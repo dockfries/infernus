@@ -1,0 +1,23 @@
+{
+  "name": "omp-node-lib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YuCarl77/omp-node-lib.git"
+  },
+  "keywords": [
+    "omp",
+    "samp"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YuCarl77/omp-node-lib/issues"
+  },
+  "homepage": "https://github.com/YuCarl77/omp-node-lib#readme"
+}
