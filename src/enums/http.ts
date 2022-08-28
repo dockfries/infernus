@@ -1,0 +1,10 @@
+namespace OmpNode.Enum {
+  export enum HTTP {
+    ERROR_BAD_HOST = 1,
+    ERROR_NO_SOCKET,
+    ERROR_CANT_CONNECT,
+    ERROR_CANT_WRITE,
+    ERROR_CONTENT_TOO_BIG,
+    ERROR_MALFORMED_RESPONSE,
+  }
+}
