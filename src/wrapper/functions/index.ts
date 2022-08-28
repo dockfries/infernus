@@ -1,13 +1,12 @@
 // Reference to Peter Szombati's samp-node-lib
 
-import {
-  CARMODTYPE,
-  FIGHT_STYLE,
-  PLAYER_STATE,
-  TEXTDRAW_ALIGN,
-  VEHICLE_MODEL_INFO,
-  WEAPONSKILL,
-} from "./SampEnum";
+import FIGHT_STYLE = OmpNode.Enum.FightingStyles;
+import WEAPONSKILL = OmpNode.Enum.WeaponSkills;
+import CARMODTYPE = OmpNode.Enum.CarModType;
+import VEHICLE_MODEL_INFO = OmpNode.Enum.VehicleModelInfo;
+import PLAYER_STATE = OmpNode.Enum.PlayerState;
+import TEXTDRAW_ALIGN = OmpNode.Enum.TextDrawAlign;
+
 import { rgba } from "../../utils/colorUtils";
 
 export const SendClientMessage = (

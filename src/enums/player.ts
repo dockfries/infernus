@@ -25,4 +25,27 @@ namespace OmpNode.Enum {
     FIXED,
     SIDE,
   }
+
+  export enum PlayerState {
+    NONE,
+    ONFOOT,
+    DRIVER,
+    PASSENGER,
+    EXIT_VEHICLE,
+    ENTER_VEHICLE_DRIVER,
+    ENTER_VEHICLE_PASSENGER,
+    WASTED,
+    SPAWNED,
+    SPECTATING,
+  }
+
+  export enum BodyParts {
+    TORSO = 3,
+    GROIN,
+    LEFT_ARM,
+    RIGHT_ARM,
+    LEFT_LEG,
+    RIGHT_LEG,
+    HEAD,
+  }
 }
