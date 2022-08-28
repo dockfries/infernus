@@ -1,6 +1,8 @@
 {
   "include": ["src/**/*.ts"],
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": { "@/*": ["src/*"] },
     "types": ["@types/node"],
     "target": "ESNext",
     "module": "ESNext",

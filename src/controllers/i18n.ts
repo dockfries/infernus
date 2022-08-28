@@ -66,4 +66,9 @@ export default class I18n {
     const buffer = buf instanceof Buffer ? buf : Buffer.from(buf);
     return decode(buffer, charset);
   }
+
+  // Truncate the string to the EOS tag to get the actual valid data
+  public static getValidStr(byteArr: number[]) {
+    return byteArr.slice(0, byteArr.indexOf(0));
+  }
 }

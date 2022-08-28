@@ -1,8 +1,8 @@
 // Here are some internationalized functions that are encapsulated and used to override the original functions
 import { rgba } from "../utils/colorUtils";
 import I18n from "../controllers/i18n";
-import Player from "@/models/player";
-import type { IDialog } from "@/utils/Dialog";
+import { BasePlayer } from "@/controllers/player";
+import type { IDialog } from "../controllers/dialog";
 // import config from "@/config";
 
 type processTuple = [string, string | number[]];
@@ -16,7 +16,7 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 };
 
 export const SendClientMessage = (
-  player: Player,
+  player: BasePlayer,
   color: string,
   msg: string
 ): number => {
@@ -31,12 +31,12 @@ export const SendClientMessage = (
 };
 
 export const SendClientMessageToAll = (color: string, msg: string): number => {
-  Player.Players.forEach((player) => SendClientMessage(player, color, msg));
+  BasePlayer.players.forEach((player) => SendClientMessage(player, color, msg));
   return 1;
 };
 
 export const ShowPlayerDialog = (
-  player: Player,
+  player: BasePlayer,
   id: number,
   dialog: IDialog
 ): number => {
@@ -63,13 +63,15 @@ export const ShowPlayerDialog = (
 // in short, when you write the flag a, you must add I after it, but this I will actually be ignored.
 
 samp.registerEvent("OnPlayerTextI18n", "iai");
-export const OnPlayerText = (fn: (player: Player, text: string) => void) => {
+export const OnPlayerText = (
+  fn: (player: BasePlayer, text: string) => void
+) => {
   // get the player input text
   // and you can decode with the player's charset;
   samp.addEventListener(
     "OnPlayerTextI18n",
     (playerid: number, buf: number[]): void => {
-      const p = Player.Players.get(playerid);
+      const p = BasePlayer.findPlayer(playerid);
       if (p) fn(p, I18n.decodeFromBuf(buf, p.charset));
     }
   );
@@ -77,12 +79,12 @@ export const OnPlayerText = (fn: (player: Player, text: string) => void) => {
 
 samp.registerEvent("OnPlayerCommandTextI18n", "iai");
 export const OnPlayerCommandText = (
-  fn: (player: Player, cmdtext: string) => void
+  fn: (player: BasePlayer, cmdtext: string) => void
 ) => {
   samp.addEventListener(
     "OnPlayerCommandTextI18n",
     (playerid: number, buf: number[]): number => {
-      const p = Player.Players.get(playerid);
+      const p = BasePlayer.findPlayer(playerid);
       if (p) fn(p, I18n.decodeFromBuf(buf, p.charset));
       return 1;
     }
@@ -92,7 +94,7 @@ export const OnPlayerCommandText = (
 samp.registerEvent("OnDialogResponseI18n", "iiiiai");
 export const OnDialogResponse = (
   fn: (
-    player: Player,
+    player: BasePlayer,
     response: number,
     listitem: number,
     inputtext: string
@@ -107,7 +109,7 @@ export const OnDialogResponse = (
       listitem: number,
       inputbuf: number[]
     ): void => {
-      const p = Player.Players.get(playerid);
+      const p = BasePlayer.players.find((p) => p.id === playerid);
       if (!p) return;
       fn(p, response, listitem, I18n.decodeFromBuf(inputbuf, p.charset));
     }
@@ -148,12 +150,12 @@ export const OnRconLoginAttempt = (
   );
 };
 
-export const GetPlayerName = (player: Player): string => {
+export const GetPlayerName = (player: BasePlayer): string => {
   const buf: number[] = samp.callNative(
     "GetPlayerName",
     "iAi",
     player.id,
     OmpNode.Enum.Limits.MAX_PLAYER_NAME
   );
-  return I18n.decodeFromBuf(buf.slice(0, buf.indexOf(0)), player.charset);
+  return I18n.decodeFromBuf(I18n.getValidStr(buf), player.charset);
 };
