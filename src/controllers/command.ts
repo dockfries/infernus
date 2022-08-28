@@ -1,3 +1,4 @@
+import { OnPlayerCommandText } from "@/utils/helper";
 import { BasePlayer } from "./player";
 
 type EventName = string | string[];
@@ -7,6 +8,16 @@ interface ICmd {
   name: EventName;
   fn: EventFunc;
 }
+
+interface ICmdErr {
+  code: number;
+  msg: string;
+}
+
+const ICmdErrInfo: Record<string, ICmdErr> = {
+  format: { code: 0, msg: "Please enter the correct command" },
+  notExist: { code: 1, msg: "The command %s you entered does not exist" },
+};
 
 // This is an event bus for distributing instructions entered by the user.
 // You can bind a single instruction as a string, or you can bind multiple alias instructions as an array string
@@ -55,6 +66,29 @@ export class CmdBus {
         return eventName.includes(registered);
       }
       return registered === eventName;
+    });
+  }
+
+  public static OnCommandError(
+    fn: (p: BasePlayer, err: ICmdErr) => void
+  ): void {
+    OnPlayerCommandText((p: BasePlayer, cmdtext: string): void => {
+      const regCmdtext = cmdtext.match(/[^/\s]+/gi);
+      if (regCmdtext === null || regCmdtext.length === 0) {
+        return fn(p, ICmdErrInfo.format);
+      }
+      /* 
+        Use eventBus to observe and subscribe to level 1 instructions, 
+        support string and array pass, array used for alias.
+      */
+      const exist: boolean = CmdBus.emit(
+        p,
+        regCmdtext[0],
+        regCmdtext.splice(1)
+      );
+      if (exist) return;
+      // The command %s you entered does not exist
+      fn(p, ICmdErrInfo.notExist);
     });
   }
 }

@@ -2,7 +2,7 @@ import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helper";
 import { HidePlayerDialog } from "omp-wrapper";
 import { BasePlayer } from "./player";
 
-interface IDialog {
+export interface IDialog {
   style?: OmpNode.Enum.DialogStyles;
   caption?: string;
   info?: string;
@@ -10,7 +10,7 @@ interface IDialog {
   button2?: string;
 }
 
-type DialogResponse = {
+export type DialogResponse = {
   response: number;
   listitem: number;
   inputtext: string;
@@ -38,7 +38,7 @@ OnDialogResponse(
   }
 );
 
-class BaseDialog {
+export default class BaseDialog {
   private id: number;
   private static CREATED_ID: number = -1;
   private static MAX_DIALOGID: number = 32767;
@@ -122,6 +122,3 @@ class BaseDialog {
     HidePlayerDialog(player.id);
   }
 }
-
-export default BaseDialog;
-export type { IDialog, DialogResponse };
