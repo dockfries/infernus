@@ -49,18 +49,6 @@ export const OnVehicleDeath = (
   samp.addEventListener("OnVehicleDeath", func);
 };
 
-export const OnPlayerText = (
-  func: (playerid: number, text: string) => void
-) => {
-  samp.addEventListener("OnPlayerText", func);
-};
-
-export const OnPlayerCommandText = (
-  func: (playerid: number, cmdtext: string) => void
-) => {
-  samp.addEventListener("OnPlayerCommandText", func);
-};
-
 export const OnPlayerRequestClass = (
   func: (playerid: number, classid: number) => void
 ) => {
@@ -103,10 +91,6 @@ export const OnPlayerLeaveRaceCheckpoint = (
   func: (playerid: number) => void
 ) => {
   samp.addEventListener("OnPlayerLeaveRaceCheckpoint", func);
-};
-
-export const OnRconCommand = (func: (cmd: string) => void) => {
-  samp.addEventListener("OnRconCommand", func);
 };
 
 export const OnPlayerRequestSpawn = (func: (playerid: number) => void) => {
@@ -202,12 +186,6 @@ export const OnPlayerKeyStateChange = (
   samp.addEventListener("OnPlayerKeyStateChange", func);
 };
 
-export const OnRconLoginAttempt = (
-  func: (ip: string, password: string, success: number) => void
-) => {
-  samp.addEventListener("OnRconLoginAttempt", func);
-};
-
 export const OnPlayerUpdate = (func: (playerid: number) => void) => {
   samp.addEventListener("OnPlayerUpdate", func);
 };
@@ -246,18 +224,6 @@ export const OnActorStreamOut = (
   func: (actorid: number, forplayerid: number) => void
 ) => {
   samp.addEventListener("OnActorStreamOut", func);
-};
-
-export const OnDialogResponse = (
-  func: (
-    playerid: number,
-    dialogid: number,
-    response: number,
-    listitem: number,
-    inputtext: string
-  ) => void
-) => {
-  samp.addEventListener("OnDialogResponse", func);
 };
 
 export const OnPlayerTakeDamage = (

@@ -1,18 +1,39 @@
 lockfileVersion: 5.4
 
 specifiers:
-  omp-wrapper: ^0.0.7
+  '@types/node': ^18.7.13
+  iconv-lite: ^0.6.3
+  omp-wrapper: latest
   typescript: ^4.7.4
 
+dependencies:
+  iconv-lite: 0.6.3
+
 devDependencies:
+  '@types/node': 18.7.13
   omp-wrapper: 0.0.7
   typescript: 4.7.4
 
 packages:
 
+  /@types/node/18.7.13:
+    resolution: {integrity: sha512-46yIhxSe5xEaJZXWdIBP7GU4HDTG8/eo0qd9atdiL+lFpA03y8KS+lkTN834TWJj5767GbWv4n/P6efyTFt1Dw==}
+    dev: true
+
+  /iconv-lite/0.6.3:
+    resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      safer-buffer: 2.1.2
+    dev: false
+
   /omp-wrapper/0.0.7:
     resolution: {integrity: sha512-pnocKWtNdeSZ+wYRDTgEV7P/W7fmlUe6k/OYGXywlzw8Ew5GJ84qmuLeaA8rOtCK+GUYeCXd692nsIzUA5PgZw==}
     dev: true
+
+  /safer-buffer/2.1.2:
+    resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+    dev: false
 
   /typescript/4.7.4:
     resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}

@@ -1,6 +1,7 @@
 {
   "include": ["src/**/*.ts"],
   "compilerOptions": {
+    "types": ["@types/node"],
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",

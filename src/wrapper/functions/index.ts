@@ -9,27 +9,6 @@ import TEXTDRAW_ALIGN = OmpNode.Enum.TextDrawAlign;
 
 import { rgba } from "../../utils/colorUtils";
 
-export const SendClientMessage = (
-  playerid: number,
-  color: string,
-  message: string
-): number => {
-  return samp.callNative(
-    "SendClientMessage",
-    "iis",
-    playerid,
-    rgba(color),
-    message
-  );
-};
-
-export const SendClientMessageToAll = (
-  color: string,
-  message: string
-): number => {
-  return samp.callNative("SendClientMessageToAll", "is", rgba(color), message);
-};
-
 export const SendPlayerMessageToPlayer = (
   playerid: number,
   senderid: number,
@@ -977,28 +956,6 @@ export const UpdatePlayer3DTextLabelText = (
   );
 };
 
-export const ShowPlayerDialog = (
-  playerid: number,
-  dialogid: number,
-  style: number,
-  caption: string,
-  info: string,
-  button1: string,
-  button2: string
-): number => {
-  return samp.callNative(
-    "ShowPlayerDialog",
-    "iiissss",
-    playerid,
-    dialogid,
-    style,
-    caption,
-    info,
-    button1,
-    button2
-  );
-};
-
 export const gpci = (playerid: number, maxlen: number): string => {
   return samp.callNative("gpci", "iSi", playerid, maxlen);
 };
@@ -1878,10 +1835,6 @@ export const GetPlayerWeapon = (playerid: number): number => {
 
 export const GetPlayerKeys = (playerid: number): Array<any> => {
   return samp.callNative("GetPlayerKeys", "iIII", playerid);
-};
-
-export const GetPlayerName = (playerid: number, len: number): string => {
-  return samp.callNative("GetPlayerName", "iSi", playerid, len);
 };
 
 export const SetPlayerTime = (
