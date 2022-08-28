@@ -22,7 +22,7 @@ export default class I18n {
     lang: keyof ILocales = this.language
   ): string {
     const { value } = this.locales[lang];
-    let text = this.dotValue(value, key);
+    let text = I18n.dotValue(value, key);
     if (text === undefined) return "undefined";
     if (replaceable && replaceable.length) {
       // %s Used to declare as a slot and for future replacement
@@ -37,7 +37,7 @@ export default class I18n {
   }
 
   // "server.welcome" => zh_cn["server"]["welcome"];
-  private dotValue(whichLangJson: any, property: string): string {
+  private static dotValue(whichLangJson: any, property: string): string {
     const keyArr: string[] = property.split(".");
     return keyArr.reduce((obj: any, key: string) => {
       if (!obj.hasOwnProperty(key))
