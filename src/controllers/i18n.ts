@@ -11,8 +11,8 @@ export default class I18n {
   private locales: ILocales;
   private language: keyof ILocales;
 
-  constructor(language: keyof ILocales, locales: ILocales) {
-    this.language = language;
+  constructor(defaultLocale: keyof ILocales, locales: ILocales) {
+    this.language = defaultLocale;
     this.locales = locales;
   }
 

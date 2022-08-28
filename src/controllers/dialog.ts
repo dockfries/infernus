@@ -1,7 +1,6 @@
 import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helper";
 import { HidePlayerDialog } from "omp-wrapper";
 import { BasePlayer } from "./player";
-// import { $t } from "./i18n";
 
 interface IDialog {
   style?: OmpNode.Enum.DialogStyles;
@@ -58,7 +57,7 @@ class BaseDialog {
     if (BaseDialog.CREATED_ID < BaseDialog.MAX_DIALOGID) {
       BaseDialog.CREATED_ID++;
     } else {
-      console.log($t("error.dialogLimited"));
+      console.log("[Dialog]: The maximum number of dialogs is reached");
     }
     this.dialog = dialog;
     this.id = BaseDialog.CREATED_ID;

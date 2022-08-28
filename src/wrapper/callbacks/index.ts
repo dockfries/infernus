@@ -1,8 +1,5 @@
 // Reference to Peter Szombati's samp-node-lib
 
-// built-in omp-wrapper
-export * from "omp-wrapper";
-
 export const OnGameModeInit = (func: () => void) => {
   samp.addEventListener("OnGameModeInit", func);
 };

@@ -1,7 +1,6 @@
 import { OnGameModeExit, OnGameModeInit } from "@/wrapper/callbacks";
 import { GameModeExit } from "@/wrapper/functions";
 
-// todo: new with i18n params
 export default class BaseGameMode {
   private static instance: BaseGameMode;
   private initialized: boolean = false;
@@ -16,7 +15,8 @@ export default class BaseGameMode {
   // do something during initialization, such as load some objects
   // final callback to main.ts
   public init(func: () => void): void {
-    if (this.initialized) throw new Error($t("error.initTwice"));
+    if (this.initialized)
+      throw new Error("[GameMode]: Cannot be initialized more than once");
     this.initialized = true;
     this.OnInit(func);
   }

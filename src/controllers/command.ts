@@ -16,7 +16,10 @@ export class CmdBus {
 
   static on(eventName: EventName, eventFunction: EventFunc) {
     const idx: number = CmdBus.findEventIdxByName(eventName);
-    if (idx > -1) return console.log($t("error.commandTwice"));
+    if (idx > -1)
+      return console.log(
+        "[CommandBus]: It is not supported to listen for the same event more than once"
+      );
     CmdBus.eventList.push({ name: eventName, fn: eventFunction });
   }
 
