@@ -1,12 +1,18 @@
 lockfileVersion: 5.4
 
 specifiers:
+  omp-wrapper: ^0.0.7
   typescript: ^4.7.4
 
 devDependencies:
+  omp-wrapper: 0.0.7
   typescript: 4.7.4
 
 packages:
+
+  /omp-wrapper/0.0.7:
+    resolution: {integrity: sha512-pnocKWtNdeSZ+wYRDTgEV7P/W7fmlUe6k/OYGXywlzw8Ew5GJ84qmuLeaA8rOtCK+GUYeCXd692nsIzUA5PgZw==}
+    dev: true
 
   /typescript/4.7.4:
     resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}

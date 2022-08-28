@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/YuCarl77/omp-node-lib#readme",
   "devDependencies": {
+    "omp-wrapper": "@latest",
     "typescript": "^4.7.4"
   }
 }
