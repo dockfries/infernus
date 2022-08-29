@@ -21,11 +21,13 @@
   },
   "homepage": "https://github.com/YuCarl77/omp-node-lib#readme",
   "devDependencies": {
+    "@types/lodash": "^4.14.184",
     "@types/node": "^18.7.13",
     "omp-wrapper": "latest",
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "iconv-lite": "^0.6.3"
+    "iconv-lite": "^0.6.3",
+    "lodash": "^4.17.21"
   }
 }

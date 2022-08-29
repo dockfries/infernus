@@ -1,20 +1,28 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@types/lodash': ^4.14.184
   '@types/node': ^18.7.13
   iconv-lite: ^0.6.3
+  lodash: ^4.17.21
   omp-wrapper: latest
   typescript: ^4.7.4
 
 dependencies:
   iconv-lite: 0.6.3
+  lodash: 4.17.21
 
 devDependencies:
+  '@types/lodash': 4.14.184
   '@types/node': 18.7.13
   omp-wrapper: 0.0.7
   typescript: 4.7.4
 
 packages:
+
+  /@types/lodash/4.14.184:
+    resolution: {integrity: sha512-RoZphVtHbxPZizt4IcILciSWiC6dcn+eZ8oX9IWEYfDMcocdd42f7NPI6fQj+6zI8y4E0L7gu2pcZKLGTRaV9Q==}
+    dev: true
 
   /@types/node/18.7.13:
     resolution: {integrity: sha512-46yIhxSe5xEaJZXWdIBP7GU4HDTG8/eo0qd9atdiL+lFpA03y8KS+lkTN834TWJj5767GbWv4n/P6efyTFt1Dw==}
@@ -25,6 +33,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
+    dev: false
+
+  /lodash/4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: false
 
   /omp-wrapper/0.0.7:
