@@ -1,0 +1,7 @@
+.vscode
+node_modules
+src
+.npmrc
+.gitignore
+.pnpm-lock.yaml
+tsconfig.json
