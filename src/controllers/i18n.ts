@@ -7,7 +7,7 @@ export interface ILocale {
 
 export type ILocales = Record<string, ILocale>;
 
-export default class I18n {
+export class I18n {
   private locales: ILocales;
   private language: keyof ILocales;
 

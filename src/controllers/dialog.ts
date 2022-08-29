@@ -39,7 +39,7 @@ OnDialogResponse(
   }
 );
 
-export default class BaseDialog {
+export class BaseDialog {
   private id: number;
   private static CREATED_ID = -1;
   private static MAX_DIALOGID = 32767;

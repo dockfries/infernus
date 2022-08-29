@@ -1,5 +1,5 @@
 import { rgba } from "../utils/colorUtils";
-import I18n from "../controllers/i18n";
+import { I18n } from "../controllers/i18n";
 import { BasePlayer } from "@/controllers/player";
 import type { IDialog } from "../controllers/dialog";
 import { LimitsEnum } from "@/enums";
@@ -130,10 +130,7 @@ export const OnClientMessage = (
 };
 
 samp.registerEvent("OnRconCommandI18n", "ai");
-export const OnRconCommand = (
-  fn: (cmd: string) => void,
-  charset = "utf8"
-) => {
+export const OnRconCommand = (fn: (cmd: string) => void, charset = "utf8") => {
   samp.addEventListener("OnRconCommandI18n", (buf: number[]): void => {
     fn(I18n.decodeFromBuf(buf, charset));
   });

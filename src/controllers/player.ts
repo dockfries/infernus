@@ -10,20 +10,6 @@ export interface IPlayerSettings {
   charset: string;
 }
 
-OnPlayerConnect((playerid: number): void => {
-  const p = new BasePlayer();
-  p.id = playerid;
-  BasePlayer.players.push(p);
-  p.OnConnect();
-});
-
-OnPlayerDisconnect((playerid: number): void => {
-  const p = BasePlayer.findPlayerIdx(playerid);
-  if (p === -1) return;
-  BasePlayer.players[p].OnDisconnect();
-  BasePlayer.players.splice(p, 1);
-});
-
 export class BasePlayer {
   public static players: Array<BasePlayer> = [];
   public id = -1;
@@ -32,11 +18,19 @@ export class BasePlayer {
   private lastDrunkLevel = 0;
   private lastFps = 0;
 
-  public constructor() {}
+  public constructor() {
+    OnPlayerConnect((playerid: number): void => {
+      if (playerid === this.id) this.OnConnect();
+    });
+    OnPlayerDisconnect((playerid: number, reason: number): void => {
+      if (playerid === this.id) this.OnDisconnect(reason);
+    });
+  }
+
+  protected OnConnect(): void {}
+  protected OnDisconnect(reason: number): void {}
 
   // todo: need outside default locale value
-  public OnConnect(): void {}
-  public OnDisconnect(): void {}
 
   get isNpc(): boolean {
     return Boolean(IsPlayerNPC(this.id));
@@ -48,6 +42,7 @@ export class BasePlayer {
     const nowDrunkLevel = GetPlayerDrunkLevel(this.id);
     if (nowDrunkLevel < 100) {
       SetPlayerDrunkLevel(this.id, 2000);
+      this.lastDrunkLevel = 2000;
       return 0;
     }
     if (this.lastDrunkLevel === nowDrunkLevel) return this.lastFps;
@@ -78,3 +73,17 @@ export class BasePlayer {
     return BasePlayer.players.findIndex((p) => p.id === playerid);
   }
 }
+
+OnPlayerConnect((playerid: number): void => {
+  const p = new BasePlayer();
+  p.id = playerid;
+  BasePlayer.players.push(p);
+  // p.OnConnect();
+});
+
+OnPlayerDisconnect((playerid: number): void => {
+  const p = BasePlayer.findPlayerIdx(playerid);
+  if (p === -1) return;
+  // BasePlayer.players[p].OnDisconnect();
+  BasePlayer.players.splice(p, 1);
+});
