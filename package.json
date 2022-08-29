@@ -2,9 +2,10 @@
   "name": "omp-node-lib",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/bundle.js",
+  "types": "dist/bundle.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,12 @@
     "@types/lodash": "^4.14.184",
     "@types/node": "^18.7.13",
     "omp-wrapper": "latest",
+    "rollup": "^2.77.2",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-node-externals": "^4.1.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.32.1",
     "typescript": "^4.7.4"
   },
   "dependencies": {

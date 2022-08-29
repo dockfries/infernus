@@ -1,9 +1,10 @@
+import { DialogStylesEnum } from "../enums";
 import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helper";
 import { HidePlayerDialog } from "omp-wrapper";
 import { BasePlayer } from "./player";
 
 export interface IDialog {
-  style?: OmpNode.Enum.DialogStyles;
+  style?: DialogStylesEnum;
   caption?: string;
   info?: string;
   button1?: string;
@@ -47,7 +48,7 @@ export default class BaseDialog {
 
   constructor(
     dialog: IDialog = {
-      style: OmpNode.Enum.DialogStyles.MSGBOX,
+      style: DialogStylesEnum.MSGBOX,
       caption: "",
       info: "",
       button1: "",
@@ -64,10 +65,10 @@ export default class BaseDialog {
   }
 
   // #region
-  public get style(): OmpNode.Enum.DialogStyles | undefined {
+  public get style(): DialogStylesEnum | undefined {
     return this.dialog.style;
   }
-  public set style(v: OmpNode.Enum.DialogStyles | undefined) {
+  public set style(v: DialogStylesEnum | undefined) {
     this.dialog.style = v;
   }
 

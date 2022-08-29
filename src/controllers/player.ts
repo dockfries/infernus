@@ -5,7 +5,7 @@ import {
   SetPlayerDrunkLevel,
 } from "@/wrapper/functions";
 
-interface Settings {
+interface ISettings {
   locale: string;
   charset: string;
 }
@@ -13,11 +13,11 @@ export class BasePlayer {
   public static players: Array<BasePlayer> = [];
   public id: number;
   public name: string = "";
-  public settings: Settings;
+  public settings: ISettings;
   private lastDrunkLevel: number = 0;
   private lastFps: number = 0;
 
-  constructor(id: number, settings: Settings) {
+  constructor(id: number, settings: ISettings) {
     this.id = id;
     this.settings = settings;
   }

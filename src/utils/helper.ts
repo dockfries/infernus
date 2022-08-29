@@ -2,6 +2,7 @@ import { rgba } from "../utils/colorUtils";
 import I18n from "../controllers/i18n";
 import { BasePlayer } from "@/controllers/player";
 import type { IDialog } from "../controllers/dialog";
+import { LimitsEnum } from "@/enums";
 
 type processTuple = [string, string | number[]];
 
@@ -160,7 +161,7 @@ export const GetPlayerName = (player: BasePlayer): string => {
     "GetPlayerName",
     "iAi",
     player.id,
-    OmpNode.Enum.Limits.MAX_PLAYER_NAME
+    LimitsEnum.MAX_PLAYER_NAME
   );
   return I18n.decodeFromBuf(I18n.getValidStr(buf), player.charset);
 };

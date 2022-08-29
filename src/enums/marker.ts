@@ -1,7 +1,5 @@
-namespace OmpNode.Enum {
-  export enum MarkerModes {
-    OFF,
-    GLOBAL,
-    STREAMED,
-  }
+export enum MarkerModesEnum {
+  OFF,
+  GLOBAL,
+  STREAMED,
 }

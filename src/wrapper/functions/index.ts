@@ -1,15 +1,16 @@
 // Reference to Peter Szombati's samp-node-lib
 
-// removed db_ functions, for better maintainability you should use the node library
-
-import FIGHT_STYLE = OmpNode.Enum.FightingStyles;
-import WEAPONSKILL = OmpNode.Enum.WeaponSkills;
-import CARMODTYPE = OmpNode.Enum.CarModType;
-import VEHICLE_MODEL_INFO = OmpNode.Enum.VehicleModelInfo;
-import PLAYER_STATE = OmpNode.Enum.PlayerState;
-import TEXTDRAW_ALIGN = OmpNode.Enum.TextDrawAlign;
+// removed db_, timer functions, for better maintainability you should use the node library
 
 import { rgba } from "../../utils/colorUtils";
+import {
+  CarModTypeEnum,
+  FightingStylesEnum,
+  PlayerStateEnum,
+  TextDrawAlignEnum,
+  VehicleModelInfoEnum,
+  WeaponSkillsEnum,
+} from "@/enums";
 
 export const SendPlayerMessageToPlayer = (
   playerid: number,
@@ -1807,7 +1808,7 @@ export const GetPlayerMoney = (playerid: number): number => {
   return samp.callNative("GetPlayerMoney", "i", playerid);
 };
 
-export const GetPlayerState = (playerid: number): PLAYER_STATE => {
+export const GetPlayerState = (playerid: number): PlayerStateEnum => {
   return samp.callNative("GetPlayerState", "i", playerid);
 };
 
@@ -1864,12 +1865,14 @@ export const GetPlayerWantedLevel = (playerid: number): number => {
 
 export const SetPlayerFightingStyle = (
   playerid: number,
-  style: FIGHT_STYLE
+  style: FightingStylesEnum
 ): number => {
   return samp.callNative("SetPlayerFightingStyle", "ii", playerid, style);
 };
 
-export const GetPlayerFightingStyle = (playerid: number): FIGHT_STYLE => {
+export const GetPlayerFightingStyle = (
+  playerid: number
+): FightingStylesEnum => {
   return samp.callNative("GetPlayerFightingStyle", "i", playerid);
 };
 
@@ -1935,7 +1938,7 @@ export const SetPlayerShopName = (
 
 export const SetPlayerSkillLevel = (
   playerid: number,
-  skill: WEAPONSKILL,
+  skill: WeaponSkillsEnum,
   level: number
 ): number => {
   return samp.callNative("SetPlayerSkillLevel", "iii", playerid, skill, level);
@@ -2082,7 +2085,7 @@ export const PlayerTextDrawTextSize = (
 export const PlayerTextDrawAlignment = (
   playerid: number,
   text: number,
-  alignment: TEXTDRAW_ALIGN
+  alignment: TextDrawAlignEnum
 ): number => {
   return samp.callNative(
     "PlayerTextDrawAlignment",
@@ -3228,12 +3231,14 @@ export const GetVehicleModel = (vehicleid: number): number => {
 
 export const GetVehicleComponentInSlot = (
   vehicleid: number,
-  slot: CARMODTYPE
+  slot: CarModTypeEnum
 ): number => {
   return samp.callNative("GetVehicleComponentInSlot", "ii", vehicleid, slot);
 };
 
-export const GetVehicleComponentType = (component: number): CARMODTYPE | -1 => {
+export const GetVehicleComponentType = (
+  component: number
+): CarModTypeEnum | -1 => {
   return samp.callNative("GetVehicleComponentType", "i", component);
 };
 
@@ -3303,7 +3308,7 @@ export const UpdateVehicleDamageStatus = (
 
 export const GetVehicleModelInfo = (
   vehiclemodel: number,
-  infotype: VEHICLE_MODEL_INFO
+  infotype: VehicleModelInfoEnum
 ) => {
   const values = samp.callNative(
     "GetVehicleModelInfo",

@@ -1,7 +1,5 @@
-namespace OmpNode.Enum {
-  export enum EditResponseTypes {
-    CANCEL,
-    FINAL,
-    UPDATE,
-  }
+export enum EditResponseTypesEnum {
+  CANCEL,
+  FINAL,
+  UPDATE,
 }

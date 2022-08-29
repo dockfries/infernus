@@ -1,5 +1,3 @@
-namespace OmpNode.Enum {
-  export enum ClickSources {
-    SCOREBOARD,
-  }
+export enum ClickSourcesEnum {
+  SCOREBOARD,
 }
