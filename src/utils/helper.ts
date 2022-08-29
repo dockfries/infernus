@@ -1,9 +1,7 @@
-// Here are some internationalized functions that are encapsulated and used to override the original functions
 import { rgba } from "../utils/colorUtils";
 import I18n from "../controllers/i18n";
 import { BasePlayer } from "@/controllers/player";
 import type { IDialog } from "../controllers/dialog";
-// import config from "@/config";
 
 type processTuple = [string, string | number[]];
 
@@ -15,6 +13,7 @@ export const processMsg = (msg: string, charset: string): processTuple => {
   return [flag, res];
 };
 
+// Here are some i18n functions used to override the original functions
 export const SendClientMessage = (
   player: BasePlayer,
   color: string,
@@ -117,30 +116,36 @@ export const OnDialogResponse = (
 };
 
 samp.registerEvent("OnClientMessageI18n", "iai");
-export const OnClientMessage = (fn: (color: number, text: string) => void) => {
+export const OnClientMessage = (
+  fn: (color: number, text: string) => void,
+  charset: string = "utf8"
+) => {
   samp.addEventListener(
     "OnClientMessageI18n",
     (color: number, buf: number[]): void => {
-      fn(color, I18n.decodeFromBuf(buf, config.charset));
+      fn(color, I18n.decodeFromBuf(buf, charset));
     }
   );
 };
 
 samp.registerEvent("OnRconCommandI18n", "ai");
-export const OnRconCommand = (fn: (cmd: string) => void) => {
+export const OnRconCommand = (
+  fn: (cmd: string) => void,
+  charset: string = "utf8"
+) => {
   samp.addEventListener("OnRconCommandI18n", (buf: number[]): void => {
-    fn(I18n.decodeFromBuf(buf, config.charset));
+    fn(I18n.decodeFromBuf(buf, charset));
   });
 };
 
 samp.registerEvent("OnRconLoginAttemptI18n", "aiaii");
 export const OnRconLoginAttempt = (
-  fn: (ip: string, password: string, success: number) => void
+  fn: (ip: string, password: string, success: number) => void,
+  charset: string = "utf8"
 ) => {
   samp.addEventListener(
     "OnRconLoginAttemptI18n",
     (ip: number[], password: number[], success: number): void => {
-      const { charset } = config;
       fn(
         I18n.decodeFromBuf(ip, charset),
         I18n.decodeFromBuf(password, charset),
