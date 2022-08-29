@@ -1,5 +1,7 @@
 // Reference to Peter Szombati's samp-node-lib
 
+// removed db_ functions, for better maintainability you should use the node library
+
 import FIGHT_STYLE = OmpNode.Enum.FightingStyles;
 import WEAPONSKILL = OmpNode.Enum.WeaponSkills;
 import CARMODTYPE = OmpNode.Enum.CarModType;
@@ -2926,102 +2928,6 @@ export const SendClientCheck = (
     memOffset,
     byteCount
   );
-};
-
-export const db_open = (name: string): number => {
-  return samp.callNative("db_open", "s", name);
-};
-
-export const db_close = (db: number): number => {
-  return samp.callNative("db_close", "i", db);
-};
-
-export const db_query = (db: number, query: string): number => {
-  return samp.callNative("db_query", "is", db, query);
-};
-
-export const db_free_result = (dbresult: number): number => {
-  return samp.callNative("db_free_result", "i", dbresult);
-};
-
-export const db_num_rows = (dbresult: number): number => {
-  return samp.callNative("db_num_rows", "i", dbresult);
-};
-
-export const db_next_row = (dbresult: number): number => {
-  return samp.callNative("db_next_row", "i", dbresult);
-};
-
-export const db_num_fields = (dbresult: number): number => {
-  return samp.callNative("db_num_fields", "i", dbresult);
-};
-
-export const db_field_name = (
-  dbresult: number,
-  field: number,
-  maxlength: number
-): string => {
-  return samp.callNative("db_field_name", "iiSi", dbresult, field, maxlength);
-};
-
-export const db_get_field = (
-  dbresult: number,
-  field: number,
-  maxlength: number
-): string => {
-  return samp.callNative("db_get_field", "iiSi", dbresult, field, maxlength);
-};
-
-export const db_get_field_int = (result: number, field: number): number => {
-  return samp.callNative("db_get_field_int", "ii", result, field);
-};
-
-export const db_get_field_float = (result: number, field: number): number => {
-  return samp.callNativeFloat("db_get_field_float", "ii", result, field);
-};
-
-export const db_get_field_assoc = (
-  dbresult: number,
-  field: string,
-  maxlength: number
-): string => {
-  return samp.callNative(
-    "db_get_field_assoc",
-    "isSi",
-    dbresult,
-    field,
-    maxlength
-  );
-};
-
-export const db_get_field_assoc_int = (
-  result: number,
-  field: string
-): number => {
-  return samp.callNative("db_get_field_assoc_int", "is", result, field);
-};
-
-export const db_get_field_assoc_float = (
-  result: number,
-  field: string
-): number => {
-  return samp.callNativeFloat("db_get_field_assoc_float", "is", result, field);
-};
-
-export const db_get_mem_handle = (db: number): number => {
-  return samp.callNative("db_get_mem_handle", "i", db);
-};
-
-export const db_get_result_mem_handle = (result: number): number => {
-  return samp.callNative("db_get_result_mem_handle", "i", result);
-};
-
-export const db_debug_openfiles = (): number => {
-  return samp.callNative("db_debug_openfiles", "");
-};
-
-export const db_debug_openresults = (): number => {
-  return samp.callNative("db_debug_openresults", "");
 };
 
 export const CreateVehicle = (
