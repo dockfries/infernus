@@ -40,7 +40,7 @@ export default class I18n {
   private static dotValue(whichLangJson: any, property: string): string {
     const keyArr: string[] = property.split(".");
     return keyArr.reduce((obj: any, key: string) => {
-      if (!obj.hasOwnProperty(key))
+      if (!Object.prototype.hasOwnProperty.call(obj, key))
         throw new Error(`[i18n]: cannot find ${property}`);
       return obj[key];
     }, whichLangJson) as string;

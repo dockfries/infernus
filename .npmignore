@@ -3,5 +3,7 @@ node_modules
 src
 .npmrc
 .gitignore
+.eslintrc
 .pnpm-lock.yaml
 tsconfig.json
+rollup.config.ts

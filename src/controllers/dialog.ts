@@ -41,10 +41,10 @@ OnDialogResponse(
 
 export default class BaseDialog {
   private id: number;
-  private static CREATED_ID: number = -1;
-  private static MAX_DIALOGID: number = 32767;
+  private static CREATED_ID = -1;
+  private static MAX_DIALOGID = 32767;
   private dialog: IDialog;
-  public static waitingQueue: Map<Number, Function> = new Map();
+  public static waitingQueue: Map<number, Promise<DialogResponse>> = new Map();
 
   constructor(
     dialog: IDialog = {

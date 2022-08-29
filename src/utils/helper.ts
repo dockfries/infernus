@@ -119,7 +119,7 @@ export const OnDialogResponse = (
 samp.registerEvent("OnClientMessageI18n", "iai");
 export const OnClientMessage = (
   fn: (color: number, text: string) => void,
-  charset: string = "utf8"
+  charset = "utf8"
 ) => {
   samp.addEventListener(
     "OnClientMessageI18n",
@@ -132,7 +132,7 @@ export const OnClientMessage = (
 samp.registerEvent("OnRconCommandI18n", "ai");
 export const OnRconCommand = (
   fn: (cmd: string) => void,
-  charset: string = "utf8"
+  charset = "utf8"
 ) => {
   samp.addEventListener("OnRconCommandI18n", (buf: number[]): void => {
     fn(I18n.decodeFromBuf(buf, charset));
@@ -142,7 +142,7 @@ export const OnRconCommand = (
 samp.registerEvent("OnRconLoginAttemptI18n", "aiaii");
 export const OnRconLoginAttempt = (
   fn: (ip: string, password: string, success: number) => void,
-  charset: string = "utf8"
+  charset = "utf8"
 ) => {
   samp.addEventListener(
     "OnRconLoginAttemptI18n",

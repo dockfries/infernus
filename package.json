@@ -1,10 +1,11 @@
 {
   "name": "omp-node-lib",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/bundle.js",
   "types": "dist/bundle.d.ts",
   "scripts": {
+    "lint": "eslint --fix ./src",
     "build": "rollup -c"
   },
   "repository": {
@@ -24,6 +25,9 @@
   "devDependencies": {
     "@types/lodash": "^4.14.184",
     "@types/node": "^18.7.13",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.35.1",
+    "eslint": "^8.23.0",
     "omp-wrapper": "latest",
     "rollup": "^2.77.2",
     "rollup-plugin-delete": "^2.0.0",

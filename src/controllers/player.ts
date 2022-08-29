@@ -12,10 +12,10 @@ interface ISettings {
 export class BasePlayer {
   public static players: Array<BasePlayer> = [];
   public id: number;
-  public name: string = "";
+  public name = "";
   public settings: ISettings;
-  private lastDrunkLevel: number = 0;
-  private lastFps: number = 0;
+  private lastDrunkLevel = 0;
+  private lastFps = 0;
 
   constructor(id: number, settings: ISettings) {
     this.id = id;

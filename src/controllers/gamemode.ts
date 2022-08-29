@@ -3,7 +3,7 @@ import { GameModeExit } from "@/wrapper/functions";
 
 export default class BaseGameMode {
   private static instance: BaseGameMode;
-  private initialized: boolean = false;
+  private initialized = false;
 
   private constructor() {}
 
