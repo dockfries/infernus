@@ -19,6 +19,7 @@ export class BasePlayer {
   private lastFps = 0;
 
   public constructor() {
+    // Each instance can be called to callbacks, so you can split the logic.
     OnPlayerConnect((playerid: number): void => {
       if (playerid === this.id) this.OnConnect();
     });
@@ -78,12 +79,9 @@ OnPlayerConnect((playerid: number): void => {
   const p = new BasePlayer();
   p.id = playerid;
   BasePlayer.players.push(p);
-  // p.OnConnect();
 });
 
 OnPlayerDisconnect((playerid: number): void => {
-  const p = BasePlayer.findPlayerIdx(playerid);
-  if (p === -1) return;
-  // BasePlayer.players[p].OnDisconnect();
-  BasePlayer.players.splice(p, 1);
+  const pIdx = BasePlayer.findPlayerIdx(playerid);
+  if (pIdx !== -1) BasePlayer.players.splice(pIdx, 1);
 });
