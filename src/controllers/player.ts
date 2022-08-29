@@ -15,6 +15,7 @@ export class BasePlayer {
   public name: string = "";
   public settings: Settings;
   private lastDrunkLevel: number = 0;
+  private lastFps: number = 0;
 
   constructor(id: number, settings: Settings) {
     this.id = id;
@@ -25,18 +26,18 @@ export class BasePlayer {
     return Boolean(IsPlayerNPC(this.id));
   }
 
+  // should be called at one second intervals
+  // first call will return 0;
   get fps(): number {
     const nowDrunkLevel = GetPlayerDrunkLevel(this.id);
     if (nowDrunkLevel < 100) {
       SetPlayerDrunkLevel(this.id, 2000);
-    } else {
-      if (this.lastDrunkLevel != nowDrunkLevel) {
-        const currFps = this.lastDrunkLevel - nowDrunkLevel;
-        this.lastDrunkLevel = nowDrunkLevel;
-        if (currFps > 0 && currFps < 256) return currFps - 1;
-      }
+      return 0;
     }
-    return 0;
+    if (this.lastDrunkLevel === nowDrunkLevel) return this.lastFps;
+    this.lastFps = this.lastDrunkLevel - nowDrunkLevel - 1;
+    this.lastDrunkLevel = nowDrunkLevel;
+    return this.lastFps;
   }
 
   get charset() {
