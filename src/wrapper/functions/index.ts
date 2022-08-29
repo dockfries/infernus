@@ -80,18 +80,6 @@ export const GameTextForPlayer = (
   );
 };
 
-export const SetTimer = (
-  funcname: string,
-  interval: number,
-  repeating: number
-): number => {
-  return samp.callNative("SetTimer", "sii", funcname, interval, repeating);
-};
-
-export const KillTimer = (timerid: number): number => {
-  return samp.callNative("KillTimer", "i", timerid);
-};
-
 export const GetTickCount = (): number => {
   return samp.callNative("GetTickCount", "");
 };
