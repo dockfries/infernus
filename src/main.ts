@@ -1,3 +1,2 @@
-export * from "./controllers/index";
-// built-in omp-wrapper, but future will wrapper class
-// export * from "omp-wrapper";
+// built-in omp-functional-wrapper, future will support class
+export * from "./controllers";

@@ -14,7 +14,7 @@ export class BasePlayer {
   public static players: Array<BasePlayer> = [];
   public id = -1;
   public name = "";
-  public settings: IPlayerSettings = { locale: "", charset: "" };
+  public settings: IPlayerSettings = { locale: "", charset: "utf8" };
   private lastDrunkLevel = 0;
   private lastFps = 0;
 
@@ -28,10 +28,17 @@ export class BasePlayer {
     });
   }
 
+  // ignore class params no used start
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+
+  // Note: The locale and character set must be assigned at application level development time. Otherwise i18n will be problematic.
+
   protected OnConnect(): void {}
+
   protected OnDisconnect(reason: number): void {}
 
-  // todo: need outside default locale value
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+  // ignore class params no used end
 
   get isNpc(): boolean {
     return Boolean(IsPlayerNPC(this.id));
