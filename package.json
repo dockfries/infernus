@@ -6,8 +6,9 @@
   "types": "dist/bundle.d.ts",
   "scripts": {
     "lint": "eslint --fix ./src",
-    "build": "rollup -c"
+    "build": "npm run lint && rollup -c"
   },
+  "prepare": "npm run build",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/YuCarl77/omp-node-lib.git"

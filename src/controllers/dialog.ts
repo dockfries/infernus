@@ -44,7 +44,10 @@ export default class BaseDialog {
   private static CREATED_ID = -1;
   private static MAX_DIALOGID = 32767;
   private dialog: IDialog;
-  public static waitingQueue: Map<number, Promise<DialogResponse>> = new Map();
+  public static waitingQueue: Map<
+    number,
+    (value: DialogResponse | PromiseLike<DialogResponse>) => void
+  > = new Map();
 
   constructor(
     dialog: IDialog = {
