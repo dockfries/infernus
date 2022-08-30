@@ -21,6 +21,7 @@ export class BasePlayer {
   public constructor() {
     // Each instance can be called to callbacks, so you can split the logic.
     OnPlayerConnect((playerid: number): void => {
+      if (this.id === -1) this.id = playerid;
       if (playerid === this.id) this.OnConnect();
     });
     OnPlayerDisconnect((playerid: number, reason: number): void => {
