@@ -40,8 +40,8 @@ export class CmdBus {
     CmdBus.eventList.splice(idx, 1);
   }
 
-  static emit(
-    player: BasePlayer,
+  static emit<T extends BasePlayer>(
+    player: T,
     userEventName: EventName,
     userEventArgs: Array<string>
   ): boolean {
