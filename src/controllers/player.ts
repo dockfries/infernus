@@ -1,3 +1,4 @@
+import { OnPlayerText, SendClientMessage } from "@/utils/helper";
 import { OnPlayerConnect, OnPlayerDisconnect } from "@/wrapper/callbacks";
 import {
   GetPlayerDrunkLevel,
@@ -22,10 +23,13 @@ export class BasePlayer {
     // Each instance can be called to callbacks, so you can split the logic.
     OnPlayerConnect((playerid: number): void => {
       if (this.id === -1) this.id = playerid;
-      if (playerid === this.id) this.OnConnect();
+      if (playerid === this.id) this.onConnect();
     });
     OnPlayerDisconnect((playerid: number, reason: number): void => {
-      if (playerid === this.id) this.OnDisconnect(reason);
+      if (playerid === this.id) this.onDisconnect(reason);
+    });
+    OnPlayerText((player: BasePlayer, text: string) => {
+      if (player === this) this.onText(text);
     });
   }
 
@@ -34,9 +38,15 @@ export class BasePlayer {
 
   // Note: The locale and character set must be assigned at application level development time. Otherwise i18n will be problematic.
 
-  protected OnConnect(): void {}
+  protected onConnect(): void {}
 
-  protected OnDisconnect(reason: number): void {}
+  protected onDisconnect(reason: number): void {}
+
+  protected onText(text: string): void {}
+
+  public sendClientMessage(color: string, msg: string): number {
+    return SendClientMessage(this, color, msg);
+  }
 
   /* eslint-enable @typescript-eslint/no-unused-vars */
   // ignore class params no used end

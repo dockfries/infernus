@@ -2,20 +2,12 @@ import { OnVehicleDamageStatusUpdate } from "@/wrapper/callbacks";
 import { BasePlayer } from "./player";
 
 export class BaseVehicle<T extends BasePlayer> {
-  constructor() {
+  private id = -1;
+  constructor(player: T) {
     OnVehicleDamageStatusUpdate((vehicleid: number, playerid: number) => {
-      this.OnDamageStatusUpdate();
+      if (playerid === player.id && vehicleid === this.id)
+        this.onDamageStatusUpdate(player);
     });
   }
-  protected OnDamageStatusUpdate(player: T) {}
+  protected onDamageStatusUpdate(player: T) {}
 }
-
-// class CommonPlayer extends BasePlayer {
-
-// }
-
-// class B extends BaseVehicle<CommonPlayer>{
-//   protected OnDamageStatusUpdate(player: CommonPlayer): void {
-
-//   }
-// }
