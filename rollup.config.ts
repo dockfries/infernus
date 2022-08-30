@@ -4,6 +4,8 @@ import del from "rollup-plugin-delete";
 import externals from "rollup-plugin-node-externals";
 import dts from "rollup-plugin-dts";
 
+import { compilerOptions } from "./tsconfig.json";
+
 const inputPath = "./src/main.ts";
 const outputPath = "./dist";
 export default [
@@ -20,6 +22,6 @@ export default [
   {
     input: inputPath,
     output: [{ file: outputPath + "/bundle.d.ts", format: "cjs" }],
-    plugins: [dts()],
+    plugins: [dts({ compilerOptions: { paths: compilerOptions.paths } })],
   },
 ];
