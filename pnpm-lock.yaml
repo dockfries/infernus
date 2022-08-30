@@ -20,6 +20,7 @@ specifiers:
 dependencies:
   iconv-lite: 0.6.3
   lodash: 4.17.21
+  omp-wrapper: 0.0.8
 
 devDependencies:
   '@types/lodash': 4.14.184
@@ -27,7 +28,6 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 5.35.1_t3qvqq7ugt4jqnoquow4ze3psy
   '@typescript-eslint/parser': 5.35.1_sorwav4hsh5vncerguqybud76i
   eslint: 8.23.0
-  omp-wrapper: 0.0.7
   rollup: 2.78.1
   rollup-plugin-delete: 2.0.0
   rollup-plugin-dts: 4.2.2_accrhai6qopda76wnqb3pkewpq
@@ -1033,9 +1033,9 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /omp-wrapper/0.0.7:
-    resolution: {integrity: sha512-pnocKWtNdeSZ+wYRDTgEV7P/W7fmlUe6k/OYGXywlzw8Ew5GJ84qmuLeaA8rOtCK+GUYeCXd692nsIzUA5PgZw==}
-    dev: true
+  /omp-wrapper/0.0.8:
+    resolution: {integrity: sha512-OoYl7VzRiD2cv7a2isTLJbFJv+3qRq/FP31IWghMZZnlHrN8ZtQcdUJZdugqUzOtEC3kFEXtuuOFmcoWEZD65Q==}
+    dev: false
 
   /once/1.4.0:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}

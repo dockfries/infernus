@@ -29,7 +29,6 @@
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
     "eslint": "^8.23.0",
-    "omp-wrapper": "latest",
     "rollup": "^2.77.2",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-dts": "^4.2.2",
@@ -40,6 +39,7 @@
   },
   "dependencies": {
     "iconv-lite": "^0.6.3",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "omp-wrapper": "latest"
   }
 }
