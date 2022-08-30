@@ -1,15 +1,12 @@
-import { OnPlayerText } from "@/utils/helper";
+import { OnPlayerText } from "@/utils/helperUtils";
 import { OnPlayerConnect, OnPlayerDisconnect } from "@/wrapper/callbacks";
-import { I18n } from "./i18n";
-import { BasePlayer } from "./player";
+import { I18n } from "../i18n";
+import { BasePlayer } from ".";
 
 // Each instance can be called to callbacks, so you can split the logic.
 export class BasePlayerEvent<T extends BasePlayer> {
-  // Provide a function to find player, by default go to the base player method to find
-  constructor(
-    findPlayerFn: (playerid: number) => T | undefined = (playerid: number) =>
-      <T>BasePlayer.findPlayer(playerid)
-  ) {
+  // Provide a function to find clas extends BasePlayer by playerid
+  constructor(findPlayerFn: (playerid: number) => T) {
     OnPlayerConnect((playerid: number): void => {
       const p = findPlayerFn(playerid);
       if (p) this.onConnect(p);
@@ -26,7 +23,6 @@ export class BasePlayerEvent<T extends BasePlayer> {
     });
   }
 
-  // ignore class params no used start
   /* eslint-disable @typescript-eslint/no-unused-vars */
 
   protected onConnect(player: T): void {}
@@ -36,9 +32,4 @@ export class BasePlayerEvent<T extends BasePlayer> {
   protected onText(player: T, text: string): void {}
 
   /* eslint-enable @typescript-eslint/no-unused-vars */
-  // ignore class params no used end
 }
-
-new BasePlayerEvent((playerid: number) => {
-  return BasePlayer.findPlayer(playerid);
-});

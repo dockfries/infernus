@@ -1,8 +1,8 @@
-import { DialogStylesEnum } from "../enums";
-import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helper";
+import { DialogStylesEnum } from "../../enums";
+import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helperUtils";
 import { HidePlayerDialog } from "omp-wrapper";
-import { BasePlayer } from "./player";
-import { I18n } from "./i18n";
+import { BasePlayer } from "../player";
+import { I18n } from "../i18n";
 
 export interface IDialog {
   style?: DialogStylesEnum;

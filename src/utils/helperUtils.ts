@@ -1,4 +1,4 @@
-import { rgba } from "../utils/colorUtils";
+import { rgba } from "./colorUtils";
 import { I18n } from "../controllers/i18n";
 import { BasePlayer } from "@/controllers/player";
 import type { IDialog } from "../controllers/dialog";
@@ -15,8 +15,8 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 };
 
 // Here are some i18n functions used to override the original functions
-export const SendClientMessage = (
-  player: BasePlayer,
+export const SendClientMessage = <T extends BasePlayer>(
+  player: T,
   color: string,
   msg: string
 ): number => {
@@ -30,8 +30,12 @@ export const SendClientMessage = (
   );
 };
 
-export const SendClientMessageToAll = (color: string, msg: string): number => {
-  BasePlayer.players.forEach((player) => SendClientMessage(player, color, msg));
+export const SendClientMessageToAll = <T extends BasePlayer>(
+  fn: Array<T>,
+  color: string,
+  msg: string
+): number => {
+  fn.forEach((player) => SendClientMessage(player, color, msg));
   return 1;
 };
 
@@ -126,7 +130,7 @@ export const OnRconLoginAttempt = (
   );
 };
 
-export const GetPlayerName = (player: BasePlayer): string => {
+export const GetPlayerName = <T extends BasePlayer>(player: T): string => {
   const buf: number[] = samp.callNative(
     "GetPlayerName",
     "iAi",

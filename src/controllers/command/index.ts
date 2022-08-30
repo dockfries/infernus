@@ -1,6 +1,6 @@
-import { OnPlayerCommandText } from "@/utils/helper";
-import { I18n } from "./i18n";
-import { BasePlayer } from "./player";
+import { OnPlayerCommandText } from "@/utils/helperUtils";
+import { I18n } from "../i18n";
+import { BasePlayer } from "../player";
 
 type EventName = string | string[];
 type EventFunc = <T extends BasePlayer>(this: T, ...args: string[]) => any;

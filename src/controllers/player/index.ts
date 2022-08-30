@@ -1,5 +1,4 @@
-import { SendClientMessage } from "@/utils/helper";
-import { OnPlayerConnect, OnPlayerDisconnect } from "@/wrapper/callbacks";
+import { SendClientMessage } from "@/utils/helperUtils";
 import {
   GetPlayerDrunkLevel,
   IsPlayerNPC,
@@ -12,7 +11,6 @@ export interface IPlayerSettings {
 }
 
 export class BasePlayer {
-  public static players: Array<BasePlayer> = [];
   public id = -1;
   public name = "";
   public settings: IPlayerSettings = { locale: "", charset: "utf8" };
@@ -59,23 +57,4 @@ export class BasePlayer {
   set locale(language: string) {
     this.settings.locale = language;
   }
-
-  public static findPlayer(playerid: number): BasePlayer | undefined {
-    return BasePlayer.players.find((p) => p.id === playerid);
-  }
-
-  public static findPlayerIdx(playerid: number): number {
-    return BasePlayer.players.findIndex((p) => p.id === playerid);
-  }
 }
-
-OnPlayerConnect((playerid: number): void => {
-  const p = new BasePlayer();
-  p.id = playerid;
-  BasePlayer.players.push(p);
-});
-
-OnPlayerDisconnect((playerid: number): void => {
-  const pIdx = BasePlayer.findPlayerIdx(playerid);
-  if (pIdx !== -1) BasePlayer.players.splice(pIdx, 1);
-});

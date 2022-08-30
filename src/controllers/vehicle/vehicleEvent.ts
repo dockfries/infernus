@@ -1,7 +1,7 @@
 import { OnVehicleDamageStatusUpdate } from "@/wrapper/callbacks";
-import { BasePlayer } from "./player";
+import { BasePlayer } from "../player";
 
-export class BaseVehicle<T extends BasePlayer> {
+export class BaseVehicleEvent<T extends BasePlayer> {
   private id = -1;
   constructor(player: T) {
     OnVehicleDamageStatusUpdate((vehicleid: number, playerid: number) => {
@@ -9,5 +9,10 @@ export class BaseVehicle<T extends BasePlayer> {
         this.onDamageStatusUpdate(player);
     });
   }
+
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+
   protected onDamageStatusUpdate(player: T) {}
+
+  /* eslint-disable @typescript-eslint/no-unused-vars */
 }
