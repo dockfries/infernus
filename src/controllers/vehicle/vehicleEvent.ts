@@ -1,5 +1,5 @@
 import { OnVehicleDamageStatusUpdate } from "@/wrapper/callbacks";
-import { BasePlayer } from "../player";
+import { BasePlayer } from "../player/basePlayer";
 
 export class BaseVehicleEvent<T extends BasePlayer> {
   private id = -1;

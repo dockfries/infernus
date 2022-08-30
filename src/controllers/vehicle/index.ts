@@ -1,1 +1,1 @@
-import "./vehicleEvent";
+export * from "./vehicleEvent";

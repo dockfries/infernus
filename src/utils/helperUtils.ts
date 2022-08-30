@@ -1,6 +1,6 @@
 import { rgba } from "./colorUtils";
 import { I18n } from "../controllers/i18n";
-import { BasePlayer } from "@/controllers/player";
+import { BasePlayer } from "@/controllers/player/basePlayer";
 import { IDialog } from "@/interfaces";
 import { LimitsEnum } from "@/enums";
 

@@ -1,6 +1,6 @@
 import { ICmd } from "@/interfaces";
 import { EventFunc, EventName } from "@/types";
-import { BasePlayer } from "../player";
+import { BasePlayer } from "../player/basePlayer";
 
 // This is an event bus for distributing instructions entered by the user.
 // You can bind a single instruction as a string, or you can bind multiple alias instructions as an array string

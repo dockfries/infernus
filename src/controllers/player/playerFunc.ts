@@ -1,5 +1,5 @@
 import { SendClientMessageToAll } from "@/utils/helperUtils";
-import { BasePlayer } from ".";
+import { BasePlayer } from "./basePlayer";
 
 export class BasePlayerFunc<T extends BasePlayer> {
   private playersArr: Array<T>;

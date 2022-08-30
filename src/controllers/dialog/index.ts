@@ -1,7 +1,7 @@
 import { DialogStylesEnum } from "@/enums";
 import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helperUtils";
 import { HidePlayerDialog } from "omp-wrapper";
-import { BasePlayer } from "../player";
+import { BasePlayer } from "../player/basePlayer";
 import { I18n } from "../i18n";
 import { IDialog, IDialogResRaw, IDialogResResult } from "@/interfaces";
 

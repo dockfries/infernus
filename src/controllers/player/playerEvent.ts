@@ -1,7 +1,7 @@
 import { OnPlayerCommandText, OnPlayerText } from "@/utils/helperUtils";
 import { OnPlayerConnect, OnPlayerDisconnect } from "@/wrapper/callbacks";
 import { I18n } from "../i18n";
-import { BasePlayer } from ".";
+import { BasePlayer } from "./basePlayer";
 import { CmdBus } from "../command";
 import { ICmdErr } from "@/interfaces";
 
