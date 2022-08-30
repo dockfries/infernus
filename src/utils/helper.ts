@@ -35,8 +35,8 @@ export const SendClientMessageToAll = (color: string, msg: string): number => {
   return 1;
 };
 
-export const ShowPlayerDialog = (
-  player: BasePlayer,
+export const ShowPlayerDialog = <T extends BasePlayer>(
+  player: T,
   id: number,
   dialog: IDialog
 ): number => {
@@ -79,26 +79,14 @@ export const OnPlayerCommandText = (
 samp.registerEvent("OnDialogResponseI18n", "iiiiai");
 export const OnDialogResponse = (
   fn: (
-    player: BasePlayer,
+    playerid: number,
+    dialogid: number,
     response: number,
     listitem: number,
-    inputtext: string
+    inputbuf: number[]
   ) => void
 ) => {
-  samp.addEventListener(
-    "OnDialogResponseI18n",
-    (
-      playerid: number,
-      dialogid: number,
-      response: number,
-      listitem: number,
-      inputbuf: number[]
-    ): void => {
-      const p = BasePlayer.players.find((p) => p.id === playerid);
-      if (!p) return;
-      fn(p, response, listitem, I18n.decodeFromBuf(inputbuf, p.charset));
-    }
-  );
+  samp.addEventListener("OnDialogResponseI18n", fn);
 };
 
 samp.registerEvent("OnClientMessageI18n", "iai");

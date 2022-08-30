@@ -2,6 +2,7 @@ import { DialogStylesEnum } from "../enums";
 import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helper";
 import { HidePlayerDialog } from "omp-wrapper";
 import { BasePlayer } from "./player";
+import { I18n } from "./i18n";
 
 export interface IDialog {
   style?: DialogStylesEnum;
@@ -11,11 +12,18 @@ export interface IDialog {
   button2?: string;
 }
 
-export type DialogResponse = {
+export interface IDialogResCommon {
   response: number;
   listitem: number;
+}
+
+export interface IDialogResRaw extends IDialogResCommon {
+  inputbuf: number[];
+}
+
+export interface IDialogResResult extends IDialogResCommon {
   inputtext: string;
-};
+}
 
 /* You don't need to define the dialog id, 
   but you need to pay attention to the fact that you shouldn't repeatedly new the dialog in the function, 
@@ -26,27 +34,28 @@ export type DialogResponse = {
 
 OnDialogResponse(
   (
-    player: BasePlayer,
+    playerid: number,
+    dialogid: number,
     response: number,
     listitem: number,
-    inputtext: string
+    inputbuf: number[]
   ) => {
-    const callback = BaseDialog.waitingQueue.get(player.id);
+    const callback = BaseDialog.waitingQueue.get(playerid);
     if (!callback) return;
     // bug: does not trigger resolve of promise
     // fix: it only works if you put it in an event loop
-    setTimeout(() => callback({ response, listitem, inputtext }));
+    setTimeout(() => callback({ response, listitem, inputbuf }));
   }
 );
 
-export class BaseDialog {
+export class BaseDialog<T extends BasePlayer> {
   private id: number;
   private static CREATED_ID = -1;
   private static MAX_DIALOGID = 32767;
   private dialog: IDialog;
   public static waitingQueue: Map<
     number,
-    (value: DialogResponse | PromiseLike<DialogResponse>) => void
+    (value: IDialogResRaw | PromiseLike<IDialogResRaw>) => void
   > = new Map();
 
   constructor(
@@ -102,9 +111,10 @@ export class BaseDialog {
   public set button2(v: string | undefined) {
     this.dialog.button2 = v;
   }
+
   //#endregion
 
-  private static delDialogRecord(player: BasePlayer): boolean {
+  private static delDialogRecord<T extends BasePlayer>(player: T): boolean {
     if (BaseDialog.waitingQueue.has(player.id)) {
       BaseDialog.waitingQueue.delete(player.id);
       return true;
@@ -112,16 +122,29 @@ export class BaseDialog {
     return false;
   }
 
-  public show(player: BasePlayer): Promise<DialogResponse> {
-    const p = new Promise<DialogResponse>((resolve) => {
-      BaseDialog.waitingQueue.set(player.id, resolve);
-      ShowPlayerDialog(player, this.id, this.dialog);
+  public show(player: T): Promise<IDialogResResult> {
+    return new Promise((resolve, reject) => {
+      try {
+        const p = new Promise<IDialogResRaw>((resolve) => {
+          BaseDialog.waitingQueue.set(player.id, resolve);
+          ShowPlayerDialog(player, this.id, this.dialog);
+        });
+        p.then((DialogRes: IDialogResRaw) => {
+          BaseDialog.delDialogRecord(player);
+          const { response, listitem } = DialogRes;
+          const inputtext = I18n.decodeFromBuf(
+            DialogRes.inputbuf,
+            player.charset
+          );
+          resolve({ response, listitem, inputtext });
+        });
+      } catch (err) {
+        reject(err);
+      }
     });
-    p.then(() => BaseDialog.delDialogRecord(player));
-    return p;
   }
 
-  public static close(player: BasePlayer) {
+  public static close<T extends BasePlayer>(player: T) {
     BaseDialog.delDialogRecord(player);
     HidePlayerDialog(player.id);
   }
