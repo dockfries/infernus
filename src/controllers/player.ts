@@ -1,4 +1,4 @@
-import { OnPlayerText, SendClientMessage } from "@/utils/helper";
+import { SendClientMessage } from "@/utils/helper";
 import { OnPlayerConnect, OnPlayerDisconnect } from "@/wrapper/callbacks";
 import {
   GetPlayerDrunkLevel,
@@ -19,37 +19,13 @@ export class BasePlayer {
   private lastDrunkLevel = 0;
   private lastFps = 0;
 
-  public constructor() {
-    // Each instance can be called to callbacks, so you can split the logic.
-    OnPlayerConnect((playerid: number): void => {
-      if (this.id === -1) this.id = playerid;
-      if (playerid === this.id) this.onConnect();
-    });
-    OnPlayerDisconnect((playerid: number, reason: number): void => {
-      if (playerid === this.id) this.onDisconnect(reason);
-    });
-    OnPlayerText((player: BasePlayer, text: string) => {
-      if (player === this) this.onText(text);
-    });
-  }
-
-  // ignore class params no used start
-  /* eslint-disable @typescript-eslint/no-unused-vars */
+  public constructor() {}
 
   // Note: The locale and character set must be assigned at application level development time. Otherwise i18n will be problematic.
-
-  protected onConnect(): void {}
-
-  protected onDisconnect(reason: number): void {}
-
-  protected onText(text: string): void {}
 
   public sendClientMessage(color: string, msg: string): number {
     return SendClientMessage(this, color, msg);
   }
-
-  /* eslint-enable @typescript-eslint/no-unused-vars */
-  // ignore class params no used end
 
   get isNpc(): boolean {
     return Boolean(IsPlayerNPC(this.id));
