@@ -1,8 +1,9 @@
 import { OnPlayerCommandText } from "@/utils/helper";
+import { I18n } from "./i18n";
 import { BasePlayer } from "./player";
 
 type EventName = string | string[];
-type EventFunc = (this: BasePlayer, ...args: string[]) => any;
+type EventFunc = <T extends BasePlayer>(this: T, ...args: string[]) => any;
 
 interface ICmd {
   name: EventName;
@@ -69,13 +70,16 @@ export class CmdBus {
     });
   }
 
-  public static OnCommandError(
-    fn: (p: BasePlayer, err: ICmdErr) => void
+  public static OnCommandError<T extends BasePlayer>(
+    p: T,
+    fn: (err: ICmdErr) => void
   ): void {
-    OnPlayerCommandText((p: BasePlayer, cmdtext: string): void => {
+    OnPlayerCommandText((playerid: number, buf: number[]): void => {
+      if (p.id !== playerid) return;
+      const cmdtext = I18n.decodeFromBuf(buf, p.charset);
       const regCmdtext = cmdtext.match(/[^/\s]+/gi);
       if (regCmdtext === null || regCmdtext.length === 0) {
-        return fn(p, ICmdErrInfo.format);
+        return fn(ICmdErrInfo.format);
       }
       /* 
         Use eventBus to observe and subscribe to level 1 instructions, 
@@ -88,7 +92,7 @@ export class CmdBus {
       );
       if (exist) return;
       // The command %s you entered does not exist
-      fn(p, ICmdErrInfo.notExist);
+      fn(ICmdErrInfo.notExist);
     });
   }
 }

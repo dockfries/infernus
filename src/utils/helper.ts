@@ -79,16 +79,9 @@ export const OnPlayerText = (
 
 samp.registerEvent("OnPlayerCommandTextI18n", "iai");
 export const OnPlayerCommandText = (
-  fn: (player: BasePlayer, cmdtext: string) => void
+  fn: (playerid: number, buf: number[]) => void
 ) => {
-  samp.addEventListener(
-    "OnPlayerCommandTextI18n",
-    (playerid: number, buf: number[]): number => {
-      const p = BasePlayer.findPlayer(playerid);
-      if (p) fn(p, I18n.decodeFromBuf(buf, p.charset));
-      return 1;
-    }
-  );
+  samp.addEventListener("OnPlayerCommandTextI18n", fn);
 };
 
 samp.registerEvent("OnDialogResponseI18n", "iiiiai");
