@@ -1,14 +1,10 @@
+import { IPlayerSettings } from "@/interfaces";
 import { SendClientMessage } from "@/utils/helperUtils";
 import {
   GetPlayerDrunkLevel,
   IsPlayerNPC,
   SetPlayerDrunkLevel,
 } from "@/wrapper/functions";
-
-export interface IPlayerSettings {
-  locale: string;
-  charset: string;
-}
 
 export class BasePlayer {
   public id = -1;

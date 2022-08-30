@@ -2,7 +2,7 @@
 
 // removed db_, timer functions, for better maintainability you should use the node library
 
-import { rgba } from "../../utils/colorUtils";
+import { rgba } from "@/utils/colorUtils";
 import {
   CarModTypeEnum,
   FightingStylesEnum,

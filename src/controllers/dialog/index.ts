@@ -1,29 +1,9 @@
-import { DialogStylesEnum } from "../../enums";
+import { DialogStylesEnum } from "@/enums";
 import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helperUtils";
 import { HidePlayerDialog } from "omp-wrapper";
 import { BasePlayer } from "../player";
 import { I18n } from "../i18n";
-
-export interface IDialog {
-  style?: DialogStylesEnum;
-  caption?: string;
-  info?: string;
-  button1?: string;
-  button2?: string;
-}
-
-export interface IDialogResCommon {
-  response: number;
-  listitem: number;
-}
-
-export interface IDialogResRaw extends IDialogResCommon {
-  inputbuf: number[];
-}
-
-export interface IDialogResResult extends IDialogResCommon {
-  inputtext: string;
-}
+import { IDialog, IDialogResRaw, IDialogResResult } from "@/interfaces";
 
 /* You don't need to define the dialog id, 
   but you need to pay attention to the fact that you shouldn't repeatedly new the dialog in the function, 

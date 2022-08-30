@@ -1,11 +1,5 @@
+import { ILocales } from "@/types";
 import { encode, decode, encodingExists } from "iconv-lite";
-
-export interface ILocale {
-  label: string;
-  value: { [key: string]: any };
-}
-
-export type ILocales = Record<string, ILocale>;
 
 export class I18n {
   private locales: ILocales;
