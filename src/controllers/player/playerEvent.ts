@@ -12,14 +12,20 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
   notExist: { code: 1, msg: "The command %s you entered does not exist" },
 };
 
-export abstract class BasePlayerEvent<T extends BasePlayer> {
-  public abstract players: Array<T>;
-  public abstract newPlayer(playerid: number): T;
+abstract class PlayerEvent<T extends BasePlayer> {
+  public players: Array<T> = [];
+  protected abstract newPlayer(playerid: number): T;
   protected abstract onConnect(player: T): void;
   protected abstract onDisconnect(player: T, reason: number): void;
   protected abstract onText(player: T, text: string): void;
   protected abstract onCommandError(player: T, err: ICmdErr): void;
+}
+
+export abstract class BasePlayerEvent<
+  T extends BasePlayer
+> extends PlayerEvent<T> {
   constructor() {
+    super();
     OnPlayerConnect((playerid: number): void => {
       const p = this.newPlayer(playerid);
       this.players.push(p);
@@ -62,21 +68,17 @@ export abstract class BasePlayerEvent<T extends BasePlayer> {
   }
 }
 
-class MyPlayerEvent extends BasePlayerEvent<BasePlayer> {
-  public players: BasePlayer[] = [];
-  public newPlayer(playerid: number): BasePlayer {
-    return new BasePlayer(playerid);
-  }
-  protected onConnect(player: BasePlayer): void {
-    throw new Error("Method not implemented.");
-  }
-  protected onDisconnect(player: BasePlayer, reason: number): void {
-    throw new Error("Method not implemented.");
-  }
-  protected onText(player: BasePlayer, text: string): void {
-    throw new Error("Method not implemented.");
-  }
-  protected onCommandError(player: BasePlayer, err: ICmdErr): void {
-    throw new Error("Method not implemented.");
-  }
-}
+// make good use of the selected vscode bulb tips
+// class MyPlayerEvent extends BasePlayerEvent<BasePlayer> {
+//   constructor() {
+//     super();
+//   }
+//   protected newPlayer(playerid: number): BasePlayer {
+//     return new BasePlayer(playerid);
+//   }
+//   protected onConnect(player: BasePlayer): void {}
+//   protected onDisconnect(player: BasePlayer, reason: number): void {}
+//   protected onText(player: BasePlayer, text: string): void {}
+//   protected onCommandError(player: BasePlayer, err: ICmdErr): void {}
+//   // ...
+// }
