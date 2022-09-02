@@ -7,13 +7,15 @@ import {
 } from "@/wrapper/functions";
 
 export class BasePlayer {
-  public id = -1;
+  public id: number;
   public name = "";
   public settings: IPlayerSettings = { locale: "", charset: "utf8" };
   private lastDrunkLevel = 0;
   private lastFps = 0;
 
-  public constructor() {}
+  public constructor(id: number) {
+    this.id = id;
+  }
 
   // Note: The locale and character set must be assigned at application level development time. Otherwise i18n will be problematic.
 

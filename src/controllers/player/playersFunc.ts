@@ -1,7 +1,7 @@
 import { SendClientMessageToAll } from "@/utils/helperUtils";
 import { BasePlayer } from "./basePlayer";
 
-export class BasePlayerFunc<T extends BasePlayer> {
+export class BasePlayersFunc<T extends BasePlayer> {
   private playersArr: Array<T>;
   constructor(playersArr: Array<T>) {
     this.playersArr = playersArr;

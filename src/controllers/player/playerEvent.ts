@@ -12,26 +12,34 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
   notExist: { code: 1, msg: "The command %s you entered does not exist" },
 };
 
-export class BasePlayerEvent<T extends BasePlayer> {
-  // Provide a function to find class extends BasePlayer by playerid
-  constructor(findPlayerFn: (playerid: number) => T) {
+export abstract class BasePlayerEvent<T extends BasePlayer> {
+  public abstract players: Array<T>;
+  public abstract newPlayer(playerid: number): T;
+  protected abstract onConnect(player: T): void;
+  protected abstract onDisconnect(player: T, reason: number): void;
+  protected abstract onText(player: T, text: string): void;
+  protected abstract onCommandError(player: T, err: ICmdErr): void;
+  constructor() {
     OnPlayerConnect((playerid: number): void => {
-      const p = findPlayerFn(playerid);
-      if (p) this.onConnect(p);
+      const p = this.newPlayer(playerid);
+      this.players.push(p);
+      this.onConnect(p);
     });
 
     OnPlayerDisconnect((playerid: number, reason: number): void => {
-      const p = findPlayerFn(playerid);
-      if (p) this.onDisconnect(p, reason);
+      const pIdx = this.players.findIndex((p) => p.id === playerid);
+      if (pIdx === -1) return;
+      this.onDisconnect(this.players[pIdx], reason);
+      this.players.splice(pIdx, 1);
     });
 
     OnPlayerText((playerid: number, byteArr: number[]) => {
-      const p = findPlayerFn(playerid);
+      const p = this.players.find((p) => p.id === playerid);
       if (p) this.onText(p, I18n.decodeFromBuf(byteArr, p.charset));
     });
 
     OnPlayerCommandText((playerid: number, buf: number[]): void => {
-      const p = findPlayerFn(playerid);
+      const p = this.players.find((p) => p.id === playerid);
       if (!p) return;
       const cmdtext = I18n.decodeFromBuf(buf, p.charset);
       const regCmdtext = cmdtext.match(/[^/\s]+/gi);
@@ -52,16 +60,23 @@ export class BasePlayerEvent<T extends BasePlayer> {
       this.onCommandError(p, ICmdErrInfo.notExist);
     });
   }
+}
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-
-  protected onConnect(player: T): void {}
-
-  protected onDisconnect(player: T, reason: number): void {}
-
-  protected onText(player: T, text: string): void {}
-
-  protected onCommandError(player: T, err: ICmdErr): void {}
-
-  /* eslint-enable @typescript-eslint/no-unused-vars */
+class MyPlayerEvent extends BasePlayerEvent<BasePlayer> {
+  public players: BasePlayer[] = [];
+  public newPlayer(playerid: number): BasePlayer {
+    return new BasePlayer(playerid);
+  }
+  protected onConnect(player: BasePlayer): void {
+    throw new Error("Method not implemented.");
+  }
+  protected onDisconnect(player: BasePlayer, reason: number): void {
+    throw new Error("Method not implemented.");
+  }
+  protected onText(player: BasePlayer, text: string): void {
+    throw new Error("Method not implemented.");
+  }
+  protected onCommandError(player: BasePlayer, err: ICmdErr): void {
+    throw new Error("Method not implemented.");
+  }
 }
