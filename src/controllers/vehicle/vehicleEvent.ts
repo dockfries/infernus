@@ -1,18 +1,22 @@
-import { OnVehicleDamageStatusUpdate } from "@/wrapper/callbacks";
-import { BasePlayer } from "../player/basePlayer";
+// import { OnVehicleDamageStatusUpdate } from "@/wrapper/callbacks";
+import { BasePlayer } from "../player";
+import { BaseVehicle } from "./baseVehicle";
 
-export class BaseVehicleEvent<T extends BasePlayer> {
-  private id = -1;
-  constructor(player: T) {
-    OnVehicleDamageStatusUpdate((vehicleid: number, playerid: number) => {
-      if (playerid === player.id && vehicleid === this.id)
-        this.onDamageStatusUpdate(player);
-    });
+abstract class VehicleEvent<V extends BaseVehicle, P extends BasePlayer> {
+  protected abstract onDamageStatusUpdate(vehicle: V, player: P): void;
+}
+
+// Need a way to get an array of all players of the specified player event class
+export abstract class BaseVehicleEvent<
+  V extends BaseVehicle,
+  P extends BasePlayer
+> extends VehicleEvent<V, P> {
+  constructor() {
+    super();
+    // OnVehicleDamageStatusUpdate((vehicleid: number, playerid: number) => {
+    // const veh: BaseVehicle = this.vehicles.find((v) => v.id === vehicle.id);
+    // const player: BasePlayer = players.find.....
+    //   this.onDamageStatusUpdate(veh, player);
+    // });
   }
-
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-
-  protected onDamageStatusUpdate(player: T) {}
-
-  /* eslint-disable @typescript-eslint/no-unused-vars */
 }
