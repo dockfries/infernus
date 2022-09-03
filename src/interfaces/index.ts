@@ -42,7 +42,3 @@ export interface IPlayerSettings {
   locale: string;
   charset: string;
 }
-
-export interface ILogger {
-  logger: Logger;
-}

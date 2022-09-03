@@ -1,14 +1,13 @@
-import { ILogger, IPlayerSettings } from "@/interfaces";
+import { IPlayerSettings } from "@/interfaces";
 import { SendClientMessage } from "@/utils/helperUtils";
 import {
   GetPlayerDrunkLevel,
   IsPlayerNPC,
   SetPlayerDrunkLevel,
 } from "@/wrapper/functions";
-import Logger from "../logger";
+import logger from "@/logger";
 
-export abstract class BasePlayer implements ILogger {
-  public logger = Logger.getInstance();
+export abstract class BasePlayer {
   private _id: number;
   public name = "";
   // Note: The locale and character set must be assigned at application level development time. Otherwise i18n will be problematic.
@@ -65,7 +64,7 @@ export abstract class BasePlayer implements ILogger {
   }
   public setDrunkLevel(level: number): void {
     if (level < 0 || level > 50000)
-      return this.logger.error(
+      return logger.error(
         new Error("[BasePlayer] player's drunk level ranges from 0 to 50000")
       );
     SetPlayerDrunkLevel(this.id, level);

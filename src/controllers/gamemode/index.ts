@@ -1,9 +1,8 @@
 import { OnGameModeExit, OnGameModeInit } from "@/wrapper/callbacks";
 import { GameModeExit } from "@/wrapper/functions";
-import Logger from "../logger";
+import logger from "@/logger";
 
 export abstract class AbstractGM {
-  protected logger = Logger.getInstance();
   protected abstract OnInit(): void;
   protected abstract OnExit(): void;
 }
@@ -15,7 +14,7 @@ export abstract class BaseGameMode extends AbstractGM {
     super();
     OnGameModeInit((): void => {
       if (this.initialized)
-        return this.logger.error(
+        return logger.error(
           new Error("[GameMode]: Cannot be initialized more than once")
         );
       this.initialized = true;
@@ -23,7 +22,7 @@ export abstract class BaseGameMode extends AbstractGM {
     });
     OnGameModeExit((): void => {
       if (!this.initialized)
-        return this.logger.error(
+        return logger.error(
           new Error("[GameMode]: Cannot be unload more than once")
         );
       this.initialized = false;
