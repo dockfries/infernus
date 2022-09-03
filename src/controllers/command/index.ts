@@ -6,6 +6,7 @@ import { BasePlayer } from "../player/basePlayer";
 // You can bind a single instruction as a string, or you can bind multiple alias instructions as an array string
 export class CmdBus {
   private static eventList: Array<ICmd> = [];
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   static on(eventName: EventName, eventFunction: EventFunc) {
