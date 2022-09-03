@@ -1,10 +1,19 @@
-import { OnGameModeExit, OnGameModeInit } from "@/wrapper/callbacks";
+import {
+  OnGameModeExit,
+  OnGameModeInit,
+  OnIncomingConnection,
+} from "@/wrapper/callbacks";
 import { GameModeExit } from "@/wrapper/functions";
 import logger from "@/logger";
 
 export abstract class AbstractGM {
-  protected abstract OnInit(): void;
-  protected abstract OnExit(): void;
+  protected abstract onInit(): void;
+  protected abstract onExit(): void;
+  protected abstract onIncomingConnection(
+    playerid: number,
+    ipAddress: string,
+    port: number
+  ): void;
 }
 
 export abstract class BaseGameMode extends AbstractGM {
@@ -18,7 +27,7 @@ export abstract class BaseGameMode extends AbstractGM {
           new Error("[GameMode]: Cannot be initialized more than once")
         );
       this.initialized = true;
-      this.OnInit();
+      this.onInit();
     });
     OnGameModeExit((): void => {
       if (!this.initialized)
@@ -26,8 +35,9 @@ export abstract class BaseGameMode extends AbstractGM {
           new Error("[GameMode]: Cannot be unload more than once")
         );
       this.initialized = false;
-      this.OnExit();
+      this.onExit();
     });
+    OnIncomingConnection(this.onIncomingConnection);
   }
 
   public isInitialized(): boolean {

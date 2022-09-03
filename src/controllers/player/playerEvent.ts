@@ -1,9 +1,32 @@
 import { OnPlayerCommandText, OnPlayerText } from "@/utils/helperUtils";
-import { OnPlayerConnect, OnPlayerDisconnect } from "@/wrapper/callbacks";
+import {
+  OnClientCheckResponse,
+  OnPlayerConnect,
+  OnPlayerDisconnect,
+  OnPlayerClickMap,
+  OnPlayerClickPlayer,
+  OnPlayerDeath,
+  OnPlayerGiveDamage,
+  OnPlayerKeyStateChange,
+  OnPlayerRequestSpawn,
+  OnPlayerSpawn,
+  OnPlayerStateChange,
+  OnPlayerStreamIn,
+  OnPlayerStreamOut,
+  OnPlayerTakeDamage,
+  OnPlayerUpdate,
+} from "@/wrapper/callbacks";
 import { I18n } from "../i18n";
 import { BasePlayer } from "./basePlayer";
 import { CmdBus } from "../command";
 import { ICmdErr } from "@/interfaces";
+import {
+  BodyPartsEnum,
+  InvalidEnum,
+  KeysEnum,
+  PlayerStateEnum,
+  WeaponEnum,
+} from "@/enums";
 
 // Each instance can be called to callbacks, so you can split the logic.
 
@@ -19,6 +42,62 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
   protected abstract onDisconnect(player: P, reason: number): void;
   protected abstract onText(player: P, text: string): void;
   protected abstract onCommandError(player: P, err: ICmdErr): void;
+  protected abstract onClientCheckResponse(
+    player: P,
+    actionid: number,
+    memaddr: number,
+    retndata: number
+  ): void;
+  // protected abstract onEnterExitModShop(
+  //   player: P,
+  //   enterexit: number,
+  //   interiorid: number
+  // ): void;
+  protected abstract onClickMap(
+    player: P,
+    fX: number,
+    fY: number,
+    fZ: number
+  ): void;
+  protected abstract onClickPlayer(
+    player: P,
+    clickedPlayer: P,
+    source: number
+  ): void;
+  protected abstract onDeath(
+    player: P,
+    killer: P | InvalidEnum.INVALID_PLAYER_ID,
+    reason: number
+  ): void;
+  // protected abstract onGiveDamage(
+  //   player: P,
+  //   damage: P,
+  //   amount: number,
+  //   weaponid: WeaponEnum,
+  //   bodypart: BodyPartsEnum
+  // ): void;
+  protected abstract onKeyStateChange(
+    player: P,
+    newkeys: KeysEnum,
+    oldkeys: KeysEnum
+  ): void;
+  protected abstract onRequestSpawn(player: P): void;
+  protected abstract onSpawn(player: P): void;
+  protected abstract onStateChange(
+    player: P,
+    newstate: PlayerStateEnum,
+    oldstate: PlayerStateEnum
+  ): void;
+  protected abstract onStreamIn(player: P, forPlayer: P): void;
+  protected abstract onStreamOut(player: P, forPlayer: P): void;
+  // protected abstract onTakeDamage(
+  //   player: P,
+  //   damage: P | InvalidEnum.INVALID_PLAYER_ID,
+  //   amount: number,
+  //   weaponid: WeaponEnum,
+  //   bodypart: BodyPartsEnum
+  // ): void;
+  protected abstract onUpdate(player: P): void;
 }
 
 export abstract class BasePlayerEvent<
@@ -64,6 +143,145 @@ export abstract class BasePlayerEvent<
       if (exist) return;
       // The command %s you entered does not exist
       this.onCommandError(p, ICmdErrInfo.notExist);
+    });
+
+    OnClientCheckResponse(
+      (
+        playerid: number,
+        actionid: number,
+        memaddr: number,
+        retndata: number
+      ): void => {
+        const p = this.players.find((p) => p.id === playerid);
+        if (!p) return;
+        this.onClientCheckResponse(p, actionid, memaddr, retndata);
+      }
+    );
+
+    // OnEnterExitModShop(
+    //   (playerid: number, enterexit: number, interior: number): void => {
+    //     const p = this.players.find((p) => p.id === playerid);
+    //     if (!p) return;
+    //     this.onEnterExitModShop(p, enterexit, interior);
+    //   }
+    // );
+
+    OnPlayerClickMap(
+      (playerid: number, fX: number, fY: number, fZ: number): void => {
+        const p = this.players.find((p) => p.id === playerid);
+        if (!p) return;
+        this.onClickMap(p, fX, fY, fZ);
+      }
+    );
+
+    OnPlayerClickPlayer(
+      (playerid: number, clickedplayerid: number, source: number): void => {
+        const p = this.players.find((p) => p.id === playerid);
+        if (!p) return;
+        const cp = this.players.find((p) => p.id === clickedplayerid);
+        if (!cp) return;
+        this.onClickPlayer(p, cp, source);
+      }
+    );
+
+    OnPlayerDeath(
+      (playerid: number, killerid: number, reason: number): void => {
+        const p = this.players.find((p) => p.id === playerid);
+        if (!p) return;
+        if (killerid === InvalidEnum.INVALID_PLAYER_ID) {
+          this.onDeath(p, killerid, reason);
+          return;
+        }
+        const k = this.players.find((p) => p.id === killerid);
+        if (!k) return;
+        this.onDeath(p, k, reason);
+      }
+    );
+
+    // OnPlayerGiveDamage(
+    //   (
+    //     playerid: number,
+    //     damageid: number,
+    //     amount: number,
+    //     weaponid: number,
+    //     bodypart: number
+    //   ): void => {
+    //     const p = this.players.find((p) => p.id === playerid);
+    //     if (!p) return;
+    //     const d = this.players.find((p) => p.id === damageid);
+    //     if (!d) return;
+    //     this.onGiveDamage(p, d, amount, weaponid, bodypart);
+    //   }
+    // );
+
+    OnPlayerKeyStateChange(
+      (playerid: number, newkeys: number, oldkeys: number): void => {
+        const p = this.players.find((p) => p.id === playerid);
+        if (!p) return;
+        this.onKeyStateChange(p, newkeys, oldkeys);
+      }
+    );
+
+    OnPlayerRequestSpawn((playerid: number): void => {
+      const p = this.players.find((p) => p.id === playerid);
+      if (!p) return;
+      this.onRequestSpawn(p);
+    });
+
+    OnPlayerSpawn((playerid: number): void => {
+      const p = this.players.find((p) => p.id === playerid);
+      if (!p) return;
+      this.onSpawn(p);
+    });
+
+    OnPlayerStateChange(
+      (playerid: number, newstate: number, oldstate: number): void => {
+        const p = this.players.find((p) => p.id === playerid);
+        if (!p) return;
+        this.onStateChange(p, newstate, oldstate);
+      }
+    );
+
+    OnPlayerStreamIn((playerid: number, forplayerid: number): void => {
+      const p = this.players.find((p) => p.id === playerid);
+      if (!p) return;
+      const fp = this.players.find((p) => p.id === forplayerid);
+      if (!fp) return;
+      this.onStreamIn(p, fp);
+    });
+
+    OnPlayerStreamOut((playerid: number, forplayerid: number): void => {
+      const p = this.players.find((p) => p.id === playerid);
+      if (!p) return;
+      const fp = this.players.find((p) => p.id === forplayerid);
+      if (!fp) return;
+      this.onStreamOut(p, fp);
+    });
+
+    // OnPlayerTakeDamage(
+    //   (
+    //     playerid: number,
+    //     issuerid: number,
+    //     amount: number,
+    //     weaponid: number,
+    //     bodypart: number
+    //   ): void => {
+    //     const p = this.players.find((p) => p.id === playerid);
+    //     if (!p) return;
+    //     if (issuerid === InvalidEnum.INVALID_PLAYER_ID) {
+    //       this.onTakeDamage(p, issuerid, amount, weaponid, bodypart);
+    //       return;
+    //     }
+    //     const i = this.players.find((p) => p.id === issuerid);
+    //     if (!i) return;
+    //     this.onTakeDamage(p, i, amount, weaponid, bodypart);
+    //   }
+    // );
+
+    OnPlayerUpdate((playerid: number): void => {
+      const p = this.players.find((p) => p.id === playerid);
+      if (!p) return;
+      this.onUpdate(p);
     });
   }
 }

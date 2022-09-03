@@ -226,7 +226,7 @@ export const OnActorStreamOut = (
 export const OnPlayerTakeDamage = (
   func: (
     playerid: number,
-    issuer: number,
+    issuerid: number,
     amount: number,
     weaponid: number,
     bodypart: number
