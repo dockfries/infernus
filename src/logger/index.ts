@@ -10,6 +10,12 @@ const logger = pino({
   },
 });
 
+console.log = logger.info;
+console.warn = logger.warn;
+console.error = logger.error;
+console.debug = logger.debug;
+console.trace = logger.trace;
+
 process.on("uncaughtException", (err) => {
   logger.error(err);
   process.exit(1);
