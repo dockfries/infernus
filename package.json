@@ -6,7 +6,8 @@
   "types": "dist/bundle.d.ts",
   "scripts": {
     "lint": "eslint --fix ./src",
-    "build": "npm run lint && rollup -c"
+    "build": "npm run lint && rollup -c",
+    "prepublishOnly": "npm run build"
   },
   "prepare": "npm run build",
   "repository": {
