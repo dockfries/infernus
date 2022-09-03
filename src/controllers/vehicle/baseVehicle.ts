@@ -1,4 +1,10 @@
-import { CreateVehicle, DestroyVehicle } from "@/wrapper/functions";
+import logger from "@/logger";
+import { IsValidVehComponent } from "@/utils/vehicleUtils";
+import {
+  AddVehicleComponent,
+  CreateVehicle,
+  DestroyVehicle,
+} from "@/wrapper/functions";
 
 export interface IVehicle {
   vehicletype: number;
@@ -14,6 +20,7 @@ export interface IVehicle {
 
 export abstract class BaseVehicle {
   private _id = -1;
+  private info: IVehicle;
   public get id(): number {
     return this._id;
   }
@@ -29,9 +36,19 @@ export abstract class BaseVehicle {
       veh.respawn_delay || -1,
       veh.addsiren || 0
     );
+    this.info = veh;
   }
   public destroy(): void {
     DestroyVehicle(this.id);
     this._id = -1;
+  }
+  public addComponent(componentid: number): number {
+    if (!IsValidVehComponent(this.info.vehicletype, componentid)) {
+      logger.warn(
+        `[BaseVehicle]: Invalid component id ${componentid} attempted to attach to the vehicle ${this}`
+      );
+      return -1;
+    }
+    return AddVehicleComponent(this.id, componentid);
   }
 }
