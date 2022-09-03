@@ -1,5 +1,6 @@
 import { ILocales } from "@/types";
 import { encode, decode, encodingExists } from "iconv-lite";
+import Logger from "../logger";
 
 export class I18n {
   private locales: ILocales;
@@ -35,7 +36,9 @@ export class I18n {
     const keyArr: string[] = property.split(".");
     return keyArr.reduce((obj: any, key: string) => {
       if (!Object.prototype.hasOwnProperty.call(obj, key))
-        throw new Error(`[i18n]: cannot find ${property}`);
+        return Logger.getInstance().error(
+          new Error(`[i18n]: cannot find ${property}`)
+        );
       return obj[key];
     }, whichLangJson) as string;
   }
@@ -43,7 +46,9 @@ export class I18n {
   // determine if the incoming character encoding type is valid
   public static isValidate(charset: string): void {
     if (!encodingExists(charset))
-      throw new Error(`[i18n]: unknown charset ${charset}`);
+      return Logger.getInstance().error(
+        new Error(`[i18n]: unknown charset ${charset}`)
+      );
   }
 
   // convert utf8 strings to different encoded byte stream arrays

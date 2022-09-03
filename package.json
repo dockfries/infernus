@@ -41,6 +41,7 @@
   "dependencies": {
     "iconv-lite": "^0.6.3",
     "lodash": "^4.17.21",
-    "omp-wrapper": "latest"
+    "omp-wrapper": "latest",
+    "pino": "^8.4.2"
   }
 }

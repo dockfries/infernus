@@ -1,3 +1,4 @@
+import { Logger } from "pino";
 import { DialogStylesEnum } from "../enums";
 import { EventFunc, EventName } from "../types";
 
@@ -40,4 +41,8 @@ export interface ICmdErr {
 export interface IPlayerSettings {
   locale: string;
   charset: string;
+}
+
+export interface ILogger {
+  logger: Logger;
 }
