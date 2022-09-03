@@ -1,4 +1,3 @@
-import { Logger } from "pino";
 import { DialogStylesEnum } from "../enums";
 import { EventFunc, EventName } from "../types";
 
