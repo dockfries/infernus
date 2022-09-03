@@ -6,12 +6,16 @@ import {
   SetPlayerDrunkLevel,
 } from "@/wrapper/functions";
 import logger from "@/logger";
+import { BaseGameMode } from "../gamemode";
 
 export abstract class BasePlayer {
   private _id: number;
   public name = "";
   // Note: The locale and character set must be assigned at application level development time. Otherwise i18n will be problematic.
-  public settings: IPlayerSettings = { locale: "", charset: "utf8" };
+  public settings: IPlayerSettings = {
+    locale: "",
+    charset: BaseGameMode.charset,
+  };
   private lastDrunkLevel = 0;
   private lastFps = 0;
   private _isNpc: boolean;
