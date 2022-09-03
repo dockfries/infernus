@@ -15,9 +15,12 @@ export default class Logger {
   public static getInstance() {
     if (!Logger.instance)
       Logger.instance = pino({
-        prettyPrint: {
-          translateTime: "SYS:yyyy-mm-dd HH:MM:ss",
-          ignore: "pid,hostname",
+        transport: {
+          target: "pino-pretty",
+          options: {
+            translateTime: "SYS:yyyy-mm-dd HH:MM:ss",
+            ignore: "pid,hostname",
+          },
         },
       });
     return Logger.instance;
