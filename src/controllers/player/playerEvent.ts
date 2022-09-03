@@ -12,7 +12,7 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
   notExist: { code: 1, msg: "The command %s you entered does not exist" },
 };
 
-abstract class PlayerEvent<P extends BasePlayer> {
+abstract class AbstractPlayerEvent<P extends BasePlayer> {
   public players: Array<P> = [];
   protected abstract newPlayer(playerid: number): P;
   protected abstract onConnect(player: P): void;
@@ -23,7 +23,7 @@ abstract class PlayerEvent<P extends BasePlayer> {
 
 export abstract class BasePlayerEvent<
   P extends BasePlayer
-> extends PlayerEvent<P> {
+> extends AbstractPlayerEvent<P> {
   constructor() {
     super();
     OnPlayerConnect((playerid: number): void => {

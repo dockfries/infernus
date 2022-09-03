@@ -1,10 +1,16 @@
 import { OnGameModeExit, OnGameModeInit } from "@/wrapper/callbacks";
 import { GameModeExit } from "@/wrapper/functions";
 
-export class BaseGameMode {
+export abstract class AbstractGM {
+  protected OnInit(): void {}
+  protected OnExit(): void {}
+}
+
+export abstract class BaseGameMode extends AbstractGM {
   private initialized = false;
 
   public constructor() {
+    super();
     OnGameModeInit((): void => {
       if (this.initialized)
         throw new Error("[GameMode]: Cannot be initialized more than once");
@@ -19,7 +25,7 @@ export class BaseGameMode {
     });
   }
 
-  get isInitialized(): boolean {
+  public isInitialized(): boolean {
     return this.initialized;
   }
 
@@ -28,9 +34,4 @@ export class BaseGameMode {
     // it's restart
     GameModeExit();
   }
-
-  // do something during initialization, such as load some objects
-  // final callback to main.ts
-  public OnInit(): void {}
-  public OnExit(): void {}
 }
