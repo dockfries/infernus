@@ -1,6 +1,6 @@
 {
   "name": "omp-node-lib",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Better with omp-node-ts",
   "main": "dist/bundle.js",
   "types": "dist/bundle.d.ts",
@@ -42,6 +42,7 @@
     "iconv-lite": "^0.6.3",
     "lodash": "^4.17.21",
     "omp-wrapper": "latest",
-    "pino": "^8.4.2"
+    "pino": "^8.4.2",
+    "pino-pretty": "^9.1.0"
   }
 }
