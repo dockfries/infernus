@@ -1,6 +1,7 @@
 import { ILocales } from "@/types";
 import { encode, decode, encodingExists } from "iconv-lite";
 import logger from "@/logger";
+import { merge } from "lodash";
 
 export class I18n {
   private locales: ILocales;
@@ -9,6 +10,10 @@ export class I18n {
   constructor(defaultLocale: keyof ILocales, locales: ILocales) {
     this.language = defaultLocale;
     this.locales = locales;
+  }
+
+  public addLocales(locales: ILocales): void {
+    merge(this.locales, locales);
   }
 
   public $t(
