@@ -135,49 +135,6 @@ export const SHA256_PassHash = (
   );
 };
 
-export const SetSVarInt = (varname: string, int_value: number): number => {
-  return samp.callNative("SetSVarInt", "si", varname, int_value);
-};
-
-export const GetSVarInt = (varname: string): number => {
-  return samp.callNative("GetSVarInt", "s", varname);
-};
-
-export const SetSVarString = (
-  varname: string,
-  string_value: string
-): number => {
-  return samp.callNative("SetSVarString", "ss", varname, string_value);
-};
-
-export const GetSVarString = (varname: string, len: number): string => {
-  return samp.callNative("GetSVarString", "sSi", varname, len);
-};
-
-export const SetSVarFloat = (varname: string, float_value: number): number => {
-  return samp.callNative("SetSVarFloat", "sf", varname, float_value);
-};
-
-export const GetSVarFloat = (varname: string): number => {
-  return samp.callNativeFloat("GetSVarFloat", "s", varname);
-};
-
-export const DeleteSVar = (varname: string): number => {
-  return samp.callNative("DeleteSVar", "s", varname);
-};
-
-export const GetSVarsUpperIndex = (): number => {
-  return samp.callNative("GetSVarsUpperIndex", "");
-};
-
-export const GetSVarNameAtIndex = (index: number, ret_len: number): string => {
-  return samp.callNative("GetSVarNameAtIndex", "iSi", index, ret_len);
-};
-
-export const GetSVarType = (varname: string): number => {
-  return samp.callNative("GetSVarType", "s", varname);
-};
-
 export const SetGameModeText = (string: string): number => {
   return samp.callNative("SetGameModeText", "s", string);
 };
@@ -2280,78 +2237,6 @@ export const PlayerTextDrawSetPreviewVehCol = (
     color1,
     color2
   );
-};
-
-export const SetPVarInt = (
-  playerid: number,
-  varname: string,
-  int_value: number
-): number => {
-  return samp.callNative("SetPVarInt", "isi", playerid, varname, int_value);
-};
-
-export const GetPVarInt = (playerid: number, varname: string): number => {
-  return samp.callNative("GetPVarInt", "is", playerid, varname);
-};
-
-export const SetPVarString = (
-  playerid: number,
-  varname: string,
-  string_value: string
-): number => {
-  return samp.callNative(
-    "SetPVarString",
-    "iss",
-    playerid,
-    varname,
-    string_value
-  );
-};
-
-export const GetPVarString = (
-  playerid: number,
-  varname: string,
-  len: number
-): string => {
-  return samp.callNative("GetPVarString", "isSi", playerid, varname, len);
-};
-
-export const SetPVarFloat = (
-  playerid: number,
-  varname: string,
-  float_value: number
-): number => {
-  return samp.callNative("SetPVarFloat", "isf", playerid, varname, float_value);
-};
-
-export const GetPVarFloat = (playerid: number, varname: string): number => {
-  return samp.callNativeFloat("GetPVarFloat", "is", playerid, varname);
-};
-
-export const DeletePVar = (playerid: number, varname: string): number => {
-  return samp.callNative("DeletePVar", "is", playerid, varname);
-};
-
-export const GetPVarsUpperIndex = (playerid: number): number => {
-  return samp.callNative("GetPVarsUpperIndex", "i", playerid);
-};
-
-export const GetPVarNameAtIndex = (
-  playerid: number,
-  index: number,
-  ret_len: number
-): string => {
-  return samp.callNative(
-    "GetPVarNameAtIndex",
-    "iiSi",
-    playerid,
-    index,
-    ret_len
-  );
-};
-
-export const GetPVarType = (playerid: number, varname: string): number => {
-  return samp.callNative("GetPVarType", "is", playerid, varname);
 };
 
 export const SetPlayerChatBubble = (
