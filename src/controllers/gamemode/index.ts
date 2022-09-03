@@ -5,14 +5,27 @@ import {
 } from "@/wrapper/callbacks";
 import { GameModeExit } from "@/wrapper/functions";
 import logger from "@/logger";
+import {
+  OnClientMessage,
+  OnRconCommand,
+  OnRconLoginAttempt,
+} from "@/utils/helperUtils";
 
 export abstract class AbstractGM {
+  public static charset = "utf8";
   protected abstract onInit(): void;
   protected abstract onExit(): void;
   protected abstract onIncomingConnection(
     playerid: number,
     ipAddress: string,
     port: number
+  ): void;
+  protected abstract onClientMessage(color: number, text: string): void;
+  protected abstract onRconCommand(cmd: string): void;
+  protected abstract onRconLoginAttempt(
+    ip: string,
+    password: string,
+    success: boolean
   ): void;
 }
 
@@ -37,7 +50,10 @@ export abstract class BaseGameMode extends AbstractGM {
       this.initialized = false;
       this.onExit();
     });
+    OnClientMessage(this.onClientMessage);
     OnIncomingConnection(this.onIncomingConnection);
+    OnRconCommand(this.onRconCommand);
+    OnRconLoginAttempt(this.onRconLoginAttempt);
   }
 
   public isInitialized(): boolean {

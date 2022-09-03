@@ -6,14 +6,14 @@ import {
   OnPlayerClickMap,
   OnPlayerClickPlayer,
   OnPlayerDeath,
-  OnPlayerGiveDamage,
+  // OnPlayerGiveDamage,
   OnPlayerKeyStateChange,
   OnPlayerRequestSpawn,
   OnPlayerSpawn,
   OnPlayerStateChange,
   OnPlayerStreamIn,
   OnPlayerStreamOut,
-  OnPlayerTakeDamage,
+  // OnPlayerTakeDamage,
   OnPlayerUpdate,
 } from "@/wrapper/callbacks";
 import { I18n } from "../i18n";
@@ -21,11 +21,11 @@ import { BasePlayer } from "./basePlayer";
 import { CmdBus } from "../command";
 import { ICmdErr } from "@/interfaces";
 import {
-  BodyPartsEnum,
+  // BodyPartsEnum,
   InvalidEnum,
   KeysEnum,
   PlayerStateEnum,
-  WeaponEnum,
+  // WeaponEnum,
 } from "@/enums";
 
 // Each instance can be called to callbacks, so you can split the logic.

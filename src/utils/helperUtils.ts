@@ -3,6 +3,7 @@ import { I18n } from "../controllers/i18n";
 import { BasePlayer } from "@/controllers/player/basePlayer";
 import { IDialog } from "@/interfaces";
 import { LimitsEnum } from "@/enums";
+import { BaseGameMode } from "@/controllers";
 
 type processTuple = [string, string | number[]];
 
@@ -96,7 +97,7 @@ export const OnDialogResponse = (
 samp.registerEvent("OnClientMessageI18n", "iai");
 export const OnClientMessage = (
   fn: (color: number, text: string) => void,
-  charset = "utf8"
+  charset = BaseGameMode.charset
 ) => {
   samp.addEventListener(
     "OnClientMessageI18n",
@@ -107,7 +108,10 @@ export const OnClientMessage = (
 };
 
 samp.registerEvent("OnRconCommandI18n", "ai");
-export const OnRconCommand = (fn: (cmd: string) => void, charset = "utf8") => {
+export const OnRconCommand = (
+  fn: (cmd: string) => void,
+  charset = BaseGameMode.charset
+) => {
   samp.addEventListener("OnRconCommandI18n", (buf: number[]): void => {
     fn(I18n.decodeFromBuf(buf, charset));
   });
@@ -115,8 +119,8 @@ export const OnRconCommand = (fn: (cmd: string) => void, charset = "utf8") => {
 
 samp.registerEvent("OnRconLoginAttemptI18n", "aiaii");
 export const OnRconLoginAttempt = (
-  fn: (ip: string, password: string, success: number) => void,
-  charset = "utf8"
+  fn: (ip: string, password: string, success: boolean) => void,
+  charset = BaseGameMode.charset
 ) => {
   samp.addEventListener(
     "OnRconLoginAttemptI18n",
@@ -124,7 +128,7 @@ export const OnRconLoginAttempt = (
       fn(
         I18n.decodeFromBuf(ip, charset),
         I18n.decodeFromBuf(password, charset),
-        success
+        Boolean(success)
       );
     }
   );
