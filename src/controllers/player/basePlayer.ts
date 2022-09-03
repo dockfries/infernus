@@ -14,6 +14,7 @@ export abstract class BasePlayer {
   public settings: IPlayerSettings = { locale: "", charset: "utf8" };
   private lastDrunkLevel = 0;
   private lastFps = 0;
+  private _isNpc: boolean;
 
   get charset() {
     return this.settings.charset;
@@ -35,6 +36,7 @@ export abstract class BasePlayer {
 
   public constructor(id: number) {
     this._id = id;
+    this._isNpc = Boolean(IsPlayerNPC(this.id));
   }
 
   public sendClientMessage(color: string, msg: string): number {
@@ -42,7 +44,7 @@ export abstract class BasePlayer {
   }
 
   public isNpc(): boolean {
-    return Boolean(IsPlayerNPC(this.id));
+    return this._isNpc;
   }
 
   // should be called at one second intervals
