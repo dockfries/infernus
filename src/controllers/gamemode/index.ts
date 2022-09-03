@@ -2,8 +2,8 @@ import { OnGameModeExit, OnGameModeInit } from "@/wrapper/callbacks";
 import { GameModeExit } from "@/wrapper/functions";
 
 export abstract class AbstractGM {
-  protected OnInit(): void {}
-  protected OnExit(): void {}
+  protected abstract OnInit(): void;
+  protected abstract OnExit(): void;
 }
 
 export abstract class BaseGameMode extends AbstractGM {
