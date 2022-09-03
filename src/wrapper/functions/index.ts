@@ -121,20 +121,6 @@ export const GetActorPoolSize = (): number => {
   return samp.callNative("GetActorPoolSize", "");
 };
 
-export const SHA256_PassHash = (
-  password: string,
-  salt: string,
-  ret_hash_len: number
-): string => {
-  return samp.callNative(
-    "SHA256_PassHash",
-    "ssSi",
-    password,
-    salt,
-    ret_hash_len
-  );
-};
-
 export const SetGameModeText = (string: string): number => {
   return samp.callNative("SetGameModeText", "s", string);
 };
