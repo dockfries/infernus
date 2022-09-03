@@ -12,6 +12,5 @@ export * from "./object";
 export * from "./player";
 export * from "./specialActions";
 export * from "./textdrawFonts";
-export * from "./var";
 export * from "./vehicle";
 export * from "./weapon";
