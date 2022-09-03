@@ -15,7 +15,7 @@ export abstract class BaseGameMode extends AbstractGM {
     super();
     OnGameModeInit((): void => {
       if (this.initialized)
-        this.logger.error(
+        return this.logger.error(
           new Error("[GameMode]: Cannot be initialized more than once")
         );
       this.initialized = true;
@@ -23,7 +23,7 @@ export abstract class BaseGameMode extends AbstractGM {
     });
     OnGameModeExit((): void => {
       if (!this.initialized)
-        this.logger.error(
+        return this.logger.error(
           new Error("[GameMode]: Cannot be unload more than once")
         );
       this.initialized = false;
