@@ -30,6 +30,7 @@
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
     "eslint": "^8.23.0",
+    "husky": "^8.0.1",
     "rollup": "^2.77.2",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-dts": "^4.2.2",

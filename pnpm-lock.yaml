@@ -6,6 +6,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.35.1
   '@typescript-eslint/parser': ^5.35.1
   eslint: ^8.23.0
+  husky: ^8.0.1
   iconv-lite: ^0.6.3
   lodash: ^4.17.21
   omp-wrapper: latest
@@ -22,7 +23,7 @@ specifiers:
 dependencies:
   iconv-lite: 0.6.3
   lodash: 4.17.21
-  omp-wrapper: 0.0.8
+  omp-wrapper: 0.0.9
   pino: 8.4.2
   pino-pretty: 9.1.0
 
@@ -32,6 +33,7 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 5.35.1_t3qvqq7ugt4jqnoquow4ze3psy
   '@typescript-eslint/parser': 5.35.1_sorwav4hsh5vncerguqybud76i
   eslint: 8.23.0
+  husky: 8.0.1
   rollup: 2.78.1
   rollup-plugin-delete: 2.0.0
   rollup-plugin-dts: 4.2.2_accrhai6qopda76wnqb3pkewpq
@@ -907,6 +909,12 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
+  /husky/8.0.1:
+    resolution: {integrity: sha512-xs7/chUH/CKdOCs7Zy0Aev9e/dKOMZf3K1Az1nar3tzlv0jfqnYtu235bstsWTmXOR0EfINrPa97yy4Lz6RiKw==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
   /iconv-lite/0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
@@ -1117,8 +1125,8 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /omp-wrapper/0.0.8:
-    resolution: {integrity: sha512-OoYl7VzRiD2cv7a2isTLJbFJv+3qRq/FP31IWghMZZnlHrN8ZtQcdUJZdugqUzOtEC3kFEXtuuOFmcoWEZD65Q==}
+  /omp-wrapper/0.0.9:
+    resolution: {integrity: sha512-+h1tK1UIwHYMyU3SB/c2WafrXDx4lh7+z3CfJH03E9aM4pTFYxGsjRjT9XAmcwr3K/dNI84kPk/qyBysVO4czA==}
     dev: false
 
   /on-exit-leak-free/2.1.0:
