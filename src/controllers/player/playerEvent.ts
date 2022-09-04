@@ -284,6 +284,12 @@ export abstract class BasePlayerEvent<
       this.onUpdate(p);
     });
   }
+  public findPlayerIdxById(playerid: number) {
+    return this.players.findIndex((p) => p.id === playerid);
+  }
+  public findPlayerById(playerid: number) {
+    return this.players.find((p) => p.id === playerid);
+  }
 }
 
 // make good use of the selected vscode bulb tips

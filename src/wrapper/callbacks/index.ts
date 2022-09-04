@@ -351,3 +351,13 @@ export const OnScriptCash = (
 ) => {
   samp.addEventListener("OnScriptCash", func);
 };
+
+export const OnNPCEnterVehicle = (
+  func: (vehicleid: number, seatid: number) => void
+) => {
+  samp.addEventListener("OnNPCEnterVehicle", func);
+};
+
+export const OnNPCExitVehicle = (func: () => void) => {
+  samp.addEventListener("OnNPCExitVehicle", func);
+};
