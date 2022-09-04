@@ -1,3 +1,4 @@
+import { InvalidEnum } from "@/enums";
 import logger from "@/logger";
 import { IsValidVehComponent } from "@/utils/vehicleUtils";
 import {
@@ -20,6 +21,7 @@ export interface IVehicle {
 }
 
 export abstract class BaseVehicle {
+  private static createdCount = 0;
   private _id = -1;
   private info: IVehicle;
   public get id(): number {
@@ -29,7 +31,12 @@ export abstract class BaseVehicle {
     this.info = veh;
   }
   public create(): void {
-    if (this.id !== -1) return;
+    if (this.id !== -1)
+      return logger.warn("[BaseVehicle]: Unable to create the vehicle again");
+    if (BaseVehicle.createdCount === InvalidEnum.INVALID_VEHICLE_ID)
+      return logger.warn(
+        "[BaseVehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached"
+      );
     const {
       vehicletype,
       x,
@@ -52,11 +59,16 @@ export abstract class BaseVehicle {
       respawn_delay || -1,
       addsiren || 0
     );
+    BaseVehicle.createdCount++;
     vehicleBus.emit(vehicleHooks.created, this);
   }
   public destroy(): void {
-    if (this.id === -1) return;
+    if (this.id === -1)
+      return logger.warn(
+        "[BaseVehicle]: Unable to destroy the vehicle before create"
+      );
     DestroyVehicle(this.id);
+    BaseVehicle.createdCount--;
     vehicleBus.emit(vehicleHooks.created, this);
     this._id = -1;
   }
