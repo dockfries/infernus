@@ -1,4 +1,5 @@
 .vscode
+.husky
 node_modules
 src
 .npmrc
