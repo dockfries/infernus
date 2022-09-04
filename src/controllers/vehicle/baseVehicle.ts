@@ -1,4 +1,4 @@
-import { InvalidEnum } from "@/enums";
+import { LimitsEnum } from "@/enums";
 import logger from "@/logger";
 import { IsValidVehComponent } from "@/utils/vehicleUtils";
 import {
@@ -33,7 +33,7 @@ export abstract class BaseVehicle {
   public create(): void {
     if (this.id !== -1)
       return logger.warn("[BaseVehicle]: Unable to create the vehicle again");
-    if (BaseVehicle.createdCount === InvalidEnum.INVALID_VEHICLE_ID)
+    if (BaseVehicle.createdCount === LimitsEnum.MAX_VEHICLES)
       return logger.warn(
         "[BaseVehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached"
       );

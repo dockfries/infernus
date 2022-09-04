@@ -159,10 +159,10 @@ export abstract class BaseVehicleEvent<
   protected abstract onNpcExit(): void;
   protected abstract onTrailerUpdate(player: P, vehicle: V): void;
 
-  private findVehicleIdxById(vehicleid: number) {
+  public findVehicleIdxById(vehicleid: number) {
     return this.vehicles.findIndex((v) => v.id === vehicleid);
   }
-  private findVehicleById(vehicleid: number) {
+  public findVehicleById(vehicleid: number) {
     return this.vehicles.find((v) => v.id === vehicleid);
   }
   private findPlayerIdxById(playerid: number) {
