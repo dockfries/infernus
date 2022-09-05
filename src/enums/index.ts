@@ -2,7 +2,7 @@ export * from "./artwork";
 export * from "./clickSources";
 export * from "./dialogStyles";
 export * from "./editResponseTypes";
-export * from "./http";
+export * from "./netstat";
 export * from "./invalid";
 export * from "./keys";
 export * from "./limits";
