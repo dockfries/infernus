@@ -6,6 +6,7 @@ import {
 import {
   AllowAdminTeleport,
   AllowInteriorWeapons,
+  DisableInteriorEnterExits,
   EnableStuntBonusForAll,
   EnableVehicleFriendlyFire,
   EnableZoneNames,
@@ -77,4 +78,5 @@ export abstract class BaseGameMode extends AbstractGM {
   public static enableStuntBonusForAll = EnableStuntBonusForAll;
   public static enableVehicleFriendlyFire = EnableVehicleFriendlyFire;
   public static enableZoneNames = EnableZoneNames;
+  public static disableInteriorEnterExits = DisableInteriorEnterExits;
 }

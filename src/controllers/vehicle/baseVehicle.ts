@@ -5,6 +5,7 @@ import {
   AddVehicleComponent,
   CreateVehicle,
   DestroyVehicle,
+  LinkVehicleToInterior,
 } from "@/wrapper/functions";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
 
@@ -81,5 +82,8 @@ export abstract class BaseVehicle {
       return;
     }
     return AddVehicleComponent(this.id, componentid);
+  }
+  public linkToInterior(interiorId: number): number {
+    return LinkVehicleToInterior(this.id, interiorId);
   }
 }

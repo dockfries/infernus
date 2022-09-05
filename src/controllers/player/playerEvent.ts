@@ -16,6 +16,7 @@ import {
   // OnPlayerTakeDamage,
   OnPlayerUpdate,
   OnEnterExitModShop,
+  OnPlayerInteriorChange,
 } from "@/wrapper/callbacks";
 import { I18n } from "../i18n";
 import { BasePlayer } from "./basePlayer";
@@ -99,6 +100,11 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
   //   bodypart: BodyPartsEnum
   // ): void;
   protected abstract onUpdate(player: P): void;
+  protected abstract onInteriorChange(
+    player: P,
+    newinteriorid: number,
+    oldinteriorid: number
+  ): void;
 }
 
 export abstract class BasePlayerEvent<
@@ -113,19 +119,19 @@ export abstract class BasePlayerEvent<
     });
 
     OnPlayerDisconnect((playerid: number, reason: number): void => {
-      const pIdx = this.players.findIndex((p) => p.id === playerid);
+      const pIdx = this.findPlayerIdxById(playerid);
       if (pIdx === -1) return;
       this.onDisconnect(this.players[pIdx], reason);
       this.players.splice(pIdx, 1);
     });
 
     OnPlayerText((playerid: number, byteArr: number[]) => {
-      const p = this.players.find((p) => p.id === playerid);
+      const p = this.findPlayerById(playerid);
       if (p) this.onText(p, I18n.decodeFromBuf(byteArr, p.charset));
     });
 
     OnPlayerCommandText((playerid: number, buf: number[]): void => {
-      const p = this.players.find((p) => p.id === playerid);
+      const p = this.findPlayerById(playerid);
       if (!p) return;
       const cmdtext = I18n.decodeFromBuf(buf, p.charset);
       const regCmdtext = cmdtext.match(/[^/\s]+/gi);
@@ -153,7 +159,7 @@ export abstract class BasePlayerEvent<
         memaddr: number,
         retndata: number
       ): void => {
-        const p = this.players.find((p) => p.id === playerid);
+        const p = this.findPlayerById(playerid);
         if (!p) return;
         this.onClientCheckResponse(p, actionid, memaddr, retndata);
       }
@@ -161,7 +167,7 @@ export abstract class BasePlayerEvent<
 
     OnEnterExitModShop(
       (playerid: number, enterexit: number, interior: number): void => {
-        const p = this.players.find((p) => p.id === playerid);
+        const p = this.findPlayerById(playerid);
         if (!p) return;
         this.onEnterExitModShop(p, enterexit, interior);
       }
@@ -169,7 +175,7 @@ export abstract class BasePlayerEvent<
 
     OnPlayerClickMap(
       (playerid: number, fX: number, fY: number, fZ: number): void => {
-        const p = this.players.find((p) => p.id === playerid);
+        const p = this.findPlayerById(playerid);
         if (!p) return;
         this.onClickMap(p, fX, fY, fZ);
       }
@@ -177,7 +183,7 @@ export abstract class BasePlayerEvent<
 
     OnPlayerClickPlayer(
       (playerid: number, clickedplayerid: number, source: number): void => {
-        const p = this.players.find((p) => p.id === playerid);
+        const p = this.findPlayerById(playerid);
         if (!p) return;
         const cp = this.players.find((p) => p.id === clickedplayerid);
         if (!cp) return;
@@ -187,7 +193,7 @@ export abstract class BasePlayerEvent<
 
     OnPlayerDeath(
       (playerid: number, killerid: number, reason: number): void => {
-        const p = this.players.find((p) => p.id === playerid);
+        const p = this.findPlayerById(playerid);
         if (!p) return;
         if (killerid === InvalidEnum.INVALID_PLAYER_ID) {
           this.onDeath(p, killerid, reason);
@@ -207,7 +213,7 @@ export abstract class BasePlayerEvent<
     //     weaponid: WeaponsEnum,
     //     bodypart: BodyPartsEnum
     //   ): void => {
-    //     const p = this.players.find((p) => p.id === playerid);
+    //     const p = this.findPlayerById(playerid);
     //     if (!p) return;
     //     const d = this.players.find((p) => p.id === damageid);
     //     if (!d) return;
@@ -217,34 +223,34 @@ export abstract class BasePlayerEvent<
 
     OnPlayerKeyStateChange(
       (playerid: number, newkeys: number, oldkeys: number): void => {
-        const p = this.players.find((p) => p.id === playerid);
+        const p = this.findPlayerById(playerid);
         if (!p) return;
         this.onKeyStateChange(p, newkeys, oldkeys);
       }
     );
 
     OnPlayerRequestSpawn((playerid: number): void => {
-      const p = this.players.find((p) => p.id === playerid);
+      const p = this.findPlayerById(playerid);
       if (!p) return;
       this.onRequestSpawn(p);
     });
 
     OnPlayerSpawn((playerid: number): void => {
-      const p = this.players.find((p) => p.id === playerid);
+      const p = this.findPlayerById(playerid);
       if (!p) return;
       this.onSpawn(p);
     });
 
     OnPlayerStateChange(
       (playerid: number, newstate: number, oldstate: number): void => {
-        const p = this.players.find((p) => p.id === playerid);
+        const p = this.findPlayerById(playerid);
         if (!p) return;
         this.onStateChange(p, newstate, oldstate);
       }
     );
 
     OnPlayerStreamIn((playerid: number, forplayerid: number): void => {
-      const p = this.players.find((p) => p.id === playerid);
+      const p = this.findPlayerById(playerid);
       if (!p) return;
       const fp = this.players.find((p) => p.id === forplayerid);
       if (!fp) return;
@@ -252,7 +258,7 @@ export abstract class BasePlayerEvent<
     });
 
     OnPlayerStreamOut((playerid: number, forplayerid: number): void => {
-      const p = this.players.find((p) => p.id === playerid);
+      const p = this.findPlayerById(playerid);
       if (!p) return;
       const fp = this.players.find((p) => p.id === forplayerid);
       if (!fp) return;
@@ -267,7 +273,7 @@ export abstract class BasePlayerEvent<
     //     weaponid: number,
     //     bodypart: number
     //   ): void => {
-    //     const p = this.players.find((p) => p.id === playerid);
+    //     const p = this.findPlayerById(playerid);
     //     if (!p) return;
     //     if (issuerid === InvalidEnum.INVALID_PLAYER_ID) {
     //       this.onTakeDamage(p, issuerid, amount, weaponid, bodypart);
@@ -280,10 +286,18 @@ export abstract class BasePlayerEvent<
     // );
 
     OnPlayerUpdate((playerid: number): void => {
-      const p = this.players.find((p) => p.id === playerid);
+      const p = this.findPlayerById(playerid);
       if (!p) return;
       this.onUpdate(p);
     });
+
+    OnPlayerInteriorChange(
+      (playerid: number, newinteriorid: number, oldinteriorid: number) => {
+        const p = this.findPlayerById(playerid);
+        if (!p) return;
+        this.onInteriorChange(p, newinteriorid, oldinteriorid);
+      }
+    );
   }
   public findPlayerIdxById(playerid: number) {
     return this.players.findIndex((p) => p.id === playerid);

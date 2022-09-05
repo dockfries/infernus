@@ -5,8 +5,10 @@ import {
   EnablePlayerCameraTarget,
   EnableStuntBonusForPlayer,
   GetPlayerDrunkLevel,
+  GetPlayerInterior,
   IsPlayerNPC,
   SetPlayerDrunkLevel,
+  SetPlayerInterior,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -87,5 +89,11 @@ export abstract class BasePlayer {
   }
   public enableStuntBonus(enable: boolean): void {
     EnableStuntBonusForPlayer(this.id, enable);
+  }
+  public getInterior(): number {
+    return GetPlayerInterior(this.id);
+  }
+  public setInterior(interiorId: number): number {
+    return SetPlayerInterior(this.id, interiorId);
   }
 }
