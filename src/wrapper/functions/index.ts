@@ -312,7 +312,7 @@ export const EnableVehicleFriendlyFire = (): number => {
   return samp.callNative("EnableVehicleFriendlyFire", "");
 };
 
-export const AllowInteriorWeapons = (allow: number): number => {
+export const AllowInteriorWeapons = (allow: boolean): number => {
   return samp.callNative("AllowInteriorWeapons", "i", allow);
 };
 
@@ -328,7 +328,7 @@ export const SetGravity = (gravity: number): number => {
   return samp.callNative("SetGravity", "f", gravity);
 };
 
-export const AllowAdminTeleport = (allow: number): number => {
+export const AllowAdminTeleport = (allow: boolean): number => {
   return samp.callNative("AllowAdminTeleport", "i", allow);
 };
 
@@ -2496,7 +2496,7 @@ export const RemovePlayerMapIcon = (
 
 export const AllowPlayerTeleport = (
   playerid: number,
-  allow: number
+  allow: boolean
 ): number => {
   return samp.callNative("AllowPlayerTeleport", "ii", playerid, allow);
 };

@@ -15,6 +15,7 @@ import {
   OnPlayerStreamOut,
   // OnPlayerTakeDamage,
   OnPlayerUpdate,
+  OnEnterExitModShop,
 } from "@/wrapper/callbacks";
 import { I18n } from "../i18n";
 import { BasePlayer } from "./basePlayer";
@@ -36,7 +37,7 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
 };
 
 abstract class AbstractPlayerEvent<P extends BasePlayer> {
-  public players: Array<P> = [];
+  public readonly players: Array<P> = [];
   protected abstract newPlayer(playerid: number): P;
   protected abstract onConnect(player: P): void;
   protected abstract onDisconnect(player: P, reason: number): void;
@@ -48,11 +49,11 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
     memaddr: number,
     retndata: number
   ): void;
-  // protected abstract onEnterExitModShop(
-  //   player: P,
-  //   enterexit: number,
-  //   interiorid: number
-  // ): void;
+  protected abstract onEnterExitModShop(
+    player: P,
+    enterexit: number,
+    interiorid: number
+  ): void;
   protected abstract onClickMap(
     player: P,
     fX: number,
@@ -158,13 +159,13 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    // OnEnterExitModShop(
-    //   (playerid: number, enterexit: number, interior: number): void => {
-    //     const p = this.players.find((p) => p.id === playerid);
-    //     if (!p) return;
-    //     this.onEnterExitModShop(p, enterexit, interior);
-    //   }
-    // );
+    OnEnterExitModShop(
+      (playerid: number, enterexit: number, interior: number): void => {
+        const p = this.players.find((p) => p.id === playerid);
+        if (!p) return;
+        this.onEnterExitModShop(p, enterexit, interior);
+      }
+    );
 
     OnPlayerClickMap(
       (playerid: number, fX: number, fY: number, fZ: number): void => {
@@ -203,8 +204,8 @@ export abstract class BasePlayerEvent<
     //     playerid: number,
     //     damageid: number,
     //     amount: number,
-    //     weaponid: number,
-    //     bodypart: number
+    //     weaponid: WeaponsEnum,
+    //     bodypart: BodyPartsEnum
     //   ): void => {
     //     const p = this.players.find((p) => p.id === playerid);
     //     if (!p) return;

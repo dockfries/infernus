@@ -19,7 +19,7 @@ export enum ERecordStatus {
 
 export abstract class BaseNpcFunc {
   private static recordStatus: ERecordStatus;
-  public static connectNPC = ConnectNPC;
+  public static readonly connectNPC = ConnectNPC;
   public static startRecordingPlayerData<P extends BasePlayer>(
     player: P,
     recordtype: RecordTypesEnum,

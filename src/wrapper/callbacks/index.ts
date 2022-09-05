@@ -1,5 +1,7 @@
 // Reference to Peter Szombati's samp-node-lib
 
+import { BodyPartsEnum, WeaponEnum } from "@/enums";
+
 export const OnGameModeInit = (func: () => void) => {
   samp.addEventListener("OnGameModeInit", func);
 };
@@ -228,8 +230,8 @@ export const OnPlayerTakeDamage = (
     playerid: number,
     issuerid: number,
     amount: number,
-    weaponid: number,
-    bodypart: number
+    weaponid: WeaponEnum,
+    bodypart: BodyPartsEnum
   ) => void
 ) => {
   samp.addEventListener("OnPlayerTakeDamage", func);
@@ -240,8 +242,8 @@ export const OnPlayerGiveDamage = (
     playerid: number,
     damageid: number,
     amount: number,
-    weaponid: number,
-    bodypart: number
+    weaponid: WeaponEnum,
+    bodypart: BodyPartsEnum
   ) => void
 ) => {
   samp.addEventListener("OnPlayerGiveDamage", func);
@@ -252,8 +254,8 @@ export const OnPlayerGiveDamageActor = (
     playerid: number,
     damaged_actorid: number,
     amount: number,
-    weaponid: number,
-    bodypart: number
+    weaponid: WeaponEnum,
+    bodypart: BodyPartsEnum
   ) => void
 ) => {
   samp.addEventListener("OnPlayerGiveDamageActor", func);
@@ -324,7 +326,7 @@ export const OnPlayerSelectObject = (
 export const OnPlayerWeaponShot = (
   func: (
     playerid: number,
-    weaponid: number,
+    weaponid: WeaponEnum,
     hittype: number,
     hitid: number,
     fX: number,

@@ -61,7 +61,7 @@ export abstract class BaseGameMode extends AbstractGM {
   }
 
   // do something during close/restart server, such as storage of player data
-  public exit(): void {
+  public static exit(): void {
     // it's restart
     GameModeExit();
   }
