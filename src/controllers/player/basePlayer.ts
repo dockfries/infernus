@@ -10,6 +10,7 @@ import { BaseGameMode } from "../gamemode";
 
 export abstract class BasePlayer {
   private _id: number;
+  public isRecording = false;
   public name = "";
   // Note: The locale and character set must be assigned at application level development time. Otherwise i18n will be problematic.
   public settings: IPlayerSettings = {

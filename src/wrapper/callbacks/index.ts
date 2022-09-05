@@ -361,3 +361,23 @@ export const OnNPCEnterVehicle = (
 export const OnNPCExitVehicle = (func: () => void) => {
   samp.addEventListener("OnNPCExitVehicle", func);
 };
+
+export const OnNpcConnect = (func: (myplayerid: number) => void) => {
+  samp.addEventListener("OnNpcConnect", func);
+};
+
+export const OnNpcDisconnect = (func: (reason: string) => void) => {
+  samp.addEventListener("OnNpcDisconnect", func);
+};
+
+export const OnNPCModeInit = (func: () => void) => {
+  samp.addEventListener("OnNPCModeInit", func);
+};
+
+export const OnNPCModeExit = (func: () => void) => {
+  samp.addEventListener("OnNPCModeExit", func);
+};
+
+export const OnNPCSpawn = (func: () => void) => {
+  samp.addEventListener("OnNPCSpawn", func);
+};
