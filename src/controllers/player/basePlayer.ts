@@ -1,6 +1,9 @@
 import { IPlayerSettings } from "@/interfaces";
 import { SendClientMessage } from "@/utils/helperUtils";
 import {
+  AllowPlayerTeleport,
+  EnablePlayerCameraTarget,
+  EnableStuntBonusForPlayer,
   GetPlayerDrunkLevel,
   IsPlayerNPC,
   SetPlayerDrunkLevel,
@@ -75,5 +78,14 @@ export abstract class BasePlayer {
         new Error("[BasePlayer] player's drunk level ranges from 0 to 50000")
       );
     SetPlayerDrunkLevel(this.id, level);
+  }
+  public allowTeleport(allow: boolean): void {
+    AllowPlayerTeleport(this.id, allow);
+  }
+  public enableCameraTarget(enable: boolean): void {
+    EnablePlayerCameraTarget(this.id, enable);
+  }
+  public enableStuntBonus(enable: boolean): void {
+    EnableStuntBonusForPlayer(this.id, enable);
   }
 }

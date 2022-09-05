@@ -17,7 +17,9 @@ export enum ERecordStatus {
   pause,
 }
 
-export abstract class BaseNpcFunc {
+export class BaseNpcFunc {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
   private static recordStatus: ERecordStatus;
   public static readonly connectNPC = ConnectNPC;
   public static startRecordingPlayerData<P extends BasePlayer>(

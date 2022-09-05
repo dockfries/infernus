@@ -3,7 +3,14 @@ import {
   OnGameModeInit,
   OnIncomingConnection,
 } from "@/wrapper/callbacks";
-import { GameModeExit } from "@/wrapper/functions";
+import {
+  AllowAdminTeleport,
+  AllowInteriorWeapons,
+  EnableStuntBonusForAll,
+  EnableVehicleFriendlyFire,
+  EnableZoneNames,
+  GameModeExit,
+} from "@/wrapper/functions";
 import logger from "@/logger";
 import {
   OnClientMessage,
@@ -65,4 +72,9 @@ export abstract class BaseGameMode extends AbstractGM {
     // it's restart
     GameModeExit();
   }
+  public static allowAdminTeleport = AllowAdminTeleport;
+  public static allowInteriorWeapons = AllowInteriorWeapons;
+  public static enableStuntBonusForAll = EnableStuntBonusForAll;
+  public static enableVehicleFriendlyFire = EnableVehicleFriendlyFire;
+  public static enableZoneNames = EnableZoneNames;
 }

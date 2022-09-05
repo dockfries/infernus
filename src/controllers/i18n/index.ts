@@ -41,7 +41,7 @@ export class I18n {
     const keyArr: string[] = property.split(".");
     return keyArr.reduce((obj: any, key: string) => {
       if (!Object.prototype.hasOwnProperty.call(obj, key))
-        return logger.error(new Error(`[i18n]: cannot find ${property}`));
+        return logger.fatal(new Error(`[i18n]: cannot find ${property}`));
       return obj[key];
     }, whichLangJson) as string;
   }
@@ -49,7 +49,7 @@ export class I18n {
   // determine if the incoming character encoding type is valid
   public static isValidate(charset: string): void {
     if (!encodingExists(charset))
-      return logger.error(new Error(`[i18n]: unknown charset ${charset}`));
+      return logger.fatal(new Error(`[i18n]: unknown charset ${charset}`));
   }
 
   // convert utf8 strings to different encoded byte stream arrays

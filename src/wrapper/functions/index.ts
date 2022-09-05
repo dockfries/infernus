@@ -5,6 +5,7 @@
 import { rgba } from "@/utils/colorUtils";
 import {
   CarModTypeEnum,
+  ConnectionStatusEnum,
   FightingStylesEnum,
   PlayerStateEnum,
   RecordTypesEnum,
@@ -12,6 +13,7 @@ import {
   VehicleModelInfoEnum,
   WeaponSkillsEnum,
 } from "@/enums";
+import { BaseGameMode, I18n } from "@/controllers";
 
 export const SendPlayerMessageToPlayer = (
   playerid: number,
@@ -304,10 +306,6 @@ export const GetWeaponName = (weaponid: number, len: number): string => {
   return samp.callNative("GetWeaponName", "iSi", weaponid, len);
 };
 
-export const EnableTirePopping = (enable: number): number => {
-  return samp.callNative("EnableTirePopping", "i", enable);
-};
-
 export const EnableVehicleFriendlyFire = (): number => {
   return samp.callNative("EnableVehicleFriendlyFire", "");
 };
@@ -346,7 +344,7 @@ export const CreateExplosion = (
   return samp.callNative("CreateExplosion", "fffif", X, Y, Z, type, Radius);
 };
 
-export const EnableZoneNames = (enable: number): number => {
+export const EnableZoneNames = (enable: boolean): number => {
   return samp.callNative("EnableZoneNames", "i", enable);
 };
 
@@ -481,15 +479,17 @@ export const NetStats_PacketLossPercent = (playerid: number): number => {
   return samp.callNativeFloat("NetStats_PacketLossPercent", "i", playerid);
 };
 
-export const NetStats_ConnectionStatus = (playerid: number): number => {
+export const NetStats_ConnectionStatus = (
+  playerid: number
+): ConnectionStatusEnum => {
   return samp.callNative("NetStats_ConnectionStatus", "i", playerid);
 };
 
-export const NetStats_GetIpPort = (
-  playerid: number,
-  ip_port_len: number
-): string => {
-  return samp.callNative("NetStats_GetIpPort", "iSi", playerid, ip_port_len);
+export const NetStats_GetIpPort = (playerid: number): string => {
+  const buf = I18n.getValidStr(
+    samp.callNative("NetStats_GetIpPort", "iAi", playerid, 128 + 6)
+  );
+  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
 };
 
 export const CreateMenu = (
@@ -2546,7 +2546,7 @@ export const GetPlayerCameraMode = (playerid: number): number => {
 
 export const EnablePlayerCameraTarget = (
   playerid: number,
-  enable: number
+  enable: boolean
 ): number => {
   return samp.callNative("EnablePlayerCameraTarget", "ii", playerid, enable);
 };
@@ -2682,12 +2682,12 @@ export const GetPlayerVirtualWorld = (playerid: number): number => {
 
 export const EnableStuntBonusForPlayer = (
   playerid: number,
-  enable: number
+  enable: boolean
 ): number => {
   return samp.callNative("EnableStuntBonusForPlayer", "ii", playerid, enable);
 };
 
-export const EnableStuntBonusForAll = (enable: number): number => {
+export const EnableStuntBonusForAll = (enable: boolean): number => {
   return samp.callNative("EnableStuntBonusForAll", "i", enable);
 };
 
