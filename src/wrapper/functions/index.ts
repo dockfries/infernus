@@ -84,10 +84,6 @@ export const GameTextForPlayer = (
   );
 };
 
-export const GetTickCount = (): number => {
-  return samp.callNative("GetTickCount", "");
-};
-
 export const GetMaxPlayers = (): number => {
   return samp.callNative("GetMaxPlayers", "");
 };
@@ -400,15 +396,12 @@ export const SendRconCommand = (command: string): number => {
   return samp.callNative("SendRconCommand", "s", command);
 };
 
-export const GetPlayerNetworkStats = (
-  playerid: number,
-  retstr_size: number
-): string => {
-  return samp.callNative("GetPlayerNetworkStats", "iSi", playerid, retstr_size);
+export const GetPlayerNetworkStats = (playerid: number): string => {
+  return samp.callNative("GetPlayerNetworkStats", "iSi", playerid, 1024);
 };
 
-export const GetNetworkStats = (retstr_size: number): string => {
-  return samp.callNative("GetNetworkStats", "Si", retstr_size);
+export const GetNetworkStats = (): string => {
+  return samp.callNative("GetNetworkStats", "Si", 1024);
 };
 
 export const GetPlayerVersion = (playerid: number, len: number): string => {

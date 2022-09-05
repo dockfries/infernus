@@ -1,5 +1,7 @@
 import { ConnectionStatusEnum } from "@/enums";
 import {
+  GetNetworkStats,
+  GetPlayerNetworkStats,
   NetStats_BytesReceived,
   NetStats_BytesSent,
   NetStats_ConnectionStatus,
@@ -15,6 +17,12 @@ import { BasePlayer } from "../player";
 export class NetStats {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
+  public static getNetworkStats(): string {
+    return GetNetworkStats();
+  }
+  public static getPlayerNetworkStats<P extends BasePlayer>(player: P): string {
+    return GetPlayerNetworkStats(player.id);
+  }
   public static getBytesReceived<P extends BasePlayer>(player: P): number {
     return NetStats_BytesReceived(player.id);
   }

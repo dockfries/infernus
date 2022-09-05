@@ -11,6 +11,9 @@ import {
   EnableVehicleFriendlyFire,
   EnableZoneNames,
   GameModeExit,
+  GetGravity,
+  SetGameModeText,
+  SetGravity,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import {
@@ -79,4 +82,7 @@ export abstract class BaseGameMode extends AbstractGM {
   public static enableVehicleFriendlyFire = EnableVehicleFriendlyFire;
   public static enableZoneNames = EnableZoneNames;
   public static disableInteriorEnterExits = DisableInteriorEnterExits;
+  public static setGameModeText = SetGameModeText;
+  public static getGravity = GetGravity;
+  public static setGravity = SetGravity;
 }
