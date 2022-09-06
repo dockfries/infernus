@@ -4,11 +4,22 @@ import {
   AllowPlayerTeleport,
   EnablePlayerCameraTarget,
   EnableStuntBonusForPlayer,
+  GetPlayerColor,
   GetPlayerDrunkLevel,
+  GetPlayerHealth,
   GetPlayerInterior,
+  GetPlayerMoney,
+  GivePlayerMoney,
   IsPlayerNPC,
+  ResetPlayerMoney,
+  ResetPlayerWeapons,
+  SetPlayerColor,
   SetPlayerDrunkLevel,
+  SetPlayerHealth,
   SetPlayerInterior,
+  SetPlayerMarkerForPlayer,
+  ShowPlayerNameTagForPlayer,
+  SpawnPlayer,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -95,5 +106,41 @@ export abstract class BasePlayer {
   }
   public setInterior(interiorId: number): number {
     return SetPlayerInterior(this.id, interiorId);
+  }
+  public showPlayerNameTag<P extends BasePlayer>(
+    showPlayer: P,
+    show: boolean
+  ): void {
+    ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
+  }
+  public setColor(color: string): void {
+    SetPlayerColor(this.id, color);
+  }
+  public getColor(): number {
+    return GetPlayerColor(this.id);
+  }
+  public setPlayerMarker<P extends BasePlayer>(showPlayer: P, color: string) {
+    SetPlayerMarkerForPlayer(this.id, showPlayer.id, color);
+  }
+  public resetMoney(): number {
+    return ResetPlayerMoney(this.id);
+  }
+  public getMoney(): number {
+    return GetPlayerMoney(this.id);
+  }
+  public giveMoney(money: number): number {
+    return GivePlayerMoney(this.id, money);
+  }
+  public resetWeapons(): number {
+    return ResetPlayerWeapons(this.id);
+  }
+  public spawn(): number {
+    return SpawnPlayer(this.id);
+  }
+  public setHealth(health: number): number {
+    return SetPlayerHealth(this.id, health);
+  }
+  public getHealth(): number {
+    return GetPlayerHealth(this.id);
   }
 }

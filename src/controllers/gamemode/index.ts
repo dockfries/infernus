@@ -7,13 +7,20 @@ import {
   AllowAdminTeleport,
   AllowInteriorWeapons,
   DisableInteriorEnterExits,
+  DisableNameTagLOS,
   EnableStuntBonusForAll,
   EnableVehicleFriendlyFire,
   EnableZoneNames,
   GameModeExit,
   GetGravity,
+  LimitGlobalChatRadius,
+  LimitPlayerMarkerRadius,
   SetGameModeText,
   SetGravity,
+  SetNameTagDrawDistance,
+  ShowNameTags,
+  ShowPlayerMarkers,
+  UsePlayerPedAnims,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import {
@@ -85,4 +92,11 @@ export abstract class BaseGameMode extends AbstractGM {
   public static setGameModeText = SetGameModeText;
   public static getGravity = GetGravity;
   public static setGravity = SetGravity;
+  public static showNameTags = ShowNameTags;
+  public static disableNameTagLOS = DisableNameTagLOS;
+  public static usePlayerPedAnims = UsePlayerPedAnims;
+  public static showPlayerMarkers = ShowPlayerMarkers;
+  public static limitPlayerMarkerRadius = LimitPlayerMarkerRadius;
+  public static limitGlobalChatRadius = LimitGlobalChatRadius;
+  public static setNameTagDrawDistance = SetNameTagDrawDistance;
 }

@@ -7,6 +7,7 @@ import {
   CarModTypeEnum,
   ConnectionStatusEnum,
   FightingStylesEnum,
+  MarkerModesEnum,
   PlayerStateEnum,
   RecordTypesEnum,
   TextDrawAlignEnum,
@@ -282,11 +283,11 @@ export const DestroyPickup = (pickup: number): number => {
   return samp.callNative("DestroyPickup", "i", pickup);
 };
 
-export const ShowNameTags = (show: number): number => {
+export const ShowNameTags = (show: boolean): number => {
   return samp.callNative("ShowNameTags", "i", show);
 };
 
-export const ShowPlayerMarkers = (mode: number): number => {
+export const ShowPlayerMarkers = (mode: MarkerModesEnum): number => {
   return samp.callNative("ShowPlayerMarkers", "i", mode);
 };
 
@@ -2445,7 +2446,7 @@ export const SetPlayerMarkerForPlayer = (
 export const ShowPlayerNameTagForPlayer = (
   playerid: number,
   showplayerid: number,
-  show: number
+  show: boolean
 ): number => {
   return samp.callNative(
     "ShowPlayerNameTagForPlayer",
