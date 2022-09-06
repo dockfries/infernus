@@ -20,9 +20,16 @@ import {
   SetPlayerMarkerForPlayer,
   ShowPlayerNameTagForPlayer,
   SpawnPlayer,
+  TogglePlayerClock,
+  TogglePlayerControllable,
+  TogglePlayerSpectating,
+  PlayerSpectatePlayer,
+  PlayerSpectateVehicle,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
+import { SpectateModesEnum } from "@/enums";
+import { BaseVehicle } from "../vehicle";
 
 export abstract class BasePlayer {
   private _id: number;
@@ -142,5 +149,26 @@ export abstract class BasePlayer {
   }
   public getHealth(): number {
     return GetPlayerHealth(this.id);
+  }
+  public toggleClock(toggle: boolean): number {
+    return TogglePlayerClock(this.id, toggle);
+  }
+  public toggleControllable(toggle: boolean): number {
+    return TogglePlayerControllable(this.id, toggle);
+  }
+  public toggleSpectating(toggle: boolean): number {
+    return TogglePlayerSpectating(this.id, toggle);
+  }
+  public spectatePlayer<P extends BasePlayer>(
+    targetPlayer: P,
+    mode: SpectateModesEnum
+  ) {
+    return PlayerSpectatePlayer(this.id, targetPlayer.id, mode);
+  }
+  public spectateVehicle<V extends BaseVehicle>(
+    targetVehicle: V,
+    mode: SpectateModesEnum
+  ) {
+    return PlayerSpectateVehicle(this.id, targetVehicle.id, mode);
   }
 }

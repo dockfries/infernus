@@ -10,6 +10,7 @@ import {
   MarkerModesEnum,
   PlayerStateEnum,
   RecordTypesEnum,
+  SpectateModesEnum,
   TextDrawAlignEnum,
   VehicleModelInfoEnum,
   WeaponSkillsEnum,
@@ -1754,7 +1755,10 @@ export const GetPlayerTime = (playerid: number): Array<any> => {
   return samp.callNative("GetPlayerTime", "iII", playerid);
 };
 
-export const TogglePlayerClock = (playerid: number, toggle: number): number => {
+export const TogglePlayerClock = (
+  playerid: number,
+  toggle: boolean
+): number => {
   return samp.callNative("TogglePlayerClock", "ii", playerid, toggle);
 };
 
@@ -2242,7 +2246,7 @@ export const RemovePlayerFromVehicle = (playerid: number): number => {
 
 export const TogglePlayerControllable = (
   playerid: number,
-  toggle: number
+  toggle: boolean
 ): number => {
   return samp.callNative("TogglePlayerControllable", "ii", playerid, toggle);
 };
@@ -2663,7 +2667,7 @@ export const EnableStuntBonusForAll = (enable: boolean): number => {
 
 export const TogglePlayerSpectating = (
   playerid: number,
-  toggle: number
+  toggle: boolean
 ): number => {
   return samp.callNative("TogglePlayerSpectating", "ii", playerid, toggle);
 };
@@ -2671,7 +2675,7 @@ export const TogglePlayerSpectating = (
 export const PlayerSpectatePlayer = (
   playerid: number,
   targetplayerid: number,
-  mode: number
+  mode: SpectateModesEnum
 ): number => {
   return samp.callNative(
     "PlayerSpectatePlayer",
@@ -2685,7 +2689,7 @@ export const PlayerSpectatePlayer = (
 export const PlayerSpectateVehicle = (
   playerid: number,
   targetvehicleid: number,
-  mode: number
+  mode: SpectateModesEnum
 ): number => {
   return samp.callNative(
     "PlayerSpectateVehicle",
