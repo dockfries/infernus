@@ -417,30 +417,6 @@ export const UnBlockIpAddress = (ip_address: string): number => {
   return samp.callNative("UnBlockIpAddress", "s", ip_address);
 };
 
-export const GetServerVarAsString = (varname: string, len: number): string => {
-  return samp.callNative("GetServerVarAsString", "sSi", varname, len);
-};
-
-export const GetServerVarAsInt = (varname: string): number => {
-  return samp.callNative("GetServerVarAsInt", "s", varname);
-};
-
-export const GetServerVarAsBool = (varname: string): number => {
-  return samp.callNative("GetServerVarAsBool", "s", varname);
-};
-
-export const GetConsoleVarAsString = (varname: string, len: number): string => {
-  return samp.callNative("GetConsoleVarAsString", "sSi", varname, len);
-};
-
-export const GetConsoleVarAsInt = (varname: string): number => {
-  return samp.callNative("GetConsoleVarAsInt", "s", varname);
-};
-
-export const GetConsoleVarAsBool = (varname: string): number => {
-  return samp.callNative("GetConsoleVarAsBool", "s", varname);
-};
-
 export const GetServerTickRate = (): number => {
   return samp.callNative("GetServerTickRate", "");
 };
