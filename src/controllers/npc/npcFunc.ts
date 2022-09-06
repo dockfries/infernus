@@ -29,16 +29,14 @@ export class BaseNpcFunc {
   ): void {
     if (player.isRecording)
       return logger.warn(
-        "[StartRecordingPlayerData]: It should be stopped before recording"
+        "[BaseNpcFunc]: It should be stopped before recording"
       );
     StartRecordingPlayerData(player.id, recordtype, recordname);
     player.isRecording = true;
   }
   public static stopRecordingPlayerData<P extends BasePlayer>(player: P): void {
     if (!player.isRecording)
-      return logger.warn(
-        "[StartRecordingPlayerData]: It should be started before stop"
-      );
+      return logger.warn("[BaseNpcFunc]: It should be started before stop");
     StopRecordingPlayerData(player.id);
     player.isRecording = false;
   }
