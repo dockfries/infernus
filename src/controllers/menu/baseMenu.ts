@@ -5,7 +5,6 @@ import {
   DestroyMenu,
   DisableMenu,
   DisableMenuRow,
-  GetPlayerMenu,
   ShowMenuForPlayer,
   HideMenuForPlayer,
   IsValidMenu,
@@ -13,7 +12,6 @@ import {
 } from "@/wrapper/functions";
 import { BasePlayer } from "../player";
 import { menuBus, menuHooks } from "./menuBus";
-import { BaseMenuEvent } from "./menuEvent";
 
 export class BaseMenu {
   private static menuCount = 0;

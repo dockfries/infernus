@@ -68,7 +68,7 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
   ): void;
   protected abstract onDeath(
     player: P,
-    killer: P | InvalidEnum.INVALID_PLAYER_ID,
+    killer: P | InvalidEnum.PLAYER_ID,
     reason: number
   ): void;
   // protected abstract onGiveDamage(
@@ -195,7 +195,7 @@ export abstract class BasePlayerEvent<
       (playerid: number, killerid: number, reason: number): void => {
         const p = this.findPlayerById(playerid);
         if (!p) return;
-        if (killerid === InvalidEnum.INVALID_PLAYER_ID) {
+        if (killerid === InvalidEnum.PLAYER_ID) {
           this.onDeath(p, killerid, reason);
           return;
         }

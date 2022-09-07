@@ -1,3 +1,4 @@
+import { InvalidEnum } from "@/enums";
 import {
   OnPlayerExitedMenu,
   OnPlayerSelectedMenuRow,
@@ -43,6 +44,7 @@ export abstract class BaseMenuEvent<
   protected abstract onPlayerExited(player: P, menu: M): void;
   protected abstract onPlayerSelectedRow(player: P, menu: M, row: number): void;
   public findMenuById(menuId: number) {
+    if (menuId === InvalidEnum.MENU) return undefined;
     return this.menus.find((menu) => menu.id === menuId);
   }
 }
