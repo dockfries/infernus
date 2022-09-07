@@ -43,6 +43,7 @@
     "iconv-lite": "^0.6.3",
     "lodash": "^4.17.21",
     "omp-wrapper": "latest",
+    "omp-wrapper-streamer": "^0.0.3",
     "pino": "^8.4.2",
     "pino-pretty": "^9.1.0"
   }
