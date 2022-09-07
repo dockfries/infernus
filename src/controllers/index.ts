@@ -6,3 +6,4 @@ export * from "./player";
 export * from "./vehicle";
 export * from "./gamemode";
 export * from "./netstats";
+export * from "./gametext";
