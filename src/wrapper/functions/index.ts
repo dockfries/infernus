@@ -517,8 +517,8 @@ export const HideMenuForPlayer = (menuid: number, playerid: number): number => {
   return samp.callNative("HideMenuForPlayer", "ii", menuid, playerid);
 };
 
-export const IsValidMenu = (menuid: number): number => {
-  return samp.callNative("IsValidMenu", "i", menuid);
+export const IsValidMenu = (menuid: number): boolean => {
+  return Boolean(samp.callNative("IsValidMenu", "i", menuid));
 };
 
 export const DisableMenu = (menuid: number): number => {
