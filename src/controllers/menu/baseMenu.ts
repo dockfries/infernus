@@ -1,3 +1,4 @@
+import { LimitsEnum } from "@/enums";
 import logger from "@/logger";
 import {
   AddMenuItem,
@@ -90,7 +91,7 @@ export class BaseMenu {
   public create(): void | this {
     if (this._id !== -1)
       return logger.error("[BaseMenu]: Cannot be created twice");
-    if (BaseMenu.menuCount === 128) {
+    if (BaseMenu.menuCount === LimitsEnum.MAX_MENUS) {
       return logger.error(
         "[BaseMenu]: The maximum number of menus allowed to be created has been reached 128"
       );
@@ -117,7 +118,7 @@ export class BaseMenu {
   public addItem(column: number, title: string): void | this {
     if (this._id === -1 || !IsValidMenu(this.id))
       return logger.error("[BaseMenu]: Cannot addItem before create");
-    if (this._itemCount === 12)
+    if (this._itemCount === LimitsEnum.MAX_MENU_ROW)
       return logger.error(
         "[BaseMenu]: The maximum number of items allowed to be added has been reached 12"
       );
