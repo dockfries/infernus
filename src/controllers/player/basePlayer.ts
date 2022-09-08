@@ -46,6 +46,14 @@ import {
   GetPlayerVersion,
   SetPlayerVirtualWorld,
   GetPlayerVirtualWorld,
+  RemovePlayerFromVehicle,
+  SetPlayerWantedLevel,
+  GetPlayerWantedLevel,
+  SetPlayerFacingAngle,
+  GetPlayerFacingAngle,
+  SetPlayerWeather,
+  SetPlayerTime,
+  GetPlayerTime,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -56,6 +64,7 @@ import {
 } from "@/enums";
 import { BaseVehicle } from "../vehicle";
 import { basePos } from "@/types";
+import { GetPlayerWeather } from "omp-wrapper";
 
 export abstract class BasePlayer {
   private _id: number;
@@ -121,7 +130,7 @@ export abstract class BasePlayer {
   public setDrunkLevel(level: number): void {
     if (level < 0 || level > 50000)
       return logger.error(
-        new Error("[BasePlayer] player's drunk level ranges from 0 to 50000")
+        new Error("[BasePlayer]: player's drunk level ranges from 0 to 50000")
       );
     SetPlayerDrunkLevel(this.id, level);
   }
@@ -281,5 +290,50 @@ export abstract class BasePlayer {
   }
   public getVirtualWorld(): number {
     return GetPlayerVirtualWorld(this.id);
+  }
+  public removeFromVehicle(): number {
+    return RemovePlayerFromVehicle(this.id);
+  }
+  public setWantedLevel(level: number): number {
+    if (level < 0 || level > 6) {
+      logger.error("[BasePlayer]: player's wanted level ranges from 0 to 6");
+      return 0;
+    }
+    return SetPlayerWantedLevel(this.id, level);
+  }
+  public getWantedLevel(): number {
+    return GetPlayerWantedLevel(this.id);
+  }
+  public setFacingAngle(ang: number): number {
+    return SetPlayerFacingAngle(this.id, ang);
+  }
+  public getFacingAngle(): number {
+    return GetPlayerFacingAngle(this.id);
+  }
+  public setWeather(weather: number): void {
+    if (weather < 0 || weather > 255) {
+      logger.warn("[BasePlayer]: The valid weather value is only 0 to 255");
+      return;
+    }
+    SetPlayerWeather(this.id, weather);
+  }
+  // omp-wrapper
+  public getWeather(): number {
+    return GetPlayerWeather(this.id);
+  }
+  public setTime(hour: number, minute: number): void | number {
+    if (hour < 0 || hour > 23) {
+      logger.warn("[BasePlayer]: The valid hour value is only 0 to 23");
+      return;
+    }
+    if (minute < 0 || minute > 59) {
+      logger.warn("[BasePlayer]: The valid minute value is only 0 to 59");
+      return;
+    }
+    return SetPlayerTime(this.id, hour, minute);
+  }
+  public getTime() {
+    const [hour, minute] = GetPlayerTime(this.id);
+    return { hour, minute };
   }
 }

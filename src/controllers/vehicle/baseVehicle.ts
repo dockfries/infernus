@@ -76,7 +76,7 @@ export abstract class BaseVehicle {
     this._id = -1;
   }
   public addComponent(componentid: number): number | undefined {
-    if (this.id !== -1) return;
+    if (this.id === -1) return;
     if (!IsValidVehComponent(this.info.vehicletype, componentid)) {
       logger.warn(
         `[BaseVehicle]: Invalid component id ${componentid} attempted to attach to the vehicle ${this}`
@@ -86,12 +86,15 @@ export abstract class BaseVehicle {
     return AddVehicleComponent(this.id, componentid);
   }
   public linkToInterior(interiorId: number): number {
+    if (this.id === -1) return 0;
     return LinkVehicleToInterior(this.id, interiorId);
   }
   public setVirtualWorld(worldId: number): number {
+    if (this.id === -1) return 0;
     return SetVehicleVirtualWorld(this.id, worldId);
   }
   public getVirtualWorld(): number {
+    if (this.id === -1) return 0;
     return GetVehicleVirtualWorld(this.id);
   }
 }

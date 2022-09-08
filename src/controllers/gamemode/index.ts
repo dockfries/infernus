@@ -18,6 +18,8 @@ import {
   SetGameModeText,
   SetGravity,
   SetNameTagDrawDistance,
+  SetWeather,
+  SetWorldTime,
   ShowNameTags,
   ShowPlayerMarkers,
   UsePlayerPedAnims,
@@ -55,7 +57,7 @@ export abstract class BaseGameMode extends AbstractGM {
     OnGameModeInit((): void => {
       if (this.initialized)
         return logger.error(
-          new Error("[GameMode]: Cannot be initialized more than once")
+          new Error("[BaseGameMode]: Cannot be initialized more than once")
         );
       this.initialized = true;
       this.onInit();
@@ -63,7 +65,7 @@ export abstract class BaseGameMode extends AbstractGM {
     OnGameModeExit((): void => {
       if (!this.initialized)
         return logger.error(
-          new Error("[GameMode]: Cannot be unload more than once")
+          new Error("[BaseGameMode]: Cannot unload more than once")
         );
       this.initialized = false;
       this.onExit();
@@ -99,4 +101,18 @@ export abstract class BaseGameMode extends AbstractGM {
   public static limitPlayerMarkerRadius = LimitPlayerMarkerRadius;
   public static limitGlobalChatRadius = LimitGlobalChatRadius;
   public static setNameTagDrawDistance = SetNameTagDrawDistance;
+  public static setWeather(weather: number): number {
+    if (weather < 0 || weather > 255) {
+      logger.warn("[BaseGameMode]: The valid weather value is only 0 to 255");
+      return 0;
+    }
+    return SetWeather(weather);
+  }
+  public static setWorldTime(hour: number): number {
+    if (hour < 0 || hour > 23) {
+      logger.warn("[BaseGameMode]: The valid hour value is only 0 to 23");
+      return 0;
+    }
+    return SetWorldTime(hour);
+  }
 }

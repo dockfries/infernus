@@ -1751,7 +1751,7 @@ export const SetPlayerTime = (
   return samp.callNative("SetPlayerTime", "iii", playerid, hour, minute);
 };
 
-export const GetPlayerTime = (playerid: number): Array<any> => {
+export const GetPlayerTime = (playerid: number): Array<number> => {
   return samp.callNative("GetPlayerTime", "iII", playerid);
 };
 
