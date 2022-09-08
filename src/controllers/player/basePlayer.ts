@@ -92,10 +92,9 @@ import {
   SpectateModesEnum,
   WeaponSkillsEnum,
 } from "@/enums";
-import { BaseVehicle, BaseVehicleEvent } from "../vehicle";
+import { BaseVehicle } from "../vehicle";
 import { basePos } from "@/types";
-import { GetPlayerCameraTargetPlayerObj, GetPlayerWeather } from "omp-wrapper";
-import { BasePlayerEvent } from "./playerEvent";
+import { GetPlayerWeather } from "omp-wrapper";
 
 export abstract class BasePlayer {
   private _id: number;
