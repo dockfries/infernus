@@ -10,6 +10,7 @@ import {
   HideMenuForPlayer,
   IsValidMenu,
   SetMenuColumnHeader,
+  GetPlayerMenu,
 } from "@/wrapper/functions";
 import { BasePlayer } from "../player";
 import { menuBus, menuHooks } from "./menuBus";
@@ -161,5 +162,11 @@ export class BaseMenu {
     if (this._id === -1 || !IsValidMenu(this.id))
       return logger.error("[BaseMenu]: Cannot hide menu before create");
     return HideMenuForPlayer(this.id, player.id);
+  }
+  public static getMenu<M extends BaseMenu, P extends BasePlayer>(
+    player: P,
+    menus: Array<M>
+  ): M | undefined {
+    return menus.find((m) => m.id === GetPlayerMenu(player.id));
   }
 }
