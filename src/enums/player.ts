@@ -19,6 +19,28 @@ export enum CameraCutStylesEnum {
   CUT,
 }
 
+export enum CameraModesEnum {
+  BEHINDCAR = 3,
+  FOLLOWPED = 4,
+  SNIPER = 7,
+  ROCKETLAUNCHER = 8,
+  FIXED = 15,
+  _1STPERSON = 16,
+  CAM_ON_A_STRING = 18,
+  BEHINDBOAT = 22,
+  CAMERA = 46,
+  ROCKETLAUNCHER_HS = 51,
+  AIMWEAPON = 53,
+  AIMWEAPON_FROMCAR = 55,
+  DW_HELI_CHASE = 56,
+  DW_CAM_MAN = 57,
+  DW_BIRDY = 58,
+  DW_PLANE_SPOTTER = 59,
+  DW_PLANECAM1 = 62,
+  DW_PLANECAM2 = 63,
+  DW_PLANECAM3 = 64,
+}
+
 export enum SpectateModesEnum {
   NORMAL = 1,
   FIXED,

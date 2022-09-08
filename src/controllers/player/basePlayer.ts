@@ -70,19 +70,32 @@ import {
   SetPlayerFightingStyle,
   SetPlayerArmour,
   GetPlayerArmour,
+  SetCameraBehindPlayer,
+  SetPlayerCameraPos,
+  SetPlayerCameraLookAt,
+  GetPlayerCameraAspectRatio,
+  GetPlayerCameraFrontVector,
+  GetPlayerCameraPos,
+  GetPlayerCameraMode,
+  GetPlayerCameraTargetPlayer,
+  GetPlayerCameraTargetVehicle,
+  GetPlayerCameraZoom,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
 import {
+  CameraCutStylesEnum,
+  CameraModesEnum,
   FightingStylesEnum,
   PlayerStateEnum,
   SpecialActionsEnum,
   SpectateModesEnum,
   WeaponSkillsEnum,
 } from "@/enums";
-import { BaseVehicle } from "../vehicle";
+import { BaseVehicle, BaseVehicleEvent } from "../vehicle";
 import { basePos } from "@/types";
-import { GetPlayerWeather } from "omp-wrapper";
+import { GetPlayerCameraTargetPlayerObj, GetPlayerWeather } from "omp-wrapper";
+import { BasePlayerEvent } from "./playerEvent";
 
 export abstract class BasePlayer {
   private _id: number;
@@ -407,5 +420,48 @@ export abstract class BasePlayer {
   }
   public getArmour(): number {
     return GetPlayerArmour(this.id);
+  }
+  public setCameraBehind(): number {
+    return SetCameraBehindPlayer(this.id);
+  }
+  public setCameraPos(x: number, y: number, z: number): number {
+    return SetPlayerCameraPos(this.id, x, y, z);
+  }
+  public setCameraLookAt(
+    x: number,
+    y: number,
+    z: number,
+    cut: CameraCutStylesEnum
+  ): number {
+    return SetPlayerCameraLookAt(this.id, x, y, z, cut);
+  }
+  public getCameraAspectRatio(): number {
+    return GetPlayerCameraAspectRatio(this.id);
+  }
+  public getCameraFrontVector(): basePos {
+    const [x, y, z] = GetPlayerCameraFrontVector(this.id);
+    return { x, y, z };
+  }
+  public getCameraMode(): CameraModesEnum {
+    return GetPlayerCameraMode(this.id);
+  }
+  public getCameraPos(): basePos {
+    const [x, y, z] = GetPlayerCameraPos(this.id);
+    return { x, y, z };
+  }
+  public getCameraTargetPlayer<P extends BasePlayer>(
+    players: Array<P>
+  ): P | undefined {
+    const target = GetPlayerCameraTargetPlayer(this.id);
+    return players.find((p) => p.id === target);
+  }
+  public getCameraTargetVehicle<V extends BaseVehicle>(
+    vehicles: Array<V>
+  ): V | undefined {
+    const target = GetPlayerCameraTargetVehicle(this.id);
+    return vehicles.find((v) => v.id === target);
+  }
+  public getCameraZoom(): number {
+    return GetPlayerCameraZoom(this.id);
   }
 }

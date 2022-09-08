@@ -15,6 +15,7 @@ import {
   GetGravity,
   LimitGlobalChatRadius,
   LimitPlayerMarkerRadius,
+  SendRconCommand,
   SetGameModeText,
   SetGravity,
   SetNameTagDrawDistance,
@@ -117,4 +118,5 @@ export abstract class BaseGameMode extends AbstractGM {
     return SetWorldTime(hour);
   }
   public static setTeamCount = SetTeamCount;
+  public static sendRconCommand = SendRconCommand;
 }

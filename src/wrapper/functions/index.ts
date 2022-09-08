@@ -4,6 +4,8 @@
 
 import { rgba } from "@/utils/colorUtils";
 import {
+  CameraCutStylesEnum,
+  CameraModesEnum,
   CarModTypeEnum,
   ConnectionStatusEnum,
   FightingStylesEnum,
@@ -2491,7 +2493,7 @@ export const SetPlayerCameraLookAt = (
   x: number,
   y: number,
   z: number,
-  cut: number
+  cut: CameraCutStylesEnum
 ): number => {
   return samp.callNative(
     "SetPlayerCameraLookAt",
@@ -2508,15 +2510,15 @@ export const SetCameraBehindPlayer = (playerid: number): number => {
   return samp.callNative("SetCameraBehindPlayer", "i", playerid);
 };
 
-export const GetPlayerCameraPos = (playerid: number): Array<any> => {
+export const GetPlayerCameraPos = (playerid: number): Array<number> => {
   return samp.callNative("GetPlayerCameraPos", "iFFF", playerid);
 };
 
-export const GetPlayerCameraFrontVector = (playerid: number): Array<any> => {
+export const GetPlayerCameraFrontVector = (playerid: number): Array<number> => {
   return samp.callNative("GetPlayerCameraFrontVector", "iFFF", playerid);
 };
 
-export const GetPlayerCameraMode = (playerid: number): number => {
+export const GetPlayerCameraMode = (playerid: number): CameraModesEnum => {
   return samp.callNative("GetPlayerCameraMode", "i", playerid);
 };
 
