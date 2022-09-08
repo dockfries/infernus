@@ -5,7 +5,9 @@ import {
   AddVehicleComponent,
   CreateVehicle,
   DestroyVehicle,
+  GetVehicleVirtualWorld,
   LinkVehicleToInterior,
+  SetVehicleVirtualWorld,
 } from "@/wrapper/functions";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
 
@@ -85,5 +87,11 @@ export abstract class BaseVehicle {
   }
   public linkToInterior(interiorId: number): number {
     return LinkVehicleToInterior(this.id, interiorId);
+  }
+  public setVirtualWorld(worldId: number): number {
+    return SetVehicleVirtualWorld(this.id, worldId);
+  }
+  public getVirtualWorld(): number {
+    return GetVehicleVirtualWorld(this.id);
   }
 }

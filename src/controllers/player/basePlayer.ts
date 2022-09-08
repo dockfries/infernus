@@ -25,11 +25,37 @@ import {
   TogglePlayerSpectating,
   PlayerSpectatePlayer,
   PlayerSpectateVehicle,
+  ForceClassSelection,
+  Kick,
+  Ban,
+  BanEx,
+  IsPlayerAdmin,
+  IsPlayerInRangeOfPoint,
+  IsPlayerStreamedIn,
+  SetPlayerSkin,
+  GetPlayerSkin,
+  IsPlayerInAnyVehicle,
+  GetPlayerSpecialAction,
+  SetPlayerSpecialAction,
+  SetPlayerScore,
+  GetPlayerScore,
+  GetPlayerPing,
+  SetPlayerPos,
+  GetPlayerPos,
+  GetPlayerState,
+  GetPlayerVersion,
+  SetPlayerVirtualWorld,
+  GetPlayerVirtualWorld,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
-import { SpectateModesEnum } from "@/enums";
+import {
+  PlayerStateEnum,
+  SpecialActionsEnum,
+  SpectateModesEnum,
+} from "@/enums";
 import { BaseVehicle } from "../vehicle";
+import { basePos } from "@/types";
 
 export abstract class BasePlayer {
   private _id: number;
@@ -64,7 +90,7 @@ export abstract class BasePlayer {
 
   public constructor(id: number) {
     this._id = id;
-    this._isNpc = Boolean(IsPlayerNPC(this.id));
+    this._isNpc = IsPlayerNPC(this.id);
   }
 
   public sendClientMessage(color: string, msg: string): number {
@@ -142,6 +168,10 @@ export abstract class BasePlayer {
     return ResetPlayerWeapons(this.id);
   }
   public spawn(): number {
+    if (this.isSpectating()) {
+      this.toggleSpectating(false);
+      return 1;
+    }
     return SpawnPlayer(this.id);
   }
   public setHealth(health: number): number {
@@ -170,5 +200,86 @@ export abstract class BasePlayer {
     mode: SpectateModesEnum
   ) {
     return PlayerSpectateVehicle(this.id, targetVehicle.id, mode);
+  }
+  public forceClassSelection(): void {
+    ForceClassSelection(this.id);
+  }
+  public kick(): void {
+    Kick(this.id);
+  }
+  public ban(): void {
+    Ban(this.id);
+  }
+  public banEx(reason: string): void {
+    BanEx(this.id, reason);
+  }
+  public isAdmin() {
+    return IsPlayerAdmin(this.id);
+  }
+  public isInRangeOfPoint(range: number, x: number, y: number, z: number) {
+    return IsPlayerInRangeOfPoint(this.id, range, x, y, z);
+  }
+  public isStreamedIn<P extends BasePlayer>(forplayer: P) {
+    return IsPlayerStreamedIn(this.id, forplayer.id);
+  }
+  public setSkin(skinId: number): number {
+    if (skinId < 0 || skinId > 311 || skinId == 74) return 0;
+    if (this.getHealth() <= 0) return 0;
+    if (this.isInAnyVehicle()) return 0;
+    if (this.getSpecialAction() === SpecialActionsEnum.DUCK) return 0;
+    return SetPlayerSkin(this.id, skinId);
+  }
+  public getSkin(): number {
+    return GetPlayerSkin(this.id);
+  }
+  public isInAnyVehicle(): boolean {
+    return IsPlayerInAnyVehicle(this.id);
+  }
+  public getSpecialAction(): SpecialActionsEnum {
+    return GetPlayerSpecialAction(this.id);
+  }
+  public setSpecialAction(actionId: SpecialActionsEnum): number {
+    return SetPlayerSpecialAction(this.id, actionId);
+  }
+  public setScore(score: number): number {
+    return SetPlayerScore(this.id, score);
+  }
+  public getScore(): number {
+    return GetPlayerScore(this.id);
+  }
+  public getPing(): number {
+    return GetPlayerPing(this.id);
+  }
+  public setPos(x: number, y: number, z: number): number {
+    return SetPlayerPos(this.id, x, y, z);
+  }
+  public getPos(): basePos | undefined {
+    if (
+      this.isSpectating() ||
+      this.isWasted() ||
+      this.getState() === PlayerStateEnum.NONE
+    )
+      return undefined;
+    const [x, y, z] = GetPlayerPos(this.id);
+    return { x, y, z };
+  }
+  public isSpectating(): boolean {
+    return this.getState() === PlayerStateEnum.SPECTATING;
+  }
+  public isWasted(): boolean {
+    return this.getState() === PlayerStateEnum.WASTED;
+  }
+  public getState(): PlayerStateEnum {
+    return GetPlayerState(this.id);
+  }
+  public getVersion(): string {
+    if (this.isNpc()) return "";
+    return GetPlayerVersion(this.id);
+  }
+  public setVirtualWorld(worldId: number): number {
+    return SetPlayerVirtualWorld(this.id, worldId);
+  }
+  public getVirtualWorld(): number {
+    return GetPlayerVirtualWorld(this.id);
   }
 }

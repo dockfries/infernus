@@ -8,3 +8,9 @@ export type EventFunc = <T extends BasePlayer>(
 ) => any;
 
 export type ILocales = Record<string, ILocale>;
+
+export type basePos = {
+  x: number;
+  y: number;
+  z: number;
+};

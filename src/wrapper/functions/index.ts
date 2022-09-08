@@ -10,6 +10,7 @@ import {
   MarkerModesEnum,
   PlayerStateEnum,
   RecordTypesEnum,
+  SpecialActionsEnum,
   SpectateModesEnum,
   TextDrawAlignEnum,
   VehicleModelInfoEnum,
@@ -374,12 +375,12 @@ export const ConnectNPC = (name: string, script: string): number => {
   return samp.callNative("ConnectNPC", "ss", name, script);
 };
 
-export const IsPlayerNPC = (playerid: number): number => {
-  return samp.callNative("IsPlayerNPC", "i", playerid);
+export const IsPlayerNPC = (playerid: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerNPC", "i", playerid));
 };
 
-export const IsPlayerAdmin = (playerid: number): number => {
-  return samp.callNative("IsPlayerAdmin", "i", playerid);
+export const IsPlayerAdmin = (playerid: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerAdmin", "i", playerid));
 };
 
 export const Kick = (playerid: number): number => {
@@ -406,8 +407,11 @@ export const GetNetworkStats = (): string => {
   return samp.callNative("GetNetworkStats", "Si", 1024);
 };
 
-export const GetPlayerVersion = (playerid: number, len: number): string => {
-  return samp.callNative("GetPlayerVersion", "iSi", playerid, len);
+export const GetPlayerVersion = (playerid: number): string => {
+  const buf = I18n.getValidStr(
+    samp.callNative("GetPlayerVersion", "iAi", playerid, 24)
+  );
+  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
 };
 
 export const BlockIpAddress = (ip_address: string, timems: number): number => {
@@ -1534,7 +1538,7 @@ export const SetPlayerPosFindZ = (
   return samp.callNative("SetPlayerPosFindZ", "ifff", playerid, x, y, z);
 };
 
-export const GetPlayerPos = (playerid: number): Array<any> => {
+export const GetPlayerPos = (playerid: number): Array<number> => {
   return samp.callNative("GetPlayerPos", "iFFF", playerid);
 };
 
@@ -1552,15 +1556,9 @@ export const IsPlayerInRangeOfPoint = (
   x: number,
   y: number,
   z: number
-): number => {
-  return samp.callNative(
-    "IsPlayerInRangeOfPoint",
-    "iffff",
-    playerid,
-    range,
-    x,
-    y,
-    z
+): boolean => {
+  return Boolean(
+    samp.callNative("IsPlayerInRangeOfPoint", "iffff", playerid, range, x, y, z)
   );
 };
 
@@ -1583,8 +1581,10 @@ export const GetPlayerDistanceFromPoint = (
 export const IsPlayerStreamedIn = (
   playerid: number,
   forplayerid: number
-): number => {
-  return samp.callNative("IsPlayerStreamedIn", "ii", playerid, forplayerid);
+): boolean => {
+  return Boolean(
+    samp.callNative("IsPlayerStreamedIn", "ii", playerid, forplayerid)
+  );
 };
 
 export const SetPlayerInterior = (
@@ -2316,13 +2316,15 @@ export const GetAnimationName = (
   return samp.callNative("GetAnimationName", "iSiSi", index, len1, len2);
 };
 
-export const GetPlayerSpecialAction = (playerid: number): number => {
+export const GetPlayerSpecialAction = (
+  playerid: number
+): SpecialActionsEnum => {
   return samp.callNative("GetPlayerSpecialAction", "i", playerid);
 };
 
 export const SetPlayerSpecialAction = (
   playerid: number,
-  actionid: number
+  actionid: SpecialActionsEnum
 ): number => {
   return samp.callNative("SetPlayerSpecialAction", "ii", playerid, actionid);
 };
@@ -2631,8 +2633,8 @@ export const IsPlayerInVehicle = (
   return samp.callNative("IsPlayerInVehicle", "ii", playerid, vehicleid);
 };
 
-export const IsPlayerInAnyVehicle = (playerid: number): number => {
-  return samp.callNative("IsPlayerInAnyVehicle", "i", playerid);
+export const IsPlayerInAnyVehicle = (playerid: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerInAnyVehicle", "i", playerid));
 };
 
 export const IsPlayerInCheckpoint = (playerid: number): number => {
