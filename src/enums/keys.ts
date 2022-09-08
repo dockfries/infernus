@@ -18,4 +18,8 @@ export enum KeysEnum {
   YES = 65536,
   NO = 131072,
   CTRL_BACK = 262144,
+  KEY_UP = -128,
+  KEY_DOWN = 128,
+  KEY_LEFT = -128,
+  KEY_RIGHT = 128,
 }

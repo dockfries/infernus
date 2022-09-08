@@ -141,3 +141,17 @@ export const GetPlayerName = <T extends BasePlayer>(player: T): string => {
   );
   return I18n.decodeFromBuf(I18n.getValidStr(buf), player.charset);
 };
+
+// not test ia
+// if crash may be iai and name.length
+export const SetPlayerName = <T extends BasePlayer>(
+  player: T,
+  name: string
+): number => {
+  return samp.callNative(
+    "SetPlayerName",
+    "ia",
+    player.id,
+    I18n.encodeToBuf(name, player.charset)
+  );
+};

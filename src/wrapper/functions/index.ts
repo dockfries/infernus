@@ -7,6 +7,7 @@ import {
   CarModTypeEnum,
   ConnectionStatusEnum,
   FightingStylesEnum,
+  KeysEnum,
   MarkerModesEnum,
   PlayerStateEnum,
   RecordTypesEnum,
@@ -1715,10 +1716,6 @@ export const ResetPlayerMoney = (playerid: number): number => {
   return samp.callNative("ResetPlayerMoney", "i", playerid);
 };
 
-export const SetPlayerName = (playerid: number, name: string): number => {
-  return samp.callNative("SetPlayerName", "is", playerid, name);
-};
-
 export const GetPlayerMoney = (playerid: number): number => {
   return samp.callNative("GetPlayerMoney", "i", playerid);
 };
@@ -1727,8 +1724,11 @@ export const GetPlayerState = (playerid: number): PlayerStateEnum => {
   return samp.callNative("GetPlayerState", "i", playerid);
 };
 
-export const GetPlayerIp = (playerid: number, len: number): string => {
-  return samp.callNative("GetPlayerIp", "iSi", playerid, len);
+export const GetPlayerIp = (playerid: number): string => {
+  const buf = I18n.getValidStr(
+    samp.callNative("GetPlayerIp", "iAi", playerid, 128)
+  );
+  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
 };
 
 export const GetPlayerPing = (playerid: number): number => {
@@ -1739,7 +1739,7 @@ export const GetPlayerWeapon = (playerid: number): number => {
   return samp.callNative("GetPlayerWeapon", "i", playerid);
 };
 
-export const GetPlayerKeys = (playerid: number): Array<any> => {
+export const GetPlayerKeys = (playerid: number): Array<KeysEnum> => {
   return samp.callNative("GetPlayerKeys", "iIII", playerid);
 };
 
@@ -1803,7 +1803,7 @@ export const SetPlayerVelocity = (
   return samp.callNative("SetPlayerVelocity", "ifff", playerid, X, Y, Z);
 };
 
-export const GetPlayerVelocity = (playerid: number): Array<any> => {
+export const GetPlayerVelocity = (playerid: number): Array<number> => {
   return samp.callNative("GetPlayerVelocity", "iFFF", playerid);
 };
 

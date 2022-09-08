@@ -1,5 +1,9 @@
 import { IPlayerSettings } from "@/interfaces";
-import { SendClientMessage } from "@/utils/helperUtils";
+import {
+  GetPlayerName,
+  SendClientMessage,
+  SetPlayerName,
+} from "@/utils/helperUtils";
 import {
   AllowPlayerTeleport,
   EnablePlayerCameraTarget,
@@ -54,13 +58,27 @@ import {
   SetPlayerWeather,
   SetPlayerTime,
   GetPlayerTime,
+  RemoveBuildingForPlayer,
+  SetPlayerTeam,
+  GetPlayerTeam,
+  SetPlayerSkillLevel,
+  SetPlayerVelocity,
+  GetPlayerVelocity,
+  GetPlayerKeys,
+  GetPlayerIp,
+  GetPlayerFightingStyle,
+  SetPlayerFightingStyle,
+  SetPlayerArmour,
+  GetPlayerArmour,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
 import {
+  FightingStylesEnum,
   PlayerStateEnum,
   SpecialActionsEnum,
   SpectateModesEnum,
+  WeaponSkillsEnum,
 } from "@/enums";
 import { BaseVehicle } from "../vehicle";
 import { basePos } from "@/types";
@@ -69,7 +87,7 @@ import { GetPlayerWeather } from "omp-wrapper";
 export abstract class BasePlayer {
   private _id: number;
   public isRecording = false;
-  public name = "";
+  // public name = "";
   // Note: The locale and character set must be assigned at application level development time. Otherwise i18n will be problematic.
   public settings: IPlayerSettings = {
     locale: "",
@@ -335,5 +353,59 @@ export abstract class BasePlayer {
   public getTime() {
     const [hour, minute] = GetPlayerTime(this.id);
     return { hour, minute };
+  }
+  public removeBuilding(
+    modelid: number,
+    fX: number,
+    fY: number,
+    fZ: number,
+    fRadius: number
+  ): void {
+    RemoveBuildingForPlayer(this.id, modelid, fX, fY, fZ, fRadius);
+  }
+  public setTeam(team: number): number {
+    return SetPlayerTeam(this.id, team);
+  }
+  public getTeam(): number {
+    return GetPlayerTeam(this.id);
+  }
+  public setSkillLevel(skill: WeaponSkillsEnum, level: number): void {
+    if (level < 0 || level > 999) {
+      logger.warn("[BasePlayer]: The valid skill level is only 0 to 999");
+      return;
+    }
+    SetPlayerSkillLevel(this.id, skill, level);
+  }
+  public getName(): string {
+    return GetPlayerName(this);
+  }
+  public setName(name: string): number {
+    return SetPlayerName(this, name);
+  }
+  public setVelocity(x: number, y: number, z: number): number {
+    return SetPlayerVelocity(this.id, x, y, z);
+  }
+  public getVelocity(): basePos {
+    const [x, y, z] = GetPlayerVelocity(this.id);
+    return { x, y, z };
+  }
+  public getKeys() {
+    const [keys, updown, leftright] = GetPlayerKeys(this.id);
+    return { keys, updown, leftright };
+  }
+  public getIp(): string {
+    return GetPlayerIp(this.id);
+  }
+  public getFightingStyle(): FightingStylesEnum {
+    return GetPlayerFightingStyle(this.id);
+  }
+  public setFightingStyle(style: FightingStylesEnum): void {
+    SetPlayerFightingStyle(this.id, style);
+  }
+  public setArmour(armour: number): number {
+    return SetPlayerArmour(this.id, armour);
+  }
+  public getArmour(): number {
+    return GetPlayerArmour(this.id);
   }
 }

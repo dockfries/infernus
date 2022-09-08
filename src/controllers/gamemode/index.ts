@@ -18,6 +18,7 @@ import {
   SetGameModeText,
   SetGravity,
   SetNameTagDrawDistance,
+  SetTeamCount,
   SetWeather,
   SetWorldTime,
   ShowNameTags,
@@ -115,4 +116,5 @@ export abstract class BaseGameMode extends AbstractGM {
     }
     return SetWorldTime(hour);
   }
+  public static setTeamCount = SetTeamCount;
 }
