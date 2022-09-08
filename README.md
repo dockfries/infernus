@@ -16,5 +16,7 @@ NodeJS library for Scripting [Open Multiplayer](https://open.mp), depends on [om
 
 ## Credits
 
+- [omp-server](https://github.com/openmultiplayer/server-beta)
+- [samp-node](https://github.com/AmyrAhmady/samp-node)
 - [samp-node-lib](https://github.com/peterszombati/samp-node-lib)
 - [@sa-mp/node](https://github.com/samp-dev/node)
