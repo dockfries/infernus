@@ -4,6 +4,8 @@ import {
   OnIncomingConnection,
 } from "@/wrapper/callbacks";
 import {
+  AddPlayerClass,
+  AddPlayerClassEx,
   AllowAdminTeleport,
   AllowInteriorWeapons,
   DisableInteriorEnterExits,
@@ -119,4 +121,6 @@ export abstract class BaseGameMode extends AbstractGM {
   }
   public static setTeamCount = SetTeamCount;
   public static sendRconCommand = SendRconCommand;
+  public static addPlayerClass = AddPlayerClass;
+  public static addPlayerClassEx = AddPlayerClassEx;
 }
