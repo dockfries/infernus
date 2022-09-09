@@ -2624,8 +2624,8 @@ export const InterpolateCameraLookAt = (
   );
 };
 
-export const IsPlayerConnected = (playerid: number): number => {
-  return samp.callNative("IsPlayerConnected", "i", playerid);
+export const IsPlayerConnected = (playerid: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerConnected", "i", playerid));
 };
 
 export const IsPlayerInVehicle = (

@@ -87,6 +87,9 @@ import {
   PlayCrimeReportForPlayer,
   InterpolateCameraPos,
   InterpolateCameraLookAt,
+  CreateExplosionForPlayer,
+  GetMaxPlayers,
+  IsPlayerConnected,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -147,8 +150,8 @@ export abstract class BasePlayer {
     return this._isNpc;
   }
 
-  // should be called at one second intervals
   // first call will return 0;
+  // should be called at one second intervals, implemented internally by throttling
   public getFps(): number {
     const nowDrunkLevel = this.getDrunkLevel();
     if (nowDrunkLevel < 100) {
@@ -505,6 +508,9 @@ export abstract class BasePlayer {
   public static getPoolSize(): number {
     return GetPlayerPoolSize();
   }
+  public static getMaxPlayers(): number {
+    return GetMaxPlayers();
+  }
   public playCrimeReport<P extends BasePlayer>(
     suspect: P,
     crimeId: number
@@ -558,5 +564,23 @@ export abstract class BasePlayer {
       time,
       cut
     );
+  }
+  public createExplosion(
+    X: number,
+    Y: number,
+    Z: number,
+    type: number,
+    Radius: number
+  ): number {
+    if (type < 0 || type > 13) {
+      logger.error(
+        "[BasePlayer]: The valid explosion type value is only 0 to 13"
+      );
+      return 0;
+    }
+    return CreateExplosionForPlayer(this.id, X, Y, Z, type, Radius);
+  }
+  public static isConnected<P extends BasePlayer>(player: P) {
+    return IsPlayerConnected(player.id);
   }
 }

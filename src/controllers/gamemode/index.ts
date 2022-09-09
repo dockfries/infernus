@@ -8,6 +8,7 @@ import {
   AddPlayerClassEx,
   AllowAdminTeleport,
   AllowInteriorWeapons,
+  CreateExplosion,
   DisableInteriorEnterExits,
   DisableNameTagLOS,
   EnableStuntBonusForAll,
@@ -18,6 +19,7 @@ import {
   LimitGlobalChatRadius,
   LimitPlayerMarkerRadius,
   SendRconCommand,
+  SetDeathDropAmount,
   SetGameModeText,
   SetGravity,
   SetNameTagDrawDistance,
@@ -61,16 +63,14 @@ export abstract class BaseGameMode extends AbstractGM {
     OnGameModeInit((): void => {
       if (this.initialized)
         return logger.error(
-          new Error("[BaseGameMode]: Cannot be initialized more than once")
+          "[BaseGameMode]: Cannot be initialized more than once"
         );
       this.initialized = true;
       this.onInit();
     });
     OnGameModeExit((): void => {
       if (!this.initialized)
-        return logger.error(
-          new Error("[BaseGameMode]: Cannot unload more than once")
-        );
+        return logger.error("[BaseGameMode]: Cannot unload more than once");
       this.initialized = false;
       this.onExit();
     });
@@ -107,14 +107,14 @@ export abstract class BaseGameMode extends AbstractGM {
   public static setNameTagDrawDistance = SetNameTagDrawDistance;
   public static setWeather(weather: number): number {
     if (weather < 0 || weather > 255) {
-      logger.warn("[BaseGameMode]: The valid weather value is only 0 to 255");
+      logger.error("[BaseGameMode]: The valid weather value is only 0 to 255");
       return 0;
     }
     return SetWeather(weather);
   }
   public static setWorldTime(hour: number): number {
     if (hour < 0 || hour > 23) {
-      logger.warn("[BaseGameMode]: The valid hour value is only 0 to 23");
+      logger.error("[BaseGameMode]: The valid hour value is only 0 to 23");
       return 0;
     }
     return SetWorldTime(hour);
@@ -123,4 +123,20 @@ export abstract class BaseGameMode extends AbstractGM {
   public static sendRconCommand = SendRconCommand;
   public static addPlayerClass = AddPlayerClass;
   public static addPlayerClassEx = AddPlayerClassEx;
+  public static createExplosion(
+    X: number,
+    Y: number,
+    Z: number,
+    type: number,
+    Radius: number
+  ): number {
+    if (type < 0 || type > 13) {
+      logger.error(
+        "[BaseGameMode]: The valid explosion type value is only 0 to 13"
+      );
+      return 0;
+    }
+    return CreateExplosion(X, Y, Z, type, Radius);
+  }
+  public static setDeathDropAmount = SetDeathDropAmount;
 }
