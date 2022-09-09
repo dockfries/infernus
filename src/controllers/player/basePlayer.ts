@@ -90,6 +90,7 @@ import {
   CreateExplosionForPlayer,
   GetMaxPlayers,
   IsPlayerConnected,
+  DisableRemoteVehicleCollisions,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -574,5 +575,8 @@ export abstract class BasePlayer {
   }
   public static isConnected<P extends BasePlayer>(player: P) {
     return IsPlayerConnected(player.id);
+  }
+  public disableRemoteVehicleCollisions(disable: boolean) {
+    return DisableRemoteVehicleCollisions(this.id, disable);
   }
 }

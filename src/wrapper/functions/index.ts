@@ -2333,7 +2333,7 @@ export const SetPlayerSpecialAction = (
 
 export const DisableRemoteVehicleCollisions = (
   playerid: number,
-  disable: number
+  disable: boolean
 ): number => {
   return samp.callNative(
     "DisableRemoteVehicleCollisions",
@@ -2631,8 +2631,10 @@ export const IsPlayerConnected = (playerid: number): boolean => {
 export const IsPlayerInVehicle = (
   playerid: number,
   vehicleid: number
-): number => {
-  return samp.callNative("IsPlayerInVehicle", "ii", playerid, vehicleid);
+): boolean => {
+  return Boolean(
+    samp.callNative("IsPlayerInVehicle", "ii", playerid, vehicleid)
+  );
 };
 
 export const IsPlayerInAnyVehicle = (playerid: number): boolean => {
@@ -2809,7 +2811,7 @@ export const IsVehicleStreamedIn = (
 };
 
 export const GetVehiclePos = (vehicleid: number) => {
-  const values = samp.callNative("GetVehiclePos", "iFFF", vehicleid);
+  const values: number[] = samp.callNative("GetVehiclePos", "iFFF", vehicleid);
   if (values.length < 3) {
     throw new Error("VehicleID " + vehicleid + " not found");
   }
@@ -3096,7 +3098,7 @@ export const RepairVehicle = (vehicleid: number): number => {
   return samp.callNative("RepairVehicle", "i", vehicleid);
 };
 
-export const GetVehicleVelocity = (vehicleid: number): Array<any> => {
+export const GetVehicleVelocity = (vehicleid: number): Array<number> => {
   return samp.callNative("GetVehicleVelocity", "iFFF", vehicleid);
 };
 
