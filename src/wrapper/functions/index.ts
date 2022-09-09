@@ -1830,7 +1830,7 @@ export const PlayAudioStreamForPlayer = (
   posY: number,
   posZ: number,
   distance: number,
-  usepos: number
+  usepos: boolean
 ): number => {
   return samp.callNative(
     "PlayAudioStreamForPlayer",

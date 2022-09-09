@@ -80,6 +80,11 @@ import {
   GetPlayerCameraTargetPlayer,
   GetPlayerCameraTargetVehicle,
   GetPlayerCameraZoom,
+  StopAudioStreamForPlayer,
+  PlayAudioStreamForPlayer,
+  PlayerPlaySound,
+  GetPlayerPoolSize,
+  PlayCrimeReportForPlayer,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -462,5 +467,47 @@ export abstract class BasePlayer {
   }
   public getCameraZoom(): number {
     return GetPlayerCameraZoom(this.id);
+  }
+  public playAudioStream(
+    url: string,
+    posX = 0.0,
+    posY = 0.0,
+    posZ = 0.0,
+    distance = 5.0
+  ): number {
+    let usepos = false;
+    if (posX !== 0.0 || posY !== 0.0 || posZ !== 0.0) {
+      usepos = true;
+    }
+    return PlayAudioStreamForPlayer(
+      this.id,
+      url,
+      posX,
+      posY,
+      posZ,
+      distance,
+      usepos
+    );
+  }
+  public stopAudioStream(): void {
+    StopAudioStreamForPlayer(this.id);
+  }
+  public playSound(
+    soundid: number,
+    relativeX = 0.0,
+    relativeY = 0.0,
+    relativeZ = 0.0
+  ): number {
+    return PlayerPlaySound(this.id, soundid, relativeX, relativeY, relativeZ);
+  }
+  public static getPoolSize(): number {
+    return GetPlayerPoolSize();
+  }
+  public playCrimeReport<P extends BasePlayer>(suspect: P, crimeId: number) {
+    if (crimeId < 3 || crimeId > 22) {
+      logger.warn("[BasePlayer]: Available crime ids range from 3 to 22");
+      return 0;
+    }
+    return PlayCrimeReportForPlayer(this.id, suspect.id, crimeId);
   }
 }
