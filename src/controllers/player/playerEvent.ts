@@ -29,6 +29,7 @@ import {
   PlayerStateEnum,
   // WeaponEnum,
 } from "@/enums";
+import { throttle } from "lodash";
 
 // Each instance can be called to callbacks, so you can split the logic.
 
@@ -288,6 +289,7 @@ export abstract class BasePlayerEvent<
     OnPlayerUpdate((playerid: number): void => {
       const p = this.findPlayerById(playerid);
       if (!p) return;
+      this.fpsHeartbeat(p);
       this.onUpdate(p);
     });
 
@@ -305,6 +307,7 @@ export abstract class BasePlayerEvent<
   public findPlayerById(playerid: number) {
     return this.players.find((p) => p.id === playerid);
   }
+  private fpsHeartbeat = throttle((player: P) => player.getFps(), 1000);
 }
 
 // make good use of the selected vscode bulb tips
