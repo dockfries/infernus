@@ -2581,7 +2581,7 @@ export const InterpolateCameraPos = (
   ToY: number,
   ToZ: number,
   time: number,
-  cut: number
+  cut: CameraCutStylesEnum
 ): number => {
   return samp.callNative(
     "InterpolateCameraPos",
@@ -2607,7 +2607,7 @@ export const InterpolateCameraLookAt = (
   ToY: number,
   ToZ: number,
   time: number,
-  cut: number
+  cut: CameraCutStylesEnum
 ): number => {
   return samp.callNative(
     "InterpolateCameraLookAt",

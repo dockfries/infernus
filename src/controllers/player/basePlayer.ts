@@ -85,6 +85,8 @@ import {
   PlayerPlaySound,
   GetPlayerPoolSize,
   PlayCrimeReportForPlayer,
+  InterpolateCameraPos,
+  InterpolateCameraLookAt,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -503,11 +505,58 @@ export abstract class BasePlayer {
   public static getPoolSize(): number {
     return GetPlayerPoolSize();
   }
-  public playCrimeReport<P extends BasePlayer>(suspect: P, crimeId: number) {
+  public playCrimeReport<P extends BasePlayer>(
+    suspect: P,
+    crimeId: number
+  ): number {
     if (crimeId < 3 || crimeId > 22) {
       logger.warn("[BasePlayer]: Available crime ids range from 3 to 22");
       return 0;
     }
     return PlayCrimeReportForPlayer(this.id, suspect.id, crimeId);
+  }
+  public interpolateCameraPos(
+    FromX: number,
+    FromY: number,
+    FromZ: number,
+    ToX: number,
+    ToY: number,
+    ToZ: number,
+    time: number,
+    cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT
+  ): void {
+    InterpolateCameraPos(
+      this.id,
+      FromX,
+      FromY,
+      FromZ,
+      ToX,
+      ToY,
+      ToZ,
+      time,
+      cut
+    );
+  }
+  public interpolateCameraLookAt(
+    FromX: number,
+    FromY: number,
+    FromZ: number,
+    ToX: number,
+    ToY: number,
+    ToZ: number,
+    time: number,
+    cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT
+  ): void {
+    InterpolateCameraLookAt(
+      this.id,
+      FromX,
+      FromY,
+      FromZ,
+      ToX,
+      ToY,
+      ToZ,
+      time,
+      cut
+    );
   }
 }
