@@ -115,9 +115,10 @@ export abstract class BasePlayer {
     locale: "",
     charset: BaseGameMode.charset,
   };
-  private lastDrunkLevel = 0;
-  private lastFps = 0;
+  public lastDrunkLevel = 0;
+  public lastFps = 0;
   private _isNpc: boolean;
+  public isPaused = false;
 
   get charset() {
     return this.settings.charset;
@@ -153,15 +154,6 @@ export abstract class BasePlayer {
   // first call will return 0;
   // should be called at one second intervals, implemented internally by throttling
   public getFps(): number {
-    const nowDrunkLevel = this.getDrunkLevel();
-    if (nowDrunkLevel < 100) {
-      this.setDrunkLevel(2000);
-      this.lastDrunkLevel = 2000;
-      return 0;
-    }
-    if (this.lastDrunkLevel === nowDrunkLevel) return this.lastFps;
-    this.lastFps = this.lastDrunkLevel - nowDrunkLevel - 1;
-    this.lastDrunkLevel = nowDrunkLevel;
     return this.lastFps;
   }
   public getDrunkLevel(): number {

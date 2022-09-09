@@ -106,6 +106,8 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
     newinteriorid: number,
     oldinteriorid: number
   ): void;
+  protected abstract onPause(player: P): void;
+  protected abstract onResume(player: P): void;
 }
 
 export abstract class BasePlayerEvent<
@@ -307,20 +309,24 @@ export abstract class BasePlayerEvent<
   public findPlayerById(playerid: number) {
     return this.players.find((p) => p.id === playerid);
   }
-  private fpsHeartbeat = throttle((player: P) => player.getFps(), 1000);
+  private fpsHeartbeat = throttle((player: P) => {
+    const nowDrunkLevel = player.getDrunkLevel();
+    if (nowDrunkLevel < 100) {
+      player.setDrunkLevel(2000);
+      player.lastDrunkLevel = 2000;
+      player.lastFps = 0;
+      return;
+    }
+    if (!player.isPaused && player.lastDrunkLevel === nowDrunkLevel) {
+      player.isPaused = true;
+      this.onPause(player);
+      return;
+    }
+    if (player.isPaused) {
+      player.isPaused = false;
+      this.onResume(player);
+    }
+    player.lastFps = player.lastDrunkLevel - nowDrunkLevel - 1;
+    player.lastDrunkLevel = nowDrunkLevel;
+  }, 1000);
 }
-
-// make good use of the selected vscode bulb tips
-// class MyPlayerEvent extends BasePlayerEvent<BasePlayer> {
-//   constructor() {
-//     super();
-//   }
-//   protected newPlayer(playerid: number): BasePlayer {
-//     return new BasePlayer(playerid);
-//   }
-//   protected onConnect(player: BasePlayer): void {}
-//   protected onDisconnect(player: BasePlayer, reason: number): void {}
-//   protected onText(player: BasePlayer, text: string): void {}
-//   protected onCommandError(player: BasePlayer, err: ICmdErr): void {}
-//   // ...
-// }
