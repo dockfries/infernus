@@ -292,15 +292,13 @@ export abstract class BasePlayerEvent<
      * If there are 10 player event classes, that means there are 30,0000 calls per second, and with player lookups looped internally, there should be a considerable performance overhead.
      * By throttling down to 16.67 calls per second for a single player, performance should be optimized.
      */
-    OnPlayerUpdate(
-      throttle((playerid: number): void => {
-        /* Later, we will consider whether to optimize player lookup by map. */
-        const p = this.findPlayerById(playerid);
-        if (!p) return;
-        if (!p.isNpc()) this.fpsHeartbeat(p);
-        this.onUpdate(p);
-      }, 60)
-    );
+    OnPlayerUpdate((playerid: number): void => {
+      /* Later, we will consider whether to optimize player lookup by map. */
+      const p = this.findPlayerById(playerid);
+      if (!p) return;
+      if (!p.isNpc()) this.fpsHeartbeat(p);
+      this.throttleUpdate(p);
+    });
 
     OnPlayerInteriorChange(
       (playerid: number, newinteriorid: number, oldinteriorid: number) => {
@@ -316,6 +314,7 @@ export abstract class BasePlayerEvent<
   public findPlayerById(playerid: number) {
     return this.players.find((p) => p.id === playerid);
   }
+  private throttleUpdate = throttle((player: P) => this.onUpdate(player), 60);
   private fpsHeartbeat = throttle((player: P) => {
     if (!BasePlayer.isConnected(player)) return;
     const nowDrunkLevel = player.getDrunkLevel();
