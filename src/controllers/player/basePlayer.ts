@@ -91,6 +91,9 @@ import {
   GetMaxPlayers,
   IsPlayerConnected,
   DisableRemoteVehicleCollisions,
+  GetPlayerVehicleID,
+  GetPlayerVehicleSeat,
+  GetPlayerSurfingVehicleID,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -98,6 +101,7 @@ import {
   CameraCutStylesEnum,
   CameraModesEnum,
   FightingStylesEnum,
+  InvalidEnum,
   PlayerStateEnum,
   SpecialActionsEnum,
   SpectateModesEnum,
@@ -578,5 +582,20 @@ export abstract class BasePlayer {
   }
   public disableRemoteVehicleCollisions(disable: boolean) {
     return DisableRemoteVehicleCollisions(this.id, disable);
+  }
+  public getVehicle<V extends BaseVehicle>(vehicles: Array<V>): V | undefined {
+    if (!this.isInAnyVehicle()) return undefined;
+    const vehId: number = GetPlayerVehicleID(this.id);
+    return vehicles.find((v) => v.id === vehId);
+  }
+  public getVehicleSeat(): number {
+    return GetPlayerVehicleSeat(this.id);
+  }
+  public getSurfingVehicle<V extends BaseVehicle>(
+    vehicles: Array<V>
+  ): V | undefined {
+    const vehId = GetPlayerSurfingVehicleID(this.id);
+    if (vehId === InvalidEnum.VEHICLE_ID) return undefined;
+    return vehicles.find((v) => v.id === vehId);
   }
 }
