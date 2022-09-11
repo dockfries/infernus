@@ -14,28 +14,25 @@ import {
   OnVehicleStreamOut,
   OnTrailerUpdate,
 } from "@/wrapper/callbacks";
-import { BasePlayer, BasePlayerEvent } from "../player";
+import { BasePlayer } from "../player";
 import { BaseVehicle } from "./baseVehicle";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
 
 export abstract class BaseVehicleEvent<
   P extends BasePlayer,
-  E extends BasePlayerEvent<P>,
   V extends BaseVehicle
 > {
-  public readonly vehicles: Array<V> = [];
-  private playerEvent: E;
+  public readonly vehicles = new Map<number, V>();
+  private readonly players;
 
-  constructor(playerEvent: E) {
-    this.playerEvent = playerEvent;
+  constructor(playersMap: Map<number, P>) {
+    this.players = playersMap;
     // The class event is extended through the event bus
     vehicleBus.on(vehicleHooks.created, (veh: V) => {
-      this.vehicles.push(veh);
+      this.vehicles.set(veh.id, veh);
     });
     vehicleBus.on(vehicleHooks.destroyed, (veh: V) => {
-      const vIdx = this.vehicles.findIndex((v) => v === veh);
-      if (vIdx === -1) return;
-      this.vehicles.splice(vIdx, 1);
+      this.vehicles.delete(veh.id);
     });
     OnVehicleDamageStatusUpdate((vehicleid, playerid) => {
       const v = this.findVehicleById(vehicleid);
@@ -159,16 +156,15 @@ export abstract class BaseVehicleEvent<
   protected abstract onNpcExit(): void;
   protected abstract onTrailerUpdate(player: P, vehicle: V): void;
 
-  public findVehicleIdxById(vehicleid: number) {
-    return this.vehicles.findIndex((v) => v.id === vehicleid);
-  }
   public findVehicleById(vehicleid: number) {
-    return this.vehicles.find((v) => v.id === vehicleid);
+    return this.vehicles.get(vehicleid);
   }
-  private findPlayerIdxById(playerid: number) {
-    return this.playerEvent.findPlayerIdxById(playerid);
-  }
+
   private findPlayerById(playerid: number) {
-    return this.playerEvent.findPlayerById(playerid);
+    return this.players.get(playerid);
+  }
+
+  public getVehiclesArr(): Array<V> {
+    return [...this.vehicles.values()];
   }
 }

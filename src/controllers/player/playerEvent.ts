@@ -41,7 +41,7 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
 };
 
 abstract class AbstractPlayerEvent<P extends BasePlayer> {
-  public readonly players: Array<P> = [];
+  public readonly players = new Map<number, P>();
   protected abstract newPlayer(playerid: number): P;
   protected abstract onConnect(player: P): void;
   protected abstract onDisconnect(player: P, reason: number): void;
@@ -124,15 +124,15 @@ export abstract class BasePlayerEvent<
     super();
     OnPlayerConnect((playerid: number): void => {
       const p = this.newPlayer(playerid);
-      this.players.push(p);
+      this.players.set(playerid, p);
       this.onConnect(p);
     });
 
     OnPlayerDisconnect((playerid: number, reason: number): void => {
-      const pIdx = this.findPlayerIdxById(playerid);
-      if (pIdx === -1) return;
-      this.onDisconnect(this.players[pIdx], reason);
-      this.players.splice(pIdx, 1);
+      const p = this.findPlayerById(playerid);
+      if (!p) return;
+      this.onDisconnect(p, reason);
+      this.players.delete(playerid);
     });
 
     OnPlayerText((playerid: number, byteArr: number[]) => {
@@ -195,7 +195,7 @@ export abstract class BasePlayerEvent<
       (playerid: number, clickedplayerid: number, source: number): void => {
         const p = this.findPlayerById(playerid);
         if (!p) return;
-        const cp = this.players.find((p) => p.id === clickedplayerid);
+        const cp = this.findPlayerById(clickedplayerid);
         if (!cp) return;
         this.onClickPlayer(p, cp, source);
       }
@@ -209,7 +209,7 @@ export abstract class BasePlayerEvent<
           this.onDeath(p, killerid, reason);
           return;
         }
-        const k = this.players.find((p) => p.id === killerid);
+        const k = this.findPlayerById(killerid);
         if (!k) return;
         this.onDeath(p, k, reason);
       }
@@ -262,7 +262,7 @@ export abstract class BasePlayerEvent<
     OnPlayerStreamIn((playerid: number, forplayerid: number): void => {
       const p = this.findPlayerById(playerid);
       if (!p) return;
-      const fp = this.players.find((p) => p.id === forplayerid);
+      const fp = this.findPlayerById(forplayerid);
       if (!fp) return;
       this.onStreamIn(p, fp);
     });
@@ -270,7 +270,7 @@ export abstract class BasePlayerEvent<
     OnPlayerStreamOut((playerid: number, forplayerid: number): void => {
       const p = this.findPlayerById(playerid);
       if (!p) return;
-      const fp = this.players.find((p) => p.id === forplayerid);
+      const fp = this.findPlayerById(forplayerid);
       if (!fp) return;
       this.onStreamOut(p, fp);
     });
@@ -296,11 +296,12 @@ export abstract class BasePlayerEvent<
     // );
 
     /** 30 calls per second for a single player means a peak of 30,000 calls for 1000 players.
-     * If there are 10 player event classes, that means there are 30,0000 calls per second, and with player lookups looped internally, there should be a considerable performance overhead.
+     * If there are 10 player event classes, that means there are 30,0000 calls per second,
+     * and with player lookups looped internally, there should be a considerable performance overhead.
+     *
      * By throttling down to 16.67 calls per second for a single player, performance should be optimized.
      */
     OnPlayerUpdate((playerid: number): void => {
-      /* Later, we will consider whether to optimize player lookup by map. */
       const p = this.findPlayerById(playerid);
       if (!p) return;
       if (!p.isNpc()) this.fpsHeartbeat(p);
@@ -327,11 +328,11 @@ export abstract class BasePlayerEvent<
       this.onFinishedDownloading(p, virtualworld);
     });
   }
-  public findPlayerIdxById(playerid: number) {
-    return this.players.findIndex((p) => p.id === playerid);
-  }
   public findPlayerById(playerid: number) {
-    return this.players.find((p) => p.id === playerid);
+    return this.players.get(playerid);
+  }
+  public getPlayersArr(): Array<P> {
+    return [...this.players.values()];
   }
   private throttleUpdate = throttle((player: P) => this.onUpdate(player), 60);
   private fpsHeartbeat = throttle((player: P) => {
