@@ -96,6 +96,8 @@ import {
   GetPlayerSurfingVehicleID,
   ApplyAnimation,
   ClearAnimations,
+  GetPlayerAnimationIndex,
+  GetAnimationName,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -602,31 +604,38 @@ export abstract class BasePlayer {
     return vehicles.find((v) => v.id === vehId);
   }
   public applyAnimation(
-    animlib: string,
-    animname: string,
+    animLib: string,
+    animName: string,
     loop = false,
-    lockx = true,
-    locky = true,
+    lockX = true,
+    lockY = true,
     freeze = false,
-    forcesync = false
+    forceSync = false
   ): void {
-    const duration = getAnimateDurationByLibName(animlib, animname);
+    const duration = getAnimateDurationByLibName(animLib, animName);
     if (duration === undefined)
       return logger.error("[BasePlayer]: Invalid anim library or name");
     ApplyAnimation(
       this.id,
-      animlib,
-      animname,
+      animLib,
+      animName,
       4.1,
       loop,
-      lockx,
-      locky,
+      lockX,
+      lockY,
       freeze,
       loop ? 0 : duration,
-      forcesync
+      forceSync
     );
   }
-  public clearAnimations(forcesync = false) {
-    ClearAnimations(this.id, forcesync);
+  public clearAnimations(forceSync = false): void {
+    ClearAnimations(this.id, forceSync);
+  }
+  public getAnimationIndex(): number {
+    return GetPlayerAnimationIndex(this.id);
+  }
+  public getAnimationName() {
+    const [animLib, animName] = GetAnimationName(this.getAnimationIndex());
+    return { animLib, animName };
   }
 }

@@ -944,7 +944,7 @@ export const SetActorPos = (
   return samp.callNative("SetActorPos", "ifff", actorid, X, Y, Z);
 };
 
-export const GetActorPos = (actorid: number): Array<any> => {
+export const GetActorPos = (actorid: number): Array<number> => {
   return samp.callNative("GetActorPos", "iFFF", actorid);
 };
 
@@ -1096,7 +1096,7 @@ export const SetObjectPos = (
   return samp.callNative("SetObjectPos", "ifff", objectid, X, Y, Z);
 };
 
-export const GetObjectPos = (objectid: number): Array<any> => {
+export const GetObjectPos = (objectid: number): Array<number> => {
   return samp.callNative("GetObjectPos", "iFFF", objectid);
 };
 
@@ -1253,7 +1253,7 @@ export const SetPlayerObjectPos = (
 export const GetPlayerObjectPos = (
   playerid: number,
   objectid: number
-): Array<any> => {
+): Array<number> => {
   return samp.callNative("GetPlayerObjectPos", "iiFFF", playerid, objectid);
 };
 
@@ -1278,7 +1278,7 @@ export const SetPlayerObjectRot = (
 export const GetPlayerObjectRot = (
   playerid: number,
   objectid: number
-): Array<any> => {
+): Array<number> => {
   return samp.callNative("GetPlayerObjectRot", "iiFFF", playerid, objectid);
 };
 
@@ -2310,12 +2310,17 @@ export const GetPlayerAnimationIndex = (playerid: number): number => {
   return samp.callNative("GetPlayerAnimationIndex", "i", playerid);
 };
 
-export const GetAnimationName = (
-  index: number,
-  len1: number,
-  len2: number
-): Array<any> => {
-  return samp.callNative("GetAnimationName", "iSiSi", index, len1, len2);
+export const GetAnimationName = (index: number): Array<string> => {
+  const [libBuf, nameBuf]: Array<Array<number>> = samp.callNative(
+    "GetAnimationName",
+    "iAiAi",
+    index,
+    32,
+    32
+  );
+  const lib = I18n.decodeFromBuf(libBuf, BaseGameMode.charset);
+  const name = I18n.decodeFromBuf(nameBuf, BaseGameMode.charset);
+  return [lib, name];
 };
 
 export const GetPlayerSpecialAction = (
@@ -2835,7 +2840,7 @@ export const GetVehicleZAngle = (vehicleid: number): number => {
   return samp.callNative("GetVehicleZAngle", "iF", vehicleid);
 };
 
-export const GetVehicleRotationQuat = (vehicleid: number): Array<any> => {
+export const GetVehicleRotationQuat = (vehicleid: number): Array<number> => {
   return samp.callNative("GetVehicleRotationQuat", "iFFFF", vehicleid);
 };
 
