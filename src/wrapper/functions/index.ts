@@ -2276,12 +2276,12 @@ export const ApplyAnimation = (
   animlib: string,
   animname: string,
   fDelta: number,
-  loop: number,
-  lockx: number,
-  locky: number,
-  freeze: number,
+  loop: boolean,
+  lockx: boolean,
+  locky: boolean,
+  freeze: boolean,
   time: number,
-  forcesync: number
+  forcesync: boolean
 ): number => {
   return samp.callNative(
     "ApplyAnimation",
@@ -2301,7 +2301,7 @@ export const ApplyAnimation = (
 
 export const ClearAnimations = (
   playerid: number,
-  forcesync: number
+  forcesync: boolean
 ): number => {
   return samp.callNative("ClearAnimations", "ii", playerid, forcesync);
 };

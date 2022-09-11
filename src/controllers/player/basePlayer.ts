@@ -94,6 +94,8 @@ import {
   GetPlayerVehicleID,
   GetPlayerVehicleSeat,
   GetPlayerSurfingVehicleID,
+  ApplyAnimation,
+  ClearAnimations,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -110,6 +112,7 @@ import {
 import { BaseVehicle } from "../vehicle";
 import { basePos } from "@/types";
 import { GetPlayerWeather } from "omp-wrapper";
+import { getAnimateDurationByLibName } from "@/utils/animateUtils";
 
 export abstract class BasePlayer {
   private _id: number;
@@ -597,5 +600,33 @@ export abstract class BasePlayer {
     const vehId = GetPlayerSurfingVehicleID(this.id);
     if (vehId === InvalidEnum.VEHICLE_ID) return undefined;
     return vehicles.find((v) => v.id === vehId);
+  }
+  public applyAnimation(
+    animlib: string,
+    animname: string,
+    loop = false,
+    lockx = true,
+    locky = true,
+    freeze = false,
+    forcesync = false
+  ): void {
+    const duration = getAnimateDurationByLibName(animlib, animname);
+    if (duration === undefined)
+      return logger.error("[BasePlayer]: Invalid anim library or name");
+    ApplyAnimation(
+      this.id,
+      animlib,
+      animname,
+      4.1,
+      loop,
+      lockx,
+      locky,
+      freeze,
+      loop ? 0 : duration,
+      forcesync
+    );
+  }
+  public clearAnimations(forcesync = false) {
+    ClearAnimations(this.id, forcesync);
   }
 }
