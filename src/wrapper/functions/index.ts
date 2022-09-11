@@ -202,8 +202,8 @@ export const AddStaticVehicle = (
   spawn_y: number,
   spawn_z: number,
   z_angle: number,
-  color1: number,
-  color2: number
+  color1: string,
+  color2: string
 ): number => {
   return samp.callNative(
     "AddStaticVehicle",
@@ -224,8 +224,8 @@ export const AddStaticVehicleEx = (
   spawn_y: number,
   spawn_z: number,
   z_angle: number,
-  color1: number,
-  color2: number,
+  color1: string,
+  color2: string,
   respawn_delay: number,
   addsiren: number
 ): number => {

@@ -49,16 +49,18 @@ import {
   AttachTrailerToVehicle,
   GetVehicleTrailer,
   IsValidVehicle,
+  AddStaticVehicleEx,
+  AddStaticVehicle,
 } from "@/wrapper/functions";
 import { BasePlayer } from "../player";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
 
 export interface IVehicle {
-  vehicletype: number;
+  modelid: number;
   x: number;
   y: number;
   z: number;
-  rotation: number;
+  z_angle: number;
   color1: string;
   color2: string;
   respawn_delay?: number;
@@ -68,12 +70,14 @@ export interface IVehicle {
 export abstract class BaseVehicle {
   private static createdCount = 0;
   private _id = -1;
-  private info: IVehicle;
+  private readonly sourceInfo: IVehicle;
+  private readonly isStatic: boolean;
   public get id(): number {
     return this._id;
   }
-  constructor(veh: IVehicle) {
-    this.info = veh;
+  constructor(veh: IVehicle, isStatic = false) {
+    this.sourceInfo = veh;
+    this.isStatic = isStatic;
   }
   public create(): void {
     if (this.id !== -1)
@@ -83,27 +87,45 @@ export abstract class BaseVehicle {
         "[BaseVehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached"
       );
     const {
-      vehicletype,
+      modelid,
       x,
       y,
       z,
-      rotation,
+      z_angle,
       color1,
       color2,
       respawn_delay,
       addsiren,
-    } = this.info;
-    this._id = CreateVehicle(
-      vehicletype,
-      x,
-      y,
-      z,
-      rotation,
-      color1,
-      color2,
-      respawn_delay || -1,
-      addsiren || 0
-    );
+    } = this.sourceInfo;
+    if (this.isStatic) {
+      if (respawn_delay === undefined) {
+        this._id = AddStaticVehicle(modelid, x, y, z, z_angle, color1, color2);
+        return;
+      }
+      this._id = AddStaticVehicleEx(
+        modelid,
+        x,
+        y,
+        z,
+        z_angle,
+        color1,
+        color2,
+        respawn_delay || -1,
+        addsiren || 0
+      );
+    } else {
+      this._id = CreateVehicle(
+        modelid,
+        x,
+        y,
+        z,
+        z_angle,
+        color1,
+        color2,
+        respawn_delay || -1,
+        addsiren || 0
+      );
+    }
     BaseVehicle.createdCount++;
     vehicleBus.emit(vehicleHooks.created, this);
   }
@@ -119,7 +141,7 @@ export abstract class BaseVehicle {
   }
   public addComponent(componentid: number): number {
     if (this.id === -1) return 0;
-    if (!isValidVehComponent(this.info.vehicletype, componentid)) {
+    if (!isValidVehComponent(this.getModel(), componentid)) {
       logger.warn(
         `[BaseVehicle]: Invalid component id ${componentid} attempted to attach to the vehicle ${this}`
       );
@@ -213,8 +235,6 @@ export abstract class BaseVehicle {
   }
   public changeColor(color1: string, color2: string): number {
     if (this.id === -1) return 0;
-    this.info.color1 = color1;
-    this.info.color2 = color2;
     return ChangeVehicleColor(this.id, color1, color2);
   }
   public setVelocity(X: number, Y: number, Z: number): number {
