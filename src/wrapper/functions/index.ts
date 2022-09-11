@@ -2784,8 +2784,8 @@ export const CreateVehicle = (
   y: number,
   z: number,
   rotation: number,
-  color1: number,
-  color2: number,
+  color1: string,
+  color2: string,
   respawn_delay: number,
   addsiren: number
 ): number => {
@@ -2797,8 +2797,8 @@ export const CreateVehicle = (
     y,
     z,
     rotation,
-    color1,
-    color2,
+    rgba(color1),
+    rgba(color2),
     respawn_delay,
     addsiren
   );
@@ -3029,15 +3029,15 @@ export const RemoveVehicleComponent = (
 
 export const ChangeVehicleColor = (
   vehicleid: number,
-  color1: number,
-  color2: number
+  color1: string,
+  color2: string
 ): number => {
   return samp.callNative(
     "ChangeVehicleColor",
     "iii",
     vehicleid,
-    color1,
-    color2
+    rgba(color1),
+    rgba(color2)
   );
 };
 
@@ -3220,4 +3220,8 @@ export const PauseRecordingPlayback = (): void => {
 
 export const ResumeRecordingPlayback = (): void => {
   return samp.callNative("ResumeRecordingPlayback", "");
+};
+
+export const GetPlayerCustomSkin = (playerid: number): number => {
+  return samp.callNative("GetPlayerCustomSkin", "i", playerid);
 };

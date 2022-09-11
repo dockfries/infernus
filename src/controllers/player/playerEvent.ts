@@ -17,6 +17,8 @@ import {
   OnPlayerUpdate,
   OnEnterExitModShop,
   OnPlayerInteriorChange,
+  OnPlayerFinishedDownloading,
+  OnPlayerRequestDownload,
 } from "@/wrapper/callbacks";
 import { I18n } from "../i18n";
 import { BasePlayer } from "./basePlayer";
@@ -108,6 +110,11 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
   ): void;
   protected abstract onPause(player: P): void;
   protected abstract onResume(player: P): void;
+  protected abstract onRequestDownload(player: P, type: number, crc: any): void;
+  protected abstract onFinishedDownloading(
+    player: P,
+    virtualworld: number
+  ): void;
 }
 
 export abstract class BasePlayerEvent<
@@ -307,6 +314,18 @@ export abstract class BasePlayerEvent<
         this.onInteriorChange(p, newinteriorid, oldinteriorid);
       }
     );
+
+    OnPlayerRequestDownload((playerid: number, type: number, crc: any) => {
+      const p = this.findPlayerById(playerid);
+      if (!p) return;
+      this.onRequestDownload(p, type, crc);
+    });
+
+    OnPlayerFinishedDownloading((playerid: number, virtualworld: number) => {
+      const p = this.findPlayerById(playerid);
+      if (!p) return;
+      this.onFinishedDownloading(p, virtualworld);
+    });
   }
   public findPlayerIdxById(playerid: number) {
     return this.players.findIndex((p) => p.id === playerid);

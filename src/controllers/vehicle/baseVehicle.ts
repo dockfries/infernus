@@ -37,8 +37,8 @@ export interface IVehicle {
   y: number;
   z: number;
   rotation: number;
-  color1: number;
-  color2: number;
+  color1: string;
+  color2: string;
   respawn_delay?: number;
   addsiren?: number;
 }
@@ -189,7 +189,7 @@ export abstract class BaseVehicle {
   public static getPoolSize(): number {
     return GetVehiclePoolSize();
   }
-  public changeColor(color1: number, color2: number): number {
+  public changeColor(color1: string, color2: string): number {
     if (this.id === -1) return 0;
     this.info.color1 = color1;
     this.info.color2 = color2;
