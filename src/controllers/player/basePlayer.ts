@@ -98,6 +98,14 @@ import {
   ClearAnimations,
   GetPlayerAnimationIndex,
   GetAnimationName,
+  SetPlayerShopName,
+  SetPlayerPosFindZ,
+  SetPlayerWorldBounds,
+  SetPlayerChatBubble,
+  GetPlayerDistanceFromPoint,
+  GetPlayerCustomSkin,
+  GetPlayerTargetPlayer,
+  GetPlayerLastShotVectors,
 } from "@/wrapper/functions";
 import logger from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -637,5 +645,48 @@ export abstract class BasePlayer {
   public getAnimationName() {
     const [animLib, animName] = GetAnimationName(this.getAnimationIndex());
     return { animLib, animName };
+  }
+  public setShopName(shopName: string): void {
+    SetPlayerShopName(this.id, shopName);
+  }
+  public setPosFindZ(x: number, y: number, z = 150): Promise<number> {
+    return new Promise<number>((resolve) => {
+      SetPlayerPos(this.id, x, y, z);
+      setTimeout(() => resolve(SetPlayerPosFindZ(this.id, x, y, z)));
+    });
+  }
+  public setWorldBounds(
+    x_max: number,
+    x_min: number,
+    y_max: number,
+    y_min: number
+  ): void {
+    SetPlayerWorldBounds(this.id, x_max, x_min, y_max, y_min);
+  }
+  public setChatBubble(
+    text: string,
+    color: string,
+    drawDistance: number,
+    expireTime: number
+  ): void {
+    SetPlayerChatBubble(this.id, text, color, drawDistance, expireTime);
+  }
+  public getDistanceFromPoint(X: number, Y: number, Z: number): number {
+    return GetPlayerDistanceFromPoint(this.id, X, Y, Z);
+  }
+  public getCustomSkin(): number {
+    return GetPlayerCustomSkin(this.id);
+  }
+  public getTargetPlayer<P extends BasePlayer>(
+    players: Array<P>
+  ): undefined | P {
+    const pid = GetPlayerTargetPlayer(this.id);
+    if (pid === InvalidEnum.PLAYER_ID) return undefined;
+    return players.find((p) => p.id === pid);
+  }
+  public getLastShotVectors() {
+    const [fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ] =
+      GetPlayerLastShotVectors(this.id);
+    return { fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ };
   }
 }

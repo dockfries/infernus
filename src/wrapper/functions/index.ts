@@ -1892,7 +1892,7 @@ export const RemoveBuildingForPlayer = (
   );
 };
 
-export const GetPlayerLastShotVectors = (playerid: number): Array<any> => {
+export const GetPlayerLastShotVectors = (playerid: number): Array<number> => {
   return samp.callNative("GetPlayerLastShotVectors", "iFFFFFF", playerid);
 };
 
