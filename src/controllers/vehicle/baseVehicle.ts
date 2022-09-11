@@ -1,4 +1,4 @@
-import { CarModTypeEnum, LimitsEnum } from "@/enums";
+import { CarModTypeEnum, LimitsEnum, VehicleModelInfoEnum } from "@/enums";
 import logger from "@/logger";
 import { basePos } from "@/types";
 import { IsValidVehComponent } from "@/utils/vehicleUtils";
@@ -9,13 +9,24 @@ import {
   DestroyVehicle,
   GetVehicleComponentInSlot,
   GetVehicleComponentType,
+  GetVehicleDamageStatus,
+  GetVehicleDistanceFromPoint,
   GetVehicleHealth,
+  GetVehicleModel,
+  GetVehicleModelInfo,
+  GetVehicleParamsCarDoors,
+  GetVehicleParamsCarWindows,
+  GetVehicleParamsEx,
+  GetVehicleParamsSirenState,
   GetVehiclePoolSize,
   GetVehiclePos,
+  GetVehicleRotationQuat,
   GetVehicleVelocity,
   GetVehicleVirtualWorld,
   GetVehicleZAngle,
   IsPlayerInVehicle,
+  IsTrailerAttachedToVehicle,
+  IsVehicleStreamedIn,
   LinkVehicleToInterior,
   PutPlayerInVehicle,
   RemoveVehicleComponent,
@@ -23,10 +34,16 @@ import {
   SetVehicleAngularVelocity,
   SetVehicleHealth,
   SetVehicleNumberPlate,
+  SetVehicleParamsCarDoors,
+  SetVehicleParamsCarWindows,
+  SetVehicleParamsEx,
+  SetVehicleParamsForPlayer,
   SetVehiclePos,
+  SetVehicleToRespawn,
   SetVehicleVelocity,
   SetVehicleVirtualWorld,
   SetVehicleZAngle,
+  UpdateVehicleDamageStatus,
 } from "@/wrapper/functions";
 import { BasePlayer } from "../player";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
@@ -207,5 +224,132 @@ export abstract class BaseVehicle {
   public setAngularVelocity(X: number, Y: number, Z: number): number {
     if (this.id === -1) return 0;
     return SetVehicleAngularVelocity(this.id, X, Y, Z);
+  }
+  public getDamageStatus() {
+    if (this.id === -1) return;
+    return GetVehicleDamageStatus(this.id);
+  }
+  public updateDamageStatus(
+    panels: number,
+    doors: number,
+    lights: number,
+    tires: number
+  ): void {
+    if (this.id === -1) return;
+    UpdateVehicleDamageStatus(this.id, panels, doors, lights, tires);
+  }
+  public getDistanceFromPoint(X: number, Y: number, Z: number): number {
+    return GetVehicleDistanceFromPoint(this.id, X, Y, Z);
+  }
+  public getModel(): number {
+    return GetVehicleModel(this.id);
+  }
+  public static getModelInfo(
+    vehiclemodel: number,
+    infotype: VehicleModelInfoEnum
+  ): basePos {
+    return GetVehicleModelInfo(vehiclemodel, infotype);
+  }
+  public getModelInfo(infotype: VehicleModelInfoEnum): void | basePos {
+    if (this.id === -1) return;
+    return BaseVehicle.getModelInfo(this.getModel(), infotype);
+  }
+  public getRotationQuat() {
+    if (this.id === -1) return;
+    const [w, x, y, z] = GetVehicleRotationQuat(this.id);
+    return { w, x, y, z };
+  }
+  public setRespawn(): number {
+    if (this.id === -1) return 0;
+    return SetVehicleToRespawn(this.id);
+  }
+  public isStreamedIn<P extends BasePlayer>(forplayer: P): boolean {
+    if (this.id === -1) return false;
+    return IsVehicleStreamedIn(this.id, forplayer.id);
+  }
+  public setParamsCarDoors(
+    driver: boolean,
+    passenger: boolean,
+    backleft: boolean,
+    backright: boolean
+  ): number {
+    if (this.id === -1) return 0;
+    return SetVehicleParamsCarDoors(
+      this.id,
+      driver,
+      passenger,
+      backleft,
+      backright
+    );
+  }
+  public setParamsCarWindows(
+    driver: boolean,
+    passenger: boolean,
+    backleft: boolean,
+    backright: boolean
+  ) {
+    if (this.id === -1) return 0;
+    return SetVehicleParamsCarWindows(
+      this.id,
+      driver,
+      passenger,
+      backleft,
+      backright
+    );
+  }
+  public getParamsCarDoors() {
+    if (this.id === -1) return undefined;
+    return GetVehicleParamsCarDoors(this.id);
+  }
+  public getParamsCarWindows() {
+    if (this.id === -1) return undefined;
+    return GetVehicleParamsCarWindows(this.id);
+  }
+  public setParamsEx(
+    engine: boolean,
+    lights: boolean,
+    alarm: boolean,
+    doors: boolean,
+    bonnet: boolean,
+    boot: boolean,
+    objective: boolean
+  ): number {
+    if (this.id === -1) return 0;
+    return SetVehicleParamsEx(
+      this.id,
+      engine,
+      lights,
+      alarm,
+      doors,
+      bonnet,
+      boot,
+      objective
+    );
+  }
+  public getParamsEx() {
+    if (this.id === -1) return undefined;
+    const [engine, lights, alarm, doors, bonnet, boot, objective] =
+      GetVehicleParamsEx(this.id);
+    return { engine, lights, alarm, doors, bonnet, boot, objective };
+  }
+  public getParamsSirenState(): number {
+    if (this.id === -1) return -2;
+    return GetVehicleParamsSirenState(this.id);
+  }
+  public setParamsForPlayer<P extends BasePlayer>(
+    player: P,
+    objective: boolean,
+    doorslocked: boolean
+  ): number {
+    if (this.id === -1) return 0;
+    return SetVehicleParamsForPlayer(
+      this.id,
+      player.id,
+      objective,
+      doorslocked
+    );
+  }
+  public isTrailerAttached(): boolean {
+    return IsTrailerAttachedToVehicle(this.id);
   }
 }

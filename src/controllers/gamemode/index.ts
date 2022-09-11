@@ -18,6 +18,7 @@ import {
   GetGravity,
   LimitGlobalChatRadius,
   LimitPlayerMarkerRadius,
+  ManualVehicleEngineAndLights,
   SendRconCommand,
   SetDeathDropAmount,
   SetGameModeText,
@@ -139,4 +140,5 @@ export abstract class BaseGameMode extends AbstractGM {
     return CreateExplosion(X, Y, Z, type, Radius);
   }
   public static setDeathDropAmount = SetDeathDropAmount;
+  public static manualVehicleEngineAndLights = ManualVehicleEngineAndLights;
 }
