@@ -1,5 +1,6 @@
 import { IPlayerSettings } from "@/interfaces";
 import {
+  BanEx,
   GetPlayerName,
   SendClientMessage,
   SetPlayerName,

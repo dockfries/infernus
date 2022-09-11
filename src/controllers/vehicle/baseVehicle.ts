@@ -64,7 +64,7 @@ export interface IVehicle {
   color1: string;
   color2: string;
   respawn_delay?: number;
-  addsiren?: number;
+  addsiren?: boolean;
 }
 
 export abstract class BaseVehicle {
@@ -111,7 +111,7 @@ export abstract class BaseVehicle {
         color1,
         color2,
         respawn_delay || -1,
-        addsiren || 0
+        addsiren || false
       );
     } else {
       this._id = CreateVehicle(
@@ -123,7 +123,7 @@ export abstract class BaseVehicle {
         color1,
         color2,
         respawn_delay || -1,
-        addsiren || 0
+        addsiren || false
       );
     }
     BaseVehicle.createdCount++;

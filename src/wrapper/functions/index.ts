@@ -227,7 +227,7 @@ export const AddStaticVehicleEx = (
   color1: string,
   color2: string,
   respawn_delay: number,
-  addsiren: number
+  addsiren: boolean
 ): number => {
   return samp.callNative(
     "AddStaticVehicleEx",
@@ -568,7 +568,7 @@ export const TextDrawColor = (text: number, color: string): number => {
   return samp.callNative("TextDrawColor", "ii", text, rgba(color));
 };
 
-export const TextDrawUseBox = (text: number, use: number): number => {
+export const TextDrawUseBox = (text: number, use: boolean): number => {
   return samp.callNative("TextDrawUseBox", "ii", text, use);
 };
 
@@ -595,11 +595,11 @@ export const TextDrawFont = (text: number, font: number): number => {
   return samp.callNative("TextDrawFont", "ii", text, font);
 };
 
-export const TextDrawSetProportional = (text: number, set: number): number => {
+export const TextDrawSetProportional = (text: number, set: boolean): number => {
   return samp.callNative("TextDrawSetProportional", "ii", text, set);
 };
 
-export const TextDrawSetSelectable = (text: number, set: number): number => {
+export const TextDrawSetSelectable = (text: number, set: boolean): number => {
   return samp.callNative("TextDrawSetSelectable", "ii", text, set);
 };
 
@@ -750,7 +750,7 @@ export const Create3DTextLabel = (
   Z: number,
   DrawDistance: number,
   virtualworld: number,
-  testLOS: number
+  testLOS = false
 ): number => {
   return samp.callNative(
     "Create3DTextLabel",
@@ -824,7 +824,7 @@ export const CreatePlayer3DTextLabel = (
   DrawDistance: number,
   attachedplayer: number,
   attachedvehicle: number,
-  testLOS: number
+  testLOS: boolean
 ): number => {
   return samp.callNative(
     "CreatePlayer3DTextLabel",
@@ -886,8 +886,10 @@ export const DestroyActor = (actorid: number): number => {
 export const IsActorStreamedIn = (
   actorid: number,
   forplayerid: number
-): number => {
-  return samp.callNative("IsActorStreamedIn", "ii", actorid, forplayerid);
+): boolean => {
+  return Boolean(
+    samp.callNative("IsActorStreamedIn", "ii", actorid, forplayerid)
+  );
 };
 
 export const SetActorVirtualWorld = (
@@ -906,10 +908,10 @@ export const ApplyActorAnimation = (
   animlib: string,
   animname: string,
   fDelta: number,
-  loop: number,
-  lockx: number,
-  locky: number,
-  freeze: number,
+  loop: boolean,
+  lockx: boolean,
+  locky: boolean,
+  freeze: boolean,
   time: number
 ): number => {
   return samp.callNative(
@@ -962,17 +964,17 @@ export const GetActorHealth = (actorid: number): number => {
 
 export const SetActorInvulnerable = (
   actorid: number,
-  invulnerable: number
+  invulnerable: boolean
 ): number => {
   return samp.callNative("SetActorInvulnerable", "ii", actorid, invulnerable);
 };
 
-export const IsActorInvulnerable = (actorid: number): number => {
-  return samp.callNative("IsActorInvulnerable", "i", actorid);
+export const IsActorInvulnerable = (actorid: number): boolean => {
+  return Boolean(samp.callNative("IsActorInvulnerable", "i", actorid));
 };
 
-export const IsValidActor = (actorid: number): number => {
-  return samp.callNative("IsValidActor", "i", actorid);
+export const IsValidActor = (actorid: number): boolean => {
+  return Boolean(samp.callNative("IsValidActor", "i", actorid));
 };
 
 export const HTTP = (
@@ -1042,7 +1044,7 @@ export const AttachObjectToObject = (
   RotX: number,
   RotY: number,
   RotZ: number,
-  SyncRotation: number
+  SyncRotation = true
 ): number => {
   return samp.callNative(
     "AttachObjectToObject",
@@ -1117,8 +1119,8 @@ export const SetObjectNoCameraCol = (objectid: number): number => {
   return samp.callNative("SetObjectNoCameraCol", "i", objectid);
 };
 
-export const IsValidObject = (objectid: number): number => {
-  return samp.callNative("IsValidObject", "i", objectid);
+export const IsValidObject = (objectid: number): boolean => {
+  return Boolean(samp.callNative("IsValidObject", "i", objectid));
 };
 
 export const DestroyObject = (objectid: number): number => {
@@ -1153,8 +1155,8 @@ export const StopObject = (objectid: number): number => {
   return samp.callNative("StopObject", "i", objectid);
 };
 
-export const IsObjectMoving = (objectid: number): number => {
-  return samp.callNative("IsObjectMoving", "i", objectid);
+export const IsObjectMoving = (objectid: number): boolean => {
+  return Boolean(samp.callNative("IsObjectMoving", "i", objectid));
 };
 
 export const EditObject = (playerid: number, objectid: number): number => {
@@ -1300,8 +1302,10 @@ export const SetPlayerObjectNoCameraCol = (
 export const IsValidPlayerObject = (
   playerid: number,
   objectid: number
-): number => {
-  return samp.callNative("IsValidPlayerObject", "ii", playerid, objectid);
+): boolean => {
+  return Boolean(
+    samp.callNative("IsValidPlayerObject", "ii", playerid, objectid)
+  );
 };
 
 export const DestroyPlayerObject = (
@@ -1347,8 +1351,10 @@ export const StopPlayerObject = (
 export const IsPlayerObjectMoving = (
   playerid: number,
   objectid: number
-): number => {
-  return samp.callNative("IsPlayerObjectMoving", "ii", playerid, objectid);
+): boolean => {
+  return Boolean(
+    samp.callNative("IsPlayerObjectMoving", "ii", playerid, objectid)
+  );
 };
 
 export const AttachPlayerObjectToPlayer = (
@@ -1426,7 +1432,7 @@ export const SetObjectMaterialText = (
   materialsize: number,
   fontface: string,
   fontsize: number,
-  bold: number,
+  bold = true,
   fontcolor: string,
   backcolor: string,
   textalignment: number
@@ -1455,7 +1461,7 @@ export const SetPlayerObjectMaterialText = (
   materialsize: number,
   fontface: string,
   fontsize: number,
-  bold: number,
+  bold = true,
   fontcolor: string,
   backcolor: string,
   textalignment: number
@@ -1477,7 +1483,7 @@ export const SetPlayerObjectMaterialText = (
   );
 };
 
-export const SetObjectsDefaultCameraCol = (disable: number): number => {
+export const SetObjectsDefaultCameraCol = (disable: boolean): number => {
   return samp.callNative("SetObjectsDefaultCameraCol", "i", disable);
 };
 
@@ -1826,7 +1832,7 @@ export const PlayAudioStreamForPlayer = (
   posY: number,
   posZ: number,
   distance: number,
-  usepos: boolean
+  usepos = false
 ): number => {
   return samp.callNative(
     "PlayAudioStreamForPlayer",
@@ -2029,7 +2035,7 @@ export const PlayerTextDrawColor = (
 export const PlayerTextDrawUseBox = (
   playerid: number,
   text: number,
-  use: 0 | 1
+  use: boolean
 ): number => {
   return samp.callNative("PlayerTextDrawUseBox", "iii", playerid, text, use);
 };
@@ -2101,7 +2107,7 @@ export const PlayerTextDrawFont = (
 export const PlayerTextDrawSetProportional = (
   playerid: number,
   text: number,
-  set: number
+  set: boolean
 ): number => {
   return samp.callNative(
     "PlayerTextDrawSetProportional",
@@ -2115,7 +2121,7 @@ export const PlayerTextDrawSetProportional = (
 export const PlayerTextDrawSetSelectable = (
   playerid: number,
   text: number,
-  set: number
+  set: boolean
 ): number => {
   return samp.callNative(
     "PlayerTextDrawSetSelectable",
@@ -2642,12 +2648,12 @@ export const IsPlayerInAnyVehicle = (playerid: number): boolean => {
   return Boolean(samp.callNative("IsPlayerInAnyVehicle", "i", playerid));
 };
 
-export const IsPlayerInCheckpoint = (playerid: number): number => {
-  return samp.callNative("IsPlayerInCheckpoint", "i", playerid);
+export const IsPlayerInCheckpoint = (playerid: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerInCheckpoint", "i", playerid));
 };
 
-export const IsPlayerInRaceCheckpoint = (playerid: number): number => {
-  return samp.callNative("IsPlayerInRaceCheckpoint", "i", playerid);
+export const IsPlayerInRaceCheckpoint = (playerid: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerInRaceCheckpoint", "i", playerid));
 };
 
 export const SetPlayerVirtualWorld = (
@@ -2783,7 +2789,7 @@ export const CreateVehicle = (
   color1: string,
   color2: string,
   respawn_delay: number,
-  addsiren: number
+  addsiren: boolean
 ): number => {
   return samp.callNative(
     "CreateVehicle",
