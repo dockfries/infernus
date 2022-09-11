@@ -274,11 +274,11 @@ export const vehComponentArr: Array<number[] | null> = [
   [],
 ];
 
-export const IsValidVehComponent = (
+export const isValidVehComponent = (
   modelid: number,
   componentid: number
 ): boolean => {
-  if (!IsValidVehModelId(modelid)) {
+  if (!isValidVehModelId(modelid)) {
     logger.error("[vehicleUtils]: Invalid model id");
     return false;
   }
@@ -291,6 +291,31 @@ export const IsValidVehComponent = (
   );
 };
 
-export const IsValidVehModelId = (modelid: number): boolean => {
+export const isValidVehModelId = (modelid: number): boolean => {
   return modelid >= 400 && modelid <= 611;
+};
+
+export const isValidPaintJob = (
+  modelid: number,
+  paintjobid: number
+): boolean => {
+  if (paintjobid < 0 || paintjobid > 2) return false;
+  const validModels = new Map<number, number>([
+    [483, 0],
+    [534, 2],
+    [535, 2],
+    [536, 2],
+    [558, 2],
+    [559, 2],
+    [560, 2],
+    [561, 2],
+    [562, 2],
+    [565, 2],
+    [567, 2],
+    [575, 1],
+    [576, 2],
+  ]);
+  const highestPaintJoibId = validModels.get(modelid);
+  if (highestPaintJoibId === undefined) return false;
+  return paintjobid <= highestPaintJoibId;
 };

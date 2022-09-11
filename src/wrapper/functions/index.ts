@@ -3200,8 +3200,8 @@ export const GetVehicleVirtualWorld = (vehicleid: number): number => {
   return samp.callNative("GetVehicleVirtualWorld", "i", vehicleid);
 };
 
-export const IsValidVehicle = (vehicleid: number): number => {
-  return samp.callNative("IsValidVehicle", "i", vehicleid);
+export const IsValidVehicle = (vehicleid: number): boolean => {
+  return Boolean(samp.callNative("IsValidVehicle", "i", vehicleid));
 };
 
 export const StartRecordingPlayback = (

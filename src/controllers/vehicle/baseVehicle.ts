@@ -1,7 +1,7 @@
 import { CarModTypeEnum, LimitsEnum, VehicleModelInfoEnum } from "@/enums";
 import logger from "@/logger";
 import { basePos } from "@/types";
-import { IsValidVehComponent } from "@/utils/vehicleUtils";
+import { isValidPaintJob, isValidVehComponent } from "@/utils/vehicleUtils";
 import {
   AddVehicleComponent,
   ChangeVehicleColor,
@@ -44,6 +44,11 @@ import {
   SetVehicleVirtualWorld,
   SetVehicleZAngle,
   UpdateVehicleDamageStatus,
+  ChangeVehiclePaintjob,
+  DetachTrailerFromVehicle,
+  AttachTrailerToVehicle,
+  GetVehicleTrailer,
+  IsValidVehicle,
 } from "@/wrapper/functions";
 import { BasePlayer } from "../player";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
@@ -114,7 +119,7 @@ export abstract class BaseVehicle {
   }
   public addComponent(componentid: number): number {
     if (this.id === -1) return 0;
-    if (!IsValidVehComponent(this.info.vehicletype, componentid)) {
+    if (!isValidVehComponent(this.info.vehicletype, componentid)) {
       logger.warn(
         `[BaseVehicle]: Invalid component id ${componentid} attempted to attach to the vehicle ${this}`
       );
@@ -350,6 +355,29 @@ export abstract class BaseVehicle {
     );
   }
   public isTrailerAttached(): boolean {
+    if (this.id === -1) return false;
     return IsTrailerAttachedToVehicle(this.id);
+  }
+  public changePaintjob(paintjobid: 0 | 1 | 2): number {
+    if (this.id === -1) return 0;
+    if (!isValidPaintJob(this.getModel(), paintjobid)) return 0;
+    this.changeColor("#fff", "#fff");
+    ChangeVehiclePaintjob(this.id, paintjobid);
+    return 1;
+  }
+  public attachTrailer<V extends BaseVehicle>(trailer: V): number {
+    if (this.id === -1) return 0;
+    return AttachTrailerToVehicle(trailer.id, this.id);
+  }
+  public detachTrailer() {
+    if (this.id === -1) return;
+    if (this.isTrailerAttached()) DetachTrailerFromVehicle(this.id);
+  }
+  public getTrailer<V extends BaseVehicle>(vehicles: Array<V>): V | undefined {
+    if (this.id === -1) return;
+    return vehicles.find((v) => v.id === GetVehicleTrailer(this.id));
+  }
+  public static isValid(vehicleId: number) {
+    return IsValidVehicle(vehicleId);
   }
 }
