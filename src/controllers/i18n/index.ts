@@ -40,16 +40,20 @@ export class I18n {
   private static dotValue(whichLangJson: any, property: string): string {
     const keyArr: string[] = property.split(".");
     return keyArr.reduce((obj: any, key: string) => {
-      if (!Object.prototype.hasOwnProperty.call(obj, key))
-        return logger.fatal(new Error(`[i18n]: cannot find ${property}`));
+      if (!Object.prototype.hasOwnProperty.call(obj, key)) {
+        logger.fatal(`[i18n]: cannot find ${property}`);
+        process.exit();
+      }
       return obj[key];
     }, whichLangJson) as string;
   }
 
   // determine if the incoming character encoding type is valid
   public static isValidate(charset: string): void {
-    if (!encodingExists(charset))
-      return logger.fatal(new Error(`[i18n]: unknown charset ${charset}`));
+    if (!encodingExists(charset)) {
+      logger.fatal(`[i18n]: unknown charset ${charset}`);
+      process.exit();
+    }
   }
 
   // convert utf8 strings to different encoded byte stream arrays

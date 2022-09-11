@@ -155,3 +155,9 @@ export const SetPlayerName = <T extends BasePlayer>(
     I18n.encodeToBuf(name, player.charset)
   );
 };
+
+// not test ia
+// if crash may be iai and name.length
+export const BanEx = (playerid: number, reason: number[]): number => {
+  return samp.callNative("BanEx", "ia", playerid, reason);
+};

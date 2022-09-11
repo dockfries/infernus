@@ -32,7 +32,6 @@ import {
   ForceClassSelection,
   Kick,
   Ban,
-  BanEx,
   IsPlayerAdmin,
   IsPlayerInRangeOfPoint,
   IsPlayerStreamedIn,
@@ -123,6 +122,7 @@ import { BaseVehicle } from "../vehicle";
 import { basePos } from "@/types";
 import { GetPlayerWeather } from "omp-wrapper";
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
+import { I18n } from "../i18n";
 
 export abstract class BasePlayer {
   private _id: number;
@@ -269,8 +269,9 @@ export abstract class BasePlayer {
   public ban(): void {
     Ban(this.id);
   }
-  public banEx(reason: string): void {
-    BanEx(this.id, reason);
+  public banEx(reason: string, charset: string): void {
+    const buf = I18n.encodeToBuf(reason, charset);
+    BanEx(this.id, buf);
   }
   public isAdmin() {
     return IsPlayerAdmin(this.id);

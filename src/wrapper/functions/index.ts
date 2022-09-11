@@ -394,10 +394,6 @@ export const Ban = (playerid: number): number => {
   return samp.callNative("Ban", "i", playerid);
 };
 
-export const BanEx = (playerid: number, reason: string): number => {
-  return samp.callNative("BanEx", "is", playerid, reason);
-};
-
 export const SendRconCommand = (command: string): number => {
   return samp.callNative("SendRconCommand", "s", command);
 };
