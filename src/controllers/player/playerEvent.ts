@@ -296,9 +296,7 @@ export abstract class BasePlayerEvent<
     // );
 
     /** 30 calls per second for a single player means a peak of 30,000 calls for 1000 players.
-     * If there are 10 player event classes, that means there are 30,0000 calls per second,
-     * and with player lookups looped internally, there should be a considerable performance overhead.
-     *
+     * If there are 10 player event classes, that means there are 30,0000 calls per second.
      * By throttling down to 16.67 calls per second for a single player, performance should be optimized.
      */
     OnPlayerUpdate((playerid: number): void => {
