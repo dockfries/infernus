@@ -1,5 +1,5 @@
 import { CarModTypeEnum, LimitsEnum, VehicleModelInfoEnum } from "@/enums";
-import logger from "@/logger";
+import { logger } from "@/logger";
 import { basePos } from "@/types";
 import { isValidPaintJob, isValidVehComponent } from "@/utils/vehicleUtils";
 import {

@@ -107,7 +107,7 @@ import {
   GetPlayerTargetPlayer,
   GetPlayerLastShotVectors,
 } from "@/wrapper/functions";
-import logger from "@/logger";
+import { logger } from "@/logger";
 import { BaseGameMode } from "../gamemode";
 import {
   CameraCutStylesEnum,

@@ -1,6 +1,6 @@
 import pino from "pino";
 
-const logger = pino({
+export const logger = pino({
   transport: {
     target: "pino-pretty",
     options: {
@@ -9,13 +9,6 @@ const logger = pino({
     },
   },
 });
-
-// console.log = logger.info;
-// console.dir = logger.info;
-// console.warn = logger.warn;
-// console.error = logger.error;
-// console.debug = logger.debug;
-// console.trace = logger.trace;
 
 process.on("uncaughtException", (err) => {
   logger.error(err);
@@ -26,4 +19,8 @@ process.on("unhandledRejection", (err) => {
   logger.warn(err);
 });
 
-export default logger;
+// console.log = logger.info;
+// console.warn = logger.warn;
+// console.error = logger.error;
+// console.debug = logger.debug;
+// console.trace = logger.trace;

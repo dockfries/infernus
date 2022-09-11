@@ -1,5 +1,5 @@
 import { RecordTypesEnum } from "@/enums";
-import logger from "@/logger";
+import { logger } from "@/logger";
 import {
   ConnectNPC,
   StartRecordingPlayback,

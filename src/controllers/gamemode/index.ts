@@ -31,7 +31,7 @@ import {
   ShowPlayerMarkers,
   UsePlayerPedAnims,
 } from "@/wrapper/functions";
-import logger from "@/logger";
+import { logger } from "@/logger";
 import {
   OnClientMessage,
   OnRconCommand,

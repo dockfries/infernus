@@ -1,6 +1,6 @@
 type Handler<T = any> = (val: T) => void;
 
-class EventBus<Events extends Record<string, any>> {
+export class EventBus<Events extends Record<string, any>> {
   private map: Map<string, Set<Handler>> = new Map();
 
   public on<EventName extends keyof Events>(
@@ -58,5 +58,3 @@ class EventBus<Events extends Record<string, any>> {
     handlers.delete(handler);
   }
 }
-
-export default EventBus;

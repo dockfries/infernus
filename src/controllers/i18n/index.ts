@@ -1,6 +1,6 @@
 import { ILocales } from "@/types";
 import { encode, decode, encodingExists } from "iconv-lite";
-import logger from "@/logger";
+import { logger } from "@/logger";
 import { merge } from "lodash";
 
 export class I18n {

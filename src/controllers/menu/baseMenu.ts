@@ -1,5 +1,5 @@
 import { LimitsEnum } from "@/enums";
-import logger from "@/logger";
+import { logger } from "@/logger";
 import {
   AddMenuItem,
   CreateMenu,
