@@ -40,9 +40,6 @@ export enum WeaponEnum {
   FIREEXTINGUISHER = 42,
   CAMERA = 43,
   PARACHUTE = 46,
-  VEHICLE = 49,
-  DROWN = 53,
-  COLLISION = 54,
 }
 export enum WeaponSkillsEnum {
   PISTOL,
@@ -64,10 +61,22 @@ export enum BulletHitTypesEnum {
   OBJECT,
   PLAYER_OBJECT,
 }
+
 export enum WeaponStatesEnum {
   UNKNOWN = -1,
   NO_BULLETS,
   LAST_BULLET,
   MORE_BULLETS,
   RELOADING,
+}
+
+export enum DamageDeathReasonEnum {
+  VEHICLE = 49,
+  HELICOPTERBLADES = 50,
+  EXPLOSION = 51,
+  DROWN = 53,
+  COLLISION = 54,
+  CONNECT = 200,
+  DISCONNECT = 201,
+  SUICIDE = 255,
 }

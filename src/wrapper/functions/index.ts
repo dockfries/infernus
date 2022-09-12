@@ -8,6 +8,7 @@ import {
   CameraModesEnum,
   CarModTypeEnum,
   ConnectionStatusEnum,
+  DamageDeathReasonEnum,
   FightingStylesEnum,
   KeysEnum,
   MarkerModesEnum,
@@ -17,6 +18,7 @@ import {
   SpectateModesEnum,
   TextDrawAlignEnum,
   VehicleModelInfoEnum,
+  WeaponEnum,
   WeaponSkillsEnum,
   WeaponStatesEnum,
 } from "@/enums";
@@ -46,7 +48,7 @@ export const SendPlayerMessageToAll = (
 export const SendDeathMessage = (
   killer: number,
   killee: number,
-  weapon: number
+  weapon: WeaponEnum | DamageDeathReasonEnum
 ): number => {
   return samp.callNative("SendDeathMessage", "iii", killer, killee, weapon);
 };
@@ -55,7 +57,7 @@ export const SendDeathMessageToPlayer = (
   playerid: number,
   killer: number,
   killee: number,
-  weapon: number
+  weapon: WeaponEnum | DamageDeathReasonEnum
 ): number => {
   return samp.callNative(
     "SendDeathMessageToPlayer",

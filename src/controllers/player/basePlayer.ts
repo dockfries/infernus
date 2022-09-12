@@ -3,6 +3,7 @@ import {
   BanEx,
   GetPlayerName,
   SendClientMessage,
+  SendClientMessageToAll,
   SetPlayerName,
 } from "@/utils/helperUtils";
 import {
@@ -113,12 +114,15 @@ import {
   SetPlayerAmmo,
   GetPlayerAmmo,
   SetPlayerArmedWeapon,
+  SendDeathMessageToPlayer,
+  SendDeathMessage,
 } from "@/wrapper/functions";
 import { logger } from "@/logger";
 import { BaseGameMode } from "../gamemode";
 import {
   CameraCutStylesEnum,
   CameraModesEnum,
+  DamageDeathReasonEnum,
   FightingStylesEnum,
   InvalidEnum,
   PlayerStateEnum,
@@ -173,6 +177,14 @@ export abstract class BasePlayer {
 
   public sendClientMessage(color: string, msg: string): number {
     return SendClientMessage(this, color, msg);
+  }
+
+  public static sendClientMessageToAll<P extends BasePlayer>(
+    players: Array<P>,
+    color: string,
+    msg: string
+  ) {
+    SendClientMessageToAll(players, color, msg);
   }
 
   public isNpc(): boolean {
@@ -714,7 +726,7 @@ export abstract class BasePlayer {
   public getWeaponState(): WeaponStatesEnum {
     return GetPlayerWeaponState(this.id);
   }
-  public giveWeapon(weaponid: number, ammo: number): number {
+  public giveWeapon(weaponid: WeaponEnum, ammo: number): number {
     return GivePlayerWeapon(this.id, weaponid, ammo);
   }
   public setAmmo(weaponid: number, ammo: number) {
@@ -725,5 +737,37 @@ export abstract class BasePlayer {
   }
   public setArmedWeapon(weaponid: number): number {
     return SetPlayerArmedWeapon(this.id, weaponid);
+  }
+  // not test
+  public clearDeathMessage() {
+    for (let i = 0; i < 5; i++) {
+      this.sendDeathMessageToPlayer(
+        InvalidEnum.PLAYER_ID,
+        InvalidEnum.PLAYER_ID,
+        DamageDeathReasonEnum.CONNECT
+      );
+    }
+  }
+  public sendDeathMessage<P extends BasePlayer>(
+    killer: P | InvalidEnum.PLAYER_ID,
+    weapon: WeaponEnum | DamageDeathReasonEnum
+  ): void {
+    SendDeathMessage(
+      killer === InvalidEnum.PLAYER_ID ? killer : killer.id,
+      this.id,
+      weapon
+    );
+  }
+  public sendDeathMessageToPlayer<P extends BasePlayer>(
+    killer: P | InvalidEnum.PLAYER_ID,
+    killee: P | InvalidEnum.PLAYER_ID,
+    weapon: WeaponEnum | DamageDeathReasonEnum
+  ): void {
+    SendDeathMessageToPlayer(
+      this.id,
+      killer === InvalidEnum.PLAYER_ID ? killer : killer.id,
+      killee === InvalidEnum.PLAYER_ID ? killee : killee.id,
+      weapon
+    );
   }
 }
