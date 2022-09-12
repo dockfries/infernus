@@ -6,14 +6,14 @@ import {
   OnPlayerClickMap,
   OnPlayerClickPlayer,
   OnPlayerDeath,
-  // OnPlayerGiveDamage,
+  OnPlayerGiveDamage,
   OnPlayerKeyStateChange,
   OnPlayerRequestSpawn,
   OnPlayerSpawn,
   OnPlayerStateChange,
   OnPlayerStreamIn,
   OnPlayerStreamOut,
-  // OnPlayerTakeDamage,
+  OnPlayerTakeDamage,
   OnPlayerUpdate,
   OnEnterExitModShop,
   OnPlayerInteriorChange,
@@ -25,10 +25,12 @@ import { BasePlayer } from "./basePlayer";
 import { CmdBus } from "../command";
 import { ICmdErr } from "@/interfaces";
 import {
+  BodyPartsEnum,
   // BodyPartsEnum,
   InvalidEnum,
   KeysEnum,
   PlayerStateEnum,
+  WeaponEnum,
   // WeaponEnum,
 } from "@/enums";
 import { throttle } from "lodash";
@@ -74,13 +76,13 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
     killer: P | InvalidEnum.PLAYER_ID,
     reason: number
   ): void;
-  // protected abstract onGiveDamage(
-  //   player: P,
-  //   damage: P,
-  //   amount: number,
-  //   weaponid: WeaponEnum,
-  //   bodypart: BodyPartsEnum
-  // ): void;
+  protected abstract onGiveDamage(
+    player: P,
+    damage: P,
+    amount: number,
+    weaponid: WeaponEnum,
+    bodypart: BodyPartsEnum
+  ): void;
   protected abstract onKeyStateChange(
     player: P,
     newkeys: KeysEnum,
@@ -95,13 +97,13 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
   ): void;
   protected abstract onStreamIn(player: P, forPlayer: P): void;
   protected abstract onStreamOut(player: P, forPlayer: P): void;
-  // protected abstract onTakeDamage(
-  //   player: P,
-  //   damage: P | InvalidEnum.INVALID_PLAYER_ID,
-  //   amount: number,
-  //   weaponid: WeaponEnum,
-  //   bodypart: BodyPartsEnum
-  // ): void;
+  protected abstract onTakeDamage(
+    player: P,
+    damage: P | InvalidEnum.PLAYER_ID,
+    amount: number,
+    weaponid: WeaponEnum,
+    bodypart: BodyPartsEnum
+  ): void;
   protected abstract onUpdate(player: P): void;
   protected abstract onInteriorChange(
     player: P,
@@ -215,21 +217,21 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    // OnPlayerGiveDamage(
-    //   (
-    //     playerid: number,
-    //     damageid: number,
-    //     amount: number,
-    //     weaponid: WeaponsEnum,
-    //     bodypart: BodyPartsEnum
-    //   ): void => {
-    //     const p = this.findPlayerById(playerid);
-    //     if (!p) return;
-    //     const d = this.players.find((p) => p.id === damageid);
-    //     if (!d) return;
-    //     this.onGiveDamage(p, d, amount, weaponid, bodypart);
-    //   }
-    // );
+    OnPlayerGiveDamage(
+      (
+        playerid: number,
+        damageid: number,
+        amount: number,
+        weaponid: WeaponEnum,
+        bodypart: BodyPartsEnum
+      ): void => {
+        const p = this.findPlayerById(playerid);
+        if (!p) return;
+        const d = this.findPlayerById(damageid);
+        if (!d) return;
+        this.onGiveDamage(p, d, amount, weaponid, bodypart);
+      }
+    );
 
     OnPlayerKeyStateChange(
       (playerid: number, newkeys: number, oldkeys: number): void => {
@@ -275,25 +277,25 @@ export abstract class BasePlayerEvent<
       this.onStreamOut(p, fp);
     });
 
-    // OnPlayerTakeDamage(
-    //   (
-    //     playerid: number,
-    //     issuerid: number,
-    //     amount: number,
-    //     weaponid: number,
-    //     bodypart: number
-    //   ): void => {
-    //     const p = this.findPlayerById(playerid);
-    //     if (!p) return;
-    //     if (issuerid === InvalidEnum.INVALID_PLAYER_ID) {
-    //       this.onTakeDamage(p, issuerid, amount, weaponid, bodypart);
-    //       return;
-    //     }
-    //     const i = this.players.find((p) => p.id === issuerid);
-    //     if (!i) return;
-    //     this.onTakeDamage(p, i, amount, weaponid, bodypart);
-    //   }
-    // );
+    OnPlayerTakeDamage(
+      (
+        playerid: number,
+        issuerid: number,
+        amount: number,
+        weaponid: WeaponEnum,
+        bodypart: BodyPartsEnum
+      ): void => {
+        const p = this.findPlayerById(playerid);
+        if (!p) return;
+        if (issuerid === InvalidEnum.PLAYER_ID) {
+          this.onTakeDamage(p, issuerid, amount, weaponid, bodypart);
+          return;
+        }
+        const i = this.findPlayerById(issuerid);
+        if (!i) return;
+        this.onTakeDamage(p, i, amount, weaponid, bodypart);
+      }
+    );
 
     /** 30 calls per second for a single player means a peak of 30,000 calls for 1000 players.
      * If there are 10 player event classes, that means there are 30,0000 calls per second.

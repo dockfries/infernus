@@ -106,6 +106,13 @@ import {
   GetPlayerCustomSkin,
   GetPlayerTargetPlayer,
   GetPlayerLastShotVectors,
+  GetPlayerWeapon,
+  GetPlayerWeaponData,
+  GetPlayerWeaponState,
+  GivePlayerWeapon,
+  SetPlayerAmmo,
+  GetPlayerAmmo,
+  SetPlayerArmedWeapon,
 } from "@/wrapper/functions";
 import { logger } from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -117,7 +124,9 @@ import {
   PlayerStateEnum,
   SpecialActionsEnum,
   SpectateModesEnum,
+  WeaponEnum,
   WeaponSkillsEnum,
+  WeaponStatesEnum,
 } from "@/enums";
 import { BaseVehicle } from "../vehicle";
 import { basePos } from "@/types";
@@ -690,5 +699,31 @@ export abstract class BasePlayer {
     const [fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ] =
       GetPlayerLastShotVectors(this.id);
     return { fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ };
+  }
+  public getWeapon(): WeaponEnum | -1 {
+    return GetPlayerWeapon(this.id);
+  }
+  public getWeaponData(slot: number) {
+    if (slot < 0 || slot > 12) {
+      logger.error("[BasePlayer]: weapon slots range from 0 to 12");
+      return;
+    }
+    const [weapons, ammo] = GetPlayerWeaponData(this.id, slot);
+    return { weapons, ammo };
+  }
+  public getWeaponState(): WeaponStatesEnum {
+    return GetPlayerWeaponState(this.id);
+  }
+  public giveWeapon(weaponid: number, ammo: number): number {
+    return GivePlayerWeapon(this.id, weaponid, ammo);
+  }
+  public setAmmo(weaponid: number, ammo: number) {
+    return SetPlayerAmmo(this.id, weaponid, ammo);
+  }
+  public getAmmo(): number {
+    return GetPlayerAmmo(this.id);
+  }
+  public setArmedWeapon(weaponid: number): number {
+    return SetPlayerArmedWeapon(this.id, weaponid);
   }
 }

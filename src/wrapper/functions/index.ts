@@ -18,6 +18,7 @@ import {
   TextDrawAlignEnum,
   VehicleModelInfoEnum,
   WeaponSkillsEnum,
+  WeaponStatesEnum,
 } from "@/enums";
 import { BaseGameMode, I18n } from "@/controllers";
 
@@ -1107,7 +1108,7 @@ export const SetObjectRot = (
   return samp.callNative("SetObjectRot", "ifff", objectid, RotX, RotY, RotZ);
 };
 
-export const GetObjectRot = (objectid: number): Array<any> => {
+export const GetObjectRot = (objectid: number): Array<number> => {
   return samp.callNative("GetObjectRot", "iFFF", objectid);
 };
 
@@ -1621,17 +1622,17 @@ export const GetPlayerArmour = (playerid: number): number => {
 
 export const SetPlayerAmmo = (
   playerid: number,
-  weaponslot: number,
+  weaponid: number,
   ammo: number
 ): number => {
-  return samp.callNative("SetPlayerAmmo", "iii", playerid, weaponslot, ammo);
+  return samp.callNative("SetPlayerAmmo", "iii", playerid, weaponid, ammo);
 };
 
 export const GetPlayerAmmo = (playerid: number): number => {
   return samp.callNative("GetPlayerAmmo", "i", playerid);
 };
 
-export const GetPlayerWeaponState = (playerid: number): number => {
+export const GetPlayerWeaponState = (playerid: number): WeaponStatesEnum => {
   return samp.callNative("GetPlayerWeaponState", "i", playerid);
 };
 
@@ -1708,7 +1709,7 @@ export const SetPlayerArmedWeapon = (
 export const GetPlayerWeaponData = (
   playerid: number,
   slot: number
-): Array<any> => {
+): Array<number> => {
   return samp.callNative("GetPlayerWeaponData", "iiII", playerid, slot);
 };
 
