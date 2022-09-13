@@ -14,6 +14,10 @@ NodeJS library for Scripting [Open Multiplayer](https://open.mp), depends on [om
 | 4   | Samp Node               | SDK builds a bridge to the base     |
 | 5   | Omp Server              | Base                                |
 
+## Notice
+
+- Do not mix functional wrapper and class wrapper
+
 ## Credits
 
 - [omp-server](https://github.com/openmultiplayer/server-beta)
