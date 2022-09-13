@@ -1,7 +1,4 @@
-interface IAnimateInfo {
-  n: string;
-  d: number;
-}
+import { IAnimateInfo } from "@/interfaces";
 
 const animateLib = new Map<string, Array<IAnimateInfo>>([
   ["AIRPORT", [{ n: "thrw_barl_thrw", d: 2.0 }]],

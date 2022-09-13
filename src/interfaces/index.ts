@@ -41,3 +41,27 @@ export interface IPlayerSettings {
   locale: string;
   charset: string;
 }
+
+export interface IVehicle {
+  modelid: number;
+  x: number;
+  y: number;
+  z: number;
+  z_angle: number;
+  color1: string;
+  color2: string;
+  respawn_delay?: number;
+  addsiren?: boolean;
+}
+
+export interface IAnimateInfo {
+  n: string;
+  d: number;
+}
+
+export interface IBaseGangZone {
+  minx: number;
+  miny: number;
+  maxx: number;
+  maxy: number;
+}
