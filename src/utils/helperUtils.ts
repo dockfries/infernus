@@ -14,8 +14,8 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 };
 
 // Here are some i18n functions used to override the original functions
-export const SendClientMessage = <T extends BasePlayer>(
-  player: T,
+export const SendClientMessage = <P extends BasePlayer>(
+  player: P,
   color: string,
   msg: string
 ): number => {
@@ -29,8 +29,8 @@ export const SendClientMessage = <T extends BasePlayer>(
   );
 };
 
-export const SendClientMessageToAll = <T extends BasePlayer>(
-  fn: Array<T>,
+export const SendClientMessageToAll = <P extends BasePlayer>(
+  fn: Array<P>,
   color: string,
   msg: string
 ): number => {
@@ -38,8 +38,32 @@ export const SendClientMessageToAll = <T extends BasePlayer>(
   return 1;
 };
 
-export const ShowPlayerDialog = <T extends BasePlayer>(
-  player: T,
+export const SendPlayerMessageToPlayer = <P extends BasePlayer>(
+  player: P,
+  senderId: number,
+  message: string
+): number => {
+  const res = processMsg(message, player.charset);
+  return samp.callNative(
+    "SendPlayerMessageToPlayer",
+    `ii${res[0]}`,
+    player.id,
+    senderId,
+    res[1]
+  );
+};
+
+export const SendPlayerMessageToAll = <P extends BasePlayer>(
+  fn: Array<P>,
+  senderId: number,
+  message: string
+): number => {
+  fn.forEach((player) => SendPlayerMessageToPlayer(player, senderId, message));
+  return 1;
+};
+
+export const ShowPlayerDialog = <P extends BasePlayer>(
+  player: P,
   id: number,
   dialog: IDialog
 ): number => {
@@ -132,7 +156,7 @@ export const OnRconLoginAttempt = (
   );
 };
 
-export const GetPlayerName = <T extends BasePlayer>(player: T): string => {
+export const GetPlayerName = <P extends BasePlayer>(player: P): string => {
   const buf: number[] = samp.callNative(
     "GetPlayerName",
     "iAi",
@@ -142,10 +166,8 @@ export const GetPlayerName = <T extends BasePlayer>(player: T): string => {
   return I18n.decodeFromBuf(I18n.getValidStr(buf), player.charset);
 };
 
-// not test ia
-// if crash may be iai and name.length
-export const SetPlayerName = <T extends BasePlayer>(
-  player: T,
+export const SetPlayerName = <P extends BasePlayer>(
+  player: P,
   name: string
 ): number => {
   return samp.callNative(
@@ -156,8 +178,66 @@ export const SetPlayerName = <T extends BasePlayer>(
   );
 };
 
-// not test ia
-// if crash may be iai and name.length
-export const BanEx = (playerid: number, reason: number[]): number => {
-  return samp.callNative("BanEx", "ia", playerid, reason);
+export const BanEx = (
+  playerid: number,
+  reason: string,
+  charset: string
+): number => {
+  const buf = I18n.encodeToBuf(reason, charset);
+  return samp.callNative("BanEx", "ia", playerid, buf);
+};
+
+export const FindModelFileNameFromCRC = (crc: number): string => {
+  const buf = I18n.getValidStr(
+    samp.callNative("FindModelFileNameFromCRC", "iAi", crc, 255)
+  );
+  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+};
+
+export const FindTextureFileNameFromCRC = (crc: number): string => {
+  const buf = I18n.getValidStr(
+    samp.callNative("FindTextureFileNameFromCRC", "iAi", crc, 255)
+  );
+  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+};
+
+export const GetWeaponName = (weaponid: number): string => {
+  const buf = I18n.getValidStr(
+    samp.callNative("GetWeaponName", "iSi", weaponid, 32)
+  );
+  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+};
+
+export const NetStats_GetIpPort = (playerid: number): string => {
+  const buf = I18n.getValidStr(
+    samp.callNative("NetStats_GetIpPort", "iAi", playerid, 128 + 6)
+  );
+  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+};
+
+export const GetPlayerIp = (playerid: number): string => {
+  const buf = I18n.getValidStr(
+    samp.callNative("GetPlayerIp", "iAi", playerid, 128)
+  );
+  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+};
+
+export const GetAnimationName = (index: number): Array<string> => {
+  const [libBuf, nameBuf]: Array<Array<number>> = samp.callNative(
+    "GetAnimationName",
+    "iAiAi",
+    index,
+    32,
+    32
+  );
+  const lib = I18n.decodeFromBuf(libBuf, BaseGameMode.charset);
+  const name = I18n.decodeFromBuf(nameBuf, BaseGameMode.charset);
+  return [lib, name];
+};
+
+export const GetPlayerVersion = (playerid: number): string => {
+  const buf = I18n.getValidStr(
+    samp.callNative("GetPlayerVersion", "iAi", playerid, 24)
+  );
+  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
 };

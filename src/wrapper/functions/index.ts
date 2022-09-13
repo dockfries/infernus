@@ -22,28 +22,6 @@ import {
   WeaponSkillsEnum,
   WeaponStatesEnum,
 } from "@/enums";
-import { BaseGameMode, I18n } from "@/controllers";
-
-export const SendPlayerMessageToPlayer = (
-  playerid: number,
-  senderid: number,
-  message: string
-): number => {
-  return samp.callNative(
-    "SendPlayerMessageToPlayer",
-    "iis",
-    playerid,
-    senderid,
-    message
-  );
-};
-
-export const SendPlayerMessageToAll = (
-  senderid: number,
-  message: string
-): number => {
-  return samp.callNative("SendPlayerMessageToAll", "is", senderid, message);
-};
 
 export const SendDeathMessage = (
   killer: number,
@@ -307,10 +285,6 @@ export const SetWorldTime = (hour: number): number => {
   return samp.callNative("SetWorldTime", "i", hour);
 };
 
-export const GetWeaponName = (weaponid: number, len: number): string => {
-  return samp.callNative("GetWeaponName", "iSi", weaponid, len);
-};
-
 export const EnableVehicleFriendlyFire = (): number => {
   return samp.callNative("EnableVehicleFriendlyFire", "");
 };
@@ -409,13 +383,6 @@ export const GetNetworkStats = (): string => {
   return samp.callNative("GetNetworkStats", "Si", 1024);
 };
 
-export const GetPlayerVersion = (playerid: number): string => {
-  const buf = I18n.getValidStr(
-    samp.callNative("GetPlayerVersion", "iAi", playerid, 24)
-  );
-  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
-};
-
 export const BlockIpAddress = (ip_address: string, timems: number): number => {
   return samp.callNative("BlockIpAddress", "si", ip_address, timems);
 };
@@ -460,13 +427,6 @@ export const NetStats_ConnectionStatus = (
   playerid: number
 ): ConnectionStatusEnum => {
   return samp.callNative("NetStats_ConnectionStatus", "i", playerid);
-};
-
-export const NetStats_GetIpPort = (playerid: number): string => {
-  const buf = I18n.getValidStr(
-    samp.callNative("NetStats_GetIpPort", "iAi", playerid, 128 + 6)
-  );
-  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
 };
 
 export const CreateMenu = (
@@ -1498,11 +1458,11 @@ export const SetSpawnInfo = (
   y: number,
   z: number,
   rotation: number,
-  weapon1: number,
+  weapon1: WeaponEnum,
   weapon1_ammo: number,
-  weapon2: number,
+  weapon2: WeaponEnum,
   weapon2_ammo: number,
-  weapon3: number,
+  weapon3: WeaponEnum,
   weapon3_ammo: number
 ): number => {
   return samp.callNative(
@@ -1646,8 +1606,8 @@ export const GetPlayerTargetActor = (playerid: number): number => {
   return samp.callNative("GetPlayerTargetActor", "i", playerid);
 };
 
-export const SetPlayerTeam = (playerid: number, teamid: number): number => {
-  return samp.callNative("SetPlayerTeam", "ii", playerid, teamid);
+export const SetPlayerTeam = (playerid: number, teamid: number): void => {
+  samp.callNative("SetPlayerTeam", "ii", playerid, teamid);
 };
 
 export const GetPlayerTeam = (playerid: number): number => {
@@ -1729,13 +1689,6 @@ export const GetPlayerMoney = (playerid: number): number => {
 
 export const GetPlayerState = (playerid: number): PlayerStateEnum => {
   return samp.callNative("GetPlayerState", "i", playerid);
-};
-
-export const GetPlayerIp = (playerid: number): string => {
-  const buf = I18n.getValidStr(
-    samp.callNative("GetPlayerIp", "iAi", playerid, 128)
-  );
-  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
 };
 
 export const GetPlayerPing = (playerid: number): number => {
@@ -2313,19 +2266,6 @@ export const ClearAnimations = (
 
 export const GetPlayerAnimationIndex = (playerid: number): number => {
   return samp.callNative("GetPlayerAnimationIndex", "i", playerid);
-};
-
-export const GetAnimationName = (index: number): Array<string> => {
-  const [libBuf, nameBuf]: Array<Array<number>> = samp.callNative(
-    "GetAnimationName",
-    "iAiAi",
-    index,
-    32,
-    32
-  );
-  const lib = I18n.decodeFromBuf(libBuf, BaseGameMode.charset);
-  const name = I18n.decodeFromBuf(nameBuf, BaseGameMode.charset);
-  return [lib, name];
 };
 
 export const GetPlayerSpecialAction = (
@@ -3235,4 +3175,48 @@ export const ResumeRecordingPlayback = (): void => {
 
 export const GetPlayerCustomSkin = (playerid: number): number => {
   return samp.callNative("GetPlayerCustomSkin", "i", playerid);
+};
+
+export const RedirectDownload = (playerid: number, url: string): number => {
+  return samp.callNative("RedirectDownload", "is", playerid, url);
+};
+
+export const AddSimpleModel = (
+  virtualworld: number,
+  baseid: number,
+  newid: number,
+  dffname: string,
+  txdname: string
+): number => {
+  return samp.callNative(
+    "AddSimpleModel",
+    "iiiss",
+    virtualworld,
+    baseid,
+    newid,
+    dffname,
+    txdname
+  );
+};
+
+export const AddSimpleModelTimed = (
+  virtualworld: number,
+  baseid: number,
+  newid: number,
+  dffname: string,
+  txdname: string,
+  timeon: number,
+  timeoff: number
+): number => {
+  return samp.callNative(
+    "AddSimpleModelTimed",
+    "iiissii",
+    virtualworld,
+    baseid,
+    newid,
+    dffname,
+    txdname,
+    timeon,
+    timeoff
+  );
 };

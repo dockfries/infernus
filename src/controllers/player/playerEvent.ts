@@ -112,7 +112,11 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
   ): void;
   protected abstract onPause(player: P): void;
   protected abstract onResume(player: P): void;
-  protected abstract onRequestDownload(player: P, type: number, crc: any): void;
+  protected abstract onRequestDownload(
+    player: P,
+    type: number,
+    crc: number
+  ): void;
   protected abstract onFinishedDownloading(
     player: P,
     virtualworld: number
@@ -316,7 +320,7 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    OnPlayerRequestDownload((playerid: number, type: number, crc: any) => {
+    OnPlayerRequestDownload((playerid: number, type: number, crc: number) => {
       const p = this.findPlayerById(playerid);
       if (!p) return;
       this.onRequestDownload(p, type, crc);

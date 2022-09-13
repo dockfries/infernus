@@ -304,7 +304,7 @@ export const OnPlayerFinishedDownloading = (
 };
 
 export const OnPlayerRequestDownload = (
-  func: (playerid: number, type: number, crc: any) => void
+  func: (playerid: number, type: number, crc: number) => void
 ) => {
   samp.addEventListener("OnPlayerRequestDownload", func);
 };

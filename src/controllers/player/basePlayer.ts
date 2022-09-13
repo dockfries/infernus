@@ -1,9 +1,14 @@
 import { IPlayerSettings } from "@/interfaces";
 import {
   BanEx,
+  GetAnimationName,
+  GetPlayerIp,
   GetPlayerName,
+  GetPlayerVersion,
   SendClientMessage,
   SendClientMessageToAll,
+  SendPlayerMessageToAll,
+  SendPlayerMessageToPlayer,
   SetPlayerName,
 } from "@/utils/helperUtils";
 import {
@@ -48,7 +53,6 @@ import {
   SetPlayerPos,
   GetPlayerPos,
   GetPlayerState,
-  GetPlayerVersion,
   SetPlayerVirtualWorld,
   GetPlayerVirtualWorld,
   RemovePlayerFromVehicle,
@@ -66,7 +70,6 @@ import {
   SetPlayerVelocity,
   GetPlayerVelocity,
   GetPlayerKeys,
-  GetPlayerIp,
   GetPlayerFightingStyle,
   SetPlayerFightingStyle,
   SetPlayerArmour,
@@ -98,7 +101,6 @@ import {
   ApplyAnimation,
   ClearAnimations,
   GetPlayerAnimationIndex,
-  GetAnimationName,
   SetPlayerShopName,
   SetPlayerPosFindZ,
   SetPlayerWorldBounds,
@@ -116,6 +118,9 @@ import {
   SetPlayerArmedWeapon,
   SendDeathMessageToPlayer,
   SendDeathMessage,
+  SetSpawnInfo,
+  RedirectDownload,
+  SendClientCheck,
 } from "@/wrapper/functions";
 import { logger } from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -136,7 +141,6 @@ import { BaseVehicle } from "../vehicle";
 import { basePos } from "@/types";
 import { GetPlayerWeather } from "omp-wrapper";
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
-import { I18n } from "../i18n";
 
 export abstract class BasePlayer {
   private _id: number;
@@ -185,6 +189,20 @@ export abstract class BasePlayer {
     msg: string
   ) {
     SendClientMessageToAll(players, color, msg);
+  }
+
+  public sendPlayerMessage<P extends BasePlayer>(
+    player: P,
+    message: string
+  ): number {
+    return SendPlayerMessageToPlayer(player, this.id, message);
+  }
+
+  public sendPlayerMessageToAll<P extends BasePlayer>(
+    players: Array<P>,
+    message: string
+  ): number {
+    return SendPlayerMessageToAll(players, this.id, message);
   }
 
   public isNpc(): boolean {
@@ -292,8 +310,7 @@ export abstract class BasePlayer {
     Ban(this.id);
   }
   public banEx(reason: string, charset: string): void {
-    const buf = I18n.encodeToBuf(reason, charset);
-    BanEx(this.id, buf);
+    BanEx(this.id, reason, charset);
   }
   public isAdmin() {
     return IsPlayerAdmin(this.id);
@@ -418,8 +435,9 @@ export abstract class BasePlayer {
   ): void {
     RemoveBuildingForPlayer(this.id, modelid, fX, fY, fZ, fRadius);
   }
-  public setTeam(team: number): number {
-    return SetPlayerTeam(this.id, team);
+  public setTeam(team: number): void {
+    if (team < 0 || team > InvalidEnum.NO_TEAM) return;
+    SetPlayerTeam(this.id, team);
   }
   public getTeam(): number {
     return GetPlayerTeam(this.id);
@@ -769,5 +787,59 @@ export abstract class BasePlayer {
       killee === InvalidEnum.PLAYER_ID ? killee : killee.id,
       weapon
     );
+  }
+  public setSpawnInfo(
+    team: number,
+    skin: number,
+    x: number,
+    y: number,
+    z: number,
+    rotation: number,
+    weapon1: WeaponEnum,
+    weapon1_ammo: number,
+    weapon2: WeaponEnum,
+    weapon2_ammo: number,
+    weapon3: WeaponEnum,
+    weapon3_ammo: number
+  ): void {
+    if (team < 0 || team > InvalidEnum.NO_TEAM) return;
+    if (skin < 0 || skin > 311 || skin == 74) return;
+    if (weapon1_ammo < 0 || weapon2_ammo < 0 || weapon3_ammo < 0) return;
+    SetSpawnInfo(
+      this.id,
+      team,
+      skin,
+      x,
+      y,
+      z,
+      rotation,
+      weapon1,
+      weapon1_ammo,
+      weapon2,
+      weapon2_ammo,
+      weapon3,
+      weapon3_ammo
+    );
+  }
+  public redirectDownload(url: string) {
+    return RedirectDownload(this.id, url);
+  }
+  public sendClientCheck(
+    type: number,
+    memAddr: number,
+    memOffset: number,
+    byteCount: number
+  ): number {
+    const validTypes = [2, 5, 69, 70, 71, 72];
+    if (!validTypes.includes(type)) {
+      logger.error(
+        `[BasePlayer]: sendClientCheck valid types are ${validTypes.toString()}`
+      );
+      return 0;
+    }
+    if (type === 72) {
+      memAddr = memOffset = byteCount = 0;
+    }
+    return SendClientCheck(this.id, type, memAddr, memOffset, byteCount);
   }
 }

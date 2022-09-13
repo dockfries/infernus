@@ -6,7 +6,8 @@
 
 /**
  * Why did I remove a lot of overloaded writing?
- * Because with the wrapper, developers no longer need to pay attention to the parameter prompt for registering samp native events, but only need to register their own events, so it doesn't make sense.
+ * Because with the wrapper, developers no longer need to pay attention to the parameter prompt for registering samp native events,
+ * but only need to register their own events, so it doesn't make sense.
  */
 
 declare class samp {
