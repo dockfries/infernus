@@ -145,7 +145,7 @@ export abstract class BasePlayerEvent<
     OnPlayerText((playerid: number, byteArr: number[]): number => {
       const p = this.findPlayerById(playerid);
       if (p) return this.onText(p, I18n.decodeFromBuf(byteArr, p.charset));
-      return 0;
+      return 1;
     });
 
     OnPlayerCommandText((playerid: number, buf: number[]): number => {
