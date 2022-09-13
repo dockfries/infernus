@@ -1,4 +1,5 @@
 import { CarModTypeEnum, LimitsEnum, VehicleModelInfoEnum } from "@/enums";
+import { IVehicle } from "@/interfaces";
 import { logger } from "@/logger";
 import { basePos } from "@/types";
 import { isValidPaintJob, isValidVehComponent } from "@/utils/vehicleUtils";
@@ -55,21 +56,9 @@ import {
 import { BasePlayer } from "../player";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
 
-export interface IVehicle {
-  modelid: number;
-  x: number;
-  y: number;
-  z: number;
-  z_angle: number;
-  color1: string;
-  color2: string;
-  respawn_delay?: number;
-  addsiren?: boolean;
-}
-
 export abstract class BaseVehicle {
-  private static createdCount = 0;
   private _id = -1;
+  private static createdCount = 0;
   private readonly sourceInfo: IVehicle;
   private readonly isStatic: boolean;
   public get id(): number {
@@ -136,7 +125,7 @@ export abstract class BaseVehicle {
       );
     DestroyVehicle(this.id);
     BaseVehicle.createdCount--;
-    vehicleBus.emit(vehicleHooks.created, this);
+    vehicleBus.emit(vehicleHooks.destroyed, this);
     this._id = -1;
   }
   public addComponent(componentid: number): number {
