@@ -14,9 +14,9 @@ export abstract class BaseNpcEvent {
     OnNPCModeExit(this.onModeExit);
     OnNPCSpawn(this.onSpawn);
   }
-  protected abstract onConnect(myplayerid: number): void;
-  protected abstract onDisconnect(reason: string): void;
-  protected abstract onModeInit(): void;
-  protected abstract onModeExit(): void;
-  protected abstract onSpawn(): void;
+  protected abstract onConnect(myplayerid: number): number;
+  protected abstract onDisconnect(reason: string): number;
+  protected abstract onModeInit(): number;
+  protected abstract onModeExit(): number;
+  protected abstract onSpawn(): number;
 }

@@ -19,12 +19,13 @@ OnDialogResponse(
     response: number,
     listitem: number,
     inputbuf: number[]
-  ) => {
+  ): number => {
     const callback = BaseDialog.waitingQueue.get(playerid);
-    if (!callback) return;
+    if (!callback) return 0;
     // bug: does not trigger resolve of promise
     // fix: it only works if you put it in an event loop
     setTimeout(() => callback({ response, listitem, inputbuf }));
+    return 1;
   }
 );
 

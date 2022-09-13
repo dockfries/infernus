@@ -45,6 +45,7 @@ import {
   OnRconCommand,
   OnRconLoginAttempt,
 } from "@/utils/helperUtils";
+import { AllowNickNameCharacter } from "omp-wrapper";
 
 export abstract class AbstractGM {
   public static charset = "utf8";
@@ -54,14 +55,14 @@ export abstract class AbstractGM {
     playerid: number,
     ipAddress: string,
     port: number
-  ): void;
-  protected abstract onClientMessage(color: number, text: string): void;
-  protected abstract onRconCommand(cmd: string): void;
+  ): number;
+  protected abstract onClientMessage(color: number, text: string): number;
+  protected abstract onRconCommand(cmd: string): number;
   protected abstract onRconLoginAttempt(
     ip: string,
     password: string,
     success: boolean
-  ): void;
+  ): number;
 }
 
 export abstract class BaseGameMode extends AbstractGM {
@@ -74,6 +75,17 @@ export abstract class BaseGameMode extends AbstractGM {
         return logger.error(
           "[BaseGameMode]: Cannot be initialized more than once"
         );
+      /**
+       * In utf8, different national languages take up different numbers of bytes,
+       * but no matter how many bytes they take up, a byte always takes up 8 bits of binary,
+       * i.e., a decimal integer up to 255.
+       * Most multibyte nicknames are supported to connect to the server,
+       * but not for bytes with a decimal size of 233 ～ 255,
+       * because the player's spawn will crash after the call.
+       */
+      for (let i = 0; i <= 255; i++) {
+        BaseGameMode.allowNickNameCharacter(i, true);
+      }
       this.initialized = true;
       this.onInit();
     });
@@ -243,5 +255,8 @@ export abstract class BaseGameMode extends AbstractGM {
   }
   public static getWeaponName(weaponid: number): string {
     return GetWeaponName(weaponid);
+  }
+  public static allowNickNameCharacter(singleChar: number, allow = true) {
+    return AllowNickNameCharacter(singleChar, allow);
   }
 }

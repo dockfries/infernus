@@ -20,23 +20,27 @@ export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
     menuBus.on(menuHooks.destroyed, (menu: M) => {
       this.menus.delete(menu.id);
     });
-    OnPlayerExitedMenu((playerid: number) => {
+    OnPlayerExitedMenu((playerid: number): number => {
       const menu = this.findMenuById(GetPlayerMenu(playerid));
-      if (!menu) return;
+      if (!menu) return 0;
       const player = this.findPlayerById(playerid);
-      if (!player) return;
-      this.onPlayerExited(player, menu);
+      if (!player) return 0;
+      return this.onPlayerExited(player, menu);
     });
-    OnPlayerSelectedMenuRow((playerid: number, row: number) => {
+    OnPlayerSelectedMenuRow((playerid: number, row: number): number => {
       const menu = this.findMenuById(GetPlayerMenu(playerid));
-      if (!menu) return;
+      if (!menu) return 0;
       const player = this.findPlayerById(playerid);
-      if (!player) return;
-      this.onPlayerSelectedRow(player, menu, row);
+      if (!player) return 0;
+      return this.onPlayerSelectedRow(player, menu, row);
     });
   }
-  protected abstract onPlayerExited(player: P, menu: M): void;
-  protected abstract onPlayerSelectedRow(player: P, menu: M, row: number): void;
+  protected abstract onPlayerExited(player: P, menu: M): number;
+  protected abstract onPlayerSelectedRow(
+    player: P,
+    menu: M,
+    row: number
+  ): number;
 
   private findPlayerById(playerid: number) {
     return this.players.get(playerid);
