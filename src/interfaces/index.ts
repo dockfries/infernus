@@ -1,3 +1,5 @@
+import { BasePlayerTextDraw } from "@/controllers/textdraw/basePlayerTextDraw";
+import { BaseTextDraw } from "@/controllers/textdraw/baseTextDraw";
 import { DialogStylesEnum } from "../enums";
 import { EventFunc, EventName } from "../types";
 
@@ -64,4 +66,13 @@ export interface IBaseGangZone {
   miny: number;
   maxx: number;
   maxy: number;
+}
+
+export interface CommonTextDraw<
+  T extends BaseTextDraw,
+  PT extends BasePlayerTextDraw
+> {
+  id: number;
+  global: boolean;
+  value: T | PT;
 }
