@@ -90,7 +90,9 @@ export const ShowPlayerDialog = <P extends BasePlayer>(
 // in short, when you write the flag a, you must add I after it, but this I will actually be ignored.
 
 samp.registerEvent("OnPlayerTextI18n", "iai");
-export const OnPlayerText = (fn: (playerid: number, buf: number[]) => void) => {
+export const OnPlayerText = (
+  fn: (playerid: number, buf: number[]) => number
+) => {
   // get the player input text
   // and you can decode with the player's charset;
   samp.addEventListener("OnPlayerTextI18n", fn);
@@ -98,7 +100,7 @@ export const OnPlayerText = (fn: (playerid: number, buf: number[]) => void) => {
 
 samp.registerEvent("OnPlayerCommandTextI18n", "iai");
 export const OnPlayerCommandText = (
-  fn: (playerid: number, buf: number[]) => void
+  fn: (playerid: number, buf: number[]) => number
 ) => {
   samp.addEventListener("OnPlayerCommandTextI18n", fn);
 };
@@ -111,14 +113,14 @@ export const OnDialogResponse = (
     response: number,
     listitem: number,
     inputbuf: number[]
-  ) => void
+  ) => number
 ) => {
   samp.addEventListener("OnDialogResponseI18n", fn);
 };
 
 samp.registerEvent("OnClientMessageI18n", "iai");
 export const OnClientMessage = (
-  fn: (color: number, text: string) => void,
+  fn: (color: number, text: string) => number,
   charset = BaseGameMode.charset
 ) => {
   samp.addEventListener(
@@ -131,7 +133,7 @@ export const OnClientMessage = (
 
 samp.registerEvent("OnRconCommandI18n", "ai");
 export const OnRconCommand = (
-  fn: (cmd: string) => void,
+  fn: (cmd: string) => number,
   charset = BaseGameMode.charset
 ) => {
   samp.addEventListener("OnRconCommandI18n", (buf: number[]): void => {
@@ -141,7 +143,7 @@ export const OnRconCommand = (
 
 samp.registerEvent("OnRconLoginAttemptI18n", "aiaii");
 export const OnRconLoginAttempt = (
-  fn: (ip: string, password: string, success: boolean) => void,
+  fn: (ip: string, password: string, success: boolean) => number,
   charset = BaseGameMode.charset
 ) => {
   samp.addEventListener(
