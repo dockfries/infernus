@@ -46,9 +46,10 @@ import {
   OnRconLoginAttempt,
 } from "@/utils/helperUtils";
 import { AllowNickNameCharacter } from "omp-wrapper";
+import { defaultCharset } from "./settings";
 
 export abstract class AbstractGM {
-  public static charset = "utf8";
+  public static charset = defaultCharset;
   protected abstract onInit(): void;
   protected abstract onExit(): void;
   protected abstract onIncomingConnection(

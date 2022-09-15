@@ -1,4 +1,4 @@
-import { BasePlayer } from "@/controllers";
+import { BasePlayer } from "@/controllers/player";
 import { DialogStylesEnum } from "../enums";
 import { EventFunc, EventName } from "../types";
 

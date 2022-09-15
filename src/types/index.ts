@@ -1,4 +1,4 @@
-import { BasePlayer } from "@/controllers";
+import { BasePlayer } from "@/controllers/player";
 import { ILocale } from "@/interfaces";
 
 export type EventName = string | string[];

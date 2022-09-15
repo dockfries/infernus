@@ -1,7 +1,9 @@
 import { rgba } from "./colorUtils";
-import { I18n, BaseGameMode, BasePlayer } from "@/controllers";
 import { IDialog } from "@/interfaces";
 import { LimitsEnum } from "@/enums";
+import { I18n } from "@/controllers/i18n";
+import { BasePlayer } from "@/controllers/player";
+import { defaultCharset as defaultCharset } from "@/controllers/gamemode/settings";
 
 type processTuple = [string, string | number[]];
 
@@ -121,7 +123,7 @@ export const OnDialogResponse = (
 samp.registerEvent("OnClientMessageI18n", "iai");
 export const OnClientMessage = (
   fn: (color: number, text: string) => number,
-  charset = BaseGameMode.charset
+  charset = defaultCharset
 ) => {
   samp.addEventListener(
     "OnClientMessageI18n",
@@ -134,7 +136,7 @@ export const OnClientMessage = (
 samp.registerEvent("OnRconCommandI18n", "ai");
 export const OnRconCommand = (
   fn: (cmd: string) => number,
-  charset = BaseGameMode.charset
+  charset = defaultCharset
 ) => {
   samp.addEventListener("OnRconCommandI18n", (buf: number[]): void => {
     fn(I18n.decodeFromBuf(buf, charset));
@@ -144,7 +146,7 @@ export const OnRconCommand = (
 samp.registerEvent("OnRconLoginAttemptI18n", "aiaii");
 export const OnRconLoginAttempt = (
   fn: (ip: string, password: string, success: boolean) => number,
-  charset = BaseGameMode.charset
+  charset = defaultCharset
 ) => {
   samp.addEventListener(
     "OnRconLoginAttemptI18n",
@@ -193,35 +195,35 @@ export const FindModelFileNameFromCRC = (crc: number): string => {
   const buf = I18n.getValidStr(
     samp.callNative("FindModelFileNameFromCRC", "iAi", crc, 255)
   );
-  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+  return I18n.decodeFromBuf(buf, defaultCharset);
 };
 
 export const FindTextureFileNameFromCRC = (crc: number): string => {
   const buf = I18n.getValidStr(
     samp.callNative("FindTextureFileNameFromCRC", "iAi", crc, 255)
   );
-  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+  return I18n.decodeFromBuf(buf, defaultCharset);
 };
 
 export const GetWeaponName = (weaponid: number): string => {
   const buf = I18n.getValidStr(
     samp.callNative("GetWeaponName", "iSi", weaponid, 32)
   );
-  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+  return I18n.decodeFromBuf(buf, defaultCharset);
 };
 
 export const NetStats_GetIpPort = (playerid: number): string => {
   const buf = I18n.getValidStr(
     samp.callNative("NetStats_GetIpPort", "iAi", playerid, 128 + 6)
   );
-  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+  return I18n.decodeFromBuf(buf, defaultCharset);
 };
 
 export const GetPlayerIp = (playerid: number): string => {
   const buf = I18n.getValidStr(
     samp.callNative("GetPlayerIp", "iAi", playerid, 128)
   );
-  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+  return I18n.decodeFromBuf(buf, defaultCharset);
 };
 
 export const GetAnimationName = (index: number): Array<string> => {
@@ -232,8 +234,8 @@ export const GetAnimationName = (index: number): Array<string> => {
     32,
     32
   );
-  const lib = I18n.decodeFromBuf(libBuf, BaseGameMode.charset);
-  const name = I18n.decodeFromBuf(nameBuf, BaseGameMode.charset);
+  const lib = I18n.decodeFromBuf(libBuf, defaultCharset);
+  const name = I18n.decodeFromBuf(nameBuf, defaultCharset);
   return [lib, name];
 };
 
@@ -241,5 +243,5 @@ export const GetPlayerVersion = (playerid: number): string => {
   const buf = I18n.getValidStr(
     samp.callNative("GetPlayerVersion", "iAi", playerid, 24)
   );
-  return I18n.decodeFromBuf(buf, BaseGameMode.charset);
+  return I18n.decodeFromBuf(buf, defaultCharset);
 };
