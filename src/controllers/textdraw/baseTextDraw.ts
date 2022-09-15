@@ -88,7 +88,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
       BaseTextDraw.createdGlobalCount--;
     } else {
       PlayerTextDrawDestroy(player.id, this.id);
-      BaseTextDraw.createdPlayerCount++;
+      BaseTextDraw.createdPlayerCount--;
     }
     textDrawBus.emit(textDrawHooks.destroyed, {
       id: this.id,
@@ -237,10 +237,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     logger.warn(`[BaseTextDraw]: Unable to ${msg} before create`);
   }
   private unregisterEvent() {
-    textDrawBus.emit(textDrawHooks.destroyed, {
-      key: { id: this.id, global: false },
-      value: this,
-    });
+    this.destroy();
     samp.removeEventListener("OnPlayerDisconnect", this.unregisterEvent);
     return 1;
   }
