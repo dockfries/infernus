@@ -9,6 +9,7 @@ import {
   PlayerTextDrawColor,
   PlayerTextDrawDestroy,
   PlayerTextDrawFont,
+  PlayerTextDrawHide,
   PlayerTextDrawLetterSize,
   PlayerTextDrawSetOutline,
   PlayerTextDrawSetPreviewModel,
@@ -18,6 +19,7 @@ import {
   PlayerTextDrawSetSelectable,
   PlayerTextDrawSetShadow,
   PlayerTextDrawSetString,
+  PlayerTextDrawShow,
   PlayerTextDrawUseBox,
   TextDrawAlignment,
   TextDrawBackgroundColor,
@@ -26,6 +28,8 @@ import {
   TextDrawCreate,
   TextDrawDestroy,
   TextDrawFont,
+  TextDrawHideForAll,
+  TextDrawHideForPlayer,
   TextDrawLetterSize,
   TextDrawSetOutline,
   TextDrawSetPreviewModel,
@@ -35,6 +39,8 @@ import {
   TextDrawSetSelectable,
   TextDrawSetShadow,
   TextDrawSetString,
+  TextDrawShowForAll,
+  TextDrawShowForPlayer,
   TextDrawTextSize,
   TextDrawUseBox,
 } from "@/wrapper/functions";
@@ -240,5 +246,44 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     this.destroy();
     samp.removeEventListener("OnPlayerDisconnect", this.unregisterEvent);
     return 1;
+  }
+  // player's textdraw should be shown / hidden only for whom it is created.
+  public show(player?: P): void | this {
+    const p = this.sourceInfo.player;
+    if (p) PlayerTextDrawShow(p.id, this.id);
+    else {
+      if (player) TextDrawShowForPlayer(player.id, this.id);
+      else return logger.warn("[BaseTextDraw]: invalid player for show");
+    }
+    return this;
+  }
+  public hide(player?: P): void | this {
+    const p = this.sourceInfo.player;
+    if (p) PlayerTextDrawHide(p.id, this.id);
+    else {
+      if (player) TextDrawHideForPlayer(player.id, this.id);
+      else return logger.warn("[BaseTextDraw]: invalid player for hide");
+    }
+    return this;
+  }
+  public showAll(): void | this {
+    const p = this.sourceInfo.player;
+    if (!p) {
+      TextDrawShowForAll(this.id);
+      return this;
+    }
+    return logger.warn(
+      "[BaseTextDraw]: player's textdraw should not be show for all."
+    );
+  }
+  public hideAll(): void | this {
+    const p = this.sourceInfo.player;
+    if (!p) {
+      TextDrawHideForAll(this.id);
+      return this;
+    }
+    return logger.warn(
+      "[BaseTextDraw]: player's textdraw should not be hide for all."
+    );
   }
 }
