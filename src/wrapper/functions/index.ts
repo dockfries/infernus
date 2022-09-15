@@ -523,7 +523,10 @@ export const TextDrawTextSize = (
   return samp.callNative("TextDrawTextSize", "iff", text, x, y);
 };
 
-export const TextDrawAlignment = (text: number, alignment: number): number => {
+export const TextDrawAlignment = (
+  text: number,
+  alignment: TextDrawAlignEnum
+): number => {
   return samp.callNative("TextDrawAlignment", "ii", text, alignment);
 };
 
@@ -604,9 +607,9 @@ export const TextDrawSetPreviewRot = (
   fRotX: number,
   fRotY: number,
   fRotZ: number,
-  fZoom: number
-): number => {
-  return samp.callNative(
+  fZoom = 1
+): void => {
+  samp.callNative(
     "TextDrawSetPreviewRot",
     "iffff",
     text,
@@ -619,15 +622,15 @@ export const TextDrawSetPreviewRot = (
 
 export const TextDrawSetPreviewVehCol = (
   text: number,
-  color1: number,
-  color2: number
-): number => {
-  return samp.callNative(
+  color1: string,
+  color2: string
+): void => {
+  samp.callNative(
     "TextDrawSetPreviewVehCol",
     "iii",
     text,
-    color1,
-    color2
+    rgba(color1),
+    rgba(color2)
   );
 };
 
@@ -2147,8 +2150,8 @@ export const PlayerTextDrawSetPreviewRot = (
 export const PlayerTextDrawSetPreviewVehCol = (
   playerid: number,
   text: number,
-  color1: number,
-  color2: number
+  color1: string,
+  color2: string
 ): number => {
   return samp.callNative(
     "PlayerTextDrawSetPreviewVehCol",
@@ -2674,15 +2677,12 @@ export const StopRecordingPlayerData = (playerid: number): number => {
   return samp.callNative("StopRecordingPlayerData", "i", playerid);
 };
 
-export const SelectTextDraw = (
-  playerid: number,
-  hovercolor: string
-): number => {
-  return samp.callNative("SelectTextDraw", "ii", playerid, rgba(hovercolor));
+export const SelectTextDraw = (playerid: number, hovercolor: string): void => {
+  samp.callNative("SelectTextDraw", "ii", playerid, rgba(hovercolor));
 };
 
-export const CancelSelectTextDraw = (playerid: number): number => {
-  return samp.callNative("CancelSelectTextDraw", "i", playerid);
+export const CancelSelectTextDraw = (playerid: number): void => {
+  samp.callNative("CancelSelectTextDraw", "i", playerid);
 };
 
 export const CreateExplosionForPlayer = (

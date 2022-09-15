@@ -1,3 +1,4 @@
+import { BasePlayer } from "@/controllers";
 import { DialogStylesEnum } from "../enums";
 import { EventFunc, EventName } from "../types";
 
@@ -69,4 +70,11 @@ export interface IBaseGangZone {
 export interface ICommonTextDrawKey {
   id: number;
   global: boolean;
+}
+
+export interface IBaseTextDraw<P extends BasePlayer> {
+  player?: P;
+  x: number;
+  y: number;
+  text: string;
 }

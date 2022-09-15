@@ -121,6 +121,8 @@ import {
   SetSpawnInfo,
   RedirectDownload,
   SendClientCheck,
+  SelectTextDraw,
+  CancelSelectTextDraw,
 } from "@/wrapper/functions";
 import { logger } from "@/logger";
 import { BaseGameMode } from "../gamemode";
@@ -841,5 +843,11 @@ export abstract class BasePlayer {
       memAddr = memOffset = byteCount = 0;
     }
     return SendClientCheck(this.id, type, memAddr, memOffset, byteCount);
+  }
+  public selectTextDraw(color: string): void {
+    SelectTextDraw(this.id, color);
+  }
+  public cancelSelectTextDraw(): void {
+    CancelSelectTextDraw(this.id);
   }
 }
