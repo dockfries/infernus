@@ -34,6 +34,7 @@ import {
   // WeaponEnum,
 } from "@/enums";
 import { throttle } from "lodash";
+import { BaseDialog } from "../dialog";
 
 // Each instance can be called to callbacks, so you can split the logic.
 
@@ -137,6 +138,7 @@ export abstract class BasePlayerEvent<
     OnPlayerDisconnect((playerid: number, reason: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
+      BaseDialog.close(p);
       const result = this.onDisconnect(p, reason);
       this.players.delete(playerid);
       return result;
