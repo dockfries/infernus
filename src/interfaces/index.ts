@@ -78,3 +78,8 @@ export interface IBaseTextDraw<P extends BasePlayer> {
   y: number;
   text: string;
 }
+
+export interface IDialogFuncQueue {
+  resolve: (value: IDialogResRaw | PromiseLike<IDialogResRaw>) => void;
+  reject: (reason: string) => void;
+}

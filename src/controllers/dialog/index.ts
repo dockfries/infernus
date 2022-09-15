@@ -3,7 +3,12 @@ import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helperUtils";
 import { HidePlayerDialog } from "omp-wrapper";
 import { BasePlayer } from "../player/basePlayer";
 import { I18n } from "../i18n";
-import { IDialog, IDialogResRaw, IDialogResResult } from "@/interfaces";
+import {
+  IDialog,
+  IDialogFuncQueue,
+  IDialogResRaw,
+  IDialogResResult,
+} from "@/interfaces";
 
 /* You don't need to define the dialog id, 
   but you need to pay attention to the fact that you shouldn't repeatedly new the dialog in the function, 
@@ -24,7 +29,7 @@ OnDialogResponse(
     if (!callback) return 0;
     // bug: does not trigger resolve of promise
     // fix: it only works if you put it in an event loop
-    setTimeout(() => callback({ response, listitem, inputbuf }));
+    setTimeout(() => callback.resolve({ response, listitem, inputbuf }));
     return 1;
   }
 );
@@ -34,10 +39,7 @@ export class BaseDialog<T extends BasePlayer> {
   private static CREATED_ID = -1;
   private static MAX_DIALOGID = 32767;
   private dialog: IDialog;
-  public static waitingQueue: Map<
-    number,
-    (value: IDialogResRaw | PromiseLike<IDialogResRaw>) => void
-  > = new Map();
+  public static waitingQueue: Map<number, IDialogFuncQueue> = new Map();
 
   constructor(
     dialog: IDialog = {
@@ -95,7 +97,15 @@ export class BaseDialog<T extends BasePlayer> {
 
   //#endregion
 
-  private static delDialogRecord<T extends BasePlayer>(player: T): boolean {
+  private static delDialogRecord<T extends BasePlayer>(
+    player: T,
+    reject = false
+  ): boolean {
+    if (reject) {
+      // if player disconnect and still await response
+      // should stop promise waiting
+      BaseDialog.waitingQueue.get(player.id)?.reject("forceclose");
+    }
     if (BaseDialog.waitingQueue.has(player.id)) {
       BaseDialog.waitingQueue.delete(player.id);
       return true;
@@ -105,28 +115,31 @@ export class BaseDialog<T extends BasePlayer> {
 
   public show(player: T): Promise<IDialogResResult> {
     return new Promise((resolve, reject) => {
-      try {
-        const p = new Promise<IDialogResRaw>((resolve) => {
-          BaseDialog.waitingQueue.set(player.id, resolve);
-          ShowPlayerDialog(player, this.id, this.dialog);
+      const p = new Promise<IDialogResRaw>((dialogResolve, dialogReject) => {
+        BaseDialog.waitingQueue.set(player.id, {
+          resolve: dialogResolve,
+          reject: dialogReject,
         });
-        p.then((DialogRes: IDialogResRaw) => {
-          BaseDialog.delDialogRecord(player);
+        ShowPlayerDialog(player, this.id, this.dialog);
+      });
+      p.then(
+        (DialogRes: IDialogResRaw) => {
           const { response, listitem } = DialogRes;
           const inputtext = I18n.decodeFromBuf(
             DialogRes.inputbuf,
             player.charset
           );
           resolve({ response, listitem, inputtext });
-        });
-      } catch (err) {
-        reject(err);
-      }
+        },
+        (reason: string) => reject(reason)
+      ).finally(() => {
+        BaseDialog.delDialogRecord(player);
+      });
     });
   }
 
   public static close<T extends BasePlayer>(player: T) {
-    BaseDialog.delDialogRecord(player);
+    BaseDialog.delDialogRecord(player, true);
     HidePlayerDialog(player.id);
   }
 }
