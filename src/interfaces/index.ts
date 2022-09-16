@@ -112,3 +112,10 @@ export interface IDynamicPickup extends IDynamicCommon {
 export interface IDynamicCheckPoint extends IDynamicCommon {
   size: number;
 }
+
+export interface IDynamicRaceCp extends IDynamicCheckPoint {
+  type: number;
+  nextx: number;
+  nexty: number;
+  nextz: number;
+}
