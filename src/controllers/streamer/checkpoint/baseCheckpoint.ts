@@ -55,10 +55,10 @@ export class DynamicCheckpoint {
         z,
         size,
         streamdistance,
-        worldid as unknown as number[],
-        interiorid as unknown as number[],
-        playerid as unknown as number[],
-        areaid as unknown as number[],
+        worldid,
+        interiorid,
+        playerid,
+        areaid,
         priority
       );
     } else {
@@ -77,10 +77,10 @@ export class DynamicCheckpoint {
         z,
         size,
         worldid,
-        interiorid as unknown as number,
-        playerid as unknown as number,
+        interiorid,
+        playerid,
         streamdistance,
-        areaid as unknown as number,
+        areaid,
         priority
       );
     }
