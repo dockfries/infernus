@@ -108,3 +108,7 @@ export interface IDynamicPickup extends IDynamicCommon {
   type: number;
   modelid: number;
 }
+
+export interface IDynamicCheckPoint extends IDynamicCommon {
+  size: number;
+}
