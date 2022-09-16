@@ -33,9 +33,14 @@ export class DynamicMapIcon {
       priority,
     } = this.sourceInfo;
     const { x, y, z, type, color, extended } = this.sourceInfo;
+
+    if (type < 0 || type > 63)
+      return logger.error("[StreamerMapIcon]: Invalid map icon type");
+
     style ??= MapIconStyles.LOCAL;
     streamdistance ??= StreamerDistances.MAP_ICON_SD;
     priority ??= 0;
+
     if (extended) {
       if (typeof worldid === "number") worldid = [-1];
       else worldid ??= [-1];

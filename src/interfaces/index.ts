@@ -1,5 +1,5 @@
 import { BasePlayer } from "@/controllers/player";
-import { MapIconStyles, StreamerItemTypes } from "omp-wrapper-streamer";
+import { MapIconStyles } from "omp-wrapper-streamer";
 import { DialogStylesEnum } from "../enums";
 import { TEventFunc, TEventName, TStreamerExtendable } from "../types";
 
@@ -85,13 +85,10 @@ export interface IDialogFuncQueue {
   reject: (reason: string) => void;
 }
 
-export interface IDynamicMapIcon {
+export interface IDynamicCommon {
   x: number;
   y: number;
   z: number;
-  type: StreamerItemTypes;
-  color: string;
-  style?: MapIconStyles;
   streamdistance?: number;
   worldid?: TStreamerExtendable;
   interiorid?: TStreamerExtendable;
@@ -99,4 +96,15 @@ export interface IDynamicMapIcon {
   areaid?: TStreamerExtendable;
   priority?: number;
   extended?: boolean;
+}
+
+export interface IDynamicMapIcon extends IDynamicCommon {
+  type: number;
+  color: string;
+  style?: MapIconStyles;
+}
+
+export interface IDynamicPickup extends IDynamicCommon {
+  type: number;
+  modelid: number;
 }
