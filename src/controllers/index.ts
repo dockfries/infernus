@@ -9,3 +9,4 @@ import "./netstats";
 import "./gametext";
 import "./menu";
 import "./gangzone";
+import "./streamer";
