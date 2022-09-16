@@ -1,10 +1,11 @@
 import { BasePlayer } from "@/controllers/player";
+import { MapIconStyles, StreamerItemTypes } from "omp-wrapper-streamer";
 import { DialogStylesEnum } from "../enums";
-import { EventFunc, EventName } from "../types";
+import { TEventFunc, TEventName, TStreamerExtendable } from "../types";
 
 export interface ICmd {
-  name: EventName;
-  fn: EventFunc;
+  name: TEventName;
+  fn: TEventFunc;
 }
 
 export interface IDialog {
@@ -82,4 +83,20 @@ export interface IBaseTextDraw<P extends BasePlayer> {
 export interface IDialogFuncQueue {
   resolve: (value: IDialogResRaw | PromiseLike<IDialogResRaw>) => void;
   reject: (reason: string) => void;
+}
+
+export interface IDynamicMapIcon {
+  x: number;
+  y: number;
+  z: number;
+  type: StreamerItemTypes;
+  color: string;
+  style?: MapIconStyles;
+  streamdistance?: number;
+  worldid?: TStreamerExtendable;
+  interiorid?: TStreamerExtendable;
+  playerid?: TStreamerExtendable;
+  areaid?: TStreamerExtendable;
+  priority?: number;
+  extended?: boolean;
 }

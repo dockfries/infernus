@@ -139,7 +139,7 @@ import {
   WeaponStatesEnum,
 } from "@/enums";
 import { BaseVehicle } from "../vehicle";
-import { basePos } from "@/types";
+import { TBasePos } from "@/types";
 import { GetPlayerWeather } from "omp-wrapper";
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
 
@@ -350,7 +350,7 @@ export abstract class BasePlayer {
   public setPos(x: number, y: number, z: number): number {
     return SetPlayerPos(this.id, x, y, z);
   }
-  public getPos(): basePos | undefined {
+  public getPos(): TBasePos | undefined {
     if (
       this.isSpectating() ||
       this.isWasted() ||
@@ -456,7 +456,7 @@ export abstract class BasePlayer {
   public setVelocity(x: number, y: number, z: number): number {
     return SetPlayerVelocity(this.id, x, y, z);
   }
-  public getVelocity(): basePos {
+  public getVelocity(): TBasePos {
     const [x, y, z] = GetPlayerVelocity(this.id);
     return { x, y, z };
   }
@@ -496,14 +496,14 @@ export abstract class BasePlayer {
   public getCameraAspectRatio(): number {
     return GetPlayerCameraAspectRatio(this.id);
   }
-  public getCameraFrontVector(): basePos {
+  public getCameraFrontVector(): TBasePos {
     const [x, y, z] = GetPlayerCameraFrontVector(this.id);
     return { x, y, z };
   }
   public getCameraMode(): CameraModesEnum {
     return GetPlayerCameraMode(this.id);
   }
-  public getCameraPos(): basePos {
+  public getCameraPos(): TBasePos {
     const [x, y, z] = GetPlayerCameraPos(this.id);
     return { x, y, z };
   }

@@ -1,25 +1,25 @@
-import { ILocales } from "@/types";
+import { TLocales } from "@/types";
 import { encode, decode, encodingExists } from "iconv-lite";
 import { logger } from "@/logger";
 import { merge } from "lodash";
 
 export class I18n {
-  private locales: ILocales;
-  private language: keyof ILocales;
+  private locales: TLocales;
+  private language: keyof TLocales;
 
-  constructor(defaultLocale: keyof ILocales, locales: ILocales) {
+  constructor(defaultLocale: keyof TLocales, locales: TLocales) {
     this.language = defaultLocale;
     this.locales = locales;
   }
 
-  public addLocales(locales: ILocales): void {
+  public addLocales(locales: TLocales): void {
     merge(this.locales, locales);
   }
 
   public $t(
     key: string,
     replaceable?: any[] | undefined | null,
-    lang: keyof ILocales = this.language
+    lang: keyof TLocales = this.language
   ): string {
     const { value } = this.locales[lang];
     let text = I18n.dotValue(value, key);

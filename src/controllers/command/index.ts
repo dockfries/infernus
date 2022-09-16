@@ -1,5 +1,5 @@
 import { ICmd } from "@/interfaces";
-import { EventFunc, EventName } from "@/types";
+import { TEventFunc, TEventName } from "@/types";
 import { BasePlayer } from "../player/basePlayer";
 
 // This is an event bus for distributing instructions entered by the user.
@@ -9,7 +9,7 @@ export class CmdBus {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  static on(eventName: EventName, eventFunction: EventFunc) {
+  static on(eventName: TEventName, eventFunction: TEventFunc) {
     const idx: number = CmdBus.findEventIdxByName(eventName);
     if (idx > -1)
       return console.log(
@@ -18,7 +18,7 @@ export class CmdBus {
     CmdBus.eventList.push({ name: eventName, fn: eventFunction });
   }
 
-  static off(eventName: EventName) {
+  static off(eventName: TEventName) {
     const idx: number = CmdBus.findEventIdxByName(eventName);
     if (idx === -1) return;
     CmdBus.eventList.splice(idx, 1);
@@ -26,7 +26,7 @@ export class CmdBus {
 
   static emit<T extends BasePlayer>(
     player: T,
-    userEventName: EventName,
+    userEventName: TEventName,
     userEventArgs: Array<string>
   ): boolean {
     const idx: number = CmdBus.findEventIdxByName(userEventName);
@@ -37,7 +37,7 @@ export class CmdBus {
     return false;
   }
 
-  private static findEventIdxByName(eventName: EventName): number {
+  private static findEventIdxByName(eventName: TEventName): number {
     return CmdBus.eventList.findIndex((v) => {
       const { name: registered } = v;
       if (registered instanceof Array) {

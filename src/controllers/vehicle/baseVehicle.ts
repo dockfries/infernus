@@ -1,7 +1,7 @@
 import { CarModTypeEnum, LimitsEnum, VehicleModelInfoEnum } from "@/enums";
 import { IVehicle } from "@/interfaces";
 import { logger } from "@/logger";
-import { basePos } from "@/types";
+import { TBasePos } from "@/types";
 import { isValidPaintJob, isValidVehComponent } from "@/utils/vehicleUtils";
 import {
   AddVehicleComponent,
@@ -175,7 +175,7 @@ export abstract class BaseVehicle {
     if (this.id === -1) return 0;
     return SetVehiclePos(this.id, x, y, z);
   }
-  public getPos(): void | basePos {
+  public getPos(): void | TBasePos {
     if (this.id === -1) return;
     return GetVehiclePos(this.id);
   }
@@ -230,7 +230,7 @@ export abstract class BaseVehicle {
     if (this.id === -1) return 0;
     return SetVehicleVelocity(this.id, X, Y, Z);
   }
-  public getVelocity(): void | basePos {
+  public getVelocity(): void | TBasePos {
     if (this.id === -1) return;
     const [x, y, z] = GetVehicleVelocity(this.id);
     return { x, y, z };
@@ -261,10 +261,10 @@ export abstract class BaseVehicle {
   public static getModelInfo(
     vehiclemodel: number,
     infotype: VehicleModelInfoEnum
-  ): basePos {
+  ): TBasePos {
     return GetVehicleModelInfo(vehiclemodel, infotype);
   }
-  public getModelInfo(infotype: VehicleModelInfoEnum): void | basePos {
+  public getModelInfo(infotype: VehicleModelInfoEnum): void | TBasePos {
     if (this.id === -1) return;
     return BaseVehicle.getModelInfo(this.getModel(), infotype);
   }
