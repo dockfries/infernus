@@ -161,10 +161,10 @@ export abstract class BasePlayer {
     this.settings.charset = charset;
   }
 
-  get locale(): string {
+  get locale(): string | undefined {
     return this.settings.locale;
   }
-  set locale(language: string) {
+  set locale(language: string | undefined) {
     this.settings.locale = language;
   }
 

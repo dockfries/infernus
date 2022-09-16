@@ -40,7 +40,7 @@ export interface ICmdErr {
 }
 
 export interface IPlayerSettings {
-  locale: string;
+  locale?: string;
   charset: string;
 }
 
