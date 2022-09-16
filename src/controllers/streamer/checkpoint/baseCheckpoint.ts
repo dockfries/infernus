@@ -1,6 +1,7 @@
 import { BasePlayer } from "@/controllers/player";
-import { IDynamicCheckPoint } from "@/interfaces";
+
 import { logger } from "@/logger";
+import { IDynamicCheckPoint } from "@/interfaces";
 import {
   CreateDynamicCP,
   CreateDynamicCPEx,
@@ -48,16 +49,16 @@ export class DynamicCheckpoint {
       if (typeof areaid === "number") areaid = [-1];
       else areaid ??= [-1];
 
-      this._id = CreateDynamicCP(
+      this._id = CreateDynamicCPEx(
         x,
         y,
         z,
         size,
-        worldid,
-        interiorid,
-        playerid,
         streamdistance,
-        areaid,
+        worldid as unknown as number[],
+        interiorid as unknown as number[],
+        playerid as unknown as number[],
+        areaid as unknown as number[],
         priority
       );
     } else {
@@ -70,16 +71,16 @@ export class DynamicCheckpoint {
       if (Array.isArray(areaid)) areaid = -1;
       else areaid ??= -1;
 
-      this._id = CreateDynamicCPEx(
+      this._id = CreateDynamicCP(
         x,
         y,
         z,
         size,
-        streamdistance,
         worldid,
-        interiorid,
-        playerid,
-        areaid,
+        interiorid as unknown as number,
+        playerid as unknown as number,
+        streamdistance,
+        areaid as unknown as number,
         priority
       );
     }
