@@ -196,7 +196,6 @@ export abstract class Streamer {
   ): number {
     return Streamer_UpdateEx(
       player.id,
-      type,
       x,
       y,
       z,
