@@ -75,24 +75,15 @@ export const GetMaxPlayers = (): number => {
   return samp.callNative("GetMaxPlayers", "");
 };
 
-export const VectorSize = (x: number, y: number, z: number): number => {
-  return samp.callNativeFloat("VectorSize", "fff", x, y, z);
-};
-
-export const asin = (value: number): number => {
-  return samp.callNativeFloat("asin", "f", value);
-};
-
-export const acos = (value: number): number => {
-  return samp.callNativeFloat("acos", "f", value);
-};
-
-export const atan = (value: number): number => {
-  return samp.callNativeFloat("atan", "f", value);
-};
-
-export const atan2 = (y: number, x: number): number => {
-  return samp.callNativeFloat("atan2", "ff", y, x);
+export const VectorSize = (
+  x1: number,
+  y1: number,
+  z1: number,
+  x2: number,
+  y2: number,
+  z2: number
+): number => {
+  return samp.callNativeFloat("VectorSize", "ffffff", x1, y1, z1, x2, y2, z2);
 };
 
 export const GetPlayerPoolSize = (): number => {

@@ -36,6 +36,7 @@ import {
   ShowPlayerMarkers,
   UnBlockIpAddress,
   UsePlayerPedAnims,
+  VectorSize,
 } from "@/wrapper/functions";
 import { logger } from "@/logger";
 import {
@@ -266,4 +267,5 @@ export abstract class BaseGameMode extends AbstractGM {
     return AllowNickNameCharacter(singleChar, allow);
   }
   public static setObjectsDefaultCameraCol = SetObjectsDefaultCameraCol;
+  public static vectorSize = VectorSize;
 }
