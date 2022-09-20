@@ -1,22 +1,35 @@
-import { BasePlayer } from "@/main";
+import { BasePlayer } from "@/controllers/player";
 import {
   StreamerItemTypes,
   Streamer_AmxUnloadDestroyItems,
+  Streamer_CountItems,
+  Streamer_CountVisibleItems,
+  Streamer_DestroyAllItems,
+  Streamer_DestroyAllVisibleItems,
+  Streamer_GetAllVisibleItems,
   Streamer_GetCellDistance,
   Streamer_GetCellSize,
   Streamer_GetChunkSize,
   Streamer_GetChunkTickRate,
+  Streamer_GetDistanceToItem,
+  Streamer_GetItemInternalID,
+  Streamer_GetItemOffset,
+  Streamer_GetItemPos,
+  Streamer_GetItemStreamerID,
   Streamer_GetLastUpdateTime,
   Streamer_GetMaxItems,
+  Streamer_GetNearbyItems,
   Streamer_GetPlayerTickRate,
   Streamer_GetRadiusMultiplier,
   Streamer_GetTickRate,
   Streamer_GetTypePriority,
   Streamer_GetVisibleItems,
+  Streamer_IsItemVisible,
   Streamer_IsToggleCameraUpdate,
   Streamer_IsToggleChunkStream,
   Streamer_IsToggleErrorCallback,
   Streamer_IsToggleIdleUpdate,
+  Streamer_IsToggleItem,
   Streamer_IsToggleItemCallbacks,
   Streamer_IsToggleItemInvAreas,
   Streamer_IsToggleItemStatic,
@@ -29,16 +42,20 @@ import {
   Streamer_SetCellSize,
   Streamer_SetChunkSize,
   Streamer_SetChunkTickRate,
+  Streamer_SetItemOffset,
+  Streamer_SetItemPos,
   Streamer_SetMaxItems,
   Streamer_SetPlayerTickRate,
   Streamer_SetRadiusMultiplier,
   Streamer_SetTickRate,
   Streamer_SetTypePriority,
   Streamer_SetVisibleItems,
+  Streamer_ToggleAllItems,
   Streamer_ToggleCameraUpdate,
   Streamer_ToggleChunkStream,
   Streamer_ToggleErrorCallback,
   Streamer_ToggleIdleUpdate,
+  Streamer_ToggleItem,
   Streamer_ToggleItemCallbacks,
   Streamer_ToggleItemInvAreas,
   Streamer_ToggleItemStatic,
@@ -206,6 +223,79 @@ export abstract class Streamer {
       freezeplayer
     );
   }
+  public static getDistanceToItem = Streamer_GetDistanceToItem;
+  public static toggleItem<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes,
+    id: number,
+    toggle: boolean
+  ): number {
+    return Streamer_ToggleItem(player.id, type, id, toggle);
+  }
+  public static isToggleItem<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes,
+    id: number
+  ): boolean {
+    return Streamer_IsToggleItem(player.id, type, id);
+  }
+  public static toggleAllItems<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes,
+    toggle: boolean,
+    exceptions: number[] = [-1]
+  ): number {
+    return Streamer_ToggleAllItems(player.id, type, toggle, exceptions);
+  }
+  public static getItemInternalID<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes,
+    streamerid: number
+  ): number {
+    return Streamer_GetItemInternalID(player.id, type, streamerid);
+  }
+  public static getItemStreamerID<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes,
+    internalid: number
+  ): number {
+    return Streamer_GetItemStreamerID(player.id, type, internalid);
+  }
+  public static isItemVisible<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes,
+    id: number
+  ): boolean {
+    return Streamer_IsItemVisible(player.id, type, id);
+  }
+  public static destroyAllVisibleItems<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes,
+    serverwide = 1
+  ): number {
+    return Streamer_DestroyAllVisibleItems(player.id, type, serverwide);
+  }
+  public static countVisibleItems<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes,
+    serverwide = 1
+  ): number {
+    return Streamer_CountVisibleItems(player.id, type, serverwide);
+  }
+  public static destroyAllItems = Streamer_DestroyAllItems;
+  public static countItems = Streamer_CountItems;
+  public static getNearbyItems = Streamer_GetNearbyItems;
+  public static getAllVisibleItems<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes,
+    items: number[]
+  ): void {
+    Streamer_GetAllVisibleItems(player.id, type, items);
+  }
+  public static getItemPos = Streamer_GetItemPos;
+  public static setItemPos = Streamer_SetItemPos;
+  public static getItemOffset = Streamer_GetItemOffset;
+  public static setItemOffset = Streamer_SetItemOffset;
   public abstract onItemStreamIn(
     type: StreamerItemTypes,
     id: number,

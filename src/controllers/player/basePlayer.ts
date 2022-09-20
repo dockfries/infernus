@@ -123,6 +123,8 @@ import {
   SendClientCheck,
   SelectTextDraw,
   CancelSelectTextDraw,
+  SelectObject,
+  CancelEdit,
 } from "@/wrapper/functions";
 import { logger } from "@/logger";
 import {
@@ -845,5 +847,11 @@ export abstract class BasePlayer {
   }
   public cancelSelectTextDraw(): void {
     CancelSelectTextDraw(this.id);
+  }
+  public selectObject(): void {
+    SelectObject(this.id);
+  }
+  public cancelEdit() {
+    CancelEdit(this.id);
   }
 }
