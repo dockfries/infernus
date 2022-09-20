@@ -3,7 +3,7 @@ import { IDialog } from "@/interfaces";
 import { LimitsEnum } from "@/enums";
 import { I18n } from "@/controllers/i18n";
 import { BasePlayer } from "@/controllers/player";
-import { defaultCharset as defaultCharset } from "@/controllers/gamemode/settings";
+import { defaultCharset } from "@/controllers/gamemode/settings";
 
 type processTuple = [string, string | number[]];
 
@@ -246,5 +246,109 @@ export const GetPlayerVersion = (playerid: number): string => {
   return I18n.decodeFromBuf(buf, defaultCharset);
 };
 
-// samp.registerEvent("OnMain", "");
-// export const OnMain = (fn: () => void) => samp.addEventListener("OnMain", fn);
+export const CreateDynamic3DTextLabel = (
+  charset: string,
+  text: string,
+  color: number,
+  x: number,
+  y: number,
+  z: number,
+  drawdistance: number,
+  attachedplayer: number,
+  attachedvehicle: number,
+  testlos: boolean,
+  worldid: number,
+  interiorid: number,
+  playerid: number,
+  streamdistance: number,
+  areaid: number,
+  priority: number
+): number => {
+  const buf = I18n.encodeToBuf(text, charset);
+  return samp.callNative(
+    "CreateDynamic3DTextLabel",
+    "aiffffiiiiiifii",
+    buf,
+    color,
+    x,
+    y,
+    z,
+    drawdistance,
+    attachedplayer,
+    attachedvehicle,
+    testlos,
+    worldid,
+    interiorid,
+    playerid,
+    streamdistance,
+    areaid,
+    priority
+  );
+};
+
+export const CreateDynamic3DTextLabelEx = (
+  text: string,
+  color: number,
+  x: number,
+  y: number,
+  z: number,
+  drawdistance: number,
+  attachedplayer: number,
+  attachedvehicle: number,
+  testlos: boolean,
+  streamdistance: number,
+  worlds: number[],
+  interiors: number[],
+  players: number[],
+  areas: number[],
+  priority: number,
+  charset: string
+): number => {
+  const buf = I18n.encodeToBuf(text, charset);
+  return samp.callNative(
+    "CreateDynamic3DTextLabelEx",
+    "aiffffiiifaaaaiiiii",
+    buf,
+    color,
+    x,
+    y,
+    z,
+    drawdistance,
+    attachedplayer,
+    attachedvehicle,
+    testlos,
+    streamdistance,
+    worlds,
+    interiors,
+    players,
+    areas,
+    priority,
+    worlds.length,
+    interiors.length,
+    players.length,
+    areas.length
+  );
+};
+
+export const UpdateDynamic3DTextLabelText = (
+  id: number,
+  color: number,
+  text: string,
+  charset: string
+): number => {
+  const buf = I18n.encodeToBuf(text, charset);
+  return samp.callNative("UpdateDynamic3DTextLabelText", "iia", id, color, buf);
+};
+
+export const GetDynamic3DTextLabelText = (
+  id: number,
+  charset: string
+): string => {
+  const buf: number[] = samp.callNative(
+    "GetDynamic3DTextLabelText",
+    "iAi",
+    id,
+    1024
+  );
+  return I18n.decodeFromBuf(I18n.getValidStr(buf), charset);
+};

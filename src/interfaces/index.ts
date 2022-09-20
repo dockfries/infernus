@@ -120,9 +120,19 @@ export interface IDynamicRaceCp extends IDynamicCheckPoint {
   nextz: number;
 }
 
-export interface IDynamicActor extends IDynamicCheckPoint {
+export interface IDynamicActor extends IDynamicCommon {
   r: number;
   modelid: number;
   invulnerable: boolean;
   health: number;
+}
+
+export interface IDynamic3DTextLabel extends IDynamicCommon {
+  text: string;
+  color: string;
+  attachedplayer?: number;
+  attachedvehicle?: number;
+  testlos?: boolean;
+  charset: string;
+  drawdistance: number;
 }
