@@ -6,20 +6,25 @@ import {
   Streamer_GetCellSize,
   Streamer_GetChunkSize,
   Streamer_GetChunkTickRate,
+  Streamer_GetLastUpdateTime,
   Streamer_GetMaxItems,
   Streamer_GetPlayerTickRate,
   Streamer_GetRadiusMultiplier,
   Streamer_GetTickRate,
   Streamer_GetTypePriority,
   Streamer_GetVisibleItems,
+  Streamer_IsToggleCameraUpdate,
   Streamer_IsToggleChunkStream,
   Streamer_IsToggleErrorCallback,
+  Streamer_IsToggleIdleUpdate,
   Streamer_IsToggleItemCallbacks,
   Streamer_IsToggleItemInvAreas,
   Streamer_IsToggleItemStatic,
+  Streamer_IsToggleItemUpdate,
   Streamer_OnItemStreamIn,
   Streamer_OnItemStreamOut,
   Streamer_OnPluginError,
+  Streamer_ProcessActiveItems,
   Streamer_SetCellDistance,
   Streamer_SetCellSize,
   Streamer_SetChunkSize,
@@ -30,11 +35,16 @@ import {
   Streamer_SetTickRate,
   Streamer_SetTypePriority,
   Streamer_SetVisibleItems,
+  Streamer_ToggleCameraUpdate,
   Streamer_ToggleChunkStream,
   Streamer_ToggleErrorCallback,
+  Streamer_ToggleIdleUpdate,
   Streamer_ToggleItemCallbacks,
   Streamer_ToggleItemInvAreas,
   Streamer_ToggleItemStatic,
+  Streamer_ToggleItemUpdate,
+  Streamer_Update,
+  Streamer_UpdateEx,
 } from "omp-wrapper-streamer";
 
 export abstract class Streamer {
@@ -132,6 +142,71 @@ export abstract class Streamer {
   public static toggleErrorCallback = Streamer_ToggleErrorCallback;
   public static isToggleErrorCallback = Streamer_IsToggleErrorCallback;
   public static amxUnloadDestroyItems = Streamer_AmxUnloadDestroyItems;
+  public static processActiveItems = Streamer_ProcessActiveItems;
+  public static toggleIdleUpdate<P extends BasePlayer>(
+    player: P,
+    toggle: boolean
+  ): number {
+    return Streamer_ToggleIdleUpdate(player.id, toggle);
+  }
+  public static isToggleIdleUpdate<P extends BasePlayer>(player: P): boolean {
+    return Streamer_IsToggleIdleUpdate(player.id);
+  }
+  public static toggleCameraUpdate<P extends BasePlayer>(
+    player: P,
+    toggle: boolean
+  ): number {
+    return Streamer_ToggleCameraUpdate(player.id, toggle);
+  }
+  public static isToggleCameraUpdate<P extends BasePlayer>(player: P): boolean {
+    return Streamer_IsToggleCameraUpdate(player.id);
+  }
+  public static toggleItemUpdate<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes,
+    toggle: boolean
+  ): number {
+    return Streamer_ToggleItemUpdate(player.id, type, toggle);
+  }
+  public static isToggleItemUpdate<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes
+  ): boolean {
+    return Streamer_IsToggleItemUpdate(player.id, type);
+  }
+  public static getLastUpdateTime(): number {
+    return Streamer_GetLastUpdateTime();
+  }
+  public static update<P extends BasePlayer>(
+    player: P,
+    type: StreamerItemTypes | -1 = -1
+  ): number {
+    return Streamer_Update(player.id, type);
+  }
+  public static updateEx<P extends BasePlayer>(
+    player: P,
+    x: number,
+    y: number,
+    z: number,
+    worldid?: number,
+    interiorid?: number,
+    type?: StreamerItemTypes | -1,
+    compensatedtime?: number,
+    freezeplayer?: boolean
+  ): number {
+    return Streamer_UpdateEx(
+      player.id,
+      type,
+      x,
+      y,
+      z,
+      worldid,
+      interiorid,
+      type,
+      compensatedtime,
+      freezeplayer
+    );
+  }
   public abstract onItemStreamIn(
     type: StreamerItemTypes,
     id: number,
