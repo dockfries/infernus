@@ -136,3 +136,11 @@ export interface IDynamic3DTextLabel extends IDynamicCommon {
   charset: string;
   drawdistance: number;
 }
+
+export interface IDynamicObject extends IDynamicCommon {
+  modelid: number;
+  rx: number;
+  ry: number;
+  rz: number;
+  drawdistance?: number;
+}
