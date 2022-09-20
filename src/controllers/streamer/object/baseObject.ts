@@ -1,31 +1,9 @@
 import { InvalidEnum } from "@/enums";
 import type { IDynamicObject } from "@/interfaces";
+import type { BaseVehicle } from "@/controllers/vehicle";
+import type { BasePlayer } from "@/controllers/player";
 import { logger } from "@/logger";
-import { BasePlayer, BaseVehicle } from "@/main";
-import {
-  AttachCameraToDynamicObject,
-  AttachDynamicObjectToObject,
-  AttachDynamicObjectToPlayer,
-  AttachDynamicObjectToVehicle,
-  CreateDynamicObject,
-  CreateDynamicObjectEx,
-  DestroyDynamicObject,
-  EditDynamicObject,
-  GetDynamicObjectPos,
-  GetDynamicObjectRot,
-  GetPlayerCameraTargetDynObject,
-  IsDynamicObjectMaterialTextUsed,
-  IsDynamicObjectMaterialUsed,
-  IsDynamicObjectMoving,
-  IsValidDynamicObject,
-  MoveDynamicObject,
-  RemoveDynamicObjectMaterial,
-  RemoveDynamicObjectMaterialText,
-  SetDynamicObjectPos,
-  SetDynamicObjectRot,
-  StopDynamicObject,
-  StreamerDistances,
-} from "omp-wrapper-streamer";
+import * as ows from "omp-wrapper-streamer";
 import { objectBus, objectHooks } from "./objectBus";
 
 export class DynamicObject {
@@ -53,8 +31,8 @@ export class DynamicObject {
     } = this.sourceInfo;
     const { modelid, x, y, z, rx, ry, rz, extended } = this.sourceInfo;
 
-    streamdistance ??= StreamerDistances.OBJECT_SD;
-    drawdistance ??= StreamerDistances.OBJECT_DD;
+    streamdistance ??= ows.StreamerDistances.OBJECT_SD;
+    drawdistance ??= ows.StreamerDistances.OBJECT_DD;
     priority ??= 0;
 
     if (extended) {
@@ -67,7 +45,7 @@ export class DynamicObject {
       if (typeof areaid === "number") areaid = [-1];
       else areaid ??= [-1];
 
-      this._id = CreateDynamicObjectEx(
+      this._id = ows.CreateDynamicObjectEx(
         modelid,
         x,
         y,
@@ -93,7 +71,7 @@ export class DynamicObject {
       if (Array.isArray(areaid)) areaid = -1;
       else areaid ??= -1;
 
-      this._id = CreateDynamicObject(
+      this._id = ows.CreateDynamicObject(
         modelid,
         x,
         y,
@@ -120,37 +98,37 @@ export class DynamicObject {
       return logger.warn(
         "[StreamerObject]: Unable to destroy the object before create"
       );
-    DestroyDynamicObject(this.id);
+    ows.DestroyDynamicObject(this.id);
     objectBus.emit(objectHooks.destroyed, this);
     return this;
   }
 
   public static isValid(object: DynamicObject): boolean {
-    return IsValidDynamicObject(object.id);
+    return ows.IsValidDynamicObject(object.id);
   }
 
   public getPos() {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot get position before create");
-    return GetDynamicObjectPos(this.id);
+    return ows.GetDynamicObjectPos(this.id);
   }
 
   public setPos(x: number, y: number, z: number): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot set position before create");
-    return SetDynamicObjectPos(this.id, x, y, z);
+    return ows.SetDynamicObjectPos(this.id, x, y, z);
   }
 
   public getRot() {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot get rotation before create");
-    return GetDynamicObjectRot(this.id);
+    return ows.GetDynamicObjectRot(this.id);
   }
 
   public setRot(rx: number, ry: number, rz: number): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot set rotation before create");
-    return SetDynamicObjectRot(this.id, rx, ry, rz);
+    return ows.SetDynamicObjectRot(this.id, rx, ry, rz);
   }
 
   public move(
@@ -172,18 +150,18 @@ export class DynamicObject {
         "[StreamerObject]: speed more than 120 seconds, warn if it's not intentional"
       );
     if (this.isMoving()) this.stop();
-    return MoveDynamicObject(this.id, x, y, z, speed, rx, ry, rz);
+    return ows.MoveDynamicObject(this.id, x, y, z, speed, rx, ry, rz);
   }
 
   public stop(): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot stop moving before create");
-    return StopDynamicObject(this.id);
+    return ows.StopDynamicObject(this.id);
   }
 
   public isMoving(): boolean {
     if (this.id === -1) return false;
-    return IsDynamicObjectMoving(this.id);
+    return ows.IsDynamicObjectMoving(this.id);
   }
 
   public attachCamera<P extends BasePlayer>(player: P): void | number {
@@ -191,7 +169,7 @@ export class DynamicObject {
       return logger.warn(
         "[StreamerObject]: Cannot attachCamera before both are created"
       );
-    return AttachCameraToDynamicObject(player.id, this.id);
+    return ows.AttachCameraToDynamicObject(player.id, this.id);
   }
 
   public attachToObject<O extends DynamicObject>(
@@ -208,7 +186,7 @@ export class DynamicObject {
       return logger.warn(
         "[StreamerObject]: Cannot attachToObject before both are created"
       );
-    return AttachDynamicObjectToObject(
+    return ows.AttachDynamicObjectToObject(
       this.id,
       attachto.id,
       offsetx,
@@ -234,7 +212,7 @@ export class DynamicObject {
       return logger.warn(
         "[StreamerObject]: Cannot attachToVehicle before both are created"
       );
-    return AttachDynamicObjectToPlayer(
+    return ows.AttachDynamicObjectToPlayer(
       this.id,
       player.id,
       offsetx,
@@ -259,7 +237,7 @@ export class DynamicObject {
       return logger.warn(
         "[StreamerObject]: Cannot attachToVehicle before both are created"
       );
-    return AttachDynamicObjectToVehicle(
+    return ows.AttachDynamicObjectToVehicle(
       this.id,
       vehicle.id,
       offsetx,
@@ -275,49 +253,49 @@ export class DynamicObject {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Unable to edit before create");
     player.cancelEdit();
-    return EditDynamicObject(player.id, this.id);
+    return ows.EditDynamicObject(player.id, this.id);
   }
 
   public isMaterialUsed(materialIndex: number): boolean {
     if (this.id === -1) return false;
-    return IsDynamicObjectMaterialUsed(this.id, materialIndex);
+    return ows.IsDynamicObjectMaterialUsed(this.id, materialIndex);
   }
 
   public removeMaterial(materialIndex: number): number {
     if (this.id === -1) return 0;
     if (!this.isMaterialUsed(materialIndex)) return 0;
-    return RemoveDynamicObjectMaterial(this.id, materialIndex);
+    return ows.RemoveDynamicObjectMaterial(this.id, materialIndex);
   }
 
   // public getMaterial(materialIndex: number) {
   //   // need i18n
-  //   // return GetDynamicObjectMaterialText(this.id, materialIndex);
+  //   // return ows.GetDynamicObjectMaterialText(this.id, materialIndex);
   // }
 
   // need i18n
-  // SetDynamicObjectMaterial(objectid, materialindex, modelid, const txdname[], const texturename[], materialcolor = 0)
+  // ows.SetDynamicObjectMaterial(objectid, materialindex, modelid, const txdname[], const texturename[], materialcolor = 0)
 
   public isMaterialTextUsed(materialIndex: number): boolean {
     if (this.id === -1) return false;
-    return IsDynamicObjectMaterialTextUsed(this.id, materialIndex);
+    return ows.IsDynamicObjectMaterialTextUsed(this.id, materialIndex);
   }
 
   public removeMaterialText(materialIndex: number) {
     if (!this.isMaterialTextUsed(materialIndex)) return 0;
-    return RemoveDynamicObjectMaterialText(this.id, materialIndex);
+    return ows.RemoveDynamicObjectMaterialText(this.id, materialIndex);
   }
 
   // need i18n
-  // GetDynamicObjectMaterialText(objectid, materialindex, text[], &materialsize, fontface[], &fontsize, &bold, &fontcolor, &backcolor, &textalignment, maxtext = sizeof text, maxfontface = sizeof fontface)
+  // ows.GetDynamicObjectMaterialText(objectid, materialindex, text[], &materialsize, fontface[], &fontsize, &bold, &fontcolor, &backcolor, &textalignment, maxtext = sizeof text, maxfontface = sizeof fontface)
 
   // need i18n
-  // SetDynamicObjectMaterialText(objectid, materialindex, const text[], materialsize = OBJECT_MATERIAL_SIZE_256x128, const fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, textalignment = 0)
+  // ows.SetDynamicObjectMaterialText(objectid, materialindex, const text[], materialsize = OBJECT_MATERIAL_SIZE_256x128, const fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, textalignment = 0)
 
   public getPlayerCameraTarget<P extends BasePlayer, O extends DynamicObject>(
     player: P,
     objMap: Map<number, O>
   ): void | O {
-    const dynId = GetPlayerCameraTargetDynObject(player.id);
+    const dynId = ows.GetPlayerCameraTargetDynObject(player.id);
     if (dynId === InvalidEnum.OBJECT_ID) return;
     return objMap.get(dynId);
   }
