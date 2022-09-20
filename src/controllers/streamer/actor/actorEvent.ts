@@ -6,7 +6,7 @@ import {
 import { actorBus, actorHooks } from "./actorBus";
 import { DynamicActor } from "./baseActor";
 
-export abstract class DynamicRaceCPEvent<
+export abstract class DynamicActorEvent<
   P extends BasePlayer,
   A extends DynamicActor
 > {
