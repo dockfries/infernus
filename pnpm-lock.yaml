@@ -10,7 +10,7 @@ specifiers:
   iconv-lite: ^0.6.3
   lodash: ^4.17.21
   omp-wrapper: latest
-  omp-wrapper-streamer: ^0.0.7
+  omp-wrapper-streamer: latest
   pino: ^8.4.2
   pino-pretty: ^9.1.0
   rollup: ^2.77.2
@@ -25,7 +25,7 @@ dependencies:
   iconv-lite: 0.6.3
   lodash: 4.17.21
   omp-wrapper: 0.0.9
-  omp-wrapper-streamer: 0.0.7
+  omp-wrapper-streamer: 0.0.8
   pino: 8.4.2
   pino-pretty: 9.1.0
 
@@ -1127,8 +1127,8 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /omp-wrapper-streamer/0.0.7:
-    resolution: {integrity: sha512-Ls52Zlef9yBCKmlpO/OMr7hhOzaL6N+FOYpbAkVWevcd74loDyCRMC+2S0IYhyquGdfz5/xV4mL8C8OAXqbZzA==}
+  /omp-wrapper-streamer/0.0.8:
+    resolution: {integrity: sha512-vMkyDUOQaIV8GBsVnG+R+50VD/MUox+8XlsZp1z0LlN/23XJPArnRvOgSgel/zcHoMmxqtLlOFWawr3RI6JQgw==}
     dev: false
 
   /omp-wrapper/0.0.9:
