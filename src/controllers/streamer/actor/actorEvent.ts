@@ -1,7 +1,9 @@
 import type { BasePlayer } from "@/controllers/player";
+import type { BodyPartsEnum } from "@/enums";
 import {
   OnDynamicActorStreamIn,
   OnDynamicActorStreamOut,
+  OnPlayerGiveDamageDynamicActor,
 } from "omp-wrapper-streamer";
 import { actorBus, actorHooks } from "./actorBus";
 import { DynamicActor } from "./baseActor";
@@ -35,10 +37,32 @@ export abstract class DynamicActorEvent<
       if (!p) return 0;
       return this.onStreamOut(act, p);
     });
+    OnPlayerGiveDamageDynamicActor(
+      (
+        playerid: number,
+        actorid: number,
+        amount: number,
+        weaponid: number,
+        bodypart: number
+      ): number => {
+        const act = this.actors.get(actorid);
+        if (!act) return 0;
+        const p = this.players.get(playerid);
+        if (!p) return 0;
+        return this.onPlayerGiveDamage(p, act, amount, weaponid, bodypart);
+      }
+    );
   }
 
   protected abstract onStreamIn(actor: A, player: P): number;
   protected abstract onStreamOut(actor: A, player: P): number;
+  protected abstract onPlayerGiveDamage(
+    player: P,
+    actor: A,
+    amount: number,
+    weaponid: number,
+    bodypart: BodyPartsEnum
+  ): number;
 
   public getActorsArr(): Array<A> {
     return [...this.actors.values()];
