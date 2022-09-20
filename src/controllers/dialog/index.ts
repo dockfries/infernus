@@ -115,6 +115,7 @@ export class BaseDialog<T extends BasePlayer> {
 
   public show(player: T): Promise<IDialogResResult> {
     return new Promise((resolve, reject) => {
+      BaseDialog.close(player);
       const p = new Promise<IDialogResRaw>((dialogResolve, dialogReject) => {
         BaseDialog.waitingQueue.set(player.id, {
           resolve: dialogResolve,
