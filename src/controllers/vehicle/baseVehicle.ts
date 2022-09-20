@@ -1,7 +1,7 @@
 import { CarModTypeEnum, LimitsEnum, VehicleModelInfoEnum } from "@/enums";
-import { IVehicle } from "@/interfaces";
+import type { IVehicle } from "@/interfaces";
 import { logger } from "@/logger";
-import { TBasePos } from "@/types";
+import type { TBasePos } from "@/types";
 import { isValidPaintJob, isValidVehComponent } from "@/utils/vehicleUtils";
 import {
   AddVehicleComponent,
@@ -53,7 +53,7 @@ import {
   AddStaticVehicleEx,
   AddStaticVehicle,
 } from "@/wrapper/functions";
-import { BasePlayer } from "../player";
+import type { BasePlayer } from "../player";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
 
 export abstract class BaseVehicle {

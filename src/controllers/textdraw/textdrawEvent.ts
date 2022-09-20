@@ -4,8 +4,8 @@ import {
   OnPlayerClickPlayerTextDraw,
   OnPlayerClickTextDraw,
 } from "@/wrapper/callbacks";
-import { BasePlayer } from "../player";
-import { BaseTextDraw } from "./baseTextDraw";
+import type { BasePlayer } from "../player";
+import type { BaseTextDraw } from "./baseTextDraw";
 import { textDrawBus, textDrawHooks } from "./textdrawBus";
 
 export abstract class BaseTextDrawEvent<

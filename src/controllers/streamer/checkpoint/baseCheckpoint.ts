@@ -1,7 +1,6 @@
-import { BasePlayer } from "@/controllers/player";
-
+import type { BasePlayer } from "@/controllers/player";
 import { logger } from "@/logger";
-import { IDynamicCheckPoint } from "@/interfaces";
+import type { IDynamicCheckPoint } from "@/interfaces";
 import {
   CreateDynamicCP,
   CreateDynamicCPEx,

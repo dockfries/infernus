@@ -1,4 +1,4 @@
-import { IDynamicMapIcon } from "@/interfaces";
+import type { IDynamicMapIcon } from "@/interfaces";
 import { logger } from "@/logger";
 import { rgba } from "@/utils/colorUtils";
 

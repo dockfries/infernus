@@ -1,5 +1,5 @@
 import { LimitsEnum, TextDrawAlignEnum, TextDrawFontsEnum } from "@/enums";
-import { IBaseTextDraw } from "@/interfaces";
+import type { IBaseTextDraw } from "@/interfaces";
 import { logger } from "@/logger";
 import {
   CreatePlayerTextDraw,
@@ -44,7 +44,7 @@ import {
   TextDrawTextSize,
   TextDrawUseBox,
 } from "@/wrapper/functions";
-import { BasePlayer } from "../player";
+import type { BasePlayer } from "../player";
 import { textDrawBus, textDrawHooks } from "./textdrawBus";
 
 export abstract class BaseTextDraw<P extends BasePlayer> {

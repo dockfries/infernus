@@ -14,8 +14,8 @@ import {
   OnVehicleStreamOut,
   OnTrailerUpdate,
 } from "@/wrapper/callbacks";
-import { BasePlayer } from "../player";
-import { BaseVehicle } from "./baseVehicle";
+import type { BasePlayer } from "../player";
+import type { BaseVehicle } from "./baseVehicle";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
 
 export abstract class BaseVehicleEvent<

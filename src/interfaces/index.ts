@@ -119,3 +119,10 @@ export interface IDynamicRaceCp extends IDynamicCheckPoint {
   nexty: number;
   nextz: number;
 }
+
+export interface IDynamicActor extends IDynamicCheckPoint {
+  r: number;
+  modelid: number;
+  invulnerable: boolean;
+  health: number;
+}

@@ -1,4 +1,4 @@
-import { BasePlayer } from "@/controllers/player";
+import type { BasePlayer } from "@/controllers/player";
 import {
   OnPlayerEnterDynamicRaceCP,
   OnPlayerLeaveDynamicRaceCP,

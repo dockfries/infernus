@@ -245,3 +245,6 @@ export const GetPlayerVersion = (playerid: number): string => {
   );
   return I18n.decodeFromBuf(buf, defaultCharset);
 };
+
+// samp.registerEvent("OnMain", "");
+// export const OnMain = (fn: () => void) => samp.addEventListener("OnMain", fn);

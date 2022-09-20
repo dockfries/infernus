@@ -28,6 +28,7 @@ import {
   SetGameModeText,
   SetGravity,
   SetNameTagDrawDistance,
+  SetObjectsDefaultCameraCol,
   SetTeamCount,
   SetWeather,
   SetWorldTime,
@@ -76,17 +77,7 @@ export abstract class BaseGameMode extends AbstractGM {
         return logger.error(
           "[BaseGameMode]: Cannot be initialized more than once"
         );
-      /**
-       * In utf8, different national languages take up different numbers of bytes,
-       * but no matter how many bytes they take up, a byte always takes up 8 bits of binary,
-       * i.e., a decimal integer up to 255.
-       * Most multibyte nicknames are supported to connect to the server,
-       * but not for bytes with a decimal size of 233 ～ 255,
-       * because the player's spawn will crash after the call.
-       */
-      for (let i = 0; i <= 255; i++) {
-        BaseGameMode.allowNickNameCharacter(i, true);
-      }
+      BaseGameMode.supportAllNickname();
       this.initialized = true;
       this.onInit();
     });
@@ -100,6 +91,20 @@ export abstract class BaseGameMode extends AbstractGM {
     OnIncomingConnection(this.onIncomingConnection);
     OnRconCommand(this.onRconCommand);
     OnRconLoginAttempt(this.onRconLoginAttempt);
+  }
+
+  static supportAllNickname() {
+    /**
+     * In utf8, different national languages take up different numbers of bytes,
+     * but no matter how many bytes they take up, a byte always takes up 8 bits of binary,
+     * i.e., a decimal integer up to 255.
+     * Most multibyte nicknames are supported to connect to the server,
+     * but not for bytes with a decimal size of 233 ～ 255,
+     * because the player's spawn will crash after the call.
+     */
+    for (let i = 0; i <= 255; i++) {
+      BaseGameMode.allowNickNameCharacter(i, true);
+    }
   }
 
   public isInitialized(): boolean {
@@ -260,4 +265,5 @@ export abstract class BaseGameMode extends AbstractGM {
   public static allowNickNameCharacter(singleChar: number, allow = true) {
     return AllowNickNameCharacter(singleChar, allow);
   }
+  public static setObjectsDefaultCameraCol = SetObjectsDefaultCameraCol;
 }

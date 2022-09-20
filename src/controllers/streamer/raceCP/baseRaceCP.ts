@@ -1,5 +1,5 @@
-import { BasePlayer } from "@/controllers/player";
-import { IDynamicRaceCp } from "@/interfaces";
+import type { BasePlayer } from "@/controllers/player";
+import type { IDynamicRaceCp } from "@/interfaces";
 
 import { logger } from "@/logger";
 import {

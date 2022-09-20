@@ -1,4 +1,4 @@
-import { IDynamicPickup } from "@/interfaces";
+import type { IDynamicPickup } from "@/interfaces";
 import { logger } from "@/logger";
 import {
   CreateDynamicPickup,

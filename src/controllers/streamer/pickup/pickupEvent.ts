@@ -1,4 +1,4 @@
-import { BasePlayer } from "@/controllers/player";
+import type { BasePlayer } from "@/controllers/player";
 import { OnPlayerPickUpDynamicPickup } from "omp-wrapper-streamer";
 import { DynamicPickup } from "./basePickup";
 import { pickupBus, pickupHooks } from "./pickupBus";
