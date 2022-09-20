@@ -11,121 +11,7 @@ import {
   SendPlayerMessageToPlayer,
   SetPlayerName,
 } from "@/utils/helperUtils";
-import {
-  AllowPlayerTeleport,
-  EnablePlayerCameraTarget,
-  EnableStuntBonusForPlayer,
-  GetPlayerColor,
-  GetPlayerDrunkLevel,
-  GetPlayerHealth,
-  GetPlayerInterior,
-  GetPlayerMoney,
-  GivePlayerMoney,
-  IsPlayerNPC,
-  ResetPlayerMoney,
-  ResetPlayerWeapons,
-  SetPlayerColor,
-  SetPlayerDrunkLevel,
-  SetPlayerHealth,
-  SetPlayerInterior,
-  SetPlayerMarkerForPlayer,
-  ShowPlayerNameTagForPlayer,
-  SpawnPlayer,
-  TogglePlayerClock,
-  TogglePlayerControllable,
-  TogglePlayerSpectating,
-  PlayerSpectatePlayer,
-  PlayerSpectateVehicle,
-  ForceClassSelection,
-  Kick,
-  Ban,
-  IsPlayerAdmin,
-  IsPlayerInRangeOfPoint,
-  IsPlayerStreamedIn,
-  SetPlayerSkin,
-  GetPlayerSkin,
-  IsPlayerInAnyVehicle,
-  GetPlayerSpecialAction,
-  SetPlayerSpecialAction,
-  SetPlayerScore,
-  GetPlayerScore,
-  GetPlayerPing,
-  SetPlayerPos,
-  GetPlayerPos,
-  GetPlayerState,
-  SetPlayerVirtualWorld,
-  GetPlayerVirtualWorld,
-  RemovePlayerFromVehicle,
-  SetPlayerWantedLevel,
-  GetPlayerWantedLevel,
-  SetPlayerFacingAngle,
-  GetPlayerFacingAngle,
-  SetPlayerWeather,
-  SetPlayerTime,
-  GetPlayerTime,
-  RemoveBuildingForPlayer,
-  SetPlayerTeam,
-  GetPlayerTeam,
-  SetPlayerSkillLevel,
-  SetPlayerVelocity,
-  GetPlayerVelocity,
-  GetPlayerKeys,
-  GetPlayerFightingStyle,
-  SetPlayerFightingStyle,
-  SetPlayerArmour,
-  GetPlayerArmour,
-  SetCameraBehindPlayer,
-  SetPlayerCameraPos,
-  SetPlayerCameraLookAt,
-  GetPlayerCameraAspectRatio,
-  GetPlayerCameraFrontVector,
-  GetPlayerCameraPos,
-  GetPlayerCameraMode,
-  GetPlayerCameraTargetPlayer,
-  GetPlayerCameraTargetVehicle,
-  GetPlayerCameraZoom,
-  StopAudioStreamForPlayer,
-  PlayAudioStreamForPlayer,
-  PlayerPlaySound,
-  GetPlayerPoolSize,
-  PlayCrimeReportForPlayer,
-  InterpolateCameraPos,
-  InterpolateCameraLookAt,
-  CreateExplosionForPlayer,
-  GetMaxPlayers,
-  IsPlayerConnected,
-  DisableRemoteVehicleCollisions,
-  GetPlayerVehicleID,
-  GetPlayerVehicleSeat,
-  GetPlayerSurfingVehicleID,
-  ApplyAnimation,
-  ClearAnimations,
-  GetPlayerAnimationIndex,
-  SetPlayerShopName,
-  SetPlayerPosFindZ,
-  SetPlayerWorldBounds,
-  SetPlayerChatBubble,
-  GetPlayerDistanceFromPoint,
-  GetPlayerCustomSkin,
-  GetPlayerTargetPlayer,
-  GetPlayerLastShotVectors,
-  GetPlayerWeapon,
-  GetPlayerWeaponData,
-  GetPlayerWeaponState,
-  GivePlayerWeapon,
-  SetPlayerAmmo,
-  GetPlayerAmmo,
-  SetPlayerArmedWeapon,
-  SendDeathMessageToPlayer,
-  SendDeathMessage,
-  SetSpawnInfo,
-  RedirectDownload,
-  SendClientCheck,
-  SelectTextDraw,
-  CancelSelectTextDraw,
-  SelectObject,
-  CancelEdit,
-} from "@/wrapper/functions";
+import * as playerFunc from "@/wrapper/functions";
 import { logger } from "@/logger";
 import {
   CameraCutStylesEnum,
@@ -176,7 +62,7 @@ export abstract class BasePlayer {
 
   public constructor(id: number) {
     this._id = id;
-    this._isNpc = IsPlayerNPC(this.id);
+    this._isNpc = playerFunc.IsPlayerNPC(this.id);
   }
 
   public sendClientMessage(color: string, msg: string): number {
@@ -215,142 +101,142 @@ export abstract class BasePlayer {
     return this.lastFps;
   }
   public getDrunkLevel(): number {
-    return GetPlayerDrunkLevel(this.id);
+    return playerFunc.GetPlayerDrunkLevel(this.id);
   }
   public setDrunkLevel(level: number): void {
     if (level < 0 || level > 50000)
       return logger.error(
         new Error("[BasePlayer]: player's drunk level ranges from 0 to 50000")
       );
-    SetPlayerDrunkLevel(this.id, level);
+    playerFunc.SetPlayerDrunkLevel(this.id, level);
   }
   public allowTeleport(allow: boolean): void {
-    AllowPlayerTeleport(this.id, allow);
+    playerFunc.AllowPlayerTeleport(this.id, allow);
   }
   public enableCameraTarget(enable: boolean): void {
-    EnablePlayerCameraTarget(this.id, enable);
+    playerFunc.EnablePlayerCameraTarget(this.id, enable);
   }
   public enableStuntBonus(enable: boolean): void {
-    EnableStuntBonusForPlayer(this.id, enable);
+    playerFunc.EnableStuntBonusForPlayer(this.id, enable);
   }
   public getInterior(): number {
-    return GetPlayerInterior(this.id);
+    return playerFunc.GetPlayerInterior(this.id);
   }
   public setInterior(interiorId: number): number {
-    return SetPlayerInterior(this.id, interiorId);
+    return playerFunc.SetPlayerInterior(this.id, interiorId);
   }
   public showPlayerNameTag<P extends BasePlayer>(
     showPlayer: P,
     show: boolean
   ): void {
-    ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
+    playerFunc.ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
   }
   public setColor(color: string): void {
-    SetPlayerColor(this.id, color);
+    playerFunc.SetPlayerColor(this.id, color);
   }
   public getColor(): number {
-    return GetPlayerColor(this.id);
+    return playerFunc.GetPlayerColor(this.id);
   }
   public setPlayerMarker<P extends BasePlayer>(showPlayer: P, color: string) {
-    SetPlayerMarkerForPlayer(this.id, showPlayer.id, color);
+    playerFunc.SetPlayerMarkerForPlayer(this.id, showPlayer.id, color);
   }
   public resetMoney(): number {
-    return ResetPlayerMoney(this.id);
+    return playerFunc.ResetPlayerMoney(this.id);
   }
   public getMoney(): number {
-    return GetPlayerMoney(this.id);
+    return playerFunc.GetPlayerMoney(this.id);
   }
   public giveMoney(money: number): number {
-    return GivePlayerMoney(this.id, money);
+    return playerFunc.GivePlayerMoney(this.id, money);
   }
   public resetWeapons(): number {
-    return ResetPlayerWeapons(this.id);
+    return playerFunc.ResetPlayerWeapons(this.id);
   }
   public spawn(): number {
     if (this.isSpectating()) {
       this.toggleSpectating(false);
       return 1;
     }
-    return SpawnPlayer(this.id);
+    return playerFunc.SpawnPlayer(this.id);
   }
   public setHealth(health: number): number {
-    return SetPlayerHealth(this.id, health);
+    return playerFunc.SetPlayerHealth(this.id, health);
   }
   public getHealth(): number {
-    return GetPlayerHealth(this.id);
+    return playerFunc.GetPlayerHealth(this.id);
   }
   public toggleClock(toggle: boolean): number {
-    return TogglePlayerClock(this.id, toggle);
+    return playerFunc.TogglePlayerClock(this.id, toggle);
   }
   public toggleControllable(toggle: boolean): number {
-    return TogglePlayerControllable(this.id, toggle);
+    return playerFunc.TogglePlayerControllable(this.id, toggle);
   }
   public toggleSpectating(toggle: boolean): number {
-    return TogglePlayerSpectating(this.id, toggle);
+    return playerFunc.TogglePlayerSpectating(this.id, toggle);
   }
   public spectatePlayer<P extends BasePlayer>(
     targetPlayer: P,
     mode: SpectateModesEnum
   ) {
-    return PlayerSpectatePlayer(this.id, targetPlayer.id, mode);
+    return playerFunc.PlayerSpectatePlayer(this.id, targetPlayer.id, mode);
   }
   public spectateVehicle<V extends BaseVehicle>(
     targetVehicle: V,
     mode: SpectateModesEnum
   ) {
-    return PlayerSpectateVehicle(this.id, targetVehicle.id, mode);
+    return playerFunc.PlayerSpectateVehicle(this.id, targetVehicle.id, mode);
   }
   public forceClassSelection(): void {
-    ForceClassSelection(this.id);
+    playerFunc.ForceClassSelection(this.id);
   }
   public kick(): void {
-    Kick(this.id);
+    playerFunc.Kick(this.id);
   }
   public ban(): void {
-    Ban(this.id);
+    playerFunc.Ban(this.id);
   }
   public banEx(reason: string, charset: string): void {
     BanEx(this.id, reason, charset);
   }
   public isAdmin() {
-    return IsPlayerAdmin(this.id);
+    return playerFunc.IsPlayerAdmin(this.id);
   }
   public isInRangeOfPoint(range: number, x: number, y: number, z: number) {
-    return IsPlayerInRangeOfPoint(this.id, range, x, y, z);
+    return playerFunc.IsPlayerInRangeOfPoint(this.id, range, x, y, z);
   }
   public isStreamedIn<P extends BasePlayer>(forplayer: P) {
-    return IsPlayerStreamedIn(this.id, forplayer.id);
+    return playerFunc.IsPlayerStreamedIn(this.id, forplayer.id);
   }
   public setSkin(skinId: number): number {
     if (skinId < 0 || skinId > 311 || skinId == 74) return 0;
     if (this.getHealth() <= 0) return 0;
     if (this.isInAnyVehicle()) return 0;
     if (this.getSpecialAction() === SpecialActionsEnum.DUCK) return 0;
-    return SetPlayerSkin(this.id, skinId);
+    return playerFunc.SetPlayerSkin(this.id, skinId);
   }
   public getSkin(): number {
-    return GetPlayerSkin(this.id);
+    return playerFunc.GetPlayerSkin(this.id);
   }
   public isInAnyVehicle(): boolean {
-    return IsPlayerInAnyVehicle(this.id);
+    return playerFunc.IsPlayerInAnyVehicle(this.id);
   }
   public getSpecialAction(): SpecialActionsEnum {
-    return GetPlayerSpecialAction(this.id);
+    return playerFunc.GetPlayerSpecialAction(this.id);
   }
   public setSpecialAction(actionId: SpecialActionsEnum): number {
-    return SetPlayerSpecialAction(this.id, actionId);
+    return playerFunc.SetPlayerSpecialAction(this.id, actionId);
   }
   public setScore(score: number): number {
-    return SetPlayerScore(this.id, score);
+    return playerFunc.SetPlayerScore(this.id, score);
   }
   public getScore(): number {
-    return GetPlayerScore(this.id);
+    return playerFunc.GetPlayerScore(this.id);
   }
   public getPing(): number {
-    return GetPlayerPing(this.id);
+    return playerFunc.GetPlayerPing(this.id);
   }
   public setPos(x: number, y: number, z: number): number {
-    return SetPlayerPos(this.id, x, y, z);
+    return playerFunc.SetPlayerPos(this.id, x, y, z);
   }
   public getPos(): TBasePos | undefined {
     if (
@@ -359,7 +245,7 @@ export abstract class BasePlayer {
       this.getState() === PlayerStateEnum.NONE
     )
       return undefined;
-    const [x, y, z] = GetPlayerPos(this.id);
+    const [x, y, z] = playerFunc.GetPlayerPos(this.id);
     return { x, y, z };
   }
   public isSpectating(): boolean {
@@ -369,43 +255,43 @@ export abstract class BasePlayer {
     return this.getState() === PlayerStateEnum.WASTED;
   }
   public getState(): PlayerStateEnum {
-    return GetPlayerState(this.id);
+    return playerFunc.GetPlayerState(this.id);
   }
   public getVersion(): string {
     if (this.isNpc()) return "";
     return GetPlayerVersion(this.id);
   }
   public setVirtualWorld(worldId: number): number {
-    return SetPlayerVirtualWorld(this.id, worldId);
+    return playerFunc.SetPlayerVirtualWorld(this.id, worldId);
   }
   public getVirtualWorld(): number {
-    return GetPlayerVirtualWorld(this.id);
+    return playerFunc.GetPlayerVirtualWorld(this.id);
   }
   public removeFromVehicle(): number {
-    return RemovePlayerFromVehicle(this.id);
+    return playerFunc.RemovePlayerFromVehicle(this.id);
   }
   public setWantedLevel(level: number): number {
     if (level < 0 || level > 6) {
       logger.error("[BasePlayer]: player's wanted level ranges from 0 to 6");
       return 0;
     }
-    return SetPlayerWantedLevel(this.id, level);
+    return playerFunc.SetPlayerWantedLevel(this.id, level);
   }
   public getWantedLevel(): number {
-    return GetPlayerWantedLevel(this.id);
+    return playerFunc.GetPlayerWantedLevel(this.id);
   }
   public setFacingAngle(ang: number): number {
-    return SetPlayerFacingAngle(this.id, ang);
+    return playerFunc.SetPlayerFacingAngle(this.id, ang);
   }
   public getFacingAngle(): number {
-    return GetPlayerFacingAngle(this.id);
+    return playerFunc.GetPlayerFacingAngle(this.id);
   }
   public setWeather(weather: number): void {
     if (weather < 0 || weather > 255) {
       logger.warn("[BasePlayer]: The valid weather value is only 0 to 255");
       return;
     }
-    SetPlayerWeather(this.id, weather);
+    playerFunc.SetPlayerWeather(this.id, weather);
   }
   // omp-wrapper
   public getWeather(): number {
@@ -420,10 +306,10 @@ export abstract class BasePlayer {
       logger.warn("[BasePlayer]: The valid minute value is only 0 to 59");
       return;
     }
-    return SetPlayerTime(this.id, hour, minute);
+    return playerFunc.SetPlayerTime(this.id, hour, minute);
   }
   public getTime() {
-    const [hour, minute] = GetPlayerTime(this.id);
+    const [hour, minute] = playerFunc.GetPlayerTime(this.id);
     return { hour, minute };
   }
   public removeBuilding(
@@ -433,21 +319,21 @@ export abstract class BasePlayer {
     fZ: number,
     fRadius: number
   ): void {
-    RemoveBuildingForPlayer(this.id, modelid, fX, fY, fZ, fRadius);
+    playerFunc.RemoveBuildingForPlayer(this.id, modelid, fX, fY, fZ, fRadius);
   }
   public setTeam(team: number): void {
     if (team < 0 || team > InvalidEnum.NO_TEAM) return;
-    SetPlayerTeam(this.id, team);
+    playerFunc.SetPlayerTeam(this.id, team);
   }
   public getTeam(): number {
-    return GetPlayerTeam(this.id);
+    return playerFunc.GetPlayerTeam(this.id);
   }
   public setSkillLevel(skill: WeaponSkillsEnum, level: number): void {
     if (level < 0 || level > 999) {
       logger.warn("[BasePlayer]: The valid skill level is only 0 to 999");
       return;
     }
-    SetPlayerSkillLevel(this.id, skill, level);
+    playerFunc.SetPlayerSkillLevel(this.id, skill, level);
   }
   public getName(): string {
     return GetPlayerName(this);
@@ -456,36 +342,36 @@ export abstract class BasePlayer {
     return SetPlayerName(this, name);
   }
   public setVelocity(x: number, y: number, z: number): number {
-    return SetPlayerVelocity(this.id, x, y, z);
+    return playerFunc.SetPlayerVelocity(this.id, x, y, z);
   }
   public getVelocity(): TBasePos {
-    const [x, y, z] = GetPlayerVelocity(this.id);
+    const [x, y, z] = playerFunc.GetPlayerVelocity(this.id);
     return { x, y, z };
   }
   public getKeys() {
-    const [keys, updown, leftright] = GetPlayerKeys(this.id);
+    const [keys, updown, leftright] = playerFunc.GetPlayerKeys(this.id);
     return { keys, updown, leftright };
   }
   public getIp(): string {
     return GetPlayerIp(this.id);
   }
   public getFightingStyle(): FightingStylesEnum {
-    return GetPlayerFightingStyle(this.id);
+    return playerFunc.GetPlayerFightingStyle(this.id);
   }
   public setFightingStyle(style: FightingStylesEnum): void {
-    SetPlayerFightingStyle(this.id, style);
+    playerFunc.SetPlayerFightingStyle(this.id, style);
   }
   public setArmour(armour: number): number {
-    return SetPlayerArmour(this.id, armour);
+    return playerFunc.SetPlayerArmour(this.id, armour);
   }
   public getArmour(): number {
-    return GetPlayerArmour(this.id);
+    return playerFunc.GetPlayerArmour(this.id);
   }
   public setCameraBehind(): number {
-    return SetCameraBehindPlayer(this.id);
+    return playerFunc.SetCameraBehindPlayer(this.id);
   }
   public setCameraPos(x: number, y: number, z: number): number {
-    return SetPlayerCameraPos(this.id, x, y, z);
+    return playerFunc.SetPlayerCameraPos(this.id, x, y, z);
   }
   public setCameraLookAt(
     x: number,
@@ -493,36 +379,36 @@ export abstract class BasePlayer {
     z: number,
     cut: CameraCutStylesEnum
   ): number {
-    return SetPlayerCameraLookAt(this.id, x, y, z, cut);
+    return playerFunc.SetPlayerCameraLookAt(this.id, x, y, z, cut);
   }
   public getCameraAspectRatio(): number {
-    return GetPlayerCameraAspectRatio(this.id);
+    return playerFunc.GetPlayerCameraAspectRatio(this.id);
   }
   public getCameraFrontVector(): TBasePos {
-    const [x, y, z] = GetPlayerCameraFrontVector(this.id);
+    const [x, y, z] = playerFunc.GetPlayerCameraFrontVector(this.id);
     return { x, y, z };
   }
   public getCameraMode(): CameraModesEnum {
-    return GetPlayerCameraMode(this.id);
+    return playerFunc.GetPlayerCameraMode(this.id);
   }
   public getCameraPos(): TBasePos {
-    const [x, y, z] = GetPlayerCameraPos(this.id);
+    const [x, y, z] = playerFunc.GetPlayerCameraPos(this.id);
     return { x, y, z };
   }
   public getCameraTargetPlayer<P extends BasePlayer>(
     players: Array<P>
   ): P | undefined {
-    const target = GetPlayerCameraTargetPlayer(this.id);
+    const target = playerFunc.GetPlayerCameraTargetPlayer(this.id);
     return players.find((p) => p.id === target);
   }
   public getCameraTargetVehicle<V extends BaseVehicle>(
     vehicles: Array<V>
   ): V | undefined {
-    const target = GetPlayerCameraTargetVehicle(this.id);
+    const target = playerFunc.GetPlayerCameraTargetVehicle(this.id);
     return vehicles.find((v) => v.id === target);
   }
   public getCameraZoom(): number {
-    return GetPlayerCameraZoom(this.id);
+    return playerFunc.GetPlayerCameraZoom(this.id);
   }
   public playAudioStream(
     url: string,
@@ -535,7 +421,7 @@ export abstract class BasePlayer {
     if (posX !== 0.0 || posY !== 0.0 || posZ !== 0.0) {
       usepos = true;
     }
-    return PlayAudioStreamForPlayer(
+    return playerFunc.PlayAudioStreamForPlayer(
       this.id,
       url,
       posX,
@@ -546,7 +432,7 @@ export abstract class BasePlayer {
     );
   }
   public stopAudioStream(): void {
-    StopAudioStreamForPlayer(this.id);
+    playerFunc.StopAudioStreamForPlayer(this.id);
   }
   public playSound(
     soundid: number,
@@ -554,13 +440,19 @@ export abstract class BasePlayer {
     relativeY = 0.0,
     relativeZ = 0.0
   ): number {
-    return PlayerPlaySound(this.id, soundid, relativeX, relativeY, relativeZ);
+    return playerFunc.PlayerPlaySound(
+      this.id,
+      soundid,
+      relativeX,
+      relativeY,
+      relativeZ
+    );
   }
   public static getPoolSize(): number {
-    return GetPlayerPoolSize();
+    return playerFunc.GetPlayerPoolSize();
   }
   public static getMaxPlayers(): number {
-    return GetMaxPlayers();
+    return playerFunc.GetMaxPlayers();
   }
   public playCrimeReport<P extends BasePlayer>(
     suspect: P,
@@ -570,7 +462,7 @@ export abstract class BasePlayer {
       logger.warn("[BasePlayer]: Available crime ids range from 3 to 22");
       return 0;
     }
-    return PlayCrimeReportForPlayer(this.id, suspect.id, crimeId);
+    return playerFunc.PlayCrimeReportForPlayer(this.id, suspect.id, crimeId);
   }
   public interpolateCameraPos(
     FromX: number,
@@ -582,7 +474,7 @@ export abstract class BasePlayer {
     time: number,
     cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT
   ): void {
-    InterpolateCameraPos(
+    playerFunc.InterpolateCameraPos(
       this.id,
       FromX,
       FromY,
@@ -604,7 +496,7 @@ export abstract class BasePlayer {
     time: number,
     cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT
   ): void {
-    InterpolateCameraLookAt(
+    playerFunc.InterpolateCameraLookAt(
       this.id,
       FromX,
       FromY,
@@ -629,26 +521,26 @@ export abstract class BasePlayer {
       );
       return 0;
     }
-    return CreateExplosionForPlayer(this.id, X, Y, Z, type, Radius);
+    return playerFunc.CreateExplosionForPlayer(this.id, X, Y, Z, type, Radius);
   }
   public static isConnected<P extends BasePlayer>(player: P) {
-    return IsPlayerConnected(player.id);
+    return playerFunc.IsPlayerConnected(player.id);
   }
   public disableRemoteVehicleCollisions(disable: boolean) {
-    return DisableRemoteVehicleCollisions(this.id, disable);
+    return playerFunc.DisableRemoteVehicleCollisions(this.id, disable);
   }
   public getVehicle<V extends BaseVehicle>(vehicles: Array<V>): V | undefined {
     if (!this.isInAnyVehicle()) return undefined;
-    const vehId: number = GetPlayerVehicleID(this.id);
+    const vehId: number = playerFunc.GetPlayerVehicleID(this.id);
     return vehicles.find((v) => v.id === vehId);
   }
   public getVehicleSeat(): number {
-    return GetPlayerVehicleSeat(this.id);
+    return playerFunc.GetPlayerVehicleSeat(this.id);
   }
   public getSurfingVehicle<V extends BaseVehicle>(
     vehicles: Array<V>
   ): V | undefined {
-    const vehId = GetPlayerSurfingVehicleID(this.id);
+    const vehId = playerFunc.GetPlayerSurfingVehicleID(this.id);
     if (vehId === InvalidEnum.VEHICLE_ID) return undefined;
     return vehicles.find((v) => v.id === vehId);
   }
@@ -664,7 +556,7 @@ export abstract class BasePlayer {
     const duration = getAnimateDurationByLibName(animLib, animName);
     if (duration === undefined)
       return logger.error("[BasePlayer]: Invalid anim library or name");
-    ApplyAnimation(
+    playerFunc.ApplyAnimation(
       this.id,
       animLib,
       animName,
@@ -678,22 +570,22 @@ export abstract class BasePlayer {
     );
   }
   public clearAnimations(forceSync = false): void {
-    ClearAnimations(this.id, forceSync);
+    playerFunc.ClearAnimations(this.id, forceSync);
   }
   public getAnimationIndex(): number {
-    return GetPlayerAnimationIndex(this.id);
+    return playerFunc.GetPlayerAnimationIndex(this.id);
   }
   public getAnimationName() {
     const [animLib, animName] = GetAnimationName(this.getAnimationIndex());
     return { animLib, animName };
   }
   public setShopName(shopName: string): void {
-    SetPlayerShopName(this.id, shopName);
+    playerFunc.SetPlayerShopName(this.id, shopName);
   }
   public setPosFindZ(x: number, y: number, z = 150): Promise<number> {
     return new Promise<number>((resolve) => {
-      SetPlayerPos(this.id, x, y, z);
-      setTimeout(() => resolve(SetPlayerPosFindZ(this.id, x, y, z)));
+      playerFunc.SetPlayerPos(this.id, x, y, z);
+      setTimeout(() => resolve(playerFunc.SetPlayerPosFindZ(this.id, x, y, z)));
     });
   }
   public setWorldBounds(
@@ -702,7 +594,7 @@ export abstract class BasePlayer {
     y_max: number,
     y_min: number
   ): void {
-    SetPlayerWorldBounds(this.id, x_max, x_min, y_max, y_min);
+    playerFunc.SetPlayerWorldBounds(this.id, x_max, x_min, y_max, y_min);
   }
   public setChatBubble(
     text: string,
@@ -710,51 +602,57 @@ export abstract class BasePlayer {
     drawDistance: number,
     expireTime: number
   ): void {
-    SetPlayerChatBubble(this.id, text, color, drawDistance, expireTime);
+    playerFunc.SetPlayerChatBubble(
+      this.id,
+      text,
+      color,
+      drawDistance,
+      expireTime
+    );
   }
   public getDistanceFromPoint(X: number, Y: number, Z: number): number {
-    return GetPlayerDistanceFromPoint(this.id, X, Y, Z);
+    return playerFunc.GetPlayerDistanceFromPoint(this.id, X, Y, Z);
   }
   public getCustomSkin(): number {
-    return GetPlayerCustomSkin(this.id);
+    return playerFunc.GetPlayerCustomSkin(this.id);
   }
   public getTargetPlayer<P extends BasePlayer>(
     players: Array<P>
   ): undefined | P {
-    const pid = GetPlayerTargetPlayer(this.id);
+    const pid = playerFunc.GetPlayerTargetPlayer(this.id);
     if (pid === InvalidEnum.PLAYER_ID) return undefined;
     return players.find((p) => p.id === pid);
   }
   public getLastShotVectors() {
     const [fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ] =
-      GetPlayerLastShotVectors(this.id);
+      playerFunc.GetPlayerLastShotVectors(this.id);
     return { fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ };
   }
   public getWeapon(): WeaponEnum | -1 {
-    return GetPlayerWeapon(this.id);
+    return playerFunc.GetPlayerWeapon(this.id);
   }
   public getWeaponData(slot: number) {
     if (slot < 0 || slot > 12) {
       logger.error("[BasePlayer]: weapon slots range from 0 to 12");
       return;
     }
-    const [weapons, ammo] = GetPlayerWeaponData(this.id, slot);
+    const [weapons, ammo] = playerFunc.GetPlayerWeaponData(this.id, slot);
     return { weapons, ammo };
   }
   public getWeaponState(): WeaponStatesEnum {
-    return GetPlayerWeaponState(this.id);
+    return playerFunc.GetPlayerWeaponState(this.id);
   }
   public giveWeapon(weaponid: WeaponEnum, ammo: number): number {
-    return GivePlayerWeapon(this.id, weaponid, ammo);
+    return playerFunc.GivePlayerWeapon(this.id, weaponid, ammo);
   }
   public setAmmo(weaponid: number, ammo: number) {
-    return SetPlayerAmmo(this.id, weaponid, ammo);
+    return playerFunc.SetPlayerAmmo(this.id, weaponid, ammo);
   }
   public getAmmo(): number {
-    return GetPlayerAmmo(this.id);
+    return playerFunc.GetPlayerAmmo(this.id);
   }
   public setArmedWeapon(weaponid: number): number {
-    return SetPlayerArmedWeapon(this.id, weaponid);
+    return playerFunc.SetPlayerArmedWeapon(this.id, weaponid);
   }
   // not test
   public clearDeathMessage() {
@@ -770,7 +668,7 @@ export abstract class BasePlayer {
     killer: P | InvalidEnum.PLAYER_ID,
     weapon: WeaponEnum | DamageDeathReasonEnum
   ): void {
-    SendDeathMessage(
+    playerFunc.SendDeathMessage(
       killer === InvalidEnum.PLAYER_ID ? killer : killer.id,
       this.id,
       weapon
@@ -781,7 +679,7 @@ export abstract class BasePlayer {
     killee: P | InvalidEnum.PLAYER_ID,
     weapon: WeaponEnum | DamageDeathReasonEnum
   ): void {
-    SendDeathMessageToPlayer(
+    playerFunc.SendDeathMessageToPlayer(
       this.id,
       killer === InvalidEnum.PLAYER_ID ? killer : killer.id,
       killee === InvalidEnum.PLAYER_ID ? killee : killee.id,
@@ -805,7 +703,7 @@ export abstract class BasePlayer {
     if (team < 0 || team > InvalidEnum.NO_TEAM) return;
     if (skin < 0 || skin > 311 || skin == 74) return;
     if (weapon1_ammo < 0 || weapon2_ammo < 0 || weapon3_ammo < 0) return;
-    SetSpawnInfo(
+    playerFunc.SetSpawnInfo(
       this.id,
       team,
       skin,
@@ -822,7 +720,7 @@ export abstract class BasePlayer {
     );
   }
   public redirectDownload(url: string) {
-    return RedirectDownload(this.id, url);
+    return playerFunc.RedirectDownload(this.id, url);
   }
   public sendClientCheck(
     type: number,
@@ -840,18 +738,24 @@ export abstract class BasePlayer {
     if (type === 72) {
       memAddr = memOffset = byteCount = 0;
     }
-    return SendClientCheck(this.id, type, memAddr, memOffset, byteCount);
+    return playerFunc.SendClientCheck(
+      this.id,
+      type,
+      memAddr,
+      memOffset,
+      byteCount
+    );
   }
   public selectTextDraw(color: string): void {
-    SelectTextDraw(this.id, color);
+    playerFunc.SelectTextDraw(this.id, color);
   }
   public cancelSelectTextDraw(): void {
-    CancelSelectTextDraw(this.id);
+    playerFunc.CancelSelectTextDraw(this.id);
   }
   public selectObject(): void {
-    SelectObject(this.id);
+    playerFunc.SelectObject(this.id);
   }
   public cancelEdit() {
-    CancelEdit(this.id);
+    playerFunc.CancelEdit(this.id);
   }
 }
