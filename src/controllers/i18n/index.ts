@@ -42,7 +42,7 @@ export class I18n {
     return keyArr.reduce((obj: any, key: string) => {
       if (!Object.prototype.hasOwnProperty.call(obj, key)) {
         logger.fatal(`[i18n]: cannot find ${property}`);
-        process.exit();
+        process.exit(1);
       }
       return obj[key];
     }, whichLangJson) as string;
@@ -52,7 +52,7 @@ export class I18n {
   public static isValidate(charset: string): void {
     if (!encodingExists(charset)) {
       logger.fatal(`[i18n]: unknown charset ${charset}`);
-      process.exit();
+      process.exit(1);
     }
   }
 

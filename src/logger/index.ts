@@ -10,17 +10,13 @@ export const logger = pino({
   },
 });
 
+export const setLoggerLevel = (level: string): void => {
+  logger.level = level;
+};
+
 process.on("uncaughtException", (err) => {
   logger.error(err);
   process.exit(1);
 });
 
-process.on("unhandledRejection", (err) => {
-  logger.warn(err);
-});
-
-// console.log = logger.info;
-// console.warn = logger.warn;
-// console.error = logger.error;
-// console.debug = logger.debug;
-// console.trace = logger.trace;
+process.on("unhandledRejection", (err) => logger.warn(err));
