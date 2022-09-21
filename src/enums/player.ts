@@ -69,3 +69,24 @@ export enum BodyPartsEnum {
   RIGHT_LEG,
   HEAD,
 }
+
+export enum BoneIdsEnum {
+  Spine = 1,
+  Head,
+  LeftUpperArm,
+  RightUpperArm,
+  LeftHand,
+  RightHand,
+  LeftThigh,
+  RightThigh,
+  LeftFoot,
+  RightFoot,
+  RightCalf,
+  LeftCalf,
+  LeftForearm,
+  RightForearm,
+  LeftClavicle,
+  RightClavicle,
+  Neck,
+  Jaw,
+}

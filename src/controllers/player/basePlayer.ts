@@ -14,6 +14,7 @@ import {
 import * as playerFunc from "@/wrapper/functions";
 import { logger } from "@/logger";
 import {
+  BoneIdsEnum,
   CameraCutStylesEnum,
   CameraModesEnum,
   DamageDeathReasonEnum,
@@ -30,6 +31,7 @@ import { BaseVehicle } from "../vehicle";
 import { TBasePos } from "@/types";
 import * as ow from "omp-wrapper";
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
+import { DynamicObject } from "../streamer";
 
 export abstract class BasePlayer {
   private _id: number;
@@ -754,8 +756,57 @@ export abstract class BasePlayer {
   public selectObject(): void {
     playerFunc.SelectObject(this.id);
   }
-  public cancelEdit() {
+  public cancelEdit(): void {
     playerFunc.CancelEdit(this.id);
+  }
+  public getSurfingObject<O extends DynamicObject>(
+    objects: Map<number, O>
+  ): void | O {
+    const id: number = playerFunc.GetPlayerSurfingObjectID(this.id);
+    if (id === InvalidEnum.OBJECT_ID) return;
+    return objects.get(id);
+  }
+  public isAttachedObjectSlotUsed(index: number): boolean {
+    return playerFunc.IsPlayerAttachedObjectSlotUsed(this.id, index);
+  }
+  public setAttachedObject(
+    index: number,
+    modelid: number,
+    bone: BoneIdsEnum,
+    fOffsetX: number,
+    fOffsetY: number,
+    fOffsetZ: number,
+    fRotX: number,
+    fRotY: number,
+    fRotZ: number,
+    fScaleX: number,
+    fScaleY: number,
+    fScaleZ: number,
+    materialcolor1: string,
+    materialcolor2: string
+  ): void | number {
+    if (this.isAttachedObjectSlotUsed(index)) return 0;
+    return playerFunc.SetPlayerAttachedObject(
+      this.id,
+      index,
+      modelid,
+      bone,
+      fOffsetX,
+      fOffsetY,
+      fOffsetZ,
+      fRotX,
+      fRotY,
+      fRotZ,
+      fScaleX,
+      fScaleY,
+      fScaleZ,
+      materialcolor1,
+      materialcolor2
+    );
+  }
+  public removeAttachedObject(index: number): number {
+    if (!this.isAttachedObjectSlotUsed(index)) return 0;
+    return playerFunc.RemovePlayerAttachedObject(this.id, index);
   }
   public toggleWidescreen(set: boolean): number {
     return ow.TogglePlayerWidescreen(this.id, set);

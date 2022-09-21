@@ -4,6 +4,7 @@
 
 import { rgba } from "@/utils/colorUtils";
 import {
+  BoneIdsEnum,
   CameraCutStylesEnum,
   CameraModesEnum,
   CarModTypeEnum,
@@ -1852,7 +1853,7 @@ export const SetPlayerAttachedObject = (
   playerid: number,
   index: number,
   modelid: number,
-  bone: number,
+  bone: BoneIdsEnum,
   fOffsetX: number,
   fOffsetY: number,
   fOffsetZ: number,
@@ -1862,8 +1863,8 @@ export const SetPlayerAttachedObject = (
   fScaleX: number,
   fScaleY: number,
   fScaleZ: number,
-  materialcolor1: number,
-  materialcolor2: number
+  materialcolor1: string,
+  materialcolor2: string
 ): number => {
   return samp.callNative(
     "SetPlayerAttachedObject",
@@ -1881,8 +1882,8 @@ export const SetPlayerAttachedObject = (
     fScaleX,
     fScaleY,
     fScaleZ,
-    materialcolor1,
-    materialcolor2
+    rgba(materialcolor1),
+    rgba(materialcolor2)
   );
 };
 
@@ -1896,12 +1897,9 @@ export const RemovePlayerAttachedObject = (
 export const IsPlayerAttachedObjectSlotUsed = (
   playerid: number,
   index: number
-): number => {
-  return samp.callNative(
-    "IsPlayerAttachedObjectSlotUsed",
-    "ii",
-    playerid,
-    index
+): boolean => {
+  return Boolean(
+    samp.callNative("IsPlayerAttachedObjectSlotUsed", "ii", playerid, index)
   );
 };
 
