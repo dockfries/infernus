@@ -16,8 +16,11 @@ import {
 import {
   AddServerRule,
   AllowNickNameCharacter,
+  ChatTextReplacementToggled,
   ClearBanList,
+  EditPlayerClass,
   GetAvailableClasses,
+  GetPlayerClass,
   GetWeaponSlot,
   IsBanned,
   IsNickNameCharacterAllowed,
@@ -25,6 +28,7 @@ import {
   IsValidServerRule,
   RemoveServerRule,
   SetServerRule,
+  ToggleChatTextReplacement,
 } from "omp-wrapper";
 import { defaultCharset } from "./settings";
 
@@ -248,4 +252,8 @@ export abstract class BaseGameMode extends AbstractGM {
   public static removeServerRule = RemoveServerRule;
   public static getWeaponSlot = GetWeaponSlot;
   public static getAvailableClasses = GetAvailableClasses;
+  public static getPlayerClass = GetPlayerClass;
+  public static editPlayerClass = EditPlayerClass;
+  public static toggleChatTextReplacement = ToggleChatTextReplacement;
+  public static chatTextReplacementToggled = ChatTextReplacementToggled;
 }
