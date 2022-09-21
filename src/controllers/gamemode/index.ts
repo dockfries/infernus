@@ -13,48 +13,16 @@ import {
   OnRconCommand,
   OnRconLoginAttempt,
 } from "@/utils/helperUtils";
-import {
-  AddServerRule,
-  AllowNickNameCharacter,
-  ChatTextReplacementToggled,
-  ClearBanList,
-  EditPlayerClass,
-  GetAvailableClasses,
-  GetPlayerClass,
-  GetWeaponSlot,
-  IsBanned,
-  IsNickNameCharacterAllowed,
-  IsValidNickName,
-  IsValidServerRule,
-  RemoveServerRule,
-  SetServerRule,
-  ToggleChatTextReplacement,
-} from "omp-wrapper";
+import * as ow from "omp-wrapper";
 import { defaultCharset } from "./settings";
+import { TUsePlugin } from "@/types";
 
-export abstract class AbstractGM {
+export abstract class BaseGameMode {
   public static charset = defaultCharset;
-  protected abstract onInit(): void;
-  protected abstract onExit(): void;
-  protected abstract onIncomingConnection(
-    playerid: number,
-    ipAddress: string,
-    port: number
-  ): number;
-  protected abstract onClientMessage(color: number, text: string): number;
-  protected abstract onRconCommand(cmd: string): number;
-  protected abstract onRconLoginAttempt(
-    ip: string,
-    password: string,
-    success: boolean
-  ): number;
-}
-
-export abstract class BaseGameMode extends AbstractGM {
+  private static installedPlugins: Array<TUsePlugin> = [];
   private initialized = false;
 
   public constructor() {
-    super();
     OnGameModeInit((): void => {
       if (this.initialized)
         return logger.error(
@@ -76,18 +44,11 @@ export abstract class BaseGameMode extends AbstractGM {
     OnRconLoginAttempt(this.onRconLoginAttempt);
   }
 
-  static supportAllNickname() {
-    /**
-     * In utf8, different national languages take up different numbers of bytes,
-     * but no matter how many bytes they take up, a byte always takes up 8 bits of binary,
-     * i.e., a decimal integer up to 255.
-     * Most multibyte nicknames are supported to connect to the server,
-     * but not for bytes with a decimal size of 233 ～ 255,
-     * because the player's spawn will crash after the call.
-     */
-    for (let i = 0; i <= 255; i++) {
-      BaseGameMode.allowNickNameCharacter(i, true);
-    }
+  public static use(plugin: TUsePlugin, ...args: Array<any>) {
+    if (BaseGameMode.installedPlugins.some(plugin)) return BaseGameMode;
+    plugin(args);
+    BaseGameMode.installedPlugins.push(plugin);
+    return BaseGameMode;
   }
 
   public isInitialized(): boolean {
@@ -99,6 +60,36 @@ export abstract class BaseGameMode extends AbstractGM {
     // it's restart
     fns.GameModeExit();
   }
+
+  public static supportAllNickname() {
+    /**
+     * In utf8, different national languages take up different numbers of bytes,
+     * but no matter how many bytes they take up, a byte always takes up 8 bits of binary,
+     * i.e., a decimal integer up to 255.
+     * Most multibyte nicknames are supported to connect to the server,
+     * but not for bytes with a decimal size of 233 ～ 255,
+     * because the player's spawn will crash after the call.
+     */
+    for (let i = 0; i <= 255; i++) {
+      if (!BaseGameMode.isNickNameCharacterAllowed(i))
+        BaseGameMode.allowNickNameCharacter(i, true);
+    }
+  }
+
+  protected abstract onInit(): void;
+  protected abstract onExit(): void;
+  protected abstract onIncomingConnection(
+    playerid: number,
+    ipAddress: string,
+    port: number
+  ): number;
+  protected abstract onClientMessage(color: number, text: string): number;
+  protected abstract onRconCommand(cmd: string): number;
+  protected abstract onRconLoginAttempt(
+    ip: string,
+    password: string,
+    success: boolean
+  ): number;
   public static allowAdminTeleport = fns.AllowAdminTeleport;
   public static allowInteriorWeapons = fns.AllowInteriorWeapons;
   public static enableStuntBonusForAll = fns.EnableStuntBonusForAll;
@@ -241,19 +232,19 @@ export abstract class BaseGameMode extends AbstractGM {
   public static getWeaponName = GetWeaponName;
   public static setObjectsDefaultCameraCol = fns.SetObjectsDefaultCameraCol;
   public static vectorSize = fns.VectorSize;
-  public static clearBanList = ClearBanList;
-  public static isBanned = IsBanned;
-  public static isValidNickName = IsValidNickName;
-  public static allowNickNameCharacter = AllowNickNameCharacter;
-  public static isNickNameCharacterAllowed = IsNickNameCharacterAllowed;
-  public static addServerRule = AddServerRule;
-  public static setServerRule = SetServerRule;
-  public static isValidServerRule = IsValidServerRule;
-  public static removeServerRule = RemoveServerRule;
-  public static getWeaponSlot = GetWeaponSlot;
-  public static getAvailableClasses = GetAvailableClasses;
-  public static getPlayerClass = GetPlayerClass;
-  public static editPlayerClass = EditPlayerClass;
-  public static toggleChatTextReplacement = ToggleChatTextReplacement;
-  public static chatTextReplacementToggled = ChatTextReplacementToggled;
+  public static clearBanList = ow.ClearBanList;
+  public static isBanned = ow.IsBanned;
+  public static isValidNickName = ow.IsValidNickName;
+  public static allowNickNameCharacter = ow.AllowNickNameCharacter;
+  public static isNickNameCharacterAllowed = ow.IsNickNameCharacterAllowed;
+  public static addServerRule = ow.AddServerRule;
+  public static setServerRule = ow.SetServerRule;
+  public static isValidServerRule = ow.IsValidServerRule;
+  public static removeServerRule = ow.RemoveServerRule;
+  public static getWeaponSlot = ow.GetWeaponSlot;
+  public static getAvailableClasses = ow.GetAvailableClasses;
+  public static getPlayerClass = ow.GetPlayerClass;
+  public static editPlayerClass = ow.EditPlayerClass;
+  public static toggleChatTextReplacement = ow.ToggleChatTextReplacement;
+  public static chatTextReplacementToggled = ow.ChatTextReplacementToggled;
 }
