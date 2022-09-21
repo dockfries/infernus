@@ -2,28 +2,8 @@ import type { BasePlayer } from "@/controllers/player";
 import type { IDynamicActor } from "@/interfaces";
 import { logger } from "@/logger";
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
-import {
-  ApplyDynamicActorAnimation,
-  ClearDynamicActorAnimations,
-  CreateDynamicActor,
-  CreateDynamicActorEx,
-  DestroyDynamicActor,
-  GetDynamicActorFacingAngle,
-  GetDynamicActorHealth,
-  GetDynamicActorPos,
-  GetDynamicActorVirtualWorld,
-  GetPlayerCameraTargetDynActor,
-  GetPlayerTargetDynamicActor,
-  IsDynamicActorInvulnerable,
-  IsDynamicActorStreamedIn,
-  IsValidDynamicActor,
-  SetDynamicActorFacingAngle,
-  SetDynamicActorHealth,
-  SetDynamicActorInvulnerable,
-  SetDynamicActorPos,
-  SetDynamicActorVirtualWorld,
-  StreamerDistances,
-} from "omp-wrapper-streamer";
+import * as ow from "omp-wrapper";
+import * as ows from "omp-wrapper-streamer";
 import { actorBus, actorHooks } from "./actorBus";
 
 export class DynamicActor {
@@ -43,7 +23,7 @@ export class DynamicActor {
     const { modelid, x, y, z, r, invulnerable, health, extended } =
       this.sourceInfo;
 
-    streamdistance ??= StreamerDistances.ACTOR_SD;
+    streamdistance ??= ows.StreamerDistances.ACTOR_SD;
     priority ??= 0;
 
     if (extended) {
@@ -56,7 +36,7 @@ export class DynamicActor {
       if (typeof areaid === "number") areaid = [-1];
       else areaid ??= [-1];
 
-      this._id = CreateDynamicActorEx(
+      this._id = ows.CreateDynamicActorEx(
         modelid,
         x,
         y,
@@ -81,7 +61,7 @@ export class DynamicActor {
       if (Array.isArray(areaid)) areaid = -1;
       else areaid ??= -1;
 
-      this._id = CreateDynamicActor(
+      this._id = ows.CreateDynamicActor(
         modelid,
         x,
         y,
@@ -106,30 +86,30 @@ export class DynamicActor {
       return logger.warn(
         "[StreamerActor]: Unable to destroy the actor before create"
       );
-    DestroyDynamicActor(this.id);
+    ows.DestroyDynamicActor(this.id);
     actorBus.emit(actorHooks.destroyed, this);
     return this;
   }
   public static isValid(actor: DynamicActor): boolean {
-    return IsValidDynamicActor(actor.id);
+    return ows.IsValidDynamicActor(actor.id);
   }
   public isStreamedIn<P extends BasePlayer>(forplayer: P): boolean {
     if (this.id === -1) return false;
-    return IsDynamicActorStreamedIn(this.id, forplayer.id);
+    return ows.IsDynamicActorStreamedIn(this.id, forplayer.id);
   }
   public getVirtualWorld(): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to get virtual world before create"
       );
-    return GetDynamicActorVirtualWorld(this.id);
+    return ows.GetDynamicActorVirtualWorld(this.id);
   }
   public setVirtualWorld(vworld: number): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to set virtual world before create"
       );
-    return SetDynamicActorVirtualWorld(this.id, vworld);
+    return ows.SetDynamicActorVirtualWorld(this.id, vworld);
   }
   public applyAnimation(
     animLib: string,
@@ -146,7 +126,7 @@ export class DynamicActor {
     const duration = getAnimateDurationByLibName(animLib, animName);
     if (duration === undefined)
       return logger.error("[StreamerActor]: Invalid anim library or name");
-    return ApplyDynamicActorAnimation(
+    return ows.ApplyDynamicActorAnimation(
       this.id,
       animLib,
       animName,
@@ -163,59 +143,59 @@ export class DynamicActor {
       return logger.warn(
         "[StreamerActor]: Unable to clear animation before create"
       );
-    return ClearDynamicActorAnimations(this.id);
+    return ows.ClearDynamicActorAnimations(this.id);
   }
   public getFacingAngle(): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to get facing angle before create"
       );
-    return GetDynamicActorFacingAngle(this.id);
+    return ows.GetDynamicActorFacingAngle(this.id);
   }
   public setFacingAngle(ang: number): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to set facing angle before create"
       );
-    return SetDynamicActorFacingAngle(this.id, ang);
+    return ows.SetDynamicActorFacingAngle(this.id, ang);
   }
   public getPos() {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to get pos before create");
-    return GetDynamicActorPos(this.id);
+    return ows.GetDynamicActorPos(this.id);
   }
   public setPos(x: number, y: number, z: number): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to set pos before create");
-    return SetDynamicActorPos(this.id, x, y, z);
+    return ows.SetDynamicActorPos(this.id, x, y, z);
   }
   public getHealth(): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to get health before create");
-    return GetDynamicActorHealth(this.id);
+    return ows.GetDynamicActorHealth(this.id);
   }
   public setHealth(health: number): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to set health before create");
-    return SetDynamicActorHealth(this.id, health);
+    return ows.SetDynamicActorHealth(this.id, health);
   }
   public isInvulnerable(): boolean {
     if (this.id === -1) return false;
-    return IsDynamicActorInvulnerable(this.id);
+    return ows.IsDynamicActorInvulnerable(this.id);
   }
   public setInvulnerable(invulnerable = true): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to set invulnerable before create"
       );
-    return SetDynamicActorInvulnerable(this.id, invulnerable);
+    return ows.SetDynamicActorInvulnerable(this.id, invulnerable);
   }
   public getPlayerTarget<P extends BasePlayer, A extends DynamicActor>(
     player: P,
     actors: Map<number, A>
   ): void | A {
     if (this.id === -1) return undefined;
-    const actorId = GetPlayerTargetDynamicActor(player.id);
+    const actorId = ows.GetPlayerTargetDynamicActor(player.id);
     return actors.get(actorId);
   }
   public getPlayerCameraTarget<P extends BasePlayer, A extends DynamicActor>(
@@ -223,7 +203,32 @@ export class DynamicActor {
     actors: Map<number, A>
   ): void | A {
     if (this.id === -1) return undefined;
-    const actorId = GetPlayerCameraTargetDynActor(player.id);
+    const actorId = ows.GetPlayerCameraTargetDynActor(player.id);
     return actors.get(actorId);
+  }
+  public getSkin(): void | number {
+    if (this.id === -1)
+      return logger.warn("[StreamerActor]: Unable to get skin before create");
+    return ow.GetActorSkin(this.id);
+  }
+  public setSkin(model: number): void | number {
+    if (this.id === -1)
+      return logger.warn("[StreamerActor]: Unable to set skin before create");
+    if (model < 0 || model > 311 || model == 74) return 0;
+    return ow.SetActorSkin(this.id, model);
+  }
+  public getSpawnInfo() {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerActor]: Unable to get spawn info before create"
+      );
+    return ow.GetActorSpawnInfo(this.id);
+  }
+  public getAnimation() {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerActor]: Unable to get animation before create"
+      );
+    return ow.GetActorAnimation(this.id);
   }
 }

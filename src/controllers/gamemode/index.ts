@@ -3,41 +3,7 @@ import {
   OnGameModeInit,
   OnIncomingConnection,
 } from "@/wrapper/callbacks";
-import {
-  AddPlayerClass,
-  AddPlayerClassEx,
-  AddSimpleModel,
-  AddSimpleModelTimed,
-  AllowAdminTeleport,
-  AllowInteriorWeapons,
-  BlockIpAddress,
-  CreateExplosion,
-  DisableInteriorEnterExits,
-  DisableNameTagLOS,
-  EnableStuntBonusForAll,
-  EnableVehicleFriendlyFire,
-  EnableZoneNames,
-  GameModeExit,
-  GetGravity,
-  GetServerTickRate,
-  LimitGlobalChatRadius,
-  LimitPlayerMarkerRadius,
-  ManualVehicleEngineAndLights,
-  SendRconCommand,
-  SetDeathDropAmount,
-  SetGameModeText,
-  SetGravity,
-  SetNameTagDrawDistance,
-  SetObjectsDefaultCameraCol,
-  SetTeamCount,
-  SetWeather,
-  SetWorldTime,
-  ShowNameTags,
-  ShowPlayerMarkers,
-  UnBlockIpAddress,
-  UsePlayerPedAnims,
-  VectorSize,
-} from "@/wrapper/functions";
+import * as fns from "@/wrapper/functions";
 import { logger } from "@/logger";
 import {
   FindModelFileNameFromCRC,
@@ -47,7 +13,19 @@ import {
   OnRconCommand,
   OnRconLoginAttempt,
 } from "@/utils/helperUtils";
-import { AllowNickNameCharacter } from "omp-wrapper";
+import {
+  AddServerRule,
+  AllowNickNameCharacter,
+  ClearBanList,
+  GetAvailableClasses,
+  GetWeaponSlot,
+  IsBanned,
+  IsNickNameCharacterAllowed,
+  IsValidNickName,
+  IsValidServerRule,
+  RemoveServerRule,
+  SetServerRule,
+} from "omp-wrapper";
 import { defaultCharset } from "./settings";
 
 export abstract class AbstractGM {
@@ -115,42 +93,42 @@ export abstract class BaseGameMode extends AbstractGM {
   // do something during close/restart server, such as storage of player data
   public static exit(): void {
     // it's restart
-    GameModeExit();
+    fns.GameModeExit();
   }
-  public static allowAdminTeleport = AllowAdminTeleport;
-  public static allowInteriorWeapons = AllowInteriorWeapons;
-  public static enableStuntBonusForAll = EnableStuntBonusForAll;
-  public static enableVehicleFriendlyFire = EnableVehicleFriendlyFire;
-  public static enableZoneNames = EnableZoneNames;
-  public static disableInteriorEnterExits = DisableInteriorEnterExits;
-  public static setGameModeText = SetGameModeText;
-  public static getGravity = GetGravity;
-  public static setGravity = SetGravity;
-  public static showNameTags = ShowNameTags;
-  public static disableNameTagLOS = DisableNameTagLOS;
-  public static usePlayerPedAnims = UsePlayerPedAnims;
-  public static showPlayerMarkers = ShowPlayerMarkers;
-  public static limitPlayerMarkerRadius = LimitPlayerMarkerRadius;
-  public static limitGlobalChatRadius = LimitGlobalChatRadius;
-  public static setNameTagDrawDistance = SetNameTagDrawDistance;
+  public static allowAdminTeleport = fns.AllowAdminTeleport;
+  public static allowInteriorWeapons = fns.AllowInteriorWeapons;
+  public static enableStuntBonusForAll = fns.EnableStuntBonusForAll;
+  public static enableVehicleFriendlyFire = fns.EnableVehicleFriendlyFire;
+  public static enableZoneNames = fns.EnableZoneNames;
+  public static disableInteriorEnterExits = fns.DisableInteriorEnterExits;
+  public static setGameModeText = fns.SetGameModeText;
+  public static getGravity = fns.GetGravity;
+  public static setGravity = fns.SetGravity;
+  public static showNameTags = fns.ShowNameTags;
+  public static disableNameTagLOS = fns.DisableNameTagLOS;
+  public static usePlayerPedAnims = fns.UsePlayerPedAnims;
+  public static showPlayerMarkers = fns.ShowPlayerMarkers;
+  public static limitPlayerMarkerRadius = fns.LimitPlayerMarkerRadius;
+  public static limitGlobalChatRadius = fns.LimitGlobalChatRadius;
+  public static setNameTagDrawDistance = fns.SetNameTagDrawDistance;
   public static setWeather(weather: number): number {
     if (weather < 0 || weather > 255) {
       logger.error("[BaseGameMode]: The valid weather value is only 0 to 255");
       return 0;
     }
-    return SetWeather(weather);
+    return fns.SetWeather(weather);
   }
   public static setWorldTime(hour: number): number {
     if (hour < 0 || hour > 23) {
       logger.error("[BaseGameMode]: The valid hour value is only 0 to 23");
       return 0;
     }
-    return SetWorldTime(hour);
+    return fns.SetWorldTime(hour);
   }
-  public static setTeamCount = SetTeamCount;
-  public static sendRconCommand = SendRconCommand;
-  public static addPlayerClass = AddPlayerClass;
-  public static addPlayerClassEx = AddPlayerClassEx;
+  public static setTeamCount = fns.SetTeamCount;
+  public static sendRconCommand = fns.SendRconCommand;
+  public static addPlayerClass = fns.AddPlayerClass;
+  public static addPlayerClassEx = fns.AddPlayerClassEx;
   public static createExplosion(
     X: number,
     Y: number,
@@ -164,13 +142,13 @@ export abstract class BaseGameMode extends AbstractGM {
       );
       return 0;
     }
-    return CreateExplosion(X, Y, Z, type, Radius);
+    return fns.CreateExplosion(X, Y, Z, type, Radius);
   }
-  public static setDeathDropAmount = SetDeathDropAmount;
-  public static manualVehicleEngineAndLights = ManualVehicleEngineAndLights;
-  public static blockIpAddress = BlockIpAddress;
-  public static unBlockIpAddress = UnBlockIpAddress;
-  public static getServerTickRate = GetServerTickRate;
+  public static setDeathDropAmount = fns.SetDeathDropAmount;
+  public static manualVehicleEngineAndLights = fns.ManualVehicleEngineAndLights;
+  public static blockIpAddress = fns.BlockIpAddress;
+  public static unBlockIpAddress = fns.UnBlockIpAddress;
+  public static getServerTickRate = fns.GetServerTickRate;
   public static addSimpleModel(
     virtualworld: number,
     baseid: number,
@@ -179,7 +157,7 @@ export abstract class BaseGameMode extends AbstractGM {
     txdname: string
   ): number {
     if (this.checkSimpleModel(virtualworld, baseid, newid, dffname, txdname)) {
-      return AddSimpleModel(virtualworld, baseid, newid, dffname, txdname);
+      return fns.AddSimpleModel(virtualworld, baseid, newid, dffname, txdname);
     }
     return 0;
   }
@@ -203,7 +181,7 @@ export abstract class BaseGameMode extends AbstractGM {
         timeoff
       )
     ) {
-      return AddSimpleModelTimed(
+      return fns.AddSimpleModelTimed(
         virtualworld,
         baseid,
         newid,
@@ -254,18 +232,20 @@ export abstract class BaseGameMode extends AbstractGM {
     }
     return 1;
   }
-  public static findModelFileNameFromCRC(crc: number): string {
-    return FindModelFileNameFromCRC(crc);
-  }
-  public static findTextureFileNameFromCRC(crc: number): string {
-    return FindTextureFileNameFromCRC(crc);
-  }
-  public static getWeaponName(weaponid: number): string {
-    return GetWeaponName(weaponid);
-  }
-  public static allowNickNameCharacter(singleChar: number, allow = true) {
-    return AllowNickNameCharacter(singleChar, allow);
-  }
-  public static setObjectsDefaultCameraCol = SetObjectsDefaultCameraCol;
-  public static vectorSize = VectorSize;
+  public static findModelFileNameFromCRC = FindModelFileNameFromCRC;
+  public static findTextureFileNameFromCRC = FindTextureFileNameFromCRC;
+  public static getWeaponName = GetWeaponName;
+  public static setObjectsDefaultCameraCol = fns.SetObjectsDefaultCameraCol;
+  public static vectorSize = fns.VectorSize;
+  public static clearBanList = ClearBanList;
+  public static isBanned = IsBanned;
+  public static isValidNickName = IsValidNickName;
+  public static allowNickNameCharacter = AllowNickNameCharacter;
+  public static isNickNameCharacterAllowed = IsNickNameCharacterAllowed;
+  public static addServerRule = AddServerRule;
+  public static setServerRule = SetServerRule;
+  public static isValidServerRule = IsValidServerRule;
+  public static removeServerRule = RemoveServerRule;
+  public static getWeaponSlot = GetWeaponSlot;
+  public static getAvailableClasses = GetAvailableClasses;
 }
