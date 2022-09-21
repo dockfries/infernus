@@ -1,4 +1,5 @@
 import type { BasePlayer } from "@/controllers/player";
+import { EditResponseTypesEnum } from "@/enums";
 import {
   OnDynamicObjectMoved,
   OnPlayerEditDynamicObject,
@@ -86,7 +87,7 @@ export abstract class DynamicObjectEvent<
   protected abstract onPlayerEdit(
     player: P,
     object: O,
-    response: number,
+    response: EditResponseTypesEnum,
     x: number,
     y: number,
     z: number,
