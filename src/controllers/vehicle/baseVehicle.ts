@@ -444,8 +444,9 @@ export abstract class BaseVehicle {
   public getPaintjob(): number {
     if (this.id === -1) return -1;
     return ow.GetVehiclePaintjob(this.id);
+    ow;
   }
-  public getColor(): void | IVehColor {
+  public getColor() {
     if (this.id === -1) return;
     return ow.GetVehicleColor(this.id);
   }
@@ -474,7 +475,7 @@ export abstract class BaseVehicle {
       interior
     );
   }
-  public getSpawnInfo(): void | IVehSpawnInfo {
+  public getSpawnInfo() {
     if (this.id === -1) return;
     return ow.GetVehicleSpawnInfo(this.id);
   }
