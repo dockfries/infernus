@@ -352,3 +352,69 @@ export const GetDynamic3DTextLabelText = (
   );
   return I18n.decodeFromBuf(I18n.getValidStr(buf), charset);
 };
+
+export const SetDynamicObjectMaterialText = (
+  charset: string,
+  objectid: number,
+  materialindex: number,
+  text: string,
+  materialsize: number,
+  fontface: string,
+  fontsize: number,
+  bold: number,
+  fontcolor: number,
+  backcolor: number,
+  textalignment: number
+): number => {
+  const textBuf = I18n.encodeToBuf(text, charset);
+  const fontFaceBuf = I18n.encodeToBuf(fontface, charset);
+  return samp.callNative(
+    "SetDynamicObjectMaterialText",
+    "iiaiaiiiii",
+    objectid,
+    materialindex,
+    textBuf,
+    materialsize,
+    fontFaceBuf,
+    fontsize,
+    bold,
+    fontcolor,
+    backcolor,
+    textalignment
+  );
+};
+
+export const GetDynamicObjectMaterialText = (
+  objectid: number,
+  materialindex: number,
+  charset: string
+) => {
+  const [
+    text,
+    materialsize,
+    fontface,
+    bold,
+    fontcolor,
+    backcolor,
+    textalignment,
+  ]: [number[], number, number[], number, number, number, number] =
+    samp.callNative(
+      "GetDynamicObjectMaterialText",
+      "iiAIAIIIIIii",
+      objectid,
+      materialindex,
+      2048,
+      32
+    );
+  const textStr = I18n.decodeFromBuf(text, charset);
+  const fontFaceStr = I18n.decodeFromBuf(fontface, charset);
+  return {
+    text: textStr,
+    materialsize,
+    fontface: fontFaceStr,
+    bold,
+    fontcolor,
+    backcolor,
+    textalignment,
+  };
+};

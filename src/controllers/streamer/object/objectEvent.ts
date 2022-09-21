@@ -8,7 +8,7 @@ import {
 import { DynamicObject } from "./baseObject";
 import { objectBus, objectHooks } from "./objectBus";
 
-export abstract class DynamicPickupEvent<
+export abstract class DynamicObjectEvent<
   P extends BasePlayer,
   O extends DynamicObject
 > {

@@ -133,6 +133,7 @@ export class Dynamic3DTextLabel {
       return logger.warn(
         "[Streamer3DTextLabel]: Unable to update text before create"
       );
+    this.sourceInfo.charset = charset;
     return UpdateDynamic3DTextLabelText(this.id, rgba(color), text, charset);
   }
 }

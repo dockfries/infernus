@@ -5,6 +5,11 @@ import type { BasePlayer } from "@/controllers/player";
 import { logger } from "@/logger";
 import * as ows from "omp-wrapper-streamer";
 import { objectBus, objectHooks } from "./objectBus";
+import { rgba } from "@/utils/colorUtils";
+import {
+  GetDynamicObjectMaterialText,
+  SetDynamicObjectMaterialText,
+} from "@/utils/helperUtils";
 
 export class DynamicObject {
   private sourceInfo: IDynamicObject;
@@ -267,13 +272,43 @@ export class DynamicObject {
     return ows.RemoveDynamicObjectMaterial(this.id, materialIndex);
   }
 
-  // public getMaterial(materialIndex: number) {
-  //   // need i18n
-  //   // return ows.GetDynamicObjectMaterialText(this.id, materialIndex);
-  // }
+  public getMaterial(
+    materialIndex: number,
+    txdname: string,
+    texturename: string
+  ) {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerObject]: Unable to get material before create"
+      );
+    return ows.GetDynamicObjectMaterial(
+      this.id,
+      materialIndex,
+      txdname,
+      texturename
+    );
+  }
 
-  // need i18n
-  // ows.SetDynamicObjectMaterial(objectid, materialindex, modelid, const txdname[], const texturename[], materialcolor = 0)
+  public setMaterial(
+    materialindex: number,
+    modelid: number,
+    txdname: string,
+    texturename: string,
+    materialcolor = "#000"
+  ): void | number {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerObject]: Unable to set material before create"
+      );
+    return ows.SetDynamicObjectMaterial(
+      this.id,
+      materialindex,
+      modelid,
+      txdname,
+      texturename,
+      rgba(materialcolor)
+    );
+  }
 
   public isMaterialTextUsed(materialIndex: number): boolean {
     if (this.id === -1) return false;
@@ -285,11 +320,49 @@ export class DynamicObject {
     return ows.RemoveDynamicObjectMaterialText(this.id, materialIndex);
   }
 
-  // need i18n
-  // ows.GetDynamicObjectMaterialText(objectid, materialindex, text[], &materialsize, fontface[], &fontsize, &bold, &fontcolor, &backcolor, &textalignment, maxtext = sizeof text, maxfontface = sizeof fontface)
+  public getMaterialText(materialIndex: number) {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerObject]: Unable to get material text before create"
+      );
+    return GetDynamicObjectMaterialText(
+      this.id,
+      materialIndex,
+      this.sourceInfo.charset
+    );
+  }
 
-  // need i18n
-  // ows.SetDynamicObjectMaterialText(objectid, materialindex, const text[], materialsize = OBJECT_MATERIAL_SIZE_256x128, const fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, textalignment = 0)
+  public setMaterialText(
+    charset: string = this.sourceInfo.charset,
+    materialIndex: number,
+    text: string,
+    materialSize: number = ows.MaterialTextSizes.SIZE_256x128,
+    fontFace = "Arial",
+    fontSize = 24,
+    bold = 1,
+    fontColor = "#fff",
+    backColor = "#000",
+    textAlignment = 0
+  ): void | number {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerObject]: Unable to set material text before create"
+      );
+    this.sourceInfo.charset = charset;
+    return SetDynamicObjectMaterialText(
+      charset,
+      this.id,
+      materialIndex,
+      text,
+      materialSize,
+      fontFace,
+      fontSize,
+      bold,
+      rgba(fontColor),
+      rgba(backColor),
+      textAlignment
+    );
+  }
 
   public getPlayerCameraTarget<P extends BasePlayer, O extends DynamicObject>(
     player: P,
