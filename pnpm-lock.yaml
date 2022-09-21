@@ -9,7 +9,7 @@ specifiers:
   husky: ^8.0.1
   iconv-lite: ^0.6.3
   lodash: ^4.17.21
-  omp-wrapper: ^0.1.0
+  omp-wrapper: ^0.1.1
   omp-wrapper-streamer: ^0.0.9
   pino: ^8.4.2
   pino-pretty: ^9.1.0
@@ -24,7 +24,7 @@ specifiers:
 dependencies:
   iconv-lite: 0.6.3
   lodash: 4.17.21
-  omp-wrapper: 0.1.0
+  omp-wrapper: 0.1.1
   omp-wrapper-streamer: 0.0.9
   pino: 8.4.2
   pino-pretty: 9.1.0
@@ -1131,8 +1131,8 @@ packages:
     resolution: {integrity: sha512-WKVrT25ScN+iChgFcb+e9olHoKdoF9AKOReh0SNWPjW4RuZK/8X1WDZpLHxZhcj28qbHrjzHbRqJMzCKsgpT+Q==}
     dev: false
 
-  /omp-wrapper/0.1.0:
-    resolution: {integrity: sha512-SyLAFhTl4j1oL4+wQPjeyQDsogsOig5Zm3U3Jhrai4BUhL0095EH6z96KhgMQ34B/1sfgMNl0Q5ULgN7wGKDuQ==}
+  /omp-wrapper/0.1.1:
+    resolution: {integrity: sha512-u/E7VvZB1J0z9Ttws1eGS8DkxZ4dl3zNEvtCsaPAMRH1UMqEaAV0JXctZwcfRSdIb52L7/yf/BNNGEP3CqCo0A==}
     dev: false
 
   /on-exit-leak-free/2.1.0:
