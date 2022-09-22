@@ -61,7 +61,8 @@ export interface IAnimateInfo {
   d: number;
 }
 
-export interface IBaseGangZone {
+export interface IBaseGangZone<P extends BasePlayer> {
+  player?: P;
   minx: number;
   miny: number;
   maxx: number;
@@ -156,4 +157,9 @@ export interface IClientFuncQueue {
   resolve: (value: IClientResRaw | PromiseLike<IClientResRaw>) => void;
   reject: (reason: string) => void;
   timeout: NodeJS.Timeout;
+}
+
+export interface ICommonGangZoneKey {
+  id: number;
+  global: boolean;
 }
