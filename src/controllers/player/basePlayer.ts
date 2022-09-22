@@ -40,6 +40,7 @@ export abstract class BasePlayer {
   public lastDrunkLevel = 0;
   public lastFps = 0;
   private _isNpc: boolean;
+  private _isAndroid: null | boolean = null;
   public isPaused = false;
 
   get charset() {
@@ -522,8 +523,11 @@ export abstract class BasePlayer {
     }
     return playerFunc.CreateExplosionForPlayer(this.id, X, Y, Z, type, Radius);
   }
-  public static isConnected<P extends BasePlayer>(player: P) {
+  public static isConnected<P extends BasePlayer>(player: P): boolean {
     return playerFunc.IsPlayerConnected(player.id);
+  }
+  public isConnected(): boolean {
+    return playerFunc.IsPlayerConnected(this.id);
   }
   public disableRemoteVehicleCollisions(disable: boolean) {
     return playerFunc.DisableRemoteVehicleCollisions(this.id, disable);
@@ -916,5 +920,27 @@ export abstract class BasePlayer {
   }
   public removeWeapon(weaponid: number): number {
     return ow.RemovePlayerWeapon(this.id, weaponid);
+  }
+  public isAndroid(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      if (this._isAndroid !== null) return resolve(this._isAndroid);
+      setTimeout(async () => {
+        let tryCut = 1;
+        while (tryCut < 10) {
+          tryCut++;
+          if (!this.isConnected()) {
+            reject("disconnect");
+            break;
+          }
+          const p = await this.sendClientCheck(0x48, 0, 0, 2);
+          if (p) {
+            this._isAndroid = p.actionid !== 0x48;
+            resolve(this._isAndroid);
+            break;
+          }
+        }
+        if (tryCut === 10) reject("try limit");
+      });
+    });
   }
 }

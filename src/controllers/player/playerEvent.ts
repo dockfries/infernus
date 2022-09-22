@@ -123,9 +123,11 @@ export abstract class BasePlayerEvent<
 > extends AbstractPlayerEvent<P> {
   constructor() {
     super();
+
     OnPlayerConnect((playerid: number): number => {
       const p = this.newPlayer(playerid);
       this.players.set(playerid, p);
+      if (!p.isNpc()) p.isAndroid();
       return this.onConnect(p);
     });
 
