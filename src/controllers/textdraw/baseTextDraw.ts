@@ -257,6 +257,11 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     if (p) return ow.IsValidPlayer3DTextLabel(p.id, textdraw.id);
     return ow.IsValidTextDraw(textdraw.id);
   }
+  public isValid(): boolean {
+    const p = this.sourceInfo.player;
+    if (p) return ow.IsValidPlayer3DTextLabel(p.id, this.id);
+    return ow.IsValidTextDraw(this.id);
+  }
   public isVisibleForPlayer<P extends BasePlayer>(player: P): boolean {
     if (this.id === -1) return false;
     return ow.IsTextDrawVisibleForPlayer(player.id, this.id);

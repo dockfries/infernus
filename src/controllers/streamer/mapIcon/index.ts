@@ -105,4 +105,7 @@ export class DynamicMapIcon {
   public static isValid(icon: DynamicMapIcon): boolean {
     return IsValidDynamicMapIcon(icon.id);
   }
+  public isValid(): boolean {
+    return IsValidDynamicMapIcon(this.id);
+  }
 }

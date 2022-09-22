@@ -112,6 +112,10 @@ export class DynamicObject {
     return ows.IsValidDynamicObject(object.id);
   }
 
+  public isValid(): boolean {
+    return ows.IsValidDynamicObject(this.id);
+  }
+
   public getPos() {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot get position before create");

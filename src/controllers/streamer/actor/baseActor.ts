@@ -93,6 +93,9 @@ export class DynamicActor {
   public static isValid(actor: DynamicActor): boolean {
     return ows.IsValidDynamicActor(actor.id);
   }
+  public isValid(): boolean {
+    return ows.IsValidDynamicActor(this.id);
+  }
   public isStreamedIn<P extends BasePlayer>(forplayer: P): boolean {
     if (this.id === -1) return false;
     return ows.IsDynamicActorStreamedIn(this.id, forplayer.id);

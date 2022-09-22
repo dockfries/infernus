@@ -153,6 +153,9 @@ export class BaseMenu {
   public static isValid<M extends BaseMenu>(menu: M): boolean {
     return IsValidMenu(menu.id);
   }
+  public isValid(): boolean {
+    return IsValidMenu(this.id);
+  }
   public showForPlayer<P extends BasePlayer>(player: P) {
     if (this._id === -1 || !IsValidMenu(this.id))
       return logger.error("[BaseMenu]: Cannot show menu before create");

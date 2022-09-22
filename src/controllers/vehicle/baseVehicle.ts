@@ -353,8 +353,11 @@ export abstract class BaseVehicle {
     if (this.id === -1) return;
     return vehicles.find((v) => v.id === vehFunc.GetVehicleTrailer(this.id));
   }
-  public static isValid(vehicleId: number) {
-    return vehFunc.IsValidVehicle(vehicleId);
+  public static isValid<V extends BaseVehicle>(vehicle: V): boolean {
+    return vehFunc.IsValidVehicle(vehicle.id);
+  }
+  public isValid(): boolean {
+    return vehFunc.IsValidVehicle(this.id);
   }
   public getMatrix() {
     if (this.id === -1) return;

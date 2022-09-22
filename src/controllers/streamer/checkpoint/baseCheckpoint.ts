@@ -99,6 +99,9 @@ export class DynamicCheckpoint {
   public static isValid(checkpoint: DynamicCheckpoint): boolean {
     return IsValidDynamicCP(checkpoint.id);
   }
+  public isValid(): boolean {
+    return IsValidDynamicCP(this.id);
+  }
   public togglePlayer<P extends BasePlayer>(
     player: P,
     toggle: boolean

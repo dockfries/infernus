@@ -117,6 +117,9 @@ export class Dynamic3DTextLabel {
   public static isValid(textLabel: Dynamic3DTextLabel): boolean {
     return IsValidDynamic3DTextLabel(textLabel.id);
   }
+  public isValid(): boolean {
+    return IsValidDynamic3DTextLabel(this.id);
+  }
   public getText(): void | string {
     if (this.id === -1)
       return logger.warn(

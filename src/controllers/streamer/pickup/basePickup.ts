@@ -94,4 +94,7 @@ export class DynamicPickup {
   public static isValid(pickup: DynamicPickup): boolean {
     return IsValidDynamicPickup(pickup.id);
   }
+  public isValid(): boolean {
+    return IsValidDynamicPickup(this.id);
+  }
 }
