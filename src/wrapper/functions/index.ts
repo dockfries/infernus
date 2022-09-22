@@ -3209,3 +3209,31 @@ export const AddSimpleModelTimed = (
     timeoff
   );
 };
+
+export const GetWeaponName = (weaponid: number): string => {
+  return samp.callNative("GetWeaponName", "iSi", weaponid, 32);
+};
+
+export const NetStats_GetIpPort = (playerid: number): string => {
+  return samp.callNative("NetStats_GetIpPort", "iSi", playerid, 128 + 6);
+};
+
+export const GetPlayerIp = (playerid: number): string => {
+  return samp.callNative("GetPlayerIp", "iSi", playerid, 128);
+};
+
+export const GetAnimationName = (index: number): Array<string> => {
+  return samp.callNative("GetAnimationName", "iSiSi", index, 32, 32);
+};
+
+export const GetPlayerVersion = (playerid: number): string => {
+  return samp.callNative("GetPlayerVersion", "iSi", playerid, 24);
+};
+
+export const FindModelFileNameFromCRC = (crc: number): string => {
+  return samp.callNative("FindModelFileNameFromCRC", "iSi", crc, 255);
+};
+
+export const FindTextureFileNameFromCRC = (crc: number): string => {
+  return samp.callNative("FindTextureFileNameFromCRC", "iSi", crc, 255);
+};

@@ -191,61 +191,6 @@ export const BanEx = (
   return samp.callNative("BanEx", "ia", playerid, buf);
 };
 
-export const FindModelFileNameFromCRC = (crc: number): string => {
-  const buf = I18n.getValidStr(
-    samp.callNative("FindModelFileNameFromCRC", "iAi", crc, 255)
-  );
-  return I18n.decodeFromBuf(buf, defaultCharset);
-};
-
-export const FindTextureFileNameFromCRC = (crc: number): string => {
-  const buf = I18n.getValidStr(
-    samp.callNative("FindTextureFileNameFromCRC", "iAi", crc, 255)
-  );
-  return I18n.decodeFromBuf(buf, defaultCharset);
-};
-
-export const GetWeaponName = (weaponid: number): string => {
-  const buf = I18n.getValidStr(
-    samp.callNative("GetWeaponName", "iSi", weaponid, 32)
-  );
-  return I18n.decodeFromBuf(buf, defaultCharset);
-};
-
-export const NetStats_GetIpPort = (playerid: number): string => {
-  const buf = I18n.getValidStr(
-    samp.callNative("NetStats_GetIpPort", "iAi", playerid, 128 + 6)
-  );
-  return I18n.decodeFromBuf(buf, defaultCharset);
-};
-
-export const GetPlayerIp = (playerid: number): string => {
-  const buf = I18n.getValidStr(
-    samp.callNative("GetPlayerIp", "iAi", playerid, 128)
-  );
-  return I18n.decodeFromBuf(buf, defaultCharset);
-};
-
-export const GetAnimationName = (index: number): Array<string> => {
-  const [libBuf, nameBuf]: Array<Array<number>> = samp.callNative(
-    "GetAnimationName",
-    "iAiAi",
-    index,
-    32,
-    32
-  );
-  const lib = I18n.decodeFromBuf(libBuf, defaultCharset);
-  const name = I18n.decodeFromBuf(nameBuf, defaultCharset);
-  return [lib, name];
-};
-
-export const GetPlayerVersion = (playerid: number): string => {
-  const buf = I18n.getValidStr(
-    samp.callNative("GetPlayerVersion", "iAi", playerid, 24)
-  );
-  return I18n.decodeFromBuf(buf, defaultCharset);
-};
-
 export const CreateDynamic3DTextLabel = (
   charset: string,
   text: string,

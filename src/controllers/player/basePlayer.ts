@@ -1,10 +1,7 @@
 import { IPlayerSettings } from "@/interfaces";
 import {
   BanEx,
-  GetAnimationName,
-  GetPlayerIp,
   GetPlayerName,
-  GetPlayerVersion,
   SendClientMessage,
   SendClientMessageToAll,
   SendPlayerMessageToAll,
@@ -261,7 +258,7 @@ export abstract class BasePlayer {
   }
   public getVersion(): string {
     if (this.isNpc()) return "";
-    return GetPlayerVersion(this.id);
+    return playerFunc.GetPlayerVersion(this.id);
   }
   public setVirtualWorld(worldId: number): number {
     return playerFunc.SetPlayerVirtualWorld(this.id, worldId);
@@ -354,7 +351,7 @@ export abstract class BasePlayer {
     return { keys, updown, leftright };
   }
   public getIp(): string {
-    return GetPlayerIp(this.id);
+    return playerFunc.GetPlayerIp(this.id);
   }
   public getFightingStyle(): FightingStylesEnum {
     return playerFunc.GetPlayerFightingStyle(this.id);
@@ -577,7 +574,9 @@ export abstract class BasePlayer {
     return playerFunc.GetPlayerAnimationIndex(this.id);
   }
   public getAnimationName() {
-    const [animLib, animName] = GetAnimationName(this.getAnimationIndex());
+    const [animLib, animName] = playerFunc.GetAnimationName(
+      this.getAnimationIndex()
+    );
     return { animLib, animName };
   }
   public setShopName(shopName: string): void {

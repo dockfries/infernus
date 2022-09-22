@@ -6,9 +6,6 @@ import {
 import * as fns from "@/wrapper/functions";
 import { logger } from "@/logger";
 import {
-  FindModelFileNameFromCRC,
-  FindTextureFileNameFromCRC,
-  GetWeaponName,
   OnClientMessage,
   OnRconCommand,
   OnRconLoginAttempt,
@@ -227,9 +224,9 @@ export abstract class BaseGameMode {
     }
     return 1;
   }
-  public static findModelFileNameFromCRC = FindModelFileNameFromCRC;
-  public static findTextureFileNameFromCRC = FindTextureFileNameFromCRC;
-  public static getWeaponName = GetWeaponName;
+  public static findModelFileNameFromCRC = fns.FindModelFileNameFromCRC;
+  public static findTextureFileNameFromCRC = fns.FindTextureFileNameFromCRC;
+  public static getWeaponName = fns.GetWeaponName;
   public static setObjectsDefaultCameraCol = fns.SetObjectsDefaultCameraCol;
   public static vectorSize = fns.VectorSize;
   public static clearBanList = ow.ClearBanList;

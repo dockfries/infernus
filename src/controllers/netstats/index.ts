@@ -1,5 +1,4 @@
 import { ConnectionStatusEnum } from "@/enums";
-import { NetStats_GetIpPort } from "@/utils/helperUtils";
 import {
   GetNetworkStats,
   GetPlayerNetworkStats,
@@ -7,6 +6,7 @@ import {
   NetStats_BytesSent,
   NetStats_ConnectionStatus,
   NetStats_GetConnectedTime,
+  NetStats_GetIpPort,
   NetStats_MessagesReceived,
   NetStats_MessagesRecvPerSecond,
   NetStats_MessagesSent,
