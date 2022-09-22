@@ -25,12 +25,10 @@ import { CmdBus } from "../command";
 import { ICmdErr } from "@/interfaces";
 import {
   BodyPartsEnum,
-  // BodyPartsEnum,
   InvalidEnum,
   KeysEnum,
   PlayerStateEnum,
   WeaponEnum,
-  // WeaponEnum,
 } from "@/enums";
 import { throttle } from "lodash";
 import { BaseDialog } from "../promise/dialog";

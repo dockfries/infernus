@@ -50,10 +50,10 @@ export abstract class BasePlayer {
     this.settings.charset = charset;
   }
 
-  get locale(): string | undefined {
+  get locale(): string | number | undefined {
     return this.settings.locale;
   }
-  set locale(language: string | undefined) {
+  set locale(language: string | number | undefined) {
     this.settings.locale = language;
   }
 

@@ -7,7 +7,7 @@ export type TEventFunc = <T extends BasePlayer>(
   ...args: string[]
 ) => any;
 
-export type TLocales = Record<string, ILocale>;
+export type TLocales = Record<string | number, ILocale>;
 
 export type TBasePos = {
   x: number;
