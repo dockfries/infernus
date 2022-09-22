@@ -1,6 +1,5 @@
 import { OnPlayerCommandText, OnPlayerText } from "@/utils/helperUtils";
 import {
-  OnClientCheckResponse,
   OnPlayerConnect,
   OnPlayerDisconnect,
   OnPlayerClickMap,
@@ -34,7 +33,8 @@ import {
   // WeaponEnum,
 } from "@/enums";
 import { throttle } from "lodash";
-import { BaseDialog } from "../dialog";
+import { BaseDialog } from "../promise/dialog";
+import { delCCTask } from "../promise/client";
 
 // Each instance can be called to callbacks, so you can split the logic.
 
@@ -50,12 +50,6 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
   protected abstract onDisconnect(player: P, reason: number): number;
   protected abstract onText(player: P, text: string): number;
   protected abstract onCommandError(player: P, err: ICmdErr): number;
-  protected abstract onClientCheckResponse(
-    player: P,
-    actionid: number,
-    memaddr: number,
-    retndata: number
-  ): number;
   protected abstract onEnterExitModShop(
     player: P,
     enterexit: number,
@@ -139,6 +133,7 @@ export abstract class BasePlayerEvent<
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
       BaseDialog.close(p);
+      delCCTask(playerid, true);
       const result = this.onDisconnect(p, reason);
       this.players.delete(playerid);
       return result;
@@ -172,19 +167,6 @@ export abstract class BasePlayerEvent<
       // The command %s you entered does not exist
       return this.onCommandError(p, ICmdErrInfo.notExist);
     });
-
-    OnClientCheckResponse(
-      (
-        playerid: number,
-        actionid: number,
-        memaddr: number,
-        retndata: number
-      ): number => {
-        const p = this.findPlayerById(playerid);
-        if (!p) return 0;
-        return this.onClientCheckResponse(p, actionid, memaddr, retndata);
-      }
-    );
 
     OnEnterExitModShop(
       (playerid: number, enterexit: number, interior: number): number => {

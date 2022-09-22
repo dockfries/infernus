@@ -1,4 +1,4 @@
-import { IPlayerSettings } from "@/interfaces";
+import { IClientResRaw, IPlayerSettings } from "@/interfaces";
 import {
   BanEx,
   GetPlayerName,
@@ -29,6 +29,7 @@ import { TBasePos } from "@/types";
 import * as ow from "omp-wrapper";
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
 import { DynamicObject } from "../streamer";
+import { ccWaitingQueue, delCCTask } from "../promise/client";
 
 export abstract class BasePlayer {
   private _id: number;
@@ -232,7 +233,7 @@ export abstract class BasePlayer {
     return playerFunc.GetPlayerScore(this.id);
   }
   public getPing(): number {
-    return playerFunc.GetPlayerPing(this.id);
+    return playerFunc.GetPlayerPing(this.id) || 0;
   }
   public setPos(x: number, y: number, z: number): number {
     return playerFunc.SetPlayerPos(this.id, x, y, z);
@@ -727,24 +728,37 @@ export abstract class BasePlayer {
     memAddr: number,
     memOffset: number,
     byteCount: number
-  ): number {
+  ): void | Promise<IClientResRaw> {
     const validTypes = [2, 5, 69, 70, 71, 72];
     if (!validTypes.includes(type)) {
-      logger.error(
+      return logger.error(
         `[BasePlayer]: sendClientCheck valid types are ${validTypes.toString()}`
       );
-      return 0;
     }
-    if (type === 72) {
-      memAddr = memOffset = byteCount = 0;
-    }
-    return playerFunc.SendClientCheck(
-      this.id,
-      type,
-      memAddr,
-      memOffset,
-      byteCount
-    );
+    if (type === 72) memAddr = memOffset = byteCount = 0;
+
+    return new Promise((resolve, reject) => {
+      delCCTask(this.id, true);
+      if (this.isPaused) return reject("game paused");
+      const p = new Promise<IClientResRaw>((clientResolve, clientReject) => {
+        const ping = this.getPing();
+        const shouldResTime = (ping >= 1000 ? 1000 : ping) + 300;
+        ccWaitingQueue.set(this.id, {
+          resolve: clientResolve,
+          reject: clientReject,
+          timeout: setTimeout(() => delCCTask(this.id, true), shouldResTime),
+        });
+        playerFunc.SendClientCheck(
+          this.id,
+          type,
+          memAddr,
+          memOffset,
+          byteCount
+        );
+      });
+      p.then(resolve, reject);
+      p.finally(() => delCCTask(this.id));
+    });
   }
   public selectTextDraw(color: string): void {
     playerFunc.SelectTextDraw(this.id, color);

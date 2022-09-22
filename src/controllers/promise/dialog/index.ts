@@ -1,8 +1,8 @@
 import { DialogStylesEnum } from "@/enums";
 import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helperUtils";
 import { HidePlayerDialog } from "omp-wrapper";
-import { BasePlayer } from "../player/basePlayer";
-import { I18n } from "../i18n";
+import { BasePlayer } from "../../player/basePlayer";
+import { I18n } from "../../i18n";
 import {
   IDialog,
   IDialogFuncQueue,
@@ -97,20 +97,17 @@ export class BaseDialog<T extends BasePlayer> {
 
   //#endregion
 
-  private static delDialogRecord<T extends BasePlayer>(
+  private static delDialogTask<T extends BasePlayer>(
     player: T,
     reject = false
   ): boolean {
-    if (reject) {
-      // if player disconnect and still await response
-      // should stop promise waiting
-      BaseDialog.waitingQueue.get(player.id)?.reject("forceclose");
-    }
-    if (BaseDialog.waitingQueue.has(player.id)) {
-      BaseDialog.waitingQueue.delete(player.id);
-      return true;
-    }
-    return false;
+    // if player disconnect and still await response
+    // should stop promise waiting
+    const task = BaseDialog.waitingQueue.get(player.id);
+    if (!task) return false;
+    if (reject) task.reject("timeout/show again");
+    BaseDialog.waitingQueue.delete(player.id);
+    return true;
   }
 
   public show(player: T): Promise<IDialogResResult> {
@@ -123,24 +120,21 @@ export class BaseDialog<T extends BasePlayer> {
         });
         ShowPlayerDialog(player, this.id, this.dialog);
       });
-      p.then(
-        (DialogRes: IDialogResRaw) => {
-          const { response, listitem } = DialogRes;
-          const inputtext = I18n.decodeFromBuf(
-            DialogRes.inputbuf,
-            player.charset
-          );
-          resolve({ response, listitem, inputtext });
-        },
-        (reason: string) => reject(reason)
-      ).finally(() => {
-        BaseDialog.delDialogRecord(player);
+      p.then((DialogRes: IDialogResRaw) => {
+        const { response, listitem } = DialogRes;
+        const inputtext = I18n.decodeFromBuf(
+          DialogRes.inputbuf,
+          player.charset
+        );
+        resolve({ response, listitem, inputtext });
       });
+      p.catch(reject);
+      p.finally(() => BaseDialog.delDialogTask(player));
     });
   }
 
   public static close<T extends BasePlayer>(player: T) {
-    BaseDialog.delDialogRecord(player, true);
+    BaseDialog.delDialogTask(player, true);
     HidePlayerDialog(player.id);
   }
 }

@@ -145,3 +145,15 @@ export interface IDynamicObject extends IDynamicCommon {
   rz: number;
   drawdistance?: number;
 }
+
+export interface IClientResRaw {
+  actionid: number;
+  memaddr: number;
+  retndata: number;
+}
+
+export interface IClientFuncQueue {
+  resolve: (value: IClientResRaw | PromiseLike<IClientResRaw>) => void;
+  reject: (reason: string) => void;
+  timeout: NodeJS.Timeout;
+}
