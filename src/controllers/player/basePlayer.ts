@@ -739,7 +739,6 @@ export abstract class BasePlayer {
         `[BasePlayer]: sendClientCheck valid types are ${validTypes.toString()}`
       );
     }
-    if (type === 72) memAddr = memOffset = byteCount = 0;
 
     return new Promise((resolve, reject) => {
       delCCTask(this.id, true);
