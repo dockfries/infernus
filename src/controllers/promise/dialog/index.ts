@@ -105,7 +105,7 @@ export class BaseDialog<T extends BasePlayer> {
     // should stop promise waiting
     const task = BaseDialog.waitingQueue.get(player.id);
     if (!task) return false;
-    if (reject) task.reject("timeout/show again");
+    if (reject) task.reject(new Error("timeout/show again"));
     BaseDialog.waitingQueue.delete(player.id);
     return true;
   }

@@ -19,4 +19,10 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-process.on("unhandledRejection", (err) => logger.warn(err));
+process.on("unhandledRejection", (err) => {
+  if (err instanceof Error) {
+    logger.warn(err);
+    return;
+  }
+  logger.warn(new Error(JSON.stringify(err)));
+});

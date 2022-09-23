@@ -125,7 +125,12 @@ export abstract class BasePlayerEvent<
     OnPlayerConnect((playerid: number): number => {
       const p = this.newPlayer(playerid);
       this.players.set(playerid, p);
-      if (!p.isNpc()) p.isAndroid();
+      if (!p.isNpc()) {
+        try {
+          p.isAndroid();
+          // eslint-disable-next-line no-empty
+        } catch (error) {}
+      }
       return this.onConnect(p);
     });
 

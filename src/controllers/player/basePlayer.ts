@@ -743,7 +743,7 @@ export abstract class BasePlayer {
 
     return new Promise((resolve, reject) => {
       delCCTask(this.id, true);
-      if (this.isPaused) return reject("game paused");
+      if (this.isPaused) return reject(new Error("game paused"));
       const p = new Promise<IClientResRaw>((clientResolve, clientReject) => {
         const ping = this.getPing();
         const shouldResTime = (ping >= 1000 ? 1000 : ping) + 300;
@@ -929,7 +929,7 @@ export abstract class BasePlayer {
         while (tryCut < 10) {
           tryCut++;
           if (!this.isConnected()) {
-            reject("disconnect");
+            reject(new Error("disconnect"));
             break;
           }
           const p = await this.sendClientCheck(0x48, 0, 0, 2);
@@ -939,7 +939,7 @@ export abstract class BasePlayer {
             break;
           }
         }
-        if (tryCut === 10) reject("try limit");
+        if (tryCut === 10) reject(new Error("try limit"));
       });
     });
   }

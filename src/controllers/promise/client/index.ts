@@ -6,7 +6,7 @@ export const ccWaitingQueue: Map<number, IClientFuncQueue> = new Map();
 export const delCCTask = (playerId: number, reject = false): boolean => {
   const task = ccWaitingQueue.get(playerId);
   if (!task) return false;
-  if (reject) task.reject("timeout");
+  if (reject) task.reject(new Error("timeout"));
   clearTimeout(task.timeout);
   ccWaitingQueue.delete(playerId);
   return true;
@@ -19,10 +19,10 @@ OnClientCheckResponse(
     memaddr: number,
     retndata: number
   ): number => {
-    const callback = ccWaitingQueue.get(playerid);
-    if (!callback) return 0;
-    clearTimeout(callback.timeout);
-    setTimeout(() => callback.resolve({ actionid, memaddr, retndata }));
+    const task = ccWaitingQueue.get(playerid);
+    if (!task) return 0;
+    clearTimeout(task.timeout);
+    setTimeout(() => task.resolve({ actionid, memaddr, retndata }));
     return 1;
   }
 );
