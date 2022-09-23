@@ -922,9 +922,9 @@ export abstract class BasePlayer {
   }
   public isAndroid(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      if (this._isAndroid !== null) return resolve(this._isAndroid);
-      if (this.isNpc()) return resolve(false);
       setTimeout(async () => {
+        if (this._isAndroid !== null) return resolve(this._isAndroid);
+        if (this.isNpc()) return resolve(false);
         let tryCut = 1;
         while (tryCut < 6) {
           tryCut++;
