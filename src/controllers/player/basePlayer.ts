@@ -40,7 +40,7 @@ export abstract class BasePlayer {
   public lastDrunkLevel = 0;
   public lastFps = 0;
   private _isNpc: boolean;
-  private _isAndroid: null | boolean = null;
+  private _isAndroid: boolean | null = null;
   public isPaused = false;
 
   get charset() {
@@ -742,10 +742,10 @@ export abstract class BasePlayer {
 
     return new Promise((resolve, reject) => {
       delCCTask(this.id, true);
-      if (this.isPaused) return reject(new Error("game paused"));
+      if (this.isPaused) return reject("game paused");
       const p = new Promise<IClientResRaw>((clientResolve, clientReject) => {
         const ping = this.getPing();
-        const shouldResTime = (ping >= 1000 ? 1000 : ping) + 300;
+        const shouldResTime = (ping >= 200 ? 0 : ping) + 200;
         ccWaitingQueue.set(this.id, {
           resolve: clientResolve,
           reject: clientReject,
@@ -923,12 +923,13 @@ export abstract class BasePlayer {
   public isAndroid(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       if (this._isAndroid !== null) return resolve(this._isAndroid);
+      if (this.isNpc()) return resolve(false);
       setTimeout(async () => {
         let tryCut = 1;
-        while (tryCut < 10) {
+        while (tryCut < 6) {
           tryCut++;
           if (!this.isConnected()) {
-            reject(new Error("disconnect"));
+            reject("disconnect");
             break;
           }
           try {
@@ -941,7 +942,10 @@ export abstract class BasePlayer {
             // eslint-disable-next-line no-empty
           } catch (error) {}
         }
-        if (tryCut === 10) reject(new Error("try limit"));
+        if (tryCut === 6) {
+          this.kick();
+          reject("try limit");
+        }
       });
     });
   }

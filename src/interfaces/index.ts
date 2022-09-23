@@ -83,7 +83,7 @@ export interface IBaseTextDraw<P extends BasePlayer> {
 
 export interface IDialogFuncQueue {
   resolve: (value: IDialogResRaw | PromiseLike<IDialogResRaw>) => void;
-  reject: (reason: Error) => void;
+  reject: (reason: string) => void;
 }
 
 export interface IDynamicCommon {
@@ -155,7 +155,7 @@ export interface IClientResRaw {
 
 export interface IClientFuncQueue {
   resolve: (value: IClientResRaw | PromiseLike<IClientResRaw>) => void;
-  reject: (reason: Error) => void;
+  reject: (reason: string) => void;
   timeout: NodeJS.Timeout;
 }
 

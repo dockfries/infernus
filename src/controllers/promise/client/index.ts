@@ -6,7 +6,7 @@ export const ccWaitingQueue: Map<number, IClientFuncQueue> = new Map();
 export const delCCTask = (playerId: number, reject = false): boolean => {
   const task = ccWaitingQueue.get(playerId);
   if (!task) return false;
-  if (reject) task.reject(new Error("timeout"));
+  if (reject) task.reject("timeout");
   clearTimeout(task.timeout);
   ccWaitingQueue.delete(playerId);
   return true;
