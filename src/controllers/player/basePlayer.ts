@@ -931,12 +931,15 @@ export abstract class BasePlayer {
             reject(new Error("disconnect"));
             break;
           }
-          const p = await this.sendClientCheck(0x48, 0, 0, 2);
-          if (p) {
-            this._isAndroid = p.actionid !== 0x48;
-            resolve(this._isAndroid);
-            break;
-          }
+          try {
+            const p = await this.sendClientCheck(0x48, 0, 0, 2);
+            if (p) {
+              this._isAndroid = p.actionid !== 0x48;
+              resolve(this._isAndroid);
+              break;
+            }
+            // eslint-disable-next-line no-empty
+          } catch (error) {}
         }
         if (tryCut === 10) reject(new Error("try limit"));
       });
