@@ -250,13 +250,6 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
       "[BaseTextDraw]: player's textdraw should not be hide for all."
     );
   }
-  public static isValid<T extends BaseTextDraw<P>, P extends BasePlayer>(
-    textdraw: T
-  ): boolean {
-    const p = textdraw.sourceInfo.player;
-    if (p) return ow.IsValidPlayer3DTextLabel(p.id, textdraw.id);
-    return ow.IsValidTextDraw(textdraw.id);
-  }
   public isValid(): boolean {
     const p = this.sourceInfo.player;
     if (p) return ow.IsValidPlayer3DTextLabel(p.id, this.id);

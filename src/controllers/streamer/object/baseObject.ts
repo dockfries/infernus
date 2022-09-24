@@ -108,10 +108,6 @@ export class DynamicObject {
     return this;
   }
 
-  public static isValid(object: DynamicObject): boolean {
-    return ows.IsValidDynamicObject(object.id);
-  }
-
   public isValid(): boolean {
     return ows.IsValidDynamicObject(this.id);
   }

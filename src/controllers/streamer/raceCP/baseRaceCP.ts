@@ -107,9 +107,6 @@ export class DynamicRaceCP {
     raceCPBus.emit(raceCPHooks.destroyed, this);
     return this;
   }
-  public static isValid(checkpoint: DynamicRaceCP): boolean {
-    return IsValidDynamicCP(checkpoint.id);
-  }
   public isValid(): boolean {
     return IsValidDynamicCP(this.id);
   }

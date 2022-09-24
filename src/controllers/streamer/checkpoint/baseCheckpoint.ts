@@ -96,9 +96,6 @@ export class DynamicCheckpoint {
     checkPointBus.emit(checkPointHooks.destroyed, this);
     return this;
   }
-  public static isValid(checkpoint: DynamicCheckpoint): boolean {
-    return IsValidDynamicCP(checkpoint.id);
-  }
   public isValid(): boolean {
     return IsValidDynamicCP(this.id);
   }

@@ -90,9 +90,6 @@ export class DynamicActor {
     actorBus.emit(actorHooks.destroyed, this);
     return this;
   }
-  public static isValid(actor: DynamicActor): boolean {
-    return ows.IsValidDynamicActor(actor.id);
-  }
   public isValid(): boolean {
     return ows.IsValidDynamicActor(this.id);
   }

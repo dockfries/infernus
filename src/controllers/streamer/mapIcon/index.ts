@@ -102,9 +102,6 @@ export class DynamicMapIcon {
     DestroyDynamicMapIcon(this.id);
     return this;
   }
-  public static isValid(icon: DynamicMapIcon): boolean {
-    return IsValidDynamicMapIcon(icon.id);
-  }
   public isValid(): boolean {
     return IsValidDynamicMapIcon(this.id);
   }

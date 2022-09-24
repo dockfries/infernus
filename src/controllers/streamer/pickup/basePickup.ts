@@ -91,9 +91,6 @@ export class DynamicPickup {
     pickupBus.emit(pickupHooks.destroyed, this);
     return this;
   }
-  public static isValid(pickup: DynamicPickup): boolean {
-    return IsValidDynamicPickup(pickup.id);
-  }
   public isValid(): boolean {
     return IsValidDynamicPickup(this.id);
   }

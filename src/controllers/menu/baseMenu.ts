@@ -140,9 +140,6 @@ export class BaseMenu {
       return logger.error("[BaseMenu]: Wrong number of rows");
     fns.DisableMenuRow(this.id, row);
   }
-  public static isValid<M extends BaseMenu>(menu: M): boolean {
-    return fns.IsValidMenu(menu.id);
-  }
   public isValid(): boolean {
     return fns.IsValidMenu(this.id);
   }
