@@ -34,3 +34,11 @@ export type TDynamicArea =
   | IDynamicRectangle
   | IDynamicCuboid
   | IDynamicPolygon;
+
+export type TDynamicAreaTypes =
+  | "circle"
+  | "cylinder"
+  | "sphere"
+  | "rectangle"
+  | "cuboid"
+  | "polygon";

@@ -1,7 +1,12 @@
 import { BasePlayer } from "@/controllers/player";
 import { MapIconStyles } from "omp-wrapper-streamer";
 import { DialogStylesEnum } from "../enums";
-import { TEventFunc, TEventName, TStreamerExtendable } from "../types";
+import {
+  TDynamicAreaTypes,
+  TEventFunc,
+  TEventName,
+  TStreamerExtendable,
+} from "../types";
 
 export interface ICmd {
   name: TEventName;
@@ -210,4 +215,9 @@ export interface IDynamicPolygon extends IDynamicBase {
   points: number[];
   minz: number;
   maxz: number;
+}
+
+export interface IDynamicAreaKey {
+  id: number;
+  type: TDynamicAreaTypes;
 }

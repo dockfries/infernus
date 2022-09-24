@@ -1,11 +1,14 @@
 import { logger } from "@/logger";
-import { TDynamicArea } from "@/types";
+import { TDynamicArea, TDynamicAreaTypes } from "@/types";
 import * as ows from "omp-wrapper-streamer";
 import { areaBus, areaHooks } from "./areaBus";
 
 export class DynamicArea {
   private sourceInfo: TDynamicArea;
   private _id = -1;
+  public get type(): TDynamicAreaTypes {
+    return this.sourceInfo.type;
+  }
   public get id(): number {
     return this._id;
   }
