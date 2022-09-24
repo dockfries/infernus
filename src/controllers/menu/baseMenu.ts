@@ -1,17 +1,7 @@
 import { LimitsEnum } from "@/enums";
 import { logger } from "@/logger";
-import {
-  AddMenuItem,
-  CreateMenu,
-  DestroyMenu,
-  DisableMenu,
-  DisableMenuRow,
-  ShowMenuForPlayer,
-  HideMenuForPlayer,
-  IsValidMenu,
-  SetMenuColumnHeader,
-  GetPlayerMenu,
-} from "@/wrapper/functions";
+import * as fns from "@/wrapper/functions";
+import * as ow from "omp-wrapper";
 import { BasePlayer } from "../player";
 import { menuBus, menuHooks } from "./menuBus";
 
@@ -97,7 +87,7 @@ export class BaseMenu {
         "[BaseMenu]: The maximum number of menus allowed to be created has been reached 128"
       );
     }
-    this._id = CreateMenu(
+    this._id = fns.CreateMenu(
       this.title,
       this.columns,
       this.x,
@@ -110,14 +100,14 @@ export class BaseMenu {
     return this;
   }
   public destroy(): void | this {
-    if (this._id === -1 || !IsValidMenu(this.id))
+    if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot destroy before create");
-    DestroyMenu(this.id);
+    fns.DestroyMenu(this.id);
     menuBus.emit(menuHooks.destroyed, this);
     return this;
   }
   public addItem(column: number, title: string): void | this {
-    if (this._id === -1 || !IsValidMenu(this.id))
+    if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot addItem before create");
     if (this._itemCount === LimitsEnum.MAX_MENU_ROW)
       return logger.error(
@@ -125,51 +115,84 @@ export class BaseMenu {
       );
     if (column !== 0 && column !== 1)
       return logger.error("[BaseMenu]: Wrong number of columns");
-    AddMenuItem(this.id, column, title);
+    fns.AddMenuItem(this.id, column, title);
     this._itemCount++;
     return this;
   }
   public setColumnHeader(column: number, header: string): void | this {
-    if (this._id === -1 || !IsValidMenu(this.id))
+    if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot  setColumnHeader before create");
     if (column !== 0 && column !== 1)
       return logger.error("[BaseMenu]: Wrong number of columns");
-    SetMenuColumnHeader(this.id, column, header);
+    fns.SetMenuColumnHeader(this.id, column, header);
     return this;
   }
   public disable(): void | this {
-    if (this._id === -1 || !IsValidMenu(this.id))
+    if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot disable menu before create");
-    DisableMenu(this.id);
+    fns.DisableMenu(this.id);
     return this;
   }
   public disableRow(row: number) {
-    if (this._id === -1 || !IsValidMenu(this.id))
+    if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot disable row before create");
     if (row < 0 || row > this.itemCount - 1)
       return logger.error("[BaseMenu]: Wrong number of rows");
-    DisableMenuRow(this.id, row);
+    fns.DisableMenuRow(this.id, row);
   }
   public static isValid<M extends BaseMenu>(menu: M): boolean {
-    return IsValidMenu(menu.id);
+    return fns.IsValidMenu(menu.id);
   }
   public isValid(): boolean {
-    return IsValidMenu(this.id);
+    return fns.IsValidMenu(this.id);
   }
-  public showForPlayer<P extends BasePlayer>(player: P) {
-    if (this._id === -1 || !IsValidMenu(this.id))
+  public showForPlayer<P extends BasePlayer>(player: P): void | number {
+    if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot show menu before create");
-    return ShowMenuForPlayer(this.id, player.id);
+    return fns.ShowMenuForPlayer(this.id, player.id);
   }
-  public hideForPlayer<P extends BasePlayer>(player: P) {
-    if (this._id === -1 || !IsValidMenu(this.id))
+  public hideForPlayer<P extends BasePlayer>(player: P): void | number {
+    if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot hide menu before create");
-    return HideMenuForPlayer(this.id, player.id);
+    return fns.HideMenuForPlayer(this.id, player.id);
   }
   public static getMenu<M extends BaseMenu, P extends BasePlayer>(
     player: P,
     menus: Array<M>
   ): M | undefined {
-    return menus.find((m) => m.id === GetPlayerMenu(player.id));
+    return menus.find((m) => m.id === fns.GetPlayerMenu(player.id));
+  }
+  public isDisabled(): boolean {
+    if (this._id === -1) return false;
+    return ow.IsMenuDisabled(this.id);
+  }
+  public isRowDisabled(row: number): boolean {
+    if (this._id === -1) return false;
+    if (row < 0 || row > this._itemCount) return false;
+    return ow.IsMenuRowDisabled(this.id, row);
+  }
+  public getItems(column: number): number {
+    if (this._id === -1) return 0;
+    return ow.GetMenuItems(this.id, column);
+  }
+  public getPos() {
+    if (this._id === -1) return { fX: this.x, fY: this.y };
+    return ow.GetMenuPos(this.id);
+  }
+  public getColumnWidth() {
+    if (this.id === -1)
+      return { fColumn1: this.col1width, fColumn2: this.col2width };
+    return ow.GetMenuColumnWidth(this.id);
+  }
+  public getColumnHeader(column: number): void | string {
+    if (this._id === -1)
+      return logger.error("[BaseMenu]: Cannot get column header before create");
+    return ow.GetMenuColumnHeader(this.id, column);
+  }
+  public getItem(column: number, item: number): void | string {
+    if (this._id === -1)
+      return logger.error("[BaseMenu]: Cannot get item before create");
+    if (item < 0 || item > this.getItems(column) - 1) return undefined;
+    return ow.GetMenuItem(this.id, column, item);
   }
 }
