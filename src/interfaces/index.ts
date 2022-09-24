@@ -86,17 +86,20 @@ export interface IDialogFuncQueue {
   reject: (reason: string) => void;
 }
 
-export interface IDynamicCommon {
-  x: number;
-  y: number;
-  z: number;
-  streamdistance?: number;
+export interface IDynamicBase {
   worldid?: TStreamerExtendable;
   interiorid?: TStreamerExtendable;
   playerid?: TStreamerExtendable;
-  areaid?: TStreamerExtendable;
-  priority?: number;
   extended?: boolean;
+}
+
+export interface IDynamicCommon extends IDynamicBase {
+  x: number;
+  y: number;
+  z: number;
+  areaid?: TStreamerExtendable;
+  streamdistance?: number;
+  priority?: number;
 }
 
 export interface IDynamicMapIcon extends IDynamicCommon {
@@ -162,4 +165,49 @@ export interface IClientFuncQueue {
 export interface ICommonGangZoneKey {
   id: number;
   global: boolean;
+}
+
+export interface IDynamicCircleBase extends IDynamicBase {
+  x: number;
+  y: number;
+  size: number;
+}
+
+export interface IDynamicCircle extends IDynamicCircleBase {
+  type: "circle";
+}
+
+export interface IDynamicCylinder extends IDynamicCircleBase {
+  type: "cylinder";
+  minz: number;
+  maxz: number;
+}
+
+export interface IDynamicSphere extends IDynamicCircleBase {
+  type: "sphere";
+  z: number;
+}
+
+export interface IDynamicRectangleBase extends IDynamicBase {
+  minx: number;
+  miny: number;
+  maxx: number;
+  maxy: number;
+}
+
+export interface IDynamicRectangle extends IDynamicRectangleBase {
+  type: "rectangle";
+}
+
+export interface IDynamicCuboid extends IDynamicRectangleBase {
+  type: "cuboid";
+  minz: number;
+  maxz: number;
+}
+
+export interface IDynamicPolygon extends IDynamicBase {
+  type: "polygon";
+  points: number[];
+  minz: number;
+  maxz: number;
 }

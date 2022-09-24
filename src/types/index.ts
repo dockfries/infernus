@@ -1,5 +1,13 @@
 import { BasePlayer } from "@/controllers/player";
-import { ILocale } from "@/interfaces";
+import {
+  ILocale,
+  IDynamicCircle,
+  IDynamicCylinder,
+  IDynamicSphere,
+  IDynamicRectangle,
+  IDynamicCuboid,
+  IDynamicPolygon,
+} from "@/interfaces";
 
 export type TEventName = string | string[];
 export type TEventFunc = <T extends BasePlayer>(
@@ -18,3 +26,11 @@ export type TBasePos = {
 export type TStreamerExtendable = number | number[];
 
 export type TUsePlugin = (...args: Array<any>) => void;
+
+export type TDynamicArea =
+  | IDynamicCircle
+  | IDynamicCylinder
+  | IDynamicSphere
+  | IDynamicRectangle
+  | IDynamicCuboid
+  | IDynamicPolygon;

@@ -6,3 +6,4 @@ export * from "./actor";
 export * from "./3dtext";
 export * from "./common";
 export * from "./object";
+export * from "./area";
