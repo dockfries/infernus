@@ -28,16 +28,16 @@ export class CmdBus {
     player: T,
     userEventName: TEventName,
     userEventArgs: Array<string>
-  ): Promise<boolean> {
+  ): Promise<number> {
     const idx: number = CmdBus.findEventIdxByName(userEventName);
     if (idx > -1) {
       let result = CmdBus.eventList[idx].fn.apply(player, userEventArgs);
       if (result instanceof Promise) result = await result;
-      if (result === undefined || result === null) return false;
-      if (typeof result === "number") return Boolean(result);
+      if (result === undefined || result === null) return 0;
+      if (typeof result === "boolean") return Number(result);
       return result;
     }
-    return false;
+    return -1;
   }
 
   private static findEventIdxByName(eventName: TEventName): number {

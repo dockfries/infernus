@@ -163,13 +163,21 @@ export abstract class BasePlayerEvent<
         Use eventBus to observe and subscribe to level 1 instructions, 
         support string and array pass, array used for alias.
       */
-      let exist = false;
       (async () => {
-        exist = await CmdBus.emit(p, regCmdtext[0], regCmdtext.splice(1));
+        const result = await CmdBus.emit(p, regCmdtext[0], regCmdtext.slice(1));
+        // The command %s you entered does not exist
+        if (result === -1) {
+          const fn = () =>
+            this.onCommandError(p, regCmdtext.join(" "), ICmdErrInfo.notExist);
+          OnPlayerCommandText(fn);
+          samp.removeEventListener("OnPlayerCommandText", fn);
+          return;
+        }
+        const fn = () => result;
+        OnPlayerCommandText(fn);
+        samp.removeEventListener("OnPlayerCommandText", fn);
       })();
-      if (exist) return 1;
-      // The command %s you entered does not exist
-      return this.onCommandError(p, regCmdtext.join(" "), ICmdErrInfo.notExist);
+      return 1;
     });
 
     OnEnterExitModShop(
