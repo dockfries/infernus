@@ -24,14 +24,16 @@ export class CmdBus {
     CmdBus.eventList.splice(idx, 1);
   }
 
-  static emit<T extends BasePlayer>(
+  static async emit<T extends BasePlayer>(
     player: T,
     userEventName: TEventName,
     userEventArgs: Array<string>
-  ): boolean {
+  ): Promise<boolean> {
     const idx: number = CmdBus.findEventIdxByName(userEventName);
     if (idx > -1) {
-      const result = CmdBus.eventList[idx].fn.apply(player, userEventArgs);
+      let result = CmdBus.eventList[idx].fn.apply(player, userEventArgs);
+      if (result instanceof Promise) result = await result;
+      if (result === undefined || result === null) return false;
       if (typeof result === "number") return Boolean(result);
       return result;
     }

@@ -13,7 +13,7 @@ export type TEventName = string | string[];
 export type TEventFunc = <T extends BasePlayer>(
   this: T,
   ...args: string[]
-) => boolean | number;
+) => boolean | number | void | Promise<boolean | number | void>;
 
 export type TLocales = Record<string | number, ILocale>;
 

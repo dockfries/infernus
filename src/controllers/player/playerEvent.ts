@@ -163,11 +163,10 @@ export abstract class BasePlayerEvent<
         Use eventBus to observe and subscribe to level 1 instructions, 
         support string and array pass, array used for alias.
       */
-      const exist: boolean = CmdBus.emit(
-        p,
-        regCmdtext[0],
-        regCmdtext.splice(1)
-      );
+      let exist = false;
+      (async () => {
+        exist = await CmdBus.emit(p, regCmdtext[0], regCmdtext.splice(1));
+      })();
       if (exist) return 1;
       // The command %s you entered does not exist
       return this.onCommandError(p, regCmdtext.join(" "), ICmdErrInfo.notExist);
