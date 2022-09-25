@@ -166,16 +166,16 @@ export abstract class BasePlayerEvent<
       (async () => {
         const result = await CmdBus.emit(p, regCmdtext[0], regCmdtext.slice(1));
         // The command %s you entered does not exist
-        if (result === -1) {
-          const fn = () =>
-            this.onCommandError(p, regCmdtext.join(" "), ICmdErrInfo.notExist);
-          OnPlayerCommandText(fn);
-          samp.removeEventListener("OnPlayerCommandText", fn);
-          return;
-        }
-        const fn = () => result;
-        OnPlayerCommandText(fn);
-        samp.removeEventListener("OnPlayerCommandText", fn);
+        if (result >= 1) return;
+        const finalRes = this.onCommandError(
+          p,
+          regCmdtext.join(" "),
+          ICmdErrInfo.notExist
+        );
+        const fn = () => finalRes;
+        samp.addEventListener("OnPlayerCommandTextI18n", fn);
+        samp.removeEventListener("OnPlayerCommandTextI18n", fn);
+        return;
       })();
       return 1;
     });
