@@ -38,8 +38,8 @@ import { playerBus, playerHooks } from "./playerBus";
 // Each instance can be called to callbacks, so you can split the logic.
 
 const ICmdErrInfo: Record<string, ICmdErr> = {
-  format: { code: 0, msg: "Please enter the correct command" },
-  notExist: { code: 1, msg: "The command %s you entered does not exist" },
+  format: { code: 0, msg: "incorrect command" },
+  notExist: { code: 1, msg: "does not exist" },
 };
 
 abstract class AbstractPlayerEvent<P extends BasePlayer> {
@@ -48,7 +48,11 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
   protected abstract onConnect(player: P): number;
   protected abstract onDisconnect(player: P, reason: number): number;
   protected abstract onText(player: P, text: string): number;
-  protected abstract onCommandError(player: P, err: ICmdErr): number;
+  protected abstract onCommandError(
+    player: P,
+    command: string,
+    err: ICmdErr
+  ): number;
   protected abstract onEnterExitModShop(
     player: P,
     enterexit: number,
@@ -152,7 +156,7 @@ export abstract class BasePlayerEvent<
       const cmdtext = I18n.decodeFromBuf(buf, p.charset);
       const regCmdtext = cmdtext.match(/[^/\s]+/gi);
       if (regCmdtext === null || regCmdtext.length === 0) {
-        this.onCommandError(p, ICmdErrInfo.format);
+        this.onCommandError(p, cmdtext, ICmdErrInfo.format);
         return 0;
       }
       /* 
@@ -166,7 +170,7 @@ export abstract class BasePlayerEvent<
       );
       if (exist) return 1;
       // The command %s you entered does not exist
-      return this.onCommandError(p, ICmdErrInfo.notExist);
+      return this.onCommandError(p, regCmdtext.join(" "), ICmdErrInfo.notExist);
     });
 
     OnEnterExitModShop(
