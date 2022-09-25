@@ -5,11 +5,7 @@ import {
 } from "@/wrapper/callbacks";
 import * as fns from "@/wrapper/functions";
 import { logger } from "@/logger";
-import {
-  OnClientMessage,
-  OnRconCommand,
-  OnRconLoginAttempt,
-} from "@/utils/helperUtils";
+import { OnRconCommand, OnRconLoginAttempt } from "@/utils/helperUtils";
 import * as ow from "omp-wrapper";
 import { defaultCharset } from "./settings";
 import { TUsePlugin } from "@/types";
@@ -35,7 +31,6 @@ export abstract class BaseGameMode {
       this.initialized = false;
       this.onExit();
     });
-    OnClientMessage(this.onClientMessage);
     OnIncomingConnection(this.onIncomingConnection);
     OnRconCommand(this.onRconCommand);
     OnRconLoginAttempt(this.onRconLoginAttempt);
@@ -80,7 +75,6 @@ export abstract class BaseGameMode {
     ipAddress: string,
     port: number
   ): number;
-  protected abstract onClientMessage(color: number, text: string): number;
   protected abstract onRconCommand(cmd: string): number;
   protected abstract onRconLoginAttempt(
     ip: string,

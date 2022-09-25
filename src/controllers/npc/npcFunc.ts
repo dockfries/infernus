@@ -1,4 +1,4 @@
-import { RecordTypesEnum } from "@/enums";
+import { ERecordStatus, RecordTypesEnum } from "@/enums";
 import { logger } from "@/logger";
 import {
   ConnectNPC,
@@ -10,12 +10,6 @@ import {
   StopRecordingPlayerData,
 } from "@/wrapper/functions";
 import { BasePlayer } from "../player";
-
-export enum ERecordStatus {
-  none,
-  start,
-  pause,
-}
 
 export class BaseNpcFunc {
   // eslint-disable-next-line @typescript-eslint/no-empty-function

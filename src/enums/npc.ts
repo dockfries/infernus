@@ -3,3 +3,9 @@ export enum NPCPlaybackEnum {
   DRIVER,
   ONFOOT,
 }
+
+export enum ERecordStatus {
+  none,
+  start,
+  pause,
+}
