@@ -31,8 +31,9 @@ export class CmdBus {
   ): boolean {
     const idx: number = CmdBus.findEventIdxByName(userEventName);
     if (idx > -1) {
-      CmdBus.eventList[idx].fn.apply(player, userEventArgs);
-      return true;
+      const result = CmdBus.eventList[idx].fn.apply(player, userEventArgs);
+      if (typeof result === "number") return Boolean(result);
+      return result;
     }
     return false;
   }
