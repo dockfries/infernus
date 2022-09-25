@@ -42,6 +42,7 @@ export abstract class BasePlayer {
   private _isNpc: boolean;
   private _isAndroid: boolean | null = null;
   public isPaused = false;
+  public lastUpdateTick = 0;
 
   get charset() {
     return this.settings.charset;

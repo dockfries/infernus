@@ -33,6 +33,7 @@ import {
 import { throttle } from "lodash";
 import { BaseDialog } from "../promise/dialog";
 import { delCCTask } from "../promise/client";
+import { playerBus, playerHooks } from "./playerBus";
 
 // Each instance can be called to callbacks, so you can split the logic.
 
@@ -104,7 +105,7 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
     oldinteriorid: number
   ): number;
   protected abstract onPause(player: P): number;
-  protected abstract onResume(player: P): number;
+  protected abstract onResume(player: P, pauseMs: number): number;
   protected abstract onRequestDownload(
     player: P,
     type: number,
@@ -247,6 +248,7 @@ export abstract class BasePlayerEvent<
       (playerid: number, newstate: number, oldstate: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
+        if (oldstate === PlayerStateEnum.NONE) p.lastUpdateTick = Date.now();
         return this.onStateChange(p, newstate, oldstate);
       }
     );
@@ -293,7 +295,15 @@ export abstract class BasePlayerEvent<
     OnPlayerUpdate((playerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      if (!p.isNpc()) this.fpsHeartbeat(p);
+      if (!p.isNpc()) {
+        const now = Date.now();
+        if (p.isPaused) {
+          p.isPaused = false;
+          this.onResume(p, now - p.lastUpdateTick);
+        }
+        p.lastUpdateTick = now;
+        this.fpsHeartbeat(p);
+      }
       const res = this.throttleUpdate(p);
       if (res !== undefined) return res;
       return 0;
@@ -326,6 +336,11 @@ export abstract class BasePlayerEvent<
         return this.onFinishedDownloading(p, virtualworld);
       }
     );
+    playerBus.emit(playerHooks.create, this.players);
+    playerBus.on(playerHooks.pause, (player) => {
+      player.isPaused = true;
+      this.onPause(player);
+    });
   }
   public findPlayerById(playerid: number) {
     return this.players.get(playerid);
@@ -342,15 +357,6 @@ export abstract class BasePlayerEvent<
       player.lastDrunkLevel = 2000;
       player.lastFps = 0;
       return;
-    }
-    if (!player.isPaused && player.lastDrunkLevel === nowDrunkLevel) {
-      player.isPaused = true;
-      this.onPause(player);
-      return;
-    }
-    if (player.isPaused) {
-      player.isPaused = false;
-      this.onResume(player);
     }
     player.lastFps = player.lastDrunkLevel - nowDrunkLevel - 1;
     player.lastDrunkLevel = nowDrunkLevel;
