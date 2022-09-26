@@ -44,6 +44,7 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
 
 abstract class AbstractPlayerEvent<P extends BasePlayer> {
   public readonly players = new Map<number, P>();
+  public readonly cmdBus = new CmdBus<P>();
   protected abstract newPlayer(playerid: number): P;
   protected abstract onConnect(player: P): number;
   protected abstract onDisconnect(player: P, reason: number): number;
@@ -164,7 +165,11 @@ export abstract class BasePlayerEvent<
         support string and array pass, array used for alias.
       */
       (async () => {
-        const result = await CmdBus.emit(p, regCmdtext[0], regCmdtext.slice(1));
+        const result = await this.cmdBus.emit(
+          p,
+          regCmdtext[0],
+          regCmdtext.slice(1)
+        );
         // The command %s you entered does not exist
         if (result >= 1) return;
         const finalRes = this.onCommandError(

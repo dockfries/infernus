@@ -4,34 +4,33 @@ import { BasePlayer } from "../player/basePlayer";
 
 // This is an event bus for distributing instructions entered by the user.
 // You can bind a single instruction as a string, or you can bind multiple alias instructions as an array string
-export class CmdBus {
-  private static eventList: Array<ICmd> = [];
+export class CmdBus<T extends BasePlayer> {
+  private eventList: Array<ICmd> = [];
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
 
-  static on(eventName: TEventName, eventFunction: TEventFunc) {
-    const idx: number = CmdBus.findEventIdxByName(eventName);
+  public on(eventName: TEventName, eventFunction: TEventFunc) {
+    const idx: number = this.findEventIdxByName(eventName);
     if (idx > -1)
       return console.log(
         "[CommandBus]: It is not supported to listen for the same event more than once"
       );
-    CmdBus.eventList.push({ name: eventName, fn: eventFunction });
+    this.eventList.push({ name: eventName, fn: eventFunction });
   }
 
-  static off(eventName: TEventName) {
-    const idx: number = CmdBus.findEventIdxByName(eventName);
+  public off(eventName: TEventName) {
+    const idx: number = this.findEventIdxByName(eventName);
     if (idx === -1) return;
-    CmdBus.eventList.splice(idx, 1);
+    this.eventList.splice(idx, 1);
   }
 
-  static async emit<T extends BasePlayer>(
+  public async emit(
     player: T,
     userEventName: TEventName,
     userEventArgs: Array<string>
   ): Promise<number> {
-    const idx: number = CmdBus.findEventIdxByName(userEventName);
+    const idx: number = this.findEventIdxByName(userEventName);
     if (idx > -1) {
-      let result = CmdBus.eventList[idx].fn.apply(player, userEventArgs);
+      let result = this.eventList[idx].fn.apply(player, userEventArgs);
       if (result instanceof Promise) result = await result;
       if (result === undefined || result === null) return 0;
       if (typeof result === "boolean") return Number(result);
@@ -40,8 +39,8 @@ export class CmdBus {
     return -1;
   }
 
-  private static findEventIdxByName(eventName: TEventName): number {
-    return CmdBus.eventList.findIndex((v) => {
+  public findEventIdxByName(eventName: TEventName): number {
+    return this.eventList.findIndex((v) => {
       const { name: registered } = v;
       if (registered instanceof Array) {
         if (eventName instanceof Array) {
