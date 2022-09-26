@@ -1,24 +1,5 @@
 import { OnPlayerCommandText, OnPlayerText } from "@/utils/helperUtils";
-import {
-  OnPlayerConnect,
-  OnPlayerDisconnect,
-  OnPlayerClickMap,
-  OnPlayerClickPlayer,
-  OnPlayerDeath,
-  OnPlayerGiveDamage,
-  OnPlayerKeyStateChange,
-  OnPlayerRequestSpawn,
-  OnPlayerSpawn,
-  OnPlayerStateChange,
-  OnPlayerStreamIn,
-  OnPlayerStreamOut,
-  OnPlayerTakeDamage,
-  OnPlayerUpdate,
-  OnEnterExitModShop,
-  OnPlayerInteriorChange,
-  OnPlayerFinishedDownloading,
-  OnPlayerRequestDownload,
-} from "@/wrapper/callbacks";
+import * as cbs from "@/wrapper/callbacks";
 import { I18n } from "../i18n";
 import { BasePlayer } from "./basePlayer";
 import { CmdBus } from "../command";
@@ -109,7 +90,7 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
     newinteriorid: number,
     oldinteriorid: number
   ): number;
-  protected abstract onPause(player: P): number;
+  protected abstract onPause(player: P, timestamp: number): number;
   protected abstract onResume(player: P, pauseMs: number): number;
   protected abstract onRequestDownload(
     player: P,
@@ -128,14 +109,14 @@ export abstract class BasePlayerEvent<
   constructor() {
     super();
 
-    OnPlayerConnect((playerid: number): number => {
+    cbs.OnPlayerConnect((playerid: number): number => {
       const p = this.newPlayer(playerid);
       this.players.set(playerid, p);
       if (!p.isNpc()) p.isAndroid();
       return this.onConnect(p);
     });
 
-    OnPlayerDisconnect((playerid: number, reason: number): number => {
+    cbs.OnPlayerDisconnect((playerid: number, reason: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
       BaseDialog.close(p);
@@ -185,7 +166,7 @@ export abstract class BasePlayerEvent<
       return 1;
     });
 
-    OnEnterExitModShop(
+    cbs.OnEnterExitModShop(
       (playerid: number, enterexit: number, interior: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
@@ -193,7 +174,7 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    OnPlayerClickMap(
+    cbs.OnPlayerClickMap(
       (playerid: number, fX: number, fY: number, fZ: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
@@ -201,7 +182,7 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    OnPlayerClickPlayer(
+    cbs.OnPlayerClickPlayer(
       (playerid: number, clickedplayerid: number, source: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
@@ -211,7 +192,7 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    OnPlayerDeath(
+    cbs.OnPlayerDeath(
       (playerid: number, killerid: number, reason: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
@@ -224,7 +205,7 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    OnPlayerGiveDamage(
+    cbs.OnPlayerGiveDamage(
       (
         playerid: number,
         damageid: number,
@@ -240,7 +221,7 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    OnPlayerKeyStateChange(
+    cbs.OnPlayerKeyStateChange(
       (playerid: number, newkeys: number, oldkeys: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
@@ -248,19 +229,19 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    OnPlayerRequestSpawn((playerid: number): number => {
+    cbs.OnPlayerRequestSpawn((playerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
       return this.onRequestSpawn(p);
     });
 
-    OnPlayerSpawn((playerid: number): number => {
+    cbs.OnPlayerSpawn((playerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
       return this.onSpawn(p);
     });
 
-    OnPlayerStateChange(
+    cbs.OnPlayerStateChange(
       (playerid: number, newstate: number, oldstate: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
@@ -269,7 +250,7 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    OnPlayerStreamIn((playerid: number, forplayerid: number): number => {
+    cbs.OnPlayerStreamIn((playerid: number, forplayerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
       const fp = this.findPlayerById(forplayerid);
@@ -277,7 +258,7 @@ export abstract class BasePlayerEvent<
       return this.onStreamIn(p, fp);
     });
 
-    OnPlayerStreamOut((playerid: number, forplayerid: number): number => {
+    cbs.OnPlayerStreamOut((playerid: number, forplayerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
       const fp = this.findPlayerById(forplayerid);
@@ -285,7 +266,7 @@ export abstract class BasePlayerEvent<
       return this.onStreamOut(p, fp);
     });
 
-    OnPlayerTakeDamage(
+    cbs.OnPlayerTakeDamage(
       (
         playerid: number,
         issuerid: number,
@@ -308,7 +289,7 @@ export abstract class BasePlayerEvent<
      * If there are 10 player event classes, that means there are 30,0000 calls per second.
      * By throttling down to 16.67 calls per second for a single player, performance should be optimized.
      */
-    OnPlayerUpdate((playerid: number): number => {
+    cbs.OnPlayerUpdate((playerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
       if (!p.isNpc()) {
@@ -325,7 +306,7 @@ export abstract class BasePlayerEvent<
       return 0;
     });
 
-    OnPlayerInteriorChange(
+    cbs.OnPlayerInteriorChange(
       (
         playerid: number,
         newinteriorid: number,
@@ -337,7 +318,7 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    OnPlayerRequestDownload(
+    cbs.OnPlayerRequestDownload(
       (playerid: number, type: number, crc: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
@@ -345,7 +326,7 @@ export abstract class BasePlayerEvent<
       }
     );
 
-    OnPlayerFinishedDownloading(
+    cbs.OnPlayerFinishedDownloading(
       (playerid: number, virtualworld: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
@@ -353,9 +334,9 @@ export abstract class BasePlayerEvent<
       }
     );
     playerBus.emit(playerHooks.create, this.players);
-    playerBus.on(playerHooks.pause, (player) => {
+    playerBus.on(playerHooks.pause, (player: P) => {
       player.isPaused = true;
-      this.onPause(player);
+      this.onPause(player, player.lastUpdateTick);
     });
   }
   public findPlayerById(playerid: number) {
