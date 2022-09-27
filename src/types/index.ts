@@ -1,4 +1,3 @@
-import { BasePlayer } from "@/controllers/player";
 import {
   ILocale,
   IDynamicCircle,
@@ -10,7 +9,7 @@ import {
 } from "@/interfaces";
 
 export type TEventName = string | string[];
-export type TEventFunc = <P extends BasePlayer>(
+export type TEventFunc<P> = (
   player: P,
   ...args: string[]
 ) => boolean | number | void | Promise<boolean | number | void>;

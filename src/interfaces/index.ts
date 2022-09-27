@@ -8,9 +8,9 @@ import {
   TStreamerExtendable,
 } from "../types";
 
-export interface ICmd {
+export interface ICmd<P> {
   name: TEventName;
-  fn: TEventFunc;
+  fn: TEventFunc<P>;
 }
 
 export interface IDialog {

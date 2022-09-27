@@ -4,11 +4,11 @@ import { BasePlayer } from "../player/basePlayer";
 
 // This is an event bus for distributing instructions entered by the user.
 // You can bind a single instruction as a string, or you can bind multiple alias instructions as an array string
-export class CmdBus<T extends BasePlayer> {
-  private eventList: Array<ICmd> = [];
+export class CmdBus<P extends BasePlayer> {
+  private eventList: Array<ICmd<P>> = [];
   // eslint-disable-next-line @typescript-eslint/no-empty-function
 
-  public on(eventName: TEventName, eventFunction: TEventFunc) {
+  public on(eventName: TEventName, eventFunction: TEventFunc<P>) {
     const idx: number = this.findEventIdxByName(eventName);
     if (idx > -1)
       return console.log(
@@ -24,7 +24,7 @@ export class CmdBus<T extends BasePlayer> {
   }
 
   public async emit(
-    player: T,
+    player: P,
     userEventName: TEventName,
     userEventArgs: string[]
   ): Promise<number> {

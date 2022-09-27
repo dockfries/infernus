@@ -25,7 +25,7 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
 
 export abstract class BasePlayerEvent<P extends BasePlayer> {
   private readonly cmdBus = new CmdBus<P>();
-  public onCommandText = this.cmdBus.on;
+  public readonly onCommandText = this.cmdBus.on.bind(this.cmdBus);
   constructor() {
     cbs.OnPlayerConnect((playerid: number): number => {
       const p = this.newPlayer(playerid);
