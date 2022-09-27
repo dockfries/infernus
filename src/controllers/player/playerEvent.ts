@@ -23,94 +23,10 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
   notExist: { code: 1, msg: "does not exist" },
 };
 
-abstract class AbstractPlayerEvent<P extends BasePlayer> {
-  public readonly players = new Map<number, P>();
-  protected abstract newPlayer(playerid: number): P;
-  protected abstract onConnect(player: P): number;
-  protected abstract onDisconnect(player: P, reason: number): number;
-  protected abstract onText(player: P, text: string): number;
-  protected abstract onCommandError(
-    player: P,
-    command: string,
-    err: ICmdErr
-  ): number;
-  protected abstract onEnterExitModShop(
-    player: P,
-    enterexit: number,
-    interiorid: number
-  ): number;
-  protected abstract onClickMap(
-    player: P,
-    fX: number,
-    fY: number,
-    fZ: number
-  ): number;
-  protected abstract onClickPlayer(
-    player: P,
-    clickedPlayer: P,
-    source: number
-  ): number;
-  protected abstract onDeath(
-    player: P,
-    killer: P | InvalidEnum.PLAYER_ID,
-    reason: number
-  ): number;
-  protected abstract onGiveDamage(
-    player: P,
-    damage: P,
-    amount: number,
-    weaponid: WeaponEnum,
-    bodypart: BodyPartsEnum
-  ): number;
-  protected abstract onKeyStateChange(
-    player: P,
-    newkeys: KeysEnum,
-    oldkeys: KeysEnum
-  ): number;
-  protected abstract onRequestClass(player: P, classid: number): number;
-  protected abstract onRequestSpawn(player: P): number;
-  protected abstract onSpawn(player: P): number;
-  protected abstract onStateChange(
-    player: P,
-    newstate: PlayerStateEnum,
-    oldstate: PlayerStateEnum
-  ): number;
-  protected abstract onStreamIn(player: P, forPlayer: P): number;
-  protected abstract onStreamOut(player: P, forPlayer: P): number;
-  protected abstract onTakeDamage(
-    player: P,
-    damage: P | InvalidEnum.PLAYER_ID,
-    amount: number,
-    weaponid: WeaponEnum,
-    bodypart: BodyPartsEnum
-  ): number;
-  protected abstract onUpdate(player: P): number;
-  protected abstract onInteriorChange(
-    player: P,
-    newinteriorid: number,
-    oldinteriorid: number
-  ): number;
-  protected abstract onPause(player: P, timestamp: number): number;
-  protected abstract onResume(player: P, pauseMs: number): number;
-  protected abstract onRequestDownload(
-    player: P,
-    type: number,
-    crc: number
-  ): number;
-  protected abstract onFinishedDownloading(
-    player: P,
-    virtualworld: number
-  ): number;
-}
-
-export abstract class BasePlayerEvent<
-  P extends BasePlayer
-> extends AbstractPlayerEvent<P> {
+export abstract class BasePlayerEvent<P extends BasePlayer> {
   private readonly cmdBus = new CmdBus<P>();
   public onCommandText = this.cmdBus.on;
   constructor() {
-    super();
-
     cbs.OnPlayerConnect((playerid: number): number => {
       const p = this.newPlayer(playerid);
       this.players.set(playerid, p);
@@ -366,4 +282,81 @@ export abstract class BasePlayerEvent<
     player.lastFps = player.lastDrunkLevel - nowDrunkLevel - 1;
     player.lastDrunkLevel = nowDrunkLevel;
   }, 1000);
+  public readonly players = new Map<number, P>();
+  protected abstract newPlayer(playerid: number): P;
+  protected abstract onConnect(player: P): number;
+  protected abstract onDisconnect(player: P, reason: number): number;
+  protected abstract onText(player: P, text: string): number;
+  protected abstract onCommandError(
+    player: P,
+    command: string,
+    err: ICmdErr
+  ): number;
+  protected abstract onEnterExitModShop(
+    player: P,
+    enterexit: number,
+    interiorid: number
+  ): number;
+  protected abstract onClickMap(
+    player: P,
+    fX: number,
+    fY: number,
+    fZ: number
+  ): number;
+  protected abstract onClickPlayer(
+    player: P,
+    clickedPlayer: P,
+    source: number
+  ): number;
+  protected abstract onDeath(
+    player: P,
+    killer: P | InvalidEnum.PLAYER_ID,
+    reason: number
+  ): number;
+  protected abstract onGiveDamage(
+    player: P,
+    damage: P,
+    amount: number,
+    weaponid: WeaponEnum,
+    bodypart: BodyPartsEnum
+  ): number;
+  protected abstract onKeyStateChange(
+    player: P,
+    newkeys: KeysEnum,
+    oldkeys: KeysEnum
+  ): number;
+  protected abstract onRequestClass(player: P, classid: number): number;
+  protected abstract onRequestSpawn(player: P): number;
+  protected abstract onSpawn(player: P): number;
+  protected abstract onStateChange(
+    player: P,
+    newstate: PlayerStateEnum,
+    oldstate: PlayerStateEnum
+  ): number;
+  protected abstract onStreamIn(player: P, forPlayer: P): number;
+  protected abstract onStreamOut(player: P, forPlayer: P): number;
+  protected abstract onTakeDamage(
+    player: P,
+    damage: P | InvalidEnum.PLAYER_ID,
+    amount: number,
+    weaponid: WeaponEnum,
+    bodypart: BodyPartsEnum
+  ): number;
+  protected abstract onUpdate(player: P): number;
+  protected abstract onInteriorChange(
+    player: P,
+    newinteriorid: number,
+    oldinteriorid: number
+  ): number;
+  protected abstract onPause(player: P, timestamp: number): number;
+  protected abstract onResume(player: P, pauseMs: number): number;
+  protected abstract onRequestDownload(
+    player: P,
+    type: number,
+    crc: number
+  ): number;
+  protected abstract onFinishedDownloading(
+    player: P,
+    virtualworld: number
+  ): number;
 }
