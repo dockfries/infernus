@@ -192,7 +192,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     fns.TextDrawTextSize(this.id, x, y);
     return this;
   }
-  public UseBox(use: boolean): void | this {
+  public useBox(use: boolean): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set TextSize");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawUseBox(player.id, this.id, use);
