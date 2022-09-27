@@ -67,6 +67,7 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
     newkeys: KeysEnum,
     oldkeys: KeysEnum
   ): number;
+  protected abstract onRequestClass(player: P, classid: number): number;
   protected abstract onRequestSpawn(player: P): number;
   protected abstract onSpawn(player: P): number;
   protected abstract onStateChange(
@@ -229,6 +230,12 @@ export abstract class BasePlayerEvent<
         return this.onKeyStateChange(p, newkeys, oldkeys);
       }
     );
+
+    cbs.OnPlayerRequestClass((playerid: number, classid: number): number => {
+      const p = this.findPlayerById(playerid);
+      if (!p) return 0;
+      return this.onRequestClass(p, classid);
+    });
 
     cbs.OnPlayerRequestSpawn((playerid: number): number => {
       const p = this.findPlayerById(playerid);
