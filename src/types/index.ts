@@ -10,8 +10,8 @@ import {
 } from "@/interfaces";
 
 export type TEventName = string | string[];
-export type TEventFunc = <T extends BasePlayer>(
-  this: T,
+export type TEventFunc = <P extends BasePlayer>(
+  player: P,
   ...args: string[]
 ) => boolean | number | void | Promise<boolean | number | void>;
 

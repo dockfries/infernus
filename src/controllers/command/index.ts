@@ -26,11 +26,11 @@ export class CmdBus<T extends BasePlayer> {
   public async emit(
     player: T,
     userEventName: TEventName,
-    userEventArgs: Array<string>
+    userEventArgs: string[]
   ): Promise<number> {
     const idx: number = this.findEventIdxByName(userEventName);
     if (idx > -1) {
-      let result = this.eventList[idx].fn.apply(player, userEventArgs);
+      let result = this.eventList[idx].fn(player, ...userEventArgs);
       if (result instanceof Promise) result = await result;
       if (result === undefined || result === null) return 0;
       if (typeof result === "boolean") return Number(result);
