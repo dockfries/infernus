@@ -25,7 +25,6 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
 
 abstract class AbstractPlayerEvent<P extends BasePlayer> {
   public readonly players = new Map<number, P>();
-  public readonly cmdBus = new CmdBus<P>();
   protected abstract newPlayer(playerid: number): P;
   protected abstract onConnect(player: P): number;
   protected abstract onDisconnect(player: P, reason: number): number;
@@ -106,6 +105,8 @@ abstract class AbstractPlayerEvent<P extends BasePlayer> {
 export abstract class BasePlayerEvent<
   P extends BasePlayer
 > extends AbstractPlayerEvent<P> {
+  private readonly cmdBus = new CmdBus<P>();
+  public onCommandText = this.cmdBus.on;
   constructor() {
     super();
 
