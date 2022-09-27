@@ -1,4 +1,3 @@
-export * from "./command";
 export * from "./i18n";
 export * from "./promise/dialog";
 export * from "./npc";
