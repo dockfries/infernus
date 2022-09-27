@@ -9,3 +9,4 @@ export * from "./gametext";
 export * from "./menu";
 export * from "./gangzone";
 export * from "./streamer";
+export * from "./textdraw";
