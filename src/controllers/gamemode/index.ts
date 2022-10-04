@@ -12,11 +12,10 @@ import {
 } from "@/utils/helperUtils";
 import * as ow from "omp-wrapper";
 import { defaultCharset } from "./settings";
-import { TCommonCallback, TUsePlugin } from "@/types";
+import { TCommonCallback } from "@/types";
 
 export abstract class BaseGameMode {
   public static charset = defaultCharset;
-  private static installedPlugins: Array<TUsePlugin> = [];
   private initialized = false;
 
   public constructor() {
@@ -52,13 +51,6 @@ export abstract class BaseGameMode {
         "onRconLoginAttempt"
       )
     );
-  }
-
-  public static use(plugin: TUsePlugin, ...args: Array<any>) {
-    if (BaseGameMode.installedPlugins.some(plugin)) return BaseGameMode;
-    plugin(args);
-    BaseGameMode.installedPlugins.push(plugin);
-    return BaseGameMode;
   }
 
   public isInitialized(): boolean {

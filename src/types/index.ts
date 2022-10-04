@@ -24,8 +24,6 @@ export type TBasePos = {
 
 export type TStreamerExtendable = number | number[];
 
-export type TUsePlugin = (...args: Array<any>) => void;
-
 export type TDynamicArea =
   | IDynamicCircle
   | IDynamicCylinder
