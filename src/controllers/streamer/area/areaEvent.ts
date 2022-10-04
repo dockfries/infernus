@@ -1,4 +1,5 @@
-import { BasePlayer, DynamicArea } from "@/main";
+import { BasePlayer, DynamicArea, TCommonCallback } from "@/main";
+import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnPlayerEnterDynamicArea,
   OnPlayerLeaveDynamicArea,
@@ -27,17 +28,25 @@ export abstract class DynamicAreaEvent<
       if (!p) return 0;
       const a = this.areas.get(areaId);
       if (!a) return 0;
-      return this.onPlayerEnter(p, a);
+      const pFn = promisifyCallback(
+        this.onPlayerEnter,
+        "OnPlayerEnterDynamicArea"
+      );
+      return pFn(p, a);
     });
     OnPlayerLeaveDynamicArea((playerId, areaId) => {
       const p = this.players.get(playerId);
       if (!p) return 0;
       const a = this.areas.get(areaId);
       if (!a) return 0;
-      return this.onPlayerLeave(p, a);
+      const pFn = promisifyCallback(
+        this.onPlayerLeave,
+        "OnPlayerLeaveDynamicArea"
+      );
+      return pFn(p, a);
     });
   }
 
-  protected abstract onPlayerEnter(player: P, area: A): number;
-  protected abstract onPlayerLeave(player: P, area: A): number;
+  protected abstract onPlayerEnter(player: P, area: A): TCommonCallback;
+  protected abstract onPlayerLeave(player: P, area: A): TCommonCallback;
 }

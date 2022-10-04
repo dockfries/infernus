@@ -1,4 +1,5 @@
-import { OnClientMessage } from "@/utils/helperUtils";
+import { TCommonCallback } from "@/types";
+import { OnClientMessage, promisifyCallback } from "@/utils/helperUtils";
 import {
   OnNpcConnect,
   OnNpcDisconnect,
@@ -9,17 +10,20 @@ import {
 
 export abstract class BaseNpcEvent {
   constructor() {
-    OnNpcConnect(this.onConnect);
-    OnNpcDisconnect(this.onDisconnect);
-    OnNPCModeInit(this.onModeInit);
-    OnNPCModeExit(this.onModeExit);
-    OnNPCSpawn(this.onSpawn);
-    OnClientMessage(this.onClientMessage);
+    OnNpcConnect(promisifyCallback(this.onConnect, "OnNpcConnect"));
+    OnNpcDisconnect(promisifyCallback(this.onDisconnect, "OnNpcDisconnect"));
+    OnNPCModeInit(promisifyCallback(this.onModeInit, "OnNPCModeInit"));
+    OnNPCModeExit(promisifyCallback(this.onModeExit, "OnNPCModeExit"));
+    OnNPCSpawn(promisifyCallback(this.onSpawn, "OnNPCSpawn"));
+    OnClientMessage(promisifyCallback(this.onClientMessage, "OnClientMessage"));
   }
-  protected abstract onConnect(myplayerid: number): number;
-  protected abstract onDisconnect(reason: string): number;
-  protected abstract onModeInit(): number;
-  protected abstract onModeExit(): number;
-  protected abstract onSpawn(): number;
-  protected abstract onClientMessage(color: number, text: string): number;
+  protected abstract onConnect(myplayerid: number): TCommonCallback;
+  protected abstract onDisconnect(reason: string): TCommonCallback;
+  protected abstract onModeInit(): TCommonCallback;
+  protected abstract onModeExit(): TCommonCallback;
+  protected abstract onSpawn(): TCommonCallback;
+  protected abstract onClientMessage(
+    color: number,
+    text: string
+  ): TCommonCallback;
 }

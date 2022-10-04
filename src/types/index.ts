@@ -41,3 +41,5 @@ export type TDynamicAreaTypes =
   | "rectangle"
   | "cuboid"
   | "polygon";
+
+export type TCommonCallback = number | Promise<number>;

@@ -1,4 +1,8 @@
-import { OnPlayerCommandText, OnPlayerText } from "@/utils/helperUtils";
+import {
+  OnPlayerCommandText,
+  OnPlayerText,
+  promisifyCallback,
+} from "@/utils/helperUtils";
 import * as cbs from "@/wrapper/callbacks";
 import { I18n } from "../i18n";
 import { BasePlayer } from "./basePlayer";
@@ -15,6 +19,7 @@ import { throttle } from "lodash";
 import { BaseDialog } from "../promise/dialog";
 import { delCCTask } from "../promise/client";
 import { playerBus, playerHooks } from "./playerBus";
+import { TCommonCallback } from "@/types";
 
 // Each instance can be called to callbacks, so you can split the logic.
 
@@ -31,7 +36,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       const p = this.newPlayer(playerid);
       this.players.set(playerid, p);
       if (!p.isNpc()) p.isAndroid();
-      return this.onConnect(p);
+      const pFn = promisifyCallback(this.onConnect, "OnPlayerConnect");
+      return pFn(p);
     });
 
     cbs.OnPlayerDisconnect((playerid: number, reason: number): number => {
@@ -39,15 +45,17 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       if (!p) return 0;
       BaseDialog.close(p);
       delCCTask(playerid, true);
-      const result = this.onDisconnect(p, reason);
+      const pFn = promisifyCallback(this.onDisconnect, "OnPlayerDisconnect");
+      const result = pFn(p, reason);
       this.players.delete(playerid);
       return result;
     });
 
     OnPlayerText((playerid: number, byteArr: number[]): number => {
       const p = this.findPlayerById(playerid);
-      if (p) return this.onText(p, I18n.decodeFromBuf(byteArr, p.charset));
-      return 1;
+      if (!p) return 1;
+      const pFn = promisifyCallback(this.onText, "OnPlayerTextI18n");
+      return pFn(p, I18n.decodeFromBuf(byteArr, p.charset));
     });
 
     OnPlayerCommandText((playerid: number, buf: number[]): number => {
@@ -88,7 +96,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, enterexit: number, interior: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        return this.onEnterExitModShop(p, enterexit, interior);
+        const pFn = promisifyCallback(
+          this.onEnterExitModShop,
+          "OnEnterExitModShop"
+        );
+        return pFn(p, enterexit, interior);
       }
     );
 
@@ -96,7 +108,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, fX: number, fY: number, fZ: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        return this.onClickMap(p, fX, fY, fZ);
+        const pFn = promisifyCallback(this.onClickMap, "OnPlayerClickMap");
+        return pFn(p, fX, fY, fZ);
       }
     );
 
@@ -106,7 +119,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         if (!p) return 0;
         const cp = this.findPlayerById(clickedplayerid);
         if (!cp) return 0;
-        return this.onClickPlayer(p, cp, source);
+        const pFn = promisifyCallback(
+          this.onClickPlayer,
+          "OnPlayerClickPlayer"
+        );
+        return pFn(p, cp, source);
       }
     );
 
@@ -115,11 +132,13 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
         if (killerid === InvalidEnum.PLAYER_ID) {
-          return this.onDeath(p, killerid, reason);
+          const pFn = promisifyCallback(this.onDeath, "OnPlayerDeath");
+          return pFn(p, killerid, reason);
         }
         const k = this.findPlayerById(killerid);
         if (!k) return 0;
-        return this.onDeath(p, k, reason);
+        const pFn = promisifyCallback(this.onDeath, "OnPlayerDeath");
+        return pFn(p, k, reason);
       }
     );
 
@@ -135,7 +154,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         if (!p) return 0;
         const d = this.findPlayerById(damageid);
         if (!d) return 0;
-        return this.onGiveDamage(p, d, amount, weaponid, bodypart);
+        const pFn = promisifyCallback(this.onGiveDamage, "OnPlayerGiveDamage");
+        return pFn(p, d, amount, weaponid, bodypart);
       }
     );
 
@@ -143,26 +163,39 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, newkeys: number, oldkeys: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        return this.onKeyStateChange(p, newkeys, oldkeys);
+        const pFn = promisifyCallback(
+          this.onKeyStateChange,
+          "OnPlayerKeyStateChange"
+        );
+        return pFn(p, newkeys, oldkeys);
       }
     );
 
     cbs.OnPlayerRequestClass((playerid: number, classid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      return this.onRequestClass(p, classid);
+      const pFn = promisifyCallback(
+        this.onRequestClass,
+        "OnPlayerRequestClass"
+      );
+      return pFn(p, classid);
     });
 
     cbs.OnPlayerRequestSpawn((playerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      return this.onRequestSpawn(p);
+      const pFn = promisifyCallback(
+        this.onRequestSpawn,
+        "OnPlayerRequestSpawn"
+      );
+      return pFn(p);
     });
 
     cbs.OnPlayerSpawn((playerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      return this.onSpawn(p);
+      const pFn = promisifyCallback(this.onSpawn, "OnPlayerSpawn");
+      return pFn(p);
     });
 
     cbs.OnPlayerStateChange(
@@ -170,7 +203,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
         if (oldstate === PlayerStateEnum.NONE) p.lastUpdateTick = Date.now();
-        return this.onStateChange(p, newstate, oldstate);
+        const pFn = promisifyCallback(
+          this.onStateChange,
+          "OnPlayerStateChange"
+        );
+        return pFn(p, newstate, oldstate);
       }
     );
 
@@ -179,7 +216,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       if (!p) return 0;
       const fp = this.findPlayerById(forplayerid);
       if (!fp) return 0;
-      return this.onStreamIn(p, fp);
+      const pFn = promisifyCallback(this.onStreamIn, "OnPlayerStreamIn");
+      return pFn(p, fp);
     });
 
     cbs.OnPlayerStreamOut((playerid: number, forplayerid: number): number => {
@@ -187,7 +225,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       if (!p) return 0;
       const fp = this.findPlayerById(forplayerid);
       if (!fp) return 0;
-      return this.onStreamOut(p, fp);
+      const pFn = promisifyCallback(this.onStreamOut, "OnPlayerStreamOut");
+      return pFn(p, fp);
     });
 
     cbs.OnPlayerTakeDamage(
@@ -201,11 +240,16 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
         if (issuerid === InvalidEnum.PLAYER_ID) {
-          return this.onTakeDamage(p, issuerid, amount, weaponid, bodypart);
+          const pFn = promisifyCallback(
+            this.onTakeDamage,
+            "OnPlayerTakeDamage"
+          );
+          return pFn(p, issuerid, amount, weaponid, bodypart);
         }
         const i = this.findPlayerById(issuerid);
         if (!i) return 0;
-        return this.onTakeDamage(p, i, amount, weaponid, bodypart);
+        const pFn = promisifyCallback(this.onTakeDamage, "OnPlayerTakeDamage");
+        return pFn(p, i, amount, weaponid, bodypart);
       }
     );
 
@@ -225,9 +269,10 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         p.lastUpdateTick = now;
         this.fpsHeartbeat(p);
       }
-      const res = this.throttleUpdate(p);
-      if (res !== undefined) return res;
-      return 0;
+      const pFn = promisifyCallback(this.throttleUpdate, "OnPlayerUpdate");
+      const res = pFn(p);
+      if (res === undefined) return 0;
+      return res;
     });
 
     cbs.OnPlayerInteriorChange(
@@ -238,7 +283,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       ): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        return this.onInteriorChange(p, newinteriorid, oldinteriorid);
+        const pFn = promisifyCallback(
+          this.onInteriorChange,
+          "OnPlayerInteriorChange"
+        );
+        return pFn(p, newinteriorid, oldinteriorid);
       }
     );
 
@@ -246,7 +295,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, type: number, crc: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        return this.onRequestDownload(p, type, crc);
+        const pFn = promisifyCallback(
+          this.onRequestDownload,
+          "OnPlayerRequestDownload"
+        );
+        return pFn(p, type, crc);
       }
     );
 
@@ -254,7 +307,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, virtualworld: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        return this.onFinishedDownloading(p, virtualworld);
+        const pFn = promisifyCallback(
+          this.onFinishedDownloading,
+          "OnPlayerFinishedDownloading"
+        );
+        return pFn(p, virtualworld);
       }
     );
     playerBus.emit(playerHooks.create, this.players);
@@ -284,79 +341,82 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
   }, 1000);
   public readonly players = new Map<number, P>();
   protected abstract newPlayer(playerid: number): P;
-  protected abstract onConnect(player: P): number;
-  protected abstract onDisconnect(player: P, reason: number): number;
-  protected abstract onText(player: P, text: string): number;
+  protected abstract onConnect(player: P): TCommonCallback;
+  protected abstract onDisconnect(player: P, reason: number): TCommonCallback;
+  protected abstract onText(player: P, text: string): TCommonCallback;
   protected abstract onCommandError(
     player: P,
     command: string,
     err: ICmdErr
-  ): number;
+  ): TCommonCallback;
   protected abstract onEnterExitModShop(
     player: P,
     enterexit: number,
     interiorid: number
-  ): number;
+  ): TCommonCallback;
   protected abstract onClickMap(
     player: P,
     fX: number,
     fY: number,
     fZ: number
-  ): number;
+  ): TCommonCallback;
   protected abstract onClickPlayer(
     player: P,
     clickedPlayer: P,
     source: number
-  ): number;
+  ): TCommonCallback;
   protected abstract onDeath(
     player: P,
     killer: P | InvalidEnum.PLAYER_ID,
     reason: number
-  ): number;
+  ): TCommonCallback;
   protected abstract onGiveDamage(
     player: P,
     damage: P,
     amount: number,
     weaponid: WeaponEnum,
     bodypart: BodyPartsEnum
-  ): number;
+  ): TCommonCallback;
   protected abstract onKeyStateChange(
     player: P,
     newkeys: KeysEnum,
     oldkeys: KeysEnum
-  ): number;
-  protected abstract onRequestClass(player: P, classid: number): number;
-  protected abstract onRequestSpawn(player: P): number;
-  protected abstract onSpawn(player: P): number;
+  ): TCommonCallback;
+  protected abstract onRequestClass(
+    player: P,
+    classid: number
+  ): TCommonCallback;
+  protected abstract onRequestSpawn(player: P): TCommonCallback;
+  protected abstract onSpawn(player: P): TCommonCallback;
   protected abstract onStateChange(
     player: P,
     newstate: PlayerStateEnum,
     oldstate: PlayerStateEnum
-  ): number;
-  protected abstract onStreamIn(player: P, forPlayer: P): number;
-  protected abstract onStreamOut(player: P, forPlayer: P): number;
+  ): TCommonCallback;
+  protected abstract onStreamIn(player: P, forPlayer: P): TCommonCallback;
+  protected abstract onStreamOut(player: P, forPlayer: P): TCommonCallback;
   protected abstract onTakeDamage(
     player: P,
     damage: P | InvalidEnum.PLAYER_ID,
     amount: number,
     weaponid: WeaponEnum,
     bodypart: BodyPartsEnum
-  ): number;
-  protected abstract onUpdate(player: P): number;
+  ): TCommonCallback;
+  protected abstract onUpdate(player: P): TCommonCallback;
   protected abstract onInteriorChange(
     player: P,
     newinteriorid: number,
     oldinteriorid: number
-  ): number;
-  protected abstract onPause(player: P, timestamp: number): number;
-  protected abstract onResume(player: P, pauseMs: number): number;
+  ): TCommonCallback;
+  protected abstract onPause(player: P, timestamp: number): TCommonCallback;
+  protected abstract onResume(player: P, pauseMs: number): TCommonCallback;
   protected abstract onRequestDownload(
     player: P,
     type: number,
     crc: number
-  ): number;
+  ): TCommonCallback;
   protected abstract onFinishedDownloading(
     player: P,
     virtualworld: number
-  ): number;
+  ): TCommonCallback;
 }

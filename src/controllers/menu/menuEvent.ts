@@ -1,4 +1,6 @@
 import { InvalidEnum } from "@/enums";
+import { TCommonCallback } from "@/types";
+import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnPlayerExitedMenu,
   OnPlayerSelectedMenuRow,
@@ -25,22 +27,27 @@ export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
       if (!menu) return 0;
       const player = this.findPlayerById(playerid);
       if (!player) return 0;
-      return this.onPlayerExited(player, menu);
+      const pFn = promisifyCallback(this.onPlayerExited, "OnPlayerExitedMenu");
+      return pFn(player, menu);
     });
     OnPlayerSelectedMenuRow((playerid: number, row: number): number => {
       const menu = this.findMenuById(GetPlayerMenu(playerid));
       if (!menu) return 0;
       const player = this.findPlayerById(playerid);
       if (!player) return 0;
-      return this.onPlayerSelectedRow(player, menu, row);
+      const pFn = promisifyCallback(
+        this.onPlayerSelectedRow,
+        "OnPlayerSelectedMenuRow"
+      );
+      return pFn(player, menu, row);
     });
   }
-  protected abstract onPlayerExited(player: P, menu: M): number;
+  protected abstract onPlayerExited(player: P, menu: M): TCommonCallback;
   protected abstract onPlayerSelectedRow(
     player: P,
     menu: M,
     row: number
-  ): number;
+  ): TCommonCallback;
 
   private findPlayerById(playerid: number) {
     return this.players.get(playerid);

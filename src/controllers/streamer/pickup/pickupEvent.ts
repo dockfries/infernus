@@ -1,4 +1,6 @@
 import type { BasePlayer } from "@/controllers/player";
+import { TCommonCallback } from "@/types";
+import { promisifyCallback } from "@/utils/helperUtils";
 import { OnPlayerPickUpDynamicPickup } from "omp-wrapper-streamer";
 import { DynamicPickup } from "./basePickup";
 import { pickupBus, pickupHooks } from "./pickupBus";
@@ -24,12 +26,16 @@ export abstract class DynamicPickupEvent<
         if (!k) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        return this.onPlayerPickUp(p, k);
+        const pFn = promisifyCallback(
+          this.onPlayerPickUp,
+          "OnPlayerPickUpDynamicPickup"
+        );
+        return pFn(p, k);
       }
     );
   }
 
-  protected abstract onPlayerPickUp(player: P, pickup: K): number;
+  protected abstract onPlayerPickUp(player: P, pickup: K): TCommonCallback;
 
   public getPickupsArr(): Array<K> {
     return [...this.pickups.values()];

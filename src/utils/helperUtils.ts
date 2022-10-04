@@ -4,6 +4,7 @@ import { LimitsEnum } from "@/enums";
 import { I18n } from "@/controllers/i18n";
 import { BasePlayer } from "@/controllers/player";
 import { defaultCharset } from "@/controllers/gamemode/settings";
+import { TCommonCallback } from "@/types";
 
 type processTuple = [string, string | number[]];
 
@@ -361,5 +362,24 @@ export const GetDynamicObjectMaterialText = (
     fontcolor,
     backcolor,
     textalignment,
+  };
+};
+
+export const promisifyCallback = (
+  fn: (...args: any) => TCommonCallback | void,
+  cbName: string,
+  retNum = 1 // should return handled number
+) => {
+  return (...args: any) => {
+    const result = fn(args);
+    if (typeof result === "number") return result;
+    if (result instanceof Promise) {
+      result.then((value) => {
+        const promiseFn = () => value;
+        samp.addEventListener(cbName, promiseFn);
+        samp.removeEventListener(cbName, promiseFn);
+      });
+    }
+    return retNum;
   };
 };

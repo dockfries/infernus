@@ -1,4 +1,6 @@
 import type { BasePlayer } from "@/controllers/player";
+import { TCommonCallback } from "@/types";
+import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnPlayerEnterDynamicCP,
   OnPlayerLeaveDynamicCP,
@@ -26,19 +28,27 @@ export abstract class DynamicCheckPointEvent<
       if (!cp) return 0;
       const p = this.players.get(playerid);
       if (!p) return 0;
-      return this.onPlayerEnter(p, cp);
+      const pFn = promisifyCallback(
+        this.onPlayerEnter,
+        "OnPlayerEnterDynamicCP"
+      );
+      return pFn(p, cp);
     });
     OnPlayerLeaveDynamicCP((playerid: number, checkpointid: number): number => {
       const cp = this.checkpoints.get(checkpointid);
       if (!cp) return 0;
       const p = this.players.get(playerid);
       if (!p) return 0;
-      return this.onPlayerLeave(p, cp);
+      const pFn = promisifyCallback(
+        this.onPlayerLeave,
+        "OnPlayerLeaveDynamicCP"
+      );
+      return pFn(p, cp);
     });
   }
 
-  protected abstract onPlayerEnter(player: P, checkpoint: C): number;
-  protected abstract onPlayerLeave(player: P, checkpoint: C): number;
+  protected abstract onPlayerEnter(player: P, checkpoint: C): TCommonCallback;
+  protected abstract onPlayerLeave(player: P, checkpoint: C): TCommonCallback;
 
   public getCheckPointsArr(): Array<C> {
     return [...this.checkpoints.values()];

@@ -1,5 +1,7 @@
 import { InvalidEnum } from "@/enums";
 import { ICommonTextDrawKey } from "@/interfaces";
+import { TCommonCallback } from "@/types";
+import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnPlayerClickPlayerTextDraw,
   OnPlayerClickTextDraw,
@@ -29,17 +31,25 @@ export abstract class BaseTextDrawEvent<
       const p = this.players.get(playerid);
       if (!p) return 0;
       const t = this.textDraws.get({ id: clickedid, global: true });
-      return this.onPlayerClick(p, t || InvalidEnum.TEXT_DRAW);
+      const pFn = promisifyCallback(
+        this.onPlayerClick,
+        "OnPlayerClickTextDraw"
+      );
+      return pFn(p, t || InvalidEnum.TEXT_DRAW);
     });
     OnPlayerClickPlayerTextDraw((playerid, clickedid): number => {
       const p = this.players.get(playerid);
       if (!p) return 0;
       const t = this.textDraws.get({ id: clickedid, global: false });
-      return this.onPlayerClick(p, t || InvalidEnum.TEXT_DRAW);
+      const pFn = promisifyCallback(
+        this.onPlayerClick,
+        "OnPlayerClickPlayerTextDraw"
+      );
+      return pFn(p, t || InvalidEnum.TEXT_DRAW);
     });
   }
   protected abstract onPlayerClick(
     player: P,
     textdraw: T | InvalidEnum.TEXT_DRAW
-  ): number;
+  ): TCommonCallback;
 }

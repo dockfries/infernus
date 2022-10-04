@@ -1,4 +1,6 @@
 import type { BasePlayer } from "@/controllers/player";
+import { TCommonCallback } from "@/types";
+import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnPlayerEnterDynamicRaceCP,
   OnPlayerLeaveDynamicRaceCP,
@@ -27,7 +29,11 @@ export abstract class DynamicRaceCPEvent<
         if (!cp) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        return this.onPlayerEnter(p, cp);
+        const pFn = promisifyCallback(
+          this.onPlayerEnter,
+          "OnPlayerEnterDynamicRaceCP"
+        );
+        return pFn(p, cp);
       }
     );
     OnPlayerLeaveDynamicRaceCP(
@@ -36,13 +42,17 @@ export abstract class DynamicRaceCPEvent<
         if (!cp) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        return this.onPlayerLeave(p, cp);
+        const pFn = promisifyCallback(
+          this.onPlayerLeave,
+          "OnPlayerLeaveDynamicRaceCP"
+        );
+        return pFn(p, cp);
       }
     );
   }
 
-  protected abstract onPlayerEnter(player: P, checkpoint: R): number;
-  protected abstract onPlayerLeave(player: P, checkpoint: R): number;
+  protected abstract onPlayerEnter(player: P, checkpoint: R): TCommonCallback;
+  protected abstract onPlayerLeave(player: P, checkpoint: R): TCommonCallback;
 
   public getRaceCPsArr(): Array<R> {
     return [...this.raceCPs.values()];

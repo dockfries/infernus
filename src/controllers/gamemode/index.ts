@@ -5,10 +5,14 @@ import {
 } from "@/wrapper/callbacks";
 import * as fns from "@/wrapper/functions";
 import { logger } from "@/logger";
-import { OnRconCommand, OnRconLoginAttempt } from "@/utils/helperUtils";
+import {
+  OnRconCommand,
+  OnRconLoginAttempt,
+  promisifyCallback,
+} from "@/utils/helperUtils";
 import * as ow from "omp-wrapper";
 import { defaultCharset } from "./settings";
-import { TUsePlugin } from "@/types";
+import { TCommonCallback, TUsePlugin } from "@/types";
 
 export abstract class BaseGameMode {
   public static charset = defaultCharset;
@@ -31,9 +35,13 @@ export abstract class BaseGameMode {
       this.initialized = false;
       this.onExit();
     });
-    OnIncomingConnection(this.onIncomingConnection);
-    OnRconCommand(this.onRconCommand);
-    OnRconLoginAttempt(this.onRconLoginAttempt);
+    OnIncomingConnection(
+      promisifyCallback(this.onIncomingConnection, "onIncomingConnection")
+    );
+    OnRconCommand(promisifyCallback(this.onRconCommand, "onRconCommand"));
+    OnRconLoginAttempt(
+      promisifyCallback(this.onRconLoginAttempt, "onRconLoginAttempt")
+    );
   }
 
   public static use(plugin: TUsePlugin, ...args: Array<any>) {
@@ -74,13 +82,13 @@ export abstract class BaseGameMode {
     playerid: number,
     ipAddress: string,
     port: number
-  ): number;
-  protected abstract onRconCommand(cmd: string): number;
+  ): TCommonCallback;
+  protected abstract onRconCommand(cmd: string): TCommonCallback;
   protected abstract onRconLoginAttempt(
     ip: string,
     password: string,
     success: boolean
-  ): number;
+  ): TCommonCallback;
   public static allowAdminTeleport = fns.AllowAdminTeleport;
   public static allowInteriorWeapons = fns.AllowInteriorWeapons;
   public static enableStuntBonusForAll = fns.EnableStuntBonusForAll;

@@ -1,5 +1,7 @@
 import type { BasePlayer } from "@/controllers/player";
 import { EditResponseTypesEnum } from "@/enums";
+import { TCommonCallback } from "@/types";
+import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnDynamicObjectMoved,
   OnPlayerEditDynamicObject,
@@ -27,7 +29,8 @@ export abstract class DynamicObjectEvent<
     OnDynamicObjectMoved((id): number => {
       const o = this.objects.get(id);
       if (!o) return 0;
-      return this.onMoved(o);
+      const pFn = promisifyCallback(this.onMoved, "OnDynamicObjectMoved");
+      return pFn(o);
     });
     OnPlayerEditDynamicObject(
       (
@@ -45,7 +48,11 @@ export abstract class DynamicObjectEvent<
         if (!o) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        return this.onPlayerEdit(p, o, response, x, y, z, rx, ry, rz);
+        const pFn = promisifyCallback(
+          this.onPlayerEdit,
+          "OnPlayerEditDynamicObject"
+        );
+        return pFn(p, o, response, x, y, z, rx, ry, rz);
       }
     );
     OnPlayerSelectDynamicObject(
@@ -61,7 +68,11 @@ export abstract class DynamicObjectEvent<
         if (!p) return 0;
         const o = this.objects.get(objectid);
         if (!o) return 0;
-        return this.onPlayerSelect(p, o, modelid, x, y, z);
+        const pFn = promisifyCallback(
+          this.onPlayerSelect,
+          "OnPlayerSelectDynamicObject"
+        );
+        return pFn(p, o, modelid, x, y, z);
       }
     );
     OnPlayerShootDynamicObject(
@@ -77,12 +88,16 @@ export abstract class DynamicObjectEvent<
         if (!p) return 0;
         const o = this.objects.get(objectid);
         if (!o) return 0;
-        return this.onPlayerShoot(p, weaponid, o, x, y, z);
+        const pFn = promisifyCallback(
+          this.onPlayerShoot,
+          "OnPlayerShootDynamicObject"
+        );
+        return pFn(p, weaponid, o, x, y, z);
       }
     );
   }
 
-  protected abstract onMoved(object: O): number;
+  protected abstract onMoved(object: O): TCommonCallback;
 
   protected abstract onPlayerEdit(
     player: P,
@@ -94,7 +109,7 @@ export abstract class DynamicObjectEvent<
     rx: number,
     ry: number,
     rz: number
-  ): number;
+  ): TCommonCallback;
 
   protected abstract onPlayerSelect(
     player: P,
@@ -103,7 +118,7 @@ export abstract class DynamicObjectEvent<
     x: number,
     y: number,
     z: number
-  ): number;
+  ): TCommonCallback;
 
   protected abstract onPlayerShoot(
     player: P,
@@ -112,7 +127,7 @@ export abstract class DynamicObjectEvent<
     x: number,
     y: number,
     z: number
-  ): number;
+  ): TCommonCallback;
 
   public getObjectsArr(): Array<O> {
     return [...this.objects.values()];
