@@ -30,7 +30,11 @@ export abstract class DynamicActorEvent<
       if (!act) return 0;
       const p = this.players.get(forplayerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(this.onStreamIn, "OnDynamicActorStreamIn");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onStreamIn,
+        "OnDynamicActorStreamIn"
+      );
       return pFn(act, p);
     });
     OnDynamicActorStreamOut((actorid: number, forplayerid: number): number => {
@@ -38,7 +42,8 @@ export abstract class DynamicActorEvent<
       if (!act) return 0;
       const p = this.players.get(forplayerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onStreamOut,
         "OnDynamicActorStreamOut"
       );
@@ -56,7 +61,8 @@ export abstract class DynamicActorEvent<
         if (!act) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onPlayerGiveDamage,
           "OnPlayerGiveDamageDynamicActor"
         );

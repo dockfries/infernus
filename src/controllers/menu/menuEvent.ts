@@ -27,7 +27,11 @@ export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
       if (!menu) return 0;
       const player = this.findPlayerById(playerid);
       if (!player) return 0;
-      const pFn = promisifyCallback(this.onPlayerExited, "OnPlayerExitedMenu");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onPlayerExited,
+        "OnPlayerExitedMenu"
+      );
       return pFn(player, menu);
     });
     OnPlayerSelectedMenuRow((playerid: number, row: number): number => {
@@ -35,7 +39,8 @@ export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
       if (!menu) return 0;
       const player = this.findPlayerById(playerid);
       if (!player) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onPlayerSelectedRow,
         "OnPlayerSelectedMenuRow"
       );

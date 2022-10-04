@@ -26,7 +26,8 @@ export abstract class DynamicPickupEvent<
         if (!k) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onPlayerPickUp,
           "OnPlayerPickUpDynamicPickup"
         );

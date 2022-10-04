@@ -28,7 +28,8 @@ export abstract class DynamicAreaEvent<
       if (!p) return 0;
       const a = this.areas.get(areaId);
       if (!a) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onPlayerEnter,
         "OnPlayerEnterDynamicArea"
       );
@@ -39,7 +40,8 @@ export abstract class DynamicAreaEvent<
       if (!p) return 0;
       const a = this.areas.get(areaId);
       if (!a) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onPlayerLeave,
         "OnPlayerLeaveDynamicArea"
       );

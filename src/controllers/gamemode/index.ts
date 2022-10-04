@@ -36,11 +36,21 @@ export abstract class BaseGameMode {
       this.onExit();
     });
     OnIncomingConnection(
-      promisifyCallback(this.onIncomingConnection, "onIncomingConnection")
+      promisifyCallback.call(
+        this,
+        this.onIncomingConnection,
+        "onIncomingConnection"
+      )
     );
-    OnRconCommand(promisifyCallback(this.onRconCommand, "onRconCommand"));
+    OnRconCommand(
+      promisifyCallback.call(this, this.onRconCommand, "onRconCommand")
+    );
     OnRconLoginAttempt(
-      promisifyCallback(this.onRconLoginAttempt, "onRconLoginAttempt")
+      promisifyCallback.call(
+        this,
+        this.onRconLoginAttempt,
+        "onRconLoginAttempt"
+      )
     );
   }
 

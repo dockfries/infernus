@@ -31,7 +31,8 @@ export abstract class BaseTextDrawEvent<
       const p = this.players.get(playerid);
       if (!p) return 0;
       const t = this.textDraws.get({ id: clickedid, global: true });
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onPlayerClick,
         "OnPlayerClickTextDraw"
       );
@@ -41,7 +42,8 @@ export abstract class BaseTextDrawEvent<
       const p = this.players.get(playerid);
       if (!p) return 0;
       const t = this.textDraws.get({ id: clickedid, global: false });
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onPlayerClick,
         "OnPlayerClickPlayerTextDraw"
       );

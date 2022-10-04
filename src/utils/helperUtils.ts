@@ -365,13 +365,14 @@ export const GetDynamicObjectMaterialText = (
   };
 };
 
-export const promisifyCallback = (
+export const promisifyCallback = function (
+  this: any,
   fn: (...args: any) => TCommonCallback | void,
   cbName: string,
   retNum = 1 // should return handled number
-) => {
+) {
   return (...args: any) => {
-    const result = fn(args);
+    const result = fn.call(this, ...args);
     if (typeof result === "number") return result;
     if (result instanceof Promise) {
       result.then((value) => {

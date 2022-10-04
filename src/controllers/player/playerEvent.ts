@@ -36,7 +36,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       const p = this.newPlayer(playerid);
       this.players.set(playerid, p);
       if (!p.isNpc()) p.isAndroid();
-      const pFn = promisifyCallback(this.onConnect, "OnPlayerConnect");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onConnect,
+        "OnPlayerConnect"
+      );
       return pFn(p);
     });
 
@@ -45,7 +49,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       if (!p) return 0;
       BaseDialog.close(p);
       delCCTask(playerid, true);
-      const pFn = promisifyCallback(this.onDisconnect, "OnPlayerDisconnect");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onDisconnect,
+        "OnPlayerDisconnect"
+      );
       const result = pFn(p, reason);
       this.players.delete(playerid);
       return result;
@@ -54,7 +62,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     OnPlayerText((playerid: number, byteArr: number[]): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 1;
-      const pFn = promisifyCallback(this.onText, "OnPlayerTextI18n");
+      const pFn = promisifyCallback.call(this, this.onText, "OnPlayerTextI18n");
       return pFn(p, I18n.decodeFromBuf(byteArr, p.charset));
     });
 
@@ -96,7 +104,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, enterexit: number, interior: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onEnterExitModShop,
           "OnEnterExitModShop"
         );
@@ -108,7 +117,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, fX: number, fY: number, fZ: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(this.onClickMap, "OnPlayerClickMap");
+        const pFn = promisifyCallback.call(
+          this,
+          this.onClickMap,
+          "OnPlayerClickMap"
+        );
         return pFn(p, fX, fY, fZ);
       }
     );
@@ -119,7 +132,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         if (!p) return 0;
         const cp = this.findPlayerById(clickedplayerid);
         if (!cp) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onClickPlayer,
           "OnPlayerClickPlayer"
         );
@@ -132,12 +146,16 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
         if (killerid === InvalidEnum.PLAYER_ID) {
-          const pFn = promisifyCallback(this.onDeath, "OnPlayerDeath");
+          const pFn = promisifyCallback.call(
+            this,
+            this.onDeath,
+            "OnPlayerDeath"
+          );
           return pFn(p, killerid, reason);
         }
         const k = this.findPlayerById(killerid);
         if (!k) return 0;
-        const pFn = promisifyCallback(this.onDeath, "OnPlayerDeath");
+        const pFn = promisifyCallback.call(this, this.onDeath, "OnPlayerDeath");
         return pFn(p, k, reason);
       }
     );
@@ -154,7 +172,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         if (!p) return 0;
         const d = this.findPlayerById(damageid);
         if (!d) return 0;
-        const pFn = promisifyCallback(this.onGiveDamage, "OnPlayerGiveDamage");
+        const pFn = promisifyCallback.call(
+          this,
+          this.onGiveDamage,
+          "OnPlayerGiveDamage"
+        );
         return pFn(p, d, amount, weaponid, bodypart);
       }
     );
@@ -163,7 +185,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, newkeys: number, oldkeys: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onKeyStateChange,
           "OnPlayerKeyStateChange"
         );
@@ -174,7 +197,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     cbs.OnPlayerRequestClass((playerid: number, classid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onRequestClass,
         "OnPlayerRequestClass"
       );
@@ -184,7 +208,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     cbs.OnPlayerRequestSpawn((playerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onRequestSpawn,
         "OnPlayerRequestSpawn"
       );
@@ -194,7 +219,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     cbs.OnPlayerSpawn((playerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(this.onSpawn, "OnPlayerSpawn");
+      const pFn = promisifyCallback.call(this, this.onSpawn, "OnPlayerSpawn");
       return pFn(p);
     });
 
@@ -203,7 +228,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
         if (oldstate === PlayerStateEnum.NONE) p.lastUpdateTick = Date.now();
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onStateChange,
           "OnPlayerStateChange"
         );
@@ -216,7 +242,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       if (!p) return 0;
       const fp = this.findPlayerById(forplayerid);
       if (!fp) return 0;
-      const pFn = promisifyCallback(this.onStreamIn, "OnPlayerStreamIn");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onStreamIn,
+        "OnPlayerStreamIn"
+      );
       return pFn(p, fp);
     });
 
@@ -225,7 +255,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       if (!p) return 0;
       const fp = this.findPlayerById(forplayerid);
       if (!fp) return 0;
-      const pFn = promisifyCallback(this.onStreamOut, "OnPlayerStreamOut");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onStreamOut,
+        "OnPlayerStreamOut"
+      );
       return pFn(p, fp);
     });
 
@@ -240,7 +274,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
         if (issuerid === InvalidEnum.PLAYER_ID) {
-          const pFn = promisifyCallback(
+          const pFn = promisifyCallback.call(
+            this,
             this.onTakeDamage,
             "OnPlayerTakeDamage"
           );
@@ -248,7 +283,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         }
         const i = this.findPlayerById(issuerid);
         if (!i) return 0;
-        const pFn = promisifyCallback(this.onTakeDamage, "OnPlayerTakeDamage");
+        const pFn = promisifyCallback.call(
+          this,
+          this.onTakeDamage,
+          "OnPlayerTakeDamage"
+        );
         return pFn(p, i, amount, weaponid, bodypart);
       }
     );
@@ -269,7 +308,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         p.lastUpdateTick = now;
         this.fpsHeartbeat(p);
       }
-      const pFn = promisifyCallback(this.throttleUpdate, "OnPlayerUpdate");
+      const pFn = promisifyCallback.call(
+        this,
+        this.throttleUpdate,
+        "OnPlayerUpdate"
+      );
       const res = pFn(p);
       if (res === undefined) return 0;
       return res;
@@ -283,7 +326,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       ): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onInteriorChange,
           "OnPlayerInteriorChange"
         );
@@ -295,7 +339,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, type: number, crc: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onRequestDownload,
           "OnPlayerRequestDownload"
         );
@@ -307,7 +352,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, virtualworld: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onFinishedDownloading,
           "OnPlayerFinishedDownloading"
         );

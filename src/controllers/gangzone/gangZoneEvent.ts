@@ -34,7 +34,8 @@ export abstract class BaseGangZoneEvent<
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: true });
       if (!g) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onPlayerEnter,
         "OnPlayerEnterGangZone"
       );
@@ -46,7 +47,8 @@ export abstract class BaseGangZoneEvent<
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: false });
       if (!g) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onPlayerEnter,
         "OnPlayerEnterPlayerGangZone"
       );
@@ -58,7 +60,8 @@ export abstract class BaseGangZoneEvent<
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: true });
       if (!g) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onPlayerLeave,
         "OnPlayerLeaveGangZone"
       );
@@ -70,7 +73,8 @@ export abstract class BaseGangZoneEvent<
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: false });
       if (!g) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onPlayerLeave,
         "OnPlayerLeavePlayerGangZone"
       );

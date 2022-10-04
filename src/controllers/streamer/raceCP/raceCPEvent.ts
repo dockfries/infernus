@@ -29,7 +29,8 @@ export abstract class DynamicRaceCPEvent<
         if (!cp) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onPlayerEnter,
           "OnPlayerEnterDynamicRaceCP"
         );
@@ -42,7 +43,8 @@ export abstract class DynamicRaceCPEvent<
         if (!cp) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onPlayerLeave,
           "OnPlayerLeaveDynamicRaceCP"
         );

@@ -29,7 +29,11 @@ export abstract class DynamicObjectEvent<
     OnDynamicObjectMoved((id): number => {
       const o = this.objects.get(id);
       if (!o) return 0;
-      const pFn = promisifyCallback(this.onMoved, "OnDynamicObjectMoved");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onMoved,
+        "OnDynamicObjectMoved"
+      );
       return pFn(o);
     });
     OnPlayerEditDynamicObject(
@@ -48,7 +52,8 @@ export abstract class DynamicObjectEvent<
         if (!o) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onPlayerEdit,
           "OnPlayerEditDynamicObject"
         );
@@ -68,7 +73,8 @@ export abstract class DynamicObjectEvent<
         if (!p) return 0;
         const o = this.objects.get(objectid);
         if (!o) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onPlayerSelect,
           "OnPlayerSelectDynamicObject"
         );
@@ -88,7 +94,8 @@ export abstract class DynamicObjectEvent<
         if (!p) return 0;
         const o = this.objects.get(objectid);
         if (!o) return 0;
-        const pFn = promisifyCallback(
+        const pFn = promisifyCallback.call(
+          this,
           this.onPlayerShoot,
           "OnPlayerShootDynamicObject"
         );

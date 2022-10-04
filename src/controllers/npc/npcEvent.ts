@@ -10,12 +10,20 @@ import {
 
 export abstract class BaseNpcEvent {
   constructor() {
-    OnNpcConnect(promisifyCallback(this.onConnect, "OnNpcConnect"));
-    OnNpcDisconnect(promisifyCallback(this.onDisconnect, "OnNpcDisconnect"));
-    OnNPCModeInit(promisifyCallback(this.onModeInit, "OnNPCModeInit"));
-    OnNPCModeExit(promisifyCallback(this.onModeExit, "OnNPCModeExit"));
-    OnNPCSpawn(promisifyCallback(this.onSpawn, "OnNPCSpawn"));
-    OnClientMessage(promisifyCallback(this.onClientMessage, "OnClientMessage"));
+    OnNpcConnect(promisifyCallback.call(this, this.onConnect, "OnNpcConnect"));
+    OnNpcDisconnect(
+      promisifyCallback.call(this, this.onDisconnect, "OnNpcDisconnect")
+    );
+    OnNPCModeInit(
+      promisifyCallback.call(this, this.onModeInit, "OnNPCModeInit")
+    );
+    OnNPCModeExit(
+      promisifyCallback.call(this, this.onModeExit, "OnNPCModeExit")
+    );
+    OnNPCSpawn(promisifyCallback.call(this, this.onSpawn, "OnNPCSpawn"));
+    OnClientMessage(
+      promisifyCallback.call(this, this.onClientMessage, "OnClientMessage")
+    );
   }
   protected abstract onConnect(myplayerid: number): TCommonCallback;
   protected abstract onDisconnect(reason: string): TCommonCallback;

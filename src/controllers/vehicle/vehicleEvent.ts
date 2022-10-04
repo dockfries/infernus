@@ -41,7 +41,8 @@ export abstract class BaseVehicleEvent<
       if (!v) return 0;
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onDamageStatusUpdate,
         "OnVehicleDamageStatusUpdate"
       );
@@ -52,7 +53,7 @@ export abstract class BaseVehicleEvent<
       if (!v) return 0;
       const k = this.findPlayerById(killerid);
       if (!k) return 0;
-      const pFn = promisifyCallback(this.onDeath, "OnVehicleDeath");
+      const pFn = promisifyCallback.call(this, this.onDeath, "OnVehicleDeath");
       return pFn(v, k);
     });
     OnVehicleMod((playerid, vehicleid, componentid): number => {
@@ -60,7 +61,7 @@ export abstract class BaseVehicleEvent<
       if (!p) return 1;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 1;
-      const pFn = promisifyCallback(this.onMod, "OnVehicleMod");
+      const pFn = promisifyCallback.call(this, this.onMod, "OnVehicleMod");
       return pFn(p, v, componentid);
     });
     OnVehiclePaintjob((playerid, vehicleid, paintjobid): number => {
@@ -68,7 +69,11 @@ export abstract class BaseVehicleEvent<
       if (!p) return 1;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 1;
-      const pFn = promisifyCallback(this.onPaintjob, "OnVehiclePaintjob");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onPaintjob,
+        "OnVehiclePaintjob"
+      );
       return pFn(p, v, paintjobid);
     });
     OnVehicleRespray((playerid, vehicleid, color1, color2): number => {
@@ -76,7 +81,11 @@ export abstract class BaseVehicleEvent<
       if (!p) return 1;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 1;
-      const pFn = promisifyCallback(this.onRespray, "OnVehicleRespray");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onRespray,
+        "OnVehicleRespray"
+      );
       return pFn(p, v, color1, color2);
     });
     OnVehicleSirenStateChange((playerid, vehicleid, newstate): number => {
@@ -84,7 +93,8 @@ export abstract class BaseVehicleEvent<
       if (!p) return 0;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 0;
-      const pFn = promisifyCallback(
+      const pFn = promisifyCallback.call(
+        this,
         this.onSirenStateChange,
         "OnVehicleSirenStateChange"
       );
@@ -93,7 +103,7 @@ export abstract class BaseVehicleEvent<
     OnVehicleSpawn((vehicleid): number => {
       const v = this.findVehicleById(vehicleid);
       if (!v) return 1;
-      const pFn = promisifyCallback(this.onSpawn, "OnVehicleSpawn");
+      const pFn = promisifyCallback.call(this, this.onSpawn, "OnVehicleSpawn");
       return pFn(v);
     });
     OnVehicleStreamIn((vehicleid, forplayerid): number => {
@@ -101,7 +111,11 @@ export abstract class BaseVehicleEvent<
       if (!v) return 0;
       const p = this.findPlayerById(forplayerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(this.onStreamIn, "OnVehicleStreamIn");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onStreamIn,
+        "OnVehicleStreamIn"
+      );
       return pFn(v, p);
     });
     OnVehicleStreamOut((vehicleid, forplayerid): number => {
@@ -109,7 +123,11 @@ export abstract class BaseVehicleEvent<
       if (!v) return 0;
       const p = this.findPlayerById(forplayerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(this.onStreamOut, "OnVehicleStreamOut");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onStreamOut,
+        "OnVehicleStreamOut"
+      );
       return pFn(v, p);
     });
     OnPlayerEnterVehicle((playerid, vehicleid, ispassenger): number => {
@@ -117,7 +135,11 @@ export abstract class BaseVehicleEvent<
       if (!p) return 0;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 0;
-      const pFn = promisifyCallback(this.onPlayerEnter, "OnPlayerEnterVehicle");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onPlayerEnter,
+        "OnPlayerEnterVehicle"
+      );
       return pFn(p, v, Boolean(ispassenger));
     });
     OnPlayerExitVehicle((playerid, vehicleid): number => {
@@ -125,22 +147,36 @@ export abstract class BaseVehicleEvent<
       if (!p) return 0;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 0;
-      const pFn = promisifyCallback(this.onPlayerExit, "OnPlayerExitVehicle");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onPlayerExit,
+        "OnPlayerExitVehicle"
+      );
       return pFn(p, v);
     });
     OnNPCEnterVehicle((vehicleid, seatid): number => {
       const v = this.findVehicleById(vehicleid);
       if (!v) return 0;
-      const pFn = promisifyCallback(this.onNpcEnter, "OnNPCEnterVehicle");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onNpcEnter,
+        "OnNPCEnterVehicle"
+      );
       return pFn(v, seatid);
     });
-    OnNPCExitVehicle(promisifyCallback(this.onNpcExit, "OnNPCExitVehicle"));
+    OnNPCExitVehicle(
+      promisifyCallback.call(this, this.onNpcExit, "OnNPCExitVehicle")
+    );
     OnTrailerUpdate((playerid, vehicleid): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 0;
-      const pFn = promisifyCallback(this.onTrailerUpdate, "OnTrailerUpdate");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onTrailerUpdate,
+        "OnTrailerUpdate"
+      );
       return pFn(p, v);
     });
   }
