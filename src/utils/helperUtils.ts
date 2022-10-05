@@ -23,7 +23,7 @@ export const SendClientMessage = <P extends BasePlayer>(
   msg: string
 ): number => {
   const res = processMsg(msg, player.charset);
-  return samp.callNative(
+  return callNative(
     "SendClientMessage",
     `ii${res[0]}`,
     player.id,
@@ -47,7 +47,7 @@ export const SendPlayerMessageToPlayer = <P extends BasePlayer>(
   message: string
 ): number => {
   const res = processMsg(message, player.charset);
-  return samp.callNative(
+  return callNative(
     "SendPlayerMessageToPlayer",
     `ii${res[0]}`,
     player.id,
@@ -76,7 +76,7 @@ export const ShowPlayerDialog = <P extends BasePlayer>(
   const [, processInfo] = processMsg(info || "", charset);
   const [, processButton1] = processMsg(button1 || "", charset);
   const [, processButton2] = processMsg(button2 || "", charset);
-  return samp.callNative(
+  return callNative(
     "ShowPlayerDialog",
     `iii${flag.repeat(4)}`,
     player.id,
@@ -162,7 +162,7 @@ export const OnRconLoginAttempt = (
 };
 
 export const GetPlayerName = <P extends BasePlayer>(player: P): string => {
-  const buf: number[] = samp.callNative(
+  const buf: number[] = callNative(
     "GetPlayerName",
     "iAi",
     player.id,
@@ -175,7 +175,7 @@ export const SetPlayerName = <P extends BasePlayer>(
   player: P,
   name: string
 ): number => {
-  return samp.callNative(
+  return callNative(
     "SetPlayerName",
     "ia",
     player.id,
@@ -189,7 +189,7 @@ export const BanEx = (
   charset: string
 ): number => {
   const buf = I18n.encodeToBuf(reason, charset);
-  return samp.callNative("BanEx", "ia", playerid, buf);
+  return callNative("BanEx", "ia", playerid, buf);
 };
 
 export const CreateDynamic3DTextLabel = (
@@ -211,7 +211,7 @@ export const CreateDynamic3DTextLabel = (
   priority: number
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
-  return samp.callNative(
+  return callNative(
     "CreateDynamic3DTextLabel",
     "aiffffiiiiiifii",
     buf,
@@ -251,7 +251,7 @@ export const CreateDynamic3DTextLabelEx = (
   charset: string
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
-  return samp.callNative(
+  return callNative(
     "CreateDynamic3DTextLabelEx",
     "aiffffiiifaaaaiiiii",
     buf,
@@ -283,14 +283,14 @@ export const UpdateDynamic3DTextLabelText = (
   charset: string
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
-  return samp.callNative("UpdateDynamic3DTextLabelText", "iia", id, color, buf);
+  return callNative("UpdateDynamic3DTextLabelText", "iia", id, color, buf);
 };
 
 export const GetDynamic3DTextLabelText = (
   id: number,
   charset: string
 ): string => {
-  const buf: number[] = samp.callNative(
+  const buf: number[] = callNative(
     "GetDynamic3DTextLabelText",
     "iAi",
     id,
@@ -314,7 +314,7 @@ export const SetDynamicObjectMaterialText = (
 ): number => {
   const textBuf = I18n.encodeToBuf(text, charset);
   const fontFaceBuf = I18n.encodeToBuf(fontface, charset);
-  return samp.callNative(
+  return callNative(
     "SetDynamicObjectMaterialText",
     "iiaiaiiiii",
     objectid,
@@ -343,15 +343,14 @@ export const GetDynamicObjectMaterialText = (
     fontcolor,
     backcolor,
     textalignment,
-  ]: [number[], number, number[], number, number, number, number] =
-    samp.callNative(
-      "GetDynamicObjectMaterialText",
-      "iiAIAIIIIIii",
-      objectid,
-      materialindex,
-      2048,
-      32
-    );
+  ]: [number[], number, number[], number, number, number, number] = callNative(
+    "GetDynamicObjectMaterialText",
+    "iiAIAIIIIIii",
+    objectid,
+    materialindex,
+    2048,
+    32
+  );
   const textStr = I18n.decodeFromBuf(text, charset);
   const fontFaceStr = I18n.decodeFromBuf(fontface, charset);
   return {
@@ -387,3 +386,5 @@ export const promisifyCallback = function (
 
 export const NOOP = (cbName: string, unhandled = 0) =>
   promisifyCallback(() => unhandled, cbName);
+
+export const { callNative, callNativeFloat } = samp;
