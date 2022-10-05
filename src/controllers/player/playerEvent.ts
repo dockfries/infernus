@@ -1,4 +1,5 @@
 import {
+  NOOP,
   OnPlayerCommandText,
   OnPlayerText,
   promisifyCallback,
@@ -366,12 +367,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     player.lastDrunkLevel = nowDrunkLevel;
   }, 1000);
   private async promiseCommand(p: P, cmd: RegExpMatchArray): Promise<any> {
-    const NOOP = () => promisifyCallback(() => 0, "OnPlayerCommandTextI18n");
     const fullCommand = cmd.join(" ");
 
     let rFnRes = this.onCommandReceived(p, fullCommand);
     if (rFnRes instanceof Promise) rFnRes = await rFnRes;
-    if (!rFnRes) return NOOP();
+    if (!rFnRes) return NOOP("OnPlayerCommandTextI18n");
 
     /**
      * Use eventBus to observe and subscribe to level 1 instructions,
@@ -382,7 +382,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     if (idx > -1 || (await this.cmdBus.emit(p, idx, cmd.slice(1)))) {
       let pFnRes = this.onCommandPerformed(p, fullCommand);
       if (pFnRes instanceof Promise) pFnRes = await pFnRes;
-      if (!pFnRes) return NOOP();
+      if (!pFnRes) return NOOP("OnPlayerCommandTextI18n");
       return;
     }
 

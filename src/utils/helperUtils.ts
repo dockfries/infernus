@@ -384,3 +384,6 @@ export const promisifyCallback = function (
     return retNum;
   };
 };
+
+export const NOOP = (cbName: string, unhandled = 0) =>
+  promisifyCallback(() => unhandled, cbName);
