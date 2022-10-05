@@ -12,15 +12,15 @@ export class I18n {
     this.locales = locales;
   }
 
-  public addLocales(locales: TLocales): void {
+  public addLocales = (locales: TLocales): void => {
     merge(this.locales, locales);
-  }
+  };
 
-  public $t(
+  public $t = (
     key: string,
     replaceable?: any[] | undefined | null,
     lang: keyof TLocales = this.language
-  ): string {
+  ): string => {
     const { value } = this.locales[lang];
     let text = I18n.dotValue(value, key);
     if (text === undefined) return "undefined";
@@ -34,7 +34,7 @@ export class I18n {
       }
     }
     return text;
-  }
+  };
 
   // "server.welcome" => zh_cn["server"]["welcome"];
   private static dotValue(whichLangJson: any, property: string): string {
