@@ -1,4 +1,5 @@
 import { ICmd } from "@/interfaces";
+import { logger } from "@/logger";
 import { TEventFunc, TEventName } from "@/types";
 import { BasePlayer } from "../player/basePlayer";
 
@@ -11,7 +12,7 @@ export class CmdBus<P extends BasePlayer> {
   public on(eventName: TEventName, eventFunction: TEventFunc<P>) {
     const idx: number = this.findEventIdxByName(eventName);
     if (idx > -1)
-      return console.log(
+      return logger.warn(
         "[CommandBus]: It is not supported to listen for the same event more than once"
       );
     this.eventList.push({ name: eventName, fn: eventFunction });

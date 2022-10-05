@@ -9,6 +9,7 @@ import {
   IDialogResRaw,
   IDialogResResult,
 } from "@/interfaces";
+import { logger } from "@/logger";
 
 /* You don't need to define the dialog id, 
   but you need to pay attention to the fact that you shouldn't repeatedly new the dialog in the function, 
@@ -53,7 +54,7 @@ export class BaseDialog<T extends BasePlayer> {
     if (BaseDialog.CREATED_ID < BaseDialog.MAX_DIALOGID) {
       BaseDialog.CREATED_ID++;
     } else {
-      console.log("[Dialog]: The maximum number of dialogs is reached");
+      logger.warn("[Dialog]: The maximum number of dialogs is reached");
     }
     this.dialog = dialog;
     this.id = BaseDialog.CREATED_ID;
@@ -105,7 +106,10 @@ export class BaseDialog<T extends BasePlayer> {
     // should stop promise waiting
     const task = BaseDialog.waitingQueue.get(player.id);
     if (!task) return false;
-    if (reject) task.reject("timeout/show again");
+    if (reject)
+      task.reject(
+        "[BaseDialog]: player timeout does not respond or second request show dialog"
+      );
     BaseDialog.waitingQueue.delete(player.id);
     return true;
   }

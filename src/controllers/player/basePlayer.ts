@@ -743,7 +743,10 @@ export abstract class BasePlayer {
 
     return new Promise((resolve, reject) => {
       delCCTask(this.id, true);
-      if (this.isPaused) return reject("game paused");
+      if (this.isPaused)
+        return reject(
+          "[BasePlayer]: An attempt to check the player client response, but the player paused the game"
+        );
       const p = new Promise<IClientResRaw>((clientResolve, clientReject) => {
         const ping = this.getPing();
         const shouldResTime = (ping >= 200 ? 0 : ping) + 200;
@@ -930,7 +933,9 @@ export abstract class BasePlayer {
         while (tryCut < 6) {
           tryCut++;
           if (!this.isConnected()) {
-            reject("disconnect");
+            reject(
+              "[BasePlayer]: Leaving the game while checking if the player's platform is a PC"
+            );
             break;
           }
           try {
@@ -941,11 +946,15 @@ export abstract class BasePlayer {
               break;
             }
             // eslint-disable-next-line no-empty
-          } catch (error) {}
+          } catch (error) {
+            logger.info(error);
+          }
         }
         if (tryCut === 6) {
           this.kick();
-          reject("try limit");
+          reject(
+            "[BasePlayer]: Attempted to exceed the limit while checking whether the player's platform is PC"
+          );
         }
       });
     });
