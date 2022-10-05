@@ -6,7 +6,6 @@ import {
 import * as fns from "@/wrapper/functions";
 import { logger } from "@/logger";
 import {
-  NOOP,
   OnRconCommand,
   OnRconLoginAttempt,
   promisifyCallback,
@@ -14,10 +13,9 @@ import {
 import * as ow from "omp-wrapper";
 import { defaultCharset } from "./settings";
 import { TCommonCallback, TFilterScript } from "@/types";
+import { useFilterScript } from "../filterscript";
 
 export abstract class BaseGameMode {
-  private static preInstallScripts: Array<TFilterScript> = [];
-  private static installedScripts: Array<TFilterScript> = [];
   public static charset = defaultCharset;
   private initialized = false;
 
@@ -45,9 +43,10 @@ export abstract class BaseGameMode {
       )
     );
     OnRconCommand((command: string): number => {
-      const regCmd = command.trim().match(/[^/\s]+/gi);
-      if (regCmd) this.promiseRconCmd(regCmd);
-      return 1;
+      return promisifyCallback(
+        this.onRconCommand,
+        "OnRconCommandI18n"
+      )(command);
     });
     OnRconLoginAttempt(
       promisifyCallback.call(
@@ -69,17 +68,13 @@ export abstract class BaseGameMode {
   }
 
   // like vue.js, support filter script which use omp-node-lib
-  public use(plugin: TFilterScript, ...options: Array<any>): void | this {
-    const { preInstallScripts, installedScripts } = BaseGameMode;
-    if (installedScripts.some((fs) => fs === plugin)) {
-      logger.warn(`[BaseGameMode]: Script has already been applied`);
-      return;
-    }
-    plugin.load = plugin.load.bind(plugin, this, ...options);
-    preInstallScripts.push(plugin);
-    BaseGameMode.loadScript(plugin.name);
+  public readonly use = (
+    plugin: TFilterScript,
+    ...options: Array<any>
+  ): void | this => {
+    useFilterScript.call(this, plugin, ...options);
     return this;
-  }
+  };
 
   public static supportAllNickname() {
     /**
@@ -245,69 +240,6 @@ export abstract class BaseGameMode {
       return 0;
     }
     return 1;
-  }
-  private async promiseRconCmd(command: RegExpMatchArray): Promise<any> {
-    const firstLevel = command[0];
-    let fnRes = this.onRconCommand(command.join(" "));
-    if (fnRes instanceof Promise) fnRes = await fnRes;
-    if (!fnRes) return NOOP("OnRconCommandI18n");
-    const scriptName = command[1];
-    if (!scriptName) return;
-    if (firstLevel === "loadfs") {
-      BaseGameMode.loadScript(scriptName);
-      return;
-    }
-    if (firstLevel === "unloadfs") {
-      BaseGameMode.unloadScript(scriptName);
-      return;
-    }
-    if (firstLevel === "reloadfs") {
-      BaseGameMode.unloadScript(scriptName);
-      BaseGameMode.loadScript(scriptName);
-      return;
-    }
-  }
-  private static loadScript(scriptName: string): void {
-    setTimeout(async () => {
-      try {
-        const { preInstallScripts, installedScripts } = BaseGameMode;
-        const fsIdx = preInstallScripts.findIndex(
-          (fs) => fs.name === scriptName
-        );
-        if (fsIdx === -1) return;
-
-        const fs = preInstallScripts[fsIdx];
-        const loadFn = fs.load;
-        if (loadFn instanceof Promise) await loadFn();
-        else loadFn();
-
-        preInstallScripts.splice(fsIdx, 1);
-        installedScripts.push(fs);
-      } catch (err) {
-        logger.error(`[BaseGameMode]: script ${scriptName} load fail`);
-      }
-    });
-  }
-  private static unloadScript(scriptName: string): void {
-    setTimeout(async () => {
-      try {
-        const { preInstallScripts, installedScripts } = BaseGameMode;
-        const fsIdx = installedScripts.findIndex(
-          (fs) => fs.name === scriptName
-        );
-        if (fsIdx === -1) return;
-
-        const fs = installedScripts[fsIdx];
-        const unloadFn = fs.unload;
-        if (unloadFn instanceof Promise) await unloadFn();
-        else unloadFn();
-
-        installedScripts.splice(fsIdx, 1);
-        preInstallScripts.push(fs);
-      } catch (err) {
-        logger.error(`[BaseGameMode]: script ${scriptName} unload fail`);
-      }
-    });
   }
   public static findModelFileNameFromCRC = fns.FindModelFileNameFromCRC;
   public static findTextureFileNameFromCRC = fns.FindTextureFileNameFromCRC;
