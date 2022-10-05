@@ -29,8 +29,9 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
 };
 
 export abstract class BasePlayerEvent<P extends BasePlayer> {
+  public readonly players = new Map<number, P>();
   private readonly cmdBus = new CmdBus<P>();
-  public readonly onCommandText = this.cmdBus.on.bind(this.cmdBus);
+  public readonly onCommandText = this.cmdBus.on;
   constructor() {
     cbs.OnPlayerConnect((playerid: number): number => {
       const p = this.newPlayer(playerid);
@@ -75,28 +76,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         this.onCommandError(p, cmdtext, ICmdErrInfo.format);
         return 0;
       }
-      /* 
-        Use eventBus to observe and subscribe to level 1 instructions, 
-        support string and array pass, array used for alias.
-      */
-      (async () => {
-        const result = await this.cmdBus.emit(
-          p,
-          regCmdtext[0],
-          regCmdtext.slice(1)
-        );
-        // The command %s you entered does not exist
-        if (result >= 1) return;
-        const finalRes = this.onCommandError(
-          p,
-          regCmdtext.join(" "),
-          ICmdErrInfo.notExist
-        );
-        const fn = () => finalRes;
-        samp.addEventListener("OnPlayerCommandTextI18n", fn);
-        samp.removeEventListener("OnPlayerCommandTextI18n", fn);
-        return;
-      })();
+      this.promiseCommand(p, regCmdtext);
       return 1;
     });
 
@@ -385,7 +365,20 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     player.lastFps = player.lastDrunkLevel - nowDrunkLevel - 1;
     player.lastDrunkLevel = nowDrunkLevel;
   }, 1000);
-  public readonly players = new Map<number, P>();
+  /**
+   * Use eventBus to observe and subscribe to level 1 instructions,
+   * support string and array pass, array used for alias.
+   */
+  private async promiseCommand(p: P, cmd: RegExpMatchArray): Promise<void> {
+    const result = await this.cmdBus.emit(p, cmd[0], cmd.slice(1));
+    if (result >= 1) return;
+    // The command %s you entered does not exist
+    promisifyCallback(this.onCommandError, "OnPlayerCommandTextI18n")(
+      p,
+      cmd.join(" "),
+      ICmdErrInfo.notExist
+    );
+  }
   protected abstract newPlayer(playerid: number): P;
   protected abstract onConnect(player: P): TCommonCallback;
   protected abstract onDisconnect(player: P, reason: number): TCommonCallback;
