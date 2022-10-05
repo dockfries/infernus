@@ -365,24 +365,45 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     player.lastFps = player.lastDrunkLevel - nowDrunkLevel - 1;
     player.lastDrunkLevel = nowDrunkLevel;
   }, 1000);
-  /**
-   * Use eventBus to observe and subscribe to level 1 instructions,
-   * support string and array pass, array used for alias.
-   */
-  private async promiseCommand(p: P, cmd: RegExpMatchArray): Promise<void> {
-    const result = await this.cmdBus.emit(p, cmd[0], cmd.slice(1));
-    if (result >= 1) return;
-    // The command %s you entered does not exist
-    promisifyCallback(this.onCommandError, "OnPlayerCommandTextI18n")(
-      p,
-      cmd.join(" "),
-      ICmdErrInfo.notExist
+  private async promiseCommand(p: P, cmd: RegExpMatchArray): Promise<any> {
+    const NOOP = () => promisifyCallback(() => 0, "OnPlayerCommandTextI18n");
+    const fullCommand = cmd.join(" ");
+
+    let rFnRes = this.onCommandReceived(p, fullCommand);
+    if (rFnRes instanceof Promise) rFnRes = await rFnRes;
+    if (!rFnRes) return NOOP();
+
+    /**
+     * Use eventBus to observe and subscribe to level 1 instructions,
+     * support string and array pass, array used for alias.
+     */
+    const firstLevel = cmd[0];
+    const idx = this.cmdBus.findEventIdxByName(firstLevel);
+    if (idx > -1 || (await this.cmdBus.emit(p, idx, cmd.slice(1)))) {
+      let pFnRes = this.onCommandPerformed(p, fullCommand);
+      if (pFnRes instanceof Promise) pFnRes = await pFnRes;
+      if (!pFnRes) return NOOP();
+      return;
+    }
+
+    const pFn = promisifyCallback(
+      this.onCommandError,
+      "OnPlayerCommandTextI18n"
     );
+    pFn(p, fullCommand, ICmdErrInfo.notExist);
   }
   protected abstract newPlayer(playerid: number): P;
   protected abstract onConnect(player: P): TCommonCallback;
   protected abstract onDisconnect(player: P, reason: number): TCommonCallback;
   protected abstract onText(player: P, text: string): TCommonCallback;
+  protected abstract onCommandReceived(
+    player: P,
+    command: string
+  ): TCommonCallback;
+  protected abstract onCommandPerformed(
+    player: P,
+    command: string
+  ): TCommonCallback;
   protected abstract onCommandError(
     player: P,
     command: string,

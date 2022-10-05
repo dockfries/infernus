@@ -26,18 +26,13 @@ export class CmdBus<P extends BasePlayer> {
 
   public async emit(
     player: P,
-    userEventName: TEventName,
+    userEventIdx: number,
     userEventArgs: string[]
-  ): Promise<number> {
-    const idx: number = this.findEventIdxByName(userEventName);
-    if (idx > -1) {
-      let result = this.eventList[idx].fn(player, ...userEventArgs);
-      if (result instanceof Promise) result = await result;
-      if (result === undefined || result === null) return 0;
-      if (typeof result === "boolean") return Number(result);
-      return result;
-    }
-    return -1;
+  ): Promise<number | boolean> {
+    let result = this.eventList[userEventIdx].fn(player, ...userEventArgs);
+    if (result instanceof Promise) result = await result;
+    if (result === undefined || result === null) return false;
+    return result;
   }
 
   public findEventIdxByName(eventName: TEventName): number {
