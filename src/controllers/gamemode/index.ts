@@ -42,12 +42,9 @@ export abstract class BaseGameMode {
         "onIncomingConnection"
       )
     );
-    OnRconCommand((command: string): number => {
-      return promisifyCallback(
-        this.onRconCommand,
-        "OnRconCommandI18n"
-      )(command);
-    });
+    OnRconCommand(
+      promisifyCallback.call(this, this.onRconCommand, "OnRconCommandI18n")
+    );
     OnRconLoginAttempt(
       promisifyCallback.call(
         this,

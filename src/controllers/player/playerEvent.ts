@@ -9,13 +9,7 @@ import { I18n } from "../i18n";
 import { BasePlayer } from "./basePlayer";
 import { CmdBus } from "../command";
 import { ICmdErr } from "@/interfaces";
-import {
-  BodyPartsEnum,
-  InvalidEnum,
-  KeysEnum,
-  PlayerStateEnum,
-  WeaponEnum,
-} from "@/enums";
+import * as enums from "@/enums";
 import { throttle } from "lodash";
 import { BaseDialog } from "../promise/dialog";
 import { delCCTask } from "../promise/client";
@@ -126,7 +120,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, killerid: number, reason: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        if (killerid === InvalidEnum.PLAYER_ID) {
+        if (killerid === enums.InvalidEnum.PLAYER_ID) {
           const pFn = promisifyCallback.call(
             this,
             this.onDeath,
@@ -146,8 +140,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         playerid: number,
         damageid: number,
         amount: number,
-        weaponid: WeaponEnum,
-        bodypart: BodyPartsEnum
+        weaponid: enums.WeaponEnum,
+        bodypart: enums.BodyPartsEnum
       ): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
@@ -208,7 +202,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       (playerid: number, newstate: number, oldstate: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        if (oldstate === PlayerStateEnum.NONE) p.lastUpdateTick = Date.now();
+        if (oldstate === enums.PlayerStateEnum.NONE)
+          p.lastUpdateTick = Date.now();
         const pFn = promisifyCallback.call(
           this,
           this.onStateChange,
@@ -249,12 +244,12 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
         playerid: number,
         issuerid: number,
         amount: number,
-        weaponid: WeaponEnum,
-        bodypart: BodyPartsEnum
+        weaponid: enums.WeaponEnum,
+        bodypart: enums.BodyPartsEnum
       ): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        if (issuerid === InvalidEnum.PLAYER_ID) {
+        if (issuerid === enums.InvalidEnum.PLAYER_ID) {
           const pFn = promisifyCallback.call(
             this,
             this.onTakeDamage,
@@ -366,7 +361,10 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     player.lastFps = player.lastDrunkLevel - nowDrunkLevel - 1;
     player.lastDrunkLevel = nowDrunkLevel;
   }, 1000);
-  private async promiseCommand(p: P, cmd: RegExpMatchArray): Promise<any> {
+  private promiseCommand = async (
+    p: P,
+    cmd: RegExpMatchArray
+  ): Promise<any> => {
     const fullCommand = cmd.join(" ");
 
     let rFnRes = this.onCommandReceived(p, fullCommand);
@@ -386,12 +384,13 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       return;
     }
 
-    const pFn = promisifyCallback(
+    const pFn = promisifyCallback.call(
+      this,
       this.onCommandError,
       "OnPlayerCommandTextI18n"
     );
     pFn(p, fullCommand, ICmdErrInfo.notExist);
-  }
+  };
   protected abstract newPlayer(playerid: number): P;
   protected abstract onConnect(player: P): TCommonCallback;
   protected abstract onDisconnect(player: P, reason: number): TCommonCallback;
@@ -427,20 +426,20 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
   ): TCommonCallback;
   protected abstract onDeath(
     player: P,
-    killer: P | InvalidEnum.PLAYER_ID,
+    killer: P | enums.InvalidEnum.PLAYER_ID,
     reason: number
   ): TCommonCallback;
   protected abstract onGiveDamage(
     player: P,
     damage: P,
     amount: number,
-    weaponid: WeaponEnum,
-    bodypart: BodyPartsEnum
+    weaponid: enums.WeaponEnum,
+    bodypart: enums.BodyPartsEnum
   ): TCommonCallback;
   protected abstract onKeyStateChange(
     player: P,
-    newkeys: KeysEnum,
-    oldkeys: KeysEnum
+    newkeys: enums.KeysEnum,
+    oldkeys: enums.KeysEnum
   ): TCommonCallback;
   protected abstract onRequestClass(
     player: P,
@@ -450,17 +449,17 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
   protected abstract onSpawn(player: P): TCommonCallback;
   protected abstract onStateChange(
     player: P,
-    newstate: PlayerStateEnum,
-    oldstate: PlayerStateEnum
+    newstate: enums.PlayerStateEnum,
+    oldstate: enums.PlayerStateEnum
   ): TCommonCallback;
   protected abstract onStreamIn(player: P, forPlayer: P): TCommonCallback;
   protected abstract onStreamOut(player: P, forPlayer: P): TCommonCallback;
   protected abstract onTakeDamage(
     player: P,
-    damage: P | InvalidEnum.PLAYER_ID,
+    damage: P | enums.InvalidEnum.PLAYER_ID,
     amount: number,
-    weaponid: WeaponEnum,
-    bodypart: BodyPartsEnum
+    weaponid: enums.WeaponEnum,
+    bodypart: enums.BodyPartsEnum
   ): TCommonCallback;
   protected abstract onUpdate(player: P): TCommonCallback;
   protected abstract onInteriorChange(
