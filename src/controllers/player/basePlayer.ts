@@ -946,9 +946,7 @@ export abstract class BasePlayer {
               break;
             }
             // eslint-disable-next-line no-empty
-          } catch (error) {
-            logger.info(error);
-          }
+          } catch (error) {}
         }
         if (tryCut === 6) {
           this.kick();

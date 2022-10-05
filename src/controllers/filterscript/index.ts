@@ -20,6 +20,7 @@ const loadScript = (scriptName: string): void => {
       installedScripts.push(fs);
     } catch (err) {
       logger.error(`[BaseGameMode]: script ${scriptName} load fail`);
+      logger.warn(new Error(JSON.stringify(err)));
     }
   });
 };
@@ -38,6 +39,7 @@ const unloadScript = (scriptName: string): void => {
       preInstallScripts.push(fs);
     } catch (err) {
       logger.error(`[BaseGameMode]: script ${scriptName} unload fail`);
+      logger.warn(new Error(JSON.stringify(err)));
     }
   });
 };
