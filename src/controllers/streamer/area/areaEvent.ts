@@ -49,6 +49,6 @@ export abstract class DynamicAreaEvent<
     });
   }
 
-  public abstract onPlayerEnter(player: P, area: A): TCommonCallback;
-  public abstract onPlayerLeave(player: P, area: A): TCommonCallback;
+  protected abstract onPlayerEnter(player: P, area: A): TCommonCallback;
+  protected abstract onPlayerLeave(player: P, area: A): TCommonCallback;
 }

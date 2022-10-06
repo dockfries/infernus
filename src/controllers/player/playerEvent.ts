@@ -395,87 +395,90 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     );
     pFn(p, fullCommand, ICmdErrInfo.notExist);
   };
-  public abstract newPlayer(playerid: number): P;
-  public abstract onConnect(player: P): TCommonCallback;
-  public abstract onDisconnect(player: P, reason: number): TCommonCallback;
-  public abstract onText(player: P, text: string): TCommonCallback;
-  public abstract onCommandReceived(
+  protected abstract newPlayer(playerid: number): P;
+  protected abstract onConnect(player: P): TCommonCallback;
+  protected abstract onDisconnect(player: P, reason: number): TCommonCallback;
+  protected abstract onText(player: P, text: string): TCommonCallback;
+  protected abstract onCommandReceived(
     player: P,
     command: string
   ): TCommonCallback;
-  public abstract onCommandPerformed(
+  protected abstract onCommandPerformed(
     player: P,
     command: string
   ): TCommonCallback;
-  public abstract onCommandError(
+  protected abstract onCommandError(
     player: P,
     command: string,
     err: ICmdErr
   ): TCommonCallback;
-  public abstract onEnterExitModShop(
+  protected abstract onEnterExitModShop(
     player: P,
     enterexit: number,
     interiorid: number
   ): TCommonCallback;
-  public abstract onClickMap(
+  protected abstract onClickMap(
     player: P,
     fX: number,
     fY: number,
     fZ: number
   ): TCommonCallback;
-  public abstract onClickPlayer(
+  protected abstract onClickPlayer(
     player: P,
     clickedPlayer: P,
     source: number
   ): TCommonCallback;
-  public abstract onDeath(
+  protected abstract onDeath(
     player: P,
     killer: P | enums.InvalidEnum.PLAYER_ID,
     reason: number
   ): TCommonCallback;
-  public abstract onGiveDamage(
+  protected abstract onGiveDamage(
     player: P,
     damage: P,
     amount: number,
     weaponid: enums.WeaponEnum,
     bodypart: enums.BodyPartsEnum
   ): TCommonCallback;
-  public abstract onKeyStateChange(
+  protected abstract onKeyStateChange(
     player: P,
     newkeys: enums.KeysEnum,
     oldkeys: enums.KeysEnum
   ): TCommonCallback;
-  public abstract onRequestClass(player: P, classid: number): TCommonCallback;
-  public abstract onRequestSpawn(player: P): TCommonCallback;
-  public abstract onSpawn(player: P): TCommonCallback;
-  public abstract onStateChange(
+  protected abstract onRequestClass(
+    player: P,
+    classid: number
+  ): TCommonCallback;
+  protected abstract onRequestSpawn(player: P): TCommonCallback;
+  protected abstract onSpawn(player: P): TCommonCallback;
+  protected abstract onStateChange(
     player: P,
     newstate: enums.PlayerStateEnum,
     oldstate: enums.PlayerStateEnum
   ): TCommonCallback;
-  public abstract onStreamIn(player: P, forPlayer: P): TCommonCallback;
-  public abstract onStreamOut(player: P, forPlayer: P): TCommonCallback;
-  public abstract onTakeDamage(
+  protected abstract onStreamIn(player: P, forPlayer: P): TCommonCallback;
+  protected abstract onStreamOut(player: P, forPlayer: P): TCommonCallback;
+  protected abstract onTakeDamage(
     player: P,
     damage: P | enums.InvalidEnum.PLAYER_ID,
     amount: number,
     weaponid: enums.WeaponEnum,
     bodypart: enums.BodyPartsEnum
   ): TCommonCallback;
-  public abstract onUpdate(player: P): TCommonCallback;
-  public abstract onInteriorChange(
+  protected abstract onUpdate(player: P): TCommonCallback;
+  protected abstract onInteriorChange(
     player: P,
     newinteriorid: number,
     oldinteriorid: number
   ): TCommonCallback;
-  public abstract onPause(player: P, timestamp: number): TCommonCallback;
-  public abstract onResume(player: P, pauseMs: number): TCommonCallback;
-  public abstract onRequestDownload(
+  protected abstract onPause(player: P, timestamp: number): TCommonCallback;
+  protected abstract onResume(player: P, pauseMs: number): TCommonCallback;
+  protected abstract onRequestDownload(
     player: P,
     type: number,
     crc: number
   ): TCommonCallback;
-  public abstract onFinishedDownloading(
+  protected abstract onFinishedDownloading(
     player: P,
     virtualworld: number
   ): TCommonCallback;

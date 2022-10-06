@@ -50,7 +50,7 @@ export abstract class BaseTextDrawEvent<
       return pFn(p, t || InvalidEnum.TEXT_DRAW);
     });
   }
-  public abstract onPlayerClick(
+  protected abstract onPlayerClick(
     player: P,
     textdraw: T | InvalidEnum.TEXT_DRAW
   ): TCommonCallback;

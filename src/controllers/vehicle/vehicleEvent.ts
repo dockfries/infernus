@@ -181,41 +181,44 @@ export abstract class BaseVehicleEvent<
     });
   }
 
-  public abstract onDamageStatusUpdate(vehicle: V, player: P): TCommonCallback;
-  public abstract onDeath(vehicle: V, killer: P): TCommonCallback;
-  public abstract onMod(
+  protected abstract onDamageStatusUpdate(
+    vehicle: V,
+    player: P
+  ): TCommonCallback;
+  protected abstract onDeath(vehicle: V, killer: P): TCommonCallback;
+  protected abstract onMod(
     player: P,
     vehicle: V,
     componentid: number
   ): TCommonCallback;
-  public abstract onPaintjob(
+  protected abstract onPaintjob(
     player: P,
     vehicle: V,
     paintjobid: number
   ): TCommonCallback;
-  public abstract onRespray(
+  protected abstract onRespray(
     player: P,
     vehicle: V,
     color1: number,
     color2: number
   ): TCommonCallback;
-  public abstract onSirenStateChange(
+  protected abstract onSirenStateChange(
     player: P,
     vehicle: V,
     newstate: boolean
   ): TCommonCallback;
-  public abstract onSpawn(vehicle: V): TCommonCallback;
-  public abstract onStreamIn(vehicle: V, forplayer: P): TCommonCallback;
-  public abstract onStreamOut(vehicle: V, forplayer: P): TCommonCallback;
-  public abstract onPlayerEnter(
+  protected abstract onSpawn(vehicle: V): TCommonCallback;
+  protected abstract onStreamIn(vehicle: V, forplayer: P): TCommonCallback;
+  protected abstract onStreamOut(vehicle: V, forplayer: P): TCommonCallback;
+  protected abstract onPlayerEnter(
     player: P,
     vehicle: V,
     isPassenger: boolean
   ): TCommonCallback;
-  public abstract onPlayerExit(player: P, vehicle: V): TCommonCallback;
-  public abstract onNpcEnter(vehicle: V, seatid: number): TCommonCallback;
-  public abstract onNpcExit(): TCommonCallback;
-  public abstract onTrailerUpdate(player: P, vehicle: V): TCommonCallback;
+  protected abstract onPlayerExit(player: P, vehicle: V): TCommonCallback;
+  protected abstract onNpcEnter(vehicle: V, seatid: number): TCommonCallback;
+  protected abstract onNpcExit(): TCommonCallback;
+  protected abstract onTrailerUpdate(player: P, vehicle: V): TCommonCallback;
 
   public findVehicleById(vehicleid: number) {
     return this.vehicles.get(vehicleid);

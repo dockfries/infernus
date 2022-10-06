@@ -49,8 +49,8 @@ export abstract class DynamicCheckPointEvent<
     });
   }
 
-  public abstract onPlayerEnter(player: P, checkpoint: C): TCommonCallback;
-  public abstract onPlayerLeave(player: P, checkpoint: C): TCommonCallback;
+  protected abstract onPlayerEnter(player: P, checkpoint: C): TCommonCallback;
+  protected abstract onPlayerLeave(player: P, checkpoint: C): TCommonCallback;
 
   public getCheckPointsArr(): Array<C> {
     return [...this.checkpoints.values()];

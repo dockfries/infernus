@@ -36,7 +36,7 @@ export abstract class DynamicPickupEvent<
     );
   }
 
-  public abstract onPlayerPickUp(player: P, pickup: K): TCommonCallback;
+  protected abstract onPlayerPickUp(player: P, pickup: K): TCommonCallback;
 
   public getPickupsArr(): Array<K> {
     return [...this.pickups.values()];

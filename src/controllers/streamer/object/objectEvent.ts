@@ -104,9 +104,9 @@ export abstract class DynamicObjectEvent<
     );
   }
 
-  public abstract onMoved(object: O): TCommonCallback;
+  protected abstract onMoved(object: O): TCommonCallback;
 
-  public abstract onPlayerEdit(
+  protected abstract onPlayerEdit(
     player: P,
     object: O,
     response: EditResponseTypesEnum,
@@ -118,7 +118,7 @@ export abstract class DynamicObjectEvent<
     rz: number
   ): TCommonCallback;
 
-  public abstract onPlayerSelect(
+  protected abstract onPlayerSelect(
     player: P,
     object: O,
     modelid: number,
@@ -127,7 +127,7 @@ export abstract class DynamicObjectEvent<
     z: number
   ): TCommonCallback;
 
-  public abstract onPlayerShoot(
+  protected abstract onPlayerShoot(
     player: P,
     weaponid: number,
     object: O,

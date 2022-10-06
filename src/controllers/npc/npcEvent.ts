@@ -25,10 +25,13 @@ export abstract class BaseNpcEvent {
       promisifyCallback.call(this, this.onClientMessage, "OnClientMessage")
     );
   }
-  public abstract onConnect(myplayerid: number): TCommonCallback;
-  public abstract onDisconnect(reason: string): TCommonCallback;
-  public abstract onModeInit(): TCommonCallback;
-  public abstract onModeExit(): TCommonCallback;
-  public abstract onSpawn(): TCommonCallback;
-  public abstract onClientMessage(color: number, text: string): TCommonCallback;
+  protected abstract onConnect(myplayerid: number): TCommonCallback;
+  protected abstract onDisconnect(reason: string): TCommonCallback;
+  protected abstract onModeInit(): TCommonCallback;
+  protected abstract onModeExit(): TCommonCallback;
+  protected abstract onSpawn(): TCommonCallback;
+  protected abstract onClientMessage(
+    color: number,
+    text: string
+  ): TCommonCallback;
 }

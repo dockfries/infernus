@@ -36,7 +36,7 @@ export abstract class BasePlayer {
   public isRecording = false;
   // public name = "";
   // Note: The locale and character set must be assigned at application level development time. Otherwise i18n will be problematic.
-  public abstract settings: IPlayerSettings;
+  protected abstract settings: IPlayerSettings;
   public lastDrunkLevel = 0;
   public lastFps = 0;
   private _isNpc: boolean;

@@ -245,15 +245,15 @@ export abstract class Streamer {
   public static getArrayDataLength = ows.Streamer_GetArrayDataLength;
   public static getUpperBound = ows.Streamer_GetUpperBound;
 
-  public abstract onItemStreamIn(
+  protected abstract onItemStreamIn(
     type: ows.StreamerItemTypes,
     id: number,
     forplayerid: number
   ): number;
-  public abstract onItemStreamOut(
+  protected abstract onItemStreamOut(
     type: ows.StreamerItemTypes,
     id: number,
     forplayerid: number
   ): number;
-  public abstract onPluginError(error: string): number;
+  protected abstract onPluginError(error: string): number;
 }
