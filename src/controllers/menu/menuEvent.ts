@@ -66,4 +66,8 @@ export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
   public getMenusArr(): Array<M> {
     return [...this.menus.values()];
   }
+
+  public getMenusMap(): Map<number, M> {
+    return this.menus;
+  }
 }

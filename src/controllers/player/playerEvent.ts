@@ -348,6 +348,9 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
   public getPlayersArr(): Array<P> {
     return [...this.players.values()];
   }
+  public getPlayersMap(): Map<number, P> {
+    return this.players;
+  }
   private throttleUpdate = throttle((player: P) => this.onUpdate(player), 60);
   private fpsHeartbeat = throttle((player: P) => {
     if (!BasePlayer.isConnected(player)) return;

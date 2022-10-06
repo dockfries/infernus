@@ -139,4 +139,8 @@ export abstract class DynamicObjectEvent<
   public getObjectsArr(): Array<O> {
     return [...this.objects.values()];
   }
+
+  public getObjectsMap(): Map<number, O> {
+    return this.objects;
+  }
 }

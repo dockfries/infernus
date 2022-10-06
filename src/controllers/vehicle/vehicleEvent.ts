@@ -231,4 +231,8 @@ export abstract class BaseVehicleEvent<
   public getVehiclesArr(): Array<V> {
     return [...this.vehicles.values()];
   }
+
+  public getVehiclesMap(): Map<number, V> {
+    return this.vehicles;
+  }
 }

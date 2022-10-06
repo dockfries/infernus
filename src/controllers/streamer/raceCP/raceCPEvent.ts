@@ -59,4 +59,8 @@ export abstract class DynamicRaceCPEvent<
   public getRaceCPsArr(): Array<R> {
     return [...this.raceCPs.values()];
   }
+
+  public getRaceCPsMap(): Map<number, R> {
+    return this.raceCPs;
+  }
 }

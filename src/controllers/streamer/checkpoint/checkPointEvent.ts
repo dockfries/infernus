@@ -55,4 +55,8 @@ export abstract class DynamicCheckPointEvent<
   public getCheckPointsArr(): Array<C> {
     return [...this.checkpoints.values()];
   }
+
+  public getCheckPointsMap(): Map<number, C> {
+    return this.checkpoints;
+  }
 }

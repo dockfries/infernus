@@ -84,4 +84,8 @@ export abstract class DynamicActorEvent<
   public getActorsArr(): Array<A> {
     return [...this.actors.values()];
   }
+
+  public getActorsMap(): Map<number, A> {
+    return this.actors;
+  }
 }

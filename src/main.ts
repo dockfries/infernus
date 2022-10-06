@@ -4,3 +4,4 @@ export * from "./logger";
 export * from "./interfaces";
 export * from "./types";
 export * from "./enums";
+export { rgba } from "./utils/colorUtils";

@@ -41,4 +41,8 @@ export abstract class DynamicPickupEvent<
   public getPickupsArr(): Array<K> {
     return [...this.pickups.values()];
   }
+
+  public getPickupsMap(): Map<number, K> {
+    return this.pickups;
+  }
 }
