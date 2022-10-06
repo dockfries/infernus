@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@sa-mp/node': ^0.2.0
   '@types/lodash': ^4.14.184
   '@types/node': ^18.7.13
   '@typescript-eslint/eslint-plugin': ^5.35.1
@@ -30,6 +31,7 @@ dependencies:
   pino-pretty: 9.1.0
 
 devDependencies:
+  '@sa-mp/node': 0.2.0
   '@types/lodash': 4.14.184
   '@types/node': 18.7.13
   '@typescript-eslint/eslint-plugin': 5.35.1_t3qvqq7ugt4jqnoquow4ze3psy
@@ -172,6 +174,10 @@ packages:
     dependencies:
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /@sa-mp/node/0.2.0:
+    resolution: {integrity: sha512-pNkx5cNJx786Smgrzultj7ei2IHP+ZiZGm9ER3+gnOOVM8s7b6LcKhFbL8JPf9b+VdhSOTDhqhYATmyMj3G5DQ==}
     dev: true
 
   /@types/glob/7.2.0:

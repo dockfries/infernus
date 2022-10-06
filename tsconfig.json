@@ -1,6 +1,7 @@
 {
   "include": ["src/**/*.ts"],
   "compilerOptions": {
+    "types": ["@sa-mp/node"],
     "baseUrl": "./",
     "paths": { "@/*": ["src/*"] },
     "target": "ESNext",
