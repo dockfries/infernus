@@ -381,7 +381,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
      */
     const firstLevel = cmd[0];
     const idx = this.cmdBus.findEventIdxByName(firstLevel);
-    if (idx > -1 || (await this.cmdBus.emit(p, idx, cmd.slice(1)))) {
+    if (idx > -1 && (await this.cmdBus.emit(p, idx, cmd.slice(1)))) {
       let pFnRes = this.onCommandPerformed(p, fullCommand);
       if (pFnRes instanceof Promise) pFnRes = await pFnRes;
       if (!pFnRes) return NOOP("OnPlayerCommandTextI18n");

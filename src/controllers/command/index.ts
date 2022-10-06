@@ -18,24 +18,24 @@ export class CmdBus<P extends BasePlayer> {
     this.eventList.push({ name: eventName, fn: eventFunction });
   };
 
-  public off(eventName: TEventName) {
+  public off = (eventName: TEventName) => {
     const idx: number = this.findEventIdxByName(eventName);
     if (idx === -1) return;
     this.eventList.splice(idx, 1);
-  }
+  };
 
-  public async emit(
+  public emit = async (
     player: P,
     userEventIdx: number,
     userEventArgs: string[]
-  ): Promise<number | boolean> {
+  ): Promise<number | boolean> => {
     let result = this.eventList[userEventIdx].fn(player, ...userEventArgs);
     if (result instanceof Promise) result = await result;
     if (result === undefined || result === null) return false;
     return result;
-  }
+  };
 
-  public findEventIdxByName(eventName: TEventName): number {
+  public findEventIdxByName = (eventName: TEventName): number => {
     return this.eventList.findIndex((v) => {
       const { name: registered } = v;
       if (registered instanceof Array) {
@@ -49,5 +49,5 @@ export class CmdBus<P extends BasePlayer> {
       }
       return registered === eventName;
     });
-  }
+  };
 }
