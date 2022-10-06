@@ -53,8 +53,8 @@ export abstract class DynamicRaceCPEvent<
     );
   }
 
-  protected abstract onPlayerEnter(player: P, checkpoint: R): TCommonCallback;
-  protected abstract onPlayerLeave(player: P, checkpoint: R): TCommonCallback;
+  public abstract onPlayerEnter(player: P, checkpoint: R): TCommonCallback;
+  public abstract onPlayerLeave(player: P, checkpoint: R): TCommonCallback;
 
   public getRaceCPsArr(): Array<R> {
     return [...this.raceCPs.values()];

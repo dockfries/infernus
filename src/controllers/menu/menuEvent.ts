@@ -47,8 +47,8 @@ export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
       return pFn(player, menu, row);
     });
   }
-  protected abstract onPlayerExited(player: P, menu: M): TCommonCallback;
-  protected abstract onPlayerSelectedRow(
+  public abstract onPlayerExited(player: P, menu: M): TCommonCallback;
+  public abstract onPlayerSelectedRow(
     player: P,
     menu: M,
     row: number

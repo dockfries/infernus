@@ -88,15 +88,15 @@ export abstract class BaseGameMode {
     }
   }
 
-  protected abstract onInit(): void;
-  protected abstract onExit(): void;
-  protected abstract onIncomingConnection(
+  public abstract onInit(): void;
+  public abstract onExit(): void;
+  public abstract onIncomingConnection(
     playerid: number,
     ipAddress: string,
     port: number
   ): TCommonCallback;
-  protected abstract onRconCommand(cmd: string): TCommonCallback;
-  protected abstract onRconLoginAttempt(
+  public abstract onRconCommand(cmd: string): TCommonCallback;
+  public abstract onRconLoginAttempt(
     ip: string,
     password: string,
     success: boolean

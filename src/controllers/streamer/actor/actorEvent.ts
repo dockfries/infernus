@@ -71,9 +71,9 @@ export abstract class DynamicActorEvent<
     );
   }
 
-  protected abstract onStreamIn(actor: A, player: P): TCommonCallback;
-  protected abstract onStreamOut(actor: A, player: P): TCommonCallback;
-  protected abstract onPlayerGiveDamage(
+  public abstract onStreamIn(actor: A, player: P): TCommonCallback;
+  public abstract onStreamOut(actor: A, player: P): TCommonCallback;
+  public abstract onPlayerGiveDamage(
     player: P,
     actor: A,
     amount: number,

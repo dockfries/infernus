@@ -82,6 +82,6 @@ export abstract class BaseGangZoneEvent<
     });
   }
 
-  protected abstract onPlayerEnter(player: P, gangZone: G): TCommonCallback;
-  protected abstract onPlayerLeave(player: P, gangZone: G): TCommonCallback;
+  public abstract onPlayerEnter(player: P, gangZone: G): TCommonCallback;
+  public abstract onPlayerLeave(player: P, gangZone: G): TCommonCallback;
 }
