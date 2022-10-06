@@ -59,7 +59,12 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     OnPlayerText((playerid: number, byteArr: number[]): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 1;
-      const pFn = promisifyCallback.call(this, this.onText, "OnPlayerTextI18n");
+      const pFn = promisifyCallback.call(
+        this,
+        this.onText,
+        "OnPlayerTextI18n",
+        0
+      );
       return pFn(p, I18n.decodeFromBuf(byteArr, p.charset));
     });
 
