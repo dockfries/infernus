@@ -14,7 +14,7 @@ export abstract class DynamicActorEvent<
   P extends BasePlayer,
   A extends DynamicActor
 > {
-  public readonly actors = new Map<number, A>();
+  private readonly actors = new Map<number, A>();
   private readonly players;
 
   constructor(playersMap: Map<number, P>) {

@@ -12,7 +12,7 @@ export abstract class DynamicRaceCPEvent<
   P extends BasePlayer,
   R extends DynamicRaceCP
 > {
-  public readonly raceCPs = new Map<number, R>();
+  private readonly raceCPs = new Map<number, R>();
   private readonly players;
 
   constructor(playersMap: Map<number, P>) {

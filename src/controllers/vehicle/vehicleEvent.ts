@@ -24,7 +24,7 @@ export abstract class BaseVehicleEvent<
   P extends BasePlayer,
   V extends BaseVehicle
 > {
-  public readonly vehicles = new Map<number, V>();
+  private readonly vehicles = new Map<number, V>();
   private readonly players;
 
   constructor(playersMap: Map<number, P>) {

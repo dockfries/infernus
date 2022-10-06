@@ -11,7 +11,7 @@ import { BaseMenu } from "./baseMenu";
 import { menuBus, menuHooks } from "./menuBus";
 
 export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
-  public readonly menus = new Map<number, M>();
+  private readonly menus = new Map<number, M>();
   private readonly players;
 
   constructor(playersMap: Map<number, P>) {

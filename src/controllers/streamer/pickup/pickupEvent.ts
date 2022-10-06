@@ -9,7 +9,7 @@ export abstract class DynamicPickupEvent<
   P extends BasePlayer,
   K extends DynamicPickup
 > {
-  public readonly pickups = new Map<number, K>();
+  private readonly pickups = new Map<number, K>();
   private readonly players;
 
   constructor(playersMap: Map<number, P>) {

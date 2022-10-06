@@ -15,7 +15,7 @@ export abstract class DynamicObjectEvent<
   P extends BasePlayer,
   O extends DynamicObject
 > {
-  public readonly objects = new Map<number, O>();
+  private readonly objects = new Map<number, O>();
   private readonly players;
 
   constructor(playersMap: Map<number, P>) {

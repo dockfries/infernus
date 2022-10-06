@@ -12,7 +12,7 @@ export abstract class DynamicCheckPointEvent<
   P extends BasePlayer,
   C extends DynamicCheckpoint
 > {
-  public readonly checkpoints = new Map<number, C>();
+  private readonly checkpoints = new Map<number, C>();
   private readonly players;
 
   constructor(playersMap: Map<number, P>) {

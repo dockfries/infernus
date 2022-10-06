@@ -10,7 +10,7 @@ export abstract class DynamicAreaEvent<
   P extends BasePlayer,
   A extends DynamicArea
 > {
-  public readonly areas = new Map<number, A>();
+  private readonly areas = new Map<number, A>();
   private readonly players;
 
   constructor(playersMap: Map<number, P>) {
