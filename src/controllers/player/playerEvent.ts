@@ -24,9 +24,10 @@ const ICmdErrInfo: Record<string, ICmdErr> = {
 };
 
 export abstract class BasePlayerEvent<P extends BasePlayer> {
-  public readonly players = new Map<number, P>();
+  private readonly players = new Map<number, P>();
   private readonly cmdBus = new CmdBus<P>();
   public readonly onCommandText = this.cmdBus.on;
+  public readonly offCommandText = this.cmdBus.off;
   constructor() {
     cbs.OnPlayerConnect((playerid: number): number => {
       const p = this.newPlayer(playerid);
