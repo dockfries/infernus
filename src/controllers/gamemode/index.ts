@@ -13,7 +13,12 @@ import {
 import * as ow from "omp-wrapper";
 import { defaultCharset } from "./settings";
 import { TCommonCallback, TFilterScript } from "@/types";
-import { useFilterScript } from "../filterscript";
+import {
+  loadUseScript,
+  reloadUseScript,
+  unloadUseScript,
+  useFilterScript,
+} from "../filterscript";
 
 export abstract class BaseGameMode {
   public static charset = defaultCharset;
@@ -72,6 +77,10 @@ export abstract class BaseGameMode {
     useFilterScript.call(this, plugin, ...options);
     return this;
   };
+
+  public static loadScript = loadUseScript;
+  public static unloadScript = unloadUseScript;
+  public static reloadScript = reloadUseScript;
 
   public static supportAllNickname() {
     /**

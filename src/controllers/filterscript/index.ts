@@ -1,11 +1,11 @@
 import { logger } from "@/logger";
 import { TFilterScript } from "@/types";
-import { OnRconCommand } from "@/utils/helperUtils";
+import { OnGameModeExit } from "@/wrapper/callbacks";
 
 const preInstallScripts: Array<TFilterScript> = [];
 const installedScripts: Array<TFilterScript> = [];
 
-const loadScript = (scriptName: string): void => {
+export const loadUseScript = (scriptName: string): void => {
   setTimeout(async () => {
     try {
       const fsIdx = preInstallScripts.findIndex((fs) => fs.name === scriptName);
@@ -24,7 +24,7 @@ const loadScript = (scriptName: string): void => {
     }
   });
 };
-const unloadScript = (scriptName: string): void => {
+export const unloadUseScript = (scriptName: string): void => {
   setTimeout(async () => {
     try {
       const fsIdx = installedScripts.findIndex((fs) => fs.name === scriptName);
@@ -44,19 +44,13 @@ const unloadScript = (scriptName: string): void => {
   });
 };
 
-OnRconCommand((command: string): number => {
-  const regCmd = command.trim().match(/[^/\s]+/gi);
-  if (!regCmd || regCmd.length < 2) return 1;
-  const [firstLevel, scriptName] = command;
-  if (firstLevel === "loadfs") {
-    loadScript(scriptName);
-  } else if (firstLevel === "unloadfs") {
-    unloadScript(scriptName);
-  } else if (firstLevel === "reloadfs") {
-    unloadScript(scriptName);
-    loadScript(scriptName);
-  }
-  return 1;
+export const reloadUseScript = (scriptName: string) => {
+  unloadUseScript(scriptName);
+  loadUseScript(scriptName);
+};
+
+OnGameModeExit(() => {
+  installedScripts.forEach((fs) => unloadUseScript(fs.name));
 });
 
 export const useFilterScript = function (
@@ -73,5 +67,5 @@ export const useFilterScript = function (
   }
   plugin.load = plugin.load.bind(plugin, this, ...options);
   preInstallScripts.push(plugin);
-  loadScript(plugin.name);
+  loadUseScript(plugin.name);
 };

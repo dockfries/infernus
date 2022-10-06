@@ -128,8 +128,8 @@ export const OnClientMessage = (
 ) => {
   samp.addEventListener(
     "OnClientMessageI18n",
-    (color: number, buf: number[]): void => {
-      fn(color, I18n.decodeFromBuf(buf, charset));
+    (color: number, buf: number[]): number => {
+      return fn(color, I18n.decodeFromBuf(buf, charset));
     }
   );
 };
@@ -139,8 +139,8 @@ export const OnRconCommand = (
   fn: (cmd: string) => number,
   charset = defaultCharset
 ) => {
-  samp.addEventListener("OnRconCommandI18n", (buf: number[]): void => {
-    fn(I18n.decodeFromBuf(buf, charset));
+  samp.addEventListener("OnRconCommandI18n", (buf: number[]): number => {
+    return fn(I18n.decodeFromBuf(buf, charset));
   });
 };
 
@@ -151,8 +151,8 @@ export const OnRconLoginAttempt = (
 ) => {
   samp.addEventListener(
     "OnRconLoginAttemptI18n",
-    (ip: number[], password: number[], success: number): void => {
-      fn(
+    (ip: number[], password: number[], success: number): number => {
+      return fn(
         I18n.decodeFromBuf(ip, charset),
         I18n.decodeFromBuf(password, charset),
         Boolean(success)
