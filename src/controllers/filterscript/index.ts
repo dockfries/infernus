@@ -1,9 +1,9 @@
+import { IFilterScript } from "@/interfaces";
 import { logger } from "@/logger";
-import { TFilterScript } from "@/types";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 
-const preInstallScripts: Array<TFilterScript> = [];
-const installedScripts: Array<TFilterScript> = [];
+const preInstallScripts: Array<IFilterScript> = [];
+const installedScripts: Array<IFilterScript> = [];
 
 export const loadUseScript = (scriptName: string): void => {
   setTimeout(async () => {
@@ -55,7 +55,7 @@ OnGameModeExit(() => {
 
 export const useFilterScript = function (
   this: any,
-  plugin: TFilterScript,
+  plugin: IFilterScript,
   ...options: Array<any>
 ): void {
   if (

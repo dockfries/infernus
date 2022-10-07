@@ -11,7 +11,7 @@ import {
   promisifyCallback,
 } from "@/utils/helperUtils";
 import { defaultCharset } from "./settings";
-import { TCommonCallback, TFilterScript } from "@/types";
+import { TCommonCallback } from "@/types";
 import {
   loadUseScript,
   reloadUseScript,
@@ -35,6 +35,7 @@ import {
   ToggleChatTextReplacement,
   ChatTextReplacementToggled,
 } from "omp-wrapper";
+import { IFilterScript } from "@/interfaces";
 
 export abstract class BaseGameMode {
   public static charset = defaultCharset;
@@ -87,7 +88,7 @@ export abstract class BaseGameMode {
 
   // like vue.js, support filter script which use omp-node-lib
   public readonly use = (
-    plugin: TFilterScript,
+    plugin: IFilterScript,
     ...options: Array<any>
   ): void | this => {
     useFilterScript.call(this, plugin, ...options);

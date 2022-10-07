@@ -244,3 +244,10 @@ export {
   IVehSpawnInfo,
   IVehMatrix,
 } from "omp-wrapper";
+
+export type IFilterScript = {
+  name: string;
+  load: (...args: Array<any>) => any;
+  unload: () => any;
+  [propName: string | number | symbol]: any;
+};

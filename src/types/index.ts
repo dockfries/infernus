@@ -42,13 +42,6 @@ export type TDynamicAreaTypes =
 
 export type TCommonCallback = number | Promise<number>;
 
-export type TFilterScript = {
-  name: string;
-  load: (...args: Array<any>) => any;
-  unload: () => any;
-  [propName: string | number | symbol]: any;
-};
-
 export type {
   StreamerArrayData,
   StreamerItemTypeTuple,
