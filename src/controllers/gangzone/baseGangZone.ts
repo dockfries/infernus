@@ -3,7 +3,32 @@ import { IBaseGangZone } from "@/interfaces";
 import { logger } from "@/logger";
 import { rgba } from "@/utils/colorUtils";
 import * as fns from "@/wrapper/functions";
-import * as ow from "omp-wrapper";
+import {
+  CreatePlayerGangZone,
+  PlayerGangZoneDestroy,
+  PlayerGangZoneShow,
+  PlayerGangZoneHide,
+  PlayerGangZoneFlash,
+  PlayerGangZoneStopFlash,
+  IsValidPlayerGangZone,
+  IsValidGangZone,
+  IsPlayerInPlayerGangZone,
+  IsPlayerInGangZone,
+  IsPlayerGangZoneVisible,
+  IsGangZoneVisibleForPlayer,
+  PlayerGangZoneGetColor,
+  GangZoneGetColorForPlayer,
+  PlayerGangZoneGetFlashColor,
+  GangZoneGetFlashColorForPlayer,
+  IsPlayerGangZoneFlashing,
+  IsGangZoneFlashingForPlayer,
+  GangZonePos,
+  PlayerGangZoneGetPos,
+  GangZoneGetPos,
+  UsePlayerGangZoneCheck,
+  UseGangZoneCheck,
+} from "omp-wrapper";
+
 import { BasePlayer } from "../player";
 import { gangZoneBus, gangZoneHooks } from "./gangZoneBus";
 
@@ -40,7 +65,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
           "[BaseGangZone]: Unable to continue to create gangzone, maximum allowable quantity has been reached"
         );
       const { minx, miny, maxx, maxy } = this.sourceInfo;
-      this._id = ow.CreatePlayerGangZone(player.id, minx, miny, maxx, maxy);
+      this._id = CreatePlayerGangZone(player.id, minx, miny, maxx, maxy);
       BaseGangZone.createdPlayerCount++;
       // PlayerGangZones may be automatically destroyed when a player disconnects.
       samp.addEventListener("OnPlayerDisconnect", this.unregisterEvent);
@@ -62,7 +87,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
       fns.GangZoneDestroy(this.id);
       BaseGangZone.createdGlobalCount--;
     } else {
-      ow.PlayerGangZoneDestroy(player.id, this.id);
+      PlayerGangZoneDestroy(player.id, this.id);
       BaseGangZone.createdPlayerCount--;
     }
     gangZoneBus.emit(gangZoneHooks.destroyed, {
@@ -93,7 +118,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
         "[BaseGangZone]: Unable to show the gangzone before create"
       );
     const p = this.sourceInfo.player;
-    if (p) ow.PlayerGangZoneShow(p.id, this.id, rgba(color));
+    if (p) PlayerGangZoneShow(p.id, this.id, rgba(color));
     else {
       if (player) fns.GangZoneShowForPlayer(player.id, this.id, color);
       else return logger.warn("[BaseGangZone]: invalid player for show");
@@ -122,7 +147,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
         "[BaseGangZone]: Unable to hide the gangzone before create"
       );
     const p = this.sourceInfo.player;
-    if (p) ow.PlayerGangZoneHide(p.id, this.id);
+    if (p) PlayerGangZoneHide(p.id, this.id);
     else {
       if (player) fns.GangZoneHideForPlayer(player.id, this.id);
       else return logger.warn("[BaseGangZone]: invalid player for hide");
@@ -151,7 +176,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
         "[BaseGangZone]: Unable to flash the gangzone before create"
       );
     const p = this.sourceInfo.player;
-    if (p) ow.PlayerGangZoneFlash(p.id, this.id, rgba(flashcolor));
+    if (p) PlayerGangZoneFlash(p.id, this.id, rgba(flashcolor));
     else {
       if (player) fns.GangZoneFlashForPlayer(player.id, this.id, flashcolor);
       else return logger.warn("[BaseGangZone]: invalid player for flash");
@@ -180,7 +205,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
         "[BaseGangZone]: Unable to stop flash the gangzone before create"
       );
     const p = this.sourceInfo.player;
-    if (p) ow.PlayerGangZoneStopFlash(p.id, this.id);
+    if (p) PlayerGangZoneStopFlash(p.id, this.id);
     else {
       if (player) fns.GangZoneStopFlashForPlayer(player.id, this.id);
       else return logger.warn("[BaseGangZone]: invalid player for flash");
@@ -191,30 +216,30 @@ export abstract class BaseGangZone<P extends BasePlayer> {
   public isValid(): boolean {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return ow.IsValidPlayerGangZone(p.id, this.id);
-    return ow.IsValidGangZone(this.id);
+    if (p) return IsValidPlayerGangZone(p.id, this.id);
+    return IsValidGangZone(this.id);
   }
 
   public isPlayerIn(player: P): boolean {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return ow.IsPlayerInPlayerGangZone(p.id, this.id);
-    return ow.IsPlayerInGangZone(player.id, this.id);
+    if (p) return IsPlayerInPlayerGangZone(p.id, this.id);
+    return IsPlayerInGangZone(player.id, this.id);
   }
 
   public isVisibleForPlayer(player: P): boolean {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return ow.IsPlayerGangZoneVisible(p.id, this.id);
-    return ow.IsGangZoneVisibleForPlayer(player.id, this.id);
+    if (p) return IsPlayerGangZoneVisible(p.id, this.id);
+    return IsGangZoneVisibleForPlayer(player.id, this.id);
   }
 
   public getColorForPlayer(player: P): void | number {
     if (this.id === -1)
       return logger.warn("[BaseGangZone]: Unable to get color before create");
     const p = this.sourceInfo.player;
-    if (p) return ow.PlayerGangZoneGetColor(p.id, this.id);
-    return ow.GangZoneGetColorForPlayer(player.id, this.id);
+    if (p) return PlayerGangZoneGetColor(p.id, this.id);
+    return GangZoneGetColorForPlayer(player.id, this.id);
   }
 
   public getFlashColorForPlayer(player: P): void | number {
@@ -223,33 +248,33 @@ export abstract class BaseGangZone<P extends BasePlayer> {
         "[BaseGangZone]: Unable to get flash color before create"
       );
     const p = this.sourceInfo.player;
-    if (p) return ow.PlayerGangZoneGetFlashColor(p.id, this.id);
-    return ow.GangZoneGetFlashColorForPlayer(player.id, this.id);
+    if (p) return PlayerGangZoneGetFlashColor(p.id, this.id);
+    return GangZoneGetFlashColorForPlayer(player.id, this.id);
   }
 
   public isFlashingForPlayer(player: P): boolean {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return ow.IsPlayerGangZoneFlashing(p.id, this.id);
-    return ow.IsGangZoneFlashingForPlayer(player.id, this.id);
+    if (p) return IsPlayerGangZoneFlashing(p.id, this.id);
+    return IsGangZoneFlashingForPlayer(player.id, this.id);
   }
 
-  public getPos(): void | ow.GangZonePos {
+  public getPos(): void | GangZonePos {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to get position before create"
       );
     const p = this.sourceInfo.player;
-    if (p) return ow.PlayerGangZoneGetPos(p.id, this.id);
-    return ow.GangZoneGetPos(this.id);
+    if (p) return PlayerGangZoneGetPos(p.id, this.id);
+    return GangZoneGetPos(this.id);
   }
 
   public useCheck(toggle: boolean): void | this {
     if (this.id === -1)
       return logger.warn("[BaseGangZone]: Unable to use check before create");
     const p = this.sourceInfo.player;
-    if (p) ow.UsePlayerGangZoneCheck(p.id, this.id, toggle);
-    else ow.UseGangZoneCheck(this.id, toggle);
+    if (p) UsePlayerGangZoneCheck(p.id, this.id, toggle);
+    else UseGangZoneCheck(this.id, toggle);
     return this;
   }
 

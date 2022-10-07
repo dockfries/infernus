@@ -1,7 +1,16 @@
 import { LimitsEnum } from "@/enums";
 import { logger } from "@/logger";
 import * as fns from "@/wrapper/functions";
-import * as ow from "omp-wrapper";
+import {
+  IsMenuDisabled,
+  IsMenuRowDisabled,
+  GetMenuItems,
+  GetMenuPos,
+  GetMenuColumnWidth,
+  GetMenuColumnHeader,
+  GetMenuItem,
+} from "omp-wrapper";
+
 import { BasePlayer } from "../player";
 import { menuBus, menuHooks } from "./menuBus";
 
@@ -161,35 +170,35 @@ export class BaseMenu {
   }
   public isDisabled(): boolean {
     if (this._id === -1) return false;
-    return ow.IsMenuDisabled(this.id);
+    return IsMenuDisabled(this.id);
   }
   public isRowDisabled(row: number): boolean {
     if (this._id === -1) return false;
     if (row < 0 || row > this._itemCount) return false;
-    return ow.IsMenuRowDisabled(this.id, row);
+    return IsMenuRowDisabled(this.id, row);
   }
   public getItems(column: number): number {
     if (this._id === -1) return 0;
-    return ow.GetMenuItems(this.id, column);
+    return GetMenuItems(this.id, column);
   }
   public getPos() {
     if (this._id === -1) return { fX: this.x, fY: this.y };
-    return ow.GetMenuPos(this.id);
+    return GetMenuPos(this.id);
   }
   public getColumnWidth() {
     if (this.id === -1)
       return { fColumn1: this.col1width, fColumn2: this.col2width };
-    return ow.GetMenuColumnWidth(this.id);
+    return GetMenuColumnWidth(this.id);
   }
   public getColumnHeader(column: number): void | string {
     if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot get column header before create");
-    return ow.GetMenuColumnHeader(this.id, column);
+    return GetMenuColumnHeader(this.id, column);
   }
   public getItem(column: number, item: number): void | string {
     if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot get item before create");
     if (item < 0 || item > this.getItems(column) - 1) return undefined;
-    return ow.GetMenuItem(this.id, column, item);
+    return GetMenuItem(this.id, column, item);
   }
 }

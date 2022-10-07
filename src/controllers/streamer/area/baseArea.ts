@@ -4,8 +4,47 @@ import { BasePlayer } from "@/controllers/player";
 import { BaseVehicle } from "@/controllers/vehicle";
 import { DynamicObject } from "@/controllers/streamer";
 import { TDynamicArea, TDynamicAreaTypes } from "@/types";
-import * as ows from "omp-wrapper-streamer";
 import { areaBus, areaHooks } from "./areaBus";
+import {
+  AttachDynamicAreaToObject,
+  AttachDynamicAreaToPlayer,
+  AttachDynamicAreaToVehicle,
+  CreateDynamicCircle,
+  CreateDynamicCircleEx,
+  CreateDynamicCuboid,
+  CreateDynamicCuboidEx,
+  CreateDynamicCylinder,
+  CreateDynamicCylinderEx,
+  CreateDynamicPolygon,
+  CreateDynamicPolygonEx,
+  CreateDynamicRectangle,
+  CreateDynamicRectangleEx,
+  CreateDynamicSphere,
+  CreateDynamicSphereEx,
+  DestroyDynamicArea,
+  GetDynamicAreasForLine,
+  GetDynamicAreasForPoint,
+  GetDynamicAreaType,
+  GetDynamicPolygonNumberPoints,
+  GetDynamicPolygonPoints,
+  GetNumberDynamicAreasForLine,
+  GetNumberDynamicAreasForPoint,
+  GetPlayerDynamicAreas,
+  GetPlayerNumberDynamicAreas,
+  IsAnyPlayerInAnyDynamicArea,
+  IsAnyPlayerInDynamicArea,
+  IsLineInAnyDynamicArea,
+  IsLineInDynamicArea,
+  IsPlayerInAnyDynamicArea,
+  IsPlayerInDynamicArea,
+  IsPointInAnyDynamicArea,
+  IsPointInDynamicArea,
+  IsToggleDynAreaSpectateMode,
+  IsValidDynamicArea,
+  StreamerAreaTypes,
+  StreamerObjectTypes,
+  ToggleDynAreaSpectateMode,
+} from "omp-wrapper-streamer";
 
 export class DynamicArea {
   private sourceInfo: TDynamicArea;
@@ -37,7 +76,7 @@ export class DynamicArea {
         const { x, y, size } = this.sourceInfo;
         if (size < 0)
           return logger.error("[StreamerArea]: Invalid circle extend size");
-        this._id = ows.CreateDynamicCircleEx(
+        this._id = CreateDynamicCircleEx(
           x,
           y,
           size,
@@ -47,7 +86,7 @@ export class DynamicArea {
         );
       } else if (type === "cuboid") {
         const { minx, miny, minz, maxx, maxy, maxz } = this.sourceInfo;
-        this._id = ows.CreateDynamicCuboidEx(
+        this._id = CreateDynamicCuboidEx(
           minx,
           miny,
           minz,
@@ -62,7 +101,7 @@ export class DynamicArea {
         const { x, y, minz, maxz, size } = this.sourceInfo;
         if (size < 0)
           return logger.error("[StreamerArea]: Invalid cylinder extend size");
-        this._id = ows.CreateDynamicCylinderEx(
+        this._id = CreateDynamicCylinderEx(
           x,
           y,
           minz,
@@ -78,7 +117,7 @@ export class DynamicArea {
           return logger.warn(
             "[StreamerArea]: Unable to create polygon extended with asymmetrical points"
           );
-        this._id = ows.CreateDynamicPolygonEx(
+        this._id = CreateDynamicPolygonEx(
           points,
           minz,
           maxz,
@@ -88,7 +127,7 @@ export class DynamicArea {
         );
       } else if (type === "rectangle") {
         const { minx, miny, maxx, maxy } = this.sourceInfo;
-        this._id = ows.CreateDynamicRectangleEx(
+        this._id = CreateDynamicRectangleEx(
           minx,
           miny,
           maxx,
@@ -101,7 +140,7 @@ export class DynamicArea {
         const { x, y, z, size } = this.sourceInfo;
         if (size < 0)
           return logger.error("[StreamerArea]: Invalid sphere extended size");
-        this._id = ows.CreateDynamicSphereEx(
+        this._id = CreateDynamicSphereEx(
           x,
           y,
           z,
@@ -123,7 +162,7 @@ export class DynamicArea {
         const { x, y, size } = this.sourceInfo;
         if (size < 0)
           return logger.error("[StreamerArea]: Invalid circle size");
-        this._id = ows.CreateDynamicCircle(
+        this._id = CreateDynamicCircle(
           x,
           y,
           size,
@@ -133,7 +172,7 @@ export class DynamicArea {
         );
       } else if (type === "cuboid") {
         const { minx, miny, minz, maxx, maxy, maxz } = this.sourceInfo;
-        this._id = ows.CreateDynamicCuboid(
+        this._id = CreateDynamicCuboid(
           minx,
           miny,
           minz,
@@ -148,7 +187,7 @@ export class DynamicArea {
         const { x, y, minz, maxz, size } = this.sourceInfo;
         if (size < 0)
           return logger.error("[StreamerArea]: Invalid cylinder size");
-        this._id = ows.CreateDynamicCylinder(
+        this._id = CreateDynamicCylinder(
           x,
           y,
           minz,
@@ -164,7 +203,7 @@ export class DynamicArea {
           return logger.warn(
             "[StreamerArea]: Unable to create polygon with asymmetrical points"
           );
-        this._id = ows.CreateDynamicPolygon(
+        this._id = CreateDynamicPolygon(
           points,
           minz,
           maxz,
@@ -174,7 +213,7 @@ export class DynamicArea {
         );
       } else if (type === "rectangle") {
         const { minx, miny, maxx, maxy } = this.sourceInfo;
-        this._id = ows.CreateDynamicRectangle(
+        this._id = CreateDynamicRectangle(
           minx,
           miny,
           maxx,
@@ -187,7 +226,7 @@ export class DynamicArea {
         const { x, y, z, size } = this.sourceInfo;
         if (size < 0)
           return logger.error("[StreamerArea]: Invalid sphere size");
-        this._id = ows.CreateDynamicSphere(
+        this._id = CreateDynamicSphere(
           x,
           y,
           z,
@@ -206,18 +245,18 @@ export class DynamicArea {
       return logger.warn(
         "[StreamerArea]: Unable to destroy the area before create"
       );
-    ows.DestroyDynamicArea(this.id);
+    DestroyDynamicArea(this.id);
     areaBus.emit(areaHooks.destroyed, this);
     return this;
   }
   public isValid(): boolean {
     if (this.id === -1) return false;
-    return ows.IsValidDynamicArea(this.id);
+    return IsValidDynamicArea(this.id);
   }
-  public getType(): void | ows.StreamerAreaTypes {
+  public getType(): void | StreamerAreaTypes {
     if (this.id !== -1)
       return logger.warn("[StreamerArea]: Unable to get type before create");
-    return ows.GetDynamicAreaType(this.id);
+    return GetDynamicAreaType(this.id);
   }
   public getPolygonPoints(): void | number[] {
     if (this.id !== -1)
@@ -225,7 +264,7 @@ export class DynamicArea {
         "[StreamerArea]: Unable to get polygon points before create"
       );
     if (this.type !== "polygon") return undefined;
-    return ows.GetDynamicPolygonPoints(this.id);
+    return GetDynamicPolygonPoints(this.id);
   }
   public getPolygonNumberPoints(): void | number {
     if (this.id !== -1)
@@ -233,42 +272,42 @@ export class DynamicArea {
         "[StreamerArea]: Unable to get polygon points number before create"
       );
     if (this.type !== "polygon") return undefined;
-    return ows.GetDynamicPolygonNumberPoints(this.id);
+    return GetDynamicPolygonNumberPoints(this.id);
   }
   public isPlayerIn<P extends BasePlayer>(player: P, recheck = false): boolean {
     if (this.id === -1) return false;
-    return ows.IsPlayerInDynamicArea(player.id, this.id, recheck);
+    return IsPlayerInDynamicArea(player.id, this.id, recheck);
   }
   public static isPlayerInAny<P extends BasePlayer>(
     player: P,
     recheck = false
   ): boolean {
-    return ows.IsPlayerInAnyDynamicArea(player.id, recheck);
+    return IsPlayerInAnyDynamicArea(player.id, recheck);
   }
   public isAnyPlayerIn(recheck = false): boolean {
     if (this.id === -1) return false;
-    return ows.IsAnyPlayerInDynamicArea(this.id, recheck);
+    return IsAnyPlayerInDynamicArea(this.id, recheck);
   }
   public static isAnyPlayerInAny(recheck = false): boolean {
-    return ows.IsAnyPlayerInAnyDynamicArea(recheck);
+    return IsAnyPlayerInAnyDynamicArea(recheck);
   }
   public static getPlayerAreas<P extends BasePlayer, A extends DynamicArea>(
     player: P,
     areas: Map<number, A>
   ): Array<A | undefined> {
     if (!DynamicArea.getPlayerAreasNumber(player)) return [];
-    const ids = ows.GetPlayerDynamicAreas(player.id);
+    const ids = GetPlayerDynamicAreas(player.id);
     return ids.map((a) => areas.get(a));
   }
   public static getPlayerAreasNumber<P extends BasePlayer>(player: P) {
-    return ows.GetPlayerNumberDynamicAreas(player.id);
+    return GetPlayerNumberDynamicAreas(player.id);
   }
   public isPointIn(x: number, y: number, z: number): boolean {
     if (this.id === -1) return false;
-    return ows.IsPointInDynamicArea(this.id, x, y, z);
+    return IsPointInDynamicArea(this.id, x, y, z);
   }
   public static isPointInAny(x: number, y: number, z: number): boolean {
-    return ows.IsPointInAnyDynamicArea(x, y, z);
+    return IsPointInAnyDynamicArea(x, y, z);
   }
   public isLineIn(
     x1: number,
@@ -279,7 +318,7 @@ export class DynamicArea {
     z2: number
   ): boolean {
     if (this.id === -1) return false;
-    return ows.IsLineInDynamicArea(this.id, x1, y1, z1, x2, y2, z2);
+    return IsLineInDynamicArea(this.id, x1, y1, z1, x2, y2, z2);
   }
   public static isLineInAny(
     x1: number,
@@ -289,7 +328,7 @@ export class DynamicArea {
     y2: number,
     z2: number
   ): boolean {
-    return ows.IsLineInAnyDynamicArea(x1, y1, z1, x2, y2, z2);
+    return IsLineInAnyDynamicArea(x1, y1, z1, x2, y2, z2);
   }
   public static getForPoint<A extends DynamicArea>(
     x: number,
@@ -298,11 +337,11 @@ export class DynamicArea {
     areas: Map<number, A>
   ): Array<A | undefined> {
     if (!DynamicArea.getNumberForPoint(x, y, z)) return [];
-    const ids = ows.GetDynamicAreasForPoint(x, y, z);
+    const ids = GetDynamicAreasForPoint(x, y, z);
     return ids.map((a) => areas.get(a));
   }
   public static getNumberForPoint(x: number, y: number, z: number): number {
-    return ows.GetNumberDynamicAreasForPoint(x, y, z);
+    return GetNumberDynamicAreasForPoint(x, y, z);
   }
   public static getForLine<A extends DynamicArea>(
     x1: number,
@@ -314,7 +353,7 @@ export class DynamicArea {
     areas: Map<number, A>
   ): Array<A | undefined> {
     if (!DynamicArea.getNumberForLine(x1, y1, z1, x2, y2, z2)) return [];
-    const ids = ows.GetDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
+    const ids = GetDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
     return ids.map((a) => areas.get(a));
   }
   public static getNumberForLine(
@@ -325,7 +364,7 @@ export class DynamicArea {
     y2: number,
     z2: number
   ): number {
-    return ows.GetNumberDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
+    return GetNumberDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
   }
   public attachToObject<O extends DynamicObject>(
     obj: O,
@@ -337,10 +376,10 @@ export class DynamicArea {
       return logger.warn(
         "[StreamerArea]: Unable to toggle attach to object before create"
       );
-    return ows.AttachDynamicAreaToObject(
+    return AttachDynamicAreaToObject(
       this.id,
       obj.id,
-      ows.StreamerObjectTypes.DYNAMIC,
+      StreamerObjectTypes.DYNAMIC,
       InvalidEnum.PLAYER_ID,
       offsetx,
       offsety,
@@ -357,7 +396,7 @@ export class DynamicArea {
       return logger.warn(
         "[StreamerArea]: Unable to toggle attach to player before create"
       );
-    return ows.AttachDynamicAreaToPlayer(
+    return AttachDynamicAreaToPlayer(
       this.id,
       player.id,
       offsetx,
@@ -375,7 +414,7 @@ export class DynamicArea {
       return logger.warn(
         "[StreamerArea]: Unable to toggle attach to vehicle before create"
       );
-    return ows.AttachDynamicAreaToVehicle(
+    return AttachDynamicAreaToVehicle(
       this.id,
       vehicle.id,
       offsetx,
@@ -388,10 +427,10 @@ export class DynamicArea {
       return logger.warn(
         "[StreamerArea]: Unable to toggle specate mode before create"
       );
-    return ows.ToggleDynAreaSpectateMode(this.id, toggle);
+    return ToggleDynAreaSpectateMode(this.id, toggle);
   }
   public isToggleSpectateMode(): boolean {
     if (this.id === -1) return false;
-    return ows.IsToggleDynAreaSpectateMode(this.id);
+    return IsToggleDynAreaSpectateMode(this.id);
   }
 }

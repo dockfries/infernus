@@ -15,3 +15,4 @@ export * from "./textdrawFonts";
 export * from "./vehicle";
 export * from "./weapon";
 export * from "./record";
+export * from "./streamer";

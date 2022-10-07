@@ -6,8 +6,36 @@ import { logger } from "@/logger";
 import { isValidPaintJob, isValidVehComponent } from "@/utils/vehicleUtils";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
 import * as vehFunc from "@/wrapper/functions";
-import * as ow from "omp-wrapper";
+
 import { rgba } from "@/utils/colorUtils";
+import {
+  GetVehicleMatrix,
+  GetVehicleTrainSpeed,
+  GetVehicleHydraReactorAngle,
+  GetVehicleLandingGearState,
+  GetVehicleSirenState,
+  GetVehicleModelsUsed,
+  GetVehicleDriver,
+  GetVehicleLastDriver,
+  GetVehicleModelCount,
+  IsVehicleSirenEnabled,
+  ToggleVehicleSirenEnabled,
+  IsVehicleDead,
+  GetVehicleRespawnTick,
+  IsVehicleOccupied,
+  HasVehicleBeenOccupied,
+  GetVehicleOccupiedTick,
+  GetVehicleCab,
+  GetVehicleTower,
+  GetVehicleRespawnDelay,
+  SetVehicleRespawnDelay,
+  GetVehicleNumberPlate,
+  GetVehicleInterior,
+  GetVehiclePaintjob,
+  GetVehicleColor,
+  SetVehicleSpawnInfo,
+  GetVehicleSpawnInfo,
+} from "omp-wrapper";
 
 export abstract class BaseVehicle {
   private _id = -1;
@@ -358,97 +386,96 @@ export abstract class BaseVehicle {
   }
   public getMatrix() {
     if (this.id === -1) return;
-    return ow.GetVehicleMatrix(this.id);
+    return GetVehicleMatrix(this.id);
   }
   public getTrainSpeed(): number {
     if (this.id === -1) return 0;
-    return ow.GetVehicleTrainSpeed(this.id);
+    return GetVehicleTrainSpeed(this.id);
   }
   public getHydraReactorAngle(): number {
     if (this.id === -1) return 0;
-    return ow.GetVehicleHydraReactorAngle(this.id);
+    return GetVehicleHydraReactorAngle(this.id);
   }
   public getLandingGearState(): number {
     if (this.id === -1) return 0;
-    return ow.GetVehicleLandingGearState(this.id);
+    return GetVehicleLandingGearState(this.id);
   }
   public getSirenState(): number {
     if (this.id === -1) return 0;
-    return ow.GetVehicleSirenState(this.id);
+    return GetVehicleSirenState(this.id);
   }
-  public static getModelsUsed = ow.GetVehicleModelsUsed;
+  public static getModelsUsed = GetVehicleModelsUsed;
   public getDriver<P extends BasePlayer>(
     players: Map<number, P>
   ): P | undefined {
     if (this.id === -1) return;
-    return players.get(ow.GetVehicleDriver(this.id));
+    return players.get(GetVehicleDriver(this.id));
   }
   public getLastDriver<P extends BasePlayer>(
     players: Map<number, P>
   ): P | undefined {
     if (this.id === -1) return;
-    return players.get(ow.GetVehicleLastDriver(this.id));
+    return players.get(GetVehicleLastDriver(this.id));
   }
-  public static getModelCount = ow.GetVehicleModelCount;
+  public static getModelCount = GetVehicleModelCount;
   public isSirenEnabled(): boolean {
-    return ow.IsVehicleSirenEnabled(this.id);
+    return IsVehicleSirenEnabled(this.id);
   }
   public toggleSirenEnabled(enabled: boolean): number {
     if (this.id === -1) return 0;
-    return ow.ToggleVehicleSirenEnabled(this.id, enabled);
+    return ToggleVehicleSirenEnabled(this.id, enabled);
   }
   public isDead(): boolean {
     if (this.id === -1) return true;
-    return ow.IsVehicleDead(this.id);
+    return IsVehicleDead(this.id);
   }
   public getRespawnTick(): number {
     if (this.id === -1) return 0;
-    return ow.GetVehicleRespawnTick(this.id);
+    return GetVehicleRespawnTick(this.id);
   }
   public isOccupied(): boolean {
     if (this.id === -1) return false;
-    return ow.IsVehicleOccupied(this.id);
+    return IsVehicleOccupied(this.id);
   }
   public hasBeenOccupied(): boolean {
     if (this.id === -1) return false;
-    return ow.HasVehicleBeenOccupied(this.id);
+    return HasVehicleBeenOccupied(this.id);
   }
   public getOccupiedTick(): number {
     if (this.id === -1) return 0;
-    return ow.GetVehicleOccupiedTick(this.id);
+    return GetVehicleOccupiedTick(this.id);
   }
   public getCab(): number {
     if (this.id === -1) return 0;
-    return ow.GetVehicleCab(this.id);
+    return GetVehicleCab(this.id);
   }
   public getTower(): number {
     if (this.id === -1) return 0;
-    return ow.GetVehicleTower(this.id);
+    return GetVehicleTower(this.id);
   }
   public getRespawnDelay(): number {
     if (this.id === -1) return 0;
-    return ow.GetVehicleRespawnDelay(this.id);
+    return GetVehicleRespawnDelay(this.id);
   }
   public setRespawnDelay(delay: number): number {
     if (this.id === -1) return 0;
-    return ow.SetVehicleRespawnDelay(this.id, delay);
+    return SetVehicleRespawnDelay(this.id, delay);
   }
   public getNumberPlate(): string {
     if (this.id === -1) return "";
-    return ow.GetVehicleNumberPlate(this.id);
+    return GetVehicleNumberPlate(this.id);
   }
   public getInterior(): number {
     if (this.id === -1) return 0;
-    return ow.GetVehicleInterior(this.id);
+    return GetVehicleInterior(this.id);
   }
   public getPaintjob(): number {
     if (this.id === -1) return -1;
-    return ow.GetVehiclePaintjob(this.id);
-    ow;
+    return GetVehiclePaintjob(this.id);
   }
   public getColor() {
     if (this.id === -1) return;
-    return ow.GetVehicleColor(this.id);
+    return GetVehicleColor(this.id);
   }
   public setSpawnInfo(
     modelid: number,
@@ -462,7 +489,7 @@ export abstract class BaseVehicle {
     interior = -2
   ): number {
     if (this.id === -1) return 0;
-    return ow.SetVehicleSpawnInfo(
+    return SetVehicleSpawnInfo(
       this.id,
       modelid,
       fX,
@@ -477,6 +504,6 @@ export abstract class BaseVehicle {
   }
   public getSpawnInfo() {
     if (this.id === -1) return;
-    return ow.GetVehicleSpawnInfo(this.id);
+    return GetVehicleSpawnInfo(this.id);
   }
 }

@@ -26,10 +26,45 @@ import {
 } from "@/enums";
 import { BaseVehicle } from "../vehicle";
 import { TBasePos } from "@/types";
-import * as ow from "omp-wrapper";
+
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
 import { DynamicObject } from "../streamer";
 import { ccWaitingQueue, delCCTask } from "../promise/client";
+import {
+  GetPlayerWeather,
+  TogglePlayerWidescreen,
+  IsPlayerWidescreenToggled,
+  GetSpawnInfo,
+  GetPlayerSkillLevel,
+  IsPlayerCheckpointActive,
+  GetPlayerCheckpoint,
+  IsPlayerRaceCheckpointActive,
+  GetPlayerRaceCheckpoint,
+  GetPlayerWorldBounds,
+  IsPlayerInModShop,
+  GetPlayerSirenState,
+  GetPlayerLandingGearState,
+  GetPlayerHydraReactorAngle,
+  GetPlayerTrainSpeed,
+  GetPlayerZAim,
+  GetPlayerSurfingOffsets,
+  GetPlayerRotationQuat,
+  GetPlayerDialogID,
+  GetPlayerSpectateID,
+  GetPlayerSpectateType,
+  GetPlayerRawIp,
+  SetPlayerGravity,
+  GetPlayerGravity,
+  SetPlayerAdmin,
+  IsPlayerSpawned,
+  IsPlayerControllable,
+  IsPlayerCameraTargetEnabled,
+  TogglePlayerGhostMode,
+  GetPlayerGhostMode,
+  GetPlayerBuildingsRemoved,
+  GetPlayerAttachedObject,
+  RemovePlayerWeapon,
+} from "omp-wrapper";
 
 export abstract class BasePlayer {
   private _id: number;
@@ -296,7 +331,7 @@ export abstract class BasePlayer {
     playerFunc.SetPlayerWeather(this.id, weather);
   }
   public getWeather(): number {
-    return ow.GetPlayerWeather(this.id);
+    return GetPlayerWeather(this.id);
   }
   public setTime(hour: number, minute: number): void | number {
     if (hour < 0 || hour > 23) {
@@ -829,100 +864,100 @@ export abstract class BasePlayer {
     return playerFunc.RemovePlayerAttachedObject(this.id, index);
   }
   public toggleWidescreen(set: boolean): number {
-    return ow.TogglePlayerWidescreen(this.id, set);
+    return TogglePlayerWidescreen(this.id, set);
   }
   public isPlayerWidescreenToggled(): boolean {
-    return ow.IsPlayerWidescreenToggled(this.id);
+    return IsPlayerWidescreenToggled(this.id);
   }
   public getSpawnInfo() {
-    return ow.GetSpawnInfo(this.id);
+    return GetSpawnInfo(this.id);
   }
   public getSkillLevel(skill: WeaponSkillsEnum): number {
-    return ow.GetPlayerSkillLevel(this.id, skill);
+    return GetPlayerSkillLevel(this.id, skill);
   }
   public isCheckpointActive(): boolean {
-    return ow.IsPlayerCheckpointActive(this.id);
+    return IsPlayerCheckpointActive(this.id);
   }
   public getCheckpoint() {
-    return ow.GetPlayerCheckpoint(this.id);
+    return GetPlayerCheckpoint(this.id);
   }
   public isRaceCheckpointActive(): boolean {
-    return ow.IsPlayerRaceCheckpointActive(this.id);
+    return IsPlayerRaceCheckpointActive(this.id);
   }
   public getRaceCheckpoint() {
-    return ow.GetPlayerRaceCheckpoint(this.id);
+    return GetPlayerRaceCheckpoint(this.id);
   }
   public getWorldBounds() {
-    ow.GetPlayerWorldBounds(this.id);
+    GetPlayerWorldBounds(this.id);
   }
   public isInModShop(): boolean {
-    return ow.IsPlayerInModShop(this.id);
+    return IsPlayerInModShop(this.id);
   }
   public getSirenState(): number {
-    return ow.GetPlayerSirenState(this.id);
+    return GetPlayerSirenState(this.id);
   }
   public getLandingGearState(): number {
-    return ow.GetPlayerLandingGearState(this.id);
+    return GetPlayerLandingGearState(this.id);
   }
   public getHydraReactorAngle(): number {
-    return ow.GetPlayerHydraReactorAngle(this.id);
+    return GetPlayerHydraReactorAngle(this.id);
   }
   public getTrainSpeed(): number {
-    return ow.GetPlayerTrainSpeed(this.id);
+    return GetPlayerTrainSpeed(this.id);
   }
   public getZAim(): number {
-    return ow.GetPlayerZAim(this.id);
+    return GetPlayerZAim(this.id);
   }
   public getSurfingOffsets() {
-    return ow.GetPlayerSurfingOffsets(this.id);
+    return GetPlayerSurfingOffsets(this.id);
   }
   public getRotationQuat() {
-    return ow.GetPlayerRotationQuat(this.id);
+    return GetPlayerRotationQuat(this.id);
   }
   public getDialogID(): number {
-    return ow.GetPlayerDialogID(this.id);
+    return GetPlayerDialogID(this.id);
   }
   public getSpectateID(): number {
-    return ow.GetPlayerSpectateID(this.id);
+    return GetPlayerSpectateID(this.id);
   }
   public getSpectateType(): SpectateModesEnum {
-    return ow.GetPlayerSpectateType(this.id);
+    return GetPlayerSpectateType(this.id);
   }
   public getRawIp(): string {
-    return ow.GetPlayerRawIp(this.id);
+    return GetPlayerRawIp(this.id);
   }
   public setGravity(gravity: number): number {
-    return ow.SetPlayerGravity(this.id, gravity);
+    return SetPlayerGravity(this.id, gravity);
   }
   public getGravity(): number {
-    return ow.GetPlayerGravity(this.id);
+    return GetPlayerGravity(this.id);
   }
   public setAdmin(admin: boolean) {
-    return ow.SetPlayerAdmin(this.id, admin);
+    return SetPlayerAdmin(this.id, admin);
   }
   public isSpawned(): boolean {
-    return ow.IsPlayerSpawned(this.id);
+    return IsPlayerSpawned(this.id);
   }
   public isControllable(): boolean {
-    return ow.IsPlayerControllable(this.id);
+    return IsPlayerControllable(this.id);
   }
   public isCameraTargetEnabled(): boolean {
-    return ow.IsPlayerCameraTargetEnabled(this.id);
+    return IsPlayerCameraTargetEnabled(this.id);
   }
   public toggleGhostMode(toggle: boolean) {
-    return ow.TogglePlayerGhostMode(this.id, toggle);
+    return TogglePlayerGhostMode(this.id, toggle);
   }
   public getGhostMode(): boolean {
-    return ow.GetPlayerGhostMode(this.id);
+    return GetPlayerGhostMode(this.id);
   }
   public getBuildingsRemoved(): number {
-    return ow.GetPlayerBuildingsRemoved(this.id);
+    return GetPlayerBuildingsRemoved(this.id);
   }
   public getAttachedObject(index: number) {
-    return ow.GetPlayerAttachedObject(this.id, index);
+    return GetPlayerAttachedObject(this.id, index);
   }
   public removeWeapon(weaponid: number): number {
-    return ow.RemovePlayerWeapon(this.id, weaponid);
+    return RemovePlayerWeapon(this.id, weaponid);
   }
   public isAndroid(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {

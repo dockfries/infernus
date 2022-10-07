@@ -10,7 +10,6 @@ import {
   OnRconLoginAttempt,
   promisifyCallback,
 } from "@/utils/helperUtils";
-import * as ow from "omp-wrapper";
 import { defaultCharset } from "./settings";
 import { TCommonCallback, TFilterScript } from "@/types";
 import {
@@ -19,6 +18,23 @@ import {
   unloadUseScript,
   useFilterScript,
 } from "../filterscript";
+import {
+  ClearBanList,
+  IsBanned,
+  IsValidNickName,
+  AllowNickNameCharacter,
+  IsNickNameCharacterAllowed,
+  AddServerRule,
+  SetServerRule,
+  IsValidServerRule,
+  RemoveServerRule,
+  GetWeaponSlot,
+  GetAvailableClasses,
+  GetPlayerClass,
+  EditPlayerClass,
+  ToggleChatTextReplacement,
+  ChatTextReplacementToggled,
+} from "omp-wrapper";
 
 export abstract class BaseGameMode {
   public static charset = defaultCharset;
@@ -252,19 +268,19 @@ export abstract class BaseGameMode {
   public static getWeaponName = fns.GetWeaponName;
   public static setObjectsDefaultCameraCol = fns.SetObjectsDefaultCameraCol;
   public static vectorSize = fns.VectorSize;
-  public static clearBanList = ow.ClearBanList;
-  public static isBanned = ow.IsBanned;
-  public static isValidNickName = ow.IsValidNickName;
-  public static allowNickNameCharacter = ow.AllowNickNameCharacter;
-  public static isNickNameCharacterAllowed = ow.IsNickNameCharacterAllowed;
-  public static addServerRule = ow.AddServerRule;
-  public static setServerRule = ow.SetServerRule;
-  public static isValidServerRule = ow.IsValidServerRule;
-  public static removeServerRule = ow.RemoveServerRule;
-  public static getWeaponSlot = ow.GetWeaponSlot;
-  public static getAvailableClasses = ow.GetAvailableClasses;
-  public static getPlayerClass = ow.GetPlayerClass;
-  public static editPlayerClass = ow.EditPlayerClass;
-  public static toggleChatTextReplacement = ow.ToggleChatTextReplacement;
-  public static chatTextReplacementToggled = ow.ChatTextReplacementToggled;
+  public static clearBanList = ClearBanList;
+  public static isBanned = IsBanned;
+  public static isValidNickName = IsValidNickName;
+  public static allowNickNameCharacter = AllowNickNameCharacter;
+  public static isNickNameCharacterAllowed = IsNickNameCharacterAllowed;
+  public static addServerRule = AddServerRule;
+  public static setServerRule = SetServerRule;
+  public static isValidServerRule = IsValidServerRule;
+  public static removeServerRule = RemoveServerRule;
+  public static getWeaponSlot = GetWeaponSlot;
+  public static getAvailableClasses = GetAvailableClasses;
+  public static getPlayerClass = GetPlayerClass;
+  public static editPlayerClass = EditPlayerClass;
+  public static toggleChatTextReplacement = ToggleChatTextReplacement;
+  public static chatTextReplacementToggled = ChatTextReplacementToggled;
 }

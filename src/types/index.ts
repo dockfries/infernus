@@ -48,3 +48,8 @@ export type TFilterScript = {
   unload: () => any;
   [propName: string | number | symbol]: any;
 };
+
+export type {
+  StreamerArrayData,
+  StreamerItemTypeTuple,
+} from "omp-wrapper-streamer";
