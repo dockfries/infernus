@@ -221,3 +221,26 @@ export interface IDynamicAreaKey {
   id: number;
   type: TDynamicAreaTypes;
 }
+
+export {
+  IObjectPos,
+  IObjectRotPos,
+  IAttachedObject,
+  IMaterial,
+  IMaterialText,
+  IAttachedData,
+  IActorSpawn,
+  IActorAnimation,
+  IPlayerClass,
+  GangZonePos,
+  IBounds,
+  ICheckPoint,
+  IRaceCheckPoint,
+  IOffsets,
+  IQuat,
+  ITextDrawCommonSize,
+  ITextDrawRot,
+  IVehColor,
+  IVehSpawnInfo,
+  IVehMatrix,
+} from "omp-wrapper";

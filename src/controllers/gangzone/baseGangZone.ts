@@ -2,7 +2,7 @@ import { LimitsEnum } from "@/enums";
 import { IBaseGangZone } from "@/interfaces";
 import { logger } from "@/logger";
 import { rgba } from "@/utils/colorUtils";
-import * as fns from "@/wrapper/functions";
+import * as fns from "@/wrapper/native/functions";
 import {
   CreatePlayerGangZone,
   PlayerGangZoneDestroy,

@@ -2,8 +2,8 @@ import {
   OnGameModeExit,
   OnGameModeInit,
   OnIncomingConnection,
-} from "@/wrapper/callbacks";
-import * as fns from "@/wrapper/functions";
+} from "@/wrapper/native/callbacks";
+import * as fns from "@/wrapper/native/functions";
 import { logger } from "@/logger";
 import {
   OnRconCommand,

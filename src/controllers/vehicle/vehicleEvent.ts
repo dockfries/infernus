@@ -15,7 +15,7 @@ import {
   OnVehicleStreamIn,
   OnVehicleStreamOut,
   OnTrailerUpdate,
-} from "@/wrapper/callbacks";
+} from "@/wrapper/native/callbacks";
 import type { BasePlayer } from "../player";
 import type { BaseVehicle } from "./baseVehicle";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";

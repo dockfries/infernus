@@ -1,7 +1,7 @@
 import { LimitsEnum, TextDrawAlignEnum, TextDrawFontsEnum } from "@/enums";
 import type { IBaseTextDraw } from "@/interfaces";
 import { logger } from "@/logger";
-import * as fns from "@/wrapper/functions";
+import * as fns from "@/wrapper/native/functions";
 import {
   IsValidPlayer3DTextLabel,
   IsValidTextDraw,

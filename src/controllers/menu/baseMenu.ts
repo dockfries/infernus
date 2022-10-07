@@ -1,6 +1,6 @@
 import { LimitsEnum } from "@/enums";
 import { logger } from "@/logger";
-import * as fns from "@/wrapper/functions";
+import * as fns from "@/wrapper/native/functions";
 import {
   IsMenuDisabled,
   IsMenuRowDisabled,

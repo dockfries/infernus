@@ -4,8 +4,8 @@ import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnPlayerExitedMenu,
   OnPlayerSelectedMenuRow,
-} from "@/wrapper/callbacks";
-import { GetPlayerMenu } from "@/wrapper/functions";
+} from "@/wrapper/native/callbacks";
+import { GetPlayerMenu } from "@/wrapper/native/functions";
 import { BasePlayer } from "../player";
 import { BaseMenu } from "./baseMenu";
 import { menuBus, menuHooks } from "./menuBus";

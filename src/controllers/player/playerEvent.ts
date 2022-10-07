@@ -4,7 +4,7 @@ import {
   OnPlayerText,
   promisifyCallback,
 } from "@/utils/helperUtils";
-import * as cbs from "@/wrapper/callbacks";
+import * as cbs from "@/wrapper/native/callbacks";
 import { I18n } from "../i18n";
 import { BasePlayer } from "./basePlayer";
 import { CmdBus } from "../command";

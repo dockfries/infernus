@@ -5,7 +5,7 @@ import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnPlayerClickPlayerTextDraw,
   OnPlayerClickTextDraw,
-} from "@/wrapper/callbacks";
+} from "@/wrapper/native/callbacks";
 import type { BasePlayer } from "../player";
 import type { BaseTextDraw } from "./baseTextDraw";
 import { textDrawBus, textDrawHooks } from "./textdrawBus";

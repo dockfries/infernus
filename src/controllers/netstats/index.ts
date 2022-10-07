@@ -1,5 +1,5 @@
 import { ConnectionStatusEnum } from "@/enums";
-import * as fns from "@/wrapper/functions";
+import * as fns from "@/wrapper/native/functions";
 import { BasePlayer } from "../player";
 
 export class NetStats {

@@ -8,7 +8,7 @@ import {
   SendPlayerMessageToPlayer,
   SetPlayerName,
 } from "@/utils/helperUtils";
-import * as playerFunc from "@/wrapper/functions";
+import * as playerFunc from "@/wrapper/native/functions";
 import { logger } from "@/logger";
 import {
   BoneIdsEnum,
@@ -28,7 +28,7 @@ import { BaseVehicle } from "../vehicle";
 import { TBasePos } from "@/types";
 
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
-import { DynamicObject } from "../streamer";
+import { DynamicObject } from "../../wrapper/streamer";
 import { ccWaitingQueue, delCCTask } from "../promise/client";
 import {
   GetPlayerWeather,

@@ -8,7 +8,7 @@ import {
   ResumeRecordingPlayback,
   StartRecordingPlayerData,
   StopRecordingPlayerData,
-} from "@/wrapper/functions";
+} from "@/wrapper/native/functions";
 import { BasePlayer } from "../player";
 
 export class BaseNpcFunc {

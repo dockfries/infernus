@@ -1,6 +1,6 @@
 import { logger } from "@/logger";
 import { TFilterScript } from "@/types";
-import { OnGameModeExit } from "@/wrapper/callbacks";
+import { OnGameModeExit } from "@/wrapper/native/callbacks";
 
 const preInstallScripts: Array<TFilterScript> = [];
 const installedScripts: Array<TFilterScript> = [];

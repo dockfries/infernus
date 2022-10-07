@@ -5,7 +5,7 @@ import type { BasePlayer } from "../player";
 import { logger } from "@/logger";
 import { isValidPaintJob, isValidVehComponent } from "@/utils/vehicleUtils";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
-import * as vehFunc from "@/wrapper/functions";
+import * as vehFunc from "@/wrapper/native/functions";
 
 import { rgba } from "@/utils/colorUtils";
 import {

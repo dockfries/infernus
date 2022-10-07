@@ -1,4 +1,4 @@
-import { GameTextForAll, GameTextForPlayer } from "@/wrapper/functions";
+import { GameTextForAll, GameTextForPlayer } from "@/wrapper/native/functions";
 import { BasePlayer } from "../player";
 
 export class BaseGameText {

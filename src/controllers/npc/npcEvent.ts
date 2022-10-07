@@ -6,7 +6,7 @@ import {
   OnNPCModeExit,
   OnNPCModeInit,
   OnNPCSpawn,
-} from "@/wrapper/callbacks";
+} from "@/wrapper/native/callbacks";
 
 export abstract class BaseNpcEvent {
   constructor() {

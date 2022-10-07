@@ -8,5 +8,5 @@ export * from "./netstats";
 export * from "./gametext";
 export * from "./menu";
 export * from "./gangzone";
-export * from "./streamer";
+export * from "../wrapper/streamer";
 export * from "./textdraw";

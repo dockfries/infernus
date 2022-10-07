@@ -2,7 +2,7 @@ import { logger } from "@/logger";
 import { InvalidEnum } from "@/enums";
 import { BasePlayer } from "@/controllers/player";
 import { BaseVehicle } from "@/controllers/vehicle";
-import { DynamicObject } from "@/controllers/streamer";
+import { DynamicObject } from "@/wrapper/streamer";
 import { TDynamicArea, TDynamicAreaTypes } from "@/types";
 import { areaBus, areaHooks } from "./areaBus";
 import {
