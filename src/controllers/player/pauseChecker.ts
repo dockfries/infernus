@@ -15,7 +15,7 @@ playerBus.on(playerHooks.create, (players: Map<number, BasePlayer>) => {
 });
 
 OnPlayerConnect(() => {
-  if (!timer && BasePlayer.getPoolSize() > -1) {
+  if (!timer && pausePlayers && BasePlayer.getPoolSize() > -1) {
     timer = setInterval(() => {
       for (const item of pausePlayers as Map<number, BasePlayer>) {
         const p = item[1];

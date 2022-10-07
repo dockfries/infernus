@@ -245,9 +245,9 @@ export {
   IVehMatrix,
 } from "omp-wrapper";
 
-export type IFilterScript = {
+export interface IFilterScript {
   name: string;
   load: (...args: Array<any>) => any;
   unload: () => any;
   [propName: string | number | symbol]: any;
-};
+}
