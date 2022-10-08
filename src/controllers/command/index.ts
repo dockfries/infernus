@@ -11,11 +11,14 @@ export class CmdBus<P extends BasePlayer> {
 
   public on = (eventName: TEventName, eventFunction: TEventFunc<P>) => {
     const idx: number = this.findEventIdxByName(eventName);
-    if (idx > -1)
-      return logger.warn(
+    if (idx > -1) {
+      logger.warn(
         "[CommandBus]: It is not supported to listen for the same event more than once"
       );
-    this.eventList.push({ name: eventName, fn: eventFunction });
+    } else {
+      this.eventList.push({ name: eventName, fn: eventFunction });
+    }
+    return () => this.off(eventName);
   };
 
   public off = (eventName: TEventName) => {

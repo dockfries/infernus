@@ -1,3 +1,4 @@
+import { BaseGameMode } from "@/controllers";
 import { BasePlayer } from "@/controllers/player";
 import { MapIconStyles } from "omp-wrapper-streamer";
 import { DialogStylesEnum } from "../enums";
@@ -247,7 +248,7 @@ export {
 
 export interface IFilterScript {
   name: string;
-  load: (...args: Array<any>) => any;
+  load: (gm: BaseGameMode, ...args: Array<any>) => any;
   unload: () => any;
   [propName: string | number | symbol]: any;
 }
