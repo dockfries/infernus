@@ -9,6 +9,11 @@
     "build": "npm run lint && rollup -c",
     "prepublishOnly": "npm run build"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
   "prepare": "npm run build",
   "repository": {
     "type": "git",
