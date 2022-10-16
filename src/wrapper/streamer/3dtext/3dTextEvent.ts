@@ -7,7 +7,7 @@ import { Dynamic3DTextLabel } from "./base3DText";
 import { _3dTextBus, _3dTextHooks } from "./3dTextBus";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 
-export abstract class DynamicMapIconEvent<
+export abstract class Dynamic3dTextLabelEvent<
   P extends BasePlayer,
   D extends Dynamic3DTextLabel
 > {

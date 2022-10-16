@@ -1,4 +1,5 @@
-import { BasePlayer, DynamicArea, Streamer, TCommonCallback } from "@/main";
+import { BasePlayer } from "@/controllers/player";
+import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
@@ -6,7 +7,9 @@ import {
   OnPlayerLeaveDynamicArea,
   StreamerItemTypes,
 } from "omp-wrapper-streamer";
+import { Streamer } from "../common";
 import { areaBus, areaHooks } from "./areaBus";
+import { DynamicArea } from "./baseArea";
 
 export abstract class DynamicAreaEvent<
   P extends BasePlayer,

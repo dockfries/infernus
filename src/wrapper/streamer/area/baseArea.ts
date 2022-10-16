@@ -2,7 +2,6 @@ import { logger } from "@/logger";
 import { InvalidEnum } from "@/enums";
 import { BasePlayer } from "@/controllers/player";
 import { BaseVehicle } from "@/controllers/vehicle";
-import { DynamicObject, Streamer } from "@/wrapper/streamer";
 import { TDynamicArea, TDynamicAreaTypes } from "@/types";
 import { areaBus, areaHooks } from "./areaBus";
 import {
@@ -46,6 +45,8 @@ import {
   StreamerObjectTypes,
   ToggleDynAreaSpectateMode,
 } from "omp-wrapper-streamer";
+import { DynamicObject } from "../object";
+import { Streamer } from "../common";
 
 export class DynamicArea {
   private sourceInfo: TDynamicArea;
