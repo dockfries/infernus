@@ -56,7 +56,12 @@ export abstract class DynamicAreaEvent<
       if (type === StreamerItemTypes.AREA) {
         const a = this.areas.get(item);
         const p = this.players.get(player);
-        if (a && p) this.onStreamIn(a, p);
+        if (a && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamIn,
+            "Streamer_OnItemStreamIn"
+          )(a, p);
       }
       return 1;
     });
@@ -64,7 +69,12 @@ export abstract class DynamicAreaEvent<
       if (type === StreamerItemTypes.AREA) {
         const a = this.areas.get(item);
         const p = this.players.get(player);
-        if (a && p) this.onStreamOut(a, p);
+        if (a && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamOut,
+            "Streamer_OnItemStreamOut"
+          )(a, p);
       }
       return 1;
     });

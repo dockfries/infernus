@@ -54,7 +54,12 @@ export abstract class DynamicCheckPointEvent<
       if (type === StreamerItemTypes.CP) {
         const cp = this.checkpoints.get(item);
         const p = this.players.get(player);
-        if (cp && p) this.onStreamIn(cp, p);
+        if (cp && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamIn,
+            "Streamer_OnItemStreamIn"
+          )(cp, p);
       }
       return 1;
     });
@@ -62,7 +67,12 @@ export abstract class DynamicCheckPointEvent<
       if (type === StreamerItemTypes.CP) {
         const cp = this.checkpoints.get(item);
         const p = this.players.get(player);
-        if (cp && p) this.onStreamOut(cp, p);
+        if (cp && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamOut,
+            "Streamer_OnItemStreamOut"
+          )(cp, p);
       }
       return 1;
     });

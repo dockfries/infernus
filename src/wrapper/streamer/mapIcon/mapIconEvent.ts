@@ -1,5 +1,6 @@
 import type { BasePlayer } from "@/controllers/player";
 import { TCommonCallback } from "@/types";
+import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import { StreamerItemTypes } from "omp-wrapper-streamer";
 import { Streamer } from "../common";
@@ -26,7 +27,12 @@ export abstract class DynamicMapIconEvent<
       if (type === StreamerItemTypes.MAP_ICON) {
         const mi = this.mapIcons.get(item);
         const p = this.players.get(player);
-        if (mi && p) this.onStreamIn(mi, p);
+        if (mi && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamIn,
+            "Streamer_OnItemStreamIn"
+          )(mi, p);
       }
       return 1;
     });
@@ -34,7 +40,12 @@ export abstract class DynamicMapIconEvent<
       if (type === StreamerItemTypes.MAP_ICON) {
         const mi = this.mapIcons.get(item);
         const p = this.players.get(player);
-        if (mi && p) this.onStreamOut(mi, p);
+        if (mi && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamOut,
+            "Streamer_OnItemStreamOut"
+          )(mi, p);
       }
       return 1;
     });

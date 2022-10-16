@@ -6,6 +6,7 @@ import { Dynamic3DTextLabel } from "./base3DText";
 
 import { _3dTextBus, _3dTextHooks } from "./3dTextBus";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
+import { promisifyCallback } from "@/utils/helperUtils";
 
 export abstract class Dynamic3dTextLabelEvent<
   P extends BasePlayer,
@@ -26,7 +27,12 @@ export abstract class Dynamic3dTextLabelEvent<
       if (type === StreamerItemTypes.TEXT_3D_LABEL) {
         const tl = this._3dTexts.get(item);
         const p = this.players.get(player);
-        if (tl && p) this.onStreamIn(tl, p);
+        if (tl && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamIn,
+            "Streamer_OnItemStreamIn"
+          )(tl, p);
       }
       return 1;
     });
@@ -34,7 +40,12 @@ export abstract class Dynamic3dTextLabelEvent<
       if (type === StreamerItemTypes.TEXT_3D_LABEL) {
         const tl = this._3dTexts.get(item);
         const p = this.players.get(player);
-        if (tl && p) this.onStreamOut(tl, p);
+        if (tl && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamOut,
+            "Streamer_OnItemStreamOut"
+          )(tl, p);
       }
       return 1;
     });

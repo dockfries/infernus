@@ -109,7 +109,12 @@ export abstract class DynamicObjectEvent<
       if (type === StreamerItemTypes.OBJECT) {
         const obj = this.objects.get(item);
         const p = this.players.get(player);
-        if (obj && p) this.onStreamIn(obj, p);
+        if (obj && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamIn,
+            "Streamer_OnItemStreamIn"
+          )(obj, p);
       }
       return 1;
     });
@@ -117,7 +122,12 @@ export abstract class DynamicObjectEvent<
       if (type === StreamerItemTypes.OBJECT) {
         const obj = this.objects.get(item);
         const p = this.players.get(player);
-        if (obj && p) this.onStreamOut(obj, p);
+        if (obj && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamOut,
+            "Streamer_OnItemStreamOut"
+          )(obj, p);
       }
       return 1;
     });

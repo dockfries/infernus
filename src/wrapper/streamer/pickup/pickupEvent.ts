@@ -43,7 +43,12 @@ export abstract class DynamicPickupEvent<
       if (type === StreamerItemTypes.PICKUP) {
         const pk = this.pickups.get(item);
         const p = this.players.get(player);
-        if (pk && p) this.onStreamIn(pk, p);
+        if (pk && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamIn,
+            "Streamer_OnItemStreamIn"
+          )(pk, p);
       }
       return 1;
     });
@@ -51,7 +56,12 @@ export abstract class DynamicPickupEvent<
       if (type === StreamerItemTypes.PICKUP) {
         const pk = this.pickups.get(item);
         const p = this.players.get(player);
-        if (pk && p) this.onStreamOut(pk, p);
+        if (pk && p)
+          return promisifyCallback.call(
+            this,
+            this.onStreamOut,
+            "Streamer_OnItemStreamOut"
+          )(pk, p);
       }
       return 1;
     });
