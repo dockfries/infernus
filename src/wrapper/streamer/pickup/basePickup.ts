@@ -6,7 +6,9 @@ import {
   DestroyDynamicPickup,
   IsValidDynamicPickup,
   StreamerDistances,
+  StreamerItemTypes,
 } from "omp-wrapper-streamer";
+import { Streamer } from "../common";
 import { pickupBus, pickupHooks } from "./pickupBus";
 
 export class DynamicPickup {
@@ -93,5 +95,20 @@ export class DynamicPickup {
   }
   public isValid(): boolean {
     return IsValidDynamicPickup(this.id);
+  }
+  public toggleCallbacks(toggle = true): void | number {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerPickup]: Unable to toggle callbacks before create"
+      );
+    return Streamer.toggleItemCallbacks(
+      StreamerItemTypes.PICKUP,
+      this.id,
+      toggle
+    );
+  }
+  public isToggleCallbacks(): boolean {
+    if (this.id === -1) false;
+    return Streamer.isToggleItemCallbacks(StreamerItemTypes.PICKUP, this.id);
   }
 }

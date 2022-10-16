@@ -2,12 +2,15 @@ import type { BasePlayer } from "@/controllers/player";
 import { EditResponseTypesEnum } from "@/enums";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
+import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnDynamicObjectMoved,
   OnPlayerEditDynamicObject,
   OnPlayerSelectDynamicObject,
   OnPlayerShootDynamicObject,
+  StreamerItemTypes,
 } from "omp-wrapper-streamer";
+import { Streamer } from "../common";
 import { DynamicObject } from "./baseObject";
 import { objectBus, objectHooks } from "./objectBus";
 
@@ -102,6 +105,29 @@ export abstract class DynamicObjectEvent<
         return pFn(p, weaponid, o, x, y, z);
       }
     );
+    Streamer.onItemStreamIn((type, item, player) => {
+      if (type === StreamerItemTypes.OBJECT) {
+        const obj = this.objects.get(item);
+        const p = this.players.get(player);
+        if (obj && p) this.onStreamIn(obj, p);
+      }
+      return 1;
+    });
+    Streamer.onItemStreamOut((type, item, player) => {
+      if (type === StreamerItemTypes.OBJECT) {
+        const obj = this.objects.get(item);
+        const p = this.players.get(player);
+        if (obj && p) this.onStreamOut(obj, p);
+      }
+      return 1;
+    });
+    OnGameModeExit(() => {
+      setTimeout(() => {
+        this.getObjectsArr().forEach((o) => {
+          o.isValid() && o.destroy();
+        });
+      });
+    });
   }
 
   protected abstract onMoved(object: O): TCommonCallback;
@@ -135,6 +161,9 @@ export abstract class DynamicObjectEvent<
     y: number,
     z: number
   ): TCommonCallback;
+
+  protected abstract onStreamIn(object: O, player: P): TCommonCallback;
+  protected abstract onStreamOut(object: O, player: P): TCommonCallback;
 
   public getObjectsArr(): Array<O> {
     return [...this.objects.values()];

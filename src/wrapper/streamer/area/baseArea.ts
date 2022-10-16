@@ -2,7 +2,7 @@ import { logger } from "@/logger";
 import { InvalidEnum } from "@/enums";
 import { BasePlayer } from "@/controllers/player";
 import { BaseVehicle } from "@/controllers/vehicle";
-import { DynamicObject } from "@/wrapper/streamer";
+import { DynamicObject, Streamer } from "@/wrapper/streamer";
 import { TDynamicArea, TDynamicAreaTypes } from "@/types";
 import { areaBus, areaHooks } from "./areaBus";
 import {
@@ -42,6 +42,7 @@ import {
   IsToggleDynAreaSpectateMode,
   IsValidDynamicArea,
   StreamerAreaTypes,
+  StreamerItemTypes,
   StreamerObjectTypes,
   ToggleDynAreaSpectateMode,
 } from "omp-wrapper-streamer";
@@ -432,5 +433,20 @@ export class DynamicArea {
   public isToggleSpectateMode(): boolean {
     if (this.id === -1) return false;
     return IsToggleDynAreaSpectateMode(this.id);
+  }
+  public toggleCallbacks(toggle = true): void | number {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerArea]: Unable to toggle callbacks before create"
+      );
+    return Streamer.toggleItemCallbacks(
+      StreamerItemTypes.AREA,
+      this.id,
+      toggle
+    );
+  }
+  public isToggleCallbacks(): boolean {
+    if (this.id === -1) false;
+    return Streamer.isToggleItemCallbacks(StreamerItemTypes.AREA, this.id);
   }
 }

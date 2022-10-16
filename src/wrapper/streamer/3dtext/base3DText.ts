@@ -12,7 +12,10 @@ import {
   DestroyDynamic3DTextLabel,
   IsValidDynamic3DTextLabel,
   StreamerDistances,
+  StreamerItemTypes,
 } from "omp-wrapper-streamer";
+import { Streamer } from "../common";
+import { _3dTextBus, _3dTextHooks } from "./3dTextBus";
 
 export class Dynamic3DTextLabel {
   private sourceInfo: IDynamic3DTextLabel;
@@ -103,7 +106,7 @@ export class Dynamic3DTextLabel {
         priority
       );
     }
-
+    _3dTextBus.emit(_3dTextHooks.created, this);
     return this;
   }
   public destroy(): void | this {
@@ -112,6 +115,7 @@ export class Dynamic3DTextLabel {
         "[Streamer3DTextLabel]: Unable to destroy before create"
       );
     DestroyDynamic3DTextLabel(this.id);
+    _3dTextBus.emit(_3dTextHooks.destroyed, this);
     return this;
   }
   public isValid(): boolean {
@@ -135,5 +139,23 @@ export class Dynamic3DTextLabel {
       );
     this.sourceInfo.charset = charset;
     return UpdateDynamic3DTextLabelText(this.id, rgba(color), text, charset);
+  }
+  public toggleCallbacks(toggle = true): void | number {
+    if (this.id === -1)
+      return logger.warn(
+        "[Streamer3DTextLabel]: Unable to toggle callbacks before create"
+      );
+    return Streamer.toggleItemCallbacks(
+      StreamerItemTypes.TEXT_3D_LABEL,
+      this.id,
+      toggle
+    );
+  }
+  public isToggleCallbacks(): boolean {
+    if (this.id === -1) false;
+    return Streamer.isToggleItemCallbacks(
+      StreamerItemTypes.TEXT_3D_LABEL,
+      this.id
+    );
   }
 }

@@ -9,10 +9,12 @@ import {
   IsPlayerInDynamicCP,
   IsValidDynamicCP,
   StreamerDistances,
+  StreamerItemTypes,
   TogglePlayerAllDynamicCPs,
   TogglePlayerDynamicCP,
 } from "omp-wrapper-streamer";
 import { checkPointBus, checkPointHooks } from "./checkPointBus";
+import { Streamer } from "../common";
 
 export class DynamicCheckpoint {
   private sourceInfo: IDynamicCheckPoint;
@@ -125,5 +127,16 @@ export class DynamicCheckpoint {
     C extends DynamicCheckpoint
   >(player: P, checkpoints: Map<number, C>): C | undefined {
     return checkpoints.get(GetPlayerVisibleDynamicCP(player.id));
+  }
+  public toggleCallbacks(toggle = true): void | number {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerCheckpoint]: Unable to toggle callbacks before create"
+      );
+    return Streamer.toggleItemCallbacks(StreamerItemTypes.CP, this.id, toggle);
+  }
+  public isToggleCallbacks(): boolean {
+    if (this.id === -1) false;
+    return Streamer.isToggleItemCallbacks(StreamerItemTypes.CP, this.id);
   }
 }

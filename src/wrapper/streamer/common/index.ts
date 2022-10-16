@@ -76,11 +76,8 @@ import {
 } from "omp-wrapper-streamer";
 
 export abstract class Streamer {
-  constructor() {
-    Streamer_OnItemStreamIn(this.onItemStreamIn);
-    Streamer_OnItemStreamOut(this.onItemStreamOut);
-    Streamer_OnPluginError(this.onPluginError);
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
   public static getTickRate = Streamer_GetTickRate;
   public static setTickRate = Streamer_SetTickRate;
   public static getPlayerTickRate<P extends BasePlayer>(player: P): number {
@@ -318,16 +315,7 @@ export abstract class Streamer {
   public static removeArrayData = Streamer_RemoveArrayData;
   public static getArrayDataLength = Streamer_GetArrayDataLength;
   public static getUpperBound = Streamer_GetUpperBound;
-
-  protected abstract onItemStreamIn(
-    type: StreamerItemTypes,
-    id: number,
-    forplayerid: number
-  ): number;
-  protected abstract onItemStreamOut(
-    type: StreamerItemTypes,
-    id: number,
-    forplayerid: number
-  ): number;
-  protected abstract onPluginError(error: string): number;
+  public static onItemStreamIn = Streamer_OnItemStreamIn;
+  public static onItemStreamOut = Streamer_OnItemStreamOut;
+  public static onPluginError = Streamer_OnPluginError;
 }

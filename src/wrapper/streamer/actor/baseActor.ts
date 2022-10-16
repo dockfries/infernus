@@ -30,7 +30,9 @@ import {
   SetDynamicActorPos,
   SetDynamicActorVirtualWorld,
   StreamerDistances,
+  StreamerItemTypes,
 } from "omp-wrapper-streamer";
+import { Streamer } from "../common";
 import { actorBus, actorHooks } from "./actorBus";
 
 export class DynamicActor {
@@ -257,5 +259,20 @@ export class DynamicActor {
         "[StreamerActor]: Unable to get animation before create"
       );
     return GetActorAnimation(this.id);
+  }
+  public toggleCallbacks(toggle = true): void | number {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerActor]: Unable to toggle callbacks before create"
+      );
+    return Streamer.toggleItemCallbacks(
+      StreamerItemTypes.ACTOR,
+      this.id,
+      toggle
+    );
+  }
+  public isToggleCallbacks(): boolean {
+    if (this.id === -1) false;
+    return Streamer.isToggleItemCallbacks(StreamerItemTypes.ACTOR, this.id);
   }
 }

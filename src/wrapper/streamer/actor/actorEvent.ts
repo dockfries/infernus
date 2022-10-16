@@ -2,6 +2,7 @@ import type { BasePlayer } from "@/controllers/player";
 import type { BodyPartsEnum } from "@/enums";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
+import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnDynamicActorStreamIn,
   OnDynamicActorStreamOut,
@@ -69,6 +70,13 @@ export abstract class DynamicActorEvent<
         return pFn(p, act, amount, weaponid, bodypart);
       }
     );
+    OnGameModeExit(() => {
+      setTimeout(() => {
+        this.getActorsArr().forEach((a) => {
+          a.isValid() && a.destroy();
+        });
+      });
+    });
   }
 
   protected abstract onStreamIn(actor: A, player: P): TCommonCallback;

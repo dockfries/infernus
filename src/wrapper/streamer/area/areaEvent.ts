@@ -1,8 +1,10 @@
-import { BasePlayer, DynamicArea, TCommonCallback } from "@/main";
+import { BasePlayer, DynamicArea, Streamer, TCommonCallback } from "@/main";
 import { promisifyCallback } from "@/utils/helperUtils";
+import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnPlayerEnterDynamicArea,
   OnPlayerLeaveDynamicArea,
+  StreamerItemTypes,
 } from "omp-wrapper-streamer";
 import { areaBus, areaHooks } from "./areaBus";
 
@@ -47,8 +49,41 @@ export abstract class DynamicAreaEvent<
       );
       return pFn(p, a);
     });
+    Streamer.onItemStreamIn((type, item, player) => {
+      if (type === StreamerItemTypes.AREA) {
+        const a = this.areas.get(item);
+        const p = this.players.get(player);
+        if (a && p) this.onStreamIn(a, p);
+      }
+      return 1;
+    });
+    Streamer.onItemStreamOut((type, item, player) => {
+      if (type === StreamerItemTypes.AREA) {
+        const a = this.areas.get(item);
+        const p = this.players.get(player);
+        if (a && p) this.onStreamOut(a, p);
+      }
+      return 1;
+    });
+    OnGameModeExit(() => {
+      setTimeout(() => {
+        this.getAreasArr().forEach((a) => {
+          a.isValid() && a.destroy();
+        });
+      });
+    });
   }
 
   protected abstract onPlayerEnter(player: P, area: A): TCommonCallback;
   protected abstract onPlayerLeave(player: P, area: A): TCommonCallback;
+  protected abstract onStreamIn(area: A, player: P): TCommonCallback;
+  protected abstract onStreamOut(area: A, player: P): TCommonCallback;
+
+  public getAreasArr(): Array<A> {
+    return [...this.areas.values()];
+  }
+
+  public getAreasMap(): Map<number, A> {
+    return this.areas;
+  }
 }

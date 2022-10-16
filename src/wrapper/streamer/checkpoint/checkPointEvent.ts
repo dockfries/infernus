@@ -1,10 +1,13 @@
 import type { BasePlayer } from "@/controllers/player";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
+import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnPlayerEnterDynamicCP,
   OnPlayerLeaveDynamicCP,
+  StreamerItemTypes,
 } from "omp-wrapper-streamer";
+import { Streamer } from "../common";
 import { DynamicCheckpoint } from "./baseCheckpoint";
 import { checkPointBus, checkPointHooks } from "./checkPointBus";
 
@@ -47,10 +50,35 @@ export abstract class DynamicCheckPointEvent<
       );
       return pFn(p, cp);
     });
+    Streamer.onItemStreamIn((type, item, player) => {
+      if (type === StreamerItemTypes.CP) {
+        const cp = this.checkpoints.get(item);
+        const p = this.players.get(player);
+        if (cp && p) this.onStreamIn(cp, p);
+      }
+      return 1;
+    });
+    Streamer.onItemStreamOut((type, item, player) => {
+      if (type === StreamerItemTypes.CP) {
+        const cp = this.checkpoints.get(item);
+        const p = this.players.get(player);
+        if (cp && p) this.onStreamOut(cp, p);
+      }
+      return 1;
+    });
+    OnGameModeExit(() => {
+      setTimeout(() => {
+        this.getCheckPointsArr().forEach((cp) => {
+          cp.isValid() && cp.destroy();
+        });
+      });
+    });
   }
 
   protected abstract onPlayerEnter(player: P, checkpoint: C): TCommonCallback;
   protected abstract onPlayerLeave(player: P, checkpoint: C): TCommonCallback;
+  protected abstract onStreamIn(checkpoint: C, player: P): TCommonCallback;
+  protected abstract onStreamOut(checkpoint: C, player: P): TCommonCallback;
 
   public getCheckPointsArr(): Array<C> {
     return [...this.checkpoints.values()];

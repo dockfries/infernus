@@ -10,9 +10,11 @@ import {
   IsPlayerInDynamicRaceCP,
   IsValidDynamicCP,
   StreamerDistances,
+  StreamerItemTypes,
   TogglePlayerAllDynamicRaceCPs,
   TogglePlayerDynamicRaceCP,
 } from "omp-wrapper-streamer";
+import { Streamer } from "../common";
 
 import { raceCPBus, raceCPHooks } from "./raceCPBus";
 
@@ -136,5 +138,20 @@ export class DynamicRaceCP {
     checkpoints: Map<number, C>
   ): C | undefined {
     return checkpoints.get(GetPlayerVisibleDynamicRaceCP(player.id));
+  }
+  public toggleCallbacks(toggle = true): void | number {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerRaceCP]: Unable to toggle callbacks before create"
+      );
+    return Streamer.toggleItemCallbacks(
+      StreamerItemTypes.RACE_CP,
+      this.id,
+      toggle
+    );
+  }
+  public isToggleCallbacks(): boolean {
+    if (this.id === -1) false;
+    return Streamer.isToggleItemCallbacks(StreamerItemTypes.RACE_CP, this.id);
   }
 }

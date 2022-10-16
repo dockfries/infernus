@@ -35,7 +35,9 @@ import {
   SetDynamicObjectRot,
   StopDynamicObject,
   StreamerDistances,
+  StreamerItemTypes,
 } from "omp-wrapper-streamer";
+import { Streamer } from "../common";
 
 export class DynamicObject {
   private sourceInfo: IDynamicObject;
@@ -397,5 +399,20 @@ export class DynamicObject {
     const dynId = GetPlayerCameraTargetDynObject(player.id);
     if (dynId === InvalidEnum.OBJECT_ID) return;
     return objMap.get(dynId);
+  }
+  public toggleCallbacks(toggle = true): void | number {
+    if (this.id === -1)
+      return logger.warn(
+        "[StreamerObject]: Unable to toggle callbacks before create"
+      );
+    return Streamer.toggleItemCallbacks(
+      StreamerItemTypes.OBJECT,
+      this.id,
+      toggle
+    );
+  }
+  public isToggleCallbacks(): boolean {
+    if (this.id === -1) false;
+    return Streamer.isToggleItemCallbacks(StreamerItemTypes.OBJECT, this.id);
   }
 }
