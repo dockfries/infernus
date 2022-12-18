@@ -25,10 +25,7 @@ export abstract class BaseTextDrawEvent<
 
     if (this.destroyOnExit) {
       OnGameModeExit(() => {
-        this.textDraws.forEach((t) => {
-          this._onDestroyed(t, false);
-          this._onDestroyed(t, true);
-        });
+        this.textDraws.forEach((t) => t.destroy());
         this.textDraws.clear();
       });
     }

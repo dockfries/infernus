@@ -85,7 +85,8 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
       samp.addEventListener("OnPlayerDisconnect", this.unregisterEvent);
     }
 
-    this.event?._onCreated(this, player === undefined);
+    this.event?._onCreated &&
+      this.event?._onCreated(this, player === undefined);
     return this;
   }
   public destroy(): void | this {
@@ -99,7 +100,8 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
       fns.PlayerTextDrawDestroy(player.id, this.id);
       BaseTextDraw.createdPlayerCount--;
     }
-    this.event?._onDestroyed(this, player === undefined);
+    this.event?._onDestroyed &&
+      this.event?._onDestroyed(this, player === undefined);
     this._id = -1;
     return this;
   }

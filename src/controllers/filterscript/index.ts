@@ -64,6 +64,6 @@ export const useFilterScript = function (
     logger.warn(`[BaseGameMode]: script has already been applied`);
     return;
   }
-  plugin.load = () => plugin.load.call(plugin, ...options);
+  plugin.load = plugin.load.bind(plugin, ...options);
   preInstallScripts.push(plugin);
 };

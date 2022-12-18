@@ -108,7 +108,7 @@ export class BaseMenu {
       this.col1width,
       this.col2width
     );
-    this.event?._onCreated(this);
+    this.event?._onCreated && this.event?._onCreated(this);
     BaseMenu.menuCount++;
     return this;
   }
@@ -116,7 +116,7 @@ export class BaseMenu {
     if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot destroy before create");
     fns.DestroyMenu(this.id);
-    this.event?._onDestroyed(this);
+    this.event?._onDestroyed && this.event?._onDestroyed(this);
     return this;
   }
   public addItem(column: number, title: string): void | this {

@@ -107,7 +107,7 @@ export abstract class BaseVehicle {
       );
     }
     BaseVehicle.createdCount++;
-    this.event?._onCreated(this);
+    this.event?._onCreated && this.event?._onCreated(this);
   }
   public destroy(): void {
     if (this.id === -1)
@@ -116,7 +116,7 @@ export abstract class BaseVehicle {
       );
     vehFunc.DestroyVehicle(this.id);
     BaseVehicle.createdCount--;
-    this.event?._onDestroyed(this);
+    this.event?._onDestroyed && this.event?._onDestroyed(this);
     this._id = -1;
   }
   public addComponent(componentid: number): number {

@@ -25,7 +25,7 @@ export abstract class BaseMenuEvent<
     this.destroyOnExit = destroyOnExit;
     if (this.destroyOnExit) {
       OnGameModeExit(() => {
-        this.menus.forEach((m) => this._onDestroyed(m));
+        this.menus.forEach((m) => m.destroy());
         this.menus.clear();
       });
     }

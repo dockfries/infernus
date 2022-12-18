@@ -26,10 +26,7 @@ export abstract class BaseGangZoneEvent<
 
     if (this.destroyOnExit) {
       OnGameModeExit(() => {
-        this.gangZones.forEach((g) => {
-          this._onDestroyed(g, false);
-          this._onDestroyed(g, true);
-        });
+        this.gangZones.forEach((g) => g.destroy());
         this.gangZones.clear();
       });
     }

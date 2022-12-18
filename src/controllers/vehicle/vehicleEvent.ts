@@ -35,7 +35,7 @@ export abstract class BaseVehicleEvent<
     this.destroyOnExit = destroyOnExit;
     if (this.destroyOnExit) {
       OnGameModeExit(() => {
-        this.vehicles.forEach((v) => this._onDestroyed(v));
+        this.vehicles.forEach((v) => v.destroy());
         this.vehicles.clear();
       });
     }

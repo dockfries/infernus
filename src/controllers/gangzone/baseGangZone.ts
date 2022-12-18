@@ -73,7 +73,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
       samp.addEventListener("OnPlayerDisconnect", this.unregisterEvent);
     }
 
-    this.event?._onCreated(this, player === undefined);
+    this.event?._onCreated && this.event._onCreated(this, player === undefined);
   }
 
   public destroy() {
@@ -90,7 +90,8 @@ export abstract class BaseGangZone<P extends BasePlayer> {
       PlayerGangZoneDestroy(player.id, this.id);
       BaseGangZone.createdPlayerCount--;
     }
-    this.event?._onDestroyed(this, player === undefined);
+    this.event?._onDestroyed &&
+      this.event?._onDestroyed(this, player === undefined);
     this._id = -1;
   }
 
