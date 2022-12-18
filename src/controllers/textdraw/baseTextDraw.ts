@@ -45,19 +45,24 @@ import {
 } from "omp-wrapper";
 
 import type { BasePlayer } from "../player";
-import { textDrawBus, textDrawHooks } from "./textdrawBus";
+import { BaseTextDrawEvent } from "./textdrawEvent";
 
 export abstract class BaseTextDraw<P extends BasePlayer> {
   private static createdGlobalCount = 0;
   private static createdPlayerCount = 0;
   private readonly sourceInfo: IBaseTextDraw<P>;
   private _id = -1;
+  private readonly event?: BaseTextDrawEvent;
+
   public get id() {
     return this._id;
   }
-  constructor(textDraw: IBaseTextDraw<P>) {
+
+  constructor(textDraw: IBaseTextDraw<P>, event?: BaseTextDrawEvent) {
     this.sourceInfo = textDraw;
+    this.event = event;
   }
+
   public create(): void | this {
     if (this.id !== -1)
       return logger.warn("[BaseTextDraw]: Unable to create the textdraw again");
@@ -79,10 +84,8 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
       // Player-textdraws are automatically destroyed when a player disconnects.
       samp.addEventListener("OnPlayerDisconnect", this.unregisterEvent);
     }
-    textDrawBus.emit(textDrawHooks.created, {
-      key: { id: this.id, global: player === undefined },
-      value: this,
-    });
+
+    this.event?._onCreated(this, player === undefined);
     return this;
   }
   public destroy(): void | this {
@@ -96,10 +99,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
       fns.PlayerTextDrawDestroy(player.id, this.id);
       BaseTextDraw.createdPlayerCount--;
     }
-    textDrawBus.emit(textDrawHooks.destroyed, {
-      id: this.id,
-      global: player === undefined,
-    });
+    this.event?._onDestroyed(this, player === undefined);
     this._id = -1;
     return this;
   }

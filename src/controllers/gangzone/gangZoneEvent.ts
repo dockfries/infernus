@@ -1,6 +1,7 @@
-import { ICommonGangZoneKey } from "@/interfaces";
+import { IBelongsToEvent, ICommonGangZoneKey } from "@/interfaces";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
+import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnPlayerEnterGangZone,
   OnPlayerEnterPlayerGangZone,
@@ -9,25 +10,29 @@ import {
 } from "omp-wrapper";
 import { BasePlayer } from "../player";
 import { BaseGangZone } from "./baseGangZone";
-import { gangZoneBus, gangZoneHooks } from "./gangZoneBus";
 
 export abstract class BaseGangZoneEvent<
-  P extends BasePlayer,
-  G extends BaseGangZone<P>
-> {
+  P extends BasePlayer = any,
+  G extends BaseGangZone<P> = any
+> implements IBelongsToEvent<G>
+{
   public readonly gangZones = new Map<ICommonGangZoneKey, G>();
+  private readonly destroyOnExit: boolean;
   private readonly players;
-  constructor(playersMap: Map<number, P>) {
+
+  constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
-    gangZoneBus.on(
-      gangZoneHooks.created,
-      (res: { key: ICommonGangZoneKey; value: G }) => {
-        this.gangZones.set(res.key, res.value);
-      }
-    );
-    gangZoneBus.on(gangZoneHooks.destroyed, (res: ICommonGangZoneKey) => {
-      if (this.gangZones.has(res)) this.gangZones.delete(res);
-    });
+    this.destroyOnExit = destroyOnExit;
+
+    if (this.destroyOnExit) {
+      OnGameModeExit(() => {
+        this.gangZones.forEach((g) => {
+          this._onDestroyed(g, false);
+          this._onDestroyed(g, true);
+        });
+        this.gangZones.clear();
+      });
+    }
 
     OnPlayerEnterGangZone((playerId, gangZoneId): number => {
       const p = this.players.get(playerId);
@@ -80,6 +85,14 @@ export abstract class BaseGangZoneEvent<
       );
       return pFn(p, g);
     });
+  }
+
+  public _onCreated(gz: G, isGlobal: boolean) {
+    this.gangZones.set({ id: gz.id, global: isGlobal }, gz);
+  }
+
+  public _onDestroyed(gz: G, isGlobal: boolean) {
+    this.gangZones.delete({ id: gz.id, global: isGlobal });
   }
 
   protected abstract onPlayerEnter(player: P, gangZone: G): TCommonCallback;

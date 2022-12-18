@@ -4,7 +4,6 @@ import type { IVehicle } from "@/interfaces";
 import type { BasePlayer } from "../player";
 import { logger } from "@/logger";
 import { isValidPaintJob, isValidVehComponent } from "@/utils/vehicleUtils";
-import { vehicleBus, vehicleHooks } from "./vehicleBus";
 import * as vehFunc from "@/wrapper/native/functions";
 
 import { rgba } from "@/utils/colorUtils";
@@ -36,18 +35,21 @@ import {
   SetVehicleSpawnInfo,
   GetVehicleSpawnInfo,
 } from "omp-wrapper";
+import { BaseVehicleEvent } from "./vehicleEvent";
 
 export abstract class BaseVehicle {
   private _id = -1;
   private static createdCount = 0;
   private readonly sourceInfo: IVehicle;
   private readonly isStatic: boolean;
+  private readonly event?: BaseVehicleEvent;
   public get id(): number {
     return this._id;
   }
-  constructor(veh: IVehicle, isStatic = false) {
+  constructor(veh: IVehicle, event?: BaseVehicleEvent, isStatic = false) {
     this.sourceInfo = veh;
     this.isStatic = isStatic;
+    this.event = event;
   }
   public create(): void {
     if (this.id !== -1)
@@ -105,7 +107,7 @@ export abstract class BaseVehicle {
       );
     }
     BaseVehicle.createdCount++;
-    vehicleBus.emit(vehicleHooks.created, this);
+    this.event?._onCreated(this);
   }
   public destroy(): void {
     if (this.id === -1)
@@ -114,7 +116,7 @@ export abstract class BaseVehicle {
       );
     vehFunc.DestroyVehicle(this.id);
     BaseVehicle.createdCount--;
-    vehicleBus.emit(vehicleHooks.destroyed, this);
+    this.event?._onDestroyed(this);
     this._id = -1;
   }
   public addComponent(componentid: number): number {

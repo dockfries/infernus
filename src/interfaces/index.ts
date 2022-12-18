@@ -252,3 +252,8 @@ export interface IFilterScript {
   unload: () => any;
   [propName: string | number | symbol]: any;
 }
+
+export interface IBelongsToEvent<T> {
+  _onCreated: (instance: T, ...args: Array<any>) => void;
+  _onDestroyed: (instance: T, ...args: Array<any>) => void;
+}
