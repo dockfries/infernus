@@ -86,12 +86,12 @@ export abstract class BaseGameMode {
     fns.GameModeExit();
   }
 
-  // like vue.js, support filter script which use omp-node-lib
+  // support filter script which use omp-node-lib
   public readonly use = (
     plugin: IFilterScript,
     ...options: Array<any>
-  ): void | this => {
-    useFilterScript.call(this, plugin, ...options);
+  ): this => {
+    useFilterScript(plugin, ...options);
     return this;
   };
 

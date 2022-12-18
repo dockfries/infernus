@@ -1,6 +1,6 @@
 import { IFilterScript } from "@/interfaces";
 import { logger } from "@/logger";
-import { OnGameModeExit } from "@/wrapper/native/callbacks";
+import { OnGameModeExit, OnGameModeInit } from "@/wrapper/native/callbacks";
 
 const preInstallScripts: Array<IFilterScript> = [];
 const installedScripts: Array<IFilterScript> = [];
@@ -12,9 +12,7 @@ export const loadUseScript = (scriptName: string): void => {
       if (fsIdx === -1) return;
 
       const fs = preInstallScripts[fsIdx];
-      const loadFn = fs.load;
-      if (loadFn instanceof Promise) await loadFn();
-      else loadFn();
+      await fs.load();
 
       preInstallScripts.splice(fsIdx, 1);
       installedScripts.push(fs);
@@ -31,9 +29,7 @@ export const unloadUseScript = (scriptName: string): void => {
       if (fsIdx === -1) return;
 
       const fs = installedScripts[fsIdx];
-      const unloadFn = fs.unload;
-      if (unloadFn instanceof Promise) await unloadFn();
-      else unloadFn();
+      await fs.unload();
 
       installedScripts.splice(fsIdx, 1);
       preInstallScripts.push(fs);
@@ -49,12 +45,15 @@ export const reloadUseScript = (scriptName: string) => {
   loadUseScript(scriptName);
 };
 
+OnGameModeInit(() => {
+  preInstallScripts.forEach((fs) => loadUseScript(fs.name));
+});
+
 OnGameModeExit(() => {
   installedScripts.forEach((fs) => unloadUseScript(fs.name));
 });
 
 export const useFilterScript = function (
-  this: any,
   plugin: IFilterScript,
   ...options: Array<any>
 ): void {
@@ -65,7 +64,6 @@ export const useFilterScript = function (
     logger.warn(`[BaseGameMode]: script has already been applied`);
     return;
   }
-  plugin.load = plugin.load.bind(plugin, this, ...options);
+  plugin.load = () => plugin.load.call(plugin, ...options);
   preInstallScripts.push(plugin);
-  loadUseScript(plugin.name);
 };
