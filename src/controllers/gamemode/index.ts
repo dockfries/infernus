@@ -34,6 +34,12 @@ import {
   EditPlayerClass,
   ToggleChatTextReplacement,
   ChatTextReplacementToggled,
+  AllowAdminTeleport,
+  IsAdminTeleportAllowed,
+  AllowInteriorWeapons,
+  AreInteriorWeaponsAllowed,
+  AreAllAnimationsEnabled,
+  EnableAllAnimations,
 } from "omp-wrapper";
 import { IFilterScript } from "@/interfaces";
 
@@ -124,8 +130,12 @@ export abstract class BaseGameMode {
     password: string,
     success: boolean
   ): TCommonCallback;
-  public static allowAdminTeleport = fns.AllowAdminTeleport;
-  public static allowInteriorWeapons = fns.AllowInteriorWeapons;
+  public static allowAdminTeleport = AllowAdminTeleport;
+  public static isAdminTeleportAllowed = IsAdminTeleportAllowed;
+  public static allowInteriorWeapons = AllowInteriorWeapons;
+  public static areInteriorWeaponsAllowed = AreInteriorWeaponsAllowed;
+  public static areAllAnimationsEnabled = AreAllAnimationsEnabled;
+  public static enableAllAnimations = EnableAllAnimations;
   public static enableStuntBonusForAll = fns.EnableStuntBonusForAll;
   public static enableVehicleFriendlyFire = fns.EnableVehicleFriendlyFire;
   public static enableZoneNames = fns.EnableZoneNames;

@@ -275,10 +275,6 @@ export const EnableVehicleFriendlyFire = (): number => {
   return callNative("EnableVehicleFriendlyFire", "");
 };
 
-export const AllowInteriorWeapons = (allow: boolean): number => {
-  return callNative("AllowInteriorWeapons", "i", allow);
-};
-
 export const SetWeather = (weatherid: number): number => {
   return callNative("SetWeather", "i", weatherid);
 };
@@ -289,10 +285,6 @@ export const GetGravity = (): number => {
 
 export const SetGravity = (gravity: number): number => {
   return callNative("SetGravity", "f", gravity);
-};
-
-export const AllowAdminTeleport = (allow: boolean): number => {
-  return callNative("AllowAdminTeleport", "i", allow);
 };
 
 export const SetDeathDropAmount = (amount: number): number => {
@@ -2317,13 +2309,6 @@ export const RemovePlayerMapIcon = (
   iconid: number
 ): number => {
   return callNative("RemovePlayerMapIcon", "ii", playerid, iconid);
-};
-
-export const AllowPlayerTeleport = (
-  playerid: number,
-  allow: boolean
-): number => {
-  return callNative("AllowPlayerTeleport", "ii", playerid, allow);
 };
 
 export const SetPlayerCameraPos = (

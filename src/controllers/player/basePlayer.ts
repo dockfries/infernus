@@ -64,6 +64,11 @@ import {
   GetPlayerBuildingsRemoved,
   GetPlayerAttachedObject,
   RemovePlayerWeapon,
+  IsPlayerUsingOfficialClient,
+  AllowPlayerTeleport,
+  IsPlayerTeleportAllowed,
+  AllowPlayerWeapons,
+  ArePlayerWeaponsAllowed,
 } from "omp-wrapper";
 
 export abstract class BasePlayer {
@@ -148,7 +153,10 @@ export abstract class BasePlayer {
     playerFunc.SetPlayerDrunkLevel(this.id, level);
   }
   public allowTeleport(allow: boolean): void {
-    playerFunc.AllowPlayerTeleport(this.id, allow);
+    AllowPlayerTeleport(this.id, allow);
+  }
+  public isTeleportAllowed() {
+    return IsPlayerTeleportAllowed(this.id);
   }
   public enableCameraTarget(enable: boolean): void {
     playerFunc.EnablePlayerCameraTarget(this.id, enable);
@@ -994,5 +1002,14 @@ export abstract class BasePlayer {
         }
       });
     });
+  }
+  public isUsingOfficialClient() {
+    return IsPlayerUsingOfficialClient(this.id);
+  }
+  public allowWeapons(allow: boolean) {
+    return AllowPlayerWeapons(this.id, allow);
+  }
+  public areWeaponsAllowed() {
+    return ArePlayerWeaponsAllowed(this.id);
   }
 }
