@@ -19,7 +19,7 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 // Here are some i18n functions used to override the original functions
 export const SendClientMessage = <P extends BasePlayer>(
   player: P,
-  color: string,
+  color: string | number,
   msg: string
 ): number => {
   const res = processMsg(msg, player.charset);
@@ -34,7 +34,7 @@ export const SendClientMessage = <P extends BasePlayer>(
 
 export const SendClientMessageToAll = <P extends BasePlayer>(
   fn: Array<P>,
-  color: string,
+  color: string | number,
   msg: string
 ): number => {
   fn.forEach((player) => SendClientMessage(player, color, msg));

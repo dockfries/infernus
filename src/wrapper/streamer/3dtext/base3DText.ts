@@ -121,7 +121,7 @@ export class Dynamic3DTextLabel {
   public isValid(): boolean {
     return IsValidDynamic3DTextLabel(this.id);
   }
-  public getColor(): void | string {
+  public getColor(): void | string | number {
     if (this.id === -1)
       return logger.warn(
         "[Streamer3DTextLabel]: Unable to get color before create"
@@ -143,7 +143,7 @@ export class Dynamic3DTextLabel {
     return GetDynamic3DTextLabelText(this.id, this.sourceInfo.charset);
   }
   public updateText(
-    color: string,
+    color: string | number,
     text: string,
     charset = this.sourceInfo.charset
   ): void | number {

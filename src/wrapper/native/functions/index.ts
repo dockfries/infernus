@@ -169,8 +169,8 @@ export const AddStaticVehicle = (
   spawn_y: number,
   spawn_z: number,
   z_angle: number,
-  color1: string,
-  color2: string
+  color1: string | number,
+  color2: string | number
 ): number => {
   return callNative(
     "AddStaticVehicle",
@@ -191,8 +191,8 @@ export const AddStaticVehicleEx = (
   spawn_y: number,
   spawn_z: number,
   z_angle: number,
-  color1: string,
-  color2: string,
+  color1: string | number,
+  color2: string | number,
   respawn_delay: number,
   addsiren: boolean
 ): number => {
@@ -510,7 +510,7 @@ export const TextDrawAlignment = (
   return callNative("TextDrawAlignment", "ii", text, alignment);
 };
 
-export const TextDrawColor = (text: number, color: string): number => {
+export const TextDrawColor = (text: number, color: string | number): number => {
   return callNative("TextDrawColor", "ii", text, rgba(color));
 };
 
@@ -518,7 +518,10 @@ export const TextDrawUseBox = (text: number, use: boolean): number => {
   return callNative("TextDrawUseBox", "ii", text, use);
 };
 
-export const TextDrawBoxColor = (text: number, color: string): number => {
+export const TextDrawBoxColor = (
+  text: number,
+  color: string | number
+): number => {
   return callNative("TextDrawBoxColor", "ii", text, rgba(color));
 };
 
@@ -532,7 +535,7 @@ export const TextDrawSetOutline = (text: number, size: number): number => {
 
 export const TextDrawBackgroundColor = (
   text: number,
-  color: string
+  color: string | number
 ): number => {
   return callNative("TextDrawBackgroundColor", "ii", text, rgba(color));
 };
@@ -602,8 +605,8 @@ export const TextDrawSetPreviewRot = (
 
 export const TextDrawSetPreviewVehCol = (
   text: number,
-  color1: string,
-  color2: string
+  color1: string | number,
+  color2: string | number
 ): void => {
   callNative(
     "TextDrawSetPreviewVehCol",
@@ -630,7 +633,7 @@ export const GangZoneDestroy = (zone: number): number => {
 export const GangZoneShowForPlayer = (
   playerid: number,
   zone: number,
-  color: string
+  color: string | number
 ): number => {
   return callNative(
     "GangZoneShowForPlayer",
@@ -641,7 +644,10 @@ export const GangZoneShowForPlayer = (
   );
 };
 
-export const GangZoneShowForAll = (zone: number, color: string): number => {
+export const GangZoneShowForAll = (
+  zone: number,
+  color: string | number
+): number => {
   return callNative("GangZoneShowForAll", "ii", zone, rgba(color));
 };
 
@@ -659,7 +665,7 @@ export const GangZoneHideForAll = (zone: number): number => {
 export const GangZoneFlashForPlayer = (
   playerid: number,
   zone: number,
-  flashcolor: string
+  flashcolor: string | number
 ): number => {
   return callNative(
     "GangZoneFlashForPlayer",
@@ -672,7 +678,7 @@ export const GangZoneFlashForPlayer = (
 
 export const GangZoneFlashForAll = (
   zone: number,
-  flashcolor: string
+  flashcolor: string | number
 ): number => {
   return callNative("GangZoneFlashForAll", "ii", zone, rgba(flashcolor));
 };
@@ -690,7 +696,7 @@ export const GangZoneStopFlashForAll = (zone: number): number => {
 
 export const Create3DTextLabel = (
   text: string,
-  color: string,
+  color: string | number,
   X: number,
   Y: number,
   Z: number,
@@ -754,7 +760,7 @@ export const Attach3DTextLabelToVehicle = (
 
 export const Update3DTextLabelText = (
   id: number,
-  color: string,
+  color: string | number,
   text: string
 ): number => {
   return callNative("Update3DTextLabelText", "iis", id, rgba(color), text);
@@ -763,7 +769,7 @@ export const Update3DTextLabelText = (
 export const CreatePlayer3DTextLabel = (
   playerid: number,
   text: string,
-  color: string,
+  color: string | number,
   X: number,
   Y: number,
   Z: number,
@@ -798,7 +804,7 @@ export const DeletePlayer3DTextLabel = (
 export const UpdatePlayer3DTextLabelText = (
   playerid: number,
   id: number,
-  color: string,
+  color: string | number,
   text: string
 ): number => {
   return callNative(
@@ -1316,7 +1322,7 @@ export const SetObjectMaterial = (
   modelid: number,
   txdname: string,
   texturename: string,
-  materialcolor: string
+  materialcolor: string | number
 ): number => {
   return callNative(
     "SetObjectMaterial",
@@ -1337,7 +1343,7 @@ export const SetPlayerObjectMaterial = (
   modelid: number,
   txdname: string,
   texturename: string,
-  materialcolor: string
+  materialcolor: string | number
 ): number => {
   return callNative(
     "SetPlayerObjectMaterial",
@@ -1360,8 +1366,8 @@ export const SetObjectMaterialText = (
   fontface: string,
   fontsize: number,
   bold = true,
-  fontcolor: string,
-  backcolor: string,
+  fontcolor: string | number,
+  backcolor: string | number,
   textalignment: number
 ): number => {
   return callNative(
@@ -1389,8 +1395,8 @@ export const SetPlayerObjectMaterialText = (
   fontface: string,
   fontsize: number,
   bold = true,
-  fontcolor: string,
-  backcolor: string,
+  fontcolor: string | number,
+  backcolor: string | number,
   textalignment: number
 ): number => {
   return callNative(
@@ -1595,7 +1601,10 @@ export const SetPlayerDrunkLevel = (
   return callNative("SetPlayerDrunkLevel", "ii", playerid, level);
 };
 
-export const SetPlayerColor = (playerid: number, color: string): number => {
+export const SetPlayerColor = (
+  playerid: number,
+  color: string | number
+): number => {
   return callNative("SetPlayerColor", "ii", playerid, rgba(color));
 };
 
@@ -1830,8 +1839,8 @@ export const SetPlayerAttachedObject = (
   fScaleX: number,
   fScaleY: number,
   fScaleZ: number,
-  materialcolor1: string,
-  materialcolor2: string
+  materialcolor1: string | number,
+  materialcolor2: string | number
 ): number => {
   return callNative(
     "SetPlayerAttachedObject",
@@ -1922,7 +1931,7 @@ export const PlayerTextDrawAlignment = (
 export const PlayerTextDrawColor = (
   playerid: number,
   text: number,
-  color: string
+  color: string | number
 ): number => {
   return callNative("PlayerTextDrawColor", "iii", playerid, text, rgba(color));
 };
@@ -1938,7 +1947,7 @@ export const PlayerTextDrawUseBox = (
 export const PlayerTextDrawBoxColor = (
   playerid: number,
   text: number,
-  color: string
+  color: string | number
 ): number => {
   return callNative(
     "PlayerTextDrawBoxColor",
@@ -1968,7 +1977,7 @@ export const PlayerTextDrawSetOutline = (
 export const PlayerTextDrawBackgroundColor = (
   playerid: number,
   text: number,
-  color: string
+  color: string | number
 ): number => {
   return callNative(
     "PlayerTextDrawBackgroundColor",
@@ -2062,8 +2071,8 @@ export const PlayerTextDrawSetPreviewRot = (
 export const PlayerTextDrawSetPreviewVehCol = (
   playerid: number,
   text: number,
-  color1: string,
-  color2: string
+  color1: string | number,
+  color2: string | number
 ): number => {
   return callNative(
     "PlayerTextDrawSetPreviewVehCol",
@@ -2078,7 +2087,7 @@ export const PlayerTextDrawSetPreviewVehCol = (
 export const SetPlayerChatBubble = (
   playerid: number,
   text: string,
-  color: string,
+  color: string | number,
   drawdistance: number,
   expiretime: number
 ): number => {
@@ -2254,7 +2263,7 @@ export const SetPlayerWorldBounds = (
 export const SetPlayerMarkerForPlayer = (
   playerid: number,
   showplayerid: number,
-  color: string
+  color: string | number
 ): number => {
   return callNative(
     "SetPlayerMarkerForPlayer",
@@ -2286,7 +2295,7 @@ export const SetPlayerMapIcon = (
   y: number,
   z: number,
   markertype: number,
-  color: string,
+  color: string | number,
   style: number
 ): number => {
   return callNative(
@@ -2552,7 +2561,10 @@ export const StopRecordingPlayerData = (playerid: number): number => {
   return callNative("StopRecordingPlayerData", "i", playerid);
 };
 
-export const SelectTextDraw = (playerid: number, hovercolor: string): void => {
+export const SelectTextDraw = (
+  playerid: number,
+  hovercolor: string | number
+): void => {
   callNative("SelectTextDraw", "ii", playerid, rgba(hovercolor));
 };
 
@@ -2604,8 +2616,8 @@ export const CreateVehicle = (
   y: number,
   z: number,
   rotation: number,
-  color1: string,
-  color2: string,
+  color1: string | number,
+  color2: string | number,
   respawn_delay: number,
   addsiren: boolean
 ): number => {
@@ -2838,8 +2850,8 @@ export const RemoveVehicleComponent = (
 
 export const ChangeVehicleColor = (
   vehicleid: number,
-  color1: string,
-  color2: string
+  color1: string | number,
+  color2: string | number
 ): number => {
   return callNative(
     "ChangeVehicleColor",

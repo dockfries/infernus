@@ -112,21 +112,21 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawFont(this.id, style);
     return this;
   }
-  public setColor(color: string): void | this {
+  public setColor(color: string | number): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set color");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawColor(player.id, this.id, color);
     else fns.TextDrawColor(this.id, color);
     return this;
   }
-  public setBoxColor(color: string): void | this {
+  public setBoxColor(color: string | number): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set box color");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawBoxColor(player.id, this.id, color);
     else fns.TextDrawBoxColor(this.id, color);
     return this;
   }
-  public setBackgroundColor(color: string): void | this {
+  public setBackgroundColor(color: string | number): void | this {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("set background color");
     const { player } = this.sourceInfo;
@@ -188,7 +188,10 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawSetPreviewRot(this.id, fRotX, fRotY, fRotZ, fZoom);
     return this;
   }
-  public setPreviewVehCol(color1: string, color2: string): void | this {
+  public setPreviewVehCol(
+    color1: string | number,
+    color2: string | number
+  ): void | this {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("set preview veh col");
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);

@@ -219,7 +219,7 @@ export abstract class BaseVehicle {
   public static getPoolSize(): number {
     return vehFunc.GetVehiclePoolSize();
   }
-  public changeColor(color1: string, color2: string): number {
+  public changeColor(color1: string | number, color2: string | number): number {
     if (this.id === -1) return 0;
     return vehFunc.ChangeVehicleColor(this.id, color1, color2);
   }
@@ -485,8 +485,8 @@ export abstract class BaseVehicle {
     fY: number,
     fZ: number,
     fAngle: number,
-    color1: string,
-    color2: string,
+    color1: string | number,
+    color2: string | number,
     respawntime = -2,
     interior = -2
   ): number {

@@ -95,7 +95,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     this._id = -1;
   }
 
-  public showForAll(color: string): void | this {
+  public showForAll(color: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to show the gangzone before create"
@@ -110,7 +110,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     );
   }
 
-  public showForPlayer(color: string, player?: P): void | this {
+  public showForPlayer(color: string | number, player?: P): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to show the gangzone before create"
@@ -153,7 +153,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     return this;
   }
 
-  public flashForAll(flashcolor: string): void | this {
+  public flashForAll(flashcolor: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to flash the gangzone before create"
@@ -168,7 +168,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     );
   }
 
-  public flashForPlayer(player: P, flashcolor: string): void | this {
+  public flashForPlayer(player: P, flashcolor: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to flash the gangzone before create"

@@ -102,13 +102,13 @@ export abstract class BasePlayer {
     this._isNpc = playerFunc.IsPlayerNPC(this.id);
   }
 
-  public sendClientMessage(color: string, msg: string): number {
+  public sendClientMessage(color: string | number, msg: string): number {
     return SendClientMessage(this, color, msg);
   }
 
   public static sendClientMessageToAll<P extends BasePlayer>(
     players: Array<P>,
-    color: string,
+    color: string | number,
     msg: string
   ) {
     SendClientMessageToAll(players, color, msg);
@@ -168,13 +168,16 @@ export abstract class BasePlayer {
   ): void {
     playerFunc.ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
   }
-  public setColor(color: string): void {
+  public setColor(color: string | number): void {
     playerFunc.SetPlayerColor(this.id, color);
   }
   public getColor(): number {
     return playerFunc.GetPlayerColor(this.id);
   }
-  public setPlayerMarker<P extends BasePlayer>(showPlayer: P, color: string) {
+  public setPlayerMarker<P extends BasePlayer>(
+    showPlayer: P,
+    color: string | number
+  ) {
     playerFunc.SetPlayerMarkerForPlayer(this.id, showPlayer.id, color);
   }
   public resetMoney(): number {
@@ -639,7 +642,7 @@ export abstract class BasePlayer {
   }
   public setChatBubble(
     text: string,
-    color: string,
+    color: string | number,
     drawDistance: number,
     expireTime: number
   ): void {
@@ -802,7 +805,7 @@ export abstract class BasePlayer {
       p.finally(() => delCCTask(this.id));
     });
   }
-  public selectTextDraw(color: string): void {
+  public selectTextDraw(color: string | number): void {
     playerFunc.SelectTextDraw(this.id, color);
   }
   public cancelSelectTextDraw(): void {
@@ -837,8 +840,8 @@ export abstract class BasePlayer {
     fScaleX: number,
     fScaleY: number,
     fScaleZ: number,
-    materialcolor1: string,
-    materialcolor2: string
+    materialcolor1: string | number,
+    materialcolor2: string | number
   ): void | number {
     if (this.isAttachedObjectSlotUsed(index)) return 0;
     return playerFunc.SetPlayerAttachedObject(
