@@ -2,7 +2,6 @@ import { GameTextForAll, GameTextForPlayer } from "@/wrapper/native/functions";
 import { BasePlayer } from "../player";
 
 export class BaseGameText {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private _str: string;
   public get str(): string {
     return this._str;

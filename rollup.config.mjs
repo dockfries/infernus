@@ -1,8 +1,11 @@
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const { compilerOptions } = require("./tsconfig.json");
+
 import esbuild from "rollup-plugin-esbuild";
 import del from "rollup-plugin-delete";
 import externals from "rollup-plugin-node-externals";
 import dts from "rollup-plugin-dts";
-import { compilerOptions } from "./tsconfig.json";
 import { typescriptPaths } from "rollup-plugin-typescript-paths";
 
 const inputPath = "./src/main.ts";
