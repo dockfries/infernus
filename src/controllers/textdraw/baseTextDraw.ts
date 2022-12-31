@@ -45,24 +45,19 @@ import {
 } from "omp-wrapper";
 
 import type { BasePlayer } from "../player";
-import { BaseTextDrawEvent } from "./textdrawEvent";
+import { textDrawBus, textDrawHooks } from "./textdrawBus";
 
 export abstract class BaseTextDraw<P extends BasePlayer> {
   private static createdGlobalCount = 0;
   private static createdPlayerCount = 0;
   private readonly sourceInfo: IBaseTextDraw<P>;
   private _id = -1;
-  private readonly event?: BaseTextDrawEvent;
-
   public get id() {
     return this._id;
   }
-
-  constructor(textDraw: IBaseTextDraw<P>, event?: BaseTextDrawEvent) {
+  constructor(textDraw: IBaseTextDraw<P>) {
     this.sourceInfo = textDraw;
-    this.event = event;
   }
-
   public create(): void | this {
     if (this.id !== -1)
       return logger.warn("[BaseTextDraw]: Unable to create the textdraw again");
@@ -84,9 +79,10 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
       // Player-textdraws are automatically destroyed when a player disconnects.
       samp.addEventListener("OnPlayerDisconnect", this.unregisterEvent);
     }
-
-    this.event?._onCreated &&
-      this.event?._onCreated(this, player === undefined);
+    textDrawBus.emit(textDrawHooks.created, {
+      key: { id: this.id, global: player === undefined },
+      value: this,
+    });
     return this;
   }
   public destroy(): void | this {
@@ -100,8 +96,10 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
       fns.PlayerTextDrawDestroy(player.id, this.id);
       BaseTextDraw.createdPlayerCount--;
     }
-    this.event?._onDestroyed &&
-      this.event?._onDestroyed(this, player === undefined);
+    textDrawBus.emit(textDrawHooks.destroyed, {
+      id: this.id,
+      global: player === undefined,
+    });
     this._id = -1;
     return this;
   }
@@ -188,10 +186,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawSetPreviewRot(this.id, fRotX, fRotY, fRotZ, fZoom);
     return this;
   }
-  public setPreviewVehCol(
-    color1: string | number,
-    color2: string | number
-  ): void | this {
+  public setPreviewVehCol(color1: string, color2: string): void | this {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("set preview veh col");
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);

@@ -15,7 +15,7 @@ export abstract class Dynamic3dTextLabelEvent<
   private readonly _3dTexts = new Map<number, D>();
   private readonly players;
 
-  constructor(playersMap: Map<number, P>) {
+  constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
     _3dTextBus.on(_3dTextHooks.created, (_3dText: D) => {
       this._3dTexts.set(_3dText.id, _3dText);
@@ -23,6 +23,12 @@ export abstract class Dynamic3dTextLabelEvent<
     _3dTextBus.on(_3dTextHooks.destroyed, (_3dText: D) => {
       this._3dTexts.delete(_3dText.id);
     });
+    if (destroyOnExit) {
+      OnGameModeExit(() => {
+        this._3dTexts.forEach((t) => t.destroy());
+        this._3dTexts.clear();
+      });
+    }
     Streamer.onItemStreamIn((type, item, player) => {
       if (type === StreamerItemTypes.TEXT_3D_LABEL) {
         const tl = this._3dTexts.get(item);
@@ -48,13 +54,6 @@ export abstract class Dynamic3dTextLabelEvent<
           )(tl, p);
       }
       return 1;
-    });
-    OnGameModeExit(() => {
-      setTimeout(() => {
-        this.get3dTextLabelsArr().forEach((d) => {
-          d.isValid() && d.destroy();
-        });
-      });
     });
   }
 

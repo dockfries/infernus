@@ -1,4 +1,3 @@
-import { IBelongsToEvent } from "@/interfaces";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import {
@@ -20,20 +19,25 @@ import {
 } from "@/wrapper/native/callbacks";
 import type { BasePlayer } from "../player";
 import type { BaseVehicle } from "./baseVehicle";
+import { vehicleBus, vehicleHooks } from "./vehicleBus";
 
 export abstract class BaseVehicleEvent<
-  P extends BasePlayer = any,
-  V extends BaseVehicle = any
-> implements IBelongsToEvent<V>
-{
+  P extends BasePlayer,
+  V extends BaseVehicle
+> {
   private readonly vehicles = new Map<number, V>();
   private readonly players;
-  private readonly destroyOnExit: boolean;
 
   constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
-    this.destroyOnExit = destroyOnExit;
-    if (this.destroyOnExit) {
+    // The class event is extended through the event bus
+    vehicleBus.on(vehicleHooks.created, (veh: V) => {
+      this.vehicles.set(veh.id, veh);
+    });
+    vehicleBus.on(vehicleHooks.destroyed, (veh: V) => {
+      this.vehicles.delete(veh.id);
+    });
+    if (destroyOnExit) {
       OnGameModeExit(() => {
         this.vehicles.forEach((v) => v.destroy());
         this.vehicles.clear();
@@ -237,13 +241,5 @@ export abstract class BaseVehicleEvent<
 
   public getVehiclesMap(): Map<number, V> {
     return this.vehicles;
-  }
-
-  public _onCreated(veh: V) {
-    this.vehicles.set(veh.id, veh);
-  }
-
-  public _onDestroyed(veh: V) {
-    this.vehicles.delete(veh.id);
   }
 }

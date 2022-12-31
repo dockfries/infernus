@@ -18,7 +18,7 @@ export abstract class DynamicAreaEvent<
   private readonly areas = new Map<number, A>();
   private readonly players;
 
-  constructor(playersMap: Map<number, P>) {
+  constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
 
     areaBus.on(areaHooks.created, (res: A) => {
@@ -27,6 +27,13 @@ export abstract class DynamicAreaEvent<
     areaBus.on(areaHooks.destroyed, (res: A) => {
       if (this.areas.has(res.id)) this.areas.delete(res.id);
     });
+
+    if (destroyOnExit) {
+      OnGameModeExit(() => {
+        this.areas.forEach((a) => a.destroy());
+        this.areas.clear();
+      });
+    }
 
     OnPlayerEnterDynamicArea((playerId, areaId) => {
       const p = this.players.get(playerId);
@@ -77,13 +84,6 @@ export abstract class DynamicAreaEvent<
           )(a, p);
       }
       return 1;
-    });
-    OnGameModeExit(() => {
-      setTimeout(() => {
-        this.getAreasArr().forEach((a) => {
-          a.isValid() && a.destroy();
-        });
-      });
     });
   }
 

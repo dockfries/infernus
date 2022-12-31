@@ -21,7 +21,7 @@ export abstract class DynamicObjectEvent<
   private readonly objects = new Map<number, O>();
   private readonly players;
 
-  constructor(playersMap: Map<number, P>) {
+  constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
     objectBus.on(objectHooks.created, (object: O) => {
       this.objects.set(object.id, object);
@@ -29,6 +29,12 @@ export abstract class DynamicObjectEvent<
     objectBus.on(objectHooks.destroyed, (object: O) => {
       this.objects.delete(object.id);
     });
+    if (destroyOnExit) {
+      OnGameModeExit(() => {
+        this.objects.forEach((o) => o.destroy());
+        this.objects.clear();
+      });
+    }
     OnDynamicObjectMoved((id): number => {
       const o = this.objects.get(id);
       if (!o) return 0;
@@ -130,13 +136,6 @@ export abstract class DynamicObjectEvent<
           )(obj, p);
       }
       return 1;
-    });
-    OnGameModeExit(() => {
-      setTimeout(() => {
-        this.getObjectsArr().forEach((o) => {
-          o.isValid() && o.destroy();
-        });
-      });
     });
   }
 

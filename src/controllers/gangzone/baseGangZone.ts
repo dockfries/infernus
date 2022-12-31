@@ -30,18 +30,16 @@ import {
 } from "omp-wrapper";
 
 import { BasePlayer } from "../player";
-import { BaseGangZoneEvent } from "./gangZoneEvent";
+import { gangZoneBus, gangZoneHooks } from "./gangZoneBus";
 
 export abstract class BaseGangZone<P extends BasePlayer> {
   private _id = -1;
   private static createdGlobalCount = 0;
   private static createdPlayerCount = 0;
   public readonly sourceInfo: IBaseGangZone<P>;
-  private readonly event?: BaseGangZoneEvent;
 
-  constructor(gangZone: IBaseGangZone<P>, event?: BaseGangZoneEvent) {
+  constructor(gangZone: IBaseGangZone<P>) {
     this.sourceInfo = gangZone;
-    this.event = event;
   }
 
   public get id() {
@@ -72,8 +70,10 @@ export abstract class BaseGangZone<P extends BasePlayer> {
       // PlayerGangZones may be automatically destroyed when a player disconnects.
       samp.addEventListener("OnPlayerDisconnect", this.unregisterEvent);
     }
-
-    this.event?._onCreated && this.event._onCreated(this, player === undefined);
+    gangZoneBus.emit(gangZoneHooks.created, {
+      key: { id: this.id, global: player === undefined },
+      value: this,
+    });
   }
 
   public destroy() {
@@ -90,8 +90,10 @@ export abstract class BaseGangZone<P extends BasePlayer> {
       PlayerGangZoneDestroy(player.id, this.id);
       BaseGangZone.createdPlayerCount--;
     }
-    this.event?._onDestroyed &&
-      this.event?._onDestroyed(this, player === undefined);
+    gangZoneBus.emit(gangZoneHooks.destroyed, {
+      id: this.id,
+      global: player === undefined,
+    });
     this._id = -1;
   }
 

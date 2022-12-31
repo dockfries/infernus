@@ -18,7 +18,7 @@ export abstract class DynamicActorEvent<
   private readonly actors = new Map<number, A>();
   private readonly players;
 
-  constructor(playersMap: Map<number, P>) {
+  constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
     actorBus.on(actorHooks.created, (actor: A) => {
       this.actors.set(actor.id, actor);
@@ -26,6 +26,12 @@ export abstract class DynamicActorEvent<
     actorBus.on(actorHooks.destroyed, (actor: A) => {
       this.actors.delete(actor.id);
     });
+    if (destroyOnExit) {
+      OnGameModeExit(() => {
+        this.actors.forEach((a) => a.destroy());
+        this.actors.clear();
+      });
+    }
     OnDynamicActorStreamIn((actorid: number, forplayerid: number): number => {
       const act = this.actors.get(actorid);
       if (!act) return 0;
@@ -70,13 +76,6 @@ export abstract class DynamicActorEvent<
         return pFn(p, act, amount, weaponid, bodypart);
       }
     );
-    OnGameModeExit(() => {
-      setTimeout(() => {
-        this.getActorsArr().forEach((a) => {
-          a.isValid() && a.destroy();
-        });
-      });
-    });
   }
 
   protected abstract onStreamIn(actor: A, player: P): TCommonCallback;

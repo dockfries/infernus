@@ -17,7 +17,7 @@ export abstract class DynamicPickupEvent<
   private readonly pickups = new Map<number, K>();
   private readonly players;
 
-  constructor(playersMap: Map<number, P>) {
+  constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
     pickupBus.on(pickupHooks.created, (pickup: K) => {
       this.pickups.set(pickup.id, pickup);
@@ -25,6 +25,12 @@ export abstract class DynamicPickupEvent<
     pickupBus.on(pickupHooks.destroyed, (pickup: K) => {
       this.pickups.delete(pickup.id);
     });
+    if (destroyOnExit) {
+      OnGameModeExit(() => {
+        this.pickups.forEach((p) => p.destroy());
+        this.pickups.clear();
+      });
+    }
     OnPlayerPickUpDynamicPickup(
       (playerid: number, pickupid: number): number => {
         const k = this.pickups.get(pickupid);
@@ -64,13 +70,6 @@ export abstract class DynamicPickupEvent<
           )(pk, p);
       }
       return 1;
-    });
-    OnGameModeExit(() => {
-      setTimeout(() => {
-        this.getPickupsArr().forEach((pk) => {
-          pk.isValid() && pk.destroy();
-        });
-      });
     });
   }
 

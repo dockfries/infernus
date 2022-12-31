@@ -12,14 +12,12 @@ import {
 } from "omp-wrapper";
 
 import { BasePlayer } from "../player";
-import { BaseMenuEvent } from "./menuEvent";
+import { menuBus, menuHooks } from "./menuBus";
 
 export class BaseMenu {
   private static menuCount = 0;
   private _id = -1;
   private _itemCount = 0;
-  private readonly event?: BaseMenuEvent;
-
   public get itemCount() {
     return this._itemCount;
   }
@@ -81,8 +79,7 @@ export class BaseMenu {
     x: number,
     y: number,
     col1width: number,
-    col2width: number,
-    event?: BaseMenuEvent
+    col2width: number
   ) {
     this._title = title;
     this.columns = columns;
@@ -90,7 +87,6 @@ export class BaseMenu {
     this._y = y;
     this._col1width = col1width;
     this._col2width = col2width;
-    this.event = event;
   }
   public create(): void | this {
     if (this._id !== -1)
@@ -108,7 +104,7 @@ export class BaseMenu {
       this.col1width,
       this.col2width
     );
-    this.event?._onCreated && this.event?._onCreated(this);
+    menuBus.emit(menuHooks.created, this);
     BaseMenu.menuCount++;
     return this;
   }
@@ -116,7 +112,7 @@ export class BaseMenu {
     if (this._id === -1)
       return logger.error("[BaseMenu]: Cannot destroy before create");
     fns.DestroyMenu(this.id);
-    this.event?._onDestroyed && this.event?._onDestroyed(this);
+    menuBus.emit(menuHooks.destroyed, this);
     return this;
   }
   public addItem(column: number, title: string): void | this {

@@ -1,5 +1,4 @@
 import { InvalidEnum } from "@/enums";
-import { IBelongsToEvent } from "@/interfaces";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import {
@@ -10,26 +9,26 @@ import {
 import { GetPlayerMenu } from "@/wrapper/native/functions";
 import { BasePlayer } from "../player";
 import { BaseMenu } from "./baseMenu";
+import { menuBus, menuHooks } from "./menuBus";
 
-export abstract class BaseMenuEvent<
-  P extends BasePlayer = any,
-  M extends BaseMenu = any
-> implements IBelongsToEvent<M>
-{
+export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
   private readonly menus = new Map<number, M>();
   private readonly players;
-  private readonly destroyOnExit: boolean;
 
   constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
-    this.destroyOnExit = destroyOnExit;
-    if (this.destroyOnExit) {
+    menuBus.on(menuHooks.created, (menu: M) => {
+      this.menus.set(menu.id, menu);
+    });
+    menuBus.on(menuHooks.destroyed, (menu: M) => {
+      this.menus.delete(menu.id);
+    });
+    if (destroyOnExit) {
       OnGameModeExit(() => {
         this.menus.forEach((m) => m.destroy());
         this.menus.clear();
       });
     }
-
     OnPlayerExitedMenu((playerid: number): number => {
       const menu = this.findMenuById(GetPlayerMenu(playerid));
       if (!menu) return 0;
@@ -55,7 +54,6 @@ export abstract class BaseMenuEvent<
       return pFn(player, menu, row);
     });
   }
-
   protected abstract onPlayerExited(player: P, menu: M): TCommonCallback;
   protected abstract onPlayerSelectedRow(
     player: P,
@@ -78,12 +76,5 @@ export abstract class BaseMenuEvent<
 
   public getMenusMap(): Map<number, M> {
     return this.menus;
-  }
-
-  public _onCreated(menu: M) {
-    this.menus.set(menu.id, menu);
-  }
-  public _onDestroyed(menu: M) {
-    this.menus.delete(menu.id);
   }
 }

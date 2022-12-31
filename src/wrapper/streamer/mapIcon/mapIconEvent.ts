@@ -15,7 +15,7 @@ export abstract class DynamicMapIconEvent<
   private readonly mapIcons = new Map<number, M>();
   private readonly players;
 
-  constructor(playersMap: Map<number, P>) {
+  constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
     mapIconBus.on(mapIconHooks.created, (mapIcon: M) => {
       this.mapIcons.set(mapIcon.id, mapIcon);
@@ -23,6 +23,12 @@ export abstract class DynamicMapIconEvent<
     mapIconBus.on(mapIconHooks.destroyed, (mapIcon: M) => {
       this.mapIcons.delete(mapIcon.id);
     });
+    if (destroyOnExit) {
+      OnGameModeExit(() => {
+        this.mapIcons.forEach((c) => c.destroy());
+        this.mapIcons.clear();
+      });
+    }
     Streamer.onItemStreamIn((type, item, player) => {
       if (type === StreamerItemTypes.MAP_ICON) {
         const mi = this.mapIcons.get(item);
@@ -48,13 +54,6 @@ export abstract class DynamicMapIconEvent<
           )(mi, p);
       }
       return 1;
-    });
-    OnGameModeExit(() => {
-      setTimeout(() => {
-        this.getMapIconsArr().forEach((i) => {
-          i.isValid() && i.destroy();
-        });
-      });
     });
   }
 

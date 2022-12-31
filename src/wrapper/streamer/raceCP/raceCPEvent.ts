@@ -18,7 +18,7 @@ export abstract class DynamicRaceCPEvent<
   private readonly raceCPs = new Map<number, R>();
   private readonly players;
 
-  constructor(playersMap: Map<number, P>) {
+  constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
     raceCPBus.on(raceCPHooks.created, (checkpoint: R) => {
       this.raceCPs.set(checkpoint.id, checkpoint);
@@ -26,6 +26,12 @@ export abstract class DynamicRaceCPEvent<
     raceCPBus.on(raceCPHooks.destroyed, (checkpoint: R) => {
       this.raceCPs.delete(checkpoint.id);
     });
+    if (destroyOnExit) {
+      OnGameModeExit(() => {
+        this.raceCPs.forEach((r) => r.destroy());
+        this.raceCPs.clear();
+      });
+    }
     OnPlayerEnterDynamicRaceCP(
       (playerid: number, checkpointid: number): number => {
         const cp = this.raceCPs.get(checkpointid);
@@ -79,13 +85,6 @@ export abstract class DynamicRaceCPEvent<
           )(cp, p);
       }
       return 1;
-    });
-    OnGameModeExit(() => {
-      setTimeout(() => {
-        this.getRaceCPsArr().forEach((cp) => {
-          cp.isValid() && cp.destroy();
-        });
-      });
     });
   }
 

@@ -18,7 +18,7 @@ export abstract class DynamicCheckPointEvent<
   private readonly checkpoints = new Map<number, C>();
   private readonly players;
 
-  constructor(playersMap: Map<number, P>) {
+  constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
     checkPointBus.on(checkPointHooks.created, (checkpoint: C) => {
       this.checkpoints.set(checkpoint.id, checkpoint);
@@ -26,6 +26,13 @@ export abstract class DynamicCheckPointEvent<
     checkPointBus.on(checkPointHooks.destroyed, (checkpoint: C) => {
       this.checkpoints.delete(checkpoint.id);
     });
+    if (destroyOnExit) {
+      OnGameModeExit(() => {
+        this.checkpoints.forEach((c) => c.destroy());
+        this.checkpoints.clear();
+      });
+    }
+
     OnPlayerEnterDynamicCP((playerid: number, checkpointid: number): number => {
       const cp = this.checkpoints.get(checkpointid);
       if (!cp) return 0;
@@ -75,13 +82,6 @@ export abstract class DynamicCheckPointEvent<
           )(cp, p);
       }
       return 1;
-    });
-    OnGameModeExit(() => {
-      setTimeout(() => {
-        this.getCheckPointsArr().forEach((cp) => {
-          cp.isValid() && cp.destroy();
-        });
-      });
     });
   }
 
