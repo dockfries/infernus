@@ -240,10 +240,10 @@ export class DynamicActor {
       return logger.warn("[StreamerActor]: Unable to get skin before create");
     return GetActorSkin(this.id);
   }
-  public setSkin(model: number): void | number {
+  public setSkin(model: number, ignoreRange = false): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to set skin before create");
-    if (model < 0 || model > 311 || model == 74) return 0;
+    if (!ignoreRange && (model < 0 || model > 311 || model == 74)) return 0;
     return SetActorSkin(this.id, model);
   }
   public getSpawnInfo() {

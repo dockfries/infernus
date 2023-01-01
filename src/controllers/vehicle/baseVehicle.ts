@@ -49,7 +49,7 @@ export abstract class BaseVehicle {
     this.sourceInfo = veh;
     this.isStatic = isStatic;
   }
-  public create(): void {
+  public create(ignoreRange = false): void {
     if (this.id !== -1)
       return logger.warn("[BaseVehicle]: Unable to create the vehicle again");
     if (BaseVehicle.createdCount === LimitsEnum.MAX_VEHICLES)
@@ -67,6 +67,7 @@ export abstract class BaseVehicle {
       respawn_delay,
       addsiren,
     } = this.sourceInfo;
+    if (!ignoreRange && (modelid < 400 || modelid > 611)) return;
     if (this.isStatic) {
       if (respawn_delay === undefined) {
         this._id = vehFunc.AddStaticVehicle(
@@ -486,9 +487,11 @@ export abstract class BaseVehicle {
     color1: string | number,
     color2: string | number,
     respawntime = -2,
-    interior = -2
+    interior = -2,
+    ignoreRange = false
   ): number {
     if (this.id === -1) return 0;
+    if (!ignoreRange && (modelid < 400 || modelid > 611)) return 0;
     return SetVehicleSpawnInfo(
       this.id,
       modelid,

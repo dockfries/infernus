@@ -255,8 +255,8 @@ export abstract class BasePlayer {
   public isStreamedIn<P extends BasePlayer>(forplayer: P) {
     return playerFunc.IsPlayerStreamedIn(this.id, forplayer.id);
   }
-  public setSkin(skinId: number): number {
-    if (skinId < 0 || skinId > 311 || skinId == 74) return 0;
+  public setSkin(skinId: number, ignoreRange = false): number {
+    if (!ignoreRange && (skinId < 0 || skinId > 311 || skinId == 74)) return 0;
     if (this.getHealth() <= 0) return 0;
     if (this.isInAnyVehicle()) return 0;
     if (this.getSpecialAction() === SpecialActionsEnum.DUCK) return 0;
