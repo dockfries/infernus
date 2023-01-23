@@ -1,6 +1,6 @@
 # omp-node-lib
 
-## Introduction
+[![npm](https://img.shields.io/npm/v/omp-node-lib)](https://www.npmjs.com/package/omp-node-lib) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/omp-node-lib)
 
 NodeJS library for Scripting [Open Multiplayer](https://open.mp), depends on [omp-node-ts](https://github.com/YuCarl77/omp-node-ts) template.
 
@@ -16,11 +16,9 @@ NodeJS library for Scripting [Open Multiplayer](https://open.mp), depends on [om
 
 ## Notice
 
-- Do not mix functional wrapper and class wrapper
+- It is strongly recommended not to mix functional wrapper with class wrapper.
+- Please wait for the [Omp Node](https://github.com/AmyrAhmady) to support component plugins, such as [Pawn.RakNet](https://github.com/katursis/Pawn.RakNet)
 
-## Credits
+## License
 
-- [omp-server](https://github.com/openmultiplayer/server-beta)
-- [samp-node](https://github.com/AmyrAhmady/samp-node)
-- [samp-node-lib](https://github.com/peterszombati/samp-node-lib)
-- [@sa-mp/node](https://github.com/samp-dev/node)
+[MIT](./LICENSE)
