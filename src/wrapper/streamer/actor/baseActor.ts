@@ -56,8 +56,8 @@ export class DynamicActor {
     priority ??= 0;
 
     if (extended) {
-      if (typeof worldid === "number") worldid = [-1];
-      else worldid ??= [-1];
+      if (typeof worldid === "number") worldid = [0];
+      else worldid ??= [0];
       if (typeof interiorid === "number") interiorid = [-1];
       else interiorid ??= [-1];
       if (typeof playerid === "number") playerid = [-1];
@@ -81,8 +81,8 @@ export class DynamicActor {
         priority
       );
     } else {
-      if (Array.isArray(worldid)) worldid = -1;
-      else worldid ??= -1;
+      if (Array.isArray(worldid)) worldid = 0;
+      else worldid ??= 0;
       if (Array.isArray(interiorid)) interiorid = -1;
       else interiorid ??= -1;
       if (Array.isArray(playerid)) playerid = -1;
