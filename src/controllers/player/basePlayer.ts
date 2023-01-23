@@ -80,7 +80,6 @@ export abstract class BasePlayer {
   public lastDrunkLevel = 0;
   public lastFps = 0;
   private _isNpc: boolean;
-  private _isAndroid: boolean | null = null;
   public isPaused = false;
   public lastUpdateTick = 0;
 
@@ -969,39 +968,6 @@ export abstract class BasePlayer {
   }
   public removeWeapon(weaponid: number): number {
     return RemovePlayerWeapon(this.id, weaponid);
-  }
-  public isAndroid(): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      setTimeout(async () => {
-        if (this._isAndroid !== null) return resolve(this._isAndroid);
-        if (this.isNpc()) return resolve(false);
-        let tryCut = 1;
-        while (tryCut < 6) {
-          tryCut++;
-          if (!this.isConnected()) {
-            reject(
-              "[BasePlayer]: Leaving the game while checking if the player's platform is a PC"
-            );
-            break;
-          }
-          try {
-            const p = await this.sendClientCheck(0x48, 0, 0, 2);
-            if (p) {
-              this._isAndroid = p.actionid !== 0x48;
-              resolve(this._isAndroid);
-              break;
-            }
-            // eslint-disable-next-line no-empty
-          } catch (error) {}
-        }
-        if (tryCut === 6) {
-          this.kick();
-          reject(
-            "[BasePlayer]: Attempted to exceed the limit while checking whether the player's platform is PC"
-          );
-        }
-      });
-    });
   }
   public isUsingOfficialClient() {
     return IsPlayerUsingOfficialClient(this.id);

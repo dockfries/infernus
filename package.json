@@ -1,6 +1,6 @@
 {
   "name": "omp-node-lib",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "Better with omp-node-ts",
   "main": "dist/bundle.js",
   "types": "dist/bundle.d.ts",

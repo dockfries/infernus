@@ -32,7 +32,6 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     cbs.OnPlayerConnect((playerid: number): number => {
       const p = this.newPlayer(playerid);
       this.players.set(playerid, p);
-      if (!p.isNpc()) p.isAndroid();
       const pFn = promisifyCallback.call(
         this,
         this.onConnect,
