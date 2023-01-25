@@ -19,7 +19,7 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 // Here are some i18n functions used to override the original functions
 export const SendClientMessage = <P extends BasePlayer>(
   player: P,
-  color: string | number,
+  colour: string | number,
   msg: string
 ): number => {
   const res = processMsg(msg, player.charset);
@@ -27,17 +27,17 @@ export const SendClientMessage = <P extends BasePlayer>(
     "SendClientMessage",
     `ii${res[0]}`,
     player.id,
-    rgba(color),
+    rgba(colour),
     res[1]
   );
 };
 
 export const SendClientMessageToAll = <P extends BasePlayer>(
   fn: Array<P>,
-  color: string | number,
+  colour: string | number,
   msg: string
 ): number => {
-  fn.forEach((player) => SendClientMessage(player, color, msg));
+  fn.forEach((player) => SendClientMessage(player, colour, msg));
   return 1;
 };
 
@@ -123,13 +123,13 @@ export const OnDialogResponse = (
 
 samp.registerEvent("OnClientMessageI18n", "iai");
 export const OnClientMessage = (
-  fn: (color: number, text: string) => number,
+  fn: (colour: number, text: string) => number,
   charset = defaultCharset
 ) => {
   samp.addEventListener(
     "OnClientMessageI18n",
-    (color: number, buf: number[]): number => {
-      return fn(color, I18n.decodeFromBuf(buf, charset));
+    (colour: number, buf: number[]): number => {
+      return fn(colour, I18n.decodeFromBuf(buf, charset));
     }
   );
 };
@@ -195,7 +195,7 @@ export const BanEx = (
 export const CreateDynamic3DTextLabel = (
   charset: string,
   text: string,
-  color: number,
+  colour: number,
   x: number,
   y: number,
   z: number,
@@ -215,7 +215,7 @@ export const CreateDynamic3DTextLabel = (
     "CreateDynamic3DTextLabel",
     "aiffffiiiiiifii",
     buf,
-    color,
+    colour,
     x,
     y,
     z,
@@ -234,7 +234,7 @@ export const CreateDynamic3DTextLabel = (
 
 export const CreateDynamic3DTextLabelEx = (
   text: string,
-  color: number,
+  colour: number,
   x: number,
   y: number,
   z: number,
@@ -255,7 +255,7 @@ export const CreateDynamic3DTextLabelEx = (
     "CreateDynamic3DTextLabelEx",
     "aiffffiiifaaaaiiiii",
     buf,
-    color,
+    colour,
     x,
     y,
     z,
@@ -278,12 +278,12 @@ export const CreateDynamic3DTextLabelEx = (
 
 export const UpdateDynamic3DTextLabelText = (
   id: number,
-  color: number,
+  colour: number,
   text: string,
   charset: string
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
-  return callNative("UpdateDynamic3DTextLabelText", "iia", id, color, buf);
+  return callNative("UpdateDynamic3DTextLabelText", "iia", id, colour, buf);
 };
 
 export const GetDynamic3DTextLabelText = (
@@ -308,8 +308,8 @@ export const SetDynamicObjectMaterialText = (
   fontface: string,
   fontsize: number,
   bold: number,
-  fontcolor: number,
-  backcolor: number,
+  fontcolour: number,
+  backcolour: number,
   textalignment: number
 ): number => {
   const textBuf = I18n.encodeToBuf(text, charset);
@@ -324,8 +324,8 @@ export const SetDynamicObjectMaterialText = (
     fontFaceBuf,
     fontsize,
     bold,
-    fontcolor,
-    backcolor,
+    fontcolour,
+    backcolour,
     textalignment
   );
 };
@@ -340,8 +340,8 @@ export const GetDynamicObjectMaterialText = (
     materialsize,
     fontface,
     bold,
-    fontcolor,
-    backcolor,
+    fontcolour,
+    backcolour,
     textalignment,
   ]: [number[], number, number[], number, number, number, number] = callNative(
     "GetDynamicObjectMaterialText",
@@ -358,8 +358,8 @@ export const GetDynamicObjectMaterialText = (
     materialsize,
     fontface: fontFaceStr,
     bold,
-    fontcolor,
-    backcolor,
+    fontcolour,
+    backcolour,
     textalignment,
   };
 };

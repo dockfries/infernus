@@ -26,13 +26,12 @@ import {
   HasVehicleBeenOccupied,
   GetVehicleOccupiedTick,
   GetVehicleCab,
-  GetVehicleTower,
   GetVehicleRespawnDelay,
   SetVehicleRespawnDelay,
   GetVehicleNumberPlate,
   GetVehicleInterior,
   GetVehiclePaintjob,
-  GetVehicleColor,
+  GetVehicleColours,
   SetVehicleSpawnInfo,
   GetVehicleSpawnInfo,
 } from "omp-wrapper";
@@ -62,8 +61,8 @@ export abstract class BaseVehicle {
       y,
       z,
       z_angle,
-      color1,
-      color2,
+      colour1,
+      colour2,
       respawn_delay,
       addsiren,
     } = this.sourceInfo;
@@ -76,8 +75,8 @@ export abstract class BaseVehicle {
           y,
           z,
           z_angle,
-          color1,
-          color2
+          colour1,
+          colour2
         );
         return;
       }
@@ -87,8 +86,8 @@ export abstract class BaseVehicle {
         y,
         z,
         z_angle,
-        color1,
-        color2,
+        colour1,
+        colour2,
         respawn_delay || -1,
         addsiren || false
       );
@@ -99,8 +98,8 @@ export abstract class BaseVehicle {
         y,
         z,
         z_angle,
-        color1,
-        color2,
+        colour1,
+        colour2,
         respawn_delay || -1,
         addsiren || false
       );
@@ -218,9 +217,12 @@ export abstract class BaseVehicle {
   public static getPoolSize(): number {
     return vehFunc.GetVehiclePoolSize();
   }
-  public changeColor(color1: string | number, color2: string | number): number {
+  public changeColours(
+    colour1: string | number,
+    colour2: string | number
+  ): number {
     if (this.id === -1) return 0;
-    return vehFunc.ChangeVehicleColor(this.id, color1, color2);
+    return vehFunc.ChangeVehicleColours(this.id, colour1, colour2);
   }
   public setVelocity(X: number, Y: number, Z: number): number {
     if (this.id === -1) return 0;
@@ -366,7 +368,7 @@ export abstract class BaseVehicle {
   public changePaintjob(paintjobid: 0 | 1 | 2): number {
     if (this.id === -1) return 0;
     if (!isValidPaintJob(this.getModel(), paintjobid)) return 0;
-    this.changeColor("#fff", "#fff");
+    this.changeColours("#fff", "#fff");
     vehFunc.ChangeVehiclePaintjob(this.id, paintjobid);
     return 1;
   }
@@ -450,10 +452,6 @@ export abstract class BaseVehicle {
     if (this.id === -1) return 0;
     return GetVehicleCab(this.id);
   }
-  public getTower(): number {
-    if (this.id === -1) return 0;
-    return GetVehicleTower(this.id);
-  }
   public getRespawnDelay(): number {
     if (this.id === -1) return 0;
     return GetVehicleRespawnDelay(this.id);
@@ -474,9 +472,9 @@ export abstract class BaseVehicle {
     if (this.id === -1) return -1;
     return GetVehiclePaintjob(this.id);
   }
-  public getColor() {
+  public getColours() {
     if (this.id === -1) return;
-    return GetVehicleColor(this.id);
+    return GetVehicleColours(this.id);
   }
   public setSpawnInfo(
     modelid: number,
@@ -484,8 +482,8 @@ export abstract class BaseVehicle {
     fY: number,
     fZ: number,
     fAngle: number,
-    color1: string | number,
-    color2: string | number,
+    colour1: string | number,
+    colour2: string | number,
     respawntime = -2,
     interior = -2,
     ignoreRange = false
@@ -499,8 +497,8 @@ export abstract class BaseVehicle {
       fY,
       fZ,
       fAngle,
-      rgba(color1),
-      rgba(color2),
+      rgba(colour1),
+      rgba(colour2),
       respawntime,
       interior
     );

@@ -55,8 +55,8 @@ export interface IVehicle {
   y: number;
   z: number;
   z_angle: number;
-  color1: string | number;
-  color2: string | number;
+  colour1: string | number;
+  colour2: string | number;
   respawn_delay?: number;
   addsiren?: boolean;
 }
@@ -109,7 +109,7 @@ export interface IDynamicCommon extends IDynamicBase {
 
 export interface IDynamicMapIcon extends IDynamicCommon {
   type: number;
-  color: string | number;
+  colour: string | number;
   style?: MapIconStyles;
 }
 
@@ -139,7 +139,7 @@ export interface IDynamicActor extends IDynamicCommon {
 export interface IDynamic3DTextLabel extends IDynamicCommon {
   charset: string;
   text: string;
-  color: string | number;
+  colour: string | number;
   attachedplayer?: number;
   attachedvehicle?: number;
   testlos?: boolean;

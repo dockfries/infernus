@@ -31,7 +31,7 @@ export abstract class BaseNpcEvent {
   protected abstract onModeExit(): TCommonCallback;
   protected abstract onSpawn(): TCommonCallback;
   protected abstract onClientMessage(
-    color: number,
+    colour: number,
     text: string
   ): TCommonCallback;
 }

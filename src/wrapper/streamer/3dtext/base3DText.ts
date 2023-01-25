@@ -40,7 +40,7 @@ export class Dynamic3DTextLabel {
       areaid,
       priority,
     } = this.sourceInfo;
-    const { charset, text, color, drawdistance, x, y, z, extended } =
+    const { charset, text, colour, drawdistance, x, y, z, extended } =
       this.sourceInfo;
 
     attachedplayer ??= InvalidEnum.PLAYER_ID;
@@ -61,7 +61,7 @@ export class Dynamic3DTextLabel {
 
       this._id = CreateDynamic3DTextLabelEx(
         text,
-        rgba(color),
+        rgba(colour),
         x,
         y,
         z,
@@ -90,7 +90,7 @@ export class Dynamic3DTextLabel {
       this._id = CreateDynamic3DTextLabel(
         charset,
         text,
-        rgba(color),
+        rgba(colour),
         x,
         y,
         z,
@@ -121,12 +121,12 @@ export class Dynamic3DTextLabel {
   public isValid(): boolean {
     return IsValidDynamic3DTextLabel(this.id);
   }
-  public getColor(): void | string | number {
+  public getColour(): void | string | number {
     if (this.id === -1)
       return logger.warn(
-        "[Streamer3DTextLabel]: Unable to get color before create"
+        "[Streamer3DTextLabel]: Unable to get colour before create"
       );
-    return this.sourceInfo.color;
+    return this.sourceInfo.colour;
   }
   public getCharset(): void | string {
     if (this.id === -1)
@@ -143,7 +143,7 @@ export class Dynamic3DTextLabel {
     return GetDynamic3DTextLabelText(this.id, this.sourceInfo.charset);
   }
   public updateText(
-    color: string | number,
+    colour: string | number,
     text: string,
     charset = this.sourceInfo.charset
   ): void | number {
@@ -152,7 +152,7 @@ export class Dynamic3DTextLabel {
         "[Streamer3DTextLabel]: Unable to update text before create"
       );
     this.sourceInfo.charset = charset;
-    return UpdateDynamic3DTextLabelText(this.id, rgba(color), text, charset);
+    return UpdateDynamic3DTextLabelText(this.id, rgba(colour), text, charset);
   }
   public toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)

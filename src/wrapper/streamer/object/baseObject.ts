@@ -285,7 +285,7 @@ export class DynamicObject {
   public edit<P extends BasePlayer>(player: P): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Unable to edit before create");
-    player.cancelEdit();
+    player.endObjectEditing();
     return EditDynamicObject(player.id, this.id);
   }
 
@@ -322,7 +322,7 @@ export class DynamicObject {
     modelid: number,
     txdname: string,
     texturename: string,
-    materialcolor = "#000"
+    materialcolour = "#000"
   ): void | number {
     if (this.id === -1)
       return logger.warn(
@@ -334,7 +334,7 @@ export class DynamicObject {
       modelid,
       txdname,
       texturename,
-      rgba(materialcolor)
+      rgba(materialcolour)
     );
   }
 
@@ -368,8 +368,8 @@ export class DynamicObject {
     fontFace = "Arial",
     fontSize = 24,
     bold = 1,
-    fontColor = "#fff",
-    backColor = "#000",
+    fontColour = "#fff",
+    backColour = "#000",
     textAlignment = 0
   ): void | number {
     if (this.id === -1)
@@ -386,8 +386,8 @@ export class DynamicObject {
       fontFace,
       fontSize,
       bold,
-      rgba(fontColor),
-      rgba(backColor),
+      rgba(fontColour),
+      rgba(backColour),
       textAlignment
     );
   }

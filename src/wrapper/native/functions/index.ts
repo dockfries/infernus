@@ -24,6 +24,8 @@ import {
   WeaponStatesEnum,
 } from "@/enums";
 import { callNative, callNativeFloat } from "@/utils/helperUtils";
+import { I18n } from "@/controllers/i18n";
+import { defaultCharset } from "@/controllers/gamemode/settings";
 
 export const SendDeathMessage = (
   killer: number,
@@ -169,8 +171,8 @@ export const AddStaticVehicle = (
   spawn_y: number,
   spawn_z: number,
   z_angle: number,
-  color1: string | number,
-  color2: string | number
+  colour1: string | number,
+  colour2: string | number
 ): number => {
   return callNative(
     "AddStaticVehicle",
@@ -180,8 +182,8 @@ export const AddStaticVehicle = (
     spawn_y,
     spawn_z,
     z_angle,
-    color1,
-    color2
+    colour1,
+    colour2
   );
 };
 
@@ -191,8 +193,8 @@ export const AddStaticVehicleEx = (
   spawn_y: number,
   spawn_z: number,
   z_angle: number,
-  color1: string | number,
-  color2: string | number,
+  colour1: string | number,
+  colour2: string | number,
   respawn_delay: number,
   addsiren: boolean
 ): number => {
@@ -204,8 +206,8 @@ export const AddStaticVehicleEx = (
     spawn_y,
     spawn_z,
     z_angle,
-    color1,
-    color2,
+    colour1,
+    colour2,
     respawn_delay,
     addsiren
   );
@@ -285,10 +287,6 @@ export const GetGravity = (): number => {
 
 export const SetGravity = (gravity: number): number => {
   return callNative("SetGravity", "f", gravity);
-};
-
-export const SetDeathDropAmount = (amount: number): number => {
-  return callNative("SetDeathDropAmount", "i", amount);
 };
 
 export const CreateExplosion = (
@@ -502,19 +500,22 @@ export const TextDrawAlignment = (
   return callNative("TextDrawAlignment", "ii", text, alignment);
 };
 
-export const TextDrawColor = (text: number, color: string | number): number => {
-  return callNative("TextDrawColor", "ii", text, rgba(color));
+export const TextDrawColour = (
+  text: number,
+  colour: string | number
+): boolean => {
+  return Boolean(callNative("TextDrawColour", "ii", text, rgba(colour)));
 };
 
 export const TextDrawUseBox = (text: number, use: boolean): number => {
   return callNative("TextDrawUseBox", "ii", text, use);
 };
 
-export const TextDrawBoxColor = (
+export const TextDrawBoxColour = (
   text: number,
-  color: string | number
-): number => {
-  return callNative("TextDrawBoxColor", "ii", text, rgba(color));
+  colour: string | number
+): boolean => {
+  return Boolean(callNative("TextDrawBoxColour", "ii", text, rgba(colour)));
 };
 
 export const TextDrawSetShadow = (text: number, size: number): number => {
@@ -525,11 +526,13 @@ export const TextDrawSetOutline = (text: number, size: number): number => {
   return callNative("TextDrawSetOutline", "ii", text, size);
 };
 
-export const TextDrawBackgroundColor = (
+export const TextDrawBackgroundColour = (
   text: number,
-  color: string | number
-): number => {
-  return callNative("TextDrawBackgroundColor", "ii", text, rgba(color));
+  colour: string | number
+): boolean => {
+  return Boolean(
+    callNative("TextDrawBackgroundColour", "ii", text, rgba(colour))
+  );
 };
 
 export const TextDrawFont = (text: number, font: number): number => {
@@ -595,17 +598,19 @@ export const TextDrawSetPreviewRot = (
   );
 };
 
-export const TextDrawSetPreviewVehCol = (
+export const TextDrawSetPreviewVehicleColours = (
   text: number,
-  color1: string | number,
-  color2: string | number
-): void => {
-  callNative(
-    "TextDrawSetPreviewVehCol",
-    "iii",
-    text,
-    rgba(color1),
-    rgba(color2)
+  colour1: string | number,
+  colour2: string | number
+): boolean => {
+  return Boolean(
+    callNative(
+      "TextDrawSetPreviewVehicleColours",
+      "iii",
+      text,
+      rgba(colour1),
+      rgba(colour2)
+    )
   );
 };
 
@@ -625,22 +630,22 @@ export const GangZoneDestroy = (zone: number): number => {
 export const GangZoneShowForPlayer = (
   playerid: number,
   zone: number,
-  color: string | number
+  colour: string | number
 ): number => {
   return callNative(
     "GangZoneShowForPlayer",
     "iii",
     playerid,
     zone,
-    rgba(color)
+    rgba(colour)
   );
 };
 
 export const GangZoneShowForAll = (
   zone: number,
-  color: string | number
+  colour: string | number
 ): number => {
-  return callNative("GangZoneShowForAll", "ii", zone, rgba(color));
+  return callNative("GangZoneShowForAll", "ii", zone, rgba(colour));
 };
 
 export const GangZoneHideForPlayer = (
@@ -657,22 +662,22 @@ export const GangZoneHideForAll = (zone: number): number => {
 export const GangZoneFlashForPlayer = (
   playerid: number,
   zone: number,
-  flashcolor: string | number
+  flashcolour: string | number
 ): number => {
   return callNative(
     "GangZoneFlashForPlayer",
     "iii",
     playerid,
     zone,
-    rgba(flashcolor)
+    rgba(flashcolour)
   );
 };
 
 export const GangZoneFlashForAll = (
   zone: number,
-  flashcolor: string | number
+  flashcolour: string | number
 ): number => {
-  return callNative("GangZoneFlashForAll", "ii", zone, rgba(flashcolor));
+  return callNative("GangZoneFlashForAll", "ii", zone, rgba(flashcolour));
 };
 
 export const GangZoneStopFlashForPlayer = (
@@ -688,7 +693,7 @@ export const GangZoneStopFlashForAll = (zone: number): number => {
 
 export const Create3DTextLabel = (
   text: string,
-  color: string | number,
+  colour: string | number,
   X: number,
   Y: number,
   Z: number,
@@ -700,7 +705,7 @@ export const Create3DTextLabel = (
     "Create3DTextLabel",
     "siffffii",
     text,
-    rgba(color),
+    rgba(colour),
     X,
     Y,
     Z,
@@ -752,16 +757,16 @@ export const Attach3DTextLabelToVehicle = (
 
 export const Update3DTextLabelText = (
   id: number,
-  color: string | number,
+  colour: string | number,
   text: string
 ): number => {
-  return callNative("Update3DTextLabelText", "iis", id, rgba(color), text);
+  return callNative("Update3DTextLabelText", "iis", id, rgba(colour), text);
 };
 
 export const CreatePlayer3DTextLabel = (
   playerid: number,
   text: string,
-  color: string | number,
+  colour: string | number,
   X: number,
   Y: number,
   Z: number,
@@ -775,7 +780,7 @@ export const CreatePlayer3DTextLabel = (
     "isiffffiii",
     playerid,
     text,
-    rgba(color),
+    rgba(colour),
     X,
     Y,
     Z,
@@ -796,7 +801,7 @@ export const DeletePlayer3DTextLabel = (
 export const UpdatePlayer3DTextLabelText = (
   playerid: number,
   id: number,
-  color: string | number,
+  colour: string | number,
   text: string
 ): number => {
   return callNative(
@@ -804,13 +809,16 @@ export const UpdatePlayer3DTextLabelText = (
     "iiis",
     playerid,
     id,
-    rgba(color),
+    rgba(colour),
     text
   );
 };
 
-export const gpci = (playerid: number, maxlen: number): string => {
-  return callNative("gpci", "iSi", playerid, maxlen);
+export const GPCI = (playerid: number, charset = defaultCharset): string => {
+  return I18n.decodeFromBuf(
+    I18n.getValidStr(callNative("GPCI", "iAi", playerid, 41)),
+    charset
+  );
 };
 
 export const CreateActor = (
@@ -1057,8 +1065,8 @@ export const GetObjectModel = (objectid: number): number => {
   return callNative("GetObjectModel", "i", objectid);
 };
 
-export const SetObjectNoCameraCol = (objectid: number): number => {
-  return callNative("SetObjectNoCameraCol", "i", objectid);
+export const SetObjectNoCameraCollision = (objectid: number): boolean => {
+  return Boolean(callNative("SetObjectNoCameraCollision", "i", objectid));
 };
 
 export const IsValidObject = (objectid: number): boolean => {
@@ -1101,23 +1109,28 @@ export const IsObjectMoving = (objectid: number): boolean => {
   return Boolean(callNative("IsObjectMoving", "i", objectid));
 };
 
-export const EditObject = (playerid: number, objectid: number): number => {
-  return callNative("EditObject", "ii", playerid, objectid);
-};
-
-export const EditPlayerObject = (
+export const BeginObjectEditing = (
   playerid: number,
   objectid: number
-): number => {
-  return callNative("EditPlayerObject", "ii", playerid, objectid);
+): boolean => {
+  return Boolean(callNative("BeginObjectEditing", "ii", playerid, objectid));
 };
 
-export const SelectObject = (playerid: number): number => {
-  return callNative("SelectObject", "i", playerid);
+export const BeginPlayerObjectEditing = (
+  playerid: number,
+  objectid: number
+): boolean => {
+  return Boolean(
+    callNative("BeginPlayerObjectEditing", "ii", playerid, objectid)
+  );
 };
 
-export const CancelEdit = (playerid: number): number => {
-  return callNative("CancelEdit", "i", playerid);
+export const BeginObjectSelecting = (playerid: number): boolean => {
+  return Boolean(callNative("BeginObjectSelecting", "i", playerid));
+};
+
+export const EndObjectEditing = (playerid: number): boolean => {
+  return Boolean(callNative("EndObjectEditing", "i", playerid));
 };
 
 export const CreatePlayerObject = (
@@ -1221,11 +1234,13 @@ export const GetPlayerObjectModel = (
   return callNative("GetPlayerObjectModel", "ii", playerid, objectid);
 };
 
-export const SetPlayerObjectNoCameraCol = (
+export const SetPlayerObjectNoCameraCollision = (
   playerid: number,
   objectid: number
-): number => {
-  return callNative("SetPlayerObjectNoCameraCol", "ii", playerid, objectid);
+): boolean => {
+  return Boolean(
+    callNative("SetPlayerObjectNoCameraCollision", "ii", playerid, objectid)
+  );
 };
 
 export const IsValidPlayerObject = (
@@ -1314,7 +1329,7 @@ export const SetObjectMaterial = (
   modelid: number,
   txdname: string,
   texturename: string,
-  materialcolor: string | number
+  materialcolour: string | number
 ): number => {
   return callNative(
     "SetObjectMaterial",
@@ -1324,7 +1339,7 @@ export const SetObjectMaterial = (
     modelid,
     txdname,
     texturename,
-    rgba(materialcolor)
+    rgba(materialcolour)
   );
 };
 
@@ -1335,7 +1350,7 @@ export const SetPlayerObjectMaterial = (
   modelid: number,
   txdname: string,
   texturename: string,
-  materialcolor: string | number
+  materialcolour: string | number
 ): number => {
   return callNative(
     "SetPlayerObjectMaterial",
@@ -1346,7 +1361,7 @@ export const SetPlayerObjectMaterial = (
     modelid,
     txdname,
     texturename,
-    rgba(materialcolor)
+    rgba(materialcolour)
   );
 };
 
@@ -1358,8 +1373,8 @@ export const SetObjectMaterialText = (
   fontface: string,
   fontsize: number,
   bold = true,
-  fontcolor: string | number,
-  backcolor: string | number,
+  fontcolour: string | number,
+  backcolour: string | number,
   textalignment: number
 ): number => {
   return callNative(
@@ -1372,8 +1387,8 @@ export const SetObjectMaterialText = (
     fontface,
     fontsize,
     bold,
-    rgba(fontcolor),
-    rgba(backcolor),
+    rgba(fontcolour),
+    rgba(backcolour),
     textalignment
   );
 };
@@ -1387,8 +1402,8 @@ export const SetPlayerObjectMaterialText = (
   fontface: string,
   fontsize: number,
   bold = true,
-  fontcolor: string | number,
-  backcolor: string | number,
+  fontcolour: string | number,
+  backcolour: string | number,
   textalignment: number
 ): number => {
   return callNative(
@@ -1402,14 +1417,14 @@ export const SetPlayerObjectMaterialText = (
     fontface,
     fontsize,
     bold,
-    rgba(fontcolor),
-    rgba(backcolor),
+    rgba(fontcolour),
+    rgba(backcolour),
     textalignment
   );
 };
 
-export const SetObjectsDefaultCameraCol = (disable: boolean): number => {
-  return callNative("SetObjectsDefaultCameraCol", "i", disable);
+export const SetObjectsDefaultCameraCollision = (disable: boolean): boolean => {
+  return Boolean(callNative("SetObjectsDefaultCameraCollision", "i", disable));
 };
 
 export const SetSpawnInfo = (
@@ -1595,9 +1610,9 @@ export const SetPlayerDrunkLevel = (
 
 export const SetPlayerColor = (
   playerid: number,
-  color: string | number
+  colour: string | number
 ): number => {
-  return callNative("SetPlayerColor", "ii", playerid, rgba(color));
+  return callNative("SetPlayerColor", "ii", playerid, rgba(colour));
 };
 
 export const GetPlayerColor = (playerid: number): number => {
@@ -1831,8 +1846,8 @@ export const SetPlayerAttachedObject = (
   fScaleX: number,
   fScaleY: number,
   fScaleZ: number,
-  materialcolor1: string | number,
-  materialcolor2: string | number
+  materialcolour1: string | number,
+  materialcolour2: string | number
 ): number => {
   return callNative(
     "SetPlayerAttachedObject",
@@ -1850,8 +1865,8 @@ export const SetPlayerAttachedObject = (
     fScaleX,
     fScaleY,
     fScaleZ,
-    rgba(materialcolor1),
-    rgba(materialcolor2)
+    rgba(materialcolour1),
+    rgba(materialcolour2)
   );
 };
 
@@ -1920,12 +1935,14 @@ export const PlayerTextDrawAlignment = (
   );
 };
 
-export const PlayerTextDrawColor = (
+export const PlayerTextDrawColour = (
   playerid: number,
   text: number,
-  color: string | number
-): number => {
-  return callNative("PlayerTextDrawColor", "iii", playerid, text, rgba(color));
+  colour: string | number
+): boolean => {
+  return Boolean(
+    callNative("PlayerTextDrawColour", "iii", playerid, text, rgba(colour))
+  );
 };
 
 export const PlayerTextDrawUseBox = (
@@ -1936,17 +1953,13 @@ export const PlayerTextDrawUseBox = (
   return callNative("PlayerTextDrawUseBox", "iii", playerid, text, use);
 };
 
-export const PlayerTextDrawBoxColor = (
+export const PlayerTextDrawBoxColour = (
   playerid: number,
   text: number,
-  color: string | number
-): number => {
-  return callNative(
-    "PlayerTextDrawBoxColor",
-    "iii",
-    playerid,
-    text,
-    rgba(color)
+  colour: string | number
+): boolean => {
+  return Boolean(
+    callNative("PlayerTextDrawBoxColour", "iii", playerid, text, rgba(colour))
   );
 };
 
@@ -1966,17 +1979,19 @@ export const PlayerTextDrawSetOutline = (
   return callNative("PlayerTextDrawSetOutline", "iii", playerid, text, size);
 };
 
-export const PlayerTextDrawBackgroundColor = (
+export const PlayerTextDrawBackgroundColour = (
   playerid: number,
   text: number,
-  color: string | number
-): number => {
-  return callNative(
-    "PlayerTextDrawBackgroundColor",
-    "iii",
-    playerid,
-    text,
-    rgba(color)
+  colour: string | number
+): boolean => {
+  return Boolean(
+    callNative(
+      "PlayerTextDrawBackgroundColour",
+      "iii",
+      playerid,
+      text,
+      rgba(colour)
+    )
   );
 };
 
@@ -2060,26 +2075,28 @@ export const PlayerTextDrawSetPreviewRot = (
   );
 };
 
-export const PlayerTextDrawSetPreviewVehCol = (
+export const PlayerTextDrawSetPreviewVehicleColours = (
   playerid: number,
   text: number,
-  color1: string | number,
-  color2: string | number
-): number => {
-  return callNative(
-    "PlayerTextDrawSetPreviewVehCol",
-    "iiii",
-    playerid,
-    text,
-    color1,
-    color2
+  colour1: string | number,
+  colour2: string | number
+): boolean => {
+  return Boolean(
+    callNative(
+      "PlayerTextDrawSetPreviewVehicleColours",
+      "iiii",
+      playerid,
+      text,
+      colour1,
+      colour2
+    )
   );
 };
 
 export const SetPlayerChatBubble = (
   playerid: number,
   text: string,
-  color: string | number,
+  colour: string | number,
   drawdistance: number,
   expiretime: number
 ): number => {
@@ -2088,7 +2105,7 @@ export const SetPlayerChatBubble = (
     "isifi",
     playerid,
     text,
-    rgba(color),
+    rgba(colour),
     drawdistance,
     expiretime
   );
@@ -2255,14 +2272,14 @@ export const SetPlayerWorldBounds = (
 export const SetPlayerMarkerForPlayer = (
   playerid: number,
   showplayerid: number,
-  color: string | number
+  colour: string | number
 ): number => {
   return callNative(
     "SetPlayerMarkerForPlayer",
     "iii",
     playerid,
     showplayerid,
-    rgba(color)
+    rgba(colour)
   );
 };
 
@@ -2287,7 +2304,7 @@ export const SetPlayerMapIcon = (
   y: number,
   z: number,
   markertype: number,
-  color: string | number,
+  colour: string | number,
   style: number
 ): number => {
   return callNative(
@@ -2299,7 +2316,7 @@ export const SetPlayerMapIcon = (
     y,
     z,
     markertype,
-    rgba(color),
+    rgba(colour),
     style
   );
 };
@@ -2548,9 +2565,9 @@ export const StopRecordingPlayerData = (playerid: number): number => {
 
 export const SelectTextDraw = (
   playerid: number,
-  hovercolor: string | number
+  hovercolour: string | number
 ): void => {
-  callNative("SelectTextDraw", "ii", playerid, rgba(hovercolor));
+  callNative("SelectTextDraw", "ii", playerid, rgba(hovercolour));
 };
 
 export const CancelSelectTextDraw = (playerid: number): void => {
@@ -2601,8 +2618,8 @@ export const CreateVehicle = (
   y: number,
   z: number,
   rotation: number,
-  color1: string | number,
-  color2: string | number,
+  colour1: string | number,
+  colour2: string | number,
   respawn_delay: number,
   addsiren: boolean
 ): number => {
@@ -2614,8 +2631,8 @@ export const CreateVehicle = (
     y,
     z,
     rotation,
-    rgba(color1),
-    rgba(color2),
+    rgba(colour1),
+    rgba(colour2),
     respawn_delay,
     addsiren
   );
@@ -2833,17 +2850,17 @@ export const RemoveVehicleComponent = (
   return callNative("RemoveVehicleComponent", "ii", vehicleid, componentid);
 };
 
-export const ChangeVehicleColor = (
+export const ChangeVehicleColours = (
   vehicleid: number,
-  color1: string | number,
-  color2: string | number
+  colour1: string | number,
+  colour2: string | number
 ): number => {
   return callNative(
-    "ChangeVehicleColor",
+    "ChangeVehicleColours",
     "iii",
     vehicleid,
-    rgba(color1),
-    rgba(color2)
+    rgba(colour1),
+    rgba(colour2)
   );
 };
 

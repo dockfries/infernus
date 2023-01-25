@@ -106,16 +106,16 @@ export abstract class BasePlayer {
     this._isNpc = playerFunc.IsPlayerNPC(this.id);
   }
 
-  public sendClientMessage(color: string | number, msg: string): number {
-    return SendClientMessage(this, color, msg);
+  public sendClientMessage(colour: string | number, msg: string): number {
+    return SendClientMessage(this, colour, msg);
   }
 
   public static sendClientMessageToAll<P extends BasePlayer>(
     players: Array<P>,
-    color: string | number,
+    colour: string | number,
     msg: string
   ) {
-    SendClientMessageToAll(players, color, msg);
+    SendClientMessageToAll(players, colour, msg);
   }
 
   public sendPlayerMessage<P extends BasePlayer>(
@@ -175,17 +175,17 @@ export abstract class BasePlayer {
   ): void {
     playerFunc.ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
   }
-  public setColor(color: string | number): void {
-    playerFunc.SetPlayerColor(this.id, color);
+  public setColor(colour: string | number): void {
+    playerFunc.SetPlayerColor(this.id, colour);
   }
   public getColor(): number {
     return playerFunc.GetPlayerColor(this.id);
   }
   public setPlayerMarker<P extends BasePlayer>(
     showPlayer: P,
-    color: string | number
+    colour: string | number
   ) {
-    playerFunc.SetPlayerMarkerForPlayer(this.id, showPlayer.id, color);
+    playerFunc.SetPlayerMarkerForPlayer(this.id, showPlayer.id, colour);
   }
   public resetMoney(): number {
     return playerFunc.ResetPlayerMoney(this.id);
@@ -649,14 +649,14 @@ export abstract class BasePlayer {
   }
   public setChatBubble(
     text: string,
-    color: string | number,
+    colour: string | number,
     drawDistance: number,
     expireTime: number
   ): void {
     playerFunc.SetPlayerChatBubble(
       this.id,
       text,
-      color,
+      colour,
       drawDistance,
       expireTime
     );
@@ -812,17 +812,17 @@ export abstract class BasePlayer {
       p.finally(() => delCCTask(this.id));
     });
   }
-  public selectTextDraw(color: string | number): void {
-    playerFunc.SelectTextDraw(this.id, color);
+  public selectTextDraw(colour: string | number): void {
+    playerFunc.SelectTextDraw(this.id, colour);
   }
   public cancelSelectTextDraw(): void {
     playerFunc.CancelSelectTextDraw(this.id);
   }
-  public selectObject(): void {
-    playerFunc.SelectObject(this.id);
+  public beginObjectSelecting(): void {
+    playerFunc.BeginObjectSelecting(this.id);
   }
-  public cancelEdit(): void {
-    playerFunc.CancelEdit(this.id);
+  public endObjectEditing(): void {
+    playerFunc.EndObjectEditing(this.id);
   }
   public getSurfingObject<O extends DynamicObject>(
     objects: Map<number, O>
@@ -847,8 +847,8 @@ export abstract class BasePlayer {
     fScaleX: number,
     fScaleY: number,
     fScaleZ: number,
-    materialcolor1: string | number,
-    materialcolor2: string | number
+    materialcolour1: string | number,
+    materialcolour2: string | number
   ): void | number {
     if (this.isAttachedObjectSlotUsed(index)) return 0;
     return playerFunc.SetPlayerAttachedObject(
@@ -865,8 +865,8 @@ export abstract class BasePlayer {
       fScaleX,
       fScaleY,
       fScaleZ,
-      materialcolor1,
-      materialcolor2
+      materialcolour1,
+      materialcolour2
     );
   }
   public removeAttachedObject(index: number): number {
@@ -977,5 +977,8 @@ export abstract class BasePlayer {
   }
   public areWeaponsAllowed() {
     return ArePlayerWeaponsAllowed(this.id);
+  }
+  public gpci(charset?: string) {
+    return playerFunc.GPCI(this.id, charset);
   }
 }

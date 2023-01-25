@@ -16,10 +16,7 @@ import {
   IsPlayerInGangZone,
   IsPlayerGangZoneVisible,
   IsGangZoneVisibleForPlayer,
-  PlayerGangZoneGetColor,
-  GangZoneGetColorForPlayer,
-  PlayerGangZoneGetFlashColor,
-  GangZoneGetFlashColorForPlayer,
+  PlayerGangZoneGetColour,
   IsPlayerGangZoneFlashing,
   IsGangZoneFlashingForPlayer,
   GangZonePos,
@@ -27,6 +24,9 @@ import {
   GangZoneGetPos,
   UsePlayerGangZoneCheck,
   UseGangZoneCheck,
+  GangZoneGetColourForPlayer,
+  GangZoneGetFlashColourForPlayer,
+  PlayerGangZoneGetFlashColour,
 } from "omp-wrapper";
 
 import { BasePlayer } from "../player";
@@ -97,14 +97,14 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     this._id = -1;
   }
 
-  public showForAll(color: string | number): void | this {
+  public showForAll(colour: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to show the gangzone before create"
       );
     const p = this.sourceInfo.player;
     if (!p) {
-      fns.GangZoneShowForAll(this.id, color);
+      fns.GangZoneShowForAll(this.id, colour);
       return this;
     }
     return logger.warn(
@@ -112,15 +112,15 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     );
   }
 
-  public showForPlayer(color: string | number, player?: P): void | this {
+  public showForPlayer(colour: string | number, player?: P): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to show the gangzone before create"
       );
     const p = this.sourceInfo.player;
-    if (p) PlayerGangZoneShow(p.id, this.id, rgba(color));
+    if (p) PlayerGangZoneShow(p.id, this.id, rgba(colour));
     else {
-      if (player) fns.GangZoneShowForPlayer(player.id, this.id, color);
+      if (player) fns.GangZoneShowForPlayer(player.id, this.id, colour);
       else return logger.warn("[BaseGangZone]: invalid player for show");
     }
     return this;
@@ -155,14 +155,14 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     return this;
   }
 
-  public flashForAll(flashcolor: string | number): void | this {
+  public flashForAll(flashcolour: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to flash the gangzone before create"
       );
     const p = this.sourceInfo.player;
     if (!p) {
-      fns.GangZoneFlashForAll(this.id, flashcolor);
+      fns.GangZoneFlashForAll(this.id, flashcolour);
       return this;
     }
     return logger.warn(
@@ -170,15 +170,15 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     );
   }
 
-  public flashForPlayer(player: P, flashcolor: string | number): void | this {
+  public flashForPlayer(player: P, flashcolour: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to flash the gangzone before create"
       );
     const p = this.sourceInfo.player;
-    if (p) PlayerGangZoneFlash(p.id, this.id, rgba(flashcolor));
+    if (p) PlayerGangZoneFlash(p.id, this.id, rgba(flashcolour));
     else {
-      if (player) fns.GangZoneFlashForPlayer(player.id, this.id, flashcolor);
+      if (player) fns.GangZoneFlashForPlayer(player.id, this.id, flashcolour);
       else return logger.warn("[BaseGangZone]: invalid player for flash");
     }
     return this;
@@ -234,22 +234,22 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     return IsGangZoneVisibleForPlayer(player.id, this.id);
   }
 
-  public getColorForPlayer(player: P): void | number {
+  public getColourForPlayer(player: P): void | number {
     if (this.id === -1)
-      return logger.warn("[BaseGangZone]: Unable to get color before create");
+      return logger.warn("[BaseGangZone]: Unable to get colour before create");
     const p = this.sourceInfo.player;
-    if (p) return PlayerGangZoneGetColor(p.id, this.id);
-    return GangZoneGetColorForPlayer(player.id, this.id);
+    if (p) return PlayerGangZoneGetColour(p.id, this.id);
+    return GangZoneGetColourForPlayer(player.id, this.id);
   }
 
-  public getFlashColorForPlayer(player: P): void | number {
+  public getFlashColourForPlayer(player: P): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[BaseGangZone]: Unable to get flash color before create"
+        "[BaseGangZone]: Unable to get flash colour before create"
       );
     const p = this.sourceInfo.player;
-    if (p) return PlayerGangZoneGetFlashColor(p.id, this.id);
-    return GangZoneGetFlashColorForPlayer(player.id, this.id);
+    if (p) return PlayerGangZoneGetFlashColour(p.id, this.id);
+    return GangZoneGetFlashColourForPlayer(player.id, this.id);
   }
 
   public isFlashingForPlayer(player: P): boolean {

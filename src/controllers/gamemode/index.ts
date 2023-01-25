@@ -183,7 +183,6 @@ export abstract class BaseGameMode {
     }
     return fns.CreateExplosion(X, Y, Z, type, Radius);
   }
-  public static setDeathDropAmount = fns.SetDeathDropAmount;
   public static manualVehicleEngineAndLights = fns.ManualVehicleEngineAndLights;
   public static blockIpAddress = fns.BlockIpAddress;
   public static unBlockIpAddress = fns.UnBlockIpAddress;
@@ -274,7 +273,8 @@ export abstract class BaseGameMode {
   public static findModelFileNameFromCRC = fns.FindModelFileNameFromCRC;
   public static findTextureFileNameFromCRC = fns.FindTextureFileNameFromCRC;
   public static getWeaponName = fns.GetWeaponName;
-  public static setObjectsDefaultCameraCol = fns.SetObjectsDefaultCameraCol;
+  public static setObjectsDefaultCameraCollision =
+    fns.SetObjectsDefaultCameraCollision;
   public static vectorSize = fns.VectorSize;
   public static clearBanList = ClearBanList;
   public static isBanned = IsBanned;

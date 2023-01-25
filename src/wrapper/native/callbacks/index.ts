@@ -134,8 +134,8 @@ export const OnVehicleRespray = (
   func: (
     playerid: number,
     vehicleid: number,
-    color1: number,
-    color2: number
+    colour1: number,
+    colour2: number
   ) => number
 ) => {
   samp.addEventListener("OnVehicleRespray", func);

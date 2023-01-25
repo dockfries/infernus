@@ -83,7 +83,7 @@ export abstract class BaseVehicleEvent<
       );
       return pFn(p, v, paintjobid);
     });
-    OnVehicleRespray((playerid, vehicleid, color1, color2): number => {
+    OnVehicleRespray((playerid, vehicleid, colour1, colour2): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 1;
       const v = this.findVehicleById(vehicleid);
@@ -93,7 +93,7 @@ export abstract class BaseVehicleEvent<
         this.onRespray,
         "OnVehicleRespray"
       );
-      return pFn(p, v, color1, color2);
+      return pFn(p, v, colour1, colour2);
     });
     OnVehicleSirenStateChange((playerid, vehicleid, newstate): number => {
       const p = this.findPlayerById(playerid);
@@ -206,8 +206,8 @@ export abstract class BaseVehicleEvent<
   protected abstract onRespray(
     player: P,
     vehicle: V,
-    color1: number,
-    color2: number
+    colour1: number,
+    colour2: number
   ): TCommonCallback;
   protected abstract onSirenStateChange(
     player: P,

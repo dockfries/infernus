@@ -16,12 +16,12 @@ import {
   TextDrawGetTextSize,
   PlayerTextDrawGetPos,
   TextDrawGetPos,
-  PlayerTextDrawGetColor,
-  TextDrawGetColor,
-  PlayerTextDrawGetBoxColor,
-  TextDrawGetBoxColor,
-  PlayerTextDrawGetBackgroundCol,
-  TextDrawGetBackgroundColor,
+  PlayerTextDrawGetColour,
+  TextDrawGetColour,
+  PlayerTextDrawGetBoxColour,
+  TextDrawGetBoxColour,
+  PlayerTextDrawGetBackgroundColour,
+  TextDrawGetBackgroundColour,
   PlayerTextDrawGetShadow,
   TextDrawGetShadow,
   PlayerTextDrawGetOutline,
@@ -40,8 +40,8 @@ import {
   TextDrawGetPreviewModel,
   PlayerTextDrawGetPreviewRot,
   TextDrawGetPreviewRot,
-  PlayerTextDrawGetPreviewVehCol,
-  TextDrawGetPreviewVehCol,
+  PlayerTextDrawGetPreviewVehicleColours,
+  TextDrawGetPreviewVehicleColours,
 } from "omp-wrapper";
 
 import type { BasePlayer } from "../player";
@@ -110,26 +110,26 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawFont(this.id, style);
     return this;
   }
-  public setColor(color: string | number): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set color");
+  public setColour(Colour: string | number): void | this {
+    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set Colour");
     const { player } = this.sourceInfo;
-    if (player) fns.PlayerTextDrawColor(player.id, this.id, color);
-    else fns.TextDrawColor(this.id, color);
+    if (player) fns.PlayerTextDrawColour(player.id, this.id, Colour);
+    else fns.TextDrawColour(this.id, Colour);
     return this;
   }
-  public setBoxColor(color: string | number): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set box color");
+  public setBoxColours(Colour: string | number): void | this {
+    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set box Colour");
     const { player } = this.sourceInfo;
-    if (player) fns.PlayerTextDrawBoxColor(player.id, this.id, color);
-    else fns.TextDrawBoxColor(this.id, color);
+    if (player) fns.PlayerTextDrawBoxColour(player.id, this.id, Colour);
+    else fns.TextDrawBoxColour(this.id, Colour);
     return this;
   }
-  public setBackgroundColor(color: string | number): void | this {
+  public setBackgroundColours(Colour: string | number): void | this {
     if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("set background color");
+      return BaseTextDraw.beforeCreateWarn("set background Colour");
     const { player } = this.sourceInfo;
-    if (player) fns.PlayerTextDrawBackgroundColor(player.id, this.id, color);
-    else fns.TextDrawBackgroundColor(this.id, color);
+    if (player) fns.PlayerTextDrawBackgroundColour(player.id, this.id, Colour);
+    else fns.TextDrawBackgroundColour(this.id, Colour);
     return this;
   }
   public setAlignment(alignment: TextDrawAlignEnum): void | this {
@@ -186,14 +186,19 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawSetPreviewRot(this.id, fRotX, fRotY, fRotZ, fZoom);
     return this;
   }
-  public setPreviewVehCol(color1: string, color2: string): void | this {
+  public setPreviewVehColours(Colour1: string, Colour2: string): void | this {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("set preview veh col");
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
     if (player)
-      fns.PlayerTextDrawSetPreviewVehCol(player.id, this.id, color1, color2);
-    else fns.TextDrawSetPreviewVehCol(this.id, color1, color2);
+      fns.PlayerTextDrawSetPreviewVehicleColours(
+        player.id,
+        this.id,
+        Colour1,
+        Colour2
+      );
+    else fns.TextDrawSetPreviewVehicleColours(this.id, Colour1, Colour2);
     return this;
   }
   public setProportional(set = true): void | this {
@@ -331,23 +336,23 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     if (p) return PlayerTextDrawGetPos(p.id, this.id);
     return TextDrawGetPos(this.id);
   }
-  public getColor() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get color");
+  public getColour() {
+    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get Colour");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetColor(p.id, this.id);
-    return TextDrawGetColor(this.id);
+    if (p) return PlayerTextDrawGetColour(p.id, this.id);
+    return TextDrawGetColour(this.id);
   }
-  public getBoxColor() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get box color");
+  public getBoxColour() {
+    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get box Colour");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetBoxColor(p.id, this.id);
-    return TextDrawGetBoxColor(this.id);
+    if (p) return PlayerTextDrawGetBoxColour(p.id, this.id);
+    return TextDrawGetBoxColour(this.id);
   }
-  public getBackgroundColor() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get bg color");
+  public getBackgroundColour() {
+    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get bg Colour");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetBackgroundCol(p.id, this.id);
-    return TextDrawGetBackgroundColor(this.id);
+    if (p) return PlayerTextDrawGetBackgroundColour(p.id, this.id);
+    return TextDrawGetBackgroundColour(this.id);
   }
   public getShadow() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get shadow");
@@ -405,11 +410,11 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     if (p) return PlayerTextDrawGetPreviewRot(p.id, this.id);
     return TextDrawGetPreviewRot(this.id);
   }
-  public getPreviewVehCol() {
+  public getPreviewVehColours() {
     if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("get preview vel color");
+      return BaseTextDraw.beforeCreateWarn("get preview vel Colours");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetPreviewVehCol(p.id, this.id);
-    return TextDrawGetPreviewVehCol(this.id);
+    if (p) return PlayerTextDrawGetPreviewVehicleColours(p.id, this.id);
+    return TextDrawGetPreviewVehicleColours(this.id);
   }
 }

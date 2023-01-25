@@ -35,7 +35,7 @@ export class DynamicMapIcon {
       areaid,
       priority,
     } = this.sourceInfo;
-    const { x, y, z, type, color, extended } = this.sourceInfo;
+    const { x, y, z, type, colour, extended } = this.sourceInfo;
 
     if (type < 0 || type > 63)
       return logger.error("[StreamerMapIcon]: Invalid map icon type");
@@ -59,7 +59,7 @@ export class DynamicMapIcon {
         y,
         z,
         type,
-        rgba(color),
+        rgba(colour),
         style,
         streamdistance,
         worldid,
@@ -86,7 +86,7 @@ export class DynamicMapIcon {
       y,
       z,
       type,
-      rgba(color),
+      rgba(colour),
       worldid,
       interiorid,
       playerid,
