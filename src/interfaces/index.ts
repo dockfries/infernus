@@ -34,19 +34,9 @@ export interface IDialogResResult extends IDialogResCommon {
   inputtext: string;
 }
 
-export interface ILocale {
-  label: string;
-  value: { [key: string]: any };
-}
-
 export interface ICmdErr {
   code: number;
   msg: string;
-}
-
-export interface IPlayerSettings {
-  locale?: string | number;
-  charset: string;
 }
 
 export interface IVehicle {

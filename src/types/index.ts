@@ -1,5 +1,4 @@
 import {
-  ILocale,
   IDynamicCircle,
   IDynamicCylinder,
   IDynamicSphere,
@@ -14,7 +13,7 @@ export type TEventFunc<P> = (
   ...args: string[]
 ) => boolean | number | void | Promise<boolean | number | void>;
 
-export type TLocales = Record<string | number, ILocale>;
+export type TLocales = Record<string, Record<string, any>>;
 
 export type TBasePos = {
   x: number;

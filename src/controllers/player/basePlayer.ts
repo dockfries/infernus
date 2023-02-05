@@ -1,4 +1,4 @@
-import { IClientResRaw, IPlayerSettings } from "@/interfaces";
+import { IClientResRaw } from "@/interfaces";
 import {
   BanEx,
   GetPlayerName,
@@ -70,32 +70,24 @@ import {
   AllowPlayerWeapons,
   ArePlayerWeaponsAllowed,
 } from "omp-wrapper";
+import { defaultCharset } from "../gamemode/settings";
 
 export abstract class BasePlayer {
   private _id: number;
+  private _isNpc: boolean;
+
   public isRecording = false;
-  // public name = "";
-  // Note: The locale and character set must be assigned at application level development time. Otherwise i18n will be problematic.
-  protected abstract settings: IPlayerSettings;
+
+  /* Note: The locale and character set must be assigned at application level development time.
+   Otherwise i18n will be problematic. */
+
+  public locale?: string;
+  public charset: string = defaultCharset;
+
   public lastDrunkLevel = 0;
   public lastFps = 0;
-  private _isNpc: boolean;
   public isPaused = false;
   public lastUpdateTick = 0;
-
-  get charset() {
-    return this.settings.charset;
-  }
-  set charset(charset: string) {
-    this.settings.charset = charset;
-  }
-
-  get locale(): string | number | undefined {
-    return this.settings.locale;
-  }
-  set locale(language: string | number | undefined) {
-    this.settings.locale = language;
-  }
 
   get id(): number {
     return this._id;

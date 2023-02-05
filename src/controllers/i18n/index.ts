@@ -1,52 +1,51 @@
 import { TLocales } from "@/types";
 import { encode, decode, encodingExists } from "iconv-lite";
 import { logger } from "@/logger";
-import { merge } from "lodash";
+import { get, mapKeys, merge, omit, snakeCase } from "lodash";
 
 export class I18n {
-  private locales: TLocales;
-  private language: keyof TLocales;
-
-  constructor(defaultLocale: keyof TLocales, locales: TLocales) {
-    this.language = defaultLocale;
-    this.locales = locales;
+  constructor(
+    private defaultLocale: keyof TLocales,
+    private locales: TLocales
+  ) {
+    this.defaultLocale = snakeCase(defaultLocale);
+    this.locales = I18n.snakeLocaleKeys(locales);
   }
 
   public addLocales = (locales: TLocales): void => {
-    merge(this.locales, locales);
+    merge(this.locales, I18n.snakeLocaleKeys(locales));
+  };
+
+  public removeLocales = (...props: any[]): void => {
+    this.locales = omit(this.locales, props);
   };
 
   public $t = (
     key: string,
     replaceable?: any[] | undefined | null,
-    lang: keyof TLocales = this.language
+    locale: keyof TLocales = this.defaultLocale
   ): string => {
-    const { value } = this.locales[lang];
-    let text = I18n.dotValue(value, key);
-    if (text === undefined) return "undefined";
+    const incomingLocale = this.locales[snakeCase(locale)];
+    const defaultLocale = get(this.locales[this.defaultLocale], key);
+    // "server.welcome" => zh_cn["server"]["welcome"];
+    const dotVal = get(incomingLocale, key, defaultLocale);
+    if (dotVal === undefined) {
+      logger.warn(`[i18n]: cannot find ${locale}["${key}"]`);
+      return "undefined";
+    }
+    if (typeof dotVal !== "string") return JSON.stringify(dotVal);
+    let strDotVal = dotVal;
     if (replaceable && replaceable.length) {
       // %s Used to declare as a slot and for future replacement
       const placeholder = /%s/i;
       for (let i = 0; i < replaceable.length; i++) {
-        const matches = text.match(placeholder);
+        const matches = strDotVal.match(placeholder);
         if (matches === null) break;
-        text = text.replace(placeholder, replaceable[i]);
+        strDotVal = strDotVal.replace(placeholder, replaceable[i]);
       }
     }
-    return text;
+    return strDotVal;
   };
-
-  // "server.welcome" => zh_cn["server"]["welcome"];
-  private static dotValue(whichLangJson: any, property: string): string {
-    const keyArr: string[] = property.split(".");
-    return keyArr.reduce((obj: any, key: string) => {
-      if (!Object.prototype.hasOwnProperty.call(obj, key)) {
-        logger.fatal(`[i18n]: cannot find ${property}`);
-        process.exit(1);
-      }
-      return obj[key];
-    }, whichLangJson) as string;
-  }
 
   // determine if the incoming character encoding type is valid
   public static isValidate(charset: string): void {
@@ -74,5 +73,9 @@ export class I18n {
   // Truncate the string to the EOS tag to get the actual valid data
   public static getValidStr(byteArr: number[]) {
     return byteArr.slice(0, byteArr.indexOf(0));
+  }
+
+  public static snakeLocaleKeys(locales: TLocales) {
+    return mapKeys(locales, (_, key) => snakeCase(key));
   }
 }
