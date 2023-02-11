@@ -70,19 +70,15 @@ import {
   AllowPlayerWeapons,
   ArePlayerWeaponsAllowed,
 } from "omp-wrapper";
-import { defaultCharset } from "../gamemode/settings";
+import { defaultCharset, defaultLocale } from "../gamemode/settings";
+import { playerBus, playerHooks } from "./playerBus";
 
 export abstract class BasePlayer {
   private _id: number;
   private _isNpc: boolean;
-
-  isRecording = false;
-
-  /* Note: The locale and character set must be assigned at application level development time.
-   Otherwise i18n will be problematic. */
-
-  locale?: string;
-  charset: string = defaultCharset;
+  private _locale: string = defaultLocale;
+  private _charset: string = defaultCharset;
+  private _isRecording = false;
 
   lastDrunkLevel = 0;
   lastFps = 0;
@@ -91,6 +87,24 @@ export abstract class BasePlayer {
 
   get id(): number {
     return this._id;
+  }
+  get locale(): string {
+    return this._locale;
+  }
+  set locale(value: string) {
+    playerBus.emit(playerHooks.setLocale, { player: this, value });
+  }
+  get charset(): string {
+    return this._charset;
+  }
+  set charset(value: string) {
+    playerBus.emit(playerHooks.setCharset, { player: this, value });
+  }
+  get isRecording() {
+    return this._isRecording;
+  }
+  set isRecording(value) {
+    playerBus.emit(playerHooks.setIsRecording, { player: this, value });
   }
 
   constructor(id: number) {

@@ -256,7 +256,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
           this.onResume && this.onResume(p, now - p.lastUpdateTick);
         }
         p.lastUpdateTick = now;
-        this.fpsHeartbeat(p);
+        BasePlayerEvent.fpsHeartbeat(p);
       }
       const pFn = promisifyCallback(this, "throttleUpdate", "OnPlayerUpdate");
       const res = pFn(p);
@@ -311,6 +311,16 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       player.isPaused = true;
       this.onPause && this.onPause(player, player.lastUpdateTick);
     });
+
+    playerBus.on(playerHooks.setLocale, ({ player, value }) => {
+      Reflect.set(player, "_locale", value);
+    });
+    playerBus.on(playerHooks.setCharset, ({ player, value }) => {
+      Reflect.set(player, "_charset", value);
+    });
+    playerBus.on(playerHooks.setIsRecording, ({ player, value }) => {
+      Reflect.set(player, "_isRecording", value);
+    });
   }
   findPlayerById(playerid: number) {
     return this.players.get(playerid);
@@ -325,7 +335,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     (player: P) => this.onUpdate && this.onUpdate(player),
     60
   );
-  private fpsHeartbeat = throttle((player: P) => {
+  private static fpsHeartbeat = throttle((player: BasePlayer) => {
     if (!BasePlayer.isConnected(player)) return;
     const nowDrunkLevel = player.getDrunkLevel();
     if (nowDrunkLevel < 100) {
