@@ -362,8 +362,11 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
 
     let rFnRes =
       caller.onCommandReceived && caller.onCommandReceived(p, fullCommand);
-    if (rFnRes instanceof Promise) rFnRes = await rFnRes;
-    if (!rFnRes) return NOOP("OnPlayerCommandTextI18n");
+
+    if (rFnRes !== undefined) {
+      if (rFnRes instanceof Promise) rFnRes = await rFnRes;
+      if (!rFnRes) return NOOP("OnPlayerCommandTextI18n");
+    }
 
     /**
      * Use eventBus to observe and subscribe to level 1 instructions,
@@ -393,10 +396,12 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     cmdBus: CmdBus<BasePlayer>;
     instance: any;
   } => {
-    if (instance === null || !Reflect.has(instance, "cmdBus")) return null;
-    const cmdBus = Reflect.get(instance, "cmdBus");
-    const idx = cmdBus.findEventIdxByName(firstLevel);
-    if (idx > -1) return { idx, cmdBus, instance };
+    if (instance === null) return null;
+    if (Reflect.has(instance, "cmdBus")) {
+      const cmdBus = Reflect.get(instance, "cmdBus");
+      const idx = cmdBus.findEventIdxByName(firstLevel);
+      if (idx > -1) return { idx, cmdBus, instance };
+    }
     return BasePlayerEvent.recurseCmdBus(
       Reflect.getPrototypeOf(instance),
       firstLevel
