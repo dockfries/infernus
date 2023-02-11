@@ -16,7 +16,7 @@ export abstract class BaseGangZoneEvent<
   P extends BasePlayer,
   G extends BaseGangZone<P>
 > {
-  public readonly gangZones = new Map<ICommonGangZoneKey, G>();
+  readonly gangZones = new Map<ICommonGangZoneKey, G>();
   private readonly players;
   constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
@@ -41,9 +41,9 @@ export abstract class BaseGangZoneEvent<
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: true });
       if (!g) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerEnter,
+        "onPlayerEnter",
         "OnPlayerEnterGangZone"
       );
       return pFn(p, g);
@@ -54,9 +54,9 @@ export abstract class BaseGangZoneEvent<
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: false });
       if (!g) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerEnter,
+        "onPlayerEnter",
         "OnPlayerEnterPlayerGangZone"
       );
       return pFn(p, g);
@@ -67,9 +67,9 @@ export abstract class BaseGangZoneEvent<
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: true });
       if (!g) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerLeave,
+        "onPlayerLeave",
         "OnPlayerLeaveGangZone"
       );
       return pFn(p, g);
@@ -80,15 +80,15 @@ export abstract class BaseGangZoneEvent<
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: false });
       if (!g) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerLeave,
+        "onPlayerLeave",
         "OnPlayerLeavePlayerGangZone"
       );
       return pFn(p, g);
     });
   }
 
-  protected abstract onPlayerEnter(player: P, gangZone: G): TCommonCallback;
-  protected abstract onPlayerLeave(player: P, gangZone: G): TCommonCallback;
+  onPlayerEnter?(player: P, gangZone: G): TCommonCallback;
+  onPlayerLeave?(player: P, gangZone: G): TCommonCallback;
 }

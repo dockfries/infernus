@@ -12,15 +12,15 @@ export class I18n {
     this.locales = I18n.snakeLocaleKeys(locales);
   }
 
-  public addLocales = (locales: TLocales): void => {
+  addLocales = (locales: TLocales): void => {
     merge(this.locales, I18n.snakeLocaleKeys(locales));
   };
 
-  public removeLocales = (...props: any[]): void => {
+  removeLocales = (...props: any[]): void => {
     this.locales = omit(this.locales, props);
   };
 
-  public $t = (
+  $t = (
     key: string,
     replaceable?: any[] | undefined | null,
     locale: keyof TLocales = this.defaultLocale
@@ -48,7 +48,7 @@ export class I18n {
   };
 
   // determine if the incoming character encoding type is valid
-  public static isValidate(charset: string): void {
+  static isValidate(charset: string): void {
     if (!encodingExists(charset)) {
       logger.fatal(`[i18n]: unknown charset ${charset}`);
       process.exit(1);
@@ -58,24 +58,24 @@ export class I18n {
   // convert utf8 strings to different encoded byte stream arrays
   // used to solve the internationalization language display display messy problem
   // https://github.com/AmyrAhmady/samp-node/issues/2
-  public static encodeToBuf(content: string, charset: string): number[] {
+  static encodeToBuf(content: string, charset: string): number[] {
     I18n.isValidate(charset);
     return [...encode(content, charset), 0];
   }
 
   // convert byte stream arrays of different encodings to utf8 strings
-  public static decodeFromBuf(buf: Buffer | number[], charset: string): string {
+  static decodeFromBuf(buf: Buffer | number[], charset: string): string {
     I18n.isValidate(charset);
     const buffer = buf instanceof Buffer ? buf : Buffer.from(buf);
     return decode(buffer, charset);
   }
 
   // Truncate the string to the EOS tag to get the actual valid data
-  public static getValidStr(byteArr: number[]) {
+  static getValidStr(byteArr: number[]) {
     return byteArr.slice(0, byteArr.indexOf(0));
   }
 
-  public static snakeLocaleKeys(locales: TLocales) {
+  static snakeLocaleKeys(locales: TLocales) {
     return mapKeys(locales, (_, key) => snakeCase(key));
   }
 }

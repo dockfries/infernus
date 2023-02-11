@@ -38,13 +38,13 @@ import { actorBus, actorHooks } from "./actorBus";
 export class DynamicActor {
   private sourceInfo: IDynamicActor;
   private _id = -1;
-  public get id(): number {
+  get id(): number {
     return this._id;
   }
   constructor(actor: IDynamicActor) {
     this.sourceInfo = actor;
   }
-  public create(): void | this {
+  create(): void | this {
     if (this.id !== -1)
       return logger.warn("[StreamerActor]: Unable to create actor again");
     let { streamdistance, worldid, interiorid, playerid, areaid, priority } =
@@ -110,7 +110,7 @@ export class DynamicActor {
     actorBus.emit(actorHooks.created, this);
     return this;
   }
-  public destroy(): void | this {
+  destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to destroy the actor before create"
@@ -119,28 +119,28 @@ export class DynamicActor {
     actorBus.emit(actorHooks.destroyed, this);
     return this;
   }
-  public isValid(): boolean {
+  isValid(): boolean {
     return IsValidDynamicActor(this.id);
   }
-  public isStreamedIn<P extends BasePlayer>(forplayer: P): boolean {
+  isStreamedIn<P extends BasePlayer>(forplayer: P): boolean {
     if (this.id === -1) return false;
     return IsDynamicActorStreamedIn(this.id, forplayer.id);
   }
-  public getVirtualWorld(): void | number {
+  getVirtualWorld(): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to get virtual world before create"
       );
     return GetDynamicActorVirtualWorld(this.id);
   }
-  public setVirtualWorld(vworld: number): void | number {
+  setVirtualWorld(vworld: number): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to set virtual world before create"
       );
     return SetDynamicActorVirtualWorld(this.id, vworld);
   }
-  public applyAnimation(
+  applyAnimation(
     animLib: string,
     animName: string,
     loop = false,
@@ -167,59 +167,59 @@ export class DynamicActor {
       loop ? 0 : duration
     );
   }
-  public clearAnimations(): void | number {
+  clearAnimations(): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to clear animation before create"
       );
     return ClearDynamicActorAnimations(this.id);
   }
-  public getFacingAngle(): void | number {
+  getFacingAngle(): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to get facing angle before create"
       );
     return GetDynamicActorFacingAngle(this.id);
   }
-  public setFacingAngle(ang: number): void | number {
+  setFacingAngle(ang: number): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to set facing angle before create"
       );
     return SetDynamicActorFacingAngle(this.id, ang);
   }
-  public getPos() {
+  getPos() {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to get pos before create");
     return GetDynamicActorPos(this.id);
   }
-  public setPos(x: number, y: number, z: number): void | number {
+  setPos(x: number, y: number, z: number): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to set pos before create");
     return SetDynamicActorPos(this.id, x, y, z);
   }
-  public getHealth(): void | number {
+  getHealth(): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to get health before create");
     return GetDynamicActorHealth(this.id);
   }
-  public setHealth(health: number): void | number {
+  setHealth(health: number): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to set health before create");
     return SetDynamicActorHealth(this.id, health);
   }
-  public isInvulnerable(): boolean {
+  isInvulnerable(): boolean {
     if (this.id === -1) return false;
     return IsDynamicActorInvulnerable(this.id);
   }
-  public setInvulnerable(invulnerable = true): void | number {
+  setInvulnerable(invulnerable = true): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to set invulnerable before create"
       );
     return SetDynamicActorInvulnerable(this.id, invulnerable);
   }
-  public getPlayerTarget<P extends BasePlayer, A extends DynamicActor>(
+  getPlayerTarget<P extends BasePlayer, A extends DynamicActor>(
     player: P,
     actors: Map<number, A>
   ): void | A {
@@ -227,7 +227,7 @@ export class DynamicActor {
     const actorId = GetPlayerTargetDynamicActor(player.id);
     return actors.get(actorId);
   }
-  public getPlayerCameraTarget<P extends BasePlayer, A extends DynamicActor>(
+  getPlayerCameraTarget<P extends BasePlayer, A extends DynamicActor>(
     player: P,
     actors: Map<number, A>
   ): void | A {
@@ -235,32 +235,32 @@ export class DynamicActor {
     const actorId = GetPlayerCameraTargetDynActor(player.id);
     return actors.get(actorId);
   }
-  public getSkin(): void | number {
+  getSkin(): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to get skin before create");
     return GetActorSkin(this.id);
   }
-  public setSkin(model: number, ignoreRange = false): void | number {
+  setSkin(model: number, ignoreRange = false): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerActor]: Unable to set skin before create");
     if (!ignoreRange && (model < 0 || model > 311 || model == 74)) return 0;
     return SetActorSkin(this.id, model);
   }
-  public getSpawnInfo() {
+  getSpawnInfo() {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to get spawn info before create"
       );
     return GetActorSpawnInfo(this.id);
   }
-  public getAnimation() {
+  getAnimation() {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to get animation before create"
       );
     return GetActorAnimation(this.id);
   }
-  public toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to toggle callbacks before create"
@@ -271,7 +271,7 @@ export class DynamicActor {
       toggle
     );
   }
-  public isToggleCallbacks(): boolean {
+  isToggleCallbacks(): boolean {
     if (this.id === -1) false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.ACTOR, this.id);
   }

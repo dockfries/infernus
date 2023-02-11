@@ -36,17 +36,17 @@ export abstract class BaseGangZone<P extends BasePlayer> {
   private _id = -1;
   private static createdGlobalCount = 0;
   private static createdPlayerCount = 0;
-  public readonly sourceInfo: IBaseGangZone<P>;
+  readonly sourceInfo: IBaseGangZone<P>;
 
   constructor(gangZone: IBaseGangZone<P>) {
     this.sourceInfo = gangZone;
   }
 
-  public get id() {
+  get id() {
     return this._id;
   }
 
-  public create(): void {
+  create(): void {
     if (this.id !== -1)
       return logger.warn("[BaseGangZone]: Unable to create the gangzone again");
 
@@ -76,7 +76,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     });
   }
 
-  public destroy() {
+  destroy() {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to destroy the gangzone before create"
@@ -97,7 +97,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     this._id = -1;
   }
 
-  public showForAll(colour: string | number): void | this {
+  showForAll(colour: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to show the gangzone before create"
@@ -112,7 +112,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     );
   }
 
-  public showForPlayer(colour: string | number, player?: P): void | this {
+  showForPlayer(colour: string | number, player?: P): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to show the gangzone before create"
@@ -126,7 +126,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     return this;
   }
 
-  public hideForAll(): void | this {
+  hideForAll(): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to hide the gangzone before create"
@@ -141,7 +141,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     );
   }
 
-  public hideForPlayer(player?: P): void | this {
+  hideForPlayer(player?: P): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to hide the gangzone before create"
@@ -155,7 +155,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     return this;
   }
 
-  public flashForAll(flashcolour: string | number): void | this {
+  flashForAll(flashcolour: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to flash the gangzone before create"
@@ -170,7 +170,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     );
   }
 
-  public flashForPlayer(player: P, flashcolour: string | number): void | this {
+  flashForPlayer(player: P, flashcolour: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to flash the gangzone before create"
@@ -184,7 +184,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     return this;
   }
 
-  public StopFlashForAll(): void | this {
+  StopFlashForAll(): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to stop flash the gangzone before create"
@@ -199,7 +199,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     );
   }
 
-  public StopFlashForPlayer(player: P): void | this {
+  StopFlashForPlayer(player: P): void | this {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to stop flash the gangzone before create"
@@ -213,28 +213,28 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     return this;
   }
 
-  public isValid(): boolean {
+  isValid(): boolean {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
     if (p) return IsValidPlayerGangZone(p.id, this.id);
     return IsValidGangZone(this.id);
   }
 
-  public isPlayerIn(player: P): boolean {
+  isPlayerIn(player: P): boolean {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
     if (p) return IsPlayerInPlayerGangZone(p.id, this.id);
     return IsPlayerInGangZone(player.id, this.id);
   }
 
-  public isVisibleForPlayer(player: P): boolean {
+  isVisibleForPlayer(player: P): boolean {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
     if (p) return IsPlayerGangZoneVisible(p.id, this.id);
     return IsGangZoneVisibleForPlayer(player.id, this.id);
   }
 
-  public getColourForPlayer(player: P): void | number {
+  getColourForPlayer(player: P): void | number {
     if (this.id === -1)
       return logger.warn("[BaseGangZone]: Unable to get colour before create");
     const p = this.sourceInfo.player;
@@ -242,7 +242,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     return GangZoneGetColourForPlayer(player.id, this.id);
   }
 
-  public getFlashColourForPlayer(player: P): void | number {
+  getFlashColourForPlayer(player: P): void | number {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to get flash colour before create"
@@ -252,14 +252,14 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     return GangZoneGetFlashColourForPlayer(player.id, this.id);
   }
 
-  public isFlashingForPlayer(player: P): boolean {
+  isFlashingForPlayer(player: P): boolean {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
     if (p) return IsPlayerGangZoneFlashing(p.id, this.id);
     return IsGangZoneFlashingForPlayer(player.id, this.id);
   }
 
-  public getPos(): void | GangZonePos {
+  getPos(): void | GangZonePos {
     if (this.id === -1)
       return logger.warn(
         "[BaseGangZone]: Unable to get position before create"
@@ -269,7 +269,7 @@ export abstract class BaseGangZone<P extends BasePlayer> {
     return GangZoneGetPos(this.id);
   }
 
-  public useCheck(toggle: boolean): void | this {
+  useCheck(toggle: boolean): void | this {
     if (this.id === -1)
       return logger.warn("[BaseGangZone]: Unable to use check before create");
     const p = this.sourceInfo.player;

@@ -39,7 +39,7 @@ export type TDynamicAreaTypes =
   | "cuboid"
   | "polygon";
 
-export type TCommonCallback = number | Promise<number>;
+export type TCommonCallback = number | boolean | Promise<number | boolean>;
 
 export type {
   StreamerArrayData,

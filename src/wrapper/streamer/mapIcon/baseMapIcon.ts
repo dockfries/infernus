@@ -17,13 +17,13 @@ import { mapIconBus, mapIconHooks } from "./mapIconBus";
 export class DynamicMapIcon {
   private sourceInfo: IDynamicMapIcon;
   private _id = -1;
-  public get id(): number {
+  get id(): number {
     return this._id;
   }
   constructor(mapIcon: IDynamicMapIcon) {
     this.sourceInfo = mapIcon;
   }
-  public create(): void | this {
+  create(): void | this {
     if (this.id !== -1)
       return logger.warn("[StreamerMapIcon]: Unable to create map icon again");
     let {
@@ -98,7 +98,7 @@ export class DynamicMapIcon {
     mapIconBus.emit(mapIconHooks.created, this);
     return this;
   }
-  public destroy(): void | this {
+  destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerMapIcon]: Unable to destroy the map icon before create"
@@ -107,10 +107,10 @@ export class DynamicMapIcon {
     mapIconBus.emit(mapIconHooks.destroyed, this);
     return this;
   }
-  public isValid(): boolean {
+  isValid(): boolean {
     return IsValidDynamicMapIcon(this.id);
   }
-  public toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerMapIcon]: Unable to toggle callbacks before create"
@@ -121,7 +121,7 @@ export class DynamicMapIcon {
       toggle
     );
   }
-  public isToggleCallbacks(): boolean {
+  isToggleCallbacks(): boolean {
     if (this.id === -1) false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.MAP_ICON, this.id);
   }

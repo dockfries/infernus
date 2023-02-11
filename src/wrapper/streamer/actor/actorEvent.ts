@@ -37,9 +37,9 @@ export abstract class DynamicActorEvent<
       if (!act) return 0;
       const p = this.players.get(forplayerid);
       if (!p) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onStreamIn,
+        "onStreamIn",
         "OnDynamicActorStreamIn"
       );
       return pFn(act, p);
@@ -49,9 +49,9 @@ export abstract class DynamicActorEvent<
       if (!act) return 0;
       const p = this.players.get(forplayerid);
       if (!p) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onStreamOut,
+        "onStreamOut",
         "OnDynamicActorStreamOut"
       );
       return pFn(act, p);
@@ -68,9 +68,9 @@ export abstract class DynamicActorEvent<
         if (!act) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback.call(
+        const pFn = promisifyCallback(
           this,
-          this.onPlayerGiveDamage,
+          "onPlayerGiveDamage",
           "OnPlayerGiveDamageDynamicActor"
         );
         return pFn(p, act, amount, weaponid, bodypart);
@@ -78,9 +78,9 @@ export abstract class DynamicActorEvent<
     );
   }
 
-  protected abstract onStreamIn(actor: A, player: P): TCommonCallback;
-  protected abstract onStreamOut(actor: A, player: P): TCommonCallback;
-  protected abstract onPlayerGiveDamage(
+  onStreamIn?(actor: A, player: P): TCommonCallback;
+  onStreamOut?(actor: A, player: P): TCommonCallback;
+  onPlayerGiveDamage?(
     player: P,
     actor: A,
     amount: number,
@@ -88,11 +88,11 @@ export abstract class DynamicActorEvent<
     bodypart: BodyPartsEnum
   ): TCommonCallback;
 
-  public getActorsArr(): Array<A> {
+  getActorsArr(): Array<A> {
     return [...this.actors.values()];
   }
 
-  public getActorsMap(): Map<number, A> {
+  getActorsMap(): Map<number, A> {
     return this.actors;
   }
 }

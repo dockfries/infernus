@@ -37,9 +37,9 @@ export abstract class DynamicPickupEvent<
         if (!k) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback.call(
+        const pFn = promisifyCallback(
           this,
-          this.onPlayerPickUp,
+          "onPlayerPickUp",
           "OnPlayerPickUpDynamicPickup"
         );
         return pFn(p, k);
@@ -50,9 +50,9 @@ export abstract class DynamicPickupEvent<
         const pk = this.pickups.get(item);
         const p = this.players.get(player);
         if (pk && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamIn,
+            "onStreamIn",
             "Streamer_OnItemStreamIn"
           )(pk, p);
       }
@@ -63,9 +63,9 @@ export abstract class DynamicPickupEvent<
         const pk = this.pickups.get(item);
         const p = this.players.get(player);
         if (pk && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamOut,
+            "onStreamOut",
             "Streamer_OnItemStreamOut"
           )(pk, p);
       }
@@ -73,15 +73,15 @@ export abstract class DynamicPickupEvent<
     });
   }
 
-  protected abstract onPlayerPickUp(player: P, pickup: K): TCommonCallback;
-  protected abstract onStreamIn(pickup: K, player: P): TCommonCallback;
-  protected abstract onStreamOut(pickup: K, player: P): TCommonCallback;
+  onPlayerPickUp?(player: P, pickup: K): TCommonCallback;
+  onStreamIn?(pickup: K, player: P): TCommonCallback;
+  onStreamOut?(pickup: K, player: P): TCommonCallback;
 
-  public getPickupsArr(): Array<K> {
+  getPickupsArr(): Array<K> {
     return [...this.pickups.values()];
   }
 
-  public getPickupsMap(): Map<number, K> {
+  getPickupsMap(): Map<number, K> {
     return this.pickups;
   }
 }

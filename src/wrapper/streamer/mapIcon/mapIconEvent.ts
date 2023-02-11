@@ -34,9 +34,9 @@ export abstract class DynamicMapIconEvent<
         const mi = this.mapIcons.get(item);
         const p = this.players.get(player);
         if (mi && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamIn,
+            "onStreamIn",
             "Streamer_OnItemStreamIn"
           )(mi, p);
       }
@@ -47,9 +47,9 @@ export abstract class DynamicMapIconEvent<
         const mi = this.mapIcons.get(item);
         const p = this.players.get(player);
         if (mi && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamOut,
+            "onStreamOut",
             "Streamer_OnItemStreamOut"
           )(mi, p);
       }
@@ -57,14 +57,14 @@ export abstract class DynamicMapIconEvent<
     });
   }
 
-  protected abstract onStreamIn(mapIcon: M, player: P): TCommonCallback;
-  protected abstract onStreamOut(mapIcon: M, player: P): TCommonCallback;
+  onStreamIn?(mapIcon: M, player: P): TCommonCallback;
+  onStreamOut?(mapIcon: M, player: P): TCommonCallback;
 
-  public getMapIconsArr(): Array<M> {
+  getMapIconsArr(): Array<M> {
     return [...this.mapIcons.values()];
   }
 
-  public getMapIconsMap(): Map<number, M> {
+  getMapIconsMap(): Map<number, M> {
     return this.mapIcons;
   }
 }

@@ -52,13 +52,13 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
   private static createdPlayerCount = 0;
   private readonly sourceInfo: IBaseTextDraw<P>;
   private _id = -1;
-  public get id() {
+  get id() {
     return this._id;
   }
   constructor(textDraw: IBaseTextDraw<P>) {
     this.sourceInfo = textDraw;
   }
-  public create(): void | this {
+  create(): void | this {
     if (this.id !== -1)
       return logger.warn("[BaseTextDraw]: Unable to create the textdraw again");
     const { x, y, text, player } = this.sourceInfo;
@@ -85,7 +85,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     });
     return this;
   }
-  public destroy(): void | this {
+  destroy(): void | this {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("destroy the textdraw");
     const { player } = this.sourceInfo;
@@ -103,28 +103,28 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     this._id = -1;
     return this;
   }
-  public setFont(style: 0 | 1 | 2 | 3 | TextDrawFontsEnum): void | this {
+  setFont(style: 0 | 1 | 2 | 3 | TextDrawFontsEnum): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set font");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawFont(player.id, this.id, style);
     else fns.TextDrawFont(this.id, style);
     return this;
   }
-  public setColour(Colour: string | number): void | this {
+  setColour(Colour: string | number): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set Colour");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawColour(player.id, this.id, Colour);
     else fns.TextDrawColour(this.id, Colour);
     return this;
   }
-  public setBoxColours(Colour: string | number): void | this {
+  setBoxColours(Colour: string | number): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set box Colour");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawBoxColour(player.id, this.id, Colour);
     else fns.TextDrawBoxColour(this.id, Colour);
     return this;
   }
-  public setBackgroundColours(Colour: string | number): void | this {
+  setBackgroundColours(Colour: string | number): void | this {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("set background Colour");
     const { player } = this.sourceInfo;
@@ -132,21 +132,21 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawBackgroundColour(this.id, Colour);
     return this;
   }
-  public setAlignment(alignment: TextDrawAlignEnum): void | this {
+  setAlignment(alignment: TextDrawAlignEnum): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set alignment");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawAlignment(player.id, this.id, alignment);
     else fns.TextDrawAlignment(this.id, alignment);
     return this;
   }
-  public setLetterSize(x: number, y: number): void | this {
+  setLetterSize(x: number, y: number): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set letter size");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawLetterSize(player.id, this.id, x, y);
     else fns.TextDrawLetterSize(this.id, x, y);
     return this;
   }
-  public setOutline(size: number): void | this {
+  setOutline(size: number): void | this {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("set outline model");
     if (size < 0) return logger.warn("[BaseTextDraw]: Invalid outline value");
@@ -155,7 +155,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawSetOutline(this.id, size);
     return this;
   }
-  public setPreviewModel(modelIndex: number): void | this {
+  setPreviewModel(modelIndex: number): void | this {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("set preview model");
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
@@ -165,7 +165,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawSetPreviewModel(this.id, modelIndex);
     return this;
   }
-  public setPreviewRot(
+  setPreviewRot(
     fRotX: number,
     fRotY: number,
     fRotZ: number,
@@ -186,7 +186,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawSetPreviewRot(this.id, fRotX, fRotY, fRotZ, fZoom);
     return this;
   }
-  public setPreviewVehColours(Colour1: string, Colour2: string): void | this {
+  setPreviewVehColours(Colour1: string, Colour2: string): void | this {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("set preview veh col");
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
@@ -201,7 +201,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawSetPreviewVehicleColours(this.id, Colour1, Colour2);
     return this;
   }
-  public setProportional(set = true): void | this {
+  setProportional(set = true): void | this {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("set Proportional");
     const { player } = this.sourceInfo;
@@ -209,14 +209,14 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawSetProportional(this.id, set);
     return this;
   }
-  public setSelectable(set: boolean): void | this {
+  setSelectable(set: boolean): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set Selectable");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawSetSelectable(player.id, this.id, set);
     else fns.TextDrawSetSelectable(this.id, set);
     return this;
   }
-  public setShadow(size: number): void | this {
+  setShadow(size: number): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set shadow");
     if (size < 0) return logger.warn("[BaseTextDraw]: Invalid shadow value");
     const { player } = this.sourceInfo;
@@ -224,7 +224,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawSetShadow(this.id, size);
     return this;
   }
-  public setString(text: string): void | this {
+  setString(text: string): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set string");
     if (text.length === 0 || text.length > 1024)
       return logger.warn("[BaseTextDraw]: Invalid text length");
@@ -233,12 +233,12 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     else fns.TextDrawSetString(this.id, text);
     return this;
   }
-  public setTextSize(x: number, y: number): void | this {
+  setTextSize(x: number, y: number): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set TextSize");
     fns.TextDrawTextSize(this.id, x, y);
     return this;
   }
-  public useBox(use: boolean): void | this {
+  useBox(use: boolean): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set TextSize");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawUseBox(player.id, this.id, use);
@@ -254,7 +254,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     return 1;
   }
   // player's textdraw should be shown / hidden only for whom it is created.
-  public show(player?: P): void | this {
+  show(player?: P): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("show");
     const p = this.sourceInfo.player;
     if (p) fns.PlayerTextDrawShow(p.id, this.id);
@@ -264,7 +264,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     }
     return this;
   }
-  public hide(player?: P): void | this {
+  hide(player?: P): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("hide");
     const p = this.sourceInfo.player;
     if (p) fns.PlayerTextDrawHide(p.id, this.id);
@@ -274,7 +274,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     }
     return this;
   }
-  public showAll(): void | this {
+  showAll(): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("show");
     const p = this.sourceInfo.player;
     if (!p) {
@@ -285,7 +285,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
       "[BaseTextDraw]: player's textdraw should not be show for all."
     );
   }
-  public hideAll(): void | this {
+  hideAll(): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("hideAll");
     const p = this.sourceInfo.player;
     if (!p) {
@@ -296,121 +296,121 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
       "[BaseTextDraw]: player's textdraw should not be hide for all."
     );
   }
-  public isValid(): boolean {
+  isValid(): boolean {
     const p = this.sourceInfo.player;
     if (p) return IsValidPlayer3DTextLabel(p.id, this.id);
     return IsValidTextDraw(this.id);
   }
-  public isVisibleForPlayer<P extends BasePlayer>(player: P): boolean {
+  isVisibleForPlayer<P extends BasePlayer>(player: P): boolean {
     if (this.id === -1) return false;
     return IsTextDrawVisibleForPlayer(player.id, this.id);
   }
-  public getString(): string {
+  getString(): string {
     if (this.id === -1) return this.sourceInfo.text;
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetString(p.id, this.id);
     return TextDrawGetString(this.id);
   }
-  public setPos(fX: number, fY: number): void | this {
+  setPos(fX: number, fY: number): void | this {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set position");
     const p = this.sourceInfo.player;
     if (p) PlayerTextDrawSetPos(p.id, this.id, fX, fY);
     else TextDrawSetPos(this.id, fX, fY);
     return this;
   }
-  public getLetterSize() {
+  getLetterSize() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get letter size");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetLetterSize(p.id, this.id);
     return TextDrawGetLetterSize(this.id);
   }
-  public getTextSize() {
+  getTextSize() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get text size");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetTextSize(p.id, this.id);
     return TextDrawGetTextSize(this.id);
   }
-  public getPos() {
+  getPos() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get position");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetPos(p.id, this.id);
     return TextDrawGetPos(this.id);
   }
-  public getColour() {
+  getColour() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get Colour");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetColour(p.id, this.id);
     return TextDrawGetColour(this.id);
   }
-  public getBoxColour() {
+  getBoxColour() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get box Colour");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetBoxColour(p.id, this.id);
     return TextDrawGetBoxColour(this.id);
   }
-  public getBackgroundColour() {
+  getBackgroundColour() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get bg Colour");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetBackgroundColour(p.id, this.id);
     return TextDrawGetBackgroundColour(this.id);
   }
-  public getShadow() {
+  getShadow() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get shadow");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetShadow(p.id, this.id);
     return TextDrawGetShadow(this.id);
   }
-  public getOutline() {
+  getOutline() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get outline");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetOutline(p.id, this.id);
     return TextDrawGetOutline(this.id);
   }
-  public getFont() {
+  getFont() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get font");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetFont(p.id, this.id);
     return TextDrawGetFont(this.id);
   }
-  public isBox() {
+  isBox() {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawIsBox(p.id, this.id);
     return TextDrawIsBox(this.id);
   }
-  public isProportional() {
+  isProportional() {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawIsProportional(p.id, this.id);
     return TextDrawIsProportional(this.id);
   }
-  public isSelectable() {
+  isSelectable() {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawIsSelectable(p.id, this.id);
     return TextDrawIsSelectable(this.id);
   }
-  public getAlignment() {
+  getAlignment() {
     if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get alignment");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetAlignment(p.id, this.id);
     return TextDrawGetAlignment(this.id);
   }
-  public getPreviewModel() {
+  getPreviewModel() {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("get preview model");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetPreviewModel(p.id, this.id);
     return TextDrawGetPreviewModel(this.id);
   }
-  public getPreviewRot() {
+  getPreviewRot() {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("get preview rotation");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetPreviewRot(p.id, this.id);
     return TextDrawGetPreviewRot(this.id);
   }
-  public getPreviewVehColours() {
+  getPreviewVehColours() {
     if (this.id === -1)
       return BaseTextDraw.beforeCreateWarn("get preview vel Colours");
     const p = this.sourceInfo.player;

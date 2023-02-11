@@ -4,7 +4,7 @@ import { LimitsEnum } from "@/enums";
 import { I18n } from "@/controllers/i18n";
 import { BasePlayer } from "@/controllers/player";
 import { defaultCharset } from "@/controllers/gamemode/settings";
-import { TCommonCallback } from "@/types";
+import { camelCase, upperFirst } from "lodash";
 
 type processTuple = [string, string | number[]];
 
@@ -364,27 +364,33 @@ export const GetDynamicObjectMaterialText = (
   };
 };
 
-export const promisifyCallback = function (
-  this: any,
-  fn: (...args: any) => TCommonCallback | void,
-  cbName: string,
-  retNum = 1 // should return handled number
-) {
+export const promisifyCallback = (
+  obj: any,
+  fnName: string,
+  naiveCbName?: string,
+  retNum = 1 // should return handled number or boolean
+) => {
   return (...args: any) => {
-    const result = fn.call(this, ...args);
-    if (typeof result === "number") return result;
+    if (!obj[fnName]) return retNum;
+
+    const result = obj[fnName](...args);
+
     if (result instanceof Promise) {
       result.then((value) => {
         const promiseFn = () => value;
-        samp.addEventListener(cbName, promiseFn);
-        samp.removeEventListener(cbName, promiseFn);
+        let parseNaiveCbName = naiveCbName;
+        if (!parseNaiveCbName) parseNaiveCbName = upperFirst(camelCase(fnName));
+        samp.addEventListener(parseNaiveCbName, promiseFn);
+        samp.removeEventListener(parseNaiveCbName, promiseFn);
       });
+      return retNum;
     }
-    return retNum;
+    if (result === undefined) return retNum;
+    return Number(result);
   };
 };
 
 export const NOOP = (cbName: string, unhandled = 0) =>
-  promisifyCallback(() => unhandled, cbName);
+  promisifyCallback({ NOOP: () => unhandled }, "NOOP", cbName);
 
 export const { callNative, callNativeFloat } = samp;

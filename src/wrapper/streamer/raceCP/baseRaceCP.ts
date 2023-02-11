@@ -21,13 +21,13 @@ import { raceCPBus, raceCPHooks } from "./raceCPBus";
 export class DynamicRaceCP {
   private sourceInfo: IDynamicRaceCp;
   private _id = -1;
-  public get id(): number {
+  get id(): number {
     return this._id;
   }
   constructor(checkPoint: IDynamicRaceCp) {
     this.sourceInfo = checkPoint;
   }
-  public create(): void | this {
+  create(): void | this {
     if (this.id !== -1)
       return logger.warn("[StreamerRaceCP]: Unable to create checkpoint again");
     let { streamdistance, worldid, interiorid, playerid, areaid, priority } =
@@ -100,7 +100,7 @@ export class DynamicRaceCP {
     raceCPBus.emit(raceCPHooks.created, this);
     return this;
   }
-  public destroy(): void | this {
+  destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerRaceCP]: Unable to destroy the checkpoint before create"
@@ -109,13 +109,10 @@ export class DynamicRaceCP {
     raceCPBus.emit(raceCPHooks.destroyed, this);
     return this;
   }
-  public isValid(): boolean {
+  isValid(): boolean {
     return IsValidDynamicCP(this.id);
   }
-  public togglePlayer<P extends BasePlayer>(
-    player: P,
-    toggle: boolean
-  ): void | this {
+  togglePlayer<P extends BasePlayer>(player: P, toggle: boolean): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerRaceCP]: Unable to toggle the player before create"
@@ -123,23 +120,23 @@ export class DynamicRaceCP {
     TogglePlayerDynamicRaceCP(player.id, this.id, toggle);
     return this;
   }
-  public static togglePlayerAll<P extends BasePlayer>(
+  static togglePlayerAll<P extends BasePlayer>(
     player: P,
     toggle: boolean
   ): number {
     return TogglePlayerAllDynamicRaceCPs(player.id, toggle);
   }
-  public isPlayerIn<P extends BasePlayer>(player: P): boolean {
+  isPlayerIn<P extends BasePlayer>(player: P): boolean {
     if (this.id === -1) return false;
     return IsPlayerInDynamicRaceCP(player.id, this.id);
   }
-  public static getPlayerVisible<P extends BasePlayer, C extends DynamicRaceCP>(
+  static getPlayerVisible<P extends BasePlayer, C extends DynamicRaceCP>(
     player: P,
     checkpoints: Map<number, C>
   ): C | undefined {
     return checkpoints.get(GetPlayerVisibleDynamicRaceCP(player.id));
   }
-  public toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerRaceCP]: Unable to toggle callbacks before create"
@@ -150,7 +147,7 @@ export class DynamicRaceCP {
       toggle
     );
   }
-  public isToggleCallbacks(): boolean {
+  isToggleCallbacks(): boolean {
     if (this.id === -1) false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.RACE_CP, this.id);
   }

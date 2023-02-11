@@ -40,9 +40,9 @@ export abstract class DynamicAreaEvent<
       if (!p) return 0;
       const a = this.areas.get(areaId);
       if (!a) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerEnter,
+        "onPlayerEnter",
         "OnPlayerEnterDynamicArea"
       );
       return pFn(p, a);
@@ -52,9 +52,9 @@ export abstract class DynamicAreaEvent<
       if (!p) return 0;
       const a = this.areas.get(areaId);
       if (!a) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerLeave,
+        "onPlayerLeave",
         "OnPlayerLeaveDynamicArea"
       );
       return pFn(p, a);
@@ -64,9 +64,9 @@ export abstract class DynamicAreaEvent<
         const a = this.areas.get(item);
         const p = this.players.get(player);
         if (a && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamIn,
+            "onStreamIn",
             "Streamer_OnItemStreamIn"
           )(a, p);
       }
@@ -77,9 +77,9 @@ export abstract class DynamicAreaEvent<
         const a = this.areas.get(item);
         const p = this.players.get(player);
         if (a && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamOut,
+            "onStreamOut",
             "Streamer_OnItemStreamOut"
           )(a, p);
       }
@@ -87,16 +87,16 @@ export abstract class DynamicAreaEvent<
     });
   }
 
-  protected abstract onPlayerEnter(player: P, area: A): TCommonCallback;
-  protected abstract onPlayerLeave(player: P, area: A): TCommonCallback;
-  protected abstract onStreamIn(area: A, player: P): TCommonCallback;
-  protected abstract onStreamOut(area: A, player: P): TCommonCallback;
+  onPlayerEnter?(player: P, area: A): TCommonCallback;
+  onPlayerLeave?(player: P, area: A): TCommonCallback;
+  onStreamIn?(area: A, player: P): TCommonCallback;
+  onStreamOut?(area: A, player: P): TCommonCallback;
 
-  public getAreasArr(): Array<A> {
+  getAreasArr(): Array<A> {
     return [...this.areas.values()];
   }
 
-  public getAreasMap(): Map<number, A> {
+  getAreasMap(): Map<number, A> {
     return this.areas;
   }
 }

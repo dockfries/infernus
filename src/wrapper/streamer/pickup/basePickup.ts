@@ -14,13 +14,13 @@ import { pickupBus, pickupHooks } from "./pickupBus";
 export class DynamicPickup {
   private sourceInfo: IDynamicPickup;
   private _id = -1;
-  public get id(): number {
+  get id(): number {
     return this._id;
   }
   constructor(pickup: IDynamicPickup) {
     this.sourceInfo = pickup;
   }
-  public create(): void | this {
+  create(): void | this {
     if (this.id !== -1)
       return logger.warn("[StreamerPickup]: Unable to create pickup again");
     let { streamdistance, worldid, interiorid, playerid, areaid, priority } =
@@ -84,7 +84,7 @@ export class DynamicPickup {
     pickupBus.emit(pickupHooks.created, this);
     return this;
   }
-  public destroy(): void | this {
+  destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerPickup]: Unable to destroy the pickup before create"
@@ -93,10 +93,10 @@ export class DynamicPickup {
     pickupBus.emit(pickupHooks.destroyed, this);
     return this;
   }
-  public isValid(): boolean {
+  isValid(): boolean {
     return IsValidDynamicPickup(this.id);
   }
-  public toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerPickup]: Unable to toggle callbacks before create"
@@ -107,7 +107,7 @@ export class DynamicPickup {
       toggle
     );
   }
-  public isToggleCallbacks(): boolean {
+  isToggleCallbacks(): boolean {
     if (this.id === -1) false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.PICKUP, this.id);
   }

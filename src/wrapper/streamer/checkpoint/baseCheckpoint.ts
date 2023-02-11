@@ -19,13 +19,13 @@ import { Streamer } from "../common";
 export class DynamicCheckpoint {
   private sourceInfo: IDynamicCheckPoint;
   private _id = -1;
-  public get id(): number {
+  get id(): number {
     return this._id;
   }
   constructor(checkPoint: IDynamicCheckPoint) {
     this.sourceInfo = checkPoint;
   }
-  public create(): void | this {
+  create(): void | this {
     if (this.id !== -1)
       return logger.warn(
         "[StreamerCheckpoint]: Unable to create checkpoint again"
@@ -89,7 +89,7 @@ export class DynamicCheckpoint {
     checkPointBus.emit(checkPointHooks.created, this);
     return this;
   }
-  public destroy(): void | this {
+  destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerCheckpoint]: Unable to destroy the checkpoint before create"
@@ -98,13 +98,10 @@ export class DynamicCheckpoint {
     checkPointBus.emit(checkPointHooks.destroyed, this);
     return this;
   }
-  public isValid(): boolean {
+  isValid(): boolean {
     return IsValidDynamicCP(this.id);
   }
-  public togglePlayer<P extends BasePlayer>(
-    player: P,
-    toggle: boolean
-  ): void | this {
+  togglePlayer<P extends BasePlayer>(player: P, toggle: boolean): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerCheckpoint]: Unable to toggle the player before create"
@@ -112,30 +109,30 @@ export class DynamicCheckpoint {
     TogglePlayerDynamicCP(player.id, this.id, toggle);
     return this;
   }
-  public static togglePlayerAll<P extends BasePlayer>(
+  static togglePlayerAll<P extends BasePlayer>(
     player: P,
     toggle: boolean
   ): number {
     return TogglePlayerAllDynamicCPs(player.id, toggle);
   }
-  public isPlayerIn<P extends BasePlayer>(player: P): boolean {
+  isPlayerIn<P extends BasePlayer>(player: P): boolean {
     if (this.id === -1) return false;
     return IsPlayerInDynamicCP(player.id, this.id);
   }
-  public static getPlayerVisible<
-    P extends BasePlayer,
-    C extends DynamicCheckpoint
-  >(player: P, checkpoints: Map<number, C>): C | undefined {
+  static getPlayerVisible<P extends BasePlayer, C extends DynamicCheckpoint>(
+    player: P,
+    checkpoints: Map<number, C>
+  ): C | undefined {
     return checkpoints.get(GetPlayerVisibleDynamicCP(player.id));
   }
-  public toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerCheckpoint]: Unable to toggle callbacks before create"
       );
     return Streamer.toggleItemCallbacks(StreamerItemTypes.CP, this.id, toggle);
   }
-  public isToggleCallbacks(): boolean {
+  isToggleCallbacks(): boolean {
     if (this.id === -1) false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.CP, this.id);
   }

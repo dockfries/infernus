@@ -15,7 +15,7 @@ export abstract class BaseTextDrawEvent<
   P extends BasePlayer,
   T extends BaseTextDraw<P>
 > {
-  public readonly textDraws = new Map<ICommonTextDrawKey, T>();
+  readonly textDraws = new Map<ICommonTextDrawKey, T>();
   private readonly players;
   constructor(playersMap: Map<number, P>, destroyOnExit = true) {
     this.players = playersMap;
@@ -38,9 +38,9 @@ export abstract class BaseTextDrawEvent<
       const p = this.players.get(playerid);
       if (!p) return 0;
       const t = this.textDraws.get({ id: clickedid, global: true });
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerClick,
+        "onPlayerClick",
         "OnPlayerClickTextDraw"
       );
       return pFn(p, t || InvalidEnum.TEXT_DRAW);
@@ -49,15 +49,15 @@ export abstract class BaseTextDrawEvent<
       const p = this.players.get(playerid);
       if (!p) return 0;
       const t = this.textDraws.get({ id: clickedid, global: false });
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerClick,
+        "onPlayerClick",
         "OnPlayerClickPlayerTextDraw"
       );
       return pFn(p, t || InvalidEnum.TEXT_DRAW);
     });
   }
-  protected abstract onPlayerClick(
+  onPlayerClick?(
     player: P,
     textdraw: T | InvalidEnum.TEXT_DRAW
   ): TCommonCallback;

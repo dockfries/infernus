@@ -38,9 +38,9 @@ export abstract class DynamicCheckPointEvent<
       if (!cp) return 0;
       const p = this.players.get(playerid);
       if (!p) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerEnter,
+        "onPlayerEnter",
         "OnPlayerEnterDynamicCP"
       );
       return pFn(p, cp);
@@ -50,9 +50,9 @@ export abstract class DynamicCheckPointEvent<
       if (!cp) return 0;
       const p = this.players.get(playerid);
       if (!p) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerLeave,
+        "onPlayerLeave",
         "OnPlayerLeaveDynamicCP"
       );
       return pFn(p, cp);
@@ -62,9 +62,9 @@ export abstract class DynamicCheckPointEvent<
         const cp = this.checkpoints.get(item);
         const p = this.players.get(player);
         if (cp && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamIn,
+            "onStreamIn",
             "Streamer_OnItemStreamIn"
           )(cp, p);
       }
@@ -75,9 +75,9 @@ export abstract class DynamicCheckPointEvent<
         const cp = this.checkpoints.get(item);
         const p = this.players.get(player);
         if (cp && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamOut,
+            "onStreamOut",
             "Streamer_OnItemStreamOut"
           )(cp, p);
       }
@@ -85,16 +85,16 @@ export abstract class DynamicCheckPointEvent<
     });
   }
 
-  protected abstract onPlayerEnter(player: P, checkpoint: C): TCommonCallback;
-  protected abstract onPlayerLeave(player: P, checkpoint: C): TCommonCallback;
-  protected abstract onStreamIn(checkpoint: C, player: P): TCommonCallback;
-  protected abstract onStreamOut(checkpoint: C, player: P): TCommonCallback;
+  onPlayerEnter?(player: P, checkpoint: C): TCommonCallback;
+  onPlayerLeave?(player: P, checkpoint: C): TCommonCallback;
+  onStreamIn?(checkpoint: C, player: P): TCommonCallback;
+  onStreamOut?(checkpoint: C, player: P): TCommonCallback;
 
-  public getCheckPointsArr(): Array<C> {
+  getCheckPointsArr(): Array<C> {
     return [...this.checkpoints.values()];
   }
 
-  public getCheckPointsMap(): Map<number, C> {
+  getCheckPointsMap(): Map<number, C> {
     return this.checkpoints;
   }
 }

@@ -41,14 +41,14 @@ export abstract class BaseVehicle {
   private static createdCount = 0;
   private readonly sourceInfo: IVehicle;
   private readonly isStatic: boolean;
-  public get id(): number {
+  get id(): number {
     return this._id;
   }
   constructor(veh: IVehicle, isStatic = false) {
     this.sourceInfo = veh;
     this.isStatic = isStatic;
   }
-  public create(ignoreRange = false): void {
+  create(ignoreRange = false): void {
     if (this.id !== -1)
       return logger.warn("[BaseVehicle]: Unable to create the vehicle again");
     if (BaseVehicle.createdCount === LimitsEnum.MAX_VEHICLES)
@@ -107,7 +107,7 @@ export abstract class BaseVehicle {
     BaseVehicle.createdCount++;
     vehicleBus.emit(vehicleHooks.created, this);
   }
-  public destroy(): void {
+  destroy(): void {
     if (this.id === -1)
       return logger.warn(
         "[BaseVehicle]: Unable to destroy the vehicle before create"
@@ -117,7 +117,7 @@ export abstract class BaseVehicle {
     vehicleBus.emit(vehicleHooks.destroyed, this);
     this._id = -1;
   }
-  public addComponent(componentid: number): number {
+  addComponent(componentid: number): number {
     if (this.id === -1) return 0;
     if (!isValidVehComponent(this.getModel(), componentid)) {
       logger.warn(
@@ -127,7 +127,7 @@ export abstract class BaseVehicle {
     }
     return vehFunc.AddVehicleComponent(this.id, componentid);
   }
-  public removeComponent(componentid: number): number {
+  removeComponent(componentid: number): number {
     if (
       this.getComponentInSlot(BaseVehicle.getComponentType(componentid)) === 0
     ) {
@@ -138,49 +138,49 @@ export abstract class BaseVehicle {
     }
     return vehFunc.RemoveVehicleComponent(this.id, componentid);
   }
-  public getComponentInSlot(slot: CarModTypeEnum) {
+  getComponentInSlot(slot: CarModTypeEnum) {
     return vehFunc.GetVehicleComponentInSlot(this.id, slot);
   }
-  public static getComponentType(component: number) {
+  static getComponentType(component: number) {
     return vehFunc.GetVehicleComponentType(component);
   }
-  public linkToInterior(interiorId: number): number {
+  linkToInterior(interiorId: number): number {
     if (this.id === -1) return 0;
     return vehFunc.LinkVehicleToInterior(this.id, interiorId);
   }
-  public setVirtualWorld(worldId: number): number {
+  setVirtualWorld(worldId: number): number {
     if (this.id === -1) return 0;
     return vehFunc.SetVehicleVirtualWorld(this.id, worldId);
   }
-  public getVirtualWorld(): number {
+  getVirtualWorld(): number {
     if (this.id === -1) return 0;
     return vehFunc.GetVehicleVirtualWorld(this.id);
   }
-  public repair(): number {
+  repair(): number {
     if (this.id === -1) return 0;
     return vehFunc.RepairVehicle(this.id);
   }
-  public setPos(x: number, y: number, z: number): number {
+  setPos(x: number, y: number, z: number): number {
     if (this.id === -1) return 0;
     return vehFunc.SetVehiclePos(this.id, x, y, z);
   }
-  public getPos(): void | TBasePos {
+  getPos(): void | TBasePos {
     if (this.id === -1) return;
     return vehFunc.GetVehiclePos(this.id);
   }
-  public getHealth(): number {
+  getHealth(): number {
     if (this.id === -1) return 0;
     return vehFunc.GetVehicleHealth(this.id);
   }
-  public setHealth(health: number): number {
+  setHealth(health: number): number {
     if (this.id === -1) return 0;
     return vehFunc.SetVehicleHealth(this.id, health);
   }
-  public isPlayerIn<P extends BasePlayer>(player: P): boolean {
+  isPlayerIn<P extends BasePlayer>(player: P): boolean {
     if (this.id === -1) return false;
     return vehFunc.IsPlayerInVehicle(player.id, this.id);
   }
-  public putPlayerIn<P extends BasePlayer>(player: P, seatid: number): number {
+  putPlayerIn<P extends BasePlayer>(player: P, seatid: number): number {
     if (this.id === -1) return 0;
     if (seatid < 0) return 0;
     if (seatid > 4) {
@@ -190,15 +190,15 @@ export abstract class BaseVehicle {
     }
     return vehFunc.PutPlayerInVehicle(player.id, this.id, seatid);
   }
-  public getZAngle(): number {
+  getZAngle(): number {
     if (this.id === -1) return 0;
     return vehFunc.GetVehicleZAngle(this.id);
   }
-  public setZAngle(z_angle: number): number {
+  setZAngle(z_angle: number): number {
     if (this.id === -1) return 0;
     return vehFunc.SetVehicleZAngle(this.id, z_angle);
   }
-  public setNumberPlate(numberplate: string): number {
+  setNumberPlate(numberplate: string): number {
     if (this.id === -1) return 0;
     if (numberplate.length < 1 || numberplate.length > 32) {
       logger.error(
@@ -214,34 +214,31 @@ export abstract class BaseVehicle {
     }
     return vehFunc.SetVehicleNumberPlate(this.id, numberplate);
   }
-  public static getPoolSize(): number {
+  static getPoolSize(): number {
     return vehFunc.GetVehiclePoolSize();
   }
-  public changeColours(
-    colour1: string | number,
-    colour2: string | number
-  ): number {
+  changeColours(colour1: string | number, colour2: string | number): number {
     if (this.id === -1) return 0;
     return vehFunc.ChangeVehicleColours(this.id, colour1, colour2);
   }
-  public setVelocity(X: number, Y: number, Z: number): number {
+  setVelocity(X: number, Y: number, Z: number): number {
     if (this.id === -1) return 0;
     return vehFunc.SetVehicleVelocity(this.id, X, Y, Z);
   }
-  public getVelocity(): void | TBasePos {
+  getVelocity(): void | TBasePos {
     if (this.id === -1) return;
     const [x, y, z] = vehFunc.GetVehicleVelocity(this.id);
     return { x, y, z };
   }
-  public setAngularVelocity(X: number, Y: number, Z: number): number {
+  setAngularVelocity(X: number, Y: number, Z: number): number {
     if (this.id === -1) return 0;
     return vehFunc.SetVehicleAngularVelocity(this.id, X, Y, Z);
   }
-  public getDamageStatus() {
+  getDamageStatus() {
     if (this.id === -1) return;
     return vehFunc.GetVehicleDamageStatus(this.id);
   }
-  public updateDamageStatus(
+  updateDamageStatus(
     panels: number,
     doors: number,
     lights: number,
@@ -250,36 +247,36 @@ export abstract class BaseVehicle {
     if (this.id === -1) return;
     vehFunc.UpdateVehicleDamageStatus(this.id, panels, doors, lights, tires);
   }
-  public getDistanceFromPoint(X: number, Y: number, Z: number): number {
+  getDistanceFromPoint(X: number, Y: number, Z: number): number {
     return vehFunc.GetVehicleDistanceFromPoint(this.id, X, Y, Z);
   }
-  public getModel(): number {
+  getModel(): number {
     return vehFunc.GetVehicleModel(this.id);
   }
-  public static getModelInfo(
+  static getModelInfo(
     vehiclemodel: number,
     infotype: VehicleModelInfoEnum
   ): TBasePos {
     return vehFunc.GetVehicleModelInfo(vehiclemodel, infotype);
   }
-  public getModelInfo(infotype: VehicleModelInfoEnum): void | TBasePos {
+  getModelInfo(infotype: VehicleModelInfoEnum): void | TBasePos {
     if (this.id === -1) return;
     return BaseVehicle.getModelInfo(this.getModel(), infotype);
   }
-  public getRotationQuat() {
+  getRotationQuat() {
     if (this.id === -1) return;
     const [w, x, y, z] = vehFunc.GetVehicleRotationQuat(this.id);
     return { w, x, y, z };
   }
-  public setRespawn(): number {
+  setRespawn(): number {
     if (this.id === -1) return 0;
     return vehFunc.SetVehicleToRespawn(this.id);
   }
-  public isStreamedIn<P extends BasePlayer>(forplayer: P): boolean {
+  isStreamedIn<P extends BasePlayer>(forplayer: P): boolean {
     if (this.id === -1) return false;
     return vehFunc.IsVehicleStreamedIn(this.id, forplayer.id);
   }
-  public setParamsCarDoors(
+  setParamsCarDoors(
     driver: boolean,
     passenger: boolean,
     backleft: boolean,
@@ -294,7 +291,7 @@ export abstract class BaseVehicle {
       backright
     );
   }
-  public setParamsCarWindows(
+  setParamsCarWindows(
     driver: boolean,
     passenger: boolean,
     backleft: boolean,
@@ -309,15 +306,15 @@ export abstract class BaseVehicle {
       backright
     );
   }
-  public getParamsCarDoors() {
+  getParamsCarDoors() {
     if (this.id === -1) return undefined;
     return vehFunc.GetVehicleParamsCarDoors(this.id);
   }
-  public getParamsCarWindows() {
+  getParamsCarWindows() {
     if (this.id === -1) return undefined;
     return vehFunc.GetVehicleParamsCarWindows(this.id);
   }
-  public setParamsEx(
+  setParamsEx(
     engine: boolean,
     lights: boolean,
     alarm: boolean,
@@ -338,17 +335,17 @@ export abstract class BaseVehicle {
       objective
     );
   }
-  public getParamsEx() {
+  getParamsEx() {
     if (this.id === -1) return undefined;
     const [engine, lights, alarm, doors, bonnet, boot, objective] =
       vehFunc.GetVehicleParamsEx(this.id);
     return { engine, lights, alarm, doors, bonnet, boot, objective };
   }
-  public getParamsSirenState(): number {
+  getParamsSirenState(): number {
     if (this.id === -1) return -2;
     return vehFunc.GetVehicleParamsSirenState(this.id);
   }
-  public setParamsForPlayer<P extends BasePlayer>(
+  setParamsForPlayer<P extends BasePlayer>(
     player: P,
     objective: boolean,
     doorslocked: boolean
@@ -361,122 +358,118 @@ export abstract class BaseVehicle {
       doorslocked
     );
   }
-  public isTrailerAttached(): boolean {
+  isTrailerAttached(): boolean {
     if (this.id === -1) return false;
     return vehFunc.IsTrailerAttachedToVehicle(this.id);
   }
-  public changePaintjob(paintjobid: 0 | 1 | 2): number {
+  changePaintjob(paintjobid: 0 | 1 | 2): number {
     if (this.id === -1) return 0;
     if (!isValidPaintJob(this.getModel(), paintjobid)) return 0;
     this.changeColours("#fff", "#fff");
     vehFunc.ChangeVehiclePaintjob(this.id, paintjobid);
     return 1;
   }
-  public attachTrailer<V extends BaseVehicle>(trailer: V): number {
+  attachTrailer<V extends BaseVehicle>(trailer: V): number {
     if (this.id === -1) return 0;
     return vehFunc.AttachTrailerToVehicle(trailer.id, this.id);
   }
-  public detachTrailer() {
+  detachTrailer() {
     if (this.id === -1) return;
     if (this.isTrailerAttached()) vehFunc.DetachTrailerFromVehicle(this.id);
   }
-  public getTrailer<V extends BaseVehicle>(vehicles: Array<V>): V | undefined {
+  getTrailer<V extends BaseVehicle>(vehicles: Array<V>): V | undefined {
     if (this.id === -1) return;
     return vehicles.find((v) => v.id === vehFunc.GetVehicleTrailer(this.id));
   }
-  public isValid(): boolean {
+  isValid(): boolean {
     return vehFunc.IsValidVehicle(this.id);
   }
-  public getMatrix() {
+  getMatrix() {
     if (this.id === -1) return;
     return GetVehicleMatrix(this.id);
   }
-  public getTrainSpeed(): number {
+  getTrainSpeed(): number {
     if (this.id === -1) return 0;
     return GetVehicleTrainSpeed(this.id);
   }
-  public getHydraReactorAngle(): number {
+  getHydraReactorAngle(): number {
     if (this.id === -1) return 0;
     return GetVehicleHydraReactorAngle(this.id);
   }
-  public getLandingGearState(): number {
+  getLandingGearState(): number {
     if (this.id === -1) return 0;
     return GetVehicleLandingGearState(this.id);
   }
-  public getSirenState(): number {
+  getSirenState(): number {
     if (this.id === -1) return 0;
     return GetVehicleSirenState(this.id);
   }
-  public static getModelsUsed = GetVehicleModelsUsed;
-  public getDriver<P extends BasePlayer>(
-    players: Map<number, P>
-  ): P | undefined {
+  static getModelsUsed = GetVehicleModelsUsed;
+  getDriver<P extends BasePlayer>(players: Map<number, P>): P | undefined {
     if (this.id === -1) return;
     return players.get(GetVehicleDriver(this.id));
   }
-  public getLastDriver<P extends BasePlayer>(
-    players: Map<number, P>
-  ): P | undefined {
+  getLastDriver<P extends BasePlayer>(players: Map<number, P>): P | undefined {
     if (this.id === -1) return;
     return players.get(GetVehicleLastDriver(this.id));
   }
-  public static getModelCount = GetVehicleModelCount;
-  public isSirenEnabled(): boolean {
+  static getModelCount = GetVehicleModelCount;
+  isSirenEnabled(): boolean {
     return IsVehicleSirenEnabled(this.id);
   }
-  public toggleSirenEnabled(enabled: boolean): number {
+  toggleSirenEnabled(enabled: boolean): number {
     if (this.id === -1) return 0;
     return ToggleVehicleSirenEnabled(this.id, enabled);
   }
-  public isDead(): boolean {
+  isDead(): boolean {
     if (this.id === -1) return true;
     return IsVehicleDead(this.id);
   }
-  public getRespawnTick(): number {
+  getRespawnTick(): number {
     if (this.id === -1) return 0;
     return GetVehicleRespawnTick(this.id);
   }
-  public isOccupied(): boolean {
+  isOccupied(): boolean {
     if (this.id === -1) return false;
     return IsVehicleOccupied(this.id);
   }
-  public hasBeenOccupied(): boolean {
+  hasBeenOccupied(): boolean {
     if (this.id === -1) return false;
     return HasVehicleBeenOccupied(this.id);
   }
-  public getOccupiedTick(): number {
+  getOccupiedTick(): number {
     if (this.id === -1) return 0;
     return GetVehicleOccupiedTick(this.id);
   }
-  public getCab(): number {
+  getCab(): number {
     if (this.id === -1) return 0;
     return GetVehicleCab(this.id);
   }
-  public getRespawnDelay(): number {
+  getRespawnDelay(): number {
     if (this.id === -1) return 0;
     return GetVehicleRespawnDelay(this.id);
   }
-  public setRespawnDelay(delay: number): number {
+  setRespawnDelay(delay: number): number {
     if (this.id === -1) return 0;
     return SetVehicleRespawnDelay(this.id, delay);
   }
-  public getNumberPlate(): string {
+  getNumberPlate(): string {
     if (this.id === -1) return "";
     return GetVehicleNumberPlate(this.id);
   }
-  public getInterior(): number {
+  getInterior(): number {
     if (this.id === -1) return 0;
     return GetVehicleInterior(this.id);
   }
-  public getPaintjob(): number {
+  getPaintjob(): number {
     if (this.id === -1) return -1;
     return GetVehiclePaintjob(this.id);
   }
-  public getColours() {
+  getColours() {
     if (this.id === -1) return;
     return GetVehicleColours(this.id);
   }
-  public setSpawnInfo(
+  setSpawnInfo(
     modelid: number,
     fX: number,
     fY: number,
@@ -503,7 +496,7 @@ export abstract class BaseVehicle {
       interior
     );
   }
-  public getSpawnInfo() {
+  getSpawnInfo() {
     if (this.id === -1) return;
     return GetVehicleSpawnInfo(this.id);
   }

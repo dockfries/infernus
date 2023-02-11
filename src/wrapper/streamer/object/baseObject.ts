@@ -42,7 +42,7 @@ import { Streamer } from "../common";
 export class DynamicObject {
   private sourceInfo: IDynamicObject;
   private _id = -1;
-  public get id(): number {
+  get id(): number {
     return this._id;
   }
 
@@ -50,7 +50,7 @@ export class DynamicObject {
     this.sourceInfo = object;
   }
 
-  public create(): void | this {
+  create(): void | this {
     if (this.id !== -1)
       return logger.warn("[StreamerObject]: Unable to create object again");
     let {
@@ -126,7 +126,7 @@ export class DynamicObject {
     return this;
   }
 
-  public destroy(): void | this {
+  destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerObject]: Unable to destroy the object before create"
@@ -136,35 +136,35 @@ export class DynamicObject {
     return this;
   }
 
-  public isValid(): boolean {
+  isValid(): boolean {
     return IsValidDynamicObject(this.id);
   }
 
-  public getPos() {
+  getPos() {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot get position before create");
     return GetDynamicObjectPos(this.id);
   }
 
-  public setPos(x: number, y: number, z: number): void | number {
+  setPos(x: number, y: number, z: number): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot set position before create");
     return SetDynamicObjectPos(this.id, x, y, z);
   }
 
-  public getRot() {
+  getRot() {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot get rotation before create");
     return GetDynamicObjectRot(this.id);
   }
 
-  public setRot(rx: number, ry: number, rz: number): void | number {
+  setRot(rx: number, ry: number, rz: number): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot set rotation before create");
     return SetDynamicObjectRot(this.id, rx, ry, rz);
   }
 
-  public move(
+  move(
     x: number,
     y: number,
     z: number,
@@ -186,18 +186,18 @@ export class DynamicObject {
     return MoveDynamicObject(this.id, x, y, z, speed, rx, ry, rz);
   }
 
-  public stop(): void | number {
+  stop(): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot stop moving before create");
     return StopDynamicObject(this.id);
   }
 
-  public isMoving(): boolean {
+  isMoving(): boolean {
     if (this.id === -1) return false;
     return IsDynamicObjectMoving(this.id);
   }
 
-  public attachCamera<P extends BasePlayer>(player: P): void | number {
+  attachCamera<P extends BasePlayer>(player: P): void | number {
     if (this.id === -1 || player.id === -1)
       return logger.warn(
         "[StreamerObject]: Cannot attachCamera before both are created"
@@ -205,7 +205,7 @@ export class DynamicObject {
     return AttachCameraToDynamicObject(player.id, this.id);
   }
 
-  public attachToObject<O extends DynamicObject>(
+  attachToObject<O extends DynamicObject>(
     attachto: O,
     offsetx: number,
     offsety: number,
@@ -232,7 +232,7 @@ export class DynamicObject {
     );
   }
 
-  public attachToPlayer<P extends BasePlayer>(
+  attachToPlayer<P extends BasePlayer>(
     player: P,
     offsetx: number,
     offsety: number,
@@ -257,7 +257,7 @@ export class DynamicObject {
     );
   }
 
-  public attachToVehicle<V extends BaseVehicle>(
+  attachToVehicle<V extends BaseVehicle>(
     vehicle: V,
     offsetx: number,
     offsety: number,
@@ -282,29 +282,25 @@ export class DynamicObject {
     );
   }
 
-  public edit<P extends BasePlayer>(player: P): void | number {
+  edit<P extends BasePlayer>(player: P): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Unable to edit before create");
     player.endObjectEditing();
     return EditDynamicObject(player.id, this.id);
   }
 
-  public isMaterialUsed(materialIndex: number): boolean {
+  isMaterialUsed(materialIndex: number): boolean {
     if (this.id === -1) return false;
     return IsDynamicObjectMaterialUsed(this.id, materialIndex);
   }
 
-  public removeMaterial(materialIndex: number): number {
+  removeMaterial(materialIndex: number): number {
     if (this.id === -1) return 0;
     if (!this.isMaterialUsed(materialIndex)) return 0;
     return RemoveDynamicObjectMaterial(this.id, materialIndex);
   }
 
-  public getMaterial(
-    materialIndex: number,
-    txdname: string,
-    texturename: string
-  ) {
+  getMaterial(materialIndex: number, txdname: string, texturename: string) {
     if (this.id === -1)
       return logger.warn(
         "[StreamerObject]: Unable to get material before create"
@@ -317,7 +313,7 @@ export class DynamicObject {
     );
   }
 
-  public setMaterial(
+  setMaterial(
     materialindex: number,
     modelid: number,
     txdname: string,
@@ -338,17 +334,17 @@ export class DynamicObject {
     );
   }
 
-  public isMaterialTextUsed(materialIndex: number): boolean {
+  isMaterialTextUsed(materialIndex: number): boolean {
     if (this.id === -1) return false;
     return IsDynamicObjectMaterialTextUsed(this.id, materialIndex);
   }
 
-  public removeMaterialText(materialIndex: number) {
+  removeMaterialText(materialIndex: number) {
     if (!this.isMaterialTextUsed(materialIndex)) return 0;
     return RemoveDynamicObjectMaterialText(this.id, materialIndex);
   }
 
-  public getMaterialText(materialIndex: number) {
+  getMaterialText(materialIndex: number) {
     if (this.id === -1)
       return logger.warn(
         "[StreamerObject]: Unable to get material text before create"
@@ -360,7 +356,7 @@ export class DynamicObject {
     );
   }
 
-  public setMaterialText(
+  setMaterialText(
     charset: string = this.sourceInfo.charset,
     materialIndex: number,
     text: string,
@@ -392,7 +388,7 @@ export class DynamicObject {
     );
   }
 
-  public getPlayerCameraTarget<P extends BasePlayer, O extends DynamicObject>(
+  getPlayerCameraTarget<P extends BasePlayer, O extends DynamicObject>(
     player: P,
     objMap: Map<number, O>
   ): void | O {
@@ -400,7 +396,7 @@ export class DynamicObject {
     if (dynId === InvalidEnum.OBJECT_ID) return;
     return objMap.get(dynId);
   }
-  public toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerObject]: Unable to toggle callbacks before create"
@@ -411,7 +407,7 @@ export class DynamicObject {
       toggle
     );
   }
-  public isToggleCallbacks(): boolean {
+  isToggleCallbacks(): boolean {
     if (this.id === -1) false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.OBJECT, this.id);
   }

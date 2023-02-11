@@ -3,7 +3,7 @@ type Handler<T = any> = (val: T) => void;
 export class EventBus<Events extends Record<string, any>> {
   private map: Map<string, Set<Handler>> = new Map();
 
-  public on<EventName extends keyof Events>(
+  on<EventName extends keyof Events>(
     name: EventName,
     handler: Handler<Events[EventName]>
   ) {

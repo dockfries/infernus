@@ -34,9 +34,9 @@ export abstract class Dynamic3dTextLabelEvent<
         const tl = this._3dTexts.get(item);
         const p = this.players.get(player);
         if (tl && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamIn,
+            "onStreamIn",
             "Streamer_OnItemStreamIn"
           )(tl, p);
       }
@@ -47,9 +47,9 @@ export abstract class Dynamic3dTextLabelEvent<
         const tl = this._3dTexts.get(item);
         const p = this.players.get(player);
         if (tl && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamOut,
+            "onStreamOut",
             "Streamer_OnItemStreamOut"
           )(tl, p);
       }
@@ -57,14 +57,14 @@ export abstract class Dynamic3dTextLabelEvent<
     });
   }
 
-  protected abstract onStreamIn(label: D, player: P): TCommonCallback;
-  protected abstract onStreamOut(label: D, player: P): TCommonCallback;
+  onStreamIn?(label: D, player: P): TCommonCallback;
+  onStreamOut?(label: D, player: P): TCommonCallback;
 
-  public get3dTextLabelsArr(): Array<D> {
+  get3dTextLabelsArr(): Array<D> {
     return [...this._3dTexts.values()];
   }
 
-  public get3dTextLabelsMap(): Map<number, D> {
+  get3dTextLabelsMap(): Map<number, D> {
     return this._3dTexts;
   }
 }

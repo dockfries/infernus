@@ -8,7 +8,7 @@ import { BasePlayer } from "../player/basePlayer";
 export class CmdBus<P extends BasePlayer> {
   private eventList: Array<ICmd<P>> = [];
 
-  public on = (eventName: TEventName, eventFunction: TEventFunc<P>) => {
+  on = (eventName: TEventName, eventFunction: TEventFunc<P>) => {
     const idx: number = this.findEventIdxByName(eventName);
     if (idx > -1) {
       logger.warn(
@@ -20,13 +20,13 @@ export class CmdBus<P extends BasePlayer> {
     return () => this.off(eventName);
   };
 
-  public off = (eventName: TEventName) => {
+  off = (eventName: TEventName) => {
     const idx: number = this.findEventIdxByName(eventName);
     if (idx === -1) return;
     this.eventList.splice(idx, 1);
   };
 
-  public emit = async (
+  emit = async (
     player: P,
     userEventIdx: number,
     userEventArgs: string[]
@@ -37,7 +37,7 @@ export class CmdBus<P extends BasePlayer> {
     return result;
   };
 
-  public findEventIdxByName = (eventName: TEventName): number => {
+  findEventIdxByName = (eventName: TEventName): number => {
     return this.eventList.findIndex((v) => {
       const { name: registered } = v;
       if (registered instanceof Array) {

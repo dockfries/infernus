@@ -15,8 +15,8 @@ export class BaseNpcFunc {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
   private static recordStatus: ERecordStatus;
-  public static readonly connectNPC = ConnectNPC;
-  public static startRecordingPlayerData<P extends BasePlayer>(
+  static readonly connectNPC = ConnectNPC;
+  static startRecordingPlayerData<P extends BasePlayer>(
     player: P,
     recordtype: RecordTypesEnum,
     recordname: string
@@ -28,13 +28,13 @@ export class BaseNpcFunc {
     StartRecordingPlayerData(player.id, recordtype, recordname);
     player.isRecording = true;
   }
-  public static stopRecordingPlayerData<P extends BasePlayer>(player: P): void {
+  static stopRecordingPlayerData<P extends BasePlayer>(player: P): void {
     if (!player.isRecording)
       return logger.warn("[BaseNpcFunc]: It should be started before stop");
     StopRecordingPlayerData(player.id);
     player.isRecording = false;
   }
-  public static startRecordingPlayback(
+  static startRecordingPlayback(
     playbacktype: RecordTypesEnum,
     recordname: string
   ): void {
@@ -45,20 +45,20 @@ export class BaseNpcFunc {
     StartRecordingPlayback(playbacktype, recordname);
     BaseNpcFunc.recordStatus = ERecordStatus.start;
   }
-  public static stopRecordingPlayback(): void {
+  static stopRecordingPlayback(): void {
     if (BaseNpcFunc.recordStatus < ERecordStatus.start)
       return logger.warn("[BaseNpcFunc]: The current status cannot be stopped");
     StopRecordingPlayback();
     BaseNpcFunc.recordStatus = ERecordStatus.none;
   }
 
-  public static pauseRecordingPlayback() {
+  static pauseRecordingPlayback() {
     if (BaseNpcFunc.recordStatus !== ERecordStatus.start)
       return logger.warn("[BaseNpcFunc]: The current status cannot be paused");
     PauseRecordingPlayback();
     BaseNpcFunc.recordStatus = ERecordStatus.pause;
   }
-  public static resumeRecordingPlayback() {
+  static resumeRecordingPlayback() {
     if (BaseNpcFunc.recordStatus !== ERecordStatus.pause)
       return logger.warn("[BaseNpcFunc]: The current status cannot be paused");
     ResumeRecordingPlayback();

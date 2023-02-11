@@ -51,16 +51,16 @@ import { Streamer } from "../common";
 export class DynamicArea {
   private sourceInfo: TDynamicArea;
   private _id = -1;
-  public get type(): TDynamicAreaTypes {
+  get type(): TDynamicAreaTypes {
     return this.sourceInfo.type;
   }
-  public get id(): number {
+  get id(): number {
     return this._id;
   }
   constructor(area: TDynamicArea) {
     this.sourceInfo = area;
   }
-  public create(): void | this {
+  create(): void | this {
     if (this.id !== -1)
       return logger.warn("[StreamerArea]: Unable to create area again");
     let { worldid, interiorid, playerid } = this.sourceInfo;
@@ -242,7 +242,7 @@ export class DynamicArea {
     areaBus.emit(areaHooks.created, this);
     return this;
   }
-  public destroy(): void | this {
+  destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerArea]: Unable to destroy the area before create"
@@ -251,16 +251,16 @@ export class DynamicArea {
     areaBus.emit(areaHooks.destroyed, this);
     return this;
   }
-  public isValid(): boolean {
+  isValid(): boolean {
     if (this.id === -1) return false;
     return IsValidDynamicArea(this.id);
   }
-  public getType(): void | StreamerAreaTypes {
+  getType(): void | StreamerAreaTypes {
     if (this.id !== -1)
       return logger.warn("[StreamerArea]: Unable to get type before create");
     return GetDynamicAreaType(this.id);
   }
-  public getPolygonPoints(): void | number[] {
+  getPolygonPoints(): void | number[] {
     if (this.id !== -1)
       return logger.warn(
         "[StreamerArea]: Unable to get polygon points before create"
@@ -268,7 +268,7 @@ export class DynamicArea {
     if (this.type !== "polygon") return undefined;
     return GetDynamicPolygonPoints(this.id);
   }
-  public getPolygonNumberPoints(): void | number {
+  getPolygonNumberPoints(): void | number {
     if (this.id !== -1)
       return logger.warn(
         "[StreamerArea]: Unable to get polygon points number before create"
@@ -276,24 +276,24 @@ export class DynamicArea {
     if (this.type !== "polygon") return undefined;
     return GetDynamicPolygonNumberPoints(this.id);
   }
-  public isPlayerIn<P extends BasePlayer>(player: P, recheck = false): boolean {
+  isPlayerIn<P extends BasePlayer>(player: P, recheck = false): boolean {
     if (this.id === -1) return false;
     return IsPlayerInDynamicArea(player.id, this.id, recheck);
   }
-  public static isPlayerInAny<P extends BasePlayer>(
+  static isPlayerInAny<P extends BasePlayer>(
     player: P,
     recheck = false
   ): boolean {
     return IsPlayerInAnyDynamicArea(player.id, recheck);
   }
-  public isAnyPlayerIn(recheck = false): boolean {
+  isAnyPlayerIn(recheck = false): boolean {
     if (this.id === -1) return false;
     return IsAnyPlayerInDynamicArea(this.id, recheck);
   }
-  public static isAnyPlayerInAny(recheck = false): boolean {
+  static isAnyPlayerInAny(recheck = false): boolean {
     return IsAnyPlayerInAnyDynamicArea(recheck);
   }
-  public static getPlayerAreas<P extends BasePlayer, A extends DynamicArea>(
+  static getPlayerAreas<P extends BasePlayer, A extends DynamicArea>(
     player: P,
     areas: Map<number, A>
   ): Array<A | undefined> {
@@ -301,17 +301,17 @@ export class DynamicArea {
     const ids = GetPlayerDynamicAreas(player.id);
     return ids.map((a) => areas.get(a));
   }
-  public static getPlayerAreasNumber<P extends BasePlayer>(player: P) {
+  static getPlayerAreasNumber<P extends BasePlayer>(player: P) {
     return GetPlayerNumberDynamicAreas(player.id);
   }
-  public isPointIn(x: number, y: number, z: number): boolean {
+  isPointIn(x: number, y: number, z: number): boolean {
     if (this.id === -1) return false;
     return IsPointInDynamicArea(this.id, x, y, z);
   }
-  public static isPointInAny(x: number, y: number, z: number): boolean {
+  static isPointInAny(x: number, y: number, z: number): boolean {
     return IsPointInAnyDynamicArea(x, y, z);
   }
-  public isLineIn(
+  isLineIn(
     x1: number,
     y1: number,
     z1: number,
@@ -322,7 +322,7 @@ export class DynamicArea {
     if (this.id === -1) return false;
     return IsLineInDynamicArea(this.id, x1, y1, z1, x2, y2, z2);
   }
-  public static isLineInAny(
+  static isLineInAny(
     x1: number,
     y1: number,
     z1: number,
@@ -332,7 +332,7 @@ export class DynamicArea {
   ): boolean {
     return IsLineInAnyDynamicArea(x1, y1, z1, x2, y2, z2);
   }
-  public static getForPoint<A extends DynamicArea>(
+  static getForPoint<A extends DynamicArea>(
     x: number,
     y: number,
     z: number,
@@ -342,10 +342,10 @@ export class DynamicArea {
     const ids = GetDynamicAreasForPoint(x, y, z);
     return ids.map((a) => areas.get(a));
   }
-  public static getNumberForPoint(x: number, y: number, z: number): number {
+  static getNumberForPoint(x: number, y: number, z: number): number {
     return GetNumberDynamicAreasForPoint(x, y, z);
   }
-  public static getForLine<A extends DynamicArea>(
+  static getForLine<A extends DynamicArea>(
     x1: number,
     y1: number,
     z1: number,
@@ -358,7 +358,7 @@ export class DynamicArea {
     const ids = GetDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
     return ids.map((a) => areas.get(a));
   }
-  public static getNumberForLine(
+  static getNumberForLine(
     x1: number,
     y1: number,
     z1: number,
@@ -368,7 +368,7 @@ export class DynamicArea {
   ): number {
     return GetNumberDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
   }
-  public attachToObject<O extends DynamicObject>(
+  attachToObject<O extends DynamicObject>(
     obj: O,
     offsetx = 0.0,
     offsety = 0.0,
@@ -388,7 +388,7 @@ export class DynamicArea {
       offsetz
     );
   }
-  public attachToPlayer<P extends BasePlayer>(
+  attachToPlayer<P extends BasePlayer>(
     player: P,
     offsetx = 0.0,
     offsety = 0.0,
@@ -406,7 +406,7 @@ export class DynamicArea {
       offsetz
     );
   }
-  public attachToVehicle<V extends BaseVehicle>(
+  attachToVehicle<V extends BaseVehicle>(
     vehicle: V,
     offsetx = 0.0,
     offsety = 0.0,
@@ -424,18 +424,18 @@ export class DynamicArea {
       offsetz
     );
   }
-  public toggleSpectateMode(toggle: boolean): void | number {
+  toggleSpectateMode(toggle: boolean): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerArea]: Unable to toggle specate mode before create"
       );
     return ToggleDynAreaSpectateMode(this.id, toggle);
   }
-  public isToggleSpectateMode(): boolean {
+  isToggleSpectateMode(): boolean {
     if (this.id === -1) return false;
     return IsToggleDynAreaSpectateMode(this.id);
   }
-  public toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerArea]: Unable to toggle callbacks before create"
@@ -446,7 +446,7 @@ export class DynamicArea {
       toggle
     );
   }
-  public isToggleCallbacks(): boolean {
+  isToggleCallbacks(): boolean {
     if (this.id === -1) false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.AREA, this.id);
   }

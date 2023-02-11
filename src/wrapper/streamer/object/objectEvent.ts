@@ -38,11 +38,7 @@ export abstract class DynamicObjectEvent<
     OnDynamicObjectMoved((id): number => {
       const o = this.objects.get(id);
       if (!o) return 0;
-      const pFn = promisifyCallback.call(
-        this,
-        this.onMoved,
-        "OnDynamicObjectMoved"
-      );
+      const pFn = promisifyCallback(this, "onMoved", "OnDynamicObjectMoved");
       return pFn(o);
     });
     OnPlayerEditDynamicObject(
@@ -61,9 +57,9 @@ export abstract class DynamicObjectEvent<
         if (!o) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback.call(
+        const pFn = promisifyCallback(
           this,
-          this.onPlayerEdit,
+          "onPlayerEdit",
           "OnPlayerEditDynamicObject"
         );
         return pFn(p, o, response, x, y, z, rx, ry, rz);
@@ -82,9 +78,9 @@ export abstract class DynamicObjectEvent<
         if (!p) return 0;
         const o = this.objects.get(objectid);
         if (!o) return 0;
-        const pFn = promisifyCallback.call(
+        const pFn = promisifyCallback(
           this,
-          this.onPlayerSelect,
+          "onPlayerSelect",
           "OnPlayerSelectDynamicObject"
         );
         return pFn(p, o, modelid, x, y, z);
@@ -103,9 +99,9 @@ export abstract class DynamicObjectEvent<
         if (!p) return 0;
         const o = this.objects.get(objectid);
         if (!o) return 0;
-        const pFn = promisifyCallback.call(
+        const pFn = promisifyCallback(
           this,
-          this.onPlayerShoot,
+          "onPlayerShoot",
           "OnPlayerShootDynamicObject"
         );
         return pFn(p, weaponid, o, x, y, z);
@@ -116,9 +112,9 @@ export abstract class DynamicObjectEvent<
         const obj = this.objects.get(item);
         const p = this.players.get(player);
         if (obj && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamIn,
+            "onStreamIn",
             "Streamer_OnItemStreamIn"
           )(obj, p);
       }
@@ -129,9 +125,9 @@ export abstract class DynamicObjectEvent<
         const obj = this.objects.get(item);
         const p = this.players.get(player);
         if (obj && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamOut,
+            "onStreamOut",
             "Streamer_OnItemStreamOut"
           )(obj, p);
       }
@@ -139,9 +135,9 @@ export abstract class DynamicObjectEvent<
     });
   }
 
-  protected abstract onMoved(object: O): TCommonCallback;
+  onMoved?(object: O): TCommonCallback;
 
-  protected abstract onPlayerEdit(
+  onPlayerEdit?(
     player: P,
     object: O,
     response: EditResponseTypesEnum,
@@ -153,7 +149,7 @@ export abstract class DynamicObjectEvent<
     rz: number
   ): TCommonCallback;
 
-  protected abstract onPlayerSelect(
+  onPlayerSelect?(
     player: P,
     object: O,
     modelid: number,
@@ -162,7 +158,7 @@ export abstract class DynamicObjectEvent<
     z: number
   ): TCommonCallback;
 
-  protected abstract onPlayerShoot(
+  onPlayerShoot?(
     player: P,
     weaponid: number,
     object: O,
@@ -171,14 +167,14 @@ export abstract class DynamicObjectEvent<
     z: number
   ): TCommonCallback;
 
-  protected abstract onStreamIn(object: O, player: P): TCommonCallback;
-  protected abstract onStreamOut(object: O, player: P): TCommonCallback;
+  onStreamIn?(object: O, player: P): TCommonCallback;
+  onStreamOut?(object: O, player: P): TCommonCallback;
 
-  public getObjectsArr(): Array<O> {
+  getObjectsArr(): Array<O> {
     return [...this.objects.values()];
   }
 
-  public getObjectsMap(): Map<number, O> {
+  getObjectsMap(): Map<number, O> {
     return this.objects;
   }
 }

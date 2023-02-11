@@ -40,7 +40,7 @@ export class BaseDialog<T extends BasePlayer> {
   private static CREATED_ID = -1;
   private static MAX_DIALOGID = 32767;
   private dialog: IDialog;
-  public static waitingQueue: Map<number, IDialogFuncQueue> = new Map();
+  static waitingQueue: Map<number, IDialogFuncQueue> = new Map();
 
   constructor(
     dialog: IDialog = {
@@ -61,38 +61,38 @@ export class BaseDialog<T extends BasePlayer> {
   }
 
   // #region
-  public get style(): DialogStylesEnum | undefined {
+  get style(): DialogStylesEnum | undefined {
     return this.dialog.style;
   }
-  public set style(v: DialogStylesEnum | undefined) {
+  set style(v: DialogStylesEnum | undefined) {
     this.dialog.style = v;
   }
 
-  public get caption(): string | undefined {
+  get caption(): string | undefined {
     return this.dialog.caption;
   }
-  public set caption(v: string | undefined) {
+  set caption(v: string | undefined) {
     this.dialog.caption = v;
   }
 
-  public get info(): string | undefined {
+  get info(): string | undefined {
     return this.dialog.info;
   }
-  public set info(v: string | undefined) {
+  set info(v: string | undefined) {
     this.dialog.info = v;
   }
 
-  public get button1(): string | undefined {
+  get button1(): string | undefined {
     return this.dialog.button1;
   }
-  public set button1(v: string | undefined) {
+  set button1(v: string | undefined) {
     this.dialog.button1 = v;
   }
 
-  public get button2(): string | undefined {
+  get button2(): string | undefined {
     return this.dialog.button2;
   }
-  public set button2(v: string | undefined) {
+  set button2(v: string | undefined) {
     this.dialog.button2 = v;
   }
 
@@ -114,7 +114,7 @@ export class BaseDialog<T extends BasePlayer> {
     return true;
   }
 
-  public show(player: T): Promise<IDialogResResult> {
+  show(player: T): Promise<IDialogResResult> {
     return new Promise((resolve, reject) => {
       BaseDialog.close(player);
       const p = new Promise<IDialogResRaw>((dialogResolve, dialogReject) => {
@@ -137,7 +137,7 @@ export class BaseDialog<T extends BasePlayer> {
     });
   }
 
-  public static close<T extends BasePlayer>(player: T) {
+  static close<T extends BasePlayer>(player: T) {
     BaseDialog.delDialogTask(player, true);
     HidePlayerDialog(player.id);
   }

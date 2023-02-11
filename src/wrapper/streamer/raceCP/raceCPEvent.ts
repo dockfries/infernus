@@ -38,9 +38,9 @@ export abstract class DynamicRaceCPEvent<
         if (!cp) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback.call(
+        const pFn = promisifyCallback(
           this,
-          this.onPlayerEnter,
+          "onPlayerEnter",
           "OnPlayerEnterDynamicRaceCP"
         );
         return pFn(p, cp);
@@ -52,9 +52,9 @@ export abstract class DynamicRaceCPEvent<
         if (!cp) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback.call(
+        const pFn = promisifyCallback(
           this,
-          this.onPlayerLeave,
+          "onPlayerLeave",
           "OnPlayerLeaveDynamicRaceCP"
         );
         return pFn(p, cp);
@@ -65,9 +65,9 @@ export abstract class DynamicRaceCPEvent<
         const cp = this.raceCPs.get(item);
         const p = this.players.get(player);
         if (cp && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamIn,
+            "onStreamIn",
             "Streamer_OnItemStreamIn"
           )(cp, p);
       }
@@ -78,9 +78,9 @@ export abstract class DynamicRaceCPEvent<
         const cp = this.raceCPs.get(item);
         const p = this.players.get(player);
         if (cp && p)
-          return promisifyCallback.call(
+          return promisifyCallback(
             this,
-            this.onStreamOut,
+            "onStreamOut",
             "Streamer_OnItemStreamOut"
           )(cp, p);
       }
@@ -88,16 +88,16 @@ export abstract class DynamicRaceCPEvent<
     });
   }
 
-  protected abstract onPlayerEnter(player: P, checkpoint: R): TCommonCallback;
-  protected abstract onPlayerLeave(player: P, checkpoint: R): TCommonCallback;
-  protected abstract onStreamIn(checkpoint: R, player: P): TCommonCallback;
-  protected abstract onStreamOut(checkpoint: R, player: P): TCommonCallback;
+  onPlayerEnter?(player: P, checkpoint: R): TCommonCallback;
+  onPlayerLeave?(player: P, checkpoint: R): TCommonCallback;
+  onStreamIn?(checkpoint: R, player: P): TCommonCallback;
+  onStreamOut?(checkpoint: R, player: P): TCommonCallback;
 
-  public getRaceCPsArr(): Array<R> {
+  getRaceCPsArr(): Array<R> {
     return [...this.raceCPs.values()];
   }
 
-  public getRaceCPsMap(): Map<number, R> {
+  getRaceCPsMap(): Map<number, R> {
     return this.raceCPs;
   }
 }

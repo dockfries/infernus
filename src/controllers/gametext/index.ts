@@ -3,27 +3,27 @@ import { BasePlayer } from "../player";
 
 export class BaseGameText {
   private _str: string;
-  public get str(): string {
+  get str(): string {
     return this._str;
   }
-  public set str(value: string) {
+  set str(value: string) {
     this._str = value;
   }
   private _time: number;
-  public get time(): number {
+  get time(): number {
     return this._time;
   }
-  public set time(value: number) {
+  set time(value: number) {
     this._time = value;
   }
   private _style: number;
-  public get style(): number {
+  get style(): number {
     return this._style;
   }
-  public set style(value: number) {
+  set style(value: number) {
     this._style = value;
   }
-  public constructor(str: string, time: number, style: number) {
+  constructor(str: string, time: number, style: number) {
     this._str = str;
     this._time = time;
     this._style = style;

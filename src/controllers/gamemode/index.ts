@@ -44,10 +44,10 @@ import {
 import { IFilterScript } from "@/interfaces";
 
 export abstract class BaseGameMode {
-  public static charset = defaultCharset;
+  static charset = defaultCharset;
   private initialized = false;
 
-  public constructor() {
+  constructor() {
     OnGameModeInit((): void => {
       if (this.initialized)
         return logger.error(
@@ -55,57 +55,42 @@ export abstract class BaseGameMode {
         );
       BaseGameMode.supportAllNickname();
       this.initialized = true;
-      this.onInit();
+      this.onInit && this.onInit();
     });
     OnGameModeExit((): void => {
       if (!this.initialized)
         return logger.error("[BaseGameMode]: Cannot unload more than once");
       this.initialized = false;
-      this.onExit();
+      this.onExit && this.onExit();
     });
-    OnIncomingConnection(
-      promisifyCallback.call(
-        this,
-        this.onIncomingConnection,
-        "onIncomingConnection"
-      )
-    );
+    OnIncomingConnection(promisifyCallback(this, "onIncomingConnection"));
     OnRconCommand(
-      promisifyCallback.call(this, this.onRconCommand, "OnRconCommandI18n")
+      promisifyCallback(this, "onRconCommand", "OnRconCommandI18n")
     );
-    OnRconLoginAttempt(
-      promisifyCallback.call(
-        this,
-        this.onRconLoginAttempt,
-        "onRconLoginAttempt"
-      )
-    );
+    OnRconLoginAttempt(promisifyCallback(this, "onRconLoginAttempt"));
   }
 
-  public isInitialized(): boolean {
+  isInitialized(): boolean {
     return this.initialized;
   }
 
   // do something during close/restart server, such as storage of player data
-  public static exit(): void {
+  static exit(): void {
     // it's restart
     fns.GameModeExit();
   }
 
   // support filter script which use omp-node-lib
-  public readonly use = (
-    plugin: IFilterScript,
-    ...options: Array<any>
-  ): this => {
+  readonly use = (plugin: IFilterScript, ...options: Array<any>): this => {
     useFilterScript(plugin, ...options);
     return this;
   };
 
-  public static loadScript = loadUseScript;
-  public static unloadScript = unloadUseScript;
-  public static reloadScript = reloadUseScript;
+  static loadScript = loadUseScript;
+  static unloadScript = unloadUseScript;
+  static reloadScript = reloadUseScript;
 
-  public static supportAllNickname() {
+  static supportAllNickname() {
     /**
      * In utf8, different national languages take up different numbers of bytes,
      * but no matter how many bytes they take up, a byte always takes up 8 bits of binary,
@@ -117,58 +102,58 @@ export abstract class BaseGameMode {
     }
   }
 
-  protected abstract onInit(): void;
-  protected abstract onExit(): void;
-  protected abstract onIncomingConnection(
+  onInit?(): void;
+  onExit?(): void;
+  onIncomingConnection?(
     playerid: number,
     ipAddress: string,
     port: number
   ): TCommonCallback;
-  protected abstract onRconCommand(cmd: string): TCommonCallback;
-  protected abstract onRconLoginAttempt(
+  onRconCommand?(cmd: string): TCommonCallback;
+  onRconLoginAttempt?(
     ip: string,
     password: string,
     success: boolean
   ): TCommonCallback;
-  public static allowAdminTeleport = AllowAdminTeleport;
-  public static isAdminTeleportAllowed = IsAdminTeleportAllowed;
-  public static allowInteriorWeapons = AllowInteriorWeapons;
-  public static areInteriorWeaponsAllowed = AreInteriorWeaponsAllowed;
-  public static areAllAnimationsEnabled = AreAllAnimationsEnabled;
-  public static enableAllAnimations = EnableAllAnimations;
-  public static enableStuntBonusForAll = fns.EnableStuntBonusForAll;
-  public static enableVehicleFriendlyFire = fns.EnableVehicleFriendlyFire;
-  public static enableZoneNames = fns.EnableZoneNames;
-  public static disableInteriorEnterExits = fns.DisableInteriorEnterExits;
-  public static setGameModeText = fns.SetGameModeText;
-  public static getGravity = fns.GetGravity;
-  public static setGravity = fns.SetGravity;
-  public static showNameTags = fns.ShowNameTags;
-  public static disableNameTagLOS = fns.DisableNameTagLOS;
-  public static usePlayerPedAnims = fns.UsePlayerPedAnims;
-  public static showPlayerMarkers = fns.ShowPlayerMarkers;
-  public static limitPlayerMarkerRadius = fns.LimitPlayerMarkerRadius;
-  public static limitGlobalChatRadius = fns.LimitGlobalChatRadius;
-  public static setNameTagDrawDistance = fns.SetNameTagDrawDistance;
-  public static setWeather(weather: number): number {
+  static allowAdminTeleport = AllowAdminTeleport;
+  static isAdminTeleportAllowed = IsAdminTeleportAllowed;
+  static allowInteriorWeapons = AllowInteriorWeapons;
+  static areInteriorWeaponsAllowed = AreInteriorWeaponsAllowed;
+  static areAllAnimationsEnabled = AreAllAnimationsEnabled;
+  static enableAllAnimations = EnableAllAnimations;
+  static enableStuntBonusForAll = fns.EnableStuntBonusForAll;
+  static enableVehicleFriendlyFire = fns.EnableVehicleFriendlyFire;
+  static enableZoneNames = fns.EnableZoneNames;
+  static disableInteriorEnterExits = fns.DisableInteriorEnterExits;
+  static setGameModeText = fns.SetGameModeText;
+  static getGravity = fns.GetGravity;
+  static setGravity = fns.SetGravity;
+  static showNameTags = fns.ShowNameTags;
+  static disableNameTagLOS = fns.DisableNameTagLOS;
+  static usePlayerPedAnims = fns.UsePlayerPedAnims;
+  static showPlayerMarkers = fns.ShowPlayerMarkers;
+  static limitPlayerMarkerRadius = fns.LimitPlayerMarkerRadius;
+  static limitGlobalChatRadius = fns.LimitGlobalChatRadius;
+  static setNameTagDrawDistance = fns.SetNameTagDrawDistance;
+  static setWeather(weather: number): number {
     if (weather < 0 || weather > 255) {
       logger.error("[BaseGameMode]: The valid weather value is only 0 to 255");
       return 0;
     }
     return fns.SetWeather(weather);
   }
-  public static setWorldTime(hour: number): number {
+  static setWorldTime(hour: number): number {
     if (hour < 0 || hour > 23) {
       logger.error("[BaseGameMode]: The valid hour value is only 0 to 23");
       return 0;
     }
     return fns.SetWorldTime(hour);
   }
-  public static setTeamCount = fns.SetTeamCount;
-  public static sendRconCommand = fns.SendRconCommand;
-  public static addPlayerClass = fns.AddPlayerClass;
-  public static addPlayerClassEx = fns.AddPlayerClassEx;
-  public static createExplosion(
+  static setTeamCount = fns.SetTeamCount;
+  static sendRconCommand = fns.SendRconCommand;
+  static addPlayerClass = fns.AddPlayerClass;
+  static addPlayerClassEx = fns.AddPlayerClassEx;
+  static createExplosion(
     X: number,
     Y: number,
     Z: number,
@@ -183,11 +168,11 @@ export abstract class BaseGameMode {
     }
     return fns.CreateExplosion(X, Y, Z, type, Radius);
   }
-  public static manualVehicleEngineAndLights = fns.ManualVehicleEngineAndLights;
-  public static blockIpAddress = fns.BlockIpAddress;
-  public static unBlockIpAddress = fns.UnBlockIpAddress;
-  public static getServerTickRate = fns.GetServerTickRate;
-  public static addSimpleModel(
+  static manualVehicleEngineAndLights = fns.ManualVehicleEngineAndLights;
+  static blockIpAddress = fns.BlockIpAddress;
+  static unBlockIpAddress = fns.UnBlockIpAddress;
+  static getServerTickRate = fns.GetServerTickRate;
+  static addSimpleModel(
     virtualworld: number,
     baseid: number,
     newid: number,
@@ -199,7 +184,7 @@ export abstract class BaseGameMode {
     }
     return 0;
   }
-  public static addSimpleModelTimed(
+  static addSimpleModelTimed(
     virtualworld: number,
     baseid: number,
     newid: number,
@@ -270,25 +255,25 @@ export abstract class BaseGameMode {
     }
     return 1;
   }
-  public static findModelFileNameFromCRC = fns.FindModelFileNameFromCRC;
-  public static findTextureFileNameFromCRC = fns.FindTextureFileNameFromCRC;
-  public static getWeaponName = fns.GetWeaponName;
-  public static setObjectsDefaultCameraCollision =
+  static findModelFileNameFromCRC = fns.FindModelFileNameFromCRC;
+  static findTextureFileNameFromCRC = fns.FindTextureFileNameFromCRC;
+  static getWeaponName = fns.GetWeaponName;
+  static setObjectsDefaultCameraCollision =
     fns.SetObjectsDefaultCameraCollision;
-  public static vectorSize = fns.VectorSize;
-  public static clearBanList = ClearBanList;
-  public static isBanned = IsBanned;
-  public static isValidNickName = IsValidNickName;
-  public static allowNickNameCharacter = AllowNickNameCharacter;
-  public static isNickNameCharacterAllowed = IsNickNameCharacterAllowed;
-  public static addServerRule = AddServerRule;
-  public static setServerRule = SetServerRule;
-  public static isValidServerRule = IsValidServerRule;
-  public static removeServerRule = RemoveServerRule;
-  public static getWeaponSlot = GetWeaponSlot;
-  public static getAvailableClasses = GetAvailableClasses;
-  public static getPlayerClass = GetPlayerClass;
-  public static editPlayerClass = EditPlayerClass;
-  public static toggleChatTextReplacement = ToggleChatTextReplacement;
-  public static chatTextReplacementToggled = ChatTextReplacementToggled;
+  static vectorSize = fns.VectorSize;
+  static clearBanList = ClearBanList;
+  static isBanned = IsBanned;
+  static isValidNickName = IsValidNickName;
+  static allowNickNameCharacter = AllowNickNameCharacter;
+  static isNickNameCharacterAllowed = IsNickNameCharacterAllowed;
+  static addServerRule = AddServerRule;
+  static setServerRule = SetServerRule;
+  static isValidServerRule = IsValidServerRule;
+  static removeServerRule = RemoveServerRule;
+  static getWeaponSlot = GetWeaponSlot;
+  static getAvailableClasses = GetAvailableClasses;
+  static getPlayerClass = GetPlayerClass;
+  static editPlayerClass = EditPlayerClass;
+  static toggleChatTextReplacement = ToggleChatTextReplacement;
+  static chatTextReplacementToggled = ChatTextReplacementToggled;
 }

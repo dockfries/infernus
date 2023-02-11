@@ -34,9 +34,9 @@ export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
       if (!menu) return 0;
       const player = this.findPlayerById(playerid);
       if (!player) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerExited,
+        "onPlayerExited",
         "OnPlayerExitedMenu"
       );
       return pFn(player, menu);
@@ -46,35 +46,31 @@ export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
       if (!menu) return 0;
       const player = this.findPlayerById(playerid);
       if (!player) return 0;
-      const pFn = promisifyCallback.call(
+      const pFn = promisifyCallback(
         this,
-        this.onPlayerSelectedRow,
+        "onPlayerSelectedRow",
         "OnPlayerSelectedMenuRow"
       );
       return pFn(player, menu, row);
     });
   }
-  protected abstract onPlayerExited(player: P, menu: M): TCommonCallback;
-  protected abstract onPlayerSelectedRow(
-    player: P,
-    menu: M,
-    row: number
-  ): TCommonCallback;
+  onPlayerExited?(player: P, menu: M): TCommonCallback;
+  onPlayerSelectedRow?(player: P, menu: M, row: number): TCommonCallback;
 
   private findPlayerById(playerid: number) {
     return this.players.get(playerid);
   }
 
-  public findMenuById(menuId: number) {
+  findMenuById(menuId: number) {
     if (menuId === InvalidEnum.MENU) return undefined;
     return this.menus.get(menuId);
   }
 
-  public getMenusArr(): Array<M> {
+  getMenusArr(): Array<M> {
     return [...this.menus.values()];
   }
 
-  public getMenusMap(): Map<number, M> {
+  getMenusMap(): Map<number, M> {
     return this.menus;
   }
 }
