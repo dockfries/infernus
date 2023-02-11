@@ -352,9 +352,16 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     cmd: RegExpMatchArray
   ): Promise<any> => {
     const fullCommand = cmd.join(" ");
+    const firstLevel = cmd[0];
+
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    let caller: any = this;
+    const result = BasePlayerEvent.recurseCmdBus(caller, firstLevel);
+
+    if (result && result.instance) caller = result.instance;
 
     let rFnRes =
-      this.onCommandReceived && this.onCommandReceived(p, fullCommand);
+      caller.onCommandReceived && caller.onCommandReceived(p, fullCommand);
     if (rFnRes instanceof Promise) rFnRes = await rFnRes;
     if (!rFnRes) return NOOP("OnPlayerCommandTextI18n");
 
@@ -362,22 +369,38 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
      * Use eventBus to observe and subscribe to level 1 instructions,
      * support string and array pass, array used for alias.
      */
-    const firstLevel = cmd[0];
-    const idx = this.cmdBus.findEventIdxByName(firstLevel);
-    if (idx > -1 && (await this.cmdBus.emit(p, idx, cmd.slice(1)))) {
+
+    if (result && (await result.cmdBus.emit(p, result.idx, cmd.slice(1)))) {
       let pFnRes =
-        this.onCommandPerformed && this.onCommandPerformed(p, fullCommand);
+        caller.onCommandPerformed && caller.onCommandPerformed(p, fullCommand);
       if (pFnRes instanceof Promise) pFnRes = await pFnRes;
       if (!pFnRes) return NOOP("OnPlayerCommandTextI18n");
       return;
     }
 
     const pFn = promisifyCallback(
-      this,
+      caller,
       "onCommandError",
       "OnPlayerCommandTextI18n"
     );
     pFn(p, fullCommand, ICmdErrInfo.notExist);
+  };
+  private static recurseCmdBus = (
+    instance: object | null,
+    firstLevel: string
+  ): null | {
+    idx: number;
+    cmdBus: CmdBus<BasePlayer>;
+    instance: any;
+  } => {
+    if (instance === null || !Reflect.has(instance, "cmdBus")) return null;
+    const cmdBus = Reflect.get(instance, "cmdBus");
+    const idx = cmdBus.findEventIdxByName(firstLevel);
+    if (idx > -1) return { idx, cmdBus, instance };
+    return BasePlayerEvent.recurseCmdBus(
+      Reflect.getPrototypeOf(instance),
+      firstLevel
+    );
   };
 
   onConnect?(player: P): TCommonCallback;
