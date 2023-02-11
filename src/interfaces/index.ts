@@ -127,7 +127,7 @@ export interface IDynamicActor extends IDynamicCommon {
 }
 
 export interface IDynamic3DTextLabel extends IDynamicCommon {
-  charset: string;
+  charset?: string;
   text: string;
   colour: string | number;
   attachedplayer?: number;
@@ -137,7 +137,7 @@ export interface IDynamic3DTextLabel extends IDynamicCommon {
 }
 
 export interface IDynamicObject extends IDynamicCommon {
-  charset: string;
+  charset?: string;
   modelid: number;
   rx: number;
   ry: number;

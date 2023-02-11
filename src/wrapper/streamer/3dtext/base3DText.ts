@@ -1,3 +1,4 @@
+import { defaultCharset } from "@/controllers/gamemode/settings";
 import { InvalidEnum } from "@/enums";
 import type { IDynamic3DTextLabel } from "@/interfaces";
 import { logger } from "@/logger";
@@ -75,7 +76,7 @@ export class Dynamic3DTextLabel {
         playerid,
         areaid,
         priority,
-        charset
+        charset || defaultCharset
       );
     } else {
       if (Array.isArray(worldid)) worldid = -1;
@@ -88,7 +89,7 @@ export class Dynamic3DTextLabel {
       else areaid ??= -1;
 
       this._id = CreateDynamic3DTextLabel(
-        charset,
+        charset || defaultCharset,
         text,
         rgba(colour),
         x,
@@ -140,7 +141,10 @@ export class Dynamic3DTextLabel {
       return logger.warn(
         "[Streamer3DTextLabel]: Unable to get text before create"
       );
-    return GetDynamic3DTextLabelText(this.id, this.sourceInfo.charset);
+    return GetDynamic3DTextLabelText(
+      this.id,
+      this.sourceInfo.charset || defaultCharset
+    );
   }
   updateText(
     colour: string | number,
@@ -152,7 +156,12 @@ export class Dynamic3DTextLabel {
         "[Streamer3DTextLabel]: Unable to update text before create"
       );
     this.sourceInfo.charset = charset;
-    return UpdateDynamic3DTextLabelText(this.id, rgba(colour), text, charset);
+    return UpdateDynamic3DTextLabelText(
+      this.id,
+      rgba(colour),
+      text,
+      charset || defaultCharset
+    );
   }
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)

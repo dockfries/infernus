@@ -38,6 +38,7 @@ import {
   StreamerItemTypes,
 } from "omp-wrapper-streamer";
 import { Streamer } from "../common";
+import { defaultCharset } from "@/controllers/gamemode/settings";
 
 export class DynamicObject {
   private sourceInfo: IDynamicObject;
@@ -352,12 +353,12 @@ export class DynamicObject {
     return GetDynamicObjectMaterialText(
       this.id,
       materialIndex,
-      this.sourceInfo.charset
+      this.sourceInfo.charset || defaultCharset
     );
   }
 
   setMaterialText(
-    charset: string = this.sourceInfo.charset,
+    charset = this.sourceInfo.charset,
     materialIndex: number,
     text: string,
     materialSize: number = MaterialTextSizes.SIZE_256x128,
@@ -374,7 +375,7 @@ export class DynamicObject {
       );
     this.sourceInfo.charset = charset;
     return SetDynamicObjectMaterialText(
-      charset,
+      charset || defaultCharset,
       this.id,
       materialIndex,
       text,
