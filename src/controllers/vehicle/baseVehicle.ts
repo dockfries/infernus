@@ -384,6 +384,9 @@ export abstract class BaseVehicle {
   isValid(): boolean {
     return vehFunc.IsValidVehicle(this.id);
   }
+  static isValid(id: number): boolean {
+    return vehFunc.IsValidVehicle(id);
+  }
   getMatrix() {
     if (this.id === -1) return;
     return GetVehicleMatrix(this.id);

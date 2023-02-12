@@ -312,14 +312,9 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
       this.onPause && this.onPause(player, player.lastUpdateTick);
     });
 
-    playerBus.on(playerHooks.setLocale, ({ player, value }) => {
-      Reflect.set(player, "_locale", value);
-    });
-    playerBus.on(playerHooks.setCharset, ({ player, value }) => {
-      Reflect.set(player, "_charset", value);
-    });
-    playerBus.on(playerHooks.setIsRecording, ({ player, value }) => {
-      Reflect.set(player, "_isRecording", value);
+    playerBus.on(playerHooks.setCommonProp, ({ player, prop, value }) => {
+      Reflect.set(player, prop, value);
+      this.players.set(player.id, player);
     });
   }
   findPlayerById(playerid: number) {
@@ -336,7 +331,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     60
   );
   private static fpsHeartbeat = throttle((player: BasePlayer) => {
-    if (!BasePlayer.isConnected(player)) return;
+    if (!BasePlayer.isConnected(player.id)) return;
     const nowDrunkLevel = player.getDrunkLevel();
     if (nowDrunkLevel < 100) {
       player.setDrunkLevel(2000);

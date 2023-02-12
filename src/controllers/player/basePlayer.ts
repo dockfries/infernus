@@ -92,19 +92,31 @@ export abstract class BasePlayer {
     return this._locale;
   }
   set locale(value: string) {
-    playerBus.emit(playerHooks.setLocale, { player: this, value });
+    playerBus.emit(playerHooks.setCommonProp, {
+      player: this,
+      prop: "_locale",
+      value,
+    });
   }
   get charset(): string {
     return this._charset;
   }
   set charset(value: string) {
-    playerBus.emit(playerHooks.setCharset, { player: this, value });
+    playerBus.emit(playerHooks.setCommonProp, {
+      player: this,
+      prop: "_charset",
+      value,
+    });
   }
   get isRecording() {
     return this._isRecording;
   }
   set isRecording(value) {
-    playerBus.emit(playerHooks.setIsRecording, { player: this, value });
+    playerBus.emit(playerHooks.setCommonProp, {
+      player: this,
+      prop: "_isRecording",
+      value,
+    });
   }
 
   constructor(id: number) {
@@ -566,8 +578,8 @@ export abstract class BasePlayer {
     }
     return playerFunc.CreateExplosionForPlayer(this.id, X, Y, Z, type, Radius);
   }
-  static isConnected<P extends BasePlayer>(player: P): boolean {
-    return playerFunc.IsPlayerConnected(player.id);
+  static isConnected(id: number): boolean {
+    return playerFunc.IsPlayerConnected(id);
   }
   isConnected(): boolean {
     return playerFunc.IsPlayerConnected(this.id);
