@@ -14,21 +14,19 @@ import { throttle } from "lodash";
 import { BaseDialog } from "../promise/dialog";
 import { delCCTask } from "../promise/client";
 import { playerBus, playerHooks } from "./playerBus";
-import { TCommonCallback } from "@/types";
+import { TCommonCallback, TEventFunc, TEventName } from "@/types";
 
 // Each instance can be called to callbacks, so you can split the logic.
 
-const ICmdErrInfo: Record<string, ICmdErr> = {
-  format: { code: 0, msg: "incorrect command" },
-  notExist: { code: 1, msg: "does not exist" },
+const ICmdErrInfo: Record<"format" | "notExist" | "rejected", ICmdErr> = {
+  format: { code: 0, msg: "failed to recognize command (almost never)" },
+  notExist: { code: 1, msg: "command does not exist" },
+  rejected: { code: 2, msg: "rejected because true/1 was not returned" },
 };
 
 export abstract class BasePlayerEvent<P extends BasePlayer> {
   private readonly players = new Map<number, P>();
-  private readonly cmdBus = new CmdBus<P>();
-
-  readonly onCommandText = this.cmdBus.on;
-  readonly offCommandText = this.cmdBus.off;
+  private static cmdBus = new CmdBus();
 
   constructor(newPlayerFn: (id: number) => P) {
     cbs.OnPlayerConnect((playerid: number): number => {
@@ -342,65 +340,72 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     player.lastFps = player.lastDrunkLevel - nowDrunkLevel - 1;
     player.lastDrunkLevel = nowDrunkLevel;
   }, 1000);
+
+  /**
+   * Use eventBus to observe and subscribe to level 1 instructions,
+   * support string and array pass, array used for alias.
+   */
+  readonly onCommandText = (
+    name: TEventName,
+    fn: TEventFunc<P> | TEventFunc<P>[]
+  ): (() => void) => {
+    return BasePlayerEvent.cmdBus.on(this, name, fn);
+  };
+
+  readonly offCommandText = (
+    name: TEventName,
+    fn: TEventFunc<P> | TEventFunc<P>[]
+  ) => {
+    BasePlayerEvent.cmdBus.off(this, name, fn);
+  };
+
   private promiseCommand = async (
     p: P,
     cmd: RegExpMatchArray
-  ): Promise<any> => {
+  ): Promise<unknown> => {
     const fullCommand = cmd.join(" ");
     const firstLevel = cmd[0];
 
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    let caller: any = this;
-    const result = BasePlayerEvent.recurseCmdBus(caller, firstLevel);
+    const hasAnyRegistered = BasePlayerEvent.cmdBus.eventMap.get(firstLevel);
+    if (!hasAnyRegistered && this.onCommandError) {
+      this.onCommandError(p, fullCommand, ICmdErrInfo.notExist);
+      return;
+    }
 
-    if (result && result.instance) caller = result.instance;
+    const hasInstanceFns = hasAnyRegistered?.get(this);
+    if (!hasInstanceFns) return;
 
     let rFnRes =
-      caller.onCommandReceived && caller.onCommandReceived(p, fullCommand);
+      this.onCommandReceived && this.onCommandReceived(p, fullCommand);
 
     if (rFnRes !== undefined) {
       if (rFnRes instanceof Promise) rFnRes = await rFnRes;
       if (!rFnRes) return NOOP("OnPlayerCommandTextI18n");
     }
 
-    /**
-     * Use eventBus to observe and subscribe to level 1 instructions,
-     * support string and array pass, array used for alias.
-     */
+    // deliberately let the for loop not wait
+    hasInstanceFns.forEach(async (fn) => {
+      // CmdBus emit start
+      let result = fn.call(this, p, ...cmd.slice(1));
+      if (result instanceof Promise) result = await result;
+      if (result === undefined || result === null) result = false;
+      // CmdBus emit end
 
-    if (result && (await result.cmdBus.emit(p, result.idx, cmd.slice(1)))) {
-      let pFnRes =
-        caller.onCommandPerformed && caller.onCommandPerformed(p, fullCommand);
-      if (pFnRes instanceof Promise) pFnRes = await pFnRes;
-      if (!pFnRes) return NOOP("OnPlayerCommandTextI18n");
-      return;
-    }
+      if (result) {
+        let pFnRes =
+          this.onCommandPerformed && this.onCommandPerformed(p, fullCommand);
+        if (pFnRes instanceof Promise) pFnRes = await pFnRes;
+        if (!pFnRes) return NOOP("OnPlayerCommandTextI18n");
+        return;
+      }
 
-    const pFn = promisifyCallback(
-      caller,
-      "onCommandError",
-      "OnPlayerCommandTextI18n"
-    );
-    pFn(p, fullCommand, ICmdErrInfo.notExist);
-  };
-  private static recurseCmdBus = (
-    instance: object | null,
-    firstLevel: string
-  ): null | {
-    idx: number;
-    cmdBus: CmdBus<BasePlayer>;
-    instance: any;
-  } => {
-    if (instance === null) return null;
-    if (Reflect.has(instance, "cmdBus")) {
-      const cmdBus = Reflect.get(instance, "cmdBus");
-      const idx = cmdBus.findEventIdxByName(firstLevel);
-      if (idx > -1) return { idx, cmdBus, instance };
-    }
-    return BasePlayerEvent.recurseCmdBus(
-      Reflect.getPrototypeOf(instance),
-      firstLevel
-    );
+      const pFn = promisifyCallback(
+        this,
+        "onCommandError",
+        "OnPlayerCommandTextI18n"
+      );
+      pFn(p, fullCommand, ICmdErrInfo.rejected);
+    });
   };
 
   onConnect?(player: P): TCommonCallback;

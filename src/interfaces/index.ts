@@ -1,17 +1,7 @@
 import { BasePlayer } from "@/controllers/player";
 import { MapIconStyles } from "omp-wrapper-streamer";
 import { DialogStylesEnum } from "../enums";
-import {
-  TDynamicAreaTypes,
-  TEventFunc,
-  TEventName,
-  TStreamerExtendable,
-} from "../types";
-
-export interface ICmd<P> {
-  name: TEventName;
-  fn: TEventFunc<P>;
-}
+import { TDynamicAreaTypes, TStreamerExtendable } from "../types";
 
 export interface IDialog {
   style?: DialogStylesEnum;

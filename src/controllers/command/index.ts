@@ -1,55 +1,57 @@
-import { ICmd } from "@/interfaces";
-import { logger } from "@/logger";
 import { TEventFunc, TEventName } from "@/types";
-import { BasePlayer } from "../player/basePlayer";
+import { BasePlayerEvent } from "../player";
 
 // This is an event bus for distributing instructions entered by the user.
 // You can bind a single instruction as a string, or you can bind multiple alias instructions as an array string
-export class CmdBus<P extends BasePlayer> {
-  private eventList: Array<ICmd<P>> = [];
 
-  on = (eventName: TEventName, eventFunction: TEventFunc<P>) => {
-    const idx: number = this.findEventIdxByName(eventName);
-    if (idx > -1) {
-      logger.warn(
-        "[CommandBus]: It is not supported to listen for the same event more than once"
-      );
-    } else {
-      this.eventList.push({ name: eventName, fn: eventFunction });
-    }
-    return () => this.off(eventName);
-  };
+type trigger = BasePlayerEvent<any>;
+type callFn<P = any> = TEventFunc<P>;
 
-  off = (eventName: TEventName) => {
-    const idx: number = this.findEventIdxByName(eventName);
-    if (idx === -1) return;
-    this.eventList.splice(idx, 1);
-  };
+export class CmdBus {
+  readonly eventMap: Map<string, Map<trigger, callFn[]>> = new Map();
 
-  emit = async (
-    player: P,
-    userEventIdx: number,
-    userEventArgs: string[]
-  ): Promise<number | boolean> => {
-    let result = this.eventList[userEventIdx].fn(player, ...userEventArgs);
-    if (result instanceof Promise) result = await result;
-    if (result === undefined || result === null) return false;
-    return result;
-  };
-
-  findEventIdxByName = (eventName: TEventName): number => {
-    return this.eventList.findIndex((v) => {
-      const { name: registered } = v;
-      if (registered instanceof Array) {
-        if (eventName instanceof Array) {
-          return registered.some((e) => eventName.includes(e));
+  on = (trigger: trigger, name: TEventName, fn: callFn | callFn[]) => {
+    if (!(name instanceof Array)) name = [name];
+    name.forEach((e) => {
+      const events = this.eventMap.get(e);
+      // No events registered
+      if (!events) {
+        this.eventMap.set(
+          e,
+          // init the trigger and fns
+          new Map().set(trigger, fn instanceof Array ? fn : [fn])
+        );
+      } else {
+        // Has event registration, but does not know if it already contains the same trigger (playerEvent instance)
+        const registeredFns = events.get(trigger);
+        // If registered, add fn to what you already have
+        if (registeredFns) {
+          (fn instanceof Array ? fn : [fn]).forEach((f) =>
+            registeredFns.push(f)
+          );
+        } else {
+          // this trigger not registered，init the trigger and fns
+          events.set(trigger, fn instanceof Array ? fn : [fn]);
         }
-        return registered.includes(eventName);
       }
-      if (typeof registered === "string" && eventName instanceof Array) {
-        return eventName.includes(registered);
+    });
+    return () => this.off(trigger, name, fn);
+  };
+
+  off = (trigger: trigger, name: TEventName, fn: callFn | callFn[]) => {
+    if (!(name instanceof Array)) name = [name];
+    name.forEach((e) => {
+      const events = this.eventMap.get(e);
+      if (!events) return;
+      const registeredFns = events.get(trigger);
+      if (!registeredFns) return;
+      if (!(fn instanceof Array)) fn = [fn];
+      for (let i = 0; i < registeredFns.length; i++) {
+        const f = registeredFns[i];
+        if (!fn.includes(f)) continue;
+        registeredFns.splice(i, 1);
+        i--;
       }
-      return registered === eventName;
     });
   };
 }
