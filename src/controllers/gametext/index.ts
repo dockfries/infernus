@@ -1,37 +1,61 @@
-import { GameTextForAll, GameTextForPlayer } from "@/wrapper/native/functions";
+import {
+  GameTextForAll,
+  GameTextForPlayer,
+  HasGameText,
+  HideGameTextForAll,
+  HideGameTextForPlayer,
+} from "@/wrapper/native/functions";
 import { BasePlayer } from "../player";
 
-export class BaseGameText {
-  private _str: string;
-  get str(): string {
-    return this._str;
-  }
-  set str(value: string) {
-    this._str = value;
-  }
+export class BaseGameText<P extends BasePlayer = BasePlayer> {
+  private _text: string;
   private _time: number;
+  private _style: number;
+
+  get text(): string {
+    return this._text;
+  }
+  set text(value: string) {
+    this._text = value;
+  }
+
   get time(): number {
     return this._time;
   }
   set time(value: number) {
     this._time = value;
   }
-  private _style: number;
+
   get style(): number {
     return this._style;
   }
   set style(value: number) {
     this._style = value;
   }
+
   constructor(str: string, time: number, style: number) {
-    this._str = str;
+    this._text = str;
     this._time = time;
     this._style = style;
   }
-  forAll() {
-    GameTextForAll(this.str, this.time, this.style);
+
+  static hideForAll(style: number) {
+    HideGameTextForAll(style);
   }
-  forPlayer<P extends BasePlayer>(player: P) {
-    GameTextForPlayer(player.id, this.str, this.time, this.style);
+
+  static has<P extends BasePlayer>(player: P, style: number) {
+    return HasGameText(player.id, style);
+  }
+
+  forAll() {
+    GameTextForAll(this.text, this.time, this.style);
+  }
+
+  forPlayer(player: P) {
+    GameTextForPlayer(player.id, this.text, this.time, this.style);
+  }
+
+  hideForPlayer(player: P) {
+    return HideGameTextForPlayer(player.id, this.style);
   }
 }

@@ -59,13 +59,30 @@ export const GameTextForAll = (
   return callNative("GameTextForAll", "sii", string, time, style);
 };
 
+export const HideGameTextForAll = (style: number) => {
+  callNative("HideGameTextForAll", "i", style);
+};
+
 export const GameTextForPlayer = (
   playerid: number,
   string: string,
   time: number,
   style: number
-): number => {
-  return callNative("GameTextForPlayer", "isii", playerid, string, time, style);
+): boolean => {
+  return Boolean(
+    callNative("GameTextForPlayer", "isii", playerid, string, time, style)
+  );
+};
+
+export const HasGameText = (playerid: number, style: number): boolean => {
+  return Boolean(callNative("HasGameText", "ii", playerid, style));
+};
+
+export const HideGameTextForPlayer = (
+  playerid: number,
+  style: number
+): boolean => {
+  return Boolean(callNative("HideGameTextForPlayer", "ii", playerid, style));
 };
 
 export const GetMaxPlayers = (): number => {
