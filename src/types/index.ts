@@ -8,7 +8,8 @@ import {
 } from "@/interfaces";
 
 export type TEventName = string | string[];
-export type TEventFunc<P> = (
+export type TEventFunc<EventInstance, P> = (
+  this: EventInstance,
   player: P,
   ...args: string[]
 ) => boolean | number | void | Promise<boolean | number | void>;

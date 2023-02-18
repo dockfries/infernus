@@ -347,14 +347,14 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
    */
   readonly onCommandText = (
     name: TEventName,
-    fn: TEventFunc<P> | TEventFunc<P>[]
+    fn: TEventFunc<this, P> | TEventFunc<this, P>[]
   ): (() => void) => {
     return BasePlayerEvent.cmdBus.on(this, name, fn);
   };
 
   readonly offCommandText = (
     name: TEventName,
-    fn: TEventFunc<P> | TEventFunc<P>[]
+    fn: TEventFunc<this, P> | TEventFunc<this, P>[]
   ) => {
     BasePlayerEvent.cmdBus.off(this, name, fn);
   };
