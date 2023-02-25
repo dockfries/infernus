@@ -1,0 +1,18 @@
+const { registerEvent } = samp;
+registerEvent("OnDynamicObjectMoved", "i");
+registerEvent("OnPlayerEditDynamicObject", "iiiiiiiii");
+registerEvent("OnPlayerSelectDynamicObject", "iiiiii");
+registerEvent("OnPlayerShootDynamicObject", "iiiiii");
+registerEvent("OnPlayerPickUpDynamicPickup", "ii");
+registerEvent("OnPlayerEnterDynamicCP", "ii");
+registerEvent("OnPlayerLeaveDynamicCP", "ii");
+registerEvent("OnPlayerEnterDynamicRaceCP", "ii");
+registerEvent("OnPlayerLeaveDynamicRaceCP", "ii");
+registerEvent("OnPlayerEnterDynamicArea", "ii");
+registerEvent("OnPlayerLeaveDynamicArea", "ii");
+registerEvent("OnPlayerGiveDamageDynamicActor", "iiiii");
+registerEvent("OnDynamicActorStreamIn", "ii");
+registerEvent("OnDynamicActorStreamOut", "ii");
+registerEvent("Streamer_OnItemStreamIn", "iii");
+registerEvent("Streamer_OnItemStreamOut", "iii");
+registerEvent("Streamer_OnPluginError", "s");

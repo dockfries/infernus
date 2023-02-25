@@ -1,0 +1,12 @@
+node_modules/
+src/
+*.ts
+!*.d.ts
+.vscode
+.gitignore
+.git
+rollup.config.js
+tsconfig.json
+pnpm-lock.yaml
+LICENSE
+.husky

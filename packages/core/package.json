@@ -1,0 +1,51 @@
+{
+  "name": "omp-node-lib",
+  "version": "0.8.3",
+  "description": "Better with omp-node-ts",
+  "main": "dist/bundle.js",
+  "types": "dist/bundle.d.ts",
+  "scripts": {
+    "lint": "eslint --fix ./src",
+    "build": "npm run lint && rollup -c",
+    "prepublishOnly": "npm run build"
+  },
+  "prepare": "npm run build",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YuCarl77/omp-node-lib.git"
+  },
+  "keywords": [
+    "omp",
+    "samp"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YuCarl77/omp-node-lib/issues"
+  },
+  "homepage": "https://github.com/YuCarl77/omp-node-lib#readme",
+  "devDependencies": {
+    "@sa-mp/node": "^0.2.0",
+    "@types/lodash": "^4.14.191",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
+    "esbuild": "^0.15.18",
+    "eslint": "^8.32.0",
+    "rollup": "^3.10.1",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-dts": "^5.1.1",
+    "rollup-plugin-esbuild": "^5.0.0",
+    "rollup-plugin-node-externals": "^5.1.0",
+    "rollup-plugin-typescript-paths": "^1.4.0",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.6.3",
+    "lodash": "^4.17.21",
+    "omp-wrapper": "workspace:^0.2.0",
+    "omp-wrapper-streamer": "workspace:^0.2.0",
+    "pino": "~8.6.1",
+    "pino-pretty": "^9.1.1"
+  }
+}

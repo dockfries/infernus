@@ -1,0 +1,51 @@
+{
+  "a51": {
+    "labels": {
+      "created": "Area 51 (69) Gates 3D Text Labels created for player",
+      "destroyed": "Deleted the 3D Text Labels on the Area 51 (69) Gates",
+      "tips": "{CCCCCC}[%s]\n{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to open or close the gate"
+    },
+    "load": {
+      "line-1": "Area 51 (69) Building Objects FilterScript",
+      "line-2": "Script v1.01",
+      "line-3": "28th March 2015"
+    },
+    "objects": {
+      "created": {
+        "building": "Area 51 (69) Building object created",
+        "fence": "Area 51 (69) Fence object created",
+        "gate": "Area 51 (69) Gate objects created",
+        "land": "Area 51 (69) Land object created"
+      },
+      "destroyed": {
+        "building": "Area 51 (69) Building object %s destroyed",
+        "fence": "Area 51 (69) Fence object destroyed",
+        "gate": {
+          "eastern": "Area 51 (69) Eastern Gate object destroyed",
+          "northern": "Area 51 (69) Northern Gate object destroyed"
+        },
+        "land": "Area 51 (69) Land object destroyed"
+      },
+      "gate": {
+        "name": {
+          "eastern": "Eastern Gate",
+          "northern": "Northern Gate"
+        },
+        "status": {
+          "closing": "%s Closing!",
+          "opening": "%s Opening!",
+          "waiting": {
+            "close": "* Sorry, you must wait for the %s to fully close first.",
+            "open": "* Sorry, you must wait for the %s to fully open first."
+          }
+        }
+      }
+    },
+    "text": {
+      "teleport": "Area 51 (69) Base!"
+    },
+    "unload": {
+      "line-1": "Area 51 (69) Base Objects FilterScript Unloaded"
+    }
+  }
+}

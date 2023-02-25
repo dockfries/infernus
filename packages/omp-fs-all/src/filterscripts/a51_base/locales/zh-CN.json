@@ -1,0 +1,51 @@
+{
+  "a51": {
+    "labels": {
+      "created": "已为玩家创建了51(69)区的3D文本标签",
+      "destroyed": "删除了51(69)区门前的3D文本标签",
+      "tips": "{CCCCCC}[%s]\n{CCCCCC}按下'{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}'打开或关闭大门"
+    },
+    "load": {
+      "line-1": "51(69)区建筑物过滤脚本",
+      "line-2": "版本 v1.01",
+      "line-3": "2015年3月28日"
+    },
+    "objects": {
+      "created": {
+        "building": "已创建51(69)区建筑物",
+        "fence": "已创建51(69)区围栏",
+        "gate": "已创建51(69)区大门",
+        "land": "已创建51(69)区土地"
+      },
+      "destroyed": {
+        "building": "已销毁51(69)区建筑物 %s",
+        "fence": "已销毁51(69)区围栏",
+        "gate": {
+          "eastern": "已销毁51(69)区东门",
+          "northern": "已销毁51(69)区北门"
+        },
+        "land": "已销毁51(69)区土地"
+      },
+      "gate": {
+        "name": {
+          "eastern": "东门",
+          "northern": "北门"
+        },
+        "status": {
+          "closing": "%s 正在关闭中!",
+          "opening": "%s 正在打开中!",
+          "waiting": {
+            "close": "* 抱歉，您必须先等待%s完全关闭。",
+            "open": "* 抱歉，您必须先等待%s完全打开。"
+          }
+        }
+      }
+    },
+    "text": {
+      "teleport": "51(69)区基地!"
+    },
+    "unload": {
+      "line-1": "51(69)区建筑物过滤脚本已卸载"
+    }
+  }
+}
