@@ -3,7 +3,32 @@ lockfileVersion: 5.4
 importers:
 
   .:
-    specifiers: {}
+    specifiers:
+      '@sa-mp/node': ^0.2.0
+      '@typescript-eslint/eslint-plugin': ^5.52.0
+      '@typescript-eslint/parser': ^5.52.0
+      esbuild: ^0.15.18
+      eslint: ^8.34.0
+      rollup: ^3.15.0
+      rollup-plugin-delete: ^2.0.0
+      rollup-plugin-dts: ^5.2.0
+      rollup-plugin-esbuild: ^5.0.0
+      rollup-plugin-node-externals: ^5.1.2
+      rollup-plugin-typescript-paths: ^1.4.0
+      typescript: ^4.9.4
+    devDependencies:
+      '@sa-mp/node': 0.2.0
+      '@typescript-eslint/eslint-plugin': 5.53.0_ny4s7qc6yg74faf3d6xty2ofzy
+      '@typescript-eslint/parser': 5.53.0_7kw3g6rralp5ps6mg3uyzz6azm
+      esbuild: 0.15.18
+      eslint: 8.34.0
+      rollup: 3.17.2
+      rollup-plugin-delete: 2.0.0
+      rollup-plugin-dts: 5.2.0_vi3xdhr63abcxdtwtptol35g5u
+      rollup-plugin-esbuild: 5.0.0_dedsaosao2lvdc3nhzhvqawbpu
+      rollup-plugin-node-externals: 5.1.2_rollup@3.17.2
+      rollup-plugin-typescript-paths: 1.4.0_typescript@4.9.5
+      typescript: 4.9.5
 
   packages/core:
     specifiers:
@@ -14,11 +39,10 @@ importers:
       '@typescript-eslint/parser': ^5.49.0
       esbuild: ^0.15.18
       eslint: ^8.32.0
-      husky: ^8.0.3
       iconv-lite: ^0.6.3
       lodash: ^4.17.21
-      omp-wrapper: workspace:^0.2.0
-      omp-wrapper-streamer: workspace:^0.2.0
+      omp-wrapper: workspace:*
+      omp-wrapper-streamer: workspace:*
       pino: ~8.6.1
       pino-pretty: ^9.1.1
       rollup: ^3.10.1
@@ -43,7 +67,6 @@ importers:
       '@typescript-eslint/parser': 5.53.0_7kw3g6rralp5ps6mg3uyzz6azm
       esbuild: 0.15.18
       eslint: 8.34.0
-      husky: 8.0.3
       rollup: 3.17.2
       rollup-plugin-delete: 2.0.0
       rollup-plugin-dts: 5.2.0_vi3xdhr63abcxdtwtptol35g5u
@@ -54,9 +77,20 @@ importers:
 
   packages/omp-fs-all:
     specifiers:
-      omp-node-lib: workspace:^0.8.3
+      '@rollup/plugin-json': ^6.0.0
+      '@types/node': ^18.13.0
+      omp-node-lib: workspace:*
     dependencies:
       omp-node-lib: link:../core
+    devDependencies:
+      '@rollup/plugin-json': 6.0.0
+      '@types/node': 18.14.1
+
+  packages/omp-wrapper:
+    specifiers: {}
+
+  packages/omp-wrapper-streamer:
+    specifiers: {}
 
 packages:
 
@@ -163,6 +197,32 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
+    dev: true
+
+  /@rollup/plugin-json/6.0.0:
+    resolution: {integrity: sha512-i/4C5Jrdr1XUarRhVu27EEwjt4GObltD7c+MkCIpO2QIbojw8MUs+CCTqOphQi3Qtg1FLmYt+l+6YeoIf51J7w==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 5.0.2
+    dev: true
+
+  /@rollup/pluginutils/5.0.2:
+    resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      '@types/estree': 1.0.0
+      estree-walker: 2.0.2
+      picomatch: 2.3.1
     dev: true
 
   /@rollup/pluginutils/5.0.2_rollup@3.17.2:
@@ -1115,12 +1175,6 @@ packages:
       glob: 8.1.0
       readable-stream: 3.6.1
     dev: false
-
-  /husky/8.0.3:
-    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
-    engines: {node: '>=14'}
-    hasBin: true
-    dev: true
 
   /iconv-lite/0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}

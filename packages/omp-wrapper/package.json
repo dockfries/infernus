@@ -2,17 +2,6 @@
   "name": "omp-wrapper",
   "version": "0.2.0",
   "description": "A functional wrapper of the omp new scripting api (natives and callbacks) for samp-node.",
-  "main": "dist/bundle.js",
-  "types": "dist/bundle.d.ts",
-  "scripts": {
-    "lint": "eslint --fix ./src",
-    "build": "npm run lint && rollup -c",
-    "prepublishOnly": "npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yucarl77/omp-wrapper.git"
-  },
   "keywords": [
     "samp",
     "sa:mp",
@@ -22,23 +11,22 @@
     "pawn",
     "wrapper"
   ],
-  "prepare": "npm run build",
-  "author": "YuCarl77",
-  "license": "ISC",
-  "devDependencies": {
-    "@sa-mp/node": "^0.2.0",
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
-    "@typescript-eslint/parser": "^5.52.0",
-    "esbuild": "^0.15.18",
-    "eslint": "^8.34.0",
-    "rollup": "^3.15.0",
-    "rollup-plugin-delete": "^2.0.0",
-    "rollup-plugin-dts": "^5.2.0",
-    "rollup-plugin-esbuild": "^5.0.0",
-    "typescript": "^4.9.5"
-  },
+  "homepage": "https://github.com/yucarl77/omp-wrapper#readme",
   "bugs": {
     "url": "https://github.com/yucarl77/omp-wrapper/issues"
   },
-  "homepage": "https://github.com/yucarl77/omp-wrapper#readme"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yucarl77/omp-wrapper.git"
+  },
+  "license": "ISC",
+  "author": "YuCarl77",
+  "main": "dist/bundle.js",
+  "types": "dist/bundle.d.ts",
+  "scripts": {
+    "build": "pnpm lint && rollup -c",
+    "lint": "eslint --fix ./src",
+    "prepublishOnly": "pnpm build"
+  },
+  "prepare": "pnpm build"
 }
