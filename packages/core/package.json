@@ -1,18 +1,18 @@
 {
   "name": "omp-node-lib",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Better with omp-node-ts",
   "keywords": [
     "omp",
     "samp"
   ],
-  "homepage": "https://github.com/YuCarl77/omp-node-lib#readme",
+  "homepage": "https://github.com/dockfries/omp-node-lib#readme",
   "bugs": {
-    "url": "https://github.com/YuCarl77/omp-node-lib/issues"
+    "url": "https://github.com/dockfries/omp-node-lib/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YuCarl77/omp-node-lib.git"
+    "url": "git+https://github.com/dockfries/omp-node-lib.git"
   },
   "license": "ISC",
   "author": "",

@@ -34,6 +34,6 @@ OnPlayerConnect(() => {
 });
 
 OnPlayerDisconnect(() => {
-  if (timer && BasePlayer.getPoolSize() === -1) clearInterval(timer);
+  if (timer && BasePlayer.getPoolSize() <= 0) clearInterval(timer);
   return 1;
 });

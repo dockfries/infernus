@@ -38,26 +38,14 @@ importers:
 
   packages/core:
     specifiers:
-      '@sa-mp/node': ^0.2.0
       '@types/lodash': ^4.14.191
       '@types/node': ^18.11.18
-      '@typescript-eslint/eslint-plugin': ^5.49.0
-      '@typescript-eslint/parser': ^5.49.0
-      esbuild: ^0.15.18
-      eslint: ^8.32.0
       iconv-lite: ^0.6.3
       lodash: ^4.17.21
       omp-wrapper: workspace:*
       omp-wrapper-streamer: workspace:*
       pino: ~8.6.1
       pino-pretty: ^9.1.1
-      rollup: ^3.10.1
-      rollup-plugin-delete: ^2.0.0
-      rollup-plugin-dts: ^5.1.1
-      rollup-plugin-esbuild: ^5.0.0
-      rollup-plugin-node-externals: ^5.1.0
-      rollup-plugin-typescript-paths: ^1.4.0
-      typescript: ^4.9.4
     dependencies:
       iconv-lite: 0.6.3
       lodash: 4.17.21
@@ -66,20 +54,8 @@ importers:
       pino: 8.6.1
       pino-pretty: 9.4.0
     devDependencies:
-      '@sa-mp/node': 0.2.0
       '@types/lodash': 4.14.191
       '@types/node': 18.14.1
-      '@typescript-eslint/eslint-plugin': 5.53.0_ny4s7qc6yg74faf3d6xty2ofzy
-      '@typescript-eslint/parser': 5.53.0_7kw3g6rralp5ps6mg3uyzz6azm
-      esbuild: 0.15.18
-      eslint: 8.34.0
-      rollup: 3.17.2
-      rollup-plugin-delete: 2.0.0
-      rollup-plugin-dts: 5.2.0_vi3xdhr63abcxdtwtptol35g5u
-      rollup-plugin-esbuild: 5.0.0_dedsaosao2lvdc3nhzhvqawbpu
-      rollup-plugin-node-externals: 5.1.2_rollup@3.17.2
-      rollup-plugin-typescript-paths: 1.4.0_typescript@4.9.5
-      typescript: 4.9.5
 
   packages/omp-fs-all:
     specifiers:

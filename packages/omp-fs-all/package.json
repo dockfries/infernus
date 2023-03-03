@@ -1,19 +1,19 @@
 {
   "name": "omp-fs-all",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A collection of all built-in filterscripts",
   "keywords": [
     "filterscript",
     "omp",
     "samp"
   ],
-  "homepage": "https://github.com/YuCarl77/omp-fs-all#readme",
+  "homepage": "https://github.com/dockfries/omp-fs-all#readme",
   "bugs": {
-    "url": "https://github.com/YuCarl77/omp-fs-all/issues"
+    "url": "https://github.com/dockfries/omp-fs-all/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YuCarl77/omp-fs-all.git"
+    "url": "git+https://github.com/dockfries/omp-fs-all.git"
   },
   "license": "ISC",
   "author": "",

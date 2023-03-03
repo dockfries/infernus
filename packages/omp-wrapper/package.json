@@ -1,6 +1,6 @@
 {
   "name": "omp-wrapper",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "A functional wrapper of the omp new scripting api (natives and callbacks) for samp-node.",
   "keywords": [
     "samp",
@@ -11,16 +11,16 @@
     "pawn",
     "wrapper"
   ],
-  "homepage": "https://github.com/yucarl77/omp-wrapper#readme",
+  "homepage": "https://github.com/dockfries/omp-wrapper#readme",
   "bugs": {
-    "url": "https://github.com/yucarl77/omp-wrapper/issues"
+    "url": "https://github.com/dockfries/omp-wrapper/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yucarl77/omp-wrapper.git"
+    "url": "git+https://github.com/dockfries/omp-wrapper.git"
   },
   "license": "ISC",
-  "author": "YuCarl77",
+  "author": "dockfries",
   "main": "dist/bundle.js",
   "types": "dist/bundle.d.ts",
   "scripts": {
