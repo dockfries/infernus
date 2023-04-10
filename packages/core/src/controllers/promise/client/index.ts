@@ -8,7 +8,7 @@ export const delCCTask = (playerId: number, reject = false): boolean => {
   if (!task) return false;
   if (reject)
     task.reject(
-      "[BasePlayer]: An attempt to check the player client response timed out"
+      "[Player]: An attempt to check the player client response timed out"
     );
   clearTimeout(task.timeout);
   ccWaitingQueue.delete(playerId);

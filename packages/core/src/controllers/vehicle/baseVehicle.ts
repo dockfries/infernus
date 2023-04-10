@@ -1,7 +1,7 @@
 import { CarModTypeEnum, LimitsEnum, VehicleModelInfoEnum } from "@/enums";
-import type { TBasePos } from "@/types";
+import type { TPos } from "@/types";
 import type { IVehicle } from "@/interfaces";
-import type { BasePlayer } from "../player";
+import type { Player } from "../player";
 import { logger } from "@/logger";
 import { isValidPaintJob, isValidVehComponent } from "@/utils/vehicleUtils";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
@@ -34,9 +34,9 @@ import {
   GetVehicleColours,
   SetVehicleSpawnInfo,
   GetVehicleSpawnInfo,
-} from "omp-wrapper";
+} from "@infernus/wrapper";
 
-export abstract class BaseVehicle {
+export class Vehicle {
   private _id = -1;
   private static createdCount = 0;
   private readonly sourceInfo: IVehicle;
@@ -50,10 +50,10 @@ export abstract class BaseVehicle {
   }
   create(ignoreRange = false): void {
     if (this.id !== -1)
-      return logger.warn("[BaseVehicle]: Unable to create the vehicle again");
-    if (BaseVehicle.createdCount === LimitsEnum.MAX_VEHICLES)
+      return logger.warn("[Vehicle]: Unable to create the vehicle again");
+    if (Vehicle.createdCount === LimitsEnum.MAX_VEHICLES)
       return logger.warn(
-        "[BaseVehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached"
+        "[Vehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached"
       );
     const {
       modelid,
@@ -104,16 +104,16 @@ export abstract class BaseVehicle {
         addsiren || false
       );
     }
-    BaseVehicle.createdCount++;
+    Vehicle.createdCount++;
     vehicleBus.emit(vehicleHooks.created, this);
   }
   destroy(): void {
     if (this.id === -1)
       return logger.warn(
-        "[BaseVehicle]: Unable to destroy the vehicle before create"
+        "[Vehicle]: Unable to destroy the vehicle before create"
       );
     vehFunc.DestroyVehicle(this.id);
-    BaseVehicle.createdCount--;
+    Vehicle.createdCount--;
     vehicleBus.emit(vehicleHooks.destroyed, this);
     this._id = -1;
   }
@@ -121,18 +121,16 @@ export abstract class BaseVehicle {
     if (this.id === -1) return 0;
     if (!isValidVehComponent(this.getModel(), componentid)) {
       logger.warn(
-        `[BaseVehicle]: Invalid component id ${componentid} attempted to attach to the vehicle ${this}`
+        `[Vehicle]: Invalid component id ${componentid} attempted to attach to the vehicle ${this}`
       );
       return 0;
     }
     return vehFunc.AddVehicleComponent(this.id, componentid);
   }
   removeComponent(componentid: number): number {
-    if (
-      this.getComponentInSlot(BaseVehicle.getComponentType(componentid)) === 0
-    ) {
+    if (this.getComponentInSlot(Vehicle.getComponentType(componentid)) === 0) {
       logger.warn(
-        `[BaseVehicle]: component id ${componentid} does not exist on this vehicle`
+        `[Vehicle]: component id ${componentid} does not exist on this vehicle`
       );
       return 0;
     }
@@ -164,7 +162,7 @@ export abstract class BaseVehicle {
     if (this.id === -1) return 0;
     return vehFunc.SetVehiclePos(this.id, x, y, z);
   }
-  getPos(): void | TBasePos {
+  getPos(): void | TPos {
     if (this.id === -1) return;
     return vehFunc.GetVehiclePos(this.id);
   }
@@ -176,16 +174,16 @@ export abstract class BaseVehicle {
     if (this.id === -1) return 0;
     return vehFunc.SetVehicleHealth(this.id, health);
   }
-  isPlayerIn<P extends BasePlayer>(player: P): boolean {
+  isPlayerIn<P extends Player>(player: P): boolean {
     if (this.id === -1) return false;
     return vehFunc.IsPlayerInVehicle(player.id, this.id);
   }
-  putPlayerIn<P extends BasePlayer>(player: P, seatid: number): number {
+  putPlayerIn<P extends Player>(player: P, seatid: number): number {
     if (this.id === -1) return 0;
     if (seatid < 0) return 0;
     if (seatid > 4) {
       logger.warn(
-        "[BaseVehicle]: If the seat is invalid or is taken, will cause a crash when they EXIT the vehicle."
+        "[Vehicle]: If the seat is invalid or is taken, will cause a crash when they EXIT the vehicle."
       );
     }
     return vehFunc.PutPlayerInVehicle(player.id, this.id, seatid);
@@ -202,14 +200,12 @@ export abstract class BaseVehicle {
     if (this.id === -1) return 0;
     if (numberplate.length < 1 || numberplate.length > 32) {
       logger.error(
-        "[BaseVehicle]: The length of the number plate ranges from 32 characters"
+        "[Vehicle]: The length of the number plate ranges from 32 characters"
       );
       return 0;
     }
     if (!/^[a-zA-Z0-9]+$/.test(numberplate)) {
-      logger.error(
-        "[BaseVehicle]: number plates only allow letters and numbers"
-      );
+      logger.error("[Vehicle]: number plates only allow letters and numbers");
       return 0;
     }
     return vehFunc.SetVehicleNumberPlate(this.id, numberplate);
@@ -225,7 +221,7 @@ export abstract class BaseVehicle {
     if (this.id === -1) return 0;
     return vehFunc.SetVehicleVelocity(this.id, X, Y, Z);
   }
-  getVelocity(): void | TBasePos {
+  getVelocity(): void | TPos {
     if (this.id === -1) return;
     const [x, y, z] = vehFunc.GetVehicleVelocity(this.id);
     return { x, y, z };
@@ -256,12 +252,12 @@ export abstract class BaseVehicle {
   static getModelInfo(
     vehiclemodel: number,
     infotype: VehicleModelInfoEnum
-  ): TBasePos {
+  ): TPos {
     return vehFunc.GetVehicleModelInfo(vehiclemodel, infotype);
   }
-  getModelInfo(infotype: VehicleModelInfoEnum): void | TBasePos {
+  getModelInfo(infotype: VehicleModelInfoEnum): void | TPos {
     if (this.id === -1) return;
-    return BaseVehicle.getModelInfo(this.getModel(), infotype);
+    return Vehicle.getModelInfo(this.getModel(), infotype);
   }
   getRotationQuat() {
     if (this.id === -1) return;
@@ -272,7 +268,7 @@ export abstract class BaseVehicle {
     if (this.id === -1) return 0;
     return vehFunc.SetVehicleToRespawn(this.id);
   }
-  isStreamedIn<P extends BasePlayer>(forplayer: P): boolean {
+  isStreamedIn<P extends Player>(forplayer: P): boolean {
     if (this.id === -1) return false;
     return vehFunc.IsVehicleStreamedIn(this.id, forplayer.id);
   }
@@ -345,7 +341,7 @@ export abstract class BaseVehicle {
     if (this.id === -1) return -2;
     return vehFunc.GetVehicleParamsSirenState(this.id);
   }
-  setParamsForPlayer<P extends BasePlayer>(
+  setParamsForPlayer<P extends Player>(
     player: P,
     objective: boolean,
     doorslocked: boolean
@@ -369,7 +365,7 @@ export abstract class BaseVehicle {
     vehFunc.ChangeVehiclePaintjob(this.id, paintjobid);
     return 1;
   }
-  attachTrailer<V extends BaseVehicle>(trailer: V): number {
+  attachTrailer<V extends Vehicle>(trailer: V): number {
     if (this.id === -1) return 0;
     return vehFunc.AttachTrailerToVehicle(trailer.id, this.id);
   }
@@ -377,7 +373,7 @@ export abstract class BaseVehicle {
     if (this.id === -1) return;
     if (this.isTrailerAttached()) vehFunc.DetachTrailerFromVehicle(this.id);
   }
-  getTrailer<V extends BaseVehicle>(vehicles: Array<V>): V | undefined {
+  getTrailer<V extends Vehicle>(vehicles: Array<V>): V | undefined {
     if (this.id === -1) return;
     return vehicles.find((v) => v.id === vehFunc.GetVehicleTrailer(this.id));
   }
@@ -408,11 +404,11 @@ export abstract class BaseVehicle {
     return GetVehicleSirenState(this.id);
   }
   static getModelsUsed = GetVehicleModelsUsed;
-  getDriver<P extends BasePlayer>(players: Map<number, P>): P | undefined {
+  getDriver<P extends Player>(players: Map<number, P>): P | undefined {
     if (this.id === -1) return;
     return players.get(GetVehicleDriver(this.id));
   }
-  getLastDriver<P extends BasePlayer>(players: Map<number, P>): P | undefined {
+  getLastDriver<P extends Player>(players: Map<number, P>): P | undefined {
     if (this.id === -1) return;
     return players.get(GetVehicleLastDriver(this.id));
   }

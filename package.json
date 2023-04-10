@@ -1,4 +1,6 @@
 {
+  "name": "infernus",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "lint-staged": "lint-staged",
@@ -15,6 +17,7 @@
   },
   "devDependencies": {
     "@sa-mp/node": "^0.2.0",
+    "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "esbuild": "^0.15.18",
@@ -29,5 +32,6 @@
     "rollup-plugin-node-externals": "^5.1.2",
     "rollup-plugin-typescript-paths": "^1.4.0",
     "typescript": "^4.9.4"
-  }
+  },
+  "prepare": "npm run build"
 }

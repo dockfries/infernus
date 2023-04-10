@@ -1,4 +1,4 @@
-import { BasePlayer } from "@/controllers/player";
+import { Player } from "@/controllers/player";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
@@ -6,15 +6,12 @@ import {
   OnPlayerEnterDynamicArea,
   OnPlayerLeaveDynamicArea,
   StreamerItemTypes,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { Streamer } from "../common";
 import { areaBus, areaHooks } from "./areaBus";
 import { DynamicArea } from "./baseArea";
 
-export abstract class DynamicAreaEvent<
-  P extends BasePlayer,
-  A extends DynamicArea
-> {
+export class DynamicAreaEvent<P extends Player, A extends DynamicArea> {
   private readonly areas = new Map<number, A>();
   private readonly players;
 

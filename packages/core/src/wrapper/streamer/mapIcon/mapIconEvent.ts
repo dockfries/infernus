@@ -1,17 +1,14 @@
-import type { BasePlayer } from "@/controllers/player";
+import type { Player } from "@/controllers/player";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
-import { StreamerItemTypes } from "omp-wrapper-streamer";
+import { StreamerItemTypes } from "@infernus/streamer";
 import { Streamer } from "../common";
 import { DynamicMapIcon } from "./baseMapIcon";
 
 import { mapIconBus, mapIconHooks } from "./mapIconBus";
 
-export abstract class DynamicMapIconEvent<
-  P extends BasePlayer,
-  M extends DynamicMapIcon
-> {
+export class DynamicMapIconEvent<P extends Player, M extends DynamicMapIcon> {
   private readonly mapIcons = new Map<number, M>();
   private readonly players;
 

@@ -7,11 +7,11 @@ import {
   OnPlayerSelectedMenuRow,
 } from "@/wrapper/native/callbacks";
 import { GetPlayerMenu } from "@/wrapper/native/functions";
-import { BasePlayer } from "../player";
-import { BaseMenu } from "./baseMenu";
+import { Player } from "../player";
+import { Menu } from "./baseMenu";
 import { menuBus, menuHooks } from "./menuBus";
 
-export abstract class BaseMenuEvent<P extends BasePlayer, M extends BaseMenu> {
+export class MenuEvent<P extends Player, M extends Menu> {
   private readonly menus = new Map<number, M>();
   private readonly players;
 

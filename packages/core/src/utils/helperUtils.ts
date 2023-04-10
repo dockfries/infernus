@@ -2,7 +2,7 @@ import { rgba } from "./colorUtils";
 import { IDialog } from "@/interfaces";
 import { LimitsEnum } from "@/enums";
 import { I18n } from "@/controllers/i18n";
-import { BasePlayer } from "@/controllers/player";
+import { Player } from "@/controllers/player";
 import { defaultCharset } from "@/controllers/gamemode/settings";
 import { camelCase, upperFirst } from "lodash";
 
@@ -17,7 +17,7 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 };
 
 // Here are some i18n functions used to override the original functions
-export const SendClientMessage = <P extends BasePlayer>(
+export const SendClientMessage = <P extends Player>(
   player: P,
   colour: string | number,
   msg: string
@@ -32,7 +32,7 @@ export const SendClientMessage = <P extends BasePlayer>(
   );
 };
 
-export const SendClientMessageToAll = <P extends BasePlayer>(
+export const SendClientMessageToAll = <P extends Player>(
   fn: Array<P>,
   colour: string | number,
   msg: string
@@ -41,7 +41,7 @@ export const SendClientMessageToAll = <P extends BasePlayer>(
   return 1;
 };
 
-export const SendPlayerMessageToPlayer = <P extends BasePlayer>(
+export const SendPlayerMessageToPlayer = <P extends Player>(
   player: P,
   senderId: number,
   message: string
@@ -56,7 +56,7 @@ export const SendPlayerMessageToPlayer = <P extends BasePlayer>(
   );
 };
 
-export const SendPlayerMessageToAll = <P extends BasePlayer>(
+export const SendPlayerMessageToAll = <P extends Player>(
   fn: Array<P>,
   senderId: number,
   message: string
@@ -65,7 +65,7 @@ export const SendPlayerMessageToAll = <P extends BasePlayer>(
   return 1;
 };
 
-export const ShowPlayerDialog = <P extends BasePlayer>(
+export const ShowPlayerDialog = <P extends Player>(
   player: P,
   id: number,
   dialog: IDialog
@@ -161,7 +161,7 @@ export const OnRconLoginAttempt = (
   );
 };
 
-export const GetPlayerName = <P extends BasePlayer>(player: P): string => {
+export const GetPlayerName = <P extends Player>(player: P): string => {
   const buf: number[] = callNative(
     "GetPlayerName",
     "iAi",
@@ -171,7 +171,7 @@ export const GetPlayerName = <P extends BasePlayer>(player: P): string => {
   return I18n.decodeFromBuf(I18n.getValidStr(buf), player.charset);
 };
 
-export const SetPlayerName = <P extends BasePlayer>(
+export const SetPlayerName = <P extends Player>(
   player: P,
   name: string
 ): number => {

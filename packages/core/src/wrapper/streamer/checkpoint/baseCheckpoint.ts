@@ -1,4 +1,4 @@
-import type { BasePlayer } from "@/controllers/player";
+import type { Player } from "@/controllers/player";
 import { logger } from "@/logger";
 import type { IDynamicCheckPoint } from "@/interfaces";
 import {
@@ -12,7 +12,7 @@ import {
   StreamerItemTypes,
   TogglePlayerAllDynamicCPs,
   TogglePlayerDynamicCP,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { checkPointBus, checkPointHooks } from "./checkPointBus";
 import { Streamer } from "../common";
 
@@ -101,7 +101,7 @@ export class DynamicCheckpoint {
   isValid(): boolean {
     return IsValidDynamicCP(this.id);
   }
-  togglePlayer<P extends BasePlayer>(player: P, toggle: boolean): void | this {
+  togglePlayer<P extends Player>(player: P, toggle: boolean): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerCheckpoint]: Unable to toggle the player before create"
@@ -109,17 +109,14 @@ export class DynamicCheckpoint {
     TogglePlayerDynamicCP(player.id, this.id, toggle);
     return this;
   }
-  static togglePlayerAll<P extends BasePlayer>(
-    player: P,
-    toggle: boolean
-  ): number {
+  static togglePlayerAll<P extends Player>(player: P, toggle: boolean): number {
     return TogglePlayerAllDynamicCPs(player.id, toggle);
   }
-  isPlayerIn<P extends BasePlayer>(player: P): boolean {
+  isPlayerIn<P extends Player>(player: P): boolean {
     if (this.id === -1) return false;
     return IsPlayerInDynamicCP(player.id, this.id);
   }
-  static getPlayerVisible<P extends BasePlayer, C extends DynamicCheckpoint>(
+  static getPlayerVisible<P extends Player, C extends DynamicCheckpoint>(
     player: P,
     checkpoints: Map<number, C>
   ): C | undefined {

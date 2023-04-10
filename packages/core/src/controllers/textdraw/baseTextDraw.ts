@@ -1,5 +1,5 @@
 import { LimitsEnum, TextDrawAlignEnum, TextDrawFontsEnum } from "@/enums";
-import type { IBaseTextDraw } from "@/interfaces";
+import type { ITextDraw } from "@/interfaces";
 import { logger } from "@/logger";
 import * as fns from "@/wrapper/native/functions";
 import {
@@ -42,40 +42,40 @@ import {
   TextDrawGetPreviewRot,
   PlayerTextDrawGetPreviewVehicleColours,
   TextDrawGetPreviewVehicleColours,
-} from "omp-wrapper";
+} from "@infernus/wrapper";
 
-import type { BasePlayer } from "../player";
+import type { Player } from "../player";
 import { textDrawBus, textDrawHooks } from "./textdrawBus";
 
-export abstract class BaseTextDraw<P extends BasePlayer> {
+export class TextDraw<P extends Player> {
   private static createdGlobalCount = 0;
   private static createdPlayerCount = 0;
-  private readonly sourceInfo: IBaseTextDraw<P>;
+  private readonly sourceInfo: ITextDraw<P>;
   private _id = -1;
   get id() {
     return this._id;
   }
-  constructor(textDraw: IBaseTextDraw<P>) {
+  constructor(textDraw: ITextDraw<P>) {
     this.sourceInfo = textDraw;
   }
   create(): void | this {
     if (this.id !== -1)
-      return logger.warn("[BaseTextDraw]: Unable to create the textdraw again");
+      return logger.warn("[TextDraw]: Unable to create the textdraw again");
     const { x, y, text, player } = this.sourceInfo;
     if (!player) {
-      if (BaseTextDraw.createdGlobalCount === LimitsEnum.MAX_TEXT_DRAWS)
+      if (TextDraw.createdGlobalCount === LimitsEnum.MAX_TEXT_DRAWS)
         return logger.warn(
-          "[BaseTextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached"
+          "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached"
         );
       this._id = fns.TextDrawCreate(x, y, text);
-      BaseTextDraw.createdGlobalCount++;
+      TextDraw.createdGlobalCount++;
     } else {
-      if (BaseTextDraw.createdPlayerCount === LimitsEnum.MAX_TEXT_DRAWS)
+      if (TextDraw.createdPlayerCount === LimitsEnum.MAX_TEXT_DRAWS)
         return logger.warn(
-          "[BaseTextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached"
+          "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached"
         );
       this._id = fns.CreatePlayerTextDraw(player.id, x, y, text);
-      BaseTextDraw.createdPlayerCount++;
+      TextDraw.createdPlayerCount++;
       // Player-textdraws are automatically destroyed when a player disconnects.
       samp.addEventListener("OnPlayerDisconnect", this.unregisterEvent);
     }
@@ -87,14 +87,14 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
   }
   destroy(): void | this {
     if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("destroy the textdraw");
+      return TextDraw.beforeCreateWarn("destroy the textdraw");
     const { player } = this.sourceInfo;
     if (!player) {
       fns.TextDrawDestroy(this.id);
-      BaseTextDraw.createdGlobalCount--;
+      TextDraw.createdGlobalCount--;
     } else {
       fns.PlayerTextDrawDestroy(player.id, this.id);
-      BaseTextDraw.createdPlayerCount--;
+      TextDraw.createdPlayerCount--;
     }
     textDrawBus.emit(textDrawHooks.destroyed, {
       id: this.id,
@@ -104,21 +104,21 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     return this;
   }
   setFont(style: 0 | 1 | 2 | 3 | TextDrawFontsEnum): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set font");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set font");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawFont(player.id, this.id, style);
     else fns.TextDrawFont(this.id, style);
     return this;
   }
   setColour(Colour: string | number): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set Colour");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set Colour");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawColour(player.id, this.id, Colour);
     else fns.TextDrawColour(this.id, Colour);
     return this;
   }
   setBoxColours(Colour: string | number): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set box Colour");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set box Colour");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawBoxColour(player.id, this.id, Colour);
     else fns.TextDrawBoxColour(this.id, Colour);
@@ -126,38 +126,36 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
   }
   setBackgroundColours(Colour: string | number): void | this {
     if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("set background Colour");
+      return TextDraw.beforeCreateWarn("set background Colour");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawBackgroundColour(player.id, this.id, Colour);
     else fns.TextDrawBackgroundColour(this.id, Colour);
     return this;
   }
   setAlignment(alignment: TextDrawAlignEnum): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set alignment");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set alignment");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawAlignment(player.id, this.id, alignment);
     else fns.TextDrawAlignment(this.id, alignment);
     return this;
   }
   setLetterSize(x: number, y: number): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set letter size");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set letter size");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawLetterSize(player.id, this.id, x, y);
     else fns.TextDrawLetterSize(this.id, x, y);
     return this;
   }
   setOutline(size: number): void | this {
-    if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("set outline model");
-    if (size < 0) return logger.warn("[BaseTextDraw]: Invalid outline value");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set outline model");
+    if (size < 0) return logger.warn("[TextDraw]: Invalid outline value");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawSetOutline(player.id, this.id, size);
     else fns.TextDrawSetOutline(this.id, size);
     return this;
   }
   setPreviewModel(modelIndex: number): void | this {
-    if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("set preview model");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set preview model");
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
     if (player)
@@ -171,7 +169,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     fRotZ: number,
     fZoom = 1
   ): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set preview rot");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set preview rot");
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
     if (player)
@@ -187,8 +185,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     return this;
   }
   setPreviewVehColours(Colour1: string, Colour2: string): void | this {
-    if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("set preview veh col");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set preview veh col");
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
     if (player)
@@ -202,51 +199,50 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     return this;
   }
   setProportional(set = true): void | this {
-    if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("set Proportional");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set Proportional");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawSetProportional(player.id, this.id, set);
     else fns.TextDrawSetProportional(this.id, set);
     return this;
   }
   setSelectable(set: boolean): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set Selectable");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set Selectable");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawSetSelectable(player.id, this.id, set);
     else fns.TextDrawSetSelectable(this.id, set);
     return this;
   }
   setShadow(size: number): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set shadow");
-    if (size < 0) return logger.warn("[BaseTextDraw]: Invalid shadow value");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set shadow");
+    if (size < 0) return logger.warn("[TextDraw]: Invalid shadow value");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawSetShadow(player.id, this.id, size);
     else fns.TextDrawSetShadow(this.id, size);
     return this;
   }
   setString(text: string): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set string");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set string");
     if (text.length === 0 || text.length > 1024)
-      return logger.warn("[BaseTextDraw]: Invalid text length");
+      return logger.warn("[TextDraw]: Invalid text length");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawSetString(player.id, this.id, text);
     else fns.TextDrawSetString(this.id, text);
     return this;
   }
   setTextSize(x: number, y: number): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set TextSize");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set TextSize");
     fns.TextDrawTextSize(this.id, x, y);
     return this;
   }
   useBox(use: boolean): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set TextSize");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set TextSize");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawUseBox(player.id, this.id, use);
     else fns.TextDrawUseBox(this.id, use);
     return this;
   }
   private static beforeCreateWarn(msg: string): void {
-    logger.warn(`[BaseTextDraw]: Unable to ${msg} before create`);
+    logger.warn(`[TextDraw]: Unable to ${msg} before create`);
   }
   private unregisterEvent() {
     this.destroy();
@@ -255,45 +251,45 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
   }
   // player's textdraw should be shown / hidden only for whom it is created.
   show(player?: P): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("show");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("show");
     const p = this.sourceInfo.player;
     if (p) fns.PlayerTextDrawShow(p.id, this.id);
     else {
       if (player) fns.TextDrawShowForPlayer(player.id, this.id);
-      else return logger.warn("[BaseTextDraw]: invalid player for show");
+      else return logger.warn("[TextDraw]: invalid player for show");
     }
     return this;
   }
   hide(player?: P): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("hide");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("hide");
     const p = this.sourceInfo.player;
     if (p) fns.PlayerTextDrawHide(p.id, this.id);
     else {
       if (player) fns.TextDrawHideForPlayer(player.id, this.id);
-      else return logger.warn("[BaseTextDraw]: invalid player for hide");
+      else return logger.warn("[TextDraw]: invalid player for hide");
     }
     return this;
   }
   showAll(): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("show");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("show");
     const p = this.sourceInfo.player;
     if (!p) {
       fns.TextDrawShowForAll(this.id);
       return this;
     }
     return logger.warn(
-      "[BaseTextDraw]: player's textdraw should not be show for all."
+      "[TextDraw]: player's textdraw should not be show for all."
     );
   }
   hideAll(): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("hideAll");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("hideAll");
     const p = this.sourceInfo.player;
     if (!p) {
       fns.TextDrawHideForAll(this.id);
       return this;
     }
     return logger.warn(
-      "[BaseTextDraw]: player's textdraw should not be hide for all."
+      "[TextDraw]: player's textdraw should not be hide for all."
     );
   }
   isValid(): boolean {
@@ -301,7 +297,7 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     if (p) return IsValidPlayer3DTextLabel(p.id, this.id);
     return IsValidTextDraw(this.id);
   }
-  isVisibleForPlayer<P extends BasePlayer>(player: P): boolean {
+  isVisibleForPlayer<P extends Player>(player: P): boolean {
     if (this.id === -1) return false;
     return IsTextDrawVisibleForPlayer(player.id, this.id);
   }
@@ -312,62 +308,62 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     return TextDrawGetString(this.id);
   }
   setPos(fX: number, fY: number): void | this {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("set position");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set position");
     const p = this.sourceInfo.player;
     if (p) PlayerTextDrawSetPos(p.id, this.id, fX, fY);
     else TextDrawSetPos(this.id, fX, fY);
     return this;
   }
   getLetterSize() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get letter size");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get letter size");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetLetterSize(p.id, this.id);
     return TextDrawGetLetterSize(this.id);
   }
   getTextSize() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get text size");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get text size");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetTextSize(p.id, this.id);
     return TextDrawGetTextSize(this.id);
   }
   getPos() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get position");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get position");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetPos(p.id, this.id);
     return TextDrawGetPos(this.id);
   }
   getColour() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get Colour");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get Colour");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetColour(p.id, this.id);
     return TextDrawGetColour(this.id);
   }
   getBoxColour() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get box Colour");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get box Colour");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetBoxColour(p.id, this.id);
     return TextDrawGetBoxColour(this.id);
   }
   getBackgroundColour() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get bg Colour");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get bg Colour");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetBackgroundColour(p.id, this.id);
     return TextDrawGetBackgroundColour(this.id);
   }
   getShadow() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get shadow");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get shadow");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetShadow(p.id, this.id);
     return TextDrawGetShadow(this.id);
   }
   getOutline() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get outline");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get outline");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetOutline(p.id, this.id);
     return TextDrawGetOutline(this.id);
   }
   getFont() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get font");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get font");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetFont(p.id, this.id);
     return TextDrawGetFont(this.id);
@@ -391,28 +387,27 @@ export abstract class BaseTextDraw<P extends BasePlayer> {
     return TextDrawIsSelectable(this.id);
   }
   getAlignment() {
-    if (this.id === -1) return BaseTextDraw.beforeCreateWarn("get alignment");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get alignment");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetAlignment(p.id, this.id);
     return TextDrawGetAlignment(this.id);
   }
   getPreviewModel() {
-    if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("get preview model");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get preview model");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetPreviewModel(p.id, this.id);
     return TextDrawGetPreviewModel(this.id);
   }
   getPreviewRot() {
     if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("get preview rotation");
+      return TextDraw.beforeCreateWarn("get preview rotation");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetPreviewRot(p.id, this.id);
     return TextDrawGetPreviewRot(this.id);
   }
   getPreviewVehColours() {
     if (this.id === -1)
-      return BaseTextDraw.beforeCreateWarn("get preview vel Colours");
+      return TextDraw.beforeCreateWarn("get preview vel Colours");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetPreviewVehicleColours(p.id, this.id);
     return TextDrawGetPreviewVehicleColours(this.id);

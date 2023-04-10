@@ -8,7 +8,7 @@ import {
   OnNPCSpawn,
 } from "@/wrapper/native/callbacks";
 
-export abstract class BaseNpcEvent {
+export class NpcEvent {
   constructor() {
     OnNpcConnect(promisifyCallback(this, "onConnect", "OnNpcConnect"));
     OnNpcDisconnect(promisifyCallback(this, "onDisconnect", "OnNpcDisconnect"));

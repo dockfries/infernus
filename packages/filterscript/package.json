@@ -1,0 +1,35 @@
+{
+  "name": "@infernus/fs",
+  "version": "0.2.3",
+  "description": "A collection of all built-in filterscripts",
+  "keywords": [
+    "filterscript",
+    "omp",
+    "samp"
+  ],
+  "homepage": "https://github.com/dockfries/omp-node/tree/main/packages/filterscript#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/omp-node/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/omp-node.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "main": "dist/bundle.js",
+  "types": "dist/bundle.d.ts",
+  "scripts": {
+    "build": "pnpm lint && rollup -c",
+    "lint": "eslint --fix ./src",
+    "prepublishOnly": "pnpm build"
+  },
+  "devDependencies": {
+    "@infernus/core": "workspace:^",
+    "@rollup/plugin-json": "^6.0.0"
+  },
+  "prepare": "pnpm build",
+  "peerDependencies": {
+    "@infernus/core": "workspace:^"
+  }
+}

@@ -14,7 +14,7 @@ import {
   IsValidDynamic3DTextLabel,
   StreamerDistances,
   StreamerItemTypes,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { Streamer } from "../common";
 import { _3dTextBus, _3dTextHooks } from "./3dTextBus";
 

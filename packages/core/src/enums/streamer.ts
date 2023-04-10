@@ -7,4 +7,4 @@ export {
   E_STREAMER,
   MaterialTextSizes,
   MapIconStyles,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";

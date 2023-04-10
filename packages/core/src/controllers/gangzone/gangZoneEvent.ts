@@ -7,15 +7,12 @@ import {
   OnPlayerEnterPlayerGangZone,
   OnPlayerLeaveGangZone,
   OnPlayerLeavePlayerGangZone,
-} from "omp-wrapper";
-import { BasePlayer } from "../player";
-import { BaseGangZone } from "./baseGangZone";
+} from "@infernus/wrapper";
+import { Player } from "../player";
+import { GangZone } from "./baseGangZone";
 import { gangZoneBus, gangZoneHooks } from "./gangZoneBus";
 
-export abstract class BaseGangZoneEvent<
-  P extends BasePlayer,
-  G extends BaseGangZone<P>
-> {
+export class GangZoneEvent<P extends Player, G extends GangZone<P>> {
   readonly gangZones = new Map<ICommonGangZoneKey, G>();
   private readonly players;
   constructor(playersMap: Map<number, P>, destroyOnExit = true) {

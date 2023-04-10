@@ -1,8 +1,8 @@
-# omp-node-lib
+# @infernus/core
 
-[![npm](https://img.shields.io/npm/v/omp-node-lib)](https://www.npmjs.com/package/omp-node-lib) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/omp-node-lib)
+[![npm](https://img.shields.io/npm/v/@infernus/core)](https://www.npmjs.com/package/@infernus/core) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/core)
 
-NodeJS library for Scripting [Open Multiplayer](https://open.mp), depends on [omp-node-ts](https://github.com/dockfries/omp-node-ts) template.
+NodeJS library for Scripting [Open Multiplayer](https://open.mp), in conjunction with [omp-node-starter](https://github.com/dockfries/omp-node-starter) template.
 
 ## Composition
 

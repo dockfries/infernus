@@ -1,4 +1,4 @@
-import type { BasePlayer } from "@/controllers/player";
+import type { Player } from "@/controllers/player";
 import type { BodyPartsEnum } from "@/enums";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
@@ -7,14 +7,11 @@ import {
   OnDynamicActorStreamIn,
   OnDynamicActorStreamOut,
   OnPlayerGiveDamageDynamicActor,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { actorBus, actorHooks } from "./actorBus";
 import { DynamicActor } from "./baseActor";
 
-export abstract class DynamicActorEvent<
-  P extends BasePlayer,
-  A extends DynamicActor
-> {
+export class DynamicActorEvent<P extends Player, A extends DynamicActor> {
   private readonly actors = new Map<number, A>();
   private readonly players;
 

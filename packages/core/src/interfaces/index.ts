@@ -1,5 +1,5 @@
-import { BasePlayer } from "@/controllers/player";
-import { MapIconStyles } from "omp-wrapper-streamer";
+import { Player } from "@/controllers/player";
+import { MapIconStyles } from "@infernus/streamer";
 import { DialogStylesEnum } from "../enums";
 import { TDynamicAreaTypes, TStreamerExtendable } from "../types";
 
@@ -46,7 +46,7 @@ export interface IAnimateInfo {
   d: number;
 }
 
-export interface IBaseGangZone<P extends BasePlayer> {
+export interface IGangZone<P extends Player> {
   player?: P;
   minx: number;
   miny: number;
@@ -59,7 +59,7 @@ export interface ICommonTextDrawKey {
   global: boolean;
 }
 
-export interface IBaseTextDraw<P extends BasePlayer> {
+export interface ITextDraw<P extends Player> {
   player?: P;
   x: number;
   y: number;
@@ -71,14 +71,14 @@ export interface IDialogFuncQueue {
   reject: (reason: string) => void;
 }
 
-export interface IDynamicBase {
+export interface IDynamic {
   worldid?: TStreamerExtendable;
   interiorid?: TStreamerExtendable;
   playerid?: TStreamerExtendable;
   extended?: boolean;
 }
 
-export interface IDynamicCommon extends IDynamicBase {
+export interface IDynamicCommon extends IDynamic {
   x: number;
   y: number;
   z: number;
@@ -152,45 +152,45 @@ export interface ICommonGangZoneKey {
   global: boolean;
 }
 
-export interface IDynamicCircleBase extends IDynamicBase {
+export interface IDynamicCircleCommon extends IDynamic {
   x: number;
   y: number;
   size: number;
 }
 
-export interface IDynamicCircle extends IDynamicCircleBase {
+export interface IDynamicCircle extends IDynamicCircleCommon {
   type: "circle";
 }
 
-export interface IDynamicCylinder extends IDynamicCircleBase {
+export interface IDynamicCylinder extends IDynamicCircleCommon {
   type: "cylinder";
   minz: number;
   maxz: number;
 }
 
-export interface IDynamicSphere extends IDynamicCircleBase {
+export interface IDynamicSphere extends IDynamicCircleCommon {
   type: "sphere";
   z: number;
 }
 
-export interface IDynamicRectangleBase extends IDynamicBase {
+export interface IDynamicRectangleCommon extends IDynamic {
   minx: number;
   miny: number;
   maxx: number;
   maxy: number;
 }
 
-export interface IDynamicRectangle extends IDynamicRectangleBase {
+export interface IDynamicRectangle extends IDynamicRectangleCommon {
   type: "rectangle";
 }
 
-export interface IDynamicCuboid extends IDynamicRectangleBase {
+export interface IDynamicCuboid extends IDynamicRectangleCommon {
   type: "cuboid";
   minz: number;
   maxz: number;
 }
 
-export interface IDynamicPolygon extends IDynamicBase {
+export interface IDynamicPolygon extends IDynamic {
   type: "polygon";
   points: number[];
   minz: number;
@@ -223,7 +223,7 @@ export {
   IVehColor,
   IVehSpawnInfo,
   IVehMatrix,
-} from "omp-wrapper";
+} from "@infernus/wrapper";
 
 export interface IFilterScript {
   name: string;

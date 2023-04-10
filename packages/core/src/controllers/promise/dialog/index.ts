@@ -1,7 +1,7 @@
 import { DialogStylesEnum } from "@/enums";
 import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helperUtils";
-import { HidePlayerDialog } from "omp-wrapper";
-import { BasePlayer } from "../../player/basePlayer";
+import { HidePlayerDialog } from "@infernus/wrapper";
+import { Player } from "../../player/basePlayer";
 import { I18n } from "../../i18n";
 import {
   IDialog,
@@ -26,7 +26,7 @@ OnDialogResponse(
     listitem: number,
     inputbuf: number[]
   ): number => {
-    const callback = BaseDialog.waitingQueue.get(playerid);
+    const callback = Dialog.waitingQueue.get(playerid);
     if (!callback) return 0;
     // bug: does not trigger resolve of promise
     // fix: it only works if you put it in an event loop
@@ -35,7 +35,7 @@ OnDialogResponse(
   }
 );
 
-export class BaseDialog<T extends BasePlayer> {
+export class Dialog<T extends Player> {
   private id: number;
   private static CREATED_ID = -1;
   private static MAX_DIALOGID = 32767;
@@ -51,13 +51,13 @@ export class BaseDialog<T extends BasePlayer> {
       button2: "",
     }
   ) {
-    if (BaseDialog.CREATED_ID < BaseDialog.MAX_DIALOGID) {
-      BaseDialog.CREATED_ID++;
+    if (Dialog.CREATED_ID < Dialog.MAX_DIALOGID) {
+      Dialog.CREATED_ID++;
     } else {
       logger.warn("[Dialog]: The maximum number of dialogs is reached");
     }
     this.dialog = dialog;
-    this.id = BaseDialog.CREATED_ID;
+    this.id = Dialog.CREATED_ID;
   }
 
   // #region
@@ -98,27 +98,27 @@ export class BaseDialog<T extends BasePlayer> {
 
   //#endregion
 
-  private static delDialogTask<T extends BasePlayer>(
+  private static delDialogTask<T extends Player>(
     player: T,
     reject = false
   ): boolean {
     // if player disconnect and still await response
     // should stop promise waiting
-    const task = BaseDialog.waitingQueue.get(player.id);
+    const task = Dialog.waitingQueue.get(player.id);
     if (!task) return false;
     if (reject)
       task.reject(
-        "[BaseDialog]: player timeout does not respond or second request show dialog"
+        "[Dialog]: player timeout does not respond or second request show dialog"
       );
-    BaseDialog.waitingQueue.delete(player.id);
+    Dialog.waitingQueue.delete(player.id);
     return true;
   }
 
   show(player: T): Promise<IDialogResResult> {
     return new Promise((resolve, reject) => {
-      BaseDialog.close(player);
+      Dialog.close(player);
       const p = new Promise<IDialogResRaw>((dialogResolve, dialogReject) => {
-        BaseDialog.waitingQueue.set(player.id, {
+        Dialog.waitingQueue.set(player.id, {
           resolve: dialogResolve,
           reject: dialogReject,
         });
@@ -133,12 +133,12 @@ export class BaseDialog<T extends BasePlayer> {
         resolve({ response, listitem, inputtext });
       });
       p.catch(reject);
-      p.finally(() => BaseDialog.delDialogTask(player));
+      p.finally(() => Dialog.delDialogTask(player));
     });
   }
 
-  static close<T extends BasePlayer>(player: T) {
-    BaseDialog.delDialogTask(player, true);
+  static close<T extends Player>(player: T) {
+    Dialog.delDialogTask(player, true);
     HidePlayerDialog(player.id);
   }
 }

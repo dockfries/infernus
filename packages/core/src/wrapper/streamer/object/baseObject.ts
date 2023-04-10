@@ -1,7 +1,7 @@
 import { InvalidEnum } from "@/enums";
 import type { IDynamicObject } from "@/interfaces";
-import type { BaseVehicle } from "@/controllers/vehicle";
-import type { BasePlayer } from "@/controllers/player";
+import type { Vehicle } from "@/controllers/vehicle";
+import type { Player } from "@/controllers/player";
 import { logger } from "@/logger";
 import { objectBus, objectHooks } from "./objectBus";
 import { rgba } from "@/utils/colorUtils";
@@ -36,7 +36,7 @@ import {
   StopDynamicObject,
   StreamerDistances,
   StreamerItemTypes,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { Streamer } from "../common";
 import { defaultCharset } from "@/controllers/gamemode/settings";
 
@@ -198,7 +198,7 @@ export class DynamicObject {
     return IsDynamicObjectMoving(this.id);
   }
 
-  attachCamera<P extends BasePlayer>(player: P): void | number {
+  attachCamera<P extends Player>(player: P): void | number {
     if (this.id === -1 || player.id === -1)
       return logger.warn(
         "[StreamerObject]: Cannot attachCamera before both are created"
@@ -233,7 +233,7 @@ export class DynamicObject {
     );
   }
 
-  attachToPlayer<P extends BasePlayer>(
+  attachToPlayer<P extends Player>(
     player: P,
     offsetx: number,
     offsety: number,
@@ -258,7 +258,7 @@ export class DynamicObject {
     );
   }
 
-  attachToVehicle<V extends BaseVehicle>(
+  attachToVehicle<V extends Vehicle>(
     vehicle: V,
     offsetx: number,
     offsety: number,
@@ -283,7 +283,7 @@ export class DynamicObject {
     );
   }
 
-  edit<P extends BasePlayer>(player: P): void | number {
+  edit<P extends Player>(player: P): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Unable to edit before create");
     player.endObjectEditing();
@@ -389,7 +389,7 @@ export class DynamicObject {
     );
   }
 
-  getPlayerCameraTarget<P extends BasePlayer, O extends DynamicObject>(
+  getPlayerCameraTarget<P extends Player, O extends DynamicObject>(
     player: P,
     objMap: Map<number, O>
   ): void | O {

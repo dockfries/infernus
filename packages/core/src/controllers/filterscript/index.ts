@@ -17,7 +17,7 @@ export const loadUseScript = (scriptName: string): void => {
       preInstallScripts.splice(fsIdx, 1);
       installedScripts.push(fs);
     } catch (err) {
-      logger.error(`[BaseGameMode]: script ${scriptName} load fail`);
+      logger.error(`[GameMode]: script ${scriptName} load fail`);
       logger.warn(new Error(JSON.stringify(err)));
     }
   });
@@ -34,7 +34,7 @@ export const unloadUseScript = (scriptName: string): void => {
       installedScripts.splice(fsIdx, 1);
       preInstallScripts.push(fs);
     } catch (err) {
-      logger.error(`[BaseGameMode]: script ${scriptName} unload fail`);
+      logger.error(`[GameMode]: script ${scriptName} unload fail`);
       logger.warn(new Error(JSON.stringify(err)));
     }
   });
@@ -61,7 +61,7 @@ export const useFilterScript = function (
     preInstallScripts.some((fs) => fs === plugin) ||
     installedScripts.some((fs) => fs === plugin)
   ) {
-    logger.warn(`[BaseGameMode]: script has already been applied`);
+    logger.warn(`[GameMode]: script has already been applied`);
     return;
   }
   plugin.load = plugin.load.bind(plugin, ...options);

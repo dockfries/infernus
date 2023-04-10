@@ -24,8 +24,8 @@ import {
   WeaponSkillsEnum,
   WeaponStatesEnum,
 } from "@/enums";
-import { BaseVehicle } from "../vehicle";
-import { TBasePos } from "@/types";
+import { Vehicle } from "../vehicle";
+import { TPos } from "@/types";
 
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
 import { DynamicObject } from "../../wrapper/streamer";
@@ -69,11 +69,11 @@ import {
   IsPlayerTeleportAllowed,
   AllowPlayerWeapons,
   ArePlayerWeaponsAllowed,
-} from "omp-wrapper";
+} from "@infernus/wrapper";
 import { defaultCharset, defaultLocale } from "../gamemode/settings";
 import { playerBus, playerHooks } from "./playerBus";
 
-export abstract class BasePlayer {
+export class Player {
   private _id: number;
   private _isNpc: boolean;
   private _locale: string = defaultLocale;
@@ -128,7 +128,7 @@ export abstract class BasePlayer {
     return SendClientMessage(this, colour, msg);
   }
 
-  static sendClientMessageToAll<P extends BasePlayer>(
+  static sendClientMessageToAll<P extends Player>(
     players: Array<P>,
     colour: string | number,
     msg: string
@@ -136,11 +136,11 @@ export abstract class BasePlayer {
     SendClientMessageToAll(players, colour, msg);
   }
 
-  sendPlayerMessage<P extends BasePlayer>(player: P, message: string): number {
+  sendPlayerMessage<P extends Player>(player: P, message: string): number {
     return SendPlayerMessageToPlayer(player, this.id, message);
   }
 
-  sendPlayerMessageToAll<P extends BasePlayer>(
+  sendPlayerMessageToAll<P extends Player>(
     players: Array<P>,
     message: string
   ): number {
@@ -162,7 +162,7 @@ export abstract class BasePlayer {
   setDrunkLevel(level: number): void {
     if (level < 0 || level > 50000)
       return logger.error(
-        new Error("[BasePlayer]: player's drunk level ranges from 0 to 50000")
+        new Error("[Player]: player's drunk level ranges from 0 to 50000")
       );
     playerFunc.SetPlayerDrunkLevel(this.id, level);
   }
@@ -184,7 +184,7 @@ export abstract class BasePlayer {
   setInterior(interiorId: number): number {
     return playerFunc.SetPlayerInterior(this.id, interiorId);
   }
-  showPlayerNameTag<P extends BasePlayer>(showPlayer: P, show: boolean): void {
+  showPlayerNameTag<P extends Player>(showPlayer: P, show: boolean): void {
     playerFunc.ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
   }
   setColor(colour: string | number): void {
@@ -193,10 +193,7 @@ export abstract class BasePlayer {
   getColor(): number {
     return playerFunc.GetPlayerColor(this.id);
   }
-  setPlayerMarker<P extends BasePlayer>(
-    showPlayer: P,
-    colour: string | number
-  ) {
+  setPlayerMarker<P extends Player>(showPlayer: P, colour: string | number) {
     playerFunc.SetPlayerMarkerForPlayer(this.id, showPlayer.id, colour);
   }
   resetMoney(): number {
@@ -233,13 +230,13 @@ export abstract class BasePlayer {
   toggleSpectating(toggle: boolean): number {
     return playerFunc.TogglePlayerSpectating(this.id, toggle);
   }
-  spectatePlayer<P extends BasePlayer>(
+  spectatePlayer<P extends Player>(
     targetPlayer: P,
     mode = SpectateModesEnum.NORMAL
   ) {
     return playerFunc.PlayerSpectatePlayer(this.id, targetPlayer.id, mode);
   }
-  spectateVehicle<V extends BaseVehicle>(
+  spectateVehicle<V extends Vehicle>(
     targetVehicle: V,
     mode = SpectateModesEnum.NORMAL
   ) {
@@ -263,7 +260,7 @@ export abstract class BasePlayer {
   isInRangeOfPoint(range: number, x: number, y: number, z: number) {
     return playerFunc.IsPlayerInRangeOfPoint(this.id, range, x, y, z);
   }
-  isStreamedIn<P extends BasePlayer>(forplayer: P) {
+  isStreamedIn<P extends Player>(forplayer: P) {
     return playerFunc.IsPlayerStreamedIn(this.id, forplayer.id);
   }
   setSkin(skinId: number, ignoreRange = false): number {
@@ -297,7 +294,7 @@ export abstract class BasePlayer {
   setPos(x: number, y: number, z: number): number {
     return playerFunc.SetPlayerPos(this.id, x, y, z);
   }
-  getPos(): TBasePos | undefined {
+  getPos(): TPos | undefined {
     if (
       this.isSpectating() ||
       this.isWasted() ||
@@ -331,7 +328,7 @@ export abstract class BasePlayer {
   }
   setWantedLevel(level: number): number {
     if (level < 0 || level > 6) {
-      logger.error("[BasePlayer]: player's wanted level ranges from 0 to 6");
+      logger.error("[Player]: player's wanted level ranges from 0 to 6");
       return 0;
     }
     return playerFunc.SetPlayerWantedLevel(this.id, level);
@@ -347,7 +344,7 @@ export abstract class BasePlayer {
   }
   setWeather(weather: number): void {
     if (weather < 0 || weather > 255) {
-      logger.warn("[BasePlayer]: The valid weather value is only 0 to 255");
+      logger.warn("[Player]: The valid weather value is only 0 to 255");
       return;
     }
     playerFunc.SetPlayerWeather(this.id, weather);
@@ -357,11 +354,11 @@ export abstract class BasePlayer {
   }
   setTime(hour: number, minute: number): void | number {
     if (hour < 0 || hour > 23) {
-      logger.warn("[BasePlayer]: The valid hour value is only 0 to 23");
+      logger.warn("[Player]: The valid hour value is only 0 to 23");
       return;
     }
     if (minute < 0 || minute > 59) {
-      logger.warn("[BasePlayer]: The valid minute value is only 0 to 59");
+      logger.warn("[Player]: The valid minute value is only 0 to 59");
       return;
     }
     return playerFunc.SetPlayerTime(this.id, hour, minute);
@@ -388,7 +385,7 @@ export abstract class BasePlayer {
   }
   setSkillLevel(skill: WeaponSkillsEnum, level: number): void {
     if (level < 0 || level > 999) {
-      logger.warn("[BasePlayer]: The valid skill level is only 0 to 999");
+      logger.warn("[Player]: The valid skill level is only 0 to 999");
       return;
     }
     playerFunc.SetPlayerSkillLevel(this.id, skill, level);
@@ -402,7 +399,7 @@ export abstract class BasePlayer {
   setVelocity(x: number, y: number, z: number): number {
     return playerFunc.SetPlayerVelocity(this.id, x, y, z);
   }
-  getVelocity(): TBasePos {
+  getVelocity(): TPos {
     const [x, y, z] = playerFunc.GetPlayerVelocity(this.id);
     return { x, y, z };
   }
@@ -442,26 +439,22 @@ export abstract class BasePlayer {
   getCameraAspectRatio(): number {
     return playerFunc.GetPlayerCameraAspectRatio(this.id);
   }
-  getCameraFrontVector(): TBasePos {
+  getCameraFrontVector(): TPos {
     const [x, y, z] = playerFunc.GetPlayerCameraFrontVector(this.id);
     return { x, y, z };
   }
   getCameraMode(): CameraModesEnum {
     return playerFunc.GetPlayerCameraMode(this.id);
   }
-  getCameraPos(): TBasePos {
+  getCameraPos(): TPos {
     const [x, y, z] = playerFunc.GetPlayerCameraPos(this.id);
     return { x, y, z };
   }
-  getCameraTargetPlayer<P extends BasePlayer>(
-    players: Array<P>
-  ): P | undefined {
+  getCameraTargetPlayer<P extends Player>(players: Array<P>): P | undefined {
     const target = playerFunc.GetPlayerCameraTargetPlayer(this.id);
     return players.find((p) => p.id === target);
   }
-  getCameraTargetVehicle<V extends BaseVehicle>(
-    vehicles: Array<V>
-  ): V | undefined {
+  getCameraTargetVehicle<V extends Vehicle>(vehicles: Array<V>): V | undefined {
     const target = playerFunc.GetPlayerCameraTargetVehicle(this.id);
     return vehicles.find((v) => v.id === target);
   }
@@ -512,9 +505,9 @@ export abstract class BasePlayer {
   static getMaxPlayers(): number {
     return playerFunc.GetMaxPlayers();
   }
-  playCrimeReport<P extends BasePlayer>(suspect: P, crimeId: number): number {
+  playCrimeReport<P extends Player>(suspect: P, crimeId: number): number {
     if (crimeId < 3 || crimeId > 22) {
-      logger.warn("[BasePlayer]: Available crime ids range from 3 to 22");
+      logger.warn("[Player]: Available crime ids range from 3 to 22");
       return 0;
     }
     return playerFunc.PlayCrimeReportForPlayer(this.id, suspect.id, crimeId);
@@ -571,9 +564,7 @@ export abstract class BasePlayer {
     Radius: number
   ): number {
     if (type < 0 || type > 13) {
-      logger.error(
-        "[BasePlayer]: The valid explosion type value is only 0 to 13"
-      );
+      logger.error("[Player]: The valid explosion type value is only 0 to 13");
       return 0;
     }
     return playerFunc.CreateExplosionForPlayer(this.id, X, Y, Z, type, Radius);
@@ -587,7 +578,7 @@ export abstract class BasePlayer {
   disableRemoteVehicleCollisions(disable: boolean) {
     return playerFunc.DisableRemoteVehicleCollisions(this.id, disable);
   }
-  getVehicle<V extends BaseVehicle>(vehicles: Array<V>): V | undefined {
+  getVehicle<V extends Vehicle>(vehicles: Array<V>): V | undefined {
     if (!this.isInAnyVehicle()) return undefined;
     const vehId: number = playerFunc.GetPlayerVehicleID(this.id);
     return vehicles.find((v) => v.id === vehId);
@@ -595,7 +586,7 @@ export abstract class BasePlayer {
   getVehicleSeat(): number {
     return playerFunc.GetPlayerVehicleSeat(this.id);
   }
-  getSurfingVehicle<V extends BaseVehicle>(vehicles: Array<V>): V | undefined {
+  getSurfingVehicle<V extends Vehicle>(vehicles: Array<V>): V | undefined {
     const vehId = playerFunc.GetPlayerSurfingVehicleID(this.id);
     if (vehId === InvalidEnum.VEHICLE_ID) return undefined;
     return vehicles.find((v) => v.id === vehId);
@@ -611,7 +602,7 @@ export abstract class BasePlayer {
   ): void {
     const duration = getAnimateDurationByLibName(animLib, animName);
     if (duration === undefined)
-      return logger.error("[BasePlayer]: Invalid anim library or name");
+      return logger.error("[Player]: Invalid anim library or name");
     playerFunc.ApplyAnimation(
       this.id,
       animLib,
@@ -674,7 +665,7 @@ export abstract class BasePlayer {
   getCustomSkin(): number {
     return playerFunc.GetPlayerCustomSkin(this.id);
   }
-  getTargetPlayer<P extends BasePlayer>(players: Array<P>): undefined | P {
+  getTargetPlayer<P extends Player>(players: Array<P>): undefined | P {
     const pid = playerFunc.GetPlayerTargetPlayer(this.id);
     if (pid === InvalidEnum.PLAYER_ID) return undefined;
     return players.find((p) => p.id === pid);
@@ -689,7 +680,7 @@ export abstract class BasePlayer {
   }
   getWeaponData(slot: number) {
     if (slot < 0 || slot > 12) {
-      logger.error("[BasePlayer]: weapon slots range from 0 to 12");
+      logger.error("[Player]: weapon slots range from 0 to 12");
       return;
     }
     const [weapons, ammo] = playerFunc.GetPlayerWeaponData(this.id, slot);
@@ -720,7 +711,7 @@ export abstract class BasePlayer {
       );
     }
   }
-  sendDeathMessage<P extends BasePlayer>(
+  sendDeathMessage<P extends Player>(
     killer: P | InvalidEnum.PLAYER_ID,
     weapon: WeaponEnum | DamageDeathReasonEnum
   ): void {
@@ -730,7 +721,7 @@ export abstract class BasePlayer {
       weapon
     );
   }
-  sendDeathMessageToPlayer<P extends BasePlayer>(
+  sendDeathMessageToPlayer<P extends Player>(
     killer: P | InvalidEnum.PLAYER_ID,
     killee: P | InvalidEnum.PLAYER_ID,
     weapon: WeaponEnum | DamageDeathReasonEnum
@@ -787,7 +778,7 @@ export abstract class BasePlayer {
     const validTypes = [2, 5, 69, 70, 71, 72];
     if (!validTypes.includes(type)) {
       return logger.error(
-        `[BasePlayer]: sendClientCheck valid types are ${validTypes.toString()}`
+        `[Player]: sendClientCheck valid types are ${validTypes.toString()}`
       );
     }
 
@@ -795,7 +786,7 @@ export abstract class BasePlayer {
       delCCTask(this.id, true);
       if (this.isPaused)
         return reject(
-          "[BasePlayer]: An attempt to check the player client response, but the player paused the game"
+          "[Player]: An attempt to check the player client response, but the player paused the game"
         );
       const p = new Promise<IClientResRaw>((clientResolve, clientReject) => {
         const ping = this.getPing();

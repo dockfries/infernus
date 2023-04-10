@@ -1,0 +1,57 @@
+export enum PR_EventType {
+  INCOMING_PACKET,
+  INCOMING_RPC,
+  OUTGOING_PACKET,
+  OUTGOING_RPC,
+  INCOMING_CUSTOM_RPC,
+
+  NUMBER_OF_EVENT_TYPES,
+}
+
+export enum PR_ValueType {
+  INT8,
+  INT16,
+  INT32,
+  UINT8,
+  UINT16,
+  UINT32,
+  FLOAT,
+  BOOL,
+  STRING,
+
+  CINT8,
+  CINT16,
+  CINT32,
+  CUINT8,
+  CUINT16,
+  CUINT32,
+  CFLOAT,
+  CBOOL,
+  CSTRING,
+
+  BITS,
+  FLOAT3,
+  FLOAT4,
+  VECTOR,
+  NORM_QUAT,
+
+  STRING8,
+  STRING32,
+
+  IGNORE_BITS,
+}
+
+export enum PR_PacketPriority {
+  SYSTEM,
+  HIGH,
+  MEDIUM,
+  LOW,
+}
+
+export enum PR_PacketReliability {
+  UNRELIABLE = 6,
+  UNRELIABLE_SEQUENCED,
+  RELIABLE,
+  RELIABLE_ORDERED,
+  RELIABLE_SEQUENCED,
+}

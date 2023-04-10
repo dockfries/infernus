@@ -1,4 +1,4 @@
-import type { BasePlayer } from "@/controllers/player";
+import type { Player } from "@/controllers/player";
 import type { IDynamicRaceCp } from "@/interfaces";
 
 import { logger } from "@/logger";
@@ -13,7 +13,7 @@ import {
   StreamerItemTypes,
   TogglePlayerAllDynamicRaceCPs,
   TogglePlayerDynamicRaceCP,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { Streamer } from "../common";
 
 import { raceCPBus, raceCPHooks } from "./raceCPBus";
@@ -112,7 +112,7 @@ export class DynamicRaceCP {
   isValid(): boolean {
     return IsValidDynamicCP(this.id);
   }
-  togglePlayer<P extends BasePlayer>(player: P, toggle: boolean): void | this {
+  togglePlayer<P extends Player>(player: P, toggle: boolean): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerRaceCP]: Unable to toggle the player before create"
@@ -120,17 +120,14 @@ export class DynamicRaceCP {
     TogglePlayerDynamicRaceCP(player.id, this.id, toggle);
     return this;
   }
-  static togglePlayerAll<P extends BasePlayer>(
-    player: P,
-    toggle: boolean
-  ): number {
+  static togglePlayerAll<P extends Player>(player: P, toggle: boolean): number {
     return TogglePlayerAllDynamicRaceCPs(player.id, toggle);
   }
-  isPlayerIn<P extends BasePlayer>(player: P): boolean {
+  isPlayerIn<P extends Player>(player: P): boolean {
     if (this.id === -1) return false;
     return IsPlayerInDynamicRaceCP(player.id, this.id);
   }
-  static getPlayerVisible<P extends BasePlayer, C extends DynamicRaceCP>(
+  static getPlayerVisible<P extends Player, C extends DynamicRaceCP>(
     player: P,
     checkpoints: Map<number, C>
   ): C | undefined {

@@ -40,26 +40,24 @@ import {
   AreInteriorWeaponsAllowed,
   AreAllAnimationsEnabled,
   EnableAllAnimations,
-} from "omp-wrapper";
+} from "@infernus/wrapper";
 import { IFilterScript } from "@/interfaces";
 
-export abstract class BaseGameMode {
+export class GameMode {
   static charset = defaultCharset;
   private initialized = false;
 
   constructor() {
     OnGameModeInit((): void => {
       if (this.initialized)
-        return logger.error(
-          "[BaseGameMode]: Cannot be initialized more than once"
-        );
-      BaseGameMode.supportAllNickname();
+        return logger.error("[GameMode]: Cannot be initialized more than once");
+      GameMode.supportAllNickname();
       this.initialized = true;
       this.onInit && this.onInit();
     });
     OnGameModeExit((): void => {
       if (!this.initialized)
-        return logger.error("[BaseGameMode]: Cannot unload more than once");
+        return logger.error("[GameMode]: Cannot unload more than once");
       this.initialized = false;
       this.onExit && this.onExit();
     });
@@ -80,8 +78,8 @@ export abstract class BaseGameMode {
     fns.GameModeExit();
   }
 
-  // support filter script which use omp-node-lib
-  readonly use = (plugin: IFilterScript, ...options: Array<any>): this => {
+  // support filter script which use @infernus/core
+  static use = (plugin: IFilterScript, ...options: Array<any>) => {
     useFilterScript(plugin, ...options);
     return this;
   };
@@ -97,8 +95,8 @@ export abstract class BaseGameMode {
      * i.e., a decimal integer up to 255.
      */
     for (let i = 0; i <= 255; i++) {
-      if (!BaseGameMode.isNickNameCharacterAllowed(i))
-        BaseGameMode.allowNickNameCharacter(i, true);
+      if (!GameMode.isNickNameCharacterAllowed(i))
+        GameMode.allowNickNameCharacter(i, true);
     }
   }
 
@@ -137,14 +135,14 @@ export abstract class BaseGameMode {
   static setNameTagDrawDistance = fns.SetNameTagDrawDistance;
   static setWeather(weather: number): number {
     if (weather < 0 || weather > 255) {
-      logger.error("[BaseGameMode]: The valid weather value is only 0 to 255");
+      logger.error("[GameMode]: The valid weather value is only 0 to 255");
       return 0;
     }
     return fns.SetWeather(weather);
   }
   static setWorldTime(hour: number): number {
     if (hour < 0 || hour > 23) {
-      logger.error("[BaseGameMode]: The valid hour value is only 0 to 23");
+      logger.error("[GameMode]: The valid hour value is only 0 to 23");
       return 0;
     }
     return fns.SetWorldTime(hour);
@@ -162,7 +160,7 @@ export abstract class BaseGameMode {
   ): number {
     if (type < 0 || type > 13) {
       logger.error(
-        "[BaseGameMode]: The valid explosion type value is only 0 to 13"
+        "[GameMode]: The valid explosion type value is only 0 to 13"
       );
       return 0;
     }
@@ -226,31 +224,31 @@ export abstract class BaseGameMode {
     timeoff?: number
   ): number {
     if (virtualworld < -1) {
-      logger.error("[BaseGameMode]: AddSimpleModel - Error virtual world");
+      logger.error("[GameMode]: AddSimpleModel - Error virtual world");
       return 0;
     }
     if (baseid < 0) {
-      logger.error("[BaseGameMode]: AddSimpleModel - Error baseid");
+      logger.error("[GameMode]: AddSimpleModel - Error baseid");
       return 0;
     }
     if (newid > -1000 || newid < -30000) {
-      logger.error("[BaseGameMode]: AddSimpleModel - Error newid range");
+      logger.error("[GameMode]: AddSimpleModel - Error newid range");
       return 0;
     }
     if (dffname.trim().length < 0) {
-      logger.error("[BaseGameMode]: AddSimpleModel - Empty dffname");
+      logger.error("[GameMode]: AddSimpleModel - Empty dffname");
       return 0;
     }
     if (txdname.trim().length < 0) {
-      logger.error("[BaseGameMode]: AddSimpleModel - Empty txdname");
+      logger.error("[GameMode]: AddSimpleModel - Empty txdname");
       return 0;
     }
     if (timeon !== undefined && (timeon < 0 || timeon > 23)) {
-      logger.error("[BaseGameMode]: AddSimpleModel - Error time on range");
+      logger.error("[GameMode]: AddSimpleModel - Error time on range");
       return 0;
     }
     if (timeoff !== undefined && (timeoff < 0 || timeoff > 23)) {
-      logger.error("[BaseGameMode]: AddSimpleModel - Error time off range");
+      logger.error("[GameMode]: AddSimpleModel - Error time off range");
       return 0;
     }
     return 1;

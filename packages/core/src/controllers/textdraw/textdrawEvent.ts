@@ -7,14 +7,11 @@ import {
   OnPlayerClickPlayerTextDraw,
   OnPlayerClickTextDraw,
 } from "@/wrapper/native/callbacks";
-import type { BasePlayer } from "../player";
-import type { BaseTextDraw } from "./baseTextDraw";
+import type { Player } from "../player";
+import type { TextDraw } from "./baseTextDraw";
 import { textDrawBus, textDrawHooks } from "./textdrawBus";
 
-export abstract class BaseTextDrawEvent<
-  P extends BasePlayer,
-  T extends BaseTextDraw<P>
-> {
+export class TextDrawEvent<P extends Player, T extends TextDraw<P>> {
   readonly textDraws = new Map<ICommonTextDrawKey, T>();
   private readonly players;
   constructor(playersMap: Map<number, P>, destroyOnExit = true) {

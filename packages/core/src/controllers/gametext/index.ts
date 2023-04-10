@@ -5,9 +5,9 @@ import {
   HideGameTextForAll,
   HideGameTextForPlayer,
 } from "@/wrapper/native/functions";
-import { BasePlayer } from "../player";
+import { Player } from "../player";
 
-export class BaseGameText<P extends BasePlayer = BasePlayer> {
+export class GameText<P extends Player = Player> {
   private _text: string;
   private _time: number;
   private _style: number;
@@ -43,7 +43,7 @@ export class BaseGameText<P extends BasePlayer = BasePlayer> {
     HideGameTextForAll(style);
   }
 
-  static has<P extends BasePlayer>(player: P, style: number) {
+  static has<P extends Player>(player: P, style: number) {
     return HasGameText(player.id, style);
   }
 

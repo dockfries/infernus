@@ -1,10 +1,10 @@
 import { TEventFunc, TEventName } from "@/types";
-import { BasePlayerEvent } from "../player";
+import { PlayerEvent } from "../player";
 
 // This is an event bus for distributing instructions entered by the user.
 // You can bind a single instruction as a string, or you can bind multiple alias instructions as an array string
 
-type trigger = BasePlayerEvent<any>;
+type trigger = PlayerEvent<any>;
 type callFn<P = any> = TEventFunc<P>;
 
 export class CmdBus {

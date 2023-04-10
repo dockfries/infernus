@@ -1,6 +1,6 @@
-import type { BasePlayer } from "@/controllers/player";
+import type { Player } from "@/controllers/player";
 import { TCommonCallback } from "@/types";
-import { StreamerItemTypes } from "omp-wrapper-streamer";
+import { StreamerItemTypes } from "@infernus/streamer";
 import { Streamer } from "../common";
 import { Dynamic3DTextLabel } from "./base3DText";
 
@@ -8,8 +8,8 @@ import { _3dTextBus, _3dTextHooks } from "./3dTextBus";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import { promisifyCallback } from "@/utils/helperUtils";
 
-export abstract class Dynamic3dTextLabelEvent<
-  P extends BasePlayer,
+export class Dynamic3dTextLabelEvent<
+  P extends Player,
   D extends Dynamic3DTextLabel
 > {
   private readonly _3dTexts = new Map<number, D>();

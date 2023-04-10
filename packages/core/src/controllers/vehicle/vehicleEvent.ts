@@ -17,14 +17,11 @@ import {
   OnTrailerUpdate,
   OnGameModeExit,
 } from "@/wrapper/native/callbacks";
-import type { BasePlayer } from "../player";
-import type { BaseVehicle } from "./baseVehicle";
+import type { Player } from "../player";
+import type { Vehicle } from "./baseVehicle";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
 
-export abstract class BaseVehicleEvent<
-  P extends BasePlayer,
-  V extends BaseVehicle
-> {
+export class VehicleEvent<P extends Player, V extends Vehicle> {
   private readonly vehicles = new Map<number, V>();
   private readonly players;
 

@@ -6,12 +6,12 @@ import {
 } from "@/utils/helperUtils";
 import * as cbs from "@/wrapper/native/callbacks";
 import { I18n } from "../i18n";
-import { BasePlayer } from "./basePlayer";
+import { Player } from "./basePlayer";
 import { CmdBus } from "../command";
 import { ICmdErr } from "@/interfaces";
 import * as enums from "@/enums";
 import { throttle } from "lodash";
-import { BaseDialog } from "../promise/dialog";
+import { Dialog } from "../promise/dialog";
 import { delCCTask } from "../promise/client";
 import { playerBus, playerHooks } from "./playerBus";
 import { TCommonCallback, TEventFunc, TEventName } from "@/types";
@@ -24,7 +24,7 @@ const ICmdErrInfo: Record<"format" | "notExist" | "rejected", ICmdErr> = {
   rejected: { code: 2, msg: "rejected because true/1 was not returned" },
 };
 
-export abstract class BasePlayerEvent<P extends BasePlayer> {
+export class PlayerEvent<P extends Player> {
   private readonly players = new Map<number, P>();
   private static cmdBus = new CmdBus();
 
@@ -39,7 +39,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     cbs.OnPlayerDisconnect((playerid: number, reason: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      BaseDialog.close(p);
+      Dialog.close(p);
       delCCTask(playerid, true);
       const pFn = promisifyCallback(this, "onDisconnect", "OnPlayerDisconnect");
       const result = pFn(p, reason);
@@ -254,7 +254,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
           this.onResume && this.onResume(p, now - p.lastUpdateTick);
         }
         p.lastUpdateTick = now;
-        BasePlayerEvent.fpsHeartbeat(p);
+        PlayerEvent.fpsHeartbeat(p);
       }
       const pFn = promisifyCallback(this, "throttleUpdate", "OnPlayerUpdate");
       const res = pFn(p);
@@ -328,8 +328,8 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     (player: P) => this.onUpdate && this.onUpdate(player),
     60
   );
-  private static fpsHeartbeat = throttle((player: BasePlayer) => {
-    if (!BasePlayer.isConnected(player.id)) return;
+  private static fpsHeartbeat = throttle((player: Player) => {
+    if (!Player.isConnected(player.id)) return;
     const nowDrunkLevel = player.getDrunkLevel();
     if (nowDrunkLevel < 100) {
       player.setDrunkLevel(2000);
@@ -349,14 +349,14 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     name: TEventName,
     fn: TEventFunc<this, P> | TEventFunc<this, P>[]
   ): (() => void) => {
-    return BasePlayerEvent.cmdBus.on(this, name, fn);
+    return PlayerEvent.cmdBus.on(this, name, fn);
   };
 
   readonly offCommandText = (
     name: TEventName,
     fn: TEventFunc<this, P> | TEventFunc<this, P>[]
   ) => {
-    BasePlayerEvent.cmdBus.off(this, name, fn);
+    PlayerEvent.cmdBus.off(this, name, fn);
   };
 
   private promiseCommand = async (
@@ -366,7 +366,7 @@ export abstract class BasePlayerEvent<P extends BasePlayer> {
     const fullCommand = cmd.join(" ");
     const firstLevel = cmd[0];
 
-    const hasAnyRegistered = BasePlayerEvent.cmdBus.eventMap.get(firstLevel);
+    const hasAnyRegistered = PlayerEvent.cmdBus.eventMap.get(firstLevel);
     if (!hasAnyRegistered && this.onCommandError) {
       this.onCommandError(p, fullCommand, ICmdErrInfo.notExist);
       return;

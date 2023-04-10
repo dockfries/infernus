@@ -1,4 +1,4 @@
-import type { BasePlayer } from "@/controllers/player";
+import type { Player } from "@/controllers/player";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
@@ -6,13 +6,13 @@ import {
   OnPlayerEnterDynamicCP,
   OnPlayerLeaveDynamicCP,
   StreamerItemTypes,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { Streamer } from "../common";
 import { DynamicCheckpoint } from "./baseCheckpoint";
 import { checkPointBus, checkPointHooks } from "./checkPointBus";
 
-export abstract class DynamicCheckPointEvent<
-  P extends BasePlayer,
+export class DynamicCheckPointEvent<
+  P extends Player,
   C extends DynamicCheckpoint
 > {
   private readonly checkpoints = new Map<number, C>();

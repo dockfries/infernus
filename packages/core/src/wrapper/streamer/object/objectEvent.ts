@@ -1,4 +1,4 @@
-import type { BasePlayer } from "@/controllers/player";
+import type { Player } from "@/controllers/player";
 import { EditResponseTypesEnum } from "@/enums";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
@@ -9,15 +9,12 @@ import {
   OnPlayerSelectDynamicObject,
   OnPlayerShootDynamicObject,
   StreamerItemTypes,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { Streamer } from "../common";
 import { DynamicObject } from "./baseObject";
 import { objectBus, objectHooks } from "./objectBus";
 
-export abstract class DynamicObjectEvent<
-  P extends BasePlayer,
-  O extends DynamicObject
-> {
+export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {
   private readonly objects = new Map<number, O>();
   private readonly players;
 

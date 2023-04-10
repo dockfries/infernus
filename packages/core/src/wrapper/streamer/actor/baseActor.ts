@@ -1,4 +1,4 @@
-import type { BasePlayer } from "@/controllers/player";
+import type { Player } from "@/controllers/player";
 import type { IDynamicActor } from "@/interfaces";
 import { logger } from "@/logger";
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
@@ -7,7 +7,7 @@ import {
   SetActorSkin,
   GetActorSpawnInfo,
   GetActorAnimation,
-} from "omp-wrapper";
+} from "@infernus/wrapper";
 
 import {
   ApplyDynamicActorAnimation,
@@ -31,7 +31,7 @@ import {
   SetDynamicActorVirtualWorld,
   StreamerDistances,
   StreamerItemTypes,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { Streamer } from "../common";
 import { actorBus, actorHooks } from "./actorBus";
 
@@ -122,7 +122,7 @@ export class DynamicActor {
   isValid(): boolean {
     return IsValidDynamicActor(this.id);
   }
-  isStreamedIn<P extends BasePlayer>(forplayer: P): boolean {
+  isStreamedIn<P extends Player>(forplayer: P): boolean {
     if (this.id === -1) return false;
     return IsDynamicActorStreamedIn(this.id, forplayer.id);
   }
@@ -219,7 +219,7 @@ export class DynamicActor {
       );
     return SetDynamicActorInvulnerable(this.id, invulnerable);
   }
-  getPlayerTarget<P extends BasePlayer, A extends DynamicActor>(
+  getPlayerTarget<P extends Player, A extends DynamicActor>(
     player: P,
     actors: Map<number, A>
   ): void | A {
@@ -227,7 +227,7 @@ export class DynamicActor {
     const actorId = GetPlayerTargetDynamicActor(player.id);
     return actors.get(actorId);
   }
-  getPlayerCameraTarget<P extends BasePlayer, A extends DynamicActor>(
+  getPlayerCameraTarget<P extends Player, A extends DynamicActor>(
     player: P,
     actors: Map<number, A>
   ): void | A {

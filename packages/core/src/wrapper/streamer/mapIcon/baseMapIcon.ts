@@ -10,7 +10,7 @@ import {
   CreateDynamicMapIcon,
   MapIconStyles,
   StreamerItemTypes,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { Streamer } from "../common";
 import { mapIconBus, mapIconHooks } from "./mapIconBus";
 

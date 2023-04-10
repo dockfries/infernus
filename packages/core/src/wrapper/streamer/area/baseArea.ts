@@ -1,7 +1,7 @@
 import { logger } from "@/logger";
 import { InvalidEnum } from "@/enums";
-import { BasePlayer } from "@/controllers/player";
-import { BaseVehicle } from "@/controllers/vehicle";
+import { Player } from "@/controllers/player";
+import { Vehicle } from "@/controllers/vehicle";
 import { TDynamicArea, TDynamicAreaTypes } from "@/types";
 import { areaBus, areaHooks } from "./areaBus";
 import {
@@ -44,7 +44,7 @@ import {
   StreamerItemTypes,
   StreamerObjectTypes,
   ToggleDynAreaSpectateMode,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { DynamicObject } from "../object";
 import { Streamer } from "../common";
 
@@ -276,14 +276,11 @@ export class DynamicArea {
     if (this.type !== "polygon") return undefined;
     return GetDynamicPolygonNumberPoints(this.id);
   }
-  isPlayerIn<P extends BasePlayer>(player: P, recheck = false): boolean {
+  isPlayerIn<P extends Player>(player: P, recheck = false): boolean {
     if (this.id === -1) return false;
     return IsPlayerInDynamicArea(player.id, this.id, recheck);
   }
-  static isPlayerInAny<P extends BasePlayer>(
-    player: P,
-    recheck = false
-  ): boolean {
+  static isPlayerInAny<P extends Player>(player: P, recheck = false): boolean {
     return IsPlayerInAnyDynamicArea(player.id, recheck);
   }
   isAnyPlayerIn(recheck = false): boolean {
@@ -293,7 +290,7 @@ export class DynamicArea {
   static isAnyPlayerInAny(recheck = false): boolean {
     return IsAnyPlayerInAnyDynamicArea(recheck);
   }
-  static getPlayerAreas<P extends BasePlayer, A extends DynamicArea>(
+  static getPlayerAreas<P extends Player, A extends DynamicArea>(
     player: P,
     areas: Map<number, A>
   ): Array<A | undefined> {
@@ -301,7 +298,7 @@ export class DynamicArea {
     const ids = GetPlayerDynamicAreas(player.id);
     return ids.map((a) => areas.get(a));
   }
-  static getPlayerAreasNumber<P extends BasePlayer>(player: P) {
+  static getPlayerAreasNumber<P extends Player>(player: P) {
     return GetPlayerNumberDynamicAreas(player.id);
   }
   isPointIn(x: number, y: number, z: number): boolean {
@@ -388,7 +385,7 @@ export class DynamicArea {
       offsetz
     );
   }
-  attachToPlayer<P extends BasePlayer>(
+  attachToPlayer<P extends Player>(
     player: P,
     offsetx = 0.0,
     offsety = 0.0,
@@ -406,7 +403,7 @@ export class DynamicArea {
       offsetz
     );
   }
-  attachToVehicle<V extends BaseVehicle>(
+  attachToVehicle<V extends Vehicle>(
     vehicle: V,
     offsetx = 0.0,
     offsety = 0.0,

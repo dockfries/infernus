@@ -16,7 +16,7 @@ export type TEventFunc<EventInstance, P> = (
 
 export type TLocales = Record<string, Record<string, any>>;
 
-export type TBasePos = {
+export type TPos = {
   x: number;
   y: number;
   z: number;
@@ -45,4 +45,4 @@ export type TCommonCallback = number | boolean | Promise<number | boolean>;
 export type {
   StreamerArrayData,
   StreamerItemTypeTuple,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";

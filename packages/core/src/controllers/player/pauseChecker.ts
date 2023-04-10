@@ -3,21 +3,21 @@ import {
   OnPlayerConnect,
   OnPlayerDisconnect,
 } from "@/wrapper/native/callbacks";
-import { BasePlayer } from "./basePlayer";
+import { Player } from "./basePlayer";
 import { playerBus, playerHooks } from "./playerBus";
 
 let timer: null | NodeJS.Timer = null;
 
-let pausePlayers: Map<number, BasePlayer> | null = null;
+let pausePlayers: Map<number, Player> | null = null;
 
-playerBus.on(playerHooks.create, (players: Map<number, BasePlayer>) => {
+playerBus.on(playerHooks.create, (players: Map<number, Player>) => {
   if (pausePlayers === null) pausePlayers = players;
 });
 
 OnPlayerConnect(() => {
-  if (!timer && pausePlayers && BasePlayer.getPoolSize() > -1) {
+  if (!timer && pausePlayers && Player.getPoolSize() > -1) {
     timer = setInterval(() => {
-      for (const item of pausePlayers as Map<number, BasePlayer>) {
+      for (const item of pausePlayers as Map<number, Player>) {
         const p = item[1];
         if (
           !p.isNpc() &&
@@ -34,6 +34,6 @@ OnPlayerConnect(() => {
 });
 
 OnPlayerDisconnect(() => {
-  if (timer && BasePlayer.getPoolSize() <= 0) clearInterval(timer);
+  if (timer && Player.getPoolSize() <= 0) clearInterval(timer);
   return 1;
 });

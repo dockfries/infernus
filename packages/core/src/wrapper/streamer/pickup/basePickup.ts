@@ -7,7 +7,7 @@ import {
   IsValidDynamicPickup,
   StreamerDistances,
   StreamerItemTypes,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { Streamer } from "../common";
 import { pickupBus, pickupHooks } from "./pickupBus";
 

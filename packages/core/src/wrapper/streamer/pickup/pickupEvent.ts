@@ -1,19 +1,16 @@
-import type { BasePlayer } from "@/controllers/player";
+import type { Player } from "@/controllers/player";
 import { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnPlayerPickUpDynamicPickup,
   StreamerItemTypes,
-} from "omp-wrapper-streamer";
+} from "@infernus/streamer";
 import { Streamer } from "../common";
 import { DynamicPickup } from "./basePickup";
 import { pickupBus, pickupHooks } from "./pickupBus";
 
-export abstract class DynamicPickupEvent<
-  P extends BasePlayer,
-  K extends DynamicPickup
-> {
+export class DynamicPickupEvent<P extends Player, K extends DynamicPickup> {
   private readonly pickups = new Map<number, K>();
   private readonly players;
 

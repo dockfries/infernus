@@ -1,0 +1,39 @@
+{
+  "name": "@infernus/raknet",
+  "version": "0.0.1",
+  "description": "A functional wrapper of the popular open.mp raknet plugin for samp-node.",
+  "keywords": [
+    "samp",
+    "sa:mp",
+    "sa-mp",
+    "omp",
+    "open.mp",
+    "pawn",
+    "wrapper",
+    "raknet"
+  ],
+  "homepage": "https://github.com/dockfries/omp-node/tree/main/packages/raknet#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/omp-node/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/omp-node.git"
+  },
+  "license": "ISC",
+  "author": "dockfries",
+  "main": "dist/bundle.js",
+  "types": "dist/bundle.d.ts",
+  "scripts": {
+    "build": "pnpm lint && rollup -c",
+    "lint": "eslint --fix ./src",
+    "prepublishOnly": "pnpm build"
+  },
+  "prepare": "pnpm build",
+  "devDependencies": {
+    "@infernus/core": "workspace:^"
+  },
+  "peerDependencies": {
+    "@infernus/core": "workspace:^"
+  }
+}
