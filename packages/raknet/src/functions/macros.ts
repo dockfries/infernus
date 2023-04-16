@@ -55,8 +55,7 @@ export const BS_ReadCompressedBool = (bs: BitStream) =>
   BS_ReadValue(bs, PR_ValueType.CBOOL);
 
 export const BS_ReadCompressedString = (bs: BitStream, size: number) => {
-  const byteArr = BS_ReadValue(bs, [PR_ValueType.CSTRING, size]) as number[];
-  return byteArr.slice(0, byteArr.indexOf(0));
+  return BS_ReadStringX(bs, size, true);
 };
 
 export const BS_ReadBits = (bs: BitStream, size: number) =>

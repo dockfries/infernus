@@ -1,12 +1,6 @@
-import { GameMode, IFilterScript } from "@infernus/core";
-import { PR_Init } from "./functions/natives";
-
-export default {
-  name: "raknet",
-  load() {
-    new GameMode().onInit = PR_Init;
-  },
-  unload() {
-    /* empty */
-  },
-} as IFilterScript;
+export * from "./callbacks";
+export * from "./defines";
+export * from "./enums";
+export * from "./functions";
+export * from "./interfaces";
+export * from "./types";

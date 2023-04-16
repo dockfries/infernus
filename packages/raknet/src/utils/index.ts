@@ -1,20 +1,30 @@
 import { PR_ValueType } from "@/enums";
 import { BS_ReadValue } from "@/functions/natives";
 import { BitStream } from "@/types";
+import iconv from "iconv-lite";
 
 export const BS_ConvertToByteString = (
   value: string | number[],
-  length: number
+  length: number,
+  charset = "utf-8"
 ) => {
-  let finalValue: string | number[] = value;
-  if (typeof finalValue === "string") {
-    const encoder = new TextEncoder();
-    finalValue = Array.from(encoder.encode(finalValue));
+  let finalValue: Buffer | [] = [];
+  if (typeof value === "string") {
+    finalValue = iconv.encode(value, charset);
   }
-  return finalValue.slice(0, length);
+  return Array.from(finalValue).slice(0, length);
 };
 
-export const BS_ReadStringX = (bs: BitStream, size: number) => {
-  const byteArr = BS_ReadValue(bs, [PR_ValueType.STRING, size]) as number[];
-  return byteArr.slice(0, byteArr.indexOf(0));
+export const BS_ReadStringX = (
+  bs: BitStream,
+  size: number,
+  isCompressed = false,
+  charset = "utf-8"
+) => {
+  const byteArr = BS_ReadValue(bs, [
+    isCompressed ? PR_ValueType.CSTRING : PR_ValueType.STRING,
+    size,
+  ]) as number[];
+  const validByteArr = byteArr.slice(0, byteArr.indexOf(0));
+  return iconv.decode(Buffer.from(validByteArr), charset);
 };

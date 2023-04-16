@@ -1,6 +1,6 @@
 {
   "name": "@infernus/raknet",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A functional wrapper of the popular open.mp raknet plugin for samp-node.",
   "keywords": [
     "samp",
@@ -35,5 +35,8 @@
   },
   "peerDependencies": {
     "@infernus/core": "workspace:^"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.6.3"
   }
 }

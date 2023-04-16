@@ -1,9 +1,11 @@
-import { PR_PacketPriority, PR_PacketReliability, PR_ValueType } from "@/enums";
+import {
+  PR_PacketPriority,
+  PR_PacketReliability,
+  PR_ValueType,
+  RakNetNatives,
+} from "@/enums";
 import { BitStream } from "@/types";
-
-export const PR_Init = () => {
-  samp.callNative("PR_Init", "");
-};
+import { patchRakNetNative } from "./patch";
 
 export const PR_SendPacket = (
   bs: BitStream,
@@ -12,9 +14,8 @@ export const PR_SendPacket = (
   reliability = PR_PacketReliability.RELIABLE_ORDERED,
   orderingChannel = 0
 ) => {
-  samp.callNative(
-    "PR_SendPacket",
-    "iiiii",
+  patchRakNetNative(
+    RakNetNatives.SEND_PACKET,
     bs,
     playerId,
     priority,
@@ -31,9 +32,8 @@ export const PR_SendRPC = (
   reliability = PR_PacketReliability.RELIABLE_ORDERED,
   orderingChannel = 0
 ) => {
-  samp.callNative(
-    "PR_SendRPC",
-    "iiiiii",
+  patchRakNetNative(
+    RakNetNatives.SEND_RPC,
     bs,
     playerId,
     rpcId,
@@ -44,7 +44,7 @@ export const PR_SendRPC = (
 };
 
 export const PR_EmulateIncomingPacket = (bs: BitStream, playerId: number) => {
-  samp.callNative("PR_EmulateIncomingPacket", "ii", bs, playerId);
+  patchRakNetNative(RakNetNatives.EMULATE_INCOMING_PACKET, bs, playerId);
 };
 
 export const PR_EmulateIncomingRPC = (
@@ -52,95 +52,89 @@ export const PR_EmulateIncomingRPC = (
   playerId: number,
   rpcId: number
 ) => {
-  samp.callNative("PR_EmulateIncomingRPC", "iii", bs, playerId, rpcId);
+  patchRakNetNative(RakNetNatives.EMULATE_INCOMING_RPC, bs, playerId, rpcId);
 };
 
 export const BS_New = (): BitStream => {
-  return samp.callNative("BS_New", "");
+  return patchRakNetNative(RakNetNatives.NEW);
 };
 
 export const BS_NewCopy = (bs: BitStream): BitStream => {
-  return samp.callNative("BS_NewCopy", "i", bs);
+  return patchRakNetNative(RakNetNatives.NEW_COPY, bs);
 };
 
 export const BS_Delete = (bs: BitStream): BitStream => {
-  return samp.callNative("BS_Delete", "i", bs);
+  patchRakNetNative(RakNetNatives.DELETE, bs);
+  return bs;
 };
 
 export const BS_Reset = (bs: BitStream) => {
-  samp.callNative("BS_Reset", "i", bs);
+  patchRakNetNative(RakNetNatives.RESET, bs);
 };
 
 export const BS_ResetReadPointer = (bs: BitStream) => {
-  samp.callNative("BS_ResetReadPointer", "i", bs);
+  patchRakNetNative(RakNetNatives.RESET_READ_POINTER, bs);
 };
 
 export const BS_ResetWritePointer = (bs: BitStream) => {
-  samp.callNative("BS_ResetWritePointer", "i", bs);
+  patchRakNetNative(RakNetNatives.RESET_WRITE_POINTER, bs);
 };
 
 export const BS_IgnoreBits = (bs: BitStream, number_of_bits: number) => {
-  samp.callNative("BS_IgnoreBits", "ii", bs, number_of_bits);
+  patchRakNetNative(RakNetNatives.IGNORE_BITS, bs, number_of_bits);
 };
 
 export const BS_SetWriteOffset = (bs: BitStream, offset: number) => {
-  samp.callNative("BS_SetWriteOffset", "ii", bs, offset);
+  patchRakNetNative(RakNetNatives.SET_WRITE_OFFSET, bs, offset);
 };
 
 export const BS_GetWriteOffset = (bs: BitStream): number => {
-  return samp.callNative("BS_GetWriteOffset", "iI", bs);
+  return patchRakNetNative(RakNetNatives.GET_WRITE_OFFSET, bs);
 };
 
 export const BS_SetReadOffset = (bs: BitStream, offset: number) => {
-  samp.callNative("BS_SetReadOffset", "ii", bs, offset);
+  patchRakNetNative(RakNetNatives.SET_READ_OFFSET, bs, offset);
 };
 
 export const BS_GetReadOffset = (bs: BitStream): number => {
-  return samp.callNative("BS_GetReadOffset", "iI", bs);
+  return patchRakNetNative(RakNetNatives.GET_READ_OFFSET, bs);
 };
 
 export const BS_GetNumberOfBitsUsed = (bs: BitStream): number => {
-  return samp.callNative("BS_GetNumberOfBitsUsed", "iI", bs);
+  return patchRakNetNative(RakNetNatives.GET_NUMBER_OF_BITS_USED, bs);
 };
 
 export const BS_GetNumberOfBytesUsed = (bs: BitStream): number => {
-  return samp.callNative("BS_GetNumberOfBytesUsed", "iI", bs);
+  return patchRakNetNative(RakNetNatives.GET_NUMBER_OF_BYTES_USED, bs);
 };
 
 export const BS_GetNumberOfUnreadBits = (bs: BitStream): number => {
-  return samp.callNative("BS_GetNumberOfUnreadBits", "iI", bs);
+  return patchRakNetNative(RakNetNatives.GET_NUMBER_OF_UNREAD_BITS, bs);
 };
 
 export const BS_GetNumberOfBitsAllocated = (bs: BitStream): number => {
-  return samp.callNative("BS_GetNumberOfBitsAllocated", "iI", bs);
-};
-
-const isArrValueType = (type: PR_ValueType) => {
-  return [
-    PR_ValueType.STRING,
-    PR_ValueType.CSTRING,
-    PR_ValueType.STRING8,
-    PR_ValueType.STRING32,
-    PR_ValueType.FLOAT3,
-    PR_ValueType.FLOAT4,
-    PR_ValueType.VECTOR,
-    PR_ValueType.NORM_QUAT,
-  ].includes(type);
+  return patchRakNetNative(RakNetNatives.GET_NUMBER_OF_BITS_ALLOCATED, bs);
 };
 
 export function BS_ReadValue(
   bs: BitStream,
   ...types: (PR_ValueType | [PR_ValueType, number])[]
 ): number | number[] | (number | number[])[] {
-  let paramTypes = "";
+  const ret: any[] = [];
   types.forEach((item) => {
-    const isReplaceItem = Array.isArray(item);
-    const type = isReplaceItem ? item[0] : item;
-    paramTypes += "i";
-    paramTypes += isArrValueType(type) ? "A" : "F";
-    isReplaceItem && (paramTypes += "i");
+    const isPlaceholder = Array.isArray(item);
+    const type = isPlaceholder ? item[0] : item;
+    ret.push(
+      patchRakNetNative(
+        RakNetNatives.READ_VALUE,
+        bs,
+        type,
+        isPlaceholder ? item[1] : 0
+      )
+    );
   });
-  return samp.callNative("BS_ReadValue", `i${paramTypes}`, bs, ...types);
+  if (ret.length === 1) return ret[0];
+  return ret;
 }
 
 export const BS_WriteValue = (
@@ -157,16 +151,13 @@ export const BS_WriteValue = (
       ]
   )[]
 ) => {
-  let paramTypes = "";
   types.forEach((item) => {
-    paramTypes += "i";
-    paramTypes += isArrValueType(item[0]) ? "a" : "f";
-    if (item.length === 3) paramTypes += "i";
+    patchRakNetNative(
+      RakNetNatives.WRITE_VALUE,
+      bs,
+      item[0],
+      item[1],
+      item[2] || 0
+    );
   });
-  samp.callNative(
-    "BS_WriteValue",
-    `i${paramTypes}`,
-    bs,
-    ...types.flat(Infinity)
-  );
 };

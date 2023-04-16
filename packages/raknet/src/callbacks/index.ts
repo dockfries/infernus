@@ -1,31 +1,51 @@
-// - It's not clear if registering multiple callbacks at the same time and then having one false followed by the next true will still execute (whether it's the same eventId i.e. packetId or rpcId)
-
-// If they affect each other, a copy of the global array will be saved, and then the callback will be called in a loop. If one of them returns false, the return will be executed.
-// Otherwise return true when the loop is complete, maybe?
+import { packetCallback, rpcCallback } from "@/types";
 
 // raw callback
-export const OnIncomingPacket = (
-  func: (playerId: number, packetId: number, bs: number) => boolean
-) => {
-  return samp.addEventListener("OnIncomingPacket", func);
+const incomingPackets: packetCallback[] = [];
+const incomingRPCs: rpcCallback[] = [];
+const outgoingPackets: packetCallback[] = [];
+const outgoingRPCs: rpcCallback[] = [];
+
+samp.registerEvent("OnIncomingPacket", "iii");
+samp.addEventListener(
+  "OnIncomingPacket",
+  (...args: [number, number, number]) => {
+    return incomingPackets.every((func) => func(...args));
+  }
+);
+
+samp.registerEvent("OnIncomingRPC", "iii");
+samp.addEventListener("OnIncomingRPC", (...args: [number, number, number]) => {
+  return incomingRPCs.every((func) => func(...args));
+});
+
+samp.registerEvent("OnOutgoingPacket", "iii");
+samp.addEventListener(
+  "OnOutgoingPacket",
+  (...args: [number, number, number]) => {
+    return outgoingPackets.every((func) => func(...args));
+  }
+);
+
+samp.registerEvent("OnOutgoingRPC", "iii");
+samp.addEventListener("OnOutgoingRPC", (...args: [number, number, number]) => {
+  return outgoingRPCs.every((func) => func(...args));
+});
+
+export const OnIncomingPacket = (func: packetCallback) => {
+  incomingPackets.push(func);
 };
 
-export const OnIncomingRPC = (
-  func: (playerId: number, rpcId: number, bs: number) => boolean
-) => {
-  return samp.addEventListener("OnIncomingRPC", func);
+export const OnIncomingRPC = (func: rpcCallback) => {
+  incomingRPCs.push(func);
 };
 
-export const OnOutgoingPacket = (
-  func: (playerId: number, packetId: number, bs: number) => boolean
-) => {
-  return samp.addEventListener("OnOutgoingPacket", func);
+export const OnOutgoingPacket = (func: packetCallback) => {
+  outgoingPackets.push(func);
 };
 
-export const OnOutgoingRPC = (
-  func: (playerId: number, rpcId: number, bs: number) => boolean
-) => {
-  return samp.addEventListener("OnOutgoingRPC", func);
+export const OnOutgoingRPC = (func: rpcCallback) => {
+  outgoingRPCs.push(func);
 };
 
 // syntactic sugar callback
