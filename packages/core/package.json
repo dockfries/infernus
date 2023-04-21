@@ -15,7 +15,7 @@
     "url": "git+https://github.com/dockfries/omp-node.git"
   },
   "license": "ISC",
-  "author": "",
+  "author": "dockfries",
   "main": "dist/bundle.js",
   "types": "dist/bundle.d.ts",
   "scripts": {

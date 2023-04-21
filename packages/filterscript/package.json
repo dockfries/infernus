@@ -16,7 +16,7 @@
     "url": "git+https://github.com/dockfries/omp-node.git"
   },
   "license": "ISC",
-  "author": "",
+  "author": "dockfries",
   "main": "dist/bundle.js",
   "types": "dist/bundle.d.ts",
   "scripts": {
@@ -28,8 +28,8 @@
     "@infernus/core": "workspace:^",
     "@rollup/plugin-json": "^6.0.0"
   },
-  "prepare": "pnpm build",
   "peerDependencies": {
     "@infernus/core": "workspace:^"
-  }
+  },
+  "prepare": "pnpm build"
 }
