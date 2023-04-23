@@ -375,13 +375,20 @@ export const promisifyCallback = (
 
     const result = obj[fnName](...args);
 
+    /**
+     * This does not meet our expectations. When we use async or promise to return a result in a callback, it will not trigger the result we return asynchronously until the next time the same callback is triggered.
+     * One possible solution: pass the callback name and the result of the asynchronous wait through the CallRemoteFunction, determine if it was triggered manually before we receive the callback to the class itself, and return the result of the asynchronous wait directly if it was.
+     * CallRemoteFunction("OnPlayerText", "is", playerid, text);
+     */
     if (result instanceof Promise) {
       result.then((value) => {
-        const promiseFn = () => value;
         let parseNaiveCbName = naiveCbName;
         if (!parseNaiveCbName) parseNaiveCbName = upperFirst(camelCase(fnName));
+        const promiseFn = () => {
+          samp.removeEventListener(parseNaiveCbName as string, promiseFn);
+          return value;
+        };
         samp.addEventListener(parseNaiveCbName, promiseFn);
-        samp.removeEventListener(parseNaiveCbName, promiseFn);
       });
       return retNum;
     }
