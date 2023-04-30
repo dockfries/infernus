@@ -1,4 +1,8 @@
-import { IVehColor, IVehMatrix, IVehSpawnInfo } from "./interfaces/Vehicle";
+import type {
+  IVehColor,
+  IVehMatrix,
+  IVehSpawnInfo,
+} from "./interfaces/Vehicle";
 
 export const GetVehicleSpawnInfo = (vehicleid: number): IVehSpawnInfo => {
   const [fX = 0, fY = 0, fZ = 0, fRot = 0, color1 = 0, color2 = 0]: number[] =

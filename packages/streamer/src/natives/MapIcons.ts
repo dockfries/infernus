@@ -1,5 +1,5 @@
 import { StreamerDistances } from "../definitions/Distances";
-import { StreamerItemTypes } from "../definitions/ItemTypes";
+import type { StreamerItemTypes } from "../definitions/ItemTypes";
 
 export enum MapIconStyles {
   LOCAL,

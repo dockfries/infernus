@@ -7,15 +7,15 @@
     "omp",
     "samp"
   ],
-  "homepage": "https://github.com/dockfries/omp-node/tree/main/packages/filterscript#readme",
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/filterscript#readme",
   "bugs": {
-    "url": "https://github.com/dockfries/omp-node/issues"
+    "url": "https://github.com/dockfries/infernus/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dockfries/omp-node.git"
+    "url": "git+https://github.com/dockfries/infernus.git"
   },
-  "license": "ISC",
+  "license": "MIT",
   "author": "dockfries",
   "main": "dist/bundle.js",
   "types": "dist/bundle.d.ts",

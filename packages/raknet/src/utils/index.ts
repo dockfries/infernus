@@ -1,6 +1,6 @@
 import { PR_ValueType } from "@/enums";
 import { BS_ReadValue } from "@/functions/natives";
-import { BitStream } from "@/types";
+import type { BitStream } from "@/types";
 import iconv from "iconv-lite";
 
 export const BS_ConvertToByteString = (

@@ -1,5 +1,5 @@
-import { ICommonGangZoneKey } from "@/interfaces";
-import { TCommonCallback } from "@/types";
+import type { ICommonGangZoneKey } from "@/interfaces";
+import type { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
@@ -8,8 +8,8 @@ import {
   OnPlayerLeaveGangZone,
   OnPlayerLeavePlayerGangZone,
 } from "@infernus/wrapper";
-import { Player } from "../player";
-import { GangZone } from "./baseGangZone";
+import type { Player } from "../player";
+import type { GangZone } from "./baseGangZone";
 import { gangZoneBus, gangZoneHooks } from "./gangZoneBus";
 
 export class GangZoneEvent<P extends Player, G extends GangZone<P>> {

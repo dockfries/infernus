@@ -1,4 +1,4 @@
-import {
+import type {
   IAttachedData,
   IMaterial,
   IMaterialText,

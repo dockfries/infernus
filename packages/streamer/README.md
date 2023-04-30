@@ -1,6 +1,6 @@
 # @infernus/streamer
 
-[![npm](https://img.shields.io/npm/v/@infernus/streamer)](https://www.npmjs.com/package/@infernus/streamer) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/streamer)
+[![npm](https://img.shields.io/npm/v/@infernus/streamer)](https://www.npmjs.com/package/@infernus/streamer) ![npm](https://img.shields.io/npm/dy/@infernus/streamer) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/streamer)
 
 A functional wrapper of the popular SA-MP streamer plugin (v2.9.6) for samp-node.
 

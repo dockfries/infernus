@@ -1,4 +1,4 @@
-import {
+import type {
   StreamerItemTypes,
   StreamerItemTypeTuple,
 } from "../definitions/ItemTypes";

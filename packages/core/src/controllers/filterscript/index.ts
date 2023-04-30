@@ -1,4 +1,4 @@
-import { IFilterScript } from "@/interfaces";
+import type { IFilterScript } from "@/interfaces";
 import { logger } from "@/logger";
 import { OnGameModeExit, OnGameModeInit } from "@/wrapper/native/callbacks";
 

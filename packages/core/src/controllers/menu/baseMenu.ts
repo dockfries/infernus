@@ -11,7 +11,7 @@ import {
   GetMenuItem,
 } from "@infernus/wrapper";
 
-import { Player } from "../player";
+import type { Player } from "../player";
 import { menuBus, menuHooks } from "./menuBus";
 
 export class Menu {

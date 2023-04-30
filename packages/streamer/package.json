@@ -1,6 +1,6 @@
 {
   "name": "@infernus/streamer",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "A functional wrapper of the popular SA-MP streamer plugin (v2.9.6) for samp-node.",
   "keywords": [
     "samp",
@@ -12,15 +12,15 @@
     "wrapper",
     "streamer"
   ],
-  "homepage": "https://github.com/dockfries/omp-node/tree/main/packages/streamer#readme",
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/streamer#readme",
   "bugs": {
-    "url": "https://github.com/dockfries/omp-node/issues"
+    "url": "https://github.com/dockfries/infernus/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dockfries/omp-node.git"
+    "url": "git+https://github.com/dockfries/infernus.git"
   },
-  "license": "ISC",
+  "license": "MIT",
   "author": "dockfries",
   "main": "dist/bundle.js",
   "types": "dist/bundle.d.ts",

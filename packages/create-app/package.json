@@ -1,7 +1,7 @@
 {
   "name": "@infernus/create-app",
-  "version": "0.0.5",
-  "description": "Used to quickly generate an omp-node-starter template",
+  "version": "0.0.6",
+  "description": "Used to quickly generate an infernus-starter template",
   "files": [
     "dist",
     "LICENSE"
@@ -12,7 +12,7 @@
     "cli",
     "create"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "author": "dockfries",
   "type": "module",
   "bin": {

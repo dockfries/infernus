@@ -11,7 +11,7 @@ import {
   promisifyCallback,
 } from "@/utils/helperUtils";
 import { defaultCharset } from "./settings";
-import { TCommonCallback } from "@/types";
+import type { TCommonCallback } from "@/types";
 import {
   loadUseScript,
   reloadUseScript,
@@ -41,7 +41,7 @@ import {
   AreAllAnimationsEnabled,
   EnableAllAnimations,
 } from "@infernus/wrapper";
-import { IFilterScript } from "@/interfaces";
+import type { IFilterScript } from "@/interfaces";
 
 export class GameMode {
   static charset = defaultCharset;

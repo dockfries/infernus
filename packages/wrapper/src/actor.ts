@@ -1,4 +1,4 @@
-import { IActorAnimation, IActorSpawn } from "./interfaces/Actor";
+import type { IActorAnimation, IActorSpawn } from "./interfaces/Actor";
 
 export const GetActorSkin = (actorid: number): number => {
   return samp.callNative("GetActorSkin", "i", actorid);

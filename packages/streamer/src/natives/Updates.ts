@@ -1,4 +1,4 @@
-import { StreamerItemTypes } from "../definitions/ItemTypes";
+import type { StreamerItemTypes } from "../definitions/ItemTypes";
 
 export const Streamer_ProcessActiveItems = (): number => {
   return samp.callNative("Streamer_ProcessActiveItems", "");

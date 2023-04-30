@@ -1,10 +1,10 @@
 import type { Player } from "@/controllers/player";
-import { TCommonCallback } from "@/types";
+import type { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import { StreamerItemTypes } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { DynamicMapIcon } from "./baseMapIcon";
+import type { DynamicMapIcon } from "./baseMapIcon";
 
 import { mapIconBus, mapIconHooks } from "./mapIconBus";
 

@@ -8,13 +8,13 @@ import * as cbs from "@/wrapper/native/callbacks";
 import { I18n } from "../i18n";
 import { Player } from "./basePlayer";
 import { CmdBus } from "../command";
-import { ICmdErr } from "@/interfaces";
+import type { ICmdErr } from "@/interfaces";
 import * as enums from "@/enums";
 import { throttle } from "lodash";
 import { Dialog } from "../promise/dialog";
 import { delCCTask } from "../promise/client";
 import { playerBus, playerHooks } from "./playerBus";
-import { TCommonCallback, TEventFunc, TEventName } from "@/types";
+import type { TCommonCallback, TEventFunc, TEventName } from "@/types";
 
 // Each instance can be called to callbacks, so you can split the logic.
 

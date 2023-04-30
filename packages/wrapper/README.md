@@ -1,6 +1,6 @@
 # @infernus/wrapper
 
-[![npm](https://img.shields.io/npm/v/@infernus/wrapper)](https://www.npmjs.com/package/@infernus/wrapper) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/wrapper)
+[![npm](https://img.shields.io/npm/v/@infernus/wrapper)](https://www.npmjs.com/package/@infernus/wrapper) ![npm](https://img.shields.io/npm/dy/@infernus/wrapper) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/wrapper)
 
 As the core helper, added some features(natives and callbacks) that were added during the omp beta that were not incorporated into the core due to historical issues.
 

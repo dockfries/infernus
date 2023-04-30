@@ -1,6 +1,6 @@
 import type { Player } from "@/controllers/player";
-import { EditResponseTypesEnum } from "@/enums";
-import { TCommonCallback } from "@/types";
+import type { EditResponseTypesEnum } from "@/enums";
+import type { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
@@ -11,7 +11,7 @@ import {
   StreamerItemTypes,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { DynamicObject } from "./baseObject";
+import type { DynamicObject } from "./baseObject";
 import { objectBus, objectHooks } from "./objectBus";
 
 export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {

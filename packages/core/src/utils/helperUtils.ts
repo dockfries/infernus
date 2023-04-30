@@ -1,8 +1,8 @@
 import { rgba } from "./colorUtils";
-import { IDialog } from "@/interfaces";
+import type { IDialog } from "@/interfaces";
 import { LimitsEnum } from "@/enums";
 import { I18n } from "@/controllers/i18n";
-import { Player } from "@/controllers/player";
+import type { Player } from "@/controllers/player";
 import { defaultCharset } from "@/controllers/gamemode/settings";
 import { camelCase, upperFirst } from "lodash";
 

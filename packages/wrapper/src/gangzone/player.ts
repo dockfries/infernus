@@ -1,4 +1,4 @@
-import { GangZonePos } from "../interfaces/GangZone";
+import type { GangZonePos } from "../interfaces/GangZone";
 
 export const CreatePlayerGangZone = (
   playerid: number,

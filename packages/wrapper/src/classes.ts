@@ -1,4 +1,4 @@
-import { IPlayerClass } from "./interfaces/PlayerClass";
+import type { IPlayerClass } from "./interfaces/PlayerClass";
 
 export const GetAvailableClasses = (): number => {
   return samp.callNative("GetAvailableClasses", "");

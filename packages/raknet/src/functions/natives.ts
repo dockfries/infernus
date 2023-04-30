@@ -1,10 +1,10 @@
+import type { PR_ValueType } from "@/enums";
 import {
   PR_PacketPriority,
   PR_PacketReliability,
-  PR_ValueType,
   RakNetNatives,
 } from "@/enums";
-import { BitStream } from "@/types";
+import type { BitStream } from "@/types";
 import { patchRakNetNative } from "./patch";
 
 export const PR_SendPacket = (

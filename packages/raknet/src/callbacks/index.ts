@@ -1,4 +1,4 @@
-import { packetCallback, rpcCallback } from "@/types";
+import type { packetCallback, rpcCallback } from "@/types";
 
 // raw callback
 const incomingPackets: packetCallback[] = [];

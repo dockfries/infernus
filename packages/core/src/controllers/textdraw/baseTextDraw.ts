@@ -1,4 +1,5 @@
-import { LimitsEnum, TextDrawAlignEnum, TextDrawFontsEnum } from "@/enums";
+import type { TextDrawAlignEnum } from "@/enums";
+import { LimitsEnum, TextDrawFontsEnum } from "@/enums";
 import type { ITextDraw } from "@/interfaces";
 import { logger } from "@/logger";
 import * as fns from "@/wrapper/native/functions";

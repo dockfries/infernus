@@ -1,5 +1,5 @@
-import { TEventFunc, TEventName } from "@/types";
-import { PlayerEvent } from "../player";
+import type { TEventFunc, TEventName } from "@/types";
+import type { PlayerEvent } from "../player";
 
 // This is an event bus for distributing instructions entered by the user.
 // You can bind a single instruction as a string, or you can bind multiple alias instructions as an array string

@@ -1,8 +1,8 @@
 import type { Player } from "@/controllers/player";
-import { TCommonCallback } from "@/types";
+import type { TCommonCallback } from "@/types";
 import { StreamerItemTypes } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { Dynamic3DTextLabel } from "./base3DText";
+import type { Dynamic3DTextLabel } from "./base3DText";
 
 import { _3dTextBus, _3dTextHooks } from "./3dTextBus";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";

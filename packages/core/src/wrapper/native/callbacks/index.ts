@@ -1,6 +1,6 @@
 // Reference to Peter Szombati's samp-node-lib
 
-import { BodyPartsEnum, WeaponEnum } from "@/enums";
+import type { BodyPartsEnum, WeaponEnum } from "@/enums";
 
 export const OnGameModeInit = (func: () => void) => {
   samp.addEventListener("OnGameModeInit", func);

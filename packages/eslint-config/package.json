@@ -1,0 +1,7 @@
+{
+  "name": "@infernus/eslint-config",
+  "private": true,
+  "license": "MIT",
+  "author": "dockfries",
+  "main": "index.js"
+}

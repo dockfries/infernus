@@ -1,4 +1,4 @@
-import { ITextDrawCommonSize, ITextDrawRot } from "../interfaces/TextDraw";
+import type { ITextDrawCommonSize, ITextDrawRot } from "../interfaces/TextDraw";
 
 export const IsValidTextDraw = (textdrawid: number): boolean => {
   return Boolean(samp.callNative("IsValidTextDraw", "i", textdrawid));

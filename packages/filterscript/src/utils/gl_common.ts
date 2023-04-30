@@ -1,5 +1,5 @@
-import { ICommonOptions } from "@/interfaces";
-import { Player, KeysEnum } from "@infernus/core";
+import type { ICommonOptions } from "@/interfaces";
+import type { Player, KeysEnum } from "@infernus/core";
 
 export const IsKeyJustDown = (
   key: KeysEnum,

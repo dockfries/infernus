@@ -1,6 +1,6 @@
-import { ConnectionStatusEnum } from "@/enums";
+import type { ConnectionStatusEnum } from "@/enums";
 import * as fns from "@/wrapper/native/functions";
-import { Player } from "../player";
+import type { Player } from "../player";
 
 export class NetStats {
   // eslint-disable-next-line @typescript-eslint/no-empty-function

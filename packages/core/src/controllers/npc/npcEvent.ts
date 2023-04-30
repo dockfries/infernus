@@ -1,4 +1,4 @@
-import { TCommonCallback } from "@/types";
+import type { TCommonCallback } from "@/types";
 import { OnClientMessage, promisifyCallback } from "@/utils/helperUtils";
 import {
   OnNpcConnect,

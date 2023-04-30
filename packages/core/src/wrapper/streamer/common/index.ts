@@ -1,6 +1,6 @@
 import { Player } from "@/controllers/player";
+import type { StreamerItemTypes } from "@infernus/streamer";
 import {
-  StreamerItemTypes,
   Streamer_AmxUnloadDestroyItems,
   Streamer_AppendArrayData,
   Streamer_CountItems,

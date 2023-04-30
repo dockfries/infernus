@@ -1,4 +1,5 @@
-import { CarModTypeEnum, LimitsEnum, VehicleModelInfoEnum } from "@/enums";
+import type { CarModTypeEnum, VehicleModelInfoEnum } from "@/enums";
+import { LimitsEnum } from "@/enums";
 import type { TPos } from "@/types";
 import type { IVehicle } from "@/interfaces";
 import type { Player } from "../player";

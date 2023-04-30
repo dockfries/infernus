@@ -37,7 +37,7 @@ async function initializeStarter(relativeGenPath, projectName, isRakNet) {
 
   const starterPath = await downloadGitRepo(
     "dockfries",
-    "omp-node-starter",
+    "infernus-starter",
     relativeGenPath
   );
 

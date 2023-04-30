@@ -1,4 +1,4 @@
-import { GangZonePos } from "../interfaces/GangZone";
+import type { GangZonePos } from "../interfaces/GangZone";
 
 export const IsValidGangZone = (zoneid: number): boolean => {
   return Boolean(samp.callNative("IsValidGangZone", "i", zoneid));

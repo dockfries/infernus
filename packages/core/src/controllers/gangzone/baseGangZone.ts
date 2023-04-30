@@ -1,8 +1,9 @@
 import { LimitsEnum } from "@/enums";
-import { IGangZone } from "@/interfaces";
+import type { IGangZone } from "@/interfaces";
 import { logger } from "@/logger";
 import { rgba } from "@/utils/colorUtils";
 import * as fns from "@/wrapper/native/functions";
+import type { GangZonePos } from "@infernus/wrapper";
 import {
   CreatePlayerGangZone,
   PlayerGangZoneDestroy,
@@ -19,7 +20,6 @@ import {
   PlayerGangZoneGetColour,
   IsPlayerGangZoneFlashing,
   IsGangZoneFlashingForPlayer,
-  GangZonePos,
   PlayerGangZoneGetPos,
   GangZoneGetPos,
   UsePlayerGangZoneCheck,
@@ -29,7 +29,7 @@ import {
   PlayerGangZoneGetFlashColour,
 } from "@infernus/wrapper";
 
-import { Player } from "../player";
+import type { Player } from "../player";
 import { gangZoneBus, gangZoneHooks } from "./gangZoneBus";
 
 export class GangZone<P extends Player> {

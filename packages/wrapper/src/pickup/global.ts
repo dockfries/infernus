@@ -1,4 +1,4 @@
-import { IObjectPos } from "../interfaces/Object";
+import type { IObjectPos } from "../interfaces/Object";
 
 export const IsValidPickup = (pickupid: number): boolean => {
   return Boolean(samp.callNative("IsValidPickup", "i", pickupid));

@@ -3,7 +3,7 @@
 // removed db_, timer functions, for better maintainability you should use the node library
 
 import { rgba } from "@/utils/colorUtils";
-import {
+import type {
   BoneIdsEnum,
   CameraCutStylesEnum,
   CameraModesEnum,

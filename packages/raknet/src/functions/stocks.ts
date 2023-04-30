@@ -1,6 +1,6 @@
 import { PR_MAX_WEAPON_SLOTS } from "@/defines";
 import { PR_PacketPriority, PR_PacketReliability, PR_ValueType } from "@/enums";
-import {
+import type {
   IAimSync,
   IBulletSync,
   IInCarSync,
@@ -14,8 +14,9 @@ import {
   IUnoccupiedSync,
   IWeaponsUpdate,
 } from "@/interfaces";
-import { BitStream, Vector3 } from "@/types";
-import { InvalidEnum, LimitsEnum, Player, Vehicle } from "@infernus/core";
+import type { BitStream, Vector3 } from "@/types";
+import type { Player, Vehicle } from "@infernus/core";
+import { InvalidEnum, LimitsEnum } from "@infernus/core";
 import {
   BS_ReadCompressedBool,
   BS_ReadInt32,

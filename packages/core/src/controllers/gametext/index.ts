@@ -5,7 +5,7 @@ import {
   HideGameTextForAll,
   HideGameTextForPlayer,
 } from "@/wrapper/native/functions";
-import { Player } from "../player";
+import type { Player } from "../player";
 
 export class GameText<P extends Player = Player> {
   private _text: string;

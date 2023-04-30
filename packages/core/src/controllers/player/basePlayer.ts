@@ -1,4 +1,4 @@
-import { IClientResRaw } from "@/interfaces";
+import type { IClientResRaw } from "@/interfaces";
 import {
   BanEx,
   GetPlayerName,
@@ -10,25 +10,27 @@ import {
 } from "@/utils/helperUtils";
 import * as playerFunc from "@/wrapper/native/functions";
 import { logger } from "@/logger";
-import {
+import type {
   BoneIdsEnum,
-  CameraCutStylesEnum,
   CameraModesEnum,
-  DamageDeathReasonEnum,
   FightingStylesEnum,
-  InvalidEnum,
-  PlayerStateEnum,
-  SpecialActionsEnum,
-  SpectateModesEnum,
   WeaponEnum,
   WeaponSkillsEnum,
   WeaponStatesEnum,
 } from "@/enums";
-import { Vehicle } from "../vehicle";
-import { TPos } from "@/types";
+import {
+  CameraCutStylesEnum,
+  DamageDeathReasonEnum,
+  InvalidEnum,
+  PlayerStateEnum,
+  SpecialActionsEnum,
+  SpectateModesEnum,
+} from "@/enums";
+import type { Vehicle } from "../vehicle";
+import type { TPos } from "@/types";
 
 import { getAnimateDurationByLibName } from "@/utils/animateUtils";
-import { DynamicObject } from "../../wrapper/streamer";
+import type { DynamicObject } from "../../wrapper/streamer";
 import { ccWaitingQueue, delCCTask } from "../promise/client";
 import {
   GetPlayerWeather,

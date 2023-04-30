@@ -1,6 +1,6 @@
 import type { Player } from "@/controllers/player";
 import type { BodyPartsEnum } from "@/enums";
-import { TCommonCallback } from "@/types";
+import type { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
@@ -9,7 +9,7 @@ import {
   OnPlayerGiveDamageDynamicActor,
 } from "@infernus/streamer";
 import { actorBus, actorHooks } from "./actorBus";
-import { DynamicActor } from "./baseActor";
+import type { DynamicActor } from "./baseActor";
 
 export class DynamicActorEvent<P extends Player, A extends DynamicActor> {
   private readonly actors = new Map<number, A>();

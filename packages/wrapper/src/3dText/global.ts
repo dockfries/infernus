@@ -1,4 +1,4 @@
-import { IAttachedData, IObjectPos } from "../interfaces/Object";
+import type { IAttachedData, IObjectPos } from "../interfaces/Object";
 
 export const IsValid3DTextLabel = (id: number): boolean => {
   return Boolean(samp.callNative("IsValid3DTextLabel", "i", id));

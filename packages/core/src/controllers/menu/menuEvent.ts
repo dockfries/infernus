@@ -1,5 +1,5 @@
 import { InvalidEnum } from "@/enums";
-import { TCommonCallback } from "@/types";
+import type { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnGameModeExit,
@@ -7,8 +7,8 @@ import {
   OnPlayerSelectedMenuRow,
 } from "@/wrapper/native/callbacks";
 import { GetPlayerMenu } from "@/wrapper/native/functions";
-import { Player } from "../player";
-import { Menu } from "./baseMenu";
+import type { Player } from "../player";
+import type { Menu } from "./baseMenu";
 import { menuBus, menuHooks } from "./menuBus";
 
 export class MenuEvent<P extends Player, M extends Menu> {

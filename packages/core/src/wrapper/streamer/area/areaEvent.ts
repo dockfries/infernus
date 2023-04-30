@@ -1,5 +1,5 @@
-import { Player } from "@/controllers/player";
-import { TCommonCallback } from "@/types";
+import type { Player } from "@/controllers/player";
+import type { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
@@ -9,7 +9,7 @@ import {
 } from "@infernus/streamer";
 import { Streamer } from "../common";
 import { areaBus, areaHooks } from "./areaBus";
-import { DynamicArea } from "./baseArea";
+import type { DynamicArea } from "./baseArea";
 
 export class DynamicAreaEvent<P extends Player, A extends DynamicArea> {
   private readonly areas = new Map<number, A>();

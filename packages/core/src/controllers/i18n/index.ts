@@ -1,4 +1,4 @@
-import { TLocales } from "@/types";
+import type { TLocales } from "@/types";
 import { encode, decode, encodingExists } from "iconv-lite";
 import { logger } from "@/logger";
 import { get, mapKeys, merge, omit, snakeCase } from "lodash";

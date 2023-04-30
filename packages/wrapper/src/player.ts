@@ -1,9 +1,9 @@
-import { IBounds } from "./interfaces/Bounds";
-import { ICheckPoint, IRaceCheckPoint } from "./interfaces/CheckPoint";
-import { IAttachedObject } from "./interfaces/Object";
-import { IOffsets } from "./interfaces/Offsets";
-import { IPlayerClass } from "./interfaces/PlayerClass";
-import { IQuat } from "./interfaces/Quat";
+import type { IBounds } from "./interfaces/Bounds";
+import type { ICheckPoint, IRaceCheckPoint } from "./interfaces/CheckPoint";
+import type { IAttachedObject } from "./interfaces/Object";
+import type { IOffsets } from "./interfaces/Offsets";
+import type { IPlayerClass } from "./interfaces/PlayerClass";
+import type { IQuat } from "./interfaces/Quat";
 
 export const TogglePlayerWidescreen = (
   playerid: number,

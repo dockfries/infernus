@@ -1,9 +1,10 @@
 import { logger } from "@/logger";
 import { InvalidEnum } from "@/enums";
-import { Player } from "@/controllers/player";
-import { Vehicle } from "@/controllers/vehicle";
-import { TDynamicArea, TDynamicAreaTypes } from "@/types";
+import type { Player } from "@/controllers/player";
+import type { Vehicle } from "@/controllers/vehicle";
+import type { TDynamicArea, TDynamicAreaTypes } from "@/types";
 import { areaBus, areaHooks } from "./areaBus";
+import type { StreamerAreaTypes } from "@infernus/streamer";
 import {
   AttachDynamicAreaToObject,
   AttachDynamicAreaToPlayer,
@@ -40,12 +41,11 @@ import {
   IsPointInDynamicArea,
   IsToggleDynAreaSpectateMode,
   IsValidDynamicArea,
-  StreamerAreaTypes,
   StreamerItemTypes,
   StreamerObjectTypes,
   ToggleDynAreaSpectateMode,
 } from "@infernus/streamer";
-import { DynamicObject } from "../object";
+import type { DynamicObject } from "../object";
 import { Streamer } from "../common";
 
 export class DynamicArea {

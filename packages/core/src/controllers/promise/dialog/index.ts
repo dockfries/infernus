@@ -1,9 +1,9 @@
 import { DialogStylesEnum } from "@/enums";
 import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helperUtils";
 import { HidePlayerDialog } from "@infernus/wrapper";
-import { Player } from "../../player/basePlayer";
+import type { Player } from "../../player/basePlayer";
 import { I18n } from "../../i18n";
-import {
+import type {
   IDialog,
   IDialogFuncQueue,
   IDialogResRaw,
@@ -114,27 +114,26 @@ export class Dialog<T extends Player> {
     return true;
   }
 
-  show(player: T): Promise<IDialogResResult> {
-    return new Promise((resolve, reject) => {
+  show(player: T) {
+    return new Promise<IDialogResRaw>((resolve, reject) => {
       Dialog.close(player);
-      const p = new Promise<IDialogResRaw>((dialogResolve, dialogReject) => {
-        Dialog.waitingQueue.set(player.id, {
-          resolve: dialogResolve,
-          reject: dialogReject,
-        });
-        ShowPlayerDialog(player, this.id, this.dialog);
-      });
-      p.then((DialogRes: IDialogResRaw) => {
+      Dialog.waitingQueue.set(player.id, { resolve, reject });
+      ShowPlayerDialog(player, this.id, this.dialog);
+    })
+      .then((DialogRes: IDialogResRaw) => {
         const { response, listitem } = DialogRes;
         const inputtext = I18n.decodeFromBuf(
           DialogRes.inputbuf,
           player.charset
         );
-        resolve({ response, listitem, inputtext });
-      });
-      p.catch(reject);
-      p.finally(() => Dialog.delDialogTask(player));
-    });
+        return Promise.resolve({
+          response,
+          listitem,
+          inputtext,
+        } as IDialogResResult);
+      })
+      .catch((e) => Promise.reject(e))
+      .finally(() => Dialog.delDialogTask(player));
   }
 
   static close<T extends Player>(player: T) {

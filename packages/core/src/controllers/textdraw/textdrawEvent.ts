@@ -1,6 +1,6 @@
 import { InvalidEnum } from "@/enums";
-import { ICommonTextDrawKey } from "@/interfaces";
-import { TCommonCallback } from "@/types";
+import type { ICommonTextDrawKey } from "@/interfaces";
+import type { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnGameModeExit,

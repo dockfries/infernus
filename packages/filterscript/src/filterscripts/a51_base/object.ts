@@ -1,14 +1,12 @@
 import { GateStatusEnum } from "@/filterscripts/a51_base/enums/gate";
-import { IA51Options, ICommonOptions, IGateList } from "@/interfaces";
+import type { IA51Options, ICommonOptions, IGateList } from "@/interfaces";
 import { log, PlaySoundForPlayersInRange } from "@/utils/gl_common";
+import type { Player, I18n, PlayerEvent } from "@infernus/core";
 import {
   GameText,
-  Player,
   DynamicObject,
   DynamicObjectEvent,
-  I18n,
   KeysEnum,
-  PlayerEvent,
 } from "@infernus/core";
 import { ColorEnum } from "./enums/color";
 import { playerEvent } from "./player";

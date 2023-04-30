@@ -1,4 +1,4 @@
-import { TCommonCallback } from "@/types";
+import type { TCommonCallback } from "@/types";
 import { promisifyCallback } from "@/utils/helperUtils";
 import {
   OnNPCEnterVehicle,

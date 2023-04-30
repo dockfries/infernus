@@ -17,9 +17,10 @@
  * 2 3D Text Labels = 1 on each gate
  */
 
-import { IA51Options } from "@/interfaces";
+import type { IA51Options } from "@/interfaces";
 
-import { GameText, I18n, IFilterScript } from "@infernus/core";
+import type { IFilterScript } from "@infernus/core";
+import { GameText, I18n } from "@infernus/core";
 
 import { loadLabels, registerLabelEvent, unloadLabels } from "./label";
 import { loadObjects, moveGate, removeBuilding, unloadObjects } from "./object";

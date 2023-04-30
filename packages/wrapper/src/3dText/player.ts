@@ -1,4 +1,4 @@
-import { IAttachedData, IObjectPos } from "../interfaces/Object";
+import type { IAttachedData, IObjectPos } from "../interfaces/Object";
 
 export const IsValidPlayer3DTextLabel = (
   playerid: number,

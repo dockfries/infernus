@@ -3,13 +3,12 @@
   kye 2007
 */
 
-import { IAdminSpecOptions } from "@/interfaces";
+import type { IAdminSpecOptions } from "@/interfaces";
+import type { Vehicle, IFilterScript } from "@infernus/core";
 import {
   Player,
   PlayerEvent,
-  Vehicle,
   VehicleEvent,
-  IFilterScript,
   InvalidEnum,
   PlayerStateEnum,
 } from "@infernus/core";
@@ -48,6 +47,7 @@ class AdminSpecPlayerEvent extends PlayerEvent<AdminSpecPlayer> {
 
 class AdminSpecVehicleEvent extends VehicleEvent<AdminSpecPlayer, Vehicle> {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
   return {
     name: "admin_spec",
