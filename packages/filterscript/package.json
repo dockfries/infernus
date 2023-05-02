@@ -1,6 +1,6 @@
 {
   "name": "@infernus/fs",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A collection of all built-in filterscripts",
   "keywords": [
     "filterscript",
@@ -17,7 +17,14 @@
   },
   "license": "MIT",
   "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs"
+    }
+  },
   "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
   "types": "dist/bundle.d.ts",
   "scripts": {
     "build": "pnpm lint && rollup -c",

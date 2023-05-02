@@ -1,7 +1,7 @@
 {
   "name": "@infernus/raknet",
-  "version": "0.0.2",
-  "description": "A functional wrapper of the popular open.mp raknet plugin for samp-node.",
+  "version": "0.0.3",
+  "description": "A wrapper of the popular open.mp raknet plugin for samp-node.",
   "keywords": [
     "samp",
     "sa:mp",
@@ -22,7 +22,14 @@
   },
   "license": "MIT",
   "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs"
+    }
+  },
   "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
   "types": "dist/bundle.d.ts",
   "scripts": {
     "build": "pnpm lint && rollup -c",

@@ -1,6 +1,6 @@
 {
   "name": "@infernus/core",
-  "version": "0.8.7",
+  "version": "0.8.8",
   "description": "NodeJS library for Scripting Open Multiplayer",
   "keywords": [
     "omp",
@@ -16,7 +16,14 @@
   },
   "license": "MIT",
   "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs"
+    }
+  },
   "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
   "types": "dist/bundle.d.ts",
   "scripts": {
     "build": "npm run lint && rollup -c",

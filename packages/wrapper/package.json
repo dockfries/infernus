@@ -1,6 +1,6 @@
 {
   "name": "@infernus/wrapper",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A functional wrapper of the omp new scripting api (natives and callbacks) for samp-node.",
   "keywords": [
     "samp",
@@ -21,7 +21,14 @@
   },
   "license": "MIT",
   "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs"
+    }
+  },
   "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
   "types": "dist/bundle.d.ts",
   "scripts": {
     "build": "pnpm lint && rollup -c",

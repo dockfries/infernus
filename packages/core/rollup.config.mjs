@@ -13,7 +13,10 @@ const outputPath = "./dist";
 export default [
   {
     input: inputPath,
-    output: { file: outputPath + "/bundle.js", format: "cjs" },
+    output: [
+      { file: outputPath + "/bundle.js", format: "cjs" },
+      { file: outputPath + "/bundle.mjs", format: "es" },
+    ],
     plugins: [
       del({ targets: outputPath + "/*" }),
       esbuild({ minify: true }),
@@ -23,7 +26,7 @@ export default [
   },
   {
     input: inputPath,
-    output: [{ file: outputPath + "/bundle.d.ts", format: "cjs" }],
+    output: [{ file: outputPath + "/bundle.d.ts" }],
     plugins: [dts({ compilerOptions: { paths: compilerOptions.paths } })],
   },
 ];

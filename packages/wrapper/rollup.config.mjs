@@ -7,18 +7,15 @@ const outputPath = "./dist";
 export default [
   {
     input: "./src/index.ts",
-    output: {
-      file: outputPath + "/bundle.js",
-      format: "cjs",
-    },
+    output: [
+      { file: outputPath + "/bundle.js", format: "cjs" },
+      { file: outputPath + "/bundle.mjs", format: "es" },
+    ],
     plugins: [del({ targets: outputPath + "/*" }), esbuild({ minify: true })],
   },
   {
     input: "./src/index.ts",
-    output: {
-      file: outputPath + "/bundle.d.ts",
-      format: "cjs",
-    },
+    output: { file: outputPath + "/bundle.d.ts" },
     plugins: [dts()],
   },
 ];
