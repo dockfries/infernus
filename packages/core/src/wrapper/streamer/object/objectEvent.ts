@@ -1,7 +1,7 @@
 import type { Player } from "@/controllers/player";
 import type { EditResponseTypesEnum } from "@/enums";
 import type { TCommonCallback } from "@/types";
-import { promisifyCallback } from "@/utils/helperUtils";
+import { defineAsyncCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnDynamicObjectMoved,
@@ -35,7 +35,7 @@ export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {
     OnDynamicObjectMoved((id): number => {
       const o = this.objects.get(id);
       if (!o) return 0;
-      const pFn = promisifyCallback(this, "onMoved", "OnDynamicObjectMoved");
+      const pFn = defineAsyncCallback(this, "onMoved");
       return pFn(o);
     });
     OnPlayerEditDynamicObject(
@@ -54,11 +54,7 @@ export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {
         if (!o) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onPlayerEdit",
-          "OnPlayerEditDynamicObject"
-        );
+        const pFn = defineAsyncCallback(this, "onPlayerEdit");
         return pFn(p, o, response, x, y, z, rx, ry, rz);
       }
     );
@@ -75,11 +71,7 @@ export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {
         if (!p) return 0;
         const o = this.objects.get(objectid);
         if (!o) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onPlayerSelect",
-          "OnPlayerSelectDynamicObject"
-        );
+        const pFn = defineAsyncCallback(this, "onPlayerSelect");
         return pFn(p, o, modelid, x, y, z);
       }
     );
@@ -96,11 +88,7 @@ export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {
         if (!p) return 0;
         const o = this.objects.get(objectid);
         if (!o) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onPlayerShoot",
-          "OnPlayerShootDynamicObject"
-        );
+        const pFn = defineAsyncCallback(this, "onPlayerShoot");
         return pFn(p, weaponid, o, x, y, z);
       }
     );
@@ -108,12 +96,7 @@ export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {
       if (type === StreamerItemTypes.OBJECT) {
         const obj = this.objects.get(item);
         const p = this.players.get(player);
-        if (obj && p)
-          return promisifyCallback(
-            this,
-            "onStreamIn",
-            "Streamer_OnItemStreamIn"
-          )(obj, p);
+        if (obj && p) return defineAsyncCallback(this, "onStreamIn")(obj, p);
       }
       return 1;
     });
@@ -121,12 +104,7 @@ export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {
       if (type === StreamerItemTypes.OBJECT) {
         const obj = this.objects.get(item);
         const p = this.players.get(player);
-        if (obj && p)
-          return promisifyCallback(
-            this,
-            "onStreamOut",
-            "Streamer_OnItemStreamOut"
-          )(obj, p);
+        if (obj && p) return defineAsyncCallback(this, "onStreamOut")(obj, p);
       }
       return 1;
     });

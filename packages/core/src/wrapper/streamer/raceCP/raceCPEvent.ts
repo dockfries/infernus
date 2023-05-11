@@ -1,6 +1,6 @@
 import type { Player } from "@/controllers/player";
 import type { TCommonCallback } from "@/types";
-import { promisifyCallback } from "@/utils/helperUtils";
+import { defineAsyncCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnPlayerEnterDynamicRaceCP,
@@ -35,11 +35,7 @@ export class DynamicRaceCPEvent<P extends Player, R extends DynamicRaceCP> {
         if (!cp) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onPlayerEnter",
-          "OnPlayerEnterDynamicRaceCP"
-        );
+        const pFn = defineAsyncCallback(this, "onPlayerEnter");
         return pFn(p, cp);
       }
     );
@@ -49,11 +45,7 @@ export class DynamicRaceCPEvent<P extends Player, R extends DynamicRaceCP> {
         if (!cp) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onPlayerLeave",
-          "OnPlayerLeaveDynamicRaceCP"
-        );
+        const pFn = defineAsyncCallback(this, "onPlayerLeave");
         return pFn(p, cp);
       }
     );
@@ -61,12 +53,7 @@ export class DynamicRaceCPEvent<P extends Player, R extends DynamicRaceCP> {
       if (type === StreamerItemTypes.RACE_CP) {
         const cp = this.raceCPs.get(item);
         const p = this.players.get(player);
-        if (cp && p)
-          return promisifyCallback(
-            this,
-            "onStreamIn",
-            "Streamer_OnItemStreamIn"
-          )(cp, p);
+        if (cp && p) return defineAsyncCallback(this, "onStreamIn")(cp, p);
       }
       return 1;
     });
@@ -74,12 +61,7 @@ export class DynamicRaceCPEvent<P extends Player, R extends DynamicRaceCP> {
       if (type === StreamerItemTypes.RACE_CP) {
         const cp = this.raceCPs.get(item);
         const p = this.players.get(player);
-        if (cp && p)
-          return promisifyCallback(
-            this,
-            "onStreamOut",
-            "Streamer_OnItemStreamOut"
-          )(cp, p);
+        if (cp && p) return defineAsyncCallback(this, "onStreamOut")(cp, p);
       }
       return 1;
     });

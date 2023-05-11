@@ -8,7 +8,7 @@ import { logger } from "@/logger";
 import {
   OnRconCommand,
   OnRconLoginAttempt,
-  promisifyCallback,
+  defineAsyncCallback,
 } from "@/utils/helperUtils";
 import { defaultCharset } from "./settings";
 import type { TCommonCallback } from "@/types";
@@ -61,11 +61,9 @@ export class GameMode {
       this.initialized = false;
       this.onExit && this.onExit();
     });
-    OnIncomingConnection(promisifyCallback(this, "onIncomingConnection"));
-    OnRconCommand(
-      promisifyCallback(this, "onRconCommand", "OnRconCommandI18n")
-    );
-    OnRconLoginAttempt(promisifyCallback(this, "onRconLoginAttempt"));
+    OnIncomingConnection(defineAsyncCallback(this, "onIncomingConnection"));
+    OnRconCommand(defineAsyncCallback(this, "onRconCommand"));
+    OnRconLoginAttempt(defineAsyncCallback(this, "onRconLoginAttempt"));
   }
 
   isInitialized(): boolean {

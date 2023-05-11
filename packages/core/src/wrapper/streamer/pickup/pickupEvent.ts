@@ -1,6 +1,6 @@
 import type { Player } from "@/controllers/player";
 import type { TCommonCallback } from "@/types";
-import { promisifyCallback } from "@/utils/helperUtils";
+import { defineAsyncCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnPlayerPickUpDynamicPickup,
@@ -34,11 +34,7 @@ export class DynamicPickupEvent<P extends Player, K extends DynamicPickup> {
         if (!k) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onPlayerPickUp",
-          "OnPlayerPickUpDynamicPickup"
-        );
+        const pFn = defineAsyncCallback(this, "onPlayerPickUp");
         return pFn(p, k);
       }
     );
@@ -46,12 +42,7 @@ export class DynamicPickupEvent<P extends Player, K extends DynamicPickup> {
       if (type === StreamerItemTypes.PICKUP) {
         const pk = this.pickups.get(item);
         const p = this.players.get(player);
-        if (pk && p)
-          return promisifyCallback(
-            this,
-            "onStreamIn",
-            "Streamer_OnItemStreamIn"
-          )(pk, p);
+        if (pk && p) return defineAsyncCallback(this, "onStreamIn")(pk, p);
       }
       return 1;
     });
@@ -59,12 +50,7 @@ export class DynamicPickupEvent<P extends Player, K extends DynamicPickup> {
       if (type === StreamerItemTypes.PICKUP) {
         const pk = this.pickups.get(item);
         const p = this.players.get(player);
-        if (pk && p)
-          return promisifyCallback(
-            this,
-            "onStreamOut",
-            "Streamer_OnItemStreamOut"
-          )(pk, p);
+        if (pk && p) return defineAsyncCallback(this, "onStreamOut")(pk, p);
       }
       return 1;
     });

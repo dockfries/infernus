@@ -1,5 +1,5 @@
 import type { TCommonCallback } from "@/types";
-import { promisifyCallback } from "@/utils/helperUtils";
+import { defineAsyncCallback } from "@/utils/helperUtils";
 import {
   OnNPCEnterVehicle,
   OnNPCExitVehicle,
@@ -45,11 +45,7 @@ export class VehicleEvent<P extends Player, V extends Vehicle> {
       if (!v) return 0;
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onDamageStatusUpdate",
-        "OnVehicleDamageStatusUpdate"
-      );
+      const pFn = defineAsyncCallback(this, "onDamageStatusUpdate");
       return pFn(v, p);
     });
     OnVehicleDeath((vehicleid, killerid): number => {
@@ -57,7 +53,7 @@ export class VehicleEvent<P extends Player, V extends Vehicle> {
       if (!v) return 0;
       const k = this.findPlayerById(killerid);
       if (!k) return 0;
-      const pFn = promisifyCallback(this, "onDeath", "OnVehicleDeath");
+      const pFn = defineAsyncCallback(this, "onDeath");
       return pFn(v, k);
     });
     OnVehicleMod((playerid, vehicleid, componentid): number => {
@@ -65,7 +61,7 @@ export class VehicleEvent<P extends Player, V extends Vehicle> {
       if (!p) return 1;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 1;
-      const pFn = promisifyCallback(this, "onMod", "OnVehicleMod");
+      const pFn = defineAsyncCallback(this, "onMod");
       return pFn(p, v, componentid);
     });
     OnVehiclePaintjob((playerid, vehicleid, paintjobid): number => {
@@ -73,7 +69,7 @@ export class VehicleEvent<P extends Player, V extends Vehicle> {
       if (!p) return 1;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 1;
-      const pFn = promisifyCallback(this, "onPaintjob", "OnVehiclePaintjob");
+      const pFn = defineAsyncCallback(this, "onPaintjob");
       return pFn(p, v, paintjobid);
     });
     OnVehicleRespray((playerid, vehicleid, colour1, colour2): number => {
@@ -81,7 +77,7 @@ export class VehicleEvent<P extends Player, V extends Vehicle> {
       if (!p) return 1;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 1;
-      const pFn = promisifyCallback(this, "onRespray", "OnVehicleRespray");
+      const pFn = defineAsyncCallback(this, "onRespray");
       return pFn(p, v, colour1, colour2);
     });
     OnVehicleSirenStateChange((playerid, vehicleid, newstate): number => {
@@ -89,17 +85,13 @@ export class VehicleEvent<P extends Player, V extends Vehicle> {
       if (!p) return 0;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onSirenStateChange",
-        "OnVehicleSirenStateChange"
-      );
+      const pFn = defineAsyncCallback(this, "onSirenStateChange");
       return pFn(p, v, Boolean(newstate));
     });
     OnVehicleSpawn((vehicleid): number => {
       const v = this.findVehicleById(vehicleid);
       if (!v) return 1;
-      const pFn = promisifyCallback(this, "onSpawn", "OnVehicleSpawn");
+      const pFn = defineAsyncCallback(this, "onSpawn");
       return pFn(v);
     });
     OnVehicleStreamIn((vehicleid, forplayerid): number => {
@@ -107,7 +99,7 @@ export class VehicleEvent<P extends Player, V extends Vehicle> {
       if (!v) return 0;
       const p = this.findPlayerById(forplayerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(this, "onStreamIn", "OnVehicleStreamIn");
+      const pFn = defineAsyncCallback(this, "onStreamIn");
       return pFn(v, p);
     });
     OnVehicleStreamOut((vehicleid, forplayerid): number => {
@@ -115,7 +107,7 @@ export class VehicleEvent<P extends Player, V extends Vehicle> {
       if (!v) return 0;
       const p = this.findPlayerById(forplayerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(this, "onStreamOut", "OnVehicleStreamOut");
+      const pFn = defineAsyncCallback(this, "onStreamOut");
       return pFn(v, p);
     });
     OnPlayerEnterVehicle((playerid, vehicleid, ispassenger): number => {
@@ -123,11 +115,7 @@ export class VehicleEvent<P extends Player, V extends Vehicle> {
       if (!p) return 0;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerEnter",
-        "OnPlayerEnterVehicle"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerEnter");
       return pFn(p, v, Boolean(ispassenger));
     });
     OnPlayerExitVehicle((playerid, vehicleid): number => {
@@ -135,26 +123,22 @@ export class VehicleEvent<P extends Player, V extends Vehicle> {
       if (!p) return 0;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerExit",
-        "OnPlayerExitVehicle"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerExit");
       return pFn(p, v);
     });
     OnNPCEnterVehicle((vehicleid, seatid): number => {
       const v = this.findVehicleById(vehicleid);
       if (!v) return 0;
-      const pFn = promisifyCallback(this, "onNpcEnter", "OnNPCEnterVehicle");
+      const pFn = defineAsyncCallback(this, "onNpcEnter");
       return pFn(v, seatid);
     });
-    OnNPCExitVehicle(promisifyCallback(this, "onNpcExit", "OnNPCExitVehicle"));
+    OnNPCExitVehicle(defineAsyncCallback(this, "onNpcExit"));
     OnTrailerUpdate((playerid, vehicleid): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
       const v = this.findVehicleById(vehicleid);
       if (!v) return 0;
-      const pFn = promisifyCallback(this, "onTrailerUpdate");
+      const pFn = defineAsyncCallback(this, "onTrailerUpdate");
       return pFn(p, v);
     });
   }

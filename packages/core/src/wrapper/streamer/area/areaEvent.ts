@@ -1,6 +1,6 @@
 import type { Player } from "@/controllers/player";
 import type { TCommonCallback } from "@/types";
-import { promisifyCallback } from "@/utils/helperUtils";
+import { defineAsyncCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnPlayerEnterDynamicArea,
@@ -37,11 +37,7 @@ export class DynamicAreaEvent<P extends Player, A extends DynamicArea> {
       if (!p) return 0;
       const a = this.areas.get(areaId);
       if (!a) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerEnter",
-        "OnPlayerEnterDynamicArea"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerEnter");
       return pFn(p, a);
     });
     OnPlayerLeaveDynamicArea((playerId, areaId) => {
@@ -49,23 +45,14 @@ export class DynamicAreaEvent<P extends Player, A extends DynamicArea> {
       if (!p) return 0;
       const a = this.areas.get(areaId);
       if (!a) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerLeave",
-        "OnPlayerLeaveDynamicArea"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerLeave");
       return pFn(p, a);
     });
     Streamer.onItemStreamIn((type, item, player) => {
       if (type === StreamerItemTypes.AREA) {
         const a = this.areas.get(item);
         const p = this.players.get(player);
-        if (a && p)
-          return promisifyCallback(
-            this,
-            "onStreamIn",
-            "Streamer_OnItemStreamIn"
-          )(a, p);
+        if (a && p) return defineAsyncCallback(this, "onStreamIn")(a, p);
       }
       return 1;
     });
@@ -73,12 +60,7 @@ export class DynamicAreaEvent<P extends Player, A extends DynamicArea> {
       if (type === StreamerItemTypes.AREA) {
         const a = this.areas.get(item);
         const p = this.players.get(player);
-        if (a && p)
-          return promisifyCallback(
-            this,
-            "onStreamOut",
-            "Streamer_OnItemStreamOut"
-          )(a, p);
+        if (a && p) return defineAsyncCallback(this, "onStreamOut")(a, p);
       }
       return 1;
     });

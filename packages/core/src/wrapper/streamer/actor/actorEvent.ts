@@ -1,7 +1,7 @@
 import type { Player } from "@/controllers/player";
 import type { BodyPartsEnum } from "@/enums";
 import type { TCommonCallback } from "@/types";
-import { promisifyCallback } from "@/utils/helperUtils";
+import { defineAsyncCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnDynamicActorStreamIn,
@@ -34,11 +34,7 @@ export class DynamicActorEvent<P extends Player, A extends DynamicActor> {
       if (!act) return 0;
       const p = this.players.get(forplayerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onStreamIn",
-        "OnDynamicActorStreamIn"
-      );
+      const pFn = defineAsyncCallback(this, "onStreamIn");
       return pFn(act, p);
     });
     OnDynamicActorStreamOut((actorid: number, forplayerid: number): number => {
@@ -46,11 +42,7 @@ export class DynamicActorEvent<P extends Player, A extends DynamicActor> {
       if (!act) return 0;
       const p = this.players.get(forplayerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onStreamOut",
-        "OnDynamicActorStreamOut"
-      );
+      const pFn = defineAsyncCallback(this, "onStreamOut");
       return pFn(act, p);
     });
     OnPlayerGiveDamageDynamicActor(
@@ -65,11 +57,7 @@ export class DynamicActorEvent<P extends Player, A extends DynamicActor> {
         if (!act) return 0;
         const p = this.players.get(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onPlayerGiveDamage",
-          "OnPlayerGiveDamageDynamicActor"
-        );
+        const pFn = defineAsyncCallback(this, "onPlayerGiveDamage");
         return pFn(p, act, amount, weaponid, bodypart);
       }
     );

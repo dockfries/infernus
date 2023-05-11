@@ -2,7 +2,7 @@ import {
   NOOP,
   OnPlayerCommandText,
   OnPlayerText,
-  promisifyCallback,
+  defineAsyncCallback,
 } from "@/utils/helperUtils";
 import * as cbs from "@/wrapper/native/callbacks";
 import { I18n } from "../i18n";
@@ -32,7 +32,7 @@ export class PlayerEvent<P extends Player> {
     cbs.OnPlayerConnect((playerid: number): number => {
       const p = newPlayerFn(playerid);
       this.players.set(playerid, p);
-      const pFn = promisifyCallback(this, "onConnect", "OnPlayerConnect");
+      const pFn = defineAsyncCallback(this, "onConnect");
       return pFn(p);
     });
 
@@ -41,7 +41,7 @@ export class PlayerEvent<P extends Player> {
       if (!p) return 0;
       Dialog.close(p);
       delCCTask(playerid, true);
-      const pFn = promisifyCallback(this, "onDisconnect", "OnPlayerDisconnect");
+      const pFn = defineAsyncCallback(this, "onDisconnect");
       const result = pFn(p, reason);
       this.players.delete(playerid);
       return result;
@@ -50,7 +50,7 @@ export class PlayerEvent<P extends Player> {
     OnPlayerText((playerid: number, byteArr: number[]): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 1;
-      const pFn = promisifyCallback(this, "onText", "OnPlayerTextI18n", 0);
+      const pFn = defineAsyncCallback(this, "onText", 0);
       return pFn(p, I18n.decodeFromBuf(byteArr, p.charset));
     });
 
@@ -72,7 +72,7 @@ export class PlayerEvent<P extends Player> {
       (playerid: number, enterexit: number, interior: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(this, "onEnterExitModShop");
+        const pFn = defineAsyncCallback(this, "onEnterExitModShop");
         return pFn(p, enterexit, interior);
       }
     );
@@ -81,7 +81,7 @@ export class PlayerEvent<P extends Player> {
       (playerid: number, fX: number, fY: number, fZ: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(this, "onClickMap", "OnPlayerClickMap");
+        const pFn = defineAsyncCallback(this, "onClickMap");
         return pFn(p, fX, fY, fZ);
       }
     );
@@ -92,18 +92,14 @@ export class PlayerEvent<P extends Player> {
         if (!p) return 0;
         const cp = this.findPlayerById(clickedplayerid);
         if (!cp) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onClickPlayer",
-          "OnPlayerClickPlayer"
-        );
+        const pFn = defineAsyncCallback(this, "onClickPlayer");
         return pFn(p, cp, source);
       }
     );
 
     cbs.OnPlayerDeath(
       (playerid: number, killerid: number, reason: number): number => {
-        const pFn = promisifyCallback(this, "onDeath", "OnPlayerDeath");
+        const pFn = defineAsyncCallback(this, "onDeath");
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
         if (killerid === enums.InvalidEnum.PLAYER_ID) {
@@ -127,11 +123,7 @@ export class PlayerEvent<P extends Player> {
         if (!p) return 0;
         const d = this.findPlayerById(damageid);
         if (!d) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onGiveDamage",
-          "OnPlayerGiveDamage"
-        );
+        const pFn = defineAsyncCallback(this, "onGiveDamage");
         return pFn(p, d, amount, weaponid, bodypart);
       }
     );
@@ -140,11 +132,7 @@ export class PlayerEvent<P extends Player> {
       (playerid: number, newkeys: number, oldkeys: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onKeyStateChange",
-          "OnPlayerKeyStateChange"
-        );
+        const pFn = defineAsyncCallback(this, "onKeyStateChange");
         return pFn(p, newkeys, oldkeys);
       }
     );
@@ -152,29 +140,21 @@ export class PlayerEvent<P extends Player> {
     cbs.OnPlayerRequestClass((playerid: number, classid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onRequestClass",
-        "OnPlayerRequestClass"
-      );
+      const pFn = defineAsyncCallback(this, "onRequestClass");
       return pFn(p, classid);
     });
 
     cbs.OnPlayerRequestSpawn((playerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onRequestSpawn",
-        "OnPlayerRequestSpawn"
-      );
+      const pFn = defineAsyncCallback(this, "onRequestSpawn");
       return pFn(p);
     });
 
     cbs.OnPlayerSpawn((playerid: number): number => {
       const p = this.findPlayerById(playerid);
       if (!p) return 0;
-      const pFn = promisifyCallback(this, "onSpawn", "OnPlayerSpawn");
+      const pFn = defineAsyncCallback(this, "onSpawn");
       return pFn(p);
     });
 
@@ -184,11 +164,7 @@ export class PlayerEvent<P extends Player> {
         if (!p) return 0;
         if (oldstate === enums.PlayerStateEnum.NONE)
           p.lastUpdateTick = Date.now();
-        const pFn = promisifyCallback(
-          this,
-          "onStateChange",
-          "OnPlayerStateChange"
-        );
+        const pFn = defineAsyncCallback(this, "onStateChange");
         return pFn(p, newstate, oldstate);
       }
     );
@@ -198,7 +174,7 @@ export class PlayerEvent<P extends Player> {
       if (!p) return 0;
       const fp = this.findPlayerById(forplayerid);
       if (!fp) return 0;
-      const pFn = promisifyCallback(this, "onStreamIn", "OnPlayerStreamIn");
+      const pFn = defineAsyncCallback(this, "onStreamIn");
       return pFn(p, fp);
     });
 
@@ -207,7 +183,7 @@ export class PlayerEvent<P extends Player> {
       if (!p) return 0;
       const fp = this.findPlayerById(forplayerid);
       if (!fp) return 0;
-      const pFn = promisifyCallback(this, "onStreamOut", "OnPlayerStreamOut");
+      const pFn = defineAsyncCallback(this, "onStreamOut");
       return pFn(p, fp);
     });
 
@@ -222,20 +198,12 @@ export class PlayerEvent<P extends Player> {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
         if (issuerid === enums.InvalidEnum.PLAYER_ID) {
-          const pFn = promisifyCallback(
-            this,
-            "onTakeDamage",
-            "OnPlayerTakeDamage"
-          );
+          const pFn = defineAsyncCallback(this, "onTakeDamage");
           return pFn(p, issuerid, amount, weaponid, bodypart);
         }
         const i = this.findPlayerById(issuerid);
         if (!i) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onTakeDamage",
-          "OnPlayerTakeDamage"
-        );
+        const pFn = defineAsyncCallback(this, "onTakeDamage");
         return pFn(p, i, amount, weaponid, bodypart);
       }
     );
@@ -256,7 +224,7 @@ export class PlayerEvent<P extends Player> {
         p.lastUpdateTick = now;
         PlayerEvent.fpsHeartbeat(p);
       }
-      const pFn = promisifyCallback(this, "throttleUpdate", "OnPlayerUpdate");
+      const pFn = defineAsyncCallback(this, "throttleUpdate");
       const res = pFn(p);
       if (res === undefined) return 0;
       return res;
@@ -270,11 +238,7 @@ export class PlayerEvent<P extends Player> {
       ): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onInteriorChange",
-          "OnPlayerInteriorChange"
-        );
+        const pFn = defineAsyncCallback(this, "onInteriorChange");
         return pFn(p, newinteriorid, oldinteriorid);
       }
     );
@@ -283,11 +247,7 @@ export class PlayerEvent<P extends Player> {
       (playerid: number, type: number, crc: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onRequestDownload",
-          "OnPlayerRequestDownload"
-        );
+        const pFn = defineAsyncCallback(this, "onRequestDownload");
         return pFn(p, type, crc);
       }
     );
@@ -296,11 +256,7 @@ export class PlayerEvent<P extends Player> {
       (playerid: number, virtualworld: number): number => {
         const p = this.findPlayerById(playerid);
         if (!p) return 0;
-        const pFn = promisifyCallback(
-          this,
-          "onFinishedDownloading",
-          "OnPlayerFinishedDownloading"
-        );
+        const pFn = defineAsyncCallback(this, "onFinishedDownloading");
         return pFn(p, virtualworld);
       }
     );
@@ -380,7 +336,7 @@ export class PlayerEvent<P extends Player> {
 
     if (rFnRes !== undefined) {
       if (rFnRes instanceof Promise) rFnRes = await rFnRes;
-      if (!rFnRes) return NOOP("OnPlayerCommandTextI18n");
+      if (!rFnRes) return NOOP();
     }
 
     // deliberately let the for loop not wait
@@ -395,15 +351,11 @@ export class PlayerEvent<P extends Player> {
         let pFnRes =
           this.onCommandPerformed && this.onCommandPerformed(p, fullCommand);
         if (pFnRes instanceof Promise) pFnRes = await pFnRes;
-        if (!pFnRes) return NOOP("OnPlayerCommandTextI18n");
+        if (!pFnRes) return NOOP();
         return;
       }
 
-      const pFn = promisifyCallback(
-        this,
-        "onCommandError",
-        "OnPlayerCommandTextI18n"
-      );
+      const pFn = defineAsyncCallback(this, "onCommandError");
       pFn(p, fullCommand, ICmdErrInfo.rejected);
     });
   };

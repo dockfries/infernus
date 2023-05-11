@@ -1,6 +1,6 @@
 import { InvalidEnum } from "@/enums";
 import type { TCommonCallback } from "@/types";
-import { promisifyCallback } from "@/utils/helperUtils";
+import { defineAsyncCallback } from "@/utils/helperUtils";
 import {
   OnGameModeExit,
   OnPlayerExitedMenu,
@@ -34,11 +34,7 @@ export class MenuEvent<P extends Player, M extends Menu> {
       if (!menu) return 0;
       const player = this.findPlayerById(playerid);
       if (!player) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerExited",
-        "OnPlayerExitedMenu"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerExited");
       return pFn(player, menu);
     });
     OnPlayerSelectedMenuRow((playerid: number, row: number): number => {
@@ -46,11 +42,7 @@ export class MenuEvent<P extends Player, M extends Menu> {
       if (!menu) return 0;
       const player = this.findPlayerById(playerid);
       if (!player) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerSelectedRow",
-        "OnPlayerSelectedMenuRow"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerSelectedRow");
       return pFn(player, menu, row);
     });
   }

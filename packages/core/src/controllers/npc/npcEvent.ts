@@ -1,5 +1,5 @@
 import type { TCommonCallback } from "@/types";
-import { OnClientMessage, promisifyCallback } from "@/utils/helperUtils";
+import { OnClientMessage, defineAsyncCallback } from "@/utils/helperUtils";
 import {
   OnNpcConnect,
   OnNpcDisconnect,
@@ -10,12 +10,12 @@ import {
 
 export class NpcEvent {
   constructor() {
-    OnNpcConnect(promisifyCallback(this, "onConnect", "OnNpcConnect"));
-    OnNpcDisconnect(promisifyCallback(this, "onDisconnect", "OnNpcDisconnect"));
-    OnNPCModeInit(promisifyCallback(this, "onModeInit", "OnNPCModeInit"));
-    OnNPCModeExit(promisifyCallback(this, "onModeExit", "OnNPCModeExit"));
-    OnNPCSpawn(promisifyCallback(this, "onSpawn", "OnNPCSpawn"));
-    OnClientMessage(promisifyCallback(this, "onClientMessage"));
+    OnNpcConnect(defineAsyncCallback(this, "onConnect"));
+    OnNpcDisconnect(defineAsyncCallback(this, "onDisconnect"));
+    OnNPCModeInit(defineAsyncCallback(this, "onModeInit"));
+    OnNPCModeExit(defineAsyncCallback(this, "onModeExit"));
+    OnNPCSpawn(defineAsyncCallback(this, "onSpawn"));
+    OnClientMessage(defineAsyncCallback(this, "onClientMessage"));
   }
   onConnect?(myplayerid: number): TCommonCallback;
   onDisconnect?(reason: string): TCommonCallback;

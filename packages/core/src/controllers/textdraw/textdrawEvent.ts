@@ -1,7 +1,7 @@
 import { InvalidEnum } from "@/enums";
 import type { ICommonTextDrawKey } from "@/interfaces";
 import type { TCommonCallback } from "@/types";
-import { promisifyCallback } from "@/utils/helperUtils";
+import { defineAsyncCallback } from "@/utils/helperUtils";
 import {
   OnGameModeExit,
   OnPlayerClickPlayerTextDraw,
@@ -35,22 +35,14 @@ export class TextDrawEvent<P extends Player, T extends TextDraw<P>> {
       const p = this.players.get(playerid);
       if (!p) return 0;
       const t = this.textDraws.get({ id: clickedid, global: true });
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerClick",
-        "OnPlayerClickTextDraw"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerClick");
       return pFn(p, t || InvalidEnum.TEXT_DRAW);
     });
     OnPlayerClickPlayerTextDraw((playerid, clickedid): number => {
       const p = this.players.get(playerid);
       if (!p) return 0;
       const t = this.textDraws.get({ id: clickedid, global: false });
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerClick",
-        "OnPlayerClickPlayerTextDraw"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerClick");
       return pFn(p, t || InvalidEnum.TEXT_DRAW);
     });
   }

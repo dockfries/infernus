@@ -4,14 +4,12 @@ import { LimitsEnum } from "@/enums";
 import { I18n } from "@/controllers/i18n";
 import type { Player } from "@/controllers/player";
 import { defaultCharset } from "@/controllers/gamemode/settings";
-import { camelCase, upperFirst } from "lodash";
 
 type processTuple = [string, string | number[]];
 
 export const processMsg = (msg: string, charset: string): processTuple => {
-  const res: string | number[] = ["utf8", "utf-8"].includes(charset)
-    ? msg
-    : I18n.encodeToBuf(msg, charset);
+  const isUtf8 = charset.replace("-", "") === "utf8";
+  const res = isUtf8 ? msg : I18n.encodeToBuf(msg, charset);
   const flag = res instanceof Array ? "a" : "s";
   return [flag, res];
 };
@@ -364,40 +362,30 @@ export const GetDynamicObjectMaterialText = (
   };
 };
 
-export const promisifyCallback = (
-  obj: any,
-  fnName: string,
-  naiveCbName?: string,
-  retNum = 1 // should return handled number or boolean
+/**
+ * The callback return value of the promise is processed to block default events
+ * @param context Usually the current context point is passed in
+ * @param callback Callbacks are invoked in context
+ * @param blockDefaultRetNum The return value of the call that blocks the default event
+ * @returns A function that can be used as a callback
+ */
+export const defineAsyncCallback = (
+  context: any,
+  callback: string,
+  blockDefaultRetNum = 1
 ) => {
   return (...args: any) => {
-    if (!obj[fnName]) return retNum;
+    if (!context[callback]) return blockDefaultRetNum;
 
-    const result = obj[fnName](...args);
+    const result = context[callback](...args);
 
-    /**
-     * This does not meet our expectations. When we use async or promise to return a result in a callback, it will not trigger the result we return asynchronously until the next time the same callback is triggered.
-     * One possible solution: pass the callback name and the result of the asynchronous wait through the CallRemoteFunction, determine if it was triggered manually before we receive the callback to the class itself, and return the result of the asynchronous wait directly if it was.
-     * CallRemoteFunction("OnPlayerText", "is", playerid, text);
-     */
-    if (result instanceof Promise) {
-      result.then((value) => {
-        let parseNaiveCbName = naiveCbName;
-        if (!parseNaiveCbName) parseNaiveCbName = upperFirst(camelCase(fnName));
-        const promiseFn = () => {
-          samp.removeEventListener(parseNaiveCbName as string, promiseFn);
-          return value;
-        };
-        samp.addEventListener(parseNaiveCbName, promiseFn);
-      });
-      return retNum;
-    }
-    if (result === undefined) return retNum;
+    if (result instanceof Promise) return blockDefaultRetNum;
+    if (result === undefined) return blockDefaultRetNum;
     return Number(result);
   };
 };
 
-export const NOOP = (cbName: string, unhandled = 0) =>
-  promisifyCallback({ NOOP: () => unhandled }, "NOOP", cbName);
+export const NOOP = (unhandled = 0) =>
+  defineAsyncCallback({ NOOP: () => unhandled }, "NOOP");
 
 export const { callNative, callNativeFloat } = samp;

@@ -1,6 +1,6 @@
 import type { ICommonGangZoneKey } from "@/interfaces";
 import type { TCommonCallback } from "@/types";
-import { promisifyCallback } from "@/utils/helperUtils";
+import { defineAsyncCallback } from "@/utils/helperUtils";
 import { OnGameModeExit } from "@/wrapper/native/callbacks";
 import {
   OnPlayerEnterGangZone,
@@ -38,11 +38,7 @@ export class GangZoneEvent<P extends Player, G extends GangZone<P>> {
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: true });
       if (!g) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerEnter",
-        "OnPlayerEnterGangZone"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerEnter");
       return pFn(p, g);
     });
 
@@ -51,11 +47,7 @@ export class GangZoneEvent<P extends Player, G extends GangZone<P>> {
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: false });
       if (!g) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerEnter",
-        "OnPlayerEnterPlayerGangZone"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerEnter");
       return pFn(p, g);
     });
 
@@ -64,11 +56,7 @@ export class GangZoneEvent<P extends Player, G extends GangZone<P>> {
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: true });
       if (!g) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerLeave",
-        "OnPlayerLeaveGangZone"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerLeave");
       return pFn(p, g);
     });
 
@@ -77,11 +65,7 @@ export class GangZoneEvent<P extends Player, G extends GangZone<P>> {
       if (!p) return 0;
       const g = this.gangZones.get({ id: gangZoneId, global: false });
       if (!g) return 0;
-      const pFn = promisifyCallback(
-        this,
-        "onPlayerLeave",
-        "OnPlayerLeavePlayerGangZone"
-      );
+      const pFn = defineAsyncCallback(this, "onPlayerLeave");
       return pFn(p, g);
     });
   }
