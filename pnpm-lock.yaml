@@ -109,7 +109,7 @@ importers:
   packages/filterscript:
     devDependencies:
       "@infernus/core":
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       "@rollup/plugin-json":
         specifier: ^6.0.0
@@ -125,11 +125,7 @@ importers:
         specifier: workspace:^
         version: link:../core
 
-  packages/streamer:
-    devDependencies:
-      "@infernus/core":
-        specifier: workspace:^
-        version: link:../core
+  packages/streamer: {}
 
   packages/wrapper: {}
 

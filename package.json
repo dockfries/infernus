@@ -7,12 +7,11 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.{ts,json}": [
-      "prettier --write"
-    ],
     "*.ts": [
-      "eslint",
-      "prettier --parser=typescript --write"
+      "eslint"
+    ],
+    "*.{ts,json,yaml}": [
+      "prettier --write"
     ]
   },
   "devDependencies": {

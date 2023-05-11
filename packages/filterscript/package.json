@@ -1,6 +1,6 @@
 {
   "name": "@infernus/fs",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A collection of all built-in filterscripts",
   "keywords": [
     "filterscript",
@@ -32,11 +32,11 @@
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
-    "@infernus/core": "workspace:^",
+    "@infernus/core": "workspace:*",
     "@rollup/plugin-json": "^6.0.0"
   },
   "peerDependencies": {
-    "@infernus/core": "workspace:^"
+    "@infernus/core": "workspace:*"
   },
   "prepare": "pnpm build"
 }
