@@ -58,15 +58,15 @@ export const TextDrawGetPos = (textdrawid: number): ITextDrawCommonSize => {
 };
 
 export const TextDrawGetColour = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetColour", "i", textdrawid);
+  return samp.callNative("TextDrawGetColor", "i", textdrawid);
 };
 
 export const TextDrawGetBoxColour = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetBoxColour", "i", textdrawid);
+  return samp.callNative("TextDrawGetBoxColor", "i", textdrawid);
 };
 
 export const TextDrawGetBackgroundColour = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetBackgroundColour", "i", textdrawid);
+  return samp.callNative("TextDrawGetBackgroundColor", "i", textdrawid);
 };
 
 export const TextDrawGetShadow = (textdrawid: number): number => {
@@ -109,7 +109,7 @@ export const TextDrawGetPreviewRot = (textdrawid: number): ITextDrawRot => {
 
 export const TextDrawGetPreviewVehicleColours = (textdrawid: number) => {
   const [color1, color2]: number[] = samp.callNative(
-    "TextDrawGetPreviewVehicleColours",
+    "TextDrawGetPreviewVehCol",
     "iII",
     textdrawid
   );

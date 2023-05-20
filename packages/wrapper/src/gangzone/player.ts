@@ -86,7 +86,7 @@ export const PlayerGangZoneGetColour = (
   playerid: number,
   zoneid: number
 ): number => {
-  return samp.callNative("PlayerGangZoneGetColour", "ii", playerid, zoneid);
+  return samp.callNative("PlayerGangZoneGetColor", "ii", playerid, zoneid);
 };
 
 export const PlayerGangZoneGetFlashColour = (

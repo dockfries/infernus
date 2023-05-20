@@ -81,7 +81,7 @@ export const PlayerTextDrawGetColour = (
   playerid: number,
   textdrawid: number
 ): number => {
-  return samp.callNative("PlayerTextDrawGetColour", "ii", playerid, textdrawid);
+  return samp.callNative("PlayerTextDrawGetColor", "ii", playerid, textdrawid);
 };
 
 export const PlayerTextDrawGetBoxColour = (
@@ -204,7 +204,7 @@ export const PlayerTextDrawGetPreviewVehicleColours = (
   textdrawid: number
 ) => {
   const [color1, color2]: number[] = samp.callNative(
-    "PlayerTextDrawGetPreviewVehicleColours",
+    "PlayerTextDrawGetPreviewVehCol",
     "iiII",
     playerid,
     textdrawid

@@ -1,4 +1,6 @@
 export enum CarModTypeEnum {
+  UNKNOWN_CARMODTYPE = -1,
+  CARMODTYPE_NONE = -1,
   SPOILER,
   HOOD,
   ROOF,

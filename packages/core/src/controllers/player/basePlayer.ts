@@ -975,6 +975,6 @@ export class Player {
     return ArePlayerWeaponsAllowed(this.id);
   }
   gpci(charset?: string) {
-    return playerFunc.GPCI(this.id, charset);
+    return playerFunc.gpci(this.id, charset);
   }
 }

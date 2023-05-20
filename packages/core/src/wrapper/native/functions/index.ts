@@ -521,7 +521,7 @@ export const TextDrawColour = (
   text: number,
   colour: string | number
 ): boolean => {
-  return Boolean(callNative("TextDrawColour", "ii", text, rgba(colour)));
+  return Boolean(callNative("TextDrawColor", "ii", text, rgba(colour)));
 };
 
 export const TextDrawUseBox = (text: number, use: boolean): number => {
@@ -532,7 +532,7 @@ export const TextDrawBoxColour = (
   text: number,
   colour: string | number
 ): boolean => {
-  return Boolean(callNative("TextDrawBoxColour", "ii", text, rgba(colour)));
+  return Boolean(callNative("TextDrawBoxColor", "ii", text, rgba(colour)));
 };
 
 export const TextDrawSetShadow = (text: number, size: number): number => {
@@ -548,7 +548,7 @@ export const TextDrawBackgroundColour = (
   colour: string | number
 ): boolean => {
   return Boolean(
-    callNative("TextDrawBackgroundColour", "ii", text, rgba(colour))
+    callNative("TextDrawBackgroundColor", "ii", text, rgba(colour))
   );
 };
 
@@ -622,7 +622,7 @@ export const TextDrawSetPreviewVehicleColours = (
 ): boolean => {
   return Boolean(
     callNative(
-      "TextDrawSetPreviewVehicleColours",
+      "TextDrawSetPreviewVehCol",
       "iii",
       text,
       rgba(colour1),
@@ -831,9 +831,9 @@ export const UpdatePlayer3DTextLabelText = (
   );
 };
 
-export const GPCI = (playerid: number, charset = defaultCharset): string => {
+export const gpci = (playerid: number, charset = defaultCharset): string => {
   return I18n.decodeFromBuf(
-    I18n.getValidStr(callNative("GPCI", "iAi", playerid, 41)),
+    I18n.getValidStr(callNative("gpci", "iAi", playerid, 41)),
     charset
   );
 };
@@ -1441,7 +1441,7 @@ export const SetPlayerObjectMaterialText = (
 };
 
 export const SetObjectsDefaultCameraCollision = (disable: boolean): boolean => {
-  return Boolean(callNative("SetObjectsDefaultCameraCollision", "i", disable));
+  return Boolean(callNative("SetObjectsDefaultCameraCol", "i", disable));
 };
 
 export const SetSpawnInfo = (
@@ -1958,7 +1958,7 @@ export const PlayerTextDrawColour = (
   colour: string | number
 ): boolean => {
   return Boolean(
-    callNative("PlayerTextDrawColour", "iii", playerid, text, rgba(colour))
+    callNative("PlayerTextDrawColor", "iii", playerid, text, rgba(colour))
   );
 };
 
@@ -1976,7 +1976,7 @@ export const PlayerTextDrawBoxColour = (
   colour: string | number
 ): boolean => {
   return Boolean(
-    callNative("PlayerTextDrawBoxColour", "iii", playerid, text, rgba(colour))
+    callNative("PlayerTextDrawBoxColor", "iii", playerid, text, rgba(colour))
   );
 };
 
@@ -2100,7 +2100,7 @@ export const PlayerTextDrawSetPreviewVehicleColours = (
 ): boolean => {
   return Boolean(
     callNative(
-      "PlayerTextDrawSetPreviewVehicleColours",
+      "PlayerTextDrawSetPreviewVehCol",
       "iiii",
       playerid,
       text,
@@ -2873,7 +2873,7 @@ export const ChangeVehicleColours = (
   colour2: string | number
 ): number => {
   return callNative(
-    "ChangeVehicleColours",
+    "ChangeVehicleColor",
     "iii",
     vehicleid,
     rgba(colour1),
@@ -2933,9 +2933,7 @@ export const GetVehicleComponentInSlot = (
   return callNative("GetVehicleComponentInSlot", "ii", vehicleid, slot);
 };
 
-export const GetVehicleComponentType = (
-  component: number
-): CarModTypeEnum | -1 => {
+export const GetVehicleComponentType = (component: number): CarModTypeEnum => {
   return callNative("GetVehicleComponentType", "i", component);
 };
 
