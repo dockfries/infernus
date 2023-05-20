@@ -1,0 +1,26 @@
+{
+  "projectName": "infernus",
+  "projectOwner": "dockfries",
+  "repoType": "github",
+  "contributors": [
+    {
+      "login": "dockfries",
+      "name": "Carl You",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34953768?v=4",
+      "profile": "https://github.com/dockfries",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Andonrai",
+      "name": "Andonrai",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45472916?v=4",
+      "profile": "https://github.com/Andonrai",
+      "contributions": [
+        "bug"
+      ]
+    }
+  ],
+  "linkToUsage": false
+}

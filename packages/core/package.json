@@ -31,8 +31,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@infernus/streamer": "workspace:*",
-    "@infernus/wrapper": "workspace:*",
+    "@infernus/streamer": "workspace:^",
+    "@infernus/wrapper": "workspace:^",
     "iconv-lite": "^0.6.3",
     "lodash": "^4.17.21",
     "pino": "~8.6.1",
