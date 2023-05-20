@@ -4,15 +4,15 @@ export interface IOnFootSync {
   lrKey: number;
   udKey: number;
   keys: number;
-  position: Vector3;
-  quaternion: Vector4;
+  position: Vector3<number>;
+  quaternion: Vector4<number>;
   health: number;
   armour: number;
   additionalKey: number;
   weaponId: number;
   specialAction: number;
-  velocity: Vector3;
-  surfingOffsets: Vector3;
+  velocity: Vector3<number>;
+  surfingOffsets: Vector3<number>;
   surfingVehicleId: number;
   animationId: number;
   animationFlags: number;
@@ -23,9 +23,9 @@ export interface IInCarSync {
   lrKey: number;
   udKey: number;
   keys: number;
-  quaternion: Vector4;
-  position: Vector3;
-  velocity: Vector3;
+  quaternion: Vector4<number>;
+  position: Vector3<number>;
+  velocity: Vector3<number>;
   vehicleHealth: number;
   playerHealth: number;
   armour: number;
@@ -39,10 +39,10 @@ export interface IInCarSync {
 
 export interface ITrailerSync {
   trailerId: number;
-  position: Vector3;
-  quaternion: Vector4;
-  velocity: Vector3;
-  angularVelocity: Vector3;
+  position: Vector3<number>;
+  quaternion: Vector4<number>;
+  velocity: Vector3<number>;
+  angularVelocity: Vector3<number>;
 }
 
 export interface IPassengerSync {
@@ -56,24 +56,24 @@ export interface IPassengerSync {
   lrKey: number;
   udKey: number;
   keys: number;
-  position: Vector3;
+  position: Vector3<number>;
 }
 
 export interface IUnoccupiedSync {
   vehicleId: number;
   seatId: number;
-  roll: Vector3;
-  direction: Vector3;
-  position: Vector3;
-  velocity: Vector3;
-  angularVelocity: Vector3;
+  roll: Vector3<number>;
+  direction: Vector3<number>;
+  position: Vector3<number>;
+  velocity: Vector3<number>;
+  angularVelocity: Vector3<number>;
   vehicleHealth: number;
 }
 
 export interface IAimSync {
   camMode: number;
-  camFrontVec: Vector3;
-  camPos: Vector3;
+  camFrontVec: Vector3<number>;
+  camPos: Vector3<number>;
   aimZ: number;
   camZoom: number;
   weaponState: number;
@@ -83,9 +83,9 @@ export interface IAimSync {
 export interface IBulletSync {
   hitType: number;
   hitId: number;
-  origin: Vector3;
-  hitPos: Vector3;
-  offsets: Vector3;
+  origin: Vector3<number>;
+  hitPos: Vector3<number>;
+  offsets: Vector3<number>;
   weaponId: number;
 }
 
@@ -93,7 +93,7 @@ export interface ISpectatingSync {
   lrKey: number;
   udKey: number;
   keys: number;
-  position: Vector3;
+  position: Vector3<number>;
 }
 
 export interface IMarkersSync {

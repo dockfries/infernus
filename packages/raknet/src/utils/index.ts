@@ -1,9 +1,8 @@
+import type { BitStream } from "@/bitStream";
 import { PR_ValueType } from "@/enums";
-import { BS_ReadValue } from "@/functions/natives";
-import type { BitStream } from "@/types";
 import iconv from "iconv-lite";
 
-export const BS_ConvertToByteString = (
+export const convertToByteString = (
   value: string | number[],
   length: number,
   charset = "utf-8"
@@ -15,16 +14,20 @@ export const BS_ConvertToByteString = (
   return Array.from(finalValue).slice(0, length);
 };
 
-export const BS_ReadStringX = (
+export const readStringX = (
   bs: BitStream,
   size: number,
   isCompressed = false,
   charset = "utf-8"
 ) => {
-  const byteArr = BS_ReadValue(bs, [
+  const byteArr = bs.readValue([
     isCompressed ? PR_ValueType.CSTRING : PR_ValueType.STRING,
     size,
   ]) as number[];
   const validByteArr = byteArr.slice(0, byteArr.indexOf(0));
   return iconv.decode(Buffer.from(validByteArr), charset);
+};
+
+export const patchRakNetNative = (...args: any[]) => {
+  return samp.callPublic("RakNetNative", `a`, args);
 };
