@@ -15,11 +15,12 @@ export const syncRead: MethodDecorator = (
   target: any,
   propertyKey: string | symbol
 ) => {
+  const rawFunc = target[propertyKey];
   target[propertyKey] = (...args: any) => {
     target.bs.resetReadPointer();
     const packetId = target.bs.readBits(8);
     if (packetId !== target.prototype._packetId) return null;
-    return target[propertyKey](...args);
+    return rawFunc(...args);
   };
 };
 
@@ -27,9 +28,10 @@ export const syncWrite: MethodDecorator = (
   target: any,
   propertyKey: string | symbol
 ) => {
+  const rawFunc = target[propertyKey];
   target[propertyKey] = (...args: any) => {
     target.bs.resetWritePointer();
     target.bs.writeBits(8, target.prototype._packetId);
-    target[propertyKey](...args);
+    rawFunc(...args);
   };
 };

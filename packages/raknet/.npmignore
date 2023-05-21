@@ -5,8 +5,9 @@ src/
 .vscode
 .gitignore
 .git
-rollup.config.js
 tsconfig.json
 pnpm-lock.yaml
 LICENSE
 .husky
+.eslintrc
+rollup.config.mjs
