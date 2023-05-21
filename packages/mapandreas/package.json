@@ -1,0 +1,40 @@
+{
+  "name": "@infernus/mapandreas",
+  "version": "0.1.1",
+  "description": "A wrapper of the popular SA-MP MapAndreas plugin for samp-node.",
+  "keywords": [
+    "samp",
+    "sa:mp",
+    "sa-mp",
+    "omp",
+    "open.mp",
+    "pawn",
+    "wrapper",
+    "mapandreas"
+  ],
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/mapandreas#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/infernus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/infernus.git"
+  },
+  "license": "MIT",
+  "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs"
+    }
+  },
+  "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
+  "types": "dist/bundle.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepublishOnly": "pnpm -w build"
+  }
+}
