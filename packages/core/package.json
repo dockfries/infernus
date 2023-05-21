@@ -1,6 +1,6 @@
 {
   "name": "@infernus/core",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "NodeJS library for Scripting Open Multiplayer",
   "keywords": [
     "omp",
@@ -25,6 +25,9 @@
   "main": "dist/bundle.js",
   "module": "dist/bundle.mjs",
   "types": "dist/bundle.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "npm run lint && rollup -c",
     "lint": "eslint --fix ./src",

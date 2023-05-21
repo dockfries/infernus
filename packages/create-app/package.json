@@ -1,11 +1,7 @@
 {
   "name": "@infernus/create-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Used to quickly generate an infernus-starter template",
-  "files": [
-    "dist",
-    "LICENSE"
-  ],
   "keywords": [
     "omp",
     "init",
@@ -18,6 +14,9 @@
   "bin": {
     "infernus": "dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "rollup -c",
     "prepublishOnly": "pnpm build"

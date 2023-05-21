@@ -1,6 +1,6 @@
 {
   "name": "@infernus/fs",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "A collection of all built-in filterscripts",
   "keywords": [
     "filterscript",
@@ -26,6 +26,9 @@
   "main": "dist/bundle.js",
   "module": "dist/bundle.mjs",
   "types": "dist/bundle.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm lint && rollup -c",
     "lint": "eslint --fix ./src",

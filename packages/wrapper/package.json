@@ -30,6 +30,9 @@
   "main": "dist/bundle.js",
   "module": "dist/bundle.mjs",
   "types": "dist/bundle.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm lint && rollup -c",
     "lint": "eslint --fix ./src",
