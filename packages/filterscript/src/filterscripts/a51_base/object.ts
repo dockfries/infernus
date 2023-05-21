@@ -1,6 +1,10 @@
-import { GateStatusEnum } from "@/filterscripts/a51_base/enums/gate";
-import type { IA51Options, ICommonOptions, IGateList } from "@/interfaces";
-import { log, PlaySoundForPlayersInRange } from "@/utils/gl_common";
+import { GateStatusEnum } from "filterscript/filterscripts/a51_base/enums/gate";
+import type {
+  IA51Options,
+  ICommonOptions,
+  IGateList,
+} from "filterscript/interfaces";
+import { log, PlaySoundForPlayersInRange } from "filterscript/utils/gl_common";
 import type { Player, I18n, PlayerEvent } from "@infernus/core";
 import {
   GameText,

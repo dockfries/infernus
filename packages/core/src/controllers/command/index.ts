@@ -1,4 +1,4 @@
-import type { TEventFunc, TEventName } from "@/types";
+import type { TEventFunc, TEventName } from "core/types";
 import type { PlayerEvent } from "../player";
 
 // This is an event bus for distributing instructions entered by the user.

@@ -1,4 +1,4 @@
-import type { Vector3, Vector4 } from "@/types";
+import type { Vector3, Vector4 } from "raknet/types";
 
 export interface IOnFootSync {
   lrKey: number;

@@ -1,5 +1,5 @@
-import { DialogStylesEnum } from "@/enums";
-import { OnDialogResponse, ShowPlayerDialog } from "@/utils/helperUtils";
+import { DialogStylesEnum } from "core/enums";
+import { OnDialogResponse, ShowPlayerDialog } from "core/utils/helperUtils";
 import { HidePlayerDialog } from "@infernus/wrapper";
 import type { Player } from "../../player/basePlayer";
 import { I18n } from "../../i18n";
@@ -8,7 +8,7 @@ import type {
   IDialogFuncQueue,
   IDialogResRaw,
   IDialogResResult,
-} from "@/interfaces";
+} from "core/interfaces";
 
 OnDialogResponse(
   (
@@ -20,6 +20,7 @@ OnDialogResponse(
   ): number => {
     const callback = Dialog.waitingQueue.get(playerid);
     if (!callback) return 0;
+    if (callback.showId !== dialogid) return 1;
     // bug: does not trigger resolve of promise
     // fix: it only works if you put it in an event loop
     setTimeout(() => callback.resolve({ response, listitem, inputbuf }));

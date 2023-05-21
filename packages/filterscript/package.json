@@ -30,16 +30,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm lint && rollup -c",
-    "lint": "eslint --fix ./src",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm -w build"
   },
   "devDependencies": {
-    "@infernus/core": "workspace:^",
-    "@rollup/plugin-json": "^6.0.0"
+    "@infernus/core": "workspace:^"
   },
   "peerDependencies": {
     "@infernus/core": "workspace:^"
-  },
-  "prepare": "pnpm build"
+  }
 }

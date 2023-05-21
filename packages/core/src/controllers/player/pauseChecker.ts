@@ -1,8 +1,8 @@
-import { PlayerStateEnum } from "@/enums";
+import { PlayerStateEnum } from "core/enums";
 import {
   OnPlayerConnect,
   OnPlayerDisconnect,
-} from "@/wrapper/native/callbacks";
+} from "core/wrapper/native/callbacks";
 import { Player } from "./basePlayer";
 import { playerBus, playerHooks } from "./playerBus";
 

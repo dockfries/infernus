@@ -1,4 +1,4 @@
-import type { PacketIdList } from "@/enums";
+import type { PacketIdList } from "raknet/enums";
 
 export const sync = (value: PacketIdList): ClassDecorator => {
   return (target: any) => {

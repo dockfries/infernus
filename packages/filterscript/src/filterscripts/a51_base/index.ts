@@ -17,7 +17,7 @@
  * 2 3D Text Labels = 1 on each gate
  */
 
-import type { IA51Options } from "@/interfaces";
+import type { IA51Options } from "filterscript/interfaces";
 
 import type { IFilterScript } from "@infernus/core";
 import { GameText, I18n } from "@infernus/core";

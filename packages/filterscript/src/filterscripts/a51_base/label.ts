@@ -1,6 +1,6 @@
-import { ColorEnum } from "@/filterscripts/a51_base/enums/color";
-import type { IA51Options, IGateList } from "@/interfaces";
-import { log } from "@/utils/gl_common";
+import { ColorEnum } from "filterscript/filterscripts/a51_base/enums/color";
+import type { IA51Options, IGateList } from "filterscript/interfaces";
+import { log } from "filterscript/utils/gl_common";
 import type { Player, I18n } from "@infernus/core";
 import { Dynamic3DTextLabel, Dynamic3dTextLabelEvent } from "@infernus/core";
 import { gateInfo } from "./object";

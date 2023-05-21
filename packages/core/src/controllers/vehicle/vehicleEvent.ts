@@ -1,5 +1,5 @@
-import type { TCommonCallback } from "@/types";
-import { defineAsyncCallback } from "@/utils/helperUtils";
+import type { TCommonCallback } from "core/types";
+import { defineAsyncCallback } from "core/utils/helperUtils";
 import {
   OnNPCEnterVehicle,
   OnNPCExitVehicle,
@@ -16,7 +16,7 @@ import {
   OnVehicleStreamOut,
   OnTrailerUpdate,
   OnGameModeExit,
-} from "@/wrapper/native/callbacks";
+} from "core/wrapper/native/callbacks";
 import type { Player } from "../player";
 import type { Vehicle } from "./baseVehicle";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";

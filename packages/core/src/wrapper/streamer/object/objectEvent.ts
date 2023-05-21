@@ -1,8 +1,8 @@
-import type { Player } from "@/controllers/player";
-import type { EditResponseTypesEnum } from "@/enums";
-import type { TCommonCallback } from "@/types";
-import { defineAsyncCallback } from "@/utils/helperUtils";
-import { OnGameModeExit } from "@/wrapper/native/callbacks";
+import type { Player } from "core/controllers/player";
+import type { EditResponseTypesEnum } from "core/enums";
+import type { TCommonCallback } from "core/types";
+import { defineAsyncCallback } from "core/utils/helperUtils";
+import { OnGameModeExit } from "core/wrapper/native/callbacks";
 import {
   OnDynamicObjectMoved,
   OnPlayerEditDynamicObject,

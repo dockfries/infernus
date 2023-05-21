@@ -1,6 +1,6 @@
-import type { RecordTypesEnum } from "@/enums";
-import { ERecordStatus } from "@/enums";
-import { logger } from "@/logger";
+import type { RecordTypesEnum } from "core/enums";
+import { ERecordStatus } from "core/enums";
+import { logger } from "core/logger";
 import {
   ConnectNPC,
   StartRecordingPlayback,
@@ -9,7 +9,7 @@ import {
   ResumeRecordingPlayback,
   StartRecordingPlayerData,
   StopRecordingPlayerData,
-} from "@/wrapper/native/functions";
+} from "core/wrapper/native/functions";
 import type { Player } from "../player";
 
 export class NpcFunc {

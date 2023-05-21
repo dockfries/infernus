@@ -1,7 +1,7 @@
-import type { BitStream } from "@/bitStream";
-import { sync, syncRead, syncWrite } from "@/decorators";
-import { PacketIdList, PR_ValueType } from "@/enums";
-import type { IAimSync } from "@/interfaces";
+import type { BitStream } from "raknet/bitStream";
+import { sync, syncRead, syncWrite } from "raknet/decorators";
+import { PacketIdList, PR_ValueType } from "raknet/enums";
+import type { IAimSync } from "raknet/interfaces";
 
 @sync(PacketIdList.AIM_SYNC)
 export class AimSync {

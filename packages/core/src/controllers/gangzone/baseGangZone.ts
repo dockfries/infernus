@@ -1,8 +1,8 @@
-import { LimitsEnum } from "@/enums";
-import type { IGangZone } from "@/interfaces";
-import { logger } from "@/logger";
-import { rgba } from "@/utils/colorUtils";
-import * as fns from "@/wrapper/native/functions";
+import { LimitsEnum } from "core/enums";
+import type { IGangZone } from "core/interfaces";
+import { logger } from "core/logger";
+import { rgba } from "core/utils/colorUtils";
+import * as fns from "core/wrapper/native/functions";
 import type { GangZonePos } from "@infernus/wrapper";
 import {
   CreatePlayerGangZone,

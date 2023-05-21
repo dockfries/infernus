@@ -1,4 +1,4 @@
-import type { BitStream } from "@/bitStream";
+import type { BitStream } from "raknet/bitStream";
 
 export type BitStreamRaw = number;
 export type Vector3<T> = [T, T, T];

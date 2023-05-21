@@ -1,5 +1,5 @@
-import type { ConnectionStatusEnum } from "@/enums";
-import * as fns from "@/wrapper/native/functions";
+import type { ConnectionStatusEnum } from "core/enums";
+import * as fns from "core/wrapper/native/functions";
 import type { Player } from "../player";
 
 export class NetStats {

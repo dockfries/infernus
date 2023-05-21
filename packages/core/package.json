@@ -29,9 +29,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "npm run lint && rollup -c",
-    "lint": "eslint --fix ./src",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm -w build"
   },
   "dependencies": {
     "@infernus/streamer": "workspace:^",

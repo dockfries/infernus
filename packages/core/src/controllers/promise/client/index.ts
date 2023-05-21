@@ -1,5 +1,5 @@
-import type { IClientFuncQueue } from "@/interfaces";
-import { OnClientCheckResponse } from "@/wrapper/native/callbacks";
+import type { IClientFuncQueue } from "core/interfaces";
+import { OnClientCheckResponse } from "core/wrapper/native/callbacks";
 
 export const ccWaitingQueue: Map<number, IClientFuncQueue> = new Map();
 

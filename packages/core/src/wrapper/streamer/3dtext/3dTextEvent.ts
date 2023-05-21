@@ -1,12 +1,12 @@
-import type { Player } from "@/controllers/player";
-import type { TCommonCallback } from "@/types";
+import type { Player } from "core/controllers/player";
+import type { TCommonCallback } from "core/types";
 import { StreamerItemTypes } from "@infernus/streamer";
 import { Streamer } from "../common";
 import type { Dynamic3DTextLabel } from "./base3DText";
 
 import { _3dTextBus, _3dTextHooks } from "./3dTextBus";
-import { OnGameModeExit } from "@/wrapper/native/callbacks";
-import { defineAsyncCallback } from "@/utils/helperUtils";
+import { OnGameModeExit } from "core/wrapper/native/callbacks";
+import { defineAsyncCallback } from "core/utils/helperUtils";
 
 export class Dynamic3dTextLabelEvent<
   P extends Player,

@@ -1,6 +1,6 @@
-import type { IFilterScript } from "@/interfaces";
-import { logger } from "@/logger";
-import { OnGameModeExit, OnGameModeInit } from "@/wrapper/native/callbacks";
+import type { IFilterScript } from "core/interfaces";
+import { logger } from "core/logger";
+import { OnGameModeExit, OnGameModeInit } from "core/wrapper/native/callbacks";
 
 const preInstallScripts: Array<IFilterScript> = [];
 const installedScripts: Array<IFilterScript> = [];

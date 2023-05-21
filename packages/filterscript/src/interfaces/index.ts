@@ -1,4 +1,4 @@
-import type { GateStatusEnum } from "@/filterscripts/a51_base/enums/gate";
+import type { GateStatusEnum } from "filterscript/filterscripts/a51_base/enums/gate";
 import type {
   DynamicObject,
   Player,

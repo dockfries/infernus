@@ -1,4 +1,4 @@
-import type { Player } from "@/controllers/player";
+import type { Player } from "core/controllers/player";
 import type { MapIconStyles } from "@infernus/streamer";
 import type { DialogStylesEnum } from "../enums";
 import type { TDynamicAreaTypes, TStreamerExtendable } from "../types";

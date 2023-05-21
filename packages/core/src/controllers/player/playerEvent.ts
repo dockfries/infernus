@@ -3,18 +3,18 @@ import {
   OnPlayerCommandText,
   OnPlayerText,
   defineAsyncCallback,
-} from "@/utils/helperUtils";
-import * as cbs from "@/wrapper/native/callbacks";
+} from "core/utils/helperUtils";
+import * as cbs from "core/wrapper/native/callbacks";
 import { I18n } from "../i18n";
 import { Player } from "./basePlayer";
 import { CmdBus } from "../command";
-import type { ICmdErr } from "@/interfaces";
-import * as enums from "@/enums";
+import type { ICmdErr } from "core/interfaces";
+import * as enums from "core/enums";
 import { throttle } from "lodash";
 import { Dialog } from "../promise/dialog";
 import { delCCTask } from "../promise/client";
 import { playerBus, playerHooks } from "./playerBus";
-import type { TCommonCallback, TEventFunc, TEventName } from "@/types";
+import type { TCommonCallback, TEventFunc, TEventName } from "core/types";
 
 // Each instance can be called to callbacks, so you can split the logic.
 

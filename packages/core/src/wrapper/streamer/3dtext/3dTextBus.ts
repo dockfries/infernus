@@ -1,4 +1,4 @@
-import { EventBus } from "@/utils/eventBus";
+import { EventBus } from "core/utils/eventBus";
 
 export enum _3dTextHooks {
   created = "On3dTextCreate",

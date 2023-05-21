@@ -1,4 +1,4 @@
-import type { IAnimateInfo } from "@/interfaces";
+import type { IAnimateInfo } from "core/interfaces";
 
 const animateLib = new Map<string, Array<IAnimateInfo>>([
   ["AIRPORT", [{ n: "thrw_barl_thrw", d: 2.0 }]],

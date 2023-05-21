@@ -1,14 +1,14 @@
-import { InvalidEnum } from "@/enums";
-import type { IDynamicObject } from "@/interfaces";
-import type { Vehicle } from "@/controllers/vehicle";
-import type { Player } from "@/controllers/player";
-import { logger } from "@/logger";
+import { InvalidEnum } from "core/enums";
+import type { IDynamicObject } from "core/interfaces";
+import type { Vehicle } from "core/controllers/vehicle";
+import type { Player } from "core/controllers/player";
+import { logger } from "core/logger";
 import { objectBus, objectHooks } from "./objectBus";
-import { rgba } from "@/utils/colorUtils";
+import { rgba } from "core/utils/colorUtils";
 import {
   GetDynamicObjectMaterialText,
   SetDynamicObjectMaterialText,
-} from "@/utils/helperUtils";
+} from "core/utils/helperUtils";
 import {
   AttachCameraToDynamicObject,
   AttachDynamicObjectToObject,
@@ -38,7 +38,7 @@ import {
   StreamerItemTypes,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { defaultCharset } from "@/controllers/gamemode/settings";
+import { defaultCharset } from "core/controllers/gamemode/settings";
 
 export class DynamicObject {
   private sourceInfo: IDynamicObject;

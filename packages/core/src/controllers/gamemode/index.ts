@@ -2,16 +2,16 @@ import {
   OnGameModeExit,
   OnGameModeInit,
   OnIncomingConnection,
-} from "@/wrapper/native/callbacks";
-import * as fns from "@/wrapper/native/functions";
-import { logger } from "@/logger";
+} from "core/wrapper/native/callbacks";
+import * as fns from "core/wrapper/native/functions";
+import { logger } from "core/logger";
 import {
   OnRconCommand,
   OnRconLoginAttempt,
   defineAsyncCallback,
-} from "@/utils/helperUtils";
+} from "core/utils/helperUtils";
 import { defaultCharset } from "./settings";
-import type { TCommonCallback } from "@/types";
+import type { TCommonCallback } from "core/types";
 import {
   loadUseScript,
   reloadUseScript,
@@ -41,7 +41,7 @@ import {
   AreAllAnimationsEnabled,
   EnableAllAnimations,
 } from "@infernus/wrapper";
-import type { IFilterScript } from "@/interfaces";
+import type { IFilterScript } from "core/interfaces";
 
 export class GameMode {
   static charset = defaultCharset;

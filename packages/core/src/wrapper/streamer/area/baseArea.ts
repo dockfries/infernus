@@ -1,8 +1,8 @@
-import { logger } from "@/logger";
-import { InvalidEnum } from "@/enums";
-import type { Player } from "@/controllers/player";
-import type { Vehicle } from "@/controllers/vehicle";
-import type { TDynamicArea, TDynamicAreaTypes } from "@/types";
+import { logger } from "core/logger";
+import { InvalidEnum } from "core/enums";
+import type { Player } from "core/controllers/player";
+import type { Vehicle } from "core/controllers/vehicle";
+import type { TDynamicArea, TDynamicAreaTypes } from "core/types";
 import { areaBus, areaHooks } from "./areaBus";
 import type { StreamerAreaTypes } from "@infernus/streamer";
 import {

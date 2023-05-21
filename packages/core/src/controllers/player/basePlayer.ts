@@ -1,4 +1,4 @@
-import type { IClientResRaw } from "@/interfaces";
+import type { IClientResRaw } from "core/interfaces";
 import {
   BanEx,
   GetPlayerName,
@@ -7,9 +7,9 @@ import {
   SendPlayerMessageToAll,
   SendPlayerMessageToPlayer,
   SetPlayerName,
-} from "@/utils/helperUtils";
-import * as playerFunc from "@/wrapper/native/functions";
-import { logger } from "@/logger";
+} from "core/utils/helperUtils";
+import * as playerFunc from "core/wrapper/native/functions";
+import { logger } from "core/logger";
 import type {
   BoneIdsEnum,
   CameraModesEnum,
@@ -17,7 +17,7 @@ import type {
   WeaponEnum,
   WeaponSkillsEnum,
   WeaponStatesEnum,
-} from "@/enums";
+} from "core/enums";
 import {
   CameraCutStylesEnum,
   DamageDeathReasonEnum,
@@ -25,11 +25,11 @@ import {
   PlayerStateEnum,
   SpecialActionsEnum,
   SpectateModesEnum,
-} from "@/enums";
+} from "core/enums";
 import type { Vehicle } from "../vehicle";
-import type { TPos } from "@/types";
+import type { TPos } from "core/types";
 
-import { getAnimateDurationByLibName } from "@/utils/animateUtils";
+import { getAnimateDurationByLibName } from "core/utils/animateUtils";
 import type { DynamicObject } from "../../wrapper/streamer";
 import { ccWaitingQueue, delCCTask } from "../promise/client";
 import {

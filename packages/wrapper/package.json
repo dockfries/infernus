@@ -34,9 +34,6 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm lint && rollup -c",
-    "lint": "eslint --fix ./src",
-    "prepublishOnly": "pnpm build"
-  },
-  "prepare": "pnpm build"
+    "prepublishOnly": "pnpm -w build"
+  }
 }

@@ -35,9 +35,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm lint && rollup -c",
-    "lint": "eslint --fix ./src",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm -w build"
   },
   "dependencies": {
     "iconv-lite": "^0.6.3"
@@ -47,6 +45,5 @@
   },
   "peerDependencies": {
     "@infernus/core": "workspace:^"
-  },
-  "prepare": "pnpm build"
+  }
 }

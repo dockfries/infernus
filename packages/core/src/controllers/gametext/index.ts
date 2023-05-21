@@ -4,7 +4,7 @@ import {
   HasGameText,
   HideGameTextForAll,
   HideGameTextForPlayer,
-} from "@/wrapper/native/functions";
+} from "core/wrapper/native/functions";
 import type { Player } from "../player";
 
 export class GameText<P extends Player = Player> {

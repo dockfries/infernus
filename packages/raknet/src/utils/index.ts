@@ -1,5 +1,5 @@
-import type { BitStream } from "@/bitStream";
-import { PR_ValueType } from "@/enums";
+import type { BitStream } from "raknet/bitStream";
+import { PR_ValueType } from "raknet/enums";
 import iconv from "iconv-lite";
 
 export const convertToByteString = (

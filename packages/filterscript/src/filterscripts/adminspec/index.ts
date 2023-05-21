@@ -3,7 +3,7 @@
   kye 2007
 */
 
-import type { IAdminSpecOptions } from "@/interfaces";
+import type { IAdminSpecOptions } from "filterscript/interfaces";
 import type { Vehicle, IFilterScript } from "@infernus/core";
 import {
   Player,

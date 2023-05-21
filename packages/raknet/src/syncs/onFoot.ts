@@ -1,7 +1,7 @@
-import { BitStream } from "@/bitStream";
-import { sync, syncRead, syncWrite } from "@/decorators";
-import { PacketIdList, PR_ValueType } from "@/enums";
-import type { IOnFootSync } from "@/interfaces";
+import { BitStream } from "raknet/bitStream";
+import { sync, syncRead, syncWrite } from "raknet/decorators";
+import { PacketIdList, PR_ValueType } from "raknet/enums";
+import type { IOnFootSync } from "raknet/interfaces";
 
 @sync(PacketIdList.ONFOOT_SYNC)
 export class OnFootSync {

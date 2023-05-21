@@ -2,7 +2,7 @@
 
 // removed db_, timer functions, for better maintainability you should use the node library
 
-import { rgba } from "@/utils/colorUtils";
+import { rgba } from "core/utils/colorUtils";
 import type {
   BoneIdsEnum,
   CameraCutStylesEnum,
@@ -22,10 +22,10 @@ import type {
   WeaponEnum,
   WeaponSkillsEnum,
   WeaponStatesEnum,
-} from "@/enums";
-import { callNative, callNativeFloat } from "@/utils/helperUtils";
-import { I18n } from "@/controllers/i18n";
-import { defaultCharset } from "@/controllers/gamemode/settings";
+} from "core/enums";
+import { callNative, callNativeFloat } from "core/utils/helperUtils";
+import { I18n } from "core/controllers/i18n";
+import { defaultCharset } from "core/controllers/gamemode/settings";
 
 export const SendDeathMessage = (
   killer: number,

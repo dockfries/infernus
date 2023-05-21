@@ -1,14 +1,14 @@
-import type { CarModTypeEnum, VehicleModelInfoEnum } from "@/enums";
-import { LimitsEnum } from "@/enums";
-import type { TPos } from "@/types";
-import type { IVehicle } from "@/interfaces";
+import type { CarModTypeEnum, VehicleModelInfoEnum } from "core/enums";
+import { LimitsEnum } from "core/enums";
+import type { TPos } from "core/types";
+import type { IVehicle } from "core/interfaces";
 import type { Player } from "../player";
-import { logger } from "@/logger";
-import { isValidPaintJob, isValidVehComponent } from "@/utils/vehicleUtils";
+import { logger } from "core/logger";
+import { isValidPaintJob, isValidVehComponent } from "core/utils/vehicleUtils";
 import { vehicleBus, vehicleHooks } from "./vehicleBus";
-import * as vehFunc from "@/wrapper/native/functions";
+import * as vehFunc from "core/wrapper/native/functions";
 
-import { rgba } from "@/utils/colorUtils";
+import { rgba } from "core/utils/colorUtils";
 import {
   GetVehicleMatrix,
   GetVehicleTrainSpeed,

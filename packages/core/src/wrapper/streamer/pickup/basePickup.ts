@@ -1,5 +1,5 @@
-import type { IDynamicPickup } from "@/interfaces";
-import { logger } from "@/logger";
+import type { IDynamicPickup } from "core/interfaces";
+import { logger } from "core/logger";
 import {
   CreateDynamicPickup,
   CreateDynamicPickupEx,

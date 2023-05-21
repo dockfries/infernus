@@ -1,4 +1,4 @@
-import type { ICommonOptions } from "@/interfaces";
+import type { ICommonOptions } from "filterscript/interfaces";
 import type { Player, KeysEnum } from "@infernus/core";
 
 export const IsKeyJustDown = (

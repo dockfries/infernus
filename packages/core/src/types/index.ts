@@ -5,7 +5,7 @@ import type {
   IDynamicRectangle,
   IDynamicCuboid,
   IDynamicPolygon,
-} from "@/interfaces";
+} from "core/interfaces";
 
 export type TEventName = string | string[];
 export type TEventFunc<EventInstance, P> = (

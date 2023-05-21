@@ -1,5 +1,5 @@
-import { BitStream } from "@/bitStream";
-import type { BitStreamRaw, packetCallback, rpcCallback } from "@/types";
+import { BitStream } from "raknet/bitStream";
+import type { BitStreamRaw, packetCallback, rpcCallback } from "raknet/types";
 
 // raw callback
 const incomingPackets: packetCallback[] = [];

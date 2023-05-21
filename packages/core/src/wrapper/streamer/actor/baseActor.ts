@@ -1,7 +1,7 @@
-import type { Player } from "@/controllers/player";
-import type { IDynamicActor } from "@/interfaces";
-import { logger } from "@/logger";
-import { getAnimateDurationByLibName } from "@/utils/animateUtils";
+import type { Player } from "core/controllers/player";
+import type { IDynamicActor } from "core/interfaces";
+import { logger } from "core/logger";
+import { getAnimateDurationByLibName } from "core/utils/animateUtils";
 import {
   GetActorSkin,
   SetActorSkin,

@@ -1,12 +1,12 @@
-import type { TCommonCallback } from "@/types";
-import { OnClientMessage, defineAsyncCallback } from "@/utils/helperUtils";
+import type { TCommonCallback } from "core/types";
+import { OnClientMessage, defineAsyncCallback } from "core/utils/helperUtils";
 import {
   OnNpcConnect,
   OnNpcDisconnect,
   OnNPCModeExit,
   OnNPCModeInit,
   OnNPCSpawn,
-} from "@/wrapper/native/callbacks";
+} from "core/wrapper/native/callbacks";
 
 export class NpcEvent {
   constructor() {

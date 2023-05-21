@@ -1,11 +1,12 @@
 {
-  "name": "infernus",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
+    "build": "node ./scripts/build.js",
+    "contributors": "all-contributors generate",
     "lint-staged": "lint-staged",
-    "prepare": "husky install",
-    "contributors": "all-contributors generate"
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.ts": [
@@ -15,8 +16,17 @@
       "prettier --write"
     ]
   },
+  "dependencies": {
+    "@infernus/core": "workspace:^",
+    "@infernus/streamer": "workspace:^",
+    "@infernus/wrapper": "workspace:^",
+    "iconv-lite": "^0.6.3",
+    "lodash": "^4.17.21",
+    "pino": "~8.6.1"
+  },
   "devDependencies": {
     "@infernus/eslint-config": "workspace:^",
+    "@rollup/plugin-json": "^6.0.0",
     "@sa-mp/node": "^0.2.0",
     "@types/node": "^18.16.13",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
@@ -24,7 +34,9 @@
     "all-contributors-cli": "^6.25.1",
     "esbuild": "^0.15.18",
     "eslint": "^8.41.0",
+    "execa": "^7.1.1",
     "husky": "^8.0.3",
+    "inquirer": "^9.1.5",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8",
     "rollup": "^3.22.0",

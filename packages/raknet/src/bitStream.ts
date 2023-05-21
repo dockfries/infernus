@@ -4,7 +4,11 @@ import {
   PR_PacketReliability,
   RakNetNatives,
 } from "./enums";
-import { readStringX, convertToByteString, patchRakNetNative } from "@/utils";
+import {
+  readStringX,
+  convertToByteString,
+  patchRakNetNative,
+} from "raknet/utils";
 import type { BitStreamRaw, Vector3, Vector4 } from "./types";
 import { PR_MAX_WEAPON_SLOTS } from "./defines";
 import type { IRconCommand, IStatsUpdate, IWeaponsUpdate } from "./interfaces";

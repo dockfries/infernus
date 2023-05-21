@@ -1,14 +1,14 @@
-import { defaultCharset } from "@/controllers/gamemode/settings";
-import { InvalidEnum } from "@/enums";
-import type { IDynamic3DTextLabel } from "@/interfaces";
-import { logger } from "@/logger";
-import { rgba } from "@/utils/colorUtils";
+import { defaultCharset } from "core/controllers/gamemode/settings";
+import { InvalidEnum } from "core/enums";
+import type { IDynamic3DTextLabel } from "core/interfaces";
+import { logger } from "core/logger";
+import { rgba } from "core/utils/colorUtils";
 import {
   CreateDynamic3DTextLabel,
   CreateDynamic3DTextLabelEx,
   GetDynamic3DTextLabelText,
   UpdateDynamic3DTextLabelText,
-} from "@/utils/helperUtils";
+} from "core/utils/helperUtils";
 import {
   DestroyDynamic3DTextLabel,
   IsValidDynamic3DTextLabel,

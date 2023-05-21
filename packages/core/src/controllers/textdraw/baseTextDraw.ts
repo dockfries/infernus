@@ -1,8 +1,8 @@
-import type { TextDrawAlignEnum } from "@/enums";
-import { LimitsEnum, TextDrawFontsEnum } from "@/enums";
-import type { ITextDraw } from "@/interfaces";
-import { logger } from "@/logger";
-import * as fns from "@/wrapper/native/functions";
+import type { TextDrawAlignEnum } from "core/enums";
+import { LimitsEnum, TextDrawFontsEnum } from "core/enums";
+import type { ITextDraw } from "core/interfaces";
+import { logger } from "core/logger";
+import * as fns from "core/wrapper/native/functions";
 import {
   IsValidPlayer3DTextLabel,
   IsValidTextDraw,

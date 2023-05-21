@@ -1,9 +1,9 @@
 import { rgba } from "./colorUtils";
-import type { IDialog } from "@/interfaces";
-import { LimitsEnum } from "@/enums";
-import { I18n } from "@/controllers/i18n";
-import type { Player } from "@/controllers/player";
-import { defaultCharset } from "@/controllers/gamemode/settings";
+import type { IDialog } from "core/interfaces";
+import { LimitsEnum } from "core/enums";
+import { I18n } from "core/controllers/i18n";
+import type { Player } from "core/controllers/player";
+import { defaultCharset } from "core/controllers/gamemode/settings";
 
 type processTuple = [string, string | number[]];
 

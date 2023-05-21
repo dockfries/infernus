@@ -1,6 +1,6 @@
-import type { IDynamicMapIcon } from "@/interfaces";
-import { logger } from "@/logger";
-import { rgba } from "@/utils/colorUtils";
+import type { IDynamicMapIcon } from "core/interfaces";
+import { logger } from "core/logger";
+import { rgba } from "core/utils/colorUtils";
 
 import {
   IsValidDynamicMapIcon,

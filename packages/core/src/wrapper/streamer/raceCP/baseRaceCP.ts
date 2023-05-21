@@ -1,7 +1,7 @@
-import type { Player } from "@/controllers/player";
-import type { IDynamicRaceCp } from "@/interfaces";
+import type { Player } from "core/controllers/player";
+import type { IDynamicRaceCp } from "core/interfaces";
 
-import { logger } from "@/logger";
+import { logger } from "core/logger";
 import {
   CreateDynamicRaceCP,
   CreateDynamicRaceCPEx,

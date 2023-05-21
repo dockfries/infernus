@@ -1,12 +1,12 @@
-import { InvalidEnum } from "@/enums";
-import type { ICommonTextDrawKey } from "@/interfaces";
-import type { TCommonCallback } from "@/types";
-import { defineAsyncCallback } from "@/utils/helperUtils";
+import { InvalidEnum } from "core/enums";
+import type { ICommonTextDrawKey } from "core/interfaces";
+import type { TCommonCallback } from "core/types";
+import { defineAsyncCallback } from "core/utils/helperUtils";
 import {
   OnGameModeExit,
   OnPlayerClickPlayerTextDraw,
   OnPlayerClickTextDraw,
-} from "@/wrapper/native/callbacks";
+} from "core/wrapper/native/callbacks";
 import type { Player } from "../player";
 import type { TextDraw } from "./baseTextDraw";
 import { textDrawBus, textDrawHooks } from "./textdrawBus";

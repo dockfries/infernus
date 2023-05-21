@@ -1,12 +1,12 @@
-import { InvalidEnum } from "@/enums";
-import type { TCommonCallback } from "@/types";
-import { defineAsyncCallback } from "@/utils/helperUtils";
+import { InvalidEnum } from "core/enums";
+import type { TCommonCallback } from "core/types";
+import { defineAsyncCallback } from "core/utils/helperUtils";
 import {
   OnGameModeExit,
   OnPlayerExitedMenu,
   OnPlayerSelectedMenuRow,
-} from "@/wrapper/native/callbacks";
-import { GetPlayerMenu } from "@/wrapper/native/functions";
+} from "core/wrapper/native/callbacks";
+import { GetPlayerMenu } from "core/wrapper/native/functions";
 import type { Player } from "../player";
 import type { Menu } from "./baseMenu";
 import { menuBus, menuHooks } from "./menuBus";

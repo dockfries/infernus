@@ -1,7 +1,7 @@
-import type { ICommonGangZoneKey } from "@/interfaces";
-import type { TCommonCallback } from "@/types";
-import { defineAsyncCallback } from "@/utils/helperUtils";
-import { OnGameModeExit } from "@/wrapper/native/callbacks";
+import type { ICommonGangZoneKey } from "core/interfaces";
+import type { TCommonCallback } from "core/types";
+import { defineAsyncCallback } from "core/utils/helperUtils";
+import { OnGameModeExit } from "core/wrapper/native/callbacks";
 import {
   OnPlayerEnterGangZone,
   OnPlayerEnterPlayerGangZone,
