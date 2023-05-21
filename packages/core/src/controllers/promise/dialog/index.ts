@@ -9,14 +9,6 @@ import type {
   IDialogResRaw,
   IDialogResResult,
 } from "@/interfaces";
-import { logger } from "@/logger";
-
-/* You don't need to define the dialog id, 
-  but you need to pay attention to the fact that you shouldn't repeatedly new the dialog in the function, 
-  instead you should call the open method.
-  
-  If you need to change the value dynamically, you should do it by setter method
-*/
 
 OnDialogResponse(
   (
@@ -35,10 +27,14 @@ OnDialogResponse(
   }
 );
 
+/**
+ * You don't need to care about the dialog id.
+ * If you need to change the value dynamically, you should do it by setter method.
+ */
 export class Dialog<T extends Player> {
-  private id: number;
-  private static CREATED_ID = -1;
-  private static MAX_DIALOGID = 32767;
+  private id = -1;
+  private static showingIds: number[] = [];
+  private static max_dialogId = 32767;
   private dialog: IDialog;
   static waitingQueue: Map<number, IDialogFuncQueue> = new Map();
 
@@ -51,13 +47,7 @@ export class Dialog<T extends Player> {
       button2: "",
     }
   ) {
-    if (Dialog.CREATED_ID < Dialog.MAX_DIALOGID) {
-      Dialog.CREATED_ID++;
-    } else {
-      logger.warn("[Dialog]: The maximum number of dialogs is reached");
-    }
     this.dialog = dialog;
-    this.id = Dialog.CREATED_ID;
   }
 
   // #region
@@ -106,18 +96,34 @@ export class Dialog<T extends Player> {
     // should stop promise waiting
     const task = Dialog.waitingQueue.get(player.id);
     if (!task) return false;
-    if (reject)
+    if (reject) {
       task.reject(
         "[Dialog]: player timeout does not respond or second request show dialog"
       );
+    }
     Dialog.waitingQueue.delete(player.id);
+    const index = Dialog.showingIds.indexOf(task.showId);
+    if (index > -1) Dialog.showingIds.splice(index, 1);
     return true;
   }
 
   show(player: T) {
     return new Promise<IDialogResRaw>((resolve, reject) => {
       Dialog.close(player);
-      Dialog.waitingQueue.set(player.id, { resolve, reject });
+
+      while (this.id === -1 || Dialog.showingIds.includes(this.id)) {
+        if (Dialog.showingIds.length === Dialog.max_dialogId) break;
+        this.id = Math.floor(Math.random() * (Dialog.max_dialogId + 1));
+      }
+
+      if (this.id === -1) {
+        reject("[Dialog]: The maximum number of dialogs is reached");
+        return;
+      }
+
+      Dialog.showingIds.push(this.id);
+      Dialog.waitingQueue.set(player.id, { resolve, reject, showId: this.id });
+
       ShowPlayerDialog(player, this.id, this.dialog);
     })
       .then((DialogRes: IDialogResRaw) => {

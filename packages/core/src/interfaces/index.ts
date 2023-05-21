@@ -67,6 +67,7 @@ export interface ITextDraw<P extends Player> {
 }
 
 export interface IDialogFuncQueue {
+  showId: number;
   resolve: (value: IDialogResRaw | PromiseLike<IDialogResRaw>) => void;
   reject: (reason: string) => void;
 }
