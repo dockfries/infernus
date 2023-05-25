@@ -1,16 +1,18 @@
-import type { BitStream } from "raknet/bitStream";
-import { sync, syncRead, syncWrite } from "raknet/decorators";
-import { PacketIdList, PR_ValueType } from "raknet/enums";
-import type { IMarkersSync } from "raknet/interfaces";
+import { BitStream } from "raknet/bitStream";
+import { syncId, syncReader, syncWriter } from "raknet/decorators";
+import { PacketIdList, PacketRpcValueType } from "raknet/enums";
+import type { IMarkersSync, IPacketListSync } from "raknet/interfaces";
 import type { Vector3 } from "raknet/types";
 import { LimitsEnum } from "@infernus/core";
 
-@sync(PacketIdList.MARKERS_SYNC)
-export class MarkersSync {
-  constructor(private bs: BitStream) {}
+@syncId(PacketIdList.MarkersSync)
+export class MarkersSync extends BitStream implements IPacketListSync {
+  constructor(private bs: BitStream) {
+    super(bs);
+  }
 
-  @syncRead
-  read() {
+  @syncReader
+  readSync() {
     const data: Partial<IMarkersSync> = {};
 
     data.playerPositionX = [];
@@ -42,9 +44,9 @@ export class MarkersSync {
         data.playerIsActive[playerId] = true;
 
         const [x, y, z] = this.bs.readValue(
-          PR_ValueType.INT16,
-          PR_ValueType.INT16,
-          PR_ValueType.INT16
+          PacketRpcValueType.Int16,
+          PacketRpcValueType.Int16,
+          PacketRpcValueType.Int16
         ) as Vector3<number>;
 
         data.playerPositionX[playerId] = x;
@@ -55,8 +57,8 @@ export class MarkersSync {
     return data as IMarkersSync | null;
   }
 
-  @syncWrite
-  write(data: IMarkersSync) {
+  @syncWriter
+  writeSync(data: IMarkersSync) {
     this.bs.writeInt32(data.numberOfPlayers);
 
     for (let i = 0; i < LimitsEnum.MAX_PLAYERS; i++) {
@@ -65,15 +67,15 @@ export class MarkersSync {
       }
 
       this.bs.writeValue(
-        [PR_ValueType.UINT16, i],
-        [PR_ValueType.CBOOL, data.playerIsActive[i]]
+        [PacketRpcValueType.UInt16, i],
+        [PacketRpcValueType.CBool, data.playerIsActive[i]]
       );
 
       if (data.playerIsActive[i]) {
         this.bs.writeValue(
-          [PR_ValueType.INT16, data.playerPositionX[i]],
-          [PR_ValueType.INT16, data.playerPositionY[i]],
-          [PR_ValueType.INT16, data.playerPositionZ[i]]
+          [PacketRpcValueType.Int16, data.playerPositionX[i]],
+          [PacketRpcValueType.Int16, data.playerPositionY[i]],
+          [PacketRpcValueType.Int16, data.playerPositionZ[i]]
         );
       }
     }

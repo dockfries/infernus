@@ -1,6 +1,6 @@
 import type { PacketIdList } from "raknet/enums";
 
-export const sync = (value: PacketIdList): ClassDecorator => {
+export const syncId = (value: PacketIdList): ClassDecorator => {
   return (target: any) => {
     Object.defineProperty(target.prototype, "_packetId", {
       configurable: false,
@@ -11,7 +11,7 @@ export const sync = (value: PacketIdList): ClassDecorator => {
   };
 };
 
-export const syncRead: MethodDecorator = (
+export const syncReader: MethodDecorator = (
   target: any,
   propertyKey: string | symbol
 ) => {
@@ -24,7 +24,7 @@ export const syncRead: MethodDecorator = (
   };
 };
 
-export const syncWrite: MethodDecorator = (
+export const syncWriter: MethodDecorator = (
   target: any,
   propertyKey: string | symbol
 ) => {

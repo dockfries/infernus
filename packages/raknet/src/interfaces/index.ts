@@ -1,3 +1,4 @@
+import type { BulletHitTypesEnum, WeaponEnum } from "core/enums";
 import type { Vector3, Vector4 } from "raknet/types";
 
 export interface IOnFootSync {
@@ -9,7 +10,7 @@ export interface IOnFootSync {
   health: number;
   armour: number;
   additionalKey: number;
-  weaponId: number;
+  weaponId: WeaponEnum;
   specialAction: number;
   velocity: Vector3<number>;
   surfingOffsets: Vector3<number>;
@@ -30,7 +31,7 @@ export interface IInCarSync {
   playerHealth: number;
   armour: number;
   additionalKey: number;
-  weaponId: number;
+  weaponId: WeaponEnum;
   sirenState: number;
   landingGearState: number;
   trailerId: number;
@@ -50,7 +51,7 @@ export interface IPassengerSync {
   driveBy: number;
   seatId: number;
   additionalKey: number;
-  weaponId: number;
+  weaponId: WeaponEnum;
   playerHealth: number;
   playerArmour: number;
   lrKey: number;
@@ -81,12 +82,13 @@ export interface IAimSync {
 }
 
 export interface IBulletSync {
-  hitType: number;
+  fromId: number;
+  hitType: BulletHitTypesEnum;
   hitId: number;
   origin: Vector3<number>;
   hitPos: Vector3<number>;
   offsets: Vector3<number>;
-  weaponId: number;
+  weaponId: WeaponEnum;
 }
 
 export interface ISpectatingSync {
@@ -122,4 +124,9 @@ export interface IStatsUpdate {
 
 export interface IRconCommand {
   command: number[];
+}
+
+export interface IPacketListSync {
+  readSync(...args: any): void;
+  writeSync(...args: any): void;
 }

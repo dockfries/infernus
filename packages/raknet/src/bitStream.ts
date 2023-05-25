@@ -1,7 +1,7 @@
-import { PR_ValueType } from "./enums";
+import { PacketRpcValueType } from "./enums";
 import {
-  PR_PacketPriority,
-  PR_PacketReliability,
+  PacketRpcPriority,
+  PacketRpcReliability,
   RakNetNatives,
 } from "./enums";
 import {
@@ -12,26 +12,32 @@ import {
 import type { BitStreamRaw, Vector3, Vector4 } from "./types";
 import { PR_MAX_WEAPON_SLOTS } from "./defines";
 import type { IRconCommand, IStatsUpdate, IWeaponsUpdate } from "./interfaces";
-import type { Player, Vehicle } from "@infernus/core";
+import type { Vehicle } from "@infernus/core";
+import type { Player } from "@infernus/core";
 import { InvalidEnum } from "@infernus/core";
 
 export class BitStream {
-  private id: BitStreamRaw;
+  public readonly id: BitStreamRaw;
 
-  constructor(from_id?: BitStreamRaw) {
-    this.id = from_id || patchRakNetNative(RakNetNatives.NEW);
+  constructor(from?: BitStreamRaw | BitStream) {
+    if (!from) this.id = patchRakNetNative(RakNetNatives.New);
+    else if (from instanceof BitStream) {
+      this.id = from.id;
+    } else {
+      this.id = from;
+    }
   }
 
   // natives
 
   sendPacket(
     playerId: number,
-    priority = PR_PacketPriority.HIGH,
-    reliability = PR_PacketReliability.RELIABLE_ORDERED,
+    priority = PacketRpcPriority.High,
+    reliability = PacketRpcReliability.ReliableOrdered,
     orderingChannel = 0
   ) {
     patchRakNetNative(
-      RakNetNatives.SEND_PACKET,
+      RakNetNatives.SendPacket,
       this.id,
       playerId,
       priority,
@@ -43,12 +49,12 @@ export class BitStream {
   sendRPC(
     playerId: number,
     rpcId: number,
-    priority = PR_PacketPriority.HIGH,
-    reliability = PR_PacketReliability.RELIABLE_ORDERED,
+    priority = PacketRpcPriority.High,
+    reliability = PacketRpcReliability.ReliableOrdered,
     orderingChannel = 0
   ) {
     patchRakNetNative(
-      RakNetNatives.SEND_RPC,
+      RakNetNatives.SendRpc,
       this.id,
       playerId,
       rpcId,
@@ -59,12 +65,12 @@ export class BitStream {
   }
 
   emulateIncomingPacket(playerId: number) {
-    patchRakNetNative(RakNetNatives.EMULATE_INCOMING_PACKET, this.id, playerId);
+    patchRakNetNative(RakNetNatives.EmulateIncomingPacket, this.id, playerId);
   }
 
   emulateIncomingRPC(playerId: number, rpcId: number) {
     patchRakNetNative(
-      RakNetNatives.EMULATE_INCOMING_RPC,
+      RakNetNatives.EmulateIncomingRpc,
       this.id,
       playerId,
       rpcId
@@ -72,67 +78,64 @@ export class BitStream {
   }
 
   newCopy() {
-    return new BitStream(patchRakNetNative(RakNetNatives.NEW_COPY, this.id));
+    return new BitStream(patchRakNetNative(RakNetNatives.NewCopy, this.id));
   }
 
   delete() {
-    patchRakNetNative(RakNetNatives.DELETE, this.id);
+    patchRakNetNative(RakNetNatives.Delete, this.id);
     return this.id;
   }
 
   reset() {
-    patchRakNetNative(RakNetNatives.RESET, this.id);
+    patchRakNetNative(RakNetNatives.Reset, this.id);
   }
 
   resetReadPointer() {
-    patchRakNetNative(RakNetNatives.RESET_READ_POINTER, this.id);
+    patchRakNetNative(RakNetNatives.ResetReadPointer, this.id);
   }
 
   resetWritePointer() {
-    patchRakNetNative(RakNetNatives.RESET_WRITE_POINTER, this.id);
+    patchRakNetNative(RakNetNatives.ResetWritePointer, this.id);
   }
 
   ignoreBits(number_of_bits: number) {
-    patchRakNetNative(RakNetNatives.IGNORE_BITS, this.id, number_of_bits);
+    patchRakNetNative(RakNetNatives.IgnoreBits, this.id, number_of_bits);
   }
 
   setWriteOffset(offset: number) {
-    patchRakNetNative(RakNetNatives.SET_WRITE_OFFSET, this.id, offset);
+    patchRakNetNative(RakNetNatives.SetWriteOffset, this.id, offset);
   }
 
   getWriteOffset(): number {
-    return patchRakNetNative(RakNetNatives.GET_WRITE_OFFSET, this.id);
+    return patchRakNetNative(RakNetNatives.GetWriteOffset, this.id);
   }
 
   setReadOffset(offset: number) {
-    patchRakNetNative(RakNetNatives.SET_READ_OFFSET, this.id, offset);
+    patchRakNetNative(RakNetNatives.SetReadOffset, this.id, offset);
   }
 
   getReadOffset(): number {
-    return patchRakNetNative(RakNetNatives.GET_READ_OFFSET, this.id);
+    return patchRakNetNative(RakNetNatives.GetReadOffset, this.id);
   }
 
   getNumberOfBitsUsed(): number {
-    return patchRakNetNative(RakNetNatives.GET_NUMBER_OF_BITS_USED, this.id);
+    return patchRakNetNative(RakNetNatives.GetNumberOfBitsUsed, this.id);
   }
 
   getNumberOfBytesUsed(): number {
-    return patchRakNetNative(RakNetNatives.GET_NUMBER_OF_BYTES_USED, this.id);
+    return patchRakNetNative(RakNetNatives.GetNumberOfBytesUsed, this.id);
   }
 
   getNumberOfUnreadBits(): number {
-    return patchRakNetNative(RakNetNatives.GET_NUMBER_OF_UNREAD_BITS, this.id);
+    return patchRakNetNative(RakNetNatives.GetNumberOfUnreadBits, this.id);
   }
 
   getNumberOfBitsAllocated(): number {
-    return patchRakNetNative(
-      RakNetNatives.GET_NUMBER_OF_BITS_ALLOCATED,
-      this.id
-    );
+    return patchRakNetNative(RakNetNatives.GetNumberOfBitsAllocated, this.id);
   }
 
   readValue(
-    ...types: (PR_ValueType | [PR_ValueType, number])[]
+    ...types: (PacketRpcValueType | [PacketRpcValueType, number])[]
   ): number | number[] | (number | number[])[] {
     const ret: any[] = [];
     types.forEach((item) => {
@@ -140,7 +143,7 @@ export class BitStream {
       const type = isPlaceholder ? item[0] : item;
       ret.push(
         patchRakNetNative(
-          RakNetNatives.READ_VALUE,
+          RakNetNatives.ReadValue,
           this.id,
           type,
           isPlaceholder ? item[1] : 0
@@ -154,11 +157,11 @@ export class BitStream {
   writeValue(
     ...types: (
       | [
-          PR_ValueType,
+          PacketRpcValueType,
           number | number[] | boolean | (number | number[] | boolean)[]
         ]
       | [
-          PR_ValueType,
+          PacketRpcValueType,
           number | number[] | boolean | (number | number[] | boolean)[],
           number
         ]
@@ -166,7 +169,7 @@ export class BitStream {
   ) {
     types.forEach((item) => {
       patchRakNetNative(
-        RakNetNatives.WRITE_VALUE,
+        RakNetNatives.WriteValue,
         this.id,
         item[0],
         item[1],
@@ -178,35 +181,35 @@ export class BitStream {
   // macros
 
   readInt8() {
-    return this.readValue(this.id, PR_ValueType.INT8);
+    return this.readValue(this.id, PacketRpcValueType.Int8);
   }
 
   readInt16() {
-    return this.readValue(this.id, PR_ValueType.INT16);
+    return this.readValue(this.id, PacketRpcValueType.Int16);
   }
 
   readInt32() {
-    return this.readValue(this.id, PR_ValueType.INT32);
+    return this.readValue(this.id, PacketRpcValueType.Int32);
   }
 
   readUint8() {
-    return this.readValue(this.id, PR_ValueType.UINT8);
+    return this.readValue(this.id, PacketRpcValueType.UInt8);
   }
 
   readUint16() {
-    return this.readValue(this.id, PR_ValueType.UINT16);
+    return this.readValue(this.id, PacketRpcValueType.UInt16);
   }
 
   readUint32() {
-    return this.readValue(this.id, PR_ValueType.UINT32);
+    return this.readValue(this.id, PacketRpcValueType.UInt32);
   }
 
   readFloat() {
-    return this.readValue(this.id, PR_ValueType.FLOAT);
+    return this.readValue(this.id, PacketRpcValueType.Float);
   }
 
   readBool() {
-    return this.readValue(this.id, PR_ValueType.BOOL);
+    return this.readValue(this.id, PacketRpcValueType.Bool);
   }
 
   readString(size = 1024) {
@@ -214,35 +217,35 @@ export class BitStream {
   }
 
   readCompressedInt8() {
-    return this.readValue(this.id, PR_ValueType.CINT8);
+    return this.readValue(this.id, PacketRpcValueType.CInt8);
   }
 
   readCompressedInt16() {
-    return this.readValue(this.id, PR_ValueType.CINT16);
+    return this.readValue(this.id, PacketRpcValueType.CInt16);
   }
 
   readCompressedInt32() {
-    return this.readValue(this.id, PR_ValueType.CINT32);
+    return this.readValue(this.id, PacketRpcValueType.CInt32);
   }
 
   readCompressedUint8() {
-    return this.readValue(this.id, PR_ValueType.CUINT8);
+    return this.readValue(this.id, PacketRpcValueType.CUInt8);
   }
 
   readCompressedUint16() {
-    return this.readValue(this.id, PR_ValueType.CUINT16);
+    return this.readValue(this.id, PacketRpcValueType.CUInt16);
   }
 
   readCompressedUint32() {
-    return this.readValue(this.id, PR_ValueType.CUINT32);
+    return this.readValue(this.id, PacketRpcValueType.CUInt32);
   }
 
   readCompressedFloat() {
-    return this.readValue(this.id, PR_ValueType.CFLOAT);
+    return this.readValue(this.id, PacketRpcValueType.CFloat);
   }
 
   readCompressedBool() {
-    return this.readValue(this.id, PR_ValueType.CBOOL);
+    return this.readValue(this.id, PacketRpcValueType.CBool);
   }
 
   readCompressedString(size: number) {
@@ -250,23 +253,23 @@ export class BitStream {
   }
 
   readBits(size: number) {
-    return this.readValue(this.id, [PR_ValueType.BITS, size]);
+    return this.readValue(this.id, [PacketRpcValueType.Bits, size]);
   }
 
   readFloat3() {
-    return this.readValue(this.id, PR_ValueType.FLOAT3);
+    return this.readValue(this.id, PacketRpcValueType.Float3);
   }
 
   readFloat4() {
-    return this.readValue(this.id, PR_ValueType.FLOAT4);
+    return this.readValue(this.id, PacketRpcValueType.Float4);
   }
 
   readVector() {
-    return this.readValue(this.id, PR_ValueType.VECTOR);
+    return this.readValue(this.id, PacketRpcValueType.Vector);
   }
 
   readNormQuat() {
-    return this.readValue(this.id, PR_ValueType.NORM_QUAT);
+    return this.readValue(this.id, PacketRpcValueType.NormQuat);
   }
 
   readString8() {
@@ -278,103 +281,115 @@ export class BitStream {
   }
 
   writeInt8(value: number) {
-    this.writeValue([PR_ValueType.INT8, value]);
+    this.writeValue([PacketRpcValueType.Int8, value]);
   }
 
   writeInt16(value: number) {
-    this.writeValue([PR_ValueType.INT16, value]);
+    this.writeValue([PacketRpcValueType.Int16, value]);
   }
 
   writeInt32(value: number) {
-    this.writeValue([PR_ValueType.INT32, value]);
+    this.writeValue([PacketRpcValueType.Int32, value]);
   }
 
   writeUint8(value: number) {
-    this.writeValue([PR_ValueType.UINT8, value]);
+    this.writeValue([PacketRpcValueType.UInt8, value]);
   }
 
   writeUint16(value: number) {
-    this.writeValue([PR_ValueType.UINT16, value]);
+    this.writeValue([PacketRpcValueType.UInt16, value]);
   }
 
   writeUint32(value: number) {
-    this.writeValue([PR_ValueType.UINT32, value]);
+    this.writeValue([PacketRpcValueType.UInt32, value]);
   }
 
   writeFloat(value: number) {
-    this.writeValue([PR_ValueType.FLOAT, value]);
+    this.writeValue([PacketRpcValueType.Float, value]);
   }
 
   writeBool(value: boolean) {
-    this.writeValue([PR_ValueType.BOOL, value]);
+    this.writeValue([PacketRpcValueType.Bool, value]);
   }
 
   writeString(value: string | number[], length = 1024) {
-    this.writeValue([PR_ValueType.STRING, convertToByteString(value, length)]);
+    this.writeValue([
+      PacketRpcValueType.String,
+      convertToByteString(value, length),
+    ]);
   }
 
   writeCompressedInt8(value: number) {
-    this.writeValue([PR_ValueType.CINT8, value]);
+    this.writeValue([PacketRpcValueType.CInt8, value]);
   }
 
   writeCompressedInt16(value: number) {
-    this.writeValue([PR_ValueType.CINT16, value]);
+    this.writeValue([PacketRpcValueType.CInt16, value]);
   }
 
   writeCompressedInt32(value: number) {
-    this.writeValue([PR_ValueType.CINT32, value]);
+    this.writeValue([PacketRpcValueType.CInt32, value]);
   }
 
   writeCompressedUint8(value: number) {
-    this.writeValue([PR_ValueType.CUINT8, value]);
+    this.writeValue([PacketRpcValueType.CUInt8, value]);
   }
 
   writeCompressedUint16(value: number) {
-    this.writeValue([PR_ValueType.CUINT16, value]);
+    this.writeValue([PacketRpcValueType.CUInt16, value]);
   }
 
   writeCompressedUint32(value: number) {
-    this.writeValue([PR_ValueType.CUINT32, value]);
+    this.writeValue([PacketRpcValueType.CUInt32, value]);
   }
 
   writeCompressedFloat(value: number) {
-    this.writeValue([PR_ValueType.CFLOAT, value]);
+    this.writeValue([PacketRpcValueType.CFloat, value]);
   }
 
   writeCompressedBool(value: boolean) {
-    this.writeValue([PR_ValueType.CBOOL, value]);
+    this.writeValue([PacketRpcValueType.CBool, value]);
   }
 
   writeCompressedString(value: string, length = 1024) {
-    this.writeValue([PR_ValueType.CSTRING, convertToByteString(value, length)]);
+    this.writeValue([
+      PacketRpcValueType.CString,
+      convertToByteString(value, length),
+    ]);
   }
 
   writeBits(value: number, size: number) {
-    this.writeValue([PR_ValueType.BITS, value, size]);
+    this.writeValue([PacketRpcValueType.Bits, value, size]);
   }
 
   writeFloat3(value: Vector3<number>) {
-    this.writeValue([PR_ValueType.FLOAT3, value]);
+    this.writeValue([PacketRpcValueType.Float3, value]);
   }
 
   writeFloat4(value: Vector4<number>) {
-    this.writeValue([PR_ValueType.FLOAT4, value]);
+    this.writeValue([PacketRpcValueType.Float4, value]);
   }
 
   writeVector(value: Vector3<number>) {
-    this.writeValue([PR_ValueType.VECTOR, value]);
+    this.writeValue([PacketRpcValueType.Vector, value]);
   }
 
   writeNormQuat(value: Vector4<number>) {
-    this.writeValue([PR_ValueType.NORM_QUAT, value]);
+    this.writeValue([PacketRpcValueType.NormQuat, value]);
   }
 
   writeString8(value: string | number[]) {
-    this.writeValue([PR_ValueType.STRING8, convertToByteString(value, 8)]);
+    this.writeValue([
+      PacketRpcValueType.String8,
+      convertToByteString(value, 8),
+    ]);
   }
 
   writeString32(value: string | number[]) {
-    this.writeValue([PR_ValueType.STRING32, convertToByteString(value, 32)]);
+    this.writeValue([
+      PacketRpcValueType.String32,
+      convertToByteString(value, 32),
+    ]);
   }
 
   // static stocks
@@ -450,15 +465,15 @@ export class BitStream {
     }
 
     [data.targetId, data.targetActorId] = this.readValue(
-      PR_ValueType.UINT16,
-      PR_ValueType.UINT16
+      PacketRpcValueType.UInt16,
+      PacketRpcValueType.UInt16
     ) as number[];
 
     while (numberOfSlots--) {
       const [slotId, weaponId, ammo] = this.readValue(
-        PR_ValueType.UINT8,
-        PR_ValueType.UINT8,
-        PR_ValueType.UINT16
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.UInt16
       ) as number[];
 
       if (slotId < PR_MAX_WEAPON_SLOTS) {
@@ -473,22 +488,22 @@ export class BitStream {
   readStatsUpdate() {
     const data: Partial<IStatsUpdate> = {};
     [data.money, data.drunkLevel] = this.readValue(
-      PR_ValueType.INT32,
-      PR_ValueType.INT32
+      PacketRpcValueType.Int32,
+      PacketRpcValueType.Int32
     ) as number[];
     return data as IStatsUpdate;
   }
 
   readRconCommand() {
     const data: Partial<IRconCommand> = {};
-    [data.command] = this.readValue(PR_ValueType.STRING32) as any;
+    [data.command] = this.readValue(PacketRpcValueType.String32) as any;
     return data as IRconCommand;
   }
 
   writeWeaponsUpdate(data: IWeaponsUpdate) {
     this.writeValue(
-      [PR_ValueType.UINT16, data.targetId],
-      [PR_ValueType.UINT16, data.targetActorId]
+      [PacketRpcValueType.UInt16, data.targetId],
+      [PacketRpcValueType.UInt16, data.targetActorId]
     );
 
     for (let slotId = 0; slotId < PR_MAX_WEAPON_SLOTS; slotId++) {
@@ -497,29 +512,29 @@ export class BitStream {
       }
 
       this.writeValue(
-        [PR_ValueType.UINT8, slotId],
-        [PR_ValueType.UINT8, data.slotWeaponId[slotId]],
-        [PR_ValueType.UINT16, data.slotWeaponAmmo[slotId]]
+        [PacketRpcValueType.UInt8, slotId],
+        [PacketRpcValueType.UInt8, data.slotWeaponId[slotId]],
+        [PacketRpcValueType.UInt16, data.slotWeaponAmmo[slotId]]
       );
     }
   }
 
   writeStatsUpdate(data: IStatsUpdate) {
     this.writeValue(
-      [PR_ValueType.INT32, data.money],
-      [PR_ValueType.INT32, data.drunkLevel]
+      [PacketRpcValueType.Int32, data.money],
+      [PacketRpcValueType.Int32, data.drunkLevel]
     );
   }
 
   writeRconCommand(data: IRconCommand) {
-    this.writeValue([PR_ValueType.STRING32, data.command]);
+    this.writeValue([PacketRpcValueType.String32, data.command]);
   }
 
   sendPacketToPlayerStream(
     players: Player[],
     player: Player,
-    priority = PR_PacketPriority.HIGH,
-    reliability = PR_PacketReliability.RELIABLE_ORDERED,
+    priority = PacketRpcPriority.High,
+    reliability = PacketRpcReliability.ReliableOrdered,
     orderingChannel = 0
   ) {
     players.forEach((p) => {
@@ -532,8 +547,8 @@ export class BitStream {
     players: Player[],
     player: Player,
     rpcId: number,
-    priority = PR_PacketPriority.HIGH,
-    reliability = PR_PacketReliability.RELIABLE_ORDERED,
+    priority = PacketRpcPriority.High,
+    reliability = PacketRpcReliability.ReliableOrdered,
     orderingChannel = 0
   ) {
     players.forEach((p) => {
@@ -548,8 +563,8 @@ export class BitStream {
     players: Player[],
     vehicle: Vehicle,
     excludedPlayer: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID,
-    priority = PR_PacketPriority.HIGH,
-    reliability = PR_PacketReliability.RELIABLE_ORDERED,
+    priority = PacketRpcPriority.High,
+    reliability = PacketRpcReliability.ReliableOrdered,
     orderingChannel = 0
   ) {
     players.forEach((p) => {
@@ -567,8 +582,8 @@ export class BitStream {
     vehicle: Vehicle,
     rpcId: number,
     excludedPlayer: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID,
-    priority = PR_PacketPriority.HIGH,
-    reliability = PR_PacketReliability.RELIABLE_ORDERED,
+    priority = PacketRpcPriority.High,
+    reliability = PacketRpcReliability.ReliableOrdered,
     orderingChannel = 0
   ) {
     players.forEach((p) => {

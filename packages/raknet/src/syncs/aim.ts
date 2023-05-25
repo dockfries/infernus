@@ -1,14 +1,16 @@
-import type { BitStream } from "raknet/bitStream";
-import { sync, syncRead, syncWrite } from "raknet/decorators";
-import { PacketIdList, PR_ValueType } from "raknet/enums";
-import type { IAimSync } from "raknet/interfaces";
+import { BitStream } from "raknet/bitStream";
+import { syncId, syncReader, syncWriter } from "raknet/decorators";
+import { PacketIdList, PacketRpcValueType } from "raknet/enums";
+import type { IAimSync, IPacketListSync } from "raknet/interfaces";
 
-@sync(PacketIdList.AIM_SYNC)
-export class AimSync {
-  constructor(private bs: BitStream) {}
+@syncId(PacketIdList.AimSync)
+export class AimSync extends BitStream implements IPacketListSync {
+  constructor(private bs: BitStream) {
+    super(bs);
+  }
 
-  @syncRead
-  read() {
+  @syncReader
+  readSync() {
     const data: Partial<IAimSync> = {};
     [
       data.camMode,
@@ -19,27 +21,27 @@ export class AimSync {
       data.camZoom,
       data.aspectRatio,
     ] = this.bs.readValue(
-      PR_ValueType.UINT8,
-      PR_ValueType.FLOAT3,
-      PR_ValueType.FLOAT3,
-      PR_ValueType.FLOAT,
-      [PR_ValueType.BITS, 2],
-      [PR_ValueType.BITS, 6],
-      PR_ValueType.UINT8
+      PacketRpcValueType.UInt8,
+      PacketRpcValueType.Float3,
+      PacketRpcValueType.Float3,
+      PacketRpcValueType.Float,
+      [PacketRpcValueType.Bits, 2],
+      [PacketRpcValueType.Bits, 6],
+      PacketRpcValueType.UInt8
     ) as any;
     return data as IAimSync | null;
   }
 
-  @syncWrite
-  write(data: IAimSync) {
+  @syncWriter
+  writeSync(data: IAimSync) {
     this.bs.writeValue(
-      [PR_ValueType.UINT8, data.camMode],
-      [PR_ValueType.FLOAT3, data.camFrontVec],
-      [PR_ValueType.FLOAT3, data.camPos],
-      [PR_ValueType.FLOAT, data.aimZ],
-      [PR_ValueType.BITS, data.weaponState, 2],
-      [PR_ValueType.BITS, data.camZoom, 6],
-      [PR_ValueType.UINT8, data.aspectRatio]
+      [PacketRpcValueType.UInt8, data.camMode],
+      [PacketRpcValueType.Float3, data.camFrontVec],
+      [PacketRpcValueType.Float3, data.camPos],
+      [PacketRpcValueType.Float, data.aimZ],
+      [PacketRpcValueType.Bits, data.weaponState, 2],
+      [PacketRpcValueType.Bits, data.camZoom, 6],
+      [PacketRpcValueType.UInt8, data.aspectRatio]
     );
   }
 }

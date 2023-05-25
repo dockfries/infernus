@@ -1,5 +1,5 @@
 import type { BitStream } from "raknet/bitStream";
-import { PR_ValueType } from "raknet/enums";
+import { PacketRpcValueType } from "raknet/enums";
 import iconv from "iconv-lite";
 
 export const convertToByteString = (
@@ -21,7 +21,7 @@ export const readStringX = (
   charset = "utf-8"
 ) => {
   const byteArr = bs.readValue([
-    isCompressed ? PR_ValueType.CSTRING : PR_ValueType.STRING,
+    isCompressed ? PacketRpcValueType.CString : PacketRpcValueType.String,
     size,
   ]) as number[];
   const validByteArr = byteArr.slice(0, byteArr.indexOf(0));

@@ -13,5 +13,32 @@ pnpm add @infernus/core @infernus/raknet
 ## Example
 
 ```ts
-// Coming soon
+import { Player } from "@infernus/core";
+import {
+  BitStream,
+  IPacket,
+  PacketIdList,
+  OnFootSync,
+  BulletSync,
+} from "@infernus/raknet";
+import type { IBulletSync } from "@infernus/raknet";
+
+IPacket(PacketIdList.OnFootSync, (playerId, bs) => {
+  const sync = new OnFootSync(bs).readSync();
+  console.log(playerId, sync);
+  return true;
+});
+
+function sendBulletData(from: Player, to: Player | -1, data: IBulletSync) {
+  const bs = new BulletSync(new BitStream());
+  bs.writeSync(data);
+
+  if (to instanceof Player) {
+    bs.sendPacket(to.id);
+  } else {
+    bs.sendPacket(to);
+  }
+
+  bs.delete();
+}
 ```

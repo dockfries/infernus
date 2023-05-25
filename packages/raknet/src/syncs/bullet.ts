@@ -1,16 +1,19 @@
-import type { BitStream } from "raknet/bitStream";
-import { sync, syncRead, syncWrite } from "raknet/decorators";
-import { PacketIdList, PR_ValueType } from "raknet/enums";
-import type { IBulletSync } from "raknet/interfaces";
+import { BitStream } from "raknet/bitStream";
+import { syncId, syncReader, syncWriter } from "raknet/decorators";
+import { PacketIdList, PacketRpcValueType } from "raknet/enums";
+import type { IBulletSync, IPacketListSync } from "raknet/interfaces";
 
-@sync(PacketIdList.BULLET_SYNC)
-export class BulletSync {
-  constructor(private bs: BitStream) {}
+@syncId(PacketIdList.BulletSync)
+export class BulletSync extends BitStream implements IPacketListSync {
+  constructor(private bs: BitStream) {
+    super(bs);
+  }
 
-  @syncRead
-  read() {
+  @syncReader
+  readSync() {
     const data: Partial<IBulletSync> = {};
     [
+      data.fromId,
       data.hitType,
       data.hitId,
       data.origin,
@@ -18,25 +21,27 @@ export class BulletSync {
       data.offsets,
       data.weaponId,
     ] = this.bs.readValue(
-      PR_ValueType.UINT8,
-      PR_ValueType.UINT16,
-      PR_ValueType.FLOAT3,
-      PR_ValueType.FLOAT3,
-      PR_ValueType.FLOAT3,
-      PR_ValueType.UINT8
+      PacketRpcValueType.UInt16,
+      PacketRpcValueType.UInt8,
+      PacketRpcValueType.UInt16,
+      PacketRpcValueType.Float3,
+      PacketRpcValueType.Float3,
+      PacketRpcValueType.Float3,
+      PacketRpcValueType.UInt8
     ) as any;
     return data as IBulletSync | null;
   }
 
-  @syncWrite
-  write(data: IBulletSync) {
+  @syncWriter
+  writeSync(data: IBulletSync) {
     this.bs.writeValue(
-      [PR_ValueType.UINT8, data.hitType],
-      [PR_ValueType.UINT16, data.hitId],
-      [PR_ValueType.FLOAT3, data.origin],
-      [PR_ValueType.FLOAT3, data.hitPos],
-      [PR_ValueType.FLOAT3, data.offsets],
-      [PR_ValueType.UINT8, data.weaponId]
+      [PacketRpcValueType.UInt16, data.fromId],
+      [PacketRpcValueType.UInt8, data.hitType],
+      [PacketRpcValueType.UInt16, data.hitId],
+      [PacketRpcValueType.Float3, data.origin],
+      [PacketRpcValueType.Float3, data.hitPos],
+      [PacketRpcValueType.Float3, data.offsets],
+      [PacketRpcValueType.UInt8, data.weaponId]
     );
   }
 }

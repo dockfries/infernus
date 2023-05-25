@@ -1,14 +1,16 @@
 import { BitStream } from "raknet/bitStream";
-import { sync, syncRead, syncWrite } from "raknet/decorators";
-import { PacketIdList, PR_ValueType } from "raknet/enums";
-import type { IInCarSync } from "raknet/interfaces";
+import { syncId, syncReader, syncWriter } from "raknet/decorators";
+import { PacketIdList, PacketRpcValueType } from "raknet/enums";
+import type { IInCarSync, IPacketListSync } from "raknet/interfaces";
 
-@sync(PacketIdList.DRIVER_SYNC)
-export class InCarSync {
-  constructor(private bs: BitStream) {}
+@syncId(PacketIdList.DriverSync)
+export class InCarSync extends BitStream implements IPacketListSync {
+  constructor(private bs: BitStream) {
+    super(bs);
+  }
 
-  @syncRead
-  read(outgoing = false) {
+  @syncReader
+  readSync(outgoing = false) {
     const data: Partial<IInCarSync> = {
       trainSpeed: 0.0,
       trailerId: 0,
@@ -31,18 +33,18 @@ export class InCarSync {
         data.sirenState,
         data.landingGearState,
       ] = this.bs.readValue(
-        PR_ValueType.UINT16,
-        PR_ValueType.UINT16,
-        PR_ValueType.UINT16,
-        PR_ValueType.UINT16,
-        PR_ValueType.NORM_QUAT,
-        PR_ValueType.FLOAT3,
-        PR_ValueType.VECTOR,
-        PR_ValueType.UINT16,
-        PR_ValueType.UINT8,
-        PR_ValueType.UINT8,
-        PR_ValueType.BOOL,
-        PR_ValueType.BOOL
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.NormQuat,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.Vector,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.Bool,
+        PacketRpcValueType.Bool
       ) as any;
 
       data.vehicleHealth = data.vehicleHealth ? +data.vehicleHealth : 0;
@@ -52,16 +54,16 @@ export class InCarSync {
       data.playerHealth = health;
       data.armour = armour;
 
-      const hasTrainSpeed = this.bs.readValue(PR_ValueType.BOOL);
+      const hasTrainSpeed = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasTrainSpeed) {
-        data.trainSpeed = this.bs.readValue(PR_ValueType.FLOAT) as number;
+        data.trainSpeed = this.bs.readValue(PacketRpcValueType.Float) as number;
       }
 
-      const hasTrailer = this.bs.readValue(PR_ValueType.BOOL);
+      const hasTrailer = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasTrailer) {
-        data.trailerId = this.bs.readValue(PR_ValueType.UINT16) as number;
+        data.trailerId = this.bs.readValue(PacketRpcValueType.UInt16) as number;
       }
     } else {
       [
@@ -82,29 +84,29 @@ export class InCarSync {
         data.trailerId,
         data.trainSpeed,
       ] = this.bs.readValue(
-        PR_ValueType.UINT16,
-        PR_ValueType.UINT16,
-        PR_ValueType.UINT16,
-        PR_ValueType.UINT16,
-        PR_ValueType.FLOAT4,
-        PR_ValueType.FLOAT3,
-        PR_ValueType.FLOAT3,
-        PR_ValueType.FLOAT,
-        PR_ValueType.UINT8,
-        PR_ValueType.UINT8,
-        [PR_ValueType.BITS, 2],
-        [PR_ValueType.BITS, 6],
-        PR_ValueType.UINT8,
-        PR_ValueType.UINT8,
-        PR_ValueType.UINT16,
-        PR_ValueType.FLOAT
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.Float4,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.Float,
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.UInt8,
+        [PacketRpcValueType.Bits, 2],
+        [PacketRpcValueType.Bits, 6],
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.Float
       ) as any;
     }
     return data as IInCarSync | null;
   }
 
-  @syncWrite
-  write(data: IInCarSync, outgoing = false) {
+  @syncWriter
+  writeSync(data: IInCarSync, outgoing = false) {
     if (outgoing) {
       const healthArmour = BitStream.packHealthArmour(
         data.playerHealth,
@@ -112,55 +114,55 @@ export class InCarSync {
       );
 
       this.bs.writeValue(
-        [PR_ValueType.UINT16, data.vehicleId],
-        [PR_ValueType.UINT16, data.lrKey],
-        [PR_ValueType.UINT16, data.udKey],
-        [PR_ValueType.UINT16, data.keys],
-        [PR_ValueType.NORM_QUAT, data.quaternion],
-        [PR_ValueType.FLOAT3, data.position],
-        [PR_ValueType.VECTOR, data.velocity],
-        [PR_ValueType.UINT16, Math.round(data.vehicleHealth)],
-        [PR_ValueType.UINT8, healthArmour],
-        [PR_ValueType.UINT8, data.weaponId],
-        [PR_ValueType.BOOL, data.sirenState],
-        [PR_ValueType.BOOL, data.landingGearState]
+        [PacketRpcValueType.UInt16, data.vehicleId],
+        [PacketRpcValueType.UInt16, data.lrKey],
+        [PacketRpcValueType.UInt16, data.udKey],
+        [PacketRpcValueType.UInt16, data.keys],
+        [PacketRpcValueType.NormQuat, data.quaternion],
+        [PacketRpcValueType.Float3, data.position],
+        [PacketRpcValueType.Vector, data.velocity],
+        [PacketRpcValueType.UInt16, Math.round(data.vehicleHealth)],
+        [PacketRpcValueType.UInt8, healthArmour],
+        [PacketRpcValueType.UInt8, data.weaponId],
+        [PacketRpcValueType.Bool, data.sirenState],
+        [PacketRpcValueType.Bool, data.landingGearState]
       );
 
       if (data.trainSpeed) {
         this.bs.writeValue(
-          [PR_ValueType.BOOL, true],
-          [PR_ValueType.FLOAT, data.trainSpeed]
+          [PacketRpcValueType.Bool, true],
+          [PacketRpcValueType.Float, data.trainSpeed]
         );
       } else {
-        this.bs.writeValue([PR_ValueType.BOOL, false]);
+        this.bs.writeValue([PacketRpcValueType.Bool, false]);
       }
 
       if (data.trailerId) {
         this.bs.writeValue(
-          [PR_ValueType.BOOL, true],
-          [PR_ValueType.UINT16, data.trailerId]
+          [PacketRpcValueType.Bool, true],
+          [PacketRpcValueType.UInt16, data.trailerId]
         );
       } else {
-        this.bs.writeValue([PR_ValueType.BOOL, false]);
+        this.bs.writeValue([PacketRpcValueType.Bool, false]);
       }
     } else {
       this.bs.writeValue(
-        [PR_ValueType.UINT16, data.vehicleId],
-        [PR_ValueType.UINT16, data.lrKey],
-        [PR_ValueType.UINT16, data.udKey],
-        [PR_ValueType.UINT16, data.keys],
-        [PR_ValueType.FLOAT4, data.quaternion],
-        [PR_ValueType.FLOAT3, data.position],
-        [PR_ValueType.FLOAT3, data.velocity],
-        [PR_ValueType.FLOAT, data.vehicleHealth],
-        [PR_ValueType.UINT8, data.playerHealth],
-        [PR_ValueType.UINT8, data.armour],
-        [PR_ValueType.BITS, data.additionalKey, 2],
-        [PR_ValueType.BITS, data.weaponId, 6],
-        [PR_ValueType.UINT8, data.sirenState],
-        [PR_ValueType.UINT8, data.landingGearState],
-        [PR_ValueType.UINT16, data.trailerId],
-        [PR_ValueType.FLOAT, data.trainSpeed]
+        [PacketRpcValueType.UInt16, data.vehicleId],
+        [PacketRpcValueType.UInt16, data.lrKey],
+        [PacketRpcValueType.UInt16, data.udKey],
+        [PacketRpcValueType.UInt16, data.keys],
+        [PacketRpcValueType.Float4, data.quaternion],
+        [PacketRpcValueType.Float3, data.position],
+        [PacketRpcValueType.Float3, data.velocity],
+        [PacketRpcValueType.Float, data.vehicleHealth],
+        [PacketRpcValueType.UInt8, data.playerHealth],
+        [PacketRpcValueType.UInt8, data.armour],
+        [PacketRpcValueType.Bits, data.additionalKey, 2],
+        [PacketRpcValueType.Bits, data.weaponId, 6],
+        [PacketRpcValueType.UInt8, data.sirenState],
+        [PacketRpcValueType.UInt8, data.landingGearState],
+        [PacketRpcValueType.UInt16, data.trailerId],
+        [PacketRpcValueType.Float, data.trainSpeed]
       );
     }
   }

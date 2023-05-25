@@ -1,32 +1,34 @@
-import type { BitStream } from "raknet/bitStream";
-import { sync, syncRead, syncWrite } from "raknet/decorators";
-import { PacketIdList, PR_ValueType } from "raknet/enums";
-import type { ISpectatingSync } from "raknet/interfaces";
+import { BitStream } from "raknet/bitStream";
+import { syncId, syncReader, syncWriter } from "raknet/decorators";
+import { PacketIdList, PacketRpcValueType } from "raknet/enums";
+import type { IPacketListSync, ISpectatingSync } from "raknet/interfaces";
 
-@sync(PacketIdList.SPECTATING_SYNC)
-export class SpectatingSync {
-  constructor(private bs: BitStream) {}
+@syncId(PacketIdList.SpectatingSync)
+export class SpectatingSync extends BitStream implements IPacketListSync {
+  constructor(private bs: BitStream) {
+    super(bs);
+  }
 
-  @syncRead
-  read() {
+  @syncReader
+  readSync() {
     const data: Partial<ISpectatingSync> = {};
     [data.lrKey, data.udKey, data.keys, data.position] = this.bs.readValue(
-      PR_ValueType.UINT16,
-      PR_ValueType.UINT16,
-      PR_ValueType.UINT16,
-      PR_ValueType.FLOAT3
+      PacketRpcValueType.UInt16,
+      PacketRpcValueType.UInt16,
+      PacketRpcValueType.UInt16,
+      PacketRpcValueType.Float3
     ) as any;
 
     return data as ISpectatingSync | null;
   }
 
-  @syncWrite
-  write(data: ISpectatingSync) {
+  @syncWriter
+  writeSync(data: ISpectatingSync) {
     this.bs.writeValue(
-      [PR_ValueType.UINT16, data.lrKey],
-      [PR_ValueType.UINT16, data.udKey],
-      [PR_ValueType.UINT16, data.keys],
-      [PR_ValueType.FLOAT3, data.position]
+      [PacketRpcValueType.UInt16, data.lrKey],
+      [PacketRpcValueType.UInt16, data.udKey],
+      [PacketRpcValueType.UInt16, data.keys],
+      [PacketRpcValueType.Float3, data.position]
     );
   }
 }

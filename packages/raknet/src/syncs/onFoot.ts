@@ -1,14 +1,16 @@
 import { BitStream } from "raknet/bitStream";
-import { sync, syncRead, syncWrite } from "raknet/decorators";
-import { PacketIdList, PR_ValueType } from "raknet/enums";
-import type { IOnFootSync } from "raknet/interfaces";
+import { syncId, syncReader, syncWriter } from "raknet/decorators";
+import { PacketIdList, PacketRpcValueType } from "raknet/enums";
+import type { IOnFootSync, IPacketListSync } from "raknet/interfaces";
 
-@sync(PacketIdList.ONFOOT_SYNC)
-export class OnFootSync {
-  constructor(private bs: BitStream) {}
+@syncId(PacketIdList.OnFootSync)
+export class OnFootSync extends BitStream implements IPacketListSync {
+  constructor(private bs: BitStream) {
+    super(bs);
+  }
 
-  @syncRead
-  read(outgoing = false) {
+  @syncReader
+  readSync(outgoing = false) {
     const data: Partial<IOnFootSync> = {
       lrKey: 0,
       udKey: 0,
@@ -18,16 +20,16 @@ export class OnFootSync {
     };
 
     if (outgoing) {
-      const hasLeftRight = this.bs.readValue(PR_ValueType.BOOL);
+      const hasLeftRight = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasLeftRight) {
-        data.lrKey = this.bs.readValue(PR_ValueType.UINT16) as number;
+        data.lrKey = this.bs.readValue(PacketRpcValueType.UInt16) as number;
       }
 
-      const hasUpDown = this.bs.readValue(PR_ValueType.BOOL);
+      const hasUpDown = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasUpDown) {
-        data.udKey = this.bs.readValue(PR_ValueType.UINT16) as number;
+        data.udKey = this.bs.readValue(PacketRpcValueType.UInt16) as number;
       }
 
       let healthArmour: number, hasSurfInfo: number;
@@ -42,14 +44,14 @@ export class OnFootSync {
         data.velocity,
         hasSurfInfo,
       ] = this.bs.readValue(
-        PR_ValueType.UINT16,
-        PR_ValueType.FLOAT3,
-        PR_ValueType.NORM_QUAT,
-        PR_ValueType.UINT8,
-        PR_ValueType.UINT8,
-        PR_ValueType.UINT8,
-        PR_ValueType.VECTOR,
-        PR_ValueType.BOOL
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.NormQuat,
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.Vector,
+        PacketRpcValueType.Bool
       ) as any;
 
       const { health, armour } = BitStream.unpackHealthArmour(
@@ -60,17 +62,17 @@ export class OnFootSync {
 
       if (hasSurfInfo) {
         [data.surfingVehicleId, data.surfingOffsets] = this.bs.readValue(
-          PR_ValueType.UINT16,
-          PR_ValueType.FLOAT3
+          PacketRpcValueType.UInt16,
+          PacketRpcValueType.Float3
         ) as any;
       }
 
-      const hasAnimation = this.bs.readValue(PR_ValueType.BOOL);
+      const hasAnimation = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasAnimation) {
         [data.animationId, data.animationFlags] = this.bs.readValue(
-          PR_ValueType.INT16,
-          PR_ValueType.INT16
+          PacketRpcValueType.Int16,
+          PacketRpcValueType.Int16
         ) as any;
       }
     } else {
@@ -91,98 +93,98 @@ export class OnFootSync {
         data.animationId,
         data.animationFlags,
       ] = this.bs.readValue(
-        PR_ValueType.UINT16,
-        PR_ValueType.UINT16,
-        PR_ValueType.UINT16,
-        PR_ValueType.FLOAT3,
-        PR_ValueType.FLOAT4,
-        PR_ValueType.UINT8,
-        PR_ValueType.UINT8,
-        [PR_ValueType.BITS, 2],
-        [PR_ValueType.BITS, 6],
-        PR_ValueType.UINT8,
-        PR_ValueType.FLOAT3,
-        PR_ValueType.FLOAT3,
-        PR_ValueType.UINT16,
-        PR_ValueType.INT16,
-        PR_ValueType.INT16
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.Float4,
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.UInt8,
+        [PacketRpcValueType.Bits, 2],
+        [PacketRpcValueType.Bits, 6],
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.Int16,
+        PacketRpcValueType.Int16
       ) as any;
     }
     return data as IOnFootSync | null;
   }
 
-  @syncWrite
-  write(data: IOnFootSync, outgoing = false) {
+  @syncWriter
+  writeSync(data: IOnFootSync, outgoing = false) {
     this.bs.resetWritePointer();
-    this.bs.writeBits(8, PacketIdList.ONFOOT_SYNC);
+    this.bs.writeBits(8, PacketIdList.OnFootSync);
 
     if (outgoing) {
       if (data.lrKey) {
         this.bs.writeValue(
-          [PR_ValueType.BOOL, true],
-          [PR_ValueType.UINT16, data.lrKey]
+          [PacketRpcValueType.Bool, true],
+          [PacketRpcValueType.UInt16, data.lrKey]
         );
       } else {
-        this.bs.writeValue([PR_ValueType.BOOL, false]);
+        this.bs.writeValue([PacketRpcValueType.Bool, false]);
       }
 
       if (data.udKey) {
         this.bs.writeValue(
-          [PR_ValueType.BOOL, true],
-          [PR_ValueType.UINT16, data.udKey]
+          [PacketRpcValueType.Bool, true],
+          [PacketRpcValueType.UInt16, data.udKey]
         );
       } else {
-        this.bs.writeValue([PR_ValueType.BOOL, false]);
+        this.bs.writeValue([PacketRpcValueType.Bool, false]);
       }
 
       const healthArmour = BitStream.packHealthArmour(data.health, data.armour);
 
       this.bs.writeValue(
-        [PR_ValueType.UINT16, data.keys],
-        [PR_ValueType.FLOAT3, data.position],
-        [PR_ValueType.NORM_QUAT, data.quaternion],
-        [PR_ValueType.UINT8, healthArmour],
-        [PR_ValueType.UINT8, data.weaponId],
-        [PR_ValueType.UINT8, data.specialAction],
-        [PR_ValueType.VECTOR, data.velocity]
+        [PacketRpcValueType.UInt16, data.keys],
+        [PacketRpcValueType.Float3, data.position],
+        [PacketRpcValueType.NormQuat, data.quaternion],
+        [PacketRpcValueType.UInt8, healthArmour],
+        [PacketRpcValueType.UInt8, data.weaponId],
+        [PacketRpcValueType.UInt8, data.specialAction],
+        [PacketRpcValueType.Vector, data.velocity]
       );
 
       if (data.surfingVehicleId) {
         this.bs.writeValue(
-          [PR_ValueType.BOOL, true],
-          [PR_ValueType.UINT16, data.surfingVehicleId],
-          [PR_ValueType.FLOAT3, data.surfingOffsets]
+          [PacketRpcValueType.Bool, true],
+          [PacketRpcValueType.UInt16, data.surfingVehicleId],
+          [PacketRpcValueType.Float3, data.surfingOffsets]
         );
       } else {
-        this.bs.writeValue([PR_ValueType.BOOL, false]);
+        this.bs.writeValue([PacketRpcValueType.Bool, false]);
       }
 
       if (data.animationId || data.animationFlags) {
         this.bs.writeValue(
-          [PR_ValueType.BOOL, true],
-          [PR_ValueType.INT16, data.animationId],
-          [PR_ValueType.INT16, data.animationFlags]
+          [PacketRpcValueType.Bool, true],
+          [PacketRpcValueType.Int16, data.animationId],
+          [PacketRpcValueType.Int16, data.animationFlags]
         );
       } else {
-        this.bs.writeValue([PR_ValueType.BOOL, false]);
+        this.bs.writeValue([PacketRpcValueType.Bool, false]);
       }
     } else {
       this.bs.writeValue(
-        [PR_ValueType.UINT16, data.lrKey],
-        [PR_ValueType.UINT16, data.udKey],
-        [PR_ValueType.UINT16, data.keys],
-        [PR_ValueType.FLOAT3, data.position],
-        [PR_ValueType.FLOAT4, data.quaternion],
-        [PR_ValueType.UINT8, data.health],
-        [PR_ValueType.UINT8, data.armour],
-        [PR_ValueType.BITS, data.additionalKey, 2],
-        [PR_ValueType.BITS, data.weaponId, 6],
-        [PR_ValueType.UINT8, data.specialAction],
-        [PR_ValueType.FLOAT3, data.velocity],
-        [PR_ValueType.FLOAT3, data.surfingOffsets],
-        [PR_ValueType.UINT16, data.surfingVehicleId],
-        [PR_ValueType.INT16, data.animationId],
-        [PR_ValueType.INT16, data.animationFlags]
+        [PacketRpcValueType.UInt16, data.lrKey],
+        [PacketRpcValueType.UInt16, data.udKey],
+        [PacketRpcValueType.UInt16, data.keys],
+        [PacketRpcValueType.Float3, data.position],
+        [PacketRpcValueType.Float4, data.quaternion],
+        [PacketRpcValueType.UInt8, data.health],
+        [PacketRpcValueType.UInt8, data.armour],
+        [PacketRpcValueType.Bits, data.additionalKey, 2],
+        [PacketRpcValueType.Bits, data.weaponId, 6],
+        [PacketRpcValueType.UInt8, data.specialAction],
+        [PacketRpcValueType.Float3, data.velocity],
+        [PacketRpcValueType.Float3, data.surfingOffsets],
+        [PacketRpcValueType.UInt16, data.surfingVehicleId],
+        [PacketRpcValueType.Int16, data.animationId],
+        [PacketRpcValueType.Int16, data.animationFlags]
       );
     }
   }
