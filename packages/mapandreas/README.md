@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@infernus/mapandreas)](https://www.npmjs.com/package/@infernus/mapandreas) ![npm](https://img.shields.io/npm/dy/@infernus/mapandreas) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/mapandreas)
 
-A wrapper of the popular SA-MP MapAndreas plugin for samp-node.
+A wrapper of the popular [SA-MP MapAndreas plugin](https://github.com/philip1337/samp-plugin-mapandreas) for samp-node.
 
 ## Getting started
 
