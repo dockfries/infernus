@@ -22,9 +22,6 @@ importers:
         specifier: ~8.6.1
         version: 8.6.1
     devDependencies:
-      "@infernus/eslint-config":
-        specifier: workspace:^
-        version: link:packages/eslint-config
       "@rollup/plugin-json":
         specifier: ^6.0.0
         version: 6.0.0(rollup@3.22.0)

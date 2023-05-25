@@ -25,7 +25,6 @@
     "pino": "~8.6.1"
   },
   "devDependencies": {
-    "@infernus/eslint-config": "workspace:^",
     "@rollup/plugin-json": "^6.0.0",
     "@sa-mp/node": "^0.2.0",
     "@types/node": "^18.16.13",

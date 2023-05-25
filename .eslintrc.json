@@ -15,5 +15,8 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/consistent-type-imports": "error"
+  },
+  "globals": {
+    "samp": "readonly"
   }
 }
