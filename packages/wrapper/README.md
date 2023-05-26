@@ -4,6 +4,10 @@
 
 As the core helper, added some features(natives and callbacks) that were added during the omp beta that were not incorporated into the core due to historical issues.
 
+## Notice
+
+If you are using `@infernus/core` you should not use this package alone as core is already integrated internally.
+
 ## Getting started
 
 ```sh
@@ -15,11 +19,12 @@ pnpm add @infernus/wrapper
 ```ts
 import { GetPlayerRawIp, GetPlayerRotationQuat } from "@infernus/wrapper";
 
-// In an event
+// In a callback event, such as OnPlayerConnect
+samp.on("OnPlayerConnect", (playerid) => {
+  const ip = GetPlayerRawIp(playerid);
+  console.log(`${playerid} with raw ip ${ip} has connected to the server`);
 
-const ip = GetPlayerRawIp(playerid);
-console.log(`${playerid} with raw ip ${ip} has connected to the server`);
-
-const { w, x, y, z } = GetPlayerRotationQuat(p.playerid);
-console.log(w, x, y, z);
+  const { w, x, y, z } = GetPlayerRotationQuat(p.playerid);
+  console.log(w, x, y, z);
+});
 ```
