@@ -40,8 +40,12 @@ import {
   AreInteriorWeaponsAllowed,
   AreAllAnimationsEnabled,
   EnableAllAnimations,
+  GetConsoleVarAsByteArray,
+  GetConsoleVarAsBool,
+  GetConsoleVarAsInt,
 } from "@infernus/wrapper";
 import type { IFilterScript } from "core/interfaces";
+import { I18n } from "../i18n";
 
 export class GameMode {
   static charset = defaultCharset;
@@ -272,4 +276,10 @@ export class GameMode {
   static editPlayerClass = EditPlayerClass;
   static toggleChatTextReplacement = ToggleChatTextReplacement;
   static chatTextReplacementToggled = ChatTextReplacementToggled;
+  static getConsoleVarAsString(varname: string) {
+    const consoleVar = GetConsoleVarAsByteArray(varname);
+    return I18n.decodeFromBuf(I18n.getValidStr(consoleVar), GameMode.charset);
+  }
+  static getConsoleVarAsInt = GetConsoleVarAsInt;
+  static getConsoleVarAsBool = GetConsoleVarAsBool;
 }

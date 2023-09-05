@@ -61,3 +61,20 @@ export const AreAllAnimationsEnabled = () => {
 export const EnableAllAnimations = (enable: boolean) => {
   samp.callNative("EnableAllAnimations", "i", enable);
 };
+
+export const GetConsoleVarAsByteArray = (varname: string) => {
+  return samp.callNative(
+    "GetConsoleVarAsString",
+    "sAi",
+    varname,
+    64
+  ) as number[];
+};
+
+export const GetConsoleVarAsInt = (varname: string): number => {
+  return samp.callNative("GetConsoleVarAsInt", "s", varname);
+};
+
+export const GetConsoleVarAsBool = (varname: string) => {
+  return Boolean(samp.callNative("GetConsoleVarAsBool", "s", varname));
+};
