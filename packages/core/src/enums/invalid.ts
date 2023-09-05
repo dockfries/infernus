@@ -4,7 +4,7 @@ export enum InvalidEnum {
   VEHICLE_ID = 0xffff,
   ACTOR_ID = 0xffff,
   OBJECT_ID = 0xffff,
-  MENU = 0xff,
+  MENU = -1,
   TEXT_DRAW = 0xffff,
   PLAYER_TEXT_DRAW = 0xffff,
   GANG_ZONE = -1,
