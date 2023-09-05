@@ -14,7 +14,7 @@ pnpm add @infernus/core @infernus/mapandreas
 
 ```ts
 import { GameMode } from "@infernus/core";
-import { MapAndreas } from "@infernus/mapandreas";
+import { MapAndreas, MapAndreasMode } from "@infernus/mapandreas";
 
 const gm = new GameMode();
 
