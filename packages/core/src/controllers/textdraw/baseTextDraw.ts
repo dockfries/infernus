@@ -413,4 +413,7 @@ export class TextDraw<P extends Player> {
     if (p) return PlayerTextDrawGetPreviewVehicleColours(p.id, this.id);
     return TextDrawGetPreviewVehicleColours(this.id);
   }
+  isGlobal() {
+    return !!this.sourceInfo.player;
+  }
 }
