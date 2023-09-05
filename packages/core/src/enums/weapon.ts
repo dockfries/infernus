@@ -1,4 +1,15 @@
 export enum WeaponEnum {
+  UNKNOWN = -1,
+
+  REASON_VEHICLE = 49,
+  REASON_DROWN = 53,
+  REASON_COLLISION = 54,
+  REASON_SPLAT = 54,
+  REASON_CONNECT = 200,
+  REASON_DISCONNECT = 200,
+  REASON_SUICIDE = 255,
+
+  WEAPON_FIST = 0,
   BRASSKNUCKLE = 1,
   GOLFCLUB = 2,
   NITESTICK = 3,
@@ -39,6 +50,9 @@ export enum WeaponEnum {
   SPRAYCAN = 41,
   FIREEXTINGUISHER = 42,
   CAMERA = 43,
+
+  NIGHT_VISION_GOGGLES = 44,
+  THERMAL_GOGGLES = 45,
   PARACHUTE = 46,
 }
 export enum WeaponSkillsEnum {
