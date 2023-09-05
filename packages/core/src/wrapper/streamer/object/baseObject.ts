@@ -141,6 +141,10 @@ export class DynamicObject {
     return IsValidDynamicObject(this.id);
   }
 
+  getModel() {
+    return this.sourceInfo.modelid;
+  }
+
   getPos() {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot get position before create");

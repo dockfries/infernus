@@ -13,6 +13,7 @@ import {
 import { Streamer } from "../common";
 import type { DynamicObject } from "./baseObject";
 import { objectBus, objectHooks } from "./objectBus";
+import { OnPlayerEditAttachedObject } from "@infernus/wrapper";
 
 export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {
   private readonly objects = new Map<number, O>();
@@ -92,6 +93,44 @@ export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {
         return pFn(p, weaponid, o, x, y, z);
       }
     );
+    OnPlayerEditAttachedObject(
+      (
+        playerid: number,
+        response: number,
+        index: number,
+        modelid: number,
+        boneid: number,
+        fOffsetX: number,
+        fOffsetY: number,
+        fOffsetZ: number,
+        fRotX: number,
+        fRotY: number,
+        fRotZ: number,
+        fScaleX: number,
+        fScaleY: number,
+        fScaleZ: number
+      ) => {
+        const p = this.players.get(playerid);
+        if (!p) return 0;
+        const pFn = defineAsyncCallback(this, "onPlayerEditAttached");
+        return pFn(
+          p,
+          response,
+          index,
+          modelid,
+          boneid,
+          fOffsetX,
+          fOffsetY,
+          fOffsetZ,
+          fRotX,
+          fRotY,
+          fRotZ,
+          fScaleX,
+          fScaleY,
+          fScaleZ
+        );
+      }
+    );
     Streamer.onItemStreamIn((type, item, player) => {
       if (type === StreamerItemTypes.OBJECT) {
         const obj = this.objects.get(item);
@@ -140,6 +179,23 @@ export class DynamicObjectEvent<P extends Player, O extends DynamicObject> {
     x: number,
     y: number,
     z: number
+  ): TCommonCallback;
+
+  onPlayerEditAttached?(
+    player: P,
+    response: number,
+    index: number,
+    modelid: number,
+    boneid: number,
+    fOffsetX: number,
+    fOffsetY: number,
+    fOffsetZ: number,
+    fRotX: number,
+    fRotY: number,
+    fRotZ: number,
+    fScaleX: number,
+    fScaleY: number,
+    fScaleZ: number
   ): TCommonCallback;
 
   onStreamIn?(object: O, player: P): TCommonCallback;
