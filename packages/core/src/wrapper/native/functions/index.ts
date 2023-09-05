@@ -1825,6 +1825,10 @@ export const GetPlayerSurfingObjectID = (playerid: number): number => {
   return callNative("GetPlayerSurfingObjectID", "i", playerid);
 };
 
+export const GetPlayerSurfingPlayerObjectID = (playerid: number): number => {
+  return callNative("GetPlayerSurfingPlayerObjectID", "i", playerid);
+};
+
 export const RemoveBuildingForPlayer = (
   playerid: number,
   modelid: number,

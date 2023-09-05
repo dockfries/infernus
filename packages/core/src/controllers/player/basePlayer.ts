@@ -827,6 +827,13 @@ export class Player {
     if (id === InvalidEnum.OBJECT_ID) return;
     return objects.get(id);
   }
+  getSurfingPlayerObject<O extends DynamicObject>(
+    objects: Map<number, O>
+  ): void | O {
+    const id: number = playerFunc.GetPlayerSurfingPlayerObjectID(this.id);
+    if (id === InvalidEnum.OBJECT_ID) return;
+    return objects.get(id);
+  }
   isAttachedObjectSlotUsed(index: number): boolean {
     return playerFunc.IsPlayerAttachedObjectSlotUsed(this.id, index);
   }
