@@ -32,13 +32,7 @@ IPacket(PacketIdList.OnFootSync, (playerId, bs) => {
 function sendBulletData(from: Player, to: Player | -1, data: IBulletSync) {
   const bs = new BulletSync(new BitStream());
   bs.writeSync(data);
-
-  if (to instanceof Player) {
-    bs.sendPacket(to.id);
-  } else {
-    bs.sendPacket(to);
-  }
-
+  bs.sendPacket(to);
   bs.delete();
 }
 ```

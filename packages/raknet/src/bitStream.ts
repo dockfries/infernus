@@ -12,8 +12,7 @@ import {
 import type { BitStreamRaw, Vector3, Vector4 } from "./types";
 import { PR_MAX_WEAPON_SLOTS } from "./defines";
 import type { IRconCommand, IStatsUpdate, IWeaponsUpdate } from "./interfaces";
-import type { Vehicle } from "@infernus/core";
-import type { Player } from "@infernus/core";
+import type { Vehicle, Player } from "@infernus/core";
 import { InvalidEnum } from "@infernus/core";
 
 export class BitStream {
@@ -31,15 +30,16 @@ export class BitStream {
   // natives
 
   sendPacket(
-    playerId: number,
+    player: number | Player,
     priority = PacketRpcPriority.High,
     reliability = PacketRpcReliability.ReliableOrdered,
     orderingChannel = 0
   ) {
+    const id = typeof player === "number" ? player : player.id;
     patchRakNetNative(
       RakNetNatives.SendPacket,
       this.id,
-      playerId,
+      id,
       priority,
       reliability,
       orderingChannel
@@ -47,16 +47,17 @@ export class BitStream {
   }
 
   sendRPC(
-    playerId: number,
+    player: number | Player,
     rpcId: number,
     priority = PacketRpcPriority.High,
     reliability = PacketRpcReliability.ReliableOrdered,
     orderingChannel = 0
   ) {
+    const id = typeof player === "number" ? player : player.id;
     patchRakNetNative(
       RakNetNatives.SendRpc,
       this.id,
-      playerId,
+      id,
       rpcId,
       priority,
       reliability,
@@ -64,17 +65,14 @@ export class BitStream {
     );
   }
 
-  emulateIncomingPacket(playerId: number) {
-    patchRakNetNative(RakNetNatives.EmulateIncomingPacket, this.id, playerId);
+  emulateIncomingPacket(player: number | Player) {
+    const id = typeof player === "number" ? player : player.id;
+    patchRakNetNative(RakNetNatives.EmulateIncomingPacket, this.id, id);
   }
 
-  emulateIncomingRPC(playerId: number, rpcId: number) {
-    patchRakNetNative(
-      RakNetNatives.EmulateIncomingRpc,
-      this.id,
-      playerId,
-      rpcId
-    );
+  emulateIncomingRPC(player: number | Player, rpcId: number) {
+    const id = typeof player === "number" ? player : player.id;
+    patchRakNetNative(RakNetNatives.EmulateIncomingRpc, this.id, id, rpcId);
   }
 
   newCopy() {
