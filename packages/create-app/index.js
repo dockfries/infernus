@@ -13,6 +13,9 @@ import {
   installPlugin,
 } from "./utils/index.js";
 
+let relativeGenPath = "";
+let configJsonPath = "";
+
 function successInstalled(projectName) {
   console.log(`\nSuccessfully created project ${chalk.cyan(projectName)}`);
   console.log(`\ncd ${chalk.cyan(projectName)}`);
@@ -20,7 +23,7 @@ function successInstalled(projectName) {
   console.log("pnpm dev\n");
 }
 
-async function initializeStarter(relativeGenPath, projectName, isRakNet) {
+async function initializeStarter(projectName, isRakNet) {
   console.log("\n");
   const isMac = process.platform === "darwin";
   const isCreatedProject = await fs.ensureDir(relativeGenPath);
@@ -66,7 +69,7 @@ async function initializeStarter(relativeGenPath, projectName, isRakNet) {
   }
 }
 
-function changePkgName(relativeGenPath, projectName) {
+function changePkgName(projectName) {
   const pkgFilePath = relativeGenPath + "/package.json";
   const pkg = fs.readJsonSync(pkgFilePath);
   pkg.name = projectName;
@@ -75,13 +78,15 @@ function changePkgName(relativeGenPath, projectName) {
   fs.writeJson(pkgFilePath, pkg, { spaces: 2 });
 }
 
-async function initializeBase(relativeGenPath, isLinux) {
+async function initializeBase(isLinux) {
   const base = await downloadGitRelease(
     isLinux,
     "openmultiplayer",
     "open.mp",
     relativeGenPath
   );
+
+  const configJson = fs.readFileSync(configJsonPath);
 
   await wrapLoading(decompress, `decompress ${base}`, base, relativeGenPath, {
     strip: 1,
@@ -90,15 +95,17 @@ async function initializeBase(relativeGenPath, isLinux) {
   fs.remove(base);
 
   fs.remove(relativeGenPath + "/qawno");
+
+  fs.writeFileSync(configJsonPath, configJson);
 }
 
-function changeRconPass(relativeGenPath, password) {
-  const configJson = fs.readJsonSync(relativeGenPath + "/config.json");
+function changeRconPass(password) {
+  const configJson = fs.readJsonSync(configJsonPath);
   configJson.rcon.password = password;
-  fs.writeJSON(relativeGenPath + "/config.json", configJson, { space: 2 });
+  fs.writeJSON(configJsonPath, configJson, { spaces: 2 });
 }
 
-async function installPlugins(relativeGenPath, isLinux, isRakNet) {
+async function installPlugins(isLinux, isRakNet) {
   fs.ensureDirSync(relativeGenPath + "/plugins");
 
   const plugins = [
@@ -194,17 +201,18 @@ async function init() {
     );
 
     const isLinux = env === "linux";
-    const relativeGenPath = "./" + projectName;
+    relativeGenPath = "./" + projectName;
+    configJsonPath = relativeGenPath + "/config.json";
 
-    await initializeStarter(relativeGenPath, projectName, isRakNet);
+    await initializeStarter(projectName, isRakNet);
 
-    changePkgName(relativeGenPath, projectName);
+    changePkgName(projectName);
 
-    await initializeBase(relativeGenPath, isLinux);
+    await initializeBase(isLinux);
 
-    await installPlugins(relativeGenPath, isLinux, isRakNet);
+    await installPlugins(isLinux, isRakNet);
 
-    changeRconPass(relativeGenPath, password);
+    changeRconPass(password);
 
     successInstalled(projectName);
   } catch (err) {
