@@ -2,6 +2,8 @@ export type CallbackRet = boolean | number | void;
 
 export type PromisifyCallbackRet = CallbackRet | Promise<CallbackRet>;
 
+export type nextMiddleware = () => CallbackRet;
+
 export const eventBus = new Map<string, Array<(...args: any) => any>>();
 
 export function promisifyCallback(
@@ -18,16 +20,18 @@ export function promisifyCallback(
 export function defineEvent<T extends object>(
   eventName: string,
   enhanceParamsFn: (
-    next: () => CallbackRet,
+    next: nextMiddleware,
     ...args: any
-  ) => { next: () => CallbackRet } & T,
+  ) => { next: nextMiddleware } & T,
   defaultRetVal = true,
   registerEvent = false,
   registerEventIdentifier = ""
 ) {
   const hasListener = eventBus.has(eventName);
+
   if (!hasListener) {
     registerEvent && samp.registerEvent(eventName, registerEventIdentifier);
+
     samp.on(eventName, (...args) => {
       let index = -1;
 
@@ -47,9 +51,10 @@ export function defineEvent<T extends object>(
   }
 
   return (
-    cb: (ret: { next: () => CallbackRet } & T) => PromisifyCallbackRet
+    cb: (ret: ReturnType<typeof enhanceParamsFn>) => PromisifyCallbackRet
   ) => {
     const middlewares = eventBus.get(eventName) || [];
+
     const length = middlewares.push(cb);
     const idx = length - 1;
 
@@ -57,6 +62,7 @@ export function defineEvent<T extends object>(
 
     const off = () => {
       const currentMiddlewares = eventBus.get(eventName) || [];
+
       if (currentMiddlewares.length && currentMiddlewares[idx] === cb) {
         currentMiddlewares.splice(idx, 1);
         eventBus.set(eventName, currentMiddlewares);
