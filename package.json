@@ -1,12 +1,15 @@
 {
-  "version": "0.0.1",
+  "version": "0.9.5",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "node ./scripts/build.js",
+    "release": "node ./scripts/release.js",
     "contributors": "all-contributors generate",
     "lint-staged": "lint-staged",
-    "prepare": "husky install"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "prepare": "husky install",
+    "preinstall": "npx only-allow pnpm -y"
   },
   "lint-staged": {
     "*.ts": [
@@ -25,12 +28,16 @@
     "pino": "~8.6.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.2",
+    "@commitlint/config-conventional": "^18.4.2",
     "@rollup/plugin-json": "^6.0.0",
     "@sa-mp/node": "^0.2.0",
     "@types/node": "^18.16.13",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
     "all-contributors-cli": "^6.25.1",
+    "bumpp": "^9.2.0",
+    "conventional-changelog-cli": "^4.1.0",
     "esbuild": "^0.15.18",
     "eslint": "^8.41.0",
     "execa": "^7.1.1",
@@ -45,6 +52,5 @@
     "rollup-plugin-node-externals": "^5.1.3",
     "rollup-plugin-typescript-paths": "^1.4.0",
     "typescript": "^5.0.4"
-  },
-  "prepare": "npm run build"
+  }
 }

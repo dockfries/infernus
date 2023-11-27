@@ -17,10 +17,7 @@
   "files": [
     "dist"
   ],
-  "scripts": {
-    "build": "rollup -c",
-    "prepublishOnly": "pnpm build"
-  },
+  "scripts": {},
   "dependencies": {
     "chalk": "^5.2.0",
     "decompress": "^4.2.1",

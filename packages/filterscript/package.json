@@ -29,9 +29,7 @@
   "files": [
     "dist"
   ],
-  "scripts": {
-    "prepublishOnly": "pnpm -w build"
-  },
+  "scripts": {},
   "devDependencies": {
     "@infernus/core": "workspace:^"
   },

@@ -14,6 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/dockfries/infernus.git"
   },
+  "scripts": {},
   "license": "MIT",
   "author": "dockfries",
   "exports": {
@@ -28,9 +29,6 @@
   "files": [
     "dist"
   ],
-  "scripts": {
-    "prepublishOnly": "pnpm -w build"
-  },
   "dependencies": {
     "@infernus/streamer": "workspace:^",
     "@infernus/wrapper": "workspace:^",
@@ -41,6 +39,5 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.192"
-  },
-  "prepare": "npm run build"
+  }
 }
