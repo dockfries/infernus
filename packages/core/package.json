@@ -1,6 +1,6 @@
 {
   "name": "@infernus/core",
-  "version": "0.9.5",
+  "version": "0.9.8",
   "description": "NodeJS library for Scripting Open Multiplayer",
   "keywords": [
     "omp",
@@ -33,11 +33,11 @@
     "@infernus/streamer": "workspace:^",
     "@infernus/wrapper": "workspace:^",
     "iconv-lite": "^0.6.3",
-    "lodash": "^4.17.21",
-    "pino": "~8.6.1",
-    "pino-pretty": "^9.1.1"
+    "lodash-unified": "^1.0.3",
+    "pino": "^8.16.2",
+    "pino-pretty": "^9.4.1"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.192"
+    "@types/lodash-es": "^4.17.12"
   }
 }
