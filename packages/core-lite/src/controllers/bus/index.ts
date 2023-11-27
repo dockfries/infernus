@@ -4,71 +4,98 @@ export type PromisifyCallbackRet = CallbackRet | Promise<CallbackRet>;
 
 export type nextMiddleware = () => CallbackRet;
 
-export const eventBus = new Map<string, Array<(...args: any) => any>>();
+export type defineEventOptions<T> = {
+  name: string;
+  enhance: (
+    next: nextMiddleware,
+    ...args: any[]
+  ) => { next: nextMiddleware } & T;
+  defaultValue?: boolean;
+  identifier?: string;
+  isNative?: boolean;
+};
 
-export function promisifyCallback(
+const eventBus = new Map<string, Array<(...args: any) => any>>();
+
+function transformReturnValue(
   value: PromisifyCallbackRet,
-  defaultRetVal: boolean
+  defaultValue: boolean
 ) {
-  if (value instanceof Promise) {
-    return +defaultRetVal;
-  }
-  const ret = +value;
-  return isNaN(ret) ? +defaultRetVal : ret;
+  if (typeof value === "boolean") return +value;
+  if (typeof value === "number" && !isNaN(value)) return value;
+  return +defaultValue;
 }
 
-export function defineEvent<T extends object>(
-  eventName: string,
-  enhanceParamsFn: (
-    next: nextMiddleware,
-    ...args: any
-  ) => { next: nextMiddleware } & T,
-  defaultRetVal = true,
-  registerEvent = false,
-  registerEventIdentifier = ""
-) {
-  const hasListener = eventBus.has(eventName);
+function executeMiddlewares<T>(options: defineEventOptions<T>, ...args: any[]) {
+  const { defaultValue = true, name, enhance } = options;
+  let index = -1;
 
-  if (!hasListener) {
-    registerEvent && samp.registerEvent(eventName, registerEventIdentifier);
+  try {
+    const next = () => {
+      const middlewares = eventBus.get(name);
+      if (!middlewares || !middlewares.length) return defaultValue;
 
-    samp.on(eventName, (...args) => {
-      let index = -1;
+      index++;
+      if (index < middlewares.length) {
+        return middlewares[index](enhance(next, args));
+      }
+      return defaultValue;
+    };
 
-      const next = () => {
-        const middlewares = eventBus.get(eventName);
-        if (!middlewares || !middlewares.length) return defaultRetVal;
+    return transformReturnValue(next(), defaultValue);
+  } catch (err) {
+    const error = JSON.stringify(err);
+    const msg = `executing event [name:${name},index:${index}] error: ${error}.`;
+    console.log(msg);
+  }
+  return transformReturnValue(defaultValue, defaultValue);
+}
 
-        index++;
-        if (index < middlewares.length) {
-          return middlewares[index](enhanceParamsFn(next, ...args));
-        }
-        return defaultRetVal;
-      };
+export function defineEvent<T extends object>(options: defineEventOptions<T>) {
+  const { name, enhance, identifier, isNative = true } = options;
 
-      return promisifyCallback(next(), defaultRetVal);
-    });
+  function trigger(...args: any[]) {
+    if (isNative) {
+      const msg = `simulate event [name:${name}] is native (not recommended), unless you know what you're doing.`;
+      console.log(msg);
+    }
+    return executeMiddlewares(options, ...args);
   }
 
-  return (
-    cb: (ret: ReturnType<typeof enhanceParamsFn>) => PromisifyCallbackRet
-  ) => {
-    const middlewares = eventBus.get(eventName) || [];
+  function run(cb: (ret: ReturnType<typeof enhance>) => PromisifyCallbackRet) {
+    const middlewares = eventBus.get(name) || [];
 
     const length = middlewares.push(cb);
     const idx = length - 1;
 
-    eventBus.set(eventName, middlewares);
+    eventBus.set(name, middlewares);
 
     const off = () => {
-      const currentMiddlewares = eventBus.get(eventName) || [];
+      const currentMiddlewares = eventBus.get(name) || [];
 
       if (currentMiddlewares.length && currentMiddlewares[idx] === cb) {
         currentMiddlewares.splice(idx, 1);
-        eventBus.set(eventName, currentMiddlewares);
+        eventBus.set(name, currentMiddlewares);
       }
     };
 
     return off;
-  };
+  }
+
+  const h = [run, trigger] as [typeof run, typeof trigger];
+
+  const isDefined = eventBus.has(name);
+
+  if (isDefined) {
+    const msg = `define event [name:${name}] error: already defined.`;
+    console.log(msg);
+    throw new Error(msg);
+  }
+
+  if (isNative) {
+    identifier && samp.registerEvent(name, identifier);
+    samp.on(name, trigger);
+  }
+
+  return h;
 }
