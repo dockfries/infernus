@@ -6,6 +6,13 @@ The name "Infernus" comes from the vehicle id 411 in the game.
 
 NodeJS library for scripting [Open Multiplayer](https://open.mp). Highly recommended to get started with the [infernus-starter](https://github.com/dockfries/infernus-starter) template.
 
+## Features
+
+- 🥳 [open.mp](https://github.com/openmultiplayer) for the next generation
+- 🚀 fully embrace the powerful node.js ecosystem
+- 🎉 utf8 file coding, i18n support for different charsets depending on the player
+- 💡 better data types and asynchronous support
+
 ## Installation
 
 ```sh
