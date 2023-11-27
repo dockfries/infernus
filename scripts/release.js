@@ -19,7 +19,7 @@ function bumpVersion() {
 }
 
 function releasePkg(isReady) {
-  return execa("npm publish", [!isReady && "--dry-run"].filter(Boolean), {
+  return execa("pnpm publish", [!isReady && "--dry-run"].filter(Boolean), {
     cwd: pkgPath,
     stdio: "inherit",
   });

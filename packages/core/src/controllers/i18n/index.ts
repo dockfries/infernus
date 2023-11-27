@@ -1,7 +1,7 @@
 import type { TLocales } from "core/types";
 import { encode, decode, encodingExists } from "iconv-lite";
 import { logger } from "core/logger";
-import { get, mapKeys, merge, omit, snakeCase } from "lodash";
+import { snakeCase, merge, omit, get, mapKeys } from "lodash-unified";
 
 export class I18n {
   constructor(
@@ -76,6 +76,6 @@ export class I18n {
   }
 
   static snakeLocaleKeys(locales: TLocales) {
-    return mapKeys(locales, (_, key) => snakeCase(key));
+    return mapKeys(locales, (_: any, key: any) => snakeCase(key));
   }
 }

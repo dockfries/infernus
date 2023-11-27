@@ -6,7 +6,7 @@ import {
 import { Player } from "./basePlayer";
 import { playerBus, playerHooks } from "./playerBus";
 
-let timer: null | NodeJS.Timer = null;
+let timer: null | NodeJS.Timeout = null;
 
 let pausePlayers: Map<number, Player> | null = null;
 

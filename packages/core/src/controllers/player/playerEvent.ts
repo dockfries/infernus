@@ -10,11 +10,11 @@ import { Player } from "./basePlayer";
 import { CmdBus } from "../command";
 import type { ICmdErr } from "core/interfaces";
 import * as enums from "core/enums";
-import { throttle } from "lodash";
 import { Dialog } from "../promise/dialog";
 import { delCCTask } from "../promise/client";
 import { playerBus, playerHooks } from "./playerBus";
 import type { TCommonCallback, TEventFunc, TEventName } from "core/types";
+import { throttle } from "lodash-unified";
 
 // Each instance can be called to callbacks, so you can split the logic.
 
