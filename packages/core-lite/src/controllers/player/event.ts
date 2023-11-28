@@ -3,51 +3,48 @@ import { defineEvent } from "../bus";
 
 const players = new Map<number, Player>();
 
-export const [OnPlayerConnect] = defineEvent({
+export const getPlayerInstances = () => [...players.values()];
+
+export const [onPlayerConnect] = defineEvent({
   name: "OnPlayerConnect",
-  enhance(next, playerId: number) {
-    const player = players.get(playerId) || new Player(playerId);
-    return { next, player };
+  beforeEach(id: number) {
+    const player = new Player(id);
+    players.set(id, player);
+    return { player };
   },
 });
 
-export const [OnPlayerDisconnect] = defineEvent({
+export const [onPlayerDisconnect] = defineEvent({
   name: "OnPlayerDisconnect",
-  enhance(next, playerId: number) {
-    const player = players.get(playerId);
-    return { next, player };
+  beforeEach(id: number) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const player = players.get(id)!;
+    return { player };
+  },
+  afterEach({ player }) {
+    players.delete(player.id);
   },
 });
 
-const [OnPlayerPause, triggerOnPlayerPause] = defineEvent({
+export const [onPlayerPause, triggerOnPlayerPause] = defineEvent({
   name: "OnPlayerPause",
   isNative: false,
-  enhance(next, player: Player) {
-    return { next, player };
+  beforeEach(player: Player) {
+    return { player };
   },
 });
 
-OnPlayerPause(({ next, player }) => {
-  console.log(player);
-  return next();
-});
+// onPlayerPause(({ next, player }) => {
+//   console.log(player);
+//   return next();
+// });
 
-// simulate trigger custom event middlewares
-OnPlayerConnect(({ next, player }) => {
-  // if custom event middlewares return false(number != 1) not execute this event middlewares
-  // It is common in anti-cheating system.
-  const res = triggerOnPlayerPause(player);
-  if (!res) return;
+// // simulate trigger custom event middlewares
+// onPlayerConnect(({ next, player }) => {
+//   // if custom event middlewares return false(number != 1) not execute this event middlewares
+//   // It is common in anti-cheat system.
+//   const res = triggerOnPlayerPause(player);
+//   if (!res) return;
 
-  return next();
-});
-
-// after all onPlayerDisconnect middlewares executed
-// forget player (if meet async middleware, it will immediate executed)
-OnPlayerDisconnect(({ next, player }) => {
-  const ret = next();
-  if (player) players.delete(player.id);
-  return ret;
-});
-
-export { OnPlayerPause };
+//   return next();
+// });

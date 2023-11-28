@@ -2,20 +2,18 @@ export type CallbackRet = boolean | number | void;
 
 export type PromisifyCallbackRet = CallbackRet | Promise<CallbackRet>;
 
-export type nextMiddleware = () => CallbackRet;
+export type NextMiddleware = { next: () => CallbackRet };
 
-export type defineEventOptions<T> = {
+export type Options<T> = {
   name: string;
-  enhance: (
-    next: nextMiddleware,
-    ...args: any[]
-  ) => { next: nextMiddleware } & T;
   defaultValue?: boolean;
   identifier?: string;
   isNative?: boolean;
+  beforeEach: (...args: any[]) => T;
+  afterEach?: (arg: T) => void;
 };
 
-const eventBus = new Map<string, Array<(...args: any) => any>>();
+const eventBus = new Map<string, ((...args: any) => PromisifyCallbackRet)[]>();
 
 function transformReturnValue(
   value: PromisifyCallbackRet,
@@ -26,9 +24,14 @@ function transformReturnValue(
   return +defaultValue;
 }
 
-function executeMiddlewares<T>(options: defineEventOptions<T>, ...args: any[]) {
-  const { defaultValue = true, name, enhance } = options;
+function executeMiddlewares<T>(options: Options<T>, ...args: any[]) {
+  const { defaultValue = true, name, beforeEach, afterEach } = options;
+
+  const enhanced = beforeEach(...args);
+
   let index = -1;
+
+  const promises: Promise<CallbackRet>[] = [];
 
   try {
     const next = () => {
@@ -37,8 +40,20 @@ function executeMiddlewares<T>(options: defineEventOptions<T>, ...args: any[]) {
 
       index++;
       if (index < middlewares.length) {
-        return middlewares[index](enhance(next, args));
+        const ret = middlewares[index]({ next, ...enhanced });
+
+        if (ret instanceof Promise) {
+          promises.push(ret);
+        }
+
+        return ret;
       }
+
+      if (afterEach) {
+        if (!promises.length) afterEach(enhanced);
+        else Promise.all(promises).then(() => afterEach(enhanced));
+      }
+
       return defaultValue;
     };
 
@@ -51,18 +66,26 @@ function executeMiddlewares<T>(options: defineEventOptions<T>, ...args: any[]) {
   return transformReturnValue(defaultValue, defaultValue);
 }
 
-export function defineEvent<T extends object>(options: defineEventOptions<T>) {
-  const { name, enhance, identifier, isNative = true } = options;
+export function defineEvent<T extends object>(options: Options<T>) {
+  const { name, identifier, isNative = true } = options;
+
+  const isDefined = eventBus.has(name);
+
+  if (isDefined) {
+    const msg = `event [name:${name}] error: already defined.`;
+    console.log(msg);
+    throw new Error(msg);
+  }
 
   function trigger(...args: any[]) {
     if (isNative) {
-      const msg = `simulate event [name:${name}] is native (not recommended), unless you know what you're doing.`;
+      const msg = `simulate execute native event [name:${name}] is not recommended.`;
       console.log(msg);
     }
     return executeMiddlewares(options, ...args);
   }
 
-  function run(cb: (ret: ReturnType<typeof enhance>) => PromisifyCallbackRet) {
+  function run(cb: (ret: T & NextMiddleware) => PromisifyCallbackRet) {
     const middlewares = eventBus.get(name) || [];
 
     const length = middlewares.push(cb);
@@ -83,14 +106,6 @@ export function defineEvent<T extends object>(options: defineEventOptions<T>) {
   }
 
   const h = [run, trigger] as [typeof run, typeof trigger];
-
-  const isDefined = eventBus.has(name);
-
-  if (isDefined) {
-    const msg = `define event [name:${name}] error: already defined.`;
-    console.log(msg);
-    throw new Error(msg);
-  }
 
   if (isNative) {
     identifier && samp.registerEvent(name, identifier);
