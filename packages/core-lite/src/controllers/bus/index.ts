@@ -2,14 +2,12 @@ export type CallbackRet = boolean | number | void;
 
 export type PromisifyCallbackRet = CallbackRet | Promise<CallbackRet>;
 
-export type NextMiddleware = { next: () => CallbackRet };
-
 export type Options<T> = {
   name: string;
   defaultValue?: boolean;
   identifier?: string;
   isNative?: boolean;
-  beforeEach: (...args: any[]) => T;
+  beforeEach?: (...args: any[]) => T;
   afterEach?: (arg: T) => void;
 };
 
@@ -27,19 +25,19 @@ function transformReturnValue(
 function executeMiddlewares<T>(options: Options<T>, ...args: any[]) {
   const { defaultValue = true, name, beforeEach, afterEach } = options;
 
-  const enhanced = beforeEach(...args);
+  const middlewares = eventBus.get(name);
+  if (!middlewares || !middlewares.length) return defaultValue;
 
-  let index = -1;
+  const enhanced = beforeEach ? beforeEach(...args) : ({} as T);
 
   const promises: Promise<CallbackRet>[] = [];
 
-  try {
-    const next = () => {
-      const middlewares = eventBus.get(name);
-      if (!middlewares || !middlewares.length) return defaultValue;
+  let index = -1;
 
-      index++;
-      if (index < middlewares.length) {
+  const next = () => {
+    index++;
+    if (index < middlewares.length) {
+      try {
         const ret = middlewares[index]({ next, ...enhanced });
 
         if (ret instanceof Promise) {
@@ -47,23 +45,23 @@ function executeMiddlewares<T>(options: Options<T>, ...args: any[]) {
         }
 
         return ret;
+      } catch (err) {
+        const error = JSON.stringify(err);
+        const msg = `executing event [name:${name},index:${index}] error: ${error}.`;
+        console.log(msg);
       }
-
-      if (afterEach) {
-        if (!promises.length) afterEach(enhanced);
-        else Promise.all(promises).then(() => afterEach(enhanced));
-      }
-
       return defaultValue;
-    };
+    }
 
-    return transformReturnValue(next(), defaultValue);
-  } catch (err) {
-    const error = JSON.stringify(err);
-    const msg = `executing event [name:${name},index:${index}] error: ${error}.`;
-    console.log(msg);
-  }
-  return transformReturnValue(defaultValue, defaultValue);
+    if (afterEach) {
+      if (!promises.length) afterEach(enhanced);
+      else Promise.allSettled(promises).then(() => afterEach(enhanced));
+    }
+
+    return defaultValue;
+  };
+
+  return transformReturnValue(next(), defaultValue);
 }
 
 export function defineEvent<T extends object>(options: Options<T>) {
@@ -85,7 +83,9 @@ export function defineEvent<T extends object>(options: Options<T>) {
     return executeMiddlewares(options, ...args);
   }
 
-  function run(cb: (ret: T & NextMiddleware) => PromisifyCallbackRet) {
+  function run(
+    cb: (ret: T & { next: () => CallbackRet }) => PromisifyCallbackRet
+  ) {
     const middlewares = eventBus.get(name) || [];
 
     const length = middlewares.push(cb);
