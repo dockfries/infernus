@@ -11,7 +11,14 @@ export type Options<T> = {
   afterEach?: (arg: T) => void;
 };
 
-const eventBus = new Map<string, ((...args: any) => PromisifyCallbackRet)[]>();
+export const eventBus = new Map<
+  string,
+  ((...args: any) => PromisifyCallbackRet)[]
+>();
+
+export function emptyMiddlewares(name: string) {
+  eventBus.set(name, []);
+}
 
 function transformReturnValue(
   value: PromisifyCallbackRet,
@@ -26,7 +33,7 @@ function executeMiddlewares<T>(options: Options<T>, ...args: any[]) {
   const { defaultValue = true, name, beforeEach, afterEach } = options;
 
   const middlewares = eventBus.get(name);
-  if (!middlewares || !middlewares.length) return defaultValue;
+  if (!middlewares || !middlewares.length) return +defaultValue;
 
   const enhanced = beforeEach ? beforeEach(...args) : ({} as T);
 
@@ -75,6 +82,8 @@ export function defineEvent<T extends object>(options: Options<T>) {
     throw new Error(msg);
   }
 
+  emptyMiddlewares(name);
+
   function trigger(...args: any[]) {
     if (isNative) {
       const msg = `simulate execute native event [name:${name}] is not recommended.`;
@@ -86,19 +95,17 @@ export function defineEvent<T extends object>(options: Options<T>) {
   function run(
     cb: (ret: T & { next: () => CallbackRet }) => PromisifyCallbackRet
   ) {
-    const middlewares = eventBus.get(name) || [];
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const middlewares = eventBus.get(name)!;
 
     const length = middlewares.push(cb);
     const idx = length - 1;
-
-    eventBus.set(name, middlewares);
 
     const off = () => {
       const currentMiddlewares = eventBus.get(name) || [];
 
       if (currentMiddlewares.length && currentMiddlewares[idx] === cb) {
         currentMiddlewares.splice(idx, 1);
-        eventBus.set(name, currentMiddlewares);
       }
     };
 

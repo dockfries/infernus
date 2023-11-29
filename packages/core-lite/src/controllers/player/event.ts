@@ -1,11 +1,12 @@
-import { Player } from ".";
+import { Player } from "./entity";
 import { defineEvent } from "../bus";
 
 const players = new Map<number, Player>();
 
+export const getPlayerInstance = (id: number) => players.get(id);
 export const getPlayerInstances = () => [...players.values()];
 
-export const [onPlayerConnect] = defineEvent({
+export const [onConnect] = defineEvent({
   name: "OnPlayerConnect",
   beforeEach(id: number) {
     const player = new Player(id);
@@ -14,7 +15,7 @@ export const [onPlayerConnect] = defineEvent({
   },
 });
 
-export const [onPlayerDisconnect] = defineEvent({
+export const [onDisconnect] = defineEvent({
   name: "OnPlayerDisconnect",
   beforeEach(id: number) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -26,7 +27,7 @@ export const [onPlayerDisconnect] = defineEvent({
   },
 });
 
-export const [onPlayerPause, triggerOnPlayerPause] = defineEvent({
+export const [onPause] = defineEvent({
   name: "OnPlayerPause",
   isNative: false,
   beforeEach(player: Player) {
@@ -34,16 +35,16 @@ export const [onPlayerPause, triggerOnPlayerPause] = defineEvent({
   },
 });
 
-// onPlayerPause(({ next, player }) => {
+// onPause(({ next, player }) => {
 //   console.log(player);
 //   return next();
 // });
 
 // // simulate trigger custom event middlewares
-// onPlayerConnect(({ next, player }) => {
+// onConnect(({ next, player }) => {
 //   // if custom event middlewares return false(number != 1) not execute this event middlewares
 //   // It is common in anti-cheat system.
-//   const res = triggerOnPlayerPause(player);
+//   const res = triggerOnPause(player);
 //   if (!res) return;
 
 //   return next();
