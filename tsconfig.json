@@ -13,12 +13,11 @@
       "raknet/*": ["packages/raknet/src/*"],
       "filterscript/*": ["packages/filterscript/src/*"]
     },
-    "removeComments": true,
     "rootDir": ".",
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
     "types": ["@sa-mp/node", "@types/node"]
   },
-  "include": ["packages/*/src"]
+  "include": ["packages/*/src/*.ts"]
 }
