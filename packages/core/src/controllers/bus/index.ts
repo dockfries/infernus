@@ -1,3 +1,5 @@
+import { logger } from "core/logger";
+
 export type CallbackRet = boolean | number | void;
 
 export type PromisifyCallbackRet = CallbackRet | Promise<CallbackRet>;
@@ -55,7 +57,7 @@ function executeMiddlewares<T>(options: Options<T>, ...args: any[]) {
       } catch (err) {
         const error = JSON.stringify(err);
         const msg = `executing event [name:${name},index:${index}] error: ${error}.`;
-        console.log(msg);
+        logger.error(msg);
       }
       return defaultValue;
     }
@@ -78,17 +80,13 @@ export function defineEvent<T extends object>(options: Options<T>) {
 
   if (isDefined) {
     const msg = `event [name:${name}] error: already defined.`;
-    console.log(msg);
+    logger.error(msg);
     throw new Error(msg);
   }
 
   emptyMiddlewares(name);
 
   function trigger(...args: any[]) {
-    if (isNative) {
-      const msg = `simulate execute native event [name:${name}] is not recommended.`;
-      console.log(msg);
-    }
     return executeMiddlewares(options, ...args);
   }
 

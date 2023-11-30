@@ -21,9 +21,9 @@ export const [onConnect] = defineEvent({
 
 export const [onDisconnect] = defineEvent({
   name: "OnPlayerDisconnect",
-  beforeEach(id: number) {
+  beforeEach(id: number, reason: number) {
     const player = Player.players.get(id)!;
-    return { player };
+    return { player, reason };
   },
   afterEach({ player }) {
     Player.players.delete(player.id);

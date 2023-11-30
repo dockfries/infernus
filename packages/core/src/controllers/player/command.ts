@@ -44,7 +44,11 @@ export const [onCommandError, triggerOnError] = defineEvent({
   name: "OnCommandError",
   isNative: false,
   defaultValue: false,
-  beforeEach(player: Player, command: string, error: typeof CommandErrors) {
+  beforeEach(
+    player: Player,
+    command: string,
+    error: (typeof CommandErrors)["NOT_EXIST"]
+  ) {
     return { player, command, error };
   },
 });
@@ -83,30 +87,45 @@ onCommandText(({ player, buffer }) => {
 });
 
 export const CmdBus = {
-  on(command: string, cb: (ret: CmdBusCallback) => PromisifyCallbackRet) {
-    if (!command.match(commandPattern)) {
-      console.log("error command format");
+  on(
+    command: string | string[],
+    cb: (ret: CmdBusCallback) => PromisifyCallbackRet
+  ) {
+    const _command = Array.isArray(command) ? command : [command];
+
+    const inValidCmd = _command.find((cmd) => !cmd.match(commandPattern));
+
+    if (inValidCmd) {
+      console.log(`error command ${inValidCmd} format`);
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       return () => {};
     }
 
-    if (!commandBus.has(command)) {
-      const e = defineEvent({
-        name: command,
-        isNative: false,
-        beforeEach(player: Player, subcommand: string[]) {
-          return { player, subcommand };
-        },
-      });
-      commandBus.set(command, e);
-    }
+    const offs = _command.map((cmd) => {
+      if (!commandBus.has(cmd)) {
+        const e = defineEvent({
+          name: cmd,
+          isNative: false,
+          beforeEach(player: Player, subcommand: string[]) {
+            return { player, subcommand };
+          },
+        });
+        commandBus.set(cmd, e);
+      }
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const [run] = commandBus.get(command)!;
-    return run(cb);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const [run] = commandBus.get(cmd)!;
+      return run(cb);
+    });
+
+    return () => {
+      offs.forEach((off) => off());
+    };
   },
-  off(command: string) {
-    if (!commandBus.has(command)) return;
-    emptyMiddlewares(command);
+  off(command: string | string[]) {
+    const _command = Array.isArray(command) ? command : [command];
+    _command.forEach((cmd) => {
+      if (commandBus.has(cmd)) emptyMiddlewares(cmd);
+    });
   },
 };
