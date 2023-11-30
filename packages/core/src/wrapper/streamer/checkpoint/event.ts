@@ -1,14 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DynamicCheckpoint } from "./entity";
-import {
-  onItemStreamIn,
-  onItemStreamOut,
-  onPlayerEnterDynamicCP,
-  onPlayerLeaveDynamicCP,
-} from "../callbacks";
+import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/controllers/bus";
 import { GameMode } from "core/controllers/gamemode";
-import type { Player } from "core/controllers/player/entity";
+import { Player } from "core/controllers/player/entity";
 import { StreamerItemTypes } from "core/enums";
 
 GameMode.onExit(({ next }) => {
@@ -44,6 +39,28 @@ onItemStreamOut(({ type, id, forPlayer, next }) => {
     return triggerStreamOut(forPlayer, DynamicCheckpoint.getInstance(id)!);
   }
   return next();
+});
+
+const [onPlayerEnterDynamicCP] = defineEvent({
+  name: "OnPlayerEnterDynamicCP",
+  identifier: "ii",
+  beforeEach(playerId: number, checkpointId: number) {
+    return {
+      player: Player.getInstance(playerId)!,
+      pickup: DynamicCheckpoint.getInstance(checkpointId)!,
+    };
+  },
+});
+
+const [onPlayerLeaveDynamicCP] = defineEvent({
+  name: "OnPlayerLeaveDynamicCP",
+  identifier: "ii",
+  beforeEach(playerId: number, checkpointId: number) {
+    return {
+      player: Player.getInstance(playerId)!,
+      pickup: DynamicCheckpoint.getInstance(checkpointId)!,
+    };
+  },
 });
 
 export const DynamicCheckPointEvent = {

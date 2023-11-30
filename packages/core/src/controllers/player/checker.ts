@@ -1,8 +1,7 @@
 import { Player } from "./entity";
 import { PlayerStateEnum } from "../../enums";
 import { defineEvent } from "../bus";
-import { delCheckResponseTask } from "./promise/client";
-import { Dialog } from "./promise/dialog";
+import { Dialog } from "./dialog";
 import { onConnect, onDisconnect, onUpdate } from "./event";
 
 let pauseChecker: null | NodeJS.Timeout = null;
@@ -47,7 +46,6 @@ onDisconnect(({ player, next }) => {
     clearInterval(pauseChecker);
     pauseChecker = null;
   }
-  delCheckResponseTask(player, true);
   Dialog.close(player);
   return next();
 });

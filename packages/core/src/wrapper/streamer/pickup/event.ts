@@ -1,14 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DynamicPickup } from "./entity";
-import {
-  onItemStreamIn,
-  onItemStreamOut,
-  onPlayerPickUpDynamicPickup,
-} from "../callbacks";
-import type { Player } from "core/controllers";
-import { GameMode } from "core/controllers";
+import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/controllers/bus";
 import { StreamerItemTypes } from "core/enums";
+import { GameMode } from "core/controllers/gamemode";
+import { Player } from "core/controllers/player/entity";
 
 GameMode.onExit(({ next }) => {
   DynamicPickup.getInstances().forEach((p) => p.destroy());
@@ -43,6 +39,17 @@ onItemStreamOut(({ type, id, forPlayer, next }) => {
     return triggerStreamOut(forPlayer, DynamicPickup.getInstance(id)!);
   }
   return next();
+});
+
+const [onPlayerPickUpDynamicPickup] = defineEvent({
+  name: "OnPlayerPickUpDynamicPickup",
+  identifier: "ii",
+  beforeEach(playerId: number, pickupId: number) {
+    return {
+      player: Player.getInstance(playerId)!,
+      pickup: DynamicPickup.getInstance(pickupId)!,
+    };
+  },
 });
 
 export const DynamicPickupEvent = {

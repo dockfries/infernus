@@ -71,6 +71,7 @@ import {
   Streamer_Update,
   Streamer_UpdateEx,
 } from "@infernus/streamer";
+import { onPluginError } from "../callbacks";
 
 export class Streamer {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -297,4 +298,5 @@ export class Streamer {
   static removeArrayData = Streamer_RemoveArrayData;
   static getArrayDataLength = Streamer_GetArrayDataLength;
   static getUpperBound = Streamer_GetUpperBound;
+  static onPluginError = onPluginError;
 }

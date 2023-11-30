@@ -1,17 +1,17 @@
-import { DialogStylesEnum } from "../../../../enums";
+import { DialogStylesEnum } from "../../enums";
 import type {
   IDialog,
   IDialogFuncQueue,
   IDialogResRaw,
   IDialogResResult,
-} from "../../../../interfaces";
+} from "../../interfaces";
 import { HidePlayerDialog } from "@infernus/wrapper";
-import { I18n } from "../../../i18n";
-import { Player } from "../../entity";
-import { defineEvent } from "../../../bus";
+import { I18n } from "../i18n";
+import { Player } from "./entity";
+import { defineEvent } from "../bus";
 import { ShowPlayerDialog } from "core/utils/helperUtils";
 
-const [onDialogResponse] = defineEvent({
+export const [onDialogResponse] = defineEvent({
   name: "OnDialogResponse",
   beforeEach(
     id: number,
@@ -33,8 +33,8 @@ const [onDialogResponse] = defineEvent({
 
 onDialogResponse(({ next, player, dialogId, response, listItem, buffer }) => {
   const callback = Dialog.waitingQueue.get(player);
-  if (!callback) return 0;
-  if (callback.showId !== dialogId) return 1;
+  if (!callback) return next();
+  if (callback.showId !== dialogId) return next();
   // bug: does not trigger resolve of promise
   // fix: it only works if you put it in an event loop
   setTimeout(() => callback.resolve({ response, listItem, buffer }));

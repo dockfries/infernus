@@ -1,14 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { Player } from "core/controllers";
-import { DynamicRaceCP, GameMode } from "core/controllers";
-import {
-  onItemStreamIn,
-  onItemStreamOut,
-  onPlayerEnterDynamicRaceCP,
-  onPlayerLeaveDynamicRaceCP,
-} from "../callbacks";
+import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/controllers/bus";
+import { GameMode } from "core/controllers/gamemode";
 import { StreamerItemTypes } from "core/enums";
+import { DynamicRaceCP } from "./entity";
+import { Player } from "core/controllers/player/entity";
 
 GameMode.onExit(({ next }) => {
   DynamicRaceCP.getInstances().forEach((r) => r.destroy());
@@ -43,6 +39,28 @@ onItemStreamOut(({ type, id, forPlayer, next }) => {
     return triggerStreamOut(forPlayer, DynamicRaceCP.getInstance(id)!);
   }
   return next();
+});
+
+const [onPlayerEnterDynamicRaceCP] = defineEvent({
+  name: "OnPlayerEnterDynamicRaceCP",
+  identifier: "ii",
+  beforeEach(playerId: number, checkpointId: number) {
+    return {
+      player: Player.getInstance(playerId)!,
+      pickup: DynamicRaceCP.getInstance(checkpointId)!,
+    };
+  },
+});
+
+const [onPlayerLeaveDynamicRaceCP] = defineEvent({
+  name: "OnPlayerLeaveDynamicRaceCP",
+  identifier: "ii",
+  beforeEach(playerId: number, checkpointId: number) {
+    return {
+      player: Player.getInstance(playerId)!,
+      pickup: DynamicRaceCP.getInstance(checkpointId)!,
+    };
+  },
 });
 
 export const DynamicRaceCPEvent = {

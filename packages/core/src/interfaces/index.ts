@@ -142,12 +142,6 @@ export interface IClientResRaw {
   data: number;
 }
 
-export interface IClientFuncQueue {
-  resolve: (value: IClientResRaw | PromiseLike<IClientResRaw>) => void;
-  reject: (reason: string) => void;
-  timeout: NodeJS.Timeout;
-}
-
 export interface ICommonGangZoneKey {
   id: number;
   global: boolean;

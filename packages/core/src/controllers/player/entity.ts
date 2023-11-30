@@ -25,9 +25,18 @@ import type { TPos } from "../../types";
 import { getAnimateDurationByLibName } from "../../utils/animateUtils";
 import * as h from "../../utils/helperUtils";
 import { logger } from "../../logger";
-import { delCheckResponseTask, checkResponseQueue } from "./promise/client";
+
 import type { Vehicle } from "../vehicle";
 import type { DynamicObject } from "core/wrapper/streamer";
+import { defineEvent } from "../bus";
+
+export const [onCheckResponse] = defineEvent({
+  name: "OnClientCheckResponse",
+  beforeEach(id: number, actionId: number, memAddr: number, data: number) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return { player: Player.getInstance(id)!, actionId, memAddr, data };
+  },
+});
 
 export class Player {
   static readonly players = new Map<number, Player>();
@@ -675,7 +684,7 @@ export class Player {
     memAddr: number,
     memOffset: number,
     byteCount: number
-  ): void | Promise<IClientResRaw> {
+  ) {
     const validTypes = [2, 5, 69, 70, 71, 72];
     if (!validTypes.includes(type)) {
       return logger.error(
@@ -683,27 +692,43 @@ export class Player {
       );
     }
 
-    return new Promise((resolve, reject) => {
-      delCheckResponseTask(this, true);
-      if (this.isPaused)
+    return new Promise<IClientResRaw>((resolve, reject) => {
+      if (this.isPaused) {
         return reject(
           "[Player]: An attempt to check the player client response, but the player paused the game"
         );
-      const p = new Promise<IClientResRaw>((clientResolve, clientReject) => {
-        const ping = this.getPing();
-        const shouldResTime = (ping >= 200 ? 0 : ping) + 200;
-        checkResponseQueue.set(this, {
-          resolve: clientResolve,
-          reject: clientReject,
-          timeout: setTimeout(
-            () => delCheckResponseTask(this, true),
-            shouldResTime
-          ),
-        });
-        f.SendClientCheck(this.id, type, memAddr, memOffset, byteCount);
-      });
-      p.then(resolve, reject);
-      p.finally(() => delCheckResponseTask(this));
+      }
+
+      const timeoutMsg =
+        "[Player]: An attempt to check the player client response timed out";
+
+      const ping = this.getPing();
+      const shouldResTime = (ping >= 200 ? 0 : ping) + 200;
+
+      let timer: NodeJS.Timeout | null = null;
+
+      const off = onCheckResponse(
+        ({ player, actionId, memAddr, data, next }) => {
+          if (player !== this) return next();
+          if (timer) {
+            clearTimeout(timer);
+            timer = null;
+            reject(timeoutMsg);
+          } else {
+            resolve({ actionId, memAddr, data });
+          }
+          const ret = next();
+          off();
+          return ret;
+        }
+      );
+
+      timer = setTimeout(() => {
+        off();
+        reject(timeoutMsg);
+      }, shouldResTime);
+
+      f.SendClientCheck(this.id, type, memAddr, memOffset, byteCount);
     });
   }
   selectTextDraw(colour: string | number): void {

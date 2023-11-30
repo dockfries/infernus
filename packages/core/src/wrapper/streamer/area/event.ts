@@ -1,14 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DynamicArea } from "./entity";
 import { GameMode } from "core/controllers/gamemode";
-import {
-  onItemStreamIn,
-  onItemStreamOut,
-  onPlayerEnterDynamicArea,
-  onPlayerLeaveDynamicArea,
-} from "../callbacks";
+import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/controllers/bus";
-import type { Player } from "core/controllers/player/entity";
+import { Player } from "core/controllers/player/entity";
 import { StreamerItemTypes } from "core/enums";
 
 GameMode.onExit(({ next }) => {
@@ -44,6 +39,28 @@ onItemStreamOut(({ type, id, forPlayer, next }) => {
     return triggerStreamOut(forPlayer, DynamicArea.getInstance(id)!);
   }
   return next();
+});
+
+const [onPlayerEnterDynamicArea] = defineEvent({
+  name: "OnPlayerEnterDynamicArea",
+  identifier: "ii",
+  beforeEach(playerId: number, areaId: number) {
+    return {
+      player: Player.getInstance(playerId)!,
+      pickup: DynamicArea.getInstance(areaId)!,
+    };
+  },
+});
+
+const [onPlayerLeaveDynamicArea] = defineEvent({
+  name: "OnPlayerLeaveDynamicArea",
+  identifier: "ii",
+  beforeEach(playerId: number, areaId: number) {
+    return {
+      player: Player.getInstance(playerId)!,
+      pickup: DynamicArea.getInstance(areaId)!,
+    };
+  },
 });
 
 export const DynamicAreaEvent = {

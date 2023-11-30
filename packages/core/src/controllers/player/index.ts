@@ -7,7 +7,6 @@ import {
   onCommandReceived,
 } from "./command";
 import {
-  onCheckResponse,
   onClickMap,
   onClickPlayer,
   onConnect,
@@ -29,6 +28,9 @@ import {
   onText,
   onUpdate,
 } from "./event";
+
+import { Dialog, onDialogResponse } from "./dialog";
+import { onCheckResponse } from "./entity";
 
 export { Player } from "./entity";
 
@@ -59,8 +61,9 @@ export const PlayerEvent = {
   onCommandReceived,
   onCommandPerformed,
   onCommandError,
+  onDialogResponse,
 };
 
-export { CmdBus };
+export { CmdBus, Dialog };
 
 export type { CmdBusCallback, CommandErrors };

@@ -223,11 +223,3 @@ export const [onFinishedDownloading] = defineEvent({
     };
   },
 });
-
-export const [onCheckResponse] = defineEvent({
-  name: "OnClientCheckResponse",
-  beforeEach(id: number, actionId: number, memAddr: number, data: number) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return { player: Player.getInstance(id)!, actionId, memAddr, data };
-  },
-});
