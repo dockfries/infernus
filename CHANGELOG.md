@@ -1,3 +1,12 @@
+# [0.10.0-beta.2](https://github.com/dockfries/infernus/compare/v0.10.0-beta.1...v0.10.0-beta.2) (2023-11-30)
+
+
+### Bug Fixes
+
+* **core:** find subcommand ([0e63ccf](https://github.com/dockfries/infernus/commit/0e63ccfd7b4047820404d23a5686fbb66acc4b62))
+
+
+
 # [0.10.0-beta.1](https://github.com/dockfries/infernus/compare/v0.10.0-beta.0...v0.10.0-beta.1) (2023-11-30)
 
 
