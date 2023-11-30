@@ -1,3 +1,19 @@
+# [0.10.0-beta.0](https://github.com/dockfries/infernus/compare/v0.9.8...v0.10.0-beta.0) (2023-11-30)
+
+
+### Bug Fixes
+
+* bump version files range ([2b711a3](https://github.com/dockfries/infernus/commit/2b711a3c78030875cfee996d0b23aff1701d3837))
+* **core:** build circular deps ([943ca4e](https://github.com/dockfries/infernus/commit/943ca4e430a29f21b71b38d082467b944abf31b4))
+* **git:** pre-commit hook contributors not add ([3270723](https://github.com/dockfries/infernus/commit/327072363580908a53f5301c7966ab8597165d88))
+
+
+### Features
+
+* **wip-core:** simulate trigger event ([be0e26f](https://github.com/dockfries/infernus/commit/be0e26fc56b38fda259045b633b9e5498bb2fe17))
+
+
+
 ## 0.9.8 (2023-11-27)
 
 ### Bug Fixes
