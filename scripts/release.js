@@ -7,13 +7,17 @@ import { versionBump } from "bumpp";
 let pkgName, pkgPath;
 
 function bumpVersion() {
+  const isCore = pkgName === "core";
   return versionBump({
     all: true,
     push: false,
-    tag: pkgName === "core",
+    tag: isCore,
     execute: "pnpm changelog",
     commit: `chore(release): ${pkgName} v%s`,
-    files: ["./package.json", "./packages/core/package.json"],
+    files: [
+      isCore && "./package.json",
+      `./packages/${pkgName}/package.json`,
+    ].filter(Boolean),
     cwd: process.cwd(),
   });
 }
