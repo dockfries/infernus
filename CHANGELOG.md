@@ -1,3 +1,12 @@
+# [0.10.0-beta.1](https://github.com/dockfries/infernus/compare/v0.10.0-beta.0...v0.10.0-beta.1) (2023-11-30)
+
+
+### Bug Fixes
+
+* **core:** logger, onCommandError/Text, disconnect ([052000f](https://github.com/dockfries/infernus/commit/052000f2fb6a2abbd580fdba931f3f3ffdb02703))
+
+
+
 # [0.10.0-beta.0](https://github.com/dockfries/infernus/compare/v0.9.8...v0.10.0-beta.0) (2023-11-30)
 
 
