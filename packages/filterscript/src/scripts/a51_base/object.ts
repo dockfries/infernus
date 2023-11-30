@@ -1,11 +1,12 @@
-import { GateStatusEnum } from "filterscript/filterscripts/a51_base/enums/gate";
+import { GateStatusEnum } from "filterscript/scripts/a51_base/enums/gate";
 import type {
   IA51Options,
   ICommonOptions,
   IGateList,
 } from "filterscript/interfaces";
 import { log, PlaySoundForPlayersInRange } from "filterscript/utils/gl_common";
-import type { Player, I18n, PlayerEvent } from "@infernus/core";
+import type { I18n } from "@infernus/core";
+import { Player } from "@infernus/core";
 import {
   GameText,
   DynamicObject,
@@ -13,7 +14,6 @@ import {
   KeysEnum,
 } from "@infernus/core";
 import { ColorEnum } from "./enums/color";
-import { playerEvent } from "./player";
 
 export const gateInfo: IGateList = {
   east: {
@@ -72,29 +72,8 @@ export const gateInfo: IGateList = {
   },
 };
 
-class MyDynamicObjectEvent extends DynamicObjectEvent<Player, DynamicObject> {
-  onMoved(object: DynamicObject) {
-    const { north, east } = gateInfo;
-    if (object === north.instance) {
-      gateInfo.north.status =
-        north.status === GateStatusEnum.CLOSING
-          ? GateStatusEnum.CLOSED
-          : GateStatusEnum.OPEN;
-      return true;
-    }
-    if (object === east.instance) {
-      gateInfo.east.status =
-        east.status === GateStatusEnum.CLOSING
-          ? GateStatusEnum.CLOSED
-          : GateStatusEnum.OPEN;
-      return true;
-    }
-    return true;
-  }
-}
-
 const A51LandObject: DynamicObject = new DynamicObject({
-  modelid: 11692,
+  modelId: 11692,
   x: 199.344,
   y: 1943.79,
   z: 18.2031,
@@ -104,7 +83,7 @@ const A51LandObject: DynamicObject = new DynamicObject({
 });
 const A51Buildings: Array<DynamicObject> = [
   new DynamicObject({
-    modelid: 19905,
+    modelId: 19905,
     x: 206.79895,
     y: 1931.643432,
     z: 16.450595,
@@ -113,7 +92,7 @@ const A51Buildings: Array<DynamicObject> = [
     rz: 0,
   }),
   new DynamicObject({
-    modelid: 19905,
+    modelId: 19905,
     x: 188.208908,
     y: 1835.033569,
     z: 16.450595,
@@ -122,7 +101,7 @@ const A51Buildings: Array<DynamicObject> = [
     rz: 0,
   }),
   new DynamicObject({
-    modelid: 19905,
+    modelId: 19905,
     x: 230.378875,
     y: 1835.033569,
     z: 16.450595,
@@ -131,7 +110,7 @@ const A51Buildings: Array<DynamicObject> = [
     rz: 0,
   }),
   new DynamicObject({
-    modelid: 19907,
+    modelId: 19907,
     x: 142.013977,
     y: 1902.538085,
     z: 17.633581,
@@ -140,7 +119,7 @@ const A51Buildings: Array<DynamicObject> = [
     rz: 270.0,
   }),
   new DynamicObject({
-    modelid: 19907,
+    modelId: 19907,
     x: 146.854003,
     y: 1846.008056,
     z: 16.53358,
@@ -149,7 +128,7 @@ const A51Buildings: Array<DynamicObject> = [
     rz: 0,
   }),
   new DynamicObject({
-    modelid: 19909,
+    modelId: 19909,
     x: 137.90039,
     y: 1875.024291,
     z: 16.836734,
@@ -158,7 +137,7 @@ const A51Buildings: Array<DynamicObject> = [
     rz: 270.0,
   }),
   new DynamicObject({
-    modelid: 19909,
+    modelId: 19909,
     x: 118.170387,
     y: 1875.184326,
     z: 16.846735,
@@ -168,7 +147,7 @@ const A51Buildings: Array<DynamicObject> = [
   }),
 ];
 const A51Fence: DynamicObject = new DynamicObject({
-  modelid: 19312,
+  modelId: 19312,
   x: 191.141,
   y: 1870.04,
   z: 21.4766,
@@ -178,7 +157,7 @@ const A51Fence: DynamicObject = new DynamicObject({
 });
 const { closePos: nClosePos } = gateInfo.north;
 const A51NorthernGate: DynamicObject = new DynamicObject({
-  modelid: 19313,
+  modelId: 19313,
   x: nClosePos.x,
   y: nClosePos.y,
   z: nClosePos.z,
@@ -188,7 +167,7 @@ const A51NorthernGate: DynamicObject = new DynamicObject({
 });
 const { closePos: eClosePos } = gateInfo.east;
 const A51EasternGate: DynamicObject = new DynamicObject({
-  modelid: 19313,
+  modelId: 19313,
   x: eClosePos.x,
   y: eClosePos.y,
   z: eClosePos.z,
@@ -198,7 +177,6 @@ const A51EasternGate: DynamicObject = new DynamicObject({
 });
 
 export const moveGate = (
-  playerEvent: PlayerEvent<Player>,
   player: Player,
   newkeys: KeysEnum,
   options: IA51Options,
@@ -254,7 +232,7 @@ export const moveGate = (
   }
 
   PlaySoundForPlayersInRange(
-    playerEvent.getPlayersArr(),
+    Player.getInstances(),
     1035,
     50.0,
     position.x,
@@ -347,9 +325,31 @@ export const removeBuilding = (player: Player) => {
   player.removeBuilding(16094, 191.141, 1870.04, 21.4766, 250.0);
 };
 
+let offs: (() => void)[] = [];
+
 export const loadObjects = (options: ICommonOptions, i18n: I18n) => {
   // event should before create
-  new MyDynamicObjectEvent(playerEvent.getPlayersMap(), false);
+
+  const offOnMoved = DynamicObjectEvent.onMoved(({ object, next }) => {
+    const { north, east } = gateInfo;
+    if (object === north.instance) {
+      gateInfo.north.status =
+        north.status === GateStatusEnum.CLOSING
+          ? GateStatusEnum.CLOSED
+          : GateStatusEnum.OPEN;
+      return next();
+    }
+    if (object === east.instance) {
+      gateInfo.east.status =
+        east.status === GateStatusEnum.CLOSING
+          ? GateStatusEnum.CLOSED
+          : GateStatusEnum.OPEN;
+      return next();
+    }
+    return next();
+  });
+
+  offs.push(offOnMoved);
 
   A51LandObject.create();
   log(options, `  |--  ${i18n?.$t("a51.objects.created.land")}`);
@@ -368,7 +368,7 @@ export const loadObjects = (options: ICommonOptions, i18n: I18n) => {
 
   log(options, `  |--  ${i18n?.$t("a51.objects.created.gate")}`);
 
-  playerEvent.getPlayersArr().forEach((p) => {
+  Player.getInstances().forEach((p) => {
     if (!p.isConnected() || p.isNpc()) return;
     removeBuilding(p);
   });
@@ -400,6 +400,9 @@ export const unloadObjects = (options: ICommonOptions, i18n: I18n) => {
       );
     }
   });
+
+  offs.forEach((off) => off());
+  offs = [];
 };
 
 const destroyValidObject = (o: DynamicObject | Array<DynamicObject> | null) => {

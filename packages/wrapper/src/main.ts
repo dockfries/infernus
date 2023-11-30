@@ -8,8 +8,6 @@ export * from "./actor";
 export * from "./chat";
 export * from "./classes";
 export * from "./core";
-export * from "./gangzone/callbacks/global";
-export * from "./gangzone/callbacks/player";
 export * from "./gangzone/global";
 export * from "./gangzone/player";
 export * from "./menu";

@@ -20,17 +20,17 @@
 import type { IA51Options } from "filterscript/interfaces";
 
 import type { IFilterScript } from "@infernus/core";
-import { GameText, I18n } from "@infernus/core";
+import { GameText, I18n, PlayerEvent } from "@infernus/core";
 
 import { loadLabels, registerLabelEvent, unloadLabels } from "./label";
 import { loadObjects, moveGate, removeBuilding, unloadObjects } from "./object";
 
 import zh_cn from "./locales/zh-CN.json";
 import en_us from "./locales/en-US.json";
-import { playerEvent } from "./player";
 
 export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
-  let unregisterCommand: ReturnType<typeof playerEvent.onCommandText>;
+  let offs: (() => void)[] = [];
+
   const _options = options || {};
   _options.defaultLocale = _options.defaultLocale || "en_US";
   _options.command = _options.command || "a51";
@@ -40,46 +40,65 @@ export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
   if (locales) i18n.addLocales(locales);
 
   const registerEvent = () => {
-    playerEvent.onConnect = (p) => {
-      removeBuilding(p);
-      loadLabels(p, _options, i18n);
-      return true;
-    };
-    playerEvent.onDisconnect = (p) => {
-      unloadLabels(_options, i18n, p);
-      return true;
-    };
-    playerEvent.onKeyStateChange = (p, newKeys) => {
-      moveGate(playerEvent, p, newKeys, _options, i18n);
-      return true;
-    };
-    if (_options.onCommandReceived) {
-      playerEvent.onCommandReceived = _options.onCommandReceived;
-    }
+    const offOnConnect = PlayerEvent.onConnect(({ player, next }) => {
+      removeBuilding(player);
+      loadLabels(player, _options, i18n);
+      return next();
+    });
+    const offOnDisconnect = PlayerEvent.onDisconnect(({ player, next }) => {
+      unloadLabels(_options, i18n, player);
+      return next();
+    });
+    const offOnKeyStateChange = PlayerEvent.onKeyStateChange(
+      ({ player, newKeys, next }) => {
+        moveGate(player, newKeys, _options, i18n);
+        return next();
+      }
+    );
+
+    const offOnCommandReceived = PlayerEvent.onCommandReceived(
+      ({ player, command, next }) => {
+        if (_options.onCommandReceived) {
+          const ret = _options.onCommandReceived(player, command);
+          if (!ret) return ret;
+          return next();
+        }
+      }
+    );
+
+    offs.push(
+      offOnConnect,
+      offOnDisconnect,
+      offOnKeyStateChange,
+      offOnCommandReceived
+    );
   };
 
-  const unregisterEvent = () => {
-    playerEvent.onConnect = undefined;
-    playerEvent.onKeyStateChange = undefined;
-    playerEvent.onCommandReceived = undefined;
+  const offEventsCommands = () => {
+    offs.forEach((off) => off());
+    offs = [];
   };
 
   const registerCommand = () => {
     const { command, onTeleport } = _options;
-    unregisterCommand = playerEvent.onCommandText(command as string, (p) => {
-      p.setInterior(0);
-      p.setPos(135.2, 1948.51, 19.74);
-      p.setFacingAngle(180);
-      p.setCameraBehind();
-      if (onTeleport) onTeleport(p);
-      else
-        new GameText(
-          `~b~~h~${i18n?.$t("a51.text.teleport", null, p.locale)}`,
-          3000,
-          3
-        ).forPlayer(p);
-      return true;
-    });
+    const offCommand = PlayerEvent.onCommandText(
+      command as string,
+      ({ player, next }) => {
+        player.setInterior(0);
+        player.setPos(135.2, 1948.51, 19.74);
+        player.setFacingAngle(180);
+        player.setCameraBehind();
+        if (onTeleport) onTeleport(player);
+        else
+          new GameText(
+            `~b~~h~${i18n?.$t("a51.text.teleport", null, player.locale)}`,
+            3000,
+            3
+          ).forPlayer(player);
+        return next();
+      }
+    );
+    offs.push(offCommand);
   };
 
   const separator = () => {
@@ -102,8 +121,7 @@ export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
       separator();
     },
     unload() {
-      unregisterEvent();
-      unregisterCommand();
+      offEventsCommands();
       unloadObjects(_options, i18n);
       unloadLabels(_options, i18n);
 

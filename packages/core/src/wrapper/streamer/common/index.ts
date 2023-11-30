@@ -196,8 +196,8 @@ export class Streamer {
     x: number,
     y: number,
     z: number,
-    worldid?: number,
-    interiorid?: number,
+    worldId?: number,
+    interiorId?: number,
     type?: StreamerItemTypes | -1,
     compensatedtime?: number,
     freezeplayer?: boolean
@@ -207,8 +207,8 @@ export class Streamer {
       x,
       y,
       z,
-      worldid,
-      interiorid,
+      worldId,
+      interiorId,
       type,
       compensatedtime,
       freezeplayer

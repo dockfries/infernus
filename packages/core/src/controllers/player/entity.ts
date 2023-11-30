@@ -54,16 +54,16 @@ export class Player {
 
   constructor(public readonly id: number) {}
 
-  sendClientMessage(colour: string | number, msg: string): number {
-    return h.SendClientMessage(this, colour, msg);
+  sendClientMessage(color: string | number, msg: string): number {
+    return h.SendClientMessage(this, color, msg);
   }
 
   static sendClientMessageToAll(
     players: Array<Player>,
-    colour: string | number,
+    color: string | number,
     msg: string
   ) {
-    h.SendClientMessageToAll(players, colour, msg);
+    h.SendClientMessageToAll(players, color, msg);
   }
 
   sendPlayerMessage(player: Player, message: string): number {
@@ -114,14 +114,14 @@ export class Player {
   showPlayerNameTag(showPlayer: Player, show: boolean): void {
     f.ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
   }
-  setColor(colour: string | number): void {
-    f.SetPlayerColor(this.id, colour);
+  setColor(color: string | number): void {
+    f.SetPlayerColor(this.id, color);
   }
   getColor(): number {
     return f.GetPlayerColor(this.id);
   }
-  setPlayerMarker(showPlayer: Player, colour: string | number) {
-    f.SetPlayerMarkerForPlayer(this.id, showPlayer.id, colour);
+  setPlayerMarker(showPlayer: Player, color: string | number) {
+    f.SetPlayerMarkerForPlayer(this.id, showPlayer.id, color);
   }
   resetMoney(): number {
     return f.ResetPlayerMoney(this.id);
@@ -563,11 +563,11 @@ export class Player {
   }
   setChatBubble(
     text: string,
-    colour: string | number,
+    color: string | number,
     drawDistance: number,
     expireTime: number
   ): void {
-    f.SetPlayerChatBubble(this.id, text, colour, drawDistance, expireTime);
+    f.SetPlayerChatBubble(this.id, text, color, drawDistance, expireTime);
   }
   getDistanceFromPoint(X: number, Y: number, Z: number): number {
     return f.GetPlayerDistanceFromPoint(this.id, X, Y, Z);
@@ -731,8 +731,8 @@ export class Player {
       f.SendClientCheck(this.id, type, memAddr, memOffset, byteCount);
     });
   }
-  selectTextDraw(colour: string | number): void {
-    f.SelectTextDraw(this.id, colour);
+  selectTextDraw(color: string | number): void {
+    f.SelectTextDraw(this.id, color);
   }
   cancelSelectTextDraw(): void {
     f.CancelSelectTextDraw(this.id);

@@ -17,25 +17,31 @@ export class DynamicPickup {
   create(): void | this {
     if (this.id !== -1)
       return logger.warn("[StreamerPickup]: Unable to create pickup again");
-    let { streamdistance, worldid, interiorid, playerid, areaid, priority } =
-      this.sourceInfo;
-    const { type, modelid, x, y, z, extended } = this.sourceInfo;
+    let {
+      streamDistance,
+      worldId,
+      interiorId: interiorId,
+      playerId,
+      areaId,
+      priority,
+    } = this.sourceInfo;
+    const { type, modelId: modelid, x, y, z, extended } = this.sourceInfo;
 
     if (type < 0 || type > 22)
       return logger.error("[StreamerPickup]: Invalid pickup type");
 
-    streamdistance ??= s.StreamerDistances.PICKUP_SD;
+    streamDistance ??= s.StreamerDistances.PICKUP_SD;
     priority ??= 0;
 
     if (extended) {
-      if (typeof worldid === "number") worldid = [-1];
-      else worldid ??= [-1];
-      if (typeof interiorid === "number") interiorid = [-1];
-      else interiorid ??= [-1];
-      if (typeof playerid === "number") playerid = [-1];
-      else playerid ??= [-1];
-      if (typeof areaid === "number") areaid = [-1];
-      else areaid ??= [-1];
+      if (typeof worldId === "number") worldId = [-1];
+      else worldId ??= [-1];
+      if (typeof interiorId === "number") interiorId = [-1];
+      else interiorId ??= [-1];
+      if (typeof playerId === "number") playerId = [-1];
+      else playerId ??= [-1];
+      if (typeof areaId === "number") areaId = [-1];
+      else areaId ??= [-1];
 
       this._id = s.CreateDynamicPickupEx(
         modelid,
@@ -43,22 +49,22 @@ export class DynamicPickup {
         x,
         y,
         z,
-        streamdistance,
-        worldid,
-        interiorid,
-        playerid,
-        areaid,
+        streamDistance,
+        worldId,
+        interiorId,
+        playerId,
+        areaId,
         priority
       );
     } else {
-      if (Array.isArray(worldid)) worldid = -1;
-      else worldid ??= -1;
-      if (Array.isArray(interiorid)) interiorid = -1;
-      else interiorid ??= -1;
-      if (Array.isArray(playerid)) playerid = -1;
-      else playerid ??= -1;
-      if (Array.isArray(areaid)) areaid = -1;
-      else areaid ??= -1;
+      if (Array.isArray(worldId)) worldId = -1;
+      else worldId ??= -1;
+      if (Array.isArray(interiorId)) interiorId = -1;
+      else interiorId ??= -1;
+      if (Array.isArray(playerId)) playerId = -1;
+      else playerId ??= -1;
+      if (Array.isArray(areaId)) areaId = -1;
+      else areaId ??= -1;
 
       this._id = s.CreateDynamicPickup(
         modelid,
@@ -66,11 +72,11 @@ export class DynamicPickup {
         x,
         y,
         z,
-        worldid,
-        interiorid,
-        playerid,
-        streamdistance,
-        areaid,
+        worldId,
+        interiorId,
+        playerId,
+        streamDistance,
+        areaId,
         priority
       );
     }

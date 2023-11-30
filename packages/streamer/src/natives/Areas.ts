@@ -4,9 +4,9 @@ export const CreateDynamicCircle = (
   x: number,
   y: number,
   size: number,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1
 ): number => {
   return samp.callNative(
     "CreateDynamicCircle",
@@ -14,9 +14,9 @@ export const CreateDynamicCircle = (
     x,
     y,
     size,
-    worldid,
-    interiorid,
-    playerid
+    worldId,
+    interiorId,
+    playerId
   );
 };
 
@@ -26,9 +26,9 @@ export const CreateDynamicCylinder = (
   minz: number,
   maxz: number,
   size: number,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1
 ): number => {
   return samp.callNative(
     "CreateDynamicCylinder",
@@ -38,9 +38,9 @@ export const CreateDynamicCylinder = (
     minz,
     maxz,
     size,
-    worldid,
-    interiorid,
-    playerid
+    worldId,
+    interiorId,
+    playerId
   );
 };
 
@@ -49,9 +49,9 @@ export const CreateDynamicSphere = (
   y: number,
   z: number,
   size: number,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1
 ): number => {
   return samp.callNative(
     "CreateDynamicSphere",
@@ -60,9 +60,9 @@ export const CreateDynamicSphere = (
     y,
     z,
     size,
-    worldid,
-    interiorid,
-    playerid
+    worldId,
+    interiorId,
+    playerId
   );
 };
 
@@ -71,9 +71,9 @@ export const CreateDynamicRectangle = (
   miny: number,
   maxx: number,
   maxy: number,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1
 ): number => {
   return samp.callNative(
     "CreateDynamicRectangle",
@@ -82,9 +82,9 @@ export const CreateDynamicRectangle = (
     miny,
     maxx,
     maxy,
-    worldid,
-    interiorid,
-    playerid
+    worldId,
+    interiorId,
+    playerId
   );
 };
 
@@ -95,9 +95,9 @@ export const CreateDynamicCuboid = (
   maxx: number,
   maxy: number,
   maxz: number,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1
 ): number => {
   return samp.callNative(
     "CreateDynamicCuboid",
@@ -108,9 +108,9 @@ export const CreateDynamicCuboid = (
     maxx,
     maxy,
     maxz,
-    worldid,
-    interiorid,
-    playerid
+    worldId,
+    interiorId,
+    playerId
   );
 };
 
@@ -118,9 +118,9 @@ export const CreateDynamicPolygon = (
   points: number[],
   minz: number = Number.MIN_VALUE,
   maxz: number = Number.MAX_VALUE,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1
 ): number => {
   return samp.callNative(
     "CreateDynamicPolygon",
@@ -129,62 +129,62 @@ export const CreateDynamicPolygon = (
     minz,
     maxz,
     points.length,
-    worldid,
-    interiorid,
-    playerid
+    worldId,
+    interiorId,
+    playerId
   );
 };
 
-export const DestroyDynamicArea = (areaid: number): number => {
-  return samp.callNative("DestroyDynamicArea", "i", areaid);
+export const DestroyDynamicArea = (areaId: number): number => {
+  return samp.callNative("DestroyDynamicArea", "i", areaId);
 };
 
-export const IsValidDynamicArea = (areaid: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicArea", "i", areaid));
+export const IsValidDynamicArea = (areaId: number): boolean => {
+  return Boolean(samp.callNative("IsValidDynamicArea", "i", areaId));
 };
 
-export const GetDynamicAreaType = (areaid: number): number => {
-  return samp.callNative("GetDynamicAreaType", "i", areaid);
+export const GetDynamicAreaType = (areaId: number): number => {
+  return samp.callNative("GetDynamicAreaType", "i", areaId);
 };
 
-export const GetDynamicPolygonPoints = (areaid: number): number[] => {
+export const GetDynamicPolygonPoints = (areaId: number): number[] => {
   return samp.callNative(
     "GetDynamicPolygonPoints",
     "iAi",
-    areaid,
-    GetDynamicPolygonNumberPoints(areaid)
+    areaId,
+    GetDynamicPolygonNumberPoints(areaId)
   );
 };
 
-export const GetDynamicPolygonNumberPoints = (areaid: number): number => {
-  return samp.callNative("GetDynamicPolygonNumberPoints", "i", areaid);
+export const GetDynamicPolygonNumberPoints = (areaId: number): number => {
+  return samp.callNative("GetDynamicPolygonNumberPoints", "i", areaId);
 };
 
 export const IsPlayerInDynamicArea = (
-  playerid: number,
-  areaid: number,
+  playerId: number,
+  areaId: number,
   recheck = false
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInDynamicArea", "iii", playerid, areaid, recheck)
+    samp.callNative("IsPlayerInDynamicArea", "iii", playerId, areaId, recheck)
   );
 };
 
 export const IsPlayerInAnyDynamicArea = (
-  playerid: number,
+  playerId: number,
   recheck = false
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInAnyDynamicArea", "ii", playerid, recheck)
+    samp.callNative("IsPlayerInAnyDynamicArea", "ii", playerId, recheck)
   );
 };
 
 export const IsAnyPlayerInDynamicArea = (
-  areaid: number,
+  areaId: number,
   recheck = false
 ): boolean => {
   return Boolean(
-    samp.callNative("IsAnyPlayerInDynamicArea", "ii", areaid, recheck)
+    samp.callNative("IsAnyPlayerInDynamicArea", "ii", areaId, recheck)
   );
 };
 
@@ -192,27 +192,27 @@ export const IsAnyPlayerInAnyDynamicArea = (recheck = false): boolean => {
   return Boolean(samp.callNative("IsAnyPlayerInAnyDynamicArea", "i", recheck));
 };
 
-export const GetPlayerDynamicAreas = (playerid: number): number[] => {
+export const GetPlayerDynamicAreas = (playerId: number): number[] => {
   return samp.callNative(
     "GetPlayerDynamicAreas",
     "iAi",
-    playerid,
-    GetPlayerNumberDynamicAreas(playerid)
+    playerId,
+    GetPlayerNumberDynamicAreas(playerId)
   );
 };
 
-export const GetPlayerNumberDynamicAreas = (playerid: number) => {
-  return samp.callNative("GetPlayerNumberDynamicAreas", "i", playerid);
+export const GetPlayerNumberDynamicAreas = (playerId: number) => {
+  return samp.callNative("GetPlayerNumberDynamicAreas", "i", playerId);
 };
 
 export const IsPointInDynamicArea = (
-  areaid: number,
+  areaId: number,
   x: number,
   y: number,
   z: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPointInDynamicArea", "ifff", areaid, x, y, z)
+    samp.callNative("IsPointInDynamicArea", "ifff", areaId, x, y, z)
   );
 };
 
@@ -225,7 +225,7 @@ export const IsPointInAnyDynamicArea = (
 };
 
 export const IsLineInDynamicArea = (
-  areaid: number,
+  areaId: number,
   x1: number,
   y1: number,
   z1: number,
@@ -237,7 +237,7 @@ export const IsLineInDynamicArea = (
     samp.callNative(
       "IsLineInDynamicArea",
       "iffffff",
-      areaid,
+      areaId,
       x1,
       y1,
       z1,
@@ -326,10 +326,10 @@ export const GetNumberDynamicAreasForLine = (
 };
 
 export const AttachDynamicAreaToObject = (
-  areaid: number,
+  areaId: number,
   objectid: number,
   type = StreamerObjectTypes.DYNAMIC,
-  playerid = 0xffff,
+  playerId = 0xffff,
   offsetx = 0.0,
   offsety = 0.0,
   offsetz = 0.0
@@ -337,10 +337,10 @@ export const AttachDynamicAreaToObject = (
   return samp.callNative(
     "AttachDynamicAreaToObject",
     "iiiifff",
-    areaid,
+    areaId,
     objectid,
     type,
-    playerid,
+    playerId,
     offsetx,
     offsety,
     offsetz
@@ -348,8 +348,8 @@ export const AttachDynamicAreaToObject = (
 };
 
 export const AttachDynamicAreaToPlayer = (
-  areaid: number,
-  playerid: number,
+  areaId: number,
+  playerId: number,
   offsetx = 0.0,
   offsety = 0.0,
   offsetz = 0.0
@@ -357,8 +357,8 @@ export const AttachDynamicAreaToPlayer = (
   return samp.callNative(
     "AttachDynamicAreaToPlayer",
     "iifff",
-    areaid,
-    playerid,
+    areaId,
+    playerId,
     offsetx,
     offsety,
     offsetz
@@ -366,7 +366,7 @@ export const AttachDynamicAreaToPlayer = (
 };
 
 export const AttachDynamicAreaToVehicle = (
-  areaid: number,
+  areaId: number,
   vehicleid: number,
   offsetx = 0.0,
   offsety = 0.0,
@@ -375,7 +375,7 @@ export const AttachDynamicAreaToVehicle = (
   return samp.callNative(
     "AttachDynamicAreaToVehicle",
     "iifff",
-    areaid,
+    areaId,
     vehicleid,
     offsetx,
     offsety,
@@ -384,12 +384,12 @@ export const AttachDynamicAreaToVehicle = (
 };
 
 export const ToggleDynAreaSpectateMode = (
-  areaid: number,
+  areaId: number,
   toggle: boolean
 ): number => {
-  return samp.callNative("ToggleDynAreaSpectateMode", "ii", areaid, toggle);
+  return samp.callNative("ToggleDynAreaSpectateMode", "ii", areaId, toggle);
 };
 
-export const IsToggleDynAreaSpectateMode = (areaid: number): boolean => {
-  return Boolean(samp.callNative("IsToggleDynAreaSpectateMode", "i", areaid));
+export const IsToggleDynAreaSpectateMode = (areaId: number): boolean => {
+  return Boolean(samp.callNative("IsToggleDynAreaSpectateMode", "i", areaId));
 };

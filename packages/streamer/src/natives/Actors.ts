@@ -8,11 +8,11 @@ export const CreateDynamicActor = (
   r: number,
   invulnerable = true,
   health = 100.0,
-  worldid = 0,
-  interiorid = -1,
-  playerid = -1,
-  streamdistance: number = StreamerDistances.ACTOR_SD,
-  areaid = -1,
+  worldId = 0,
+  interiorId = -1,
+  playerId = -1,
+  streamDistance: number = StreamerDistances.ACTOR_SD,
+  areaId = -1,
   priority = 0
 ): number => {
   return samp.callNative(
@@ -25,11 +25,11 @@ export const CreateDynamicActor = (
     r,
     invulnerable,
     health,
-    worldid,
-    interiorid,
-    playerid,
-    streamdistance,
-    areaid,
+    worldId,
+    interiorId,
+    playerId,
+    streamDistance,
+    areaId,
     priority
   );
 };
@@ -148,10 +148,10 @@ export const IsDynamicActorInvulnerable = (actorid: number): boolean => {
   return Boolean(samp.callNative("IsDynamicActorInvulnerable", "i", actorid));
 };
 
-export const GetPlayerTargetDynamicActor = (playerid: number): number => {
-  return samp.callNative("GetPlayerTargetDynamicActor", "i", playerid);
+export const GetPlayerTargetDynamicActor = (playerId: number): number => {
+  return samp.callNative("GetPlayerTargetDynamicActor", "i", playerId);
 };
 
-export const GetPlayerCameraTargetDynActor = (playerid: number): number => {
-  return samp.callNative("GetPlayerCameraTargetDynActor", "i", playerid);
+export const GetPlayerCameraTargetDynActor = (playerId: number): number => {
+  return samp.callNative("GetPlayerCameraTargetDynActor", "i", playerId);
 };

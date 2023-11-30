@@ -25,16 +25,16 @@ export class DynamicArea {
   create(): void | this {
     if (this.id !== -1)
       return logger.warn("[StreamerArea]: Unable to create area again");
-    let { worldid, interiorid, playerid } = this.sourceInfo;
+    let { worldId, interiorId: interiorId, playerId } = this.sourceInfo;
     const { type, extended } = this.sourceInfo;
 
     if (extended) {
-      if (typeof worldid === "number") worldid = [-1];
-      else worldid ??= [-1];
-      if (typeof interiorid === "number") interiorid = [-1];
-      else interiorid ??= [-1];
-      if (typeof playerid === "number") playerid = [-1];
-      else playerid ??= [-1];
+      if (typeof worldId === "number") worldId = [-1];
+      else worldId ??= [-1];
+      if (typeof interiorId === "number") interiorId = [-1];
+      else interiorId ??= [-1];
+      if (typeof playerId === "number") playerId = [-1];
+      else playerId ??= [-1];
 
       if (type === "circle") {
         const { x, y, size } = this.sourceInfo;
@@ -44,12 +44,19 @@ export class DynamicArea {
           x,
           y,
           size,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       } else if (type === "cuboid") {
-        const { minx, miny, minz, maxx, maxy, maxz } = this.sourceInfo;
+        const {
+          minX: minx,
+          minY: miny,
+          minz,
+          maxX: maxx,
+          maxY: maxy,
+          maxz,
+        } = this.sourceInfo;
         this._id = s.CreateDynamicCuboidEx(
           minx,
           miny,
@@ -57,12 +64,12 @@ export class DynamicArea {
           maxx,
           maxy,
           maxz,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       } else if (type === "cylinder") {
-        const { x, y, minz, maxz, size } = this.sourceInfo;
+        const { x, y, minZ: minz, maxZ: maxz, size } = this.sourceInfo;
         if (size < 0)
           return logger.error("[StreamerArea]: Invalid cylinder extend size");
         this._id = s.CreateDynamicCylinderEx(
@@ -71,9 +78,9 @@ export class DynamicArea {
           minz,
           maxz,
           size,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       } else if (type === "polygon") {
         const { points, minz, maxz } = this.sourceInfo;
@@ -85,20 +92,25 @@ export class DynamicArea {
           points,
           minz,
           maxz,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       } else if (type === "rectangle") {
-        const { minx, miny, maxx, maxy } = this.sourceInfo;
+        const {
+          minX: minx,
+          minY: miny,
+          maxX: maxx,
+          maxY: maxy,
+        } = this.sourceInfo;
         this._id = s.CreateDynamicRectangleEx(
           minx,
           miny,
           maxx,
           maxy,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       } else {
         const { x, y, z, size } = this.sourceInfo;
@@ -109,18 +121,18 @@ export class DynamicArea {
           y,
           z,
           size,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       }
     } else {
-      if (Array.isArray(worldid)) worldid = -1;
-      else worldid ??= -1;
-      if (Array.isArray(interiorid)) interiorid = -1;
-      else interiorid ??= -1;
-      if (Array.isArray(playerid)) playerid = -1;
-      else playerid ??= -1;
+      if (Array.isArray(worldId)) worldId = -1;
+      else worldId ??= -1;
+      if (Array.isArray(interiorId)) interiorId = -1;
+      else interiorId ??= -1;
+      if (Array.isArray(playerId)) playerId = -1;
+      else playerId ??= -1;
 
       if (type === "circle") {
         const { x, y, size } = this.sourceInfo;
@@ -130,12 +142,19 @@ export class DynamicArea {
           x,
           y,
           size,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       } else if (type === "cuboid") {
-        const { minx, miny, minz, maxx, maxy, maxz } = this.sourceInfo;
+        const {
+          minX: minx,
+          minY: miny,
+          minz,
+          maxX: maxx,
+          maxY: maxy,
+          maxz,
+        } = this.sourceInfo;
         this._id = s.CreateDynamicCuboid(
           minx,
           miny,
@@ -143,12 +162,12 @@ export class DynamicArea {
           maxx,
           maxy,
           maxz,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       } else if (type === "cylinder") {
-        const { x, y, minz, maxz, size } = this.sourceInfo;
+        const { x, y, minZ: minz, maxZ: maxz, size } = this.sourceInfo;
         if (size < 0)
           return logger.error("[StreamerArea]: Invalid cylinder size");
         this._id = s.CreateDynamicCylinder(
@@ -157,9 +176,9 @@ export class DynamicArea {
           minz,
           maxz,
           size,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       } else if (type === "polygon") {
         const { points, minz, maxz } = this.sourceInfo;
@@ -171,20 +190,25 @@ export class DynamicArea {
           points,
           minz,
           maxz,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       } else if (type === "rectangle") {
-        const { minx, miny, maxx, maxy } = this.sourceInfo;
+        const {
+          minX: minx,
+          minY: miny,
+          maxX: maxx,
+          maxY: maxy,
+        } = this.sourceInfo;
         this._id = s.CreateDynamicRectangle(
           minx,
           miny,
           maxx,
           maxy,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       } else {
         const { x, y, z, size } = this.sourceInfo;
@@ -195,9 +219,9 @@ export class DynamicArea {
           y,
           z,
           size,
-          worldid,
-          interiorid,
-          playerid
+          worldId,
+          interiorId,
+          playerId
         );
       }
     }

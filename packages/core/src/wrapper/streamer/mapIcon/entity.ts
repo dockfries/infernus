@@ -29,71 +29,71 @@ export class DynamicMapIcon {
       return logger.warn("[StreamerMapIcon]: Unable to create map icon again");
     let {
       style,
-      streamdistance,
-      worldid,
-      interiorid,
-      playerid,
-      areaid,
+      streamDistance,
+      worldId,
+      interiorId: interiorId,
+      playerId,
+      areaId,
       priority,
     } = this.sourceInfo;
-    const { x, y, z, type, colour, extended } = this.sourceInfo;
+    const { x, y, z, type, color: color, extended } = this.sourceInfo;
 
     if (type < 0 || type > 63)
       return logger.error("[StreamerMapIcon]: Invalid map icon type");
 
     style ??= MapIconStyles.LOCAL;
-    streamdistance ??= StreamerDistances.MAP_ICON_SD;
+    streamDistance ??= StreamerDistances.MAP_ICON_SD;
     priority ??= 0;
 
     if (extended) {
-      if (typeof worldid === "number") worldid = [-1];
-      else worldid ??= [-1];
-      if (typeof interiorid === "number") interiorid = [-1];
-      else interiorid ??= [-1];
-      if (typeof playerid === "number") playerid = [-1];
-      else playerid ??= [-1];
-      if (typeof areaid === "number") areaid = [-1];
-      else areaid ??= [-1];
+      if (typeof worldId === "number") worldId = [-1];
+      else worldId ??= [-1];
+      if (typeof interiorId === "number") interiorId = [-1];
+      else interiorId ??= [-1];
+      if (typeof playerId === "number") playerId = [-1];
+      else playerId ??= [-1];
+      if (typeof areaId === "number") areaId = [-1];
+      else areaId ??= [-1];
 
       this._id = CreateDynamicMapIconEx(
         x,
         y,
         z,
         type,
-        rgba(colour),
+        rgba(color),
         style,
-        streamdistance,
-        worldid,
-        interiorid,
-        playerid,
-        areaid,
+        streamDistance,
+        worldId,
+        interiorId,
+        playerId,
+        areaId,
         priority
       );
       DynamicMapIcon.mapIcons.set(this._id, this);
       return this;
     }
 
-    if (Array.isArray(worldid)) worldid = -1;
-    else worldid ??= -1;
-    if (Array.isArray(interiorid)) interiorid = -1;
-    else interiorid ??= -1;
-    if (Array.isArray(playerid)) playerid = -1;
-    else playerid ??= -1;
-    if (Array.isArray(areaid)) areaid = -1;
-    else areaid ??= -1;
+    if (Array.isArray(worldId)) worldId = -1;
+    else worldId ??= -1;
+    if (Array.isArray(interiorId)) interiorId = -1;
+    else interiorId ??= -1;
+    if (Array.isArray(playerId)) playerId = -1;
+    else playerId ??= -1;
+    if (Array.isArray(areaId)) areaId = -1;
+    else areaId ??= -1;
 
     this._id = CreateDynamicMapIcon(
       x,
       y,
       z,
       type,
-      rgba(colour),
-      worldid,
-      interiorid,
-      playerid,
-      streamdistance,
+      rgba(color),
+      worldId,
+      interiorId,
+      playerId,
+      streamDistance,
       style,
-      areaid,
+      areaId,
       priority
     );
     DynamicMapIcon.mapIcons.set(this._id, this);

@@ -5,11 +5,11 @@ export const IsValid3DTextLabel = (id: number): boolean => {
 };
 
 export const Is3DTextLabelStreamedIn = (
-  playerid: number,
+  playerId: number,
   id: number
 ): boolean => {
   return Boolean(
-    samp.callNative("Is3DTextLabelStreamedIn", "ii", playerid, id)
+    samp.callNative("Is3DTextLabelStreamedIn", "ii", playerId, id)
   );
 };
 
@@ -48,9 +48,9 @@ export const Set3DTextLabelLOS = (id: number, status: boolean): void => {
 
 export const Set3DTextLabelVirtualWorld = (
   id: number,
-  worldid: number
+  worldId: number
 ): void => {
-  samp.callNative("Set3DTextLabelVirtualWorld", "ii", id, worldid);
+  samp.callNative("Set3DTextLabelVirtualWorld", "ii", id, worldId);
 };
 
 export const Get3DTextLabelVirtualWorld = (id: number): number => {

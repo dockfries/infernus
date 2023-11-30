@@ -6,17 +6,17 @@ import type { IPlayerClass } from "./interfaces/PlayerClass";
 import type { IQuat } from "./interfaces/Quat";
 
 export const TogglePlayerWidescreen = (
-  playerid: number,
+  playerId: number,
   set: boolean
 ): number => {
-  return samp.callNative("TogglePlayerWidescreen", "ii", playerid, set);
+  return samp.callNative("TogglePlayerWidescreen", "ii", playerId, set);
 };
 
-export const IsPlayerWidescreenToggled = (playerid: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerWidescreenToggled", "i", playerid));
+export const IsPlayerWidescreenToggled = (playerId: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerWidescreenToggled", "i", playerId));
 };
 
-export const GetSpawnInfo = (playerid: number): IPlayerClass => {
+export const GetSpawnInfo = (playerId: number): IPlayerClass => {
   const [
     teamid,
     modelid = 0,
@@ -30,7 +30,7 @@ export const GetSpawnInfo = (playerid: number): IPlayerClass => {
     weapon2_ammo = 0,
     weapon3 = 0,
     weapon3_ammo = 0,
-  ]: number[] = samp.callNative("GetSpawnInfo", "iIIFFFFIIIIII", playerid);
+  ]: number[] = samp.callNative("GetSpawnInfo", "iIIFFFFIIIIII", playerId);
   return {
     teamid,
     modelid,
@@ -48,36 +48,36 @@ export const GetSpawnInfo = (playerid: number): IPlayerClass => {
 };
 
 export const GetPlayerSkillLevel = (
-  playerid: number,
+  playerId: number,
   skill: number
 ): number => {
-  return samp.callNative("GetPlayerSkillLevel", "ii", playerid, skill);
+  return samp.callNative("GetPlayerSkillLevel", "ii", playerId, skill);
 };
 
-export const GetPlayerWeather = (playerid: number): number => {
-  return samp.callNative("GetPlayerWeather", "i", playerid);
+export const GetPlayerWeather = (playerId: number): number => {
+  return samp.callNative("GetPlayerWeather", "i", playerId);
 };
 
-export const IsPlayerCheckpointActive = (playerid: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerCheckpointActive", "i", playerid));
+export const IsPlayerCheckpointActive = (playerId: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerCheckpointActive", "i", playerId));
 };
 
-export const GetPlayerCheckpoint = (playerid: number): ICheckPoint => {
+export const GetPlayerCheckpoint = (playerId: number): ICheckPoint => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0, fSize = 0.0]: number[] = samp.callNative(
     "GetPlayerCheckpoint",
     "iFFFF",
-    playerid
+    playerId
   );
   return { fX, fY, fZ, fSize };
 };
 
-export const IsPlayerRaceCheckpointActive = (playerid: number): boolean => {
+export const IsPlayerRaceCheckpointActive = (playerId: number): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerRaceCheckpointActive", "i", playerid)
+    samp.callNative("IsPlayerRaceCheckpointActive", "i", playerId)
   );
 };
 
-export const GetPlayerRaceCheckpoint = (playerid: number): IRaceCheckPoint => {
+export const GetPlayerRaceCheckpoint = (playerId: number): IRaceCheckPoint => {
   const [
     fX = 0.0,
     fY = 0.0,
@@ -89,113 +89,113 @@ export const GetPlayerRaceCheckpoint = (playerid: number): IRaceCheckPoint => {
   ]: number[] = samp.callNative(
     "GetPlayerRaceCheckpoint",
     "iFFFFFFF",
-    playerid
+    playerId
   );
   return { fX, fY, fZ, fNextX, fNextY, fNextZ, fSize };
 };
 
-export const GetPlayerWorldBounds = (playerid: number): IBounds => {
+export const GetPlayerWorldBounds = (playerId: number): IBounds => {
   const [x_max = 0.0, x_min = 0.0, y_max = 0.0, y_min = 0.0]: number[] =
-    samp.callNative("GetPlayerWorldBounds", "iFFFF", playerid);
+    samp.callNative("GetPlayerWorldBounds", "iFFFF", playerId);
   return { x_max, x_min, y_max, y_min };
 };
 
-export const IsPlayerInModShop = (playerid: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerInModShop", "i", playerid));
+export const IsPlayerInModShop = (playerId: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerInModShop", "i", playerId));
 };
 
-export const GetPlayerSirenState = (playerid: number): number => {
-  return samp.callNative("GetPlayerSirenState", "i", playerid);
+export const GetPlayerSirenState = (playerId: number): number => {
+  return samp.callNative("GetPlayerSirenState", "i", playerId);
 };
 
-export const GetPlayerLandingGearState = (playerid: number): number => {
-  return samp.callNative("GetPlayerLandingGearState", "i", playerid);
+export const GetPlayerLandingGearState = (playerId: number): number => {
+  return samp.callNative("GetPlayerLandingGearState", "i", playerId);
 };
 
-export const GetPlayerHydraReactorAngle = (playerid: number): number => {
-  return samp.callNative("GetPlayerHydraReactorAngle", "i", playerid);
+export const GetPlayerHydraReactorAngle = (playerId: number): number => {
+  return samp.callNative("GetPlayerHydraReactorAngle", "i", playerId);
 };
 
-export const GetPlayerTrainSpeed = (playerid: number): number => {
-  return samp.callNativeFloat("GetPlayerTrainSpeed", "i", playerid);
+export const GetPlayerTrainSpeed = (playerId: number): number => {
+  return samp.callNativeFloat("GetPlayerTrainSpeed", "i", playerId);
 };
 
-export const GetPlayerZAim = (playerid: number): number => {
-  return samp.callNativeFloat("GetPlayerZAim", "i", playerid);
+export const GetPlayerZAim = (playerId: number): number => {
+  return samp.callNativeFloat("GetPlayerZAim", "i", playerId);
 };
 
-export const GetPlayerSurfingOffsets = (playerid: number): IOffsets => {
+export const GetPlayerSurfingOffsets = (playerId: number): IOffsets => {
   const [fOffsetX = 0.0, fOffsetY = 0.0, fOffsetZ = 0.0]: number[] =
-    samp.callNative("GetPlayerSurfingOffsets", "iFFF", playerid);
+    samp.callNative("GetPlayerSurfingOffsets", "iFFF", playerId);
   return { fOffsetX, fOffsetY, fOffsetZ };
 };
 
-export const GetPlayerRotationQuat = (playerid: number): IQuat => {
+export const GetPlayerRotationQuat = (playerId: number): IQuat => {
   const [w = 0.0, x = 0.0, y = 0.0, z = 0.0]: number[] = samp.callNative(
     "GetPlayerRotationQuat",
     "iFFFF",
-    playerid
+    playerId
   );
   return { w, x, y, z };
 };
 
-export const GetPlayerDialogID = (playerid: number): number => {
-  return samp.callNative("GetPlayerDialogID", "i", playerid);
+export const GetPlayerDialogID = (playerId: number): number => {
+  return samp.callNative("GetPlayerDialogID", "i", playerId);
 };
 
-export const GetPlayerSpectateID = (playerid: number): number => {
-  return samp.callNative("GetPlayerSpectateID", "i", playerid);
+export const GetPlayerSpectateID = (playerId: number): number => {
+  return samp.callNative("GetPlayerSpectateID", "i", playerId);
 };
 
-export const GetPlayerSpectateType = (playerid: number): number => {
-  return samp.callNative("GetPlayerSpectateType", "i", playerid);
+export const GetPlayerSpectateType = (playerId: number): number => {
+  return samp.callNative("GetPlayerSpectateType", "i", playerId);
 };
 
-export const GetPlayerRawIp = (playerid: number): string => {
-  return samp.callNative("GetPlayerRawIp", "i", playerid);
+export const GetPlayerRawIp = (playerId: number): string => {
+  return samp.callNative("GetPlayerRawIp", "i", playerId);
 };
 
-export const SetPlayerGravity = (playerid: number, gravity: number): number => {
-  return samp.callNative("SetPlayerGravity", "if", playerid, gravity);
+export const SetPlayerGravity = (playerId: number, gravity: number): number => {
+  return samp.callNative("SetPlayerGravity", "if", playerId, gravity);
 };
 
-export const GetPlayerGravity = (playerid: number): number => {
-  return samp.callNativeFloat("GetPlayerGravity", "i", playerid);
+export const GetPlayerGravity = (playerId: number): number => {
+  return samp.callNativeFloat("GetPlayerGravity", "i", playerId);
 };
 
-export const SetPlayerAdmin = (playerid: number, admin: boolean): number => {
-  return samp.callNative("SetPlayerAdmin", "ii", playerid, admin);
+export const SetPlayerAdmin = (playerId: number, admin: boolean): number => {
+  return samp.callNative("SetPlayerAdmin", "ii", playerId, admin);
 };
 
-export const IsPlayerSpawned = (playerid: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerSpawned", "i", playerid));
+export const IsPlayerSpawned = (playerId: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerSpawned", "i", playerId));
 };
 
-export const IsPlayerControllable = (playerid: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerControllable", "i", playerid));
+export const IsPlayerControllable = (playerId: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerControllable", "i", playerId));
 };
 
-export const IsPlayerCameraTargetEnabled = (playerid: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerCameraTargetEnabled", "i", playerid));
+export const IsPlayerCameraTargetEnabled = (playerId: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerCameraTargetEnabled", "i", playerId));
 };
 
 export const TogglePlayerGhostMode = (
-  playerid: number,
+  playerId: number,
   toggle: boolean
 ): number => {
-  return samp.callNative("TogglePlayerGhostMode", "ii", playerid, toggle);
+  return samp.callNative("TogglePlayerGhostMode", "ii", playerId, toggle);
 };
 
-export const GetPlayerGhostMode = (playerid: number): boolean => {
-  return Boolean(samp.callNative("GetPlayerGhostMode", "i", playerid));
+export const GetPlayerGhostMode = (playerId: number): boolean => {
+  return Boolean(samp.callNative("GetPlayerGhostMode", "i", playerId));
 };
 
-export const GetPlayerBuildingsRemoved = (playerid: number): number => {
-  return samp.callNative("GetPlayerBuildingsRemoved", "i", playerid);
+export const GetPlayerBuildingsRemoved = (playerId: number): number => {
+  return samp.callNative("GetPlayerBuildingsRemoved", "i", playerId);
 };
 
 export const GetPlayerAttachedObject = (
-  playerid: number,
+  playerId: number,
   index: number
 ): IAttachedObject => {
   const [
@@ -215,7 +215,7 @@ export const GetPlayerAttachedObject = (
   ]: number[] = samp.callNative(
     "GetPlayerAttachedObject",
     "iiIIFFFFFFFFFII",
-    playerid,
+    playerId,
     index
   );
   return {
@@ -236,38 +236,38 @@ export const GetPlayerAttachedObject = (
 };
 
 export const RemovePlayerWeapon = (
-  playerid: number,
+  playerId: number,
   weaponid: number
 ): number => {
-  return samp.callNative("RemovePlayerWeapon", "ii", playerid, weaponid);
+  return samp.callNative("RemovePlayerWeapon", "ii", playerId, weaponid);
 };
 
-export const HidePlayerDialog = (playerid: number): number => {
-  return samp.callNative("HidePlayerDialog", "i", playerid);
+export const HidePlayerDialog = (playerId: number): number => {
+  return samp.callNative("HidePlayerDialog", "i", playerId);
 };
 
-export const IsPlayerUsingOfficialClient = (playerid: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerUsingOfficialClient", "i", playerid));
+export const IsPlayerUsingOfficialClient = (playerId: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerUsingOfficialClient", "i", playerId));
 };
 
 export const AllowPlayerTeleport = (
-  playerid: number,
+  playerId: number,
   allow: boolean
 ): boolean => {
-  return Boolean(samp.callNative("AllowPlayerTeleport", "ii", playerid, allow));
+  return Boolean(samp.callNative("AllowPlayerTeleport", "ii", playerId, allow));
 };
 
-export const IsPlayerTeleportAllowed = (playerid: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerTeleportAllowed", "i", playerid));
+export const IsPlayerTeleportAllowed = (playerId: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerTeleportAllowed", "i", playerId));
 };
 
 export const AllowPlayerWeapons = (
-  playerid: number,
+  playerId: number,
   allow: boolean
 ): boolean => {
-  return Boolean(samp.callNative("AllowPlayerWeapons", "i", playerid, allow));
+  return Boolean(samp.callNative("AllowPlayerWeapons", "i", playerId, allow));
 };
 
-export const ArePlayerWeaponsAllowed = (playerid: number): boolean => {
-  return Boolean(samp.callNative("ArePlayerWeaponsAllowed", "i", playerid));
+export const ArePlayerWeaponsAllowed = (playerId: number): boolean => {
+  return Boolean(samp.callNative("ArePlayerWeaponsAllowed", "i", playerId));
 };

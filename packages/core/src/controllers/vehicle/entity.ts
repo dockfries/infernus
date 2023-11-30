@@ -33,53 +33,44 @@ export class Vehicle {
       return logger.warn(
         "[Vehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached"
       );
-    const {
-      modelid,
-      x,
-      y,
-      z,
-      z_angle,
-      colour1,
-      colour2,
-      respawn_delay,
-      addsiren,
-    } = this.sourceInfo;
-    if (!ignoreRange && (modelid < 400 || modelid > 611)) return;
+    const { modelId, x, y, z, z_angle, color, respawn_delay, addSiren } =
+      this.sourceInfo;
+    if (!ignoreRange && (modelId < 400 || modelId > 611)) return;
     if (this.isStatic) {
       if (respawn_delay === undefined) {
         this._id = v.AddStaticVehicle(
-          modelid,
+          modelId,
           x,
           y,
           z,
           z_angle,
-          colour1,
-          colour2
+          color[0],
+          color[1]
         );
         return;
       }
       this._id = v.AddStaticVehicleEx(
-        modelid,
+        modelId,
         x,
         y,
         z,
         z_angle,
-        colour1,
-        colour2,
+        color[0],
+        color[1],
         respawn_delay || -1,
-        addsiren || false
+        addSiren || false
       );
     } else {
       this._id = v.CreateVehicle(
-        modelid,
+        modelId,
         x,
         y,
         z,
         z_angle,
-        colour1,
-        colour2,
+        color[0],
+        color[1],
         respawn_delay || -1,
-        addsiren || false
+        addSiren || false
       );
     }
     Vehicle.createdCount++;
@@ -191,9 +182,9 @@ export class Vehicle {
   static getPoolSize(): number {
     return v.GetVehiclePoolSize();
   }
-  changeColours(colour1: string | number, colour2: string | number): number {
+  changeColours(color1: string | number, color2: string | number): number {
     if (this.id === -1) return 0;
-    return v.ChangeVehicleColours(this.id, colour1, colour2);
+    return v.ChangeVehicleColours(this.id, color1, color2);
   }
   setVelocity(X: number, Y: number, Z: number): number {
     if (this.id === -1) return 0;
@@ -442,33 +433,33 @@ export class Vehicle {
     if (this.id === -1) return -1;
     return w.GetVehiclePaintjob(this.id);
   }
-  getColours() {
+  getColors() {
     if (this.id === -1) return;
-    return w.GetVehicleColours(this.id);
+    return w.GetVehicleColors(this.id);
   }
   setSpawnInfo(
-    modelid: number,
+    modelId: number,
     fX: number,
     fY: number,
     fZ: number,
     fAngle: number,
-    colour1: string | number,
-    colour2: string | number,
+    color1: string | number,
+    color2: string | number,
     respawntime = -2,
     interior = -2,
     ignoreRange = false
   ): number {
     if (this.id === -1) return 0;
-    if (!ignoreRange && (modelid < 400 || modelid > 611)) return 0;
+    if (!ignoreRange && (modelId < 400 || modelId > 611)) return 0;
     return w.SetVehicleSpawnInfo(
       this.id,
-      modelid,
+      modelId,
       fX,
       fY,
       fZ,
       fAngle,
-      rgba(colour1),
-      rgba(colour2),
+      rgba(color1),
+      rgba(color2),
       respawntime,
       interior
     );

@@ -5,15 +5,15 @@ export const CreateDynamicRaceCP = (
   x: number,
   y: number,
   z: number,
-  nextx: number,
-  nexty: number,
-  nextz: number,
+  nextX: number,
+  nextY: number,
+  nextZ: number,
   size: number,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1,
-  streamdistance: number = StreamerDistances.RACE_CP_SD,
-  areaid = -1,
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1,
+  streamDistance: number = StreamerDistances.RACE_CP_SD,
+  areaId = -1,
   priority = 0
 ): number => {
   return samp.callNative(
@@ -23,15 +23,15 @@ export const CreateDynamicRaceCP = (
     x,
     y,
     z,
-    nextx,
-    nexty,
-    nextz,
+    nextX,
+    nextY,
+    nextZ,
     size,
-    worldid,
-    interiorid,
-    playerid,
-    streamdistance,
-    areaid,
+    worldId,
+    interiorId,
+    playerId,
+    streamDistance,
+    areaId,
     priority
   );
 };
@@ -45,40 +45,40 @@ export const IsValidDynamicRaceCP = (checkpointid: number): boolean => {
 };
 
 export const TogglePlayerDynamicRaceCP = (
-  playerid: number,
+  playerId: number,
   checkpointid: number,
   toggle: boolean
 ): number => {
   return samp.callNative(
     "TogglePlayerDynamicRaceCP",
     "iii",
-    playerid,
+    playerId,
     checkpointid,
     toggle
   );
 };
 
 export const TogglePlayerAllDynamicRaceCPs = (
-  playerid: number,
+  playerId: number,
   toggle: boolean
 ): number => {
   return samp.callNative(
     "TogglePlayerAllDynamicRaceCPs",
     "ii",
-    playerid,
+    playerId,
     toggle
   );
 };
 
 export const IsPlayerInDynamicRaceCP = (
-  playerid: number,
+  playerId: number,
   checkpointid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInDynamicRaceCP", "ii", playerid, checkpointid)
+    samp.callNative("IsPlayerInDynamicRaceCP", "ii", playerId, checkpointid)
   );
 };
 
-export const GetPlayerVisibleDynamicRaceCP = (playerid: number): number => {
-  return samp.callNative("GetPlayerVisibleDynamicRaceCP", "i", playerid);
+export const GetPlayerVisibleDynamicRaceCP = (playerId: number): number => {
+  return samp.callNative("GetPlayerVisibleDynamicRaceCP", "i", playerId);
 };

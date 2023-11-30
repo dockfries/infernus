@@ -14,12 +14,12 @@ export const CreateDynamicMapIcon = (
   z: number,
   type: StreamerItemTypes,
   color: number,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1,
-  streamdistance: number = StreamerDistances.MAP_ICON_SD,
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1,
+  streamDistance: number = StreamerDistances.MAP_ICON_SD,
   style: number = MapIconStyles.LOCAL,
-  areaid = -1,
+  areaId = -1,
   priority = 0
 ): number => {
   return samp.callNative(
@@ -30,12 +30,12 @@ export const CreateDynamicMapIcon = (
     z,
     type,
     color,
-    worldid,
-    interiorid,
-    playerid,
-    streamdistance,
+    worldId,
+    interiorId,
+    playerId,
+    streamDistance,
     style,
-    areaid,
+    areaId,
     priority
   );
 };

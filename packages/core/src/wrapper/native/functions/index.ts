@@ -35,7 +35,7 @@ export const SendDeathMessage = (
 };
 
 export const SendDeathMessageToPlayer = (
-  playerid: number,
+  playerId: number,
   killer: number,
   killee: number,
   weapon: WeaponEnum | DamageDeathReasonEnum
@@ -43,7 +43,7 @@ export const SendDeathMessageToPlayer = (
   return callNative(
     "SendDeathMessageToPlayer",
     "iiii",
-    playerid,
+    playerId,
     killer,
     killee,
     weapon
@@ -63,25 +63,25 @@ export const HideGameTextForAll = (style: number) => {
 };
 
 export const GameTextForPlayer = (
-  playerid: number,
+  playerId: number,
   string: string,
   time: number,
   style: number
 ): boolean => {
   return Boolean(
-    callNative("GameTextForPlayer", "isii", playerid, string, time, style)
+    callNative("GameTextForPlayer", "isii", playerId, string, time, style)
   );
 };
 
-export const HasGameText = (playerid: number, style: number): boolean => {
-  return Boolean(callNative("HasGameText", "ii", playerid, style));
+export const HasGameText = (playerId: number, style: number): boolean => {
+  return Boolean(callNative("HasGameText", "ii", playerId, style));
 };
 
 export const HideGameTextForPlayer = (
-  playerid: number,
+  playerId: number,
   style: number
 ): boolean => {
-  return Boolean(callNative("HideGameTextForPlayer", "ii", playerid, style));
+  return Boolean(callNative("HideGameTextForPlayer", "ii", playerId, style));
 };
 
 export const GetMaxPlayers = (): number => {
@@ -187,8 +187,8 @@ export const AddStaticVehicle = (
   spawn_y: number,
   spawn_z: number,
   z_angle: number,
-  colour1: string | number,
-  colour2: string | number
+  color1: string | number,
+  color2: string | number
 ): number => {
   return callNative(
     "AddStaticVehicle",
@@ -198,8 +198,8 @@ export const AddStaticVehicle = (
     spawn_y,
     spawn_z,
     z_angle,
-    colour1,
-    colour2
+    color1,
+    color2
   );
 };
 
@@ -209,8 +209,8 @@ export const AddStaticVehicleEx = (
   spawn_y: number,
   spawn_z: number,
   z_angle: number,
-  colour1: string | number,
-  colour2: string | number,
+  color1: string | number,
+  color2: string | number,
   respawn_delay: number,
   addsiren: boolean
 ): number => {
@@ -222,8 +222,8 @@ export const AddStaticVehicleEx = (
     spawn_y,
     spawn_z,
     z_angle,
-    colour1,
-    colour2,
+    color1,
+    color2,
     respawn_delay,
     addsiren
   );
@@ -347,28 +347,28 @@ export const ConnectNPC = (name: string, script: string): number => {
   return callNative("ConnectNPC", "ss", name, script);
 };
 
-export const IsPlayerNPC = (playerid: number): boolean => {
-  return Boolean(callNative("IsPlayerNPC", "i", playerid));
+export const IsPlayerNPC = (playerId: number): boolean => {
+  return Boolean(callNative("IsPlayerNPC", "i", playerId));
 };
 
-export const IsPlayerAdmin = (playerid: number): boolean => {
-  return Boolean(callNative("IsPlayerAdmin", "i", playerid));
+export const IsPlayerAdmin = (playerId: number): boolean => {
+  return Boolean(callNative("IsPlayerAdmin", "i", playerId));
 };
 
-export const Kick = (playerid: number): number => {
-  return callNative("Kick", "i", playerid);
+export const Kick = (playerId: number): number => {
+  return callNative("Kick", "i", playerId);
 };
 
-export const Ban = (playerid: number): number => {
-  return callNative("Ban", "i", playerid);
+export const Ban = (playerId: number): number => {
+  return callNative("Ban", "i", playerId);
 };
 
 export const SendRconCommand = (command: string): number => {
   return callNative("SendRconCommand", "s", command);
 };
 
-export const GetPlayerNetworkStats = (playerid: number): string => {
-  return callNative("GetPlayerNetworkStats", "iSi", playerid, 1024);
+export const GetPlayerNetworkStats = (playerId: number): string => {
+  return callNative("GetPlayerNetworkStats", "iSi", playerId, 1024);
 };
 
 export const GetNetworkStats = (): string => {
@@ -387,38 +387,38 @@ export const GetServerTickRate = (): number => {
   return callNative("GetServerTickRate", "");
 };
 
-export const NetStats_GetConnectedTime = (playerid: number): number => {
-  return callNative("NetStats_GetConnectedTime", "i", playerid);
+export const NetStats_GetConnectedTime = (playerId: number): number => {
+  return callNative("NetStats_GetConnectedTime", "i", playerId);
 };
 
-export const NetStats_MessagesReceived = (playerid: number): number => {
-  return callNative("NetStats_MessagesReceived", "i", playerid);
+export const NetStats_MessagesReceived = (playerId: number): number => {
+  return callNative("NetStats_MessagesReceived", "i", playerId);
 };
 
-export const NetStats_BytesReceived = (playerid: number): number => {
-  return callNative("NetStats_BytesReceived", "i", playerid);
+export const NetStats_BytesReceived = (playerId: number): number => {
+  return callNative("NetStats_BytesReceived", "i", playerId);
 };
 
-export const NetStats_MessagesSent = (playerid: number): number => {
-  return callNative("NetStats_MessagesSent", "i", playerid);
+export const NetStats_MessagesSent = (playerId: number): number => {
+  return callNative("NetStats_MessagesSent", "i", playerId);
 };
 
-export const NetStats_BytesSent = (playerid: number): number => {
-  return callNative("NetStats_BytesSent", "i", playerid);
+export const NetStats_BytesSent = (playerId: number): number => {
+  return callNative("NetStats_BytesSent", "i", playerId);
 };
 
-export const NetStats_MessagesRecvPerSecond = (playerid: number): number => {
-  return callNative("NetStats_MessagesRecvPerSecond", "i", playerid);
+export const NetStats_MessagesRecvPerSecond = (playerId: number): number => {
+  return callNative("NetStats_MessagesRecvPerSecond", "i", playerId);
 };
 
-export const NetStats_PacketLossPercent = (playerid: number): number => {
-  return callNativeFloat("NetStats_PacketLossPercent", "i", playerid);
+export const NetStats_PacketLossPercent = (playerId: number): number => {
+  return callNativeFloat("NetStats_PacketLossPercent", "i", playerId);
 };
 
 export const NetStats_ConnectionStatus = (
-  playerid: number
+  playerId: number
 ): ConnectionStatusEnum => {
-  return callNative("NetStats_ConnectionStatus", "i", playerid);
+  return callNative("NetStats_ConnectionStatus", "i", playerId);
 };
 
 export const CreateMenu = (
@@ -461,12 +461,12 @@ export const SetMenuColumnHeader = (
   return callNative("SetMenuColumnHeader", "iis", menuid, column, columnheader);
 };
 
-export const ShowMenuForPlayer = (menuid: number, playerid: number): number => {
-  return callNative("ShowMenuForPlayer", "ii", menuid, playerid);
+export const ShowMenuForPlayer = (menuid: number, playerId: number): number => {
+  return callNative("ShowMenuForPlayer", "ii", menuid, playerId);
 };
 
-export const HideMenuForPlayer = (menuid: number, playerid: number): number => {
-  return callNative("HideMenuForPlayer", "ii", menuid, playerid);
+export const HideMenuForPlayer = (menuid: number, playerId: number): number => {
+  return callNative("HideMenuForPlayer", "ii", menuid, playerId);
 };
 
 export const IsValidMenu = (menuid: number): boolean => {
@@ -481,8 +481,8 @@ export const DisableMenuRow = (menuid: number, row: number): number => {
   return callNative("DisableMenuRow", "ii", menuid, row);
 };
 
-export const GetPlayerMenu = (playerid: number): number => {
-  return callNative("GetPlayerMenu", "i", playerid);
+export const GetPlayerMenu = (playerId: number): number => {
+  return callNative("GetPlayerMenu", "i", playerId);
 };
 
 export const TextDrawCreate = (x: number, y: number, text: string): number => {
@@ -518,9 +518,9 @@ export const TextDrawAlignment = (
 
 export const TextDrawColour = (
   text: number,
-  colour: string | number
+  color: string | number
 ): boolean => {
-  return Boolean(callNative("TextDrawColor", "ii", text, rgba(colour)));
+  return Boolean(callNative("TextDrawColor", "ii", text, rgba(color)));
 };
 
 export const TextDrawUseBox = (text: number, use: boolean): number => {
@@ -529,9 +529,9 @@ export const TextDrawUseBox = (text: number, use: boolean): number => {
 
 export const TextDrawBoxColour = (
   text: number,
-  colour: string | number
+  color: string | number
 ): boolean => {
-  return Boolean(callNative("TextDrawBoxColor", "ii", text, rgba(colour)));
+  return Boolean(callNative("TextDrawBoxColor", "ii", text, rgba(color)));
 };
 
 export const TextDrawSetShadow = (text: number, size: number): number => {
@@ -544,10 +544,10 @@ export const TextDrawSetOutline = (text: number, size: number): number => {
 
 export const TextDrawBackgroundColour = (
   text: number,
-  colour: string | number
+  color: string | number
 ): boolean => {
   return Boolean(
-    callNative("TextDrawBackgroundColor", "ii", text, rgba(colour))
+    callNative("TextDrawBackgroundColor", "ii", text, rgba(color))
   );
 };
 
@@ -564,17 +564,17 @@ export const TextDrawSetSelectable = (text: number, set: boolean): number => {
 };
 
 export const TextDrawShowForPlayer = (
-  playerid: number,
+  playerId: number,
   text: number
 ): number => {
-  return callNative("TextDrawShowForPlayer", "ii", playerid, text);
+  return callNative("TextDrawShowForPlayer", "ii", playerId, text);
 };
 
 export const TextDrawHideForPlayer = (
-  playerid: number,
+  playerId: number,
   text: number
 ): number => {
-  return callNative("TextDrawHideForPlayer", "ii", playerid, text);
+  return callNative("TextDrawHideForPlayer", "ii", playerId, text);
 };
 
 export const TextDrawShowForAll = (text: number): number => {
@@ -616,16 +616,16 @@ export const TextDrawSetPreviewRot = (
 
 export const TextDrawSetPreviewVehicleColours = (
   text: number,
-  colour1: string | number,
-  colour2: string | number
+  color1: string | number,
+  color2: string | number
 ): boolean => {
   return Boolean(
     callNative(
       "TextDrawSetPreviewVehCol",
       "iii",
       text,
-      rgba(colour1),
-      rgba(colour2)
+      rgba(color1),
+      rgba(color2)
     )
   );
 };
@@ -644,31 +644,31 @@ export const GangZoneDestroy = (zone: number): number => {
 };
 
 export const GangZoneShowForPlayer = (
-  playerid: number,
+  playerId: number,
   zone: number,
-  colour: string | number
+  color: string | number
 ): number => {
   return callNative(
     "GangZoneShowForPlayer",
     "iii",
-    playerid,
+    playerId,
     zone,
-    rgba(colour)
+    rgba(color)
   );
 };
 
 export const GangZoneShowForAll = (
   zone: number,
-  colour: string | number
+  color: string | number
 ): number => {
-  return callNative("GangZoneShowForAll", "ii", zone, rgba(colour));
+  return callNative("GangZoneShowForAll", "ii", zone, rgba(color));
 };
 
 export const GangZoneHideForPlayer = (
-  playerid: number,
+  playerId: number,
   zone: number
 ): number => {
-  return callNative("GangZoneHideForPlayer", "ii", playerid, zone);
+  return callNative("GangZoneHideForPlayer", "ii", playerId, zone);
 };
 
 export const GangZoneHideForAll = (zone: number): number => {
@@ -676,14 +676,14 @@ export const GangZoneHideForAll = (zone: number): number => {
 };
 
 export const GangZoneFlashForPlayer = (
-  playerid: number,
+  playerId: number,
   zone: number,
   flashcolour: string | number
 ): number => {
   return callNative(
     "GangZoneFlashForPlayer",
     "iii",
-    playerid,
+    playerId,
     zone,
     rgba(flashcolour)
   );
@@ -697,10 +697,10 @@ export const GangZoneFlashForAll = (
 };
 
 export const GangZoneStopFlashForPlayer = (
-  playerid: number,
+  playerId: number,
   zone: number
 ): number => {
-  return callNative("GangZoneStopFlashForPlayer", "ii", playerid, zone);
+  return callNative("GangZoneStopFlashForPlayer", "ii", playerId, zone);
 };
 
 export const GangZoneStopFlashForAll = (zone: number): number => {
@@ -709,7 +709,7 @@ export const GangZoneStopFlashForAll = (zone: number): number => {
 
 export const Create3DTextLabel = (
   text: string,
-  colour: string | number,
+  color: string | number,
   X: number,
   Y: number,
   Z: number,
@@ -721,7 +721,7 @@ export const Create3DTextLabel = (
     "Create3DTextLabel",
     "siffffii",
     text,
-    rgba(colour),
+    rgba(color),
     X,
     Y,
     Z,
@@ -737,7 +737,7 @@ export const Delete3DTextLabel = (id: number): number => {
 
 export const Attach3DTextLabelToPlayer = (
   id: number,
-  playerid: number,
+  playerId: number,
   OffsetX: number,
   OffsetY: number,
   OffsetZ: number
@@ -746,7 +746,7 @@ export const Attach3DTextLabelToPlayer = (
     "Attach3DTextLabelToPlayer",
     "iifff",
     id,
-    playerid,
+    playerId,
     OffsetX,
     OffsetY,
     OffsetZ
@@ -773,16 +773,16 @@ export const Attach3DTextLabelToVehicle = (
 
 export const Update3DTextLabelText = (
   id: number,
-  colour: string | number,
+  color: string | number,
   text: string
 ): number => {
-  return callNative("Update3DTextLabelText", "iis", id, rgba(colour), text);
+  return callNative("Update3DTextLabelText", "iis", id, rgba(color), text);
 };
 
 export const CreatePlayer3DTextLabel = (
-  playerid: number,
+  playerId: number,
   text: string,
-  colour: string | number,
+  color: string | number,
   X: number,
   Y: number,
   Z: number,
@@ -794,9 +794,9 @@ export const CreatePlayer3DTextLabel = (
   return callNative(
     "CreatePlayer3DTextLabel",
     "isiffffiii",
-    playerid,
+    playerId,
     text,
-    rgba(colour),
+    rgba(color),
     X,
     Y,
     Z,
@@ -808,31 +808,31 @@ export const CreatePlayer3DTextLabel = (
 };
 
 export const DeletePlayer3DTextLabel = (
-  playerid: number,
+  playerId: number,
   id: number
 ): number => {
-  return callNative("DeletePlayer3DTextLabel", "ii", playerid, id);
+  return callNative("DeletePlayer3DTextLabel", "ii", playerId, id);
 };
 
 export const UpdatePlayer3DTextLabelText = (
-  playerid: number,
+  playerId: number,
   id: number,
-  colour: string | number,
+  color: string | number,
   text: string
 ): number => {
   return callNative(
     "UpdatePlayer3DTextLabelText",
     "iiis",
-    playerid,
+    playerId,
     id,
-    rgba(colour),
+    rgba(color),
     text
   );
 };
 
-export const gpci = (playerid: number, charset: string): string => {
+export const gpci = (playerId: number, charset: string): string => {
   return I18n.decodeFromBuf(
-    I18n.getValidStr(callNative("gpci", "iAi", playerid, 41)),
+    I18n.getValidStr(callNative("gpci", "iAi", playerId, 41)),
     charset
   );
 };
@@ -1029,7 +1029,7 @@ export const AttachObjectToObject = (
 
 export const AttachObjectToPlayer = (
   objectid: number,
-  playerid: number,
+  playerId: number,
   OffsetX: number,
   OffsetY: number,
   OffsetZ: number,
@@ -1041,7 +1041,7 @@ export const AttachObjectToPlayer = (
     "AttachObjectToPlayer",
     "iiffffff",
     objectid,
-    playerid,
+    playerId,
     OffsetX,
     OffsetY,
     OffsetZ,
@@ -1126,31 +1126,31 @@ export const IsObjectMoving = (objectid: number): boolean => {
 };
 
 export const BeginObjectEditing = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): boolean => {
-  return Boolean(callNative("BeginObjectEditing", "ii", playerid, objectid));
+  return Boolean(callNative("BeginObjectEditing", "ii", playerId, objectid));
 };
 
 export const BeginPlayerObjectEditing = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): boolean => {
   return Boolean(
-    callNative("BeginPlayerObjectEditing", "ii", playerid, objectid)
+    callNative("BeginPlayerObjectEditing", "ii", playerId, objectid)
   );
 };
 
-export const BeginObjectSelecting = (playerid: number): boolean => {
-  return Boolean(callNative("BeginObjectSelecting", "i", playerid));
+export const BeginObjectSelecting = (playerId: number): boolean => {
+  return Boolean(callNative("BeginObjectSelecting", "i", playerId));
 };
 
-export const EndObjectEditing = (playerid: number): boolean => {
-  return Boolean(callNative("EndObjectEditing", "i", playerid));
+export const EndObjectEditing = (playerId: number): boolean => {
+  return Boolean(callNative("EndObjectEditing", "i", playerId));
 };
 
 export const CreatePlayerObject = (
-  playerid: number,
+  playerId: number,
   modelid: number,
   X: number,
   Y: number,
@@ -1163,7 +1163,7 @@ export const CreatePlayerObject = (
   return callNative(
     "CreatePlayerObject",
     "iifffffff",
-    playerid,
+    playerId,
     modelid,
     X,
     Y,
@@ -1176,7 +1176,7 @@ export const CreatePlayerObject = (
 };
 
 export const AttachPlayerObjectToVehicle = (
-  playerid: number,
+  playerId: number,
   objectid: number,
   vehicleid: number,
   fOffsetX: number,
@@ -1189,7 +1189,7 @@ export const AttachPlayerObjectToVehicle = (
   return callNative(
     "AttachPlayerObjectToVehicle",
     "iiiffffff",
-    playerid,
+    playerId,
     objectid,
     vehicleid,
     fOffsetX,
@@ -1202,24 +1202,24 @@ export const AttachPlayerObjectToVehicle = (
 };
 
 export const SetPlayerObjectPos = (
-  playerid: number,
+  playerId: number,
   objectid: number,
   X: number,
   Y: number,
   Z: number
 ): number => {
-  return callNative("SetPlayerObjectPos", "iifff", playerid, objectid, X, Y, Z);
+  return callNative("SetPlayerObjectPos", "iifff", playerId, objectid, X, Y, Z);
 };
 
 export const GetPlayerObjectPos = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): Array<number> => {
-  return callNative("GetPlayerObjectPos", "iiFFF", playerid, objectid);
+  return callNative("GetPlayerObjectPos", "iiFFF", playerId, objectid);
 };
 
 export const SetPlayerObjectRot = (
-  playerid: number,
+  playerId: number,
   objectid: number,
   RotX: number,
   RotY: number,
@@ -1228,7 +1228,7 @@ export const SetPlayerObjectRot = (
   return callNative(
     "SetPlayerObjectRot",
     "iifff",
-    playerid,
+    playerId,
     objectid,
     RotX,
     RotY,
@@ -1237,44 +1237,44 @@ export const SetPlayerObjectRot = (
 };
 
 export const GetPlayerObjectRot = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): Array<number> => {
-  return callNative("GetPlayerObjectRot", "iiFFF", playerid, objectid);
+  return callNative("GetPlayerObjectRot", "iiFFF", playerId, objectid);
 };
 
 export const GetPlayerObjectModel = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): number => {
-  return callNative("GetPlayerObjectModel", "ii", playerid, objectid);
+  return callNative("GetPlayerObjectModel", "ii", playerId, objectid);
 };
 
 export const SetPlayerObjectNoCameraCollision = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): boolean => {
   return Boolean(
-    callNative("SetPlayerObjectNoCameraCollision", "ii", playerid, objectid)
+    callNative("SetPlayerObjectNoCameraCollision", "ii", playerId, objectid)
   );
 };
 
 export const IsValidPlayerObject = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): boolean => {
-  return Boolean(callNative("IsValidPlayerObject", "ii", playerid, objectid));
+  return Boolean(callNative("IsValidPlayerObject", "ii", playerId, objectid));
 };
 
 export const DestroyPlayerObject = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): number => {
-  return callNative("DestroyPlayerObject", "ii", playerid, objectid);
+  return callNative("DestroyPlayerObject", "ii", playerId, objectid);
 };
 
 export const MovePlayerObject = (
-  playerid: number,
+  playerId: number,
   objectid: number,
   X: number,
   Y: number,
@@ -1287,7 +1287,7 @@ export const MovePlayerObject = (
   return callNative(
     "MovePlayerObject",
     "iifffffff",
-    playerid,
+    playerId,
     objectid,
     X,
     Y,
@@ -1300,17 +1300,17 @@ export const MovePlayerObject = (
 };
 
 export const StopPlayerObject = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): number => {
-  return callNative("StopPlayerObject", "ii", playerid, objectid);
+  return callNative("StopPlayerObject", "ii", playerId, objectid);
 };
 
 export const IsPlayerObjectMoving = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): boolean => {
-  return Boolean(callNative("IsPlayerObjectMoving", "ii", playerid, objectid));
+  return Boolean(callNative("IsPlayerObjectMoving", "ii", playerId, objectid));
 };
 
 export const AttachPlayerObjectToPlayer = (
@@ -1360,7 +1360,7 @@ export const SetObjectMaterial = (
 };
 
 export const SetPlayerObjectMaterial = (
-  playerid: number,
+  playerId: number,
   objectid: number,
   materialindex: number,
   modelid: number,
@@ -1371,7 +1371,7 @@ export const SetPlayerObjectMaterial = (
   return callNative(
     "SetPlayerObjectMaterial",
     "iiiissi",
-    playerid,
+    playerId,
     objectid,
     materialindex,
     modelid,
@@ -1410,7 +1410,7 @@ export const SetObjectMaterialText = (
 };
 
 export const SetPlayerObjectMaterialText = (
-  playerid: number,
+  playerId: number,
   objectid: number,
   text: string,
   materialindex: number,
@@ -1425,7 +1425,7 @@ export const SetPlayerObjectMaterialText = (
   return callNative(
     "SetPlayerObjectMaterialText",
     "iisiisiiiii",
-    playerid,
+    playerId,
     objectid,
     text,
     materialindex,
@@ -1444,7 +1444,7 @@ export const SetObjectsDefaultCameraCollision = (disable: boolean): boolean => {
 };
 
 export const SetSpawnInfo = (
-  playerid: number,
+  playerId: number,
   team: number,
   skin: number,
   x: number,
@@ -1461,7 +1461,7 @@ export const SetSpawnInfo = (
   return callNative(
     "SetSpawnInfo",
     "iiiffffiiiiii",
-    playerid,
+    playerId,
     team,
     skin,
     x,
@@ -1477,54 +1477,54 @@ export const SetSpawnInfo = (
   );
 };
 
-export const SpawnPlayer = (playerid: number): number => {
-  return callNative("SpawnPlayer", "i", playerid);
+export const SpawnPlayer = (playerId: number): number => {
+  return callNative("SpawnPlayer", "i", playerId);
 };
 
 export const SetPlayerPos = (
-  playerid: number,
+  playerId: number,
   x: number,
   y: number,
   z: number
 ): number => {
-  return callNative("SetPlayerPos", "ifff", playerid, x, y, z);
+  return callNative("SetPlayerPos", "ifff", playerId, x, y, z);
 };
 
 export const SetPlayerPosFindZ = (
-  playerid: number,
+  playerId: number,
   x: number,
   y: number,
   z: number
 ): number => {
-  return callNative("SetPlayerPosFindZ", "ifff", playerid, x, y, z);
+  return callNative("SetPlayerPosFindZ", "ifff", playerId, x, y, z);
 };
 
-export const GetPlayerPos = (playerid: number): Array<number> => {
-  return callNative("GetPlayerPos", "iFFF", playerid);
+export const GetPlayerPos = (playerId: number): Array<number> => {
+  return callNative("GetPlayerPos", "iFFF", playerId);
 };
 
-export const SetPlayerFacingAngle = (playerid: number, ang: number): number => {
-  return callNative("SetPlayerFacingAngle", "if", playerid, ang);
+export const SetPlayerFacingAngle = (playerId: number, ang: number): number => {
+  return callNative("SetPlayerFacingAngle", "if", playerId, ang);
 };
 
-export const GetPlayerFacingAngle = (playerid: number): number => {
-  return callNative("GetPlayerFacingAngle", "iF", playerid);
+export const GetPlayerFacingAngle = (playerId: number): number => {
+  return callNative("GetPlayerFacingAngle", "iF", playerId);
 };
 
 export const IsPlayerInRangeOfPoint = (
-  playerid: number,
+  playerId: number,
   range: number,
   x: number,
   y: number,
   z: number
 ): boolean => {
   return Boolean(
-    callNative("IsPlayerInRangeOfPoint", "iffff", playerid, range, x, y, z)
+    callNative("IsPlayerInRangeOfPoint", "iffff", playerId, range, x, y, z)
   );
 };
 
 export const GetPlayerDistanceFromPoint = (
-  playerid: number,
+  playerId: number,
   X: number,
   Y: number,
   Z: number
@@ -1532,7 +1532,7 @@ export const GetPlayerDistanceFromPoint = (
   return callNativeFloat(
     "GetPlayerDistanceFromPoint",
     "ifff",
-    playerid,
+    playerId,
     X,
     Y,
     Z
@@ -1540,243 +1540,243 @@ export const GetPlayerDistanceFromPoint = (
 };
 
 export const IsPlayerStreamedIn = (
-  playerid: number,
+  playerId: number,
   forplayerid: number
 ): boolean => {
-  return Boolean(callNative("IsPlayerStreamedIn", "ii", playerid, forplayerid));
+  return Boolean(callNative("IsPlayerStreamedIn", "ii", playerId, forplayerid));
 };
 
 export const SetPlayerInterior = (
-  playerid: number,
-  interiorid: number
+  playerId: number,
+  interiorId: number
 ): number => {
-  return callNative("SetPlayerInterior", "ii", playerid, interiorid);
+  return callNative("SetPlayerInterior", "ii", playerId, interiorId);
 };
 
-export const GetPlayerInterior = (playerid: number): number => {
-  return callNative("GetPlayerInterior", "i", playerid);
+export const GetPlayerInterior = (playerId: number): number => {
+  return callNative("GetPlayerInterior", "i", playerId);
 };
 
-export const SetPlayerHealth = (playerid: number, health: number): number => {
-  return callNative("SetPlayerHealth", "if", playerid, health);
+export const SetPlayerHealth = (playerId: number, health: number): number => {
+  return callNative("SetPlayerHealth", "if", playerId, health);
 };
 
-export const GetPlayerHealth = (playerid: number): number => {
-  return callNative("GetPlayerHealth", "iF", playerid);
+export const GetPlayerHealth = (playerId: number): number => {
+  return callNative("GetPlayerHealth", "iF", playerId);
 };
 
-export const SetPlayerArmour = (playerid: number, armour: number): number => {
-  return callNative("SetPlayerArmour", "if", playerid, armour);
+export const SetPlayerArmour = (playerId: number, armour: number): number => {
+  return callNative("SetPlayerArmour", "if", playerId, armour);
 };
 
-export const GetPlayerArmour = (playerid: number): number => {
-  return callNative("GetPlayerArmour", "iF", playerid);
+export const GetPlayerArmour = (playerId: number): number => {
+  return callNative("GetPlayerArmour", "iF", playerId);
 };
 
 export const SetPlayerAmmo = (
-  playerid: number,
+  playerId: number,
   weaponid: number,
   ammo: number
 ): number => {
-  return callNative("SetPlayerAmmo", "iii", playerid, weaponid, ammo);
+  return callNative("SetPlayerAmmo", "iii", playerId, weaponid, ammo);
 };
 
-export const GetPlayerAmmo = (playerid: number): number => {
-  return callNative("GetPlayerAmmo", "i", playerid);
+export const GetPlayerAmmo = (playerId: number): number => {
+  return callNative("GetPlayerAmmo", "i", playerId);
 };
 
-export const GetPlayerWeaponState = (playerid: number): WeaponStatesEnum => {
-  return callNative("GetPlayerWeaponState", "i", playerid);
+export const GetPlayerWeaponState = (playerId: number): WeaponStatesEnum => {
+  return callNative("GetPlayerWeaponState", "i", playerId);
 };
 
-export const GetPlayerTargetPlayer = (playerid: number): number => {
-  return callNative("GetPlayerTargetPlayer", "i", playerid);
+export const GetPlayerTargetPlayer = (playerId: number): number => {
+  return callNative("GetPlayerTargetPlayer", "i", playerId);
 };
 
-export const GetPlayerTargetActor = (playerid: number): number => {
-  return callNative("GetPlayerTargetActor", "i", playerid);
+export const GetPlayerTargetActor = (playerId: number): number => {
+  return callNative("GetPlayerTargetActor", "i", playerId);
 };
 
-export const SetPlayerTeam = (playerid: number, teamid: number): void => {
-  callNative("SetPlayerTeam", "ii", playerid, teamid);
+export const SetPlayerTeam = (playerId: number, teamid: number): void => {
+  callNative("SetPlayerTeam", "ii", playerId, teamid);
 };
 
-export const GetPlayerTeam = (playerid: number): number => {
-  return callNative("GetPlayerTeam", "i", playerid);
+export const GetPlayerTeam = (playerId: number): number => {
+  return callNative("GetPlayerTeam", "i", playerId);
 };
 
-export const SetPlayerScore = (playerid: number, score: number): number => {
-  return callNative("SetPlayerScore", "ii", playerid, score);
+export const SetPlayerScore = (playerId: number, score: number): number => {
+  return callNative("SetPlayerScore", "ii", playerId, score);
 };
 
-export const GetPlayerScore = (playerid: number): number => {
-  return callNative("GetPlayerScore", "i", playerid);
+export const GetPlayerScore = (playerId: number): number => {
+  return callNative("GetPlayerScore", "i", playerId);
 };
 
-export const GetPlayerDrunkLevel = (playerid: number): number => {
-  return callNative("GetPlayerDrunkLevel", "i", playerid);
+export const GetPlayerDrunkLevel = (playerId: number): number => {
+  return callNative("GetPlayerDrunkLevel", "i", playerId);
 };
 
 export const SetPlayerDrunkLevel = (
-  playerid: number,
+  playerId: number,
   level: number
 ): number => {
-  return callNative("SetPlayerDrunkLevel", "ii", playerid, level);
+  return callNative("SetPlayerDrunkLevel", "ii", playerId, level);
 };
 
 export const SetPlayerColor = (
-  playerid: number,
-  colour: string | number
+  playerId: number,
+  color: string | number
 ): number => {
-  return callNative("SetPlayerColor", "ii", playerid, rgba(colour));
+  return callNative("SetPlayerColor", "ii", playerId, rgba(color));
 };
 
-export const GetPlayerColor = (playerid: number): number => {
-  return callNative("GetPlayerColor", "i", playerid);
+export const GetPlayerColor = (playerId: number): number => {
+  return callNative("GetPlayerColor", "i", playerId);
 };
 
-export const SetPlayerSkin = (playerid: number, skinid: number): number => {
-  return callNative("SetPlayerSkin", "ii", playerid, skinid);
+export const SetPlayerSkin = (playerId: number, skinid: number): number => {
+  return callNative("SetPlayerSkin", "ii", playerId, skinid);
 };
 
-export const GetPlayerSkin = (playerid: number): number => {
-  return callNative("GetPlayerSkin", "i", playerid);
+export const GetPlayerSkin = (playerId: number): number => {
+  return callNative("GetPlayerSkin", "i", playerId);
 };
 
 export const GivePlayerWeapon = (
-  playerid: number,
+  playerId: number,
   weaponid: number,
   ammo: number
 ): number => {
-  return callNative("GivePlayerWeapon", "iii", playerid, weaponid, ammo);
+  return callNative("GivePlayerWeapon", "iii", playerId, weaponid, ammo);
 };
 
-export const ResetPlayerWeapons = (playerid: number): number => {
-  return callNative("ResetPlayerWeapons", "i", playerid);
+export const ResetPlayerWeapons = (playerId: number): number => {
+  return callNative("ResetPlayerWeapons", "i", playerId);
 };
 
 export const SetPlayerArmedWeapon = (
-  playerid: number,
+  playerId: number,
   weaponid: number
 ): number => {
-  return callNative("SetPlayerArmedWeapon", "ii", playerid, weaponid);
+  return callNative("SetPlayerArmedWeapon", "ii", playerId, weaponid);
 };
 
 export const GetPlayerWeaponData = (
-  playerid: number,
+  playerId: number,
   slot: number
 ): Array<number> => {
-  return callNative("GetPlayerWeaponData", "iiII", playerid, slot);
+  return callNative("GetPlayerWeaponData", "iiII", playerId, slot);
 };
 
-export const GivePlayerMoney = (playerid: number, money: number): number => {
-  return callNative("GivePlayerMoney", "ii", playerid, money);
+export const GivePlayerMoney = (playerId: number, money: number): number => {
+  return callNative("GivePlayerMoney", "ii", playerId, money);
 };
 
-export const ResetPlayerMoney = (playerid: number): number => {
-  return callNative("ResetPlayerMoney", "i", playerid);
+export const ResetPlayerMoney = (playerId: number): number => {
+  return callNative("ResetPlayerMoney", "i", playerId);
 };
 
-export const GetPlayerMoney = (playerid: number): number => {
-  return callNative("GetPlayerMoney", "i", playerid);
+export const GetPlayerMoney = (playerId: number): number => {
+  return callNative("GetPlayerMoney", "i", playerId);
 };
 
-export const GetPlayerState = (playerid: number): PlayerStateEnum => {
-  return callNative("GetPlayerState", "i", playerid);
+export const GetPlayerState = (playerId: number): PlayerStateEnum => {
+  return callNative("GetPlayerState", "i", playerId);
 };
 
-export const GetPlayerPing = (playerid: number): number => {
-  return callNative("GetPlayerPing", "i", playerid);
+export const GetPlayerPing = (playerId: number): number => {
+  return callNative("GetPlayerPing", "i", playerId);
 };
 
-export const GetPlayerWeapon = (playerid: number): number => {
-  return callNative("GetPlayerWeapon", "i", playerid);
+export const GetPlayerWeapon = (playerId: number): number => {
+  return callNative("GetPlayerWeapon", "i", playerId);
 };
 
-export const GetPlayerKeys = (playerid: number): Array<KeysEnum> => {
-  return callNative("GetPlayerKeys", "iIII", playerid);
+export const GetPlayerKeys = (playerId: number): Array<KeysEnum> => {
+  return callNative("GetPlayerKeys", "iIII", playerId);
 };
 
 export const SetPlayerTime = (
-  playerid: number,
+  playerId: number,
   hour: number,
   minute: number
 ): number => {
-  return callNative("SetPlayerTime", "iii", playerid, hour, minute);
+  return callNative("SetPlayerTime", "iii", playerId, hour, minute);
 };
 
-export const GetPlayerTime = (playerid: number): Array<number> => {
-  return callNative("GetPlayerTime", "iII", playerid);
+export const GetPlayerTime = (playerId: number): Array<number> => {
+  return callNative("GetPlayerTime", "iII", playerId);
 };
 
 export const TogglePlayerClock = (
-  playerid: number,
+  playerId: number,
   toggle: boolean
 ): number => {
-  return callNative("TogglePlayerClock", "ii", playerid, toggle);
+  return callNative("TogglePlayerClock", "ii", playerId, toggle);
 };
 
-export const SetPlayerWeather = (playerid: number, weather: number): number => {
-  return callNative("SetPlayerWeather", "ii", playerid, weather);
+export const SetPlayerWeather = (playerId: number, weather: number): number => {
+  return callNative("SetPlayerWeather", "ii", playerId, weather);
 };
 
-export const ForceClassSelection = (playerid: number): number => {
-  return callNative("ForceClassSelection", "i", playerid);
+export const ForceClassSelection = (playerId: number): number => {
+  return callNative("ForceClassSelection", "i", playerId);
 };
 
 export const SetPlayerWantedLevel = (
-  playerid: number,
+  playerId: number,
   level: number
 ): number => {
-  return callNative("SetPlayerWantedLevel", "ii", playerid, level);
+  return callNative("SetPlayerWantedLevel", "ii", playerId, level);
 };
 
-export const GetPlayerWantedLevel = (playerid: number): number => {
-  return callNative("GetPlayerWantedLevel", "i", playerid);
+export const GetPlayerWantedLevel = (playerId: number): number => {
+  return callNative("GetPlayerWantedLevel", "i", playerId);
 };
 
 export const SetPlayerFightingStyle = (
-  playerid: number,
+  playerId: number,
   style: FightingStylesEnum
 ): number => {
-  return callNative("SetPlayerFightingStyle", "ii", playerid, style);
+  return callNative("SetPlayerFightingStyle", "ii", playerId, style);
 };
 
 export const GetPlayerFightingStyle = (
-  playerid: number
+  playerId: number
 ): FightingStylesEnum => {
-  return callNative("GetPlayerFightingStyle", "i", playerid);
+  return callNative("GetPlayerFightingStyle", "i", playerId);
 };
 
 export const SetPlayerVelocity = (
-  playerid: number,
+  playerId: number,
   X: number,
   Y: number,
   Z: number
 ): number => {
-  return callNative("SetPlayerVelocity", "ifff", playerid, X, Y, Z);
+  return callNative("SetPlayerVelocity", "ifff", playerId, X, Y, Z);
 };
 
-export const GetPlayerVelocity = (playerid: number): Array<number> => {
-  return callNative("GetPlayerVelocity", "iFFF", playerid);
+export const GetPlayerVelocity = (playerId: number): Array<number> => {
+  return callNative("GetPlayerVelocity", "iFFF", playerId);
 };
 
 export const PlayCrimeReportForPlayer = (
-  playerid: number,
+  playerId: number,
   suspectid: number,
   crime: number
 ): number => {
   return callNative(
     "PlayCrimeReportForPlayer",
     "iii",
-    playerid,
+    playerId,
     suspectid,
     crime
   );
 };
 
 export const PlayAudioStreamForPlayer = (
-  playerid: number,
+  playerId: number,
   url: string,
   posX: number,
   posY: number,
@@ -1787,7 +1787,7 @@ export const PlayAudioStreamForPlayer = (
   return callNative(
     "PlayAudioStreamForPlayer",
     "isffffi",
-    playerid,
+    playerId,
     url,
     posX,
     posY,
@@ -1797,39 +1797,39 @@ export const PlayAudioStreamForPlayer = (
   );
 };
 
-export const StopAudioStreamForPlayer = (playerid: number): number => {
-  return callNative("StopAudioStreamForPlayer", "i", playerid);
+export const StopAudioStreamForPlayer = (playerId: number): number => {
+  return callNative("StopAudioStreamForPlayer", "i", playerId);
 };
 
 export const SetPlayerShopName = (
-  playerid: number,
+  playerId: number,
   shopname: string
 ): number => {
-  return callNative("SetPlayerShopName", "is", playerid, shopname);
+  return callNative("SetPlayerShopName", "is", playerId, shopname);
 };
 
 export const SetPlayerSkillLevel = (
-  playerid: number,
+  playerId: number,
   skill: WeaponSkillsEnum,
   level: number
 ): number => {
-  return callNative("SetPlayerSkillLevel", "iii", playerid, skill, level);
+  return callNative("SetPlayerSkillLevel", "iii", playerId, skill, level);
 };
 
-export const GetPlayerSurfingVehicleID = (playerid: number): number => {
-  return callNative("GetPlayerSurfingVehicleID", "i", playerid);
+export const GetPlayerSurfingVehicleID = (playerId: number): number => {
+  return callNative("GetPlayerSurfingVehicleID", "i", playerId);
 };
 
-export const GetPlayerSurfingObjectID = (playerid: number): number => {
-  return callNative("GetPlayerSurfingObjectID", "i", playerid);
+export const GetPlayerSurfingObjectID = (playerId: number): number => {
+  return callNative("GetPlayerSurfingObjectID", "i", playerId);
 };
 
-export const GetPlayerSurfingPlayerObjectID = (playerid: number): number => {
-  return callNative("GetPlayerSurfingPlayerObjectID", "i", playerid);
+export const GetPlayerSurfingPlayerObjectID = (playerId: number): number => {
+  return callNative("GetPlayerSurfingPlayerObjectID", "i", playerId);
 };
 
 export const RemoveBuildingForPlayer = (
-  playerid: number,
+  playerId: number,
   modelid: number,
   fX: number,
   fY: number,
@@ -1839,7 +1839,7 @@ export const RemoveBuildingForPlayer = (
   return callNative(
     "RemoveBuildingForPlayer",
     "iiffff",
-    playerid,
+    playerId,
     modelid,
     fX,
     fY,
@@ -1848,12 +1848,12 @@ export const RemoveBuildingForPlayer = (
   );
 };
 
-export const GetPlayerLastShotVectors = (playerid: number): Array<number> => {
-  return callNative("GetPlayerLastShotVectors", "iFFFFFF", playerid);
+export const GetPlayerLastShotVectors = (playerId: number): Array<number> => {
+  return callNative("GetPlayerLastShotVectors", "iFFFFFF", playerId);
 };
 
 export const SetPlayerAttachedObject = (
-  playerid: number,
+  playerId: number,
   index: number,
   modelid: number,
   bone: BoneIdsEnum,
@@ -1872,7 +1872,7 @@ export const SetPlayerAttachedObject = (
   return callNative(
     "SetPlayerAttachedObject",
     "iiiifffffffffii",
-    playerid,
+    playerId,
     index,
     modelid,
     bone,
@@ -1891,192 +1891,192 @@ export const SetPlayerAttachedObject = (
 };
 
 export const RemovePlayerAttachedObject = (
-  playerid: number,
+  playerId: number,
   index: number
 ): number => {
-  return callNative("RemovePlayerAttachedObject", "ii", playerid, index);
+  return callNative("RemovePlayerAttachedObject", "ii", playerId, index);
 };
 
 export const IsPlayerAttachedObjectSlotUsed = (
-  playerid: number,
+  playerId: number,
   index: number
 ): boolean => {
   return Boolean(
-    callNative("IsPlayerAttachedObjectSlotUsed", "ii", playerid, index)
+    callNative("IsPlayerAttachedObjectSlotUsed", "ii", playerId, index)
   );
 };
 
-export const EditAttachedObject = (playerid: number, index: number): number => {
-  return callNative("EditAttachedObject", "ii", playerid, index);
+export const EditAttachedObject = (playerId: number, index: number): number => {
+  return callNative("EditAttachedObject", "ii", playerId, index);
 };
 
 export const CreatePlayerTextDraw = (
-  playerid: number,
+  playerId: number,
   x: number,
   y: number,
   text: string
 ): number => {
-  return callNative("CreatePlayerTextDraw", "iffs", playerid, x, y, text);
+  return callNative("CreatePlayerTextDraw", "iffs", playerId, x, y, text);
 };
 
-export const PlayerTextDrawDestroy = (playerid: number, text: number): void => {
-  callNative("PlayerTextDrawDestroy", "ii", playerid, text);
+export const PlayerTextDrawDestroy = (playerId: number, text: number): void => {
+  callNative("PlayerTextDrawDestroy", "ii", playerId, text);
 };
 
 export const PlayerTextDrawLetterSize = (
-  playerid: number,
+  playerId: number,
   text: number,
   x: number,
   y: number
 ): number => {
-  return callNative("PlayerTextDrawLetterSize", "iiff", playerid, text, x, y);
+  return callNative("PlayerTextDrawLetterSize", "iiff", playerId, text, x, y);
 };
 
 export const PlayerTextDrawTextSize = (
-  playerid: number,
+  playerId: number,
   text: number,
   x: number,
   y: number
 ): number => {
-  return callNative("PlayerTextDrawTextSize", "iiff", playerid, text, x, y);
+  return callNative("PlayerTextDrawTextSize", "iiff", playerId, text, x, y);
 };
 
 export const PlayerTextDrawAlignment = (
-  playerid: number,
+  playerId: number,
   text: number,
   alignment: TextDrawAlignEnum
 ): number => {
   return callNative(
     "PlayerTextDrawAlignment",
     "iii",
-    playerid,
+    playerId,
     text,
     alignment
   );
 };
 
 export const PlayerTextDrawColour = (
-  playerid: number,
+  playerId: number,
   text: number,
-  colour: string | number
+  color: string | number
 ): boolean => {
   return Boolean(
-    callNative("PlayerTextDrawColor", "iii", playerid, text, rgba(colour))
+    callNative("PlayerTextDrawColor", "iii", playerId, text, rgba(color))
   );
 };
 
 export const PlayerTextDrawUseBox = (
-  playerid: number,
+  playerId: number,
   text: number,
   use: boolean
 ): number => {
-  return callNative("PlayerTextDrawUseBox", "iii", playerid, text, use);
+  return callNative("PlayerTextDrawUseBox", "iii", playerId, text, use);
 };
 
 export const PlayerTextDrawBoxColour = (
-  playerid: number,
+  playerId: number,
   text: number,
-  colour: string | number
+  color: string | number
 ): boolean => {
   return Boolean(
-    callNative("PlayerTextDrawBoxColor", "iii", playerid, text, rgba(colour))
+    callNative("PlayerTextDrawBoxColor", "iii", playerId, text, rgba(color))
   );
 };
 
 export const PlayerTextDrawSetShadow = (
-  playerid: number,
+  playerId: number,
   text: number,
   size: number
 ): number => {
-  return callNative("PlayerTextDrawSetShadow", "iii", playerid, text, size);
+  return callNative("PlayerTextDrawSetShadow", "iii", playerId, text, size);
 };
 
 export const PlayerTextDrawSetOutline = (
-  playerid: number,
+  playerId: number,
   text: number,
   size: number
 ): number => {
-  return callNative("PlayerTextDrawSetOutline", "iii", playerid, text, size);
+  return callNative("PlayerTextDrawSetOutline", "iii", playerId, text, size);
 };
 
 export const PlayerTextDrawBackgroundColour = (
-  playerid: number,
+  playerId: number,
   text: number,
-  colour: string | number
+  color: string | number
 ): boolean => {
   return Boolean(
     callNative(
       "PlayerTextDrawBackgroundColour",
       "iii",
-      playerid,
+      playerId,
       text,
-      rgba(colour)
+      rgba(color)
     )
   );
 };
 
 export const PlayerTextDrawFont = (
-  playerid: number,
+  playerId: number,
   text: number,
   font: number
 ): number => {
-  return callNative("PlayerTextDrawFont", "iii", playerid, text, font);
+  return callNative("PlayerTextDrawFont", "iii", playerId, text, font);
 };
 
 export const PlayerTextDrawSetProportional = (
-  playerid: number,
+  playerId: number,
   text: number,
   set: boolean
 ): number => {
   return callNative(
     "PlayerTextDrawSetProportional",
     "iii",
-    playerid,
+    playerId,
     text,
     set
   );
 };
 
 export const PlayerTextDrawSetSelectable = (
-  playerid: number,
+  playerId: number,
   text: number,
   set: boolean
 ): number => {
-  return callNative("PlayerTextDrawSetSelectable", "iii", playerid, text, set);
+  return callNative("PlayerTextDrawSetSelectable", "iii", playerId, text, set);
 };
 
-export const PlayerTextDrawShow = (playerid: number, text: number): number => {
-  return callNative("PlayerTextDrawShow", "ii", playerid, text);
+export const PlayerTextDrawShow = (playerId: number, text: number): number => {
+  return callNative("PlayerTextDrawShow", "ii", playerId, text);
 };
 
-export const PlayerTextDrawHide = (playerid: number, text: number): number => {
-  return callNative("PlayerTextDrawHide", "ii", playerid, text);
+export const PlayerTextDrawHide = (playerId: number, text: number): number => {
+  return callNative("PlayerTextDrawHide", "ii", playerId, text);
 };
 
 export const PlayerTextDrawSetString = (
-  playerid: number,
+  playerId: number,
   text: number,
   string: string
 ): number => {
-  return callNative("PlayerTextDrawSetString", "iis", playerid, text, string);
+  return callNative("PlayerTextDrawSetString", "iis", playerId, text, string);
 };
 
 export const PlayerTextDrawSetPreviewModel = (
-  playerid: number,
+  playerId: number,
   text: number,
   modelindex: number
 ): number => {
   return callNative(
     "PlayerTextDrawSetPreviewModel",
     "iii",
-    playerid,
+    playerId,
     text,
     modelindex
   );
 };
 
 export const PlayerTextDrawSetPreviewRot = (
-  playerid: number,
+  playerId: number,
   text: number,
   fRotX: number,
   fRotY: number,
@@ -2086,7 +2086,7 @@ export const PlayerTextDrawSetPreviewRot = (
   return callNative(
     "PlayerTextDrawSetPreviewRot",
     "iiffff",
-    playerid,
+    playerId,
     text,
     fRotX,
     fRotY,
@@ -2096,80 +2096,80 @@ export const PlayerTextDrawSetPreviewRot = (
 };
 
 export const PlayerTextDrawSetPreviewVehicleColours = (
-  playerid: number,
+  playerId: number,
   text: number,
-  colour1: string | number,
-  colour2: string | number
+  color1: string | number,
+  color2: string | number
 ): boolean => {
   return Boolean(
     callNative(
       "PlayerTextDrawSetPreviewVehCol",
       "iiii",
-      playerid,
+      playerId,
       text,
-      colour1,
-      colour2
+      color1,
+      color2
     )
   );
 };
 
 export const SetPlayerChatBubble = (
-  playerid: number,
+  playerId: number,
   text: string,
-  colour: string | number,
+  color: string | number,
   drawdistance: number,
   expiretime: number
 ): number => {
   return callNative(
     "SetPlayerChatBubble",
     "isifi",
-    playerid,
+    playerId,
     text,
-    rgba(colour),
+    rgba(color),
     drawdistance,
     expiretime
   );
 };
 
 export const PutPlayerInVehicle = (
-  playerid: number,
+  playerId: number,
   vehicleid: number,
   seatid: number
 ): number => {
-  return callNative("PutPlayerInVehicle", "iii", playerid, vehicleid, seatid);
+  return callNative("PutPlayerInVehicle", "iii", playerId, vehicleid, seatid);
 };
 
-export const GetPlayerVehicleID = (playerid: number): number => {
-  return callNative("GetPlayerVehicleID", "i", playerid);
+export const GetPlayerVehicleID = (playerId: number): number => {
+  return callNative("GetPlayerVehicleID", "i", playerId);
 };
 
-export const GetPlayerVehicleSeat = (playerid: number): number => {
-  return callNative("GetPlayerVehicleSeat", "i", playerid);
+export const GetPlayerVehicleSeat = (playerId: number): number => {
+  return callNative("GetPlayerVehicleSeat", "i", playerId);
 };
 
-export const RemovePlayerFromVehicle = (playerid: number): number => {
-  return callNative("RemovePlayerFromVehicle", "i", playerid);
+export const RemovePlayerFromVehicle = (playerId: number): number => {
+  return callNative("RemovePlayerFromVehicle", "i", playerId);
 };
 
 export const TogglePlayerControllable = (
-  playerid: number,
+  playerId: number,
   toggle: boolean
 ): number => {
-  return callNative("TogglePlayerControllable", "ii", playerid, toggle);
+  return callNative("TogglePlayerControllable", "ii", playerId, toggle);
 };
 
 export const PlayerPlaySound = (
-  playerid: number,
+  playerId: number,
   soundid: number,
   x: number,
   y: number,
   z: number
 ): number => {
-  return callNative("PlayerPlaySound", "iifff", playerid, soundid, x, y, z);
+  return callNative("PlayerPlaySound", "iifff", playerId, soundid, x, y, z);
 };
 
 export const ApplyAnimation = (
-  playerid: number,
+  playerId: number,
   animlib: string,
   animname: string,
   fDelta: number,
@@ -2183,7 +2183,7 @@ export const ApplyAnimation = (
   return callNative(
     "ApplyAnimation",
     "issfiiiiii",
-    playerid,
+    playerId,
     animlib,
     animname,
     fDelta,
@@ -2197,82 +2197,82 @@ export const ApplyAnimation = (
 };
 
 export const ClearAnimations = (
-  playerid: number,
+  playerId: number,
   forcesync: boolean
 ): number => {
-  return callNative("ClearAnimations", "ii", playerid, forcesync);
+  return callNative("ClearAnimations", "ii", playerId, forcesync);
 };
 
-export const GetPlayerAnimationIndex = (playerid: number): number => {
-  return callNative("GetPlayerAnimationIndex", "i", playerid);
+export const GetPlayerAnimationIndex = (playerId: number): number => {
+  return callNative("GetPlayerAnimationIndex", "i", playerId);
 };
 
 export const GetPlayerSpecialAction = (
-  playerid: number
+  playerId: number
 ): SpecialActionsEnum => {
-  return callNative("GetPlayerSpecialAction", "i", playerid);
+  return callNative("GetPlayerSpecialAction", "i", playerId);
 };
 
 export const SetPlayerSpecialAction = (
-  playerid: number,
+  playerId: number,
   actionid: SpecialActionsEnum
 ): number => {
-  return callNative("SetPlayerSpecialAction", "ii", playerid, actionid);
+  return callNative("SetPlayerSpecialAction", "ii", playerId, actionid);
 };
 
 export const DisableRemoteVehicleCollisions = (
-  playerid: number,
+  playerId: number,
   disable: boolean
 ): number => {
-  return callNative("DisableRemoteVehicleCollisions", "ii", playerid, disable);
+  return callNative("DisableRemoteVehicleCollisions", "ii", playerId, disable);
 };
 
 export const SetPlayerCheckpoint = (
-  playerid: number,
+  playerId: number,
   x: number,
   y: number,
   z: number,
   size: number
 ): number => {
-  return callNative("SetPlayerCheckpoint", "iffff", playerid, x, y, z, size);
+  return callNative("SetPlayerCheckpoint", "iffff", playerId, x, y, z, size);
 };
 
-export const DisablePlayerCheckpoint = (playerid: number): number => {
-  return callNative("DisablePlayerCheckpoint", "i", playerid);
+export const DisablePlayerCheckpoint = (playerId: number): number => {
+  return callNative("DisablePlayerCheckpoint", "i", playerId);
 };
 
 export const SetPlayerRaceCheckpoint = (
-  playerid: number,
+  playerId: number,
   type: number,
   x: number,
   y: number,
   z: number,
-  nextx: number,
-  nexty: number,
-  nextz: number,
+  nextX: number,
+  nextY: number,
+  nextZ: number,
   size: number
 ): number => {
   return callNative(
     "SetPlayerRaceCheckpoint",
     "iifffffff",
-    playerid,
+    playerId,
     type,
     x,
     y,
     z,
-    nextx,
-    nexty,
-    nextz,
+    nextX,
+    nextY,
+    nextZ,
     size
   );
 };
 
-export const DisablePlayerRaceCheckpoint = (playerid: number): number => {
-  return callNative("DisablePlayerRaceCheckpoint", "i", playerid);
+export const DisablePlayerRaceCheckpoint = (playerId: number): number => {
+  return callNative("DisablePlayerRaceCheckpoint", "i", playerId);
 };
 
 export const SetPlayerWorldBounds = (
-  playerid: number,
+  playerId: number,
   x_max: number,
   x_min: number,
   y_max: number,
@@ -2281,7 +2281,7 @@ export const SetPlayerWorldBounds = (
   return callNative(
     "SetPlayerWorldBounds",
     "iffff",
-    playerid,
+    playerId,
     x_max,
     x_min,
     y_max,
@@ -2290,151 +2290,151 @@ export const SetPlayerWorldBounds = (
 };
 
 export const SetPlayerMarkerForPlayer = (
-  playerid: number,
+  playerId: number,
   showplayerid: number,
-  colour: string | number
+  color: string | number
 ): number => {
   return callNative(
     "SetPlayerMarkerForPlayer",
     "iii",
-    playerid,
+    playerId,
     showplayerid,
-    rgba(colour)
+    rgba(color)
   );
 };
 
 export const ShowPlayerNameTagForPlayer = (
-  playerid: number,
+  playerId: number,
   showplayerid: number,
   show: boolean
 ): number => {
   return callNative(
     "ShowPlayerNameTagForPlayer",
     "iii",
-    playerid,
+    playerId,
     showplayerid,
     show
   );
 };
 
 export const SetPlayerMapIcon = (
-  playerid: number,
+  playerId: number,
   iconid: number,
   x: number,
   y: number,
   z: number,
   markertype: number,
-  colour: string | number,
+  color: string | number,
   style: number
 ): number => {
   return callNative(
     "SetPlayerMapIcon",
     "iifffiii",
-    playerid,
+    playerId,
     iconid,
     x,
     y,
     z,
     markertype,
-    rgba(colour),
+    rgba(color),
     style
   );
 };
 
 export const RemovePlayerMapIcon = (
-  playerid: number,
+  playerId: number,
   iconid: number
 ): number => {
-  return callNative("RemovePlayerMapIcon", "ii", playerid, iconid);
+  return callNative("RemovePlayerMapIcon", "ii", playerId, iconid);
 };
 
 export const SetPlayerCameraPos = (
-  playerid: number,
+  playerId: number,
   x: number,
   y: number,
   z: number
 ): number => {
-  return callNative("SetPlayerCameraPos", "ifff", playerid, x, y, z);
+  return callNative("SetPlayerCameraPos", "ifff", playerId, x, y, z);
 };
 
 export const SetPlayerCameraLookAt = (
-  playerid: number,
+  playerId: number,
   x: number,
   y: number,
   z: number,
   cut: CameraCutStylesEnum
 ): number => {
-  return callNative("SetPlayerCameraLookAt", "ifffi", playerid, x, y, z, cut);
+  return callNative("SetPlayerCameraLookAt", "ifffi", playerId, x, y, z, cut);
 };
 
-export const SetCameraBehindPlayer = (playerid: number): number => {
-  return callNative("SetCameraBehindPlayer", "i", playerid);
+export const SetCameraBehindPlayer = (playerId: number): number => {
+  return callNative("SetCameraBehindPlayer", "i", playerId);
 };
 
-export const GetPlayerCameraPos = (playerid: number): Array<number> => {
-  return callNative("GetPlayerCameraPos", "iFFF", playerid);
+export const GetPlayerCameraPos = (playerId: number): Array<number> => {
+  return callNative("GetPlayerCameraPos", "iFFF", playerId);
 };
 
-export const GetPlayerCameraFrontVector = (playerid: number): Array<number> => {
-  return callNative("GetPlayerCameraFrontVector", "iFFF", playerid);
+export const GetPlayerCameraFrontVector = (playerId: number): Array<number> => {
+  return callNative("GetPlayerCameraFrontVector", "iFFF", playerId);
 };
 
-export const GetPlayerCameraMode = (playerid: number): CameraModesEnum => {
-  return callNative("GetPlayerCameraMode", "i", playerid);
+export const GetPlayerCameraMode = (playerId: number): CameraModesEnum => {
+  return callNative("GetPlayerCameraMode", "i", playerId);
 };
 
 export const EnablePlayerCameraTarget = (
-  playerid: number,
+  playerId: number,
   enable: boolean
 ): number => {
-  return callNative("EnablePlayerCameraTarget", "ii", playerid, enable);
+  return callNative("EnablePlayerCameraTarget", "ii", playerId, enable);
 };
 
-export const GetPlayerCameraTargetObject = (playerid: number): number => {
-  return callNative("GetPlayerCameraTargetObject", "i", playerid);
+export const GetPlayerCameraTargetObject = (playerId: number): number => {
+  return callNative("GetPlayerCameraTargetObject", "i", playerId);
 };
 
-export const GetPlayerCameraTargetVehicle = (playerid: number): number => {
-  return callNative("GetPlayerCameraTargetVehicle", "i", playerid);
+export const GetPlayerCameraTargetVehicle = (playerId: number): number => {
+  return callNative("GetPlayerCameraTargetVehicle", "i", playerId);
 };
 
-export const GetPlayerCameraTargetPlayer = (playerid: number): number => {
-  return callNative("GetPlayerCameraTargetPlayer", "i", playerid);
+export const GetPlayerCameraTargetPlayer = (playerId: number): number => {
+  return callNative("GetPlayerCameraTargetPlayer", "i", playerId);
 };
 
-export const GetPlayerCameraTargetActor = (playerid: number): number => {
-  return callNative("GetPlayerCameraTargetActor", "i", playerid);
+export const GetPlayerCameraTargetActor = (playerId: number): number => {
+  return callNative("GetPlayerCameraTargetActor", "i", playerId);
 };
 
-export const GetPlayerCameraAspectRatio = (playerid: number): number => {
-  return callNativeFloat("GetPlayerCameraAspectRatio", "i", playerid);
+export const GetPlayerCameraAspectRatio = (playerId: number): number => {
+  return callNativeFloat("GetPlayerCameraAspectRatio", "i", playerId);
 };
 
-export const GetPlayerCameraZoom = (playerid: number): number => {
-  return callNativeFloat("GetPlayerCameraZoom", "i", playerid);
+export const GetPlayerCameraZoom = (playerId: number): number => {
+  return callNativeFloat("GetPlayerCameraZoom", "i", playerId);
 };
 
 export const AttachCameraToObject = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): number => {
-  return callNative("AttachCameraToObject", "ii", playerid, objectid);
+  return callNative("AttachCameraToObject", "ii", playerId, objectid);
 };
 
 export const AttachCameraToPlayerObject = (
-  playerid: number,
+  playerId: number,
   playerobjectid: number
 ): number => {
   return callNative(
     "AttachCameraToPlayerObject",
     "ii",
-    playerid,
+    playerId,
     playerobjectid
   );
 };
 
 export const InterpolateCameraPos = (
-  playerid: number,
+  playerId: number,
   FromX: number,
   FromY: number,
   FromZ: number,
@@ -2447,7 +2447,7 @@ export const InterpolateCameraPos = (
   return callNative(
     "InterpolateCameraPos",
     "iffffffii",
-    playerid,
+    playerId,
     FromX,
     FromY,
     FromZ,
@@ -2460,7 +2460,7 @@ export const InterpolateCameraPos = (
 };
 
 export const InterpolateCameraLookAt = (
-  playerid: number,
+  playerId: number,
   FromX: number,
   FromY: number,
   FromZ: number,
@@ -2473,7 +2473,7 @@ export const InterpolateCameraLookAt = (
   return callNative(
     "InterpolateCameraLookAt",
     "iffffffii",
-    playerid,
+    playerId,
     FromX,
     FromY,
     FromZ,
@@ -2485,45 +2485,45 @@ export const InterpolateCameraLookAt = (
   );
 };
 
-export const IsPlayerConnected = (playerid: number): boolean => {
-  return Boolean(callNative("IsPlayerConnected", "i", playerid));
+export const IsPlayerConnected = (playerId: number): boolean => {
+  return Boolean(callNative("IsPlayerConnected", "i", playerId));
 };
 
 export const IsPlayerInVehicle = (
-  playerid: number,
+  playerId: number,
   vehicleid: number
 ): boolean => {
-  return Boolean(callNative("IsPlayerInVehicle", "ii", playerid, vehicleid));
+  return Boolean(callNative("IsPlayerInVehicle", "ii", playerId, vehicleid));
 };
 
-export const IsPlayerInAnyVehicle = (playerid: number): boolean => {
-  return Boolean(callNative("IsPlayerInAnyVehicle", "i", playerid));
+export const IsPlayerInAnyVehicle = (playerId: number): boolean => {
+  return Boolean(callNative("IsPlayerInAnyVehicle", "i", playerId));
 };
 
-export const IsPlayerInCheckpoint = (playerid: number): boolean => {
-  return Boolean(callNative("IsPlayerInCheckpoint", "i", playerid));
+export const IsPlayerInCheckpoint = (playerId: number): boolean => {
+  return Boolean(callNative("IsPlayerInCheckpoint", "i", playerId));
 };
 
-export const IsPlayerInRaceCheckpoint = (playerid: number): boolean => {
-  return Boolean(callNative("IsPlayerInRaceCheckpoint", "i", playerid));
+export const IsPlayerInRaceCheckpoint = (playerId: number): boolean => {
+  return Boolean(callNative("IsPlayerInRaceCheckpoint", "i", playerId));
 };
 
 export const SetPlayerVirtualWorld = (
-  playerid: number,
-  worldid: number
+  playerId: number,
+  worldId: number
 ): number => {
-  return callNative("SetPlayerVirtualWorld", "ii", playerid, worldid);
+  return callNative("SetPlayerVirtualWorld", "ii", playerId, worldId);
 };
 
-export const GetPlayerVirtualWorld = (playerid: number): number => {
-  return callNative("GetPlayerVirtualWorld", "i", playerid);
+export const GetPlayerVirtualWorld = (playerId: number): number => {
+  return callNative("GetPlayerVirtualWorld", "i", playerId);
 };
 
 export const EnableStuntBonusForPlayer = (
-  playerid: number,
+  playerId: number,
   enable: boolean
 ): number => {
-  return callNative("EnableStuntBonusForPlayer", "ii", playerid, enable);
+  return callNative("EnableStuntBonusForPlayer", "ii", playerId, enable);
 };
 
 export const EnableStuntBonusForAll = (enable: boolean): number => {
@@ -2531,71 +2531,71 @@ export const EnableStuntBonusForAll = (enable: boolean): number => {
 };
 
 export const TogglePlayerSpectating = (
-  playerid: number,
+  playerId: number,
   toggle: boolean
 ): number => {
-  return callNative("TogglePlayerSpectating", "ii", playerid, toggle);
+  return callNative("TogglePlayerSpectating", "ii", playerId, toggle);
 };
 
 export const PlayerSpectatePlayer = (
-  playerid: number,
+  playerId: number,
   targetplayerid: number,
   mode: SpectateModesEnum
 ): number => {
   return callNative(
     "PlayerSpectatePlayer",
     "iii",
-    playerid,
+    playerId,
     targetplayerid,
     mode
   );
 };
 
 export const PlayerSpectateVehicle = (
-  playerid: number,
+  playerId: number,
   targetvehicleid: number,
   mode: SpectateModesEnum
 ): number => {
   return callNative(
     "PlayerSpectateVehicle",
     "iii",
-    playerid,
+    playerId,
     targetvehicleid,
     mode
   );
 };
 
 export const StartRecordingPlayerData = (
-  playerid: number,
+  playerId: number,
   recordtype: number,
   recordname: string
 ): number => {
   return callNative(
     "StartRecordingPlayerData",
     "iis",
-    playerid,
+    playerId,
     recordtype,
     recordname
   );
 };
 
-export const StopRecordingPlayerData = (playerid: number): number => {
-  return callNative("StopRecordingPlayerData", "i", playerid);
+export const StopRecordingPlayerData = (playerId: number): number => {
+  return callNative("StopRecordingPlayerData", "i", playerId);
 };
 
 export const SelectTextDraw = (
-  playerid: number,
+  playerId: number,
   hovercolour: string | number
 ): void => {
-  callNative("SelectTextDraw", "ii", playerid, rgba(hovercolour));
+  callNative("SelectTextDraw", "ii", playerId, rgba(hovercolour));
 };
 
-export const CancelSelectTextDraw = (playerid: number): void => {
-  callNative("CancelSelectTextDraw", "i", playerid);
+export const CancelSelectTextDraw = (playerId: number): void => {
+  callNative("CancelSelectTextDraw", "i", playerId);
 };
 
 export const CreateExplosionForPlayer = (
-  playerid: number,
+  playerId: number,
   X: number,
   Y: number,
   Z: number,
@@ -2605,7 +2605,7 @@ export const CreateExplosionForPlayer = (
   return callNative(
     "CreateExplosionForPlayer",
     "ifffif",
-    playerid,
+    playerId,
     X,
     Y,
     Z,
@@ -2615,7 +2615,7 @@ export const CreateExplosionForPlayer = (
 };
 
 export const SendClientCheck = (
-  playerid: number,
+  playerId: number,
   type: number,
   memAddr: number,
   memOffset: number,
@@ -2624,7 +2624,7 @@ export const SendClientCheck = (
   return callNative(
     "SendClientCheck",
     "iiiii",
-    playerid,
+    playerId,
     type,
     memAddr,
     memOffset,
@@ -2638,8 +2638,8 @@ export const CreateVehicle = (
   y: number,
   z: number,
   rotation: number,
-  colour1: string | number,
-  colour2: string | number,
+  color1: string | number,
+  color2: string | number,
   respawn_delay: number,
   addsiren: boolean
 ): number => {
@@ -2651,8 +2651,8 @@ export const CreateVehicle = (
     y,
     z,
     rotation,
-    rgba(colour1),
-    rgba(colour2),
+    rgba(color1),
+    rgba(color2),
     respawn_delay,
     addsiren
   );
@@ -2725,7 +2725,7 @@ export const SetVehicleZAngle = (
 
 export const SetVehicleParamsForPlayer = (
   vehicleid: number,
-  playerid: number,
+  playerId: number,
   objective: boolean,
   doorslocked: boolean
 ): number => {
@@ -2733,7 +2733,7 @@ export const SetVehicleParamsForPlayer = (
     "SetVehicleParamsForPlayer",
     "iiii",
     vehicleid,
-    playerid,
+    playerId,
     objective,
     doorslocked
   );
@@ -2851,9 +2851,9 @@ export const SetVehicleToRespawn = (vehicleid: number): number => {
 
 export const LinkVehicleToInterior = (
   vehicleid: number,
-  interiorid: number
+  interiorId: number
 ): number => {
-  return callNative("LinkVehicleToInterior", "ii", vehicleid, interiorid);
+  return callNative("LinkVehicleToInterior", "ii", vehicleid, interiorId);
 };
 
 export const AddVehicleComponent = (
@@ -2872,15 +2872,15 @@ export const RemoveVehicleComponent = (
 
 export const ChangeVehicleColours = (
   vehicleid: number,
-  colour1: string | number,
-  colour2: string | number
+  color1: string | number,
+  color2: string | number
 ): number => {
   return callNative(
     "ChangeVehicleColor",
     "iii",
     vehicleid,
-    rgba(colour1),
-    rgba(colour2)
+    rgba(color1),
+    rgba(color2)
   );
 };
 
@@ -3023,9 +3023,9 @@ export const GetVehicleModelInfo = (
 
 export const SetVehicleVirtualWorld = (
   vehicleid: number,
-  worldid: number
+  worldId: number
 ): number => {
-  return callNative("SetVehicleVirtualWorld", "ii", vehicleid, worldid);
+  return callNative("SetVehicleVirtualWorld", "ii", vehicleid, worldId);
 };
 
 export const GetVehicleVirtualWorld = (vehicleid: number): number => {
@@ -3055,12 +3055,12 @@ export const ResumeRecordingPlayback = (): void => {
   return callNative("ResumeRecordingPlayback", "");
 };
 
-export const GetPlayerCustomSkin = (playerid: number): number => {
-  return callNative("GetPlayerCustomSkin", "i", playerid);
+export const GetPlayerCustomSkin = (playerId: number): number => {
+  return callNative("GetPlayerCustomSkin", "i", playerId);
 };
 
-export const RedirectDownload = (playerid: number, url: string): number => {
-  return callNative("RedirectDownload", "is", playerid, url);
+export const RedirectDownload = (playerId: number, url: string): number => {
+  return callNative("RedirectDownload", "is", playerId, url);
 };
 
 export const AddSimpleModel = (
@@ -3107,20 +3107,20 @@ export const GetWeaponName = (weaponid: number): string => {
   return callNative("GetWeaponName", "iSi", weaponid, 32);
 };
 
-export const NetStats_GetIpPort = (playerid: number): string => {
-  return callNative("NetStats_GetIpPort", "iSi", playerid, 128 + 6);
+export const NetStats_GetIpPort = (playerId: number): string => {
+  return callNative("NetStats_GetIpPort", "iSi", playerId, 128 + 6);
 };
 
-export const GetPlayerIp = (playerid: number): string => {
-  return callNative("GetPlayerIp", "iSi", playerid, 128);
+export const GetPlayerIp = (playerId: number): string => {
+  return callNative("GetPlayerIp", "iSi", playerId, 128);
 };
 
 export const GetAnimationName = (index: number): Array<string> => {
   return callNative("GetAnimationName", "iSiSi", index, 32, 32);
 };
 
-export const GetPlayerVersion = (playerid: number): string => {
-  return callNative("GetPlayerVersion", "iSi", playerid, 24);
+export const GetPlayerVersion = (playerId: number): string => {
+  return callNative("GetPlayerVersion", "iSi", playerId, 24);
 };
 
 export const FindModelFileNameFromCRC = (crc: number): string => {

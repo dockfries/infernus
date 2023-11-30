@@ -33,79 +33,79 @@ export class Dynamic3DTextLabel {
     if (this.id !== -1)
       return logger.warn("[Streamer3DTextLabel]: Unable to create again");
     let {
-      attachedplayer,
-      attachedvehicle,
-      testlos,
-      streamdistance,
-      worldid,
-      interiorid,
-      playerid,
-      areaid,
+      attachedPlayer,
+      attachedVehicle,
+      testLos,
+      streamDistance,
+      worldId,
+      interiorId,
+      playerId,
+      areaId,
       priority,
     } = this.sourceInfo;
-    const { charset, text, colour, drawdistance, x, y, z, extended } =
+    const { charset, text, color, drawDistance, x, y, z, extended } =
       this.sourceInfo;
 
-    attachedplayer ??= InvalidEnum.PLAYER_ID;
-    attachedvehicle ??= InvalidEnum.VEHICLE_ID;
-    streamdistance ??= StreamerDistances.TEXT_3D_LABEL_SD;
-    testlos ??= false;
+    attachedPlayer ??= InvalidEnum.PLAYER_ID;
+    attachedVehicle ??= InvalidEnum.VEHICLE_ID;
+    streamDistance ??= StreamerDistances.TEXT_3D_LABEL_SD;
+    testLos ??= false;
     priority ??= 0;
 
     if (extended) {
-      if (typeof worldid === "number") worldid = [-1];
-      else worldid ??= [-1];
-      if (typeof interiorid === "number") interiorid = [-1];
-      else interiorid ??= [-1];
-      if (typeof playerid === "number") playerid = [-1];
-      else playerid ??= [-1];
-      if (typeof areaid === "number") areaid = [-1];
-      else areaid ??= [-1];
+      if (typeof worldId === "number") worldId = [-1];
+      else worldId ??= [-1];
+      if (typeof interiorId === "number") interiorId = [-1];
+      else interiorId ??= [-1];
+      if (typeof playerId === "number") playerId = [-1];
+      else playerId ??= [-1];
+      if (typeof areaId === "number") areaId = [-1];
+      else areaId ??= [-1];
 
       this._id = CreateDynamic3DTextLabelEx(
         text,
-        rgba(colour),
+        rgba(color),
         x,
         y,
         z,
-        drawdistance,
-        attachedplayer,
-        attachedvehicle,
-        testlos,
-        streamdistance,
-        worldid,
-        interiorid,
-        playerid,
-        areaid,
+        drawDistance,
+        attachedPlayer,
+        attachedVehicle,
+        testLos,
+        streamDistance,
+        worldId,
+        interiorId,
+        playerId,
+        areaId,
         priority,
         charset || "utf8"
       );
     } else {
-      if (Array.isArray(worldid)) worldid = -1;
-      else worldid ??= -1;
-      if (Array.isArray(interiorid)) interiorid = -1;
-      else interiorid ??= -1;
-      if (Array.isArray(playerid)) playerid = -1;
-      else playerid ??= -1;
-      if (Array.isArray(areaid)) areaid = -1;
-      else areaid ??= -1;
+      if (Array.isArray(worldId)) worldId = -1;
+      else worldId ??= -1;
+      if (Array.isArray(interiorId)) interiorId = -1;
+      else interiorId ??= -1;
+      if (Array.isArray(playerId)) playerId = -1;
+      else playerId ??= -1;
+      if (Array.isArray(areaId)) areaId = -1;
+      else areaId ??= -1;
 
       this._id = CreateDynamic3DTextLabel(
         charset || "utf8",
         text,
-        rgba(colour),
+        rgba(color),
         x,
         y,
         z,
-        drawdistance,
-        attachedplayer,
-        attachedvehicle,
-        testlos,
-        worldid,
-        interiorid,
-        playerid,
-        streamdistance,
-        areaid,
+        drawDistance,
+        attachedPlayer,
+        attachedVehicle,
+        testLos,
+        worldId,
+        interiorId,
+        playerId,
+        streamDistance,
+        areaId,
         priority
       );
     }
@@ -124,12 +124,12 @@ export class Dynamic3DTextLabel {
   isValid(): boolean {
     return IsValidDynamic3DTextLabel(this.id);
   }
-  getColour(): void | string | number {
+  getColor(): void | string | number {
     if (this.id === -1)
       return logger.warn(
-        "[Streamer3DTextLabel]: Unable to get colour before create"
+        "[Streamer3DTextLabel]: Unable to get color before create"
       );
-    return this.sourceInfo.colour;
+    return this.sourceInfo.color;
   }
   getCharset(): void | string {
     if (this.id === -1)
@@ -149,7 +149,7 @@ export class Dynamic3DTextLabel {
     );
   }
   updateText(
-    colour: string | number,
+    color: string | number,
     text: string,
     charset = this.sourceInfo.charset
   ): void | number {
@@ -160,7 +160,7 @@ export class Dynamic3DTextLabel {
     this.sourceInfo.charset = charset;
     return UpdateDynamic3DTextLabelText(
       this.id,
-      rgba(colour),
+      rgba(color),
       text,
       charset || "utf8"
     );

@@ -20,23 +20,37 @@ export class DynamicActor {
   create(): void | this {
     if (this.id !== -1)
       return logger.warn("[StreamerActor]: Unable to create actor again");
-    let { streamdistance, worldid, interiorid, playerid, areaid, priority } =
-      this.sourceInfo;
-    const { modelid, x, y, z, r, invulnerable, health, extended } =
-      this.sourceInfo;
+    let {
+      streamDistance,
+      worldId,
+      interiorId: interiorId,
+      playerId,
+      areaId,
+      priority,
+    } = this.sourceInfo;
+    const {
+      modelId: modelid,
+      x,
+      y,
+      z,
+      r,
+      invulnerable,
+      health,
+      extended,
+    } = this.sourceInfo;
 
-    streamdistance ??= s.StreamerDistances.ACTOR_SD;
+    streamDistance ??= s.StreamerDistances.ACTOR_SD;
     priority ??= 0;
 
     if (extended) {
-      if (typeof worldid === "number") worldid = [0];
-      else worldid ??= [0];
-      if (typeof interiorid === "number") interiorid = [-1];
-      else interiorid ??= [-1];
-      if (typeof playerid === "number") playerid = [-1];
-      else playerid ??= [-1];
-      if (typeof areaid === "number") areaid = [-1];
-      else areaid ??= [-1];
+      if (typeof worldId === "number") worldId = [0];
+      else worldId ??= [0];
+      if (typeof interiorId === "number") interiorId = [-1];
+      else interiorId ??= [-1];
+      if (typeof playerId === "number") playerId = [-1];
+      else playerId ??= [-1];
+      if (typeof areaId === "number") areaId = [-1];
+      else areaId ??= [-1];
 
       this._id = s.CreateDynamicActorEx(
         modelid,
@@ -46,22 +60,22 @@ export class DynamicActor {
         r,
         invulnerable,
         health,
-        streamdistance,
-        worldid,
-        interiorid,
-        playerid,
-        areaid,
+        streamDistance,
+        worldId,
+        interiorId,
+        playerId,
+        areaId,
         priority
       );
     } else {
-      if (Array.isArray(worldid)) worldid = 0;
-      else worldid ??= 0;
-      if (Array.isArray(interiorid)) interiorid = -1;
-      else interiorid ??= -1;
-      if (Array.isArray(playerid)) playerid = -1;
-      else playerid ??= -1;
-      if (Array.isArray(areaid)) areaid = -1;
-      else areaid ??= -1;
+      if (Array.isArray(worldId)) worldId = 0;
+      else worldId ??= 0;
+      if (Array.isArray(interiorId)) interiorId = -1;
+      else interiorId ??= -1;
+      if (Array.isArray(playerId)) playerId = -1;
+      else playerId ??= -1;
+      if (Array.isArray(areaId)) areaId = -1;
+      else areaId ??= -1;
 
       this._id = s.CreateDynamicActor(
         modelid,
@@ -71,11 +85,11 @@ export class DynamicActor {
         r,
         invulnerable,
         health,
-        worldid,
-        interiorid,
-        playerid,
-        streamdistance,
-        areaid,
+        worldId,
+        interiorId,
+        playerId,
+        streamDistance,
+        areaId,
         priority
       );
     }

@@ -5,46 +5,46 @@ export const IsValidGangZone = (zoneid: number): boolean => {
 };
 
 export const IsPlayerInGangZone = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): boolean => {
-  return Boolean(samp.callNative("IsPlayerInGangZone", "ii", playerid, zoneid));
+  return Boolean(samp.callNative("IsPlayerInGangZone", "ii", playerId, zoneid));
 };
 
 export const IsGangZoneVisibleForPlayer = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsGangZoneVisibleForPlayer", "ii", playerid, zoneid)
+    samp.callNative("IsGangZoneVisibleForPlayer", "ii", playerId, zoneid)
   );
 };
 
 export const GangZoneGetColourForPlayer = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): number => {
-  return samp.callNative("GangZoneGetColourForPlayer", "ii", playerid, zoneid);
+  return samp.callNative("GangZoneGetColourForPlayer", "ii", playerId, zoneid);
 };
 
 export const GangZoneGetFlashColourForPlayer = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): number => {
   return samp.callNative(
     "GangZoneGetFlashColourForPlayer",
     "ii",
-    playerid,
+    playerId,
     zoneid
   );
 };
 
 export const IsGangZoneFlashingForPlayer = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsGangZoneFlashingForPlayer", "ii", playerid, zoneid)
+    samp.callNative("IsGangZoneFlashingForPlayer", "ii", playerId, zoneid)
   );
 };
 

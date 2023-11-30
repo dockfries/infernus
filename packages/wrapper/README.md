@@ -20,11 +20,11 @@ pnpm add @infernus/wrapper
 import { GetPlayerRawIp, GetPlayerRotationQuat } from "@infernus/wrapper";
 
 // In a callback event, such as OnPlayerConnect
-samp.on("OnPlayerConnect", (playerid) => {
-  const ip = GetPlayerRawIp(playerid);
-  console.log(`${playerid} with raw ip ${ip} has connected to the server`);
+samp.on("OnPlayerConnect", (playerId) => {
+  const ip = GetPlayerRawIp(playerId);
+  console.log(`${playerId} with raw ip ${ip} has connected to the server`);
 
-  const { w, x, y, z } = GetPlayerRotationQuat(p.playerid);
+  const { w, x, y, z } = GetPlayerRotationQuat(p.playerId);
   console.log(w, x, y, z);
 });
 ```

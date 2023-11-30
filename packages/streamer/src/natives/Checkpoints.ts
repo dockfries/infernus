@@ -5,11 +5,11 @@ export const CreateDynamicCP = (
   y: number,
   z: number,
   size: number,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1,
-  streamdistance: number = StreamerDistances.CP_SD,
-  areaid = -1,
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1,
+  streamDistance: number = StreamerDistances.CP_SD,
+  areaId = -1,
   priority = 0
 ): number => {
   return samp.callNative(
@@ -19,11 +19,11 @@ export const CreateDynamicCP = (
     y,
     z,
     size,
-    worldid,
-    interiorid,
-    playerid,
-    streamdistance,
-    areaid,
+    worldId,
+    interiorId,
+    playerId,
+    streamDistance,
+    areaId,
     priority
   );
 };
@@ -37,35 +37,35 @@ export const IsValidDynamicCP = (checkpointid: number): boolean => {
 };
 
 export const TogglePlayerDynamicCP = (
-  playerid: number,
+  playerId: number,
   checkpointid: number,
   toggle: boolean
 ): number => {
   return samp.callNative(
     "TogglePlayerDynamicCP",
     "iii",
-    playerid,
+    playerId,
     checkpointid,
     toggle
   );
 };
 
 export const TogglePlayerAllDynamicCPs = (
-  playerid: number,
+  playerId: number,
   toggle: boolean
 ): number => {
-  return samp.callNative("TogglePlayerAllDynamicCPs", "ii", playerid, toggle);
+  return samp.callNative("TogglePlayerAllDynamicCPs", "ii", playerId, toggle);
 };
 
 export const IsPlayerInDynamicCP = (
-  playerid: number,
+  playerId: number,
   checkpointid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInDynamicCP", "ii", playerid, checkpointid)
+    samp.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointid)
   );
 };
 
-export const GetPlayerVisibleDynamicCP = (playerid: number): number => {
-  return samp.callNative("GetPlayerVisibleDynamicCP", "i", playerid);
+export const GetPlayerVisibleDynamicCP = (playerId: number): number => {
+  return samp.callNative("GetPlayerVisibleDynamicCP", "i", playerId);
 };

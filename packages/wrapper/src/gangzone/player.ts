@@ -1,7 +1,7 @@
 import type { GangZonePos } from "../interfaces/GangZone";
 
 export const CreatePlayerGangZone = (
-  playerid: number,
+  playerId: number,
   minx: number,
   miny: number,
   maxx: number,
@@ -10,7 +10,7 @@ export const CreatePlayerGangZone = (
   return samp.callNative(
     "CreatePlayerGangZone",
     "iffff",
-    playerid,
+    playerId,
     minx,
     miny,
     maxx,
@@ -19,110 +19,110 @@ export const CreatePlayerGangZone = (
 };
 
 export const PlayerGangZoneDestroy = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): number => {
-  return samp.callNative("PlayerGangZoneDestroy", "ii", playerid, zoneid);
+  return samp.callNative("PlayerGangZoneDestroy", "ii", playerId, zoneid);
 };
 
 export const PlayerGangZoneShow = (
-  playerid: number,
+  playerId: number,
   zoneid: number,
   color: number
 ): number => {
-  return samp.callNative("PlayerGangZoneShow", "iii", playerid, zoneid, color);
+  return samp.callNative("PlayerGangZoneShow", "iii", playerId, zoneid, color);
 };
 
 export const PlayerGangZoneHide = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): number => {
-  return samp.callNative("PlayerGangZoneHide", "ii", playerid, zoneid);
+  return samp.callNative("PlayerGangZoneHide", "ii", playerId, zoneid);
 };
 
 export const PlayerGangZoneFlash = (
-  playerid: number,
+  playerId: number,
   zoneid: number,
   color: number
 ): number => {
-  return samp.callNative("PlayerGangZoneFlash", "iii", playerid, zoneid, color);
+  return samp.callNative("PlayerGangZoneFlash", "iii", playerId, zoneid, color);
 };
 
 export const PlayerGangZoneStopFlash = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): number => {
-  return samp.callNative("PlayerGangZoneStopFlash", "ii", playerid, zoneid);
+  return samp.callNative("PlayerGangZoneStopFlash", "ii", playerId, zoneid);
 };
 
 export const IsValidPlayerGangZone = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsValidPlayerGangZone", "ii", playerid, zoneid)
+    samp.callNative("IsValidPlayerGangZone", "ii", playerId, zoneid)
   );
 };
 
 export const IsPlayerInPlayerGangZone = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInPlayerGangZone", "ii", playerid, zoneid)
+    samp.callNative("IsPlayerInPlayerGangZone", "ii", playerId, zoneid)
   );
 };
 
 export const IsPlayerGangZoneVisible = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerGangZoneVisible", "ii", playerid, zoneid)
+    samp.callNative("IsPlayerGangZoneVisible", "ii", playerId, zoneid)
   );
 };
 
 export const PlayerGangZoneGetColour = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): number => {
-  return samp.callNative("PlayerGangZoneGetColor", "ii", playerid, zoneid);
+  return samp.callNative("PlayerGangZoneGetColor", "ii", playerId, zoneid);
 };
 
 export const PlayerGangZoneGetFlashColour = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): number => {
   return samp.callNative(
     "PlayerGangZoneGetFlashColour",
     "ii",
-    playerid,
+    playerId,
     zoneid
   );
 };
 
 export const IsPlayerGangZoneFlashing = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerGangZoneFlashing", "ii", playerid, zoneid)
+    samp.callNative("IsPlayerGangZoneFlashing", "ii", playerId, zoneid)
   );
 };
 
 export const PlayerGangZoneGetPos = (
-  playerid: number,
+  playerId: number,
   zoneid: number
 ): GangZonePos => {
   const [fMinX = 0.0, fMinY = 0.0, fMaxX = 0.0, fMaxY = 0.0]: number[] =
-    samp.callNative("PlayerGangZoneGetPos", "iiFFFF", playerid, zoneid);
+    samp.callNative("PlayerGangZoneGetPos", "iiFFFF", playerId, zoneid);
   return { fMinX, fMinY, fMaxX, fMaxY };
 };
 
 export const UsePlayerGangZoneCheck = (
-  playerid: number,
+  playerId: number,
   zoneid: number,
   use: boolean
 ): void => {
-  samp.callNative("UsePlayerGangZoneCheck", "iii", playerid, zoneid, use);
+  samp.callNative("UsePlayerGangZoneCheck", "iii", playerId, zoneid, use);
 };

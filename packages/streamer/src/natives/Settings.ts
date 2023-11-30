@@ -12,15 +12,15 @@ export const Streamer_SetTickRate = (rate = 50): number => {
   return samp.callNative("Streamer_SetTickRate", "i", rate);
 };
 
-export const Streamer_GetPlayerTickRate = (playerid: number): number => {
-  return samp.callNative("Streamer_GetPlayerTickRate", "i", playerid);
+export const Streamer_GetPlayerTickRate = (playerId: number): number => {
+  return samp.callNative("Streamer_GetPlayerTickRate", "i", playerId);
 };
 
 export const Streamer_SetPlayerTickRate = (
-  playerid: number,
+  playerId: number,
   rate = 50
 ): number => {
-  return samp.callNative("Streamer_SetPlayerTickRate", "ii", playerid, rate);
+  return samp.callNative("Streamer_SetPlayerTickRate", "ii", playerId, rate);
 };
 
 export const Streamer_ToggleChunkStream = (toggle = false): number => {
@@ -33,22 +33,22 @@ export const Streamer_IsToggleChunkStream = (): boolean => {
 
 export const Streamer_GetChunkTickRate = (
   type: StreamerItemTypes,
-  playerid = -1
+  playerId = -1
 ): number => {
-  return samp.callNative("Streamer_GetChunkTickRate", "ii", type, playerid);
+  return samp.callNative("Streamer_GetChunkTickRate", "ii", type, playerId);
 };
 
 export const Streamer_SetChunkTickRate = (
   type: StreamerItemTypes,
   rate: number,
-  playerid = -1
+  playerId = -1
 ): number => {
   return samp.callNative(
     "Streamer_SetChunkTickRate",
     "iii",
     type,
     rate,
-    playerid
+    playerId
   );
 };
 
@@ -76,43 +76,43 @@ export const Streamer_SetMaxItems = (
 
 export const Streamer_GetVisibleItems = (
   type: StreamerItemTypes,
-  playerid = -1
+  playerId = -1
 ): number => {
-  return samp.callNative("Streamer_GetVisibleItems", "ii", type, playerid);
+  return samp.callNative("Streamer_GetVisibleItems", "ii", type, playerId);
 };
 
 export const Streamer_SetVisibleItems = (
   type: StreamerItemTypes,
   items: number,
-  playerid = -1
+  playerId = -1
 ): number => {
   return samp.callNative(
     "Streamer_SetVisibleItems",
     "iii",
     type,
     items,
-    playerid
+    playerId
   );
 };
 
 export const Streamer_GetRadiusMultiplier = (
   type: StreamerItemTypes,
-  playerid = -1
+  playerId = -1
 ): number => {
-  return samp.callNative("Streamer_GetRadiusMultiplier", "iFi", type, playerid);
+  return samp.callNative("Streamer_GetRadiusMultiplier", "iFi", type, playerId);
 };
 
 export const Streamer_SetRadiusMultiplier = (
   type: StreamerItemTypes,
   multiplier: number,
-  playerid = -1
+  playerId = -1
 ): number => {
   return samp.callNative(
     "Streamer_SetRadiusMultiplier",
     "ifi",
     type,
     multiplier,
-    playerid
+    playerId
   );
 };
 

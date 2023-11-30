@@ -110,7 +110,7 @@ export class TextDraw {
     else fns.TextDrawFont(this.id, style);
     return this;
   }
-  setColour(Colour: string | number): void | this {
+  setColor(Colour: string | number): void | this {
     if (this.id === -1) return TextDraw.beforeCreateWarn("set Colour");
     const { player } = this.sourceInfo;
     if (player) fns.PlayerTextDrawColour(player.id, this.id, Colour);
@@ -332,7 +332,7 @@ export class TextDraw {
     if (p) return PlayerTextDrawGetPos(p.id, this.id);
     return TextDrawGetPos(this.id);
   }
-  getColour() {
+  getColor() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get Colour");
     const p = this.sourceInfo.player;
     if (p) return PlayerTextDrawGetColour(p.id, this.id);

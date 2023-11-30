@@ -5,11 +5,11 @@ export const IsValidTextDraw = (textdrawid: number): boolean => {
 };
 
 export const IsTextDrawVisibleForPlayer = (
-  playerid: number,
+  playerId: number,
   textdrawid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsTextDrawVisibleForPlayer", "ii", playerid, textdrawid)
+    samp.callNative("IsTextDrawVisibleForPlayer", "ii", playerId, textdrawid)
   );
 };
 
@@ -118,7 +118,7 @@ export const TextDrawGetPreviewVehicleColours = (textdrawid: number) => {
 
 export const TextDrawSetStringForPlayer = (
   textdrawid: number,
-  playerid: number,
+  playerId: number,
   fmat: string,
   ...args: Array<any>
 ): void => {
@@ -126,7 +126,7 @@ export const TextDrawSetStringForPlayer = (
     "TextDrawSetStringForPlayer",
     "iisa",
     textdrawid,
-    playerid,
+    playerId,
     fmat,
     args
   );

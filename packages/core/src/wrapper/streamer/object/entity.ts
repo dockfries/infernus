@@ -28,29 +28,29 @@ export class DynamicObject {
     if (this.id !== -1)
       return logger.warn("[StreamerObject]: Unable to create object again");
     let {
-      streamdistance,
-      drawdistance,
-      worldid,
-      interiorid,
-      playerid,
-      areaid,
+      streamDistance,
+      drawDistance: drawdistance,
+      worldId,
+      interiorId: interiorId,
+      playerId,
+      areaId,
       priority,
     } = this.sourceInfo;
-    const { modelid, x, y, z, rx, ry, rz, extended } = this.sourceInfo;
+    const { modelId: modelid, x, y, z, rx, ry, rz, extended } = this.sourceInfo;
 
-    streamdistance ??= s.StreamerDistances.OBJECT_SD;
+    streamDistance ??= s.StreamerDistances.OBJECT_SD;
     drawdistance ??= s.StreamerDistances.OBJECT_DD;
     priority ??= 0;
 
     if (extended) {
-      if (typeof worldid === "number") worldid = [-1];
-      else worldid ??= [-1];
-      if (typeof interiorid === "number") interiorid = [-1];
-      else interiorid ??= [-1];
-      if (typeof playerid === "number") playerid = [-1];
-      else playerid ??= [-1];
-      if (typeof areaid === "number") areaid = [-1];
-      else areaid ??= [-1];
+      if (typeof worldId === "number") worldId = [-1];
+      else worldId ??= [-1];
+      if (typeof interiorId === "number") interiorId = [-1];
+      else interiorId ??= [-1];
+      if (typeof playerId === "number") playerId = [-1];
+      else playerId ??= [-1];
+      if (typeof areaId === "number") areaId = [-1];
+      else areaId ??= [-1];
 
       this._id = s.CreateDynamicObjectEx(
         modelid,
@@ -60,23 +60,23 @@ export class DynamicObject {
         rx,
         ry,
         rz,
-        streamdistance,
+        streamDistance,
         drawdistance,
-        worldid,
-        interiorid,
-        playerid,
-        areaid,
+        worldId,
+        interiorId,
+        playerId,
+        areaId,
         priority
       );
     } else {
-      if (Array.isArray(worldid)) worldid = -1;
-      else worldid ??= -1;
-      if (Array.isArray(interiorid)) interiorid = -1;
-      else interiorid ??= -1;
-      if (Array.isArray(playerid)) playerid = -1;
-      else playerid ??= -1;
-      if (Array.isArray(areaid)) areaid = -1;
-      else areaid ??= -1;
+      if (Array.isArray(worldId)) worldId = -1;
+      else worldId ??= -1;
+      if (Array.isArray(interiorId)) interiorId = -1;
+      else interiorId ??= -1;
+      if (Array.isArray(playerId)) playerId = -1;
+      else playerId ??= -1;
+      if (Array.isArray(areaId)) areaId = -1;
+      else areaId ??= -1;
 
       this._id = s.CreateDynamicObject(
         modelid,
@@ -86,12 +86,12 @@ export class DynamicObject {
         rx,
         ry,
         rz,
-        worldid,
-        interiorid,
-        playerid,
-        streamdistance,
+        worldId,
+        interiorId,
+        playerId,
+        streamDistance,
         drawdistance,
-        areaid,
+        areaId,
         priority
       );
     }
@@ -115,7 +115,7 @@ export class DynamicObject {
   }
 
   getModel() {
-    return this.sourceInfo.modelid;
+    return this.sourceInfo.modelId;
   }
 
   getPos() {

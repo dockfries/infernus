@@ -5,4 +5,4 @@ export interface GangZonePos {
   fMaxY: number;
 }
 
-export type GangZoneCb = (playerid: number, zoneid: number) => void;
+export type GangZoneCb = (playerId: number, zoneid: number) => void;

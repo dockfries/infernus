@@ -5,11 +5,11 @@ export const IsValidPickup = (pickupid: number): boolean => {
 };
 
 export const IsPickupStreamedIn = (
-  playerid: number,
+  playerId: number,
   pickupid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPickupStreamedIn", "ii", playerid, pickupid)
+    samp.callNative("IsPickupStreamedIn", "ii", playerId, pickupid)
   );
 };
 
@@ -68,24 +68,24 @@ export const SetPickupVirtualWorld = (
 };
 
 export const ShowPickupForPlayer = (
-  playerid: number,
+  playerId: number,
   pickupid: number
 ): number => {
-  return samp.callNative("ShowPickupForPlayer", "ii", playerid, pickupid);
+  return samp.callNative("ShowPickupForPlayer", "ii", playerId, pickupid);
 };
 
 export const HidePickupForPlayer = (
-  playerid: number,
+  playerId: number,
   pickupid: number
 ): number => {
-  return samp.callNative("HidePickupForPlayer", "ii", playerid, pickupid);
+  return samp.callNative("HidePickupForPlayer", "ii", playerId, pickupid);
 };
 
 export const IsPickupHiddenForPlayer = (
-  playerid: number,
+  playerId: number,
   pickupid: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPickupHiddenForPlayer", "ii", playerid, pickupid)
+    samp.callNative("IsPickupHiddenForPlayer", "ii", playerId, pickupid)
   );
 };

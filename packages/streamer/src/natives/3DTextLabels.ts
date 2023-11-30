@@ -10,11 +10,11 @@ export const CreateDynamic3DTextLabel = (
   attachedplayer = 0xffff,
   attachedvehicle = 0xffff,
   testlos = false,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1,
-  streamdistance: number = StreamerDistances.TEXT_3D_LABEL_SD,
-  areaid = -1,
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1,
+  streamDistance: number = StreamerDistances.TEXT_3D_LABEL_SD,
+  areaId = -1,
   priority = 0
 ): number => {
   return samp.callNative(
@@ -29,11 +29,11 @@ export const CreateDynamic3DTextLabel = (
     attachedplayer,
     attachedvehicle,
     testlos,
-    worldid,
-    interiorid,
-    playerid,
-    streamdistance,
-    areaid,
+    worldId,
+    interiorId,
+    playerId,
+    streamDistance,
+    areaId,
     priority
   );
 };

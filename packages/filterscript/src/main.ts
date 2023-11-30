@@ -1,1 +1,1 @@
-export * from "./filterscripts";
+export * from "./scripts";

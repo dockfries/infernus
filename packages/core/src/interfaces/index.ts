@@ -24,21 +24,15 @@ export interface IDialogResResult extends IDialogResCommon {
   inputText: string;
 }
 
-export interface ICmdErr {
-  code: number;
-  msg: string;
-}
-
 export interface IVehicle {
-  modelid: number;
+  modelId: number;
   x: number;
   y: number;
   z: number;
   z_angle: number;
-  colour1: string | number;
-  colour2: string | number;
+  color: [string | number, string | number];
   respawn_delay?: number;
-  addsiren?: boolean;
+  addSiren?: boolean;
 }
 
 export interface IAnimateInfo {
@@ -48,10 +42,10 @@ export interface IAnimateInfo {
 
 export interface IGangZone {
   player?: Player;
-  minx: number;
-  miny: number;
-  maxx: number;
-  maxy: number;
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
 }
 
 export interface ICommonTextDrawKey {
@@ -73,9 +67,9 @@ export interface IDialogFuncQueue {
 }
 
 export interface IDynamic {
-  worldid?: TStreamerExtendable;
-  interiorid?: TStreamerExtendable;
-  playerid?: TStreamerExtendable;
+  worldId?: TStreamerExtendable;
+  interiorId?: TStreamerExtendable;
+  playerId?: TStreamerExtendable;
   extended?: boolean;
 }
 
@@ -83,20 +77,20 @@ export interface IDynamicCommon extends IDynamic {
   x: number;
   y: number;
   z: number;
-  areaid?: TStreamerExtendable;
-  streamdistance?: number;
+  areaId?: TStreamerExtendable;
+  streamDistance?: number;
   priority?: number;
 }
 
 export interface IDynamicMapIcon extends IDynamicCommon {
   type: number;
-  colour: string | number;
+  color: string | number;
   style?: MapIconStyles;
 }
 
 export interface IDynamicPickup extends IDynamicCommon {
   type: number;
-  modelid: number;
+  modelId: number;
 }
 
 export interface IDynamicCheckPoint extends IDynamicCommon {
@@ -105,14 +99,14 @@ export interface IDynamicCheckPoint extends IDynamicCommon {
 
 export interface IDynamicRaceCp extends IDynamicCheckPoint {
   type: number;
-  nextx: number;
-  nexty: number;
-  nextz: number;
+  nextX: number;
+  nextY: number;
+  nextZ: number;
 }
 
 export interface IDynamicActor extends IDynamicCommon {
   r: number;
-  modelid: number;
+  modelId: number;
   invulnerable: boolean;
   health: number;
 }
@@ -120,20 +114,20 @@ export interface IDynamicActor extends IDynamicCommon {
 export interface IDynamic3DTextLabel extends IDynamicCommon {
   charset?: string;
   text: string;
-  colour: string | number;
-  attachedplayer?: number;
-  attachedvehicle?: number;
-  testlos?: boolean;
-  drawdistance: number;
+  color: string | number;
+  attachedPlayer?: number;
+  attachedVehicle?: number;
+  testLos?: boolean;
+  drawDistance: number;
 }
 
 export interface IDynamicObject extends IDynamicCommon {
   charset?: string;
-  modelid: number;
+  modelId: number;
   rx: number;
   ry: number;
   rz: number;
-  drawdistance?: number;
+  drawDistance?: number;
 }
 
 export interface IClientResRaw {
@@ -159,8 +153,8 @@ export interface IDynamicCircle extends IDynamicCircleCommon {
 
 export interface IDynamicCylinder extends IDynamicCircleCommon {
   type: "cylinder";
-  minz: number;
-  maxz: number;
+  minZ: number;
+  maxZ: number;
 }
 
 export interface IDynamicSphere extends IDynamicCircleCommon {
@@ -169,10 +163,10 @@ export interface IDynamicSphere extends IDynamicCircleCommon {
 }
 
 export interface IDynamicRectangleCommon extends IDynamic {
-  minx: number;
-  miny: number;
-  maxx: number;
-  maxy: number;
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
 }
 
 export interface IDynamicRectangle extends IDynamicRectangleCommon {

@@ -5,49 +5,49 @@ export const Streamer_ProcessActiveItems = (): number => {
 };
 
 export const Streamer_ToggleIdleUpdate = (
-  playerid: number,
+  playerId: number,
   toggle: boolean
 ): number => {
-  return samp.callNative("Streamer_ToggleIdleUpdate", "ii", playerid, toggle);
+  return samp.callNative("Streamer_ToggleIdleUpdate", "ii", playerId, toggle);
 };
 
-export const Streamer_IsToggleIdleUpdate = (playerid: number): boolean => {
-  return Boolean(samp.callNative("Streamer_IsToggleIdleUpdate", "i", playerid));
+export const Streamer_IsToggleIdleUpdate = (playerId: number): boolean => {
+  return Boolean(samp.callNative("Streamer_IsToggleIdleUpdate", "i", playerId));
 };
 
 export const Streamer_ToggleCameraUpdate = (
-  playerid: number,
+  playerId: number,
   toggle: boolean
 ): number => {
-  return samp.callNative("Streamer_ToggleCameraUpdate", "ii", playerid, toggle);
+  return samp.callNative("Streamer_ToggleCameraUpdate", "ii", playerId, toggle);
 };
 
-export const Streamer_IsToggleCameraUpdate = (playerid: number): boolean => {
+export const Streamer_IsToggleCameraUpdate = (playerId: number): boolean => {
   return Boolean(
-    samp.callNative("Streamer_IsToggleCameraUpdate", "i", playerid)
+    samp.callNative("Streamer_IsToggleCameraUpdate", "i", playerId)
   );
 };
 
 export const Streamer_ToggleItemUpdate = (
-  playerid: number,
+  playerId: number,
   type: StreamerItemTypes,
   toggle: boolean
 ): number => {
   return samp.callNative(
     "Streamer_ToggleItemUpdate",
     "iii",
-    playerid,
+    playerId,
     type,
     toggle
   );
 };
 
 export const Streamer_IsToggleItemUpdate = (
-  playerid: number,
+  playerId: number,
   type: StreamerItemTypes
 ): boolean => {
   return Boolean(
-    samp.callNative("Streamer_IsToggleItemUpdate", "ii", playerid, type)
+    samp.callNative("Streamer_IsToggleItemUpdate", "ii", playerId, type)
   );
 };
 
@@ -55,17 +55,17 @@ export const Streamer_GetLastUpdateTime = (): number => {
   return samp.callNative("Streamer_GetLastUpdateTime", "F");
 };
 
-export const Streamer_Update = (playerid: number, type = -1): number => {
-  return samp.callNative("Streamer_Update", "ii", playerid, type);
+export const Streamer_Update = (playerId: number, type = -1): number => {
+  return samp.callNative("Streamer_Update", "ii", playerId, type);
 };
 
 export const Streamer_UpdateEx = (
-  playerid: number,
+  playerId: number,
   x: number,
   y: number,
   z: number,
-  worldid = -1,
-  interiorid = -1,
+  worldId = -1,
+  interiorId = -1,
   type = -1,
   compensatedtime = -1,
   freezeplayer = true
@@ -73,12 +73,12 @@ export const Streamer_UpdateEx = (
   return samp.callNative(
     "Streamer_UpdateEx",
     "ifffiiiii",
-    playerid,
+    playerId,
     x,
     y,
     z,
-    worldid,
-    interiorid,
+    worldId,
+    interiorId,
     type,
     compensatedtime,
     freezeplayer

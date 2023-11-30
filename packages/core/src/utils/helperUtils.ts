@@ -16,7 +16,7 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 // Here are some i18n functions used to override the original functions
 export const SendClientMessage = (
   player: Player,
-  colour: string | number,
+  color: string | number,
   msg: string
 ): number => {
   const res = processMsg(msg, player.charset);
@@ -24,17 +24,17 @@ export const SendClientMessage = (
     "SendClientMessage",
     `ii${res[0]}`,
     player.id,
-    rgba(colour),
+    rgba(color),
     res[1]
   );
 };
 
 export const SendClientMessageToAll = (
   fn: Array<Player>,
-  colour: string | number,
+  color: string | number,
   msg: string
 ): number => {
-  fn.forEach((player) => SendClientMessage(player, colour, msg));
+  fn.forEach((player) => SendClientMessage(player, color, msg));
   return 1;
 };
 
@@ -91,7 +91,7 @@ export const ShowPlayerDialog = (
 
 samp.registerEvent("OnPlayerTextI18n", "iai");
 export const OnPlayerText = (
-  fn: (playerid: number, buf: number[]) => number
+  fn: (playerId: number, buf: number[]) => number
 ) => {
   // get the player input text
   // and you can decode with the player's charset;
@@ -100,7 +100,7 @@ export const OnPlayerText = (
 
 samp.registerEvent("OnPlayerCommandTextI18n", "iai");
 export const OnPlayerCommandText = (
-  fn: (playerid: number, buf: number[]) => number
+  fn: (playerId: number, buf: number[]) => number
 ) => {
   samp.addEventListener("OnPlayerCommandTextI18n", fn);
 };
@@ -108,7 +108,7 @@ export const OnPlayerCommandText = (
 samp.registerEvent("OnDialogResponseI18n", "iiiiai");
 export const OnDialogResponse = (
   fn: (
-    playerid: number,
+    playerId: number,
     dialogid: number,
     response: number,
     listitem: number,
@@ -120,13 +120,13 @@ export const OnDialogResponse = (
 
 samp.registerEvent("OnClientMessageI18n", "iai");
 export const OnClientMessage = (
-  fn: (colour: number, text: string) => number,
+  fn: (color: number, text: string) => number,
   charset = "utf8"
 ) => {
   samp.addEventListener(
     "OnClientMessageI18n",
-    (colour: number, buf: number[]): number => {
-      return fn(colour, I18n.decodeFromBuf(buf, charset));
+    (color: number, buf: number[]): number => {
+      return fn(color, I18n.decodeFromBuf(buf, charset));
     }
   );
 };
@@ -178,18 +178,18 @@ export const SetPlayerName = (player: Player, name: string): number => {
 };
 
 export const BanEx = (
-  playerid: number,
+  playerId: number,
   reason: string,
   charset: string
 ): number => {
   const buf = I18n.encodeToBuf(reason, charset);
-  return callNative("BanEx", "ia", playerid, buf);
+  return callNative("BanEx", "ia", playerId, buf);
 };
 
 export const CreateDynamic3DTextLabel = (
   charset: string,
   text: string,
-  colour: number,
+  color: number,
   x: number,
   y: number,
   z: number,
@@ -197,11 +197,11 @@ export const CreateDynamic3DTextLabel = (
   attachedplayer: number,
   attachedvehicle: number,
   testlos: boolean,
-  worldid: number,
-  interiorid: number,
-  playerid: number,
-  streamdistance: number,
-  areaid: number,
+  worldId: number,
+  interiorId: number,
+  playerId: number,
+  streamDistance: number,
+  areaId: number,
   priority: number
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
@@ -209,7 +209,7 @@ export const CreateDynamic3DTextLabel = (
     "CreateDynamic3DTextLabel",
     "aiffffiiiiiifii",
     buf,
-    colour,
+    color,
     x,
     y,
     z,
@@ -217,18 +217,18 @@ export const CreateDynamic3DTextLabel = (
     attachedplayer,
     attachedvehicle,
     testlos,
-    worldid,
-    interiorid,
-    playerid,
-    streamdistance,
-    areaid,
+    worldId,
+    interiorId,
+    playerId,
+    streamDistance,
+    areaId,
     priority
   );
 };
 
 export const CreateDynamic3DTextLabelEx = (
   text: string,
-  colour: number,
+  color: number,
   x: number,
   y: number,
   z: number,
@@ -236,7 +236,7 @@ export const CreateDynamic3DTextLabelEx = (
   attachedplayer: number,
   attachedvehicle: number,
   testlos: boolean,
-  streamdistance: number,
+  streamDistance: number,
   worlds: number[],
   interiors: number[],
   players: number[],
@@ -249,7 +249,7 @@ export const CreateDynamic3DTextLabelEx = (
     "CreateDynamic3DTextLabelEx",
     "aiffffiiifaaaaiiiii",
     buf,
-    colour,
+    color,
     x,
     y,
     z,
@@ -257,7 +257,7 @@ export const CreateDynamic3DTextLabelEx = (
     attachedplayer,
     attachedvehicle,
     testlos,
-    streamdistance,
+    streamDistance,
     worlds,
     interiors,
     players,
@@ -272,12 +272,12 @@ export const CreateDynamic3DTextLabelEx = (
 
 export const UpdateDynamic3DTextLabelText = (
   id: number,
-  colour: number,
+  color: number,
   text: string,
   charset: string
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
-  return callNative("UpdateDynamic3DTextLabelText", "iia", id, colour, buf);
+  return callNative("UpdateDynamic3DTextLabelText", "iia", id, color, buf);
 };
 
 export const GetDynamic3DTextLabelText = (

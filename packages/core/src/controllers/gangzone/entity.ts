@@ -36,16 +36,16 @@ export class GangZone {
         return logger.warn(
           "[GangZone]: Unable to continue to create gangzone, maximum allowable quantity has been reached"
         );
-      const { minx, miny, maxx, maxy } = this.sourceInfo;
-      this._id = f.GangZoneCreate(minx, miny, maxx, maxy);
+      const { minX, minY, maxX, maxY } = this.sourceInfo;
+      this._id = f.GangZoneCreate(minX, minY, maxX, maxY);
       GangZone.createdGlobalCount++;
     } else {
       if (GangZone.createdPlayerCount === LimitsEnum.MAX_GANG_ZONES)
         return logger.warn(
           "[GangZone]: Unable to continue to create gangzone, maximum allowable quantity has been reached"
         );
-      const { minx, miny, maxx, maxy } = this.sourceInfo;
-      this._id = w.CreatePlayerGangZone(player.id, minx, miny, maxx, maxy);
+      const { minX, minY, maxX, maxY } = this.sourceInfo;
+      this._id = w.CreatePlayerGangZone(player.id, minX, minY, maxX, maxY);
       GangZone.createdPlayerCount++;
       // PlayerGangZones automatically destroyed when player disconnect
       const off = PlayerEvent.onDisconnect(({ player, next }) => {
@@ -82,14 +82,14 @@ export class GangZone {
     this._id = -1;
   }
 
-  showForAll(colour: string | number): void | this {
+  showForAll(color: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[GangZone]: Unable to show the gangzone before create"
       );
     const p = this.sourceInfo.player;
     if (!p) {
-      f.GangZoneShowForAll(this.id, colour);
+      f.GangZoneShowForAll(this.id, color);
       return this;
     }
     return logger.warn(
@@ -97,15 +97,15 @@ export class GangZone {
     );
   }
 
-  showForPlayer(colour: string | number, player?: Player): void | this {
+  showForPlayer(color: string | number, player?: Player): void | this {
     if (this.id === -1)
       return logger.warn(
         "[GangZone]: Unable to show the gangzone before create"
       );
     const p = this.sourceInfo.player;
-    if (p) w.PlayerGangZoneShow(p.id, this.id, rgba(colour));
+    if (p) w.PlayerGangZoneShow(p.id, this.id, rgba(color));
     else {
-      if (player) f.GangZoneShowForPlayer(player.id, this.id, colour);
+      if (player) f.GangZoneShowForPlayer(player.id, this.id, color);
       else return logger.warn("[GangZone]: invalid player for show");
     }
     return this;
@@ -221,7 +221,7 @@ export class GangZone {
 
   getColourForPlayer(player: Player): void | number {
     if (this.id === -1)
-      return logger.warn("[GangZone]: Unable to get colour before create");
+      return logger.warn("[GangZone]: Unable to get color before create");
     const p = this.sourceInfo.player;
     if (p) return w.PlayerGangZoneGetColour(p.id, this.id);
     return w.GangZoneGetColourForPlayer(player.id, this.id);
@@ -229,9 +229,7 @@ export class GangZone {
 
   getFlashColourForPlayer(player: Player): void | number {
     if (this.id === -1)
-      return logger.warn(
-        "[GangZone]: Unable to get flash colour before create"
-      );
+      return logger.warn("[GangZone]: Unable to get flash color before create");
     const p = this.sourceInfo.player;
     if (p) return w.PlayerGangZoneGetFlashColour(p.id, this.id);
     return w.GangZoneGetFlashColourForPlayer(player.id, this.id);

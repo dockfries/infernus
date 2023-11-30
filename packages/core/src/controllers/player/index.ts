@@ -61,9 +61,11 @@ export const PlayerEvent = {
   onCommandReceived,
   onCommandPerformed,
   onCommandError,
+  onCommandText: CmdBus.on,
+  offCommandText: CmdBus.off,
   onDialogResponse,
 };
 
-export { CmdBus, Dialog };
+export { Dialog };
 
 export type { CmdBusCallback, CommandErrors };

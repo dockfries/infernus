@@ -10,9 +10,9 @@ const outgoingRPCs: rpcCallback[] = [];
 samp.registerEvent("OnIncomingPacket", "iii");
 samp.addEventListener(
   "OnIncomingPacket",
-  (playerid: number, packetid: number, bs: BitStreamRaw) => {
+  (playerId: number, packetid: number, bs: BitStreamRaw) => {
     return incomingPackets.every((func) =>
-      func(playerid, packetid, new BitStream(bs))
+      func(playerId, packetid, new BitStream(bs))
     );
   }
 );
@@ -20,9 +20,9 @@ samp.addEventListener(
 samp.registerEvent("OnIncomingRPC", "iii");
 samp.addEventListener(
   "OnIncomingRPC",
-  (playerid: number, rpcid: number, bs: BitStreamRaw) => {
+  (playerId: number, rpcid: number, bs: BitStreamRaw) => {
     return incomingRPCs.every((func) =>
-      func(playerid, rpcid, new BitStream(bs))
+      func(playerId, rpcid, new BitStream(bs))
     );
   }
 );
@@ -30,9 +30,9 @@ samp.addEventListener(
 samp.registerEvent("OnOutgoingPacket", "iii");
 samp.addEventListener(
   "OnOutgoingPacket",
-  (playerid: number, packetid: number, bs: BitStreamRaw) => {
+  (playerId: number, packetid: number, bs: BitStreamRaw) => {
     return outgoingPackets.every((func) =>
-      func(playerid, packetid, new BitStream(bs))
+      func(playerId, packetid, new BitStream(bs))
     );
   }
 );
@@ -40,9 +40,9 @@ samp.addEventListener(
 samp.registerEvent("OnOutgoingRPC", "iii");
 samp.addEventListener(
   "OnOutgoingRPC",
-  (playerid: number, rpcid: number, bs: BitStreamRaw) => {
+  (playerId: number, rpcid: number, bs: BitStreamRaw) => {
     return outgoingRPCs.every((func) =>
-      func(playerid, rpcid, new BitStream(bs))
+      func(playerId, rpcid, new BitStream(bs))
     );
   }
 );

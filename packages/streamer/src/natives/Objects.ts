@@ -8,12 +8,12 @@ export const CreateDynamicObject = (
   rx: number,
   ry: number,
   rz: number,
-  worldid = -1,
-  interiorid = -1,
-  playerid = -1,
-  streamdistance: number = StreamerDistances.OBJECT_SD,
+  worldId = -1,
+  interiorId = -1,
+  playerId = -1,
+  streamDistance: number = StreamerDistances.OBJECT_SD,
   drawdistance: number = StreamerDistances.OBJECT_DD,
-  areaid = -1,
+  areaId = -1,
   priority = 0
 ): number => {
   return samp.callNative(
@@ -26,12 +26,12 @@ export const CreateDynamicObject = (
     rx,
     ry,
     rz,
-    worldid,
-    interiorid,
-    playerid,
-    streamdistance,
+    worldId,
+    interiorId,
+    playerId,
+    streamDistance,
     drawdistance,
-    areaid,
+    areaId,
     priority
   );
 };
@@ -113,13 +113,13 @@ export const IsDynamicObjectMoving = (objectid: number): boolean => {
 };
 
 export const AttachCameraToDynamicObject = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): number => {
   return samp.callNative(
     "AttachCameraToDynamicObject",
     "ii",
-    playerid,
+    playerId,
     objectid
   );
 };
@@ -152,7 +152,7 @@ export const AttachDynamicObjectToObject = (
 
 export const AttachDynamicObjectToPlayer = (
   objectid: number,
-  playerid: number,
+  playerId: number,
   offsetx: number,
   offsety: number,
   offsetz: number,
@@ -164,7 +164,7 @@ export const AttachDynamicObjectToPlayer = (
     "AttachDynamicObjectToPlayer",
     "iiffffff",
     objectid,
-    playerid,
+    playerId,
     offsetx,
     offsety,
     offsetz,
@@ -199,10 +199,10 @@ export const AttachDynamicObjectToVehicle = (
 };
 
 export const EditDynamicObject = (
-  playerid: number,
+  playerId: number,
   objectid: number
 ): number => {
-  return samp.callNative("EditDynamicObject", "ii", playerid, objectid);
+  return samp.callNative("EditDynamicObject", "ii", playerId, objectid);
 };
 
 export const IsDynamicObjectMaterialUsed = (
@@ -372,6 +372,6 @@ export const SetDynamicObjectMaterialText = (
   );
 };
 
-export const GetPlayerCameraTargetDynObject = (playerid: number): number => {
-  return samp.callNative("GetPlayerCameraTargetDynObject", "i", playerid);
+export const GetPlayerCameraTargetDynObject = (playerId: number): number => {
+  return samp.callNative("GetPlayerCameraTargetDynObject", "i", playerId);
 };
