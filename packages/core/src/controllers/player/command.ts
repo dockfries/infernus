@@ -20,7 +20,11 @@ export const CommandErrors = {
   NOT_EXIST: { code: 1, msg: "command does not exist" },
   REJECTED: {
     code: 2,
-    msg: "An event registered through CmdBus.on returned false",
+    msg: "An event registered through onCommandText returned false",
+  },
+  PERFORMED: {
+    code: 3,
+    msg: "An event registered through onCommandPerformed returned false",
   },
 };
 
@@ -105,8 +109,7 @@ onCommandText(({ player, buffer, next }) => {
   }
 
   const ret = triggerOnPerformed(player, fullCommand);
-  if (!ret) return ret;
-
+  if (!ret) return triggerOnError(player, fullCommand, CommandErrors.REJECTED);
   return next();
 });
 
