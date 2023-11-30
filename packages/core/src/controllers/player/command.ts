@@ -63,27 +63,51 @@ const [onCommandText] = defineEvent({
   },
 });
 
-onCommandText(({ player, buffer }) => {
+function generateCombinations(arr: any[]) {
+  const result = [];
+  let current = "";
+  for (let i = 0; i < arr.length; i++) {
+    current += arr[i] + " ";
+    result.push(current.trimEnd());
+  }
+  return result.reverse();
+}
+
+onCommandText(({ player, buffer, next }) => {
   const rawCommand = I18n.decodeFromBuf(buffer, player.charset);
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const matchedCommand = rawCommand.match(commandPattern)!;
 
-  const commandStr = matchedCommand.join(" ");
+  const maybes = generateCombinations(matchedCommand);
 
-  const definedCommands = commandBus.get(commandStr);
-  if (!definedCommands) {
-    return triggerOnError(player, commandStr, CommandErrors.NOT_EXIST);
+  const maybeFind = maybes.find((maybe) => commandBus.get(maybe));
+
+  const fullCommand = matchedCommand.join(" ");
+
+  if (!maybeFind) {
+    return triggerOnError(player, fullCommand, CommandErrors.NOT_EXIST);
   }
 
-  const received = triggerOnReceived(player, commandStr);
+  const received = triggerOnReceived(player, fullCommand);
   if (!received) return received;
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const definedCommands = commandBus.get(maybeFind)!;
+
   const [, triggerCommand] = definedCommands;
-  const middlewaresRet = triggerCommand(player, matchedCommand.slice(1));
 
-  if (middlewaresRet) return triggerOnPerformed(player, commandStr);
+  const subcommand = fullCommand.replace(maybeFind, "").trim().split(" ");
 
-  return triggerOnError(player, commandStr, CommandErrors.REJECTED);
+  const middlewaresRet = triggerCommand(player, subcommand);
+
+  if (!middlewaresRet) {
+    return triggerOnError(player, fullCommand, CommandErrors.REJECTED);
+  }
+
+  const ret = triggerOnPerformed(player, fullCommand);
+  if (!ret) return ret;
+
+  return next();
 });
 
 export const CmdBus = {
