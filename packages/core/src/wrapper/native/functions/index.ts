@@ -25,7 +25,6 @@ import type {
 } from "core/enums";
 import { callNative, callNativeFloat } from "core/utils/helperUtils";
 import { I18n } from "core/controllers/i18n";
-import { defaultCharset } from "core/controllers/gamemode/settings";
 
 export const SendDeathMessage = (
   killer: number,
@@ -831,7 +830,7 @@ export const UpdatePlayer3DTextLabelText = (
   );
 };
 
-export const gpci = (playerid: number, charset = defaultCharset): string => {
+export const gpci = (playerid: number, charset: string): string => {
   return I18n.decodeFromBuf(
     I18n.getValidStr(callNative("gpci", "iAi", playerid, 41)),
     charset

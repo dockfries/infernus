@@ -124,24 +124,3 @@ export const GetObjectMaterialText = (
 export const HasObjectCameraCollision = (objectid: number): boolean => {
   return Boolean(samp.callNative("HasObjectCameraCollision", "i", objectid));
 };
-
-export const OnPlayerEditAttachedObject = (
-  fn: (
-    playerid: number,
-    response: number,
-    index: number,
-    modelid: number,
-    boneid: number,
-    fOffsetX: number,
-    fOffsetY: number,
-    fOffsetZ: number,
-    fRotX: number,
-    fRotY: number,
-    fRotZ: number,
-    fScaleX: number,
-    fScaleY: number,
-    fScaleZ: number
-  ) => number
-): void => {
-  samp.on("OnPlayerEditAttachedObject", fn);
-};

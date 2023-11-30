@@ -1,6 +1,6 @@
-import type { IFilterScript } from "core/interfaces";
-import { logger } from "core/logger";
-import { OnGameModeExit, OnGameModeInit } from "core/wrapper/native/callbacks";
+import type { IFilterScript } from "../../interfaces";
+import { onExit, onInit } from "../gamemode/event";
+import { logger } from "../../logger";
 
 const preInstallScripts: Array<IFilterScript> = [];
 const installedScripts: Array<IFilterScript> = [];
@@ -45,12 +45,14 @@ export const reloadUseScript = (scriptName: string) => {
   loadUseScript(scriptName);
 };
 
-OnGameModeInit(() => {
+onInit(({ next }) => {
   preInstallScripts.forEach((fs) => loadUseScript(fs.name));
+  next();
 });
 
-OnGameModeExit(() => {
+onExit(({ next }) => {
   installedScripts.forEach((fs) => unloadUseScript(fs.name));
+  next();
 });
 
 export const useFilterScript = function (

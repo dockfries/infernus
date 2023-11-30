@@ -1,6 +1,6 @@
-import type { TLocales } from "core/types";
+import type { TLocales } from "../../types";
 import { encode, decode, encodingExists } from "iconv-lite";
-import { logger } from "core/logger";
+import { logger } from "../../logger";
 import { snakeCase, merge, omit, get, mapKeys } from "lodash-unified";
 
 export class I18n {

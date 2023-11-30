@@ -1,2 +1,2 @@
-export * from "./baseArea";
-export * from "./areaEvent";
+export * from "./entity";
+export * from "./event";

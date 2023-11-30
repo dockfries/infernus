@@ -1,2 +1,2 @@
-export * from "./baseMenu";
-export * from "./menuEvent";
+export * from "./entity";
+export * from "./event";

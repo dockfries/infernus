@@ -1,2 +1,2 @@
-export * from "./baseMapIcon";
-export * from "./mapIconEvent";
+export * from "./entity";
+export * from "./event";

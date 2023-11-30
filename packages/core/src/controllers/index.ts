@@ -1,5 +1,4 @@
 export * from "./i18n";
-export * from "./promise/dialog";
 export * from "./npc";
 export * from "./player";
 export * from "./vehicle";

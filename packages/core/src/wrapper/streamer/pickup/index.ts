@@ -1,2 +1,2 @@
-export * from "./basePickup";
-export * from "./pickupEvent";
+export * from "./entity";
+export * from "./event";

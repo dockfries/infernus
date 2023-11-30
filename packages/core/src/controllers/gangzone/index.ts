@@ -1,2 +1,2 @@
-export * from "./baseGangZone";
-export * from "./gangZoneEvent";
+export * from "./entity";
+export * from "./event";

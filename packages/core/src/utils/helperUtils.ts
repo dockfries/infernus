@@ -1,9 +1,8 @@
-import { rgba } from "./colorUtils";
-import type { IDialog } from "core/interfaces";
-import { LimitsEnum } from "core/enums";
 import { I18n } from "core/controllers/i18n";
-import type { Player } from "core/controllers/player";
-import { defaultCharset } from "core/controllers/gamemode/settings";
+import type { Player } from "../controllers/player/entity";
+import { LimitsEnum } from "../enums";
+import type { IDialog } from "../interfaces";
+import { rgba } from "./colorUtils";
 
 type processTuple = [string, string | number[]];
 
@@ -15,8 +14,8 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 };
 
 // Here are some i18n functions used to override the original functions
-export const SendClientMessage = <P extends Player>(
-  player: P,
+export const SendClientMessage = (
+  player: Player,
   colour: string | number,
   msg: string
 ): number => {
@@ -30,8 +29,8 @@ export const SendClientMessage = <P extends Player>(
   );
 };
 
-export const SendClientMessageToAll = <P extends Player>(
-  fn: Array<P>,
+export const SendClientMessageToAll = (
+  fn: Array<Player>,
   colour: string | number,
   msg: string
 ): number => {
@@ -39,8 +38,8 @@ export const SendClientMessageToAll = <P extends Player>(
   return 1;
 };
 
-export const SendPlayerMessageToPlayer = <P extends Player>(
-  player: P,
+export const SendPlayerMessageToPlayer = (
+  player: Player,
   senderId: number,
   message: string
 ): number => {
@@ -54,8 +53,8 @@ export const SendPlayerMessageToPlayer = <P extends Player>(
   );
 };
 
-export const SendPlayerMessageToAll = <P extends Player>(
-  fn: Array<P>,
+export const SendPlayerMessageToAll = (
+  fn: Array<Player>,
   senderId: number,
   message: string
 ): number => {
@@ -63,8 +62,8 @@ export const SendPlayerMessageToAll = <P extends Player>(
   return 1;
 };
 
-export const ShowPlayerDialog = <P extends Player>(
-  player: P,
+export const ShowPlayerDialog = (
+  player: Player,
   id: number,
   dialog: IDialog
 ): number => {
@@ -122,7 +121,7 @@ export const OnDialogResponse = (
 samp.registerEvent("OnClientMessageI18n", "iai");
 export const OnClientMessage = (
   fn: (colour: number, text: string) => number,
-  charset = defaultCharset
+  charset = "utf8"
 ) => {
   samp.addEventListener(
     "OnClientMessageI18n",
@@ -135,7 +134,7 @@ export const OnClientMessage = (
 samp.registerEvent("OnRconCommandI18n", "ai");
 export const OnRconCommand = (
   fn: (cmd: string) => number,
-  charset = defaultCharset
+  charset = "utf8"
 ) => {
   samp.addEventListener("OnRconCommandI18n", (buf: number[]): number => {
     return fn(I18n.decodeFromBuf(buf, charset));
@@ -145,7 +144,7 @@ export const OnRconCommand = (
 samp.registerEvent("OnRconLoginAttemptI18n", "aiaii");
 export const OnRconLoginAttempt = (
   fn: (ip: string, password: string, success: boolean) => number,
-  charset = defaultCharset
+  charset = "utf8"
 ) => {
   samp.addEventListener(
     "OnRconLoginAttemptI18n",
@@ -159,7 +158,7 @@ export const OnRconLoginAttempt = (
   );
 };
 
-export const GetPlayerName = <P extends Player>(player: P): string => {
+export const GetPlayerName = (player: Player): string => {
   const buf: number[] = callNative(
     "GetPlayerName",
     "iAi",
@@ -169,10 +168,7 @@ export const GetPlayerName = <P extends Player>(player: P): string => {
   return I18n.decodeFromBuf(I18n.getValidStr(buf), player.charset);
 };
 
-export const SetPlayerName = <P extends Player>(
-  player: P,
-  name: string
-): number => {
+export const SetPlayerName = (player: Player, name: string): number => {
   return callNative(
     "SetPlayerName",
     "ia",
@@ -361,31 +357,5 @@ export const GetDynamicObjectMaterialText = (
     textalignment,
   };
 };
-
-/**
- * The callback return value of the promise is processed to block default events
- * @param context Usually the current context point is passed in
- * @param callback Callbacks are invoked in context
- * @param blockDefaultRetNum The return value of the call that blocks the default event
- * @returns A function that can be used as a callback
- */
-export const defineAsyncCallback = (
-  context: any,
-  callback: string,
-  blockDefaultRetNum = 1
-) => {
-  return (...args: any) => {
-    if (!context[callback]) return blockDefaultRetNum;
-
-    const result = context[callback](...args);
-
-    if (result instanceof Promise) return blockDefaultRetNum;
-    if (result === undefined) return blockDefaultRetNum;
-    return Number(result);
-  };
-};
-
-export const NOOP = (unhandled = 0) =>
-  defineAsyncCallback({ NOOP: () => unhandled }, "NOOP");
 
 export const { callNative, callNativeFloat } = samp;

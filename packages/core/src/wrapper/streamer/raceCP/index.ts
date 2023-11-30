@@ -1,2 +1,2 @@
-export * from "./baseRaceCP";
-export * from "./raceCPEvent";
+export * from "./entity";
+export * from "./event";

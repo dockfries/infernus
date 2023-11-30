@@ -1,2 +1,2 @@
-export * from "./npcEvent";
-export * from "./npcFunc";
+export * from "./event";
+export * from "./entity";

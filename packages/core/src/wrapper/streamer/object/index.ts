@@ -1,2 +1,2 @@
-export * from "./baseObject";
-export * from "./objectEvent";
+export * from "./entity";
+export * from "./event";

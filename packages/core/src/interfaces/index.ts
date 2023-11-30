@@ -1,7 +1,7 @@
-import type { Player } from "core/controllers/player";
 import type { MapIconStyles } from "@infernus/streamer";
 import type { DialogStylesEnum } from "../enums";
 import type { TDynamicAreaTypes, TStreamerExtendable } from "../types";
+import type { Player } from "../controllers/player";
 
 export interface IDialog {
   style?: DialogStylesEnum;
@@ -13,15 +13,15 @@ export interface IDialog {
 
 export interface IDialogResCommon {
   response: number;
-  listitem: number;
+  listItem: number;
 }
 
 export interface IDialogResRaw extends IDialogResCommon {
-  inputbuf: number[];
+  buffer: number[];
 }
 
 export interface IDialogResResult extends IDialogResCommon {
-  inputtext: string;
+  inputText: string;
 }
 
 export interface ICmdErr {
@@ -46,8 +46,8 @@ export interface IAnimateInfo {
   d: number;
 }
 
-export interface IGangZone<P extends Player> {
-  player?: P;
+export interface IGangZone {
+  player?: Player;
   minx: number;
   miny: number;
   maxx: number;
@@ -59,8 +59,8 @@ export interface ICommonTextDrawKey {
   global: boolean;
 }
 
-export interface ITextDraw<P extends Player> {
-  player?: P;
+export interface ITextDraw {
+  player?: Player;
   x: number;
   y: number;
   text: string;
@@ -137,9 +137,9 @@ export interface IDynamicObject extends IDynamicCommon {
 }
 
 export interface IClientResRaw {
-  actionid: number;
-  memaddr: number;
-  retndata: number;
+  actionId: number;
+  memAddr: number;
+  data: number;
 }
 
 export interface IClientFuncQueue {

@@ -1,2 +1,2 @@
-export * from "./base3DText";
-export * from "./3dTextEvent";
+export * from "./entity";
+export * from "./event";

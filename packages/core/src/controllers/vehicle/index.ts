@@ -1,2 +1,2 @@
-export * from "./baseVehicle";
-export * from "./vehicleEvent";
+export * from "./entity";
+export * from "./event";

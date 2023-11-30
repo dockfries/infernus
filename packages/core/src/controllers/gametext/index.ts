@@ -1,13 +1,7 @@
-import {
-  GameTextForAll,
-  GameTextForPlayer,
-  HasGameText,
-  HideGameTextForAll,
-  HideGameTextForPlayer,
-} from "core/wrapper/native/functions";
 import type { Player } from "../player";
+import * as f from "../../wrapper/native/functions";
 
-export class GameText<P extends Player = Player> {
+export class GameText {
   private _text: string;
   private _time: number;
   private _style: number;
@@ -40,22 +34,22 @@ export class GameText<P extends Player = Player> {
   }
 
   static hideForAll(style: number) {
-    HideGameTextForAll(style);
+    f.HideGameTextForAll(style);
   }
 
-  static has<P extends Player>(player: P, style: number) {
-    return HasGameText(player.id, style);
+  static has(player: Player, style: number) {
+    return f.HasGameText(player.id, style);
   }
 
   forAll() {
-    GameTextForAll(this.text, this.time, this.style);
+    f.GameTextForAll(this.text, this.time, this.style);
   }
 
-  forPlayer(player: P) {
-    GameTextForPlayer(player.id, this.text, this.time, this.style);
+  forPlayer(player: Player) {
+    f.GameTextForPlayer(player.id, this.text, this.time, this.style);
   }
 
-  hideForPlayer(player: P) {
-    return HideGameTextForPlayer(player.id, this.style);
+  hideForPlayer(player: Player) {
+    return f.HideGameTextForPlayer(player.id, this.style);
   }
 }

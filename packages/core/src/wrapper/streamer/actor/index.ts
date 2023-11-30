@@ -1,2 +1,2 @@
-export * from "./baseActor";
-export * from "./actorEvent";
+export * from "./entity";
+export * from "./event";

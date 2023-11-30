@@ -1,2 +1,2 @@
-export * from "./baseTextDraw";
-export * from "./textdrawEvent";
+export * from "./entity";
+export * from "./event";
