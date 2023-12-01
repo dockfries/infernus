@@ -1,36 +1,37 @@
-# [0.10.0-beta.2](https://github.com/dockfries/infernus/compare/v0.10.0-beta.1...v0.10.0-beta.2) (2023-11-30)
+# [0.10.0-beta.4](https://github.com/dockfries/infernus/compare/v0.10.0-beta.2...v0.10.0-beta.4) (2023-12-01)
 
 
 ### Bug Fixes
 
-* **core:** find subcommand ([0e63ccf](https://github.com/dockfries/infernus/commit/0e63ccfd7b4047820404d23a5686fbb66acc4b62))
+* **core:** command error performed key not used ([521489e](https://github.com/dockfries/infernus/commit/521489e01e914e80c5db39a5f9992ff57dc54b6a))
+* **core:** fps heartbeat, command off index ([26858f0](https://github.com/dockfries/infernus/commit/26858f08ca3f5d7f1a3ba645db835467b477dee9))
+* **core:** maybe right command error sequence ([15cdbb3](https://github.com/dockfries/infernus/commit/15cdbb36585ac75685199c30229aff535d22ca07))
 
 
+
+# [0.10.0-beta.2](https://github.com/dockfries/infernus/compare/v0.10.0-beta.1...v0.10.0-beta.2) (2023-11-30)
+
+### Bug Fixes
+
+- **core:** find subcommand ([0e63ccf](https://github.com/dockfries/infernus/commit/0e63ccfd7b4047820404d23a5686fbb66acc4b62))
 
 # [0.10.0-beta.1](https://github.com/dockfries/infernus/compare/v0.10.0-beta.0...v0.10.0-beta.1) (2023-11-30)
 
-
 ### Bug Fixes
 
-* **core:** logger, onCommandError/Text, disconnect ([052000f](https://github.com/dockfries/infernus/commit/052000f2fb6a2abbd580fdba931f3f3ffdb02703))
-
-
+- **core:** logger, onCommandError/Text, disconnect ([052000f](https://github.com/dockfries/infernus/commit/052000f2fb6a2abbd580fdba931f3f3ffdb02703))
 
 # [0.10.0-beta.0](https://github.com/dockfries/infernus/compare/v0.9.8...v0.10.0-beta.0) (2023-11-30)
 
-
 ### Bug Fixes
 
-* bump version files range ([2b711a3](https://github.com/dockfries/infernus/commit/2b711a3c78030875cfee996d0b23aff1701d3837))
-* **core:** build circular deps ([943ca4e](https://github.com/dockfries/infernus/commit/943ca4e430a29f21b71b38d082467b944abf31b4))
-* **git:** pre-commit hook contributors not add ([3270723](https://github.com/dockfries/infernus/commit/327072363580908a53f5301c7966ab8597165d88))
-
+- bump version files range ([2b711a3](https://github.com/dockfries/infernus/commit/2b711a3c78030875cfee996d0b23aff1701d3837))
+- **core:** build circular deps ([943ca4e](https://github.com/dockfries/infernus/commit/943ca4e430a29f21b71b38d082467b944abf31b4))
+- **git:** pre-commit hook contributors not add ([3270723](https://github.com/dockfries/infernus/commit/327072363580908a53f5301c7966ab8597165d88))
 
 ### Features
 
-* **wip-core:** simulate trigger event ([be0e26f](https://github.com/dockfries/infernus/commit/be0e26fc56b38fda259045b633b9e5498bb2fe17))
-
-
+- **wip-core:** simulate trigger event ([be0e26f](https://github.com/dockfries/infernus/commit/be0e26fc56b38fda259045b633b9e5498bb2fe17))
 
 ## 0.9.8 (2023-11-27)
 
