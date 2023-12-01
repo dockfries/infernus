@@ -109,7 +109,7 @@ onCommandText(({ player, buffer, next }) => {
   }
 
   const ret = triggerOnPerformed(player, fullCommand);
-  if (!ret) return triggerOnError(player, fullCommand, CommandErrors.REJECTED);
+  if (!ret) return triggerOnError(player, fullCommand, CommandErrors.PERFORMED);
   return next();
 });
 
