@@ -106,6 +106,7 @@ export class DynamicMapIcon {
       );
     DestroyDynamicMapIcon(this.id);
     DynamicMapIcon.mapIcons.delete(this._id);
+    this._id = -1;
     return this;
   }
   isValid(): boolean {

@@ -6,7 +6,7 @@ import { GangZone } from "./entity";
 
 GameMode.onExit(({ next }) => {
   GangZone.getInstances().forEach((g) => g.destroy());
-  next();
+  return next();
 });
 
 const [onPlayerEnterGlobal] = defineEvent({

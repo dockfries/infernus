@@ -107,6 +107,7 @@ export class DynamicObject {
       );
     s.DestroyDynamicObject(this.id);
     DynamicObject.objects.delete(this.id);
+    this._id = -1;
     return this;
   }
 

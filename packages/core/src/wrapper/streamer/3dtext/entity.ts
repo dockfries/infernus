@@ -119,6 +119,7 @@ export class Dynamic3DTextLabel {
       );
     DestroyDynamic3DTextLabel(this.id);
     Dynamic3DTextLabel.texts.delete(this.id);
+    this._id = -1;
     return this;
   }
   isValid(): boolean {

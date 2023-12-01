@@ -235,6 +235,7 @@ export class DynamicArea {
       );
     s.DestroyDynamicArea(this.id);
     DynamicArea.areas.delete(this.id);
+    this._id = -1;
     return this;
   }
   isValid(): boolean {

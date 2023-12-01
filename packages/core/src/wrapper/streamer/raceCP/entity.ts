@@ -107,6 +107,7 @@ export class DynamicRaceCP {
       );
     DestroyDynamicCP(this.id);
     DynamicRaceCP.checkpoints.delete(this.id);
+    this._id = -1;
     return this;
   }
   isValid(): boolean {

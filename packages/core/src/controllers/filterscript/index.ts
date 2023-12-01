@@ -47,12 +47,12 @@ export const reloadUseScript = (scriptName: string) => {
 
 onInit(({ next }) => {
   preInstallScripts.forEach((fs) => loadUseScript(fs.name));
-  next();
+  return next();
 });
 
 onExit(({ next }) => {
   installedScripts.forEach((fs) => unloadUseScript(fs.name));
-  next();
+  return next();
 });
 
 export const useFilterScript = function (

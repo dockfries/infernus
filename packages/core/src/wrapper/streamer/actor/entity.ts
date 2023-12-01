@@ -104,6 +104,7 @@ export class DynamicActor {
       );
     s.DestroyDynamicActor(this.id);
     DynamicActor.actors.delete(this.id);
+    this._id = -1;
     return this;
   }
   isValid(): boolean {

@@ -6,7 +6,7 @@ import { defineEvent } from "../bus";
 
 GameMode.onExit(({ next }) => {
   Vehicle.getInstances().forEach((v) => v.destroy());
-  next();
+  return next();
 });
 
 const [onDamageStatusUpdate] = defineEvent({

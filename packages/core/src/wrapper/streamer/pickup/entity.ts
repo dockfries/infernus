@@ -91,6 +91,7 @@ export class DynamicPickup {
       );
     s.DestroyDynamicPickup(this.id);
     DynamicPickup.pickups.delete(this.id);
+    this._id = -1;
     return this;
   }
   isValid(): boolean {

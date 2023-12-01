@@ -118,6 +118,7 @@ export class Menu {
       return logger.error("[Menu]: Cannot destroy before create");
     f.DestroyMenu(this.id);
     Menu.menus.delete(this._id);
+    this._id = -1;
     return this;
   }
   addItem(column: number, title: string): void | this {

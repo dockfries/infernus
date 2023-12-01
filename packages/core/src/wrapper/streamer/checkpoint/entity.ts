@@ -103,6 +103,7 @@ export class DynamicCheckpoint {
       );
     DestroyDynamicCP(this.id);
     DynamicCheckpoint.checkpoints.delete(this.id);
+    this._id = -1;
     return this;
   }
   isValid(): boolean {

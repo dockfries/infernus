@@ -7,7 +7,7 @@ import { Player } from "../player";
 
 GameMode.onExit(({ next }) => {
   Menu.getInstances().forEach((g) => g.destroy());
-  next();
+  return next();
 });
 
 const [onPlayerExited] = defineEvent({
