@@ -1,3 +1,12 @@
+# [0.10.0-beta.5](https://github.com/dockfries/infernus/compare/v0.10.0-beta.4...v0.10.0-beta.5) (2023-12-01)
+
+
+### Bug Fixes
+
+* **core:** streamer destroy not set id -1, return onExit ([20a874b](https://github.com/dockfries/infernus/commit/20a874bbe0e2002aa7f0c5509d7a784a93493aaf))
+
+
+
 # [0.10.0-beta.4](https://github.com/dockfries/infernus/compare/v0.10.0-beta.2...v0.10.0-beta.4) (2023-12-01)
 
 
