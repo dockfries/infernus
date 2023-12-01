@@ -53,17 +53,22 @@ onDisconnect(({ player, next }) => {
 function fpsHeartbeat(player: Player) {
   if (!Player.isConnected(player.id)) return;
 
-  const nowDrunkLevel = player.getDrunkLevel();
+  const now = Date.now();
 
-  if (nowDrunkLevel < 100) {
-    player.setDrunkLevel(2000);
-    player.lastDrunkLevel = 2000;
-    player.lastFps = 0;
-    return;
+  if (now - player.lastUpdateFpsTick >= 1000) {
+    const nowDrunkLevel = player.getDrunkLevel();
+
+    if (nowDrunkLevel < 100) {
+      player.setDrunkLevel(2000);
+      player.lastDrunkLevel = 2000;
+      player.lastFps = 0;
+      return;
+    }
+
+    player.lastUpdateFpsTick = now;
+    player.lastFps = player.lastDrunkLevel - nowDrunkLevel - 1;
+    player.lastDrunkLevel = nowDrunkLevel;
   }
-
-  player.lastFps = player.lastDrunkLevel - nowDrunkLevel - 1;
-  player.lastDrunkLevel = nowDrunkLevel;
 }
 
 onUpdate(({ player, next }) => {

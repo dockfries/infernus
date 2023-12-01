@@ -90,27 +90,33 @@ export function defineEvent<T extends object>(options: Options<T>) {
     return executeMiddlewares(options, ...args);
   }
 
-  function run(
+  function pusher(
     cb: (ret: T & { next: () => CallbackRet }) => PromisifyCallbackRet
   ) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const middlewares = eventBus.get(name)!;
 
     const length = middlewares.push(cb);
-    const idx = length - 1;
+    const pushedPos = length - 1;
 
     const off = () => {
       const currentMiddlewares = eventBus.get(name) || [];
+      const currentMaxPos = currentMiddlewares.length - 1;
 
-      if (currentMiddlewares.length && currentMiddlewares[idx] === cb) {
-        currentMiddlewares.splice(idx, 1);
+      const endIdx = currentMaxPos < pushedPos ? currentMaxPos : pushedPos;
+
+      for (let i = endIdx; i >= 0; i--) {
+        if (currentMiddlewares[i] === cb) {
+          currentMiddlewares.splice(i, 1);
+          break;
+        }
       }
     };
 
     return off;
   }
 
-  const h = [run, trigger] as [typeof run, typeof trigger];
+  const h = [pusher, trigger] as [typeof pusher, typeof trigger];
 
   if (isNative) {
     identifier && samp.registerEvent(name, identifier);

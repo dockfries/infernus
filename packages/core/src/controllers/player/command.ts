@@ -141,8 +141,8 @@ export const CmdBus = {
       }
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const [run] = commandBus.get(cmd)!;
-      return run(cb);
+      const [pusher] = commandBus.get(cmd)!;
+      return pusher(cb);
     });
 
     return () => {

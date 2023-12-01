@@ -47,6 +47,7 @@ export class Player {
   lastDrunkLevel = 0;
   lastFps = 0;
   lastUpdateTick = 0;
+  lastUpdateFpsTick = 0;
 
   isPaused = false;
 
