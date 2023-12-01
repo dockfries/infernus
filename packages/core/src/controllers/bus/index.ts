@@ -4,12 +4,13 @@ export type CallbackRet = boolean | number | void;
 
 export type PromisifyCallbackRet = CallbackRet | Promise<CallbackRet>;
 
-export type Options<T> = {
+export type Options<T extends object> = {
   name: string;
   defaultValue?: boolean;
   identifier?: string;
   isNative?: boolean;
-  beforeEach?: (...args: any[]) => T;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  beforeEach?: (...args: any[]) => Exclude<T, Array<any> | Function>;
   afterEach?: (arg: T) => void;
 };
 
@@ -31,7 +32,10 @@ function transformReturnValue(
   return +defaultValue;
 }
 
-function executeMiddlewares<T>(options: Options<T>, ...args: any[]) {
+function executeMiddlewares<T extends object>(
+  options: Options<T>,
+  ...args: any[]
+) {
   const { defaultValue = true, name, beforeEach, afterEach } = options;
 
   const middlewares = eventBus.get(name);
