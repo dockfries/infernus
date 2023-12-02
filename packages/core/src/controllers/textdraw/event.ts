@@ -6,7 +6,8 @@ import { GameMode } from "../gamemode";
 import { defineEvent } from "../bus";
 
 GameMode.onExit(({ next }) => {
-  TextDraw.getInstances().forEach((t) => t.destroy());
+  TextDraw.getInstances(true).forEach((t) => t.destroy());
+  TextDraw.getInstances(false).forEach((t) => t.destroy());
   return next();
 });
 
@@ -16,9 +17,7 @@ const [onPlayerClickGlobal] = defineEvent({
     return {
       player: Player.getInstance(pid)!,
       textDraw:
-        tid === InvalidEnum.TEXT_DRAW
-          ? tid
-          : TextDraw.getInstance({ id: tid, global: true })!,
+        tid === InvalidEnum.TEXT_DRAW ? tid : TextDraw.getInstance(tid, true)!,
     };
   },
 });
@@ -28,9 +27,7 @@ const [onPlayerClickPlayer] = defineEvent({
     return {
       player: Player.getInstance(pid)!,
       textDraw:
-        tid === InvalidEnum.TEXT_DRAW
-          ? tid
-          : TextDraw.getInstance({ id: tid, global: false })!,
+        tid === InvalidEnum.TEXT_DRAW ? tid : TextDraw.getInstance(tid, false)!,
     };
   },
 });

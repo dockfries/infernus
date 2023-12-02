@@ -45,16 +45,12 @@ import {
   TextDrawGetPreviewVehicleColors,
 } from "@infernus/wrapper";
 
-import type { Player } from "../player";
+import { PlayerEvent, type Player } from "../player";
 
 export class TextDraw {
-  static readonly textDraws = new Map<
-    { id: number; global: boolean },
-    TextDraw
-  >();
+  static readonly globalTextDraws = new Map<number, TextDraw>();
+  static readonly playerTextDraws = new Map<number, TextDraw>();
 
-  private static createdGlobalCount = 0;
-  private static createdPlayerCount = 0;
   private readonly sourceInfo: ITextDraw;
 
   private _id = -1;
@@ -69,23 +65,29 @@ export class TextDraw {
       return logger.warn("[TextDraw]: Unable to create the textdraw again");
     const { x, y, text, player } = this.sourceInfo;
     if (!player) {
-      if (TextDraw.createdGlobalCount === LimitsEnum.MAX_TEXT_DRAWS)
+      if (TextDraw.getInstances(true).length === LimitsEnum.MAX_TEXT_DRAWS)
         return logger.warn(
           "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached"
         );
       this._id = fns.TextDrawCreate(x, y, text);
-      TextDraw.createdGlobalCount++;
+      TextDraw.globalTextDraws.set(this.id, this);
     } else {
-      if (TextDraw.createdPlayerCount === LimitsEnum.MAX_TEXT_DRAWS)
+      if (TextDraw.getInstances(false).length === LimitsEnum.MAX_TEXT_DRAWS)
         return logger.warn(
           "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached"
         );
       this._id = fns.CreatePlayerTextDraw(player.id, x, y, text);
-      TextDraw.createdPlayerCount++;
       // Player-textdraws are automatically destroyed when a player disconnects.
-      samp.addEventListener("OnPlayerDisconnect", this.unregisterEvent);
+      const off = PlayerEvent.onDisconnect(({ player: p, next }) => {
+        if (p === player) {
+          this.destroy();
+          off();
+        }
+        return next();
+      });
+      TextDraw.playerTextDraws.set(this.id, this);
     }
-    TextDraw.textDraws.set({ id: this.id, global: player === undefined }, this);
+
     return this;
   }
   destroy(): void | this {
@@ -94,12 +96,11 @@ export class TextDraw {
     const { player } = this.sourceInfo;
     if (!player) {
       fns.TextDrawDestroy(this.id);
-      TextDraw.createdGlobalCount--;
+      TextDraw.globalTextDraws.delete(this.id);
     } else {
       fns.PlayerTextDrawDestroy(player.id, this.id);
-      TextDraw.createdPlayerCount--;
+      TextDraw.playerTextDraws.delete(this.id);
     }
-    TextDraw.textDraws.delete({ id: this.id, global: player === undefined });
     this._id = -1;
     return this;
   }
@@ -243,11 +244,6 @@ export class TextDraw {
   }
   private static beforeCreateWarn(msg: string): void {
     logger.warn(`[TextDraw]: Unable to ${msg} before create`);
-  }
-  private unregisterEvent() {
-    this.destroy();
-    samp.removeEventListener("OnPlayerDisconnect", this.unregisterEvent);
-    return 1;
   }
   // player's textdraw should be shown / hidden only for whom it is created.
   show(player?: Player): void | this {
@@ -416,11 +412,13 @@ export class TextDraw {
     return !!this.sourceInfo.player;
   }
 
-  static getInstance(t: { id: number; global: boolean }) {
-    return this.textDraws.get(t);
+  static getInstance(id: number, isGlobal: boolean) {
+    if (isGlobal) return this.globalTextDraws.get(id);
+    return this.playerTextDraws.get(id);
   }
 
-  static getInstances() {
-    return [...this.textDraws.values()];
+  static getInstances(isGlobal: boolean) {
+    if (isGlobal) return [...this.globalTextDraws.values()];
+    return [...this.playerTextDraws.values()];
   }
 }

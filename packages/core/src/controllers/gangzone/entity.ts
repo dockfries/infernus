@@ -1,20 +1,15 @@
 import * as w from "@infernus/wrapper";
 import * as f from "../../wrapper/native/functions";
 import { LimitsEnum } from "../../enums";
-import type {
-  IGangZone,
-  GangZonePos,
-  ICommonGangZoneKey,
-} from "../../interfaces";
+import type { IGangZone, GangZonePos } from "../../interfaces";
 import { logger } from "../../logger";
 import { PlayerEvent, type Player } from "../player";
 import { rgba } from "../../utils/colorUtils";
 
 export class GangZone {
-  static readonly gangZones = new Map<ICommonGangZoneKey, GangZone>();
+  static readonly globalGangZones = new Map<number, GangZone>();
+  static readonly playerGangZones = new Map<number, GangZone>();
 
-  private static createdGlobalCount = 0;
-  private static createdPlayerCount = 0;
   readonly sourceInfo: IGangZone;
 
   constructor(gangZone: IGangZone) {
@@ -32,21 +27,20 @@ export class GangZone {
 
     const { player } = this.sourceInfo;
     if (!player) {
-      if (GangZone.createdGlobalCount === LimitsEnum.MAX_GANG_ZONES)
+      if (GangZone.getInstances(true).length === LimitsEnum.MAX_GANG_ZONES)
         return logger.warn(
           "[GangZone]: Unable to continue to create gangzone, maximum allowable quantity has been reached"
         );
       const { minX, minY, maxX, maxY } = this.sourceInfo;
       this._id = f.GangZoneCreate(minX, minY, maxX, maxY);
-      GangZone.createdGlobalCount++;
+      GangZone.globalGangZones.set(this.id, this);
     } else {
-      if (GangZone.createdPlayerCount === LimitsEnum.MAX_GANG_ZONES)
+      if (GangZone.getInstances(false).length === LimitsEnum.MAX_GANG_ZONES)
         return logger.warn(
           "[GangZone]: Unable to continue to create gangzone, maximum allowable quantity has been reached"
         );
       const { minX, minY, maxX, maxY } = this.sourceInfo;
       this._id = w.CreatePlayerGangZone(player.id, minX, minY, maxX, maxY);
-      GangZone.createdPlayerCount++;
       // PlayerGangZones automatically destroyed when player disconnect
       const off = PlayerEvent.onDisconnect(({ player, next }) => {
         next();
@@ -55,8 +49,8 @@ export class GangZone {
           off();
         }
       });
+      GangZone.playerGangZones.set(this.id, this);
     }
-    GangZone.gangZones.set({ id: this.id, global: player === undefined }, this);
   }
 
   destroy() {
@@ -68,16 +62,11 @@ export class GangZone {
     const { player } = this.sourceInfo;
     if (!player) {
       f.GangZoneDestroy(this.id);
-      GangZone.createdGlobalCount--;
+      GangZone.globalGangZones.delete(this.id);
     } else {
       w.PlayerGangZoneDestroy(player.id, this.id);
-      GangZone.createdPlayerCount--;
+      GangZone.playerGangZones.delete(this.id);
     }
-
-    GangZone.gangZones.delete({
-      id: this.id,
-      global: player === undefined,
-    });
 
     this._id = -1;
   }
@@ -259,11 +248,13 @@ export class GangZone {
     return this;
   }
 
-  static getInstance(g: { id: number; global: boolean }) {
-    return this.gangZones.get(g);
+  static getInstance(id: number, isGlobal: boolean) {
+    if (isGlobal) return this.globalGangZones.get(id);
+    return this.playerGangZones.get(id);
   }
 
-  static getInstances() {
-    return [...this.gangZones.values()];
+  static getInstances(isGlobal: boolean) {
+    if (isGlobal) return [...this.globalGangZones.values()];
+    return [...this.playerGangZones.values()];
   }
 }

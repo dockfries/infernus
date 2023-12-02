@@ -5,7 +5,8 @@ import { Player } from "../player";
 import { GangZone } from "./entity";
 
 GameMode.onExit(({ next }) => {
-  GangZone.getInstances().forEach((g) => g.destroy());
+  GangZone.getInstances(true).forEach((g) => g.destroy());
+  GangZone.getInstances(false).forEach((g) => g.destroy());
   return next();
 });
 
@@ -14,7 +15,7 @@ const [onPlayerEnterGlobal] = defineEvent({
   beforeEach(pid: number, gid: number) {
     return {
       player: Player.getInstance(pid)!,
-      gangZone: GangZone.getInstance({ id: gid, global: true })!,
+      gangZone: GangZone.getInstance(gid, true)!,
     };
   },
 });
@@ -24,7 +25,7 @@ const [onPlayerLeaveGlobal] = defineEvent({
   beforeEach(pid: number, gid: number) {
     return {
       player: Player.getInstance(pid)!,
-      gangZone: GangZone.getInstance({ id: gid, global: true })!,
+      gangZone: GangZone.getInstance(gid, true)!,
     };
   },
 });
@@ -34,7 +35,7 @@ const [onPlayerEnterPlayer] = defineEvent({
   beforeEach(pid: number, gid: number) {
     return {
       player: Player.getInstance(pid)!,
-      gangZone: GangZone.getInstance({ id: gid, global: false })!,
+      gangZone: GangZone.getInstance(gid, false)!,
     };
   },
 });
@@ -44,7 +45,7 @@ const [onPlayerLeavePlayer] = defineEvent({
   beforeEach(pid: number, gid: number) {
     return {
       player: Player.getInstance(pid)!,
-      gangZone: GangZone.getInstance({ id: gid, global: false })!,
+      gangZone: GangZone.getInstance(gid, false)!,
     };
   },
 });

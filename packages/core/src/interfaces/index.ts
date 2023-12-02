@@ -136,11 +136,6 @@ export interface IClientResRaw {
   data: number;
 }
 
-export interface ICommonGangZoneKey {
-  id: number;
-  global: boolean;
-}
-
 export interface IDynamicCircleCommon extends IDynamic {
   x: number;
   y: number;
