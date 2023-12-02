@@ -42,7 +42,7 @@ onItemStreamOut(({ type, id, forPlayer, next }) => {
   return next();
 });
 
-export const Dynamic3DTextLabelEvent = {
+export const Dynamic3DTextLabelEvent = Object.freeze({
   onStreamIn,
   onStreamOut,
-};
+});

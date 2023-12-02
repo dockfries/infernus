@@ -39,11 +39,11 @@ const [onClientMessage] = defineEvent({
   },
 });
 
-export const NpcEvent = {
+export const NpcEvent = Object.freeze({
   onConnect,
   onDisconnect,
   onModeInit,
   onModeExit,
   onSpawn,
   onClientMessage,
-};
+});

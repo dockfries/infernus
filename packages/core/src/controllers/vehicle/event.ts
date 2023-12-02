@@ -145,7 +145,7 @@ const [onTrailerUpdate] = defineEvent({
   },
 });
 
-export const VehicleEvent = {
+export const VehicleEvent = Object.freeze({
   onDamageStatusUpdate,
   onDeath,
   onMod,
@@ -160,4 +160,4 @@ export const VehicleEvent = {
   onNpcEnter,
   onNpcExit,
   onTrailerUpdate,
-};
+});

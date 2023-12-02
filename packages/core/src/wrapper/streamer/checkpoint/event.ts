@@ -63,9 +63,9 @@ const [onPlayerLeaveDynamicCP] = defineEvent({
   },
 });
 
-export const DynamicCheckPointEvent = {
+export const DynamicCheckPointEvent = Object.freeze({
   onPlayerEnter: onPlayerEnterDynamicCP,
   onPlayerLeave: onPlayerLeaveDynamicCP,
   onStreamIn,
   onStreamOut,
-};
+});

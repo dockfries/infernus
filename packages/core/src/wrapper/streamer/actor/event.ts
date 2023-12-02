@@ -52,8 +52,8 @@ const [onPlayerGiveDamageDynamicActor] = defineEvent({
   },
 });
 
-export const DynamicActorEvent = {
+export const DynamicActorEvent = Object.freeze({
   onStreamIn: onDynamicActorStreamIn,
   onStreamOut: onDynamicActorStreamOut,
   onPlayerGiveDamage: onPlayerGiveDamageDynamicActor,
-};
+});

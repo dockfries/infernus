@@ -63,9 +63,9 @@ const [onPlayerLeaveDynamicArea] = defineEvent({
   },
 });
 
-export const DynamicAreaEvent = {
+export const DynamicAreaEvent = Object.freeze({
   onStreamIn,
   onStreamOut,
   onPlayerEnter: onPlayerEnterDynamicArea,
   onPlayerLeave: onPlayerLeaveDynamicArea,
-};
+});

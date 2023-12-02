@@ -26,7 +26,7 @@ const [onPlayerSelectedRow] = defineEvent({
   },
 });
 
-export const MenuEvent = {
+export const MenuEvent = Object.freeze({
   onPlayerExited,
   onPlayerSelectedRow,
-};
+});

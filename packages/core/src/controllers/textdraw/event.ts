@@ -35,4 +35,7 @@ const [onPlayerClickPlayer] = defineEvent({
   },
 });
 
-export const TextDrawEvent = { onPlayerClickGlobal, onPlayerClickPlayer };
+export const TextDrawEvent = Object.freeze({
+  onPlayerClickGlobal,
+  onPlayerClickPlayer,
+});

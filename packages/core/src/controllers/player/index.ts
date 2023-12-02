@@ -34,7 +34,7 @@ import { onCheckResponse } from "./entity";
 
 export { Player } from "./entity";
 
-export const PlayerEvent = {
+export const PlayerEvent = Object.freeze({
   onConnect,
   onDisconnect,
   onPause,
@@ -64,7 +64,7 @@ export const PlayerEvent = {
   onCommandText: CmdBus.on,
   offCommandText: CmdBus.off,
   onDialogResponse,
-};
+});
 
 export { Dialog };
 

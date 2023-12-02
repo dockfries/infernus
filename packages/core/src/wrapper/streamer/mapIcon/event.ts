@@ -41,7 +41,7 @@ onItemStreamOut(({ type, id, forPlayer, next }) => {
   return next();
 });
 
-export const DynamicMapIconEvent = {
+export const DynamicMapIconEvent = Object.freeze({
   onStreamIn,
   onStreamOut,
-};
+});

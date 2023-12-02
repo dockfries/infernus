@@ -159,7 +159,7 @@ const [onPlayerEditAttachedObject] = defineEvent({
   },
 });
 
-export const DynamicObjectEvent = {
+export const DynamicObjectEvent = Object.freeze({
   onMoved: onDynamicObjectMoved,
   onPlayerEdit: onPlayerEditDynamicObject,
   onPlayerSelect: onPlayerSelectDynamicObject,
@@ -167,4 +167,4 @@ export const DynamicObjectEvent = {
   onPlayerEditAttached: onPlayerEditAttachedObject,
   onStreamIn,
   onStreamOut,
-};
+});

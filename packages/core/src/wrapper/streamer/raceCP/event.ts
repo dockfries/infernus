@@ -63,9 +63,9 @@ const [onPlayerLeaveDynamicRaceCP] = defineEvent({
   },
 });
 
-export const DynamicRaceCPEvent = {
+export const DynamicRaceCPEvent = Object.freeze({
   onPlayerEnter: onPlayerEnterDynamicRaceCP,
   onPlayerLeave: onPlayerLeaveDynamicRaceCP,
   onStreamIn,
   onStreamOut,
-};
+});

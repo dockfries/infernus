@@ -49,9 +49,9 @@ const [onPlayerLeavePlayer] = defineEvent({
   },
 });
 
-export const GangZoneEvent = {
+export const GangZoneEvent = Object.freeze({
   onPlayerEnterGlobal,
   onPlayerLeaveGlobal,
   onPlayerEnterPlayer,
   onPlayerLeavePlayer,
-};
+});

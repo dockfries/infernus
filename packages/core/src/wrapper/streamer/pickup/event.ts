@@ -52,8 +52,8 @@ const [onPlayerPickUpDynamicPickup] = defineEvent({
   },
 });
 
-export const DynamicPickupEvent = {
+export const DynamicPickupEvent = Object.freeze({
   onPlayerPickUp: onPlayerPickUpDynamicPickup,
   onStreamIn,
   onStreamOut,
-};
+});
