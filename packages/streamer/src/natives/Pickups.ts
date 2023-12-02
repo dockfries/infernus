@@ -30,10 +30,10 @@ export const CreateDynamicPickup = (
   );
 };
 
-export const DestroyDynamicPickup = (pickupid: number): number => {
-  return samp.callNative("DestroyDynamicPickup", "i", pickupid);
+export const DestroyDynamicPickup = (pickupId: number): number => {
+  return samp.callNative("DestroyDynamicPickup", "i", pickupId);
 };
 
-export const IsValidDynamicPickup = (pickupid: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicPickup", "i", pickupid));
+export const IsValidDynamicPickup = (pickupId: number): boolean => {
+  return Boolean(samp.callNative("IsValidDynamicPickup", "i", pickupId));
 };

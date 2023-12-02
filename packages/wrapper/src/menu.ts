@@ -1,45 +1,45 @@
-export const IsMenuDisabled = (menuid: number): boolean => {
-  return Boolean(samp.callNative("IsMenuDisabled", "i", menuid));
+export const IsMenuDisabled = (menuId: number): boolean => {
+  return Boolean(samp.callNative("IsMenuDisabled", "i", menuId));
 };
 
-export const IsMenuRowDisabled = (menuid: number, row: number): boolean => {
-  return Boolean(samp.callNative("IsMenuRowDisabled", "ii", menuid, row));
+export const IsMenuRowDisabled = (menuId: number, row: number): boolean => {
+  return Boolean(samp.callNative("IsMenuRowDisabled", "ii", menuId, row));
 };
 
-export const GetMenuColumns = (menuid: number): number => {
-  return samp.callNative("GetMenuColumns", "i", menuid);
+export const GetMenuColumns = (menuId: number): number => {
+  return samp.callNative("GetMenuColumns", "i", menuId);
 };
 
-export const GetMenuItems = (menuid: number, column: number): number => {
-  return samp.callNative("GetMenuItems", "ii", menuid, column);
+export const GetMenuItems = (menuId: number, column: number): number => {
+  return samp.callNative("GetMenuItems", "ii", menuId, column);
 };
 
-export const GetMenuPos = (menuid: number) => {
+export const GetMenuPos = (menuId: number) => {
   const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
     "GetMenuPos",
     "iFF",
-    menuid
+    menuId
   );
   return { fX, fY };
 };
 
-export const GetMenuColumnWidth = (menuid: number) => {
+export const GetMenuColumnWidth = (menuId: number) => {
   const [fColumn1 = 0.0, fColumn2 = 0.0]: number[] = samp.callNative(
     "GetMenuColumnWidth",
     "iFF",
-    menuid
+    menuId
   );
   return { fColumn1, fColumn2 };
 };
 
-export const GetMenuColumnHeader = (menuid: number, column: number): string => {
-  return samp.callNative("GetMenuColumnHeader", "iiSi", menuid, column, 31);
+export const GetMenuColumnHeader = (menuId: number, column: number): string => {
+  return samp.callNative("GetMenuColumnHeader", "iiSi", menuId, column, 31);
 };
 
 export const GetMenuItem = (
-  menuid: number,
+  menuId: number,
   column: number,
-  itemid: number
+  itemId: number
 ): string => {
-  return samp.callNative("GetMenuItem", "iiiSi", menuid, column, itemid, 31);
+  return samp.callNative("GetMenuItem", "iiiSi", menuId, column, itemId, 31);
 };

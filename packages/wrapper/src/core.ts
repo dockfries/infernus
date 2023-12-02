@@ -2,8 +2,8 @@ export const ClearBanList = (): void => {
   samp.callNative("ClearBanList", "");
 };
 
-export const IsBanned = (ipaddress: string): boolean => {
-  return Boolean(samp.callNative("IsBanned", "s", ipaddress));
+export const IsBanned = (ipAddress: string): boolean => {
+  return Boolean(samp.callNative("IsBanned", "s", ipAddress));
 };
 
 export const IsValidNickName = (name: string): boolean => {

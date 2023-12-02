@@ -113,12 +113,12 @@ export class DynamicActor {
       );
     return s.GetDynamicActorVirtualWorld(this.id);
   }
-  setVirtualWorld(vworld: number): void | number {
+  setVirtualWorld(vWorld: number): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to set virtual world before create"
       );
-    return s.SetDynamicActorVirtualWorld(this.id, vworld);
+    return s.SetDynamicActorVirtualWorld(this.id, vWorld);
   }
   applyAnimation(
     animLib: string,

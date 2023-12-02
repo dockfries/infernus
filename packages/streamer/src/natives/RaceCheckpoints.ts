@@ -36,24 +36,24 @@ export const CreateDynamicRaceCP = (
   );
 };
 
-export const DestroyDynamicRaceCP = (checkpointid: number): number => {
-  return samp.callNative("DestroyDynamicRaceCP", "i", checkpointid);
+export const DestroyDynamicRaceCP = (checkpointId: number): number => {
+  return samp.callNative("DestroyDynamicRaceCP", "i", checkpointId);
 };
 
-export const IsValidDynamicRaceCP = (checkpointid: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicRaceCP", "i", checkpointid));
+export const IsValidDynamicRaceCP = (checkpointId: number): boolean => {
+  return Boolean(samp.callNative("IsValidDynamicRaceCP", "i", checkpointId));
 };
 
 export const TogglePlayerDynamicRaceCP = (
   playerId: number,
-  checkpointid: number,
+  checkpointId: number,
   toggle: boolean
 ): number => {
   return samp.callNative(
     "TogglePlayerDynamicRaceCP",
     "iii",
     playerId,
-    checkpointid,
+    checkpointId,
     toggle
   );
 };
@@ -72,10 +72,10 @@ export const TogglePlayerAllDynamicRaceCPs = (
 
 export const IsPlayerInDynamicRaceCP = (
   playerId: number,
-  checkpointid: number
+  checkpointId: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInDynamicRaceCP", "ii", playerId, checkpointid)
+    samp.callNative("IsPlayerInDynamicRaceCP", "ii", playerId, checkpointId)
   );
 };
 

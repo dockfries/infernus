@@ -111,7 +111,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
           if (!vehId) {
             player.sendClientMessage(
               ColorEnum.WHITE,
-              "USAGE: /specvehicle [vehicleid]"
+              "USAGE: /specvehicle [vehicleId]"
             );
             return next();
           }

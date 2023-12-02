@@ -66,28 +66,28 @@ export const Streamer_ToggleAllItems = (
 export const Streamer_GetItemInternalID = (
   playerId: number,
   type: StreamerItemTypes,
-  streamerid: number
+  streamerId: number
 ): number => {
   return samp.callNative(
     "Streamer_GetItemInternalID",
     "iii",
     playerId,
     type,
-    streamerid
+    streamerId
   );
 };
 
 export const Streamer_GetItemStreamerID = (
   playerId: number,
   type: StreamerItemTypes,
-  internalid: number
+  internalId: number
 ): number => {
   return samp.callNative(
     "Streamer_GetItemStreamerID",
     "iii",
     playerId,
     type,
-    internalid
+    internalId
   );
 };
 
@@ -104,43 +104,43 @@ export const Streamer_IsItemVisible = (
 export const Streamer_DestroyAllVisibleItems = (
   playerId: number,
   type: StreamerItemTypes,
-  serverwide = 1
+  serverWide = 1
 ): number => {
   return samp.callNative(
     "Streamer_DestroyAllVisibleItems",
     "iii",
     playerId,
     type,
-    serverwide
+    serverWide
   );
 };
 
 export const Streamer_CountVisibleItems = (
   playerId: number,
   type: StreamerItemTypes,
-  serverwide = 1
+  serverWide = 1
 ): number => {
   return samp.callNative(
     "Streamer_CountVisibleItems",
     "iii",
     playerId,
     type,
-    serverwide
+    serverWide
   );
 };
 
 export const Streamer_DestroyAllItems = (
   type: StreamerItemTypes,
-  serverwide = 1
+  serverWide = 1
 ): number => {
-  return samp.callNative("Streamer_DestroyAllItems", "ii", type, serverwide);
+  return samp.callNative("Streamer_DestroyAllItems", "ii", type, serverWide);
 };
 
 export const Streamer_CountItems = (
   type: StreamerItemTypes,
-  serverwide = 1
+  serverWide = 1
 ): number => {
-  return samp.callNative("Streamer_CountItems", "ii", type, serverwide);
+  return samp.callNative("Streamer_CountItems", "ii", type, serverWide);
 };
 
 export const Streamer_GetNearbyItems = (
@@ -149,7 +149,7 @@ export const Streamer_GetNearbyItems = (
   z: number,
   type: StreamerItemTypes,
   items: number[],
-  maxitems: number = items.length,
+  maxItems: number = items.length,
   range = 300.0,
   worldId = -1
 ): void => {
@@ -160,7 +160,7 @@ export const Streamer_GetNearbyItems = (
     y,
     z,
     type,
-    maxitems,
+    maxItems,
     range,
     worldId
   );
@@ -170,14 +170,14 @@ export const Streamer_GetAllVisibleItems = (
   playerId: number,
   type: StreamerItemTypes,
   items: number[],
-  maxitems: number = items.length
+  maxItems: number = items.length
 ): void => {
   items = samp.callNative(
     "Streamer_GetAllVisibleItems",
     "iiAi",
     playerId,
     type,
-    maxitems
+    maxItems
   );
 };
 

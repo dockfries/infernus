@@ -1,3 +1,3 @@
-export const GetWeaponSlot = (weaponid: number): number => {
-  return samp.callNative("GetWeaponSlot", "i", weaponid);
+export const GetWeaponSlot = (weaponId: number): number => {
+  return samp.callNative("GetWeaponSlot", "i", weaponId);
 };

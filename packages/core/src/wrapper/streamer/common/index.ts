@@ -199,8 +199,8 @@ export class Streamer {
     worldId?: number,
     interiorId?: number,
     type?: StreamerItemTypes | -1,
-    compensatedtime?: number,
-    freezeplayer?: boolean
+    compensatedTime?: number,
+    freezePlayer?: boolean
   ): number {
     return Streamer_UpdateEx(
       player.id,
@@ -210,8 +210,8 @@ export class Streamer {
       worldId,
       interiorId,
       type,
-      compensatedtime,
-      freezeplayer
+      compensatedTime,
+      freezePlayer
     );
   }
   static getDistanceToItem = Streamer_GetDistanceToItem;
@@ -241,16 +241,16 @@ export class Streamer {
   static getItemInternalID(
     player: Player,
     type: StreamerItemTypes,
-    streamerid: number
+    streamerId: number
   ): number {
-    return Streamer_GetItemInternalID(player.id, type, streamerid);
+    return Streamer_GetItemInternalID(player.id, type, streamerId);
   }
   static getItemStreamerID(
     player: Player,
     type: StreamerItemTypes,
-    internalid: number
+    internalId: number
   ): number {
-    return Streamer_GetItemStreamerID(player.id, type, internalid);
+    return Streamer_GetItemStreamerID(player.id, type, internalId);
   }
   static isItemVisible(
     player: Player,
@@ -262,16 +262,16 @@ export class Streamer {
   static destroyAllVisibleItems(
     player: Player,
     type: StreamerItemTypes,
-    serverwide = 1
+    serverWide = 1
   ): number {
-    return Streamer_DestroyAllVisibleItems(player.id, type, serverwide);
+    return Streamer_DestroyAllVisibleItems(player.id, type, serverWide);
   }
   static countVisibleItems(
     player: Player,
     type: StreamerItemTypes,
-    serverwide = 1
+    serverWide = 1
   ): number {
-    return Streamer_CountVisibleItems(player.id, type, serverwide);
+    return Streamer_CountVisibleItems(player.id, type, serverWide);
   }
   static destroyAllItems = Streamer_DestroyAllItems;
   static countItems = Streamer_CountItems;

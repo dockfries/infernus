@@ -1,17 +1,17 @@
 export interface IActorSpawn {
-  skinid: number;
+  skinId: number;
   fX: number;
   fY: number;
   fZ: number;
   fAngle: number;
 }
 export interface IActorAnimation {
-  animlib: string;
-  animname: string;
+  animLib: string;
+  animName: string;
   fDelta: number;
   loop: number;
-  lockx: number;
-  locky: number;
+  lockX: number;
+  lockY: number;
   freeze: number;
   time: number;
 }

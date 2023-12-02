@@ -34,118 +34,118 @@ export const CreateDynamicActor = (
   );
 };
 
-export const DestroyDynamicActor = (actorid: number): number => {
-  return samp.callNative("DestroyDynamicActor", "i", actorid);
+export const DestroyDynamicActor = (actorId: number): number => {
+  return samp.callNative("DestroyDynamicActor", "i", actorId);
 };
 
-export const IsValidDynamicActor = (actorid: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicActor", "i", actorid));
+export const IsValidDynamicActor = (actorId: number): boolean => {
+  return Boolean(samp.callNative("IsValidDynamicActor", "i", actorId));
 };
 
 export const IsDynamicActorStreamedIn = (
-  actorid: number,
-  forplayerid: number
+  actorId: number,
+  forPlayerId: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsDynamicActorStreamedIn", "ii", actorid, forplayerid)
+    samp.callNative("IsDynamicActorStreamedIn", "ii", actorId, forPlayerId)
   );
 };
 
-export const GetDynamicActorVirtualWorld = (actorid: number): number => {
-  return samp.callNative("GetDynamicActorVirtualWorld", "i", actorid);
+export const GetDynamicActorVirtualWorld = (actorId: number): number => {
+  return samp.callNative("GetDynamicActorVirtualWorld", "i", actorId);
 };
 
 export const SetDynamicActorVirtualWorld = (
-  actorid: number,
-  vworld: number
+  actorId: number,
+  vWorld: number
 ): number => {
-  return samp.callNative("SetDynamicActorVirtualWorld", "ii", actorid, vworld);
+  return samp.callNative("SetDynamicActorVirtualWorld", "ii", actorId, vWorld);
 };
 
 export const ApplyDynamicActorAnimation = (
-  actorid: number,
-  animlib: string,
-  animname: string,
-  fdelta: number,
+  actorId: number,
+  animLib: string,
+  animName: string,
+  fDelta: number,
   loop: boolean,
-  lockx: boolean,
-  locky: boolean,
+  lockX: boolean,
+  lockY: boolean,
   freeze: boolean,
   time: number
 ): number => {
   return samp.callNative(
     "ApplyDynamicActorAnimation",
     "issfiiiii",
-    actorid,
-    animlib,
-    animname,
-    fdelta,
+    actorId,
+    animLib,
+    animName,
+    fDelta,
     loop,
-    lockx,
-    locky,
+    lockX,
+    lockY,
     freeze,
     time
   );
 };
 
-export const ClearDynamicActorAnimations = (actorid: number): number => {
-  return samp.callNative("ClearDynamicActorAnimations", "i", actorid);
+export const ClearDynamicActorAnimations = (actorId: number): number => {
+  return samp.callNative("ClearDynamicActorAnimations", "i", actorId);
 };
 
-export const GetDynamicActorFacingAngle = (actorid: number): number => {
-  return samp.callNative("GetDynamicActorFacingAngle", "iF", actorid);
+export const GetDynamicActorFacingAngle = (actorId: number): number => {
+  return samp.callNative("GetDynamicActorFacingAngle", "iF", actorId);
 };
 
 export const SetDynamicActorFacingAngle = (
-  actorid: number,
+  actorId: number,
   ang: number
 ): number => {
-  return samp.callNative("SetDynamicActorFacingAngle", "if", actorid, ang);
+  return samp.callNative("SetDynamicActorFacingAngle", "if", actorId, ang);
 };
 
-export const GetDynamicActorPos = (actorid: number) => {
+export const GetDynamicActorPos = (actorId: number) => {
   const [x, y, z]: number[] = samp.callNative(
     "GetDynamicActorPos",
     "iFFF",
-    actorid
+    actorId
   );
   return { x, y, z };
 };
 
 export const SetDynamicActorPos = (
-  actorid: number,
+  actorId: number,
   x: number,
   y: number,
   z: number
 ): number => {
-  return samp.callNative("SetDynamicActorPos", "ifff", actorid, x, y, z);
+  return samp.callNative("SetDynamicActorPos", "ifff", actorId, x, y, z);
 };
 
-export const GetDynamicActorHealth = (actorid: number): number => {
-  return samp.callNative("GetDynamicActorHealth", "iF", actorid);
+export const GetDynamicActorHealth = (actorId: number): number => {
+  return samp.callNative("GetDynamicActorHealth", "iF", actorId);
 };
 
 export const SetDynamicActorHealth = (
-  actorid: number,
+  actorId: number,
   health: number
 ): number => {
-  return samp.callNative("SetDynamicActorHealth", "if", actorid, health);
+  return samp.callNative("SetDynamicActorHealth", "if", actorId, health);
 };
 
 export const SetDynamicActorInvulnerable = (
-  actorid: number,
+  actorId: number,
   invulnerable = true
 ): number => {
   return samp.callNative(
     "SetDynamicActorInvulnerable",
     "ii",
-    actorid,
+    actorId,
     invulnerable
   );
 };
 
-export const IsDynamicActorInvulnerable = (actorid: number): boolean => {
-  return Boolean(samp.callNative("IsDynamicActorInvulnerable", "i", actorid));
+export const IsDynamicActorInvulnerable = (actorId: number): boolean => {
+  return Boolean(samp.callNative("IsDynamicActorInvulnerable", "i", actorId));
 };
 
 export const GetPlayerTargetDynamicActor = (playerId: number): number => {

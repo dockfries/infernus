@@ -175,15 +175,15 @@ export interface IDynamicRectangle extends IDynamicRectangleCommon {
 
 export interface IDynamicCuboid extends IDynamicRectangleCommon {
   type: "cuboid";
-  minz: number;
-  maxz: number;
+  minZ: number;
+  maxZ: number;
 }
 
 export interface IDynamicPolygon extends IDynamic {
   type: "polygon";
   points: number[];
-  minz: number;
-  maxz: number;
+  minZ: number;
+  maxZ: number;
 }
 
 export interface IDynamicAreaKey {

@@ -67,8 +67,8 @@ export const Streamer_UpdateEx = (
   worldId = -1,
   interiorId = -1,
   type = -1,
-  compensatedtime = -1,
-  freezeplayer = true
+  compensatedTime = -1,
+  freezePlayer = true
 ): number => {
   return samp.callNative(
     "Streamer_UpdateEx",
@@ -80,7 +80,7 @@ export const Streamer_UpdateEx = (
     worldId,
     interiorId,
     type,
-    compensatedtime,
-    freezeplayer
+    compensatedTime,
+    freezePlayer
   );
 };

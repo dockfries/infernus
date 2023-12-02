@@ -223,7 +223,7 @@ export const GetDynamic3DTextLabelText = (
 
 export const SetDynamicObjectMaterialText = (
   charset: string,
-  objectid: number,
+  objectId: number,
   materialIndex: number,
   text: string,
   materialSize: number,
@@ -239,7 +239,7 @@ export const SetDynamicObjectMaterialText = (
   return callNative(
     "SetDynamicObjectMaterialText",
     "iiaiaiiiii",
-    objectid,
+    objectId,
     materialIndex,
     textBuf,
     materialSize,
@@ -253,7 +253,7 @@ export const SetDynamicObjectMaterialText = (
 };
 
 export const GetDynamicObjectMaterialText = (
-  objectid: number,
+  objectId: number,
   materialIndex: number,
   charset: string
 ) => {
@@ -268,7 +268,7 @@ export const GetDynamicObjectMaterialText = (
   ]: [number[], number, number[], number, number, number, number] = callNative(
     "GetDynamicObjectMaterialText",
     "iiAIAIIIIIii",
-    objectid,
+    objectId,
     materialIndex,
     2048,
     32

@@ -36,52 +36,52 @@ export const CreateDynamicObject = (
   );
 };
 
-export const DestroyDynamicObject = (objectid: number): number => {
-  return samp.callNative("DestroyDynamicObject", "i", objectid);
+export const DestroyDynamicObject = (objectId: number): number => {
+  return samp.callNative("DestroyDynamicObject", "i", objectId);
 };
 
-export const IsValidDynamicObject = (objectid: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicObject", "i", objectid));
+export const IsValidDynamicObject = (objectId: number): boolean => {
+  return Boolean(samp.callNative("IsValidDynamicObject", "i", objectId));
 };
 
-export const GetDynamicObjectPos = (objectid: number) => {
+export const GetDynamicObjectPos = (objectId: number) => {
   const [x, y, z]: number[] = samp.callNative(
     "GetDynamicObjectPos",
     "iFFF",
-    objectid
+    objectId
   );
   return { x, y, z };
 };
 
 export const SetDynamicObjectPos = (
-  objectid: number,
+  objectId: number,
   x: number,
   y: number,
   z: number
 ): number => {
-  return samp.callNative("SetDynamicObjectPos", "ifff", objectid, x, y, z);
+  return samp.callNative("SetDynamicObjectPos", "ifff", objectId, x, y, z);
 };
 
-export const GetDynamicObjectRot = (objectid: number) => {
+export const GetDynamicObjectRot = (objectId: number) => {
   const [rx, ry, rz]: number[] = samp.callNative(
     "GetDynamicObjectRot",
     "iFFF",
-    objectid
+    objectId
   );
   return { rx, ry, rz };
 };
 
 export const SetDynamicObjectRot = (
-  objectid: number,
+  objectId: number,
   rx: number,
   ry: number,
   rz: number
 ): number => {
-  return samp.callNative("SetDynamicObjectRot", "ifff", objectid, rx, ry, rz);
+  return samp.callNative("SetDynamicObjectRot", "ifff", objectId, rx, ry, rz);
 };
 
 export const MoveDynamicObject = (
-  objectid: number,
+  objectId: number,
   x: number,
   y: number,
   z: number,
@@ -93,7 +93,7 @@ export const MoveDynamicObject = (
   return samp.callNative(
     "MoveDynamicObject",
     "ifffffff",
-    objectid,
+    objectId,
     x,
     y,
     z,
@@ -104,58 +104,58 @@ export const MoveDynamicObject = (
   );
 };
 
-export const StopDynamicObject = (objectid: number): number => {
-  return samp.callNative("StopDynamicObject", "i", objectid);
+export const StopDynamicObject = (objectId: number): number => {
+  return samp.callNative("StopDynamicObject", "i", objectId);
 };
 
-export const IsDynamicObjectMoving = (objectid: number): boolean => {
-  return Boolean(samp.callNative("IsDynamicObjectMoving", "i", objectid));
+export const IsDynamicObjectMoving = (objectId: number): boolean => {
+  return Boolean(samp.callNative("IsDynamicObjectMoving", "i", objectId));
 };
 
 export const AttachCameraToDynamicObject = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): number => {
   return samp.callNative(
     "AttachCameraToDynamicObject",
     "ii",
     playerId,
-    objectid
+    objectId
   );
 };
 
 export const AttachDynamicObjectToObject = (
-  objectid: number,
-  attachtoid: number,
-  offsetx: number,
-  offsety: number,
-  offsetz: number,
+  objectId: number,
+  attachToId: number,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
   rx: number,
   ry: number,
   rz: number,
-  syncrotation = true
+  syncRotation = true
 ): number => {
   return samp.callNative(
     "AttachDynamicObjectToObject",
     "iiffffffi",
-    objectid,
-    attachtoid,
-    offsetx,
-    offsety,
-    offsetz,
+    objectId,
+    attachToId,
+    offsetX,
+    offsetY,
+    offsetZ,
     rx,
     ry,
     rz,
-    syncrotation
+    syncRotation
   );
 };
 
 export const AttachDynamicObjectToPlayer = (
-  objectid: number,
+  objectId: number,
   playerId: number,
-  offsetx: number,
-  offsety: number,
-  offsetz: number,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
   rx: number,
   ry: number,
   rz: number
@@ -163,11 +163,11 @@ export const AttachDynamicObjectToPlayer = (
   return samp.callNative(
     "AttachDynamicObjectToPlayer",
     "iiffffff",
-    objectid,
+    objectId,
     playerId,
-    offsetx,
-    offsety,
-    offsetz,
+    offsetX,
+    offsetY,
+    offsetZ,
     rx,
     ry,
     rz
@@ -175,11 +175,11 @@ export const AttachDynamicObjectToPlayer = (
 };
 
 export const AttachDynamicObjectToVehicle = (
-  objectid: number,
-  vehicleid: number,
-  offsetx: number,
-  offsety: number,
-  offsetz: number,
+  objectId: number,
+  vehicleId: number,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
   rx: number,
   ry: number,
   rz: number
@@ -187,11 +187,11 @@ export const AttachDynamicObjectToVehicle = (
   return samp.callNative(
     "AttachDynamicObjectToVehicle",
     "iiffffff",
-    objectid,
-    vehicleid,
-    offsetx,
-    offsety,
-    offsetz,
+    objectId,
+    vehicleId,
+    offsetX,
+    offsetY,
+    offsetZ,
     rx,
     ry,
     rz
@@ -200,39 +200,39 @@ export const AttachDynamicObjectToVehicle = (
 
 export const EditDynamicObject = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): number => {
-  return samp.callNative("EditDynamicObject", "ii", playerId, objectid);
+  return samp.callNative("EditDynamicObject", "ii", playerId, objectId);
 };
 
 export const IsDynamicObjectMaterialUsed = (
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ): boolean => {
   return Boolean(
     samp.callNative(
       "IsDynamicObjectMaterialUsed",
       "ii",
-      objectid,
+      objectId,
       materialIndex
     )
   );
 };
 
 export const RemoveDynamicObjectMaterial = (
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ): number => {
   return samp.callNative(
     "RemoveDynamicObjectMaterial",
     "ii",
-    objectid,
+    objectId,
     materialIndex
   );
 };
 
 export const GetDynamicObjectMaterial = (
-  objectid: number,
+  objectId: number,
   materialIndex: number,
   txdName: string,
   textureName: string
@@ -240,7 +240,7 @@ export const GetDynamicObjectMaterial = (
   const [modelId, materialColor]: [number, string | number] = samp.callNative(
     "GetDynamicObjectMaterial",
     "iiIssIii",
-    objectid,
+    objectId,
     materialIndex,
     txdName,
     textureName,
@@ -251,7 +251,7 @@ export const GetDynamicObjectMaterial = (
 };
 
 export const SetDynamicObjectMaterial = (
-  objectid: number,
+  objectId: number,
   materialIndex: number,
   modelId: number,
   txdName: string,
@@ -261,7 +261,7 @@ export const SetDynamicObjectMaterial = (
   return samp.callNative(
     "SetDynamicObjectMaterial",
     "iiissi",
-    objectid,
+    objectId,
     materialIndex,
     modelId,
     txdName,
@@ -271,33 +271,33 @@ export const SetDynamicObjectMaterial = (
 };
 
 export const IsDynamicObjectMaterialTextUsed = (
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ): boolean => {
   return Boolean(
     samp.callNative(
       "IsDynamicObjectMaterialTextUsed",
       "ii",
-      objectid,
+      objectId,
       materialIndex
     )
   );
 };
 
 export const RemoveDynamicObjectMaterialText = (
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ): number => {
   return samp.callNative(
     "RemoveDynamicObjectMaterialText",
     "ii",
-    objectid,
+    objectId,
     materialIndex
   );
 };
 
 export const GetDynamicObjectMaterialText = (
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ) => {
   const [
@@ -311,7 +311,7 @@ export const GetDynamicObjectMaterialText = (
   ]: [string, number, string, number, number, number, number] = samp.callNative(
     "GetDynamicObjectMaterialText",
     "iiSISIIIIIii",
-    objectid,
+    objectId,
     materialIndex,
     2048,
     32
@@ -345,7 +345,7 @@ export enum MaterialTextSizes {
 }
 
 export const SetDynamicObjectMaterialText = (
-  objectid: number,
+  objectId: number,
   materialIndex: number,
   text: string,
   materialSize: number = MaterialTextSizes.SIZE_256x128,
@@ -359,7 +359,7 @@ export const SetDynamicObjectMaterialText = (
   return samp.callNative(
     "SetDynamicObjectMaterialText",
     "iisisiiiii",
-    objectid,
+    objectId,
     materialIndex,
     text,
     materialSize,

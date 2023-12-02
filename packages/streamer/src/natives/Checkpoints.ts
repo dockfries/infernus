@@ -28,24 +28,24 @@ export const CreateDynamicCP = (
   );
 };
 
-export const DestroyDynamicCP = (checkpointid: number): number => {
-  return samp.callNative("DestroyDynamicCP", "i", checkpointid);
+export const DestroyDynamicCP = (checkpointId: number): number => {
+  return samp.callNative("DestroyDynamicCP", "i", checkpointId);
 };
 
-export const IsValidDynamicCP = (checkpointid: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicCP", "i", checkpointid));
+export const IsValidDynamicCP = (checkpointId: number): boolean => {
+  return Boolean(samp.callNative("IsValidDynamicCP", "i", checkpointId));
 };
 
 export const TogglePlayerDynamicCP = (
   playerId: number,
-  checkpointid: number,
+  checkpointId: number,
   toggle: boolean
 ): number => {
   return samp.callNative(
     "TogglePlayerDynamicCP",
     "iii",
     playerId,
-    checkpointid,
+    checkpointId,
     toggle
   );
 };
@@ -59,10 +59,10 @@ export const TogglePlayerAllDynamicCPs = (
 
 export const IsPlayerInDynamicCP = (
   playerId: number,
-  checkpointid: number
+  checkpointId: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointid)
+    samp.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointId)
   );
 };
 

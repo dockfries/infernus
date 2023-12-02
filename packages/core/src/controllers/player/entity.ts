@@ -600,17 +600,17 @@ export class Player {
   getWeaponState(): WeaponStatesEnum {
     return f.GetPlayerWeaponState(this.id);
   }
-  giveWeapon(weaponid: WeaponEnum, ammo: number): number {
-    return f.GivePlayerWeapon(this.id, weaponid, ammo);
+  giveWeapon(weaponId: WeaponEnum, ammo: number): number {
+    return f.GivePlayerWeapon(this.id, weaponId, ammo);
   }
-  setAmmo(weaponid: number, ammo: number) {
-    return f.SetPlayerAmmo(this.id, weaponid, ammo);
+  setAmmo(weaponId: number, ammo: number) {
+    return f.SetPlayerAmmo(this.id, weaponId, ammo);
   }
   getAmmo(): number {
     return f.GetPlayerAmmo(this.id);
   }
-  setArmedWeapon(weaponid: number): number {
-    return f.SetPlayerArmedWeapon(this.id, weaponid);
+  setArmedWeapon(weaponId: number): number {
+    return f.SetPlayerArmedWeapon(this.id, weaponId);
   }
   // not test
   clearDeathMessage() {
@@ -891,8 +891,8 @@ export class Player {
   getAttachedObject(index: number) {
     return w.GetPlayerAttachedObject(this.id, index);
   }
-  removeWeapon(weaponid: number): number {
-    return w.RemovePlayerWeapon(this.id, weaponid);
+  removeWeapon(weaponId: number): number {
+    return w.RemovePlayerWeapon(this.id, weaponId);
   }
   isUsingOfficialClient() {
     return w.IsPlayerUsingOfficialClient(this.id);

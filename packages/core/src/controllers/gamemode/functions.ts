@@ -73,19 +73,19 @@ export default {
   unBlockIpAddress: f.UnBlockIpAddress,
   getServerTickRate: f.GetServerTickRate,
   addSimpleModel(
-    virtualworld: number,
+    virtualWorld: number,
     baseid: number,
     newid: number,
     dffname: string,
     txdName: string
   ): number {
-    if (this.checkSimpleModel(virtualworld, baseid, newid, dffname, txdName)) {
-      return f.AddSimpleModel(virtualworld, baseid, newid, dffname, txdName);
+    if (this.checkSimpleModel(virtualWorld, baseid, newid, dffname, txdName)) {
+      return f.AddSimpleModel(virtualWorld, baseid, newid, dffname, txdName);
     }
     return 0;
   },
   addSimpleModelTimed(
-    virtualworld: number,
+    virtualWorld: number,
     baseid: number,
     newid: number,
     dffname: string,
@@ -95,7 +95,7 @@ export default {
   ): number {
     if (
       this.checkSimpleModel(
-        virtualworld,
+        virtualWorld,
         baseid,
         newid,
         dffname,
@@ -105,7 +105,7 @@ export default {
       )
     ) {
       return f.AddSimpleModelTimed(
-        virtualworld,
+        virtualWorld,
         baseid,
         newid,
         dffname,
@@ -117,7 +117,7 @@ export default {
     return 0;
   },
   checkSimpleModel(
-    virtualworld: number,
+    virtualWorld: number,
     baseid: number,
     newid: number,
     dffname: string,
@@ -125,7 +125,7 @@ export default {
     timeon?: number,
     timeoff?: number
   ): number {
-    if (virtualworld < -1) {
+    if (virtualWorld < -1) {
       logger.error("[GameMode]: AddSimpleModel - Error virtual world");
       return 0;
     }

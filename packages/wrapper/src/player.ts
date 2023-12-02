@@ -18,7 +18,7 @@ export const IsPlayerWidescreenToggled = (playerId: number): boolean => {
 
 export const GetSpawnInfo = (playerId: number): IPlayerClass => {
   const [
-    teamid,
+    teamId,
     modelId = 0,
     spawn_x = 0.0,
     spawn_y = 0.0,
@@ -32,7 +32,7 @@ export const GetSpawnInfo = (playerId: number): IPlayerClass => {
     weapon3_ammo = 0,
   ]: number[] = samp.callNative("GetSpawnInfo", "iIIFFFFIIIIII", playerId);
   return {
-    teamid,
+    teamId,
     modelId,
     spawn_x,
     spawn_y,
@@ -237,9 +237,9 @@ export const GetPlayerAttachedObject = (
 
 export const RemovePlayerWeapon = (
   playerId: number,
-  weaponid: number
+  weaponId: number
 ): number => {
-  return samp.callNative("RemovePlayerWeapon", "ii", playerId, weaponid);
+  return samp.callNative("RemovePlayerWeapon", "ii", playerId, weaponId);
 };
 
 export const HidePlayerDialog = (playerId: number): number => {

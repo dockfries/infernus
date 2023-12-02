@@ -4,17 +4,17 @@ export const GetAvailableClasses = (): number => {
   return samp.callNative("GetAvailableClasses", "");
 };
 
-// when getting a class through AddPlayerClass(without ex), teamid may be 255.
+// when getting a class through AddPlayerClass(without ex), teamId may be 255.
 // bug: z_angle The value of does not look accurate? not sure of the cause of the problem
-export const GetPlayerClass = (classid: number): boolean | IPlayerClass => {
-  if (classid < GetAvailableClasses() || classid > 319) return false;
+export const GetPlayerClass = (classId: number): boolean | IPlayerClass => {
+  if (classId < GetAvailableClasses() || classId > 319) return false;
   const res: number[] = samp.callNative(
     "GetPlayerClass",
     "iIIFFFFIIIIII",
-    classid
+    classId
   );
   const [
-    teamid,
+    teamId,
     modelId = 0,
     spawn_x = 0.0,
     spawn_y = 0.0,
@@ -28,7 +28,7 @@ export const GetPlayerClass = (classid: number): boolean | IPlayerClass => {
     weapon3_ammo = 0,
   ] = res;
   return {
-    teamid,
+    teamId,
     modelId,
     spawn_x,
     spawn_y,
@@ -45,8 +45,8 @@ export const GetPlayerClass = (classid: number): boolean | IPlayerClass => {
 
 // bug: z_angel is not assigned a value, not sure of the cause of the problem
 export const EditPlayerClass = (
-  classid: number,
-  teamid: number,
+  classId: number,
+  teamId: number,
   modelId: number,
   spawn_x: number,
   spawn_y: number,
@@ -63,8 +63,8 @@ export const EditPlayerClass = (
     samp.callNative(
       "EditPlayerClass",
       "iiiffffiiiiii",
-      classid,
-      teamid,
+      classId,
+      teamId,
       modelId,
       spawn_x,
       spawn_y,

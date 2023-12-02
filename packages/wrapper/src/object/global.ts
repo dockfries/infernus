@@ -6,42 +6,42 @@ import type {
   IObjectRotPos,
 } from "../interfaces/Object";
 
-export const GetObjectDrawDistance = (objectid: number): number => {
-  return samp.callNativeFloat("GetObjectDrawDistance", "i", objectid);
+export const GetObjectDrawDistance = (objectId: number): number => {
+  return samp.callNativeFloat("GetObjectDrawDistance", "i", objectId);
 };
 
-export const GetObjectMoveSpeed = (objectid: number): number => {
-  return samp.callNativeFloat("GetObjectMoveSpeed", "i", objectid);
+export const GetObjectMoveSpeed = (objectId: number): number => {
+  return samp.callNativeFloat("GetObjectMoveSpeed", "i", objectId);
 };
 
-export const GetObjectMovingTargetPos = (objectid: number): IObjectPos => {
+export const GetObjectMovingTargetPos = (objectId: number): IObjectPos => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
     "GetObjectMovingTargetPos",
     "i",
-    objectid
+    objectId
   );
   return { fX, fY, fZ };
 };
 
-export const GetObjectMovingTargetRot = (objectid: number): IObjectPos => {
+export const GetObjectMovingTargetRot = (objectId: number): IObjectPos => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
     "GetObjectMovingTargetRot",
     "i",
-    objectid
+    objectId
   );
   return { fX, fY, fZ };
 };
 
-export const GetObjectAttachedData = (objectid: number): IAttachedData => {
+export const GetObjectAttachedData = (objectId: number): IAttachedData => {
   const [
     attached_vehicleId = 0,
     attached_objectId = 0,
     attached_playerId = 0,
-  ]: number[] = samp.callNative("GetObjectAttachedData", "i", objectid);
+  ]: number[] = samp.callNative("GetObjectAttachedData", "i", objectId);
   return { attached_vehicleId, attached_objectId, attached_playerId };
 };
 
-export const GetObjectAttachedOffset = (objectid: number): IObjectRotPos => {
+export const GetObjectAttachedOffset = (objectId: number): IObjectRotPos => {
   const [
     fX = 0.0,
     fY = 0.0,
@@ -49,26 +49,26 @@ export const GetObjectAttachedOffset = (objectid: number): IObjectRotPos => {
     fRotX = 0.0,
     fRotY = 0.0,
     fRotZ = 0.0,
-  ]: number[] = samp.callNative("GetObjectAttachedOffset", "i", objectid);
+  ]: number[] = samp.callNative("GetObjectAttachedOffset", "i", objectId);
   return { fX, fY, fZ, fRotX, fRotY, fRotZ };
 };
 
-export const GetObjectSyncRotation = (objectid: number): number => {
-  return samp.callNative("GetObjectSyncRotation", "i", objectid);
+export const GetObjectSyncRotation = (objectId: number): number => {
+  return samp.callNative("GetObjectSyncRotation", "i", objectId);
 };
 
 // Return values: 1 = material, 2 = material tex
 export const IsObjectMaterialSlotUsed = (
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsObjectMaterialSlotUsed", "ii", objectid, materialIndex)
+    samp.callNative("IsObjectMaterialSlotUsed", "ii", objectId, materialIndex)
   );
 };
 
 export const GetObjectMaterial = (
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ): IMaterial => {
   const [modelId = 0, txdName, textureName, materialColor = 0]: [
@@ -79,7 +79,7 @@ export const GetObjectMaterial = (
   ] = samp.callNative(
     "GetObjectMaterial",
     "iiISiSiI",
-    objectid,
+    objectId,
     materialIndex,
     64,
     64
@@ -88,7 +88,7 @@ export const GetObjectMaterial = (
 };
 
 export const GetObjectMaterialText = (
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ): IMaterialText => {
   const [
@@ -104,7 +104,7 @@ export const GetObjectMaterialText = (
     samp.callNative(
       "GetObjectMaterialText",
       "iiSiISiIIIII",
-      objectid,
+      objectId,
       materialIndex,
       2048,
       32
@@ -121,6 +121,6 @@ export const GetObjectMaterialText = (
   };
 };
 
-export const HasObjectCameraCollision = (objectid: number): boolean => {
-  return Boolean(samp.callNative("HasObjectCameraCollision", "i", objectid));
+export const HasObjectCameraCollision = (objectId: number): boolean => {
+  return Boolean(samp.callNative("HasObjectCameraCollision", "i", objectId));
 };

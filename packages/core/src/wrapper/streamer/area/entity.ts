@@ -50,64 +50,64 @@ export class DynamicArea {
         );
       } else if (type === "cuboid") {
         const {
-          minX: minx,
-          minY: miny,
-          minz,
-          maxX: maxx,
-          maxY: maxy,
-          maxz,
+          minX: minX,
+          minY: minY,
+          minZ,
+          maxX: maxX,
+          maxY: maxY,
+          maxZ,
         } = this.sourceInfo;
         this._id = s.CreateDynamicCuboidEx(
-          minx,
-          miny,
-          minz,
-          maxx,
-          maxy,
-          maxz,
+          minX,
+          minY,
+          minZ,
+          maxX,
+          maxY,
+          maxZ,
           worldId,
           interiorId,
           playerId
         );
       } else if (type === "cylinder") {
-        const { x, y, minZ: minz, maxZ: maxz, size } = this.sourceInfo;
+        const { x, y, minZ: minZ, maxZ: maxZ, size } = this.sourceInfo;
         if (size < 0)
           return logger.error("[StreamerArea]: Invalid cylinder extend size");
         this._id = s.CreateDynamicCylinderEx(
           x,
           y,
-          minz,
-          maxz,
+          minZ,
+          maxZ,
           size,
           worldId,
           interiorId,
           playerId
         );
       } else if (type === "polygon") {
-        const { points, minz, maxz } = this.sourceInfo;
+        const { points, minZ, maxZ } = this.sourceInfo;
         if (points.length % 2 !== 0)
           return logger.warn(
             "[StreamerArea]: Unable to create polygon extended with asymmetrical points"
           );
         this._id = s.CreateDynamicPolygonEx(
           points,
-          minz,
-          maxz,
+          minZ,
+          maxZ,
           worldId,
           interiorId,
           playerId
         );
       } else if (type === "rectangle") {
         const {
-          minX: minx,
-          minY: miny,
-          maxX: maxx,
-          maxY: maxy,
+          minX: minX,
+          minY: minY,
+          maxX: maxX,
+          maxY: maxY,
         } = this.sourceInfo;
         this._id = s.CreateDynamicRectangleEx(
-          minx,
-          miny,
-          maxx,
-          maxy,
+          minX,
+          minY,
+          maxX,
+          maxY,
           worldId,
           interiorId,
           playerId
@@ -148,64 +148,64 @@ export class DynamicArea {
         );
       } else if (type === "cuboid") {
         const {
-          minX: minx,
-          minY: miny,
-          minz,
-          maxX: maxx,
-          maxY: maxy,
-          maxz,
+          minX: minX,
+          minY: minY,
+          minZ,
+          maxX: maxX,
+          maxY: maxY,
+          maxZ,
         } = this.sourceInfo;
         this._id = s.CreateDynamicCuboid(
-          minx,
-          miny,
-          minz,
-          maxx,
-          maxy,
-          maxz,
+          minX,
+          minY,
+          minZ,
+          maxX,
+          maxY,
+          maxZ,
           worldId,
           interiorId,
           playerId
         );
       } else if (type === "cylinder") {
-        const { x, y, minZ: minz, maxZ: maxz, size } = this.sourceInfo;
+        const { x, y, minZ: minZ, maxZ: maxZ, size } = this.sourceInfo;
         if (size < 0)
           return logger.error("[StreamerArea]: Invalid cylinder size");
         this._id = s.CreateDynamicCylinder(
           x,
           y,
-          minz,
-          maxz,
+          minZ,
+          maxZ,
           size,
           worldId,
           interiorId,
           playerId
         );
       } else if (type === "polygon") {
-        const { points, minz, maxz } = this.sourceInfo;
+        const { points, minZ, maxZ } = this.sourceInfo;
         if (points.length % 2 !== 0)
           return logger.warn(
             "[StreamerArea]: Unable to create polygon with asymmetrical points"
           );
         this._id = s.CreateDynamicPolygon(
           points,
-          minz,
-          maxz,
+          minZ,
+          maxZ,
           worldId,
           interiorId,
           playerId
         );
       } else if (type === "rectangle") {
         const {
-          minX: minx,
-          minY: miny,
-          maxX: maxx,
-          maxY: maxy,
+          minX: minX,
+          minY: minY,
+          maxX: maxX,
+          maxY: maxY,
         } = this.sourceInfo;
         this._id = s.CreateDynamicRectangle(
-          minx,
-          miny,
-          maxx,
-          maxy,
+          minX,
+          minY,
+          maxX,
+          maxY,
           worldId,
           interiorId,
           playerId
@@ -354,9 +354,9 @@ export class DynamicArea {
   }
   attachToObject<O extends DynamicObject>(
     obj: O,
-    offsetx = 0.0,
-    offsety = 0.0,
-    offsetz = 0.0
+    offsetX = 0.0,
+    offsetY = 0.0,
+    offsetZ = 0.0
   ): void | number {
     if (this.id === -1 || obj.id === -1)
       return logger.warn(
@@ -367,16 +367,16 @@ export class DynamicArea {
       obj.id,
       s.StreamerObjectTypes.DYNAMIC,
       InvalidEnum.PLAYER_ID,
-      offsetx,
-      offsety,
-      offsetz
+      offsetX,
+      offsetY,
+      offsetZ
     );
   }
   attachToPlayer<P extends Player>(
     player: P,
-    offsetx = 0.0,
-    offsety = 0.0,
-    offsetz = 0.0
+    offsetX = 0.0,
+    offsetY = 0.0,
+    offsetZ = 0.0
   ): void | number {
     if (this.id === -1 || player.id === -1)
       return logger.warn(
@@ -385,16 +385,16 @@ export class DynamicArea {
     return s.AttachDynamicAreaToPlayer(
       this.id,
       player.id,
-      offsetx,
-      offsety,
-      offsetz
+      offsetX,
+      offsetY,
+      offsetZ
     );
   }
   attachToVehicle<V extends Vehicle>(
     vehicle: V,
-    offsetx = 0.0,
-    offsety = 0.0,
-    offsetz = 0.0
+    offsetX = 0.0,
+    offsetY = 0.0,
+    offsetZ = 0.0
   ): void | number {
     if (this.id === -1 || vehicle.id === -1)
       return logger.warn(
@@ -403,9 +403,9 @@ export class DynamicArea {
     return s.AttachDynamicAreaToVehicle(
       this.id,
       vehicle.id,
-      offsetx,
-      offsety,
-      offsetz
+      offsetX,
+      offsetY,
+      offsetZ
     );
   }
   toggleSpectateMode(toggle: boolean): void | number {

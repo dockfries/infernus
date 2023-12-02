@@ -1,59 +1,59 @@
 import type { GangZonePos } from "../interfaces/GangZone";
 
-export const IsValidGangZone = (zoneid: number): boolean => {
-  return Boolean(samp.callNative("IsValidGangZone", "i", zoneid));
+export const IsValidGangZone = (zoneId: number): boolean => {
+  return Boolean(samp.callNative("IsValidGangZone", "i", zoneId));
 };
 
 export const IsPlayerInGangZone = (
   playerId: number,
-  zoneid: number
+  zoneId: number
 ): boolean => {
-  return Boolean(samp.callNative("IsPlayerInGangZone", "ii", playerId, zoneid));
+  return Boolean(samp.callNative("IsPlayerInGangZone", "ii", playerId, zoneId));
 };
 
 export const IsGangZoneVisibleForPlayer = (
   playerId: number,
-  zoneid: number
+  zoneId: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsGangZoneVisibleForPlayer", "ii", playerId, zoneid)
+    samp.callNative("IsGangZoneVisibleForPlayer", "ii", playerId, zoneId)
   );
 };
 
 export const GangZoneGetColorForPlayer = (
   playerId: number,
-  zoneid: number
+  zoneId: number
 ): number => {
-  return samp.callNative("GangZoneGetColorForPlayer", "ii", playerId, zoneid);
+  return samp.callNative("GangZoneGetColorForPlayer", "ii", playerId, zoneId);
 };
 
 export const GangZoneGetFlashColorForPlayer = (
   playerId: number,
-  zoneid: number
+  zoneId: number
 ): number => {
   return samp.callNative(
     "GangZoneGetFlashColorForPlayer",
     "ii",
     playerId,
-    zoneid
+    zoneId
   );
 };
 
 export const IsGangZoneFlashingForPlayer = (
   playerId: number,
-  zoneid: number
+  zoneId: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsGangZoneFlashingForPlayer", "ii", playerId, zoneid)
+    samp.callNative("IsGangZoneFlashingForPlayer", "ii", playerId, zoneId)
   );
 };
 
-export const GangZoneGetPos = (zoneid: number): GangZonePos => {
+export const GangZoneGetPos = (zoneId: number): GangZonePos => {
   const [fMinX = 0.0, fMinY = 0.0, fMaxX = 0.0, fMaxY = 0.0]: number[] =
-    samp.callNative("GangZoneGetPos", "iFFFF", zoneid);
+    samp.callNative("GangZoneGetPos", "iFFFF", zoneId);
   return { fMinX, fMinY, fMaxX, fMaxY };
 };
 
-export const UseGangZoneCheck = (zoneid: number, toggle: boolean): void => {
-  samp.callNative("UseGangZoneCheck", "ii", zoneid, toggle);
+export const UseGangZoneCheck = (zoneId: number, toggle: boolean): void => {
+  samp.callNative("UseGangZoneCheck", "ii", zoneId, toggle);
 };

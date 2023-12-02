@@ -23,8 +23,8 @@ export const CreateDynamicCircle = (
 export const CreateDynamicCylinder = (
   x: number,
   y: number,
-  minz: number,
-  maxz: number,
+  minZ: number,
+  maxZ: number,
   size: number,
   worldId = -1,
   interiorId = -1,
@@ -35,8 +35,8 @@ export const CreateDynamicCylinder = (
     "fffffiii",
     x,
     y,
-    minz,
-    maxz,
+    minZ,
+    maxZ,
     size,
     worldId,
     interiorId,
@@ -67,10 +67,10 @@ export const CreateDynamicSphere = (
 };
 
 export const CreateDynamicRectangle = (
-  minx: number,
-  miny: number,
-  maxx: number,
-  maxy: number,
+  minX: number,
+  minY: number,
+  maxX: number,
+  maxY: number,
   worldId = -1,
   interiorId = -1,
   playerId = -1
@@ -78,10 +78,10 @@ export const CreateDynamicRectangle = (
   return samp.callNative(
     "CreateDynamicRectangle",
     "ffffiii",
-    minx,
-    miny,
-    maxx,
-    maxy,
+    minX,
+    minY,
+    maxX,
+    maxY,
     worldId,
     interiorId,
     playerId
@@ -89,12 +89,12 @@ export const CreateDynamicRectangle = (
 };
 
 export const CreateDynamicCuboid = (
-  minx: number,
-  miny: number,
-  minz: number,
-  maxx: number,
-  maxy: number,
-  maxz: number,
+  minX: number,
+  minY: number,
+  minZ: number,
+  maxX: number,
+  maxY: number,
+  maxZ: number,
   worldId = -1,
   interiorId = -1,
   playerId = -1
@@ -102,12 +102,12 @@ export const CreateDynamicCuboid = (
   return samp.callNative(
     "CreateDynamicCuboid",
     "ffffffiii",
-    minx,
-    miny,
-    minz,
-    maxx,
-    maxy,
-    maxz,
+    minX,
+    minY,
+    minZ,
+    maxX,
+    maxY,
+    maxZ,
     worldId,
     interiorId,
     playerId
@@ -116,8 +116,8 @@ export const CreateDynamicCuboid = (
 
 export const CreateDynamicPolygon = (
   points: number[],
-  minz: number = Number.MIN_VALUE,
-  maxz: number = Number.MAX_VALUE,
+  minZ: number = Number.MIN_VALUE,
+  maxZ: number = Number.MAX_VALUE,
   worldId = -1,
   interiorId = -1,
   playerId = -1
@@ -126,8 +126,8 @@ export const CreateDynamicPolygon = (
     "CreateDynamicPolygon",
     "affiiii",
     points,
-    minz,
-    maxz,
+    minZ,
+    maxZ,
     points.length,
     worldId,
     interiorId,
@@ -327,59 +327,59 @@ export const GetNumberDynamicAreasForLine = (
 
 export const AttachDynamicAreaToObject = (
   areaId: number,
-  objectid: number,
+  objectId: number,
   type = StreamerObjectTypes.DYNAMIC,
   playerId = 0xffff,
-  offsetx = 0.0,
-  offsety = 0.0,
-  offsetz = 0.0
+  offsetX = 0.0,
+  offsetY = 0.0,
+  offsetZ = 0.0
 ): number => {
   return samp.callNative(
     "AttachDynamicAreaToObject",
     "iiiifff",
     areaId,
-    objectid,
+    objectId,
     type,
     playerId,
-    offsetx,
-    offsety,
-    offsetz
+    offsetX,
+    offsetY,
+    offsetZ
   );
 };
 
 export const AttachDynamicAreaToPlayer = (
   areaId: number,
   playerId: number,
-  offsetx = 0.0,
-  offsety = 0.0,
-  offsetz = 0.0
+  offsetX = 0.0,
+  offsetY = 0.0,
+  offsetZ = 0.0
 ): number => {
   return samp.callNative(
     "AttachDynamicAreaToPlayer",
     "iifff",
     areaId,
     playerId,
-    offsetx,
-    offsety,
-    offsetz
+    offsetX,
+    offsetY,
+    offsetZ
   );
 };
 
 export const AttachDynamicAreaToVehicle = (
   areaId: number,
-  vehicleid: number,
-  offsetx = 0.0,
-  offsety = 0.0,
-  offsetz = 0.0
+  vehicleId: number,
+  offsetX = 0.0,
+  offsetY = 0.0,
+  offsetZ = 0.0
 ): number => {
   return samp.callNative(
     "AttachDynamicAreaToVehicle",
     "iifff",
     areaId,
-    vehicleid,
-    offsetx,
-    offsety,
-    offsetz
+    vehicleId,
+    offsetX,
+    offsetY,
+    offsetZ
   );
 };
 

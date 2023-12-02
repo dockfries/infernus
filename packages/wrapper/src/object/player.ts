@@ -8,84 +8,84 @@ import type {
 
 export const GetPlayerObjectDrawDistance = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): number => {
   return samp.callNativeFloat(
     "GetPlayerObjectDrawDistance",
     "ii",
     playerId,
-    objectid
+    objectId
   );
 };
 
 export const SetPlayerObjectMoveSpeed = (
   playerId: number,
-  objectid: number,
+  objectId: number,
   fSpeed: number
 ) => {
   return samp.callNativeFloat(
     "SetPlayerObjectMoveSpeed",
     "iif",
     playerId,
-    objectid,
+    objectId,
     fSpeed
   );
 };
 
 export const GetPlayerObjectMoveSpeed = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): number => {
   return samp.callNativeFloat(
     "GetPlayerObjectMoveSpeed",
     "ii",
     playerId,
-    objectid
+    objectId
   );
 };
 
 export const GetPlayerObjectTarget = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): IObjectPos => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
     "GetPlayerObjectTarget",
     "iiFFF",
     playerId,
-    objectid
+    objectId
   );
   return { fX, fY, fZ };
 };
 
 export const GetPlayerObjectMovingTargetPos = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): IObjectPos => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
     "GetPlayerObjectMovingTargetPos",
     "iiFFF",
     playerId,
-    objectid
+    objectId
   );
   return { fX, fY, fZ };
 };
 
 export const GetPlayerObjectMovingTargetRot = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): IObjectPos => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
     "GetPlayerObjectMovingTargetRot",
     "iiFFF",
     playerId,
-    objectid
+    objectId
   );
   return { fX, fY, fZ };
 };
 
 export const GetPlayerObjectAttachedData = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): IAttachedData => {
   const [
     attached_vehicleId = 0,
@@ -95,14 +95,14 @@ export const GetPlayerObjectAttachedData = (
     "GetPlayerObjectAttachedData",
     "iiIII",
     playerId,
-    objectid
+    objectId
   );
   return { attached_vehicleId, attached_objectId, attached_playerId };
 };
 
 export const GetPlayerObjectAttachedOffset = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): IObjectRotPos => {
   const [
     fX = 0.0,
@@ -115,27 +115,27 @@ export const GetPlayerObjectAttachedOffset = (
     "GetPlayerObjectAttachedOffset",
     "iiFFFFFF",
     playerId,
-    objectid
+    objectId
   );
   return { fX, fY, fZ, fRotX, fRotY, fRotZ };
 };
 
 export const GetPlayerObjectSyncRotation = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): number => {
   return samp.callNative(
     "GetPlayerObjectSyncRotation",
     "ii",
     playerId,
-    objectid
+    objectId
   );
 };
 
 // Return values: 1 = material, 2 = material text
 export const IsPlayerObjectMaterialSlotUsed = (
   playerId: number,
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ): boolean => {
   return Boolean(
@@ -143,7 +143,7 @@ export const IsPlayerObjectMaterialSlotUsed = (
       "IsPlayerObjectMaterialSlotUsed",
       "iii",
       playerId,
-      objectid,
+      objectId,
       materialIndex
     )
   );
@@ -151,7 +151,7 @@ export const IsPlayerObjectMaterialSlotUsed = (
 
 export const GetPlayerObjectMaterial = (
   playerId: number,
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ): IMaterial => {
   const [modelId = 0, txdName, textureName, materialColor = 0]: [
@@ -163,7 +163,7 @@ export const GetPlayerObjectMaterial = (
     "GetPlayerObjectMaterial",
     "iiiISiSiI",
     playerId,
-    objectid,
+    objectId,
     materialIndex,
     64,
     64
@@ -173,7 +173,7 @@ export const GetPlayerObjectMaterial = (
 
 export const GetPlayerObjectMaterialText = (
   playerId: number,
-  objectid: number,
+  objectId: number,
   materialIndex: number
 ): IMaterialText => {
   const [
@@ -190,7 +190,7 @@ export const GetPlayerObjectMaterialText = (
       "GetPlayerObjectMaterialText",
       "iiiSiISiIIIII",
       playerId,
-      objectid,
+      objectId,
       materialIndex,
       2048,
       32
@@ -210,10 +210,10 @@ export const GetPlayerObjectMaterialText = (
 
 export const IsPlayerObjectNoCameraCol = (
   playerId: number,
-  objectid: number
+  objectId: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerObjectNoCameraCol", "ii", playerId, objectid)
+    samp.callNative("IsPlayerObjectNoCameraCol", "ii", playerId, objectId)
   );
 };
 
@@ -225,6 +225,6 @@ export const GetPlayerCameraTargetPlayerObj = (playerId: number): number => {
   return samp.callNative("GetPlayerCameraTargetPlayerObj", "i", playerId);
 };
 
-export const GetObjectType = (playerId: number, objectid: number): number => {
-  return samp.callNative("GetObjectType", "ii", playerId, objectid);
+export const GetObjectType = (playerId: number, objectId: number): number => {
+  return samp.callNative("GetObjectType", "ii", playerId, objectId);
 };

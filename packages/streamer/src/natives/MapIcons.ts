@@ -40,10 +40,10 @@ export const CreateDynamicMapIcon = (
   );
 };
 
-export const DestroyDynamicMapIcon = (iconid: number): number => {
-  return samp.callNative("DestroyDynamicMapIcon", "i", iconid);
+export const DestroyDynamicMapIcon = (iconId: number): number => {
+  return samp.callNative("DestroyDynamicMapIcon", "i", iconId);
 };
 
-export const IsValidDynamicMapIcon = (iconid: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicMapIcon", "i", iconid));
+export const IsValidDynamicMapIcon = (iconId: number): boolean => {
+  return Boolean(samp.callNative("IsValidDynamicMapIcon", "i", iconId));
 };

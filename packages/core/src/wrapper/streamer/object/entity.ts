@@ -186,13 +186,13 @@ export class DynamicObject {
 
   attachToObject<O extends DynamicObject>(
     attachto: O,
-    offsetx: number,
-    offsety: number,
-    offsetz: number,
+    offsetX: number,
+    offsetY: number,
+    offsetZ: number,
     rx: number,
     ry: number,
     rz: number,
-    syncrotation = true
+    syncRotation = true
   ): void | number {
     if (this.id === -1 || attachto.id === -1)
       return logger.warn(
@@ -201,21 +201,21 @@ export class DynamicObject {
     return s.AttachDynamicObjectToObject(
       this.id,
       attachto.id,
-      offsetx,
-      offsety,
-      offsetz,
+      offsetX,
+      offsetY,
+      offsetZ,
       rx,
       ry,
       rz,
-      syncrotation
+      syncRotation
     );
   }
 
   attachToPlayer<P extends Player>(
     player: P,
-    offsetx: number,
-    offsety: number,
-    offsetz: number,
+    offsetX: number,
+    offsetY: number,
+    offsetZ: number,
     rx: number,
     ry: number,
     rz: number
@@ -227,9 +227,9 @@ export class DynamicObject {
     return s.AttachDynamicObjectToPlayer(
       this.id,
       player.id,
-      offsetx,
-      offsety,
-      offsetz,
+      offsetX,
+      offsetY,
+      offsetZ,
       rx,
       ry,
       rz
@@ -238,9 +238,9 @@ export class DynamicObject {
 
   attachToVehicle<V extends Vehicle>(
     vehicle: V,
-    offsetx: number,
-    offsety: number,
-    offsetz: number,
+    offsetX: number,
+    offsetY: number,
+    offsetZ: number,
     rx: number,
     ry: number,
     rz: number
@@ -252,9 +252,9 @@ export class DynamicObject {
     return s.AttachDynamicObjectToVehicle(
       this.id,
       vehicle.id,
-      offsetx,
-      offsety,
-      offsetz,
+      offsetX,
+      offsetY,
+      offsetZ,
       rx,
       ry,
       rz

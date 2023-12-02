@@ -4,14 +4,14 @@ import type {
   IVehSpawnInfo,
 } from "./interfaces/Vehicle";
 
-export const GetVehicleSpawnInfo = (vehicleid: number): IVehSpawnInfo => {
+export const GetVehicleSpawnInfo = (vehicleId: number): IVehSpawnInfo => {
   const [fX = 0, fY = 0, fZ = 0, fRot = 0, color1 = 0, color2 = 0]: number[] =
-    samp.callNative("GetVehicleSpawnInfo", "iFFFFII", vehicleid);
+    samp.callNative("GetVehicleSpawnInfo", "iFFFFII", vehicleId);
   return { fX, fY, fZ, fRot, color1, color2 };
 };
 
 export const SetVehicleSpawnInfo = (
-  vehicleid: number,
+  vehicleId: number,
   modelId: number,
   fX: number,
   fY: number,
@@ -25,7 +25,7 @@ export const SetVehicleSpawnInfo = (
   return samp.callNative(
     "SetVehicleSpawnInfo",
     "iiFFFFiiii",
-    vehicleid,
+    vehicleId,
     modelId,
     fX,
     fY,
@@ -38,106 +38,106 @@ export const SetVehicleSpawnInfo = (
   );
 };
 
-export const GetVehicleColors = (vehicleid: number): IVehColor => {
+export const GetVehicleColors = (vehicleId: number): IVehColor => {
   const [color1 = 0, color2 = 0]: number[] = samp.callNative(
     "GetVehicleColor",
     "i",
-    vehicleid
+    vehicleId
   );
   return { color1, color2 };
 };
 
-export const GetVehiclePaintjob = (vehicleid: number): number => {
-  return samp.callNative("GetVehiclePaintjob", "i", vehicleid);
+export const GetVehiclePaintjob = (vehicleId: number): number => {
+  return samp.callNative("GetVehiclePaintjob", "i", vehicleId);
 };
 
-export const GetVehicleInterior = (vehicleid: number): number => {
-  return samp.callNative("GetVehicleInterior", "i", vehicleid);
+export const GetVehicleInterior = (vehicleId: number): number => {
+  return samp.callNative("GetVehicleInterior", "i", vehicleId);
 };
 
-export const GetVehicleNumberPlate = (vehicleid: number): string => {
-  return samp.callNative("GetVehicleNumberPlate", "iSi", vehicleid, 33);
+export const GetVehicleNumberPlate = (vehicleId: number): string => {
+  return samp.callNative("GetVehicleNumberPlate", "iSi", vehicleId, 33);
 };
 
 export const SetVehicleRespawnDelay = (
-  vehicleid: number,
+  vehicleId: number,
   delay: number
 ): number => {
-  return samp.callNative("SetVehicleRespawnDelay", "ii", vehicleid, delay);
+  return samp.callNative("SetVehicleRespawnDelay", "ii", vehicleId, delay);
 };
 
-export const GetVehicleRespawnDelay = (vehicleid: number): number => {
-  return samp.callNative("GetVehicleRespawnDelay", "i", vehicleid);
+export const GetVehicleRespawnDelay = (vehicleId: number): number => {
+  return samp.callNative("GetVehicleRespawnDelay", "i", vehicleId);
 };
 
-export const GetVehicleCab = (vehicleid: number): number => {
-  return samp.callNative("GetVehicleCab", "i", vehicleid);
+export const GetVehicleCab = (vehicleId: number): number => {
+  return samp.callNative("GetVehicleCab", "i", vehicleId);
 };
 
-export const GetVehicleOccupiedTick = (vehicleid: number): number => {
-  return samp.callNative("GetVehicleOccupiedTick", "i", vehicleid);
+export const GetVehicleOccupiedTick = (vehicleId: number): number => {
+  return samp.callNative("GetVehicleOccupiedTick", "i", vehicleId);
 };
 
-export const HasVehicleBeenOccupied = (vehicleid: number): boolean => {
-  return Boolean(samp.callNative("HasVehicleBeenOccupied", "i", vehicleid));
+export const HasVehicleBeenOccupied = (vehicleId: number): boolean => {
+  return Boolean(samp.callNative("HasVehicleBeenOccupied", "i", vehicleId));
 };
 
-export const IsVehicleOccupied = (vehicleid: number): boolean => {
-  return Boolean(samp.callNative("IsVehicleOccupied", "i", vehicleid));
+export const IsVehicleOccupied = (vehicleId: number): boolean => {
+  return Boolean(samp.callNative("IsVehicleOccupied", "i", vehicleId));
 };
 
-export const GetVehicleRespawnTick = (vehicleid: number): number => {
-  return samp.callNative("GetVehicleRespawnTick", "i", vehicleid);
+export const GetVehicleRespawnTick = (vehicleId: number): number => {
+  return samp.callNative("GetVehicleRespawnTick", "i", vehicleId);
 };
 
-export const IsVehicleDead = (vehicleid: number): boolean => {
-  return Boolean(samp.callNative("IsVehicleDead", "i", vehicleid));
+export const IsVehicleDead = (vehicleId: number): boolean => {
+  return Boolean(samp.callNative("IsVehicleDead", "i", vehicleId));
 };
 
 export const ToggleVehicleSirenEnabled = (
-  vehicleid: number,
+  vehicleId: number,
   enabled: boolean
 ): number => {
-  return samp.callNative("ToggleVehicleSirenEnabled", "ii", vehicleid, enabled);
+  return samp.callNative("ToggleVehicleSirenEnabled", "ii", vehicleId, enabled);
 };
 
-export const IsVehicleSirenEnabled = (vehicleid: number): boolean => {
-  return Boolean(samp.callNative("IsVehicleSirenEnabled", "i", vehicleid));
+export const IsVehicleSirenEnabled = (vehicleId: number): boolean => {
+  return Boolean(samp.callNative("IsVehicleSirenEnabled", "i", vehicleId));
 };
 
 export const GetVehicleModelCount = (modelId: number): number => {
   return samp.callNative("GetVehicleModelCount", "i", modelId);
 };
 
-export const GetVehicleLastDriver = (vehicleid: number): number => {
-  return samp.callNative("GetVehicleLastDriver", "i", vehicleid);
+export const GetVehicleLastDriver = (vehicleId: number): number => {
+  return samp.callNative("GetVehicleLastDriver", "i", vehicleId);
 };
 
-export const GetVehicleDriver = (vehicleid: number): number => {
-  return samp.callNative("GetVehicleDriver", "i", vehicleid);
+export const GetVehicleDriver = (vehicleId: number): number => {
+  return samp.callNative("GetVehicleDriver", "i", vehicleId);
 };
 
 export const GetVehicleModelsUsed = (): number => {
   return samp.callNative("GetVehicleModelsUsed", "");
 };
 
-export const GetVehicleSirenState = (vehicleid: number): number => {
-  return samp.callNative("GetVehicleSirenState", "i", vehicleid);
+export const GetVehicleSirenState = (vehicleId: number): number => {
+  return samp.callNative("GetVehicleSirenState", "i", vehicleId);
 };
 
-export const GetVehicleLandingGearState = (vehicleid: number): number => {
-  return samp.callNative("GetVehicleLandingGearState", "i", vehicleid);
+export const GetVehicleLandingGearState = (vehicleId: number): number => {
+  return samp.callNative("GetVehicleLandingGearState", "i", vehicleId);
 };
 
-export const GetVehicleHydraReactorAngle = (vehicleid: number): number => {
-  return samp.callNativeFloat("GetVehicleHydraReactorAngle", "i", vehicleid);
+export const GetVehicleHydraReactorAngle = (vehicleId: number): number => {
+  return samp.callNativeFloat("GetVehicleHydraReactorAngle", "i", vehicleId);
 };
 
-export const GetVehicleTrainSpeed = (vehicleid: number): number => {
-  return samp.callNativeFloat("GetVehicleTrainSpeed", "i", vehicleid);
+export const GetVehicleTrainSpeed = (vehicleId: number): number => {
+  return samp.callNativeFloat("GetVehicleTrainSpeed", "i", vehicleId);
 };
 
-export const GetVehicleMatrix = (vehicleid: number): IVehMatrix => {
+export const GetVehicleMatrix = (vehicleId: number): IVehMatrix => {
   const [
     rightX = 0,
     rightY = 0,
@@ -148,6 +148,6 @@ export const GetVehicleMatrix = (vehicleid: number): IVehMatrix => {
     atX = 0,
     atY = 0,
     atZ = 0,
-  ]: number[] = samp.callNative("GetVehicleMatrix", "iFFFFFFFFF", vehicleid);
+  ]: number[] = samp.callNative("GetVehicleMatrix", "iFFFFFFFFF", vehicleId);
   return { rightX, rightY, rightZ, upX, upY, upZ, atX, atY, atZ };
 };

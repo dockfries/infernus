@@ -1,91 +1,91 @@
 import type { IObjectPos } from "../interfaces/Object";
 
-export const IsValidPickup = (pickupid: number): boolean => {
-  return Boolean(samp.callNative("IsValidPickup", "i", pickupid));
+export const IsValidPickup = (pickupId: number): boolean => {
+  return Boolean(samp.callNative("IsValidPickup", "i", pickupId));
 };
 
 export const IsPickupStreamedIn = (
   playerId: number,
-  pickupid: number
+  pickupId: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPickupStreamedIn", "ii", playerId, pickupid)
+    samp.callNative("IsPickupStreamedIn", "ii", playerId, pickupId)
   );
 };
 
-export const GetPickupPos = (pickupid: number): IObjectPos => {
+export const GetPickupPos = (pickupId: number): IObjectPos => {
   const [fX, fY, fZ]: number[] = samp.callNative(
     "GetPickupPos",
     "iFFF",
-    pickupid
+    pickupId
   );
   return { fX, fY, fZ };
 };
 
-export const GetPickupModel = (pickupid: number): number => {
-  return samp.callNative("GetPickupModel", "i", pickupid);
+export const GetPickupModel = (pickupId: number): number => {
+  return samp.callNative("GetPickupModel", "i", pickupId);
 };
 
-export const GetPickupType = (pickupid: number): number => {
-  return samp.callNative("GetPickupType", "i", pickupid);
+export const GetPickupType = (pickupId: number): number => {
+  return samp.callNative("GetPickupType", "i", pickupId);
 };
 
-export const GetPickupVirtualWorld = (pickupid: number): number => {
-  return samp.callNative("GetPickupVirtualWorld", "i", pickupid);
+export const GetPickupVirtualWorld = (pickupId: number): number => {
+  return samp.callNative("GetPickupVirtualWorld", "i", pickupId);
 };
 
 export const SetPickupPos = (
-  pickupid: number,
+  pickupId: number,
   X: number,
   Y: number,
   Z: number,
   update = true
 ): number => {
-  return samp.callNative("SetPickupPos", "ifffi", pickupid, X, Y, Z, update);
+  return samp.callNative("SetPickupPos", "ifffi", pickupId, X, Y, Z, update);
 };
 
 export const SetPickupModel = (
-  pickupid: number,
+  pickupId: number,
   model: number,
   update = true
 ): number => {
-  return samp.callNative("SetPickupModel", "iii", pickupid, model, update);
+  return samp.callNative("SetPickupModel", "iii", pickupId, model, update);
 };
 
 export const SetPickupType = (
-  pickupid: number,
+  pickupId: number,
   type: number,
   update = true
 ): number => {
-  return samp.callNative("SetPickupType", "iii", pickupid, type, update);
+  return samp.callNative("SetPickupType", "iii", pickupId, type, update);
 };
 
 export const SetPickupVirtualWorld = (
-  pickupid: number,
-  virtualworld: number
+  pickupId: number,
+  virtualWorld: number
 ): number => {
-  return samp.callNative("SetPickupVirtualWorld", "ii", pickupid, virtualworld);
+  return samp.callNative("SetPickupVirtualWorld", "ii", pickupId, virtualWorld);
 };
 
 export const ShowPickupForPlayer = (
   playerId: number,
-  pickupid: number
+  pickupId: number
 ): number => {
-  return samp.callNative("ShowPickupForPlayer", "ii", playerId, pickupid);
+  return samp.callNative("ShowPickupForPlayer", "ii", playerId, pickupId);
 };
 
 export const HidePickupForPlayer = (
   playerId: number,
-  pickupid: number
+  pickupId: number
 ): number => {
-  return samp.callNative("HidePickupForPlayer", "ii", playerId, pickupid);
+  return samp.callNative("HidePickupForPlayer", "ii", playerId, pickupId);
 };
 
 export const IsPickupHiddenForPlayer = (
   playerId: number,
-  pickupid: number
+  pickupId: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPickupHiddenForPlayer", "ii", playerId, pickupid)
+    samp.callNative("IsPickupHiddenForPlayer", "ii", playerId, pickupId)
   );
 };
