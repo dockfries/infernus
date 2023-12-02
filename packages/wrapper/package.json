@@ -1,6 +1,6 @@
 {
   "name": "@infernus/wrapper",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "A functional wrapper of the omp new scripting api (natives and callbacks) for samp-node.",
   "keywords": [
     "samp",
