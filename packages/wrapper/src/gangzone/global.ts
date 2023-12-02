@@ -20,19 +20,19 @@ export const IsGangZoneVisibleForPlayer = (
   );
 };
 
-export const GangZoneGetColourForPlayer = (
+export const GangZoneGetColorForPlayer = (
   playerId: number,
   zoneid: number
 ): number => {
-  return samp.callNative("GangZoneGetColourForPlayer", "ii", playerId, zoneid);
+  return samp.callNative("GangZoneGetColorForPlayer", "ii", playerId, zoneid);
 };
 
-export const GangZoneGetFlashColourForPlayer = (
+export const GangZoneGetFlashColorForPlayer = (
   playerId: number,
   zoneid: number
 ): number => {
   return samp.callNative(
-    "GangZoneGetFlashColourForPlayer",
+    "GangZoneGetFlashColorForPlayer",
     "ii",
     playerId,
     zoneid

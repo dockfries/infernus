@@ -10,35 +10,35 @@ export interface IObjectRotPos extends IObjectPos {
   fRotZ: number;
 }
 export interface IAttachedObject extends IObjectRotPos {
-  modelid: number;
+  modelId: number;
   bone: number;
   fScaleX: number;
   fScaleY: number;
   fScaleZ: number;
-  materialcolor1: number;
-  materialcolor2: number;
+  materialColor1: number;
+  materialColor2: number;
 }
 
 export interface IMaterial {
-  modelid: number;
-  txdname: string;
-  texturename: string;
-  materialcolor: number;
+  modelId: number;
+  txdName: string;
+  textureName: string;
+  materialColor: number;
 }
 
 export interface IMaterialText {
   text: string;
-  materialsize: number;
-  fontface: string;
+  materialSize: number;
+  fontFace: string;
   fontsize: number;
   bold: number;
-  fontcolor: number;
-  backcolor: number;
-  textalignment: number;
+  fontColor: number;
+  backColor: number;
+  textAlignment: number;
 }
 
 export interface IAttachedData {
-  attached_vehicleid: number;
-  attached_objectid?: number;
-  attached_playerid: number;
+  attached_vehicleId: number;
+  attached_objectId?: number;
+  attached_playerId: number;
 }

@@ -25,7 +25,7 @@ export class DynamicPickup {
       areaId,
       priority,
     } = this.sourceInfo;
-    const { type, modelId: modelid, x, y, z, extended } = this.sourceInfo;
+    const { type, modelId: modelId, x, y, z, extended } = this.sourceInfo;
 
     if (type < 0 || type > 22)
       return logger.error("[StreamerPickup]: Invalid pickup type");
@@ -44,7 +44,7 @@ export class DynamicPickup {
       else areaId ??= [-1];
 
       this._id = s.CreateDynamicPickupEx(
-        modelid,
+        modelId,
         type,
         x,
         y,
@@ -67,7 +67,7 @@ export class DynamicPickup {
       else areaId ??= -1;
 
       this._id = s.CreateDynamicPickup(
-        modelid,
+        modelId,
         type,
         x,
         y,

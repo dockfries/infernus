@@ -77,10 +77,10 @@ export default {
     baseid: number,
     newid: number,
     dffname: string,
-    txdname: string
+    txdName: string
   ): number {
-    if (this.checkSimpleModel(virtualworld, baseid, newid, dffname, txdname)) {
-      return f.AddSimpleModel(virtualworld, baseid, newid, dffname, txdname);
+    if (this.checkSimpleModel(virtualworld, baseid, newid, dffname, txdName)) {
+      return f.AddSimpleModel(virtualworld, baseid, newid, dffname, txdName);
     }
     return 0;
   },
@@ -89,7 +89,7 @@ export default {
     baseid: number,
     newid: number,
     dffname: string,
-    txdname: string,
+    txdName: string,
     timeon: number,
     timeoff: number
   ): number {
@@ -99,7 +99,7 @@ export default {
         baseid,
         newid,
         dffname,
-        txdname,
+        txdName,
         timeon,
         timeoff
       )
@@ -109,7 +109,7 @@ export default {
         baseid,
         newid,
         dffname,
-        txdname,
+        txdName,
         timeon,
         timeoff
       );
@@ -121,7 +121,7 @@ export default {
     baseid: number,
     newid: number,
     dffname: string,
-    txdname: string,
+    txdName: string,
     timeon?: number,
     timeoff?: number
   ): number {
@@ -141,8 +141,8 @@ export default {
       logger.error("[GameMode]: AddSimpleModel - Empty dffname");
       return 0;
     }
-    if (txdname.trim().length < 0) {
-      logger.error("[GameMode]: AddSimpleModel - Empty txdname");
+    if (txdName.trim().length < 0) {
+      logger.error("[GameMode]: AddSimpleModel - Empty txdName");
       return 0;
     }
     if (timeon !== undefined && (timeon < 0 || timeon > 23)) {

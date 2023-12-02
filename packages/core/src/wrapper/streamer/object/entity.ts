@@ -29,17 +29,17 @@ export class DynamicObject {
       return logger.warn("[StreamerObject]: Unable to create object again");
     let {
       streamDistance,
-      drawDistance: drawdistance,
+      drawDistance: drawDistance,
       worldId,
       interiorId: interiorId,
       playerId,
       areaId,
       priority,
     } = this.sourceInfo;
-    const { modelId: modelid, x, y, z, rx, ry, rz, extended } = this.sourceInfo;
+    const { modelId: modelId, x, y, z, rx, ry, rz, extended } = this.sourceInfo;
 
     streamDistance ??= s.StreamerDistances.OBJECT_SD;
-    drawdistance ??= s.StreamerDistances.OBJECT_DD;
+    drawDistance ??= s.StreamerDistances.OBJECT_DD;
     priority ??= 0;
 
     if (extended) {
@@ -53,7 +53,7 @@ export class DynamicObject {
       else areaId ??= [-1];
 
       this._id = s.CreateDynamicObjectEx(
-        modelid,
+        modelId,
         x,
         y,
         z,
@@ -61,7 +61,7 @@ export class DynamicObject {
         ry,
         rz,
         streamDistance,
-        drawdistance,
+        drawDistance,
         worldId,
         interiorId,
         playerId,
@@ -79,7 +79,7 @@ export class DynamicObject {
       else areaId ??= -1;
 
       this._id = s.CreateDynamicObject(
-        modelid,
+        modelId,
         x,
         y,
         z,
@@ -90,7 +90,7 @@ export class DynamicObject {
         interiorId,
         playerId,
         streamDistance,
-        drawdistance,
+        drawDistance,
         areaId,
         priority
       );
@@ -279,7 +279,7 @@ export class DynamicObject {
     return s.RemoveDynamicObjectMaterial(this.id, materialIndex);
   }
 
-  getMaterial(materialIndex: number, txdname: string, texturename: string) {
+  getMaterial(materialIndex: number, txdName: string, textureName: string) {
     if (this.id === -1)
       return logger.warn(
         "[StreamerObject]: Unable to get material before create"
@@ -287,17 +287,17 @@ export class DynamicObject {
     return s.GetDynamicObjectMaterial(
       this.id,
       materialIndex,
-      txdname,
-      texturename
+      txdName,
+      textureName
     );
   }
 
   setMaterial(
-    materialindex: number,
-    modelid: number,
-    txdname: string,
-    texturename: string,
-    materialcolour = "#000"
+    materialIndex: number,
+    modelId: number,
+    txdName: string,
+    textureName: string,
+    materialColor = "#000"
   ): void | number {
     if (this.id === -1)
       return logger.warn(
@@ -305,11 +305,11 @@ export class DynamicObject {
       );
     return s.SetDynamicObjectMaterial(
       this.id,
-      materialindex,
-      modelid,
-      txdname,
-      texturename,
-      rgba(materialcolour)
+      materialIndex,
+      modelId,
+      txdName,
+      textureName,
+      rgba(materialColor)
     );
   }
 
@@ -343,8 +343,8 @@ export class DynamicObject {
     fontFace = "Arial",
     fontSize = 24,
     bold = 1,
-    fontColour = "#fff",
-    backColour = "#000",
+    fontColor = "#fff",
+    backColor = "#000",
     textAlignment = 0
   ): void | number {
     if (this.id === -1)
@@ -361,8 +361,8 @@ export class DynamicObject {
       fontFace,
       fontSize,
       bold,
-      rgba(fontColour),
-      rgba(backColour),
+      rgba(fontColor),
+      rgba(backColor),
       textAlignment
     );
   }

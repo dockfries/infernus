@@ -1,6 +1,6 @@
 export interface IPlayerClass {
   teamid: number;
-  modelid: number;
+  modelId: number;
   spawn_x: number;
   spawn_y: number;
   spawn_z: number;

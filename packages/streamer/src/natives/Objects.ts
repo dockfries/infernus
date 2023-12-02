@@ -1,7 +1,7 @@
 import { StreamerDistances } from "../definitions/Distances";
 
 export const CreateDynamicObject = (
-  modelid: number,
+  modelId: number,
   x: number,
   y: number,
   z: number,
@@ -12,14 +12,14 @@ export const CreateDynamicObject = (
   interiorId = -1,
   playerId = -1,
   streamDistance: number = StreamerDistances.OBJECT_SD,
-  drawdistance: number = StreamerDistances.OBJECT_DD,
+  drawDistance: number = StreamerDistances.OBJECT_DD,
   areaId = -1,
   priority = 0
 ): number => {
   return samp.callNative(
     "CreateDynamicObject",
     "iffffffiiiffii",
-    modelid,
+    modelId,
     x,
     y,
     z,
@@ -30,7 +30,7 @@ export const CreateDynamicObject = (
     interiorId,
     playerId,
     streamDistance,
-    drawdistance,
+    drawDistance,
     areaId,
     priority
   );
@@ -207,123 +207,123 @@ export const EditDynamicObject = (
 
 export const IsDynamicObjectMaterialUsed = (
   objectid: number,
-  materialindex: number
+  materialIndex: number
 ): boolean => {
   return Boolean(
     samp.callNative(
       "IsDynamicObjectMaterialUsed",
       "ii",
       objectid,
-      materialindex
+      materialIndex
     )
   );
 };
 
 export const RemoveDynamicObjectMaterial = (
   objectid: number,
-  materialindex: number
+  materialIndex: number
 ): number => {
   return samp.callNative(
     "RemoveDynamicObjectMaterial",
     "ii",
     objectid,
-    materialindex
+    materialIndex
   );
 };
 
 export const GetDynamicObjectMaterial = (
   objectid: number,
-  materialindex: number,
-  txdname: string,
-  texturename: string
+  materialIndex: number,
+  txdName: string,
+  textureName: string
 ) => {
-  const [modelid, materialcolor]: [number, string | number] = samp.callNative(
+  const [modelId, materialColor]: [number, string | number] = samp.callNative(
     "GetDynamicObjectMaterial",
     "iiIssIii",
     objectid,
-    materialindex,
-    txdname,
-    texturename,
+    materialIndex,
+    txdName,
+    textureName,
     64,
     64
   );
-  return { modelid, materialcolor };
+  return { modelId, materialColor };
 };
 
 export const SetDynamicObjectMaterial = (
   objectid: number,
-  materialindex: number,
-  modelid: number,
-  txdname: string,
-  texturename: string,
-  materialcolor = 0
+  materialIndex: number,
+  modelId: number,
+  txdName: string,
+  textureName: string,
+  materialColor = 0
 ): number => {
   return samp.callNative(
     "SetDynamicObjectMaterial",
     "iiissi",
     objectid,
-    materialindex,
-    modelid,
-    txdname,
-    texturename,
-    materialcolor
+    materialIndex,
+    modelId,
+    txdName,
+    textureName,
+    materialColor
   );
 };
 
 export const IsDynamicObjectMaterialTextUsed = (
   objectid: number,
-  materialindex: number
+  materialIndex: number
 ): boolean => {
   return Boolean(
     samp.callNative(
       "IsDynamicObjectMaterialTextUsed",
       "ii",
       objectid,
-      materialindex
+      materialIndex
     )
   );
 };
 
 export const RemoveDynamicObjectMaterialText = (
   objectid: number,
-  materialindex: number
+  materialIndex: number
 ): number => {
   return samp.callNative(
     "RemoveDynamicObjectMaterialText",
     "ii",
     objectid,
-    materialindex
+    materialIndex
   );
 };
 
 export const GetDynamicObjectMaterialText = (
   objectid: number,
-  materialindex: number
+  materialIndex: number
 ) => {
   const [
     text,
-    materialsize,
-    fontface,
+    materialSize,
+    fontFace,
     bold,
-    fontcolor,
-    backcolor,
-    textalignment,
+    fontColor,
+    backColor,
+    textAlignment,
   ]: [string, number, string, number, number, number, number] = samp.callNative(
     "GetDynamicObjectMaterialText",
     "iiSISIIIIIii",
     objectid,
-    materialindex,
+    materialIndex,
     2048,
     32
   );
   return {
     text,
-    materialsize,
-    fontface,
+    materialSize,
+    fontFace,
     bold,
-    fontcolor,
-    backcolor,
-    textalignment,
+    fontColor,
+    backColor,
+    textAlignment,
   };
 };
 
@@ -346,29 +346,29 @@ export enum MaterialTextSizes {
 
 export const SetDynamicObjectMaterialText = (
   objectid: number,
-  materialindex: number,
+  materialIndex: number,
   text: string,
-  materialsize: number = MaterialTextSizes.SIZE_256x128,
-  fontface = "Arial",
+  materialSize: number = MaterialTextSizes.SIZE_256x128,
+  fontFace = "Arial",
   fontsize = 24,
   bold = 1,
-  fontcolor = 0xffffffff,
-  backcolor = 0,
-  textalignment = 0
+  fontColor = 0xffffffff,
+  backColor = 0,
+  textAlignment = 0
 ): number => {
   return samp.callNative(
     "SetDynamicObjectMaterialText",
     "iisisiiiii",
     objectid,
-    materialindex,
+    materialIndex,
     text,
-    materialsize,
-    fontface,
+    materialSize,
+    fontFace,
     fontsize,
     bold,
-    fontcolor,
-    backcolor,
-    textalignment
+    fontColor,
+    backColor,
+    textAlignment
   );
 };
 

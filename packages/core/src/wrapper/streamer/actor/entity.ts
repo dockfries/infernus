@@ -28,16 +28,8 @@ export class DynamicActor {
       areaId,
       priority,
     } = this.sourceInfo;
-    const {
-      modelId: modelid,
-      x,
-      y,
-      z,
-      r,
-      invulnerable,
-      health,
-      extended,
-    } = this.sourceInfo;
+    const { modelId, x, y, z, r, invulnerable, health, extended } =
+      this.sourceInfo;
 
     streamDistance ??= s.StreamerDistances.ACTOR_SD;
     priority ??= 0;
@@ -53,7 +45,7 @@ export class DynamicActor {
       else areaId ??= [-1];
 
       this._id = s.CreateDynamicActorEx(
-        modelid,
+        modelId,
         x,
         y,
         z,
@@ -78,7 +70,7 @@ export class DynamicActor {
       else areaId ??= -1;
 
       this._id = s.CreateDynamicActor(
-        modelid,
+        modelId,
         x,
         y,
         z,

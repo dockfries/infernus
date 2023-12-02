@@ -1,7 +1,7 @@
 import { StreamerDistances } from "../definitions/Distances";
 
 export const CreateDynamicPickup = (
-  modelid: number,
+  modelId: number,
   type: number,
   x: number,
   y: number,
@@ -16,7 +16,7 @@ export const CreateDynamicPickup = (
   return samp.callNative(
     "CreateDynamicPickup",
     "iifffiiifii",
-    modelid,
+    modelId,
     type,
     x,
     y,

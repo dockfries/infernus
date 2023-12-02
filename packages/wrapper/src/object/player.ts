@@ -88,16 +88,16 @@ export const GetPlayerObjectAttachedData = (
   objectid: number
 ): IAttachedData => {
   const [
-    attached_vehicleid = 0,
-    attached_objectid = 0,
-    attached_playerid = 0,
+    attached_vehicleId = 0,
+    attached_objectId = 0,
+    attached_playerId = 0,
   ]: number[] = samp.callNative(
     "GetPlayerObjectAttachedData",
     "iiIII",
     playerId,
     objectid
   );
-  return { attached_vehicleid, attached_objectid, attached_playerid };
+  return { attached_vehicleId, attached_objectId, attached_playerId };
 };
 
 export const GetPlayerObjectAttachedOffset = (
@@ -136,7 +136,7 @@ export const GetPlayerObjectSyncRotation = (
 export const IsPlayerObjectMaterialSlotUsed = (
   playerId: number,
   objectid: number,
-  materialindex: number
+  materialIndex: number
 ): boolean => {
   return Boolean(
     samp.callNative(
@@ -144,7 +144,7 @@ export const IsPlayerObjectMaterialSlotUsed = (
       "iii",
       playerId,
       objectid,
-      materialindex
+      materialIndex
     )
   );
 };
@@ -152,9 +152,9 @@ export const IsPlayerObjectMaterialSlotUsed = (
 export const GetPlayerObjectMaterial = (
   playerId: number,
   objectid: number,
-  materialindex: number
+  materialIndex: number
 ): IMaterial => {
-  const [modelid = 0, txdname, texturename, materialcolor = 0]: [
+  const [modelId = 0, txdName, textureName, materialColor = 0]: [
     number,
     string,
     string,
@@ -164,47 +164,47 @@ export const GetPlayerObjectMaterial = (
     "iiiISiSiI",
     playerId,
     objectid,
-    materialindex,
+    materialIndex,
     64,
     64
   );
-  return { modelid, txdname, texturename, materialcolor };
+  return { modelId, txdName, textureName, materialColor };
 };
 
 export const GetPlayerObjectMaterialText = (
   playerId: number,
   objectid: number,
-  materialindex: number
+  materialIndex: number
 ): IMaterialText => {
   const [
     text,
-    materialsize = 0,
-    fontface,
+    materialSize = 0,
+    fontFace,
     fontsize = 0,
     bold = 0,
-    fontcolor = 0,
-    backcolor = 0,
-    textalignment = 0,
+    fontColor = 0,
+    backColor = 0,
+    textAlignment = 0,
   ]: [string, number, string, number, number, number, number, number] =
     samp.callNative(
       "GetPlayerObjectMaterialText",
       "iiiSiISiIIIII",
       playerId,
       objectid,
-      materialindex,
+      materialIndex,
       2048,
       32
     );
 
   return {
     text,
-    materialsize,
-    fontface,
+    materialSize,
+    fontFace,
     fontsize,
     bold,
-    fontcolor,
-    backcolor,
-    textalignment,
+    fontColor,
+    backColor,
+    textAlignment,
   };
 };
 

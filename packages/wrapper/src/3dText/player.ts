@@ -16,7 +16,7 @@ export const GetPlayer3DTextLabelText = (
   return samp.callNative("GetPlayer3DTextLabelText", "iiSi", playerId, id, 144);
 };
 
-export const GetPlayer3DTextLabelColour = (
+export const GetPlayer3DTextLabelColor = (
   playerId: number,
   id: number
 ): number => {
@@ -95,7 +95,7 @@ export const GetPlayer3DTextLabelAttachedData = (
   playerId: number,
   id: number
 ): IAttachedData => {
-  const [attached_playerid = 0, attached_vehicleid = 0]: number[] =
+  const [attached_playerId = 0, attached_vehicleId = 0]: number[] =
     samp.callNative("GetPlayer3DTextLabelAttachedData", "ii", playerId, id);
-  return { attached_playerid, attached_vehicleid };
+  return { attached_playerId, attached_vehicleId };
 };

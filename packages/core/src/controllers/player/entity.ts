@@ -293,13 +293,13 @@ export class Player {
     return { hour, minute };
   }
   removeBuilding(
-    modelid: number,
+    modelId: number,
     fX: number,
     fY: number,
     fZ: number,
     fRadius: number
   ): void {
-    f.RemoveBuildingForPlayer(this.id, modelid, fX, fY, fZ, fRadius);
+    f.RemoveBuildingForPlayer(this.id, modelId, fX, fY, fZ, fRadius);
   }
   setTeam(team: number): void {
     if (team < 0 || team > InvalidEnum.NO_TEAM) return;
@@ -761,7 +761,7 @@ export class Player {
   }
   setAttachedObject(
     index: number,
-    modelid: number,
+    modelId: number,
     bone: BoneIdsEnum,
     fOffsetX: number,
     fOffsetY: number,
@@ -772,14 +772,14 @@ export class Player {
     fScaleX: number,
     fScaleY: number,
     fScaleZ: number,
-    materialcolour1: string | number,
-    materialcolour2: string | number
+    materialColor1: string | number,
+    materialColor2: string | number
   ): void | number {
     if (this.isAttachedObjectSlotUsed(index)) return 0;
     return f.SetPlayerAttachedObject(
       this.id,
       index,
-      modelid,
+      modelId,
       bone,
       fOffsetX,
       fOffsetY,
@@ -790,8 +790,8 @@ export class Player {
       fScaleX,
       fScaleY,
       fScaleZ,
-      materialcolour1,
-      materialcolour2
+      materialColor1,
+      materialColor2
     );
   }
   removeAttachedObject(index: number): number {

@@ -86,24 +86,24 @@ export class Vehicle {
     Vehicle.vehicles.delete(this._id);
     this._id = -1;
   }
-  addComponent(componentid: number): number {
+  addComponent(componentId: number): number {
     if (this.id === -1) return 0;
-    if (!isValidVehComponent(this.getModel(), componentid)) {
+    if (!isValidVehComponent(this.getModel(), componentId)) {
       logger.warn(
-        `[Vehicle]: Invalid component id ${componentid} attempted to attach to the vehicle ${this}`
+        `[Vehicle]: Invalid component id ${componentId} attempted to attach to the vehicle ${this}`
       );
       return 0;
     }
-    return v.AddVehicleComponent(this.id, componentid);
+    return v.AddVehicleComponent(this.id, componentId);
   }
-  removeComponent(componentid: number): number {
-    if (this.getComponentInSlot(Vehicle.getComponentType(componentid)) === 0) {
+  removeComponent(componentId: number): number {
+    if (this.getComponentInSlot(Vehicle.getComponentType(componentId)) === 0) {
       logger.warn(
-        `[Vehicle]: component id ${componentid} does not exist on this vehicle`
+        `[Vehicle]: component id ${componentId} does not exist on this vehicle`
       );
       return 0;
     }
-    return v.RemoveVehicleComponent(this.id, componentid);
+    return v.RemoveVehicleComponent(this.id, componentId);
   }
   getComponentInSlot(slot: CarModTypeEnum) {
     return v.GetVehicleComponentInSlot(this.id, slot);
@@ -182,9 +182,9 @@ export class Vehicle {
   static getPoolSize(): number {
     return v.GetVehiclePoolSize();
   }
-  changeColours(color1: string | number, color2: string | number): number {
+  changeColors(color1: string | number, color2: string | number): number {
     if (this.id === -1) return 0;
-    return v.ChangeVehicleColours(this.id, color1, color2);
+    return v.ChangeVehicleColors(this.id, color1, color2);
   }
   setVelocity(X: number, Y: number, Z: number): number {
     if (this.id === -1) return 0;
@@ -327,11 +327,11 @@ export class Vehicle {
     if (this.id === -1) return false;
     return v.IsTrailerAttachedToVehicle(this.id);
   }
-  changePaintjob(paintjobid: 0 | 1 | 2): number {
+  changePaintjob(paintjobId: 0 | 1 | 2): number {
     if (this.id === -1) return 0;
-    if (!isValidPaintJob(this.getModel(), paintjobid)) return 0;
-    this.changeColours("#fff", "#fff");
-    v.ChangeVehiclePaintjob(this.id, paintjobid);
+    if (!isValidPaintJob(this.getModel(), paintjobId)) return 0;
+    this.changeColors("#fff", "#fff");
+    v.ChangeVehiclePaintjob(this.id, paintjobId);
     return 1;
   }
   attachTrailer<V extends Vehicle>(trailer: V): number {
@@ -445,7 +445,7 @@ export class Vehicle {
     fAngle: number,
     color1: string | number,
     color2: string | number,
-    respawntime = -2,
+    respawnTime = -2,
     interior = -2,
     ignoreRange = false
   ): number {
@@ -460,7 +460,7 @@ export class Vehicle {
       fAngle,
       rgba(color1),
       rgba(color2),
-      respawntime,
+      respawnTime,
       interior
     );
   }

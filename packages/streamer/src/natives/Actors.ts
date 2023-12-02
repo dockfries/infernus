@@ -1,7 +1,7 @@
 import { StreamerDistances } from "../definitions/Distances";
 
 export const CreateDynamicActor = (
-  modelid: number,
+  modelId: number,
   x: number,
   y: number,
   z: number,
@@ -18,7 +18,7 @@ export const CreateDynamicActor = (
   return samp.callNative(
     "CreateDynamicActor",
     "iffffifiiifii",
-    modelid,
+    modelId,
     x,
     y,
     z,

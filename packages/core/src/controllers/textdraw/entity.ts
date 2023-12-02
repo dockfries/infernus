@@ -17,12 +17,12 @@ import {
   TextDrawGetTextSize,
   PlayerTextDrawGetPos,
   TextDrawGetPos,
-  PlayerTextDrawGetColour,
-  TextDrawGetColour,
-  PlayerTextDrawGetBoxColour,
-  TextDrawGetBoxColour,
-  PlayerTextDrawGetBackgroundColour,
-  TextDrawGetBackgroundColour,
+  PlayerTextDrawGetColor,
+  TextDrawGetColor,
+  PlayerTextDrawGetBoxColor,
+  TextDrawGetBoxColor,
+  PlayerTextDrawGetBackgroundColor,
+  TextDrawGetBackgroundColor,
   PlayerTextDrawGetShadow,
   TextDrawGetShadow,
   PlayerTextDrawGetOutline,
@@ -41,8 +41,8 @@ import {
   TextDrawGetPreviewModel,
   PlayerTextDrawGetPreviewRot,
   TextDrawGetPreviewRot,
-  PlayerTextDrawGetPreviewVehicleColours,
-  TextDrawGetPreviewVehicleColours,
+  PlayerTextDrawGetPreviewVehicleColors,
+  TextDrawGetPreviewVehicleColors,
 } from "@infernus/wrapper";
 
 import type { Player } from "../player";
@@ -110,26 +110,26 @@ export class TextDraw {
     else fns.TextDrawFont(this.id, style);
     return this;
   }
-  setColor(Colour: string | number): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set Colour");
+  setColor(color: string | number): void | this {
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set color");
     const { player } = this.sourceInfo;
-    if (player) fns.PlayerTextDrawColour(player.id, this.id, Colour);
-    else fns.TextDrawColour(this.id, Colour);
+    if (player) fns.PlayerTextDrawColor(player.id, this.id, color);
+    else fns.TextDrawColor(this.id, color);
     return this;
   }
-  setBoxColours(Colour: string | number): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set box Colour");
+  setBoxColors(color: string | number): void | this {
+    if (this.id === -1) return TextDraw.beforeCreateWarn("set box color");
     const { player } = this.sourceInfo;
-    if (player) fns.PlayerTextDrawBoxColour(player.id, this.id, Colour);
-    else fns.TextDrawBoxColour(this.id, Colour);
+    if (player) fns.PlayerTextDrawBoxColor(player.id, this.id, color);
+    else fns.TextDrawBoxColor(this.id, color);
     return this;
   }
-  setBackgroundColours(Colour: string | number): void | this {
+  setBackgroundColors(color: string | number): void | this {
     if (this.id === -1)
-      return TextDraw.beforeCreateWarn("set background Colour");
+      return TextDraw.beforeCreateWarn("set background color");
     const { player } = this.sourceInfo;
-    if (player) fns.PlayerTextDrawBackgroundColour(player.id, this.id, Colour);
-    else fns.TextDrawBackgroundColour(this.id, Colour);
+    if (player) fns.PlayerTextDrawBackgroundColor(player.id, this.id, color);
+    else fns.TextDrawBackgroundColor(this.id, color);
     return this;
   }
   setAlignment(alignment: TextDrawAlignEnum): void | this {
@@ -184,18 +184,18 @@ export class TextDraw {
     else fns.TextDrawSetPreviewRot(this.id, fRotX, fRotY, fRotZ, fZoom);
     return this;
   }
-  setPreviewVehColours(Colour1: string, Colour2: string): void | this {
+  setPreviewVehColors(color1: string, color2: string): void | this {
     if (this.id === -1) return TextDraw.beforeCreateWarn("set preview veh col");
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
     if (player)
-      fns.PlayerTextDrawSetPreviewVehicleColours(
+      fns.PlayerTextDrawSetPreviewVehicleColors(
         player.id,
         this.id,
-        Colour1,
-        Colour2
+        color1,
+        color2
       );
-    else fns.TextDrawSetPreviewVehicleColours(this.id, Colour1, Colour2);
+    else fns.TextDrawSetPreviewVehicleColors(this.id, color1, color2);
     return this;
   }
   setProportional(set = true): void | this {
@@ -333,22 +333,22 @@ export class TextDraw {
     return TextDrawGetPos(this.id);
   }
   getColor() {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("get Colour");
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get color");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetColour(p.id, this.id);
-    return TextDrawGetColour(this.id);
+    if (p) return PlayerTextDrawGetColor(p.id, this.id);
+    return TextDrawGetColor(this.id);
   }
-  getBoxColour() {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("get box Colour");
+  getBoxColor() {
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get box color");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetBoxColour(p.id, this.id);
-    return TextDrawGetBoxColour(this.id);
+    if (p) return PlayerTextDrawGetBoxColor(p.id, this.id);
+    return TextDrawGetBoxColor(this.id);
   }
-  getBackgroundColour() {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("get bg Colour");
+  getBackgroundColor() {
+    if (this.id === -1) return TextDraw.beforeCreateWarn("get bg color");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetBackgroundColour(p.id, this.id);
-    return TextDrawGetBackgroundColour(this.id);
+    if (p) return PlayerTextDrawGetBackgroundColor(p.id, this.id);
+    return TextDrawGetBackgroundColor(this.id);
   }
   getShadow() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get shadow");
@@ -405,12 +405,12 @@ export class TextDraw {
     if (p) return PlayerTextDrawGetPreviewRot(p.id, this.id);
     return TextDrawGetPreviewRot(this.id);
   }
-  getPreviewVehColours() {
+  getPreviewVehColors() {
     if (this.id === -1)
-      return TextDraw.beforeCreateWarn("get preview vel Colours");
+      return TextDraw.beforeCreateWarn("get preview vel colors");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetPreviewVehicleColours(p.id, this.id);
-    return TextDrawGetPreviewVehicleColours(this.id);
+    if (p) return PlayerTextDrawGetPreviewVehicleColors(p.id, this.id);
+    return TextDrawGetPreviewVehicleColors(this.id);
   }
   isGlobal() {
     return !!this.sourceInfo.player;

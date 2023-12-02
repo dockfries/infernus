@@ -140,14 +140,14 @@ export class GangZone {
     return this;
   }
 
-  flashForAll(flashcolour: string | number): void | this {
+  flashForAll(flashColor: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[GangZone]: Unable to flash the gangzone before create"
       );
     const p = this.sourceInfo.player;
     if (!p) {
-      f.GangZoneFlashForAll(this.id, flashcolour);
+      f.GangZoneFlashForAll(this.id, flashColor);
       return this;
     }
     return logger.warn(
@@ -155,15 +155,15 @@ export class GangZone {
     );
   }
 
-  flashForPlayer(player: Player, flashcolour: string | number): void | this {
+  flashForPlayer(player: Player, flashColor: string | number): void | this {
     if (this.id === -1)
       return logger.warn(
         "[GangZone]: Unable to flash the gangzone before create"
       );
     const p = this.sourceInfo.player;
-    if (p) w.PlayerGangZoneFlash(p.id, this.id, rgba(flashcolour));
+    if (p) w.PlayerGangZoneFlash(p.id, this.id, rgba(flashColor));
     else {
-      if (player) f.GangZoneFlashForPlayer(player.id, this.id, flashcolour);
+      if (player) f.GangZoneFlashForPlayer(player.id, this.id, flashColor);
       else return logger.warn("[GangZone]: invalid player for flash");
     }
     return this;
@@ -219,20 +219,20 @@ export class GangZone {
     return w.IsGangZoneVisibleForPlayer(player.id, this.id);
   }
 
-  getColourForPlayer(player: Player): void | number {
+  getColorForPlayer(player: Player): void | number {
     if (this.id === -1)
       return logger.warn("[GangZone]: Unable to get color before create");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerGangZoneGetColour(p.id, this.id);
-    return w.GangZoneGetColourForPlayer(player.id, this.id);
+    if (p) return w.PlayerGangZoneGetColor(p.id, this.id);
+    return w.GangZoneGetColorForPlayer(player.id, this.id);
   }
 
-  getFlashColourForPlayer(player: Player): void | number {
+  getFlashColorForPlayer(player: Player): void | number {
     if (this.id === -1)
       return logger.warn("[GangZone]: Unable to get flash color before create");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerGangZoneGetFlashColour(p.id, this.id);
-    return w.GangZoneGetFlashColourForPlayer(player.id, this.id);
+    if (p) return w.PlayerGangZoneGetFlashColor(p.id, this.id);
+    return w.GangZoneGetFlashColorForPlayer(player.id, this.id);
   }
 
   isFlashingForPlayer(player: Player): boolean {

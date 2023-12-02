@@ -19,7 +19,7 @@ export const IsPlayerWidescreenToggled = (playerId: number): boolean => {
 export const GetSpawnInfo = (playerId: number): IPlayerClass => {
   const [
     teamid,
-    modelid = 0,
+    modelId = 0,
     spawn_x = 0.0,
     spawn_y = 0.0,
     spawn_z = 0.0,
@@ -33,7 +33,7 @@ export const GetSpawnInfo = (playerId: number): IPlayerClass => {
   ]: number[] = samp.callNative("GetSpawnInfo", "iIIFFFFIIIIII", playerId);
   return {
     teamid,
-    modelid,
+    modelId,
     spawn_x,
     spawn_y,
     spawn_z,
@@ -199,7 +199,7 @@ export const GetPlayerAttachedObject = (
   index: number
 ): IAttachedObject => {
   const [
-    modelid = 0,
+    modelId = 0,
     bone = 0,
     fX = 0.0,
     fY = 0.0,
@@ -210,8 +210,8 @@ export const GetPlayerAttachedObject = (
     fScaleX = 0.0,
     fScaleY = 0.0,
     fScaleZ = 0.0,
-    materialcolor1 = 0,
-    materialcolor2 = 0,
+    materialColor1 = 0,
+    materialColor2 = 0,
   ]: number[] = samp.callNative(
     "GetPlayerAttachedObject",
     "iiIIFFFFFFFFFII",
@@ -219,7 +219,7 @@ export const GetPlayerAttachedObject = (
     index
   );
   return {
-    modelid,
+    modelId,
     bone,
     fX,
     fY,
@@ -230,8 +230,8 @@ export const GetPlayerAttachedObject = (
     fScaleX,
     fScaleY,
     fScaleZ,
-    materialcolor1,
-    materialcolor2,
+    materialColor1,
+    materialColor2,
   };
 };
 

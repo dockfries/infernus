@@ -2,7 +2,7 @@ import { StreamerDistances } from "../definitions/Distances";
 import { MapIconStyles } from "./MapIcons";
 
 export const CreateDynamicObjectEx = (
-  modelid: number,
+  modelId: number,
   x: number,
   y: number,
   z: number,
@@ -10,7 +10,7 @@ export const CreateDynamicObjectEx = (
   ry: number,
   rz: number,
   streamDistance: number = StreamerDistances.OBJECT_SD,
-  drawdistance: number = StreamerDistances.OBJECT_DD,
+  drawDistance: number = StreamerDistances.OBJECT_DD,
   worlds: number[] = [-1],
   interiors: number[] = [-1],
   players: number[] = [-1],
@@ -20,7 +20,7 @@ export const CreateDynamicObjectEx = (
   return samp.callNative(
     "CreateDynamicObjectEx",
     "iffffffffaaaaiiiii",
-    modelid,
+    modelId,
     x,
     y,
     z,
@@ -28,7 +28,7 @@ export const CreateDynamicObjectEx = (
     ry,
     rz,
     streamDistance,
-    drawdistance,
+    drawDistance,
     worlds,
     interiors,
     players,
@@ -42,7 +42,7 @@ export const CreateDynamicObjectEx = (
 };
 
 export const CreateDynamicPickupEx = (
-  modelid: number,
+  modelId: number,
   type: number,
   x: number,
   y: number,
@@ -57,7 +57,7 @@ export const CreateDynamicPickupEx = (
   return samp.callNative(
     "CreateDynamicPickupEx",
     "iiffffaaaaiiiii",
-    modelid,
+    modelId,
     type,
     x,
     y,
@@ -189,10 +189,10 @@ export const CreateDynamic3DTextLabelEx = (
   x: number,
   y: number,
   z: number,
-  drawdistance: number,
-  attachedplayer = 0xffff,
-  attachedvehicle = 0xffff,
-  testlos = false,
+  drawDistance: number,
+  attachedPlayer = 0xffff,
+  attachedVehicle = 0xffff,
+  testLos = false,
   streamDistance: number = StreamerDistances.TEXT_3D_LABEL_SD,
   worlds: number[] = [-1],
   interiors: number[] = [-1],
@@ -208,10 +208,10 @@ export const CreateDynamic3DTextLabelEx = (
     x,
     y,
     z,
-    drawdistance,
-    attachedplayer,
-    attachedvehicle,
-    testlos,
+    drawDistance,
+    attachedPlayer,
+    attachedVehicle,
+    testLos,
     streamDistance,
     worlds,
     interiors,
@@ -408,7 +408,7 @@ export const CreateDynamicPolygonEx = (
 };
 
 export const CreateDynamicActorEx = (
-  modelid: number,
+  modelId: number,
   x: number,
   y: number,
   z: number,
@@ -425,7 +425,7 @@ export const CreateDynamicActorEx = (
   return samp.callNative(
     "CreateDynamicActorEx",
     "iffffiffaaaaiiiii",
-    modelid,
+    modelId,
     x,
     y,
     z,

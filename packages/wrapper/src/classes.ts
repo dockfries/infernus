@@ -15,7 +15,7 @@ export const GetPlayerClass = (classid: number): boolean | IPlayerClass => {
   );
   const [
     teamid,
-    modelid = 0,
+    modelId = 0,
     spawn_x = 0.0,
     spawn_y = 0.0,
     spawn_z = 0.0,
@@ -29,7 +29,7 @@ export const GetPlayerClass = (classid: number): boolean | IPlayerClass => {
   ] = res;
   return {
     teamid,
-    modelid,
+    modelId,
     spawn_x,
     spawn_y,
     spawn_z,
@@ -47,7 +47,7 @@ export const GetPlayerClass = (classid: number): boolean | IPlayerClass => {
 export const EditPlayerClass = (
   classid: number,
   teamid: number,
-  modelid: number,
+  modelId: number,
   spawn_x: number,
   spawn_y: number,
   spawn_z: number,
@@ -65,7 +65,7 @@ export const EditPlayerClass = (
       "iiiffffiiiiii",
       classid,
       teamid,
-      modelid,
+      modelId,
       spawn_x,
       spawn_y,
       spawn_z,

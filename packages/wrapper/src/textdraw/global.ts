@@ -1,123 +1,123 @@
 import type { ITextDrawCommonSize, ITextDrawRot } from "../interfaces/TextDraw";
 
-export const IsValidTextDraw = (textdrawid: number): boolean => {
-  return Boolean(samp.callNative("IsValidTextDraw", "i", textdrawid));
+export const IsValidTextDraw = (textDrawId: number): boolean => {
+  return Boolean(samp.callNative("IsValidTextDraw", "i", textDrawId));
 };
 
 export const IsTextDrawVisibleForPlayer = (
   playerId: number,
-  textdrawid: number
+  textDrawId: number
 ): boolean => {
   return Boolean(
-    samp.callNative("IsTextDrawVisibleForPlayer", "ii", playerId, textdrawid)
+    samp.callNative("IsTextDrawVisibleForPlayer", "ii", playerId, textDrawId)
   );
 };
 
-export const TextDrawGetString = (textdrawid: number): string => {
-  return samp.callNative("TextDrawGetString", "iSi", textdrawid, 1024);
+export const TextDrawGetString = (textDrawId: number): string => {
+  return samp.callNative("TextDrawGetString", "iSi", textDrawId, 1024);
 };
 
 // You can change textdraw pos with it, but you need to use TextDrawShowForPlayer() after that
 export const TextDrawSetPos = (
-  textdrawid: number,
+  textDrawId: number,
   fX: number,
   fY: number
 ): void => {
-  samp.callNative("TextDrawSetPos", "iff", textdrawid, fX, fY);
+  samp.callNative("TextDrawSetPos", "iff", textDrawId, fX, fY);
 };
 
 export const TextDrawGetLetterSize = (
-  textdrawid: number
+  textDrawId: number
 ): ITextDrawCommonSize => {
   const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
     "TextDrawGetLetterSize",
     "iFF",
-    textdrawid
+    textDrawId
   );
   return { fX, fY };
 };
 
 export const TextDrawGetTextSize = (
-  textdrawid: number
+  textDrawId: number
 ): ITextDrawCommonSize => {
   const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
     "TextDrawGetTextSize",
     "iFF",
-    textdrawid
+    textDrawId
   );
   return { fX, fY };
 };
 
-export const TextDrawGetPos = (textdrawid: number): ITextDrawCommonSize => {
+export const TextDrawGetPos = (textDrawId: number): ITextDrawCommonSize => {
   const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
     "TextDrawGetPos",
     "iFF",
-    textdrawid
+    textDrawId
   );
   return { fX, fY };
 };
 
-export const TextDrawGetColour = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetColor", "i", textdrawid);
+export const TextDrawGetColor = (textDrawId: number): number => {
+  return samp.callNative("TextDrawGetColor", "i", textDrawId);
 };
 
-export const TextDrawGetBoxColour = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetBoxColor", "i", textdrawid);
+export const TextDrawGetBoxColor = (textDrawId: number): number => {
+  return samp.callNative("TextDrawGetBoxColor", "i", textDrawId);
 };
 
-export const TextDrawGetBackgroundColour = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetBackgroundColor", "i", textdrawid);
+export const TextDrawGetBackgroundColor = (textDrawId: number): number => {
+  return samp.callNative("TextDrawGetBackgroundColor", "i", textDrawId);
 };
 
-export const TextDrawGetShadow = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetShadow", "i", textdrawid);
+export const TextDrawGetShadow = (textDrawId: number): number => {
+  return samp.callNative("TextDrawGetShadow", "i", textDrawId);
 };
 
-export const TextDrawGetOutline = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetOutline", "i", textdrawid);
+export const TextDrawGetOutline = (textDrawId: number): number => {
+  return samp.callNative("TextDrawGetOutline", "i", textDrawId);
 };
 
-export const TextDrawGetFont = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetFont", "i", textdrawid);
+export const TextDrawGetFont = (textDrawId: number): number => {
+  return samp.callNative("TextDrawGetFont", "i", textDrawId);
 };
 
-export const TextDrawIsBox = (textdrawid: number): boolean => {
-  return Boolean(samp.callNative("TextDrawIsBox", "i", textdrawid));
+export const TextDrawIsBox = (textDrawId: number): boolean => {
+  return Boolean(samp.callNative("TextDrawIsBox", "i", textDrawId));
 };
 
-export const TextDrawIsProportional = (textdrawid: number): boolean => {
-  return Boolean(samp.callNative("TextDrawIsProportional", "i", textdrawid));
+export const TextDrawIsProportional = (textDrawId: number): boolean => {
+  return Boolean(samp.callNative("TextDrawIsProportional", "i", textDrawId));
 };
 
-export const TextDrawIsSelectable = (textdrawid: number): boolean => {
-  return Boolean(samp.callNative("TextDrawIsSelectable", "i", textdrawid));
+export const TextDrawIsSelectable = (textDrawId: number): boolean => {
+  return Boolean(samp.callNative("TextDrawIsSelectable", "i", textDrawId));
 };
 
-export const TextDrawGetAlignment = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetAlignment", "i", textdrawid);
+export const TextDrawGetAlignment = (textDrawId: number): number => {
+  return samp.callNative("TextDrawGetAlignment", "i", textDrawId);
 };
 
-export const TextDrawGetPreviewModel = (textdrawid: number): number => {
-  return samp.callNative("TextDrawGetPreviewModel", "i", textdrawid);
+export const TextDrawGetPreviewModel = (textDrawId: number): number => {
+  return samp.callNative("TextDrawGetPreviewModel", "i", textDrawId);
 };
 
-export const TextDrawGetPreviewRot = (textdrawid: number): ITextDrawRot => {
+export const TextDrawGetPreviewRot = (textDrawId: number): ITextDrawRot => {
   const [fRotX = 0.0, fRotY = 0.0, fRotZ = 0.0, fZoom = 0.0]: number[] =
-    samp.callNative("TextDrawGetPreviewRot", "iFFFF", textdrawid);
+    samp.callNative("TextDrawGetPreviewRot", "iFFFF", textDrawId);
   return { fRotX, fRotY, fRotZ, fZoom };
 };
 
-export const TextDrawGetPreviewVehicleColours = (textdrawid: number) => {
+export const TextDrawGetPreviewVehicleColors = (textDrawId: number) => {
   const [color1, color2]: number[] = samp.callNative(
     "TextDrawGetPreviewVehCol",
     "iII",
-    textdrawid
+    textDrawId
   );
   return { color1, color2 };
 };
 
 export const TextDrawSetStringForPlayer = (
-  textdrawid: number,
+  textDrawId: number,
   playerId: number,
   fmat: string,
   ...args: Array<any>
@@ -125,7 +125,7 @@ export const TextDrawSetStringForPlayer = (
   samp.callNative(
     "TextDrawSetStringForPlayer",
     "iisa",
-    textdrawid,
+    textDrawId,
     playerId,
     fmat,
     args
