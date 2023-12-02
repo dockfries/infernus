@@ -1,3 +1,17 @@
+# [0.10.0-beta.6](https://github.com/dockfries/infernus/compare/v0.10.0-beta.5...v0.10.0-beta.6) (2023-12-02)
+
+
+### Bug Fixes
+
+* **core:** onCommandText replace /, failed to correctly define some i18n functions ([03276ae](https://github.com/dockfries/infernus/commit/03276ae03f39d4a29a6367ea3fb1bc3fee2ef375))
+
+
+### Features
+
+* **core:** event constant `object.freeze` ([8a589f0](https://github.com/dockfries/infernus/commit/8a589f0e1724da38624db802c3261c6b8572aa78))
+
+
+
 # [0.10.0-beta.5](https://github.com/dockfries/infernus/compare/v0.10.0-beta.4...v0.10.0-beta.5) (2023-12-01)
 
 
