@@ -1,107 +1,78 @@
+import { defineEvent } from "core/controllers";
 import { BitStream } from "raknet/bitStream";
-import type { BitStreamRaw, packetCallback, rpcCallback } from "raknet/types";
+import type { BitStreamRaw } from "raknet/types";
 
-// raw callback
-const incomingPackets: packetCallback[] = [];
-const incomingRPCs: rpcCallback[] = [];
-const outgoingPackets: packetCallback[] = [];
-const outgoingRPCs: rpcCallback[] = [];
+export const [onIncomingPacket] = defineEvent({
+  name: "OnIncomingPacket",
+  identifier: "iii",
+  beforeEach(playerId: number, packetId: number, bs: BitStreamRaw) {
+    return { playerId, packetId, bs: new BitStream(bs) };
+  },
+});
 
-samp.registerEvent("OnIncomingPacket", "iii");
-samp.addEventListener(
-  "OnIncomingPacket",
-  (playerId: number, packetid: number, bs: BitStreamRaw) => {
-    return incomingPackets.every((func) =>
-      func(playerId, packetid, new BitStream(bs))
-    );
-  }
-);
+export const [onIncomingRPC] = defineEvent({
+  name: "OnIncomingRPC",
+  identifier: "iii",
+  beforeEach(playerId: number, rpcId: number, bs: BitStreamRaw) {
+    return { playerId, rpcId, bs: new BitStream(bs) };
+  },
+});
 
-samp.registerEvent("OnIncomingRPC", "iii");
-samp.addEventListener(
-  "OnIncomingRPC",
-  (playerId: number, rpcid: number, bs: BitStreamRaw) => {
-    return incomingRPCs.every((func) =>
-      func(playerId, rpcid, new BitStream(bs))
-    );
-  }
-);
+export const [onOutgoingPacket] = defineEvent({
+  name: "OnOutgoingPacket",
+  identifier: "iii",
+  beforeEach(playerId: number, packetId: number, bs: BitStreamRaw) {
+    return { playerId, packetId, bs: new BitStream(bs) };
+  },
+});
 
-samp.registerEvent("OnOutgoingPacket", "iii");
-samp.addEventListener(
-  "OnOutgoingPacket",
-  (playerId: number, packetid: number, bs: BitStreamRaw) => {
-    return outgoingPackets.every((func) =>
-      func(playerId, packetid, new BitStream(bs))
-    );
-  }
-);
-
-samp.registerEvent("OnOutgoingRPC", "iii");
-samp.addEventListener(
-  "OnOutgoingRPC",
-  (playerId: number, rpcid: number, bs: BitStreamRaw) => {
-    return outgoingRPCs.every((func) =>
-      func(playerId, rpcid, new BitStream(bs))
-    );
-  }
-);
-
-export const OnIncomingPacket = (func: packetCallback) => {
-  incomingPackets.push(func);
-};
-
-export const OnIncomingRPC = (func: rpcCallback) => {
-  incomingRPCs.push(func);
-};
-
-export const OnOutgoingPacket = (func: packetCallback) => {
-  outgoingPackets.push(func);
-};
-
-export const OnOutgoingRPC = (func: rpcCallback) => {
-  outgoingRPCs.push(func);
-};
+export const [onOutgoingRPC] = defineEvent({
+  name: "OnOutgoingRPC",
+  identifier: "iii",
+  beforeEach(playerId: number, rpcId: number, bs: BitStreamRaw) {
+    return { playerId, rpcId, bs: new BitStream(bs) };
+  },
+});
 
 // syntactic sugar callback
 
 export const IPacket = (
   eventId: number,
-  func: (playerId: number, bs: BitStream) => boolean
+  func: Parameters<typeof onIncomingPacket>[0]
 ) => {
-  OnIncomingPacket((playerId, packetId, bs) => {
-    if (packetId === eventId) return func(playerId, bs);
-    return true;
+  return onIncomingPacket((e) => {
+    if (e.packetId === eventId) return func(e);
+    return e.next();
   });
 };
 
 export const IRPC = (
   eventId: number,
-  func: (playerId: number, bs: BitStream) => boolean
+  func: Parameters<typeof onIncomingRPC>[0]
 ) => {
-  OnIncomingRPC((playerId, rpcId, bs) => {
-    if (rpcId === eventId) return func(playerId, bs);
-    return true;
+  return onIncomingRPC((e) => {
+    if (e.rpcId === eventId) return func(e);
+    return e.next();
   });
 };
 
 export const OPacket = (
   eventId: number,
-  func: (playerId: number, bs: BitStream) => boolean
+  func: Parameters<typeof onOutgoingPacket>[0]
 ) => {
-  OnOutgoingPacket((playerId, packetId, bs) => {
-    if (packetId === eventId) return func(playerId, bs);
-    return true;
+  return onOutgoingPacket((e) => {
+    if (e.packetId === eventId) return func(e);
+    return e.next();
   });
 };
 
 export const ORPC = (
   eventId: number,
-  func: (playerId: number, bs: BitStream) => boolean
+  func: Parameters<typeof onOutgoingRPC>[0]
 ) => {
-  OnOutgoingRPC((playerId, rpcId, bs) => {
-    if (rpcId === eventId) return func(playerId, bs);
-    return true;
+  return onOutgoingRPC((e) => {
+    if (e.rpcId === eventId) return func(e);
+    return e.next();
   });
 };
 

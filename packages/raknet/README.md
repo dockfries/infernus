@@ -23,10 +23,10 @@ import {
 } from "@infernus/raknet";
 import type { IBulletSync } from "@infernus/raknet";
 
-IPacket(PacketIdList.OnFootSync, (playerId, bs) => {
+IPacket(PacketIdList.OnFootSync, ({ playerId, bs, next }) => {
   const sync = new OnFootSync(bs).readSync();
   console.log(playerId, sync);
-  return true;
+  return next();
 });
 
 function sendBulletData(from: Player, to: Player | -1, data: IBulletSync) {
