@@ -1,3 +1,18 @@
+# [0.10.0-beta.7](https://github.com/dockfries/infernus/compare/v0.10.0-beta.6...v0.10.0-beta.7) (2023-12-02)
+
+
+### Bug Fixes
+
+* **core:** error map key match for gangZone and textDraw ([4ff710f](https://github.com/dockfries/infernus/commit/4ff710fa92254f2699763d2030e651e3e1fc6c61))
+* **core:** onDeath, onTakeDamage enum type generic inference, getKeys return hump ([258667b](https://github.com/dockfries/infernus/commit/258667bdfb199c1291aa5c3c3c2a8454373045c0))
+
+
+### Features
+
+* **raknet:** use defineEvent to support middleware ([5033488](https://github.com/dockfries/infernus/commit/50334881c83dc066922177c78730e193bcfc80e9))
+
+
+
 # [0.10.0-beta.6](https://github.com/dockfries/infernus/compare/v0.10.0-beta.5...v0.10.0-beta.6) (2023-12-02)
 
 
