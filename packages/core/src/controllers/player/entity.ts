@@ -329,8 +329,8 @@ export class Player {
     return { x, y, z };
   }
   getKeys() {
-    const [keys, updown, leftright] = f.GetPlayerKeys(this.id);
-    return { keys, updown, leftright };
+    const [keys, upDown, leftRight] = f.GetPlayerKeys(this.id);
+    return { keys, upDown, leftRight };
   }
   getIp(): string {
     return f.GetPlayerIp(this.id);

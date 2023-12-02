@@ -81,7 +81,11 @@ export const [onClickPlayer] = defineEvent({
   },
 });
 
-export const [onDeath] = defineEvent({
+export const [onDeath] = defineEvent<{
+  player: Player;
+  killer: Player | InvalidEnum.PLAYER_ID;
+  reason: number;
+}>({
   name: "OnPlayerDeath",
   beforeEach(id: number, killer: number, reason: number) {
     return {
@@ -173,7 +177,13 @@ export const [onStreamOut] = defineEvent({
   },
 });
 
-export const [onTakeDamage] = defineEvent({
+export const [onTakeDamage] = defineEvent<{
+  player: Player;
+  damage: Player | InvalidEnum.PLAYER_ID;
+  amount: number;
+  weapon: WeaponEnum;
+  bodyPart: BodyPartsEnum;
+}>({
   name: "OnPlayerTakeDamage",
   beforeEach(
     id: number,
