@@ -64,7 +64,7 @@ export class I18n {
   }
 
   // convert byte stream arrays of different encodings to utf8 strings
-  static decodeFromBuf(buf: Buffer | number[], charset: string): string {
+  static decodeFromBuf(buf: Buffer | number[], charset = "utf8"): string {
     I18n.isValidate(charset);
     const buffer = buf instanceof Buffer ? buf : Buffer.from(buf);
     return decode(buffer, charset);

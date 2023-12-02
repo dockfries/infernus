@@ -120,28 +120,30 @@ export const CmdBus = {
   ) {
     const _command = Array.isArray(command) ? command : [command];
 
-    const inValidCmd = _command.find((cmd) => !cmd.match(commandPattern));
+    const invalidCmd = _command.find((cmd) => !cmd.match(commandPattern));
 
-    if (inValidCmd) {
-      console.log(`error command ${inValidCmd} format`);
+    if (invalidCmd) {
+      console.log(`error command ${invalidCmd} format`);
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       return () => {};
     }
 
     const offs = _command.map((cmd) => {
-      if (!commandBus.has(cmd)) {
+      const _cmd = cmd.replaceAll("/", "");
+
+      if (!commandBus.has(_cmd)) {
         const e = defineEvent({
-          name: cmd,
+          name: _cmd,
           isNative: false,
           beforeEach(player: Player, subcommand: string[]) {
             return { player, subcommand };
           },
         });
-        commandBus.set(cmd, e);
+        commandBus.set(_cmd, e);
       }
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const [pusher] = commandBus.get(cmd)!;
+      const [pusher] = commandBus.get(_cmd)!;
       return pusher(cb);
     });
 

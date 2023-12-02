@@ -34,7 +34,7 @@ const [onClientMessage] = defineEvent({
     return {
       color,
       buffer,
-      string: I18n.decodeFromBuf(buffer, "utf8"),
+      string: I18n.decodeFromBuf(buffer),
     };
   },
 });

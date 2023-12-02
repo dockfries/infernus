@@ -86,78 +86,6 @@ export const ShowPlayerDialog = (
   );
 };
 
-// see https://github.com/AmyrAhmady/samp-node/wiki/Events#sampnode_callevent.
-// in short, when you write the flag a, you must add I after it, but this I will actually be ignored.
-
-samp.registerEvent("OnPlayerTextI18n", "iai");
-export const OnPlayerText = (
-  fn: (playerId: number, buf: number[]) => number
-) => {
-  // get the player input text
-  // and you can decode with the player's charset;
-  samp.addEventListener("OnPlayerTextI18n", fn);
-};
-
-samp.registerEvent("OnPlayerCommandTextI18n", "iai");
-export const OnPlayerCommandText = (
-  fn: (playerId: number, buf: number[]) => number
-) => {
-  samp.addEventListener("OnPlayerCommandTextI18n", fn);
-};
-
-samp.registerEvent("OnDialogResponseI18n", "iiiiai");
-export const OnDialogResponse = (
-  fn: (
-    playerId: number,
-    dialogid: number,
-    response: number,
-    listitem: number,
-    inputbuf: number[]
-  ) => number
-) => {
-  samp.addEventListener("OnDialogResponseI18n", fn);
-};
-
-samp.registerEvent("OnClientMessageI18n", "iai");
-export const OnClientMessage = (
-  fn: (color: number, text: string) => number,
-  charset = "utf8"
-) => {
-  samp.addEventListener(
-    "OnClientMessageI18n",
-    (color: number, buf: number[]): number => {
-      return fn(color, I18n.decodeFromBuf(buf, charset));
-    }
-  );
-};
-
-samp.registerEvent("OnRconCommandI18n", "ai");
-export const OnRconCommand = (
-  fn: (cmd: string) => number,
-  charset = "utf8"
-) => {
-  samp.addEventListener("OnRconCommandI18n", (buf: number[]): number => {
-    return fn(I18n.decodeFromBuf(buf, charset));
-  });
-};
-
-samp.registerEvent("OnRconLoginAttemptI18n", "aiaii");
-export const OnRconLoginAttempt = (
-  fn: (ip: string, password: string, success: boolean) => number,
-  charset = "utf8"
-) => {
-  samp.addEventListener(
-    "OnRconLoginAttemptI18n",
-    (ip: number[], password: number[], success: number): number => {
-      return fn(
-        I18n.decodeFromBuf(ip, charset),
-        I18n.decodeFromBuf(password, charset),
-        Boolean(success)
-      );
-    }
-  );
-};
-
 export const GetPlayerName = (player: Player): string => {
   const buf: number[] = callNative(
     "GetPlayerName",
@@ -193,10 +121,10 @@ export const CreateDynamic3DTextLabel = (
   x: number,
   y: number,
   z: number,
-  drawdistance: number,
-  attachedplayer: number,
-  attachedvehicle: number,
-  testlos: boolean,
+  drawDistance: number,
+  attachedPlayer: number,
+  attachedVehicle: number,
+  testLos: boolean,
   worldId: number,
   interiorId: number,
   playerId: number,
@@ -213,10 +141,10 @@ export const CreateDynamic3DTextLabel = (
     x,
     y,
     z,
-    drawdistance,
-    attachedplayer,
-    attachedvehicle,
-    testlos,
+    drawDistance,
+    attachedPlayer,
+    attachedVehicle,
+    testLos,
     worldId,
     interiorId,
     playerId,
@@ -232,10 +160,10 @@ export const CreateDynamic3DTextLabelEx = (
   x: number,
   y: number,
   z: number,
-  drawdistance: number,
-  attachedplayer: number,
-  attachedvehicle: number,
-  testlos: boolean,
+  drawDistance: number,
+  attachedPlayer: number,
+  attachedVehicle: number,
+  testLos: boolean,
   streamDistance: number,
   worlds: number[],
   interiors: number[],
@@ -253,10 +181,10 @@ export const CreateDynamic3DTextLabelEx = (
     x,
     y,
     z,
-    drawdistance,
-    attachedplayer,
-    attachedvehicle,
-    testlos,
+    drawDistance,
+    attachedPlayer,
+    attachedVehicle,
+    testLos,
     streamDistance,
     worlds,
     interiors,
@@ -296,65 +224,65 @@ export const GetDynamic3DTextLabelText = (
 export const SetDynamicObjectMaterialText = (
   charset: string,
   objectid: number,
-  materialindex: number,
+  materialIndex: number,
   text: string,
-  materialsize: number,
-  fontface: string,
+  materialSize: number,
+  fontFace: string,
   fontsize: number,
   bold: number,
-  fontcolour: number,
-  backcolour: number,
-  textalignment: number
+  fontColor: number,
+  backColor: number,
+  textAlignment: number
 ): number => {
   const textBuf = I18n.encodeToBuf(text, charset);
-  const fontFaceBuf = I18n.encodeToBuf(fontface, charset);
+  const fontFaceBuf = I18n.encodeToBuf(fontFace, charset);
   return callNative(
     "SetDynamicObjectMaterialText",
     "iiaiaiiiii",
     objectid,
-    materialindex,
+    materialIndex,
     textBuf,
-    materialsize,
+    materialSize,
     fontFaceBuf,
     fontsize,
     bold,
-    fontcolour,
-    backcolour,
-    textalignment
+    fontColor,
+    backColor,
+    textAlignment
   );
 };
 
 export const GetDynamicObjectMaterialText = (
   objectid: number,
-  materialindex: number,
+  materialIndex: number,
   charset: string
 ) => {
   const [
     text,
-    materialsize,
-    fontface,
+    materialSize,
+    fontFace,
     bold,
-    fontcolour,
-    backcolour,
-    textalignment,
+    fontColor,
+    backColor,
+    textAlignment,
   ]: [number[], number, number[], number, number, number, number] = callNative(
     "GetDynamicObjectMaterialText",
     "iiAIAIIIIIii",
     objectid,
-    materialindex,
+    materialIndex,
     2048,
     32
   );
   const textStr = I18n.decodeFromBuf(text, charset);
-  const fontFaceStr = I18n.decodeFromBuf(fontface, charset);
+  const fontFaceStr = I18n.decodeFromBuf(fontFace, charset);
   return {
     text: textStr,
-    materialsize,
-    fontface: fontFaceStr,
+    materialSize,
+    fontFace: fontFaceStr,
     bold,
-    fontcolour,
-    backcolour,
-    textalignment,
+    fontColor,
+    backColor,
+    textAlignment,
   };
 };
 

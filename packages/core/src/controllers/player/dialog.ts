@@ -12,7 +12,8 @@ import { defineEvent } from "../bus";
 import { ShowPlayerDialog } from "core/utils/helperUtils";
 
 export const [onDialogResponse] = defineEvent({
-  name: "OnDialogResponse",
+  name: "OnDialogResponseI18n",
+  identifier: "iiiiai",
   beforeEach(
     id: number,
     dialogId: number,

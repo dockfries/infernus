@@ -1,4 +1,5 @@
 import { defineEvent } from "../bus";
+import { I18n } from "../i18n";
 
 export const [onInit] = defineEvent({ name: "OnGameModeInit" });
 export const [onExit] = defineEvent({ name: "OnGameModeExit" });
@@ -11,15 +12,23 @@ export const [onIncomingConnection] = defineEvent({
 });
 
 export const [onRconCommand] = defineEvent({
-  name: "OnRconCommand",
-  beforeEach(cmd: string) {
-    return { cmd };
+  name: "OnRconCommandI18n",
+  identifier: "ai",
+  beforeEach(buffer: number[]) {
+    return { buffer, cmd: I18n.decodeFromBuf(buffer) };
   },
 });
 
 export const [onRconLoginAttempt] = defineEvent({
-  name: "OnRconLoginAttempt",
-  beforeEach(ip: string, password: string, success: boolean) {
-    return { ip, password, success };
+  name: "OnRconLoginAttemptI18n",
+  identifier: "aiaii",
+  beforeEach(ip: number[], password: number[], success: number) {
+    return {
+      ip: I18n.decodeFromBuf(ip),
+      password: I18n.decodeFromBuf(password),
+      success: Boolean(success),
+      ipBuffer: ip,
+      passwordBuffer: password,
+    };
   },
 });
