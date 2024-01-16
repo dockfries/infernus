@@ -29,5 +29,5 @@ export const readStringX = (
 };
 
 export const patchRakNetNative = (...args: any[]) => {
-  return samp.callPublic("RakNetNative", `a`, args);
+  return samp.callPublic("RakNetNatives", `a`, args);
 };
