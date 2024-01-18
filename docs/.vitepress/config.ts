@@ -4,7 +4,31 @@ export default defineConfig({
   base: "/infernus/",
   title: "Infernus",
   description: "NodeJS library for scripting Open Multiplayer",
+  lastUpdated: true,
   themeConfig: {
+    search: {
+      provider: "local",
+      options: {
+        locales: {
+          "zh-CN": {
+            translations: {
+              button: {
+                buttonText: "搜索文档",
+                buttonAriaLabel: "搜索文档",
+              },
+              modal: {
+                noResultsText: "无法找到相关结果",
+                resetButtonTitle: "清除查询条件",
+                footer: {
+                  selectText: "选择",
+                  navigateText: "切换",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     nav: [{ text: "home", link: "/" }],
     sidebar: [
       {
@@ -19,7 +43,6 @@ export default defineConfig({
       { icon: "github", link: "https://github.com/dockfries/infernus" },
     ],
   },
-
   locales: {
     root: {
       label: "English",
