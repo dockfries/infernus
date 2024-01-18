@@ -7,7 +7,7 @@ import {
 import {
   readStringX,
   convertToByteString,
-  patchRakNetNative,
+  patchRakNetNatives,
 } from "raknet/utils";
 import type { BitStreamRaw, Vector3, Vector4 } from "./types";
 import { PR_MAX_WEAPON_SLOTS } from "./defines";
@@ -19,7 +19,7 @@ export class BitStream {
   public readonly id: BitStreamRaw;
 
   constructor(from?: BitStreamRaw | BitStream) {
-    if (!from) this.id = patchRakNetNative(RakNetNatives.New);
+    if (!from) this.id = patchRakNetNatives(RakNetNatives.New);
     else if (from instanceof BitStream) {
       this.id = from.id;
     } else {
@@ -36,7 +36,7 @@ export class BitStream {
     orderingChannel = 0
   ) {
     const id = typeof player === "number" ? player : player.id;
-    patchRakNetNative(
+    patchRakNetNatives(
       RakNetNatives.SendPacket,
       this.id,
       id,
@@ -54,7 +54,7 @@ export class BitStream {
     orderingChannel = 0
   ) {
     const id = typeof player === "number" ? player : player.id;
-    patchRakNetNative(
+    patchRakNetNatives(
       RakNetNatives.SendRpc,
       this.id,
       id,
@@ -67,69 +67,69 @@ export class BitStream {
 
   emulateIncomingPacket(player: number | Player) {
     const id = typeof player === "number" ? player : player.id;
-    patchRakNetNative(RakNetNatives.EmulateIncomingPacket, this.id, id);
+    patchRakNetNatives(RakNetNatives.EmulateIncomingPacket, this.id, id);
   }
 
   emulateIncomingRPC(player: number | Player, rpcId: number) {
     const id = typeof player === "number" ? player : player.id;
-    patchRakNetNative(RakNetNatives.EmulateIncomingRpc, this.id, id, rpcId);
+    patchRakNetNatives(RakNetNatives.EmulateIncomingRpc, this.id, id, rpcId);
   }
 
   newCopy() {
-    return new BitStream(patchRakNetNative(RakNetNatives.NewCopy, this.id));
+    return new BitStream(patchRakNetNatives(RakNetNatives.NewCopy, this.id));
   }
 
   delete() {
-    patchRakNetNative(RakNetNatives.Delete, this.id);
+    patchRakNetNatives(RakNetNatives.Delete, this.id);
     return this.id;
   }
 
   reset() {
-    patchRakNetNative(RakNetNatives.Reset, this.id);
+    patchRakNetNatives(RakNetNatives.Reset, this.id);
   }
 
   resetReadPointer() {
-    patchRakNetNative(RakNetNatives.ResetReadPointer, this.id);
+    patchRakNetNatives(RakNetNatives.ResetReadPointer, this.id);
   }
 
   resetWritePointer() {
-    patchRakNetNative(RakNetNatives.ResetWritePointer, this.id);
+    patchRakNetNatives(RakNetNatives.ResetWritePointer, this.id);
   }
 
   ignoreBits(number_of_bits: number) {
-    patchRakNetNative(RakNetNatives.IgnoreBits, this.id, number_of_bits);
+    patchRakNetNatives(RakNetNatives.IgnoreBits, this.id, number_of_bits);
   }
 
   setWriteOffset(offset: number) {
-    patchRakNetNative(RakNetNatives.SetWriteOffset, this.id, offset);
+    patchRakNetNatives(RakNetNatives.SetWriteOffset, this.id, offset);
   }
 
   getWriteOffset(): number {
-    return patchRakNetNative(RakNetNatives.GetWriteOffset, this.id);
+    return patchRakNetNatives(RakNetNatives.GetWriteOffset, this.id);
   }
 
   setReadOffset(offset: number) {
-    patchRakNetNative(RakNetNatives.SetReadOffset, this.id, offset);
+    patchRakNetNatives(RakNetNatives.SetReadOffset, this.id, offset);
   }
 
   getReadOffset(): number {
-    return patchRakNetNative(RakNetNatives.GetReadOffset, this.id);
+    return patchRakNetNatives(RakNetNatives.GetReadOffset, this.id);
   }
 
   getNumberOfBitsUsed(): number {
-    return patchRakNetNative(RakNetNatives.GetNumberOfBitsUsed, this.id);
+    return patchRakNetNatives(RakNetNatives.GetNumberOfBitsUsed, this.id);
   }
 
   getNumberOfBytesUsed(): number {
-    return patchRakNetNative(RakNetNatives.GetNumberOfBytesUsed, this.id);
+    return patchRakNetNatives(RakNetNatives.GetNumberOfBytesUsed, this.id);
   }
 
   getNumberOfUnreadBits(): number {
-    return patchRakNetNative(RakNetNatives.GetNumberOfUnreadBits, this.id);
+    return patchRakNetNatives(RakNetNatives.GetNumberOfUnreadBits, this.id);
   }
 
   getNumberOfBitsAllocated(): number {
-    return patchRakNetNative(RakNetNatives.GetNumberOfBitsAllocated, this.id);
+    return patchRakNetNatives(RakNetNatives.GetNumberOfBitsAllocated, this.id);
   }
 
   readValue(
@@ -140,7 +140,7 @@ export class BitStream {
       const isPlaceholder = Array.isArray(item);
       const type = isPlaceholder ? item[0] : item;
       ret.push(
-        patchRakNetNative(
+        patchRakNetNatives(
           RakNetNatives.ReadValue,
           this.id,
           type,
@@ -166,7 +166,7 @@ export class BitStream {
     )[]
   ) {
     types.forEach((item) => {
-      patchRakNetNative(
+      patchRakNetNatives(
         RakNetNatives.WriteValue,
         this.id,
         item[0],

@@ -28,6 +28,6 @@ export const readStringX = (
   return iconv.decode(Buffer.from(validByteArr), charset);
 };
 
-export const patchRakNetNative = (...args: any[]) => {
+export const patchRakNetNatives = (...args: any[]) => {
   return samp.callPublic("RakNetNatives", `a`, args);
 };
