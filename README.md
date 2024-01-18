@@ -48,6 +48,13 @@ pnpm add @infernus/core
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
+## Credits
+
+- [openmultiplayer](https://github.com/openmultiplayer/open.mp)
+- [samp-node](https://github.com/AmyrAhmady/samp-node)
+- [samp-node-lib](https://github.com/peterszombati/samp-node-lib)
+- [@sa-mp/node](https://github.com/samp-dev/node)
+
 ## License
 
 [MIT](./LICENSE) License © 2022-PRESENT [Carl You](https://github.com/dockfries)
