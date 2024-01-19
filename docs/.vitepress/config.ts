@@ -29,13 +29,24 @@ export default defineConfig({
         },
       },
     },
-    nav: [{ text: "home", link: "/" }],
+    nav: [
+      { text: "Home", link: "/" },
+      { text: "Open Multiplayer", link: "https://open.mp" },
+    ],
     sidebar: [
       {
         text: "Getting Started",
         items: [
           { text: "Introduction", link: "/introduction" },
           { text: "Quick Start", link: "/quick-start" },
+        ],
+      },
+      {
+        text: "Essential",
+        items: [
+          { text: "Events", link: "/essentials/events" },
+          { text: "Internationalization", link: "/essentials/i18n" },
+          { text: "Differences", link: "/essentials/differences" },
         ],
       },
     ],
@@ -53,13 +64,24 @@ export default defineConfig({
       lang: "zh-CN",
       description: "用于编写Open Multiplayer脚本的NodeJS库",
       themeConfig: {
-        nav: [{ text: "首页", link: "/zh-CN" }],
+        nav: [
+          { text: "首页", link: "/zh-CN/" },
+          { text: "Open Multiplayer", link: "https://open.mp" },
+        ],
         sidebar: [
           {
             text: "开始",
             items: [
               { text: "起步", link: "/zh-CN/introduction" },
               { text: "快速上手", link: "/zh-CN/quick-start" },
+            ],
+          },
+          {
+            text: "基础",
+            items: [
+              { text: "事件", link: "/zh-CN/essentials/events" },
+              { text: "国际化", link: "/zh-CN/essentials/i18n" },
+              { text: "差异", link: "/zh-CN/essentials/differences" },
             ],
           },
         ],
