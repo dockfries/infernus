@@ -197,11 +197,11 @@ PlayerEvent.onCommandText(
   ["msg", "message"],
   ({ player, subcommand, next }) => {
     console.log(
-      `玩家${player.getName()},输入了此命令,并且可能还输入了子命令${subcommand}`
+      `玩家${player.getName()},输入了此命令,并且可能还输入了子命令${subcommand.toString()}`
     );
 
     // 相当于玩家输入了/message global或/msg global
-    if (subcommand === "global") {
+    if (subcommand[0] === "global") {
       // 额外的逻辑
       return next();
     } else {
@@ -255,13 +255,12 @@ PlayerEvent.onCommandPerformed(({ player, command, next }) => {
 如果返回 `false` 则将执行默认行为，即原生事件 `OnPlayerCommandText` 的默认行为。
 
 ```ts
-import { Player, PlayerEvent } from "@infernus/core";
-
 PlayerEvent.onCommandError(({ player, command, error, next }) => {
   player.sendClientMessage(
     "#f00",
-    `玩家${player.id}输入了${command},出现错误${error.code}, ${error.msg}`)
+    `玩家${player.id}输入了${command},出现错误${error.code}, ${error.msg}`
   );
+
   next(); // 如果后续还有onCommandError，则执行
   return true; // 返回true表示已经处理了错误，不再触发默认事件
 });
