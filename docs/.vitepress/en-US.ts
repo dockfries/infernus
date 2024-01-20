@@ -26,6 +26,10 @@ function nav(): DefaultTheme.NavItem[] {
       text: "Plugins",
       items: [
         {
+          text: "samp-node",
+          link: "https://github.com/AmyrAhmady/samp-node",
+        },
+        {
           text: "Streamer",
           link: "https://github.com/samp-incognito/samp-streamer-plugin",
         },
