@@ -15,7 +15,7 @@ However, assuming that your instance needs to be destroyed when the player quits
 ## Discard
 
 Discard functions that can be implemented by `JavaScript` built-in functions or third-party libraries, such as `Math.abs`, `strcmp`, `sqlite db`, `setTimer` and so on.
-This means that you should use the `JavaScript` library, and you no longer need or should use native development plug-ins, such as `JavaScript`, timerfix`, etc.
+This means that you should use the `JavaScript` library, and you no longer need or should use native development plugins, such as `JavaScript`, timerfix`, etc.
 
 ## Get string
 

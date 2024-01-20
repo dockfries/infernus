@@ -48,6 +48,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
 function sidebarEssentials(): DefaultTheme.SidebarItem[] {
   return [
     { text: "Events", link: "events" },
+    { text: "Lifecycle", link: "life-cycle" },
     { text: "Internationalization", link: "i18n" },
     { text: "Dialogs", link: "dialogs" },
     { text: "Differences", link: "differences" },

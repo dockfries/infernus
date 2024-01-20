@@ -62,6 +62,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
 function sidebarEssentials(): DefaultTheme.SidebarItem[] {
   return [
     { text: "事件", link: "events" },
+    { text: "生命周期", link: "life-cycle" },
     { text: "国际化", link: "i18n" },
     { text: "对话框", link: "dialogs" },
     { text: "差异", link: "differences" },
