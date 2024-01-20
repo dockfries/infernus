@@ -25,6 +25,6 @@
 
 ## 颜色转换
 
-`Infernus` 底层的颜色转换使用了 `Peter Szombati` 的 [samp-node-lib](https://github.com/peterszombati/samp-node-lib) 源码，用于您在开发过程中调用某些函数时，使用更语义化的颜色，比如 `#fff`，`#ffffff`，`(r, g, b)`， `(r, g, b, a)`。
+`Infernus` 底层的颜色转换使用了[Peter Szombati 的 samp-node-lib](https://github.com/peterszombati/samp-node-lib) 源码，用于您在开发过程中调用某些函数时，使用更语义化的颜色，比如 `#fff`，`#ffffff`，`(r, g, b)`， `(r, g, b, a)`。
 
 如果您在某些场景，比如文本绘制使用了颜色值后，未按照您的预期结果呈现为黑色，您可以尝试换一种格式，比如将原有的`#fff`，改为 `(255,255,255,255)`，或者依旧使用原生开发的数字型格式。

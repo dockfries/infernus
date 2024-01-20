@@ -1,8 +1,8 @@
 # 事件
 
-## 基本示例
-
 `Infernus` 的事件贴近原生的事件，您应当前往 [Open Multiplayer](https://open.mp) 来参考原生开发的相关文档。
+
+## 基本示例
 
 以`OnGameModeInit`为例，在`Infernus`中即为`GameMode.onInit(callback)`。
 
@@ -53,7 +53,7 @@ PlayerEvent.onText(({ player, next }) => {
 **有了中间件模式，你可以更方便的拆分你的事件，而不是把所有事件都写在同一个函数中。**
 
 :::warning
-有了中间件模式，您千万不要忘记调用 `next()` ，除非你很清楚的知道不应当执行下一个函数。
+您千万不要忘记调用 `next()` ，除非你很清楚的知道不应当执行下一个函数。
 :::
 
 ```ts
@@ -182,13 +182,13 @@ import { Player, PlayerEvent } from "@infernus/core";
 
 // 定义一个一级命令
 PlayerEvent.onCommandText("help", ({ player, next }) => {
-  console.log(`玩家${player.getName()},你好`);
+  console.log(`玩家 ${player.getName()}，你好`);
   return next();
 });
 
 // 定义一个二级命令
 PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
-  console.log(`玩家${player.getName()}想得到传送相关的帮助信息`);
+  console.log(`玩家 ${player.getName()}想得到传送相关的帮助信息`);
   return next();
 });
 
@@ -197,7 +197,7 @@ PlayerEvent.onCommandText(
   ["msg", "message"],
   ({ player, subcommand, next }) => {
     console.log(
-      `玩家${player.getName()},输入了此命令,并且可能还输入了子命令${subcommand.toString()}`
+      `玩家 ${player.getName()}，输入了此命令，并且可能还输入了子命令 ${subcommand.toString()}`
     );
 
     // 相当于玩家输入了/message global或/msg global
@@ -212,7 +212,7 @@ PlayerEvent.onCommandText(
   }
 );
 
-// 定义一个二级命令
+// 定义一个一次性命令
 const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
   console.log("这个命令只执行一次，下一次执行就不存在了");
   off();

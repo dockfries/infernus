@@ -47,6 +47,12 @@ import { PlayerEvent, Player, Dialog } from "@infernus/core";
 PlayerEvent.onCommandText("closeDialog", ({ player, subcommand, next }) => {
   const [playerId] = subcommand;
 
+  if (!playerId) {
+    player.sendClientMessage("#f00", "请输入您要关闭哪一个玩家的对话框");
+    return next();
+  }
+
+  // 玩家输入的命令都是字符串，所以需要转换类型为数字类型
   const closePlayer = Player.getInstance(+playerId);
 
   if (!closePlayer) {
