@@ -36,7 +36,7 @@ GameMode.onIncomingConnection(({ next, playerId, ipAddress, port }) => {
 
 :::
 
-以玩家输入文本事件为例，如果我们返回 `true` 或 `1`，意味着让游戏服务器底层的文本输入事件继续执行。**此时你在聊天框中将看到一个默认的消息格式输出。**
+以玩家输入文本事件为例，如果我们返回 `true` 或 `1`，意味着让游戏服务器底层的文本输入事件继续执行。**此时您在聊天框中将看到一个默认的消息格式输出。**
 
 ```ts
 import { PlayerEvent } from "@infernus/core";
@@ -48,12 +48,12 @@ PlayerEvent.onText(({ player, next }) => {
 
 ## 中间件模式
 
-你可能注意到几乎所有事件的回调函数中都有一个`next`参数，它类似于很多框架，比如 `express`，它用于执行中间件中的下一个函数。
+您可能注意到几乎所有事件的回调函数中都有一个`next`参数，它类似于很多框架，比如 `express`，它用于执行中间件中的下一个函数。
 
-**有了中间件模式，你可以更方便的拆分你的事件，而不是把所有事件都写在同一个函数中。**
+**有了中间件模式，您可以更方便的拆分您的事件，而不是把所有事件都写在同一个函数中。**
 
 :::warning
-您千万不要忘记调用 `next()` ，除非你很清楚的知道不应当执行下一个函数。
+您千万不要忘记调用 `next()` ，除非您很清楚的知道不应当执行下一个函数。
 :::
 
 ```ts
@@ -89,7 +89,7 @@ const fakePromise = () => {
   });
 };
 
-// 你可以采用async语法糖，这也是推荐的语法
+// 您可以采用async语法糖，这也是推荐的语法
 PlayerEvent.onCommandText("async", async ({ player, next }) => {
   await fakePromise();
   player.sendClientMessage("#fff", "延迟了1秒后发送消息。");
@@ -200,7 +200,7 @@ import { Player, PlayerEvent } from "@infernus/core";
 
 // 定义一个一级命令
 PlayerEvent.onCommandText("help", ({ player, next }) => {
-  console.log(`玩家 ${player.getName()}，你好`);
+  console.log(`玩家 ${player.getName()}，您好`);
   return next();
 });
 

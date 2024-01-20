@@ -12,12 +12,12 @@ However, assuming that your instance needs to be destroyed when the player quits
 
 ## Discard
 
-Discard functions that can be implemented by `JavaScript` built-in functions or third-party libraries, such as `Math.abs`, `strcmp`, `sqlite db`, `setTimer` and so on.
-This means that you should use the `JavaScript` library, and you no longer need or should use native development plugins, such as `JavaScript`, timerfix`, etc.
+Discard functions that can be implemented by `JavaScript` built-in functions or third-party libraries, such as `floatabs`, `strcmp`, `sqlite db`, `setTimer` and so on.
+This means that you should use the `JavaScript` library, and you no longer need or should use native development plugins, such as `mysql`, timerfix`, etc.
 
 ## Get string
 
-For most string fetches, you no longer need to define a fixed-length array as native developers do. The commonly used functions have been dealt with internally in `Infernus`. The principle is that an array of strings with maximum length is defined, and then the array is automatically iterated to the point where the first byte is `0` to intercept the string, such as `GetPlayerName`, that is, `GetPlayerName`.
+For most string fetches, you no longer need to define a fixed-length array as native developers do. The commonly used functions have been dealt with internally in `Infernus`. The principle is that an array of strings with maximum length is defined, and then the array is automatically iterated to the point where the first byte is `0` to intercept the string, such as `GetPlayerName`, that is `player.getName()`.
 
 The method of interception comes from the [practical functions](./i18n.md#practical-functions) in internationalization. If you encounter some similar scenarios, you do not have to repeat the wheel.
 
@@ -25,7 +25,7 @@ The method of interception comes from the [practical functions](./i18n.md#practi
 
 `Infernus` underlying color conversion uses the [Peter Szombati's samp-node-lib](https://github.com/peterszombati/samp-node-lib) source code,used to use more semantic colors when you call certain functions during development, such as `#fff`,`#ffffff`,`(r, g, b)`, `(r, g, b, a)`.
 
-If it is not as expected in some scenes, it is rendered black, such as textdraw, after using color values, you can try a different format. For example, change the original `#fff` to`(255,255,255,255)`, or still use the native developed digital format.
+If it is not as expected in some scenes, it is rendered black or white, such as textdraw, after using color values, you can try a different format. For example, change the original `#fff` to`(255,255,255,255)`, or still use the native developed digital format.
 
 ## Player attribute
 

@@ -19,7 +19,7 @@ PlayerEvent.onCommandText("register", async ({ player, next }) => {
   const dialog = new Dialog({
     style: DialogStylesEnum.PASSWORD,
     caption: "注册",
-    info: "请输入你的密码",
+    info: "请输入您的密码",
     button1: "ok",
   });
 
