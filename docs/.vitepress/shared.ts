@@ -8,6 +8,9 @@ export const shared = defineConfig({
 
   themeConfig: {
     outline: "deep",
+    socialLinks: [
+      { icon: "github", link: "https://github.com/dockfries/infernus" },
+    ],
     search: {
       provider: "local",
       options: {

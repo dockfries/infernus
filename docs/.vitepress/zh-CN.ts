@@ -36,6 +36,19 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     { text: "首页", link: "/zh-CN/" },
     { text: "Open Multiplayer", link: "https://open.mp/zh-cn" },
+    {
+      text: "插件",
+      items: [
+        {
+          text: "Streamer",
+          link: "https://github.com/samp-incognito/samp-streamer-plugin",
+        },
+        {
+          text: "RakNet",
+          link: "https://github.com/katursis/Pawn.RakNet",
+        },
+      ],
+    },
   ];
 }
 
@@ -50,6 +63,7 @@ function sidebarEssentials(): DefaultTheme.SidebarItem[] {
   return [
     { text: "事件", link: "events" },
     { text: "国际化", link: "i18n" },
+    { text: "对话框", link: "dialogs" },
     { text: "差异", link: "differences" },
   ];
 }

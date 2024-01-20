@@ -22,6 +22,19 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     { text: "Home", link: "/" },
     { text: "Open Multiplayer", link: "https://open.mp" },
+    {
+      text: "Plugins",
+      items: [
+        {
+          text: "Streamer",
+          link: "https://github.com/samp-incognito/samp-streamer-plugin",
+        },
+        {
+          text: "RakNet",
+          link: "https://github.com/katursis/Pawn.RakNet",
+        },
+      ],
+    },
   ];
 }
 
@@ -36,6 +49,7 @@ function sidebarEssentials(): DefaultTheme.SidebarItem[] {
   return [
     { text: "Events", link: "events" },
     { text: "Internationalization", link: "i18n" },
+    { text: "Dialogs", link: "dialogs" },
     { text: "Differences", link: "differences" },
   ];
 }

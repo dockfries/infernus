@@ -6,7 +6,7 @@ The name `Infernus` comes from the vehicle with the ID `411` in the game (specif
 
 ## Limitations
 
-:::danger
+::: danger
 Yes, it's important to understand the limitations before getting started.
 
 Several limitations significantly impact the development experience. **It is recommended to approach `samp-node` ecosystem development with an experimental mindset.**

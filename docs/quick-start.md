@@ -22,7 +22,7 @@ You can easily create a project according to the command line prompts.
 pnpm create @infernus/app
 ```
 
-:::tip
+::: tip
 Because the `github` `https api` is called inside the scaffolding, if your network environment is not good, you may not be able to create it smoothly. In this case, you can refer to [Manual creation](#Manual).
 :::
 

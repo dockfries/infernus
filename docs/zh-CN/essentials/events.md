@@ -2,7 +2,7 @@
 
 ## 基本示例
 
-`Infernus` 的事件贴近原生的事件。
+`Infernus` 的事件贴近原生的事件，您应当前往 [Open Multiplayer](https://open.mp) 来参考原生开发的相关文档。
 
 以`OnGameModeInit`为例，在`Infernus`中即为`GameMode.onInit(callback)`。
 
@@ -29,7 +29,7 @@ GameMode.onIncomingConnection(({ next, playerId, ipAddress, port }) => {
 
 ## 默认行为
 
-:::tip 提示
+::: tip
 **默认行为指的是当我们不返回或返回某个值时，会触发的游戏服务器底层的行为。**
 
 不是所有的默认行为的返回值都是 `true`，它也可能是 `false` ，具体取决于游戏服务器底层的函数是怎样定义的。
@@ -52,7 +52,7 @@ PlayerEvent.onText(({ player, next }) => {
 
 **有了中间件模式，你可以更方便的拆分你的事件，而不是把所有事件都写在同一个函数中。**
 
-:::warning 警告
+:::warning
 有了中间件模式，您千万不要忘记调用 `next()` ，除非你很清楚的知道不应当执行下一个函数。
 :::
 
@@ -110,7 +110,7 @@ PlayerEvent.onCommandText("promise", ({ player, next }) => {
 
 ### 异步返回值
 
-:::warning 警告
+:::warning
 由于底层逻辑，**您定义的异步函数的返回值是无意义的**！
 
 虽然 `TypeScript` 类型要求您必须返回一个值，但是实际上不会被使用。
@@ -187,7 +187,7 @@ PlayerEvent.onCommandText("help", ({ player, next }) => {
 });
 
 // 定义一个二级命令
-PlayerEvent.onCommandText("help teleport", ({ player, subcommand, next }) => {
+PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
   console.log(`玩家${player.getName()}想得到传送相关的帮助信息`);
   return next();
 });
@@ -270,7 +270,7 @@ PlayerEvent.onCommandError(({ player, command, error, next }) => {
 
 您可以通过 `defineEvent` 来自己定义一个中间件事件，它通常用于扩展一些新的回调。
 
-比如您可以在 `OnUpdate` 中根据某些条件来触发您定义的新事件，然后您在某些地方可以使用您定义的新事件中间件。
+比如您可以在 `onUpdate` 中根据某些条件来触发您定义的新事件，然后您在某些地方可以使用您定义的新事件中间件。
 
 ```ts
 import { defineEvent, Player, PlayerEvent } from "@infernus/core";
@@ -298,7 +298,8 @@ PlayerEvent.onUpdate(({ player, next }) => {
 
   if (!isDanger && health <= 10) {
     healthDangerMap.set(player, true);
-    return trigger(player, health);
+    const ret = trigger(player, health);
+    if (!ret) return false;
   }
   if (isDanger && health > 10) {
     healthDangerMap.delete(player);

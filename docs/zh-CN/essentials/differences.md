@@ -1,6 +1,30 @@
 # 差异
 
-差异指的是 `Infernus` 和 `pwn` 之间底层的一些差异。
+`Infernus` 和 原生开发之间的一些差异。
 
-- 用 `Streamer` 实现的`Object`，`GangZone` 来替代默认的具有上限的 `CreateObject` 等函数，这意味着你无法使用原来的函数，除非你自己实现。
-- 弃用了可以被 `JavaScript` 内置函数或第三方库实现的函数，比如 `Math.abs`， `strcmp`，`sqlite db`，`setTimer`， `setTimerEx` 等操作。
+## Streamer
+
+用 `Streamer` 替代了原生函数的`Object`，`GangZone`，`3dText`等所有`api`，这意味着您必须使用 `Streamer` 插件，原来的函数您自己开发实现，但强烈不建议，并且可能引发未知问题。
+
+## 自动销毁实例
+
+当游戏模式退出时，所有的 `Streamer` 实例，车辆实例，文本绘制，菜单会自动销毁，这意味着您不再需要重复的写大量的销毁函数。
+
+不过，假设您的实例需要在玩家退出游戏时销毁，您仍然需要手动销毁。
+
+## 弃用
+
+弃用了可以被 `JavaScript` 内置函数或第三方库实现的函数，比如 `Math.abs`， `strcmp`，`sqlite db`，`setTimer` 等操作。
+这意味着您应当使用 `JavaScript` 库，不再需要也不应该使用原生开发的一些插件，比如 `mysql，timerfix` 等。
+
+## 字符串获取
+
+对于大部分字符串获取，您不再需要像原生开发那样定义一个固定长度的数组。 `Infernus` 内部已经对常用的函数进行了处理，原理是定义了一个最大长度的字符串数组，然后自动迭代数组到第一个字节为 `0` 的点截取为字符串，比如 `GetPlayerName`，即 `player.getName()`。
+
+截取的方法来自国际化中的[实用函数](./i18n.md#实用函数)，如果您遇到一些场景类似的您不必再重复造轮子。
+
+## 颜色转换
+
+`Infernus` 底层的颜色转换使用了 `Peter Szombati` 的 [samp-node-lib](https://github.com/peterszombati/samp-node-lib) 源码，用于您在开发过程中调用某些函数时，使用更语义化的颜色，比如 `#fff`，`#ffffff`，`(r, g, b)`， `(r, g, b, a)`。
+
+如果您在某些场景，比如文本绘制使用了颜色值后，未按照您的预期结果呈现为黑色，您可以尝试换一种格式，比如将原有的`#fff`，改为 `(255,255,255,255)`，或者依旧使用原生开发的数字型格式。
