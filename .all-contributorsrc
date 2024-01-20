@@ -20,7 +20,17 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "cha5e369",
+      "name": "cha5e369",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77559597?v=4",
+      "profile": "https://github.com/cha5e369",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
-  "linkToUsage": false
+  "linkToUsage": false,
+  "commitConvention": "angular"
 }
