@@ -65,7 +65,7 @@ function sidebarEssentials(): DefaultTheme.SidebarItem[] {
     { text: "生命周期", link: "life-cycle" },
     { text: "国际化", link: "i18n" },
     { text: "对话框", link: "dialogs" },
-    { text: "差异", link: "differences" },
+    { text: "特性", link: "features" },
   ];
 }
 

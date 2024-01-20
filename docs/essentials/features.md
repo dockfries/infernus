@@ -1,6 +1,4 @@
-# Differences
-
-Some differences between `Infernus` and native development.
+# Features
 
 ## Streamer
 
@@ -25,6 +23,21 @@ The method of interception comes from the [practical functions](./i18n.md#practi
 
 ## Color conversion
 
-`Infernus` underlying color conversion uses the [Peter Szombati's samp-node-lib](https://github.com/peterszombati/samp-node-lib) source code,used to use more semantic colors when you call certain functions during development, such as `#fff`,`#ffffff`,`(r, g, b)`, `(r, g, b, a)`。
+`Infernus` underlying color conversion uses the [Peter Szombati's samp-node-lib](https://github.com/peterszombati/samp-node-lib) source code,used to use more semantic colors when you call certain functions during development, such as `#fff`,`#ffffff`,`(r, g, b)`, `(r, g, b, a)`.
 
 If it is not as expected in some scenes, it is rendered black, such as textdraw, after using color values, you can try a different format. For example, change the original `#fff` to`(255,255,255,255)`, or still use the native developed digital format.
+
+## Player attribute
+
+- `getFps()`：To obtain the player's current frame rate, you can only get `1` updates every `1` second, and it may be `0`.
+- `lastUpdateTick`：The timestamp of the player's last update.
+- `lastUpdateFpsTick`：The last updated `fps` timestamp of the player.
+- `lastDrunkLevel`：The last time the player updated the drunkenness level.
+
+## Pause event
+
+Built-in callback events for players to pause `onPause` and resume `onResume`. It is not necessarily suitable for `sa definitive edition` or Android version, and it is determined by timer and `onUpdate` with errors.
+
+:::tip
+The callback may also be mistakenly triggered when the player's network is not good.
+:::

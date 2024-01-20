@@ -152,6 +152,25 @@ PlayerEvent.onText(({ player, next }) => {
 });
 ```
 
+### Cancel
+
+::: tip
+All middleware functions for events defined by [defineEvent](#custom-event) can be canceled, and most existing callbacks are defined through it.
+:::
+
+This feature is commonly used when you only want to execute once or cancel at some point.
+
+```ts
+// Define an one-time command
+const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
+  console.log(
+    "This command is only executed once, and the next execution will not exist."
+  );
+  off();
+  return next();
+});
+```
+
 ## Get instance
 
 Usually, you may need to obtain all the object-oriented instances encapsulated by `Infernus`, such as player instances, according to `id`.
@@ -222,15 +241,6 @@ PlayerEvent.onCommandText(
     }
   }
 );
-
-// Define an one-time command
-const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
-  console.log(
-    "This command is only executed once, and the next execution will not exist."
-  );
-  off();
-  return next();
-});
 ```
 
 ### Before guard

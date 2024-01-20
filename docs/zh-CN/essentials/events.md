@@ -2,7 +2,7 @@
 
 `Infernus` 的事件贴近原生的事件，您应当前往 [Open Multiplayer](https://open.mp) 来参考原生开发的相关文档。
 
-## 基本示例
+## 基础示例
 
 以`OnGameModeInit`为例，在`Infernus`中即为`GameMode.onInit(callback)`。
 
@@ -143,6 +143,24 @@ PlayerEvent.onText(({ player, next }) => {
 });
 ```
 
+### 取消
+
+::: tip
+所有通过 [defineEvent](#自定义事件) 定义的事件的中间件函数都可以被取消，现有的绝大部分回调都是通过它定义的。
+:::
+
+这个特性对于只想执行一次或在某个时刻取消时很常用。
+
+```ts
+import { PlayerEvent } from "@infernus/core";
+// 定义一个一次性命令
+const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
+  console.log("这个命令只执行一次，下一次执行就不存在了");
+  off();
+  return next();
+});
+```
+
 ## 获取实例
 
 通常您可能需要获取所有或根据 `id` 来获取 `Infernus` 封装的面向对象的实例，例如玩家实例。
@@ -211,13 +229,6 @@ PlayerEvent.onCommandText(
     }
   }
 );
-
-// 定义一个一次性命令
-const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
-  console.log("这个命令只执行一次，下一次执行就不存在了");
-  off();
-  return next();
-});
 ```
 
 ### 前置守卫

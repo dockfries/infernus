@@ -51,6 +51,6 @@ function sidebarEssentials(): DefaultTheme.SidebarItem[] {
     { text: "Lifecycle", link: "life-cycle" },
     { text: "Internationalization", link: "i18n" },
     { text: "Dialogs", link: "dialogs" },
-    { text: "Differences", link: "differences" },
+    { text: "Features", link: "features" },
   ];
 }
