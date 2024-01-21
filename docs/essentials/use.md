@@ -1,6 +1,6 @@
 # Use
 
-**`GameMode.use` Is a method to simulate `filterscript', which is used for logical reuse into game mode.**
+**`GameMode.use` Is a method to simulate `filterscript`, which is used for logical reuse into GameMode.**
 
 ::: tip
 Because it is a simulation rather than a real `filterscript`, you cannot operate these scripts through commands such as `rcon loadfs/unloadfs`.
@@ -68,7 +68,7 @@ PlayerEvent.onCommandText("reloadMyScript", ({ next }) => {
 
 ::: warning
 If you use middleware functions in your script, you should cancel these intermediate functions when the script is unloaded, otherwise there will be a memory leak!
-The reason is simple: if you don't, the middleware will not be uninstalled as the game mode restarts or manually executes the restart script command, and each time a new intermediate function is added to the script's `load` function, which will lead to a memory leak!
+The reason is simple: if you don't, the middleware will not be uninstalled as the GameMode restarts or manually executes the restart script command, and each time a new intermediate function is added to the script's `load` function, which will lead to a memory leak!
 :::
 
 In addition, you should not call the `script.load()` or `script.unload()`，You should use the [load command](#load-command) to call.

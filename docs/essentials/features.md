@@ -6,7 +6,7 @@ The `Object`, `GangZone`, `3dText` and other `api` of native functions are repla
 
 ## Automatically destroy instance
 
-When the game mode exits, all the `Streamer` instances, vehicle instances, textdraw, and menus will be automatically destroyed, which means you no longer need to write a large number of destroy functions repeatedly.
+When the GameMode exits, all the `Streamer` instances, vehicle instances, textdraw, and menus will be automatically destroyed, which means you no longer need to write a large number of destroy functions repeatedly.
 
 However, assuming that your instance needs to be destroyed when the player quits the game, you still need to destroy it manually.
 

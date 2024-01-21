@@ -46,7 +46,7 @@ If you are unsure how to start a project, please refer to the [Quick Start](./qu
 
 | /   | Layer               | Description                                     |
 | --- | ------------------- | ----------------------------------------------- |
-| 1   | Application         | Game modes, such as free-roam or role-playing   |
+| 1   | Application         | GameMode, such as free-roam or role-play        |
 | 2   | Class Wrappers      | Functionality wrapped in classes                |
 | 3   | Functional Wrappers | Wrappers for libraries like `samp/omp/streamer` |
 | 4   | `Samp Node`         | Bridge to the underlying `SDK`                  |
