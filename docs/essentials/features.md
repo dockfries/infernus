@@ -36,7 +36,7 @@ If it is not as expected in some scenes, it is rendered black or white, such as 
 
 ## Pause event
 
-Built-in callback events for players to pause `onPause` and resume `onResume`. It is not necessarily suitable for `sa definitive edition` or Android version, and it is determined by timer and `onUpdate` with errors.
+Built-in callback events for players to pause `onPause` and resume `onResume`. It is not necessarily suitable for `sa definitive edition` or Android version, and it is determined by timer and `onUpdate` with error amount.
 
 :::tip
 The callback may also be mistakenly triggered when the player's network is not good.

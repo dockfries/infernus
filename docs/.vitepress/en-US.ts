@@ -56,5 +56,6 @@ function sidebarEssentials(): DefaultTheme.SidebarItem[] {
     { text: "Internationalization", link: "i18n" },
     { text: "Dialogs", link: "dialogs" },
     { text: "Features", link: "features" },
+    { text: "Use", link: "use" },
   ];
 }

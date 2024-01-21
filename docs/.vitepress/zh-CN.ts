@@ -70,6 +70,7 @@ function sidebarEssentials(): DefaultTheme.SidebarItem[] {
     { text: "国际化", link: "i18n" },
     { text: "对话框", link: "dialogs" },
     { text: "特性", link: "features" },
+    { text: "Use", link: "use" },
   ];
 }
 
