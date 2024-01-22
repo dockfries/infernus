@@ -163,10 +163,6 @@ importers:
   packages/mapandreas: {}
 
   packages/raknet:
-    dependencies:
-      iconv-lite:
-        specifier: ^0.6.3
-        version: 0.6.3
     devDependencies:
       "@infernus/core":
         specifier: workspace:^
