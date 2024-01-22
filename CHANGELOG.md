@@ -1,3 +1,16 @@
+# [0.10.0-beta.8](https://github.com/dockfries/infernus/compare/v0.10.0-beta.7...v0.10.0-beta.8) (2024-1-22)
+
+
+### Bug Fixes
+
+* **core:** valid str `-1`, weapon enum fist ([77df1c0](https://github.com/dockfries/infernus/commit/77df1c044ad4ab9f57d77a983db6c0bddbc2f0ad))
+* **docs:** actions config pnpm version ([6433787](https://github.com/dockfries/infernus/commit/6433787b636e007f0561f51ccc291d2cc81f8499))
+* **raknet:** error patch name ([a39fa56](https://github.com/dockfries/infernus/commit/a39fa56917cfc40740c67918200482c6254e5da6))
+* **raknet:** invalid sync decorator ([5852dd1](https://github.com/dockfries/infernus/commit/5852dd12a103957199b528c8dd80bd5771f503ca))
+* **raknet:** pass array/string through new polyfill ([f61eaf2](https://github.com/dockfries/infernus/commit/f61eaf291ec27c3aa45983e39c5119e1034e97e7))
+
+
+
 # [0.10.0-beta.7](https://github.com/dockfries/infernus/compare/v0.10.0-beta.6...v0.10.0-beta.7) (2023-12-02)
 
 
