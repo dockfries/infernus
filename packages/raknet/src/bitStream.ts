@@ -8,6 +8,8 @@ import {
   readStringX,
   convertToByteString,
   patchRakNetNatives,
+  patchRakNetRead,
+  patchRakNetWrite,
 } from "raknet/utils";
 import type { BitStreamRaw, Vector3, Vector4 } from "./types";
 import { PR_MAX_WEAPON_SLOTS } from "./defines";
@@ -66,13 +68,13 @@ export class BitStream {
   }
 
   emulateIncomingPacket(player: number | Player) {
-    const id = typeof player === "number" ? player : player.id;
-    patchRakNetNatives(RakNetNatives.EmulateIncomingPacket, this.id, id);
+    const pid = typeof player === "number" ? player : player.id;
+    patchRakNetNatives(RakNetNatives.EmulateIncomingPacket, this.id, pid);
   }
 
   emulateIncomingRPC(player: number | Player, rpcId: number) {
-    const id = typeof player === "number" ? player : player.id;
-    patchRakNetNatives(RakNetNatives.EmulateIncomingRpc, this.id, id, rpcId);
+    const pid = typeof player === "number" ? player : player.id;
+    patchRakNetNatives(RakNetNatives.EmulateIncomingRpc, this.id, pid, rpcId);
   }
 
   newCopy() {
@@ -132,262 +134,242 @@ export class BitStream {
     return patchRakNetNatives(RakNetNatives.GetNumberOfBitsAllocated, this.id);
   }
 
-  readValue(
-    ...types: (PacketRpcValueType | [PacketRpcValueType, number])[]
-  ): number | number[] | (number | number[])[] {
-    const ret: any[] = [];
+  readValue(...types: (PacketRpcValueType | [PacketRpcValueType, number])[]) {
+    const ret: (number | boolean | number[])[] = [];
     types.forEach((item) => {
       const isPlaceholder = Array.isArray(item);
       const type = isPlaceholder ? item[0] : item;
-      ret.push(
-        patchRakNetNatives(
-          RakNetNatives.ReadValue,
-          this.id,
-          type,
-          isPlaceholder ? item[1] : 0
-        )
-      );
+      const value = patchRakNetRead(this.id, type, isPlaceholder ? item[1] : 0);
+      ret.push(value);
     });
-    if (ret.length === 1) return ret[0];
-    return ret;
+    return ret.length === 1 ? ret[0] : ret;
   }
 
   writeValue(
-    ...types: (
-      | [
-          PacketRpcValueType,
-          number | number[] | boolean | (number | number[] | boolean)[]
-        ]
-      | [
-          PacketRpcValueType,
-          number | number[] | boolean | (number | number[] | boolean)[],
-          number
-        ]
-    )[]
+    ...types: [PacketRpcValueType, number | number[] | boolean, number?][]
   ) {
+    const ret: boolean[] = [];
     types.forEach((item) => {
-      patchRakNetNatives(
-        RakNetNatives.WriteValue,
-        this.id,
-        item[0],
-        item[1],
-        item[2] || 0
-      );
+      const [type, value, length = 0] = item;
+
+      const isSuccess = patchRakNetWrite(this.id, type, value, length);
+      ret.push(isSuccess);
     });
+    return ret.length === 1 ? ret[0] : ret;
   }
 
   // macros
 
   readInt8() {
-    return this.readValue(this.id, PacketRpcValueType.Int8);
+    return this.readValue(PacketRpcValueType.Int8);
   }
 
   readInt16() {
-    return this.readValue(this.id, PacketRpcValueType.Int16);
+    return this.readValue(PacketRpcValueType.Int16);
   }
 
   readInt32() {
-    return this.readValue(this.id, PacketRpcValueType.Int32);
+    return this.readValue(PacketRpcValueType.Int32);
   }
 
   readUint8() {
-    return this.readValue(this.id, PacketRpcValueType.UInt8);
+    return this.readValue(PacketRpcValueType.UInt8);
   }
 
   readUint16() {
-    return this.readValue(this.id, PacketRpcValueType.UInt16);
+    return this.readValue(PacketRpcValueType.UInt16);
   }
 
   readUint32() {
-    return this.readValue(this.id, PacketRpcValueType.UInt32);
+    return this.readValue(PacketRpcValueType.UInt32);
   }
 
   readFloat() {
-    return this.readValue(this.id, PacketRpcValueType.Float);
+    return this.readValue(PacketRpcValueType.Float);
   }
 
   readBool() {
-    return this.readValue(this.id, PacketRpcValueType.Bool);
+    return this.readValue(PacketRpcValueType.Bool);
   }
 
   readString(size = 1024) {
-    return readStringX(this, size);
+    return readStringX(this, size, PacketRpcValueType.String);
   }
 
   readCompressedInt8() {
-    return this.readValue(this.id, PacketRpcValueType.CInt8);
+    return this.readValue(PacketRpcValueType.CInt8);
   }
 
   readCompressedInt16() {
-    return this.readValue(this.id, PacketRpcValueType.CInt16);
+    return this.readValue(PacketRpcValueType.CInt16);
   }
 
   readCompressedInt32() {
-    return this.readValue(this.id, PacketRpcValueType.CInt32);
+    return this.readValue(PacketRpcValueType.CInt32);
   }
 
   readCompressedUint8() {
-    return this.readValue(this.id, PacketRpcValueType.CUInt8);
+    return this.readValue(PacketRpcValueType.CUInt8);
   }
 
   readCompressedUint16() {
-    return this.readValue(this.id, PacketRpcValueType.CUInt16);
+    return this.readValue(PacketRpcValueType.CUInt16);
   }
 
   readCompressedUint32() {
-    return this.readValue(this.id, PacketRpcValueType.CUInt32);
+    return this.readValue(PacketRpcValueType.CUInt32);
   }
 
   readCompressedFloat() {
-    return this.readValue(this.id, PacketRpcValueType.CFloat);
+    return this.readValue(PacketRpcValueType.CFloat);
   }
 
   readCompressedBool() {
-    return this.readValue(this.id, PacketRpcValueType.CBool);
+    return this.readValue(PacketRpcValueType.CBool);
   }
 
-  readCompressedString(size: number) {
-    return readStringX(this, size, true);
+  readCompressedString(size: number, charset?: string) {
+    return readStringX(this, size, PacketRpcValueType.CString, charset);
   }
 
   readBits(size: number) {
-    return this.readValue(this.id, [PacketRpcValueType.Bits, size]);
+    return this.readValue([PacketRpcValueType.Bits, size]);
   }
 
   readFloat3() {
-    return this.readValue(this.id, PacketRpcValueType.Float3);
+    return this.readValue(PacketRpcValueType.Float3);
   }
 
   readFloat4() {
-    return this.readValue(this.id, PacketRpcValueType.Float4);
+    return this.readValue(PacketRpcValueType.Float4);
   }
 
   readVector() {
-    return this.readValue(this.id, PacketRpcValueType.Vector);
+    return this.readValue(PacketRpcValueType.Vector);
   }
 
   readNormQuat() {
-    return this.readValue(this.id, PacketRpcValueType.NormQuat);
+    return this.readValue(PacketRpcValueType.NormQuat);
   }
 
-  readString8() {
-    return readStringX(this, 8);
+  readString8(charset?: string) {
+    return readStringX(this, 8, PacketRpcValueType.String8, charset);
   }
 
-  readString32() {
-    return readStringX(this, 32);
+  readString32(charset?: string) {
+    return readStringX(this, 32, PacketRpcValueType.String32, charset);
   }
 
   writeInt8(value: number) {
-    this.writeValue([PacketRpcValueType.Int8, value]);
+    return this.writeValue([PacketRpcValueType.Int8, value]) as boolean;
   }
 
   writeInt16(value: number) {
-    this.writeValue([PacketRpcValueType.Int16, value]);
+    return this.writeValue([PacketRpcValueType.Int16, value]) as boolean;
   }
 
   writeInt32(value: number) {
-    this.writeValue([PacketRpcValueType.Int32, value]);
+    return this.writeValue([PacketRpcValueType.Int32, value]) as boolean;
   }
 
   writeUint8(value: number) {
-    this.writeValue([PacketRpcValueType.UInt8, value]);
+    return this.writeValue([PacketRpcValueType.UInt8, value]) as boolean;
   }
 
   writeUint16(value: number) {
-    this.writeValue([PacketRpcValueType.UInt16, value]);
+    return this.writeValue([PacketRpcValueType.UInt16, value]) as boolean;
   }
 
   writeUint32(value: number) {
-    this.writeValue([PacketRpcValueType.UInt32, value]);
+    return this.writeValue([PacketRpcValueType.UInt32, value]) as boolean;
   }
 
   writeFloat(value: number) {
-    this.writeValue([PacketRpcValueType.Float, value]);
+    return this.writeValue([PacketRpcValueType.Float, value]) as boolean;
   }
 
   writeBool(value: boolean) {
-    this.writeValue([PacketRpcValueType.Bool, value]);
+    return this.writeValue([PacketRpcValueType.Bool, value]) as boolean;
   }
 
   writeString(value: string | number[], length = 1024) {
-    this.writeValue([
+    return this.writeValue([
       PacketRpcValueType.String,
       convertToByteString(value, length),
-    ]);
+    ]) as boolean;
   }
 
   writeCompressedInt8(value: number) {
-    this.writeValue([PacketRpcValueType.CInt8, value]);
+    return this.writeValue([PacketRpcValueType.CInt8, value]) as boolean;
   }
 
   writeCompressedInt16(value: number) {
-    this.writeValue([PacketRpcValueType.CInt16, value]);
+    return this.writeValue([PacketRpcValueType.CInt16, value]) as boolean;
   }
 
   writeCompressedInt32(value: number) {
-    this.writeValue([PacketRpcValueType.CInt32, value]);
+    return this.writeValue([PacketRpcValueType.CInt32, value]) as boolean;
   }
 
   writeCompressedUint8(value: number) {
-    this.writeValue([PacketRpcValueType.CUInt8, value]);
+    return this.writeValue([PacketRpcValueType.CUInt8, value]) as boolean;
   }
 
   writeCompressedUint16(value: number) {
-    this.writeValue([PacketRpcValueType.CUInt16, value]);
+    return this.writeValue([PacketRpcValueType.CUInt16, value]) as boolean;
   }
 
   writeCompressedUint32(value: number) {
-    this.writeValue([PacketRpcValueType.CUInt32, value]);
+    return this.writeValue([PacketRpcValueType.CUInt32, value]) as boolean;
   }
 
   writeCompressedFloat(value: number) {
-    this.writeValue([PacketRpcValueType.CFloat, value]);
+    return this.writeValue([PacketRpcValueType.CFloat, value]) as boolean;
   }
 
   writeCompressedBool(value: boolean) {
-    this.writeValue([PacketRpcValueType.CBool, value]);
+    return this.writeValue([PacketRpcValueType.CBool, value]) as boolean;
   }
 
   writeCompressedString(value: string, length = 1024) {
-    this.writeValue([
+    return this.writeValue([
       PacketRpcValueType.CString,
       convertToByteString(value, length),
-    ]);
+    ]) as boolean;
   }
 
   writeBits(value: number, size: number) {
-    this.writeValue([PacketRpcValueType.Bits, value, size]);
+    return this.writeValue([PacketRpcValueType.Bits, value, size]) as boolean;
   }
 
   writeFloat3(value: Vector3<number>) {
-    this.writeValue([PacketRpcValueType.Float3, value]);
+    return this.writeValue([PacketRpcValueType.Float3, value]) as boolean;
   }
 
   writeFloat4(value: Vector4<number>) {
-    this.writeValue([PacketRpcValueType.Float4, value]);
+    return this.writeValue([PacketRpcValueType.Float4, value]) as boolean;
   }
 
   writeVector(value: Vector3<number>) {
-    this.writeValue([PacketRpcValueType.Vector, value]);
+    return this.writeValue([PacketRpcValueType.Vector, value]) as boolean;
   }
 
   writeNormQuat(value: Vector4<number>) {
-    this.writeValue([PacketRpcValueType.NormQuat, value]);
+    return this.writeValue([PacketRpcValueType.NormQuat, value]) as boolean;
   }
 
   writeString8(value: string | number[]) {
-    this.writeValue([
+    return this.writeValue([
       PacketRpcValueType.String8,
       convertToByteString(value, 8),
-    ]);
+    ]) as boolean;
   }
 
   writeString32(value: string | number[]) {
-    this.writeValue([
+    return this.writeValue([
       PacketRpcValueType.String32,
       convertToByteString(value, 32),
-    ]);
+    ]) as boolean;
   }
 
   // static stocks

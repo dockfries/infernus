@@ -1,4 +1,4 @@
-import { defineEvent } from "core/controllers";
+import { defineEvent } from "@infernus/core";
 import { BitStream } from "raknet/bitStream";
 import type { BitStreamRaw } from "raknet/types";
 

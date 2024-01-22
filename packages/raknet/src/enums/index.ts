@@ -76,8 +76,6 @@ export enum RakNetNatives {
   GetNumberOfBytesUsed,
   GetNumberOfUnreadBits,
   GetNumberOfBitsAllocated,
-  WriteValue,
-  ReadValue,
 }
 
 export enum PacketIdList {
