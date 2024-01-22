@@ -1,6 +1,7 @@
+import type { BitStream } from "raknet/bitStream";
 import type { PacketIdList } from "raknet/enums";
 
-export const syncId = (value: PacketIdList): ClassDecorator => {
+export const SyncId = (value: PacketIdList): ClassDecorator => {
   return (target: any) => {
     Object.defineProperty(target.prototype, "_packetId", {
       configurable: false,
@@ -11,27 +12,40 @@ export const syncId = (value: PacketIdList): ClassDecorator => {
   };
 };
 
-export const syncReader: MethodDecorator = (
+export const SyncReader: MethodDecorator = (
   target: any,
-  propertyKey: string | symbol
+  propertyKey: string | symbol,
+  descriptor: PropertyDescriptor
 ) => {
-  const rawFunc = target[propertyKey];
-  target[propertyKey] = (...args: any) => {
-    target.bs.resetReadPointer();
-    const packetId = target.bs.readBits(8);
-    if (packetId !== target.prototype._packetId) return null;
-    return rawFunc(...args);
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  const originalMethod = descriptor.value as Function;
+
+  descriptor.value = function (this: any, ...args: any[]) {
+    const bs: BitStream = this.bs;
+
+    bs.resetReadPointer();
+    const packetId = bs.readBits(8);
+
+    if (packetId !== this._packetId) return null;
+
+    return originalMethod.apply(this, args);
   };
 };
 
-export const syncWriter: MethodDecorator = (
+export const SyncWriter: MethodDecorator = (
   target: any,
-  propertyKey: string | symbol
+  propertyKey: string | symbol,
+  descriptor: PropertyDescriptor
 ) => {
-  const rawFunc = target[propertyKey];
-  target[propertyKey] = (...args: any) => {
-    target.bs.resetWritePointer();
-    target.bs.writeBits(8, target.prototype._packetId);
-    rawFunc(...args);
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  const originalMethod = descriptor.value;
+
+  descriptor.value = function (this: any, ...args: any[]) {
+    const bs: BitStream = this.bs;
+
+    bs.resetWritePointer();
+    bs.writeBits(this._packetId, 8);
+
+    originalMethod.apply(this, args);
   };
 };

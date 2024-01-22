@@ -1,15 +1,15 @@
 import { BitStream } from "raknet/bitStream";
-import { syncId, syncReader, syncWriter } from "raknet/decorators";
+import { SyncId, SyncReader, SyncWriter } from "raknet/decorators";
 import { PacketIdList, PacketRpcValueType } from "raknet/enums";
 import type { IOnFootSync, IPacketListSync } from "raknet/interfaces";
 
-@syncId(PacketIdList.OnFootSync)
+@SyncId(PacketIdList.OnFootSync)
 export class OnFootSync extends BitStream implements IPacketListSync {
   constructor(private bs: BitStream) {
     super(bs);
   }
 
-  @syncReader
+  @SyncReader
   readSync(outgoing = false) {
     const data: Partial<IOnFootSync> = {
       lrKey: 0,
@@ -113,10 +113,10 @@ export class OnFootSync extends BitStream implements IPacketListSync {
     return data as IOnFootSync | null;
   }
 
-  @syncWriter
+  @SyncWriter
   writeSync(data: IOnFootSync, outgoing = false) {
     this.bs.resetWritePointer();
-    this.bs.writeBits(8, PacketIdList.OnFootSync);
+    this.bs.writeBits(PacketIdList.OnFootSync, 8);
 
     if (outgoing) {
       if (data.lrKey) {

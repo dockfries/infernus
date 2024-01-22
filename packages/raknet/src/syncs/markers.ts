@@ -1,17 +1,17 @@
 import { BitStream } from "raknet/bitStream";
-import { syncId, syncReader, syncWriter } from "raknet/decorators";
+import { SyncId, SyncReader, SyncWriter } from "raknet/decorators";
 import { PacketIdList, PacketRpcValueType } from "raknet/enums";
 import type { IMarkersSync, IPacketListSync } from "raknet/interfaces";
 import type { Vector3 } from "raknet/types";
 import { LimitsEnum } from "@infernus/core";
 
-@syncId(PacketIdList.MarkersSync)
+@SyncId(PacketIdList.MarkersSync)
 export class MarkersSync extends BitStream implements IPacketListSync {
   constructor(private bs: BitStream) {
     super(bs);
   }
 
-  @syncReader
+  @SyncReader
   readSync() {
     const data: Partial<IMarkersSync> = {};
 
@@ -57,7 +57,7 @@ export class MarkersSync extends BitStream implements IPacketListSync {
     return data as IMarkersSync | null;
   }
 
-  @syncWriter
+  @SyncWriter
   writeSync(data: IMarkersSync) {
     this.bs.writeInt32(data.numberOfPlayers);
 

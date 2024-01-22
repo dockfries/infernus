@@ -1,15 +1,15 @@
 import { BitStream } from "raknet/bitStream";
-import { syncId, syncReader, syncWriter } from "raknet/decorators";
+import { SyncId, SyncReader, SyncWriter } from "raknet/decorators";
 import { PacketIdList, PacketRpcValueType } from "raknet/enums";
 import type { IPacketListSync, ISpectatingSync } from "raknet/interfaces";
 
-@syncId(PacketIdList.SpectatingSync)
+@SyncId(PacketIdList.SpectatingSync)
 export class SpectatingSync extends BitStream implements IPacketListSync {
   constructor(private bs: BitStream) {
     super(bs);
   }
 
-  @syncReader
+  @SyncReader
   readSync() {
     const data: Partial<ISpectatingSync> = {};
     [data.lrKey, data.udKey, data.keys, data.position] = this.bs.readValue(
@@ -22,7 +22,7 @@ export class SpectatingSync extends BitStream implements IPacketListSync {
     return data as ISpectatingSync | null;
   }
 
-  @syncWriter
+  @SyncWriter
   writeSync(data: ISpectatingSync) {
     this.bs.writeValue(
       [PacketRpcValueType.UInt16, data.lrKey],
