@@ -72,6 +72,8 @@ export class I18n {
 
   // Truncate the string to the EOS tag to get the actual valid data
   static getValidStr(byteArr: number[]) {
+    const end = byteArr.indexOf(0);
+    if (end === -1) return byteArr;
     return byteArr.slice(0, byteArr.indexOf(0));
   }
 

@@ -9,7 +9,7 @@ export enum WeaponEnum {
   REASON_DISCONNECT = 200,
   REASON_SUICIDE = 255,
 
-  WEAPON_FIST = 0,
+  FIST = 0,
   BRASSKNUCKLE = 1,
   GOLFCLUB = 2,
   NITESTICK = 3,
