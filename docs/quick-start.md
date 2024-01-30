@@ -8,10 +8,6 @@ It is strongly recommended that you use [infernus-starter](https://github.com/do
 
 You need to have a foundation for native `pawn` development and `node`.
 
-:::warning
-Due to the compatibility problem of `raknet`, which was initially mentioned in the introduction earlier, it is strongly not recommended to use it. You should also ignore it in subsequent scaffolding options.
-:::
-
 ### CLI
 
 The project uses `pnpm` to manage dependencies, so you need to install [pnpm](https://pnpm.io/).
@@ -23,7 +19,7 @@ pnpm create @infernus/app
 ```
 
 ::: tip
-Because the `github` `https api` is called inside the scaffolding, if your network environment is not good, you may not be able to create it smoothly. In this case, you can refer to [Manual creation](#Manual).
+Because the `github https api` is called inside the scaffolding, if your network environment is not good, you may not be able to create it smoothly. In this case, you can refer to [Manual creation](#Manual).
 :::
 
 ### Manual
@@ -58,7 +54,7 @@ The `so/ dll` depends on the environment in which you want to run the server, an
 
 3. Download [streamer plugin](https://github.com/samp-incognito/samp-streamer-plugin/releases), and later put `streamer.so/ dll` in the `plugins` folder.
 
-4. **(you should ignore this step unless the ecology is stable)**, download [raknet plugin](https://github.com/katursis/Pawn.RakNet/releases), and later put all files except the `.inc` suffix into the `components` folder.
+4. **(If you needs to use raknet)** download [raknet plugin](https://github.com/katursis/Pawn.RakNet/releases), and later put all files except the `.inc` suffix into the `components` folder.
    1. replace `gamemodes/polyfill_raknet.amx` with `gamemodes/polyfill.amx`, **or** modify the `pawn.main_scripts` section of the root file `config.json`.
 
 ```json

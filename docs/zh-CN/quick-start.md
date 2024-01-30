@@ -8,10 +8,6 @@
 
 您需要对原生 `pawn` 开发和 `node` 有一定的基础。
 
-:::warning
-由于 `raknet` 兼容性问题，此前在介绍中初步提及到，所以强烈不建议您使用。您在后续脚手架选项中也应当忽略它。
-:::
-
 ### 脚手架
 
 项目采用了 `pnpm` 来管理依赖，所以您需要安装[pnpm](https://pnpm.io/)。
@@ -23,7 +19,7 @@ pnpm create @infernus/app
 ```
 
 ::: tip
-由于脚手架内部调用了 `github` 的 `https api`，如果您网络环境条件不佳，可能无法顺利创建，此时您可以参考[手动创建](#手动)。
+由于脚手架内部调用了 `github https api`，如果您网络环境条件不佳，可能无法顺利创建，此时您可以参考[手动创建](#手动)。
 :::
 
 ### 手动
@@ -58,7 +54,7 @@ vim config.json # 您不一定需要用vim,任意编辑器都可以
 
 3. 下载[streamer 插件](https://github.com/samp-incognito/samp-streamer-plugin/releases)，稍后将`streamer.so/dll`放入插件文件夹。
 
-4. **(您应当忽略这一步，除非生态已经稳定)**，下载[raknet 插件](https://github.com/katursis/Pawn.RakNet/releases)，稍后将除了`.inc`后缀的文件都放入`components`文件夹。
+4. **(如果您需要用到 raknet)**，下载[raknet 插件](https://github.com/katursis/Pawn.RakNet/releases)，稍后将除了`.inc`后缀的文件都放入`components`文件夹。
    1. 将`gamemodes/polyfill_raknet.amx`替换为`gamemodes/polyfill.amx`，**或者**修改根文件`config.json`中的 `pawn.main_scripts` 部分。
 
 ```json
