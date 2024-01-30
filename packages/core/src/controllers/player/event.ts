@@ -9,12 +9,14 @@ import type {
   WeaponEnum,
 } from "../../enums";
 import { InvalidEnum } from "../../enums";
+import { Dialog } from "./dialog";
 
 export const [onConnect] = defineEvent({
   name: "OnPlayerConnect",
   beforeEach(id: number) {
     const player = new Player(id);
     Player.players.set(id, player);
+    Dialog.close(player);
     return { player };
   },
 });

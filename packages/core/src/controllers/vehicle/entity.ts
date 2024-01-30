@@ -179,9 +179,6 @@ export class Vehicle {
     }
     return v.SetVehicleNumberPlate(this.id, numberplate);
   }
-  static getPoolSize(): number {
-    return v.GetVehiclePoolSize();
-  }
   changeColors(color1: string | number, color2: string | number): number {
     if (this.id === -1) return 0;
     return v.ChangeVehicleColors(this.id, color1, color2);

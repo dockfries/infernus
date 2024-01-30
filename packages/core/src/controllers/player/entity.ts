@@ -418,9 +418,6 @@ export class Player {
   ): number {
     return f.PlayerPlaySound(this.id, soundid, relativeX, relativeY, relativeZ);
   }
-  static getPoolSize(): number {
-    return f.GetPlayerPoolSize();
-  }
   static getMaxPlayers(): number {
     return f.GetMaxPlayers();
   }

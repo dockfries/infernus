@@ -1,7 +1,6 @@
 import { Player } from "./entity";
 import { PlayerStateEnum } from "../../enums";
 import { defineEvent } from "../bus";
-import { Dialog } from "./dialog";
 import { onConnect, onDisconnect, onUpdate } from "./event";
 
 let pauseChecker: null | NodeJS.Timeout = null;
@@ -23,7 +22,7 @@ export const [onResume, triggerOnResume] = defineEvent({
 });
 
 onConnect(({ next }) => {
-  if (!pauseChecker && Player.getPoolSize() > -1) {
+  if (!pauseChecker && Player.getInstances().length) {
     pauseChecker = setInterval(() => {
       const activePlayers = Player.getInstances().filter((p) => {
         const activeState = p.getState() !== PlayerStateEnum.NONE;
@@ -41,12 +40,11 @@ onConnect(({ next }) => {
   return next();
 });
 
-onDisconnect(({ player, next }) => {
-  if (pauseChecker && Player.getPoolSize() <= 0) {
+onDisconnect(({ next }) => {
+  if (pauseChecker && Player.getInstances().length <= 1) {
     clearInterval(pauseChecker);
     pauseChecker = null;
   }
-  Dialog.close(player);
   return next();
 });
 

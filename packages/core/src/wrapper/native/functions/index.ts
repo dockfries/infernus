@@ -99,18 +99,6 @@ export const VectorSize = (
   return callNativeFloat("VectorSize", "ffffff", x1, y1, z1, x2, y2, z2);
 };
 
-export const GetPlayerPoolSize = (): number => {
-  return callNative("GetPlayerPoolSize", "");
-};
-
-export const GetVehiclePoolSize = (): number => {
-  return callNative("GetVehiclePoolSize", "");
-};
-
-export const GetActorPoolSize = (): number => {
-  return callNative("GetActorPoolSize", "");
-};
-
 export const SetGameModeText = (string: string): number => {
   return callNative("SetGameModeText", "s", string);
 };
