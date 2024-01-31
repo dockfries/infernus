@@ -1,3 +1,12 @@
+# [0.10.0-beta.10](https://github.com/dockfries/infernus/compare/v0.10.0-beta.9...v0.10.0-beta.10) (2024-1-31)
+
+
+### Features
+
+* **streamer:** add `DynamicObjectNoCameraCollision` ([a90e10a](https://github.com/dockfries/infernus/commit/a90e10a9f8d9344b06be0d253f5de630fe02c4a7))
+
+
+
 # [0.10.0-beta.9](https://github.com/dockfries/infernus/compare/v0.10.0-beta.8...v0.10.0-beta.9) (2024-1-31)
 
 
