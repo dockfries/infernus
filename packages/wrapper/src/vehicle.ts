@@ -78,6 +78,13 @@ export const GetVehicleOccupiedTick = (vehicleId: number): number => {
   return samp.callNative("GetVehicleOccupiedTick", "i", vehicleId);
 };
 
+export const SetVehicleOccupiedTick = (
+  vehicleId: number,
+  ticks: number
+): number => {
+  return samp.callNative("SetVehicleOccupiedTick", "ii", vehicleId, ticks);
+};
+
 export const HasVehicleBeenOccupied = (vehicleId: number): boolean => {
   return Boolean(samp.callNative("HasVehicleBeenOccupied", "i", vehicleId));
 };
@@ -90,8 +97,28 @@ export const GetVehicleRespawnTick = (vehicleId: number): number => {
   return samp.callNative("GetVehicleRespawnTick", "i", vehicleId);
 };
 
+export const SetVehicleRespawnTick = (
+  vehicleId: number,
+  ticks: number
+): number => {
+  return samp.callNative("SetVehicleRespawnTick", "ii", vehicleId, ticks);
+};
+
 export const IsVehicleDead = (vehicleId: number): boolean => {
   return Boolean(samp.callNative("IsVehicleDead", "i", vehicleId));
+};
+
+export const SetVehicleDead = (vehicleId: number, dead: boolean) => {
+  return Boolean(samp.callNative("SetVehicleDead", "ii", vehicleId, dead));
+};
+
+export const SetVehicleBeenOccupied = (
+  vehicleId: number,
+  occupied: boolean
+) => {
+  return Boolean(
+    samp.callNative("SetVehicleBeenOccupied", "ii", vehicleId, occupied)
+  );
 };
 
 export const ToggleVehicleSirenEnabled = (
@@ -99,6 +126,18 @@ export const ToggleVehicleSirenEnabled = (
   enabled: boolean
 ): number => {
   return samp.callNative("ToggleVehicleSirenEnabled", "ii", vehicleId, enabled);
+};
+
+export const SetVehicleParamsSirenState = (
+  vehicleId: number,
+  enabled: boolean
+): number => {
+  return samp.callNative(
+    "SetVehicleParamsSirenState",
+    "ii",
+    vehicleId,
+    enabled
+  );
 };
 
 export const IsVehicleSirenEnabled = (vehicleId: number): boolean => {
@@ -150,4 +189,12 @@ export const GetVehicleMatrix = (vehicleId: number): IVehMatrix => {
     atZ = 0,
   ]: number[] = samp.callNative("GetVehicleMatrix", "iFFFFFFFFF", vehicleId);
   return { rightX, rightY, rightZ, upX, upY, upZ, atX, atY, atZ };
+};
+
+export const GetRandomVehicleColorPair = (modelId: number) => {
+  const [color1 = 0, color2 = 0, color3 = 0, color4 = 0]: number[] =
+    samp.callNative("GetRandomCarColPair", "iIIII", modelId);
+  return {
+    color: [color1, color2, color3, color4] as [number, number, number, number],
+  };
 };

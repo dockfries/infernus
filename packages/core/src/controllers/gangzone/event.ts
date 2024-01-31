@@ -50,9 +50,31 @@ const [onPlayerLeavePlayer] = defineEvent({
   },
 });
 
+const [onPlayerClickGlobal] = defineEvent({
+  name: "OnPlayerClickGangZone",
+  beforeEach(pid: number, gid: number) {
+    return {
+      player: Player.getInstance(pid)!,
+      gangZone: GangZone.getInstance(gid, true)!,
+    };
+  },
+});
+
+const [onPlayerClickPlayer] = defineEvent({
+  name: "OnPlayerClickPlayerGangZone",
+  beforeEach(pid: number, gid: number) {
+    return {
+      player: Player.getInstance(pid)!,
+      gangZone: GangZone.getInstance(gid, false)!,
+    };
+  },
+});
+
 export const GangZoneEvent = Object.freeze({
   onPlayerEnterGlobal,
   onPlayerLeaveGlobal,
   onPlayerEnterPlayer,
   onPlayerLeavePlayer,
+  onPlayerClickGlobal,
+  onPlayerClickPlayer,
 });

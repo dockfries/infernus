@@ -1,5 +1,5 @@
 import { I18n } from "core/controllers/i18n";
-import { Player } from "../controllers/player/entity";
+import type { Player } from "../controllers/player/entity";
 import { LimitsEnum } from "../enums";
 import type { IDialog } from "../interfaces";
 import { rgba } from "./colorUtils";
@@ -20,7 +20,7 @@ export const SendClientMessage = (
   msg: string
 ): number => {
   const res = processMsg(msg, player.charset);
-  return callNative(
+  return samp.callNative(
     "SendClientMessage",
     `ii${res[0]}`,
     player.id,
@@ -30,10 +30,11 @@ export const SendClientMessage = (
 };
 
 export const SendClientMessageToAll = (
+  players: Array<Player>,
   color: string | number,
   msg: string
 ): number => {
-  Player.getInstances().forEach((p) => SendClientMessage(p, color, msg));
+  players.forEach((p) => SendClientMessage(p, color, msg));
   return 1;
 };
 
@@ -43,7 +44,7 @@ export const SendPlayerMessageToPlayer = (
   message: string
 ): number => {
   const res = processMsg(message, player.charset);
-  return callNative(
+  return samp.callNative(
     "SendPlayerMessageToPlayer",
     `ii${res[0]}`,
     player.id,
@@ -53,10 +54,11 @@ export const SendPlayerMessageToPlayer = (
 };
 
 export const SendPlayerMessageToAll = (
+  players: Array<Player>,
   senderId: number,
   message: string
 ): number => {
-  Player.getInstances().forEach((p) => {
+  players.forEach((p) => {
     SendPlayerMessageToPlayer(p, senderId, message);
   });
   return 1;
@@ -73,7 +75,7 @@ export const ShowPlayerDialog = (
   const [, processInfo] = processMsg(info || "", charset);
   const [, processButton1] = processMsg(button1 || "", charset);
   const [, processButton2] = processMsg(button2 || "", charset);
-  return callNative(
+  return samp.callNative(
     "ShowPlayerDialog",
     `iii${flag.repeat(4)}`,
     player.id,
@@ -87,7 +89,7 @@ export const ShowPlayerDialog = (
 };
 
 export const GetPlayerName = (player: Player): string => {
-  const buf: number[] = callNative(
+  const buf: number[] = samp.callNative(
     "GetPlayerName",
     "iAi",
     player.id,
@@ -97,7 +99,7 @@ export const GetPlayerName = (player: Player): string => {
 };
 
 export const SetPlayerName = (player: Player, name: string): number => {
-  return callNative(
+  return samp.callNative(
     "SetPlayerName",
     "ia",
     player.id,
@@ -111,7 +113,7 @@ export const BanEx = (
   charset: string
 ): number => {
   const buf = I18n.encodeToBuf(reason, charset);
-  return callNative("BanEx", "ia", playerId, buf);
+  return samp.callNative("BanEx", "ia", playerId, buf);
 };
 
 export const CreateDynamic3DTextLabel = (
@@ -133,7 +135,7 @@ export const CreateDynamic3DTextLabel = (
   priority: number
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
-  return callNative(
+  return samp.callNative(
     "CreateDynamic3DTextLabel",
     "aiffffiiiiiifii",
     buf,
@@ -173,7 +175,7 @@ export const CreateDynamic3DTextLabelEx = (
   charset: string
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
-  return callNative(
+  return samp.callNative(
     "CreateDynamic3DTextLabelEx",
     "aiffffiiifaaaaiiiii",
     buf,
@@ -205,14 +207,14 @@ export const UpdateDynamic3DTextLabelText = (
   charset: string
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
-  return callNative("UpdateDynamic3DTextLabelText", "iia", id, color, buf);
+  return samp.callNative("UpdateDynamic3DTextLabelText", "iia", id, color, buf);
 };
 
 export const GetDynamic3DTextLabelText = (
   id: number,
   charset: string
 ): string => {
-  const buf: number[] = callNative(
+  const buf: number[] = samp.callNative(
     "GetDynamic3DTextLabelText",
     "iAi",
     id,
@@ -236,7 +238,7 @@ export const SetDynamicObjectMaterialText = (
 ): number => {
   const textBuf = I18n.encodeToBuf(text, charset);
   const fontFaceBuf = I18n.encodeToBuf(fontFace, charset);
-  return callNative(
+  return samp.callNative(
     "SetDynamicObjectMaterialText",
     "iiaiaiiiii",
     objectId,
@@ -265,14 +267,14 @@ export const GetDynamicObjectMaterialText = (
     fontColor,
     backColor,
     textAlignment,
-  ]: [number[], number, number[], number, number, number, number] = callNative(
+  ] = samp.callNative(
     "GetDynamicObjectMaterialText",
     "iiAIAIIIIIii",
     objectId,
     materialIndex,
     2048,
     32
-  );
+  ) as [number[], number, number[], number, number, number, number];
   const textStr = I18n.decodeFromBuf(text, charset);
   const fontFaceStr = I18n.decodeFromBuf(fontFace, charset);
   return {
@@ -285,5 +287,3 @@ export const GetDynamicObjectMaterialText = (
     textAlignment,
   };
 };
-
-export const { callNative, callNativeFloat } = samp;

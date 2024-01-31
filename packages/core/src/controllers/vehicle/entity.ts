@@ -2,7 +2,7 @@ import type { CarModTypeEnum, VehicleModelInfoEnum } from "core/enums";
 import { LimitsEnum } from "core/enums";
 import type { TPos } from "core/types";
 import type { IVehicle } from "core/interfaces";
-import { Player } from "../player";
+import type { Player } from "../player/entity";
 import { isValidPaintJob, isValidVehComponent } from "core/utils/vehicleUtils";
 import * as v from "core/wrapper/native/functions";
 
@@ -183,14 +183,20 @@ export class Vehicle {
     if (this.id === -1) return 0;
     return v.ChangeVehicleColors(this.id, color1, color2);
   }
-  setVelocity(X: number, Y: number, Z: number): number {
-    if (this.id === -1) return 0;
+  setVelocity(X: number, Y: number, Z: number) {
+    if (this.id === -1) return false;
     return v.SetVehicleVelocity(this.id, X, Y, Z);
   }
   getVelocity(): void | TPos {
     if (this.id === -1) return;
     const [x, y, z] = v.GetVehicleVelocity(this.id);
     return { x, y, z };
+  }
+  getSpeed(magic = 180.0) {
+    if (this.id === -1) return 0.0;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { x, y, z } = this.getVelocity()!;
+    return Math.sqrt(x * x + y * y + z * z) * magic;
   }
   setAngularVelocity(X: number, Y: number, Z: number): number {
     if (this.id === -1) return 0;
@@ -372,13 +378,13 @@ export class Vehicle {
     return w.GetVehicleSirenState(this.id);
   }
   static getModelsUsed = w.GetVehicleModelsUsed;
-  getDriver() {
+  getDriver(players: Map<number, Player>) {
     if (this.id === -1) return;
-    return Player.players.get(w.GetVehicleDriver(this.id));
+    return players.get(w.GetVehicleDriver(this.id));
   }
-  getLastDriver() {
+  getLastDriver(players: Map<number, Player>) {
     if (this.id === -1) return;
-    return Player.players.get(w.GetVehicleLastDriver(this.id));
+    return players.get(w.GetVehicleLastDriver(this.id));
   }
   static getModelCount = w.GetVehicleModelCount;
   isSirenEnabled(): boolean {
@@ -388,13 +394,29 @@ export class Vehicle {
     if (this.id === -1) return 0;
     return w.ToggleVehicleSirenEnabled(this.id, enabled);
   }
+  setParamsSirenState(enabled: boolean): number {
+    if (this.id === -1) return 0;
+    return w.SetVehicleParamsSirenState(this.id, enabled);
+  }
   isDead(): boolean {
     if (this.id === -1) return true;
     return w.IsVehicleDead(this.id);
   }
+  setDead(dead: boolean): boolean {
+    if (this.id === -1) return false;
+    return w.SetVehicleDead(this.id, dead);
+  }
+  setBeenOccupied(occupied: boolean) {
+    if (this.id === -1) return false;
+    return w.SetVehicleBeenOccupied(this.id, occupied);
+  }
   getRespawnTick(): number {
     if (this.id === -1) return 0;
     return w.GetVehicleRespawnTick(this.id);
+  }
+  setRespawnTick(ticks: number) {
+    if (this.id === -1) return false;
+    return w.SetVehicleRespawnTick(this.id, ticks);
   }
   isOccupied(): boolean {
     if (this.id === -1) return false;
@@ -407,6 +429,10 @@ export class Vehicle {
   getOccupiedTick(): number {
     if (this.id === -1) return 0;
     return w.GetVehicleOccupiedTick(this.id);
+  }
+  setOccupiedTick(ticks: number): number {
+    if (this.id === -1) return 0;
+    return w.SetVehicleOccupiedTick(this.id, ticks);
   }
   getCab(): number {
     if (this.id === -1) return 0;
@@ -466,6 +492,15 @@ export class Vehicle {
   getSpawnInfo() {
     if (this.id === -1) return;
     return w.GetVehicleSpawnInfo(this.id);
+  }
+
+  getRandomColorPair() {
+    if (this.id === -1) return;
+    return w.GetRandomVehicleColorPair(this.getModel());
+  }
+
+  static getRandomColorPair(modelId: number) {
+    return w.GetRandomVehicleColorPair(modelId);
   }
 
   static getInstance(id: number) {

@@ -41,7 +41,7 @@ onItemStreamOut(({ type, id, forPlayer, next }) => {
   return next();
 });
 
-const [onPlayerPickUpDynamicPickup] = defineEvent({
+const [onPlayerPickUp] = defineEvent({
   name: "OnPlayerPickUpDynamicPickup",
   identifier: "ii",
   beforeEach(playerId: number, pickupId: number) {
@@ -53,7 +53,7 @@ const [onPlayerPickUpDynamicPickup] = defineEvent({
 });
 
 export const DynamicPickupEvent = Object.freeze({
-  onPlayerPickUp: onPlayerPickUpDynamicPickup,
+  onPlayerPickUp,
   onStreamIn,
   onStreamOut,
 });

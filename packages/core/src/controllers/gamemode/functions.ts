@@ -49,6 +49,7 @@ export default {
     }
     return f.SetWorldTime(hour);
   },
+  getWorldTime: f.GetWorldTime,
   setTeamCount: f.SetTeamCount,
   sendRconCommand: f.SendRconCommand,
   addPlayerClass: f.AddPlayerClass,
@@ -160,7 +161,8 @@ export default {
     const consoleVar = w.GetConsoleVarAsByteArray(varname);
     return I18n.decodeFromBuf(I18n.getValidStr(consoleVar), charset);
   },
-
+  getRestartTime: f.GetModeRestartTime,
+  setRestartTime: f.SetModeRestartTime,
   allowAdminTeleport: w.AllowAdminTeleport,
   isAdminTeleportAllowed: w.IsAdminTeleportAllowed,
   allowInteriorWeapons: w.AllowInteriorWeapons,
@@ -203,4 +205,7 @@ export default {
   chatTextReplacementToggled: w.ChatTextReplacementToggled,
   getConsoleVarAsInt: w.GetConsoleVarAsInt,
   getConsoleVarAsBool: w.GetConsoleVarAsBool,
+  getWeather: f.GetWeather,
+  getServerRuleFlag: f.GetServerRuleFlags,
+  setServerRuleFlags: f.SetServerRuleFlags,
 };

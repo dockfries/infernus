@@ -26,7 +26,7 @@ import { getAnimateDurationByLibName } from "../../utils/animateUtils";
 import * as h from "../../utils/helperUtils";
 import { logger } from "../../logger";
 
-import type { Vehicle } from "../vehicle";
+import type { Vehicle } from "../vehicle/entity";
 import type { DynamicObject } from "core/wrapper/streamer";
 import { defineEvent } from "../bus";
 
@@ -59,20 +59,16 @@ export class Player {
     return h.SendClientMessage(this, color, msg);
   }
 
-  static sendClientMessageToAll(
-    players: Array<Player>,
-    color: string | number,
-    msg: string
-  ) {
-    h.SendClientMessageToAll(players, color, msg);
+  static sendClientMessageToAll(color: string | number, msg: string) {
+    h.SendClientMessageToAll(Player.getInstances(), color, msg);
   }
 
-  sendPlayerMessage(player: Player, message: string): number {
+  sendMessageToPlayer(player: Player, message: string): number {
     return h.SendPlayerMessageToPlayer(player, this.id, message);
   }
 
-  sendPlayerMessageToAll(players: Array<Player>, message: string): number {
-    return h.SendPlayerMessageToAll(players, this.id, message);
+  sendMessageToAll(message: string): number {
+    return h.SendPlayerMessageToAll(Player.getInstances(), this.id, message);
   }
 
   isNpc(): boolean {
@@ -112,7 +108,7 @@ export class Player {
   setInterior(interiorId: number): number {
     return f.SetPlayerInterior(this.id, interiorId);
   }
-  showPlayerNameTag(showPlayer: Player, show: boolean): void {
+  showNameTag(showPlayer: Player, show: boolean): void {
     f.ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
   }
   setColor(color: string | number): void {
@@ -121,8 +117,11 @@ export class Player {
   getColor(): number {
     return f.GetPlayerColor(this.id);
   }
-  setPlayerMarker(showPlayer: Player, color: string | number) {
+  setMarker(showPlayer: Player, color: string | number) {
     f.SetPlayerMarkerForPlayer(this.id, showPlayer.id, color);
+  }
+  getMarker(targetPlayer: Player) {
+    return f.GetPlayerMarkerForPlayer(this.id, targetPlayer.id);
   }
   resetMoney(): number {
     return f.ResetPlayerMoney(this.id);
@@ -161,10 +160,7 @@ export class Player {
   spectatePlayer(targetPlayer: Player, mode = SpectateModesEnum.NORMAL) {
     return f.PlayerSpectatePlayer(this.id, targetPlayer.id, mode);
   }
-  spectateVehicle<V extends Vehicle>(
-    targetVehicle: V,
-    mode = SpectateModesEnum.NORMAL
-  ) {
+  spectateVehicle(targetVehicle: Vehicle, mode = SpectateModesEnum.NORMAL) {
     return f.PlayerSpectateVehicle(this.id, targetVehicle.id, mode);
   }
   forceClassSelection(): void {
@@ -185,8 +181,8 @@ export class Player {
   isInRangeOfPoint(range: number, x: number, y: number, z: number) {
     return f.IsPlayerInRangeOfPoint(this.id, range, x, y, z);
   }
-  isStreamedIn(forplayer: Player) {
-    return f.IsPlayerStreamedIn(this.id, forplayer.id);
+  isStreamedIn(forPlayer: Player) {
+    return f.IsPlayerStreamedIn(this.id, forPlayer.id);
   }
   setSkin(skinId: number, ignoreRange = false): number {
     if (!ignoreRange && (skinId < 0 || skinId > 311 || skinId == 74)) return 0;
@@ -379,7 +375,7 @@ export class Player {
     const target = f.GetPlayerCameraTargetPlayer(this.id);
     return players.find((p) => p.id === target);
   }
-  getCameraTargetVehicle<V extends Vehicle>(vehicles: Array<V>): V | undefined {
+  getCameraTargetVehicle(vehicles: Array<Vehicle>) {
     const target = f.GetPlayerCameraTargetVehicle(this.id);
     return vehicles.find((v) => v.id === target);
   }
@@ -494,7 +490,7 @@ export class Player {
   disableRemoteVehicleCollisions(disable: boolean) {
     return f.DisableRemoteVehicleCollisions(this.id, disable);
   }
-  getVehicle<V extends Vehicle>(vehicles: Array<V>): V | undefined {
+  getVehicle(vehicles: Array<Vehicle>) {
     if (!this.isInAnyVehicle()) return undefined;
     const vehId: number = f.GetPlayerVehicleID(this.id);
     return vehicles.find((v) => v.id === vehId);
@@ -502,7 +498,7 @@ export class Player {
   getVehicleSeat(): number {
     return f.GetPlayerVehicleSeat(this.id);
   }
-  getSurfingVehicle<V extends Vehicle>(vehicles: Array<V>): V | undefined {
+  getSurfingVehicle(vehicles: Array<Vehicle>) {
     const vehId = f.GetPlayerSurfingVehicleID(this.id);
     if (vehId === InvalidEnum.VEHICLE_ID) return undefined;
     return vehicles.find((v) => v.id === vehId);
@@ -558,6 +554,9 @@ export class Player {
     y_min: number
   ): void {
     f.SetPlayerWorldBounds(this.id, x_max, x_min, y_max, y_min);
+  }
+  clearWorldBounds() {
+    return f.ClearPlayerWorldBounds(this.id);
   }
   setChatBubble(
     text: string,
@@ -795,10 +794,19 @@ export class Player {
     if (!this.isAttachedObjectSlotUsed(index)) return 0;
     return f.RemovePlayerAttachedObject(this.id, index);
   }
+  getAnimationFlags(): number {
+    return samp.callNative("GetPlayerAnimationFlags", "i", this.id);
+  }
+  getLastSyncedTrailerID(): number {
+    return samp.callNative("GetPlayerLastSyncedTrailerID", "i", this.id);
+  }
+  getLastSyncedVehicleID(): number {
+    return samp.callNative("GetPlayerLastSyncedVehicleID", "i", this.id);
+  }
   toggleWidescreen(set: boolean): number {
     return w.TogglePlayerWidescreen(this.id, set);
   }
-  isPlayerWidescreenToggled(): boolean {
+  isWidescreenToggled(): boolean {
     return w.IsPlayerWidescreenToggled(this.id);
   }
   getSpawnInfo() {
