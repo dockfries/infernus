@@ -4,10 +4,8 @@ import type { TPos } from "core/types";
 import type { IVehicle } from "core/interfaces";
 import type { Player } from "../player/entity";
 import { isValidPaintJob, isValidVehComponent } from "core/utils/vehicleUtils";
-import * as v from "core/wrapper/native/functions";
-
 import { rgba } from "core/utils/colorUtils";
-import * as w from "@infernus/wrapper";
+import * as v from "core/wrapper/native";
 import { logger } from "core/logger";
 
 export class Vehicle {
@@ -359,108 +357,108 @@ export class Vehicle {
   }
   getMatrix() {
     if (this.id === -1) return;
-    return w.GetVehicleMatrix(this.id);
+    return v.GetVehicleMatrix(this.id);
   }
   getTrainSpeed(): number {
     if (this.id === -1) return 0;
-    return w.GetVehicleTrainSpeed(this.id);
+    return v.GetVehicleTrainSpeed(this.id);
   }
   getHydraReactorAngle(): number {
     if (this.id === -1) return 0;
-    return w.GetVehicleHydraReactorAngle(this.id);
+    return v.GetVehicleHydraReactorAngle(this.id);
   }
   getLandingGearState(): number {
     if (this.id === -1) return 0;
-    return w.GetVehicleLandingGearState(this.id);
+    return v.GetVehicleLandingGearState(this.id);
   }
   getSirenState(): number {
     if (this.id === -1) return 0;
-    return w.GetVehicleSirenState(this.id);
+    return v.GetVehicleSirenState(this.id);
   }
-  static getModelsUsed = w.GetVehicleModelsUsed;
+  static getModelsUsed = v.GetVehicleModelsUsed;
   getDriver(players: Map<number, Player>) {
     if (this.id === -1) return;
-    return players.get(w.GetVehicleDriver(this.id));
+    return players.get(v.GetVehicleDriver(this.id));
   }
   getLastDriver(players: Map<number, Player>) {
     if (this.id === -1) return;
-    return players.get(w.GetVehicleLastDriver(this.id));
+    return players.get(v.GetVehicleLastDriver(this.id));
   }
-  static getModelCount = w.GetVehicleModelCount;
+  static getModelCount = v.GetVehicleModelCount;
   isSirenEnabled(): boolean {
-    return w.IsVehicleSirenEnabled(this.id);
+    return v.IsVehicleSirenEnabled(this.id);
   }
   toggleSirenEnabled(enabled: boolean): number {
     if (this.id === -1) return 0;
-    return w.ToggleVehicleSirenEnabled(this.id, enabled);
+    return v.ToggleVehicleSirenEnabled(this.id, enabled);
   }
   setParamsSirenState(enabled: boolean): number {
     if (this.id === -1) return 0;
-    return w.SetVehicleParamsSirenState(this.id, enabled);
+    return v.SetVehicleParamsSirenState(this.id, enabled);
   }
   isDead(): boolean {
     if (this.id === -1) return true;
-    return w.IsVehicleDead(this.id);
+    return v.IsVehicleDead(this.id);
   }
   setDead(dead: boolean): boolean {
     if (this.id === -1) return false;
-    return w.SetVehicleDead(this.id, dead);
+    return v.SetVehicleDead(this.id, dead);
   }
   setBeenOccupied(occupied: boolean) {
     if (this.id === -1) return false;
-    return w.SetVehicleBeenOccupied(this.id, occupied);
+    return v.SetVehicleBeenOccupied(this.id, occupied);
   }
   getRespawnTick(): number {
     if (this.id === -1) return 0;
-    return w.GetVehicleRespawnTick(this.id);
+    return v.GetVehicleRespawnTick(this.id);
   }
   setRespawnTick(ticks: number) {
     if (this.id === -1) return false;
-    return w.SetVehicleRespawnTick(this.id, ticks);
+    return v.SetVehicleRespawnTick(this.id, ticks);
   }
   isOccupied(): boolean {
     if (this.id === -1) return false;
-    return w.IsVehicleOccupied(this.id);
+    return v.IsVehicleOccupied(this.id);
   }
   hasBeenOccupied(): boolean {
     if (this.id === -1) return false;
-    return w.HasVehicleBeenOccupied(this.id);
+    return v.HasVehicleBeenOccupied(this.id);
   }
   getOccupiedTick(): number {
     if (this.id === -1) return 0;
-    return w.GetVehicleOccupiedTick(this.id);
+    return v.GetVehicleOccupiedTick(this.id);
   }
   setOccupiedTick(ticks: number): number {
     if (this.id === -1) return 0;
-    return w.SetVehicleOccupiedTick(this.id, ticks);
+    return v.SetVehicleOccupiedTick(this.id, ticks);
   }
   getCab(): number {
     if (this.id === -1) return 0;
-    return w.GetVehicleCab(this.id);
+    return v.GetVehicleCab(this.id);
   }
   getRespawnDelay(): number {
     if (this.id === -1) return 0;
-    return w.GetVehicleRespawnDelay(this.id);
+    return v.GetVehicleRespawnDelay(this.id);
   }
   setRespawnDelay(delay: number): number {
     if (this.id === -1) return 0;
-    return w.SetVehicleRespawnDelay(this.id, delay);
+    return v.SetVehicleRespawnDelay(this.id, delay);
   }
   getNumberPlate(): string {
     if (this.id === -1) return "";
-    return w.GetVehicleNumberPlate(this.id);
+    return v.GetVehicleNumberPlate(this.id);
   }
   getInterior(): number {
     if (this.id === -1) return 0;
-    return w.GetVehicleInterior(this.id);
+    return v.GetVehicleInterior(this.id);
   }
   getPaintjob(): number {
     if (this.id === -1) return -1;
-    return w.GetVehiclePaintjob(this.id);
+    return v.GetVehiclePaintjob(this.id);
   }
   getColors() {
     if (this.id === -1) return;
-    return w.GetVehicleColors(this.id);
+    return v.GetVehicleColors(this.id);
   }
   setSpawnInfo(
     modelId: number,
@@ -476,7 +474,7 @@ export class Vehicle {
   ): number {
     if (this.id === -1) return 0;
     if (!ignoreRange && (modelId < 400 || modelId > 611)) return 0;
-    return w.SetVehicleSpawnInfo(
+    return v.SetVehicleSpawnInfo(
       this.id,
       modelId,
       fX,
@@ -491,16 +489,16 @@ export class Vehicle {
   }
   getSpawnInfo() {
     if (this.id === -1) return;
-    return w.GetVehicleSpawnInfo(this.id);
+    return v.GetVehicleSpawnInfo(this.id);
   }
 
   getRandomColorPair() {
     if (this.id === -1) return;
-    return w.GetRandomVehicleColorPair(this.getModel());
+    return v.GetRandomVehicleColorPair(this.getModel());
   }
 
   static getRandomColorPair(modelId: number) {
-    return w.GetRandomVehicleColorPair(modelId);
+    return v.GetRandomVehicleColorPair(modelId);
   }
 
   static getInstance(id: number) {

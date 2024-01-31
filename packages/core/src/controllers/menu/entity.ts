@@ -1,13 +1,4 @@
-import * as f from "core/wrapper/native/functions";
-import {
-  IsMenuDisabled,
-  IsMenuRowDisabled,
-  GetMenuItems,
-  GetMenuPos,
-  GetMenuColumnWidth,
-  GetMenuColumnHeader,
-  GetMenuItem,
-} from "@infernus/wrapper";
+import * as w from "core/wrapper/native";
 
 import type { Player } from "../player";
 import { LimitsEnum } from "../../enums";
@@ -102,7 +93,7 @@ export class Menu {
         "[Menu]: The maximum number of menus allowed to be created has been reached 128"
       );
     }
-    this._id = f.CreateMenu(
+    this._id = w.CreateMenu(
       this.title,
       this.columns,
       this.x,
@@ -116,7 +107,7 @@ export class Menu {
   destroy(): void | this {
     if (this._id === -1)
       return logger.error("[Menu]: Cannot destroy before create");
-    f.DestroyMenu(this.id);
+    w.DestroyMenu(this.id);
     Menu.menus.delete(this._id);
     this._id = -1;
     return this;
@@ -130,7 +121,7 @@ export class Menu {
       );
     if (column !== 0 && column !== 1)
       return logger.error("[Menu]: Wrong number of columns");
-    f.AddMenuItem(this.id, column, title);
+    w.AddMenuItem(this.id, column, title);
     this._itemCount++;
     return this;
   }
@@ -139,13 +130,13 @@ export class Menu {
       return logger.error("[Menu]: Cannot  setColumnHeader before create");
     if (column !== 0 && column !== 1)
       return logger.error("[Menu]: Wrong number of columns");
-    f.SetMenuColumnHeader(this.id, column, header);
+    w.SetMenuColumnHeader(this.id, column, header);
     return this;
   }
   disable(): void | this {
     if (this._id === -1)
       return logger.error("[Menu]: Cannot disable menu before create");
-    f.DisableMenu(this.id);
+    w.DisableMenu(this.id);
     return this;
   }
   disableRow(row: number) {
@@ -153,53 +144,53 @@ export class Menu {
       return logger.error("[Menu]: Cannot disable row before create");
     if (row < 0 || row > this.itemCount - 1)
       return logger.error("[Menu]: Wrong number of rows");
-    f.DisableMenuRow(this.id, row);
+    w.DisableMenuRow(this.id, row);
   }
   isValid(): boolean {
-    return f.IsValidMenu(this.id);
+    return w.IsValidMenu(this.id);
   }
   showForPlayer(player: Player): void | number {
     if (this._id === -1)
       return logger.error("[Menu]: Cannot show menu before create");
-    return f.ShowMenuForPlayer(this.id, player.id);
+    return w.ShowMenuForPlayer(this.id, player.id);
   }
   hideForPlayer(player: Player): void | number {
     if (this._id === -1)
       return logger.error("[Menu]: Cannot hide menu before create");
-    return f.HideMenuForPlayer(this.id, player.id);
+    return w.HideMenuForPlayer(this.id, player.id);
   }
   isDisabled(): boolean {
     if (this._id === -1) return false;
-    return IsMenuDisabled(this.id);
+    return w.IsMenuDisabled(this.id);
   }
   isRowDisabled(row: number): boolean {
     if (this._id === -1) return false;
     if (row < 0 || row > this._itemCount) return false;
-    return IsMenuRowDisabled(this.id, row);
+    return w.IsMenuRowDisabled(this.id, row);
   }
   getItems(column: number): number {
     if (this._id === -1) return 0;
-    return GetMenuItems(this.id, column);
+    return w.GetMenuItems(this.id, column);
   }
   getPos() {
     if (this._id === -1) return { fX: this.x, fY: this.y };
-    return GetMenuPos(this.id);
+    return w.GetMenuPos(this.id);
   }
   getColumnWidth() {
     if (this.id === -1)
       return { fColumn1: this.col1width, fColumn2: this.col2width };
-    return GetMenuColumnWidth(this.id);
+    return w.GetMenuColumnWidth(this.id);
   }
   getColumnHeader(column: number): void | string {
     if (this._id === -1)
       return logger.error("[Menu]: Cannot get column header before create");
-    return GetMenuColumnHeader(this.id, column);
+    return w.GetMenuColumnHeader(this.id, column);
   }
   getItem(column: number, item: number): void | string {
     if (this._id === -1)
       return logger.error("[Menu]: Cannot get item before create");
     if (item < 0 || item > this.getItems(column) - 1) return undefined;
-    return GetMenuItem(this.id, column, item);
+    return w.GetMenuItem(this.id, column, item);
   }
 
   static getInstance(id: number) {
@@ -210,7 +201,7 @@ export class Menu {
   }
   static getInstanceByPlayer(player: Player) {
     return this.getInstances().find(
-      (item) => item.id === f.GetPlayerMenu(player.id)
+      (item) => item.id === w.GetPlayerMenu(player.id)
     );
   }
 }

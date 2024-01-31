@@ -1,10 +1,10 @@
-import * as w from "@infernus/wrapper";
-import * as f from "../../wrapper/native/functions";
+import * as w from "core/wrapper/native";
 import { LimitsEnum } from "../../enums";
-import type { IGangZone, GangZonePos } from "../../interfaces";
 import { logger } from "../../logger";
 import { PlayerEvent, type Player } from "../player";
 import { rgba } from "../../utils/colorUtils";
+import type { IGangZone } from "core/interfaces";
+import type { GangZonePos } from "core/wrapper/native/interfaces";
 
 export class GangZone {
   static readonly globalGangZones = new Map<number, GangZone>();
@@ -32,7 +32,7 @@ export class GangZone {
           "[GangZone]: Unable to continue to create gangzone, maximum allowable quantity has been reached"
         );
       const { minX, minY, maxX, maxY } = this.sourceInfo;
-      this._id = f.GangZoneCreate(minX, minY, maxX, maxY);
+      this._id = w.GangZoneCreate(minX, minY, maxX, maxY);
       GangZone.globalGangZones.set(this.id, this);
     } else {
       if (GangZone.getInstances(false).length === LimitsEnum.MAX_GANG_ZONES)
@@ -61,7 +61,7 @@ export class GangZone {
 
     const { player } = this.sourceInfo;
     if (!player) {
-      f.GangZoneDestroy(this.id);
+      w.GangZoneDestroy(this.id);
       GangZone.globalGangZones.delete(this.id);
     } else {
       w.PlayerGangZoneDestroy(player.id, this.id);
@@ -78,7 +78,7 @@ export class GangZone {
       );
     const p = this.sourceInfo.player;
     if (!p) {
-      f.GangZoneShowForAll(this.id, color);
+      w.GangZoneShowForAll(this.id, color);
       return this;
     }
     return logger.warn(
@@ -94,7 +94,7 @@ export class GangZone {
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneShow(p.id, this.id, rgba(color));
     else {
-      if (player) f.GangZoneShowForPlayer(player.id, this.id, color);
+      if (player) w.GangZoneShowForPlayer(player.id, this.id, color);
       else return logger.warn("[GangZone]: invalid player for show");
     }
     return this;
@@ -107,7 +107,7 @@ export class GangZone {
       );
     const p = this.sourceInfo.player;
     if (!p) {
-      f.GangZoneHideForAll(this.id);
+      w.GangZoneHideForAll(this.id);
       return this;
     }
     return logger.warn(
@@ -123,7 +123,7 @@ export class GangZone {
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneHide(p.id, this.id);
     else {
-      if (player) f.GangZoneHideForPlayer(player.id, this.id);
+      if (player) w.GangZoneHideForPlayer(player.id, this.id);
       else return logger.warn("[GangZone]: invalid player for hide");
     }
     return this;
@@ -136,7 +136,7 @@ export class GangZone {
       );
     const p = this.sourceInfo.player;
     if (!p) {
-      f.GangZoneFlashForAll(this.id, flashColor);
+      w.GangZoneFlashForAll(this.id, flashColor);
       return this;
     }
     return logger.warn(
@@ -152,7 +152,7 @@ export class GangZone {
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneFlash(p.id, this.id, rgba(flashColor));
     else {
-      if (player) f.GangZoneFlashForPlayer(player.id, this.id, flashColor);
+      if (player) w.GangZoneFlashForPlayer(player.id, this.id, flashColor);
       else return logger.warn("[GangZone]: invalid player for flash");
     }
     return this;
@@ -165,7 +165,7 @@ export class GangZone {
       );
     const p = this.sourceInfo.player;
     if (!p) {
-      f.GangZoneStopFlashForAll(this.id);
+      w.GangZoneStopFlashForAll(this.id);
       return this;
     }
     return logger.warn(
@@ -181,7 +181,7 @@ export class GangZone {
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneStopFlash(p.id, this.id);
     else {
-      if (player) f.GangZoneStopFlashForPlayer(player.id, this.id);
+      if (player) w.GangZoneStopFlashForPlayer(player.id, this.id);
       else return logger.warn("[GangZone]: invalid player for flash");
     }
     return this;

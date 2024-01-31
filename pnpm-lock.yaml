@@ -13,9 +13,6 @@ importers:
       "@infernus/streamer":
         specifier: workspace:^
         version: link:packages/streamer
-      "@infernus/wrapper":
-        specifier: workspace:^
-        version: link:packages/wrapper
       iconv-lite:
         specifier: ^0.6.3
         version: 0.6.3
@@ -110,9 +107,6 @@ importers:
       "@infernus/streamer":
         specifier: workspace:^
         version: link:../streamer
-      "@infernus/wrapper":
-        specifier: workspace:^
-        version: link:../wrapper
       iconv-lite:
         specifier: ^0.6.3
         version: 0.6.3
@@ -169,8 +163,6 @@ importers:
         version: link:../core
 
   packages/streamer: {}
-
-  packages/wrapper: {}
 
 packages:
   /@aashutoshrathi/word-wrap@1.2.6:

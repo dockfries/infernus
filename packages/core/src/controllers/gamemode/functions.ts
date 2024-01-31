@@ -7,8 +7,7 @@ import {
   unloadUseScript,
 } from "../filterscript";
 
-import * as w from "@infernus/wrapper";
-import * as f from "../../wrapper/native/functions";
+import * as w from "core/wrapper/native";
 
 import { I18n } from "../i18n";
 import { logger } from "../../logger";
@@ -40,20 +39,20 @@ export default {
       logger.error("[GameMode]: The valid weather value is only 0 to 255");
       return 0;
     }
-    return f.SetWeather(weather);
+    return w.SetWeather(weather);
   },
   setWorldTime(hour: number): number {
     if (hour < 0 || hour > 23) {
       logger.error("[GameMode]: The valid hour value is only 0 to 23");
       return 0;
     }
-    return f.SetWorldTime(hour);
+    return w.SetWorldTime(hour);
   },
-  getWorldTime: f.GetWorldTime,
-  setTeamCount: f.SetTeamCount,
-  sendRconCommand: f.SendRconCommand,
-  addPlayerClass: f.AddPlayerClass,
-  addPlayerClassEx: f.AddPlayerClassEx,
+  getWorldTime: w.GetWorldTime,
+  setTeamCount: w.SetTeamCount,
+  sendRconCommand: w.SendRconCommand,
+  addPlayerClass: w.AddPlayerClass,
+  addPlayerClassEx: w.AddPlayerClassEx,
   createExplosion(
     X: number,
     Y: number,
@@ -67,12 +66,12 @@ export default {
       );
       return 0;
     }
-    return f.CreateExplosion(X, Y, Z, type, radius);
+    return w.CreateExplosion(X, Y, Z, type, radius);
   },
-  manualVehicleEngineAndLights: f.ManualVehicleEngineAndLights,
-  blockIpAddress: f.BlockIpAddress,
-  unBlockIpAddress: f.UnBlockIpAddress,
-  getServerTickRate: f.GetServerTickRate,
+  manualVehicleEngineAndLights: w.ManualVehicleEngineAndLights,
+  blockIpAddress: w.BlockIpAddress,
+  unBlockIpAddress: w.UnBlockIpAddress,
+  getServerTickRate: w.GetServerTickRate,
   addSimpleModel(
     virtualWorld: number,
     baseid: number,
@@ -81,7 +80,7 @@ export default {
     txdName: string
   ): number {
     if (this.checkSimpleModel(virtualWorld, baseid, newid, dffname, txdName)) {
-      return f.AddSimpleModel(virtualWorld, baseid, newid, dffname, txdName);
+      return w.AddSimpleModel(virtualWorld, baseid, newid, dffname, txdName);
     }
     return 0;
   },
@@ -105,7 +104,7 @@ export default {
         timeoff
       )
     ) {
-      return f.AddSimpleModelTimed(
+      return w.AddSimpleModelTimed(
         virtualWorld,
         baseid,
         newid,
@@ -161,33 +160,33 @@ export default {
     const consoleVar = w.GetConsoleVarAsByteArray(varname);
     return I18n.decodeFromBuf(I18n.getValidStr(consoleVar), charset);
   },
-  getRestartTime: f.GetModeRestartTime,
-  setRestartTime: f.SetModeRestartTime,
+  getRestartTime: w.GetModeRestartTime,
+  setRestartTime: w.SetModeRestartTime,
   allowAdminTeleport: w.AllowAdminTeleport,
   isAdminTeleportAllowed: w.IsAdminTeleportAllowed,
   allowInteriorWeapons: w.AllowInteriorWeapons,
   areInteriorWeaponsAllowed: w.AreInteriorWeaponsAllowed,
   areAllAnimationsEnabled: w.AreAllAnimationsEnabled,
   enableAllAnimations: w.EnableAllAnimations,
-  enableStuntBonusForAll: f.EnableStuntBonusForAll,
-  enableVehicleFriendlyFire: f.EnableVehicleFriendlyFire,
-  enableZoneNames: f.EnableZoneNames,
-  disableInteriorEnterExits: f.DisableInteriorEnterExits,
-  setGameModeText: f.SetGameModeText,
-  getGravity: f.GetGravity,
-  setGravity: f.SetGravity,
-  showNameTags: f.ShowNameTags,
-  disableNameTagLOS: f.DisableNameTagLOS,
-  usePlayerPedAnims: f.UsePlayerPedAnims,
-  showPlayerMarkers: f.ShowPlayerMarkers,
-  limitPlayerMarkerRadius: f.LimitPlayerMarkerRadius,
-  limitGlobalChatRadius: f.LimitGlobalChatRadius,
-  setNameTagDrawDistance: f.SetNameTagDrawDistance,
-  findModelFileNameFromCRC: f.FindModelFileNameFromCRC,
-  findTextureFileNameFromCRC: f.FindTextureFileNameFromCRC,
-  getWeaponName: f.GetWeaponName,
-  setObjectsDefaultCameraCollision: f.SetObjectsDefaultCameraCollision,
-  vectorSize: f.VectorSize,
+  enableStuntBonusForAll: w.EnableStuntBonusForAll,
+  enableVehicleFriendlyFire: w.EnableVehicleFriendlyFire,
+  enableZoneNames: w.EnableZoneNames,
+  disableInteriorEnterExits: w.DisableInteriorEnterExits,
+  setGameModeText: w.SetGameModeText,
+  getGravity: w.GetGravity,
+  setGravity: w.SetGravity,
+  showNameTags: w.ShowNameTags,
+  disableNameTagLOS: w.DisableNameTagLOS,
+  usePlayerPedAnims: w.UsePlayerPedAnims,
+  showPlayerMarkers: w.ShowPlayerMarkers,
+  limitPlayerMarkerRadius: w.LimitPlayerMarkerRadius,
+  limitGlobalChatRadius: w.LimitGlobalChatRadius,
+  setNameTagDrawDistance: w.SetNameTagDrawDistance,
+  findModelFileNameFromCRC: w.FindModelFileNameFromCRC,
+  findTextureFileNameFromCRC: w.FindTextureFileNameFromCRC,
+  getWeaponName: w.GetWeaponName,
+  setObjectsDefaultCameraCollision: w.SetObjectsDefaultCameraCollision,
+  vectorSize: w.VectorSize,
   clearBanList: w.ClearBanList,
   isBanned: w.IsBanned,
   isValidNickName: w.IsValidNickName,
@@ -205,7 +204,7 @@ export default {
   chatTextReplacementToggled: w.ChatTextReplacementToggled,
   getConsoleVarAsInt: w.GetConsoleVarAsInt,
   getConsoleVarAsBool: w.GetConsoleVarAsBool,
-  getWeather: f.GetWeather,
-  getServerRuleFlag: f.GetServerRuleFlags,
-  setServerRuleFlags: f.SetServerRuleFlags,
+  getWeather: w.GetWeather,
+  getServerRuleFlag: w.GetServerRuleFlags,
+  setServerRuleFlags: w.SetServerRuleFlags,
 };

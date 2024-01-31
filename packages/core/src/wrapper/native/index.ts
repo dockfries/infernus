@@ -1,7 +1,11 @@
 /* 
-  https://github.com/openmultiplayer/server-beta/blob/master/omp.inc
+  https://github.com/openmultiplayer/omp-stdlib
   new scripting api (natives and callbacks);
+  
+  some natives reference to Peter Szombati's samp-node-lib
+  removed db_, timer functions, for better maintainability you should use the node library
 */
+
 export * from "./3dText/global";
 export * from "./3dText/player";
 export * from "./actor";
@@ -19,4 +23,5 @@ export * from "./textdraw/player";
 export * from "./textdraw/global";
 export * from "./vehicle";
 export * from "./weapons";
-export * from "./interfaces";
+export * from "./network";
+export * from "./npc";

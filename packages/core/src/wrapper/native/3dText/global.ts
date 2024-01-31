@@ -1,3 +1,4 @@
+import { rgba } from "core/utils/colorUtils";
 import type { IAttachedData, IObjectPos } from "../interfaces/Object";
 
 export const IsValid3DTextLabel = (id: number): boolean => {
@@ -61,4 +62,76 @@ export const Get3DTextLabelAttachedData = (id: number): IAttachedData => {
   const [attached_playerId = 0, attached_vehicleId = 0]: number[] =
     samp.callNative("Get3DTextLabelAttachedData", "i", id);
   return { attached_playerId, attached_vehicleId };
+};
+
+export const Create3DTextLabel = (
+  text: string,
+  color: string | number,
+  X: number,
+  Y: number,
+  Z: number,
+  DrawDistance: number,
+  virtualWorld: number,
+  testLOS = false
+): number => {
+  return samp.callNative(
+    "Create3DTextLabel",
+    "siffffii",
+    text,
+    rgba(color),
+    X,
+    Y,
+    Z,
+    DrawDistance,
+    virtualWorld,
+    testLOS
+  );
+};
+
+export const Delete3DTextLabel = (id: number): number => {
+  return samp.callNative("Delete3DTextLabel", "i", id);
+};
+
+export const Attach3DTextLabelToPlayer = (
+  id: number,
+  playerId: number,
+  OffsetX: number,
+  OffsetY: number,
+  OffsetZ: number
+): number => {
+  return samp.callNative(
+    "Attach3DTextLabelToPlayer",
+    "iifff",
+    id,
+    playerId,
+    OffsetX,
+    OffsetY,
+    OffsetZ
+  );
+};
+
+export const Attach3DTextLabelToVehicle = (
+  id: number,
+  vehicleId: number,
+  OffsetX: number,
+  OffsetY: number,
+  OffsetZ: number
+): number => {
+  return samp.callNative(
+    "Attach3DTextLabelToVehicle",
+    "iifff",
+    id,
+    vehicleId,
+    OffsetX,
+    OffsetY,
+    OffsetZ
+  );
+};
+
+export const Update3DTextLabelText = (
+  id: number,
+  color: string | number,
+  text: string
+): number => {
+  return samp.callNative("Update3DTextLabelText", "iis", id, rgba(color), text);
 };

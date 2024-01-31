@@ -89,3 +89,47 @@ export const IsPickupHiddenForPlayer = (
     samp.callNative("IsPickupHiddenForPlayer", "ii", playerId, pickupId)
   );
 };
+
+export const AddStaticPickup = (
+  model: number,
+  type: number,
+  X: number,
+  Y: number,
+  Z: number,
+  virtualWorld: number
+): number => {
+  return samp.callNative(
+    "AddStaticPickup",
+    "iifffi",
+    model,
+    type,
+    X,
+    Y,
+    Z,
+    virtualWorld
+  );
+};
+
+export const CreatePickup = (
+  model: number,
+  type: number,
+  X: number,
+  Y: number,
+  Z: number,
+  virtualWorld: number
+): number => {
+  return samp.callNative(
+    "CreatePickup",
+    "iifffi",
+    model,
+    type,
+    X,
+    Y,
+    Z,
+    virtualWorld
+  );
+};
+
+export const DestroyPickup = (pickup: number): number => {
+  return samp.callNative("DestroyPickup", "i", pickup);
+};

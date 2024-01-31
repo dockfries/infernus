@@ -2,7 +2,7 @@ import type { Player } from "core/controllers/player";
 import type { IDynamicActor } from "core/interfaces";
 import { logger } from "core/logger";
 import { getAnimateDurationByLibName } from "core/utils/animateUtils";
-import * as w from "@infernus/wrapper";
+import * as w from "core/wrapper/native";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
 

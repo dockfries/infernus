@@ -186,29 +186,6 @@ export interface IDynamicAreaKey {
   type: TDynamicAreaTypes;
 }
 
-export {
-  IObjectPos,
-  IObjectRotPos,
-  IAttachedObject,
-  IMaterial,
-  IMaterialText,
-  IAttachedData,
-  IActorSpawn,
-  IActorAnimation,
-  IPlayerClass,
-  GangZonePos,
-  IBounds,
-  ICheckPoint,
-  IRaceCheckPoint,
-  IOffsets,
-  IQuat,
-  ITextDrawCommonSize,
-  ITextDrawRot,
-  IVehColor,
-  IVehSpawnInfo,
-  IVehMatrix,
-} from "@infernus/wrapper";
-
 export interface IFilterScript {
   name: string;
   load: (...args: Array<any>) => any;

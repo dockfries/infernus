@@ -1,5 +1,5 @@
 import type { Player } from "../player";
-import * as f from "../../wrapper/native/functions";
+import * as w from "core/wrapper/native";
 
 export class GameText {
   private _text: string;
@@ -34,22 +34,22 @@ export class GameText {
   }
 
   static hideForAll(style: number) {
-    f.HideGameTextForAll(style);
+    w.HideGameTextForAll(style);
   }
 
   static has(player: Player, style: number) {
-    return f.HasGameText(player.id, style);
+    return w.HasGameText(player.id, style);
   }
 
   forAll() {
-    f.GameTextForAll(this.text, this.time, this.style);
+    w.GameTextForAll(this.text, this.time, this.style);
   }
 
   forPlayer(player: Player) {
-    f.GameTextForPlayer(player.id, this.text, this.time, this.style);
+    w.GameTextForPlayer(player.id, this.text, this.time, this.style);
   }
 
   hideForPlayer(player: Player) {
-    return f.HideGameTextForPlayer(player.id, this.style);
+    return w.HideGameTextForPlayer(player.id, this.style);
   }
 }

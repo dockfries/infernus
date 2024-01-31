@@ -5,7 +5,7 @@ import type {
   IDialogResRaw,
   IDialogResResult,
 } from "../../interfaces";
-import { HidePlayerDialog } from "@infernus/wrapper";
+import { HidePlayerDialog } from "core/wrapper/native";
 import { I18n } from "../i18n";
 import { Player } from "./entity";
 import { defineEvent } from "../bus";

@@ -1,3 +1,4 @@
+import { rgba } from "core/utils/colorUtils";
 import type { IAttachedData, IObjectPos } from "../interfaces/Object";
 
 export const IsValidPlayer3DTextLabel = (
@@ -98,4 +99,55 @@ export const GetPlayer3DTextLabelAttachedData = (
   const [attached_playerId = 0, attached_vehicleId = 0]: number[] =
     samp.callNative("GetPlayer3DTextLabelAttachedData", "ii", playerId, id);
   return { attached_playerId, attached_vehicleId };
+};
+
+export const CreatePlayer3DTextLabel = (
+  playerId: number,
+  text: string,
+  color: string | number,
+  X: number,
+  Y: number,
+  Z: number,
+  DrawDistance: number,
+  attachedPlayer: number,
+  attachedVehicle: number,
+  testLOS: boolean
+): number => {
+  return samp.callNative(
+    "CreatePlayer3DTextLabel",
+    "isiffffiii",
+    playerId,
+    text,
+    rgba(color),
+    X,
+    Y,
+    Z,
+    DrawDistance,
+    attachedPlayer,
+    attachedVehicle,
+    testLOS
+  );
+};
+
+export const DeletePlayer3DTextLabel = (
+  playerId: number,
+  id: number
+): number => {
+  return samp.callNative("DeletePlayer3DTextLabel", "ii", playerId, id);
+};
+
+export const UpdatePlayer3DTextLabelText = (
+  playerId: number,
+  id: number,
+  color: string | number,
+  text: string
+): number => {
+  return samp.callNative(
+    "UpdatePlayer3DTextLabelText",
+    "iiis",
+    playerId,
+    id,
+    rgba(color),
+    text
+  );
 };
