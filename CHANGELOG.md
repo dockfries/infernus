@@ -1,3 +1,19 @@
+# [0.10.0-beta.9](https://github.com/dockfries/infernus/compare/v0.10.0-beta.8...v0.10.0-beta.9) (2024-1-31)
+
+
+### Bug Fixes
+
+* **core:** textdraw is valid function ([e590fb4](https://github.com/dockfries/infernus/commit/e590fb4cf8498adc86599218f993f0e6d8327ccf))
+
+
+### Features
+
+* **core:** add some new natives and callbacks ([e9a2b1a](https://github.com/dockfries/infernus/commit/e9a2b1ac0720578a7defd4305280a44ac9b0f255))
+* **core:** key utils ([8a79286](https://github.com/dockfries/infernus/commit/8a79286e5d8899af684a3db11c168191050a5277))
+* **core:** migrate `@infernus/wrapper` to core ([6204710](https://github.com/dockfries/infernus/commit/62047109b0bef372d09eed4a616d950b57632564))
+
+
+
 # [0.10.0-beta.8](https://github.com/dockfries/infernus/compare/v0.10.0-beta.7...v0.10.0-beta.8) (2024-1-22)
 
 
