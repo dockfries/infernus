@@ -232,7 +232,7 @@ export class DynamicActor {
       return logger.warn(
         "[StreamerActor]: Unable to get animation before create"
       );
-    return w.GetActorAnimation(this.id);
+    return s.GetDynamicActorAnimation(this.id);
   }
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)

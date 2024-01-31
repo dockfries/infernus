@@ -155,3 +155,18 @@ export const GetPlayerTargetDynamicActor = (playerId: number): number => {
 export const GetPlayerCameraTargetDynActor = (playerId: number): number => {
   return samp.callNative("GetPlayerCameraTargetDynActor", "i", playerId);
 };
+
+export const GetDynamicActorAnimation = (actorId: number) => {
+  const [
+    animLib,
+    animName,
+    fDelta = 0,
+    loop = 0,
+    lockX = 0,
+    lockY = 0,
+    freeze = 0,
+    time = 0,
+  ]: [string, string, number, number, number, number, number, number] =
+    samp.callNative("GetDynamicActorAnimation", "iSSFIIIIIii", actorId, 32, 32);
+  return { animLib, animName, fDelta, loop, lockX, lockY, freeze, time };
+};
