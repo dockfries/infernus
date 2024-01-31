@@ -1,5 +1,5 @@
 import { I18n } from "core/controllers/i18n";
-import type { Player } from "../controllers/player/entity";
+import { Player } from "../controllers/player/entity";
 import { LimitsEnum } from "../enums";
 import type { IDialog } from "../interfaces";
 import { rgba } from "./colorUtils";
@@ -30,11 +30,10 @@ export const SendClientMessage = (
 };
 
 export const SendClientMessageToAll = (
-  fn: Array<Player>,
   color: string | number,
   msg: string
 ): number => {
-  fn.forEach((player) => SendClientMessage(player, color, msg));
+  Player.getInstances().forEach((p) => SendClientMessage(p, color, msg));
   return 1;
 };
 
@@ -54,11 +53,12 @@ export const SendPlayerMessageToPlayer = (
 };
 
 export const SendPlayerMessageToAll = (
-  fn: Array<Player>,
   senderId: number,
   message: string
 ): number => {
-  fn.forEach((player) => SendPlayerMessageToPlayer(player, senderId, message));
+  Player.getInstances().forEach((p) => {
+    SendPlayerMessageToPlayer(p, senderId, message);
+  });
   return 1;
 };
 

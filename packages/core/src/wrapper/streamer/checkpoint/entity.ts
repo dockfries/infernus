@@ -109,7 +109,7 @@ export class DynamicCheckpoint {
   isValid(): boolean {
     return IsValidDynamicCP(this.id);
   }
-  togglePlayer<P extends Player>(player: P, toggle: boolean): void | this {
+  togglePlayer(player: Player, toggle: boolean): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerCheckpoint]: Unable to toggle the player before create"
@@ -117,18 +117,17 @@ export class DynamicCheckpoint {
     TogglePlayerDynamicCP(player.id, this.id, toggle);
     return this;
   }
-  static togglePlayerAll<P extends Player>(player: P, toggle: boolean): number {
+  static togglePlayerAll(player: Player, toggle: boolean): number {
     return TogglePlayerAllDynamicCPs(player.id, toggle);
   }
-  isPlayerIn<P extends Player>(player: P): boolean {
+  isPlayerIn(player: Player): boolean {
     if (this.id === -1) return false;
     return IsPlayerInDynamicCP(player.id, this.id);
   }
-  static getPlayerVisible<P extends Player, C extends DynamicCheckpoint>(
-    player: P,
-    checkpoints: Map<number, C>
-  ): C | undefined {
-    return checkpoints.get(GetPlayerVisibleDynamicCP(player.id));
+  static getPlayerVisible(player: Player) {
+    return DynamicCheckpoint.checkpoints.get(
+      GetPlayerVisibleDynamicCP(player.id)
+    );
   }
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)

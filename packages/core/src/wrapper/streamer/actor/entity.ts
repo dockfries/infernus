@@ -102,9 +102,9 @@ export class DynamicActor {
   isValid(): boolean {
     return s.IsValidDynamicActor(this.id);
   }
-  isStreamedIn<P extends Player>(forplayer: P): boolean {
+  isStreamedIn(forPlayer: Player): boolean {
     if (this.id === -1) return false;
-    return s.IsDynamicActorStreamedIn(this.id, forplayer.id);
+    return s.IsDynamicActorStreamedIn(this.id, forPlayer.id);
   }
   getVirtualWorld(): void | number {
     if (this.id === -1)
@@ -199,21 +199,15 @@ export class DynamicActor {
       );
     return s.SetDynamicActorInvulnerable(this.id, invulnerable);
   }
-  getPlayerTarget<P extends Player, A extends DynamicActor>(
-    player: P,
-    actors: Map<number, A>
-  ): void | A {
+  getPlayerTarget(player: Player) {
     if (this.id === -1) return undefined;
     const actorId = s.GetPlayerTargetDynamicActor(player.id);
-    return actors.get(actorId);
+    return DynamicActor.actors.get(actorId);
   }
-  getPlayerCameraTarget<P extends Player, A extends DynamicActor>(
-    player: P,
-    actors: Map<number, A>
-  ): void | A {
+  getPlayerCameraTarget(player: Player) {
     if (this.id === -1) return undefined;
     const actorId = s.GetPlayerCameraTargetDynActor(player.id);
-    return actors.get(actorId);
+    return DynamicActor.actors.get(actorId);
   }
   getSkin(): void | number {
     if (this.id === -1)

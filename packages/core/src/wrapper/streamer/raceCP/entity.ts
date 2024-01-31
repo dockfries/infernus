@@ -113,7 +113,7 @@ export class DynamicRaceCP {
   isValid(): boolean {
     return IsValidDynamicCP(this.id);
   }
-  togglePlayer<P extends Player>(player: P, toggle: boolean): void | this {
+  togglePlayer(player: Player, toggle: boolean): void | this {
     if (this.id === -1)
       return logger.warn(
         "[StreamerRaceCP]: Unable to toggle the player before create"
@@ -121,18 +121,17 @@ export class DynamicRaceCP {
     TogglePlayerDynamicRaceCP(player.id, this.id, toggle);
     return this;
   }
-  static togglePlayerAll<P extends Player>(player: P, toggle: boolean): number {
+  static togglePlayerAll(player: Player, toggle: boolean): number {
     return TogglePlayerAllDynamicRaceCPs(player.id, toggle);
   }
-  isPlayerIn<P extends Player>(player: P): boolean {
+  isPlayerIn(player: Player): boolean {
     if (this.id === -1) return false;
     return IsPlayerInDynamicRaceCP(player.id, this.id);
   }
-  static getPlayerVisible<P extends Player, C extends DynamicRaceCP>(
-    player: P,
-    checkpoints: Map<number, C>
-  ): C | undefined {
-    return checkpoints.get(GetPlayerVisibleDynamicRaceCP(player.id));
+  static getPlayerVisible(player: Player) {
+    return DynamicRaceCP.checkpoints.get(
+      GetPlayerVisibleDynamicRaceCP(player.id)
+    );
   }
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)

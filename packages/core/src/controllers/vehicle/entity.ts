@@ -2,7 +2,7 @@ import type { CarModTypeEnum, VehicleModelInfoEnum } from "core/enums";
 import { LimitsEnum } from "core/enums";
 import type { TPos } from "core/types";
 import type { IVehicle } from "core/interfaces";
-import type { Player } from "../player";
+import { Player } from "../player";
 import { isValidPaintJob, isValidVehComponent } from "core/utils/vehicleUtils";
 import * as v from "core/wrapper/native/functions";
 
@@ -143,19 +143,19 @@ export class Vehicle {
     if (this.id === -1) return 0;
     return v.SetVehicleHealth(this.id, health);
   }
-  isPlayerIn<P extends Player>(player: P): boolean {
+  isPlayerIn(player: Player): boolean {
     if (this.id === -1) return false;
     return v.IsPlayerInVehicle(player.id, this.id);
   }
-  putPlayerIn<P extends Player>(player: P, seatid: number): number {
+  putPlayerIn(player: Player, seatId: number): number {
     if (this.id === -1) return 0;
-    if (seatid < 0) return 0;
-    if (seatid > 4) {
+    if (seatId < 0) return 0;
+    if (seatId > 4) {
       logger.warn(
         "[Vehicle]: If the seat is invalid or is taken, will cause a crash when they EXIT the vehicle."
       );
     }
-    return v.PutPlayerInVehicle(player.id, this.id, seatid);
+    return v.PutPlayerInVehicle(player.id, this.id, seatId);
   }
   getZAngle(): number {
     if (this.id === -1) return 0;
@@ -216,14 +216,14 @@ export class Vehicle {
     return v.GetVehicleModel(this.id);
   }
   static getModelInfo(
-    vehiclemodel: number,
-    infotype: VehicleModelInfoEnum
+    vehicleModel: number,
+    infoType: VehicleModelInfoEnum
   ): TPos {
-    return v.GetVehicleModelInfo(vehiclemodel, infotype);
+    return v.GetVehicleModelInfo(vehicleModel, infoType);
   }
-  getModelInfo(infotype: VehicleModelInfoEnum): void | TPos {
+  getModelInfo(infoType: VehicleModelInfoEnum): void | TPos {
     if (this.id === -1) return;
-    return Vehicle.getModelInfo(this.getModel(), infotype);
+    return Vehicle.getModelInfo(this.getModel(), infoType);
   }
   getRotationQuat() {
     if (this.id === -1) return;
@@ -234,38 +234,38 @@ export class Vehicle {
     if (this.id === -1) return 0;
     return v.SetVehicleToRespawn(this.id);
   }
-  isStreamedIn<P extends Player>(forplayer: P): boolean {
+  isStreamedIn(forPlayer: Player): boolean {
     if (this.id === -1) return false;
-    return v.IsVehicleStreamedIn(this.id, forplayer.id);
+    return v.IsVehicleStreamedIn(this.id, forPlayer.id);
   }
   setParamsCarDoors(
     driver: boolean,
     passenger: boolean,
-    backleft: boolean,
-    backright: boolean
+    backLeft: boolean,
+    backRight: boolean
   ): number {
     if (this.id === -1) return 0;
     return v.SetVehicleParamsCarDoors(
       this.id,
       driver,
       passenger,
-      backleft,
-      backright
+      backLeft,
+      backRight
     );
   }
   setParamsCarWindows(
     driver: boolean,
     passenger: boolean,
-    backleft: boolean,
-    backright: boolean
+    backLeft: boolean,
+    backRight: boolean
   ) {
     if (this.id === -1) return 0;
     return v.SetVehicleParamsCarWindows(
       this.id,
       driver,
       passenger,
-      backleft,
-      backright
+      backLeft,
+      backRight
     );
   }
   getParamsCarDoors() {
@@ -307,17 +307,17 @@ export class Vehicle {
     if (this.id === -1) return -2;
     return v.GetVehicleParamsSirenState(this.id);
   }
-  setParamsForPlayer<P extends Player>(
-    player: P,
+  setParamsForPlayer(
+    player: Player,
     objective: boolean,
-    doorslocked: boolean
+    doorsLocked: boolean
   ): number {
     if (this.id === -1) return 0;
     return v.SetVehicleParamsForPlayer(
       this.id,
       player.id,
       objective,
-      doorslocked
+      doorsLocked
     );
   }
   isTrailerAttached(): boolean {
@@ -331,7 +331,7 @@ export class Vehicle {
     v.ChangeVehiclePaintjob(this.id, paintjobId);
     return 1;
   }
-  attachTrailer<V extends Vehicle>(trailer: V): number {
+  attachTrailer(trailer: Vehicle): number {
     if (this.id === -1) return 0;
     return v.AttachTrailerToVehicle(trailer.id, this.id);
   }
@@ -339,9 +339,11 @@ export class Vehicle {
     if (this.id === -1) return;
     if (this.isTrailerAttached()) v.DetachTrailerFromVehicle(this.id);
   }
-  getTrailer<V extends Vehicle>(vehicles: Array<V>): V | undefined {
+  getTrailer() {
     if (this.id === -1) return;
-    return vehicles.find((_v) => _v.id === v.GetVehicleTrailer(this.id));
+    return Vehicle.getInstances().find(
+      (_v) => _v.id === v.GetVehicleTrailer(this.id)
+    );
   }
   isValid(): boolean {
     return v.IsValidVehicle(this.id);
@@ -370,13 +372,13 @@ export class Vehicle {
     return w.GetVehicleSirenState(this.id);
   }
   static getModelsUsed = w.GetVehicleModelsUsed;
-  getDriver<P extends Player>(players: Map<number, P>): P | undefined {
+  getDriver() {
     if (this.id === -1) return;
-    return players.get(w.GetVehicleDriver(this.id));
+    return Player.players.get(w.GetVehicleDriver(this.id));
   }
-  getLastDriver<P extends Player>(players: Map<number, P>): P | undefined {
+  getLastDriver() {
     if (this.id === -1) return;
-    return players.get(w.GetVehicleLastDriver(this.id));
+    return Player.players.get(w.GetVehicleLastDriver(this.id));
   }
   static getModelCount = w.GetVehicleModelCount;
   isSirenEnabled(): boolean {

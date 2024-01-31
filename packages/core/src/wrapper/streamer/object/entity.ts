@@ -176,7 +176,7 @@ export class DynamicObject {
     return s.IsDynamicObjectMoving(this.id);
   }
 
-  attachCamera<P extends Player>(player: P): void | number {
+  attachCamera(player: Player): void | number {
     if (this.id === -1 || player.id === -1)
       return logger.warn(
         "[StreamerObject]: Cannot attachCamera before both are created"
@@ -184,8 +184,8 @@ export class DynamicObject {
     return s.AttachCameraToDynamicObject(player.id, this.id);
   }
 
-  attachToObject<O extends DynamicObject>(
-    attachto: O,
+  attachToObject(
+    attachTo: DynamicObject,
     offsetX: number,
     offsetY: number,
     offsetZ: number,
@@ -194,13 +194,13 @@ export class DynamicObject {
     rz: number,
     syncRotation = true
   ): void | number {
-    if (this.id === -1 || attachto.id === -1)
+    if (this.id === -1 || attachTo.id === -1)
       return logger.warn(
         "[StreamerObject]: Cannot attachToObject before both are created"
       );
     return s.AttachDynamicObjectToObject(
       this.id,
-      attachto.id,
+      attachTo.id,
       offsetX,
       offsetY,
       offsetZ,
@@ -211,8 +211,8 @@ export class DynamicObject {
     );
   }
 
-  attachToPlayer<P extends Player>(
-    player: P,
+  attachToPlayer(
+    player: Player,
     offsetX: number,
     offsetY: number,
     offsetZ: number,
@@ -236,8 +236,8 @@ export class DynamicObject {
     );
   }
 
-  attachToVehicle<V extends Vehicle>(
-    vehicle: V,
+  attachToVehicle(
+    vehicle: Vehicle,
     offsetX: number,
     offsetY: number,
     offsetZ: number,
@@ -261,7 +261,7 @@ export class DynamicObject {
     );
   }
 
-  edit<P extends Player>(player: P): void | number {
+  edit(player: Player): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Unable to edit before create");
     player.endObjectEditing();
@@ -367,13 +367,10 @@ export class DynamicObject {
     );
   }
 
-  getPlayerCameraTarget<P extends Player, O extends DynamicObject>(
-    player: P,
-    objMap: Map<number, O>
-  ): void | O {
+  getPlayerCameraTarget(player: Player) {
     const dynId = s.GetPlayerCameraTargetDynObject(player.id);
     if (dynId === InvalidEnum.OBJECT_ID) return;
-    return objMap.get(dynId);
+    return DynamicObject.objects.get(dynId);
   }
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)

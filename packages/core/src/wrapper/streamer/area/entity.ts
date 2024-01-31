@@ -263,11 +263,11 @@ export class DynamicArea {
     if (this.type !== "polygon") return undefined;
     return s.GetDynamicPolygonNumberPoints(this.id);
   }
-  isPlayerIn<P extends Player>(player: P, recheck = false): boolean {
+  isPlayerIn(player: Player, recheck = false): boolean {
     if (this.id === -1) return false;
     return s.IsPlayerInDynamicArea(player.id, this.id, recheck);
   }
-  static isPlayerInAny<P extends Player>(player: P, recheck = false): boolean {
+  static isPlayerInAny(player: Player, recheck = false): boolean {
     return s.IsPlayerInAnyDynamicArea(player.id, recheck);
   }
   isAnyPlayerIn(recheck = false): boolean {
@@ -277,15 +277,12 @@ export class DynamicArea {
   static isAnyPlayerInAny(recheck = false): boolean {
     return s.IsAnyPlayerInAnyDynamicArea(recheck);
   }
-  static getPlayerAreas<P extends Player, A extends DynamicArea>(
-    player: P,
-    areas: Map<number, A>
-  ): Array<A | undefined> {
+  static getPlayerAreas(player: Player): Array<DynamicArea | undefined> {
     if (!DynamicArea.getPlayerAreasNumber(player)) return [];
     const ids = s.GetPlayerDynamicAreas(player.id);
-    return ids.map((a) => areas.get(a));
+    return ids.map((a) => DynamicArea.areas.get(a));
   }
-  static getPlayerAreasNumber<P extends Player>(player: P) {
+  static getPlayerAreasNumber(player: Player) {
     return s.GetPlayerNumberDynamicAreas(player.id);
   }
   isPointIn(x: number, y: number, z: number): boolean {
@@ -316,31 +313,27 @@ export class DynamicArea {
   ): boolean {
     return s.IsLineInAnyDynamicArea(x1, y1, z1, x2, y2, z2);
   }
-  static getForPoint<A extends DynamicArea>(
-    x: number,
-    y: number,
-    z: number,
-    areas: Map<number, A>
-  ): Array<A | undefined> {
+  static getForPoint(x: number, y: number, z: number) {
     if (!DynamicArea.getNumberForPoint(x, y, z)) return [];
     const ids = s.GetDynamicAreasForPoint(x, y, z);
-    return ids.map((a) => areas.get(a));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return ids.map((a) => DynamicArea.getInstance(a)!);
   }
   static getNumberForPoint(x: number, y: number, z: number): number {
     return s.GetNumberDynamicAreasForPoint(x, y, z);
   }
-  static getForLine<A extends DynamicArea>(
+  static getForLine(
     x1: number,
     y1: number,
     z1: number,
     x2: number,
     y2: number,
-    z2: number,
-    areas: Map<number, A>
-  ): Array<A | undefined> {
+    z2: number
+  ) {
     if (!DynamicArea.getNumberForLine(x1, y1, z1, x2, y2, z2)) return [];
     const ids = s.GetDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
-    return ids.map((a) => areas.get(a));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return ids.map((a) => DynamicArea.areas.get(a)!);
   }
   static getNumberForLine(
     x1: number,
@@ -352,8 +345,8 @@ export class DynamicArea {
   ): number {
     return s.GetNumberDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
   }
-  attachToObject<O extends DynamicObject>(
-    obj: O,
+  attachToObject(
+    obj: DynamicObject,
     offsetX = 0.0,
     offsetY = 0.0,
     offsetZ = 0.0
@@ -372,8 +365,8 @@ export class DynamicArea {
       offsetZ
     );
   }
-  attachToPlayer<P extends Player>(
-    player: P,
+  attachToPlayer(
+    player: Player,
     offsetX = 0.0,
     offsetY = 0.0,
     offsetZ = 0.0
@@ -390,8 +383,8 @@ export class DynamicArea {
       offsetZ
     );
   }
-  attachToVehicle<V extends Vehicle>(
-    vehicle: V,
+  attachToVehicle(
+    vehicle: Vehicle,
     offsetX = 0.0,
     offsetY = 0.0,
     offsetZ = 0.0

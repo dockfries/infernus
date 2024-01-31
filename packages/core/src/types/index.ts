@@ -1,3 +1,4 @@
+import type { Player } from "core/controllers/player/entity";
 import type {
   IDynamicCircle,
   IDynamicCylinder,
@@ -8,9 +9,9 @@ import type {
 } from "core/interfaces";
 
 export type TEventName = string | string[];
-export type TEventFunc<EventInstance, P> = (
+export type TEventFunc<EventInstance> = (
   this: EventInstance,
-  player: P,
+  player: Player,
   ...args: string[]
 ) => boolean | number | void | Promise<boolean | number | void>;
 

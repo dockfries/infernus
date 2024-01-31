@@ -2122,9 +2122,9 @@ export const SetPlayerChatBubble = (
 export const PutPlayerInVehicle = (
   playerId: number,
   vehicleId: number,
-  seatid: number
+  seatId: number
 ): number => {
-  return callNative("PutPlayerInVehicle", "iii", playerId, vehicleId, seatid);
+  return callNative("PutPlayerInVehicle", "iii", playerId, vehicleId, seatId);
 };
 
 export const GetPlayerVehicleID = (playerId: number): number => {
@@ -2275,6 +2275,10 @@ export const SetPlayerWorldBounds = (
     y_max,
     y_min
   );
+};
+
+export const ClearPlayerWorldBounds = (playerId: number) => {
+  return Boolean(callNative("ClearPlayerWorldBounds", "i", playerId));
 };
 
 export const SetPlayerMarkerForPlayer = (
@@ -2991,13 +2995,13 @@ export const UpdateVehicleDamageStatus = (
 
 export const GetVehicleModelInfo = (
   vehiclemodel: number,
-  infotype: VehicleModelInfoEnum
+  infoType: VehicleModelInfoEnum
 ) => {
   const values: number[] = callNative(
     "GetVehicleModelInfo",
     "iiFFF",
     vehiclemodel,
-    infotype
+    infoType
   );
   if (values.length < 3) {
     throw new Error("ModelID " + vehiclemodel + " not found");

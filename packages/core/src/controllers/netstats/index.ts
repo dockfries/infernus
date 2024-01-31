@@ -8,36 +8,34 @@ export class NetStats {
   static getNetworkStats(): string {
     return f.GetNetworkStats();
   }
-  static getPlayerNetworkStats<P extends Player>(player: P): string {
+  static getPlayerNetworkStats(player: Player): string {
     return f.GetPlayerNetworkStats(player.id);
   }
-  static getBytesReceived<P extends Player>(player: P): number {
+  static getBytesReceived(player: Player): number {
     return f.NetStats_BytesReceived(player.id);
   }
-  static getBytesSent<P extends Player>(player: P): number {
+  static getBytesSent(player: Player): number {
     return f.NetStats_BytesSent(player.id);
   }
-  static getConnectionStatus<P extends Player>(
-    player: P
-  ): ConnectionStatusEnum {
+  static getConnectionStatus(player: Player): ConnectionStatusEnum {
     return f.NetStats_ConnectionStatus(player.id);
   }
-  static getConnectedTime<P extends Player>(player: P): number {
+  static getConnectedTime(player: Player): number {
     return f.NetStats_GetConnectedTime(player.id);
   }
-  static getIpPort<P extends Player>(player: P): string {
+  static getIpPort(player: Player): string {
     return f.NetStats_GetIpPort(player.id);
   }
-  static getMessagesReceived<P extends Player>(player: P): number {
+  static getMessagesReceived(player: Player): number {
     return f.NetStats_MessagesReceived(player.id);
   }
-  static getMessagesRecvPerSecond<P extends Player>(player: P): number {
+  static getMessagesRecvPerSecond(player: Player): number {
     return f.NetStats_MessagesRecvPerSecond(player.id);
   }
-  static getMessagesSent<P extends Player>(player: P): number {
+  static getMessagesSent(player: Player): number {
     return f.NetStats_MessagesSent(player.id);
   }
-  static getPacketLossPercent<P extends Player>(player: P): number {
+  static getPacketLossPercent(player: Player): number {
     return f.NetStats_PacketLossPercent(player.id);
   }
 }
