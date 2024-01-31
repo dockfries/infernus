@@ -375,3 +375,11 @@ export const SetDynamicObjectMaterialText = (
 export const GetPlayerCameraTargetDynObject = (playerId: number): number => {
   return samp.callNative("GetPlayerCameraTargetDynObject", "i", playerId);
 };
+
+export const SetDynamicObjectNoCameraCol = (objectId: number) => {
+  return Boolean(samp.callNative("SetDynamicObjectNoCameraCol", "i", objectId));
+};
+
+export const GetDynamicObjectNoCameraCol = (objectId: number) => {
+  return Boolean(samp.callNative("GetDynamicObjectNoCameraCol", "i", objectId));
+};

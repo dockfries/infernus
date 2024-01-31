@@ -387,6 +387,12 @@ export class DynamicObject {
     if (this.id === -1) false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.OBJECT, this.id);
   }
+  setNoCameraCollision() {
+    return s.SetDynamicObjectNoCameraCol(this.id);
+  }
+  getNoCameraCollision() {
+    return s.GetDynamicObjectNoCameraCol(this.id);
+  }
 
   static getInstance(id: number) {
     return this.objects.get(id);
