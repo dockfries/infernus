@@ -4,7 +4,6 @@ import type { ITextDraw } from "core/interfaces";
 import { logger } from "core/logger";
 import * as fns from "core/wrapper/native/functions";
 import {
-  IsValidPlayer3DTextLabel,
   IsValidTextDraw,
   IsTextDrawVisibleForPlayer,
   PlayerTextDrawGetString,
@@ -43,6 +42,7 @@ import {
   TextDrawGetPreviewRot,
   PlayerTextDrawGetPreviewVehicleColors,
   TextDrawGetPreviewVehicleColors,
+  IsValidPlayerTextDraw,
 } from "@infernus/wrapper";
 
 import { PlayerEvent, type Player } from "../player";
@@ -290,7 +290,7 @@ export class TextDraw {
   }
   isValid(): boolean {
     const p = this.sourceInfo.player;
-    if (p) return IsValidPlayer3DTextLabel(p.id, this.id);
+    if (p) return IsValidPlayerTextDraw(p.id, this.id);
     return IsValidTextDraw(this.id);
   }
   isVisibleForPlayer(player: Player): boolean {
