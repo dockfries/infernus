@@ -79,14 +79,14 @@ export const AddMenuItem = (
 export const SetMenuColumnHeader = (
   menuId: number,
   column: number,
-  columnheader: string
+  columnHeader: string
 ): number => {
   return samp.callNative(
     "SetMenuColumnHeader",
     "iis",
     menuId,
     column,
-    columnheader
+    columnHeader
   );
 };
 

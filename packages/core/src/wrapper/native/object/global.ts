@@ -373,44 +373,52 @@ export const SetObjectsDefaultCameraCollision = (disable: boolean): boolean => {
 
 export const AddSimpleModel = (
   virtualWorld: number,
-  baseid: number,
-  newid: number,
-  dffname: string,
+  baseId: number,
+  newId: number,
+  dffName: string,
   txdName: string
 ): number => {
   return samp.callNative(
     "AddSimpleModel",
     "iiiss",
     virtualWorld,
-    baseid,
-    newid,
-    dffname,
+    baseId,
+    newId,
+    dffName,
     txdName
   );
 };
 
 export const AddSimpleModelTimed = (
   virtualWorld: number,
-  baseid: number,
-  newid: number,
-  dffname: string,
+  baseId: number,
+  newId: number,
+  dffName: string,
   txdName: string,
-  timeon: number,
-  timeoff: number
+  timeOn: number,
+  timeOff: number
 ): number => {
   return samp.callNative(
     "AddSimpleModelTimed",
     "iiissii",
     virtualWorld,
-    baseid,
-    newid,
-    dffname,
+    baseId,
+    newId,
+    dffName,
     txdName,
-    timeon,
-    timeoff
+    timeOn,
+    timeOff
   );
 };
 
 export const RedirectDownload = (playerId: number, url: string): number => {
   return samp.callNative("RedirectDownload", "is", playerId, url);
+};
+
+export const FindModelFileNameFromCRC = (crc: number): string => {
+  return samp.callNative("FindModelFileNameFromCRC", "iSi", crc, 255);
+};
+
+export const FindTextureFileNameFromCRC = (crc: number): string => {
+  return samp.callNative("FindTextureFileNameFromCRC", "iSi", crc, 255);
 };

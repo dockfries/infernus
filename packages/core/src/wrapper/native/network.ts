@@ -59,8 +59,8 @@ export const GetNetworkStats = (): string => {
   return samp.callNative("GetNetworkStats", "Si", 1024);
 };
 
-export const BlockIpAddress = (ip_address: string, timems: number): number => {
-  return samp.callNative("BlockIpAddress", "si", ip_address, timems);
+export const BlockIpAddress = (ip_address: string, timeMs: number): number => {
+  return samp.callNative("BlockIpAddress", "si", ip_address, timeMs);
 };
 
 export const UnBlockIpAddress = (ip_address: string): number => {
@@ -94,4 +94,12 @@ export const SendClientCheck = (
     memOffset,
     byteCount
   );
+};
+
+export const ClearBanList = (): void => {
+  samp.callNative("ClearBanList", "");
+};
+
+export const IsBanned = (ipAddress: string): boolean => {
+  return Boolean(samp.callNative("IsBanned", "s", ipAddress));
 };

@@ -240,9 +240,9 @@ export const TextDrawSetString = (text: number, string: string): number => {
 
 export const TextDrawSetPreviewModel = (
   text: number,
-  modelindex: number
+  modelIndex: number
 ): number => {
-  return samp.callNative("TextDrawSetPreviewModel", "ii", text, modelindex);
+  return samp.callNative("TextDrawSetPreviewModel", "ii", text, modelIndex);
 };
 
 export const TextDrawSetPreviewRot = (

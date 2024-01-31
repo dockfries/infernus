@@ -412,14 +412,14 @@ export const PlayerTextDrawSetString = (
 export const PlayerTextDrawSetPreviewModel = (
   playerId: number,
   text: number,
-  modelindex: number
+  modelIndex: number
 ): number => {
   return samp.callNative(
     "PlayerTextDrawSetPreviewModel",
     "iii",
     playerId,
     text,
-    modelindex
+    modelIndex
   );
 };
 

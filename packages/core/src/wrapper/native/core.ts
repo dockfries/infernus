@@ -4,14 +4,6 @@ import type {
   MarkerModesEnum,
 } from "core/enums";
 
-export const ClearBanList = (): void => {
-  samp.callNative("ClearBanList", "");
-};
-
-export const IsBanned = (ipAddress: string): boolean => {
-  return Boolean(samp.callNative("IsBanned", "s", ipAddress));
-};
-
 export const IsValidNickName = (name: string): boolean => {
   return Boolean(samp.callNative("IsValidNickName", "s", name));
 };
@@ -38,10 +30,6 @@ export const IsValidServerRule = (name: string): boolean => {
 
 export const RemoveServerRule = (name: string): boolean => {
   return Boolean(samp.callNative("RemoveServerRule", "s", name));
-};
-
-export const CountRunningTimers = (): number => {
-  return samp.callNative("CountRunningTimers", "");
 };
 
 export const AllowAdminTeleport = (allow: boolean) => {
@@ -83,14 +71,6 @@ export const GetConsoleVarAsInt = (varname: string): number => {
 
 export const GetConsoleVarAsBool = (varname: string) => {
   return Boolean(samp.callNative("GetConsoleVarAsBool", "s", varname));
-};
-
-export const FindModelFileNameFromCRC = (crc: number): string => {
-  return samp.callNative("FindModelFileNameFromCRC", "iSi", crc, 255);
-};
-
-export const FindTextureFileNameFromCRC = (crc: number): string => {
-  return samp.callNative("FindTextureFileNameFromCRC", "iSi", crc, 255);
 };
 
 export const GetWeather = (): number => {
@@ -240,4 +220,20 @@ export const GetAnimationName = (index: number): Array<string> => {
 
 export const EnableStuntBonusForAll = (enable: boolean): number => {
   return samp.callNative("EnableStuntBonusForAll", "i", enable);
+};
+
+export const ToggleChatTextReplacement = (toggle: boolean): void => {
+  samp.callNative("ToggleChatTextReplacement", "i", toggle);
+};
+
+export const ChatTextReplacementToggled = (): boolean => {
+  return Boolean(samp.callNative("ChatTextReplacementToggled", ""));
+};
+
+export const GetWeaponSlot = (weaponId: number): number => {
+  return samp.callNative("GetWeaponSlot", "i", weaponId);
+};
+
+export const GetWeaponName = (weaponId: number): string => {
+  return samp.callNative("GetWeaponName", "iSi", weaponId, 32);
 };

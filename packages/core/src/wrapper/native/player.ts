@@ -623,14 +623,14 @@ export const GetPlayerVelocity = (playerId: number): Array<number> => {
 
 export const PlayCrimeReportForPlayer = (
   playerId: number,
-  suspectid: number,
+  suspectId: number,
   crime: number
 ): number => {
   return samp.callNative(
     "PlayCrimeReportForPlayer",
     "iii",
     playerId,
-    suspectid,
+    suspectId,
     crime
   );
 };
@@ -642,7 +642,7 @@ export const PlayAudioStreamForPlayer = (
   posY: number,
   posZ: number,
   distance: number,
-  usepos = false
+  usePos = false
 ): number => {
   return samp.callNative(
     "PlayAudioStreamForPlayer",
@@ -653,7 +653,7 @@ export const PlayAudioStreamForPlayer = (
     posY,
     posZ,
     distance,
-    usepos
+    usePos
   );
 };
 
@@ -663,9 +663,9 @@ export const StopAudioStreamForPlayer = (playerId: number): number => {
 
 export const SetPlayerShopName = (
   playerId: number,
-  shopname: string
+  shopName: string
 ): number => {
-  return samp.callNative("SetPlayerShopName", "is", playerId, shopname);
+  return samp.callNative("SetPlayerShopName", "is", playerId, shopName);
 };
 
 export const SetPlayerSkillLevel = (
@@ -771,7 +771,7 @@ export const SetPlayerChatBubble = (
   text: string,
   color: string | number,
   drawDistance: number,
-  expiretime: number
+  expireTime: number
 ): number => {
   return samp.callNative(
     "SetPlayerChatBubble",
@@ -780,7 +780,7 @@ export const SetPlayerChatBubble = (
     text,
     rgba(color),
     drawDistance,
-    expiretime
+    expireTime
   );
 };
 
@@ -819,7 +819,7 @@ export const TogglePlayerControllable = (
 
 export const PlayerPlaySound = (
   playerId: number,
-  soundid: number,
+  soundId: number,
   x: number,
   y: number,
   z: number
@@ -828,7 +828,7 @@ export const PlayerPlaySound = (
     "PlayerPlaySound",
     "iifff",
     playerId,
-    soundid,
+    soundId,
     x,
     y,
     z
@@ -845,7 +845,7 @@ export const ApplyAnimation = (
   lockY: boolean,
   freeze: boolean,
   time: number,
-  forcesync: boolean
+  forceSync: boolean
 ): number => {
   return samp.callNative(
     "ApplyAnimation",
@@ -859,15 +859,15 @@ export const ApplyAnimation = (
     lockY,
     freeze,
     time,
-    forcesync
+    forceSync
   );
 };
 
 export const ClearAnimations = (
   playerId: number,
-  forcesync: boolean
+  forceSync: boolean
 ): number => {
-  return samp.callNative("ClearAnimations", "ii", playerId, forcesync);
+  return samp.callNative("ClearAnimations", "ii", playerId, forceSync);
 };
 
 export const GetPlayerAnimationIndex = (playerId: number): number => {
@@ -882,9 +882,9 @@ export const GetPlayerSpecialAction = (
 
 export const SetPlayerSpecialAction = (
   playerId: number,
-  actionid: SpecialActionsEnum
+  actionId: SpecialActionsEnum
 ): number => {
-  return samp.callNative("SetPlayerSpecialAction", "ii", playerId, actionid);
+  return samp.callNative("SetPlayerSpecialAction", "ii", playerId, actionId);
 };
 
 export const DisableRemoteVehicleCollisions = (
@@ -943,15 +943,15 @@ export const CreateExplosionForPlayer = (
 
 export const StartRecordingPlayerData = (
   playerId: number,
-  recordtype: number,
-  recordname: string
+  recordType: number,
+  recordName: string
 ): number => {
   return samp.callNative(
     "StartRecordingPlayerData",
     "iis",
     playerId,
-    recordtype,
-    recordname
+    recordType,
+    recordName
   );
 };
 
@@ -968,28 +968,28 @@ export const TogglePlayerSpectating = (
 
 export const PlayerSpectatePlayer = (
   playerId: number,
-  targetplayerid: number,
+  targetPlayerId: number,
   mode: SpectateModesEnum
 ): number => {
   return samp.callNative(
     "PlayerSpectatePlayer",
     "iii",
     playerId,
-    targetplayerid,
+    targetPlayerId,
     mode
   );
 };
 
 export const PlayerSpectateVehicle = (
   playerId: number,
-  targetvehicleId: number,
+  targetVehicleId: number,
   mode: SpectateModesEnum
 ): number => {
   return samp.callNative(
     "PlayerSpectateVehicle",
     "iii",
     playerId,
-    targetvehicleId,
+    targetVehicleId,
     mode
   );
 };
@@ -1074,7 +1074,7 @@ export const SetPlayerMapIcon = (
   x: number,
   y: number,
   z: number,
-  markertype: number,
+  markerType: number,
   color: string | number,
   style: number
 ): number => {
@@ -1086,7 +1086,7 @@ export const SetPlayerMapIcon = (
     x,
     y,
     z,
-    markertype,
+    markerType,
     rgba(color),
     style
   );
@@ -1182,13 +1182,13 @@ export const AttachCameraToObject = (
 
 export const AttachCameraToPlayerObject = (
   playerId: number,
-  playerobjectId: number
+  playerObjectId: number
 ): number => {
   return samp.callNative(
     "AttachCameraToPlayerObject",
     "ii",
     playerId,
-    playerobjectId
+    playerObjectId
   );
 };
 
