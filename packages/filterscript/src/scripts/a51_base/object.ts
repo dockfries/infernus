@@ -231,14 +231,7 @@ export const moveGate = (
     return;
   }
 
-  PlaySoundForPlayersInRange(
-    Player.getInstances(),
-    1035,
-    50.0,
-    position.x,
-    position.y,
-    position.z
-  );
+  PlaySoundForPlayersInRange(1035, 50.0, position.x, position.y, position.z);
 
   const {
     x: ox,
