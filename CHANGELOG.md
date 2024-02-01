@@ -1,3 +1,17 @@
+# [0.10.0-beta.11](https://github.com/dockfries/infernus/compare/v0.10.0-beta.10...v0.10.0-beta.11) (2024-2-1)
+
+
+### Bug Fixes
+
+* **streamer:** get actor animation ([1de139a](https://github.com/dockfries/infernus/commit/1de139a89332aaaa299396751ac221141ca0dee7))
+
+
+### Features
+
+* **core:** add some new natives ([9ea2c9e](https://github.com/dockfries/infernus/commit/9ea2c9ec13c152d8e50e92a14fa27a88a2922025))
+
+
+
 # [0.10.0-beta.10](https://github.com/dockfries/infernus/compare/v0.10.0-beta.9...v0.10.0-beta.10) (2024-1-31)
 
 
