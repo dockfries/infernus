@@ -220,13 +220,21 @@ export class TextDraw {
     else w.TextDrawSetShadow(this.id, size);
     return this;
   }
-  setString(text: string): void | this {
+  setString(text: string, player?: Player): void | this {
     if (this.id === -1) return TextDraw.beforeCreateWarn("set string");
     if (text.length === 0 || text.length > 1024)
       return logger.warn("[TextDraw]: Invalid text length");
-    const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawSetString(player.id, this.id, text);
-    else w.TextDrawSetString(this.id, text);
+    const { player: _player } = this.sourceInfo;
+    // not-global
+    if (_player) {
+      w.PlayerTextDrawSetString(_player.id, this.id, text);
+      // global with player
+    } else if (player) {
+      w.TextDrawSetStringForPlayer(this.id, player.id, text);
+      // global
+    } else {
+      w.TextDrawSetString(this.id, text);
+    }
     return this;
   }
   setTextSize(x: number, y: number): void | this {

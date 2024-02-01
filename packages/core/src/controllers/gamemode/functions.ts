@@ -74,88 +74,89 @@ export default {
   getServerTickRate: w.GetServerTickRate,
   addSimpleModel(
     virtualWorld: number,
-    baseid: number,
-    newid: number,
-    dffname: string,
+    baseId: number,
+    newId: number,
+    dffName: string,
     txdName: string
   ): number {
-    if (this.checkSimpleModel(virtualWorld, baseid, newid, dffname, txdName)) {
-      return w.AddSimpleModel(virtualWorld, baseid, newid, dffname, txdName);
+    if (this.checkSimpleModel(virtualWorld, baseId, newId, dffName, txdName)) {
+      return w.AddSimpleModel(virtualWorld, baseId, newId, dffName, txdName);
     }
     return 0;
   },
   addSimpleModelTimed(
     virtualWorld: number,
-    baseid: number,
-    newid: number,
-    dffname: string,
+    baseId: number,
+    newId: number,
+    dffName: string,
     txdName: string,
-    timeon: number,
-    timeoff: number
+    timeOn: number,
+    timeOff: number
   ): number {
     if (
       this.checkSimpleModel(
         virtualWorld,
-        baseid,
-        newid,
-        dffname,
+        baseId,
+        newId,
+        dffName,
         txdName,
-        timeon,
-        timeoff
+        timeOn,
+        timeOff
       )
     ) {
       return w.AddSimpleModelTimed(
         virtualWorld,
-        baseid,
-        newid,
-        dffname,
+        baseId,
+        newId,
+        dffName,
         txdName,
-        timeon,
-        timeoff
+        timeOn,
+        timeOff
       );
     }
     return 0;
   },
   checkSimpleModel(
     virtualWorld: number,
-    baseid: number,
-    newid: number,
-    dffname: string,
+    baseId: number,
+    newId: number,
+    dffName: string,
     txdName: string,
-    timeon?: number,
-    timeoff?: number
+    timeOn?: number,
+    timeOff?: number
   ): number {
     if (virtualWorld < -1) {
       logger.error("[GameMode]: AddSimpleModel - Error virtual world");
       return 0;
     }
-    if (baseid < 0) {
-      logger.error("[GameMode]: AddSimpleModel - Error baseid");
+    if (baseId < 0) {
+      logger.error("[GameMode]: AddSimpleModel - Error baseId");
       return 0;
     }
-    if (newid > -1000 || newid < -30000) {
-      logger.error("[GameMode]: AddSimpleModel - Error newid range");
+    if (newId > -1000 || newId < -30000) {
+      logger.error("[GameMode]: AddSimpleModel - Error newId range");
       return 0;
     }
-    if (dffname.trim().length < 0) {
-      logger.error("[GameMode]: AddSimpleModel - Empty dffname");
+    if (dffName.trim().length < 0) {
+      logger.error("[GameMode]: AddSimpleModel - Empty dffName");
       return 0;
     }
     if (txdName.trim().length < 0) {
       logger.error("[GameMode]: AddSimpleModel - Empty txdName");
       return 0;
     }
-    if (timeon !== undefined && (timeon < 0 || timeon > 23)) {
+    if (timeOn !== undefined && (timeOn < 0 || timeOn > 23)) {
       logger.error("[GameMode]: AddSimpleModel - Error time on range");
       return 0;
     }
-    if (timeoff !== undefined && (timeoff < 0 || timeoff > 23)) {
+    if (timeOff !== undefined && (timeOff < 0 || timeOff > 23)) {
       logger.error("[GameMode]: AddSimpleModel - Error time off range");
       return 0;
     }
     return 1;
   },
-
+  isValidCustomModel: w.IsValidCustomModel,
+  getCustomModePath: w.GetCustomModePath,
   getConsoleVarAsString(varname: string, charset = "utf8") {
     const consoleVar = w.GetConsoleVarAsByteArray(varname);
     return I18n.decodeFromBuf(I18n.getValidStr(consoleVar), charset);

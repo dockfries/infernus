@@ -201,6 +201,13 @@ export const GetRandomVehicleColorPair = (modelId: number) => {
   };
 };
 
+export const VehicleColorIndexToColor = (
+  index: number,
+  alpha = 0xff
+): number => {
+  return samp.callNative("CarColIndexToColour", "ii", index, alpha);
+};
+
 export const CreateVehicle = (
   vehicleType: number,
   x: number,
@@ -673,4 +680,36 @@ export const AddStaticVehicleEx = (
     respawn_delay,
     addSiren
   );
+};
+
+export const ShowVehicle = (vehicleId: number) => {
+  return Boolean(samp.callNative("ShowVehicle", "i", vehicleId));
+};
+
+export const HideVehicle = (vehicleId: number) => {
+  return Boolean(samp.callNative("HideVehicle", "i", vehicleId));
+};
+
+export const IsVehicleHidden = (vehicleId: number) => {
+  return Boolean(samp.callNative("IsVehicleHidden", "i", vehicleId));
+};
+
+export const IsPlayerInModShop = (playerId: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerInModShop", "i", playerId));
+};
+
+export const GetPlayerSirenState = (playerId: number): number => {
+  return samp.callNative("GetPlayerSirenState", "i", playerId);
+};
+
+export const GetPlayerLandingGearState = (playerId: number): number => {
+  return samp.callNative("GetPlayerLandingGearState", "i", playerId);
+};
+
+export const GetPlayerHydraReactorAngle = (playerId: number): number => {
+  return samp.callNative("GetPlayerHydraReactorAngle", "i", playerId);
+};
+
+export const GetPlayerTrainSpeed = (playerId: number): number => {
+  return samp.callNativeFloat("GetPlayerTrainSpeed", "i", playerId);
 };

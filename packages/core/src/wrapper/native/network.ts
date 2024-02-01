@@ -43,6 +43,10 @@ export const IsPlayerAdmin = (playerId: number): boolean => {
   return Boolean(samp.callNative("IsPlayerAdmin", "i", playerId));
 };
 
+export const SetPlayerAdmin = (playerId: number, admin: boolean): number => {
+  return samp.callNative("SetPlayerAdmin", "ii", playerId, admin);
+};
+
 export const Kick = (playerId: number): number => {
   return samp.callNative("Kick", "i", playerId);
 };
@@ -102,4 +106,16 @@ export const ClearBanList = (): void => {
 
 export const IsBanned = (ipAddress: string): boolean => {
   return Boolean(samp.callNative("IsBanned", "s", ipAddress));
+};
+
+export const GetPlayerRawIp = (playerId: number): string => {
+  return samp.callNative("GetPlayerRawIp", "i", playerId);
+};
+
+export const GetPlayerIp = (playerId: number): string => {
+  return samp.callNative("GetPlayerIp", "iSi", playerId, 128);
+};
+
+export const GetPlayerVersion = (playerId: number): string => {
+  return samp.callNative("GetPlayerVersion", "iSi", playerId, 24);
 };

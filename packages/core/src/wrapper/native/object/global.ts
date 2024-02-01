@@ -1,11 +1,13 @@
 import { rgba } from "core/utils/colorUtils";
 import type {
   IAttachedData,
+  IAttachedObject,
   IMaterial,
   IMaterialText,
   IObjectPos,
   IObjectRotPos,
 } from "../interfaces/Object";
+import type { BoneIdsEnum } from "core/enums/player";
 
 export const GetObjectDrawDistance = (objectId: number): number => {
   return samp.callNativeFloat("GetObjectDrawDistance", "i", objectId);
@@ -421,4 +423,115 @@ export const FindModelFileNameFromCRC = (crc: number): string => {
 
 export const FindTextureFileNameFromCRC = (crc: number): string => {
   return samp.callNative("FindTextureFileNameFromCRC", "iSi", crc, 255);
+};
+
+export const GetPlayerAttachedObject = (
+  playerId: number,
+  index: number
+): IAttachedObject => {
+  const [
+    modelId = 0,
+    bone = 0,
+    fX = 0.0,
+    fY = 0.0,
+    fZ = 0.0,
+    fRotX = 0.0,
+    fRotY = 0.0,
+    fRotZ = 0.0,
+    fScaleX = 0.0,
+    fScaleY = 0.0,
+    fScaleZ = 0.0,
+    materialColor1 = 0,
+    materialColor2 = 0,
+  ]: number[] = samp.callNative(
+    "GetPlayerAttachedObject",
+    "iiIIFFFFFFFFFII",
+    playerId,
+    index
+  );
+  return {
+    modelId,
+    bone,
+    fX,
+    fY,
+    fZ,
+    fRotX,
+    fRotY,
+    fRotZ,
+    fScaleX,
+    fScaleY,
+    fScaleZ,
+    materialColor1,
+    materialColor2,
+  };
+};
+
+export const SetPlayerAttachedObject = (
+  playerId: number,
+  index: number,
+  modelId: number,
+  bone: BoneIdsEnum,
+  fOffsetX: number,
+  fOffsetY: number,
+  fOffsetZ: number,
+  fRotX: number,
+  fRotY: number,
+  fRotZ: number,
+  fScaleX: number,
+  fScaleY: number,
+  fScaleZ: number,
+  materialColor1: string | number,
+  materialColor2: string | number
+): number => {
+  return samp.callNative(
+    "SetPlayerAttachedObject",
+    "iiiifffffffffii",
+    playerId,
+    index,
+    modelId,
+    bone,
+    fOffsetX,
+    fOffsetY,
+    fOffsetZ,
+    fRotX,
+    fRotY,
+    fRotZ,
+    fScaleX,
+    fScaleY,
+    fScaleZ,
+    rgba(materialColor1),
+    rgba(materialColor2)
+  );
+};
+
+export const RemovePlayerAttachedObject = (
+  playerId: number,
+  index: number
+): number => {
+  return samp.callNative("RemovePlayerAttachedObject", "ii", playerId, index);
+};
+
+export const IsPlayerAttachedObjectSlotUsed = (
+  playerId: number,
+  index: number
+): boolean => {
+  return Boolean(
+    samp.callNative("IsPlayerAttachedObjectSlotUsed", "ii", playerId, index)
+  );
+};
+
+export const IsValidCustomModel = (modelId: number): boolean => {
+  return Boolean(samp.callNative("IsValidCustomModel", "i", modelId));
+};
+
+export const GetCustomModePath = (modelId: number) => {
+  if (!IsValidCustomModel(modelId)) return null;
+  const [dffPath, txdPath] = samp.callNative(
+    "GetCustomModePath",
+    "iSiSi",
+    modelId,
+    255,
+    255
+  );
+  return { dffPath, txdPath };
 };

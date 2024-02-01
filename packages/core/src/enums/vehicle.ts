@@ -1,6 +1,6 @@
 export enum CarModTypeEnum {
-  UNKNOWN_CARMODTYPE = -1,
-  CARMODTYPE_NONE = -1,
+  UNKNOWN = -1,
+  NONE = -1,
   SPOILER,
   HOOD,
   ROOF,
@@ -15,6 +15,8 @@ export enum CarModTypeEnum {
   REAR_BUMPER,
   VENT_RIGHT,
   VENT_LEFT,
+  FRONT_BULLBAR,
+  REAR_BULLBAR,
 }
 export enum VehicleParamsEnum {
   UNSET,

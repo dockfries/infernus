@@ -184,3 +184,34 @@ export const SetSpawnInfo = (
 export const SpawnPlayer = (playerId: number): number => {
   return samp.callNative("SpawnPlayer", "i", playerId);
 };
+
+export const GetSpawnInfo = (playerId: number): IPlayerClass => {
+  const [
+    teamId,
+    modelId = 0,
+    spawn_x = 0.0,
+    spawn_y = 0.0,
+    spawn_z = 0.0,
+    z_angle = 0.0,
+    weapon1 = 0,
+    weapon1_ammo = 0,
+    weapon2 = 0,
+    weapon2_ammo = 0,
+    weapon3 = 0,
+    weapon3_ammo = 0,
+  ]: number[] = samp.callNative("GetSpawnInfo", "iIIFFFFIIIIII", playerId);
+  return {
+    teamId,
+    modelId,
+    spawn_x,
+    spawn_y,
+    spawn_z,
+    z_angle,
+    weapon1,
+    weapon1_ammo,
+    weapon2,
+    weapon2_ammo,
+    weapon3,
+    weapon3_ammo,
+  };
+};

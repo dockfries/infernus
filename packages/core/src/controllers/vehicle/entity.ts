@@ -106,9 +106,6 @@ export class Vehicle {
   getComponentInSlot(slot: CarModTypeEnum) {
     return v.GetVehicleComponentInSlot(this.id, slot);
   }
-  static getComponentType(component: number) {
-    return v.GetVehicleComponentType(component);
-  }
   linkToInterior(interiorId: number): number {
     if (this.id === -1) return 0;
     return v.LinkVehicleToInterior(this.id, interiorId);
@@ -352,9 +349,6 @@ export class Vehicle {
   isValid(): boolean {
     return v.IsValidVehicle(this.id);
   }
-  static isValid(id: number): boolean {
-    return v.IsValidVehicle(id);
-  }
   getMatrix() {
     if (this.id === -1) return;
     return v.GetVehicleMatrix(this.id);
@@ -375,7 +369,6 @@ export class Vehicle {
     if (this.id === -1) return 0;
     return v.GetVehicleSirenState(this.id);
   }
-  static getModelsUsed = v.GetVehicleModelsUsed;
   getDriver(players: Map<number, Player>) {
     if (this.id === -1) return;
     return players.get(v.GetVehicleDriver(this.id));
@@ -384,7 +377,6 @@ export class Vehicle {
     if (this.id === -1) return;
     return players.get(v.GetVehicleLastDriver(this.id));
   }
-  static getModelCount = v.GetVehicleModelCount;
   isSirenEnabled(): boolean {
     return v.IsVehicleSirenEnabled(this.id);
   }
@@ -491,15 +483,33 @@ export class Vehicle {
     if (this.id === -1) return;
     return v.GetVehicleSpawnInfo(this.id);
   }
-
   getRandomColorPair() {
     if (this.id === -1) return;
     return v.GetRandomVehicleColorPair(this.getModel());
+  }
+  show() {
+    if (this.id === -1) return false;
+    return v.ShowVehicle(this.id);
+  }
+  hide() {
+    if (this.id === -1) return false;
+    return v.HideVehicle(this.id);
+  }
+  isHidden() {
+    if (this.id === -1) return false;
+    return v.IsVehicleHidden(this.id);
   }
 
   static getRandomColorPair(modelId: number) {
     return v.GetRandomVehicleColorPair(modelId);
   }
+  static getComponentType = v.GetVehicleComponentType;
+  static colorIndexToColor = v.VehicleColorIndexToColor;
+  static isValid(id: number): boolean {
+    return v.IsValidVehicle(id);
+  }
+  static getModelsUsed = v.GetVehicleModelsUsed;
+  static getModelCount = v.GetVehicleModelCount;
 
   static getInstance(id: number) {
     return this.vehicles.get(id);

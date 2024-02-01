@@ -121,16 +121,14 @@ export const TextDrawGetPreviewVehicleColors = (textDrawId: number) => {
 export const TextDrawSetStringForPlayer = (
   textDrawId: number,
   playerId: number,
-  fmat: string,
-  ...args: Array<any>
+  string: string
 ): void => {
   samp.callNative(
     "TextDrawSetStringForPlayer",
-    "iisa",
+    "iis",
     textDrawId,
     playerId,
-    fmat,
-    args
+    string
   );
 };
 

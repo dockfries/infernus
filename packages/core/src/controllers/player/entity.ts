@@ -909,6 +909,12 @@ export class Player {
   gpci(charset: string = this.charset) {
     return w.gpci(this.id, charset);
   }
+  isCuffed() {
+    return w.IsPlayerCuffed(this.id);
+  }
+  isInDriveByMode() {
+    return w.IsPlayerInDriveByMode(this.id);
+  }
 
   static getInstance(id: number) {
     return this.players.get(id);
