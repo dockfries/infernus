@@ -103,9 +103,9 @@ export async function wrapLoading(fn, message, ...args) {
     spinner.succeed();
     return result;
   } catch (err) {
-    const finalErr = err
-      ? JSON.stringify(err)
-      : "unknown error, please check the network";
+    const finalErr =
+      message +
+      (err ? JSON.stringify(err) : "unknown error, please check the network");
     spinner.fail(finalErr);
     throw finalErr;
   }

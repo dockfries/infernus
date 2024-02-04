@@ -23,7 +23,7 @@ function successInstalled(projectName) {
   console.log("pnpm dev\n");
 }
 
-async function initializeStarter(projectName, isRakNet) {
+async function initializeStarter(projectName) {
   console.log("\n");
   const isMac = process.platform === "darwin";
   const isCreatedProject = await fs.ensureDir(relativeGenPath);
@@ -55,18 +55,6 @@ async function initializeStarter(projectName, isRakNet) {
   fs.remove(starterPath);
   fs.remove(relativeGenPath + "/.git");
   fs.remove(relativeGenPath + "/.husky");
-  fs.remove(relativeGenPath + "/gamemodes/polyfill.pwn");
-  fs.remove(relativeGenPath + "/gamemodes/polyfill_raknet.pwn");
-
-  if (isRakNet) {
-    fs.remove(relativeGenPath + "/gamemodes/polyfill.amx");
-    fs.rename(
-      relativeGenPath + "/gamemodes/polyfill_raknet.amx",
-      relativeGenPath + "/gamemodes/polyfill.amx"
-    );
-  } else {
-    fs.remove(relativeGenPath + "/gamemodes/polyfill_raknet.amx");
-  }
 }
 
 function changePkgName(projectName) {
@@ -86,23 +74,29 @@ async function initializeBase(isLinux) {
     relativeGenPath
   );
 
-  const configJson = fs.readFileSync(configJsonPath);
+  const decompressOmpPath = relativeGenPath + "/omp";
 
-  await wrapLoading(decompress, `decompress ${base}`, base, relativeGenPath, {
+  await wrapLoading(decompress, `decompress ${base}`, base, decompressOmpPath, {
     strip: 1,
   });
 
-  fs.remove(base);
+  await fs.remove(base);
 
-  fs.remove(relativeGenPath + "/qawno");
+  await fs.copy(decompressOmpPath, relativeGenPath, { overwrite: false });
 
-  fs.writeFileSync(configJsonPath, configJson);
+  await fs.remove(decompressOmpPath);
 }
 
-function changeRconPass(password) {
-  const configJson = fs.readJsonSync(configJsonPath);
+async function changeConfigJson(password, isRakNet) {
+  const configJson = await fs.readJson(configJsonPath);
+
   configJson.rcon.password = password;
-  fs.writeJSON(configJsonPath, configJson, { spaces: 2 });
+
+  if (isRakNet) {
+    configJson.pawn.main_scripts = ["polyfill_raknet 1"];
+  }
+
+  return fs.writeJSON(configJsonPath, configJson, { spaces: 2 });
 }
 
 async function installPlugins(isLinux, isRakNet) {
@@ -204,15 +198,15 @@ async function init() {
     relativeGenPath = "./" + projectName;
     configJsonPath = relativeGenPath + "/config.json";
 
-    await initializeStarter(projectName, isRakNet);
+    await initializeStarter(projectName);
 
     changePkgName(projectName);
+
+    changeConfigJson(password, isRakNet);
 
     await initializeBase(isLinux);
 
     await installPlugins(isLinux, isRakNet);
-
-    changeRconPass(password);
 
     successInstalled(projectName);
   } catch (err) {
