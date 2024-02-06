@@ -102,6 +102,12 @@ importers:
         specifier: ^1.0.0-rc.40
         version: 1.0.0-rc.40(@algolia/client-search@4.22.1)(@types/node@18.19.8)(search-insights@2.13.0)(typescript@5.3.3)
 
+  packages/colandreas:
+    devDependencies:
+      "@infernus/core":
+        specifier: workspace:^
+        version: link:../core
+
   packages/core:
     dependencies:
       "@infernus/streamer":
