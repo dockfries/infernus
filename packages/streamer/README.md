@@ -17,7 +17,7 @@ pnpm add @infernus/streamer
 ## Example
 
 ```ts
-import { CreateDynamicObject } from "@infernus/streamer";
+import { CreateDynamicObject, GetDynamicObjectPos } from "@infernus/streamer";
 
 // In a callback event, such as OnGameModeInit
 samp.on("OnGameModeInit", () => {
