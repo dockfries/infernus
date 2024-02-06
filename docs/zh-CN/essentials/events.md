@@ -284,9 +284,10 @@ PlayerEvent.onCommandError(({ player, command, error, next }) => {
 比如您可以在 `onUpdate` 中根据某些条件来触发您定义的新事件，然后您在某些地方可以使用您定义的新事件中间件。
 
 ```ts
-import { defineEvent, Player, PlayerEvent } from "@infernus/core";
+import type { Player } from "@infernus/core";
+import { defineEvent, PlayerEvent } from "@infernus/core";
 
-const healthDangerMap = new Map<Player, boolean>();
+const healthDangerSet = new Set<Player>();
 
 const [onPlayerDanger, trigger] = defineEvent({
   // 只列了常用部分
@@ -304,16 +305,16 @@ const [onPlayerDanger, trigger] = defineEvent({
 });
 
 PlayerEvent.onUpdate(({ player, next }) => {
-  const isDanger = healthDangerMap.get(player);
+  const isDanger = healthDangerSet.has(player);
   const health = player.getHealth();
 
   if (!isDanger && health <= 10) {
-    healthDangerMap.set(player, true);
+    healthDangerSet.add(player);
     const ret = trigger(player, health);
     if (!ret) return false;
   }
   if (isDanger && health > 10) {
-    healthDangerMap.delete(player);
+    healthDangerSet.delete(player);
   }
 
   return next();

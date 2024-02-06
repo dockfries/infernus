@@ -296,9 +296,10 @@ You can define a middleware event yourself through `defineEvent`, which is usual
 For example, you can trigger the new event you defined in `onUpdate` according to certain conditions, and then you can use the new event middleware you defined in some places.
 
 ```ts
-import { defineEvent, Player, PlayerEvent } from "@infernus/core";
+import type { Player } from "@infernus/core";
+import { defineEvent, PlayerEvent } from "@infernus/core";
 
-const healthDangerMap = new Map<Player, boolean>();
+const healthDangerSet = new Set<Player>();
 
 const [onPlayerDanger, trigger] = defineEvent({
   // Only the commonly used parts are listed
@@ -317,16 +318,16 @@ const [onPlayerDanger, trigger] = defineEvent({
 });
 
 PlayerEvent.onUpdate(({ player, next }) => {
-  const isDanger = healthDangerMap.get(player);
+  const isDanger = healthDangerSet.has(player);
   const health = player.getHealth();
 
   if (!isDanger && health <= 10) {
-    healthDangerMap.set(player, true);
+    healthDangerSet.add(player);
     const ret = trigger(player, health);
     if (!ret) return false;
   }
   if (isDanger && health > 10) {
-    healthDangerMap.delete(player);
+    healthDangerSet.delete(player);
   }
 
   return next();
