@@ -14,9 +14,9 @@ Several limitations significantly impact the development experience. **It is rec
 **Overall, the ecosystem is currently unstable due to various factors.**
 :::
 
-### Pawn Ecosystem
+### Samp Node Ecosystem
 
-Existing libraries developed in `Pawn`, such as `fcnpc`, `colandreas`, `nexac`, and other well-known libraries, may present two situations if your project depends on them: **no longer maintained or incompatible**.
+Existing libraries developed in `Pawn`, such as `fcnpc`, `colandreas`, `nexac`, and other well-known libraries, may present two situations if your project depends on them: **nobody maintenance or incompatible**.
 
 Since `samp-node` plugin development is based on `samp` and not `omp`, certain plugin ecosystems are not compatible. For example, accessing certain plugins' native functions, such as `raknet`, is not possible.
 

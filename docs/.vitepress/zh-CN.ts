@@ -51,6 +51,14 @@ function nav(): DefaultTheme.NavItem[] {
           text: "RakNet",
           link: "https://github.com/katursis/Pawn.RakNet",
         },
+        {
+          text: "MapAndreas",
+          link: "https://github.com/philip1337/samp-plugin-mapandreas",
+        },
+        {
+          text: "ColAndreas",
+          link: "https://github.com/Pottus/ColAndreas",
+        },
       ],
     },
   ];
