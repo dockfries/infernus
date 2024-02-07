@@ -23,10 +23,14 @@ function bumpVersion() {
 }
 
 function releasePkg(isReady) {
-  return execa("pnpm publish", [!isReady && "--dry-run"].filter(Boolean), {
-    cwd: pkgPath,
-    stdio: "inherit",
-  });
+  return execa(
+    "pnpm publish",
+    [!isReady && "--dry-run", "--access", "public"].filter(Boolean),
+    {
+      cwd: pkgPath,
+      stdio: "inherit",
+    }
+  );
 }
 
 export async function selectRelease() {
