@@ -3,7 +3,11 @@ import { LimitsEnum } from "core/enums";
 import type { TPos } from "core/types";
 import type { IVehicle } from "core/interfaces";
 import type { Player } from "../player/entity";
-import { isValidPaintJob, isValidVehComponent } from "core/utils/vehicleUtils";
+import {
+  isValidPaintJob,
+  isValidVehComponent,
+  isValidVehModelId,
+} from "core/utils/vehicleUtils";
 import { rgba } from "core/utils/colorUtils";
 import * as v from "core/wrapper/native";
 import { logger } from "core/logger";
@@ -34,7 +38,7 @@ export class Vehicle {
       );
     const { modelId, x, y, z, z_angle, color, respawn_delay, addSiren } =
       this.sourceInfo;
-    if (!ignoreRange && (modelId < 400 || modelId > 611)) return;
+    if (!ignoreRange && !isValidVehModelId(modelId)) return;
     if (this.isStatic) {
       if (respawn_delay === undefined) {
         this._id = v.AddStaticVehicle(
@@ -466,7 +470,7 @@ export class Vehicle {
     ignoreRange = false
   ): number {
     if (this.id === -1) return 0;
-    if (!ignoreRange && (modelId < 400 || modelId > 611)) return 0;
+    if (!ignoreRange && !isValidVehModelId(modelId)) return 0;
     return v.SetVehicleSpawnInfo(
       this.id,
       modelId,
