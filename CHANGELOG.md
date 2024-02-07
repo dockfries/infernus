@@ -1,3 +1,19 @@
+# [0.10.0-beta.12](https://github.com/dockfries/infernus/compare/v0.10.0-beta.11...v0.10.0-beta.12) (2024-2-7)
+
+
+### Bug Fixes
+
+* **create-app:** decompress overwrite ([53ad784](https://github.com/dockfries/infernus/commit/53ad7845975d6288438211ea2789cf64ea5bbfb8))
+
+
+### Features
+
+* **colandreas:** try to implement wrapper, not test ([5f7328b](https://github.com/dockfries/infernus/commit/5f7328b43235c759f16e7bc0e3bf8ebc202b7dd4))
+* **core:** `vectorSize` use javascript implement ([f894106](https://github.com/dockfries/infernus/commit/f89410656292dd3e83e3cf187446e612f336a6a2))
+* **core:** player getSpeed ([89f6eab](https://github.com/dockfries/infernus/commit/89f6eab9b9eadff4b755265e0d4d4269169918c5))
+
+
+
 # [0.10.0-beta.11](https://github.com/dockfries/infernus/compare/v0.10.0-beta.10...v0.10.0-beta.11) (2024-2-1)
 
 
