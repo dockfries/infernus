@@ -17,9 +17,12 @@ export class CA_Object {
   collisionID = -1;
   objectInstance: DynamicObject | null = null;
 
-  constructor(obj: IDynamicObject, dc = false) {
+  constructor(obj: IDynamicObject, dc = false, newObject = true) {
     if (CA_Objects.length < MAX_CA_OBJECTS) {
-      this.objectInstance = new DynamicObject(obj);
+      if (newObject) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.objectInstance = new DynamicObject(obj).create()!;
+      }
 
       const colId = createObject(
         obj.modelId,
@@ -54,7 +57,7 @@ export class CA_Object {
   }
 
   static destroyAll() {
-    CA_Objects.forEach((o) => o.objectInstance && o.destroy());
+    CA_Objects.forEach((o) => o.objectInstance?.isValid() && o.destroy());
   }
 
   setPos(x: number, y: number, z: number) {
