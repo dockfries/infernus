@@ -7,6 +7,7 @@ import { isValidPaintJob, isValidVehComponent } from "core/utils/vehicleUtils";
 import { rgba } from "core/utils/colorUtils";
 import * as v from "core/wrapper/native";
 import { logger } from "core/logger";
+import { GameMode } from "../gamemode";
 
 export class Vehicle {
   static readonly vehicles = new Map<number, Vehicle>();
@@ -191,7 +192,7 @@ export class Vehicle {
     if (this.id === -1) return 0.0;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { x, y, z } = this.getVelocity()!;
-    return Math.sqrt(x * x + y * y + z * z) * magic;
+    return GameMode.vectorSize(x, y, z) * magic;
   }
   setAngularVelocity(X: number, Y: number, Z: number): number {
     if (this.id === -1) return 0;

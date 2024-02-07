@@ -27,6 +27,7 @@ import { logger } from "../../logger";
 import type { Vehicle } from "../vehicle/entity";
 import type { DynamicObject } from "core/wrapper/streamer";
 import { defineEvent } from "../bus";
+import { GameMode } from "../gamemode";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
@@ -321,6 +322,12 @@ export class Player {
   getVelocity(): TPos {
     const [x, y, z] = w.GetPlayerVelocity(this.id);
     return { x, y, z };
+  }
+  getSpeed(magic = 180.0) {
+    if (this.id === -1) return 0.0;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { x, y, z } = this.getVelocity()!;
+    return GameMode.vectorSize(x, y, z) * magic;
   }
   getKeys() {
     const [keys, upDown, leftRight] = w.GetPlayerKeys(this.id);
