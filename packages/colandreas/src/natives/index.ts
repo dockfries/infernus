@@ -320,7 +320,7 @@ export function quatToEuler(x: number, y: number, z: number, w: number) {
   return { rx, ry, rz };
 }
 
-export function GetModelBoundingSphere(modelId: number) {
+export function getModelBoundingSphere(modelId: number) {
   const result = Boolean(
     samp.callNative("CA_GetModelBoundingSphere", "i", modelId)
   );
