@@ -13,7 +13,14 @@ export const Streamer_GetFloatData = (
   id: number,
   data: E_STREAMER
 ): number => {
-  return samp.callNative("Streamer_GetFloatData", "iiiF", type, id, data);
+  const [ret] = samp.callNative(
+    "Streamer_GetFloatData",
+    "iiiF",
+    type,
+    id,
+    data
+  );
+  return ret;
 };
 
 export const Streamer_SetFloatData = (

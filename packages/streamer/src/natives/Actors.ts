@@ -93,7 +93,8 @@ export const ClearDynamicActorAnimations = (actorId: number): number => {
 };
 
 export const GetDynamicActorFacingAngle = (actorId: number): number => {
-  return samp.callNative("GetDynamicActorFacingAngle", "iF", actorId);
+  const [angle] = samp.callNative("GetDynamicActorFacingAngle", "iF", actorId);
+  return angle;
 };
 
 export const SetDynamicActorFacingAngle = (
@@ -122,7 +123,8 @@ export const SetDynamicActorPos = (
 };
 
 export const GetDynamicActorHealth = (actorId: number): number => {
-  return samp.callNative("GetDynamicActorHealth", "iF", actorId);
+  const [health] = samp.callNative("GetDynamicActorHealth", "iF", actorId);
+  return health;
 };
 
 export const SetDynamicActorHealth = (
