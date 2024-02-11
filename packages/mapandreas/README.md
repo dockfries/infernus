@@ -16,9 +16,7 @@ pnpm add @infernus/core @infernus/mapandreas
 import { GameMode } from "@infernus/core";
 import { MapAndreas, MapAndreasMode } from "@infernus/mapandreas";
 
-const gm = new GameMode();
-
-gm.onInit = () => {
+GameMode.onInit(({ next }) => {
   MapAndreas.init(MapAndreasMode.Full, "scriptfiles/SAFull.hmap");
 
   let pos = MapAndreas.findAverageZ(20.001, 25.006);
@@ -26,5 +24,6 @@ gm.onInit = () => {
   if (pos) {
     // Found position - position saved in 'pos'
   }
-};
+  return next();
+});
 ```
