@@ -8,18 +8,22 @@ let pkgName, pkgPath;
 
 function bumpVersion() {
   const isCore = pkgName === "core";
-  return versionBump({
+
+  const options = {
     all: true,
     push: false,
     tag: isCore,
-    execute: "pnpm changelog",
     commit: `chore(release): ${pkgName} v%s`,
     files: [
       isCore && "./package.json",
       `./packages/${pkgName}/package.json`,
     ].filter(Boolean),
     cwd: process.cwd(),
-  });
+  };
+
+  if (isCore) options.execute = "pnpm changelog";
+
+  return versionBump(options);
 }
 
 function releasePkg(isReady) {
