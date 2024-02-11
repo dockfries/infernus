@@ -1,6 +1,6 @@
 {
   "name": "@infernus/colandreas",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "A wrapper of the popular SA-MP ColAndreas plugin for samp-node.",
   "keywords": [
     "samp",
