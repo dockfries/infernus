@@ -7,7 +7,7 @@
     "release": "node ./scripts/release.js",
     "contributors": "all-contributors generate & git add README.md",
     "lint-staged": "lint-staged",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s",
     "prepare": "husky install",
     "preinstall": "npx only-allow pnpm -y",
     "docs:dev": "vitepress dev docs",
