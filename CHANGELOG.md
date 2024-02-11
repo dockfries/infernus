@@ -1,119 +1,107 @@
-# [0.10.0-beta.12](https://github.com/dockfries/infernus/compare/v0.10.0-beta.11...v0.10.0-beta.12) (2024-2-7)
+# [0.11.0-beta.0](https://github.com/dockfries/infernus/compare/v0.10.0-beta.12...v0.11.0-beta.0) (2024-2-11)
 
 
 ### Bug Fixes
 
-* **create-app:** decompress overwrite ([53ad784](https://github.com/dockfries/infernus/commit/53ad7845975d6288438211ea2789cf64ea5bbfb8))
+* **colandreas:** setPos, setRot may not dc ([a29b04f](https://github.com/dockfries/infernus/commit/a29b04f63b8cbddee723c8d3b09e9a221d18b72b))
 
 
 ### Features
 
-* **colandreas:** try to implement wrapper, not test ([5f7328b](https://github.com/dockfries/infernus/commit/5f7328b43235c759f16e7bc0e3bf8ebc202b7dd4))
-* **core:** `vectorSize` use javascript implement ([f894106](https://github.com/dockfries/infernus/commit/f89410656292dd3e83e3cf187446e612f336a6a2))
-* **core:** player getSpeed ([89f6eab](https://github.com/dockfries/infernus/commit/89f6eab9b9eadff4b755265e0d4d4269169918c5))
+* **colandreas:** `CA_Object` only create collision ([49a58d3](https://github.com/dockfries/infernus/commit/49a58d35b3339e84c6ae3165b91de5a2ef783a00))
+* **colandreas:** please wait samp-node callNative return retval ([7566921](https://github.com/dockfries/infernus/commit/7566921f98f60ffb94c8a87044893f9c26614b6a))
 
 
+### Performance Improvements
+
+* **core:** use isValidVehModelId ([61493ef](https://github.com/dockfries/infernus/commit/61493ef35c11e5cea124089d09696bb4a8b80da9))
+
+
+
+# [0.10.0-beta.12](https://github.com/dockfries/infernus/compare/v0.10.0-beta.11...v0.10.0-beta.12) (2024-2-7)
+
+### Bug Fixes
+
+- **create-app:** decompress overwrite ([53ad784](https://github.com/dockfries/infernus/commit/53ad7845975d6288438211ea2789cf64ea5bbfb8))
+
+### Features
+
+- **colandreas:** try to implement wrapper, not test ([5f7328b](https://github.com/dockfries/infernus/commit/5f7328b43235c759f16e7bc0e3bf8ebc202b7dd4))
+- **core:** `vectorSize` use javascript implement ([f894106](https://github.com/dockfries/infernus/commit/f89410656292dd3e83e3cf187446e612f336a6a2))
+- **core:** player getSpeed ([89f6eab](https://github.com/dockfries/infernus/commit/89f6eab9b9eadff4b755265e0d4d4269169918c5))
 
 # [0.10.0-beta.11](https://github.com/dockfries/infernus/compare/v0.10.0-beta.10...v0.10.0-beta.11) (2024-2-1)
 
-
 ### Bug Fixes
 
-* **streamer:** get actor animation ([1de139a](https://github.com/dockfries/infernus/commit/1de139a89332aaaa299396751ac221141ca0dee7))
-
+- **streamer:** get actor animation ([1de139a](https://github.com/dockfries/infernus/commit/1de139a89332aaaa299396751ac221141ca0dee7))
 
 ### Features
 
-* **core:** add some new natives ([9ea2c9e](https://github.com/dockfries/infernus/commit/9ea2c9ec13c152d8e50e92a14fa27a88a2922025))
-
-
+- **core:** add some new natives ([9ea2c9e](https://github.com/dockfries/infernus/commit/9ea2c9ec13c152d8e50e92a14fa27a88a2922025))
 
 # [0.10.0-beta.10](https://github.com/dockfries/infernus/compare/v0.10.0-beta.9...v0.10.0-beta.10) (2024-1-31)
 
-
 ### Features
 
-* **streamer:** add `DynamicObjectNoCameraCollision` ([a90e10a](https://github.com/dockfries/infernus/commit/a90e10a9f8d9344b06be0d253f5de630fe02c4a7))
-
-
+- **streamer:** add `DynamicObjectNoCameraCollision` ([a90e10a](https://github.com/dockfries/infernus/commit/a90e10a9f8d9344b06be0d253f5de630fe02c4a7))
 
 # [0.10.0-beta.9](https://github.com/dockfries/infernus/compare/v0.10.0-beta.8...v0.10.0-beta.9) (2024-1-31)
 
-
 ### Bug Fixes
 
-* **core:** textdraw is valid function ([e590fb4](https://github.com/dockfries/infernus/commit/e590fb4cf8498adc86599218f993f0e6d8327ccf))
-
+- **core:** textdraw is valid function ([e590fb4](https://github.com/dockfries/infernus/commit/e590fb4cf8498adc86599218f993f0e6d8327ccf))
 
 ### Features
 
-* **core:** add some new natives and callbacks ([e9a2b1a](https://github.com/dockfries/infernus/commit/e9a2b1ac0720578a7defd4305280a44ac9b0f255))
-* **core:** key utils ([8a79286](https://github.com/dockfries/infernus/commit/8a79286e5d8899af684a3db11c168191050a5277))
-* **core:** migrate `@infernus/wrapper` to core ([6204710](https://github.com/dockfries/infernus/commit/62047109b0bef372d09eed4a616d950b57632564))
-
-
+- **core:** add some new natives and callbacks ([e9a2b1a](https://github.com/dockfries/infernus/commit/e9a2b1ac0720578a7defd4305280a44ac9b0f255))
+- **core:** key utils ([8a79286](https://github.com/dockfries/infernus/commit/8a79286e5d8899af684a3db11c168191050a5277))
+- **core:** migrate `@infernus/wrapper` to core ([6204710](https://github.com/dockfries/infernus/commit/62047109b0bef372d09eed4a616d950b57632564))
 
 # [0.10.0-beta.8](https://github.com/dockfries/infernus/compare/v0.10.0-beta.7...v0.10.0-beta.8) (2024-1-22)
 
-
 ### Bug Fixes
 
-* **core:** valid str `-1`, weapon enum fist ([77df1c0](https://github.com/dockfries/infernus/commit/77df1c044ad4ab9f57d77a983db6c0bddbc2f0ad))
-* **docs:** actions config pnpm version ([6433787](https://github.com/dockfries/infernus/commit/6433787b636e007f0561f51ccc291d2cc81f8499))
-* **raknet:** error patch name ([a39fa56](https://github.com/dockfries/infernus/commit/a39fa56917cfc40740c67918200482c6254e5da6))
-* **raknet:** invalid sync decorator ([5852dd1](https://github.com/dockfries/infernus/commit/5852dd12a103957199b528c8dd80bd5771f503ca))
-* **raknet:** pass array/string through new polyfill ([f61eaf2](https://github.com/dockfries/infernus/commit/f61eaf291ec27c3aa45983e39c5119e1034e97e7))
-
-
+- **core:** valid str `-1`, weapon enum fist ([77df1c0](https://github.com/dockfries/infernus/commit/77df1c044ad4ab9f57d77a983db6c0bddbc2f0ad))
+- **docs:** actions config pnpm version ([6433787](https://github.com/dockfries/infernus/commit/6433787b636e007f0561f51ccc291d2cc81f8499))
+- **raknet:** error patch name ([a39fa56](https://github.com/dockfries/infernus/commit/a39fa56917cfc40740c67918200482c6254e5da6))
+- **raknet:** invalid sync decorator ([5852dd1](https://github.com/dockfries/infernus/commit/5852dd12a103957199b528c8dd80bd5771f503ca))
+- **raknet:** pass array/string through new polyfill ([f61eaf2](https://github.com/dockfries/infernus/commit/f61eaf291ec27c3aa45983e39c5119e1034e97e7))
 
 # [0.10.0-beta.7](https://github.com/dockfries/infernus/compare/v0.10.0-beta.6...v0.10.0-beta.7) (2023-12-02)
 
-
 ### Bug Fixes
 
-* **core:** error map key match for gangZone and textDraw ([4ff710f](https://github.com/dockfries/infernus/commit/4ff710fa92254f2699763d2030e651e3e1fc6c61))
-* **core:** onDeath, onTakeDamage enum type generic inference, getKeys return hump ([258667b](https://github.com/dockfries/infernus/commit/258667bdfb199c1291aa5c3c3c2a8454373045c0))
-
+- **core:** error map key match for gangZone and textDraw ([4ff710f](https://github.com/dockfries/infernus/commit/4ff710fa92254f2699763d2030e651e3e1fc6c61))
+- **core:** onDeath, onTakeDamage enum type generic inference, getKeys return hump ([258667b](https://github.com/dockfries/infernus/commit/258667bdfb199c1291aa5c3c3c2a8454373045c0))
 
 ### Features
 
-* **raknet:** use defineEvent to support middleware ([5033488](https://github.com/dockfries/infernus/commit/50334881c83dc066922177c78730e193bcfc80e9))
-
-
+- **raknet:** use defineEvent to support middleware ([5033488](https://github.com/dockfries/infernus/commit/50334881c83dc066922177c78730e193bcfc80e9))
 
 # [0.10.0-beta.6](https://github.com/dockfries/infernus/compare/v0.10.0-beta.5...v0.10.0-beta.6) (2023-12-02)
 
-
 ### Bug Fixes
 
-* **core:** onCommandText replace /, failed to correctly define some i18n functions ([03276ae](https://github.com/dockfries/infernus/commit/03276ae03f39d4a29a6367ea3fb1bc3fee2ef375))
-
+- **core:** onCommandText replace /, failed to correctly define some i18n functions ([03276ae](https://github.com/dockfries/infernus/commit/03276ae03f39d4a29a6367ea3fb1bc3fee2ef375))
 
 ### Features
 
-* **core:** event constant `object.freeze` ([8a589f0](https://github.com/dockfries/infernus/commit/8a589f0e1724da38624db802c3261c6b8572aa78))
-
-
+- **core:** event constant `object.freeze` ([8a589f0](https://github.com/dockfries/infernus/commit/8a589f0e1724da38624db802c3261c6b8572aa78))
 
 # [0.10.0-beta.5](https://github.com/dockfries/infernus/compare/v0.10.0-beta.4...v0.10.0-beta.5) (2023-12-01)
 
-
 ### Bug Fixes
 
-* **core:** streamer destroy not set id -1, return onExit ([20a874b](https://github.com/dockfries/infernus/commit/20a874bbe0e2002aa7f0c5509d7a784a93493aaf))
-
-
+- **core:** streamer destroy not set id -1, return onExit ([20a874b](https://github.com/dockfries/infernus/commit/20a874bbe0e2002aa7f0c5509d7a784a93493aaf))
 
 # [0.10.0-beta.4](https://github.com/dockfries/infernus/compare/v0.10.0-beta.2...v0.10.0-beta.4) (2023-12-01)
 
-
 ### Bug Fixes
 
-* **core:** command error performed key not used ([521489e](https://github.com/dockfries/infernus/commit/521489e01e914e80c5db39a5f9992ff57dc54b6a))
-* **core:** fps heartbeat, command off index ([26858f0](https://github.com/dockfries/infernus/commit/26858f08ca3f5d7f1a3ba645db835467b477dee9))
-* **core:** maybe right command error sequence ([15cdbb3](https://github.com/dockfries/infernus/commit/15cdbb36585ac75685199c30229aff535d22ca07))
-
-
+- **core:** command error performed key not used ([521489e](https://github.com/dockfries/infernus/commit/521489e01e914e80c5db39a5f9992ff57dc54b6a))
+- **core:** fps heartbeat, command off index ([26858f0](https://github.com/dockfries/infernus/commit/26858f08ca3f5d7f1a3ba645db835467b477dee9))
+- **core:** maybe right command error sequence ([15cdbb3](https://github.com/dockfries/infernus/commit/15cdbb36585ac75685199c30229aff535d22ca07))
 
 # [0.10.0-beta.2](https://github.com/dockfries/infernus/compare/v0.10.0-beta.1...v0.10.0-beta.2) (2023-11-30)
 
