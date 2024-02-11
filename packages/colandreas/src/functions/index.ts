@@ -115,16 +115,16 @@ function isInWater(instance: Player | Vehicle) {
   if (!pos) return false;
   const { x, y, z } = pos;
 
-  const ret = rayCastMultiLine(x, y, z + 1000.0, x, y, z - 1000.0, 10);
+  const {
+    collisions,
+    z: retZ,
+    modelIds,
+  } = rayCastMultiLine(x, y, z + 1000.0, x, y, z - 1000.0, 10);
 
-  if (!ret) return false;
-
-  const { collisions, z: retZ, modelIds } = ret;
+  if (collisions <= 0) return false;
 
   let depth = FLOAT_INFINITY;
   let instanceDepth = FLOAT_INFINITY;
-
-  if (collisions <= 0) return false;
 
   for (let i = 0, j = 0; i < collisions; i++) {
     if (modelIds[i] !== WATER_OBJECT) continue;
