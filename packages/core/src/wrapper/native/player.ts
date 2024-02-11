@@ -218,7 +218,12 @@ export const SetPlayerFacingAngle = (playerId: number, ang: number): number => {
 };
 
 export const GetPlayerFacingAngle = (playerId: number): number => {
-  return samp.callNative("GetPlayerFacingAngle", "iF", playerId);
+  const [angle] = samp.callNative(
+    "GetPlayerFacingAngle",
+    "iF",
+    playerId
+  ) as unknown as number[];
+  return angle;
 };
 
 export const IsPlayerInRangeOfPoint = (
@@ -274,7 +279,12 @@ export const SetPlayerHealth = (playerId: number, health: number): number => {
 };
 
 export const GetPlayerHealth = (playerId: number): number => {
-  return samp.callNative("GetPlayerHealth", "iF", playerId);
+  const [health] = samp.callNative(
+    "GetPlayerHealth",
+    "iF",
+    playerId
+  ) as unknown as number[];
+  return health;
 };
 
 export const SetPlayerArmour = (playerId: number, armour: number): number => {
@@ -282,7 +292,12 @@ export const SetPlayerArmour = (playerId: number, armour: number): number => {
 };
 
 export const GetPlayerArmour = (playerId: number): number => {
-  return samp.callNative("GetPlayerArmour", "iF", playerId);
+  const [armour] = samp.callNative(
+    "GetPlayerArmour",
+    "iF",
+    playerId
+  ) as unknown as number[];
+  return armour;
 };
 
 export const SetPlayerAmmo = (

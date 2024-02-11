@@ -15,7 +15,8 @@ export const Is3DTextLabelStreamedIn = (
 };
 
 export const Get3DTextLabelText = (id: number): string => {
-  return samp.callNative("Get3DTextLabelText", "iSi", id, 144);
+  const [text] = samp.callNative("Get3DTextLabelText", "iSi", id, 144);
+  return text;
 };
 
 export const Get3DTextLabelColor = (id: number): number => {

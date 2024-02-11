@@ -47,7 +47,8 @@ export const IsValidDynamic3DTextLabel = (id: number): boolean => {
 };
 
 export const GetDynamic3DTextLabelText = (id: number): string => {
-  return samp.callNative("GetDynamic3DTextLabelText", "iSi", id, 1024);
+  const [text] = samp.callNative("GetDynamic3DTextLabelText", "iSi", id, 1024);
+  return text;
 };
 
 export const UpdateDynamic3DTextLabelText = (

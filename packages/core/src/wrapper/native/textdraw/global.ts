@@ -16,7 +16,8 @@ export const IsTextDrawVisibleForPlayer = (
 };
 
 export const TextDrawGetString = (textDrawId: number): string => {
-  return samp.callNative("TextDrawGetString", "iSi", textDrawId, 1024);
+  const [str] = samp.callNative("TextDrawGetString", "iSi", textDrawId, 1024);
+  return str;
 };
 
 // You can change textdraw pos with it, but you need to use TextDrawShowForPlayer() after that

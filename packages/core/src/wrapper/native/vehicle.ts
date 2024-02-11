@@ -58,7 +58,13 @@ export const GetVehicleInterior = (vehicleId: number): number => {
 };
 
 export const GetVehicleNumberPlate = (vehicleId: number): string => {
-  return samp.callNative("GetVehicleNumberPlate", "iSi", vehicleId, 33);
+  const [plate] = samp.callNative(
+    "GetVehicleNumberPlate",
+    "iSi",
+    vehicleId,
+    33
+  );
+  return plate;
 };
 
 export const SetVehicleRespawnDelay = (
@@ -269,7 +275,12 @@ export const SetVehiclePos = (
 };
 
 export const GetVehicleZAngle = (vehicleId: number): number => {
-  return samp.callNative("GetVehicleZAngle", "iF", vehicleId);
+  const [angle] = samp.callNative(
+    "GetVehicleZAngle",
+    "iF",
+    vehicleId
+  ) as unknown as number[];
+  return angle;
 };
 
 export const GetVehicleRotationQuat = (vehicleId: number): Array<number> => {
@@ -485,7 +496,12 @@ export const SetVehicleHealth = (vehicleId: number, health: number): number => {
 };
 
 export const GetVehicleHealth = (vehicleId: number): number => {
-  return samp.callNative("GetVehicleHealth", "iF", vehicleId);
+  const [health] = samp.callNative(
+    "GetVehicleHealth",
+    "iF",
+    vehicleId
+  ) as unknown as number[];
+  return health;
 };
 
 export const AttachTrailerToVehicle = (

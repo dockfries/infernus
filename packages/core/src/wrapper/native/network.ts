@@ -36,7 +36,8 @@ export const NetStats_ConnectionStatus = (
 };
 
 export const NetStats_GetIpPort = (playerId: number): string => {
-  return samp.callNative("NetStats_GetIpPort", "iSi", playerId, 128 + 6);
+  const [ipp] = samp.callNative("NetStats_GetIpPort", "iSi", playerId, 128 + 6);
+  return ipp;
 };
 
 export const IsPlayerAdmin = (playerId: number): boolean => {
@@ -56,7 +57,13 @@ export const Ban = (playerId: number): number => {
 };
 
 export const GetPlayerNetworkStats = (playerId: number): string => {
-  return samp.callNative("GetPlayerNetworkStats", "iSi", playerId, 1024);
+  const [stats] = samp.callNative(
+    "GetPlayerNetworkStats",
+    "iSi",
+    playerId,
+    1024
+  );
+  return stats;
 };
 
 export const GetNetworkStats = (): string => {
@@ -76,10 +83,8 @@ export const SendRconCommand = (command: string): number => {
 };
 
 export const gpci = (playerId: number, charset: string): string => {
-  return I18n.decodeFromBuf(
-    I18n.getValidStr(samp.callNative("gpci", "iAi", playerId, 41)),
-    charset
-  );
+  const [ret] = samp.callNative("gpci", "iAi", playerId, 41);
+  return I18n.decodeFromBuf(I18n.getValidStr(ret), charset);
 };
 
 export const SendClientCheck = (
@@ -113,9 +118,11 @@ export const GetPlayerRawIp = (playerId: number): string => {
 };
 
 export const GetPlayerIp = (playerId: number): string => {
-  return samp.callNative("GetPlayerIp", "iSi", playerId, 128);
+  const [ip] = samp.callNative("GetPlayerIp", "iSi", playerId, 128);
+  return ip;
 };
 
 export const GetPlayerVersion = (playerId: number): string => {
-  return samp.callNative("GetPlayerVersion", "iSi", playerId, 24);
+  const [version] = samp.callNative("GetPlayerVersion", "iSi", playerId, 24);
+  return version;
 };

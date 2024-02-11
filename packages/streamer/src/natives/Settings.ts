@@ -99,7 +99,13 @@ export const Streamer_GetRadiusMultiplier = (
   type: StreamerItemTypes,
   playerId = -1
 ): number => {
-  return samp.callNative("Streamer_GetRadiusMultiplier", "iFi", type, playerId);
+  const [m] = samp.callNative(
+    "Streamer_GetRadiusMultiplier",
+    "iFi",
+    type,
+    playerId
+  );
+  return m;
 };
 
 export const Streamer_SetRadiusMultiplier = (

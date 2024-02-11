@@ -418,11 +418,13 @@ export const RedirectDownload = (playerId: number, url: string): number => {
 };
 
 export const FindModelFileNameFromCRC = (crc: number): string => {
-  return samp.callNative("FindModelFileNameFromCRC", "iSi", crc, 255);
+  const [name] = samp.callNative("FindModelFileNameFromCRC", "iSi", crc, 255);
+  return name;
 };
 
 export const FindTextureFileNameFromCRC = (crc: number): string => {
-  return samp.callNative("FindTextureFileNameFromCRC", "iSi", crc, 255);
+  const [name] = samp.callNative("FindTextureFileNameFromCRC", "iSi", crc, 255);
+  return name;
 };
 
 export const GetPlayerAttachedObject = (

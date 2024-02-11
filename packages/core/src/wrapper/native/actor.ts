@@ -111,7 +111,12 @@ export const SetActorFacingAngle = (actorId: number, ang: number): number => {
 };
 
 export const GetActorFacingAngle = (actorId: number): number => {
-  return samp.callNative("GetActorFacingAngle", "iF", actorId);
+  const [angle] = samp.callNative(
+    "GetActorFacingAngle",
+    "iF",
+    actorId
+  ) as unknown as number[];
+  return angle;
 };
 
 export const SetActorHealth = (actorId: number, health: number): number => {
@@ -119,7 +124,12 @@ export const SetActorHealth = (actorId: number, health: number): number => {
 };
 
 export const GetActorHealth = (actorId: number): number => {
-  return samp.callNative("GetActorHealth", "iF", actorId);
+  const [health] = samp.callNative(
+    "GetActorHealth",
+    "iF",
+    actorId
+  ) as unknown as number[];
+  return health;
 };
 
 export const SetActorInvulnerable = (

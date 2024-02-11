@@ -33,7 +33,14 @@ export const GetMenuColumnWidth = (menuId: number) => {
 };
 
 export const GetMenuColumnHeader = (menuId: number, column: number): string => {
-  return samp.callNative("GetMenuColumnHeader", "iiSi", menuId, column, 31);
+  const [header] = samp.callNative(
+    "GetMenuColumnHeader",
+    "iiSi",
+    menuId,
+    column,
+    31
+  );
+  return header;
 };
 
 export const GetMenuItem = (
@@ -41,7 +48,15 @@ export const GetMenuItem = (
   column: number,
   itemId: number
 ): string => {
-  return samp.callNative("GetMenuItem", "iiiSi", menuId, column, itemId, 31);
+  const [item] = samp.callNative(
+    "GetMenuItem",
+    "iiiSi",
+    menuId,
+    column,
+    itemId,
+    31
+  );
+  return item;
 };
 
 export const CreateMenu = (

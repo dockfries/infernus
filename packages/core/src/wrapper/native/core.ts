@@ -228,5 +228,6 @@ export const GetWeaponSlot = (weaponId: number): number => {
 };
 
 export const GetWeaponName = (weaponId: number): string => {
-  return samp.callNative("GetWeaponName", "iSi", weaponId, 32);
+  const [name] = samp.callNative("GetWeaponName", "iSi", weaponId, 32);
+  return name;
 };
