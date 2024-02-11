@@ -1,15 +1,20 @@
-## [0.11.0-beta.0](https://github.com/dockfries/infernus/compare/v0.10.0-beta.12...v0.11.0-beta.0) (2024-2-11)
+## [0.11.0-beta.1](https://github.com/dockfries/infernus/compare/v0.10.0-beta.12...v0.11.0-beta.1) (2024-2-11)
 
 
 ### ⚠ BREAKING CHANGES
 
 * **core:** please wait samp-node callNative return retval
+* **streamer:** please wait samp-node callNative return retval
+* **mapandreas:** please wait samp-node callNative return retval
+* **colandreas:** please wait samp-node callNative return retval
 
 ### Features
 
 * **colandreas:** `CA_Object` only create collision ([49a58d3](https://github.com/dockfries/infernus/commit/49a58d35b3339e84c6ae3165b91de5a2ef783a00))
-* **colandreas:** please wait samp-node callNative return retval ([7566921](https://github.com/dockfries/infernus/commit/7566921f98f60ffb94c8a87044893f9c26614b6a))
-* **core:** please wait samp-node callNative return retval ([2351198](https://github.com/dockfries/infernus/commit/235119895e86adcb676c802476f9ac3f9ebbbce3))
+* **colandreas:** please wait samp-node callNative return retval ([fb668d9](https://github.com/dockfries/infernus/commit/fb668d90c07f98e65da878793d91f6960d386156))
+* **core:** please wait samp-node callNative return retval ([ad291e0](https://github.com/dockfries/infernus/commit/ad291e081503dec3556c5709f34299ae0fa140f3))
+* **mapandreas:** please wait samp-node callNative return retval ([645c3c8](https://github.com/dockfries/infernus/commit/645c3c8c63e275b55a759b9b01768a1c52eed50c))
+* **streamer:** please wait samp-node callNative return retval ([8a6e01e](https://github.com/dockfries/infernus/commit/8a6e01e7ac38494a16030c097b05cb793b9388a1))
 
 
 ### Bug Fixes
