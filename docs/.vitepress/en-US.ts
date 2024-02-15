@@ -9,6 +9,7 @@ export const en_US = defineConfig({
     sidebar: [
       { base: "/", text: "Getting Started", items: sidebarGuide() },
       { base: "/essentials/", text: "Essentials", items: sidebarEssentials() },
+      { base: "/plugins/", text: "Plugins", items: sidebarPlugins() },
     ],
 
     editLink: {
@@ -66,4 +67,8 @@ function sidebarEssentials(): DefaultTheme.SidebarItem[] {
     { text: "Features", link: "features" },
     { text: "Use", link: "use" },
   ];
+}
+
+function sidebarPlugins(): DefaultTheme.SidebarItem[] {
+  return [{ text: "Introduction", link: "introduction" }];
 }

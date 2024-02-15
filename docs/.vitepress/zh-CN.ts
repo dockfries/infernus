@@ -13,6 +13,7 @@ export const zh_CN = defineConfig({
         text: "基础",
         items: sidebarEssentials(),
       },
+      { base: "/zh-CN/plugins/", text: "插件", items: sidebarPlugins() },
     ],
 
     editLink: {
@@ -80,6 +81,10 @@ function sidebarEssentials(): DefaultTheme.SidebarItem[] {
     { text: "特性", link: "features" },
     { text: "Use", link: "use" },
   ];
+}
+
+function sidebarPlugins(): DefaultTheme.SidebarItem[] {
+  return [{ text: "介绍", link: "introduction" }];
 }
 
 export const search = {
