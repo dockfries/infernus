@@ -67,23 +67,24 @@ export class TextDraw {
     if (!player) {
       if (TextDraw.getInstances(true).length === LimitsEnum.MAX_TEXT_DRAWS)
         return logger.warn(
-          "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached"
+          "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
         );
       this._id = w.TextDrawCreate(x, y, text);
       TextDraw.globalTextDraws.set(this.id, this);
     } else {
       if (TextDraw.getInstances(false).length === LimitsEnum.MAX_TEXT_DRAWS)
         return logger.warn(
-          "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached"
+          "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
         );
       this._id = w.CreatePlayerTextDraw(player.id, x, y, text);
       // Player-textdraws are automatically destroyed when a player disconnects.
       const off = PlayerEvent.onDisconnect(({ player: p, next }) => {
+        const ret = next();
         if (p === player) {
           this.destroy();
           off();
         }
-        return next();
+        return ret;
       });
       TextDraw.playerTextDraws.set(this.id, this);
     }
@@ -167,7 +168,7 @@ export class TextDraw {
     fRotX: number,
     fRotY: number,
     fRotZ: number,
-    fZoom = 1
+    fZoom = 1,
   ): void | this {
     if (this.id === -1) return TextDraw.beforeCreateWarn("set preview rot");
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
@@ -179,7 +180,7 @@ export class TextDraw {
         fRotX,
         fRotY,
         fRotZ,
-        fZoom
+        fZoom,
       );
     else w.TextDrawSetPreviewRot(this.id, fRotX, fRotY, fRotZ, fZoom);
     return this;
@@ -193,7 +194,7 @@ export class TextDraw {
         player.id,
         this.id,
         color1,
-        color2
+        color2,
       );
     else w.TextDrawSetPreviewVehicleColors(this.id, color1, color2);
     return this;
@@ -281,7 +282,7 @@ export class TextDraw {
       return this;
     }
     return logger.warn(
-      "[TextDraw]: player's textdraw should not be show for all."
+      "[TextDraw]: player's textdraw should not be show for all.",
     );
   }
   hideAll(): void | this {
@@ -292,7 +293,7 @@ export class TextDraw {
       return this;
     }
     return logger.warn(
-      "[TextDraw]: player's textdraw should not be hide for all."
+      "[TextDraw]: player's textdraw should not be hide for all.",
     );
   }
   isValid(): boolean {
