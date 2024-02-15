@@ -13,7 +13,7 @@ export const pkgNames = fs.readdirSync(pkgDir).filter((dirPath) => {
 export async function build(pkgName) {
   const pkgPath = path.resolve(pkgDir, pkgName);
 
-  const pkgRollupConfig = path.resolve(pkgPath, "rollup.config.mjs");
+  const pkgRollupConfig = path.resolve(pkgPath, "rollup.config.js");
 
   const useSelfConfig = fs.existsSync(pkgRollupConfig);
 
