@@ -156,8 +156,9 @@ import { PlayerEvent } from "@infernus/core";
 // 定义一个一次性命令
 const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
   console.log("这个命令只执行一次，下一次执行就不存在了");
-  off();
-  return next();
+  const ret = next();
+  off(); // next 函数应当在off函数之前执行
+  return ret;
 });
 ```
 

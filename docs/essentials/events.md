@@ -166,8 +166,9 @@ const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
   console.log(
     "This command is only executed once, and the next execution will not exist."
   );
-  off();
-  return next();
+  const ret = next();
+  off(); // next function should be executed before the off function
+  return ret;
 });
 ```
 
