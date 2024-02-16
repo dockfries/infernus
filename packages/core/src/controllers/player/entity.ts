@@ -85,7 +85,7 @@ export class Player {
   setDrunkLevel(level: number): void {
     if (level < 0 || level > 50000)
       return logger.error(
-        new Error("[Player]: player's drunk level ranges from 0 to 50000")
+        new Error("[Player]: player's drunk level ranges from 0 to 50000"),
       );
     w.SetPlayerDrunkLevel(this.id, level);
   }
@@ -292,7 +292,7 @@ export class Player {
     fX: number,
     fY: number,
     fZ: number,
-    fRadius: number
+    fRadius: number,
   ): void {
     w.RemoveBuildingForPlayer(this.id, modelId, fX, fY, fZ, fRadius);
   }
@@ -358,7 +358,7 @@ export class Player {
     x: number,
     y: number,
     z: number,
-    cut: CameraCutStylesEnum
+    cut: CameraCutStylesEnum,
   ): number {
     return w.SetPlayerCameraLookAt(this.id, x, y, z, cut);
   }
@@ -392,7 +392,7 @@ export class Player {
     posX = 0.0,
     posY = 0.0,
     posZ = 0.0,
-    distance = 5.0
+    distance = 5.0,
   ): number {
     let usepos = false;
     if (posX !== 0.0 || posY !== 0.0 || posZ !== 0.0) {
@@ -405,7 +405,7 @@ export class Player {
       posY,
       posZ,
       distance,
-      usepos
+      usepos,
     );
   }
   stopAudioStream(): void {
@@ -415,7 +415,7 @@ export class Player {
     soundid: number,
     relativeX = 0.0,
     relativeY = 0.0,
-    relativeZ = 0.0
+    relativeZ = 0.0,
   ): number {
     return w.PlayerPlaySound(this.id, soundid, relativeX, relativeY, relativeZ);
   }
@@ -437,7 +437,7 @@ export class Player {
     ToY: number,
     ToZ: number,
     time: number,
-    cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT
+    cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT,
   ): void {
     w.InterpolateCameraPos(
       this.id,
@@ -448,7 +448,7 @@ export class Player {
       ToY,
       ToZ,
       time,
-      cut
+      cut,
     );
   }
   interpolateCameraLookAt(
@@ -459,7 +459,7 @@ export class Player {
     ToY: number,
     ToZ: number,
     time: number,
-    cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT
+    cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT,
   ): void {
     w.InterpolateCameraLookAt(
       this.id,
@@ -470,7 +470,7 @@ export class Player {
       ToY,
       ToZ,
       time,
-      cut
+      cut,
     );
   }
   createExplosion(
@@ -478,7 +478,7 @@ export class Player {
     Y: number,
     Z: number,
     type: number,
-    Radius: number
+    Radius: number,
   ): number {
     if (type < 0 || type > 13) {
       logger.error("[Player]: The valid explosion type value is only 0 to 13");
@@ -515,7 +515,7 @@ export class Player {
     lockX = true,
     lockY = true,
     freeze = false,
-    forceSync = false
+    forceSync = false,
   ): void {
     const duration = getAnimateDurationByLibName(animLib, animName);
     if (duration === undefined)
@@ -530,7 +530,7 @@ export class Player {
       lockY,
       freeze,
       loop ? 0 : duration,
-      forceSync
+      forceSync,
     );
   }
   clearAnimations(forceSync = false): void {
@@ -556,7 +556,7 @@ export class Player {
     x_max: number,
     x_min: number,
     y_max: number,
-    y_min: number
+    y_min: number,
   ): void {
     w.SetPlayerWorldBounds(this.id, x_max, x_min, y_max, y_min);
   }
@@ -567,7 +567,7 @@ export class Player {
     text: string,
     color: string | number,
     drawDistance: number,
-    expireTime: number
+    expireTime: number,
   ): void {
     w.SetPlayerChatBubble(this.id, text, color, drawDistance, expireTime);
   }
@@ -619,30 +619,30 @@ export class Player {
       this.sendDeathMessageToPlayer(
         InvalidEnum.PLAYER_ID,
         InvalidEnum.PLAYER_ID,
-        DamageDeathReasonEnum.CONNECT
+        DamageDeathReasonEnum.CONNECT,
       );
     }
   }
   sendDeathMessage(
     killer: Player | InvalidEnum.PLAYER_ID,
-    weapon: WeaponEnum | DamageDeathReasonEnum
+    weapon: WeaponEnum | DamageDeathReasonEnum,
   ): void {
     w.SendDeathMessage(
       killer === InvalidEnum.PLAYER_ID ? killer : killer.id,
       this.id,
-      weapon
+      weapon,
     );
   }
   sendDeathMessageToPlayer(
     killer: Player | InvalidEnum.PLAYER_ID,
     killee: Player | InvalidEnum.PLAYER_ID,
-    weapon: WeaponEnum | DamageDeathReasonEnum
+    weapon: WeaponEnum | DamageDeathReasonEnum,
   ): void {
     w.SendDeathMessageToPlayer(
       this.id,
       killer === InvalidEnum.PLAYER_ID ? killer : killer.id,
       killee === InvalidEnum.PLAYER_ID ? killee : killee.id,
-      weapon
+      weapon,
     );
   }
   setSpawnInfo(
@@ -657,7 +657,7 @@ export class Player {
     weapon2: WeaponEnum,
     weapon2_ammo: number,
     weapon3: WeaponEnum,
-    weapon3_ammo: number
+    weapon3_ammo: number,
   ): void {
     if (team < 0 || team > InvalidEnum.NO_TEAM) return;
     if (skin < 0 || skin > 311 || skin == 74) return;
@@ -675,7 +675,7 @@ export class Player {
       weapon2,
       weapon2_ammo,
       weapon3,
-      weapon3_ammo
+      weapon3_ammo,
     );
   }
   redirectDownload(url: string) {
@@ -685,19 +685,19 @@ export class Player {
     type: number,
     memAddr: number,
     memOffset: number,
-    byteCount: number
+    byteCount: number,
   ) {
     const validTypes = [2, 5, 69, 70, 71, 72];
     if (!validTypes.includes(type)) {
       return logger.error(
-        `[Player]: sendClientCheck valid types are ${validTypes.toString()}`
+        `[Player]: sendClientCheck valid types are ${validTypes.toString()}`,
       );
     }
 
     return new Promise<IClientResRaw>((resolve, reject) => {
       if (this.isPaused) {
         return reject(
-          "[Player]: An attempt to check the player client response, but the player paused the game"
+          "[Player]: An attempt to check the player client response, but the player paused the game",
         );
       }
 
@@ -722,7 +722,7 @@ export class Player {
           const ret = next();
           off();
           return ret;
-        }
+        },
       );
 
       timer = setTimeout(() => {
@@ -751,7 +751,7 @@ export class Player {
     return objects.get(id);
   }
   getSurfingPlayerObject(
-    objects: Map<number, DynamicObject>
+    objects: Map<number, DynamicObject>,
   ): void | DynamicObject {
     const id: number = w.GetPlayerSurfingPlayerObjectID(this.id);
     if (id === InvalidEnum.OBJECT_ID) return;
@@ -760,21 +760,24 @@ export class Player {
   isAttachedObjectSlotUsed(index: number): boolean {
     return w.IsPlayerAttachedObjectSlotUsed(this.id, index);
   }
+  editAttachedObject(index: number) {
+    return w.EditAttachedObject(this.id, index);
+  }
   setAttachedObject(
     index: number,
     modelId: number,
     bone: BoneIdsEnum,
-    fOffsetX: number,
-    fOffsetY: number,
-    fOffsetZ: number,
-    fRotX: number,
-    fRotY: number,
-    fRotZ: number,
-    fScaleX: number,
-    fScaleY: number,
-    fScaleZ: number,
-    materialColor1: string | number,
-    materialColor2: string | number
+    fOffsetX = 0.0,
+    fOffsetY = 0.0,
+    fOffsetZ = 0.0,
+    fRotX = 0.0,
+    fRotY = 0.0,
+    fRotZ = 0.0,
+    fScaleX = 1.0,
+    fScaleY = 1.0,
+    fScaleZ = 1.0,
+    materialColor1: string | number = 0,
+    materialColor2: string | number = 0,
   ): void | number {
     if (this.isAttachedObjectSlotUsed(index)) return 0;
     return w.SetPlayerAttachedObject(
@@ -792,7 +795,7 @@ export class Player {
       fScaleY,
       fScaleZ,
       materialColor1,
-      materialColor2
+      materialColor2,
     );
   }
   removeAttachedObject(index: number): number {

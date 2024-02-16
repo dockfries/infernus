@@ -21,7 +21,7 @@ export const GetObjectMovingTargetPos = (objectId: number): IObjectPos => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
     "GetObjectMovingTargetPos",
     "i",
-    objectId
+    objectId,
   );
   return { fX, fY, fZ };
 };
@@ -30,7 +30,7 @@ export const GetObjectMovingTargetRot = (objectId: number): IObjectPos => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
     "GetObjectMovingTargetRot",
     "i",
-    objectId
+    objectId,
   );
   return { fX, fY, fZ };
 };
@@ -63,36 +63,36 @@ export const GetObjectSyncRotation = (objectId: number): number => {
 // Return values: 1 = material, 2 = material tex
 export const IsObjectMaterialSlotUsed = (
   objectId: number,
-  materialIndex: number
+  materialIndex: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsObjectMaterialSlotUsed", "ii", objectId, materialIndex)
+    samp.callNative("IsObjectMaterialSlotUsed", "ii", objectId, materialIndex),
   );
 };
 
 export const GetObjectMaterial = (
   objectId: number,
-  materialIndex: number
+  materialIndex: number,
 ): IMaterial => {
   const [modelId = 0, txdName, textureName, materialColor = 0]: [
     number,
     string,
     string,
-    number
+    number,
   ] = samp.callNative(
     "GetObjectMaterial",
     "iiISiSiI",
     objectId,
     materialIndex,
     64,
-    64
+    64,
   );
   return { modelId, txdName, textureName, materialColor };
 };
 
 export const GetObjectMaterialText = (
   objectId: number,
-  materialIndex: number
+  materialIndex: number,
 ): IMaterialText => {
   const [
     text,
@@ -110,7 +110,7 @@ export const GetObjectMaterialText = (
       objectId,
       materialIndex,
       2048,
-      32
+      32,
     );
   return {
     text,
@@ -136,7 +136,7 @@ export const CreateObject = (
   rX: number,
   rY: number,
   rZ: number,
-  DrawDistance: number
+  DrawDistance: number,
 ): number => {
   return samp.callNative(
     "CreateObject",
@@ -148,7 +148,7 @@ export const CreateObject = (
     rX,
     rY,
     rZ,
-    DrawDistance
+    DrawDistance,
   );
 };
 
@@ -160,7 +160,7 @@ export const AttachObjectToVehicle = (
   OffsetZ: number,
   RotX: number,
   RotY: number,
-  RotZ: number
+  RotZ: number,
 ): number => {
   return samp.callNative(
     "AttachObjectToVehicle",
@@ -172,7 +172,7 @@ export const AttachObjectToVehicle = (
     OffsetZ,
     RotX,
     RotY,
-    RotZ
+    RotZ,
   );
 };
 
@@ -185,7 +185,7 @@ export const AttachObjectToObject = (
   RotX: number,
   RotY: number,
   RotZ: number,
-  SyncRotation = true
+  SyncRotation = true,
 ): number => {
   return samp.callNative(
     "AttachObjectToObject",
@@ -198,7 +198,7 @@ export const AttachObjectToObject = (
     RotX,
     RotY,
     RotZ,
-    SyncRotation
+    SyncRotation,
   );
 };
 
@@ -210,7 +210,7 @@ export const AttachObjectToPlayer = (
   OffsetZ: number,
   RotX: number,
   RotY: number,
-  RotZ: number
+  RotZ: number,
 ): number => {
   return samp.callNative(
     "AttachObjectToPlayer",
@@ -222,19 +222,19 @@ export const AttachObjectToPlayer = (
     OffsetZ,
     RotX,
     RotY,
-    RotZ
+    RotZ,
   );
 };
 
-export const EditAttachedObject = (playerId: number, index: number): number => {
-  return samp.callNative("EditAttachedObject", "ii", playerId, index);
+export const EditAttachedObject = (playerId: number, index: number) => {
+  return Boolean(samp.callNative("EditAttachedObject", "ii", playerId, index));
 };
 
 export const SetObjectPos = (
   objectId: number,
   X: number,
   Y: number,
-  Z: number
+  Z: number,
 ): number => {
   return samp.callNative("SetObjectPos", "ifff", objectId, X, Y, Z);
 };
@@ -247,7 +247,7 @@ export const SetObjectRot = (
   objectId: number,
   RotX: number,
   RotY: number,
-  RotZ: number
+  RotZ: number,
 ): number => {
   return samp.callNative("SetObjectRot", "ifff", objectId, RotX, RotY, RotZ);
 };
@@ -280,7 +280,7 @@ export const MoveObject = (
   Speed: number,
   RotX: number,
   RotY: number,
-  RotZ: number
+  RotZ: number,
 ): number => {
   return samp.callNative(
     "MoveObject",
@@ -292,7 +292,7 @@ export const MoveObject = (
     Speed,
     RotX,
     RotY,
-    RotZ
+    RotZ,
   );
 };
 
@@ -306,10 +306,10 @@ export const IsObjectMoving = (objectId: number): boolean => {
 
 export const BeginObjectEditing = (
   playerId: number,
-  objectId: number
+  objectId: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("BeginObjectEditing", "ii", playerId, objectId)
+    samp.callNative("BeginObjectEditing", "ii", playerId, objectId),
   );
 };
 
@@ -327,7 +327,7 @@ export const SetObjectMaterial = (
   modelId: number,
   txdName: string,
   textureName: string,
-  materialColor: string | number
+  materialColor: string | number,
 ): number => {
   return samp.callNative(
     "SetObjectMaterial",
@@ -337,7 +337,7 @@ export const SetObjectMaterial = (
     modelId,
     txdName,
     textureName,
-    rgba(materialColor)
+    rgba(materialColor),
   );
 };
 
@@ -351,7 +351,7 @@ export const SetObjectMaterialText = (
   bold = true,
   fontColor: string | number,
   backColor: string | number,
-  textAlignment: number
+  textAlignment: number,
 ): number => {
   return samp.callNative(
     "SetObjectMaterialText",
@@ -365,7 +365,7 @@ export const SetObjectMaterialText = (
     bold,
     rgba(fontColor),
     rgba(backColor),
-    textAlignment
+    textAlignment,
   );
 };
 
@@ -378,7 +378,7 @@ export const AddSimpleModel = (
   baseId: number,
   newId: number,
   dffName: string,
-  txdName: string
+  txdName: string,
 ): number => {
   return samp.callNative(
     "AddSimpleModel",
@@ -387,7 +387,7 @@ export const AddSimpleModel = (
     baseId,
     newId,
     dffName,
-    txdName
+    txdName,
   );
 };
 
@@ -398,7 +398,7 @@ export const AddSimpleModelTimed = (
   dffName: string,
   txdName: string,
   timeOn: number,
-  timeOff: number
+  timeOff: number,
 ): number => {
   return samp.callNative(
     "AddSimpleModelTimed",
@@ -409,7 +409,7 @@ export const AddSimpleModelTimed = (
     dffName,
     txdName,
     timeOn,
-    timeOff
+    timeOff,
   );
 };
 
@@ -429,7 +429,7 @@ export const FindTextureFileNameFromCRC = (crc: number): string => {
 
 export const GetPlayerAttachedObject = (
   playerId: number,
-  index: number
+  index: number,
 ): IAttachedObject => {
   const [
     modelId = 0,
@@ -449,7 +449,7 @@ export const GetPlayerAttachedObject = (
     "GetPlayerAttachedObject",
     "iiIIFFFFFFFFFII",
     playerId,
-    index
+    index,
   );
   return {
     modelId,
@@ -483,7 +483,7 @@ export const SetPlayerAttachedObject = (
   fScaleY: number,
   fScaleZ: number,
   materialColor1: string | number,
-  materialColor2: string | number
+  materialColor2: string | number,
 ): number => {
   return samp.callNative(
     "SetPlayerAttachedObject",
@@ -502,23 +502,23 @@ export const SetPlayerAttachedObject = (
     fScaleY,
     fScaleZ,
     rgba(materialColor1),
-    rgba(materialColor2)
+    rgba(materialColor2),
   );
 };
 
 export const RemovePlayerAttachedObject = (
   playerId: number,
-  index: number
+  index: number,
 ): number => {
   return samp.callNative("RemovePlayerAttachedObject", "ii", playerId, index);
 };
 
 export const IsPlayerAttachedObjectSlotUsed = (
   playerId: number,
-  index: number
+  index: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerAttachedObjectSlotUsed", "ii", playerId, index)
+    samp.callNative("IsPlayerAttachedObjectSlotUsed", "ii", playerId, index),
   );
 };
 
@@ -533,7 +533,7 @@ export const GetCustomModePath = (modelId: number) => {
     "iSiSi",
     modelId,
     255,
-    255
+    255,
   );
   return { dffPath, txdPath };
 };
