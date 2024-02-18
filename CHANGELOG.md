@@ -1,3 +1,16 @@
+## [0.11.0-beta.2](https://github.com/dockfries/infernus/compare/v0.11.0-beta.1...v0.11.0-beta.2) (2024-2-18)
+
+
+### Features
+
+* **fs:** attachments ([c5cb61d](https://github.com/dockfries/infernus/commit/c5cb61d35c3cb451df2b0d563aed5754a50fd9b9))
+
+
+### Bug Fixes
+
+* **core:** editAttachedObject, setAttachedObject default value ([d795575](https://github.com/dockfries/infernus/commit/d795575837e5de630a71e62c455cccb537ed047d))
+* **core:** textdraw cancel middleware onDisconnect ([3e4f3ec](https://github.com/dockfries/infernus/commit/3e4f3ec76727abc9f5df48eb8a0a1aa97d4e114b))
+
 ## [0.11.0-beta.1](https://github.com/dockfries/infernus/compare/v0.10.0-beta.12...v0.11.0-beta.1) (2024-2-11)
 
 
