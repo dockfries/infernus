@@ -78,7 +78,7 @@ onUpdate(({ player, next }) => {
         player,
         player.lastUpdateTick,
         now,
-        now - player.lastUpdateTick
+        now - player.lastUpdateTick,
       );
     }
     player.lastUpdateTick = now;

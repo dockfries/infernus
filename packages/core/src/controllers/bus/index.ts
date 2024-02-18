@@ -25,7 +25,7 @@ export function emptyMiddlewares(name: string) {
 
 function transformReturnValue(
   value: PromisifyCallbackRet,
-  defaultValue: boolean
+  defaultValue: boolean,
 ) {
   if (typeof value === "boolean") return +value;
   if (typeof value === "number" && !isNaN(value)) return value;
@@ -95,7 +95,7 @@ export function defineEvent<T extends object>(options: Options<T>) {
   }
 
   function pusher(
-    cb: (ret: T & { next: () => CallbackRet }) => PromisifyCallbackRet
+    cb: (ret: T & { next: () => CallbackRet }) => PromisifyCallbackRet,
   ) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const middlewares = eventBus.get(name)!;

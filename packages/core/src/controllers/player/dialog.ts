@@ -19,7 +19,7 @@ export const [onDialogResponse] = defineEvent({
     dialogId: number,
     response: number,
     listItem: number,
-    buffer: number[]
+    buffer: number[],
   ) {
     return {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -60,7 +60,7 @@ export class Dialog {
       info: "",
       button1: "",
       button2: "",
-    }
+    },
   ) {
     this.dialog = dialog;
   }
@@ -110,7 +110,7 @@ export class Dialog {
     if (!task) return false;
     if (reject) {
       task.reject(
-        "[Dialog]: player timeout does not respond or second request show dialog"
+        "[Dialog]: player timeout does not respond or second request show dialog",
       );
     }
     Dialog.waitingQueue.delete(player);

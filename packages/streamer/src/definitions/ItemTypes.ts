@@ -16,5 +16,5 @@ export type StreamerItemTypeTuple = [
   StreamerItemTypes,
   StreamerItemTypes,
   StreamerItemTypes,
-  StreamerItemTypes
+  StreamerItemTypes,
 ];

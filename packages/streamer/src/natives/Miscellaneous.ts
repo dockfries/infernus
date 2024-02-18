@@ -6,7 +6,7 @@ export const Streamer_GetDistanceToItem = (
   z: number,
   type: StreamerItemTypes,
   id: number,
-  dimensions: 2 | 3 = 3
+  dimensions: 2 | 3 = 3,
 ): number => {
   return samp.callNative(
     "Streamer_GetDistanceToItem",
@@ -16,7 +16,7 @@ export const Streamer_GetDistanceToItem = (
     z,
     type,
     id,
-    dimensions
+    dimensions,
   );
 };
 
@@ -24,7 +24,7 @@ export const Streamer_ToggleItem = (
   playerId: number,
   type: StreamerItemTypes,
   id: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative(
     "Streamer_ToggleItem",
@@ -32,17 +32,17 @@ export const Streamer_ToggleItem = (
     playerId,
     type,
     id,
-    toggle
+    toggle,
   );
 };
 
 export const Streamer_IsToggleItem = (
   playerId: number,
   type: StreamerItemTypes,
-  id: number
+  id: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("Streamer_IsToggleItem", "iii", playerId, type, id)
+    samp.callNative("Streamer_IsToggleItem", "iii", playerId, type, id),
   );
 };
 
@@ -50,7 +50,7 @@ export const Streamer_ToggleAllItems = (
   playerId: number,
   type: StreamerItemTypes,
   toggle: boolean,
-  exceptions: number[] = [-1]
+  exceptions: number[] = [-1],
 ): number => {
   return samp.callNative(
     "Streamer_ToggleAllItems",
@@ -59,86 +59,86 @@ export const Streamer_ToggleAllItems = (
     type,
     toggle,
     exceptions,
-    exceptions.length
+    exceptions.length,
   );
 };
 
 export const Streamer_GetItemInternalID = (
   playerId: number,
   type: StreamerItemTypes,
-  streamerId: number
+  streamerId: number,
 ): number => {
   return samp.callNative(
     "Streamer_GetItemInternalID",
     "iii",
     playerId,
     type,
-    streamerId
+    streamerId,
   );
 };
 
 export const Streamer_GetItemStreamerID = (
   playerId: number,
   type: StreamerItemTypes,
-  internalId: number
+  internalId: number,
 ): number => {
   return samp.callNative(
     "Streamer_GetItemStreamerID",
     "iii",
     playerId,
     type,
-    internalId
+    internalId,
   );
 };
 
 export const Streamer_IsItemVisible = (
   playerId: number,
   type: StreamerItemTypes,
-  id: number
+  id: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("Streamer_IsItemVisible", "iii", playerId, type, id)
+    samp.callNative("Streamer_IsItemVisible", "iii", playerId, type, id),
   );
 };
 
 export const Streamer_DestroyAllVisibleItems = (
   playerId: number,
   type: StreamerItemTypes,
-  serverWide = 1
+  serverWide = 1,
 ): number => {
   return samp.callNative(
     "Streamer_DestroyAllVisibleItems",
     "iii",
     playerId,
     type,
-    serverWide
+    serverWide,
   );
 };
 
 export const Streamer_CountVisibleItems = (
   playerId: number,
   type: StreamerItemTypes,
-  serverWide = 1
+  serverWide = 1,
 ): number => {
   return samp.callNative(
     "Streamer_CountVisibleItems",
     "iii",
     playerId,
     type,
-    serverWide
+    serverWide,
   );
 };
 
 export const Streamer_DestroyAllItems = (
   type: StreamerItemTypes,
-  serverWide = 1
+  serverWide = 1,
 ): number => {
   return samp.callNative("Streamer_DestroyAllItems", "ii", type, serverWide);
 };
 
 export const Streamer_CountItems = (
   type: StreamerItemTypes,
-  serverWide = 1
+  serverWide = 1,
 ): number => {
   return samp.callNative("Streamer_CountItems", "ii", type, serverWide);
 };
@@ -151,7 +151,7 @@ export const Streamer_GetNearbyItems = (
   items: number[],
   maxItems: number = items.length,
   range = 300.0,
-  worldId = -1
+  worldId = -1,
 ): void => {
   items = samp.callNative(
     "Streamer_GetNearbyItems",
@@ -162,7 +162,7 @@ export const Streamer_GetNearbyItems = (
     type,
     maxItems,
     range,
-    worldId
+    worldId,
   );
 };
 
@@ -170,14 +170,14 @@ export const Streamer_GetAllVisibleItems = (
   playerId: number,
   type: StreamerItemTypes,
   items: number[],
-  maxItems: number = items.length
+  maxItems: number = items.length,
 ): void => {
   items = samp.callNative(
     "Streamer_GetAllVisibleItems",
     "iiAi",
     playerId,
     type,
-    maxItems
+    maxItems,
   );
 };
 
@@ -186,7 +186,7 @@ export const Streamer_GetItemPos = (type: StreamerItemTypes, id: number) => {
     "Streamer_GetItemPos",
     "iiFFF",
     type,
-    id
+    id,
   );
   return { x, y, z };
 };
@@ -196,7 +196,7 @@ export const Streamer_SetItemPos = (
   id: number,
   x: number,
   y: number,
-  z: number
+  z: number,
 ) => {
   return samp.callNative("Streamer_SetItemPos", "iifff", type, id, x, y, z);
 };
@@ -206,7 +206,7 @@ export const Streamer_GetItemOffset = (type: StreamerItemTypes, id: number) => {
     "Streamer_GetItemOffset",
     "iiFFF",
     type,
-    id
+    id,
   );
   return { x, y, z };
 };
@@ -216,7 +216,7 @@ export const Streamer_SetItemOffset = (
   id: number,
   x: number,
   y: number,
-  z: number
+  z: number,
 ) => {
   return samp.callNative("Streamer_SetItemOffset", "iifff", type, id, x, y, z);
 };

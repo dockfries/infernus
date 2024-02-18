@@ -7,45 +7,45 @@ export const IsValidGangZone = (zoneId: number): boolean => {
 
 export const IsPlayerInGangZone = (
   playerId: number,
-  zoneId: number
+  zoneId: number,
 ): boolean => {
   return Boolean(samp.callNative("IsPlayerInGangZone", "ii", playerId, zoneId));
 };
 
 export const IsGangZoneVisibleForPlayer = (
   playerId: number,
-  zoneId: number
+  zoneId: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsGangZoneVisibleForPlayer", "ii", playerId, zoneId)
+    samp.callNative("IsGangZoneVisibleForPlayer", "ii", playerId, zoneId),
   );
 };
 
 export const GangZoneGetColorForPlayer = (
   playerId: number,
-  zoneId: number
+  zoneId: number,
 ): number => {
   return samp.callNative("GangZoneGetColorForPlayer", "ii", playerId, zoneId);
 };
 
 export const GangZoneGetFlashColorForPlayer = (
   playerId: number,
-  zoneId: number
+  zoneId: number,
 ): number => {
   return samp.callNative(
     "GangZoneGetFlashColorForPlayer",
     "ii",
     playerId,
-    zoneId
+    zoneId,
   );
 };
 
 export const IsGangZoneFlashingForPlayer = (
   playerId: number,
-  zoneId: number
+  zoneId: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsGangZoneFlashingForPlayer", "ii", playerId, zoneId)
+    samp.callNative("IsGangZoneFlashingForPlayer", "ii", playerId, zoneId),
   );
 };
 
@@ -63,7 +63,7 @@ export const GangZoneCreate = (
   minX: number,
   minY: number,
   maxX: number,
-  maxY: number
+  maxY: number,
 ): number => {
   return samp.callNative("GangZoneCreate", "ffff", minX, minY, maxX, maxY);
 };
@@ -75,27 +75,27 @@ export const GangZoneDestroy = (zone: number): number => {
 export const GangZoneShowForPlayer = (
   playerId: number,
   zone: number,
-  color: string | number
+  color: string | number,
 ): number => {
   return samp.callNative(
     "GangZoneShowForPlayer",
     "iii",
     playerId,
     zone,
-    rgba(color)
+    rgba(color),
   );
 };
 
 export const GangZoneShowForAll = (
   zone: number,
-  color: string | number
+  color: string | number,
 ): number => {
   return samp.callNative("GangZoneShowForAll", "ii", zone, rgba(color));
 };
 
 export const GangZoneHideForPlayer = (
   playerId: number,
-  zone: number
+  zone: number,
 ): number => {
   return samp.callNative("GangZoneHideForPlayer", "ii", playerId, zone);
 };
@@ -107,27 +107,27 @@ export const GangZoneHideForAll = (zone: number): number => {
 export const GangZoneFlashForPlayer = (
   playerId: number,
   zone: number,
-  flashColor: string | number
+  flashColor: string | number,
 ): number => {
   return samp.callNative(
     "GangZoneFlashForPlayer",
     "iii",
     playerId,
     zone,
-    rgba(flashColor)
+    rgba(flashColor),
   );
 };
 
 export const GangZoneFlashForAll = (
   zone: number,
-  flashColor: string | number
+  flashColor: string | number,
 ): number => {
   return samp.callNative("GangZoneFlashForAll", "ii", zone, rgba(flashColor));
 };
 
 export const GangZoneStopFlashForPlayer = (
   playerId: number,
-  zone: number
+  zone: number,
 ): number => {
   return samp.callNative("GangZoneStopFlashForPlayer", "ii", playerId, zone);
 };

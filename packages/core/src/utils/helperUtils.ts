@@ -17,7 +17,7 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 export const SendClientMessage = (
   player: Player,
   color: string | number,
-  msg: string
+  msg: string,
 ): number => {
   const res = processMsg(msg, player.charset);
   return samp.callNative(
@@ -25,14 +25,14 @@ export const SendClientMessage = (
     `ii${res[0]}`,
     player.id,
     rgba(color),
-    res[1]
+    res[1],
   );
 };
 
 export const SendClientMessageToAll = (
   players: Array<Player>,
   color: string | number,
-  msg: string
+  msg: string,
 ): number => {
   players.forEach((p) => SendClientMessage(p, color, msg));
   return 1;
@@ -41,7 +41,7 @@ export const SendClientMessageToAll = (
 export const SendPlayerMessageToPlayer = (
   player: Player,
   senderId: number,
-  message: string
+  message: string,
 ): number => {
   const res = processMsg(message, player.charset);
   return samp.callNative(
@@ -49,14 +49,14 @@ export const SendPlayerMessageToPlayer = (
     `ii${res[0]}`,
     player.id,
     senderId,
-    res[1]
+    res[1],
   );
 };
 
 export const SendPlayerMessageToAll = (
   players: Array<Player>,
   senderId: number,
-  message: string
+  message: string,
 ): number => {
   players.forEach((p) => {
     SendPlayerMessageToPlayer(p, senderId, message);
@@ -67,7 +67,7 @@ export const SendPlayerMessageToAll = (
 export const ShowPlayerDialog = (
   player: Player,
   id: number,
-  dialog: IDialog
+  dialog: IDialog,
 ): number => {
   const { charset } = player;
   const { style, caption, info, button1, button2 } = dialog;
@@ -84,7 +84,7 @@ export const ShowPlayerDialog = (
     processCaption,
     processInfo,
     processButton1,
-    processButton2
+    processButton2,
   );
 };
 
@@ -93,7 +93,7 @@ export const GetPlayerName = (player: Player): string => {
     "GetPlayerName",
     "iAi",
     player.id,
-    LimitsEnum.MAX_PLAYER_NAME
+    LimitsEnum.MAX_PLAYER_NAME,
   );
   return I18n.decodeFromBuf(I18n.getValidStr(buf), player.charset);
 };
@@ -103,14 +103,14 @@ export const SetPlayerName = (player: Player, name: string): number => {
     "SetPlayerName",
     "ia",
     player.id,
-    I18n.encodeToBuf(name, player.charset)
+    I18n.encodeToBuf(name, player.charset),
   );
 };
 
 export const BanEx = (
   playerId: number,
   reason: string,
-  charset: string
+  charset: string,
 ): number => {
   const buf = I18n.encodeToBuf(reason, charset);
   return samp.callNative("BanEx", "ia", playerId, buf);
@@ -132,7 +132,7 @@ export const CreateDynamic3DTextLabel = (
   playerId: number,
   streamDistance: number,
   areaId: number,
-  priority: number
+  priority: number,
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
   return samp.callNative(
@@ -152,7 +152,7 @@ export const CreateDynamic3DTextLabel = (
     playerId,
     streamDistance,
     areaId,
-    priority
+    priority,
   );
 };
 
@@ -172,7 +172,7 @@ export const CreateDynamic3DTextLabelEx = (
   players: number[],
   areas: number[],
   priority: number,
-  charset: string
+  charset: string,
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
   return samp.callNative(
@@ -196,7 +196,7 @@ export const CreateDynamic3DTextLabelEx = (
     worlds.length,
     interiors.length,
     players.length,
-    areas.length
+    areas.length,
   );
 };
 
@@ -204,7 +204,7 @@ export const UpdateDynamic3DTextLabelText = (
   id: number,
   color: number,
   text: string,
-  charset: string
+  charset: string,
 ): number => {
   const buf = I18n.encodeToBuf(text, charset);
   return samp.callNative("UpdateDynamic3DTextLabelText", "iia", id, color, buf);
@@ -212,13 +212,13 @@ export const UpdateDynamic3DTextLabelText = (
 
 export const GetDynamic3DTextLabelText = (
   id: number,
-  charset: string
+  charset: string,
 ): string => {
   const buf: number[] = samp.callNative(
     "GetDynamic3DTextLabelText",
     "iAi",
     id,
-    1024
+    1024,
   );
   return I18n.decodeFromBuf(I18n.getValidStr(buf), charset);
 };
@@ -234,7 +234,7 @@ export const SetDynamicObjectMaterialText = (
   bold: number,
   fontColor: number,
   backColor: number,
-  textAlignment: number
+  textAlignment: number,
 ): number => {
   const textBuf = I18n.encodeToBuf(text, charset);
   const fontFaceBuf = I18n.encodeToBuf(fontFace, charset);
@@ -250,14 +250,14 @@ export const SetDynamicObjectMaterialText = (
     bold,
     fontColor,
     backColor,
-    textAlignment
+    textAlignment,
   );
 };
 
 export const GetDynamicObjectMaterialText = (
   objectId: number,
   materialIndex: number,
-  charset: string
+  charset: string,
 ) => {
   const [
     text,
@@ -273,7 +273,7 @@ export const GetDynamicObjectMaterialText = (
     objectId,
     materialIndex,
     2048,
-    32
+    32,
   ) as [number[], number, number[], number, number, number, number];
   const textStr = I18n.decodeFromBuf(text, charset);
   const fontFaceStr = I18n.decodeFromBuf(fontFace, charset);

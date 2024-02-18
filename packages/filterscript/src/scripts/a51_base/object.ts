@@ -180,7 +180,7 @@ export const moveGate = (
   player: Player,
   newkeys: KeysEnum,
   options: IA51Options,
-  i18n: I18n
+  i18n: I18n,
 ): void => {
   if (!(newkeys & KeysEnum.YES)) return;
   const { beforeMoveGate, onGateOpen, onGateClose } = options;
@@ -210,7 +210,7 @@ export const moveGate = (
     player.sendClientMessage(
       ColorEnum.MESSAGE_YELLOW,
       i18n?.$t("a51.objects.gate.status.waiting.open", [name], player.locale) ||
-        ""
+        "",
     );
     return;
   }
@@ -225,8 +225,8 @@ export const moveGate = (
       i18n?.$t(
         "a51.objects.gate.status.waiting.close",
         [name],
-        player.locale
-      ) || ""
+        player.locale,
+      ) || "",
     );
     return;
   }
@@ -262,7 +262,7 @@ export const moveGate = (
         i18n?.$t("a51.objects.gate.status.opening", [name], player.locale) ||
           "",
         3000,
-        3
+        3,
       );
       gt.forPlayer(player);
     }
@@ -278,7 +278,7 @@ export const moveGate = (
     const gt = new GameText(
       i18n?.$t("a51.objects.gate.status.closing", [name], player.locale) || "",
       3000,
-      3
+      3,
     );
     gt.forPlayer(player);
   }
@@ -300,7 +300,7 @@ const whichPlayerDoor = (player: Player, i18n: I18n) => {
       ? "a51.objects.gate.name.eastern"
       : "a51.objects.gate.name.northern",
     null,
-    player.locale
+    player.locale,
   );
   return {
     name,
@@ -389,7 +389,7 @@ export const unloadObjects = (options: ICommonOptions, i18n: I18n) => {
     if (destroyValidObject(o)) {
       log(
         options,
-        `  |--  ${i18n?.$t("a51.objects.destroyed.building", [i + 1])}`
+        `  |--  ${i18n?.$t("a51.objects.destroyed.building", [i + 1])}`,
       );
     }
   });

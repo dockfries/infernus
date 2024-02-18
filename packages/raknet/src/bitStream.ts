@@ -35,7 +35,7 @@ export class BitStream {
     player: number | Player,
     priority = PacketRpcPriority.High,
     reliability = PacketRpcReliability.ReliableOrdered,
-    orderingChannel = 0
+    orderingChannel = 0,
   ) {
     const id = typeof player === "number" ? player : player.id;
     patchRakNetNatives(
@@ -44,7 +44,7 @@ export class BitStream {
       id,
       priority,
       reliability,
-      orderingChannel
+      orderingChannel,
     );
   }
 
@@ -53,7 +53,7 @@ export class BitStream {
     rpcId: number,
     priority = PacketRpcPriority.High,
     reliability = PacketRpcReliability.ReliableOrdered,
-    orderingChannel = 0
+    orderingChannel = 0,
   ) {
     const id = typeof player === "number" ? player : player.id;
     patchRakNetNatives(
@@ -63,7 +63,7 @@ export class BitStream {
       rpcId,
       priority,
       reliability,
-      orderingChannel
+      orderingChannel,
     );
   }
 
@@ -446,14 +446,14 @@ export class BitStream {
 
     [data.targetId, data.targetActorId] = this.readValue(
       PacketRpcValueType.UInt16,
-      PacketRpcValueType.UInt16
+      PacketRpcValueType.UInt16,
     ) as number[];
 
     while (numberOfSlots--) {
       const [slotId, weaponId, ammo] = this.readValue(
         PacketRpcValueType.UInt8,
         PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt16
+        PacketRpcValueType.UInt16,
       ) as number[];
 
       if (slotId < PR_MAX_WEAPON_SLOTS) {
@@ -469,7 +469,7 @@ export class BitStream {
     const data: Partial<IStatsUpdate> = {};
     [data.money, data.drunkLevel] = this.readValue(
       PacketRpcValueType.Int32,
-      PacketRpcValueType.Int32
+      PacketRpcValueType.Int32,
     ) as number[];
     return data as IStatsUpdate;
   }
@@ -483,7 +483,7 @@ export class BitStream {
   writeWeaponsUpdate(data: IWeaponsUpdate) {
     this.writeValue(
       [PacketRpcValueType.UInt16, data.targetId],
-      [PacketRpcValueType.UInt16, data.targetActorId]
+      [PacketRpcValueType.UInt16, data.targetActorId],
     );
 
     for (let slotId = 0; slotId < PR_MAX_WEAPON_SLOTS; slotId++) {
@@ -494,7 +494,7 @@ export class BitStream {
       this.writeValue(
         [PacketRpcValueType.UInt8, slotId],
         [PacketRpcValueType.UInt8, data.slotWeaponId[slotId]],
-        [PacketRpcValueType.UInt16, data.slotWeaponAmmo[slotId]]
+        [PacketRpcValueType.UInt16, data.slotWeaponAmmo[slotId]],
       );
     }
   }
@@ -502,7 +502,7 @@ export class BitStream {
   writeStatsUpdate(data: IStatsUpdate) {
     this.writeValue(
       [PacketRpcValueType.Int32, data.money],
-      [PacketRpcValueType.Int32, data.drunkLevel]
+      [PacketRpcValueType.Int32, data.drunkLevel],
     );
   }
 
@@ -515,7 +515,7 @@ export class BitStream {
     player: Player,
     priority = PacketRpcPriority.High,
     reliability = PacketRpcReliability.ReliableOrdered,
-    orderingChannel = 0
+    orderingChannel = 0,
   ) {
     players.forEach((p) => {
       if (!p.isStreamedIn(player)) return;
@@ -529,7 +529,7 @@ export class BitStream {
     rpcId: number,
     priority = PacketRpcPriority.High,
     reliability = PacketRpcReliability.ReliableOrdered,
-    orderingChannel = 0
+    orderingChannel = 0,
   ) {
     players.forEach((p) => {
       if (!p.isStreamedIn(player)) {
@@ -545,7 +545,7 @@ export class BitStream {
     excludedPlayer: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID,
     priority = PacketRpcPriority.High,
     reliability = PacketRpcReliability.ReliableOrdered,
-    orderingChannel = 0
+    orderingChannel = 0,
   ) {
     players.forEach((p) => {
       if (
@@ -564,7 +564,7 @@ export class BitStream {
     excludedPlayer: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID,
     priority = PacketRpcPriority.High,
     reliability = PacketRpcReliability.ReliableOrdered,
-    orderingChannel = 0
+    orderingChannel = 0,
   ) {
     players.forEach((p) => {
       if (

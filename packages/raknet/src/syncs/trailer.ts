@@ -23,7 +23,7 @@ export class TrailerSync extends BitStream implements IPacketListSync {
       PacketRpcValueType.Float3,
       PacketRpcValueType.Float4,
       PacketRpcValueType.Float3,
-      PacketRpcValueType.Float3
+      PacketRpcValueType.Float3,
     ) as any;
     return data as ITrailerSync | null;
   }
@@ -35,7 +35,7 @@ export class TrailerSync extends BitStream implements IPacketListSync {
       [PacketRpcValueType.Float3, data.position],
       [PacketRpcValueType.Float4, data.quaternion],
       [PacketRpcValueType.Float3, data.velocity],
-      [PacketRpcValueType.Float3, data.angularVelocity]
+      [PacketRpcValueType.Float3, data.angularVelocity],
     );
   }
 }

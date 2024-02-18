@@ -77,7 +77,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
           if (!specId) {
             player.sendClientMessage(
               ColorEnum.WHITE,
-              "USAGE: /specplayer [playerId]"
+              "USAGE: /specplayer [playerId]",
             );
             return next();
           }
@@ -86,7 +86,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
           if (!specPlayer || !specPlayer.isConnected()) {
             player.sendClientMessage(
               ColorEnum.RED,
-              "specplayer: that player isn't active."
+              "specplayer: that player isn't active.",
             );
             return next();
           }
@@ -100,7 +100,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
           mp.gSpectateID = specPlayer.id;
           mp.gSpectateType = ADMIN_SPEC_TYPE.PLAYER;
           return next();
-        }
+        },
       );
 
       // SPECTATE A VEHICLE
@@ -111,7 +111,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
           if (!vehId) {
             player.sendClientMessage(
               ColorEnum.WHITE,
-              "USAGE: /specvehicle [vehicleId]"
+              "USAGE: /specvehicle [vehicleId]",
             );
             return next();
           }
@@ -129,7 +129,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
           mp.gSpectateType = ADMIN_SPEC_TYPE.VEHICLE;
 
           return next();
-        }
+        },
       );
 
       // STOP SPECTATING
@@ -142,7 +142,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
           mp.gSpectateID = InvalidEnum.PLAYER_ID;
           mp.gSpectateType = ADMIN_SPEC_TYPE.NONE;
           return next();
-        }
+        },
       );
 
       offs.push(
@@ -150,7 +150,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
         offOnDisconnect,
         offSpecPlayer,
         offSpecVehicle,
-        offSpecOff
+        offSpecOff,
       );
     },
     unload() {

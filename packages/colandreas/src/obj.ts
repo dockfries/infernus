@@ -32,7 +32,7 @@ export class CA_Object {
         obj.rx,
         obj.ry,
         obj.rz,
-        dc
+        dc,
       );
 
       if (dc) this.collisionID = colId;

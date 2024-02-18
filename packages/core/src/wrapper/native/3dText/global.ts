@@ -7,10 +7,10 @@ export const IsValid3DTextLabel = (id: number): boolean => {
 
 export const Is3DTextLabelStreamedIn = (
   playerId: number,
-  id: number
+  id: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("Is3DTextLabelStreamedIn", "ii", playerId, id)
+    samp.callNative("Is3DTextLabelStreamedIn", "ii", playerId, id),
   );
 };
 
@@ -27,7 +27,7 @@ export const Get3DTextLabelPos = (id: number): IObjectPos => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
     "Get3DTextLabelPos",
     "iFFF",
-    id
+    id,
   );
   return { fX, fY, fZ };
 };
@@ -50,7 +50,7 @@ export const Set3DTextLabelLOS = (id: number, status: boolean): void => {
 
 export const Set3DTextLabelVirtualWorld = (
   id: number,
-  worldId: number
+  worldId: number,
 ): void => {
   samp.callNative("Set3DTextLabelVirtualWorld", "ii", id, worldId);
 };
@@ -73,7 +73,7 @@ export const Create3DTextLabel = (
   Z: number,
   DrawDistance: number,
   virtualWorld: number,
-  testLOS = false
+  testLOS = false,
 ): number => {
   return samp.callNative(
     "Create3DTextLabel",
@@ -85,7 +85,7 @@ export const Create3DTextLabel = (
     Z,
     DrawDistance,
     virtualWorld,
-    testLOS
+    testLOS,
   );
 };
 
@@ -98,7 +98,7 @@ export const Attach3DTextLabelToPlayer = (
   playerId: number,
   OffsetX: number,
   OffsetY: number,
-  OffsetZ: number
+  OffsetZ: number,
 ): number => {
   return samp.callNative(
     "Attach3DTextLabelToPlayer",
@@ -107,7 +107,7 @@ export const Attach3DTextLabelToPlayer = (
     playerId,
     OffsetX,
     OffsetY,
-    OffsetZ
+    OffsetZ,
   );
 };
 
@@ -116,7 +116,7 @@ export const Attach3DTextLabelToVehicle = (
   vehicleId: number,
   OffsetX: number,
   OffsetY: number,
-  OffsetZ: number
+  OffsetZ: number,
 ): number => {
   return samp.callNative(
     "Attach3DTextLabelToVehicle",
@@ -125,14 +125,14 @@ export const Attach3DTextLabelToVehicle = (
     vehicleId,
     OffsetX,
     OffsetY,
-    OffsetZ
+    OffsetZ,
   );
 };
 
 export const Update3DTextLabelText = (
   id: number,
   color: string | number,
-  text: string
+  text: string,
 ): number => {
   return samp.callNative("Update3DTextLabelText", "iis", id, rgba(color), text);
 };

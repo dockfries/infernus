@@ -66,7 +66,7 @@ export class DynamicObject {
         interiorId,
         playerId,
         areaId,
-        priority
+        priority,
       );
     } else {
       if (Array.isArray(worldId)) worldId = -1;
@@ -92,7 +92,7 @@ export class DynamicObject {
         streamDistance,
         drawDistance,
         areaId,
-        priority
+        priority,
       );
     }
 
@@ -103,7 +103,7 @@ export class DynamicObject {
   destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerObject]: Unable to destroy the object before create"
+        "[StreamerObject]: Unable to destroy the object before create",
       );
     s.DestroyDynamicObject(this.id);
     DynamicObject.objects.delete(this.id);
@@ -150,7 +150,7 @@ export class DynamicObject {
     speed: number,
     rx = -1000,
     ry = -1000,
-    rz = -1000
+    rz = -1000,
   ): void | number {
     if (this.id === -1)
       return logger.warn("[StreamerObject]: Cannot start moving before create");
@@ -159,7 +159,7 @@ export class DynamicObject {
     }
     if (speed > 120 * 1000)
       logger.warn(
-        "[StreamerObject]: speed more than 120 seconds, warn if it's not intentional"
+        "[StreamerObject]: speed more than 120 seconds, warn if it's not intentional",
       );
     if (this.isMoving()) this.stop();
     return s.MoveDynamicObject(this.id, x, y, z, speed, rx, ry, rz);
@@ -179,7 +179,7 @@ export class DynamicObject {
   attachCamera(player: Player): void | number {
     if (this.id === -1 || player.id === -1)
       return logger.warn(
-        "[StreamerObject]: Cannot attachCamera before both are created"
+        "[StreamerObject]: Cannot attachCamera before both are created",
       );
     return s.AttachCameraToDynamicObject(player.id, this.id);
   }
@@ -192,11 +192,11 @@ export class DynamicObject {
     rx: number,
     ry: number,
     rz: number,
-    syncRotation = true
+    syncRotation = true,
   ): void | number {
     if (this.id === -1 || attachTo.id === -1)
       return logger.warn(
-        "[StreamerObject]: Cannot attachToObject before both are created"
+        "[StreamerObject]: Cannot attachToObject before both are created",
       );
     return s.AttachDynamicObjectToObject(
       this.id,
@@ -207,7 +207,7 @@ export class DynamicObject {
       rx,
       ry,
       rz,
-      syncRotation
+      syncRotation,
     );
   }
 
@@ -218,11 +218,11 @@ export class DynamicObject {
     offsetZ: number,
     rx: number,
     ry: number,
-    rz: number
+    rz: number,
   ): void | number {
     if (this.id === -1 || player.id === -1)
       return logger.warn(
-        "[StreamerObject]: Cannot attachToVehicle before both are created"
+        "[StreamerObject]: Cannot attachToVehicle before both are created",
       );
     return s.AttachDynamicObjectToPlayer(
       this.id,
@@ -232,7 +232,7 @@ export class DynamicObject {
       offsetZ,
       rx,
       ry,
-      rz
+      rz,
     );
   }
 
@@ -243,11 +243,11 @@ export class DynamicObject {
     offsetZ: number,
     rx: number,
     ry: number,
-    rz: number
+    rz: number,
   ): void | number {
     if (this.id === -1 || vehicle.id === -1)
       return logger.warn(
-        "[StreamerObject]: Cannot attachToVehicle before both are created"
+        "[StreamerObject]: Cannot attachToVehicle before both are created",
       );
     return s.AttachDynamicObjectToVehicle(
       this.id,
@@ -257,7 +257,7 @@ export class DynamicObject {
       offsetZ,
       rx,
       ry,
-      rz
+      rz,
     );
   }
 
@@ -282,13 +282,13 @@ export class DynamicObject {
   getMaterial(materialIndex: number, txdName: string, textureName: string) {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerObject]: Unable to get material before create"
+        "[StreamerObject]: Unable to get material before create",
       );
     return s.GetDynamicObjectMaterial(
       this.id,
       materialIndex,
       txdName,
-      textureName
+      textureName,
     );
   }
 
@@ -297,11 +297,11 @@ export class DynamicObject {
     modelId: number,
     txdName: string,
     textureName: string,
-    materialColor = "#000"
+    materialColor = "#000",
   ): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerObject]: Unable to set material before create"
+        "[StreamerObject]: Unable to set material before create",
       );
     return s.SetDynamicObjectMaterial(
       this.id,
@@ -309,7 +309,7 @@ export class DynamicObject {
       modelId,
       txdName,
       textureName,
-      rgba(materialColor)
+      rgba(materialColor),
     );
   }
 
@@ -326,12 +326,12 @@ export class DynamicObject {
   getMaterialText(materialIndex: number) {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerObject]: Unable to get material text before create"
+        "[StreamerObject]: Unable to get material text before create",
       );
     return GetDynamicObjectMaterialText(
       this.id,
       materialIndex,
-      this.sourceInfo.charset || "utf8"
+      this.sourceInfo.charset || "utf8",
     );
   }
 
@@ -345,11 +345,11 @@ export class DynamicObject {
     bold = 1,
     fontColor = "#fff",
     backColor = "#000",
-    textAlignment = 0
+    textAlignment = 0,
   ): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerObject]: Unable to set material text before create"
+        "[StreamerObject]: Unable to set material text before create",
       );
     this.sourceInfo.charset = charset;
     return SetDynamicObjectMaterialText(
@@ -363,7 +363,7 @@ export class DynamicObject {
       bold,
       rgba(fontColor),
       rgba(backColor),
-      textAlignment
+      textAlignment,
     );
   }
 
@@ -375,12 +375,12 @@ export class DynamicObject {
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerObject]: Unable to toggle callbacks before create"
+        "[StreamerObject]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.OBJECT,
       this.id,
-      toggle
+      toggle,
     );
   }
   isToggleCallbacks(): boolean {

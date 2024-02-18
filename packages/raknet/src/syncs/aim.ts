@@ -27,7 +27,7 @@ export class AimSync extends BitStream implements IPacketListSync {
       PacketRpcValueType.Float,
       [PacketRpcValueType.Bits, 2],
       [PacketRpcValueType.Bits, 6],
-      PacketRpcValueType.UInt8
+      PacketRpcValueType.UInt8,
     ) as any;
     return data as IAimSync | null;
   }
@@ -41,7 +41,7 @@ export class AimSync extends BitStream implements IPacketListSync {
       [PacketRpcValueType.Float, data.aimZ],
       [PacketRpcValueType.Bits, data.weaponState, 2],
       [PacketRpcValueType.Bits, data.camZoom, 6],
-      [PacketRpcValueType.UInt8, data.aspectRatio]
+      [PacketRpcValueType.UInt8, data.aspectRatio],
     );
   }
 }

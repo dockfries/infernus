@@ -61,7 +61,7 @@ export const GetConsoleVarAsByteArray = (varname: string) => {
     "GetConsoleVarAsString",
     "sAi",
     varname,
-    64
+    64,
   ) as number[];
 };
 
@@ -96,7 +96,7 @@ export const GetModeRestartTime = (): number => {
 export const GameTextForAll = (
   string: string,
   time: number,
-  style: number
+  style: number,
 ): number => {
   return samp.callNative("GameTextForAll", "sii", string, time, style);
 };
@@ -108,7 +108,7 @@ export const HideGameTextForAll = (style: number) => {
 export const SendDeathMessage = (
   killer: number,
   killee: number,
-  weapon: WeaponEnum | DamageDeathReasonEnum
+  weapon: WeaponEnum | DamageDeathReasonEnum,
 ): number => {
   return samp.callNative("SendDeathMessage", "iii", killer, killee, weapon);
 };
@@ -166,7 +166,7 @@ export const CreateExplosion = (
   Y: number,
   Z: number,
   type: number,
-  Radius: number
+  Radius: number,
 ): number => {
   return samp.callNative("CreateExplosion", "fffif", X, Y, Z, type, Radius);
 };

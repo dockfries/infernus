@@ -276,7 +276,7 @@ export const vehComponentArr: Array<number[] | null> = [
 
 export const isValidVehComponent = (
   modelId: number,
-  componentId: number
+  componentId: number,
 ): boolean => {
   if (!isValidVehModelId(modelId)) {
     logger.error("[vehicleUtils]: Invalid model id");
@@ -297,7 +297,7 @@ export const isValidVehModelId = (modelId: number): boolean => {
 
 export const isValidPaintJob = (
   modelId: number,
-  paintjobId: number
+  paintjobId: number,
 ): boolean => {
   if (paintjobId < 0 || paintjobId > 2) return false;
   const validModels = new Map<number, number>([

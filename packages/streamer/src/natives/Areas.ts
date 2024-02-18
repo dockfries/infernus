@@ -6,7 +6,7 @@ export const CreateDynamicCircle = (
   size: number,
   worldId = -1,
   interiorId = -1,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative(
     "CreateDynamicCircle",
@@ -16,7 +16,7 @@ export const CreateDynamicCircle = (
     size,
     worldId,
     interiorId,
-    playerId
+    playerId,
   );
 };
 
@@ -28,7 +28,7 @@ export const CreateDynamicCylinder = (
   size: number,
   worldId = -1,
   interiorId = -1,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative(
     "CreateDynamicCylinder",
@@ -40,7 +40,7 @@ export const CreateDynamicCylinder = (
     size,
     worldId,
     interiorId,
-    playerId
+    playerId,
   );
 };
 
@@ -51,7 +51,7 @@ export const CreateDynamicSphere = (
   size: number,
   worldId = -1,
   interiorId = -1,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative(
     "CreateDynamicSphere",
@@ -62,7 +62,7 @@ export const CreateDynamicSphere = (
     size,
     worldId,
     interiorId,
-    playerId
+    playerId,
   );
 };
 
@@ -73,7 +73,7 @@ export const CreateDynamicRectangle = (
   maxY: number,
   worldId = -1,
   interiorId = -1,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative(
     "CreateDynamicRectangle",
@@ -84,7 +84,7 @@ export const CreateDynamicRectangle = (
     maxY,
     worldId,
     interiorId,
-    playerId
+    playerId,
   );
 };
 
@@ -97,7 +97,7 @@ export const CreateDynamicCuboid = (
   maxZ: number,
   worldId = -1,
   interiorId = -1,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative(
     "CreateDynamicCuboid",
@@ -110,7 +110,7 @@ export const CreateDynamicCuboid = (
     maxZ,
     worldId,
     interiorId,
-    playerId
+    playerId,
   );
 };
 
@@ -120,7 +120,7 @@ export const CreateDynamicPolygon = (
   maxZ: number = Number.MAX_VALUE,
   worldId = -1,
   interiorId = -1,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative(
     "CreateDynamicPolygon",
@@ -131,7 +131,7 @@ export const CreateDynamicPolygon = (
     points.length,
     worldId,
     interiorId,
-    playerId
+    playerId,
   );
 };
 
@@ -152,7 +152,7 @@ export const GetDynamicPolygonPoints = (areaId: number): number[] => {
     "GetDynamicPolygonPoints",
     "iAi",
     areaId,
-    GetDynamicPolygonNumberPoints(areaId)
+    GetDynamicPolygonNumberPoints(areaId),
   );
 };
 
@@ -163,28 +163,28 @@ export const GetDynamicPolygonNumberPoints = (areaId: number): number => {
 export const IsPlayerInDynamicArea = (
   playerId: number,
   areaId: number,
-  recheck = false
+  recheck = false,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInDynamicArea", "iii", playerId, areaId, recheck)
+    samp.callNative("IsPlayerInDynamicArea", "iii", playerId, areaId, recheck),
   );
 };
 
 export const IsPlayerInAnyDynamicArea = (
   playerId: number,
-  recheck = false
+  recheck = false,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInAnyDynamicArea", "ii", playerId, recheck)
+    samp.callNative("IsPlayerInAnyDynamicArea", "ii", playerId, recheck),
   );
 };
 
 export const IsAnyPlayerInDynamicArea = (
   areaId: number,
-  recheck = false
+  recheck = false,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsAnyPlayerInDynamicArea", "ii", areaId, recheck)
+    samp.callNative("IsAnyPlayerInDynamicArea", "ii", areaId, recheck),
   );
 };
 
@@ -197,7 +197,7 @@ export const GetPlayerDynamicAreas = (playerId: number): number[] => {
     "GetPlayerDynamicAreas",
     "iAi",
     playerId,
-    GetPlayerNumberDynamicAreas(playerId)
+    GetPlayerNumberDynamicAreas(playerId),
   );
 };
 
@@ -209,17 +209,17 @@ export const IsPointInDynamicArea = (
   areaId: number,
   x: number,
   y: number,
-  z: number
+  z: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPointInDynamicArea", "ifff", areaId, x, y, z)
+    samp.callNative("IsPointInDynamicArea", "ifff", areaId, x, y, z),
   );
 };
 
 export const IsPointInAnyDynamicArea = (
   x: number,
   y: number,
-  z: number
+  z: number,
 ): boolean => {
   return Boolean(samp.callNative("IsPointInAnyDynamicArea", "fff", x, y, z));
 };
@@ -231,7 +231,7 @@ export const IsLineInDynamicArea = (
   z1: number,
   x2: number,
   y2: number,
-  z2: number
+  z2: number,
 ): boolean => {
   return Boolean(
     samp.callNative(
@@ -243,8 +243,8 @@ export const IsLineInDynamicArea = (
       z1,
       x2,
       y2,
-      z2
-    )
+      z2,
+    ),
   );
 };
 
@@ -254,17 +254,17 @@ export const IsLineInAnyDynamicArea = (
   z1: number,
   x2: number,
   y2: number,
-  z2: number
+  z2: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsLineInAnyDynamicArea", "ffffff", x1, y1, z1, x2, y2, z2)
+    samp.callNative("IsLineInAnyDynamicArea", "ffffff", x1, y1, z1, x2, y2, z2),
   );
 };
 
 export const GetDynamicAreasForPoint = (
   x: number,
   y: number,
-  z: number
+  z: number,
 ): number[] => {
   return samp.callNative(
     "GetDynamicAreasForPoint",
@@ -272,14 +272,14 @@ export const GetDynamicAreasForPoint = (
     x,
     y,
     z,
-    GetNumberDynamicAreasForPoint(x, y, z)
+    GetNumberDynamicAreasForPoint(x, y, z),
   );
 };
 
 export const GetNumberDynamicAreasForPoint = (
   x: number,
   y: number,
-  z: number
+  z: number,
 ): number => {
   return samp.callNative("GetNumberDynamicAreasForPoint", "fff", x, y, z);
 };
@@ -290,7 +290,7 @@ export const GetDynamicAreasForLine = (
   z1: number,
   x2: number,
   y2: number,
-  z2: number
+  z2: number,
 ): number[] => {
   return samp.callNative(
     "GetDynamicAreasForLine",
@@ -301,7 +301,7 @@ export const GetDynamicAreasForLine = (
     x2,
     y2,
     z2,
-    GetNumberDynamicAreasForLine(x1, y1, z1, x2, y2, z2)
+    GetNumberDynamicAreasForLine(x1, y1, z1, x2, y2, z2),
   );
 };
 
@@ -311,7 +311,7 @@ export const GetNumberDynamicAreasForLine = (
   z1: number,
   x2: number,
   y2: number,
-  z2: number
+  z2: number,
 ): number => {
   return samp.callNative(
     "GetNumberDynamicAreasForLine",
@@ -321,7 +321,7 @@ export const GetNumberDynamicAreasForLine = (
     z1,
     x2,
     y2,
-    z2
+    z2,
   );
 };
 
@@ -332,7 +332,7 @@ export const AttachDynamicAreaToObject = (
   playerId = 0xffff,
   offsetX = 0.0,
   offsetY = 0.0,
-  offsetZ = 0.0
+  offsetZ = 0.0,
 ): number => {
   return samp.callNative(
     "AttachDynamicAreaToObject",
@@ -343,7 +343,7 @@ export const AttachDynamicAreaToObject = (
     playerId,
     offsetX,
     offsetY,
-    offsetZ
+    offsetZ,
   );
 };
 
@@ -352,7 +352,7 @@ export const AttachDynamicAreaToPlayer = (
   playerId: number,
   offsetX = 0.0,
   offsetY = 0.0,
-  offsetZ = 0.0
+  offsetZ = 0.0,
 ): number => {
   return samp.callNative(
     "AttachDynamicAreaToPlayer",
@@ -361,7 +361,7 @@ export const AttachDynamicAreaToPlayer = (
     playerId,
     offsetX,
     offsetY,
-    offsetZ
+    offsetZ,
   );
 };
 
@@ -370,7 +370,7 @@ export const AttachDynamicAreaToVehicle = (
   vehicleId: number,
   offsetX = 0.0,
   offsetY = 0.0,
-  offsetZ = 0.0
+  offsetZ = 0.0,
 ): number => {
   return samp.callNative(
     "AttachDynamicAreaToVehicle",
@@ -379,13 +379,13 @@ export const AttachDynamicAreaToVehicle = (
     vehicleId,
     offsetX,
     offsetY,
-    offsetZ
+    offsetZ,
   );
 };
 
 export const ToggleDynAreaSpectateMode = (
   areaId: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative("ToggleDynAreaSpectateMode", "ii", areaId, toggle);
 };

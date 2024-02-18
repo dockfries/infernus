@@ -44,7 +44,7 @@ export class InCarSync extends BitStream implements IPacketListSync {
         PacketRpcValueType.UInt8,
         PacketRpcValueType.UInt8,
         PacketRpcValueType.Bool,
-        PacketRpcValueType.Bool
+        PacketRpcValueType.Bool,
       ) as any;
 
       data.vehicleHealth = data.vehicleHealth ? +data.vehicleHealth : 0;
@@ -99,7 +99,7 @@ export class InCarSync extends BitStream implements IPacketListSync {
         PacketRpcValueType.UInt8,
         PacketRpcValueType.UInt8,
         PacketRpcValueType.UInt16,
-        PacketRpcValueType.Float
+        PacketRpcValueType.Float,
       ) as any;
     }
     return data as IInCarSync | null;
@@ -110,7 +110,7 @@ export class InCarSync extends BitStream implements IPacketListSync {
     if (outgoing) {
       const healthArmour = BitStream.packHealthArmour(
         data.playerHealth,
-        data.armour
+        data.armour,
       );
 
       this.bs.writeValue(
@@ -125,13 +125,13 @@ export class InCarSync extends BitStream implements IPacketListSync {
         [PacketRpcValueType.UInt8, healthArmour],
         [PacketRpcValueType.UInt8, data.weaponId],
         [PacketRpcValueType.Bool, data.sirenState],
-        [PacketRpcValueType.Bool, data.landingGearState]
+        [PacketRpcValueType.Bool, data.landingGearState],
       );
 
       if (data.trainSpeed) {
         this.bs.writeValue(
           [PacketRpcValueType.Bool, true],
-          [PacketRpcValueType.Float, data.trainSpeed]
+          [PacketRpcValueType.Float, data.trainSpeed],
         );
       } else {
         this.bs.writeValue([PacketRpcValueType.Bool, false]);
@@ -140,7 +140,7 @@ export class InCarSync extends BitStream implements IPacketListSync {
       if (data.trailerId) {
         this.bs.writeValue(
           [PacketRpcValueType.Bool, true],
-          [PacketRpcValueType.UInt16, data.trailerId]
+          [PacketRpcValueType.UInt16, data.trailerId],
         );
       } else {
         this.bs.writeValue([PacketRpcValueType.Bool, false]);
@@ -162,7 +162,7 @@ export class InCarSync extends BitStream implements IPacketListSync {
         [PacketRpcValueType.UInt8, data.sirenState],
         [PacketRpcValueType.UInt8, data.landingGearState],
         [PacketRpcValueType.UInt16, data.trailerId],
-        [PacketRpcValueType.Float, data.trainSpeed]
+        [PacketRpcValueType.Float, data.trainSpeed],
       );
     }
   }

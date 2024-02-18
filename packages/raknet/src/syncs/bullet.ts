@@ -27,7 +27,7 @@ export class BulletSync extends BitStream implements IPacketListSync {
       PacketRpcValueType.Float3,
       PacketRpcValueType.Float3,
       PacketRpcValueType.Float3,
-      PacketRpcValueType.UInt8
+      PacketRpcValueType.UInt8,
     ) as any;
     return data as IBulletSync | null;
   }
@@ -41,7 +41,7 @@ export class BulletSync extends BitStream implements IPacketListSync {
       [PacketRpcValueType.Float3, data.origin],
       [PacketRpcValueType.Float3, data.hitPos],
       [PacketRpcValueType.Float3, data.offsets],
-      [PacketRpcValueType.UInt8, data.weaponId]
+      [PacketRpcValueType.UInt8, data.weaponId],
     );
   }
 }

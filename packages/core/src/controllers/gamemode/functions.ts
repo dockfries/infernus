@@ -58,11 +58,11 @@ export default {
     Y: number,
     Z: number,
     type: number,
-    radius: number
+    radius: number,
   ): number {
     if (type < 0 || type > 13) {
       logger.error(
-        "[GameMode]: The valid explosion type value is only 0 to 13"
+        "[GameMode]: The valid explosion type value is only 0 to 13",
       );
       return 0;
     }
@@ -77,7 +77,7 @@ export default {
     baseId: number,
     newId: number,
     dffName: string,
-    txdName: string
+    txdName: string,
   ): number {
     if (this.checkSimpleModel(virtualWorld, baseId, newId, dffName, txdName)) {
       return w.AddSimpleModel(virtualWorld, baseId, newId, dffName, txdName);
@@ -91,7 +91,7 @@ export default {
     dffName: string,
     txdName: string,
     timeOn: number,
-    timeOff: number
+    timeOff: number,
   ): number {
     if (
       this.checkSimpleModel(
@@ -101,7 +101,7 @@ export default {
         dffName,
         txdName,
         timeOn,
-        timeOff
+        timeOff,
       )
     ) {
       return w.AddSimpleModelTimed(
@@ -111,7 +111,7 @@ export default {
         dffName,
         txdName,
         timeOn,
-        timeOff
+        timeOff,
       );
     }
     return 0;
@@ -123,7 +123,7 @@ export default {
     dffName: string,
     txdName: string,
     timeOn?: number,
-    timeOff?: number
+    timeOff?: number,
   ): number {
     if (virtualWorld < -1) {
       logger.error("[GameMode]: AddSimpleModel - Error virtual world");

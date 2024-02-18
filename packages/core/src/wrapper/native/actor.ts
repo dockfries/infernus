@@ -34,7 +34,7 @@ export const CreateActor = (
   X: number,
   Y: number,
   Z: number,
-  Rotation: number
+  Rotation: number,
 ): number => {
   return samp.callNative("CreateActor", "iffff", modelId, X, Y, Z, Rotation);
 };
@@ -45,16 +45,16 @@ export const DestroyActor = (actorId: number): number => {
 
 export const IsActorStreamedIn = (
   actorId: number,
-  forPlayerId: number
+  forPlayerId: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsActorStreamedIn", "ii", actorId, forPlayerId)
+    samp.callNative("IsActorStreamedIn", "ii", actorId, forPlayerId),
   );
 };
 
 export const SetActorVirtualWorld = (
   actorId: number,
-  vWorld: number
+  vWorld: number,
 ): number => {
   return samp.callNative("SetActorVirtualWorld", "ii", actorId, vWorld);
 };
@@ -72,7 +72,7 @@ export const ApplyActorAnimation = (
   lockX: boolean,
   lockY: boolean,
   freeze: boolean,
-  time: number
+  time: number,
 ): number => {
   return samp.callNative(
     "ApplyActorAnimation",
@@ -85,7 +85,7 @@ export const ApplyActorAnimation = (
     lockX,
     lockY,
     freeze,
-    time
+    time,
   );
 };
 
@@ -97,7 +97,7 @@ export const SetActorPos = (
   actorId: number,
   X: number,
   Y: number,
-  Z: number
+  Z: number,
 ): number => {
   return samp.callNative("SetActorPos", "ifff", actorId, X, Y, Z);
 };
@@ -114,7 +114,7 @@ export const GetActorFacingAngle = (actorId: number): number => {
   const [angle] = samp.callNative(
     "GetActorFacingAngle",
     "iF",
-    actorId
+    actorId,
   ) as unknown as number[];
   return angle;
 };
@@ -127,14 +127,14 @@ export const GetActorHealth = (actorId: number): number => {
   const [health] = samp.callNative(
     "GetActorHealth",
     "iF",
-    actorId
+    actorId,
   ) as unknown as number[];
   return health;
 };
 
 export const SetActorInvulnerable = (
   actorId: number,
-  invulnerable: boolean
+  invulnerable: boolean,
 ): number => {
   return samp.callNative("SetActorInvulnerable", "ii", actorId, invulnerable);
 };

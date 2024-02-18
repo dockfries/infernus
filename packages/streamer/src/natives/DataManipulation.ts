@@ -11,14 +11,14 @@ export type StreamerArrayData =
 export const Streamer_GetFloatData = (
   type: StreamerItemTypes,
   id: number,
-  data: E_STREAMER
+  data: E_STREAMER,
 ): number => {
   const [ret] = samp.callNative(
     "Streamer_GetFloatData",
     "iiiF",
     type,
     id,
-    data
+    data,
   );
   return ret;
 };
@@ -27,7 +27,7 @@ export const Streamer_SetFloatData = (
   type: StreamerItemTypes,
   id: number,
   data: E_STREAMER,
-  value: number
+  value: number,
 ): number => {
   return samp.callNative(
     "Streamer_SetFloatData",
@@ -35,14 +35,14 @@ export const Streamer_SetFloatData = (
     type,
     id,
     data,
-    value
+    value,
   );
 };
 
 export const Streamer_GetIntData = (
   type: StreamerItemTypes,
   id: number,
-  data: E_STREAMER
+  data: E_STREAMER,
 ): number => {
   return samp.callNative("Streamer_GetIntData", "iii", type, id, data);
 };
@@ -51,7 +51,7 @@ export const Streamer_SetIntData = (
   type: StreamerItemTypes,
   id: number,
   data: E_STREAMER,
-  value: number
+  value: number,
 ): number => {
   return samp.callNative("Streamer_SetIntData", "iiii", type, id, data, value);
 };
@@ -59,7 +59,7 @@ export const Streamer_SetIntData = (
 export const Streamer_GetArrayData = (
   type: StreamerItemTypes,
   id: number,
-  data: StreamerArrayData
+  data: StreamerArrayData,
 ): number[] => {
   return samp.callNative(
     "Streamer_GetArrayData",
@@ -67,7 +67,7 @@ export const Streamer_GetArrayData = (
     type,
     id,
     data,
-    Streamer_GetArrayDataLength(type, id, data)
+    Streamer_GetArrayDataLength(type, id, data),
   );
 };
 
@@ -75,7 +75,7 @@ export const Streamer_SetArrayData = (
   type: StreamerItemTypes,
   id: number,
   data: StreamerArrayData,
-  dest: number[]
+  dest: number[],
 ): number => {
   return samp.callNative(
     "Streamer_SetArrayData",
@@ -84,7 +84,7 @@ export const Streamer_SetArrayData = (
     id,
     data,
     dest,
-    dest.length
+    dest.length,
   );
 };
 
@@ -92,10 +92,10 @@ export const Streamer_IsInArrayData = (
   type: StreamerItemTypes,
   id: number,
   data: StreamerArrayData,
-  value: number
+  value: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("Streamer_IsInArrayData", "iiii", type, id, data, value)
+    samp.callNative("Streamer_IsInArrayData", "iiii", type, id, data, value),
   );
 };
 
@@ -103,7 +103,7 @@ export const Streamer_AppendArrayData = (
   type: StreamerItemTypes,
   id: number,
   data: StreamerArrayData,
-  value: number
+  value: number,
 ): number => {
   return samp.callNative(
     "Streamer_AppendArrayData",
@@ -111,7 +111,7 @@ export const Streamer_AppendArrayData = (
     type,
     id,
     data,
-    value
+    value,
   );
 };
 
@@ -119,7 +119,7 @@ export const Streamer_RemoveArrayData = (
   type: StreamerItemTypes,
   id: number,
   data: StreamerArrayData,
-  value: number
+  value: number,
 ): number => {
   return samp.callNative(
     "Streamer_RemoveArrayData",
@@ -127,14 +127,14 @@ export const Streamer_RemoveArrayData = (
     type,
     id,
     data,
-    value
+    value,
   );
 };
 
 export const Streamer_GetArrayDataLength = (
   type: StreamerItemTypes,
   id: number,
-  data: StreamerArrayData
+  data: StreamerArrayData,
 ): number => {
   return samp.callNative("Streamer_GetArrayDataLength", "iii", type, id, data);
 };

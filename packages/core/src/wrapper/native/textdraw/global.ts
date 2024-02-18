@@ -8,10 +8,10 @@ export const IsValidTextDraw = (textDrawId: number): boolean => {
 
 export const IsTextDrawVisibleForPlayer = (
   playerId: number,
-  textDrawId: number
+  textDrawId: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsTextDrawVisibleForPlayer", "ii", playerId, textDrawId)
+    samp.callNative("IsTextDrawVisibleForPlayer", "ii", playerId, textDrawId),
   );
 };
 
@@ -24,29 +24,29 @@ export const TextDrawGetString = (textDrawId: number): string => {
 export const TextDrawSetPos = (
   textDrawId: number,
   fX: number,
-  fY: number
+  fY: number,
 ): void => {
   samp.callNative("TextDrawSetPos", "iff", textDrawId, fX, fY);
 };
 
 export const TextDrawGetLetterSize = (
-  textDrawId: number
+  textDrawId: number,
 ): ITextDrawCommonSize => {
   const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
     "TextDrawGetLetterSize",
     "iFF",
-    textDrawId
+    textDrawId,
   );
   return { fX, fY };
 };
 
 export const TextDrawGetTextSize = (
-  textDrawId: number
+  textDrawId: number,
 ): ITextDrawCommonSize => {
   const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
     "TextDrawGetTextSize",
     "iFF",
-    textDrawId
+    textDrawId,
   );
   return { fX, fY };
 };
@@ -55,7 +55,7 @@ export const TextDrawGetPos = (textDrawId: number): ITextDrawCommonSize => {
   const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
     "TextDrawGetPos",
     "iFF",
-    textDrawId
+    textDrawId,
   );
   return { fX, fY };
 };
@@ -114,7 +114,7 @@ export const TextDrawGetPreviewVehicleColors = (textDrawId: number) => {
   const [color1, color2]: number[] = samp.callNative(
     "TextDrawGetPreviewVehCol",
     "iII",
-    textDrawId
+    textDrawId,
   );
   return { color1, color2 };
 };
@@ -122,14 +122,14 @@ export const TextDrawGetPreviewVehicleColors = (textDrawId: number) => {
 export const TextDrawSetStringForPlayer = (
   textDrawId: number,
   playerId: number,
-  string: string
+  string: string,
 ): void => {
   samp.callNative(
     "TextDrawSetStringForPlayer",
     "iis",
     textDrawId,
     playerId,
-    string
+    string,
   );
 };
 
@@ -144,7 +144,7 @@ export const TextDrawDestroy = (text: number): number => {
 export const TextDrawLetterSize = (
   text: number,
   x: number,
-  y: number
+  y: number,
 ): number => {
   return samp.callNative("TextDrawLetterSize", "iff", text, x, y);
 };
@@ -152,21 +152,21 @@ export const TextDrawLetterSize = (
 export const TextDrawTextSize = (
   text: number,
   x: number,
-  y: number
+  y: number,
 ): number => {
   return samp.callNative("TextDrawTextSize", "iff", text, x, y);
 };
 
 export const TextDrawAlignment = (
   text: number,
-  alignment: TextDrawAlignEnum
+  alignment: TextDrawAlignEnum,
 ): number => {
   return samp.callNative("TextDrawAlignment", "ii", text, alignment);
 };
 
 export const TextDrawColor = (
   text: number,
-  color: string | number
+  color: string | number,
 ): boolean => {
   return Boolean(samp.callNative("TextDrawColor", "ii", text, rgba(color)));
 };
@@ -177,7 +177,7 @@ export const TextDrawUseBox = (text: number, use: boolean): number => {
 
 export const TextDrawBoxColor = (
   text: number,
-  color: string | number
+  color: string | number,
 ): boolean => {
   return Boolean(samp.callNative("TextDrawBoxColor", "ii", text, rgba(color)));
 };
@@ -192,10 +192,10 @@ export const TextDrawSetOutline = (text: number, size: number): number => {
 
 export const TextDrawBackgroundColor = (
   text: number,
-  color: string | number
+  color: string | number,
 ): boolean => {
   return Boolean(
-    samp.callNative("TextDrawBackgroundColor", "ii", text, rgba(color))
+    samp.callNative("TextDrawBackgroundColor", "ii", text, rgba(color)),
   );
 };
 
@@ -213,14 +213,14 @@ export const TextDrawSetSelectable = (text: number, set: boolean): number => {
 
 export const TextDrawShowForPlayer = (
   playerId: number,
-  text: number
+  text: number,
 ): number => {
   return samp.callNative("TextDrawShowForPlayer", "ii", playerId, text);
 };
 
 export const TextDrawHideForPlayer = (
   playerId: number,
-  text: number
+  text: number,
 ): number => {
   return samp.callNative("TextDrawHideForPlayer", "ii", playerId, text);
 };
@@ -239,7 +239,7 @@ export const TextDrawSetString = (text: number, string: string): number => {
 
 export const TextDrawSetPreviewModel = (
   text: number,
-  modelIndex: number
+  modelIndex: number,
 ): number => {
   return samp.callNative("TextDrawSetPreviewModel", "ii", text, modelIndex);
 };
@@ -249,7 +249,7 @@ export const TextDrawSetPreviewRot = (
   fRotX: number,
   fRotY: number,
   fRotZ: number,
-  fZoom = 1
+  fZoom = 1,
 ): void => {
   samp.callNative(
     "TextDrawSetPreviewRot",
@@ -258,14 +258,14 @@ export const TextDrawSetPreviewRot = (
     fRotX,
     fRotY,
     fRotZ,
-    fZoom
+    fZoom,
   );
 };
 
 export const TextDrawSetPreviewVehicleColors = (
   text: number,
   color1: string | number,
-  color2: string | number
+  color2: string | number,
 ): boolean => {
   return Boolean(
     samp.callNative(
@@ -273,14 +273,14 @@ export const TextDrawSetPreviewVehicleColors = (
       "iii",
       text,
       rgba(color1),
-      rgba(color2)
-    )
+      rgba(color2),
+    ),
   );
 };
 
 export const SelectTextDraw = (
   playerId: number,
-  hovercolor: string | number
+  hovercolor: string | number,
 ): void => {
   samp.callNative("SelectTextDraw", "ii", playerId, rgba(hovercolor));
 };

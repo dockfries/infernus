@@ -34,7 +34,7 @@ export class Vehicle {
       return logger.warn("[Vehicle]: Unable to create the vehicle again");
     if (Vehicle.createdCount === LimitsEnum.MAX_VEHICLES)
       return logger.warn(
-        "[Vehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached"
+        "[Vehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached",
       );
     const { modelId, x, y, z, z_angle, color, respawn_delay, addSiren } =
       this.sourceInfo;
@@ -48,7 +48,7 @@ export class Vehicle {
           z,
           z_angle,
           color[0],
-          color[1]
+          color[1],
         );
         return;
       }
@@ -61,7 +61,7 @@ export class Vehicle {
         color[0],
         color[1],
         respawn_delay || -1,
-        addSiren || false
+        addSiren || false,
       );
     } else {
       this._id = v.CreateVehicle(
@@ -73,7 +73,7 @@ export class Vehicle {
         color[0],
         color[1],
         respawn_delay || -1,
-        addSiren || false
+        addSiren || false,
       );
     }
     Vehicle.createdCount++;
@@ -82,7 +82,7 @@ export class Vehicle {
   destroy(): void {
     if (this.id === -1)
       return logger.warn(
-        "[Vehicle]: Unable to destroy the vehicle before create"
+        "[Vehicle]: Unable to destroy the vehicle before create",
       );
     v.DestroyVehicle(this.id);
     Vehicle.createdCount--;
@@ -93,7 +93,7 @@ export class Vehicle {
     if (this.id === -1) return 0;
     if (!isValidVehComponent(this.getModel(), componentId)) {
       logger.warn(
-        `[Vehicle]: Invalid component id ${componentId} attempted to attach to the vehicle ${this}`
+        `[Vehicle]: Invalid component id ${componentId} attempted to attach to the vehicle ${this}`,
       );
       return 0;
     }
@@ -102,7 +102,7 @@ export class Vehicle {
   removeComponent(componentId: number): number {
     if (this.getComponentInSlot(Vehicle.getComponentType(componentId)) === 0) {
       logger.warn(
-        `[Vehicle]: component id ${componentId} does not exist on this vehicle`
+        `[Vehicle]: component id ${componentId} does not exist on this vehicle`,
       );
       return 0;
     }
@@ -152,7 +152,7 @@ export class Vehicle {
     if (seatId < 0) return 0;
     if (seatId > 4) {
       logger.warn(
-        "[Vehicle]: If the seat is invalid or is taken, will cause a crash when they EXIT the vehicle."
+        "[Vehicle]: If the seat is invalid or is taken, will cause a crash when they EXIT the vehicle.",
       );
     }
     return v.PutPlayerInVehicle(player.id, this.id, seatId);
@@ -169,7 +169,7 @@ export class Vehicle {
     if (this.id === -1) return 0;
     if (numberplate.length < 1 || numberplate.length > 32) {
       logger.error(
-        "[Vehicle]: The length of the number plate ranges from 32 characters"
+        "[Vehicle]: The length of the number plate ranges from 32 characters",
       );
       return 0;
     }
@@ -210,7 +210,7 @@ export class Vehicle {
     panels: number,
     doors: number,
     lights: number,
-    tires: number
+    tires: number,
   ): void {
     if (this.id === -1) return;
     v.UpdateVehicleDamageStatus(this.id, panels, doors, lights, tires);
@@ -223,7 +223,7 @@ export class Vehicle {
   }
   static getModelInfo(
     vehicleModel: number,
-    infoType: VehicleModelInfoEnum
+    infoType: VehicleModelInfoEnum,
   ): TPos {
     return v.GetVehicleModelInfo(vehicleModel, infoType);
   }
@@ -248,7 +248,7 @@ export class Vehicle {
     driver: boolean,
     passenger: boolean,
     backLeft: boolean,
-    backRight: boolean
+    backRight: boolean,
   ): number {
     if (this.id === -1) return 0;
     return v.SetVehicleParamsCarDoors(
@@ -256,14 +256,14 @@ export class Vehicle {
       driver,
       passenger,
       backLeft,
-      backRight
+      backRight,
     );
   }
   setParamsCarWindows(
     driver: boolean,
     passenger: boolean,
     backLeft: boolean,
-    backRight: boolean
+    backRight: boolean,
   ) {
     if (this.id === -1) return 0;
     return v.SetVehicleParamsCarWindows(
@@ -271,7 +271,7 @@ export class Vehicle {
       driver,
       passenger,
       backLeft,
-      backRight
+      backRight,
     );
   }
   getParamsCarDoors() {
@@ -289,7 +289,7 @@ export class Vehicle {
     doors: boolean,
     bonnet: boolean,
     boot: boolean,
-    objective: boolean
+    objective: boolean,
   ): number {
     if (this.id === -1) return 0;
     return v.SetVehicleParamsEx(
@@ -300,7 +300,7 @@ export class Vehicle {
       doors,
       bonnet,
       boot,
-      objective
+      objective,
     );
   }
   getParamsEx() {
@@ -316,14 +316,14 @@ export class Vehicle {
   setParamsForPlayer(
     player: Player,
     objective: boolean,
-    doorsLocked: boolean
+    doorsLocked: boolean,
   ): number {
     if (this.id === -1) return 0;
     return v.SetVehicleParamsForPlayer(
       this.id,
       player.id,
       objective,
-      doorsLocked
+      doorsLocked,
     );
   }
   isTrailerAttached(): boolean {
@@ -348,7 +348,7 @@ export class Vehicle {
   getTrailer() {
     if (this.id === -1) return;
     return Vehicle.getInstances().find(
-      (_v) => _v.id === v.GetVehicleTrailer(this.id)
+      (_v) => _v.id === v.GetVehicleTrailer(this.id),
     );
   }
   isValid(): boolean {
@@ -467,7 +467,7 @@ export class Vehicle {
     color2: string | number,
     respawnTime = -2,
     interior = -2,
-    ignoreRange = false
+    ignoreRange = false,
   ): number {
     if (this.id === -1) return 0;
     if (!ignoreRange && !isValidVehModelId(modelId)) return 0;
@@ -481,7 +481,7 @@ export class Vehicle {
       rgba(color1),
       rgba(color2),
       respawnTime,
-      interior
+      interior,
     );
   }
   getSpawnInfo() {

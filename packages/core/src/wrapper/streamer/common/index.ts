@@ -88,7 +88,7 @@ export class Streamer {
   static isToggleChunkStream = Streamer_IsToggleChunkStream;
   static getChunkTickRate(
     type: StreamerItemTypes,
-    player: number | Player = -1
+    player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
       return Streamer_GetChunkTickRate(type, player.id);
@@ -98,7 +98,7 @@ export class Streamer {
   static setChunkTickRate(
     type: StreamerItemTypes,
     rate: number,
-    player: number | Player = -1
+    player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
       return Streamer_SetChunkTickRate(type, rate, player.id);
@@ -111,7 +111,7 @@ export class Streamer {
   static setMaxItems = Streamer_SetMaxItems;
   static getVisibleItems(
     type: StreamerItemTypes,
-    player: number | Player = -1
+    player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
       return Streamer_GetVisibleItems(type, player.id);
@@ -121,7 +121,7 @@ export class Streamer {
   static setVisibleItems(
     type: StreamerItemTypes,
     items: number,
-    player: number | Player = -1
+    player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
       return Streamer_SetVisibleItems(type, items, player.id);
@@ -130,7 +130,7 @@ export class Streamer {
   }
   static getRadiusMultiplier(
     type: StreamerItemTypes,
-    player: number | Player = -1
+    player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
       return Streamer_GetRadiusMultiplier(type, player.id);
@@ -140,7 +140,7 @@ export class Streamer {
   static setRadiusMultiplier(
     type: StreamerItemTypes,
     multiplier: number,
-    player: number | Player = -1
+    player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
       return Streamer_SetRadiusMultiplier(type, player.id);
@@ -178,7 +178,7 @@ export class Streamer {
   static toggleItemUpdate(
     player: Player,
     type: StreamerItemTypes,
-    toggle: boolean
+    toggle: boolean,
   ): number {
     return Streamer_ToggleItemUpdate(player.id, type, toggle);
   }
@@ -200,7 +200,7 @@ export class Streamer {
     interiorId?: number,
     type?: StreamerItemTypes | -1,
     compensatedTime?: number,
-    freezePlayer?: boolean
+    freezePlayer?: boolean,
   ): number {
     return Streamer_UpdateEx(
       player.id,
@@ -211,7 +211,7 @@ export class Streamer {
       interiorId,
       type,
       compensatedTime,
-      freezePlayer
+      freezePlayer,
     );
   }
   static getDistanceToItem = Streamer_GetDistanceToItem;
@@ -219,14 +219,14 @@ export class Streamer {
     player: Player,
     type: StreamerItemTypes,
     id: number,
-    toggle: boolean
+    toggle: boolean,
   ): number {
     return Streamer_ToggleItem(player.id, type, id, toggle);
   }
   static isToggleItem(
     player: Player,
     type: StreamerItemTypes,
-    id: number
+    id: number,
   ): boolean {
     return Streamer_IsToggleItem(player.id, type, id);
   }
@@ -234,42 +234,42 @@ export class Streamer {
     player: Player,
     type: StreamerItemTypes,
     toggle: boolean,
-    exceptions: number[] = [-1]
+    exceptions: number[] = [-1],
   ): number {
     return Streamer_ToggleAllItems(player.id, type, toggle, exceptions);
   }
   static getItemInternalID(
     player: Player,
     type: StreamerItemTypes,
-    streamerId: number
+    streamerId: number,
   ): number {
     return Streamer_GetItemInternalID(player.id, type, streamerId);
   }
   static getItemStreamerID(
     player: Player,
     type: StreamerItemTypes,
-    internalId: number
+    internalId: number,
   ): number {
     return Streamer_GetItemStreamerID(player.id, type, internalId);
   }
   static isItemVisible(
     player: Player,
     type: StreamerItemTypes,
-    id: number
+    id: number,
   ): boolean {
     return Streamer_IsItemVisible(player.id, type, id);
   }
   static destroyAllVisibleItems(
     player: Player,
     type: StreamerItemTypes,
-    serverWide = 1
+    serverWide = 1,
   ): number {
     return Streamer_DestroyAllVisibleItems(player.id, type, serverWide);
   }
   static countVisibleItems(
     player: Player,
     type: StreamerItemTypes,
-    serverWide = 1
+    serverWide = 1,
   ): number {
     return Streamer_CountVisibleItems(player.id, type, serverWide);
   }
@@ -279,7 +279,7 @@ export class Streamer {
   static getAllVisibleItems(
     player: Player,
     type: StreamerItemTypes,
-    items: number[]
+    items: number[],
   ): void {
     Streamer_GetAllVisibleItems(player.id, type, items);
   }

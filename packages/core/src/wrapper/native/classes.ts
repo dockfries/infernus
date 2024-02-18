@@ -12,7 +12,7 @@ export const GetPlayerClass = (classId: number): boolean | IPlayerClass => {
   const res: number[] = samp.callNative(
     "GetPlayerClass",
     "iIIFFFFIIIIII",
-    classId
+    classId,
   );
   const [
     teamId,
@@ -58,7 +58,7 @@ export const EditPlayerClass = (
   weapon2: number,
   weapon2_ammo: number,
   weapon3: number,
-  weapon3_ammo: number
+  weapon3_ammo: number,
 ): boolean => {
   return Boolean(
     samp.callNative(
@@ -76,8 +76,8 @@ export const EditPlayerClass = (
       weapon2,
       weapon2_ammo,
       weapon3,
-      weapon3_ammo
-    )
+      weapon3_ammo,
+    ),
   );
 };
 
@@ -96,7 +96,7 @@ export const AddPlayerClass = (
   weapon2: number,
   weapon2_ammo: number,
   weapon3: number,
-  weapon3_ammo: number
+  weapon3_ammo: number,
 ): number => {
   return samp.callNative(
     "AddPlayerClass",
@@ -111,7 +111,7 @@ export const AddPlayerClass = (
     weapon2,
     weapon2_ammo,
     weapon3,
-    weapon3_ammo
+    weapon3_ammo,
   );
 };
 
@@ -127,7 +127,7 @@ export const AddPlayerClassEx = (
   weapon2: number,
   weapon2_ammo: number,
   weapon3: number,
-  weapon3_ammo: number
+  weapon3_ammo: number,
 ): number => {
   return samp.callNative(
     "AddPlayerClassEx",
@@ -143,7 +143,7 @@ export const AddPlayerClassEx = (
     weapon2,
     weapon2_ammo,
     weapon3,
-    weapon3_ammo
+    weapon3_ammo,
   );
 };
 
@@ -160,7 +160,7 @@ export const SetSpawnInfo = (
   weapon2: WeaponEnum,
   weapon2_ammo: number,
   weapon3: WeaponEnum,
-  weapon3_ammo: number
+  weapon3_ammo: number,
 ): number => {
   return samp.callNative(
     "SetSpawnInfo",
@@ -177,7 +177,7 @@ export const SetSpawnInfo = (
     weapon2,
     weapon2_ammo,
     weapon3,
-    weapon3_ammo
+    weapon3_ammo,
   );
 };
 

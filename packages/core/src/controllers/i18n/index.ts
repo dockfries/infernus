@@ -6,7 +6,7 @@ import { snakeCase, merge, omit, get, mapKeys } from "lodash-unified";
 export class I18n {
   constructor(
     private defaultLocale: keyof TLocales,
-    private locales: TLocales
+    private locales: TLocales,
   ) {
     this.defaultLocale = snakeCase(defaultLocale);
     this.locales = I18n.snakeLocaleKeys(locales);
@@ -23,7 +23,7 @@ export class I18n {
   $t = (
     key: string,
     replaceable?: any[] | undefined | null,
-    locale: keyof TLocales = this.defaultLocale
+    locale: keyof TLocales = this.defaultLocale,
   ): string => {
     const incomingLocale = this.locales[snakeCase(locale)];
     const defaultLocale = get(this.locales[this.defaultLocale], key);

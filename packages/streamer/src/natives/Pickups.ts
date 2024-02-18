@@ -11,7 +11,7 @@ export const CreateDynamicPickup = (
   playerId = -1,
   streamDistance: number = StreamerDistances.PICKUP_SD,
   areaId = -1,
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicPickup",
@@ -26,7 +26,7 @@ export const CreateDynamicPickup = (
     playerId,
     streamDistance,
     areaId,
-    priority
+    priority,
   );
 };
 

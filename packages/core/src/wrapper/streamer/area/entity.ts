@@ -46,7 +46,7 @@ export class DynamicArea {
           size,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       } else if (type === "cuboid") {
         const {
@@ -66,7 +66,7 @@ export class DynamicArea {
           maxZ,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       } else if (type === "cylinder") {
         const { x, y, minZ: minZ, maxZ: maxZ, size } = this.sourceInfo;
@@ -80,13 +80,13 @@ export class DynamicArea {
           size,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       } else if (type === "polygon") {
         const { points, minZ, maxZ } = this.sourceInfo;
         if (points.length % 2 !== 0)
           return logger.warn(
-            "[StreamerArea]: Unable to create polygon extended with asymmetrical points"
+            "[StreamerArea]: Unable to create polygon extended with asymmetrical points",
           );
         this._id = s.CreateDynamicPolygonEx(
           points,
@@ -94,7 +94,7 @@ export class DynamicArea {
           maxZ,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       } else if (type === "rectangle") {
         const {
@@ -110,7 +110,7 @@ export class DynamicArea {
           maxY,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       } else {
         const { x, y, z, size } = this.sourceInfo;
@@ -123,7 +123,7 @@ export class DynamicArea {
           size,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       }
     } else {
@@ -144,7 +144,7 @@ export class DynamicArea {
           size,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       } else if (type === "cuboid") {
         const {
@@ -164,7 +164,7 @@ export class DynamicArea {
           maxZ,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       } else if (type === "cylinder") {
         const { x, y, minZ: minZ, maxZ: maxZ, size } = this.sourceInfo;
@@ -178,13 +178,13 @@ export class DynamicArea {
           size,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       } else if (type === "polygon") {
         const { points, minZ, maxZ } = this.sourceInfo;
         if (points.length % 2 !== 0)
           return logger.warn(
-            "[StreamerArea]: Unable to create polygon with asymmetrical points"
+            "[StreamerArea]: Unable to create polygon with asymmetrical points",
           );
         this._id = s.CreateDynamicPolygon(
           points,
@@ -192,7 +192,7 @@ export class DynamicArea {
           maxZ,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       } else if (type === "rectangle") {
         const {
@@ -208,7 +208,7 @@ export class DynamicArea {
           maxY,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       } else {
         const { x, y, z, size } = this.sourceInfo;
@@ -221,7 +221,7 @@ export class DynamicArea {
           size,
           worldId,
           interiorId,
-          playerId
+          playerId,
         );
       }
     }
@@ -231,7 +231,7 @@ export class DynamicArea {
   destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerArea]: Unable to destroy the area before create"
+        "[StreamerArea]: Unable to destroy the area before create",
       );
     s.DestroyDynamicArea(this.id);
     DynamicArea.areas.delete(this.id);
@@ -250,7 +250,7 @@ export class DynamicArea {
   getPolygonPoints(): void | number[] {
     if (this.id !== -1)
       return logger.warn(
-        "[StreamerArea]: Unable to get polygon points before create"
+        "[StreamerArea]: Unable to get polygon points before create",
       );
     if (this.type !== "polygon") return undefined;
     return s.GetDynamicPolygonPoints(this.id);
@@ -258,7 +258,7 @@ export class DynamicArea {
   getPolygonNumberPoints(): void | number {
     if (this.id !== -1)
       return logger.warn(
-        "[StreamerArea]: Unable to get polygon points number before create"
+        "[StreamerArea]: Unable to get polygon points number before create",
       );
     if (this.type !== "polygon") return undefined;
     return s.GetDynamicPolygonNumberPoints(this.id);
@@ -298,7 +298,7 @@ export class DynamicArea {
     z1: number,
     x2: number,
     y2: number,
-    z2: number
+    z2: number,
   ): boolean {
     if (this.id === -1) return false;
     return s.IsLineInDynamicArea(this.id, x1, y1, z1, x2, y2, z2);
@@ -309,7 +309,7 @@ export class DynamicArea {
     z1: number,
     x2: number,
     y2: number,
-    z2: number
+    z2: number,
   ): boolean {
     return s.IsLineInAnyDynamicArea(x1, y1, z1, x2, y2, z2);
   }
@@ -328,7 +328,7 @@ export class DynamicArea {
     z1: number,
     x2: number,
     y2: number,
-    z2: number
+    z2: number,
   ) {
     if (!DynamicArea.getNumberForLine(x1, y1, z1, x2, y2, z2)) return [];
     const ids = s.GetDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
@@ -341,7 +341,7 @@ export class DynamicArea {
     z1: number,
     x2: number,
     y2: number,
-    z2: number
+    z2: number,
   ): number {
     return s.GetNumberDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
   }
@@ -349,11 +349,11 @@ export class DynamicArea {
     obj: DynamicObject,
     offsetX = 0.0,
     offsetY = 0.0,
-    offsetZ = 0.0
+    offsetZ = 0.0,
   ): void | number {
     if (this.id === -1 || obj.id === -1)
       return logger.warn(
-        "[StreamerArea]: Unable to toggle attach to object before create"
+        "[StreamerArea]: Unable to toggle attach to object before create",
       );
     return s.AttachDynamicAreaToObject(
       this.id,
@@ -362,49 +362,49 @@ export class DynamicArea {
       InvalidEnum.PLAYER_ID,
       offsetX,
       offsetY,
-      offsetZ
+      offsetZ,
     );
   }
   attachToPlayer(
     player: Player,
     offsetX = 0.0,
     offsetY = 0.0,
-    offsetZ = 0.0
+    offsetZ = 0.0,
   ): void | number {
     if (this.id === -1 || player.id === -1)
       return logger.warn(
-        "[StreamerArea]: Unable to toggle attach to player before create"
+        "[StreamerArea]: Unable to toggle attach to player before create",
       );
     return s.AttachDynamicAreaToPlayer(
       this.id,
       player.id,
       offsetX,
       offsetY,
-      offsetZ
+      offsetZ,
     );
   }
   attachToVehicle(
     vehicle: Vehicle,
     offsetX = 0.0,
     offsetY = 0.0,
-    offsetZ = 0.0
+    offsetZ = 0.0,
   ): void | number {
     if (this.id === -1 || vehicle.id === -1)
       return logger.warn(
-        "[StreamerArea]: Unable to toggle attach to vehicle before create"
+        "[StreamerArea]: Unable to toggle attach to vehicle before create",
       );
     return s.AttachDynamicAreaToVehicle(
       this.id,
       vehicle.id,
       offsetX,
       offsetY,
-      offsetZ
+      offsetZ,
     );
   }
   toggleSpectateMode(toggle: boolean): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerArea]: Unable to toggle specate mode before create"
+        "[StreamerArea]: Unable to toggle specate mode before create",
       );
     return s.ToggleDynAreaSpectateMode(this.id, toggle);
   }
@@ -415,12 +415,12 @@ export class DynamicArea {
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerArea]: Unable to toggle callbacks before create"
+        "[StreamerArea]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.AREA,
       this.id,
-      toggle
+      toggle,
     );
   }
   isToggleCallbacks(): boolean {

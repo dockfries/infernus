@@ -6,7 +6,7 @@ export function createObject(
   rx: number,
   ry: number,
   rz: number,
-  add = false
+  add = false,
 ) {
   return samp.callNative(
     "CA_CreateObject",
@@ -18,7 +18,7 @@ export function createObject(
     rx,
     ry,
     rz,
-    add
+    add,
   ) as number;
 }
 
@@ -38,14 +38,14 @@ export function setObjectRot(
   index: number,
   rx: number,
   ry: number,
-  rz: number
+  rz: number,
 ) {
   return Boolean(samp.callNative("CA_SetObjectRot", "ifff", index, rx, ry, rz));
 }
 
 export function setObjectExtraID(index: number, type: number, data: number) {
   return Boolean(
-    samp.callNative("CA_SetObjectExtraID", "iii", index, type, data)
+    samp.callNative("CA_SetObjectExtraID", "iii", index, type, data),
   );
 }
 

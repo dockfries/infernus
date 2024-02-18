@@ -5,7 +5,7 @@ import { Player } from "@infernus/core";
 export const IsKeyJustDown = (
   key: KeysEnum,
   newkeys: KeysEnum,
-  oldkeys: KeysEnum
+  oldkeys: KeysEnum,
 ) => {
   if (newkeys & key && !(oldkeys & key)) return true;
   return false;
@@ -15,7 +15,7 @@ export const PlaySoundForAll = (
   soundid: number,
   x: number,
   y: number,
-  z: number
+  z: number,
 ) => {
   Player.getInstances().forEach((p) => {
     if (p.isConnected()) p.playSound(soundid, x, y, z);
@@ -27,7 +27,7 @@ export const PlaySoundForPlayersInRange = (
   range: number,
   x: number,
   y: number,
-  z: number
+  z: number,
 ) => {
   Player.getInstances().forEach((p) => {
     if (p.isConnected() && p.isInRangeOfPoint(range, x, y, z))

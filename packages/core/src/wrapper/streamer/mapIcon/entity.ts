@@ -67,7 +67,7 @@ export class DynamicMapIcon {
         interiorId,
         playerId,
         areaId,
-        priority
+        priority,
       );
       DynamicMapIcon.mapIcons.set(this._id, this);
       return this;
@@ -94,7 +94,7 @@ export class DynamicMapIcon {
       streamDistance,
       style,
       areaId,
-      priority
+      priority,
     );
     DynamicMapIcon.mapIcons.set(this._id, this);
     return this;
@@ -102,7 +102,7 @@ export class DynamicMapIcon {
   destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerMapIcon]: Unable to destroy the map icon before create"
+        "[StreamerMapIcon]: Unable to destroy the map icon before create",
       );
     DestroyDynamicMapIcon(this.id);
     DynamicMapIcon.mapIcons.delete(this._id);
@@ -115,12 +115,12 @@ export class DynamicMapIcon {
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerMapIcon]: Unable to toggle callbacks before create"
+        "[StreamerMapIcon]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       StreamerItemTypes.MAP_ICON,
       this.id,
-      toggle
+      toggle,
     );
   }
   isToggleCallbacks(): boolean {

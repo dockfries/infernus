@@ -32,7 +32,7 @@ export class Menu {
   set columns(value: number) {
     if (value !== 1 && value !== 2) {
       logger.error(
-        "[Menu]: The menu column number interval is between 1 and 2"
+        "[Menu]: The menu column number interval is between 1 and 2",
       );
       return;
     }
@@ -77,7 +77,7 @@ export class Menu {
     x: number,
     y: number,
     col1width: number,
-    col2width: number
+    col2width: number,
   ) {
     this._title = title;
     this.columns = columns;
@@ -90,7 +90,7 @@ export class Menu {
     if (this._id !== -1) return logger.error("[Menu]: Cannot be created twice");
     if (Menu.getInstances().length === LimitsEnum.MAX_MENUS) {
       return logger.error(
-        "[Menu]: The maximum number of menus allowed to be created has been reached 128"
+        "[Menu]: The maximum number of menus allowed to be created has been reached 128",
       );
     }
     this._id = w.CreateMenu(
@@ -99,7 +99,7 @@ export class Menu {
       this.x,
       this.y,
       this.col1width,
-      this.col2width
+      this.col2width,
     );
     Menu.menus.set(this._id, this);
     return this;
@@ -117,7 +117,7 @@ export class Menu {
       return logger.error("[Menu]: Cannot addItem before create");
     if (this._itemCount === LimitsEnum.MAX_MENU_ROW)
       return logger.error(
-        "[Menu]: The maximum number of items allowed to be added has been reached 12"
+        "[Menu]: The maximum number of items allowed to be added has been reached 12",
       );
     if (column !== 0 && column !== 1)
       return logger.error("[Menu]: Wrong number of columns");
@@ -201,7 +201,7 @@ export class Menu {
   }
   static getInstanceByPlayer(player: Player) {
     return this.getInstances().find(
-      (item) => item.id === w.GetPlayerMenu(player.id)
+      (item) => item.id === w.GetPlayerMenu(player.id),
     );
   }
 }

@@ -54,7 +54,7 @@ export class DynamicPickup {
         interiorId,
         playerId,
         areaId,
-        priority
+        priority,
       );
     } else {
       if (Array.isArray(worldId)) worldId = -1;
@@ -77,7 +77,7 @@ export class DynamicPickup {
         playerId,
         streamDistance,
         areaId,
-        priority
+        priority,
       );
     }
 
@@ -87,7 +87,7 @@ export class DynamicPickup {
   destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerPickup]: Unable to destroy the pickup before create"
+        "[StreamerPickup]: Unable to destroy the pickup before create",
       );
     s.DestroyDynamicPickup(this.id);
     DynamicPickup.pickups.delete(this.id);
@@ -100,12 +100,12 @@ export class DynamicPickup {
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerPickup]: Unable to toggle callbacks before create"
+        "[StreamerPickup]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.PICKUP,
       this.id,
-      toggle
+      toggle,
     );
   }
   isToggleCallbacks(): boolean {

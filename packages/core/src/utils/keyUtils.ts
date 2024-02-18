@@ -15,7 +15,7 @@ export function isPressing(keys: KeysEnum, key: KeysEnum) {
 export function isReleased(
   newKeys: KeysEnum,
   oldKeys: KeysEnum,
-  key: KeysEnum
+  key: KeysEnum,
 ) {
   return (newKeys & key) !== key && (oldKeys & key) === key;
 }

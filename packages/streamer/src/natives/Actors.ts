@@ -13,7 +13,7 @@ export const CreateDynamicActor = (
   playerId = -1,
   streamDistance: number = StreamerDistances.ACTOR_SD,
   areaId = -1,
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicActor",
@@ -30,7 +30,7 @@ export const CreateDynamicActor = (
     playerId,
     streamDistance,
     areaId,
-    priority
+    priority,
   );
 };
 
@@ -44,10 +44,10 @@ export const IsValidDynamicActor = (actorId: number): boolean => {
 
 export const IsDynamicActorStreamedIn = (
   actorId: number,
-  forPlayerId: number
+  forPlayerId: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsDynamicActorStreamedIn", "ii", actorId, forPlayerId)
+    samp.callNative("IsDynamicActorStreamedIn", "ii", actorId, forPlayerId),
   );
 };
 
@@ -57,7 +57,7 @@ export const GetDynamicActorVirtualWorld = (actorId: number): number => {
 
 export const SetDynamicActorVirtualWorld = (
   actorId: number,
-  vWorld: number
+  vWorld: number,
 ): number => {
   return samp.callNative("SetDynamicActorVirtualWorld", "ii", actorId, vWorld);
 };
@@ -71,7 +71,7 @@ export const ApplyDynamicActorAnimation = (
   lockX: boolean,
   lockY: boolean,
   freeze: boolean,
-  time: number
+  time: number,
 ): number => {
   return samp.callNative(
     "ApplyDynamicActorAnimation",
@@ -84,7 +84,7 @@ export const ApplyDynamicActorAnimation = (
     lockX,
     lockY,
     freeze,
-    time
+    time,
   );
 };
 
@@ -99,7 +99,7 @@ export const GetDynamicActorFacingAngle = (actorId: number): number => {
 
 export const SetDynamicActorFacingAngle = (
   actorId: number,
-  ang: number
+  ang: number,
 ): number => {
   return samp.callNative("SetDynamicActorFacingAngle", "if", actorId, ang);
 };
@@ -108,7 +108,7 @@ export const GetDynamicActorPos = (actorId: number) => {
   const [x, y, z]: number[] = samp.callNative(
     "GetDynamicActorPos",
     "iFFF",
-    actorId
+    actorId,
   );
   return { x, y, z };
 };
@@ -117,7 +117,7 @@ export const SetDynamicActorPos = (
   actorId: number,
   x: number,
   y: number,
-  z: number
+  z: number,
 ): number => {
   return samp.callNative("SetDynamicActorPos", "ifff", actorId, x, y, z);
 };
@@ -129,20 +129,20 @@ export const GetDynamicActorHealth = (actorId: number): number => {
 
 export const SetDynamicActorHealth = (
   actorId: number,
-  health: number
+  health: number,
 ): number => {
   return samp.callNative("SetDynamicActorHealth", "if", actorId, health);
 };
 
 export const SetDynamicActorInvulnerable = (
   actorId: number,
-  invulnerable = true
+  invulnerable = true,
 ): number => {
   return samp.callNative(
     "SetDynamicActorInvulnerable",
     "ii",
     actorId,
-    invulnerable
+    invulnerable,
   );
 };
 

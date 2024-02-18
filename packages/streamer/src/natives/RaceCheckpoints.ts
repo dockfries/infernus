@@ -14,7 +14,7 @@ export const CreateDynamicRaceCP = (
   playerId = -1,
   streamDistance: number = StreamerDistances.RACE_CP_SD,
   areaId = -1,
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicRaceCP",
@@ -32,7 +32,7 @@ export const CreateDynamicRaceCP = (
     playerId,
     streamDistance,
     areaId,
-    priority
+    priority,
   );
 };
 
@@ -47,35 +47,35 @@ export const IsValidDynamicRaceCP = (checkpointId: number): boolean => {
 export const TogglePlayerDynamicRaceCP = (
   playerId: number,
   checkpointId: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative(
     "TogglePlayerDynamicRaceCP",
     "iii",
     playerId,
     checkpointId,
-    toggle
+    toggle,
   );
 };
 
 export const TogglePlayerAllDynamicRaceCPs = (
   playerId: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative(
     "TogglePlayerAllDynamicRaceCPs",
     "ii",
     playerId,
-    toggle
+    toggle,
   );
 };
 
 export const IsPlayerInDynamicRaceCP = (
   playerId: number,
-  checkpointId: number
+  checkpointId: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInDynamicRaceCP", "ii", playerId, checkpointId)
+    samp.callNative("IsPlayerInDynamicRaceCP", "ii", playerId, checkpointId),
   );
 };
 

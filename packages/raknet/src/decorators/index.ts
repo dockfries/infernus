@@ -15,7 +15,7 @@ export const SyncId = (value: PacketIdList): ClassDecorator => {
 export const SyncReader: MethodDecorator = (
   target: any,
   propertyKey: string | symbol,
-  descriptor: PropertyDescriptor
+  descriptor: PropertyDescriptor,
 ) => {
   // eslint-disable-next-line @typescript-eslint/ban-types
   const originalMethod = descriptor.value as Function;
@@ -35,7 +35,7 @@ export const SyncReader: MethodDecorator = (
 export const SyncWriter: MethodDecorator = (
   target: any,
   propertyKey: string | symbol,
-  descriptor: PropertyDescriptor
+  descriptor: PropertyDescriptor,
 ) => {
   // eslint-disable-next-line @typescript-eslint/ban-types
   const originalMethod = descriptor.value;

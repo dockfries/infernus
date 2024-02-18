@@ -2,13 +2,13 @@ import type { RecordTypesEnum } from "core/enums";
 
 export const StartRecordingPlayback = (
   playbackType: RecordTypesEnum,
-  recordName: string
+  recordName: string,
 ): void => {
   return samp.callNative(
     "StartRecordingPlayback",
     "is",
     playbackType,
-    recordName
+    recordName,
   );
 };
 

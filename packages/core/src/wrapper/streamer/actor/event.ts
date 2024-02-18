@@ -40,7 +40,7 @@ const [onPlayerGiveDamageDynamicActor] = defineEvent({
     aid: number,
     amount: number,
     weapon: WeaponEnum,
-    bodyPart: BodyPartsEnum
+    bodyPart: BodyPartsEnum,
   ) {
     return {
       player: Player.getInstance(pid)!,

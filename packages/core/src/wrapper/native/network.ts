@@ -30,7 +30,7 @@ export const NetStats_PacketLossPercent = (playerId: number): number => {
 };
 
 export const NetStats_ConnectionStatus = (
-  playerId: number
+  playerId: number,
 ): ConnectionStatusEnum => {
   return samp.callNative("NetStats_ConnectionStatus", "i", playerId);
 };
@@ -61,7 +61,7 @@ export const GetPlayerNetworkStats = (playerId: number): string => {
     "GetPlayerNetworkStats",
     "iSi",
     playerId,
-    1024
+    1024,
   );
   return stats;
 };
@@ -92,7 +92,7 @@ export const SendClientCheck = (
   type: number,
   memAddr: number,
   memOffset: number,
-  byteCount: number
+  byteCount: number,
 ): number => {
   return samp.callNative(
     "SendClientCheck",
@@ -101,7 +101,7 @@ export const SendClientCheck = (
     type,
     memAddr,
     memOffset,
-    byteCount
+    byteCount,
   );
 };
 

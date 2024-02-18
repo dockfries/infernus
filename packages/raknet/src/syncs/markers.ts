@@ -46,7 +46,7 @@ export class MarkersSync extends BitStream implements IPacketListSync {
         const [x, y, z] = this.bs.readValue(
           PacketRpcValueType.Int16,
           PacketRpcValueType.Int16,
-          PacketRpcValueType.Int16
+          PacketRpcValueType.Int16,
         ) as Vector3<number>;
 
         data.playerPositionX[playerId] = x;
@@ -68,14 +68,14 @@ export class MarkersSync extends BitStream implements IPacketListSync {
 
       this.bs.writeValue(
         [PacketRpcValueType.UInt16, i],
-        [PacketRpcValueType.CBool, data.playerIsActive[i]]
+        [PacketRpcValueType.CBool, data.playerIsActive[i]],
       );
 
       if (data.playerIsActive[i]) {
         this.bs.writeValue(
           [PacketRpcValueType.Int16, data.playerPositionX[i]],
           [PacketRpcValueType.Int16, data.playerPositionY[i]],
-          [PacketRpcValueType.Int16, data.playerPositionZ[i]]
+          [PacketRpcValueType.Int16, data.playerPositionZ[i]],
         );
       }
     }

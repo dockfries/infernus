@@ -63,9 +63,9 @@ export const registerLabelEvent = (options: IA51Options, i18n: I18n) => {
       i18n?.$t(
         "a51.labels.tips",
         [i18n?.$t(gateName, null, player.locale)],
-        player.locale
+        player.locale,
       ) || "",
-      player.charset
+      player.charset,
     );
     return next();
   });

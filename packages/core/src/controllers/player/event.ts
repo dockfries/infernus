@@ -105,7 +105,7 @@ export const [onGiveDamage] = defineEvent({
     damage: number,
     amount: number,
     weapon: WeaponEnum,
-    bodyPart: BodyPartsEnum
+    bodyPart: BodyPartsEnum,
   ) {
     return {
       player: Player.getInstance(id)!,
@@ -192,7 +192,7 @@ export const [onTakeDamage] = defineEvent<{
     damage: number | InvalidEnum.PLAYER_ID,
     amount: number,
     weapon: WeaponEnum,
-    bodyPart: BodyPartsEnum
+    bodyPart: BodyPartsEnum,
   ) {
     return {
       player: Player.getInstance(id)!,

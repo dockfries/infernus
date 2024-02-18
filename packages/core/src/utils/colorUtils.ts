@@ -13,7 +13,7 @@ export const rgba = (value: string | number): number => {
           value.charAt(3) +
           value.charAt(3) +
           "FF",
-        16
+        16,
       );
     } else if (value.length === 7) {
       return parseInt(value.slice(1, value.length) + "FF", 16);
@@ -23,7 +23,7 @@ export const rgba = (value: string | number): number => {
     return 255;
   }
   const values: number[] = (value.match(/([0-9])+/g) || []).map((v) =>
-    parseInt(v, 10)
+    parseInt(v, 10),
   );
   if (values.length !== 4 && values.length !== 3) {
     return 255;

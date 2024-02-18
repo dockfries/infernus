@@ -29,7 +29,7 @@ export class DynamicCheckpoint {
   create(): void | this {
     if (this.id !== -1)
       return logger.warn(
-        "[StreamerCheckpoint]: Unable to create checkpoint again"
+        "[StreamerCheckpoint]: Unable to create checkpoint again",
       );
     let {
       streamDistance,
@@ -67,7 +67,7 @@ export class DynamicCheckpoint {
         interiorId,
         playerId,
         areaId,
-        priority
+        priority,
       );
     } else {
       if (Array.isArray(worldId)) worldId = -1;
@@ -89,7 +89,7 @@ export class DynamicCheckpoint {
         playerId,
         streamDistance,
         areaId,
-        priority
+        priority,
       );
     }
 
@@ -99,7 +99,7 @@ export class DynamicCheckpoint {
   destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerCheckpoint]: Unable to destroy the checkpoint before create"
+        "[StreamerCheckpoint]: Unable to destroy the checkpoint before create",
       );
     DestroyDynamicCP(this.id);
     DynamicCheckpoint.checkpoints.delete(this.id);
@@ -112,7 +112,7 @@ export class DynamicCheckpoint {
   togglePlayer(player: Player, toggle: boolean): void | this {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerCheckpoint]: Unable to toggle the player before create"
+        "[StreamerCheckpoint]: Unable to toggle the player before create",
       );
     TogglePlayerDynamicCP(player.id, this.id, toggle);
     return this;
@@ -126,13 +126,13 @@ export class DynamicCheckpoint {
   }
   static getPlayerVisible(player: Player) {
     return DynamicCheckpoint.checkpoints.get(
-      GetPlayerVisibleDynamicCP(player.id)
+      GetPlayerVisibleDynamicCP(player.id),
     );
   }
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerCheckpoint]: Unable to toggle callbacks before create"
+        "[StreamerCheckpoint]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(StreamerItemTypes.CP, this.id, toggle);
   }

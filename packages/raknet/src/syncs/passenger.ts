@@ -35,7 +35,7 @@ export class PassengerSync extends BitStream implements IPacketListSync {
       PacketRpcValueType.UInt16,
       PacketRpcValueType.UInt16,
       PacketRpcValueType.UInt16,
-      PacketRpcValueType.Float3
+      PacketRpcValueType.Float3,
     ) as any;
     return data as IPassengerSync | null;
   }
@@ -53,7 +53,7 @@ export class PassengerSync extends BitStream implements IPacketListSync {
       [PacketRpcValueType.UInt16, data.lrKey],
       [PacketRpcValueType.UInt16, data.udKey],
       [PacketRpcValueType.UInt16, data.keys],
-      [PacketRpcValueType.Float3, data.position]
+      [PacketRpcValueType.Float3, data.position],
     );
   }
 }

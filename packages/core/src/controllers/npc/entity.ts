@@ -13,7 +13,7 @@ export class Npc {
   static startRecordingPlayerData(
     player: Player,
     recordtype: RecordTypesEnum,
-    recordname: string
+    recordname: string,
   ): void {
     if (player.isRecording)
       return logger.warn("[NpcFunc]: It should be stopped before recording");
@@ -28,7 +28,7 @@ export class Npc {
   }
   static startRecordingPlayback(
     playbacktype: RecordTypesEnum,
-    recordname: string
+    recordname: string,
   ): void {
     if (Npc.recordStatus >= ERecordStatus.start)
       return logger.warn("[NpcFunc]: The current status cannot be replayed");

@@ -32,7 +32,7 @@ export interface IA51Options extends ICommonOptions {
   onGateMoving?: (
     player: Player,
     direction: keyof IGateList,
-    status: GateStatusEnum
+    status: GateStatusEnum,
   ) => boolean;
   onGateOpen?: (player: Player, direction: keyof IGateList) => boolean;
   onGateClose?: (player: Player, direction: keyof IGateList) => boolean;

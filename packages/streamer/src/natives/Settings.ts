@@ -18,7 +18,7 @@ export const Streamer_GetPlayerTickRate = (playerId: number): number => {
 
 export const Streamer_SetPlayerTickRate = (
   playerId: number,
-  rate = 50
+  rate = 50,
 ): number => {
   return samp.callNative("Streamer_SetPlayerTickRate", "ii", playerId, rate);
 };
@@ -33,7 +33,7 @@ export const Streamer_IsToggleChunkStream = (): boolean => {
 
 export const Streamer_GetChunkTickRate = (
   type: StreamerItemTypes,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative("Streamer_GetChunkTickRate", "ii", type, playerId);
 };
@@ -41,14 +41,14 @@ export const Streamer_GetChunkTickRate = (
 export const Streamer_SetChunkTickRate = (
   type: StreamerItemTypes,
   rate: number,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative(
     "Streamer_SetChunkTickRate",
     "iii",
     type,
     rate,
-    playerId
+    playerId,
   );
 };
 
@@ -58,7 +58,7 @@ export const Streamer_GetChunkSize = (type: StreamerItemTypes): number => {
 
 export const Streamer_SetChunkSize = (
   type: StreamerItemTypes,
-  size: number
+  size: number,
 ): number => {
   return samp.callNative("Streamer_SetChunkSize", "ii", type, size);
 };
@@ -69,14 +69,14 @@ export const Streamer_GetMaxItems = (type: StreamerItemTypes): number => {
 
 export const Streamer_SetMaxItems = (
   type: StreamerItemTypes,
-  items: number
+  items: number,
 ): number => {
   return samp.callNative("Streamer_SetMaxItems", "ii", type, items);
 };
 
 export const Streamer_GetVisibleItems = (
   type: StreamerItemTypes,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative("Streamer_GetVisibleItems", "ii", type, playerId);
 };
@@ -84,26 +84,26 @@ export const Streamer_GetVisibleItems = (
 export const Streamer_SetVisibleItems = (
   type: StreamerItemTypes,
   items: number,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative(
     "Streamer_SetVisibleItems",
     "iii",
     type,
     items,
-    playerId
+    playerId,
   );
 };
 
 export const Streamer_GetRadiusMultiplier = (
   type: StreamerItemTypes,
-  playerId = -1
+  playerId = -1,
 ): number => {
   const [m] = samp.callNative(
     "Streamer_GetRadiusMultiplier",
     "iFi",
     type,
-    playerId
+    playerId,
   );
   return m;
 };
@@ -111,14 +111,14 @@ export const Streamer_GetRadiusMultiplier = (
 export const Streamer_SetRadiusMultiplier = (
   type: StreamerItemTypes,
   multiplier: number,
-  playerId = -1
+  playerId = -1,
 ): number => {
   return samp.callNative(
     "Streamer_SetRadiusMultiplier",
     "ifi",
     type,
     multiplier,
-    playerId
+    playerId,
   );
 };
 
@@ -126,18 +126,18 @@ export const Streamer_GetTypePriority = (): StreamerItemTypeTuple | number => {
   return samp.callNative(
     "Streamer_GetTypePriority",
     "Ai",
-    StreamerMiscellaneous.MAX_TYPES
+    StreamerMiscellaneous.MAX_TYPES,
   );
 };
 
 export const Streamer_SetTypePriority = (
-  types: StreamerItemTypeTuple
+  types: StreamerItemTypeTuple,
 ): number => {
   return samp.callNative(
     "Streamer_SetTypePriority",
     "ai",
     types,
-    StreamerMiscellaneous.MAX_TYPES
+    StreamerMiscellaneous.MAX_TYPES,
   );
 };
 
@@ -160,63 +160,63 @@ export const Streamer_SetCellSize = (size = 300.0): number => {
 export const Streamer_ToggleItemStatic = (
   type: StreamerItemTypes,
   id: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative("Streamer_ToggleItemStatic", "iii", type, id, toggle);
 };
 
 export const Streamer_IsToggleItemStatic = (
   type: StreamerItemTypes,
-  id: number
+  id: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("Streamer_IsToggleItemStatic", "ii", type, id)
+    samp.callNative("Streamer_IsToggleItemStatic", "ii", type, id),
   );
 };
 
 export const Streamer_ToggleItemInvAreas = (
   type: StreamerItemTypes,
   id: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative(
     "Streamer_ToggleItemInvAreas",
     "iii",
     type,
     id,
-    toggle
+    toggle,
   );
 };
 
 export const Streamer_IsToggleItemInvAreas = (
   type: StreamerItemTypes,
-  id: number
+  id: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("Streamer_IsToggleItemInvAreas", "ii", type, id)
+    samp.callNative("Streamer_IsToggleItemInvAreas", "ii", type, id),
   );
 };
 
 export const Streamer_ToggleItemCallbacks = (
   type: StreamerItemTypes,
   id: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative(
     "Streamer_ToggleItemCallbacks",
     "iii",
     type,
     id,
-    toggle
+    toggle,
   );
 };
 
 export const Streamer_IsToggleItemCallbacks = (
   type: StreamerItemTypes,
-  id: number
+  id: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("Streamer_IsToggleItemCallbacks", "ii", type, id)
+    samp.callNative("Streamer_IsToggleItemCallbacks", "ii", type, id),
   );
 };
 

@@ -57,7 +57,7 @@ export class DynamicActor {
         interiorId,
         playerId,
         areaId,
-        priority
+        priority,
       );
     } else {
       if (Array.isArray(worldId)) worldId = 0;
@@ -82,7 +82,7 @@ export class DynamicActor {
         playerId,
         streamDistance,
         areaId,
-        priority
+        priority,
       );
     }
 
@@ -92,7 +92,7 @@ export class DynamicActor {
   destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to destroy the actor before create"
+        "[StreamerActor]: Unable to destroy the actor before create",
       );
     s.DestroyDynamicActor(this.id);
     DynamicActor.actors.delete(this.id);
@@ -109,14 +109,14 @@ export class DynamicActor {
   getVirtualWorld(): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to get virtual world before create"
+        "[StreamerActor]: Unable to get virtual world before create",
       );
     return s.GetDynamicActorVirtualWorld(this.id);
   }
   setVirtualWorld(vWorld: number): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to set virtual world before create"
+        "[StreamerActor]: Unable to set virtual world before create",
       );
     return s.SetDynamicActorVirtualWorld(this.id, vWorld);
   }
@@ -126,11 +126,11 @@ export class DynamicActor {
     loop = false,
     lockX = true,
     lockY = true,
-    freeze = false
+    freeze = false,
   ): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to apply animation before create"
+        "[StreamerActor]: Unable to apply animation before create",
       );
     const duration = getAnimateDurationByLibName(animLib, animName);
     if (duration === undefined)
@@ -144,27 +144,27 @@ export class DynamicActor {
       lockX,
       lockY,
       freeze,
-      loop ? 0 : duration
+      loop ? 0 : duration,
     );
   }
   clearAnimations(): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to clear animation before create"
+        "[StreamerActor]: Unable to clear animation before create",
       );
     return s.ClearDynamicActorAnimations(this.id);
   }
   getFacingAngle(): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to get facing angle before create"
+        "[StreamerActor]: Unable to get facing angle before create",
       );
     return s.GetDynamicActorFacingAngle(this.id);
   }
   setFacingAngle(ang: number): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to set facing angle before create"
+        "[StreamerActor]: Unable to set facing angle before create",
       );
     return s.SetDynamicActorFacingAngle(this.id, ang);
   }
@@ -195,7 +195,7 @@ export class DynamicActor {
   setInvulnerable(invulnerable = true): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to set invulnerable before create"
+        "[StreamerActor]: Unable to set invulnerable before create",
       );
     return s.SetDynamicActorInvulnerable(this.id, invulnerable);
   }
@@ -223,26 +223,26 @@ export class DynamicActor {
   getSpawnInfo() {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to get spawn info before create"
+        "[StreamerActor]: Unable to get spawn info before create",
       );
     return w.GetActorSpawnInfo(this.id);
   }
   getAnimation() {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to get animation before create"
+        "[StreamerActor]: Unable to get animation before create",
       );
     return s.GetDynamicActorAnimation(this.id);
   }
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerActor]: Unable to toggle callbacks before create"
+        "[StreamerActor]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.ACTOR,
       this.id,
-      toggle
+      toggle,
     );
   }
   isToggleCallbacks(): boolean {

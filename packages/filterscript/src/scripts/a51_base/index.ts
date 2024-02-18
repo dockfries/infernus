@@ -53,7 +53,7 @@ export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
       ({ player, newKeys, next }) => {
         moveGate(player, newKeys, _options, i18n);
         return next();
-      }
+      },
     );
 
     const offOnCommandReceived = PlayerEvent.onCommandReceived(
@@ -63,14 +63,14 @@ export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
           if (!ret) return ret;
           return next();
         }
-      }
+      },
     );
 
     offs.push(
       offOnConnect,
       offOnDisconnect,
       offOnKeyStateChange,
-      offOnCommandReceived
+      offOnCommandReceived,
     );
   };
 
@@ -93,10 +93,10 @@ export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
           new GameText(
             `~b~~h~${i18n?.$t("a51.text.teleport", null, player.locale)}`,
             3000,
-            3
+            3,
           ).forPlayer(player);
         return next();
-      }
+      },
     );
     offs.push(offCommand);
   };

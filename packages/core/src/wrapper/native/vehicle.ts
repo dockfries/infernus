@@ -22,7 +22,7 @@ export const SetVehicleSpawnInfo = (
   color1: number,
   color2: number,
   respawnTime = -2,
-  interior = -2
+  interior = -2,
 ): number => {
   return samp.callNative(
     "SetVehicleSpawnInfo",
@@ -36,7 +36,7 @@ export const SetVehicleSpawnInfo = (
     color1,
     color2,
     respawnTime,
-    interior
+    interior,
   );
 };
 
@@ -44,7 +44,7 @@ export const GetVehicleColors = (vehicleId: number): IVehColor => {
   const [color1 = 0, color2 = 0]: number[] = samp.callNative(
     "GetVehicleColor",
     "i",
-    vehicleId
+    vehicleId,
   );
   return { color1, color2 };
 };
@@ -62,14 +62,14 @@ export const GetVehicleNumberPlate = (vehicleId: number): string => {
     "GetVehicleNumberPlate",
     "iSi",
     vehicleId,
-    33
+    33,
   );
   return plate;
 };
 
 export const SetVehicleRespawnDelay = (
   vehicleId: number,
-  delay: number
+  delay: number,
 ): number => {
   return samp.callNative("SetVehicleRespawnDelay", "ii", vehicleId, delay);
 };
@@ -88,7 +88,7 @@ export const GetVehicleOccupiedTick = (vehicleId: number): number => {
 
 export const SetVehicleOccupiedTick = (
   vehicleId: number,
-  ticks: number
+  ticks: number,
 ): number => {
   return samp.callNative("SetVehicleOccupiedTick", "ii", vehicleId, ticks);
 };
@@ -107,7 +107,7 @@ export const GetVehicleRespawnTick = (vehicleId: number): number => {
 
 export const SetVehicleRespawnTick = (
   vehicleId: number,
-  ticks: number
+  ticks: number,
 ): number => {
   return samp.callNative("SetVehicleRespawnTick", "ii", vehicleId, ticks);
 };
@@ -122,29 +122,29 @@ export const SetVehicleDead = (vehicleId: number, dead: boolean) => {
 
 export const SetVehicleBeenOccupied = (
   vehicleId: number,
-  occupied: boolean
+  occupied: boolean,
 ) => {
   return Boolean(
-    samp.callNative("SetVehicleBeenOccupied", "ii", vehicleId, occupied)
+    samp.callNative("SetVehicleBeenOccupied", "ii", vehicleId, occupied),
   );
 };
 
 export const ToggleVehicleSirenEnabled = (
   vehicleId: number,
-  enabled: boolean
+  enabled: boolean,
 ): number => {
   return samp.callNative("ToggleVehicleSirenEnabled", "ii", vehicleId, enabled);
 };
 
 export const SetVehicleParamsSirenState = (
   vehicleId: number,
-  enabled: boolean
+  enabled: boolean,
 ): number => {
   return samp.callNative(
     "SetVehicleParamsSirenState",
     "ii",
     vehicleId,
-    enabled
+    enabled,
   );
 };
 
@@ -209,7 +209,7 @@ export const GetRandomVehicleColorPair = (modelId: number) => {
 
 export const VehicleColorIndexToColor = (
   index: number,
-  alpha = 0xff
+  alpha = 0xff,
 ): number => {
   return samp.callNative("CarColIndexToColour", "ii", index, alpha);
 };
@@ -223,7 +223,7 @@ export const CreateVehicle = (
   color1: string | number,
   color2: string | number,
   respawn_delay: number,
-  addSiren: boolean
+  addSiren: boolean,
 ): number => {
   return samp.callNative(
     "CreateVehicle",
@@ -236,7 +236,7 @@ export const CreateVehicle = (
     rgba(color1),
     rgba(color2),
     respawn_delay,
-    addSiren
+    addSiren,
   );
 };
 
@@ -246,10 +246,10 @@ export const DestroyVehicle = (vehicleId: number): number => {
 
 export const IsVehicleStreamedIn = (
   vehicleId: number,
-  forPlayerId: number
+  forPlayerId: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsVehicleStreamedIn", "ii", vehicleId, forPlayerId)
+    samp.callNative("IsVehicleStreamedIn", "ii", vehicleId, forPlayerId),
   );
 };
 
@@ -269,7 +269,7 @@ export const SetVehiclePos = (
   vehicleId: number,
   x: number,
   y: number,
-  z: number
+  z: number,
 ): number => {
   return samp.callNative("SetVehiclePos", "ifff", vehicleId, x, y, z);
 };
@@ -278,7 +278,7 @@ export const GetVehicleZAngle = (vehicleId: number): number => {
   const [angle] = samp.callNative(
     "GetVehicleZAngle",
     "iF",
-    vehicleId
+    vehicleId,
   ) as unknown as number[];
   return angle;
 };
@@ -291,7 +291,7 @@ export const GetVehicleDistanceFromPoint = (
   vehicleId: number,
   X: number,
   Y: number,
-  Z: number
+  Z: number,
 ): number => {
   return samp.callNativeFloat(
     "GetVehicleDistanceFromPoint",
@@ -299,13 +299,13 @@ export const GetVehicleDistanceFromPoint = (
     vehicleId,
     X,
     Y,
-    Z
+    Z,
   );
 };
 
 export const SetVehicleZAngle = (
   vehicleId: number,
-  z_angle: number
+  z_angle: number,
 ): number => {
   return samp.callNative("SetVehicleZAngle", "if", vehicleId, z_angle);
 };
@@ -314,7 +314,7 @@ export const SetVehicleParamsForPlayer = (
   vehicleId: number,
   playerId: number,
   objective: boolean,
-  doorsLocked: boolean
+  doorsLocked: boolean,
 ): number => {
   return samp.callNative(
     "SetVehicleParamsForPlayer",
@@ -322,7 +322,7 @@ export const SetVehicleParamsForPlayer = (
     vehicleId,
     playerId,
     objective,
-    doorsLocked
+    doorsLocked,
   );
 };
 
@@ -338,7 +338,7 @@ export const SetVehicleParamsEx = (
   doors: boolean,
   bonnet: boolean,
   boot: boolean,
-  objective: boolean
+  objective: boolean,
 ): number => {
   return samp.callNative(
     "SetVehicleParamsEx",
@@ -350,7 +350,7 @@ export const SetVehicleParamsEx = (
     doors,
     bonnet,
     boot,
-    objective
+    objective,
   );
 };
 
@@ -367,7 +367,7 @@ export const SetVehicleParamsCarDoors = (
   driver: boolean,
   passenger: boolean,
   backLeft: boolean,
-  backRight: boolean
+  backRight: boolean,
 ): number => {
   return samp.callNative(
     "SetVehicleParamsCarDoors",
@@ -376,12 +376,12 @@ export const SetVehicleParamsCarDoors = (
     driver,
     passenger,
     backLeft,
-    backRight
+    backRight,
   );
 };
 
 export const GetVehicleParamsCarDoors = (
-  vehicleId: number
+  vehicleId: number,
 ): {
   driver: -1 | 0 | 1;
   passenger: -1 | 0 | 1;
@@ -391,7 +391,7 @@ export const GetVehicleParamsCarDoors = (
   const values = samp.callNative(
     "GetVehicleParamsCarDoors",
     "iIIII",
-    vehicleId
+    vehicleId,
   );
   return {
     driver: values[0],
@@ -406,7 +406,7 @@ export const SetVehicleParamsCarWindows = (
   driver: boolean,
   passenger: boolean,
   backLeft: boolean,
-  backRight: boolean
+  backRight: boolean,
 ): number => {
   return samp.callNative(
     "SetVehicleParamsCarWindows",
@@ -415,12 +415,12 @@ export const SetVehicleParamsCarWindows = (
     driver,
     passenger,
     backLeft,
-    backRight
+    backRight,
   );
 };
 
 export const GetVehicleParamsCarWindows = (
-  vehicleId: number
+  vehicleId: number,
 ): {
   driver: -1 | 0 | 1;
   passenger: -1 | 0 | 1;
@@ -430,7 +430,7 @@ export const GetVehicleParamsCarWindows = (
   const values = samp.callNative(
     "GetVehicleParamsCarWindows",
     "iIIII",
-    vehicleId
+    vehicleId,
   );
   return {
     driver: values[0],
@@ -446,47 +446,47 @@ export const SetVehicleToRespawn = (vehicleId: number): number => {
 
 export const LinkVehicleToInterior = (
   vehicleId: number,
-  interiorId: number
+  interiorId: number,
 ): number => {
   return samp.callNative("LinkVehicleToInterior", "ii", vehicleId, interiorId);
 };
 
 export const AddVehicleComponent = (
   vehicleId: number,
-  componentId: number
+  componentId: number,
 ): number => {
   return samp.callNative("AddVehicleComponent", "ii", vehicleId, componentId);
 };
 
 export const RemoveVehicleComponent = (
   vehicleId: number,
-  componentId: number
+  componentId: number,
 ): number => {
   return samp.callNative(
     "RemoveVehicleComponent",
     "ii",
     vehicleId,
-    componentId
+    componentId,
   );
 };
 
 export const ChangeVehicleColors = (
   vehicleId: number,
   color1: string | number,
-  color2: string | number
+  color2: string | number,
 ): number => {
   return samp.callNative(
     "ChangeVehicleColor",
     "iii",
     vehicleId,
     rgba(color1),
-    rgba(color2)
+    rgba(color2),
   );
 };
 
 export const ChangeVehiclePaintjob = (
   vehicleId: number,
-  paintjobId: number
+  paintjobId: number,
 ): number => {
   return samp.callNative("ChangeVehiclePaintjob", "ii", vehicleId, paintjobId);
 };
@@ -499,14 +499,14 @@ export const GetVehicleHealth = (vehicleId: number): number => {
   const [health] = samp.callNative(
     "GetVehicleHealth",
     "iF",
-    vehicleId
+    vehicleId,
   ) as unknown as number[];
   return health;
 };
 
 export const AttachTrailerToVehicle = (
   trailerid: number,
-  vehicleId: number
+  vehicleId: number,
 ): number => {
   return samp.callNative("AttachTrailerToVehicle", "ii", trailerid, vehicleId);
 };
@@ -525,7 +525,7 @@ export const GetVehicleTrailer = (vehicleId: number): number => {
 
 export const SetVehicleNumberPlate = (
   vehicleId: number,
-  numberplate: string
+  numberplate: string,
 ): number => {
   return samp.callNative("SetVehicleNumberPlate", "is", vehicleId, numberplate);
 };
@@ -536,7 +536,7 @@ export const GetVehicleModel = (vehicleId: number): number => {
 
 export const GetVehicleComponentInSlot = (
   vehicleId: number,
-  slot: CarModTypeEnum
+  slot: CarModTypeEnum,
 ): number => {
   return samp.callNative("GetVehicleComponentInSlot", "ii", vehicleId, slot);
 };
@@ -557,10 +557,10 @@ export const SetVehicleVelocity = (
   vehicleId: number,
   X: number,
   Y: number,
-  Z: number
+  Z: number,
 ) => {
   return Boolean(
-    samp.callNative("SetVehicleVelocity", "ifff", vehicleId, X, Y, Z)
+    samp.callNative("SetVehicleVelocity", "ifff", vehicleId, X, Y, Z),
   );
 };
 
@@ -568,7 +568,7 @@ export const SetVehicleAngularVelocity = (
   vehicleId: number,
   X: number,
   Y: number,
-  Z: number
+  Z: number,
 ): number => {
   return samp.callNative(
     "SetVehicleAngularVelocity",
@@ -576,7 +576,7 @@ export const SetVehicleAngularVelocity = (
     vehicleId,
     X,
     Y,
-    Z
+    Z,
   );
 };
 
@@ -584,7 +584,7 @@ export const GetVehicleDamageStatus = (vehicleId: number) => {
   const values: number[] = samp.callNative(
     "GetVehicleDamageStatus",
     "iIIII",
-    vehicleId
+    vehicleId,
   );
   if (values.length < 4) {
     throw new Error("VehicleID " + vehicleId + " not found");
@@ -602,7 +602,7 @@ export const UpdateVehicleDamageStatus = (
   panels: number,
   doors: number,
   lights: number,
-  tires: number
+  tires: number,
 ): number => {
   return samp.callNative(
     "UpdateVehicleDamageStatus",
@@ -611,19 +611,19 @@ export const UpdateVehicleDamageStatus = (
     panels,
     doors,
     lights,
-    tires
+    tires,
   );
 };
 
 export const GetVehicleModelInfo = (
   vehicleModel: number,
-  infoType: VehicleModelInfoEnum
+  infoType: VehicleModelInfoEnum,
 ) => {
   const values: number[] = samp.callNative(
     "GetVehicleModelInfo",
     "iiFFF",
     vehicleModel,
-    infoType
+    infoType,
   );
   if (values.length < 3) {
     throw new Error("ModelID " + vehicleModel + " not found");
@@ -637,7 +637,7 @@ export const GetVehicleModelInfo = (
 
 export const SetVehicleVirtualWorld = (
   vehicleId: number,
-  worldId: number
+  worldId: number,
 ): number => {
   return samp.callNative("SetVehicleVirtualWorld", "ii", vehicleId, worldId);
 };
@@ -657,7 +657,7 @@ export const AddStaticVehicle = (
   spawn_z: number,
   z_angle: number,
   color1: string | number,
-  color2: string | number
+  color2: string | number,
 ): number => {
   return samp.callNative(
     "AddStaticVehicle",
@@ -668,7 +668,7 @@ export const AddStaticVehicle = (
     spawn_z,
     z_angle,
     color1,
-    color2
+    color2,
   );
 };
 
@@ -681,7 +681,7 @@ export const AddStaticVehicleEx = (
   color1: string | number,
   color2: string | number,
   respawn_delay: number,
-  addSiren: boolean
+  addSiren: boolean,
 ): number => {
   return samp.callNative(
     "AddStaticVehicleEx",
@@ -694,7 +694,7 @@ export const AddStaticVehicleEx = (
     color1,
     color2,
     respawn_delay,
-    addSiren
+    addSiren,
   );
 };
 

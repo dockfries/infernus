@@ -51,11 +51,11 @@ export class OnFootSync extends BitStream implements IPacketListSync {
         PacketRpcValueType.UInt8,
         PacketRpcValueType.UInt8,
         PacketRpcValueType.Vector,
-        PacketRpcValueType.Bool
+        PacketRpcValueType.Bool,
       ) as any;
 
       const { health, armour } = BitStream.unpackHealthArmour(
-        healthArmour as number
+        healthArmour as number,
       );
       data.health = health;
       data.armour = armour;
@@ -63,7 +63,7 @@ export class OnFootSync extends BitStream implements IPacketListSync {
       if (hasSurfInfo) {
         [data.surfingVehicleId, data.surfingOffsets] = this.bs.readValue(
           PacketRpcValueType.UInt16,
-          PacketRpcValueType.Float3
+          PacketRpcValueType.Float3,
         ) as any;
       }
 
@@ -72,7 +72,7 @@ export class OnFootSync extends BitStream implements IPacketListSync {
       if (hasAnimation) {
         [data.animationId, data.animationFlags] = this.bs.readValue(
           PacketRpcValueType.Int16,
-          PacketRpcValueType.Int16
+          PacketRpcValueType.Int16,
         ) as any;
       }
     } else {
@@ -107,7 +107,7 @@ export class OnFootSync extends BitStream implements IPacketListSync {
         PacketRpcValueType.Float3,
         PacketRpcValueType.UInt16,
         PacketRpcValueType.Int16,
-        PacketRpcValueType.Int16
+        PacketRpcValueType.Int16,
       ) as any;
     }
     return data as IOnFootSync | null;
@@ -122,7 +122,7 @@ export class OnFootSync extends BitStream implements IPacketListSync {
       if (data.lrKey) {
         this.bs.writeValue(
           [PacketRpcValueType.Bool, true],
-          [PacketRpcValueType.UInt16, data.lrKey]
+          [PacketRpcValueType.UInt16, data.lrKey],
         );
       } else {
         this.bs.writeValue([PacketRpcValueType.Bool, false]);
@@ -131,7 +131,7 @@ export class OnFootSync extends BitStream implements IPacketListSync {
       if (data.udKey) {
         this.bs.writeValue(
           [PacketRpcValueType.Bool, true],
-          [PacketRpcValueType.UInt16, data.udKey]
+          [PacketRpcValueType.UInt16, data.udKey],
         );
       } else {
         this.bs.writeValue([PacketRpcValueType.Bool, false]);
@@ -146,14 +146,14 @@ export class OnFootSync extends BitStream implements IPacketListSync {
         [PacketRpcValueType.UInt8, healthArmour],
         [PacketRpcValueType.UInt8, data.weaponId],
         [PacketRpcValueType.UInt8, data.specialAction],
-        [PacketRpcValueType.Vector, data.velocity]
+        [PacketRpcValueType.Vector, data.velocity],
       );
 
       if (data.surfingVehicleId) {
         this.bs.writeValue(
           [PacketRpcValueType.Bool, true],
           [PacketRpcValueType.UInt16, data.surfingVehicleId],
-          [PacketRpcValueType.Float3, data.surfingOffsets]
+          [PacketRpcValueType.Float3, data.surfingOffsets],
         );
       } else {
         this.bs.writeValue([PacketRpcValueType.Bool, false]);
@@ -163,7 +163,7 @@ export class OnFootSync extends BitStream implements IPacketListSync {
         this.bs.writeValue(
           [PacketRpcValueType.Bool, true],
           [PacketRpcValueType.Int16, data.animationId],
-          [PacketRpcValueType.Int16, data.animationFlags]
+          [PacketRpcValueType.Int16, data.animationFlags],
         );
       } else {
         this.bs.writeValue([PacketRpcValueType.Bool, false]);
@@ -184,7 +184,7 @@ export class OnFootSync extends BitStream implements IPacketListSync {
         [PacketRpcValueType.Float3, data.surfingOffsets],
         [PacketRpcValueType.UInt16, data.surfingVehicleId],
         [PacketRpcValueType.Int16, data.animationId],
-        [PacketRpcValueType.Int16, data.animationFlags]
+        [PacketRpcValueType.Int16, data.animationFlags],
       );
     }
   }

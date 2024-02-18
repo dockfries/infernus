@@ -9,10 +9,10 @@ export function removeBuilding(
   x: number,
   y: number,
   z: number,
-  radius: number
+  radius: number,
 ) {
   return Boolean(
-    samp.callNative("CA_RemoveBuilding", "iffff", modelId, x, y, z, radius)
+    samp.callNative("CA_RemoveBuilding", "iffff", modelId, x, y, z, radius),
   );
 }
 
@@ -21,10 +21,10 @@ export function restoreBuilding(
   x: number,
   y: number,
   z: number,
-  radius: number
+  radius: number,
 ) {
   return Boolean(
-    samp.callNative("CA_RestoreBuilding", "iffff", modelId, x, y, z, radius)
+    samp.callNative("CA_RestoreBuilding", "iffff", modelId, x, y, z, radius),
   );
 }
 
@@ -34,7 +34,7 @@ export function rayCastLine(
   startZ: number,
   endX: number,
   endY: number,
-  endZ: number
+  endZ: number,
 ) {
   const [x, y, z, result] = samp.callNative(
     "CA_RayCastLine",
@@ -44,7 +44,7 @@ export function rayCastLine(
     startZ,
     endX,
     endY,
-    endZ
+    endZ,
   ) as number[];
 
   if (!result) return null;
@@ -58,7 +58,7 @@ export function rayCastLineID(
   startZ: number,
   endX: number,
   endY: number,
-  endZ: number
+  endZ: number,
 ) {
   const [x, y, z, result] = samp.callNative(
     "CA_RayCastLineID",
@@ -68,7 +68,7 @@ export function rayCastLineID(
     startZ,
     endX,
     endY,
-    endZ
+    endZ,
   ) as number[];
 
   if (!result) return null;
@@ -83,7 +83,7 @@ export function rayCastLineExtraID(
   startZ: number,
   endX: number,
   endY: number,
-  endZ: number
+  endZ: number,
 ) {
   const [x, y, z, result] = samp.callNative(
     "CA_RayCastLineExtraID",
@@ -94,7 +94,7 @@ export function rayCastLineExtraID(
     startZ,
     endX,
     endY,
-    endZ
+    endZ,
   ) as number[];
 
   if (!result) return null;
@@ -109,7 +109,7 @@ export function rayCastMultiLine(
   endX: number,
   endY: number,
   endZ: number,
-  size = MAX_MULTICAST_SIZE
+  size = MAX_MULTICAST_SIZE,
 ) {
   const [x, y, z, dist, modelIds, result] = samp.callNative(
     "CA_RayCastMultiLine",
@@ -120,7 +120,7 @@ export function rayCastMultiLine(
     endX,
     endY,
     endZ,
-    size
+    size,
   ) as [number[], number[], number[], number[], number[], number];
 
   const len = result > 0 ? result : 0;
@@ -141,7 +141,7 @@ export function rayCastLineAngle(
   startZ: number,
   endX: number,
   endY: number,
-  endZ: number
+  endZ: number,
 ) {
   const [x, y, z, rx, ry, rz, result] = samp.callNative(
     "CA_RayCastLineAngle",
@@ -151,7 +151,7 @@ export function rayCastLineAngle(
     startZ,
     endX,
     endY,
-    endZ
+    endZ,
   ) as number[];
 
   if (!result) return null;
@@ -165,7 +165,7 @@ export function rayCastReflectionVector(
   startZ: number,
   endX: number,
   endY: number,
-  endZ: number
+  endZ: number,
 ) {
   const [x, y, z, nx, ny, nz, result] = samp.callNative(
     "CA_RayCastReflectionVector",
@@ -175,7 +175,7 @@ export function rayCastReflectionVector(
     startZ,
     endX,
     endY,
-    endZ
+    endZ,
   ) as number[];
 
   if (!result) return null;
@@ -189,7 +189,7 @@ export function rayCastLineNormal(
   startZ: number,
   endX: number,
   endY: number,
-  endZ: number
+  endZ: number,
 ) {
   const [x, y, z, nx, ny, nz, result] = samp.callNative(
     "CA_RayCastLineNormal",
@@ -199,7 +199,7 @@ export function rayCastLineNormal(
     startZ,
     endX,
     endY,
-    endZ
+    endZ,
   ) as number[];
 
   if (!result) return null;
@@ -214,10 +214,10 @@ export function contactTest(
   z: number,
   rx: number,
   ry: number,
-  rz: number
+  rz: number,
 ) {
   return Boolean(
-    samp.callNative("CA_ContactTest", "iffffff", modelId, x, y, z, rx, ry, rz)
+    samp.callNative("CA_ContactTest", "iffffff", modelId, x, y, z, rx, ry, rz),
   );
 }
 
@@ -227,7 +227,7 @@ export function eulerToQuat(rx: number, ry: number, rz: number) {
     "fffFFFF",
     rx,
     ry,
-    rz
+    rz,
   ) as number[];
   return { x, y, z, w };
 }
@@ -239,7 +239,7 @@ export function quatToEuler(x: number, y: number, z: number, w: number) {
     x,
     y,
     z,
-    w
+    w,
   ) as number[];
   return { rx, ry, rz };
 }
@@ -248,7 +248,7 @@ export function getModelBoundingSphere(modelId: number) {
   const [offX, offY, offZ, radius, result] = samp.callNative(
     "CA_GetModelBoundingSphere",
     "iFFFF",
-    modelId
+    modelId,
   ) as number[];
 
   if (!result) return null;
@@ -260,7 +260,7 @@ export function getModelBoundingBox(modelId: number) {
   const [minX, minY, minZ, maxX, maxY, maxZ, result] = samp.callNative(
     "CA_GetModelBoundingBox",
     "iFFFFFF",
-    modelId
+    modelId,
   ) as number[];
 
   if (!result) return null;
@@ -274,7 +274,7 @@ export function rayCastLineEx(
   startZ: number,
   endX: number,
   endY: number,
-  endZ: number
+  endZ: number,
 ) {
   const [x, y, z, rx, ry, rz, rw, cx, cy, cz, result] = samp.callNative(
     "CA_RayCastLineEx",
@@ -284,7 +284,7 @@ export function rayCastLineEx(
     startZ,
     endX,
     endY,
-    endZ
+    endZ,
   ) as number[];
 
   if (!result) return null;
@@ -298,7 +298,7 @@ export function rayCastLineAngleEx(
   startZ: number,
   endX: number,
   endY: number,
-  endZ: number
+  endZ: number,
 ) {
   const [x, y, z, rx, ry, rz, ocx, ocy, ocz, orx, ory, orz, result] =
     samp.callNative(
@@ -309,7 +309,7 @@ export function rayCastLineAngleEx(
       startZ,
       endX,
       endY,
-      endZ
+      endZ,
     ) as number[];
 
   if (!result) return null;

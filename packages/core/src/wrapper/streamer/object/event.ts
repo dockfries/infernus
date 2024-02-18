@@ -62,7 +62,7 @@ const [onPlayerEditDynamicObject] = defineEvent({
     z: number,
     rX: number,
     rY: number,
-    rZ: number
+    rZ: number,
   ) {
     return {
       player: Player.getInstance(pid)!,
@@ -87,7 +87,7 @@ const [onPlayerSelectDynamicObject] = defineEvent({
     modelId: number,
     x: number,
     y: number,
-    z: number
+    z: number,
   ) {
     return {
       player: Player.getInstance(pid)!,
@@ -109,7 +109,7 @@ const [onPlayerShootDynamicObject] = defineEvent({
     oid: number,
     x: number,
     y: number,
-    z: number
+    z: number,
   ) {
     return {
       player: Player.getInstance(pid)!,
@@ -138,7 +138,7 @@ const [onPlayerEditAttachedObject] = defineEvent({
     fRotZ: number,
     fScaleX: number,
     fScaleY: number,
-    fScaleZ: number
+    fScaleZ: number,
   ) {
     return {
       player: Player.getInstance(pid)!,

@@ -15,7 +15,7 @@ export const CreateDynamicObjectEx = (
   interiors: number[] = [-1],
   players: number[] = [-1],
   areas: number[] = [-1],
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicObjectEx",
@@ -37,7 +37,7 @@ export const CreateDynamicObjectEx = (
     worlds.length,
     interiors.length,
     players.length,
-    areas.length
+    areas.length,
   );
 };
 
@@ -52,7 +52,7 @@ export const CreateDynamicPickupEx = (
   interiors: number[] = [-1],
   players: number[] = [-1],
   areas: number[] = [-1],
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicPickupEx",
@@ -71,7 +71,7 @@ export const CreateDynamicPickupEx = (
     worlds.length,
     interiors.length,
     players.length,
-    areas.length
+    areas.length,
   );
 };
 
@@ -85,7 +85,7 @@ export const CreateDynamicCPEx = (
   interiors: number[] = [-1],
   players: number[] = [-1],
   areas: number[] = [-1],
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicCPEx",
@@ -103,7 +103,7 @@ export const CreateDynamicCPEx = (
     worlds.length,
     interiors.length,
     players.length,
-    areas.length
+    areas.length,
   );
 };
 
@@ -121,7 +121,7 @@ export const CreateDynamicRaceCPEx = (
   interiors: number[] = [-1],
   players: number[] = [-1],
   areas: number[] = [-1],
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicRaceCPEx",
@@ -143,7 +143,7 @@ export const CreateDynamicRaceCPEx = (
     worlds.length,
     interiors.length,
     players.length,
-    areas.length
+    areas.length,
   );
 };
 
@@ -159,7 +159,7 @@ export const CreateDynamicMapIconEx = (
   interiors: number[] = [-1],
   players: number[] = [-1],
   areas: number[] = [-1],
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicMapIconEx",
@@ -179,7 +179,7 @@ export const CreateDynamicMapIconEx = (
     worlds.length,
     interiors.length,
     players.length,
-    areas.length
+    areas.length,
   );
 };
 
@@ -198,7 +198,7 @@ export const CreateDynamic3DTextLabelEx = (
   interiors: number[] = [-1],
   players: number[] = [-1],
   areas: number[] = [-1],
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamic3DTextLabelEx",
@@ -221,7 +221,7 @@ export const CreateDynamic3DTextLabelEx = (
     worlds.length,
     interiors.length,
     players.length,
-    areas.length
+    areas.length,
   );
 };
 
@@ -231,7 +231,7 @@ export const CreateDynamicCircleEx = (
   size: number,
   worlds: number[] = [-1],
   interiors: number[] = [-1],
-  players: number[] = [-1]
+  players: number[] = [-1],
 ): number => {
   return samp.callNative(
     "CreateDynamicCircleEx",
@@ -244,7 +244,7 @@ export const CreateDynamicCircleEx = (
     players,
     worlds.length,
     interiors.length,
-    players.length
+    players.length,
   );
 };
 
@@ -256,7 +256,7 @@ export const CreateDynamicCylinderEx = (
   size: number,
   worlds: number[] = [-1],
   interiors: number[] = [-1],
-  players: number[] = [-1]
+  players: number[] = [-1],
 ): number => {
   return samp.callNative(
     "CreateDynamicCylinderEx",
@@ -271,7 +271,7 @@ export const CreateDynamicCylinderEx = (
     players,
     worlds.length,
     interiors.length,
-    players.length
+    players.length,
   );
 };
 
@@ -282,7 +282,7 @@ export const CreateDynamicSphereEx = (
   size: number,
   worlds: number[] = [-1],
   interiors: number[] = [-1],
-  players: number[] = [-1]
+  players: number[] = [-1],
 ): number => {
   return samp.callNative(
     "CreateDynamicSphereEx",
@@ -296,7 +296,7 @@ export const CreateDynamicSphereEx = (
     players,
     worlds.length,
     interiors.length,
-    players.length
+    players.length,
   );
 };
 
@@ -307,7 +307,7 @@ export const CreateDynamicRectangleEx = (
   maxY: number,
   worlds: number[] = [-1],
   interiors: number[] = [-1],
-  players: number[] = [-1]
+  players: number[] = [-1],
 ): number => {
   return samp.callNative(
     "CreateDynamicRectangleEx",
@@ -321,7 +321,7 @@ export const CreateDynamicRectangleEx = (
     players,
     worlds.length,
     interiors.length,
-    players.length
+    players.length,
   );
 };
 
@@ -334,7 +334,7 @@ export const CreateDynamicCuboidEx = (
   maxZ: number,
   worlds: number[] = [-1],
   interiors: number[] = [-1],
-  players: number[] = [-1]
+  players: number[] = [-1],
 ): number => {
   return samp.callNative(
     "CreateDynamicCuboidEx",
@@ -350,7 +350,7 @@ export const CreateDynamicCuboidEx = (
     players,
     worlds.length,
     interiors.length,
-    players.length
+    players.length,
   );
 };
 
@@ -363,7 +363,7 @@ export const CreateDynamicCubeEx = (
   maxZ: number,
   worlds: number[] = [-1],
   interiors: number[] = [-1],
-  players: number[] = [-1]
+  players: number[] = [-1],
 ): number => {
   return samp.callNative(
     "CreateDynamicCubeEx",
@@ -379,7 +379,7 @@ export const CreateDynamicCubeEx = (
     players,
     worlds.length,
     interiors.length,
-    players.length
+    players.length,
   );
 };
 
@@ -389,7 +389,7 @@ export const CreateDynamicPolygonEx = (
   maxZ: number = Number.MAX_VALUE,
   worlds: number[] = [-1],
   interiors: number[] = [-1],
-  players: number[] = [-1]
+  players: number[] = [-1],
 ): number => {
   return samp.callNative(
     "CreateDynamicPolygonEx",
@@ -403,7 +403,7 @@ export const CreateDynamicPolygonEx = (
     players,
     worlds.length,
     interiors.length,
-    players.length
+    players.length,
   );
 };
 
@@ -420,7 +420,7 @@ export const CreateDynamicActorEx = (
   interiors: number[] = [-1],
   players: number[] = [-1],
   areas: number[] = [-1],
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicActorEx",
@@ -441,6 +441,6 @@ export const CreateDynamicActorEx = (
     worlds.length,
     interiors.length,
     players.length,
-    areas.length
+    areas.length,
   );
 };

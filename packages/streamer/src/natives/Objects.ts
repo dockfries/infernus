@@ -14,7 +14,7 @@ export const CreateDynamicObject = (
   streamDistance: number = StreamerDistances.OBJECT_SD,
   drawDistance: number = StreamerDistances.OBJECT_DD,
   areaId = -1,
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicObject",
@@ -32,7 +32,7 @@ export const CreateDynamicObject = (
     streamDistance,
     drawDistance,
     areaId,
-    priority
+    priority,
   );
 };
 
@@ -48,7 +48,7 @@ export const GetDynamicObjectPos = (objectId: number) => {
   const [x, y, z]: number[] = samp.callNative(
     "GetDynamicObjectPos",
     "iFFF",
-    objectId
+    objectId,
   );
   return { x, y, z };
 };
@@ -57,7 +57,7 @@ export const SetDynamicObjectPos = (
   objectId: number,
   x: number,
   y: number,
-  z: number
+  z: number,
 ): number => {
   return samp.callNative("SetDynamicObjectPos", "ifff", objectId, x, y, z);
 };
@@ -66,7 +66,7 @@ export const GetDynamicObjectRot = (objectId: number) => {
   const [rx, ry, rz]: number[] = samp.callNative(
     "GetDynamicObjectRot",
     "iFFF",
-    objectId
+    objectId,
   );
   return { rx, ry, rz };
 };
@@ -75,7 +75,7 @@ export const SetDynamicObjectRot = (
   objectId: number,
   rx: number,
   ry: number,
-  rz: number
+  rz: number,
 ): number => {
   return samp.callNative("SetDynamicObjectRot", "ifff", objectId, rx, ry, rz);
 };
@@ -88,7 +88,7 @@ export const MoveDynamicObject = (
   speed: number,
   rx = -1000.0,
   ry = -1000.0,
-  rz = -1000.0
+  rz = -1000.0,
 ): number => {
   return samp.callNative(
     "MoveDynamicObject",
@@ -100,7 +100,7 @@ export const MoveDynamicObject = (
     speed,
     rx,
     ry,
-    rz
+    rz,
   );
 };
 
@@ -114,13 +114,13 @@ export const IsDynamicObjectMoving = (objectId: number): boolean => {
 
 export const AttachCameraToDynamicObject = (
   playerId: number,
-  objectId: number
+  objectId: number,
 ): number => {
   return samp.callNative(
     "AttachCameraToDynamicObject",
     "ii",
     playerId,
-    objectId
+    objectId,
   );
 };
 
@@ -133,7 +133,7 @@ export const AttachDynamicObjectToObject = (
   rx: number,
   ry: number,
   rz: number,
-  syncRotation = true
+  syncRotation = true,
 ): number => {
   return samp.callNative(
     "AttachDynamicObjectToObject",
@@ -146,7 +146,7 @@ export const AttachDynamicObjectToObject = (
     rx,
     ry,
     rz,
-    syncRotation
+    syncRotation,
   );
 };
 
@@ -158,7 +158,7 @@ export const AttachDynamicObjectToPlayer = (
   offsetZ: number,
   rx: number,
   ry: number,
-  rz: number
+  rz: number,
 ): number => {
   return samp.callNative(
     "AttachDynamicObjectToPlayer",
@@ -170,7 +170,7 @@ export const AttachDynamicObjectToPlayer = (
     offsetZ,
     rx,
     ry,
-    rz
+    rz,
   );
 };
 
@@ -182,7 +182,7 @@ export const AttachDynamicObjectToVehicle = (
   offsetZ: number,
   rx: number,
   ry: number,
-  rz: number
+  rz: number,
 ): number => {
   return samp.callNative(
     "AttachDynamicObjectToVehicle",
@@ -194,40 +194,40 @@ export const AttachDynamicObjectToVehicle = (
     offsetZ,
     rx,
     ry,
-    rz
+    rz,
   );
 };
 
 export const EditDynamicObject = (
   playerId: number,
-  objectId: number
+  objectId: number,
 ): number => {
   return samp.callNative("EditDynamicObject", "ii", playerId, objectId);
 };
 
 export const IsDynamicObjectMaterialUsed = (
   objectId: number,
-  materialIndex: number
+  materialIndex: number,
 ): boolean => {
   return Boolean(
     samp.callNative(
       "IsDynamicObjectMaterialUsed",
       "ii",
       objectId,
-      materialIndex
-    )
+      materialIndex,
+    ),
   );
 };
 
 export const RemoveDynamicObjectMaterial = (
   objectId: number,
-  materialIndex: number
+  materialIndex: number,
 ): number => {
   return samp.callNative(
     "RemoveDynamicObjectMaterial",
     "ii",
     objectId,
-    materialIndex
+    materialIndex,
   );
 };
 
@@ -235,7 +235,7 @@ export const GetDynamicObjectMaterial = (
   objectId: number,
   materialIndex: number,
   txdName: string,
-  textureName: string
+  textureName: string,
 ) => {
   const [modelId, materialColor]: [number, string | number] = samp.callNative(
     "GetDynamicObjectMaterial",
@@ -245,7 +245,7 @@ export const GetDynamicObjectMaterial = (
     txdName,
     textureName,
     64,
-    64
+    64,
   );
   return { modelId, materialColor };
 };
@@ -256,7 +256,7 @@ export const SetDynamicObjectMaterial = (
   modelId: number,
   txdName: string,
   textureName: string,
-  materialColor = 0
+  materialColor = 0,
 ): number => {
   return samp.callNative(
     "SetDynamicObjectMaterial",
@@ -266,39 +266,39 @@ export const SetDynamicObjectMaterial = (
     modelId,
     txdName,
     textureName,
-    materialColor
+    materialColor,
   );
 };
 
 export const IsDynamicObjectMaterialTextUsed = (
   objectId: number,
-  materialIndex: number
+  materialIndex: number,
 ): boolean => {
   return Boolean(
     samp.callNative(
       "IsDynamicObjectMaterialTextUsed",
       "ii",
       objectId,
-      materialIndex
-    )
+      materialIndex,
+    ),
   );
 };
 
 export const RemoveDynamicObjectMaterialText = (
   objectId: number,
-  materialIndex: number
+  materialIndex: number,
 ): number => {
   return samp.callNative(
     "RemoveDynamicObjectMaterialText",
     "ii",
     objectId,
-    materialIndex
+    materialIndex,
   );
 };
 
 export const GetDynamicObjectMaterialText = (
   objectId: number,
-  materialIndex: number
+  materialIndex: number,
 ) => {
   const [
     text,
@@ -314,7 +314,7 @@ export const GetDynamicObjectMaterialText = (
     objectId,
     materialIndex,
     2048,
-    32
+    32,
   );
   return {
     text,
@@ -354,7 +354,7 @@ export const SetDynamicObjectMaterialText = (
   bold = 1,
   fontColor = 0xffffffff,
   backColor = 0,
-  textAlignment = 0
+  textAlignment = 0,
 ): number => {
   return samp.callNative(
     "SetDynamicObjectMaterialText",
@@ -368,7 +368,7 @@ export const SetDynamicObjectMaterialText = (
     bold,
     fontColor,
     backColor,
-    textAlignment
+    textAlignment,
   );
 };
 

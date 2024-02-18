@@ -38,7 +38,7 @@ export const [onOutgoingRPC] = defineEvent({
 
 export const IPacket = (
   eventId: number,
-  func: Parameters<typeof onIncomingPacket>[0]
+  func: Parameters<typeof onIncomingPacket>[0],
 ) => {
   return onIncomingPacket((e) => {
     if (e.packetId === eventId) return func(e);
@@ -48,7 +48,7 @@ export const IPacket = (
 
 export const IRPC = (
   eventId: number,
-  func: Parameters<typeof onIncomingRPC>[0]
+  func: Parameters<typeof onIncomingRPC>[0],
 ) => {
   return onIncomingRPC((e) => {
     if (e.rpcId === eventId) return func(e);
@@ -58,7 +58,7 @@ export const IRPC = (
 
 export const OPacket = (
   eventId: number,
-  func: Parameters<typeof onOutgoingPacket>[0]
+  func: Parameters<typeof onOutgoingPacket>[0],
 ) => {
   return onOutgoingPacket((e) => {
     if (e.packetId === eventId) return func(e);
@@ -68,7 +68,7 @@ export const OPacket = (
 
 export const ORPC = (
   eventId: number,
-  func: Parameters<typeof onOutgoingRPC>[0]
+  func: Parameters<typeof onOutgoingRPC>[0],
 ) => {
   return onOutgoingRPC((e) => {
     if (e.rpcId === eventId) return func(e);

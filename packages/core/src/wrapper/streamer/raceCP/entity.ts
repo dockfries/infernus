@@ -67,7 +67,7 @@ export class DynamicRaceCP {
         interiorId,
         playerId,
         areaId,
-        priority
+        priority,
       );
     } else {
       if (Array.isArray(worldId)) worldId = -1;
@@ -93,7 +93,7 @@ export class DynamicRaceCP {
         playerId,
         streamDistance,
         areaId,
-        priority
+        priority,
       );
     }
 
@@ -103,7 +103,7 @@ export class DynamicRaceCP {
   destroy(): void | this {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerRaceCP]: Unable to destroy the checkpoint before create"
+        "[StreamerRaceCP]: Unable to destroy the checkpoint before create",
       );
     DestroyDynamicCP(this.id);
     DynamicRaceCP.checkpoints.delete(this.id);
@@ -116,7 +116,7 @@ export class DynamicRaceCP {
   togglePlayer(player: Player, toggle: boolean): void | this {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerRaceCP]: Unable to toggle the player before create"
+        "[StreamerRaceCP]: Unable to toggle the player before create",
       );
     TogglePlayerDynamicRaceCP(player.id, this.id, toggle);
     return this;
@@ -130,18 +130,18 @@ export class DynamicRaceCP {
   }
   static getPlayerVisible(player: Player) {
     return DynamicRaceCP.checkpoints.get(
-      GetPlayerVisibleDynamicRaceCP(player.id)
+      GetPlayerVisibleDynamicRaceCP(player.id),
     );
   }
   toggleCallbacks(toggle = true): void | number {
     if (this.id === -1)
       return logger.warn(
-        "[StreamerRaceCP]: Unable to toggle callbacks before create"
+        "[StreamerRaceCP]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       StreamerItemTypes.RACE_CP,
       this.id,
-      toggle
+      toggle,
     );
   }
   isToggleCallbacks(): boolean {

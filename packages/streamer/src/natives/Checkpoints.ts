@@ -10,7 +10,7 @@ export const CreateDynamicCP = (
   playerId = -1,
   streamDistance: number = StreamerDistances.CP_SD,
   areaId = -1,
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicCP",
@@ -24,7 +24,7 @@ export const CreateDynamicCP = (
     playerId,
     streamDistance,
     areaId,
-    priority
+    priority,
   );
 };
 
@@ -39,30 +39,30 @@ export const IsValidDynamicCP = (checkpointId: number): boolean => {
 export const TogglePlayerDynamicCP = (
   playerId: number,
   checkpointId: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative(
     "TogglePlayerDynamicCP",
     "iii",
     playerId,
     checkpointId,
-    toggle
+    toggle,
   );
 };
 
 export const TogglePlayerAllDynamicCPs = (
   playerId: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative("TogglePlayerAllDynamicCPs", "ii", playerId, toggle);
 };
 
 export const IsPlayerInDynamicCP = (
   playerId: number,
-  checkpointId: number
+  checkpointId: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointId)
+    samp.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointId),
   );
 };
 

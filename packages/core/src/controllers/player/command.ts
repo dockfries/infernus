@@ -51,7 +51,7 @@ export const [onCommandError, triggerOnError] = defineEvent({
   beforeEach(
     player: Player,
     command: string,
-    error: (typeof CommandErrors)["NOT_EXIST"]
+    error: (typeof CommandErrors)["NOT_EXIST"],
   ) {
     return { player, command, error };
   },
@@ -116,7 +116,7 @@ onCommandText(({ player, buffer, next }) => {
 export const CmdBus = {
   on(
     command: string | string[],
-    cb: (ret: CmdBusCallback) => PromisifyCallbackRet
+    cb: (ret: CmdBusCallback) => PromisifyCallbackRet,
   ) {
     const _command = Array.isArray(command) ? command : [command];
 

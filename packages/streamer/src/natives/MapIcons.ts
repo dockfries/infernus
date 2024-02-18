@@ -20,7 +20,7 @@ export const CreateDynamicMapIcon = (
   streamDistance: number = StreamerDistances.MAP_ICON_SD,
   style: number = MapIconStyles.LOCAL,
   areaId = -1,
-  priority = 0
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicMapIcon",
@@ -36,7 +36,7 @@ export const CreateDynamicMapIcon = (
     streamDistance,
     style,
     areaId,
-    priority
+    priority,
   );
 };
 

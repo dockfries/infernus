@@ -29,7 +29,7 @@ export class UnoccupiedSync extends BitStream implements IPacketListSync {
       PacketRpcValueType.Float3,
       PacketRpcValueType.Float3,
       PacketRpcValueType.Float3,
-      PacketRpcValueType.Float
+      PacketRpcValueType.Float,
     ) as any;
     return data as IUnoccupiedSync | null;
   }
@@ -44,7 +44,7 @@ export class UnoccupiedSync extends BitStream implements IPacketListSync {
       [PacketRpcValueType.Float3, data.position],
       [PacketRpcValueType.Float3, data.velocity],
       [PacketRpcValueType.Float3, data.angularVelocity],
-      [PacketRpcValueType.Float, data.vehicleHealth]
+      [PacketRpcValueType.Float, data.vehicleHealth],
     );
   }
 }

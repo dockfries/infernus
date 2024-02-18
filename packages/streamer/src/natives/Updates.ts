@@ -6,7 +6,7 @@ export const Streamer_ProcessActiveItems = (): number => {
 
 export const Streamer_ToggleIdleUpdate = (
   playerId: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative("Streamer_ToggleIdleUpdate", "ii", playerId, toggle);
 };
@@ -17,37 +17,37 @@ export const Streamer_IsToggleIdleUpdate = (playerId: number): boolean => {
 
 export const Streamer_ToggleCameraUpdate = (
   playerId: number,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative("Streamer_ToggleCameraUpdate", "ii", playerId, toggle);
 };
 
 export const Streamer_IsToggleCameraUpdate = (playerId: number): boolean => {
   return Boolean(
-    samp.callNative("Streamer_IsToggleCameraUpdate", "i", playerId)
+    samp.callNative("Streamer_IsToggleCameraUpdate", "i", playerId),
   );
 };
 
 export const Streamer_ToggleItemUpdate = (
   playerId: number,
   type: StreamerItemTypes,
-  toggle: boolean
+  toggle: boolean,
 ): number => {
   return samp.callNative(
     "Streamer_ToggleItemUpdate",
     "iii",
     playerId,
     type,
-    toggle
+    toggle,
   );
 };
 
 export const Streamer_IsToggleItemUpdate = (
   playerId: number,
-  type: StreamerItemTypes
+  type: StreamerItemTypes,
 ): boolean => {
   return Boolean(
-    samp.callNative("Streamer_IsToggleItemUpdate", "ii", playerId, type)
+    samp.callNative("Streamer_IsToggleItemUpdate", "ii", playerId, type),
   );
 };
 
@@ -68,7 +68,7 @@ export const Streamer_UpdateEx = (
   interiorId = -1,
   type = -1,
   compensatedTime = -1,
-  freezePlayer = true
+  freezePlayer = true,
 ): number => {
   return samp.callNative(
     "Streamer_UpdateEx",
@@ -81,6 +81,6 @@ export const Streamer_UpdateEx = (
     interiorId,
     type,
     compensatedTime,
-    freezePlayer
+    freezePlayer,
   );
 };

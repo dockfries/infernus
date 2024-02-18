@@ -13,7 +13,7 @@ export function rayCastExplode(
   cY: number,
   cZ: number,
   radius: number,
-  intensity = 20.0
+  intensity = 20.0,
 ) {
   const collisions: { x: number; y: number; z: number }[] = [];
 
@@ -179,7 +179,7 @@ function isNearWater(instance: Player | Vehicle, dist: number, height: number) {
         z + height,
         x + dist * Math.sin(degreesToRadians(i * 60.0)),
         y + dist * Math.cos(degreesToRadians(i * 60.0)),
-        z - height
+        z - height,
       )?.result === WATER_OBJECT
     )
       return true;
@@ -197,7 +197,7 @@ export function isVehicleNearWater(vehicle: Vehicle, dist = 3.0, height = 3.0) {
 function isFacingWater(
   instance: Player | Vehicle,
   dist: number,
-  height: number
+  height: number,
 ) {
   const pos = instance.getPos();
   const r =
@@ -216,7 +216,7 @@ function isFacingWater(
       z,
       x + dist * Math.sin(degreesToRadians(-r)),
       y + dist * Math.cos(degreesToRadians(-r)),
-      z - height
+      z - height,
     )?.result === WATER_OBJECT
   )
     return true;
@@ -230,7 +230,7 @@ export function isPlayerFacingWater(player: Player, dist = 3.0, height = 3.0) {
 export function isVehicleFacingWater(
   vehicle: Vehicle,
   dist = 3.0,
-  height = 3.0
+  height = 3.0,
 ) {
   return isFacingWater(vehicle, dist, height);
 }
@@ -275,7 +275,7 @@ export function getRoomHeight(x: number, y: number, z: number) {
   const { x: cx, y: cy, z: cz } = cRet;
 
   return Math.sqrt(
-    (fx - cx) * (fx - cx) + (fy - cy) * (fy - cy) + (fz - cz) * (fz - cz)
+    (fx - cx) * (fx - cx) + (fy - cy) * (fy - cy) + (fz - cz) * (fz - cz),
   );
 }
 
@@ -286,7 +286,7 @@ export function getRoomCenter(x: number, y: number, z: number) {
     z,
     x + 1000.0 * Math.cos(degreesToRadians(0.0)),
     y + 1000.0 * Math.sin(degreesToRadians(0.0)),
-    z
+    z,
   );
 
   const pt2 = rayCastLine(
@@ -295,7 +295,7 @@ export function getRoomCenter(x: number, y: number, z: number) {
     z,
     x + 1000.0 * Math.cos(degreesToRadians(120.0)),
     y + 1000.0 * Math.sin(degreesToRadians(120.0)),
-    z
+    z,
   );
 
   const pt3 = rayCastLine(
@@ -304,7 +304,7 @@ export function getRoomCenter(x: number, y: number, z: number) {
     z,
     x + 1000.0 * Math.cos(degreesToRadians(-120.0)),
     y + 1000.0 * Math.sin(degreesToRadians(-120.0)),
-    z
+    z,
   );
 
   if (!pt1 || !pt2 || !pt3) return -1.0;
