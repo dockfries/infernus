@@ -1,3 +1,10 @@
+## [0.11.0-beta.3](https://github.com/dockfries/infernus/compare/v0.11.0-beta.2...v0.11.0-beta.3) (2024-2-19)
+
+
+### Bug Fixes
+
+* **core:** textdraw setTextSize, isVisibleForPlayer not correctly call ([c2dad16](https://github.com/dockfries/infernus/commit/c2dad165a79fed90fb428f7d02a8ba61e08595b2))
+
 ## [0.11.0-beta.2](https://github.com/dockfries/infernus/compare/v0.11.0-beta.1...v0.11.0-beta.2) (2024-2-18)
 
 
