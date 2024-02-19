@@ -240,7 +240,9 @@ export class TextDraw {
   }
   setTextSize(x: number, y: number): void | this {
     if (this.id === -1) return TextDraw.beforeCreateWarn("set TextSize");
-    w.TextDrawTextSize(this.id, x, y);
+    const { player } = this.sourceInfo;
+    if (player) w.PlayerTextDrawTextSize(player.id, this.id, x, y);
+    else w.TextDrawTextSize(this.id, x, y);
     return this;
   }
   useBox(use: boolean): void | this {
@@ -301,8 +303,13 @@ export class TextDraw {
     if (p) return IsValidPlayerTextDraw(p.id, this.id);
     return IsValidTextDraw(this.id);
   }
-  isVisibleForPlayer(player: Player): boolean {
+  isVisibleForPlayer(player?: Player): boolean {
     if (this.id === -1) return false;
+
+    const { player: p } = this.sourceInfo;
+    if (p) return w.IsPlayerTextDrawVisible(p.id, this.id);
+
+    if (!player) return false;
     return IsTextDrawVisibleForPlayer(player.id, this.id);
   }
   getString(): string {
