@@ -26,7 +26,7 @@ export default [
     ],
     plugins: [
       del({ targets: outputPath + "/*" }),
-      esbuild({ minify: true }),
+      esbuild({ target: "node16.13", minify: true }),
       typescriptPaths({ preserveExtensions: true }),
       externals(),
       json(),
