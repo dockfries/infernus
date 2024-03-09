@@ -37,11 +37,27 @@ export const [onCheckResponse] = defineEvent({
   },
 });
 
+export const [onLocaleChange, triggerOnLocaleChange] = defineEvent({
+  name: "OnPlayerLocaleChange",
+  isNative: false,
+  beforeEach(player: Player, newLocale: string, oldLocale: string) {
+    return { player, newLocale, oldLocale };
+  },
+});
+
+export const [onCharsetChange, triggerOnCharsetChange] = defineEvent({
+  name: "OnPlayerCharsetChange",
+  isNative: false,
+  beforeEach(player: Player, newCharset: string, oldCharset: string) {
+    return { player, newCharset, oldCharset };
+  },
+});
+
 export class Player {
   static readonly players = new Map<number, Player>();
 
-  charset = "ISO-8859-1";
-  locale = "en_US";
+  private _charset = "ISO-8859-1";
+  private _locale = "en_US";
 
   lastDrunkLevel = 0;
   lastFps = 0;
@@ -51,6 +67,26 @@ export class Player {
   isPaused = false;
 
   isRecording = false;
+
+  get charset() {
+    return this._charset;
+  }
+
+  set charset(newCharset: string) {
+    const oldCharset = this._charset;
+    this._charset = newCharset;
+    triggerOnCharsetChange(this, newCharset, oldCharset);
+  }
+
+  get locale() {
+    return this._locale;
+  }
+
+  set locale(newLocale: string) {
+    const oldLocale = this._locale;
+    this._locale = newLocale;
+    triggerOnLocaleChange(this, newLocale, oldLocale);
+  }
 
   constructor(public readonly id: number) {}
 

@@ -21,6 +21,14 @@ export const [onResume, triggerOnResume] = defineEvent({
   },
 });
 
+export const [onFpsUpdate, triggerOnFpsUpdate] = defineEvent({
+  name: "OnPlayerFpsUpdate",
+  isNative: false,
+  beforeEach(player: Player, newFps: number, oldFps: number) {
+    return { player, newFps, oldFps };
+  },
+});
+
 onConnect(({ next }) => {
   if (!pauseChecker && Player.getInstances().length) {
     pauseChecker = setInterval(() => {
@@ -64,8 +72,14 @@ function fpsHeartbeat(player: Player) {
     }
 
     player.lastUpdateFpsTick = now;
-    player.lastFps = player.lastDrunkLevel - nowDrunkLevel - 1;
+
+    const oldFps = player.lastFps;
+    const newFps = player.lastDrunkLevel - nowDrunkLevel - 1;
+
+    player.lastFps = newFps;
     player.lastDrunkLevel = nowDrunkLevel;
+
+    triggerOnFpsUpdate(player, newFps, oldFps);
   }
 }
 

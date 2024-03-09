@@ -1,4 +1,4 @@
-import { onPause, onResume } from "./checker";
+import { onPause, onResume, onFpsUpdate } from "./checker";
 import type { CmdBusCallback, CommandErrors } from "./command";
 import {
   CmdBus,
@@ -30,7 +30,7 @@ import {
 } from "./event";
 
 import { Dialog, onDialogResponse } from "./dialog";
-import { onCheckResponse } from "./entity";
+import { onCharsetChange, onLocaleChange, onCheckResponse } from "./entity";
 
 export { Player } from "./entity";
 
@@ -64,6 +64,9 @@ export const PlayerEvent = Object.freeze({
   onCommandText: CmdBus.on,
   offCommandText: CmdBus.off,
   onDialogResponse,
+  onLocaleChange,
+  onCharsetChange,
+  onFpsUpdate,
 });
 
 export { Dialog };
