@@ -105,72 +105,96 @@ export class TextDraw {
     this._id = -1;
     return this;
   }
-  setFont(style: 0 | 1 | 2 | 3 | TextDrawFontsEnum): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set font");
+  setFont(style: 0 | 1 | 2 | 3 | TextDrawFontsEnum) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set font");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawFont(player.id, this.id, style);
     else w.TextDrawFont(this.id, style);
     return this;
   }
-  setColor(color: string | number): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set color");
+  setColor(color: string | number) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set color");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawColor(player.id, this.id, color);
     else w.TextDrawColor(this.id, color);
     return this;
   }
-  setBoxColors(color: string | number): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set box color");
+  setBoxColors(color: string | number) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set box color");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawBoxColor(player.id, this.id, color);
     else w.TextDrawBoxColor(this.id, color);
     return this;
   }
-  setBackgroundColors(color: string | number): void | this {
-    if (this.id === -1)
-      return TextDraw.beforeCreateWarn("set background color");
+  setBackgroundColors(color: string | number) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set background color");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawBackgroundColor(player.id, this.id, color);
     else w.TextDrawBackgroundColor(this.id, color);
     return this;
   }
-  setAlignment(alignment: TextDrawAlignEnum): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set alignment");
+  setAlignment(alignment: TextDrawAlignEnum) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set alignment");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawAlignment(player.id, this.id, alignment);
     else w.TextDrawAlignment(this.id, alignment);
     return this;
   }
-  setLetterSize(x: number, y: number): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set letter size");
+  setLetterSize(x: number, y: number) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set letter size");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawLetterSize(player.id, this.id, x, y);
     else w.TextDrawLetterSize(this.id, x, y);
     return this;
   }
-  setOutline(size: number): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set outline model");
-    if (size < 0) return logger.warn("[TextDraw]: Invalid outline value");
+  setOutline(size: number) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set outline model");
+      return this;
+    }
+    if (size < 0) {
+      logger.warn("[TextDraw]: Invalid outline value");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawSetOutline(player.id, this.id, size);
     else w.TextDrawSetOutline(this.id, size);
     return this;
   }
-  setPreviewModel(modelIndex: number): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set preview model");
+  setPreviewModel(modelIndex: number) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set preview model");
+      return this;
+    }
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawSetPreviewModel(player.id, this.id, modelIndex);
     else w.TextDrawSetPreviewModel(this.id, modelIndex);
     return this;
   }
-  setPreviewRot(
-    fRotX: number,
-    fRotY: number,
-    fRotZ: number,
-    fZoom = 1,
-  ): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set preview rot");
+  setPreviewRot(fRotX: number, fRotY: number, fRotZ: number, fZoom = 1) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set preview rot");
+      return this;
+    }
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
     if (player)
@@ -185,8 +209,11 @@ export class TextDraw {
     else w.TextDrawSetPreviewRot(this.id, fRotX, fRotY, fRotZ, fZoom);
     return this;
   }
-  setPreviewVehColors(color1: string, color2: string): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set preview veh col");
+  setPreviewVehColors(color1: string, color2: string) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set preview veh col");
+      return this;
+    }
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
     if (player)
@@ -199,32 +226,49 @@ export class TextDraw {
     else w.TextDrawSetPreviewVehicleColors(this.id, color1, color2);
     return this;
   }
-  setProportional(set = true): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set Proportional");
+  setProportional(set = true) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set Proportional");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawSetProportional(player.id, this.id, set);
     else w.TextDrawSetProportional(this.id, set);
     return this;
   }
-  setSelectable(set: boolean): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set Selectable");
+  setSelectable(set: boolean) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set Selectable");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawSetSelectable(player.id, this.id, set);
     else w.TextDrawSetSelectable(this.id, set);
     return this;
   }
-  setShadow(size: number): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set shadow");
-    if (size < 0) return logger.warn("[TextDraw]: Invalid shadow value");
+  setShadow(size: number) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set shadow");
+      return this;
+    }
+    if (size < 0) {
+      logger.warn("[TextDraw]: Invalid shadow value");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawSetShadow(player.id, this.id, size);
     else w.TextDrawSetShadow(this.id, size);
     return this;
   }
-  setString(text: string, player?: Player): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set string");
-    if (text.length === 0 || text.length > 1024)
-      return logger.warn("[TextDraw]: Invalid text length");
+  setString(text: string, player?: Player) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set string");
+      return this;
+    }
+    if (text.length === 0 || text.length > 1024) {
+      logger.warn("[TextDraw]: Invalid text length");
+      return this;
+    }
     const { player: _player } = this.sourceInfo;
     // not-global
     if (_player) {
@@ -238,15 +282,21 @@ export class TextDraw {
     }
     return this;
   }
-  setTextSize(x: number, y: number): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set TextSize");
+  setTextSize(x: number, y: number) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set TextSize");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawTextSize(player.id, this.id, x, y);
     else w.TextDrawTextSize(this.id, x, y);
     return this;
   }
-  useBox(use: boolean): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set TextSize");
+  useBox(use: boolean) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set TextSize");
+      return this;
+    }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawUseBox(player.id, this.id, use);
     else w.TextDrawUseBox(this.id, use);
@@ -256,47 +306,63 @@ export class TextDraw {
     logger.warn(`[TextDraw]: Unable to ${msg} before create`);
   }
   // player's textdraw should be shown / hidden only for whom it is created.
-  show(player?: Player): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("show");
+  show(player?: Player) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("show");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (p) w.PlayerTextDrawShow(p.id, this.id);
     else {
       if (player) w.TextDrawShowForPlayer(player.id, this.id);
-      else return logger.warn("[TextDraw]: invalid player for show");
+      else {
+        logger.warn("[TextDraw]: invalid player for show");
+        return this;
+      }
     }
     return this;
   }
-  hide(player?: Player): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("hide");
+  hide(player?: Player) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("hide");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (p) w.PlayerTextDrawHide(p.id, this.id);
     else {
       if (player) w.TextDrawHideForPlayer(player.id, this.id);
-      else return logger.warn("[TextDraw]: invalid player for hide");
+      else {
+        logger.warn("[TextDraw]: invalid player for hide");
+        return this;
+      }
     }
     return this;
   }
-  showAll(): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("show");
+  showAll() {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("show");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (!p) {
       w.TextDrawShowForAll(this.id);
       return this;
     }
-    return logger.warn(
-      "[TextDraw]: player's textdraw should not be show for all.",
-    );
+    logger.warn("[TextDraw]: player's textdraw should not be show for all.");
+    return this;
   }
-  hideAll(): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("hideAll");
+  hideAll() {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("hideAll");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (!p) {
       w.TextDrawHideForAll(this.id);
       return this;
     }
-    return logger.warn(
-      "[TextDraw]: player's textdraw should not be hide for all.",
-    );
+    logger.warn("[TextDraw]: player's textdraw should not be hide for all.");
+    return this;
   }
   isValid(): boolean {
     const p = this.sourceInfo.player;
@@ -318,8 +384,11 @@ export class TextDraw {
     if (p) return PlayerTextDrawGetString(p.id, this.id);
     return TextDrawGetString(this.id);
   }
-  setPos(fX: number, fY: number): void | this {
-    if (this.id === -1) return TextDraw.beforeCreateWarn("set position");
+  setPos(fX: number, fY: number) {
+    if (this.id === -1) {
+      TextDraw.beforeCreateWarn("set position");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (p) PlayerTextDrawSetPos(p.id, this.id, fX, fY);
     else TextDrawSetPos(this.id, fX, fY);

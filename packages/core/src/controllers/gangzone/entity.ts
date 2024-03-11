@@ -71,118 +71,132 @@ export class GangZone {
     this._id = -1;
   }
 
-  showForAll(color: string | number): void | this {
-    if (this.id === -1)
-      return logger.warn(
-        "[GangZone]: Unable to show the gangzone before create",
-      );
+  showForAll(color: string | number) {
+    if (this.id === -1) {
+      logger.warn("[GangZone]: Unable to show the gangzone before create");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (!p) {
       w.GangZoneShowForAll(this.id, color);
       return this;
     }
-    return logger.warn(
-      "[GangZone]: player's gangzone should not be show for all.",
-    );
+    logger.warn("[GangZone]: player's gangzone should not be show for all.");
+    return this;
   }
 
-  showForPlayer(color: string | number, player?: Player): void | this {
-    if (this.id === -1)
-      return logger.warn(
-        "[GangZone]: Unable to show the gangzone before create",
-      );
+  showForPlayer(color: string | number, player?: Player) {
+    if (this.id === -1) {
+      logger.warn("[GangZone]: Unable to show the gangzone before create");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneShow(p.id, this.id, rgba(color));
     else {
       if (player) w.GangZoneShowForPlayer(player.id, this.id, color);
-      else return logger.warn("[GangZone]: invalid player for show");
+      else {
+        logger.warn("[GangZone]: invalid player for show");
+        return this;
+      }
     }
     return this;
   }
 
-  hideForAll(): void | this {
-    if (this.id === -1)
-      return logger.warn(
-        "[GangZone]: Unable to hide the gangzone before create",
-      );
+  hideForAll() {
+    if (this.id === -1) {
+      logger.warn("[GangZone]: Unable to hide the gangzone before create");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (!p) {
       w.GangZoneHideForAll(this.id);
       return this;
     }
-    return logger.warn(
-      "[GangZone]: player's gangzone should not be hide for all.",
-    );
+    logger.warn("[GangZone]: player's gangzone should not be hide for all.");
+    return this;
   }
 
-  hideForPlayer(player?: Player): void | this {
-    if (this.id === -1)
-      return logger.warn(
-        "[GangZone]: Unable to hide the gangzone before create",
-      );
+  hideForPlayer(player?: Player) {
+    if (this.id === -1) {
+      logger.warn("[GangZone]: Unable to hide the gangzone before create");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneHide(p.id, this.id);
     else {
       if (player) w.GangZoneHideForPlayer(player.id, this.id);
-      else return logger.warn("[GangZone]: invalid player for hide");
+      else {
+        logger.warn("[GangZone]: invalid player for hide");
+        return this;
+      }
     }
     return this;
   }
 
-  flashForAll(flashColor: string | number): void | this {
-    if (this.id === -1)
-      return logger.warn(
-        "[GangZone]: Unable to flash the gangzone before create",
-      );
+  flashForAll(flashColor: string | number) {
+    if (this.id === -1) {
+      logger.warn("[GangZone]: Unable to flash the gangzone before create");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (!p) {
       w.GangZoneFlashForAll(this.id, flashColor);
       return this;
     }
-    return logger.warn(
-      "[GangZone]: player's gangzone should not be flash for all.",
-    );
+    logger.warn("[GangZone]: player's gangzone should not be flash for all.");
+    return this;
   }
 
-  flashForPlayer(player: Player, flashColor: string | number): void | this {
-    if (this.id === -1)
-      return logger.warn(
-        "[GangZone]: Unable to flash the gangzone before create",
-      );
+  flashForPlayer(player: Player, flashColor: string | number) {
+    if (this.id === -1) {
+      logger.warn("[GangZone]: Unable to flash the gangzone before create");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneFlash(p.id, this.id, rgba(flashColor));
     else {
       if (player) w.GangZoneFlashForPlayer(player.id, this.id, flashColor);
-      else return logger.warn("[GangZone]: invalid player for flash");
+      else {
+        logger.warn("[GangZone]: invalid player for flash");
+        return this;
+      }
     }
     return this;
   }
 
-  stopFlashForAll(): void | this {
-    if (this.id === -1)
-      return logger.warn(
+  stopFlashForAll() {
+    if (this.id === -1) {
+      logger.warn(
         "[GangZone]: Unable to stop flash the gangzone before create",
       );
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (!p) {
       w.GangZoneStopFlashForAll(this.id);
       return this;
     }
-    return logger.warn(
+    logger.warn(
       "[GangZone]: player's gangzone should not be stop flash for all.",
     );
+    return this;
   }
 
-  stopFlashForPlayer(player: Player): void | this {
-    if (this.id === -1)
-      return logger.warn(
+  stopFlashForPlayer(player: Player) {
+    if (this.id === -1) {
+      logger.warn(
         "[GangZone]: Unable to stop flash the gangzone before create",
       );
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneStopFlash(p.id, this.id);
     else {
       if (player) w.GangZoneStopFlashForPlayer(player.id, this.id);
-      else return logger.warn("[GangZone]: invalid player for flash");
+      else {
+        logger.warn("[GangZone]: invalid player for flash");
+        return this;
+      }
     }
     return this;
   }
@@ -239,9 +253,11 @@ export class GangZone {
     return w.GangZoneGetPos(this.id);
   }
 
-  useCheck(toggle: boolean): void | this {
-    if (this.id === -1)
-      return logger.warn("[GangZone]: Unable to use check before create");
+  useCheck(toggle: boolean) {
+    if (this.id === -1) {
+      logger.warn("[GangZone]: Unable to use check before create");
+      return this;
+    }
     const p = this.sourceInfo.player;
     if (p) w.UsePlayerGangZoneCheck(p.id, this.id, toggle);
     else w.UseGangZoneCheck(this.id, toggle);
