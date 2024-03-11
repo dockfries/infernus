@@ -1,3 +1,11 @@
+## [0.11.0-beta.5](https://github.com/dockfries/infernus/compare/v0.11.0-beta.3...v0.11.0-beta.5) (2024-3-11)
+
+
+### Features
+
+* **core:** gangzone & textdraw chain call always return this ([456a394](https://github.com/dockfries/infernus/commit/456a394524c26486c91872628c321c483dfcb9ef))
+* **core:** playerEvent onFpsUpdate, onLocale/CharsetChange ([b0451a7](https://github.com/dockfries/infernus/commit/b0451a7ff5e19b752e3427e1548847337976d52d))
+
 ## [0.11.0-beta.3](https://github.com/dockfries/infernus/compare/v0.11.0-beta.2...v0.11.0-beta.3) (2024-2-19)
 
 
