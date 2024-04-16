@@ -1,0 +1,38 @@
+{
+  "name": "@infernus/cef",
+  "version": "0.0.1",
+  "description": "A wrapper of the popular samp-cef plugin for samp-node.",
+  "keywords": [
+    "omp",
+    "samp"
+  ],
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/cef#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/infernus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/infernus.git"
+  },
+  "license": "MIT",
+  "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs"
+    }
+  },
+  "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
+  "types": "dist/bundle.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {},
+  "devDependencies": {
+    "@infernus/core": "workspace:^"
+  },
+  "peerDependencies": {
+    "@infernus/core": "workspace:^"
+  }
+}

@@ -120,7 +120,7 @@ export function defineEvent<T extends object>(options: Options<T>) {
     return off;
   }
 
-  const h = [pusher, trigger] as [typeof pusher, typeof trigger];
+  const h = [pusher, trigger] as const;
 
   if (isNative) {
     identifier && samp.registerEvent(name, identifier);
