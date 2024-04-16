@@ -12,8 +12,28 @@ pnpm add @infernus/core @infernus/cef
 
 ## Example
 
+Please refer to the [documentation](https://github.com/Pycckue-Bnepeg/samp-cef/wiki/Working-with-events) of the samp-cef plugin.
+
+```c
+#include <open.mp>
+#include <samp-node>
+
+#include <streamer>
+
+#include <polyfill/i18n>
+
+#include <cef>
+
+forward OnLogin(player_id, const password[]);
+public OnLogin(player_id, const password[]) {
+  // transfer to our samp.on
+  return SAMPNode_CallEvent('OnPlayerCefLogin', player_id, password)
+}
+```
+
 ```ts
-import { CefEvent } from "@infernus/cef";
+import { defineEvent } from "@infernus/core";
+import { Cef, CefEvent } from "@infernus/cef";
 
 CefEvent.onInitialize(({ player, success, next }) => {
   if (!player) return next();
@@ -33,6 +53,39 @@ CefEvent.onInitialize(({ player, success, next }) => {
     );
   }
 
+  return next();
+});
+
+CefEvent.onBrowserCreated(({ cef, statusCode }) => {
+  if (cef.browserId === 1) {
+    if (statusCode !== 200) {
+      // fallback to dialogs ...
+      return;
+    }
+    Cef.subscribe("loginpage:login", "OnLogin");
+  }
+});
+
+const [onPlayerCefLogin] = defineEvent({
+  name: "OnPlayerCefLogin",
+  isNative: false,
+  identifier: "is",
+  beforeEach(playerId: number, password: string) {
+    return { playerId, password };
+  },
+});
+
+onPlayerCefLogin(({ playerId, password, next }) => {
+  // get a user password and compare it with a passed string
+  const success = comparePlayerPassword(playerId, password);
+  if (success) {
+    // send a response status to the player
+    // Cef.emitEvent(playerId, "someevent", 0, 25.51, "hellow!");
+    // you no longer need CEFINT, CEFFLOAT, CEFSTR !!!
+    Cef.emitEvent(playerId, "loginpage:response", 1);
+    // your code when user is logged in
+    OnSuccessLogin(playerId);
+  }
   return next();
 });
 ```
