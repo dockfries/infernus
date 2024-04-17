@@ -35,10 +35,10 @@ export class Cef {
     // it can be used by multiple players with same id
     // if not given, generate a random id
     if (browserId) {
-      if (!Cef.instances.has(this.playerId + "_" + browserId)) {
-        Cef.instances.set(this.playerId + "_" + browserId, this);
-      }
+      const cef = Cef.instances.get(this.playerId + "_" + browserId);
+      if (cef) return cef;
       this.browserId = browserId;
+      Cef.instances.set(this.playerId + "_" + browserId, this);
     } else {
       let randId = -1;
       while (
