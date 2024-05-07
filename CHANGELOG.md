@@ -1,3 +1,11 @@
+## [0.11.0-beta.6](https://github.com/dockfries/infernus/compare/v0.11.0-beta.5...v0.11.0-beta.6) (2024-05-07)
+
+
+### Features
+
+* **cef:** not sure if it works properly ([d670e79](https://github.com/dockfries/infernus/commit/d670e792539dc1a59b5f06105186ce7538eacc5c))
+* **core:** sendRconCommand support charset ([9623b00](https://github.com/dockfries/infernus/commit/9623b00d2dc6140310e01e1787d0912e9487daa1))
+
 ## [0.11.0-beta.5](https://github.com/dockfries/infernus/compare/v0.11.0-beta.3...v0.11.0-beta.5) (2024-3-11)
 
 
