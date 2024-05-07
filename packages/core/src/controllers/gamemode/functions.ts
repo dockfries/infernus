@@ -11,6 +11,7 @@ import * as w from "core/wrapper/native";
 
 import { I18n } from "../i18n";
 import { logger } from "../../logger";
+import { SendRconCommand } from "core/utils/helperUtils";
 
 export default {
   use(plugin: IFilterScript, ...options: Array<any>) {
@@ -50,7 +51,7 @@ export default {
   },
   getWorldTime: w.GetWorldTime,
   setTeamCount: w.SetTeamCount,
-  sendRconCommand: w.SendRconCommand,
+  sendRconCommand: SendRconCommand,
   addPlayerClass: w.AddPlayerClass,
   addPlayerClassEx: w.AddPlayerClassEx,
   createExplosion(

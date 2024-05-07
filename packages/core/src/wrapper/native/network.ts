@@ -78,10 +78,6 @@ export const UnBlockIpAddress = (ip_address: string): number => {
   return samp.callNative("UnBlockIpAddress", "s", ip_address);
 };
 
-export const SendRconCommand = (command: string): number => {
-  return samp.callNative("SendRconCommand", "s", command);
-};
-
 export const gpci = (playerId: number, charset: string): string => {
   const [ret] = samp.callNative("gpci", "iAi", playerId, 41);
   return I18n.decodeFromBuf(I18n.getValidStr(ret), charset);

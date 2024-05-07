@@ -116,6 +116,11 @@ export const BanEx = (
   return samp.callNative("BanEx", "ia", playerId, buf);
 };
 
+export const SendRconCommand = (command: string, charset = "utf8"): number => {
+  const [flag, processCommand] = processMsg(command, charset);
+  return samp.callNative("SendRconCommand", flag, processCommand);
+};
+
 export const CreateDynamic3DTextLabel = (
   charset: string,
   text: string,
