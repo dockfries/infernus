@@ -4,7 +4,7 @@ import { pkgDir, rootPkgJsonPath } from "./share.js";
 
 function syncCoreVersionToRoot() {
   const bumpedVersion = JSON.parse(
-    fs.readFileSync(path.resolve(pkgDir, "core", "package.json"), "utf-8")
+    fs.readFileSync(path.resolve(pkgDir, "core", "package.json"), "utf-8"),
   ).version;
 
   const rootPkgJson = JSON.parse(fs.readFileSync(rootPkgJsonPath, "utf-8"));
@@ -13,7 +13,7 @@ function syncCoreVersionToRoot() {
   fs.writeFileSync(
     rootPkgJsonPath,
     JSON.stringify(rootPkgJson, null, 2),
-    "utf-8"
+    "utf-8",
   );
 }
 

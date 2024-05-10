@@ -33,7 +33,7 @@ function releasePkg(isReady) {
     {
       cwd: pkgPath,
       stdio: "inherit",
-    }
+    },
   );
 }
 

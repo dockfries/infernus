@@ -15,10 +15,10 @@
     "docs:preview": "vitepress preview docs"
   },
   "lint-staged": {
-    "*.ts": [
+    "*.{ts,js}": [
       "eslint --fix"
     ],
-    "*.{ts,json,yaml}": [
+    "*.{ts,js,json,yaml}": [
       "prettier --write"
     ]
   },
