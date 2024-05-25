@@ -15,12 +15,66 @@ The project uses `pnpm` to manage dependencies, so you need to install [pnpm](ht
 You can easily create a project according to the command line prompts.
 
 ```sh
-pnpm create @infernus/app
+pnpm dlx @infernus/create-app
 ```
 
 ::: tip
-Because the `github https api` is called inside the scaffolding, if your network environment is not good, you may not be able to create it smoothly. In this case, you can refer to [Manual](#manual).
+Because the CLI internally calls the `github HTTP API`, if your network environment is poor, you may not be able to create the app successfully. In this case, you can refer to [Manual](#manual).
+
+[Click here to learn about API rate limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-primary-rate-limits)
 :::
+
+#### Example
+
+```sh
+#Install the CLI tool globally
+pnpm add @infernus/create-app -g
+
+# Create a project
+infernus create <appName>
+
+# Install one or more dependencies, 
+# all operations' dependencies can be followed by a version number, 
+# it is similar to the syntax of npm packages.
+infernus add openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
+# Server environment installation dependencies (not handling inc files)
+infernus add samp-incognito/samp-streamer-plugin@^2.9.6 -p
+
+# Install all existing dependencies, similar to sampctl ensure
+infernus install
+
+# Uninstall one or more dependencies
+infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
+
+# Update a dependency (update global cache and apply to current directory)
+infernus update openmultiplayer/open.mp
+
+# Update a dependency to a specific version
+infernus update openmultiplayer/open.mp@^1.2.0.2670
+
+# Clear the lowest matching version of a single global dependency
+infernus cache clean samp-incognito/samp-streamer-plugin@^2.9.6
+# Clear all versions of a single global dependency
+infernus cache clean samp-incognito/samp-streamer-plugin
+# Clear all global cache dependencies
+infernus cache clean -a
+
+# Set a GitHub token to resolve API rate limit issues (on-demand).
+# Note: environment variable gh_token will take precedence over the global config.
+infernus config gh_token <your_github_token>
+
+# Display global configuration information
+infernus config -l
+
+# Delete a global configuration
+infernus config gh_token
+```
+
+#### Feature
+
+1. It only handles the most basic plugin dependency management, and does not manage pure `include` library management.
+2. Installed packages are cached in `~/infernus/dependencies`, and subsequent installations of the same version are copied directly instead of downloaded.
+3. The configuration file is located at `~/infernus/config.json`, and currently only has a `gh_token` configuration item to solve the frequency limit of the `github api`.
 
 ### Manual
 

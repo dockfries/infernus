@@ -15,12 +15,66 @@
 根据命令行的提示您可以轻松的创建一个项目。
 
 ```sh
-pnpm create @infernus/app
+pnpm dlx @infernus/create-app
 ```
 
 ::: tip
 由于脚手架内部调用了 `github https api`，如果您网络环境条件不佳，可能无法顺利创建，此时您可以参考[手动创建](#手动)。
+
+[点此了解API频率限制](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-primary-rate-limits)
 :::
+
+`@infernus/create-app` 是一个类似于`sampctl`的工具，尝试通过解析`pawn.json`规则来管理包依赖，你可以用它来简单的管理插件或是`open.mp`基座依赖。
+
+#### 示例
+
+```sh
+#全局安装cli工具
+pnpm add @infernus/create-app -g
+
+# 创建一个项目
+infernus create <appName>
+
+# 安装一个或多个依赖，所有操作的依赖后面都可以跟版本号，它类似于npm包的语法
+infernus add openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
+# 服务端环境安装依赖(不处理inc文件)
+infernus add samp-incognito/samp-streamer-plugin@^2.9.6 -p
+
+# 安装现有所有依赖，类似于sampctl ensure
+infernus install
+
+# 卸载一个或多个依赖
+infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
+
+# 更新一个依赖（更新全局缓存并应用到当前目录）
+infernus update openmultiplayer/open.mp
+
+# 更新一个依赖到指定版本
+infernus update openmultiplayer/open.mp@^1.2.0.2670
+
+# 清理全局单个依赖的最低匹配版本
+infernus cache clean samp-incognito/samp-streamer-plugin@^2.9.6
+# 清理全局单个依赖的所有版本
+infernus cache clean samp-incognito/samp-streamer-plugin
+# 清理所有全局缓存依赖
+infernus cache clean -a
+
+# 设置一个github token来解决api rate limit问题(按需)
+# 注：环境变量的gh_token将优先于全局配置
+infernus config gh_token <your_github_token>
+
+# 显示全局配置信息
+infernus config -l
+
+# 删除一个全局配置
+infernus config gh_token
+```
+
+#### 特性
+
+1. 只负责最基础的插件依赖管理，不负责纯`include`库的管理。
+2. 安装的包缓存在`~/infernus/dependencies`下，相同版本后续安装直接复制而不是下载
+3. 配置文件在`~/infernus/config.json`，目前只有一个`gh_token`配置项来解决`github api`频率限制
 
 ### 手动
 
