@@ -28,12 +28,16 @@ import type {
   RemoveDepsOptions,
   SetGetConfigOptions,
 } from "./types";
-import { readGlobalConfig, writeGlobalConfig } from "./utils/config";
+import {
+  readGlobalConfig,
+  readOmpConfig,
+  writeGlobalConfig,
+  writeOmpConfig,
+} from "./utils/config";
 
 const cli = yargs(hideBin(process.argv));
 
 let appGeneratePath = "";
-let configJsonPath = "";
 
 const currentFilePath = fileURLToPath(import.meta.url);
 
@@ -89,7 +93,7 @@ function changePkgName(projectName: string) {
 }
 
 async function changeConfigJson(password: string, isRakNet: boolean) {
-  const configJson = await fs.readJson(configJsonPath);
+  const configJson = (await readOmpConfig()) || {};
 
   configJson.rcon.password = password;
 
@@ -97,7 +101,7 @@ async function changeConfigJson(password: string, isRakNet: boolean) {
     configJson.pawn.main_scripts = ["polyfill_raknet 1"];
   }
 
-  return fs.writeJSON(configJsonPath, configJson, { spaces: 2 });
+  return writeOmpConfig(configJson);
 }
 
 function initBaseDeps(isRakNet: boolean) {
@@ -112,7 +116,7 @@ function initBaseDeps(isRakNet: boolean) {
   return addDeps(deps);
 }
 
-function generateRandomString(length) {
+function generateRandomString(length: number) {
   return Math.random()
     .toString(36)
     .slice(2, 2 + length);
@@ -183,8 +187,6 @@ async function createApp(args: ArgumentsCamelCase) {
   await fs.ensureDir(appGeneratePath);
 
   process.chdir(appGeneratePath);
-
-  configJsonPath = resolve(appGeneratePath, "config.json");
 
   await initStarter(appName);
 
