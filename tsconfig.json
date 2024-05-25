@@ -19,5 +19,5 @@
     "target": "ESNext",
     "types": ["@sa-mp/node", "@types/node"]
   },
-  "include": ["packages/*/src/*.ts"]
+  "include": ["packages/*/src/**/*.ts"]
 }
