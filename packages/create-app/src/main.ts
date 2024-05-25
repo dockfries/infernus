@@ -255,7 +255,8 @@ function addUpdateBuilder(y: Argv) {
 
 function init() {
   cli
-    .usage("Usage: infernus [command] <options>")
+    .usage("Usage: $0 [command] <options>")
+    .scriptName("infernus")
     .command("create [app-name]", "create a new project", () => {}, createApp)
     .command({
       command: "add [dependencies..]",
