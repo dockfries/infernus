@@ -1,6 +1,6 @@
 {
   "name": "@infernus/create-app",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Command line interface for rapid infernus development",
   "keywords": [
     "omp",
@@ -12,14 +12,12 @@
   "author": "dockfries",
   "type": "module",
   "bin": {
-    "infernus": "dist/index.js"
+    "infernus": "dist/bundle.js"
   },
   "files": [
     "dist"
   ],
-  "scripts": {
-    "dev": "node ./src/index.js"
-  },
+  "scripts": {},
   "dependencies": {
     "@octokit/core": "^6.1.2",
     "axios": "^1.6.8",
