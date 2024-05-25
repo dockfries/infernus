@@ -15,7 +15,7 @@
 根据命令行的提示您可以轻松的创建一个项目。
 
 ```sh
-pnpm dlx @infernus/create-app
+pnpm dlx @infernus/create-app create
 ```
 
 ::: tip

@@ -15,7 +15,7 @@ The project uses `pnpm` to manage dependencies, so you need to install [pnpm](ht
 You can easily create a project according to the command line prompts.
 
 ```sh
-pnpm dlx @infernus/create-app
+pnpm dlx @infernus/create-app create
 ```
 
 ::: tip
@@ -72,7 +72,7 @@ infernus config gh_token
 
 #### Feature
 
-1. It only handles the most basic plugin dependency management, and does not manage pure `include` library management.
+1. It only handles the most basic plugin dependency management, and does not manage pure `include` library.
 2. Installed packages are cached in `~/infernus/dependencies`, and subsequent installations of the same version are copied directly instead of downloaded.
 3. The configuration file is located at `~/infernus/config.json`, and currently only has a `gh_token` configuration item to solve the frequency limit of the `github api`.
 
