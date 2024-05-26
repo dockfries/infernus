@@ -19,15 +19,15 @@ Please refer to the [documentation](https://github.com/Pycckue-Bnepeg/samp-cef/w
 #include <samp-node>
 
 #include <streamer>
+#include <cef>
 
 #include <polyfill/i18n>
-
-#include <cef>
+#include <polyfill/cef>
 
 forward OnLogin(player_id, const password[]);
 public OnLogin(player_id, const password[]) {
   // transfer to our samp.on
-  return SAMPNode_CallEvent('OnPlayerCefLogin', player_id, password)
+  return SAMPNode_CallEvent("OnPlayerCefLogin", player_id, password)
 }
 ```
 
@@ -68,7 +68,6 @@ CefEvent.onBrowserCreated(({ cef, statusCode }) => {
 
 const [onPlayerCefLogin] = defineEvent({
   name: "OnPlayerCefLogin",
-  isNative: false,
   identifier: "is",
   beforeEach(playerId: number, password: string) {
     return { playerId, password };

@@ -1,30 +1,13 @@
 import { DynamicObject, Player, defineEvent } from "@infernus/core";
+import { CefDefault, CefNatives, CefValueType } from "./enums";
+import type { CefOptions, CefExtOptions } from "./interfaces";
+import { patchCefNatives } from "./utils";
 
-export enum CefValueType {
-  STRING,
-  INTEGER,
-  FLOAT,
-}
+export * from "./enums";
 
-export interface CefCommonOptions {
-  player: Player | number;
-  browserId?: number;
-  url: string;
-}
-
-export interface CefOptions extends CefCommonOptions {
-  hidden: boolean;
-  focused: boolean;
-}
-
-export interface CefExtOptions extends CefCommonOptions {
-  texture: string;
-  scale: number;
-}
+export * from "./interfaces";
 
 export class Cef {
-  static readonly MAX_DIST = 50.0;
-  static readonly REF_DIST = 15.0;
   private static readonly MAX_BROWSER_ID = 32767;
   private static readonly instances = new Map<string, Cef>();
   readonly browserId: number = -1;
@@ -56,8 +39,8 @@ export class Cef {
 
     if ("texture" in options) {
       const { texture, scale } = options;
-      samp.callNative(
-        "cef_create_ext_browser",
+      samp.callPublic(
+        "PatchCefCreateExtBrowser",
         "iissi",
         this.playerId,
         this.browserId,
@@ -67,57 +50,45 @@ export class Cef {
       );
     } else {
       const { hidden, focused } = options;
-      samp.callNative(
-        "cef_create_browser",
+      samp.callPublic(
+        "PatchCefCreateBrowser",
         "iisii",
         this.playerId,
         this.browserId,
         url,
-        hidden,
-        focused,
+        +hidden,
+        +focused,
       );
     }
   }
 
   destroy() {
-    const res = samp.callNative(
-      "cef_destroy_browser",
-      "ii",
-      this.playerId,
-      this.browserId,
+    const res = Boolean(
+      patchCefNatives(CefNatives.DestroyBrowser, this.playerId, this.browserId),
     );
     if (res) {
       Cef.instances.delete(this.playerId + "_" + this.browserId);
     }
-    return Boolean(res);
+    return res;
   }
 
   show() {
-    const res = samp.callNative(
-      "cef_hide_browser",
-      "iii",
-      this.playerId,
-      this.browserId,
-      false,
+    const res = Boolean(
+      patchCefNatives(CefNatives.HideBrowser, this.playerId, this.browserId, 0),
     );
-    return Boolean(res);
+    return res;
   }
 
   hide() {
-    const res = samp.callNative(
-      "cef_hide_browser",
-      "iii",
-      this.playerId,
-      this.browserId,
-      true,
+    const res = Boolean(
+      patchCefNatives(CefNatives.HideBrowser, this.playerId, this.browserId, 1),
     );
-    return Boolean(res);
+    return res;
   }
 
   appendToObject(object: DynamicObject | number) {
-    const res = samp.callNative(
-      "cef_append_to_object",
-      "iii",
+    const res = patchCefNatives(
+      CefNatives.AppendToObject,
       this.playerId,
       this.browserId,
       object instanceof DynamicObject ? object.id : object,
@@ -126,9 +97,8 @@ export class Cef {
   }
 
   removeFromObject(object: DynamicObject | number) {
-    const res = samp.callNative(
-      "cef_remove_from_object",
-      "iii",
+    const res = patchCefNatives(
+      CefNatives.RemoveFromObject,
       this.playerId,
       this.browserId,
       object instanceof DynamicObject ? object.id : object,
@@ -137,56 +107,53 @@ export class Cef {
   }
 
   toggleDevTools(enabled: boolean) {
-    const res = samp.callNative(
-      "cef_toggle_dev_tools",
-      "iii",
+    const res = patchCefNatives(
+      CefNatives.ToggleDevTools,
       this.playerId,
       this.browserId,
-      enabled,
+      +enabled,
     );
     return Boolean(res);
   }
 
   setAudioSettings(
-    maxDistance = Cef.MAX_DIST,
-    referenceDistance = Cef.REF_DIST,
+    maxDistance: number = CefDefault.MaxDist,
+    referenceDistance: number = CefDefault.RefDist,
   ) {
-    const res = samp.callNative(
-      "cef_set_audio_settings",
+    const res = samp.callPublic(
+      "PatchCefSetAudioSettings",
       "iiff",
       this.playerId,
       this.browserId,
-      maxDistance,
-      referenceDistance,
+      maxDistance.toFixed(2),
+      referenceDistance.toFixed(2),
     );
     return Boolean(res);
   }
 
   focusBrowser(focused: boolean) {
-    const res = samp.callNative(
-      "cef_focus_browser",
-      "iii",
+    const res = patchCefNatives(
+      CefNatives.FocusBrowser,
       this.playerId,
       this.browserId,
-      focused,
+      +focused,
     );
     return Boolean(res);
   }
 
   alwaysListenKeys(listen: boolean) {
-    const res = samp.callNative(
-      "cef_always_listen_keys",
-      "iii",
+    const res = patchCefNatives(
+      CefNatives.AlwaysListenKeys,
       this.playerId,
       this.browserId,
-      listen,
+      +listen,
     );
     return Boolean(res);
   }
 
   loadUrl(url: string) {
-    const res = samp.callNative(
-      "cef_load_url",
+    const res = samp.callPublic(
+      "PatchCefLoadUrl",
       "iis",
       this.playerId,
       this.browserId,
@@ -196,9 +163,8 @@ export class Cef {
   }
 
   static playerHasPlugin(player: Player | number) {
-    const res = samp.callNative(
-      "cef_player_has_plugin",
-      "i",
+    const res = patchCefNatives(
+      CefNatives.PlayerHasPlugin,
       player instanceof Player ? player.id : player,
     );
     return Boolean(res);
@@ -212,29 +178,35 @@ export class Cef {
     const pid = player instanceof Player ? player.id : player;
     const argsWithType = args
       .map((arg) => {
-        if (typeof arg === "string") return [CefValueType.STRING, arg];
+        if (typeof arg === "string") return [CefValueType.String, arg];
         if (typeof arg === "number") {
           if (Number.isNaN(arg)) {
             throw new Error("samp-cef: NaN is not allowed");
           }
-          if (Number.isInteger(arg)) return [CefValueType.INTEGER, arg];
-          if (arg % 1 !== 0) return [CefValueType.FLOAT, arg];
+          if (Number.isInteger(arg)) return [CefValueType.Integer, arg];
+          if (arg % 1 !== 0) return [CefValueType.Float, arg];
         }
         throw new Error("samp-cef: Unsupported type");
       })
       .flat();
-    const res = samp.callNative(
-      "cef_emit_event",
-      "isa",
+
+    if (argsWithType.length / 2 > 5) {
+      throw new Error("samp-cef: maximum of five parameters can be sent back");
+    }
+
+    const res = samp.callPublic(
+      "PatchCefEmitEvent",
+      "isai",
       pid,
       event,
       argsWithType,
+      argsWithType.length / 2,
     );
     return Boolean(res);
   }
 
   static subscribe(event: string, callbackName: string) {
-    const res = samp.callNative("cef_subscribe", "ss", event, callbackName);
+    const res = samp.callPublic("PatchCefSubscribe", "ss", event, callbackName);
     return Boolean(res);
   }
 
