@@ -4,6 +4,8 @@
 
 A wrapper of the popular [open.mp raknet plugin](https://github.com/katursis/Pawn.RakNet) for samp-node.
 
+**You must use an existing [polyfill](https://github.com/dockfries/infernus-starter/blob/main/gamemodes/polyfill/raknet.inc) or compile the corresponding GameMode based on it before you can use it.**
+
 ## Getting started
 
 ```sh
