@@ -63,7 +63,7 @@ function getConfigPath() {
 }
 
 function getLockPath() {
-  return path.resolve(process.cwd(), "infernus.lock.json");
+  return path.resolve(process.cwd(), "infernus-lock.json");
 }
 
 function getOmpConfigPath() {

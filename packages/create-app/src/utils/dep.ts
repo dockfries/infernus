@@ -511,13 +511,13 @@ export async function addDeps(
       );
     }
 
-    await removeDeps(waitRemoveDeps);
+    await removeDeps(waitRemoveDeps, true);
   }
 
   await installDeps(_deps, isUpdate, isProd);
 }
 
-export async function removeDeps(deps?: string[]) {
+export async function removeDeps(deps?: string[], onlyLockFile = false) {
   if (!deps || !deps.length) return;
 
   const config = await readLocalConfig();
@@ -539,8 +539,10 @@ export async function removeDeps(deps?: string[]) {
   for (const dep of deps) {
     const [depName] = dep.split("@");
 
-    if (depName in config.dependencies) {
-      delete config.dependencies[depName];
+    if (!onlyLockFile) {
+      if (depName in config.dependencies) {
+        delete config.dependencies[depName];
+      }
     }
 
     if (depName in lockFile.dependencies) {
