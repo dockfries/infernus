@@ -1,15 +1,14 @@
-import path from "path";
+import path from "node:path";
 import { createRequire } from "node:module";
-
-const require = createRequire(import.meta.url);
-const { compilerOptions } = require("./tsconfig.json");
-
 import esbuild from "rollup-plugin-esbuild";
 import del from "rollup-plugin-delete";
 import externals from "rollup-plugin-node-externals";
 import dts from "rollup-plugin-dts";
 import { typescriptPaths } from "rollup-plugin-typescript-paths";
 import json from "@rollup/plugin-json";
+
+const require = createRequire(import.meta.url);
+const { compilerOptions } = require("./tsconfig.json");
 
 const packagesDir = path.resolve("./packages");
 const packageDir = path.resolve(packagesDir, process.env.TARGET);

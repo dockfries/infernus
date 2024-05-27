@@ -1,12 +1,12 @@
+import path from "node:path";
+import os from "node:os";
 import axios from "axios";
-import path from "path";
 import HttpsProxyAgent from "https-proxy-agent";
 import fs from "fs-extra";
 import cliProgress from "cli-progress";
 import chalk from "chalk";
 import type { OctokitOptions } from "@octokit/core";
 import { Octokit } from "@octokit/core";
-import os from "node:os";
 import { readGlobalConfig } from "./config";
 
 let delayTry = 500;

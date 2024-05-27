@@ -27,7 +27,7 @@ Because the CLI internally calls the `github HTTP API`, if your network environm
 #### Example
 
 ```sh
-#Install the CLI tool globally
+# Install the CLI tool globally
 pnpm add @infernus/create-app -g
 
 # Create a project
@@ -37,11 +37,14 @@ infernus create <appName>
 # all operations' dependencies can be followed by a version number, 
 # it is similar to the syntax of npm packages.
 infernus add openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
-# Server environment installation dependencies (not handling inc files)
+# production mode install deps (not copy inc files)
 infernus add samp-incognito/samp-streamer-plugin@^2.9.6 -p
 
 # Install all existing dependencies, similar to sampctl ensure
 infernus install
+
+# same as above, production mode install deps (not copy inc files)
+infernus install -p
 
 # Uninstall one or more dependencies
 infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6

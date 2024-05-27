@@ -1,6 +1,6 @@
+import path from "node:path";
 import decompress from "decompress";
 import semver from "semver";
-import path from "node:path";
 import fs from "fs-extra";
 import fg from "fast-glob";
 import inquirer from "inquirer";

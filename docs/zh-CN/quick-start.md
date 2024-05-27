@@ -29,7 +29,7 @@ pnpm dlx @infernus/create-app create
 #### 示例
 
 ```sh
-#全局安装cli工具
+# 全局安装cli工具
 pnpm add @infernus/create-app -g
 
 # 创建一个项目
@@ -37,11 +37,14 @@ infernus create <appName>
 
 # 安装一个或多个依赖，所有操作的依赖后面都可以跟版本号，它类似于npm包的语法
 infernus add openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
-# 服务端环境安装依赖(不处理inc文件)
+# 服务端环境安装依赖(不复制inc文件)
 infernus add samp-incognito/samp-streamer-plugin@^2.9.6 -p
 
 # 安装现有所有依赖，类似于sampctl ensure
 infernus install
+
+# 同上， 但生产模式安装依赖 (不复制inc文件)
+infernus install -p
 
 # 卸载一个或多个依赖
 infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
@@ -89,11 +92,11 @@ git clone git@github.com:dockfries/infernus-starter.git
 cd infernus-starter
 
 # 修改config.json中的rcon密码
-vim config.json # 您不一定需要用vim,任意编辑器都可以
+vim config.json # 您不一定需要用vim，任意编辑器都可以
 
 "rcon": {
   "password": "changeme" # 把changeme换成您自己的密码
-},
+}，
 ```
 
 :::warning
@@ -113,8 +116,8 @@ vim config.json # 您不一定需要用vim,任意编辑器都可以
 
 ```json
   "pawn": {
-    "main_scripts": ["polyfill_raknet 1"],
-  },
+    "main_scripts": ["polyfill_raknet 1"]，
+  }，
 ```
 
 ### 安装依赖并运行
