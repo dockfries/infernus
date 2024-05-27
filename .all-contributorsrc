@@ -8,29 +8,38 @@
       "name": "Carl You",
       "avatar_url": "https://avatars.githubusercontent.com/u/34953768?v=4",
       "profile": "https://github.com/dockfries",
-      "contributions": [
-        "code"
-      ]
+      "contributions": ["code"]
     },
     {
       "login": "Andonrai",
       "name": "Andonrai",
       "avatar_url": "https://avatars.githubusercontent.com/u/45472916?v=4",
       "profile": "https://github.com/Andonrai",
-      "contributions": [
-        "bug"
-      ]
+      "contributions": ["bug"]
     },
     {
       "login": "cha5e369",
       "name": "cha5e369",
       "avatar_url": "https://avatars.githubusercontent.com/u/77559597?v=4",
       "profile": "https://github.com/cha5e369",
-      "contributions": [
-        "bug"
-      ]
+      "contributions": ["bug", "ideas"]
+    },
+    {
+      "login": "Frank441",
+      "name": "Frank441",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79960940?v=4",
+      "profile": "https://github.com/Frank441",
+      "contributions": ["bug"]
+    },
+    {
+      "login": "lyricsdev",
+      "name": "Алексей",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77627599?v=4",
+      "profile": "https://github.com/lyricsdev",
+      "contributions": ["bug"]
     }
   ],
   "linkToUsage": false,
   "commitConvention": "angular"
 }
+
