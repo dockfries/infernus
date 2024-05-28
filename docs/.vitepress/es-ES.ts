@@ -8,7 +8,11 @@ export const es_ES = defineConfig({
 
     sidebar: [
       { base: "/es-ES/", text: "Comenzar", items: sidebarGuide() },
-      { base: "/es-ES/essentials/", text: "Esenciales", items: sidebarEssentials() },
+      {
+        base: "/es-ES/essentials/",
+        text: "Esenciales",
+        items: sidebarEssentials(),
+      },
       { base: "/es-ES/plugins/", text: "Plugins", items: sidebarPlugins() },
     ],
 
@@ -16,6 +20,16 @@ export const es_ES = defineConfig({
       pattern: "https://github.com/dockfries/infernus/edit/main/docs/:path",
       text: "Editar esta página en GitHub",
     },
+
+    darkModeSwitchLabel: "Cambiar apariencia",
+    docFooter: {
+      next: "Siguiente",
+      prev: "Anterior",
+    },
+    lastUpdatedText: "Última actualización",
+    outlineTitle: "Navegación de la página",
+    returnToTopLabel: "Volver al principio",
+    sidebarMenuLabel: "Menú",
   },
 });
 
@@ -74,23 +88,22 @@ function sidebarPlugins(): DefaultTheme.SidebarItem[] {
 }
 
 export const search = {
-    "es-ES": {
-      translations: {
-        button: {
-          buttonText: "Buscar documentos",
-          buttonAriaLabel: "Buscar documentos",
-        },
-        modal: {
-          noResultsText: "No se encontraron resultados relevantes",
-          resetButtonTitle: "Borrar condiciones de consulta",
-          displayDetails: "Ver lista detallada",
-          footer: {
-            selectText: "elegir",
-            closeText: "cerrar",
-            navigateText: "cambiar",
-          },
+  "es-ES": {
+    translations: {
+      button: {
+        buttonText: "Buscar en la documentación",
+        buttonAriaLabel: "Buscar en la documentación",
+      },
+      modal: {
+        noResultsText: "No se encontraron resultados",
+        resetButtonTitle: "Restablecer consulta",
+        displayDetails: "Ver lista de detalles",
+        footer: {
+          selectText: "Seleccionar",
+          closeText: "Cerrar",
+          navigateText: "Navegar",
         },
       },
     },
-  };
-  
+  },
+};
