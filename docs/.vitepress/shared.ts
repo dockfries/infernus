@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
 import { search as zhSearch } from "./zh-CN";
+import { search as esSearch } from "./es-ES";
 
 export const shared = defineConfig({
   base: "/infernus/",
@@ -14,7 +15,7 @@ export const shared = defineConfig({
     search: {
       provider: "local",
       options: {
-        locales: { ...zhSearch },
+        locales: { ...zhSearch, ...esSearch },
       },
     },
   },
