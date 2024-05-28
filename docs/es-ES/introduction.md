@@ -16,25 +16,25 @@ Varias limitaciones impactan significativamente la experiencia de desarrollo. **
 
 ### Ecosistema de SAMP-NODE
 
-Existing libraries developed in `Pawn`, such as `fcnpc`, `colandreas`, `nexac`, and other well-known libraries, may present two situations if your project depends on them: **nobody maintenance or incompatible**.
+Existiendo librerías desarrolladas en `Pawn`, tales como `fcnpc`, `colandreas`, `nexac` y otras también conocidas, pueden presentarse dos situaciones en tu proyecto si dependes de ellas: **mantenimiento inexistente o incompatible**.
 
-Since `samp-node` plugin development is based on `samp` and not `omp`, certain plugin ecosystems are not compatible. For example, accessing certain plugins' native functions, such as `raknet`, is not possible.
+Teniendo en cuenta que el plugin desarrollo de `samp-node` está basado en `samp` y no en `omp`, ciertos ecosistemas de algunos plugins no son compatibles. Por ejemplo, acceder a las funciones nativas de ciertos plugins, como `raknet`, no es posible.
 
-This greatly limits the development of `samp` plugins using the `node.js` ecosystem. It requires joint efforts from samp-node's authors and the community to address this issue.
+Esto limita bastante el desarrollo de plugins de `samp` usando el ecosistema de `node.js`. Requiere juntar esfuerzos de los autores de samp-node y la comunidad para abordar este problema.
 
-However, `omp's` focus is primarily on building `omp` itself rather than third-party libraries.
+Sin embargo, el enfoque de `omp` está principalmente en construir `omp` en sí en lugar de bibliotecas de terceros.
 
 ### Bloqueo de terminal
 
-Due to poor compatibility between the underlying `samp-node` and certain asynchronous `node.js` libraries, there may be occasional terminal blocking.
+Debido a la pobre compatibilidad entre el `samp-node` subyacente y ciertas librerías asíncronas de `node.js`, ocasionalmente puede haber bloqueo de terminal.
 
-For example, when using orm libraries like `typeorm/sequelize`, it can cause terminal blocking and the server becomes unresponsive until you manually press enter in the terminal.
+Por ejemplo, cuando usas librerías de orm como `typeorm/sequelize`, puede casar bloqueo de terminal y el server deja de responder hasta que manualmente presionas enter en la terminal.
 
-Therefore, it is recommended to adopt a distributed development approach, even though it may sound cumbersome.
+Por lo tanto, es recomendado adoptar un enfoque de desarrollo distribuido, aunque pueda parecer molesto.
 
-One approach is to create another separate `node.js` project for database operations, such as using `NestJS` to build an `API` specifically for `CRUD` operations. The game server can then access the database logic through `HTTP` requests, or you can explore more advanced communication methods like `RPC` or `sockets`.
+Un enfoque es crear un proyecto separado de `node.js` para las operaciones de base de datos, como el uso de `NestJS` para construir una `API` específicamente para operaciones `CRUD`. El servidor del juego puede acceder a la lógica de la base de datos a través de peticiones `HTTP`, o puedes explorar métodos de comunicación avanzada como `RPC` o `sockets`.
 
-The benefit of this approach is that the game server only handles game logic, while the database logic is offloaded to another project. Additionally, you can develop an administration system that shares the same `API` as the game server.
+El beneficio de este enfoque es que el servidor del juego solo maneja la lógica del juego, mientras que la lógica de la base de datos está transferida en otro proyecto. Adicionalmente, puedes desarrollar un sistema de administración que comparta la misma `API` que el servidor del juego.
 
 ## Composición
 

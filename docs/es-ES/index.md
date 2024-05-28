@@ -1,5 +1,5 @@
 ---
-layout: Inicio
+layout: home
 
 hero:
   name: "Infernus"

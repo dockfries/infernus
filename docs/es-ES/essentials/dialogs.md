@@ -15,7 +15,7 @@ Con el ejemplo, puede utilizar diálogos de forma elegante y continua para almac
 ```ts
 import { PlayerEvent, Dialog, DialogStylesEnum } from "@infernus/core";
 
-PlayerEvent.onCommandText("register", async ({ player, next }) => {
+PlayerEvent.onCommandText("registro", async ({ player, next }) => {
   const dialog = new Dialog({
     style: DialogStylesEnum.PASSWORD,
     caption: "Registro",
@@ -47,7 +47,7 @@ PlayerEvent.onCommandText("register", async ({ player, next }) => {
 ```ts
 import { PlayerEvent, Player, Dialog } from "@infernus/core";
 
-PlayerEvent.onCommandText("closeDialog", ({ player, subcommand, next }) => {
+PlayerEvent.onCommandText("cerrarDialogo", ({ player, subcommand, next }) => {
   const [playerId] = subcommand;
 
   if (!playerId) {
@@ -62,7 +62,7 @@ PlayerEvent.onCommandText("closeDialog", ({ player, subcommand, next }) => {
   const closePlayer = Player.getInstance(+playerId);
 
   if (!closePlayer) {
-    player.sendClientMessage("#f00", "El jugadorn no está conectado.");
+    player.sendClientMessage("#f00", "El jugador no está conectado.");
   } else {
     // Método estático de diálogo
     Dialog.close(closePlayer);

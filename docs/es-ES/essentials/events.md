@@ -23,7 +23,7 @@ GameMode.onExit(({ next }) => {
 
 GameMode.onIncomingConnection(({ next, playerId, ipAddress, port }) => {
   console.log(
-    `player id:${playerId},ip:${ipAddress},port:${port} intenta conectarse`
+    `id del jugador:${playerId},ip:${ipAddress},puerto:${port} intenta conectarse`
   );
   return next();
 });
@@ -62,12 +62,12 @@ No olvides llamar a `next()` a menos que sepas muy bien que la siguiente funció
 import { Player, PlayerEvent } from "@infernus/core";
 
 PlayerEvent.onConnect(({ player, next }) => {
-  console.log("player connected 1");
+  console.log("jugador 1 conectado");
   // return next(); Supongamos que olvidas llamarlo
 });
 
 PlayerEvent.onConnect(({ player, next }) => {
-  console.log("player connected 2");
+  console.log("jugador 2 conectado");
   // Este middleware no se ejecutará
   return next();
 });
@@ -182,7 +182,7 @@ Puedes obtener ejemplos de las siguientes formas, así como otros ejemplos como 
 import { Player, PlayerEvent } from "@infernus/core";
 
 PlayerEvent.onConnect(({ player, next }) => {
-  const players = Player.getInstances(); // Obtener una matriz de todas las instancias de jugador
+  const players = Player.getInstances(); // Obtener un arreglo de todas las instancias de jugador
   players.forEach((p) => {
     p.sendClientMessage("#fff", `jugador ${player.getName()} conectado`);
   });
@@ -210,13 +210,13 @@ El comando del jugador también proporciona guardia delantera, guardia trasera y
 import { Player, PlayerEvent } from "@infernus/core";
 
 // Definir un comando de primer nivel
-PlayerEvent.onCommandText("help", ({ player, next }) => {
+PlayerEvent.onCommandText("ayuda", ({ player, next }) => {
   console.log(`jugador ${player.getName()}, hola`);
   return next();
 });
 
 // Definir un comando de segundo nivel
-PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
+PlayerEvent.onCommandText("ayuda teletransporte", ({ player, next }) => {
   console.log(
     `jugador ${player.getName()} desea obtener información de ayuda relacionada con la teletransportación`
   );
@@ -225,7 +225,7 @@ PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
 
 // Definir un comando que puede ser activado por /msg o /message
 PlayerEvent.onCommandText(
-  ["msg", "message"],
+  ["msg", "mensaje"],
   ({ player, subcommand, next }) => {
     console.log(
       `el jugador ${player.getName()} introdujo este comando, y también puede haber introducido un subcomando ${subcommand.toString()}`

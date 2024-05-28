@@ -17,13 +17,13 @@ Esto significa que debes usar la librería `JavaScript`, y que ya no necesitas n
 
 ## Obtener cadena de texto
 
-Para la mayoría de las búsquedas de cadenas, ya no es necesario definir una matriz de longitud fija como hacen los desarrolladores nativos. Las funciones más utilizadas se han tratado internamente en `Infernus`. El principio es que se define un array de cadenas con una longitud máxima, y entonces el array se itera automáticamente hasta el punto donde el primer byte es `0` para interceptar la cadena, como `GetPlayerName`, que es `player.getName()`.
+Para la mayoría de las búsquedas de cadenas, ya no es necesario definir un arreglo de longitud fija como hacen los desarrolladores nativos. Las funciones más utilizadas se han tratado internamente en `Infernus`. El principio es que se define un array de cadenas con una longitud máxima, y entonces el array se itera automáticamente hasta el punto donde el primer byte es `0` para interceptar la cadena, como `GetPlayerName`, que es `player.getName()`.
 
 El método de intercepción proviene de las [funciones prácticas](./i18n.md#practical-functions) en internacionalización. Si te encuentras con algunos escenarios similares, no tienes que repetir la rueda.
 
 ## Conversión de colores
 
-La conversión de color subyacente de `Infernus` utiliza el código fuente de [Peter Szombati's samp-node-lib](https://github.com/peterszombati/samp-node-lib), utilizado para usar colores más semánticos cuando se llaman a ciertas funciones durante el desarrollo, como `#fff`,`#ffffff`,`(r, g, b)`, `(r, g, b, a)`.
+La conversión de color subyacente de `Infernus` utiliza el código fuente de [samp-node-lib, hecho por Peter Szombati](https://github.com/peterszombati/samp-node-lib), utilizado para usar colores más semánticos cuando se llaman a ciertas funciones durante el desarrollo, como `#fff`,`#ffffff`,`(r, g, b)`, `(r, g, b, a)`.
 
 Si no es como se esperaba en algunas escenas, se renderiza en blanco o negro, como textdraw, después de usar valores de color, puede probar un formato diferente. Por ejemplo, cambiar el original `#fff` a `(255,255,255,255)`, o seguir utilizando el formato digital nativo desarrollado.
 
