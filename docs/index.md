@@ -3,7 +3,7 @@ layout: home
 
 hero:
   name: "Infernus"
-  tagline: NodeJS library for scripting Open Multiplayer scripts
+  tagline: Node.js library for scripting Open Multiplayer scripts
   actions:
     - theme: brand
       text: Get Started
@@ -13,7 +13,7 @@ features:
   - title: 🥳Future
     details: Next-generation Open Multiplayer
   - title: 🚀Ecosystem
-    details: Powerful NodeJS ecosystem
+    details: Powerful Node.js ecosystem
   - title: 🎉Internationalization
     details: UTF8 file encoding dependent on player client environment
 ---
