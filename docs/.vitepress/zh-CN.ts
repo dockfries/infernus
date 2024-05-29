@@ -2,7 +2,7 @@ import { defineConfig, type DefaultTheme } from "vitepress";
 
 export const zh_CN = defineConfig({
   lang: "zh-CN",
-  description: "用于编写Open Multiplayer脚本的NodeJS库",
+  description: "用于编写Open Multiplayer脚本的Node.js库",
   themeConfig: {
     nav: nav(),
 
