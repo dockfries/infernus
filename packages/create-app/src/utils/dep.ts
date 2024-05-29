@@ -240,11 +240,9 @@ async function installDeps(deps: string[], isUpdate = false, isProd = false) {
     if (!pawnJson || !pawnJson.resources || !pawnJson.resources.length)
       throw new Error(`not found resources in pawn.json: ${name}`);
 
-    const depVersionPath = path.resolve(
-      depsPath,
-      name,
-      localCacheVersion ? localCacheVersion : matchedRelease!.tag_name,
-    );
+    const finalVersion = localCacheVersion || matchedRelease!.tag_name;
+
+    const depVersionPath = path.resolve(depsPath, name, finalVersion);
 
     const pawnJsonPath = path.resolve(depVersionPath, "pawn.json");
     await fs.ensureFile(pawnJsonPath);
@@ -321,8 +319,8 @@ async function installDeps(deps: string[], isUpdate = false, isProd = false) {
       }
 
       if (archiveResource.plugins) {
-        const isOmpPlugin = getIsOmpComponent(version);
-        const pluginFolderPath = getPluginOrComponentPath(version);
+        const isOmpPlugin = getIsOmpComponent(finalVersion);
+        const pluginFolderPath = getPluginOrComponentPath(finalVersion);
 
         await fs.ensureDir(pluginFolderPath);
 
@@ -380,7 +378,7 @@ async function installDeps(deps: string[], isUpdate = false, isProd = false) {
     }
 
     if (notArchiveResources.length) {
-      const pluginFolderPath = getPluginOrComponentPath(version);
+      const pluginFolderPath = getPluginOrComponentPath(finalVersion);
 
       const assetNames = notArchiveResources.map((r) => r.name);
 
@@ -436,9 +434,7 @@ async function installDeps(deps: string[], isUpdate = false, isProd = false) {
     dependencies = {
       ...dependencies,
       [name]: {
-        version: localCacheVersion
-          ? localCacheVersion
-          : matchedRelease.tag_name,
+        version: finalVersion,
       },
     };
   }
