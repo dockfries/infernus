@@ -2,7 +2,7 @@ import { defineConfig, type DefaultTheme } from "vitepress";
 
 export const en_US = defineConfig({
   lang: "en-US",
-  description: "NodeJS library for scripting Open Multiplayer",
+  description: "Node.js library for scripting Open Multiplayer",
   themeConfig: {
     nav: nav(),
 
