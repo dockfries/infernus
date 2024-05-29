@@ -24,6 +24,8 @@ Because the CLI internally calls the `github HTTP API`, if your network environm
 [Click here to learn about API rate limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-primary-rate-limits)
 :::
 
+`@infernus/create-app` is a tool similar to `sampctl` that manages package dependencies by parsing `pawn.json` rules. You can use it to simply manage plugin or `open.mp` base dependencies.
+
 #### Example
 
 ```sh

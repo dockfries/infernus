@@ -24,6 +24,8 @@ Debido a que el CLI llama internamente al `github HTTP API`, si tu entorno de re
 [Pulse aquí para conocer sobre los límites de tarifa de la API (API Rate-limit)](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-primary-rate-limits)
 :::
 
+`@infernus/create-app` es una herramienta similar a `sampctl` que gestiona las dependencias de paquetes analizando las reglas de `pawn.json`. Puede utilizarlo para simplemente administrar dependencias de base de plugins o `open.mp`.
+
 #### Ejemplo
 
 ```sh
