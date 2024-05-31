@@ -46,6 +46,10 @@ function nav(): DefaultTheme.NavItem[] {
           text: "ColAndreas",
           link: "https://github.com/Pottus/ColAndreas",
         },
+        {
+          text: "samp-cef",
+          link: "https://github.com/Pycckue-Bnepeg/samp-cef",
+        },
       ],
     },
   ];
