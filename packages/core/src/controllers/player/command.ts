@@ -113,6 +113,10 @@ onCommandText(({ player, buffer, next }) => {
   return next();
 });
 
+function cmdBeforeEach(player: Player, subcommand: string[]) {
+  return { player, subcommand };
+}
+
 export const CmdBus = {
   on(
     command: string | string[],
@@ -135,9 +139,7 @@ export const CmdBus = {
         const e = defineEvent({
           name: _cmd,
           isNative: false,
-          beforeEach(player: Player, subcommand: string[]) {
-            return { player, subcommand };
-          },
+          beforeEach: cmdBeforeEach,
         });
         commandBus.set(_cmd, e);
       }
