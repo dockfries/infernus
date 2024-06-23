@@ -3,3 +3,4 @@ export * from "./adminspec";
 export * from "./attachments";
 export * from "./base";
 export * from "./anti_flood";
+export * from "./cargo_ship";

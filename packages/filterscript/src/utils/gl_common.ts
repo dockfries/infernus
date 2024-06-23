@@ -2,7 +2,7 @@ import type { ICommonOptions } from "filterscript/interfaces";
 import type { KeysEnum } from "@infernus/core";
 import { Player } from "@infernus/core";
 
-export const IsKeyJustDown = (
+export const isKeyJustDown = (
   key: KeysEnum,
   newkeys: KeysEnum,
   oldkeys: KeysEnum,
@@ -11,7 +11,7 @@ export const IsKeyJustDown = (
   return false;
 };
 
-export const PlaySoundForAll = (
+export const playSoundForAll = (
   soundid: number,
   x: number,
   y: number,
@@ -22,7 +22,7 @@ export const PlaySoundForAll = (
   });
 };
 
-export const PlaySoundForPlayersInRange = (
+export const playSoundForPlayersInRange = (
   soundid: number,
   range: number,
   x: number,

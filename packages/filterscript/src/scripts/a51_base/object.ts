@@ -4,7 +4,7 @@ import type {
   ICommonOptions,
   IGateList,
 } from "filterscript/interfaces";
-import { log, PlaySoundForPlayersInRange } from "filterscript/utils/gl_common";
+import { log, playSoundForPlayersInRange } from "filterscript/utils/gl_common";
 import type { I18n } from "@infernus/core";
 import { Player } from "@infernus/core";
 import {
@@ -231,7 +231,7 @@ export const moveGate = (
     return;
   }
 
-  PlaySoundForPlayersInRange(1035, 50.0, position.x, position.y, position.z);
+  playSoundForPlayersInRange(1035, 50.0, position.x, position.y, position.z);
 
   const {
     x: ox,
