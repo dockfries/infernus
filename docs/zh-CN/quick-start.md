@@ -107,7 +107,7 @@ vim config.json # 您不一定需要用vim，任意编辑器都可以
 
 1. 下载[omp 游戏服务器](https://github.com/openmultiplayer/open.mp/releases)，稍后将`omp-server[.exe]`和`components`文件夹解压到项目根目录。
 
-2. 下载[samp-node 插件](https://github.com/AmyrAhmady/samp-node/releases)，稍后将`libnode.so/dll`放入工程根目录，`samp-node.so/dll`放入 `plugins` 文件夹（如果根目录没有 `plugins` 文件夹，需要您手动创建）。
+2. 下载[samp-node 插件](https://github.com/dockfries/samp-node/releases)，稍后将`libnode.so/dll`放入工程根目录，`samp-node.so/dll`放入 `plugins` 文件夹（如果根目录没有 `plugins` 文件夹，需要您手动创建）。
 
 3. 下载[streamer 插件](https://github.com/samp-incognito/samp-streamer-plugin/releases)，稍后将`streamer.so/dll`放入插件文件夹。
 

@@ -109,7 +109,7 @@ The `so/dll` depends on the environment in which you want to run the server, and
 
 1. Download [omp game server](https://github.com/openmultiplayer/open.mp/releases), and later extract the `omp-server[.exe]` and `components` folders to the project root directory.
 
-2. Download [samp-node plugin](https://github.com/AmyrAhmady/samp-node/releases), and later extract the `libnode.so/dll` in the root directory of the project, and `plugins` in the `plugins` folder (if the root directory does not have a `plugins` folder, you need to create it manually).
+2. Download [samp-node plugin](https://github.com/dockfries/samp-node/releases), and later extract the `libnode.so/dll` in the root directory of the project, and `plugins` in the `plugins` folder (if the root directory does not have a `plugins` folder, you need to create it manually).
 
 3. Download [streamer plugin](https://github.com/samp-incognito/samp-streamer-plugin/releases), and later put `streamer.so/dll` in the `plugins` folder.
 
