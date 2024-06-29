@@ -41,6 +41,10 @@ function nav(): DefaultTheme.NavItem[] {
       text: "插件",
       items: [
         {
+          text: "omp-node",
+          link: "https://github.com/omp-node",
+        },
+        {
           text: "samp-node",
           link: "https://github.com/AmyrAhmady/samp-node",
         },

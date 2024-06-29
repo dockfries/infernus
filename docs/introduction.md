@@ -4,6 +4,11 @@ The name `Infernus` comes from the vehicle with the ID `411` in the game (specif
 
 `Infernus` is a library built on top of `samp-node`, which allows calling the game's `SDK` from the `JavaScript` layer.
 
+## 🚧 Work in Progress
+
+- [omp-node](https://github.com/omp-node) is currently in active development,once officially released, `Infernus` will begin to adapt.
+- If you want to try out `omp-node` or prefer the native syntax without too much wrapping, check out [@open.mp/node](https://github.com/omp-node/node).
+
 ## Limitations
 
 ::: danger

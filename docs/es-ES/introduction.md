@@ -4,6 +4,11 @@ El nombre `Infernus` proviene del vehículo con el ID `411` en el juego (concret
 
 `Infernus` es una biblioteca construida sobre `samp-node`, que permite llamar al `SDK` del juego desde la capa de `JavaScript`.
 
+## 🚧 Trabajo en Curso
+
+- [omp-node](https://github.com/omp-node) está actualmente en desarrollo activo, una vez lanzado oficialmente, `Infernus` comenzará a adaptarse.
+- si quiere probar `omp-node` o prefiere la sintaxis nativa sin demasiado envoltorio, revise [@open.mp/node](https://github.com/omp-node/node).
+
 ## Limitaciones
 
 ::: danger
@@ -44,13 +49,13 @@ En general, sólo hay que centrarse en la capa superior, que es la de desarrollo
 
 Si no está seguro de cómo iniciar un proyecto, consulte el [Inicio rápido](./quick-start).
 
-| /   | Capa                    | Descripción                                             |
-| --- | ----------------------- | ------------------------------------------------------- |
-| 1   | Aplicación              | Modo de juego, como free-roam o role-play               |
-| 2   | Envoltorios de clase    | Funcionalidad envuelta en clases                        |
-| 3   | Envoltorios funcionales | Envoltorios para librerías como `samp/omp/streamer`     |
-| 4   | `SAMP NODE`             | Puente hacia el `SDK` subyacente                        |
-| 5   | `OMP` Servidor de juego | Servidor de juego subyacente                            |
+| /   | Capa                    | Descripción                                         |
+| --- | ----------------------- | --------------------------------------------------- |
+| 1   | Aplicación              | Modo de juego, como free-roam o role-play           |
+| 2   | Envoltorios de clase    | Funcionalidad envuelta en clases                    |
+| 3   | Envoltorios funcionales | Envoltorios para librerías como `samp/omp/streamer` |
+| 4   | `SAMP NODE`             | Puente hacia el `SDK` subyacente                    |
+| 5   | `OMP` Servidor de juego | Servidor de juego subyacente                        |
 
 ## ¿Por qué desarrollar?
 
