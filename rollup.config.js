@@ -34,6 +34,9 @@ export default [
   {
     input: inputPath,
     output: [{ file: outputPath + "/bundle.d.ts" }],
-    plugins: [dts({ compilerOptions: { paths: compilerOptions.paths } })],
+    plugins: [
+      dts({ compilerOptions: { paths: compilerOptions.paths } }),
+      externals(),
+    ],
   },
 ];
