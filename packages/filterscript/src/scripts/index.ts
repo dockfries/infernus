@@ -4,3 +4,4 @@ export * from "./attachments";
 export * from "./base";
 export * from "./anti_flood";
 export * from "./cargo_ship";
+export * from "./dillimore_gas";
