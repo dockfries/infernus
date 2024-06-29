@@ -89,7 +89,7 @@ export const ShowPlayerDialog = (
 };
 
 export const GetPlayerName = (player: Player): string => {
-  const buf: number[] = samp.callNative(
+  const [buf]: [number[]] = samp.callNative(
     "GetPlayerName",
     "iAi",
     player.id,
@@ -219,7 +219,7 @@ export const GetDynamic3DTextLabelText = (
   id: number,
   charset: string,
 ): string => {
-  const buf: number[] = samp.callNative(
+  const [buf]: [number[]] = samp.callNative(
     "GetDynamic3DTextLabelText",
     "iAi",
     id,

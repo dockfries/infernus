@@ -148,12 +148,13 @@ export const GetDynamicAreaType = (areaId: number): number => {
 };
 
 export const GetDynamicPolygonPoints = (areaId: number): number[] => {
-  return samp.callNative(
+  const [points] = samp.callNative(
     "GetDynamicPolygonPoints",
     "iAi",
     areaId,
     GetDynamicPolygonNumberPoints(areaId),
-  );
+  ) as [number[]];
+  return points;
 };
 
 export const GetDynamicPolygonNumberPoints = (areaId: number): number => {
@@ -193,12 +194,13 @@ export const IsAnyPlayerInAnyDynamicArea = (recheck = false): boolean => {
 };
 
 export const GetPlayerDynamicAreas = (playerId: number): number[] => {
-  return samp.callNative(
+  const [areas] = samp.callNative(
     "GetPlayerDynamicAreas",
     "iAi",
     playerId,
     GetPlayerNumberDynamicAreas(playerId),
-  );
+  ) as [number[]];
+  return areas;
 };
 
 export const GetPlayerNumberDynamicAreas = (playerId: number) => {
@@ -266,14 +268,15 @@ export const GetDynamicAreasForPoint = (
   y: number,
   z: number,
 ): number[] => {
-  return samp.callNative(
+  const [areas] = samp.callNative(
     "GetDynamicAreasForPoint",
     "fffAi",
     x,
     y,
     z,
     GetNumberDynamicAreasForPoint(x, y, z),
-  );
+  ) as [number[]];
+  return areas;
 };
 
 export const GetNumberDynamicAreasForPoint = (
@@ -292,7 +295,7 @@ export const GetDynamicAreasForLine = (
   y2: number,
   z2: number,
 ): number[] => {
-  return samp.callNative(
+  const [areas] = samp.callNative(
     "GetDynamicAreasForLine",
     "ffffffAi",
     x1,
@@ -302,7 +305,8 @@ export const GetDynamicAreasForLine = (
     y2,
     z2,
     GetNumberDynamicAreasForLine(x1, y1, z1, x2, y2, z2),
-  );
+  ) as [number[]];
+  return areas;
 };
 
 export const GetNumberDynamicAreasForLine = (

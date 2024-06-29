@@ -22,13 +22,14 @@ export const PlayerTextDrawGetString = (
   playerId: number,
   textDrawId: number,
 ): string => {
-  return samp.callNative(
+  const [str] = samp.callNative(
     "PlayerTextDrawGetString",
     "iiSi",
     playerId,
     textDrawId,
     1024,
-  );
+  ) as [string];
+  return str;
 };
 
 export const PlayerTextDrawSetPos = (

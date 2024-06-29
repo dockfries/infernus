@@ -8,7 +8,7 @@ export const Streamer_GetDistanceToItem = (
   id: number,
   dimensions: 2 | 3 = 3,
 ): number => {
-  return samp.callNative(
+  const [distance] = samp.callNative(
     "Streamer_GetDistanceToItem",
     "fffiiFi",
     x,
@@ -17,7 +17,8 @@ export const Streamer_GetDistanceToItem = (
     type,
     id,
     dimensions,
-  );
+  ) as [number];
+  return distance;
 };
 
 export const Streamer_ToggleItem = (
@@ -148,12 +149,11 @@ export const Streamer_GetNearbyItems = (
   y: number,
   z: number,
   type: StreamerItemTypes,
-  items: number[],
-  maxItems: number = items.length,
+  maxItems = 32,
   range = 300.0,
   worldId = -1,
-): void => {
-  items = samp.callNative(
+): number[] => {
+  const [items = [], found = 0] = samp.callNative(
     "Streamer_GetNearbyItems",
     "fffiAifi",
     x,
@@ -163,22 +163,23 @@ export const Streamer_GetNearbyItems = (
     maxItems,
     range,
     worldId,
-  );
+  ) as [number[], number];
+  return items.slice(0, found);
 };
 
 export const Streamer_GetAllVisibleItems = (
   playerId: number,
   type: StreamerItemTypes,
-  items: number[],
-  maxItems: number = items.length,
-): void => {
-  items = samp.callNative(
+  maxItems: number = 32,
+): number[] => {
+  const [items_ = [], found = 0] = samp.callNative(
     "Streamer_GetAllVisibleItems",
     "iiAi",
     playerId,
     type,
     maxItems,
-  );
+  ) as [number[], number];
+  return items_.slice(0, found);
 };
 
 export const Streamer_GetItemPos = (type: StreamerItemTypes, id: number) => {

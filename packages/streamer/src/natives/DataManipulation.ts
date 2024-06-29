@@ -61,14 +61,15 @@ export const Streamer_GetArrayData = (
   id: number,
   data: StreamerArrayData,
 ): number[] => {
-  return samp.callNative(
+  const [arrayData] = samp.callNative(
     "Streamer_GetArrayData",
     "iiiAi",
     type,
     id,
     data,
     Streamer_GetArrayDataLength(type, id, data),
-  );
+  ) as [number[]];
+  return arrayData;
 };
 
 export const Streamer_SetArrayData = (

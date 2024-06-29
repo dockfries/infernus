@@ -57,12 +57,13 @@ export const EnableAllAnimations = (enable: boolean) => {
 };
 
 export const GetConsoleVarAsByteArray = (varname: string) => {
-  return samp.callNative(
+  const [buf] = samp.callNative(
     "GetConsoleVarAsString",
     "sAi",
     varname,
     64,
-  ) as number[];
+  ) as [number[]];
+  return buf;
 };
 
 export const GetConsoleVarAsInt = (varname: string): number => {
