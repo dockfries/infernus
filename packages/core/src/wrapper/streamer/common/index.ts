@@ -279,9 +279,9 @@ export class Streamer {
   static getAllVisibleItems(
     player: Player,
     type: StreamerItemTypes,
-    items: number[],
-  ): void {
-    Streamer_GetAllVisibleItems(player.id, type, items);
+    maxItems?: number,
+  ) {
+    return Streamer_GetAllVisibleItems(player.id, type, maxItems);
   }
   static getItemPos = Streamer_GetItemPos;
   static setItemPos = Streamer_SetItemPos;
