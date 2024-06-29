@@ -1,3 +1,30 @@
+## [0.11.0-beta.7](https://github.com/dockfries/infernus/compare/v0.11.0-beta.6...v0.11.0-beta.7) (2024-06-29)
+
+
+### Features
+
+* **cef:** maybe only use polyfill ([43b67a8](https://github.com/dockfries/infernus/commit/43b67a8655fe69711315748e0ff221f942ee47a0))
+* **create-app:** better deps manage ([74eb27b](https://github.com/dockfries/infernus/commit/74eb27b55113b36a698f25af4e5fed1aeab76719))
+* **fs:** anti flood ([e58d430](https://github.com/dockfries/infernus/commit/e58d43071018659b42ddcd5308a2f146470c9685))
+* **fs:** base ([e1e5c96](https://github.com/dockfries/infernus/commit/e1e5c9698905bd098badd743f90d210c23e0fa56))
+* **fs:** cargo ship ([b275246](https://github.com/dockfries/infernus/commit/b2752465fa5513e710015a7e9aad920841d986e0))
+
+
+### Bug Fixes
+
+* **ci:** pnpm action ([4890c43](https://github.com/dockfries/infernus/commit/4890c4379d5d1746c01a13b59654b5684d513247))
+* **cli:** scriptName ([3cef7fd](https://github.com/dockfries/infernus/commit/3cef7fd6097dedbf9abfe5c39b7725e6d66c7eba))
+* **cli:** usage bundle ([53fc2c1](https://github.com/dockfries/infernus/commit/53fc2c1c5d66c54b15331f72e4be76953fbe8e89))
+* **core, streamer:** [#40](https://github.com/dockfries/infernus/issues/40) single reference paramTypes ret array ([c7226ae](https://github.com/dockfries/infernus/commit/c7226aef37c0f99aa4bcf6b8707fadada37b64c0))
+* **core:** streamer type ([bfec2b8](https://github.com/dockfries/infernus/commit/bfec2b853cf48d6e7812230a2bf6cbe0958399ee))
+* **create-app:** add or install deps removed, lockFile path ([50201cf](https://github.com/dockfries/infernus/commit/50201cf3285ebab4d57e2417b558aca15138a619))
+* **create-app:** version params ([ec33ebd](https://github.com/dockfries/infernus/commit/ec33ebda7976ec9313c00d7184f60db062d97f7f))
+
+
+### Performance Improvements
+
+* **core:** maybe command can use same beforeEach ([e3ca9b5](https://github.com/dockfries/infernus/commit/e3ca9b5d5f92923514e091e9981e2fd94e284eba))
+
 ## [0.11.0-beta.6](https://github.com/dockfries/infernus/compare/v0.11.0-beta.5...v0.11.0-beta.6) (2024-05-07)
 
 
