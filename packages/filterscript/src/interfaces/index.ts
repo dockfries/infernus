@@ -53,5 +53,9 @@ export interface IGateList {
 }
 
 export interface IAdminSpecOptions extends ICommonOptions {
-  command?: string | Array<string>;
+  command?: {
+    player?: string;
+    vehicle?: string;
+    off?: string;
+  };
 }

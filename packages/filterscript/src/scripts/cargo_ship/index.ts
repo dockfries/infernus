@@ -6,6 +6,7 @@
 //
 // - Kye 2011
 
+import type { IFilterScript } from "@infernus/core";
 import { PlayerEvent, DynamicObject, DynamicObjectEvent } from "@infernus/core";
 import {
   NUM_SHIP_ATTACHMENTS,
@@ -47,9 +48,9 @@ function clearTimer() {
   }
 }
 
-export const CargoShip = {
+export const CargoShip: IFilterScript = {
   name: "cargo_ship",
-  offs: [] as (() => void)[],
+  offs: [],
   load() {
     const moved = DynamicObjectEvent.onMoved(({ object, next }) => {
       if (object != gMainShipObject) return next();
@@ -163,7 +164,7 @@ export const CargoShip = {
     });
 
     const cmd2 = PlayerEvent.onCommandText("stopship", ({ next }) => {
-      gMainShipObject?.stop();
+      gMainShipObject && gMainShipObject.stop();
       return next();
     });
 
@@ -171,7 +172,7 @@ export const CargoShip = {
   },
   unload() {
     clearTimer();
-    gMainShipObject?.destroy();
+    gMainShipObject && gMainShipObject.destroy();
     gMainShipObject = null;
     let x = 0;
     while (x !== NUM_SHIP_ATTACHMENTS) {
@@ -180,5 +181,6 @@ export const CargoShip = {
     }
     gShipsAttachments.length = 0;
     this.offs.forEach((o) => o());
+    this.offs = [];
   },
 };

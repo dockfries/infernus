@@ -4,26 +4,26 @@ import { Player } from "@infernus/core";
 
 export const isKeyJustDown = (
   key: KeysEnum,
-  newkeys: KeysEnum,
-  oldkeys: KeysEnum,
+  newKeys: KeysEnum,
+  oldKeys: KeysEnum,
 ) => {
-  if (newkeys & key && !(oldkeys & key)) return true;
+  if (newKeys & key && !(oldKeys & key)) return true;
   return false;
 };
 
 export const playSoundForAll = (
-  soundid: number,
+  soundId: number,
   x: number,
   y: number,
   z: number,
 ) => {
   Player.getInstances().forEach((p) => {
-    if (p.isConnected()) p.playSound(soundid, x, y, z);
+    if (p.isConnected()) p.playSound(soundId, x, y, z);
   });
 };
 
 export const playSoundForPlayersInRange = (
-  soundid: number,
+  soundId: number,
   range: number,
   x: number,
   y: number,
@@ -31,7 +31,7 @@ export const playSoundForPlayersInRange = (
 ) => {
   Player.getInstances().forEach((p) => {
     if (p.isConnected() && p.isInRangeOfPoint(range, x, y, z))
-      p.playSound(soundid, x, y, z);
+      p.playSound(soundId, x, y, z);
   });
 };
 

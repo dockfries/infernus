@@ -1,12 +1,13 @@
 // Base FS
 // Contains /pm /kick /ban commands.
 
+import type { IFilterScript } from "@infernus/core";
 import { Player, PlayerEvent } from "@infernus/core";
 import { ColorEnum } from "./enums/color";
 
-export const Base = {
+export const Base: IFilterScript = {
   name: "base",
-  offs: [] as (() => void)[],
+  offs: [],
   load() {
     // PM Command
     const pm = PlayerEvent.onCommandText(
@@ -177,5 +178,6 @@ export const Base = {
   },
   unload() {
     this.offs.forEach((o) => o());
+    this.offs = [];
   },
 };

@@ -1,6 +1,7 @@
 // a basic anti flood system, and admin chatting for rcon admins
 // using # or @<message>
 
+import type { IFilterScript } from "@infernus/core";
 import { Player, PlayerEvent } from "@infernus/core";
 
 const iPlayerChatTime = new Map<Player, number>();
@@ -13,9 +14,9 @@ function isPlayerFlooding(player: Player) {
   return false;
 }
 
-export const AntiFlood = {
+export const AntiFlood: IFilterScript = {
   name: "anti_flood",
-  offs: [] as (() => void)[],
+  offs: [],
   load() {
     const onText = PlayerEvent.onText(({ player, text, next }) => {
       // Is the player flooding?
@@ -94,5 +95,6 @@ export const AntiFlood = {
     iPlayerChatTime.clear();
     szPlayerChatMsg.clear();
     this.offs.forEach((o) => o());
+    this.offs = [];
   },
 };

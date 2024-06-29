@@ -29,8 +29,6 @@ import zh_cn from "./locales/zh-CN.json";
 import en_us from "./locales/en-US.json";
 
 export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
-  let offs: (() => void)[] = [];
-
   const _options = options || {};
   _options.defaultLocale = _options.defaultLocale || "en_US";
   _options.command = _options.command || "a51";
@@ -39,7 +37,7 @@ export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
   const i18n = new I18n(defaultLocale, { zh_cn, en_us });
   if (locales) i18n.addLocales(locales);
 
-  const registerEvent = () => {
+  function registerEvent(this: IFilterScript) {
     const offOnConnect = PlayerEvent.onConnect(({ player, next }) => {
       removeBuilding(player);
       loadLabels(player, _options, i18n);
@@ -66,20 +64,20 @@ export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
       },
     );
 
-    offs.push(
+    this.offs.push(
       offOnConnect,
       offOnDisconnect,
       offOnKeyStateChange,
       offOnCommandReceived,
     );
-  };
+  }
 
-  const offEventsCommands = () => {
-    offs.forEach((off) => off());
-    offs = [];
-  };
+  function offEventsCommands(this: IFilterScript) {
+    this.offs.forEach((off) => off());
+    this.offs = [];
+  }
 
-  const registerCommand = () => {
+  function registerCommand(this: IFilterScript) {
     const { command, onTeleport } = _options;
     const offCommand = PlayerEvent.onCommandText(
       command as string,
@@ -98,8 +96,8 @@ export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
         return next();
       },
     );
-    offs.push(offCommand);
-  };
+    this.offs.push(offCommand);
+  }
 
   const separator = () => {
     console.log("  |---------------------------------------------------");
@@ -107,11 +105,12 @@ export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
 
   return {
     name: "a51_base",
+    offs: [],
     load() {
-      registerEvent();
+      registerEvent.call(this);
       loadObjects(_options, i18n);
       registerLabelEvent(_options, i18n);
-      registerCommand();
+      registerCommand.call(this);
 
       console.log("\n");
       separator();
@@ -121,7 +120,7 @@ export const useA51BaseFS = (options?: IA51Options): IFilterScript => {
       separator();
     },
     unload() {
-      offEventsCommands();
+      offEventsCommands.call(this);
       unloadObjects(_options, i18n);
       unloadLabels(_options, i18n);
 

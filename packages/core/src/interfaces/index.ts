@@ -190,5 +190,6 @@ export interface IFilterScript {
   name: string;
   load: (...args: Array<any>) => any;
   unload: () => any;
+  offs: Array<() => void>;
   [propName: string | number | symbol]: any;
 }

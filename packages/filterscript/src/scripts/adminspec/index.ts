@@ -22,39 +22,47 @@ class AdminSpecPlayer {
 
 const myPlayers = new Map<Player, AdminSpecPlayer>();
 
-const specCommands = ["specplayer", "specvehicle", "specoff"];
+const specCommands: string[] = [];
 
-// WE ONLY DEAL WITH COMMANDS FROM ADMINS IN THIS FILTERSCRIPT
-PlayerEvent.onCommandPerformed(({ player, command, next }) => {
-  if (specCommands.includes(command) && !player.isAdmin()) return false;
-  return next();
-});
-
-// IF ANYONE IS SPECTATING THIS PLAYER, WE'LL ALSO HAVE
-// TO CHANGE THEIR INTERIOR ID TO MATCH
-PlayerEvent.onInteriorChange(({ player, newInteriorId }) => {
-  Player.getInstances().forEach((p) => {
-    const mp = myPlayers.get(p);
-    if (
-      mp &&
-      p.isConnected() &&
-      p.getState() === PlayerStateEnum.SPECTATING &&
-      mp.gSpectateID === p.id &&
-      mp.gSpectateType === ADMIN_SPEC_TYPE.PLAYER &&
-      p !== player
-    ) {
-      p.setInterior(newInteriorId);
-    }
-  });
-  return true;
-});
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
-  let offs: (() => void)[] = [];
   return {
+    offs: [],
     name: "admin_spec",
     load() {
+      if (options?.command) {
+        specCommands.push(options.command.player || "specplayer");
+        specCommands.push(options.command.vehicle || "specvehicle");
+        specCommands.push(options.command.off || "specoff");
+      }
+      // WE ONLY DEAL WITH COMMANDS FROM ADMINS IN THIS FILTERSCRIPT
+      const offCommandPerformed = PlayerEvent.onCommandPerformed(
+        ({ player, command, next }) => {
+          if (specCommands.includes(command) && !player.isAdmin()) return false;
+          return next();
+        },
+      );
+
+      // IF ANYONE IS SPECTATING THIS PLAYER, WE'LL ALSO HAVE
+      // TO CHANGE THEIR INTERIOR ID TO MATCH
+      const offInteriorChange = PlayerEvent.onInteriorChange(
+        ({ player, newInteriorId }) => {
+          Player.getInstances().forEach((p) => {
+            const mp = myPlayers.get(p);
+            if (
+              mp &&
+              p.isConnected() &&
+              p.getState() === PlayerStateEnum.SPECTATING &&
+              mp.gSpectateID === p.id &&
+              mp.gSpectateType === ADMIN_SPEC_TYPE.PLAYER &&
+              p !== player
+            ) {
+              p.setInterior(newInteriorId);
+            }
+          });
+          return true;
+        },
+      );
+
       Player.getInstances().forEach((player) => {
         myPlayers.set(player, new AdminSpecPlayer());
       });
@@ -71,7 +79,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
 
       // SPECTATE A PLAYER
       const offSpecPlayer = PlayerEvent.onCommandText(
-        "specplayer",
+        specCommands[0],
         ({ player, subcommand, next }) => {
           const [specId] = subcommand;
           if (!specId) {
@@ -105,7 +113,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
 
       // SPECTATE A VEHICLE
       const offSpecVehicle = PlayerEvent.onCommandText(
-        "specvehicle",
+        specCommands[1],
         ({ player, subcommand, next }) => {
           const [vehId] = subcommand;
           if (!vehId) {
@@ -134,7 +142,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
 
       // STOP SPECTATING
       const offSpecOff = PlayerEvent.onCommandText(
-        "specoff",
+        specCommands[2],
         ({ player, next }) => {
           player.toggleSpectating(false);
 
@@ -145,7 +153,9 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
         },
       );
 
-      offs.push(
+      this.offs.push(
+        offCommandPerformed,
+        offInteriorChange,
         offOnConnect,
         offOnDisconnect,
         offSpecPlayer,
@@ -154,9 +164,9 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
       );
     },
     unload() {
-      offs.forEach((off) => off());
-      offs = [];
-      /* empty */
+      specCommands.splice(0, specCommands.length);
+      this.offs.forEach((off) => off());
+      this.offs = [];
     },
   };
 };

@@ -9,6 +9,7 @@
 //
 //-------------------------------------------------
 
+import type { IFilterScript } from "@infernus/core";
 import {
   Dialog,
   DialogStylesEnum,
@@ -18,9 +19,9 @@ import {
 } from "@infernus/core";
 import { attachmentBones, attachmentObjects } from "./constants";
 
-export const Attachments = {
+export const Attachments: IFilterScript = {
   name: "attachments",
-  offs: [] as (() => void)[],
+  offs: [],
   load() {
     const offCommand = PlayerEvent.onCommandText(
       "attachments",
@@ -154,5 +155,6 @@ export const Attachments = {
   },
   unload() {
     this.offs.forEach((o) => o());
+    this.offs = [];
   },
 };
