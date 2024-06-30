@@ -13,7 +13,7 @@ export const GlChatBubble: IFilterScript = {
     const ECHO_COLOR = 0xeeeeeeff;
     const ACTION_COLOR = 0xee66eeff;
 
-    PlayerEvent.onText(({ player, text, next }) => {
+    const onText = PlayerEvent.onText(({ player, text, next }) => {
       if (text.length > 128) return next();
 
       const to_others = `Says: ${text}`;
@@ -26,15 +26,18 @@ export const GlChatBubble: IFilterScript = {
       return false; // can't do normal chat with this loaded
     });
 
-    PlayerEvent.onCommandText("me", ({ player, subcommand, next }) => {
-      const actionText = `* ${subcommand.join(" ")}`;
-      player.setChatBubble(actionText, ACTION_COLOR, 30.0, 10000);
-      player.sendClientMessage(ACTION_COLOR, actionText);
-      return next();
-    });
+    const meCommand = PlayerEvent.onCommandText(
+      "me",
+      ({ player, subcommand, next }) => {
+        const actionText = `* ${subcommand.join(" ")}`;
+        player.setChatBubble(actionText, ACTION_COLOR, 30.0, 10000);
+        player.sendClientMessage(ACTION_COLOR, actionText);
+        return next();
+      },
+    );
 
     console.log("\n--Speech bubble example loaded.\n");
-    this.offs.push();
+    this.offs.push(onText, meCommand);
   },
   unload() {
     this.offs.forEach((off) => off());
