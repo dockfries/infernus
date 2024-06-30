@@ -6,3 +6,4 @@ export * from "./anti_flood";
 export * from "./cargo_ship";
 export * from "./dillimore_gas";
 export * from "./ferris_wheel";
+export * from "./fly_mode";

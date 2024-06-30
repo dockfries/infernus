@@ -1,4 +1,5 @@
 export enum KeysEnum {
+  NONE = 0,
   ACTION = 1,
   CROUCH = 2,
   FIRE = 4,
@@ -9,7 +10,7 @@ export enum KeysEnum {
   HANDBRAKE = 128,
   LOOK_LEFT = 256,
   SUBMISSION = 512,
-  LOOK_BEHIND = 512,
+  LOOK_BEHIND = SUBMISSION,
   WALK = 1024,
   ANALOG_UP = 2048,
   ANALOG_DOWN = 4096,
@@ -19,7 +20,7 @@ export enum KeysEnum {
   NO = 131072,
   CTRL_BACK = 262144,
   KEY_UP = -128,
-  KEY_DOWN = 128,
+  KEY_DOWN = HANDBRAKE,
   KEY_LEFT = -128,
-  KEY_RIGHT = 128,
+  KEY_RIGHT = HANDBRAKE,
 }
