@@ -8,5 +8,7 @@ export * from "./dillimore_gas";
 export * from "./ferris_wheel";
 export * from "./fly_mode";
 export * from "./gl_chat_bubble";
+export * from "./i_radio";
 export * from "./max_ips";
 export * from "./menu_test";
+export * from "./net_stats";
