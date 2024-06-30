@@ -7,3 +7,6 @@ export * from "./cargo_ship";
 export * from "./dillimore_gas";
 export * from "./ferris_wheel";
 export * from "./fly_mode";
+export * from "./gl_chat_bubble";
+export * from "./max_ips";
+export * from "./menu_test";
