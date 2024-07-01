@@ -666,7 +666,7 @@ export const ApplyAnimation = (
   lockY: boolean,
   freeze: boolean,
   time: number,
-  forceSync: boolean,
+  forceSync: number,
 ): number => {
   return samp.callNative(
     "ApplyAnimation",

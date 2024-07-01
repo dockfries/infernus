@@ -7,6 +7,7 @@ import type {
   WeaponEnum,
   WeaponStatesEnum,
   BoneIdsEnum,
+  ForceSyncEnum,
 } from "../../enums";
 
 import {
@@ -551,7 +552,7 @@ export class Player {
     lockX = true,
     lockY = true,
     freeze = false,
-    forceSync = false,
+    forceSync: boolean | ForceSyncEnum = false,
   ): void {
     const duration = getAnimateDurationByLibName(animLib, animName);
     if (duration === undefined)
@@ -566,7 +567,7 @@ export class Player {
       lockY,
       freeze,
       loop ? 0 : duration,
-      forceSync,
+      +forceSync,
     );
   }
   clearAnimations(forceSync = false): void {

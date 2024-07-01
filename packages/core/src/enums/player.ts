@@ -90,3 +90,10 @@ export enum BoneIdsEnum {
   Neck,
   Jaw,
 }
+
+export enum ForceSyncEnum {
+  UNKNOWN = -1,
+  NONE = 0,
+  ALL = 1,
+  OTHER = 2,
+}
