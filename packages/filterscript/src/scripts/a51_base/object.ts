@@ -1,9 +1,5 @@
 import { GateStatusEnum } from "filterscript/scripts/a51_base/enums/gate";
-import type {
-  IA51Options,
-  ICommonOptions,
-  IGateList,
-} from "filterscript/interfaces";
+import type { ICommonOptions } from "filterscript/interfaces";
 import { log, playSoundForPlayersInRange } from "filterscript/utils/gl_common";
 import type { I18n } from "@infernus/core";
 import { Player } from "@infernus/core";
@@ -14,6 +10,7 @@ import {
   KeysEnum,
 } from "@infernus/core";
 import { ColorEnum } from "./enums/color";
+import type { IA51BaseFSOptions, IGateList } from "./interfaces";
 
 export const gateInfo: IGateList = {
   east: {
@@ -179,7 +176,7 @@ const A51EasternGate: DynamicObject = new DynamicObject({
 export const moveGate = (
   player: Player,
   newkeys: KeysEnum,
-  options: IA51Options,
+  options: IA51BaseFSOptions,
   i18n: I18n,
 ): void => {
   if (!(newkeys & KeysEnum.YES)) return;

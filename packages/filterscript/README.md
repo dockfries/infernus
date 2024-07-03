@@ -14,9 +14,11 @@ pnpm add @infernus/core @infernus/fs
 
 ```ts
 import { GameMode } from "@infernus/core";
-import { useA51BaseFS, Base, AntiFlood } from "@infernus/fs";
+import { A51Base, AdminSpec, AntiFlood, Base, MaxIps } from "@infernus/fs";
 
-GameMode.use(useA51BaseFS({ debug: true }));
-GameMode.use(Base);
-GameMode.use(AntiFlood);
+GameMode.use(A51Base, { debug: true });
+GameMode.use(Base)
+  .use(AdminSpec)
+  .use(AntiFlood)
+  .use(MaxIps, { maxConnections: 1 });
 ```

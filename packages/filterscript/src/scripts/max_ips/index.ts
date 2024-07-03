@@ -1,10 +1,8 @@
 // maxips FS limits the number of players connecting from a
 // single IP address.
 
-import type { IFilterScript } from "@infernus/core";
 import { Player, PlayerEvent } from "@infernus/core";
-
-export const MAX_CONNECTIONS_FROM_IP = 3;
+import type { IMaxIpsFS } from "./interfaces";
 
 //---------------------------------------------
 // GetNumberOfPlayersOnThisIP
@@ -17,17 +15,20 @@ function getNumberOfPlayersOnThisIP(test_ip: string) {
   }).length;
 }
 
-export const MaxIps: IFilterScript = {
+export const MaxIps: IMaxIpsFS = {
   name: "max_ips",
-  load() {
+  load(options) {
+    const maxConnections =
+      options && options.maxConnections ? options.maxConnections : 3;
+
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
       const connecting_ip = player.getIp();
       const num_players_on_ip = getNumberOfPlayersOnThisIP(connecting_ip);
-      if (num_players_on_ip > MAX_CONNECTIONS_FROM_IP) {
+      if (num_players_on_ip > maxConnections) {
         console.log(
           "MAXIPs: Connecting player(%d) exceeded %d IP connections from %s.",
           player.id,
-          MAX_CONNECTIONS_FROM_IP,
+          maxConnections,
           connecting_ip,
         );
         player.kick();
@@ -38,7 +39,7 @@ export const MaxIps: IFilterScript = {
 
     console.log(
       "\n*** Player IP limiting FS (maxips) Loaded. Max connections from 1 IP = %d\n",
-      MAX_CONNECTIONS_FROM_IP,
+      maxConnections,
     );
 
     return [onConnect];
