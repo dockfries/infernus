@@ -11,7 +11,7 @@ Because it is a simulation rather than a real `filterscript`, you cannot operate
 ```ts
 interface IFilterScript {
   name: string;
-  load: (...args: Array<any>) => any;
+  load: (...args: Array<any>) => Array<() => void> | Promise<Array<() => void>>;
   unload: () => any;
   [propName: string | number | symbol]: any;
 }
@@ -25,21 +25,30 @@ You can write some logical reuse scripts yourself and share them with others thr
 
 ```ts
 import { GameMode } from "@infernus/core";
+import type { IFilterScript } from "@infernus/core";
 
-const script = {
-  name: 'my_script',
-  load(...args) {
-    console.log('My script loaded.')
-  }
-  unload() {
-    console.log('My script unloaded.')
-  }
+interface IMyScriptOptions {
+  debug?: boolean;
 }
 
+interface IMyScript extends IFilterScript {
+  load(options: IMyScriptOptions): ReturnType<IFilterScript["load"]>;
+}
+
+const MyScript: IMyScript = {
+  name: "my_script",
+  load(...args) {
+    console.log('My script loaded.', args);
+  },
+  unload() {
+    console.log('My script unloaded.');
+  }
+};
+
 // No parameters are passed to the load method
-GameMode.use(script);
+GameMode.use(MyScript);
 // Pass parameters to the load method
-GameMode.use(script, 'arg1', 'arg2');
+GameMode.use(MyScript, 'arg1', 'arg2', "arg...");
 ```
 
 ::: tip
@@ -67,35 +76,42 @@ PlayerEvent.onCommandText("reloadMyScript", ({ next }) => {
 ## Notice
 
 ::: warning
-If you use middleware functions in your script, you should cancel these intermediate functions when the script is unloaded, otherwise there will be a memory leak!
-The reason is simple: if you don't, the middleware will not be uninstalled as the GameMode restarts or manually executes the restart script command, and each time a new intermediate function is added to the script's `load` function, which will lead to a memory leak!
+You should not register the `GameMode.onInit` event in the `load` function, because the function is executed in its event when it is loaded through `GameMode.use`.
+
+If you use middleware functions in the `load` function, you should return an array of canceled middleware functions at the end, otherwise there will be a memory leak phenomenon! For other global variables, such as timers, you should reset them in the `unload` function!
+
+The reason is simple, if you don't do this, the middleware will not be unloaded when the GameMode is restarted or manually executed the script command restart, and every time the script is loaded, a new middle function is added, which will cause memory leak!
 :::
 
 In addition, you should not call the `script.load()` or `script.unload()`，You should use the [load command](#load-command) to call.
 
 ```ts
 
-const offs = []
-
-const script = {
+const MyScript = {
   name: 'my_script',
   load(...args) {
-    const off = GameMode.onInit(() => {
-    })
-    offs.push(off)
-  }
+    const off1 = PlayerEvent.onCommandText("foo", ({ player, next }) => {
+      return next();
+    });
+
+    const off2 = PlayerEvent.onConnect(({ player, next }) => {
+      return next();
+    });
+
+    return [off1, off2];
+  },
   unload() {
-    offs.forEach(off => off());
+
   }
 }
 
-GameMode.use(script);
+GameMode.use(MyScript);
 
 ```
 
 ## Rewrite the official filterscript
 
-`Infernus` has tried to rewrite the official filterscript, but only a little has been implemented so far. You can try it by installing `@infernus/fs`. If you are interested, you can continue to improve the official filterscript that has not been rewritten and commit to the repository.
+`Infernus` has tried to rewrite the official filterscript, but only a little has been implemented so far. You can try it by installing [@infernus/fs](https://github.com/dockfries/infernus/tree/main/packages/filterscript). If you are interested, you can continue to improve the official filterscript that has not been rewritten and commit to the repository.
 
 ```sh
 pnpm install @infernus/fs
@@ -103,9 +119,9 @@ pnpm install @infernus/fs
 
 ```ts
 import { GameMode } from "@infernus/core";
-import { useA51BaseFS } from "@infernus/fs";
+import { A51Base } from "@infernus/fs";
 
-GameMode.use(useA51BaseFS({ debug: true }));
+GameMode.use(A51Base, { debug: true });
 ```
 
 Then you enter `/a51` in the game to teleport to the base.

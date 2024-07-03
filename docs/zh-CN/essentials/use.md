@@ -11,7 +11,7 @@
 ```ts
 interface IFilterScript {
   name: string;
-  load: (...args: Array<any>) => any;
+  load: (...args: Array<any>) => Array<() => void> | Promise<Array<() => void>>;
   unload: () => any;
   [propName: string | number | symbol]: any;
 }
@@ -25,21 +25,30 @@ type Use = (plugin: IFilterScript, ...options: Array<any>) => GameMode;
 
 ```ts
 import { GameMode } from "@infernus/core";
+import type { IFilterScript } from "@infernus/core";
 
-const script = {
-  name: 'my_script',
-  load(...args) {
-    console.log('我的脚本加载了')
-  }
-  unload() {
-    console.log('我的脚本卸载了')
-  }
+interface IMyScriptOptions {
+  debug?: boolean;
 }
 
+interface IMyScript extends IFilterScript {
+  load(options: IMyScriptOptions): ReturnType<IFilterScript["load"]>;
+}
+
+const MyScript: IMyScript = {
+  name: "my_script",
+  load(...args) {
+    console.log("我的脚本加载了", args);
+  },
+  unload() {
+    console.log("我的脚本卸载了");
+  },
+};
+
 // 无参数传递给load方法
-GameMode.use(script);
+GameMode.use(MyScript);
 // 带参数传递给load方法
-GameMode.use(script, '参数1', '参数2');
+GameMode.use(MyScript, "参数1", "参数2", "参数...");
 ```
 
 ::: tip
@@ -67,34 +76,42 @@ PlayerEvent.onCommandText("reloadMyScript", ({ next }) => {
 ## 注意事项
 
 ::: warning
-如果您在脚本中使用了中间件函数，您应当在脚本卸载时取消掉这些中间函数，否则会出现内存泄漏现象！
-原因很简单，如果您不这样做，中间件不会随着游戏模式重启或手动执行重启脚本命令而卸载，而每一次脚本的 `load` 函数中又添加了新的中间函数，这会导致内存泄漏！
+您不应该在`load`函数中注册`GameMode.onInit`事件，因为函数通过`GameMode.use`加载时，就在其事件中执行。
+
+如果您在`load`函数中使用了中间件函数，您应当在最后返回要取消的中间件函数数组，否则会出现内存泄漏现象！对于其他全局变量，如计时器等，您应当在`unload`函数重置它！
+
+原因很简单，如果您不这样做，中间件不会随着游戏模式重启或手动执行重启脚本命令而卸载，而每一次脚本的加载又添加了新的中间函数，这会导致内存泄漏！
 :::
 
 另外，您不应该手动调用 `script.load()` 或 `script.unload()`，您应该使用[加载命令](#加载命令)来调用。
 
 ```ts
+import { PlayerEvent } from "@infernus/core";
 
-const offs = []
-
-const script = {
+const MyScript = {
   name: 'my_script',
   load(...args) {
-    const off = GameMode.onInit(() => {
-    })
-    offs.push(off)
-  }
+    const off1 = PlayerEvent.onCommandText("foo", ({ player, next }) => {
+      return next();
+    });
+
+    const off2 = PlayerEvent.onConnect(({ player, next }) => {
+      return next();
+    });
+
+    return [off1, off2];
+  },
   unload() {
-    offs.forEach(off => off());
+
   }
 }
 
-GameMode.use(script);
+GameMode.use(MyScript);
 ```
 
 ## 重写官方过滤脚本
 
-`Infernus` 尝试了重写官方的过滤脚本，不过目前只实现了一点点，您可以通过安装`@infernus/fs`来体验，如果您感兴趣也可以继续完善未重写的官方过滤脚本，将这些例子提交到仓库中。
+`Infernus` 尝试了重写官方的过滤脚本，不过目前只实现了一点点，您可以通过安装 [@infernus/fs](https://github.com/dockfries/infernus/tree/main/packages/filterscript) 来体验，如果您感兴趣也可以继续完善未重写的官方过滤脚本，将这些例子提交到仓库中。
 
 ```sh
 pnpm install @infernus/fs
@@ -102,9 +119,9 @@ pnpm install @infernus/fs
 
 ```ts
 import { GameMode } from "@infernus/core";
-import { useA51BaseFS } from "@infernus/fs";
+import { A51Base } from "@infernus/fs";
 
-GameMode.use(useA51BaseFS({ debug: true }));
+GameMode.use(A51Base, { debug: true });
 ```
 
 然后您在游戏中输入 `/a51` 来传送到对应的基地。
