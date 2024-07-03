@@ -25,21 +25,30 @@ Puedes escribir tú mismo algunos scripts de reutilización lógica y compartirl
 
 ```ts
 import { GameMode } from "@infernus/core";
+import type { IFilterScript } from "@infernus/core";
 
-const script = {
-  name: 'my_script',
-  load(...args) {
-    console.log('Mi script se cargó correctamente.')
-  }
-  unload() {
-    console.log('Ya no se cargará mi script.')
-  }
+interface IMyScriptOptions {
+  debug?: boolean;
 }
 
-// No se pasan parámetros al método de carga
-GameMode.use(script);
-// Pasar parámetros al método de carga
-GameMode.use(script, 'arg1', 'arg2', "arg...");
+interface IMyScript extends IFilterScript {
+  load(options: IMyScriptOptions): ReturnType<IFilterScript["load"]>;
+}
+
+const MyScript: IMyScript = {
+  name: "my_script",
+  load(...args) {
+    console.log('Mi script cargó.', args);
+  },
+  unload() {
+    console.log('Mi script se descargó.');
+  }
+};
+
+// Ningún parámetro es pasado al método load
+GameMode.use(MyScript);
+// Pasa parámetros al método load
+GameMode.use(MyScript, 'arg1', 'arg2', 'arg...');
 ```
 
 ::: tip
