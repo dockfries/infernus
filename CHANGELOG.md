@@ -1,3 +1,18 @@
+## [0.11.0-beta.8](https://github.com/dockfries/infernus/compare/v0.11.0-beta.7...v0.11.0-beta.8) (2024-07-03)
+
+
+### Features
+
+* **core:** applyAnimation forceSyncEnum ([387bcb9](https://github.com/dockfries/infernus/commit/387bcb91ce072c772c60c3d19a8ec55c4cd33172))
+* **fs:** dillimore_gas script ([f0bc3cf](https://github.com/dockfries/infernus/commit/f0bc3cf15be0d547cea6a075d2f377bb75b9d60e))
+* **fs:** ferris wheel ([b879a5e](https://github.com/dockfries/infernus/commit/b879a5e5ec5a4261e685b8facd0e7e9723a490de))
+* **fs:** fly mode ([0410faf](https://github.com/dockfries/infernus/commit/0410fafd2ff1412d95707b21da1ae719c66e88a2))
+* **fs:** gl_chat_bubble, max_ips, menu_test ([c60f8b1](https://github.com/dockfries/infernus/commit/c60f8b1eb138b48080f2ab97924d14a3d5554640))
+* **fs:** gl_map_icon, npc_record, samp_anims ([484139f](https://github.com/dockfries/infernus/commit/484139f06bb8479755c70b1dd3fafe488feac6d8))
+* **fs:** gl_real_time ([a5c7cc5](https://github.com/dockfries/infernus/commit/a5c7cc5ac8093ea8dbe88af6fa442283a531d591))
+* **fs:** i_radio, net_stats ([b219edc](https://github.com/dockfries/infernus/commit/b219edc325fa2dd20441e5cc522523572e84e6ad))
+* **fs:** player net_stats ([28354d1](https://github.com/dockfries/infernus/commit/28354d10f988f4efb1430a4e8815cd288a99c3a4))
+
 ## [0.11.0-beta.7](https://github.com/dockfries/infernus/compare/v0.11.0-beta.6...v0.11.0-beta.7) (2024-06-29)
 
 
