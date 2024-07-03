@@ -39,7 +39,7 @@ const script = {
 // No se pasan parámetros al método de carga
 GameMode.use(script);
 // Pasar parámetros al método de carga
-GameMode.use(script, 'arg1', 'arg2');
+GameMode.use(script, 'arg1', 'arg2', "arg...");
 ```
 
 ::: tip
@@ -67,30 +67,35 @@ PlayerEvent.onCommandText("reloadMyScript", ({ next }) => {
 ## Noticia
 
 ::: warning
-Si usas funciones middleware en tu script, deberías cancelar estas funciones intermedias cuando el script se descarga, ¡de lo contrario habrá una fuga de memoria!
-La razón es simple: si no lo haces, el middleware no será desinstalado cuando el GameMode se reinicie o ejecute manualmente el comando de reinicio del script, y cada vez se añadirá una nueva función intermedia a la función `load` del script, ¡lo que provocará una fuga de memoria!
+No deberías de registrar el evento `GameMode.onInit` en la función `load`, ya que se ejecuta en su evento cuando es cargada a través de `GameMode.use`.
+
+Si usas funciones de middleware en la función `load`, deberías retornar un arreglo de funciones de middleware canceladas la final, ¡de otra forma habría un fenómeno de fuga de memoria! Para otras variables globales, como los timers, ¡deberías reiniciarlas en la función `unload`!
+
+La razón es simple, si no haces eso, el middleware no va a ser descargado cuando la GameMode es reiniciada o se ejecuta de forma manual el script del comando para reiniciar, y cada vez que el script es cargado, una nueva función intermedia es agregada, ¡lo que provocará una fuga de memoria!  
 :::
 
 Además, no debe llamar a `script.load()` o `script.unload()`. Debe usar el [cargar comando](#load-command) para llamar.
 
 ```ts
-
-const offs = []
-
-const script = {
+const MyScript = {
   name: 'my_script',
   load(...args) {
-    const off = GameMode.onInit(() => {
-    })
-    offs.push(off)
-  }
+    const off1 = PlayerEvent.onCommandText("foo", ({ player, next }) => {
+      return next();
+    });
+
+    const off2 = PlayerEvent.onConnect(({ player, next }) => {
+      return next();
+    });
+
+    return [off1, off2];
+  },
   unload() {
-    offs.forEach(off => off());
+
   }
 }
 
-GameMode.use(script);
-
+GameMode.use(MyScript);
 ```
 
 ## Reescribe el oficial filterscript
@@ -103,9 +108,9 @@ pnpm install @infernus/fs
 
 ```ts
 import { GameMode } from "@infernus/core";
-import { useA51BaseFS } from "@infernus/fs";
+import { A51Base } from "@infernus/fs";
 
-GameMode.use(useA51BaseFS({ debug: true }));
+GameMode.use(A51Base, { debug: true });
 ```
 
 Luego ingresas `/a51` en el juego para teletransportarte a la base.
