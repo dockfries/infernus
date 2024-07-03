@@ -66,7 +66,6 @@ async function netStatsDisplay2() {
 
 export const NetStatsFs: IFilterScript = {
   name: "net_stats",
-  offs: [],
   load() {
     const netstatCmd = PlayerEvent.onCommandText(
       ["netstats", "pnetstats"],
@@ -103,7 +102,8 @@ export const NetStatsFs: IFilterScript = {
     );
 
     console.log("\n--Admin NetStats FS loaded.\n");
-    this.offs.push(netstatCmd, netstatCmd2);
+
+    return [netstatCmd, netstatCmd2];
   },
   unload() {
     gNetStatsTimer && clearInterval(gNetStatsTimer);
@@ -111,8 +111,5 @@ export const NetStatsFs: IFilterScript = {
 
     gNetStatsPlayer = InvalidEnum.PLAYER_ID;
     gNetStatsDisplay = InvalidEnum.PLAYER_ID;
-
-    this.offs.forEach((off) => off());
-    this.offs = [];
   },
 };

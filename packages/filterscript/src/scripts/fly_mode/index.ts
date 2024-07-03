@@ -200,7 +200,6 @@ function flyMode(player: Player) {
 
 export const FlyMode: IFilterScript = {
   name: "fly_mode",
-  offs: [],
   load() {
     const onDisconnect = PlayerEvent.onDisconnect(({ player, next }) => {
       cancelFlyMode(player, false);
@@ -268,11 +267,9 @@ export const FlyMode: IFilterScript = {
       return next();
     });
 
-    this.offs.push(onDisconnect, flyCommand, onUpdate);
+    return [onDisconnect, flyCommand, onUpdate];
   },
   unload() {
-    this.offs.forEach((off) => off());
-    this.offs = [];
     // If any players are still in edit mode, boot them out before the filterscript unloads
     Player.getInstances().forEach((p) => {
       if (

@@ -32,7 +32,6 @@ function removeBuilding(player: Player) {
 
 export const DillimoreGasStation: IFilterScript = {
   name: "dillimore_gas",
-  offs: [] as (() => void)[],
   load() {
     // Display information in the Server Console
     console.log("\n");
@@ -103,11 +102,9 @@ export const DillimoreGasStation: IFilterScript = {
       return next();
     });
 
-    this.offs.push(onConnect, dgs);
+    return [onConnect, dgs];
   },
   unload() {
-    this.offs.forEach((off) => off());
-    this.offs = [];
     // Check for valid object
     if (DillimoreGasObject1 && DillimoreGasObject1.isValid()) {
       // Destroy the Dillimore Gas Station exterior object
@@ -131,7 +128,7 @@ export const DillimoreGasStation: IFilterScript = {
 
     // Display information in the Server Console
     console.log("  |---------------------------------------------------");
-    console.log("  |--  Dillimore Gas Station Filterscript Unloaded");
+    console.log("  |--  Dillimore Gas Station FilterScript Unloaded");
     console.log("  |---------------------------------------------------");
   },
 };

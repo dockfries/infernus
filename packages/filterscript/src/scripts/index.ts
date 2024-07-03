@@ -9,6 +9,7 @@ export * from "./ferris_wheel";
 export * from "./fly_mode";
 export * from "./gl_chat_bubble";
 export * from "./gl_map_icon";
+export * from "./gl_real_time";
 export * from "./i_radio";
 export * from "./max_ips";
 export * from "./menu_test";

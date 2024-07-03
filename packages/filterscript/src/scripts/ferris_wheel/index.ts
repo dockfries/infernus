@@ -62,7 +62,6 @@ function rotateWheel() {
 
 export const FerrisWheel: IFilterScript = {
   name: "ferris_wheel",
-  offs: [],
   load() {
     const moved = DynamicObjectEvent.onMoved(({ object, next }) => {
       if (object === gFerrisWheel) {
@@ -130,12 +129,9 @@ export const FerrisWheel: IFilterScript = {
     if (timer) clearTimeout(timer);
     timer = setTimeout(rotateWheel, 3 * 1000);
 
-    this.offs.push(moved);
+    return [moved];
   },
   unload() {
-    this.offs.forEach((off) => off());
-    this.offs = [];
-
     let x = 0;
 
     gFerrisWheel?.destroy();

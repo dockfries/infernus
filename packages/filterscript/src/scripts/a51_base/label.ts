@@ -49,26 +49,28 @@ export const unloadLabels = (options: IA51Options, i18n: I18n, p?: Player) => {
 };
 
 export const registerLabelEvent = (options: IA51Options, i18n: I18n) => {
-  Dynamic3DTextLabelEvent.onStreamIn(({ instance: label, player, next }) => {
-    if (!i18n) return false;
-    const gateIdx = labelGates.get(player.id)?.findIndex((l) => l === label);
+  return Dynamic3DTextLabelEvent.onStreamIn(
+    ({ instance: label, player, next }) => {
+      if (!i18n) return false;
+      const gateIdx = labelGates.get(player.id)?.findIndex((l) => l === label);
 
-    const gateName =
-      gateIdx === 1
-        ? "a51.objects.gate.name.eastern"
-        : "a51.objects.gate.name.northern";
+      const gateName =
+        gateIdx === 1
+          ? "a51.objects.gate.name.eastern"
+          : "a51.objects.gate.name.northern";
 
-    label.updateText(
-      label.getColor() || "#fff",
-      i18n?.$t(
-        "a51.labels.tips",
-        [i18n?.$t(gateName, null, player.locale)],
-        player.locale,
-      ) || "",
-      player.charset,
-    );
-    return next();
-  });
+      label.updateText(
+        label.getColor() || "#fff",
+        i18n?.$t(
+          "a51.labels.tips",
+          [i18n?.$t(gateName, null, player.locale)],
+          player.locale,
+        ) || "",
+        player.charset,
+      );
+      return next();
+    },
+  );
 
   log(options, "  |---------------------------------------------------");
 };

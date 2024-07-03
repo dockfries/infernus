@@ -19,7 +19,6 @@ function getNumberOfPlayersOnThisIP(test_ip: string) {
 
 export const MaxIps: IFilterScript = {
   name: "max_ips",
-  offs: [],
   load() {
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
       const connecting_ip = player.getIp();
@@ -42,10 +41,7 @@ export const MaxIps: IFilterScript = {
       MAX_CONNECTIONS_FROM_IP,
     );
 
-    this.offs.push(onConnect);
+    return [onConnect];
   },
-  unload() {
-    this.offs.forEach((off) => off());
-    this.offs = [];
-  },
+  unload() {},
 };

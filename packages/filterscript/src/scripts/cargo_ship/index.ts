@@ -50,7 +50,6 @@ function clearTimer() {
 
 export const CargoShip: IFilterScript = {
   name: "cargo_ship",
-  offs: [],
   load() {
     const moved = DynamicObjectEvent.onMoved(({ object, next }) => {
       if (object != gMainShipObject) return next();
@@ -168,7 +167,7 @@ export const CargoShip: IFilterScript = {
       return next();
     });
 
-    this.offs.push(moved, cmd1, cmd2);
+    return [moved, cmd1, cmd2];
   },
   unload() {
     clearTimer();
@@ -180,7 +179,5 @@ export const CargoShip: IFilterScript = {
       x++;
     }
     gShipsAttachments.length = 0;
-    this.offs.forEach((o) => o());
-    this.offs = [];
   },
 };

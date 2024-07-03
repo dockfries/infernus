@@ -21,7 +21,6 @@ import { attachmentBones, attachmentObjects } from "./constants";
 
 export const Attachments: IFilterScript = {
   name: "attachments",
-  offs: [],
   load() {
     const offCommand = PlayerEvent.onCommandText(
       "attachments",
@@ -151,10 +150,7 @@ export const Attachments: IFilterScript = {
       },
     );
 
-    this.offs.push(offCommand, offAttached);
+    return [offCommand, offAttached];
   },
-  unload() {
-    this.offs.forEach((o) => o());
-    this.offs = [];
-  },
+  unload() {},
 };

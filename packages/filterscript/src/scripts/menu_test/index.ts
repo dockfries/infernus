@@ -25,7 +25,6 @@ function initTestMenu() {
 
 export const MenuTest: IFilterScript = {
   name: "menu_test",
-  offs: [],
   load() {
     initTestMenu();
 
@@ -47,11 +46,9 @@ export const MenuTest: IFilterScript = {
       },
     );
 
-    this.offs.push(onSelectedRow, menuCommand);
+    return [onSelectedRow, menuCommand];
   },
   unload() {
-    this.offs.forEach((off) => off());
-    this.offs = [];
     testMenu?.destroy();
     testMenu = null;
   },

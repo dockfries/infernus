@@ -10,7 +10,6 @@ const alhambraSet = new Set<Player>();
 
 export const IRadio: IFilterScript = {
   name: "i_radio",
-  offs: [],
   load() {
     const onStateChange = PlayerEvent.onStateChange(
       ({ player, newState, oldState, next }) => {
@@ -58,11 +57,9 @@ export const IRadio: IFilterScript = {
       return next();
     });
 
-    this.offs.push(onStateChange, onUpdate);
+    return [onStateChange, onUpdate];
   },
   unload() {
-    this.offs.forEach((off) => off());
-    this.offs = [];
     alhambraSet.clear();
   },
 };

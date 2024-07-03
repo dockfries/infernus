@@ -4,6 +4,7 @@ import { logger } from "../../logger";
 
 const preInstallScripts: Array<IFilterScript> = [];
 const installedScripts: Array<IFilterScript> = [];
+const registeredEvents = new Map<string, Array<() => void>>();
 
 export const loadUseScript = (scriptName: string): void => {
   setTimeout(async () => {
@@ -12,7 +13,8 @@ export const loadUseScript = (scriptName: string): void => {
       if (fsIdx === -1) return;
 
       const fs = preInstallScripts[fsIdx];
-      await fs.load();
+      const events = await fs.load();
+      events.length && registeredEvents.set(scriptName, events);
 
       preInstallScripts.splice(fsIdx, 1);
       installedScripts.push(fs);
@@ -29,6 +31,11 @@ export const unloadUseScript = (scriptName: string): void => {
       if (fsIdx === -1) return;
 
       const fs = installedScripts[fsIdx];
+
+      const offs = registeredEvents.get(scriptName);
+      offs && offs.forEach((off) => off());
+      registeredEvents.delete(scriptName);
+
       await fs.unload();
 
       installedScripts.splice(fsIdx, 1);
@@ -56,16 +63,16 @@ onExit(({ next }) => {
 });
 
 export const useFilterScript = function (
-  plugin: IFilterScript,
+  fs: IFilterScript,
   ...options: Array<any>
 ): void {
   if (
-    preInstallScripts.some((fs) => fs === plugin) ||
-    installedScripts.some((fs) => fs === plugin)
+    preInstallScripts.some((fs) => fs === fs) ||
+    installedScripts.some((fs) => fs === fs)
   ) {
     logger.warn(`[GameMode]: script has already been applied`);
     return;
   }
-  plugin.load = plugin.load.bind(plugin, ...options);
-  preInstallScripts.push(plugin);
+  fs.load = fs.load.bind(fs, ...options);
+  preInstallScripts.push(fs);
 };

@@ -188,8 +188,7 @@ export interface IDynamicAreaKey {
 
 export interface IFilterScript {
   name: string;
-  load: (...args: Array<any>) => any;
+  load: (...args: Array<any>) => Array<() => void> | Promise<Array<() => void>>;
   unload: () => any;
-  offs: Array<() => void>;
   [propName: string | number | symbol]: any;
 }

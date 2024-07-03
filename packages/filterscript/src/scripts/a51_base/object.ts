@@ -318,8 +318,6 @@ export const removeBuilding = (player: Player) => {
   player.removeBuilding(16094, 191.141, 1870.04, 21.4766, 250.0);
 };
 
-let offs: (() => void)[] = [];
-
 export const loadObjects = (options: ICommonOptions, i18n: I18n) => {
   // event should before create
 
@@ -342,8 +340,6 @@ export const loadObjects = (options: ICommonOptions, i18n: I18n) => {
     return next();
   });
 
-  offs.push(offOnMoved);
-
   A51LandObject.create();
   log(options, `  |--  ${i18n?.$t("a51.objects.created.land")}`);
 
@@ -365,6 +361,8 @@ export const loadObjects = (options: ICommonOptions, i18n: I18n) => {
     if (!p.isConnected() || p.isNpc()) return;
     removeBuilding(p);
   });
+
+  return offOnMoved;
 };
 
 export const unloadObjects = (options: ICommonOptions, i18n: I18n) => {
@@ -393,9 +391,6 @@ export const unloadObjects = (options: ICommonOptions, i18n: I18n) => {
       );
     }
   });
-
-  offs.forEach((off) => off());
-  offs = [];
 };
 
 const destroyValidObject = (o: DynamicObject | Array<DynamicObject> | null) => {

@@ -16,7 +16,6 @@ function isPlayerFlooding(player: Player) {
 
 export const AntiFlood: IFilterScript = {
   name: "anti_flood",
-  offs: [],
   load() {
     const onText = PlayerEvent.onText(({ player, text, next }) => {
       // Is the player flooding?
@@ -87,14 +86,12 @@ export const AntiFlood: IFilterScript = {
       return next();
     });
 
-    this.offs.push(onText, onCmdReceived, onDisconnect);
-
     console.log("\n--Anti Flood loaded.\n");
+
+    return [onText, onCmdReceived, onDisconnect];
   },
   unload() {
     iPlayerChatTime.clear();
     szPlayerChatMsg.clear();
-    this.offs.forEach((o) => o());
-    this.offs = [];
   },
 };

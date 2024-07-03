@@ -26,7 +26,6 @@ const specCommands: string[] = [];
 
 export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
   return {
-    offs: [],
     name: "admin_spec",
     load() {
       if (options?.command) {
@@ -153,7 +152,7 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
         },
       );
 
-      this.offs.push(
+      return [
         offCommandPerformed,
         offInteriorChange,
         offOnConnect,
@@ -161,12 +160,10 @@ export const useAdminSpecFs = (options?: IAdminSpecOptions): IFilterScript => {
         offSpecPlayer,
         offSpecVehicle,
         offSpecOff,
-      );
+      ];
     },
     unload() {
       specCommands.splice(0, specCommands.length);
-      this.offs.forEach((off) => off());
-      this.offs = [];
     },
   };
 };

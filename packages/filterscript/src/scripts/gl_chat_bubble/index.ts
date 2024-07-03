@@ -7,7 +7,6 @@ import { PlayerEvent } from "@infernus/core";
 
 export const GlChatBubble: IFilterScript = {
   name: "gl_chat_bubble",
-  offs: [],
   load() {
     const MESSAGE_COLOR = 0xeeeeeeff;
     const ECHO_COLOR = 0xeeeeeeff;
@@ -37,10 +36,7 @@ export const GlChatBubble: IFilterScript = {
     );
 
     console.log("\n--Speech bubble example loaded.\n");
-    this.offs.push(onText, meCommand);
+    return [onText, meCommand];
   },
-  unload() {
-    this.offs.forEach((off) => off());
-    this.offs = [];
-  },
+  unload() {},
 };

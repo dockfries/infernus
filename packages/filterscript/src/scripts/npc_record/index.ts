@@ -10,7 +10,6 @@ import { Npc, PlayerEvent, RecordTypesEnum } from "@infernus/core";
 
 export const NpcRecord: IFilterScript = {
   name: "npc_record",
-  offs: [],
   load() {
     const vr = PlayerEvent.onCommandText(
       "vrecord",
@@ -73,10 +72,7 @@ export const NpcRecord: IFilterScript = {
       return next();
     });
 
-    this.offs.push(vr, ofr, stop);
+    return [vr, ofr, stop];
   },
-  unload() {
-    this.offs.forEach((off) => off());
-    this.offs = [];
-  },
+  unload() {},
 };

@@ -15,7 +15,6 @@ let instances: DynamicMapIcon[] | null = null;
 
 export const GlMapIcon: IFilterScript = {
   name: "gl_map_icon",
-  offs: [],
   load() {
     instances = mapIcons.map((icon) => {
       const [x, y, z, type] = icon;
@@ -31,6 +30,7 @@ export const GlMapIcon: IFilterScript = {
       instance.create();
       return instance;
     });
+    return [];
   },
   unload() {
     instances!.forEach((instance) => {

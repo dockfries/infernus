@@ -7,7 +7,6 @@ import { ColorEnum } from "./enums/color";
 
 export const Base: IFilterScript = {
   name: "base",
-  offs: [],
   load() {
     // PM Command
     const pm = PlayerEvent.onCommandText(
@@ -172,12 +171,9 @@ export const Base: IFilterScript = {
       },
     );
 
-    this.offs.push(pm, kick, ban);
-
     console.log("\n--Base FS loaded.\n");
+
+    return [pm, kick, ban];
   },
-  unload() {
-    this.offs.forEach((o) => o());
-    this.offs = [];
-  },
+  unload() {},
 };

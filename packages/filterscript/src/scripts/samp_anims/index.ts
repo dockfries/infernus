@@ -12,7 +12,6 @@ import type { IFilterScript } from "@infernus/core";
 
 export const SampAnims: IFilterScript = {
   name: "samp_anims",
-  offs: [],
   load() {
     const fish = PlayerEvent.onCommandText("fish", ({ player, next }) => {
       // Apply animation
@@ -30,8 +29,6 @@ export const SampAnims: IFilterScript = {
       return next();
     });
 
-    this.offs.push(fish);
-
     // Display information in the Server Console
     console.log("\n");
     console.log("  |---------------------------------------------------");
@@ -39,11 +36,10 @@ export const SampAnims: IFilterScript = {
     console.log("  |--  Script v1.01");
     console.log("  |--  12th January 2015");
     console.log("  |---------------------------------------------------");
+
+    return [fish];
   },
   unload() {
-    this.offs.forEach((off) => off());
-    this.offs = [];
-
     // Display information in the Server Console
     console.log("  |---------------------------------------------------");
     console.log("  |--  SA-MP Animations Filterscript Unloaded");
