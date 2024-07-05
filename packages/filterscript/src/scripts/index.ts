@@ -11,6 +11,8 @@ export * from "./gl_chat_bubble";
 export * from "./gl_map_icon";
 export * from "./gl_real_time";
 export * from "./i_radio";
+export * from "./kylies_barn";
+export * from "./ls_wells_fargo";
 export * from "./max_ips";
 export * from "./menu_test";
 export * from "./net_stats";
