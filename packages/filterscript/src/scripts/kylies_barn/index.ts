@@ -21,6 +21,10 @@ import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
 // it can be destroyed when the filterscript is unloaded
 let KyliesBarnObject1: DynamicObject | null = null; // Barn object
 
+function removeBuilding(p: Player) {
+  p.removeBuilding(14871, 286.188, 307.609, 1002.01, 250.0); // Barn
+}
+
 export const KyliesBarn: IFilterScript = {
   name: "kylies_barn",
   load() {
@@ -54,7 +58,7 @@ export const KyliesBarn: IFilterScript = {
         // Remove default GTASA Kylie's Barn object for the player (so any
         // player currently ingame does not have to rejoin for them to be
         // removed when this filterscript is loaded)
-        p.removeBuilding(14871, 286.188, 307.609, 1002.01, 250.0); // Barn
+        removeBuilding(p);
       }
     });
 
@@ -77,8 +81,7 @@ export const KyliesBarn: IFilterScript = {
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
       // Remove default GTASA Kylie's Barn object for the player
-      player.removeBuilding(14871, 286.188, 307.609, 1002.01, 250.0); // Barn
-      // Exit here (return 1 so this callback is handled in other scripts too)
+      removeBuilding(player); // Barn
       return next();
     });
 
