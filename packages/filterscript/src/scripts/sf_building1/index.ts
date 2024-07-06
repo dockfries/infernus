@@ -1,5 +1,4 @@
-// -----------------------------------------------------------------------------
-// Example Filterscript for the let SF Building 1
+// Example FilterScript for the let SF Building 1
 // ----------------------------------------------
 // By Matite in February 2015
 //
@@ -12,8 +11,6 @@
 // * 3 objects = 1 for the replacement land object, 1 for the outside object
 //   and 1 for the inside object
 // * Enables the /sfb command to teleport the player to the SF Building 1
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
 
 import type { IFilterScript } from "@infernus/core";
 import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
@@ -39,7 +36,7 @@ export const SFBuilding1: IFilterScript = {
     // Display information in the Server Console
     console.log("\n");
     console.log("  |---------------------------------------------------");
-    console.log("  |--- SF Building 1 Filterscript");
+    console.log("  |--- SF Building 1 FilterScript");
     console.log("  |--  Script v1.01");
     console.log("  |--  10th February 2015");
     console.log("  |---------------------------------------------------");
@@ -154,7 +151,7 @@ export const SFBuilding1: IFilterScript = {
 
     // Display information in the Server Console
     console.log("  |---------------------------------------------------");
-    console.log("  |--  SF Building 1 Filterscript Unloaded");
+    console.log("  |--  SF Building 1 FilterScript Unloaded");
     console.log("  |---------------------------------------------------");
   },
 };

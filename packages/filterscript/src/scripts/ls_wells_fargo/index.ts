@@ -1,5 +1,4 @@
-// -----------------------------------------------------------------------------
-// Example Filterscript for the LS Wells Fargo Building Object
+// Example FilterScript for the LS Wells Fargo Building Object
 // -----------------------------------------------------------
 // By Matite in March 2015
 //
@@ -11,8 +10,6 @@
 // This script uses a total of:
 // * 1 object = 1 for the replacement building object
 // * Enables the /lswf command to teleport the player to the LS Wells Fargo Building
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
 
 import type { IFilterScript } from "@infernus/core";
 import { GameText, Player, PlayerEvent } from "@infernus/core";
@@ -33,7 +30,7 @@ export const LsWellsFargo: IFilterScript = {
     // Display information in the Server Console
     console.log("\n");
     console.log("  |---------------------------------------------------");
-    console.log("  |--- LS Wells Fargo Building Filterscript");
+    console.log("  |--- LS Wells Fargo Building FilterScript");
     console.log("  |--  Script v1.01");
     console.log("  |--  6th March 2015");
     console.log("  |---------------------------------------------------");
@@ -101,7 +98,7 @@ export const LsWellsFargo: IFilterScript = {
 
     // Display information in the Server Console
     console.log("  |---------------------------------------------------");
-    console.log("  |--  LS Wells Fargo Building Filterscript Unloaded");
+    console.log("  |--  LS Wells Fargo Building FilterScript Unloaded");
     console.log("  |---------------------------------------------------");
   },
 };

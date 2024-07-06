@@ -1,5 +1,5 @@
 // * ------------------------------------------------------
-// * Example Filterscript for the Area 51 (69) Base Objects
+// * Example FilterScript for the Area 51 (69) Base Objects
 // * ------------------------------------------------------
 // * By Matite in March 2015
 // *

@@ -1,5 +1,4 @@
-// -----------------------------------------------------------------------------
-// Example Filterscript for the letSafe with Door
+// Example FilterScript for the letSafe with Door
 // -----------------------------------------------
 // By Matite in January 2015
 //
@@ -21,7 +20,6 @@
 //
 // Warning...
 // This script uses a total of 2 objects
-// -----------------------------------------------------------------------------
 
 import type { IFilterScript } from "@infernus/core";
 import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
@@ -50,7 +48,7 @@ export const SafeAnimated: IFilterScript = {
     // Display information in the Server Console
     console.log("\n");
     console.log("  |---------------------------------------------------");
-    console.log("  |--- Safe and Door Filterscript by Matite");
+    console.log("  |--- Safe and Door FilterScript by Matite");
     console.log("  |--  Script v1.02");
     console.log("  |--  13th February 2015");
     console.log("  |---------------------------------------------------");
@@ -211,7 +209,7 @@ export const SafeAnimated: IFilterScript = {
 
     // Display information in the Server Console
     console.log("  |---------------------------------------------------");
-    console.log("  |--  Safe and Door Filterscript Unloaded");
+    console.log("  |--  Safe and Door FilterScript Unloaded");
     console.log("  |---------------------------------------------------");
   },
 };

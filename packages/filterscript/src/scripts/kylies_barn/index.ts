@@ -1,5 +1,4 @@
-// -----------------------------------------------------------------------------
-// Example Filterscript for Kylie's Barn Object
+// Example FilterScript for Kylie's Barn Object
 // --------------------------------------------
 // By Matite in March 2015
 //
@@ -12,7 +11,6 @@
 // This script uses a total of:
 // * 1 object = 1 for the replacement barn object
 // * Enables the /kb command to teleport the player to Kylie's Barn
-// -----------------------------------------------------------------------------
 
 import type { IFilterScript } from "@infernus/core";
 import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
@@ -31,7 +29,7 @@ export const KyliesBarn: IFilterScript = {
     // Display information in the Server Console
     console.log("\n");
     console.log("  |---------------------------------------------------");
-    console.log("  |--- Kylie's Barn Filterscript");
+    console.log("  |--- Kylie's Barn FilterScript");
     console.log("  |--  Script v1.01");
     console.log("  |--  6th March 2015");
     console.log("  |---------------------------------------------------");

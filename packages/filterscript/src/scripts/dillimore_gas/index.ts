@@ -1,5 +1,4 @@
-// -----------------------------------------------------------------------------
-// Example Filterscript for the Dillimore Gas Station Objects
+// Example FilterScript for the Dillimore Gas Station Objects
 // ----------------------------------------------------------
 // By Matite in March 2015
 //
@@ -12,7 +11,6 @@
 // * 2 objects = 1 for the replacement building exterior object and 1 for the
 //   the replacement building interior object
 // * Enables the /dgs command to teleport the player to the Dillimore Gas Station
-// -----------------------------------------------------------------------------
 
 import type { IFilterScript } from "@infernus/core";
 import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
@@ -36,7 +34,7 @@ export const DillimoreGasStation: IFilterScript = {
     // Display information in the Server Console
     console.log("\n");
     console.log("  |---------------------------------------------------");
-    console.log("  |--- Dillimore Gas Station Filterscript");
+    console.log("  |--- Dillimore Gas Station FilterScript");
     console.log("  |--  Script v1.01");
     console.log("  |--  3rd March 2015");
     console.log("  |---------------------------------------------------");
