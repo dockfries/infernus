@@ -17,7 +17,7 @@ import {
   foggy_weather_ids,
   wet_weather_ids,
 } from "./constants";
-import type { IGlRealTimeFs } from "./interfaces";
+import type { IGlRealTimeFS } from "./interfaces";
 
 // Used to override the time in this script
 let worldTimeOverride = false;
@@ -81,7 +81,7 @@ function updateTimeAndWeather() {
   }
 }
 
-export const GlRealTime: IGlRealTimeFs = {
+export const GlRealTime: IGlRealTimeFS = {
   name: "gl_real_time",
   load(options) {
     update_weather = !!(options && options.updateWeather);

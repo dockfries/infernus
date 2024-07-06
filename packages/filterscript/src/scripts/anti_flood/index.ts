@@ -29,7 +29,7 @@ export const AntiFlood: IFilterScript = {
 
       // Now we handle the admin chat, will be #<message>.
       if (
-        (text[0] == "#" || text[0] == "@") &&
+        (text[0] === "#" || text[0] === "@") &&
         text.length > 1 &&
         player.isAdmin()
       ) {

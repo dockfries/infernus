@@ -98,7 +98,7 @@ export const FerrisWheel: IFilterScript = {
     gFerrisBase.create();
 
     let x = 0;
-    while (x != NUM_FERRIS_CAGES) {
+    while (x !== NUM_FERRIS_CAGES) {
       gFerrisCages[x] = new DynamicObject({
         modelId: FERRIS_CAGE_ID,
         x: gFerrisOrigin[0],

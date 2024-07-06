@@ -52,7 +52,7 @@ export const CargoShip: IFilterScript = {
   name: "cargo_ship",
   load() {
     const moved = DynamicObjectEvent.onMoved(({ object, next }) => {
-      if (object != gMainShipObject) return next();
+      if (object !== gMainShipObject) return next();
 
       if (gShipCurrentPoint > 0 && !(gShipCurrentPoint % 5)) {
         // play some seagulls audio every 5 points
