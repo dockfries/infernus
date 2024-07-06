@@ -82,7 +82,7 @@ function stopLoopingAnim(player: Player) {
   if (!player.isControllable()) {
     player.toggleControllable(true);
   }
-  txtAnimHelper!.hide(player);
+  txtAnimHelper?.hide(player);
 }
 
 function preloadAnimLib(player: Player, animlib: string) {
@@ -696,12 +696,12 @@ export const GlActions: IGlActionsFS = {
     return offs;
   },
   unload() {
-    txtAnimHelper!.destroy();
-    txtAnimHelper = null;
-
     [...gPlayerUsingLoopingAnim.values()].forEach((player) => {
       stopLoopingAnim(player);
     });
+
+    txtAnimHelper!.destroy();
+    txtAnimHelper = null;
 
     gPlayerAnimLibsPreloaded.clear();
   },
