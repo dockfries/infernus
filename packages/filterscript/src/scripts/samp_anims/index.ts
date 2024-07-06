@@ -18,11 +18,12 @@ export const SampAnims: IFilterScript = {
       player.applyAnimation(
         "SAMP",
         "FishingIdle",
+        4.1,
         false,
         true,
         true,
         true,
-        true,
+        1,
       );
       // Send a gametext message to the player
       new GameText("~b~~h~Fishing Animation Pose!", 3000, 3).forPlayer(player);
