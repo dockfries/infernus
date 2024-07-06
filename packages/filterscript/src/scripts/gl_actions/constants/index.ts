@@ -13,7 +13,7 @@ export const preloadAnimLibs = [
   "PARK",
   "INT_HOUSE",
   "FOOD",
-];
+] as const;
 
 export const onFootList = [
   "handsup",
@@ -49,4 +49,4 @@ export const onFootList = [
   "inbedright",
   "inbedleft",
   "dance",
-];
+] as const;

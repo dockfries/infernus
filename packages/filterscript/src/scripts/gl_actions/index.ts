@@ -200,7 +200,7 @@ export const GlActions: IGlActionsFS = {
     );
 
     PlayerEvent.onCommandReceived(({ player, command, next }) => {
-      if (onFootList.includes(command)) {
+      if (onFootList.findIndex((o) => o === command) > -1) {
         // We don't handle anything else after this that can be used in vehicles
         if (player.getState() !== PlayerStateEnum.ONFOOT) {
           return false;

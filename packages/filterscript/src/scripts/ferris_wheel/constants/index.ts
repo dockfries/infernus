@@ -7,7 +7,7 @@ export const FERRIS_WHEEL_SPEED = 0.01;
 
 export const FERRIS_WHEEL_Z_ANGLE = -90.0; // This is the heading the entire ferris wheel is at (beware of gimbal lock)
 
-export const gFerrisOrigin = [832.8393, -2046.199, 27.09];
+export const gFerrisOrigin = [832.8393, -2046.199, 27.09] as const;
 
 // Cage offsets for attaching to the main wheel
 export const gFerrisCageOffsets = [
@@ -21,4 +21,4 @@ export const gFerrisCageOffsets = [
   [-11.16, -0.0399, -3.63],
   [11.16, 0.0, 3.6499],
   [7.0399, -0.02, 9.36],
-];
+] as const;

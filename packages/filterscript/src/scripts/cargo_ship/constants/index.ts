@@ -17,7 +17,7 @@ export const gShipAttachmentModelIds = [
   9822, // Captain's seat
   9820, // Bridge ducts and lights
   9590, // Cargo bay area
-];
+] as const;
 
 export const gShipAttachmentPos = [
   // these are world space positions used on the original cargo ship in the game
@@ -32,7 +32,7 @@ export const gShipAttachmentPos = [
   [-2470.9375, 1550.75, 32.9063],
   [-2474.625, 1545.0859, 33.0625],
   [-2403.5078, 1544.9453, 8.7188],
-];
+] as const;
 
 // Pirate ship route points (position/rotation)
 export const gShipRoutePoints = [
@@ -61,4 +61,4 @@ export const gShipRoutePoints = [
   [-2106.14, 1639.23, 0.0, 0.02, -0.06, 378.36],
   [-1943.63, 1743.98, 0.0, 0.02, -0.06, 411.42],
   [-1891.39, 1907.57, 0.0, 0.02, -0.06, 457.14],
-];
+] as const;

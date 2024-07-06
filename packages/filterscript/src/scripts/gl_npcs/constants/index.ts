@@ -20,7 +20,7 @@ export const spawnInfo = {
   [npcNames[6]]: [69, 61, 2388.1003, -1279.8933, 25.1291, 94.3321],
   [npcNames[7]]: [69, 61, 2388.1003, -1279.8933, 25.1291, 94.3321],
   [npcNames[8]]: [69, 61, 2388.1003, -1279.8933, 25.1291, 94.3321],
-};
+} as const;
 
 export const vehiclePutId = {
   [npcNames[0]]: 1,
@@ -31,4 +31,4 @@ export const vehiclePutId = {
   [npcNames[5]]: 15,
   [npcNames[7]]: 376,
   [npcNames[8]]: 875,
-};
+} as const;

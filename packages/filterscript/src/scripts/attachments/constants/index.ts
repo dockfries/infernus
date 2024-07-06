@@ -1,4 +1,4 @@
-export const attachmentObjects: [number, string][] = [
+export const attachmentObjects = [
   [18632, "FishingRod"],
   [18633, "GTASAWrench1"],
   [18634, "GTASACrowbar1"],
@@ -229,7 +229,7 @@ export const attachmentObjects: [number, string][] = [
   [19513, "whitephone"],
   [19578, "Banana"],
   [19418, "HandCuff"],
-];
+] as const;
 
 export const attachmentBones = [
   "Spine",
@@ -250,4 +250,4 @@ export const attachmentBones = [
   "Right clavicle",
   "Neck",
   "Jaw",
-];
+] as const;
