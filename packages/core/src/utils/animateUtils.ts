@@ -1,6 +1,6 @@
 import type { IAnimateInfo } from "core/interfaces";
 
-const animateLib = new Map<string, Array<IAnimateInfo>>([
+export const animateLib = new Map<string, Array<IAnimateInfo>>([
   ["AIRPORT", [{ n: "thrw_barl_thrw", d: 2.0 }]],
   [
     "Attractors",
@@ -2496,6 +2496,7 @@ export const isValidAnimateLib = (lib: string) => {
 export const isValidAnimateName = (lib: string, name: string) => {
   const animLib = isValidAnimateLib(lib);
   if (!animLib) return;
+  if (name === "null") return true;
   return animLib.some((anim) => anim.n === name);
 };
 

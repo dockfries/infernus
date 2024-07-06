@@ -21,7 +21,7 @@ import {
 
 import type { IClientResRaw } from "../../interfaces";
 import type { TPos } from "../../types";
-import { getAnimateDurationByLibName } from "../../utils/animateUtils";
+import { isValidAnimateName } from "../../utils/animateUtils";
 import * as h from "../../utils/helperUtils";
 import { logger } from "../../logger";
 
@@ -548,25 +548,26 @@ export class Player {
   applyAnimation(
     animLib: string,
     animName: string,
+    speed = 4.1,
     loop = false,
     lockX = true,
     lockY = true,
     freeze = false,
+    time = 0,
     forceSync: boolean | ForceSyncEnum = false,
   ): void {
-    const duration = getAnimateDurationByLibName(animLib, animName);
-    if (duration === undefined)
+    if (!isValidAnimateName(animLib, animName))
       return logger.error("[Player]: Invalid anim library or name");
     w.ApplyAnimation(
       this.id,
       animLib,
       animName,
-      4.1,
+      speed,
       loop,
       lockX,
       lockY,
       freeze,
-      loop ? 0 : duration,
+      time,
       +forceSync,
     );
   }

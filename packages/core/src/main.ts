@@ -6,3 +6,4 @@ export * from "./types";
 export * from "./enums";
 export { rgba } from "./utils/colorUtils";
 export * from "./utils/keyUtils";
+export * from "./utils/animateUtils";
