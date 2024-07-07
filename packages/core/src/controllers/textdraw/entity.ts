@@ -3,48 +3,6 @@ import { LimitsEnum, TextDrawFontsEnum } from "core/enums";
 import type { ITextDraw } from "core/interfaces";
 import { logger } from "core/logger";
 import * as w from "core/wrapper/native";
-import {
-  IsValidTextDraw,
-  IsTextDrawVisibleForPlayer,
-  PlayerTextDrawGetString,
-  TextDrawGetString,
-  PlayerTextDrawSetPos,
-  TextDrawSetPos,
-  PlayerTextDrawGetLetterSize,
-  TextDrawGetLetterSize,
-  PlayerTextDrawGetTextSize,
-  TextDrawGetTextSize,
-  PlayerTextDrawGetPos,
-  TextDrawGetPos,
-  PlayerTextDrawGetColor,
-  TextDrawGetColor,
-  PlayerTextDrawGetBoxColor,
-  TextDrawGetBoxColor,
-  PlayerTextDrawGetBackgroundColor,
-  TextDrawGetBackgroundColor,
-  PlayerTextDrawGetShadow,
-  TextDrawGetShadow,
-  PlayerTextDrawGetOutline,
-  TextDrawGetOutline,
-  PlayerTextDrawGetFont,
-  TextDrawGetFont,
-  PlayerTextDrawIsBox,
-  TextDrawIsBox,
-  PlayerTextDrawIsProportional,
-  TextDrawIsProportional,
-  PlayerTextDrawIsSelectable,
-  TextDrawIsSelectable,
-  PlayerTextDrawGetAlignment,
-  TextDrawGetAlignment,
-  PlayerTextDrawGetPreviewModel,
-  TextDrawGetPreviewModel,
-  PlayerTextDrawGetPreviewRot,
-  TextDrawGetPreviewRot,
-  PlayerTextDrawGetPreviewVehicleColors,
-  TextDrawGetPreviewVehicleColors,
-  IsValidPlayerTextDraw,
-} from "core/wrapper/native";
-
 import { PlayerEvent, type Player } from "../player";
 
 export class TextDraw {
@@ -366,8 +324,8 @@ export class TextDraw {
   }
   isValid(): boolean {
     const p = this.sourceInfo.player;
-    if (p) return IsValidPlayerTextDraw(p.id, this.id);
-    return IsValidTextDraw(this.id);
+    if (p) return w.IsValidPlayerTextDraw(p.id, this.id);
+    return w.IsValidTextDraw(this.id);
   }
   isVisibleForPlayer(player?: Player): boolean {
     if (this.id === -1) return false;
@@ -376,13 +334,13 @@ export class TextDraw {
     if (p) return w.IsPlayerTextDrawVisible(p.id, this.id);
 
     if (!player) return false;
-    return IsTextDrawVisibleForPlayer(player.id, this.id);
+    return w.IsTextDrawVisibleForPlayer(player.id, this.id);
   }
   getString(): string {
     if (this.id === -1) return this.sourceInfo.text;
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetString(p.id, this.id);
-    return TextDrawGetString(this.id);
+    if (p) return w.PlayerTextDrawGetString(p.id, this.id);
+    return w.TextDrawGetString(this.id);
   }
   setPos(fX: number, fY: number) {
     if (this.id === -1) {
@@ -390,107 +348,107 @@ export class TextDraw {
       return this;
     }
     const p = this.sourceInfo.player;
-    if (p) PlayerTextDrawSetPos(p.id, this.id, fX, fY);
-    else TextDrawSetPos(this.id, fX, fY);
+    if (p) w.PlayerTextDrawSetPos(p.id, this.id, fX, fY);
+    else w.TextDrawSetPos(this.id, fX, fY);
     return this;
   }
   getLetterSize() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get letter size");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetLetterSize(p.id, this.id);
-    return TextDrawGetLetterSize(this.id);
+    if (p) return w.PlayerTextDrawGetLetterSize(p.id, this.id);
+    return w.TextDrawGetLetterSize(this.id);
   }
   getTextSize() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get text size");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetTextSize(p.id, this.id);
-    return TextDrawGetTextSize(this.id);
+    if (p) return w.PlayerTextDrawGetTextSize(p.id, this.id);
+    return w.TextDrawGetTextSize(this.id);
   }
   getPos() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get position");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetPos(p.id, this.id);
-    return TextDrawGetPos(this.id);
+    if (p) return w.PlayerTextDrawGetPos(p.id, this.id);
+    return w.TextDrawGetPos(this.id);
   }
   getColor() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get color");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetColor(p.id, this.id);
-    return TextDrawGetColor(this.id);
+    if (p) return w.PlayerTextDrawGetColor(p.id, this.id);
+    return w.TextDrawGetColor(this.id);
   }
   getBoxColor() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get box color");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetBoxColor(p.id, this.id);
-    return TextDrawGetBoxColor(this.id);
+    if (p) return w.PlayerTextDrawGetBoxColor(p.id, this.id);
+    return w.TextDrawGetBoxColor(this.id);
   }
   getBackgroundColor() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get bg color");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetBackgroundColor(p.id, this.id);
-    return TextDrawGetBackgroundColor(this.id);
+    if (p) return w.PlayerTextDrawGetBackgroundColor(p.id, this.id);
+    return w.TextDrawGetBackgroundColor(this.id);
   }
   getShadow() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get shadow");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetShadow(p.id, this.id);
-    return TextDrawGetShadow(this.id);
+    if (p) return w.PlayerTextDrawGetShadow(p.id, this.id);
+    return w.TextDrawGetShadow(this.id);
   }
   getOutline() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get outline");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetOutline(p.id, this.id);
-    return TextDrawGetOutline(this.id);
+    if (p) return w.PlayerTextDrawGetOutline(p.id, this.id);
+    return w.TextDrawGetOutline(this.id);
   }
   getFont() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get font");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetFont(p.id, this.id);
-    return TextDrawGetFont(this.id);
+    if (p) return w.PlayerTextDrawGetFont(p.id, this.id);
+    return w.TextDrawGetFont(this.id);
   }
   isBox() {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawIsBox(p.id, this.id);
-    return TextDrawIsBox(this.id);
+    if (p) return w.PlayerTextDrawIsBox(p.id, this.id);
+    return w.TextDrawIsBox(this.id);
   }
   isProportional() {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawIsProportional(p.id, this.id);
-    return TextDrawIsProportional(this.id);
+    if (p) return w.PlayerTextDrawIsProportional(p.id, this.id);
+    return w.TextDrawIsProportional(this.id);
   }
   isSelectable() {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawIsSelectable(p.id, this.id);
-    return TextDrawIsSelectable(this.id);
+    if (p) return w.PlayerTextDrawIsSelectable(p.id, this.id);
+    return w.TextDrawIsSelectable(this.id);
   }
   getAlignment() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get alignment");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetAlignment(p.id, this.id);
-    return TextDrawGetAlignment(this.id);
+    if (p) return w.PlayerTextDrawGetAlignment(p.id, this.id);
+    return w.TextDrawGetAlignment(this.id);
   }
   getPreviewModel() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get preview model");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetPreviewModel(p.id, this.id);
-    return TextDrawGetPreviewModel(this.id);
+    if (p) return w.PlayerTextDrawGetPreviewModel(p.id, this.id);
+    return w.TextDrawGetPreviewModel(this.id);
   }
   getPreviewRot() {
     if (this.id === -1)
       return TextDraw.beforeCreateWarn("get preview rotation");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetPreviewRot(p.id, this.id);
-    return TextDrawGetPreviewRot(this.id);
+    if (p) return w.PlayerTextDrawGetPreviewRot(p.id, this.id);
+    return w.TextDrawGetPreviewRot(this.id);
   }
   getPreviewVehColors() {
     if (this.id === -1)
       return TextDraw.beforeCreateWarn("get preview vel colors");
     const p = this.sourceInfo.player;
-    if (p) return PlayerTextDrawGetPreviewVehicleColors(p.id, this.id);
-    return TextDrawGetPreviewVehicleColors(this.id);
+    if (p) return w.PlayerTextDrawGetPreviewVehicleColors(p.id, this.id);
+    return w.TextDrawGetPreviewVehicleColors(this.id);
   }
   isGlobal() {
     return !!this.sourceInfo.player;
