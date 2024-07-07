@@ -26,3 +26,4 @@ export * from "./pirate_ship";
 export * from "./safe_animated";
 export * from "./samp_anims";
 export * from "./sf_building1";
+export * from "./skin_changer";
