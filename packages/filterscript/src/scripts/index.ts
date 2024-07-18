@@ -19,6 +19,7 @@ export * from "./ls_mall";
 export * from "./ls_wells_fargo";
 export * from "./max_ips";
 export * from "./menu_test";
+export * from "./modular_houses";
 export * from "./modular_island";
 export * from "./net_stats";
 export * from "./npc_record";
