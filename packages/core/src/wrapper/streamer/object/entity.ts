@@ -297,7 +297,7 @@ export class DynamicObject {
     modelId: number,
     txdName: string,
     textureName: string,
-    materialColor = "#000",
+    materialColor: string | number = "#000",
   ): void | number {
     if (this.id === -1)
       return logger.warn(
@@ -343,8 +343,8 @@ export class DynamicObject {
     fontFace = "Arial",
     fontSize = 24,
     bold = 1,
-    fontColor = "#fff",
-    backColor = "#000",
+    fontColor: string | number = "#fff",
+    backColor: string | number = "#000",
     textAlignment = 0,
   ): void | number {
     if (this.id === -1)

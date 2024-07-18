@@ -147,7 +147,7 @@ export class Vehicle {
     if (this.id === -1) return false;
     return v.IsPlayerInVehicle(player.id, this.id);
   }
-  putPlayerIn(player: Player, seatId: number): number {
+  putPlayerIn(player: Player, seatId: number) {
     if (this.id === -1) return 0;
     if (seatId < 0) return 0;
     if (seatId > 4) {

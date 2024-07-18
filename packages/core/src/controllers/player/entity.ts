@@ -119,36 +119,38 @@ export class Player {
   getDrunkLevel(): number {
     return w.GetPlayerDrunkLevel(this.id);
   }
-  setDrunkLevel(level: number): void {
-    if (level < 0 || level > 50000)
-      return logger.error(
+  setDrunkLevel(level: number) {
+    if (level < 0 || level > 50000) {
+      logger.error(
         new Error("[Player]: player's drunk level ranges from 0 to 50000"),
       );
-    w.SetPlayerDrunkLevel(this.id, level);
+      return false;
+    }
+    return w.SetPlayerDrunkLevel(this.id, level);
   }
-  allowTeleport(allow: boolean): void {
-    w.AllowPlayerTeleport(this.id, allow);
+  allowTeleport(allow: boolean) {
+    return w.AllowPlayerTeleport(this.id, allow);
   }
   isTeleportAllowed() {
     return w.IsPlayerTeleportAllowed(this.id);
   }
-  enableCameraTarget(enable: boolean): void {
-    w.EnablePlayerCameraTarget(this.id, enable);
+  enableCameraTarget(enable: boolean) {
+    return w.EnablePlayerCameraTarget(this.id, enable);
   }
-  enableStuntBonus(enable: boolean): void {
-    w.EnableStuntBonusForPlayer(this.id, enable);
+  enableStuntBonus(enable: boolean) {
+    return w.EnableStuntBonusForPlayer(this.id, enable);
   }
   getInterior(): number {
     return w.GetPlayerInterior(this.id);
   }
-  setInterior(interiorId: number): number {
+  setInterior(interiorId: number) {
     return w.SetPlayerInterior(this.id, interiorId);
   }
-  showNameTag(showPlayer: Player, show: boolean): void {
-    w.ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
+  showNameTag(showPlayer: Player, show: boolean) {
+    return w.ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
   }
-  setColor(color: string | number): void {
-    w.SetPlayerColor(this.id, color);
+  setColor(color: string | number) {
+    return w.SetPlayerColor(this.id, color);
   }
   getColor(): number {
     return w.GetPlayerColor(this.id);
@@ -159,16 +161,16 @@ export class Player {
   getMarker(targetPlayer: Player) {
     return w.GetPlayerMarkerForPlayer(this.id, targetPlayer.id);
   }
-  resetMoney(): number {
+  resetMoney() {
     return w.ResetPlayerMoney(this.id);
   }
   getMoney(): number {
     return w.GetPlayerMoney(this.id);
   }
-  giveMoney(money: number): number {
+  giveMoney(money: number) {
     return w.GivePlayerMoney(this.id, money);
   }
-  resetWeapons(): number {
+  resetWeapons() {
     return w.ResetPlayerWeapons(this.id);
   }
   spawn(): number {
@@ -178,19 +180,19 @@ export class Player {
     }
     return w.SpawnPlayer(this.id);
   }
-  setHealth(health: number): number {
+  setHealth(health: number) {
     return w.SetPlayerHealth(this.id, health);
   }
   getHealth(): number {
     return w.GetPlayerHealth(this.id);
   }
-  toggleClock(toggle: boolean): number {
+  toggleClock(toggle: boolean) {
     return w.TogglePlayerClock(this.id, toggle);
   }
-  toggleControllable(toggle: boolean): number {
+  toggleControllable(toggle: boolean) {
     return w.TogglePlayerControllable(this.id, toggle);
   }
-  toggleSpectating(toggle: boolean): number {
+  toggleSpectating(toggle: boolean) {
     return w.TogglePlayerSpectating(this.id, toggle);
   }
   spectatePlayer(targetPlayer: Player, mode = SpectateModesEnum.NORMAL) {
@@ -199,17 +201,17 @@ export class Player {
   spectateVehicle(targetVehicle: Vehicle, mode = SpectateModesEnum.NORMAL) {
     return w.PlayerSpectateVehicle(this.id, targetVehicle.id, mode);
   }
-  forceClassSelection(): void {
-    w.ForceClassSelection(this.id);
+  forceClassSelection() {
+    return w.ForceClassSelection(this.id);
   }
-  kick(): void {
-    w.Kick(this.id);
+  kick() {
+    return w.Kick(this.id);
   }
-  ban(): void {
-    w.Ban(this.id);
+  ban() {
+    return w.Ban(this.id);
   }
-  banEx(reason: string, charset: string): void {
-    h.BanEx(this.id, reason, charset);
+  banEx(reason: string, charset: string) {
+    return h.BanEx(this.id, reason, charset);
   }
   isAdmin() {
     return w.IsPlayerAdmin(this.id);
@@ -220,11 +222,12 @@ export class Player {
   isStreamedIn(forPlayer: Player) {
     return w.IsPlayerStreamedIn(this.id, forPlayer.id);
   }
-  setSkin(skinId: number, ignoreRange = false): number {
-    if (!ignoreRange && (skinId < 0 || skinId > 311 || skinId == 74)) return 0;
-    if (this.getHealth() <= 0) return 0;
-    if (this.isInAnyVehicle()) return 0;
-    if (this.getSpecialAction() === SpecialActionsEnum.DUCK) return 0;
+  setSkin(skinId: number, ignoreRange = false) {
+    if (!ignoreRange && (skinId < 0 || skinId > 311 || skinId == 74))
+      return false;
+    if (this.getHealth() <= 0) return false;
+    if (this.isInAnyVehicle()) return false;
+    if (this.getSpecialAction() === SpecialActionsEnum.DUCK) return false;
     return w.SetPlayerSkin(this.id, skinId);
   }
   getSkin(): number {
@@ -236,10 +239,10 @@ export class Player {
   getSpecialAction(): SpecialActionsEnum {
     return w.GetPlayerSpecialAction(this.id);
   }
-  setSpecialAction(actionId: SpecialActionsEnum): number {
+  setSpecialAction(actionId: SpecialActionsEnum) {
     return w.SetPlayerSpecialAction(this.id, actionId);
   }
-  setScore(score: number): number {
+  setScore(score: number) {
     return w.SetPlayerScore(this.id, score);
   }
   getScore(): number {
@@ -248,7 +251,7 @@ export class Player {
   getPing(): number {
     return w.GetPlayerPing(this.id) || 0;
   }
-  setPos(x: number, y: number, z: number): number {
+  setPos(x: number, y: number, z: number) {
     return w.SetPlayerPos(this.id, x, y, z);
   }
   getPos(): TPos | undefined {
@@ -274,49 +277,49 @@ export class Player {
     if (this.isNpc()) return "";
     return w.GetPlayerVersion(this.id);
   }
-  setVirtualWorld(worldId: number): number {
+  setVirtualWorld(worldId: number) {
     return w.SetPlayerVirtualWorld(this.id, worldId);
   }
   getVirtualWorld(): number {
     return w.GetPlayerVirtualWorld(this.id);
   }
-  removeFromVehicle(): number {
+  removeFromVehicle() {
     return w.RemovePlayerFromVehicle(this.id);
   }
-  setWantedLevel(level: number): number {
+  setWantedLevel(level: number) {
     if (level < 0 || level > 6) {
       logger.error("[Player]: player's wanted level ranges from 0 to 6");
-      return 0;
+      return false;
     }
     return w.SetPlayerWantedLevel(this.id, level);
   }
   getWantedLevel(): number {
     return w.GetPlayerWantedLevel(this.id);
   }
-  setFacingAngle(ang: number): number {
+  setFacingAngle(ang: number) {
     return w.SetPlayerFacingAngle(this.id, ang);
   }
   getFacingAngle(): number {
     return w.GetPlayerFacingAngle(this.id);
   }
-  setWeather(weather: number): void {
+  setWeather(weather: number) {
     if (weather < 0 || weather > 255) {
       logger.warn("[Player]: The valid weather value is only 0 to 255");
-      return;
+      return false;
     }
-    w.SetPlayerWeather(this.id, weather);
+    return w.SetPlayerWeather(this.id, weather);
   }
   getWeather(): number {
     return w.GetPlayerWeather(this.id);
   }
-  setTime(hour: number, minute: number): void | number {
+  setTime(hour: number, minute: number) {
     if (hour < 0 || hour > 23) {
       logger.warn("[Player]: The valid hour value is only 0 to 23");
-      return;
+      return false;
     }
     if (minute < 0 || minute > 59) {
       logger.warn("[Player]: The valid minute value is only 0 to 59");
-      return;
+      return false;
     }
     return w.SetPlayerTime(this.id, hour, minute);
   }
@@ -330,8 +333,8 @@ export class Player {
     fY: number,
     fZ: number,
     fRadius: number,
-  ): void {
-    w.RemoveBuildingForPlayer(this.id, modelId, fX, fY, fZ, fRadius);
+  ) {
+    return w.RemoveBuildingForPlayer(this.id, modelId, fX, fY, fZ, fRadius);
   }
   setTeam(team: number): void {
     if (team < 0 || team > InvalidEnum.NO_TEAM) return;
@@ -340,12 +343,12 @@ export class Player {
   getTeam(): number {
     return w.GetPlayerTeam(this.id);
   }
-  setSkillLevel(skill: WeaponSkillsEnum, level: number): void {
+  setSkillLevel(skill: WeaponSkillsEnum, level: number) {
     if (level < 0 || level > 999) {
       logger.warn("[Player]: The valid skill level is only 0 to 999");
-      return;
+      return false;
     }
-    w.SetPlayerSkillLevel(this.id, skill, level);
+    return w.SetPlayerSkillLevel(this.id, skill, level);
   }
   getName(): string {
     return h.GetPlayerName(this);
@@ -353,7 +356,7 @@ export class Player {
   setName(name: string): number {
     return h.SetPlayerName(this, name);
   }
-  setVelocity(x: number, y: number, z: number): number {
+  setVelocity(x: number, y: number, z: number) {
     return w.SetPlayerVelocity(this.id, x, y, z);
   }
   getVelocity(): TPos {
@@ -376,27 +379,22 @@ export class Player {
   getFightingStyle(): FightingStylesEnum {
     return w.GetPlayerFightingStyle(this.id);
   }
-  setFightingStyle(style: FightingStylesEnum): void {
-    w.SetPlayerFightingStyle(this.id, style);
+  setFightingStyle(style: FightingStylesEnum) {
+    return w.SetPlayerFightingStyle(this.id, style);
   }
-  setArmour(armour: number): number {
+  setArmour(armour: number) {
     return w.SetPlayerArmour(this.id, armour);
   }
   getArmour(): number {
     return w.GetPlayerArmour(this.id);
   }
-  setCameraBehind(): number {
+  setCameraBehind() {
     return w.SetCameraBehindPlayer(this.id);
   }
-  setCameraPos(x: number, y: number, z: number): number {
+  setCameraPos(x: number, y: number, z: number) {
     return w.SetPlayerCameraPos(this.id, x, y, z);
   }
-  setCameraLookAt(
-    x: number,
-    y: number,
-    z: number,
-    cut: CameraCutStylesEnum,
-  ): number {
+  setCameraLookAt(x: number, y: number, z: number, cut: CameraCutStylesEnum) {
     return w.SetPlayerCameraLookAt(this.id, x, y, z, cut);
   }
   getCameraAspectRatio(): number {
@@ -430,7 +428,7 @@ export class Player {
     posY = 0.0,
     posZ = 0.0,
     distance = 5.0,
-  ): number {
+  ) {
     let usepos = false;
     if (posX !== 0.0 || posY !== 0.0 || posZ !== 0.0) {
       usepos = true;
@@ -445,24 +443,24 @@ export class Player {
       usepos,
     );
   }
-  stopAudioStream(): void {
-    w.StopAudioStreamForPlayer(this.id);
+  stopAudioStream() {
+    return w.StopAudioStreamForPlayer(this.id);
   }
   playSound(
     soundid: number,
     relativeX = 0.0,
     relativeY = 0.0,
     relativeZ = 0.0,
-  ): number {
+  ) {
     return w.PlayerPlaySound(this.id, soundid, relativeX, relativeY, relativeZ);
   }
   static getMaxPlayers(): number {
     return w.GetMaxPlayers();
   }
-  playCrimeReport(suspect: Player, crimeId: number): number {
+  playCrimeReport(suspect: Player, crimeId: number) {
     if (crimeId < 3 || crimeId > 22) {
       logger.warn("[Player]: Available crime ids range from 3 to 22");
-      return 0;
+      return false;
     }
     return w.PlayCrimeReportForPlayer(this.id, suspect.id, crimeId);
   }
@@ -475,8 +473,8 @@ export class Player {
     ToZ: number,
     time: number,
     cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT,
-  ): void {
-    w.InterpolateCameraPos(
+  ) {
+    return w.InterpolateCameraPos(
       this.id,
       FromX,
       FromY,
@@ -497,8 +495,8 @@ export class Player {
     ToZ: number,
     time: number,
     cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT,
-  ): void {
-    w.InterpolateCameraLookAt(
+  ) {
+    return w.InterpolateCameraLookAt(
       this.id,
       FromX,
       FromY,
@@ -516,10 +514,10 @@ export class Player {
     Z: number,
     type: number,
     Radius: number,
-  ): number {
+  ) {
     if (type < 0 || type > 13) {
       logger.error("[Player]: The valid explosion type value is only 0 to 13");
-      return 0;
+      return false;
     }
     return w.CreateExplosionForPlayer(this.id, X, Y, Z, type, Radius);
   }
@@ -555,10 +553,12 @@ export class Player {
     freeze = false,
     time = 0,
     forceSync: boolean | ForceSyncEnum = false,
-  ): void {
-    if (!isValidAnimateName(animLib, animName))
-      return logger.error("[Player]: Invalid anim library or name");
-    w.ApplyAnimation(
+  ) {
+    if (!isValidAnimateName(animLib, animName)) {
+      logger.error("[Player]: Invalid anim library or name");
+      return false;
+    }
+    return w.ApplyAnimation(
       this.id,
       animLib,
       animName,
@@ -571,8 +571,8 @@ export class Player {
       +forceSync,
     );
   }
-  clearAnimations(forceSync = false): void {
-    w.ClearAnimations(this.id, forceSync);
+  clearAnimations(forceSync = false) {
+    return w.ClearAnimations(this.id, forceSync);
   }
   getAnimationIndex(): number {
     return w.GetPlayerAnimationIndex(this.id);
@@ -581,22 +581,17 @@ export class Player {
     const [animLib, animName] = w.GetAnimationName(this.getAnimationIndex());
     return { animLib, animName };
   }
-  setShopName(shopName: string): void {
-    w.SetPlayerShopName(this.id, shopName);
+  setShopName(shopName: string) {
+    return w.SetPlayerShopName(this.id, shopName);
   }
-  setPosFindZ(x: number, y: number, z = 150): Promise<number> {
-    return new Promise<number>((resolve) => {
+  setPosFindZ(x: number, y: number, z = 150) {
+    return new Promise<boolean>((resolve) => {
       w.SetPlayerPos(this.id, x, y, z);
       setTimeout(() => resolve(w.SetPlayerPosFindZ(this.id, x, y, z)));
     });
   }
-  setWorldBounds(
-    x_max: number,
-    x_min: number,
-    y_max: number,
-    y_min: number,
-  ): void {
-    w.SetPlayerWorldBounds(this.id, x_max, x_min, y_max, y_min);
+  setWorldBounds(x_max: number, x_min: number, y_max: number, y_min: number) {
+    return w.SetPlayerWorldBounds(this.id, x_max, x_min, y_max, y_min);
   }
   clearWorldBounds() {
     return w.ClearPlayerWorldBounds(this.id);
@@ -606,10 +601,16 @@ export class Player {
     color: string | number,
     drawDistance: number,
     expireTime: number,
-  ): void {
-    w.SetPlayerChatBubble(this.id, text, color, drawDistance, expireTime);
+  ) {
+    return w.SetPlayerChatBubble(
+      this.id,
+      text,
+      color,
+      drawDistance,
+      expireTime,
+    );
   }
-  getDistanceFromPoint(X: number, Y: number, Z: number): number {
+  getDistanceFromPoint(X: number, Y: number, Z: number): boolean {
     return w.GetPlayerDistanceFromPoint(this.id, X, Y, Z);
   }
   getCustomSkin(): number {
@@ -639,7 +640,7 @@ export class Player {
   getWeaponState(): WeaponStatesEnum {
     return w.GetPlayerWeaponState(this.id);
   }
-  giveWeapon(weaponId: WeaponEnum, ammo: number): number {
+  giveWeapon(weaponId: WeaponEnum, ammo: number) {
     return w.GivePlayerWeapon(this.id, weaponId, ammo);
   }
   setAmmo(weaponId: number, ammo: number) {
@@ -648,7 +649,7 @@ export class Player {
   getAmmo(): number {
     return w.GetPlayerAmmo(this.id);
   }
-  setArmedWeapon(weaponId: number): number {
+  setArmedWeapon(weaponId: number) {
     return w.SetPlayerArmedWeapon(this.id, weaponId);
   }
   // not test
@@ -664,8 +665,8 @@ export class Player {
   sendDeathMessage(
     killer: Player | InvalidEnum.PLAYER_ID,
     weapon: WeaponEnum | DamageDeathReasonEnum,
-  ): void {
-    w.SendDeathMessage(
+  ) {
+    return w.SendDeathMessage(
       killer === InvalidEnum.PLAYER_ID ? killer : killer.id,
       this.id,
       weapon,
@@ -675,8 +676,8 @@ export class Player {
     killer: Player | InvalidEnum.PLAYER_ID,
     killee: Player | InvalidEnum.PLAYER_ID,
     weapon: WeaponEnum | DamageDeathReasonEnum,
-  ): void {
-    w.SendDeathMessageToPlayer(
+  ) {
+    return w.SendDeathMessageToPlayer(
       this.id,
       killer === InvalidEnum.PLAYER_ID ? killer : killer.id,
       killee === InvalidEnum.PLAYER_ID ? killee : killee.id,
@@ -696,11 +697,11 @@ export class Player {
     weapon2_ammo: number,
     weapon3: WeaponEnum,
     weapon3_ammo: number,
-  ): void {
-    if (team < 0 || team > InvalidEnum.NO_TEAM) return;
-    if (skin < 0 || skin > 311 || skin == 74) return;
-    if (weapon1_ammo < 0 || weapon2_ammo < 0 || weapon3_ammo < 0) return;
-    w.SetSpawnInfo(
+  ) {
+    if (team < 0 || team > InvalidEnum.NO_TEAM) return false;
+    if (skin < 0 || skin > 311 || skin == 74) return false;
+    if (weapon1_ammo < 0 || weapon2_ammo < 0 || weapon3_ammo < 0) return false;
+    return w.SetSpawnInfo(
       this.id,
       team,
       skin,
@@ -777,11 +778,11 @@ export class Player {
   cancelSelectTextDraw(): void {
     w.CancelSelectTextDraw(this.id);
   }
-  beginObjectSelecting(): void {
-    w.BeginObjectSelecting(this.id);
+  beginObjectSelecting() {
+    return w.BeginObjectSelecting(this.id);
   }
-  endObjectEditing(): void {
-    w.EndObjectEditing(this.id);
+  endObjectEditing() {
+    return w.EndObjectEditing(this.id);
   }
   getSurfingObject(objects: Map<number, DynamicObject>): void | DynamicObject {
     const id: number = w.GetPlayerSurfingObjectID(this.id);
@@ -816,7 +817,7 @@ export class Player {
     fScaleZ = 1.0,
     materialColor1: string | number = 0,
     materialColor2: string | number = 0,
-  ): void | number {
+  ) {
     if (this.isAttachedObjectSlotUsed(index)) return 0;
     return w.SetPlayerAttachedObject(
       this.id,
@@ -849,7 +850,7 @@ export class Player {
   getLastSyncedVehicleID(): number {
     return samp.callNative("GetPlayerLastSyncedVehicleID", "i", this.id);
   }
-  toggleWidescreen(set: boolean): number {
+  toggleWidescreen(set: boolean) {
     return w.TogglePlayerWidescreen(this.id, set);
   }
   isWidescreenToggled(): boolean {
@@ -912,7 +913,7 @@ export class Player {
   getRawIp(): string {
     return w.GetPlayerRawIp(this.id);
   }
-  setGravity(gravity: number): number {
+  setGravity(gravity: number) {
     return w.SetPlayerGravity(this.id, gravity);
   }
   getGravity(): number {
@@ -942,7 +943,7 @@ export class Player {
   getAttachedObject(index: number) {
     return w.GetPlayerAttachedObject(this.id, index);
   }
-  removeWeapon(weaponId: number): number {
+  removeWeapon(weaponId: number) {
     return w.RemovePlayerWeapon(this.id, weaponId);
   }
   isUsingOfficialClient() {

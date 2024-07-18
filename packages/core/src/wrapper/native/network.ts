@@ -44,16 +44,16 @@ export const IsPlayerAdmin = (playerId: number): boolean => {
   return Boolean(samp.callNative("IsPlayerAdmin", "i", playerId));
 };
 
-export const SetPlayerAdmin = (playerId: number, admin: boolean): number => {
-  return samp.callNative("SetPlayerAdmin", "ii", playerId, admin);
+export const SetPlayerAdmin = (playerId: number, admin: boolean): boolean => {
+  return !!samp.callNative("SetPlayerAdmin", "ii", playerId, admin);
 };
 
-export const Kick = (playerId: number): number => {
-  return samp.callNative("Kick", "i", playerId);
+export const Kick = (playerId: number): boolean => {
+  return !!samp.callNative("Kick", "i", playerId);
 };
 
-export const Ban = (playerId: number): number => {
-  return samp.callNative("Ban", "i", playerId);
+export const Ban = (playerId: number): boolean => {
+  return !!samp.callNative("Ban", "i", playerId);
 };
 
 export const GetPlayerNetworkStats = (playerId: number): string => {
