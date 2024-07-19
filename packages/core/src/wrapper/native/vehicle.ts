@@ -729,3 +729,18 @@ export const GetPlayerHydraReactorAngle = (playerId: number): number => {
 export const GetPlayerTrainSpeed = (playerId: number): number => {
   return samp.callNativeFloat("GetPlayerTrainSpeed", "i", playerId);
 };
+
+export const GetVehicleOccupant = (
+  vehicleId: number,
+  seatId: number,
+): number => {
+  return samp.callNative("GetVehicleOccupant", "ii", vehicleId, seatId);
+};
+
+export const GetVehicleMaxPassengers = (modelId: number): number => {
+  return samp.callNative("GetVehicleMaxPassengers", "i", modelId);
+};
+
+export const CountVehicleOccupants = (vehicleId: number): number => {
+  return samp.callNative("CountVehicleOccupants", "i", vehicleId);
+};

@@ -504,15 +504,20 @@ export class Vehicle {
     if (this.id === -1) return false;
     return v.IsVehicleHidden(this.id);
   }
-
-  static getRandomColorPair(modelId: number) {
-    return v.GetRandomVehicleColorPair(modelId);
+  getVehicleOccupant(seatId: number) {
+    return v.GetVehicleOccupant(this.id, seatId);
   }
+  getVehicleMaxPassengers() {
+    return v.GetVehicleMaxPassengers(this.getModel());
+  }
+  countVehicleOccupants() {
+    return v.CountVehicleOccupants(this.getModel());
+  }
+  static getVehicleMaxPassengers = v.GetVehicleMaxPassengers;
+  static getRandomColorPair = v.GetRandomVehicleColorPair;
   static getComponentType = v.GetVehicleComponentType;
   static colorIndexToColor = v.VehicleColorIndexToColor;
-  static isValid(id: number): boolean {
-    return v.IsValidVehicle(id);
-  }
+  static isValid = v.IsValidVehicle;
   static getModelsUsed = v.GetVehicleModelsUsed;
   static getModelCount = v.GetVehicleModelCount;
 
