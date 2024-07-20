@@ -23,6 +23,7 @@ export * from "./modular_houses";
 export * from "./modular_island";
 export * from "./net_stats";
 export * from "./npc_record";
+export * from "./o_spawner";
 export * from "./pirate_ship";
 export * from "./safe_animated";
 export * from "./samp_anims";

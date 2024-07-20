@@ -50,13 +50,13 @@ function createCurrentPageTextDraw(player: Player, x: number, y: number) {
   return txtInit;
 }
 
-// Creates a button textdraw and returns the textdraw ID.
+// Creates a button textdraw and returns the textdraw.
 function createPlayerDialogButton(
   player: Player,
   x: number,
   y: number,
-  Width: number,
-  Height: number,
+  width: number,
+  height: number,
   text: string,
 ) {
   const txtInit = new TextDraw({ player, x, y, text });
@@ -73,7 +73,7 @@ function createPlayerDialogButton(
     .setColor(0x4a5a6bff)
     .setSelectable(true)
     .setAlignment(2);
-  txtInit.setTextSize(Height, Width); // The width and height are reversed for centering.. something the game does <g>
+  txtInit.setTextSize(height, width); // The width and height are reversed for centering.. something the game does <g>
   txtInit.show();
   return txtInit;
 }
@@ -101,8 +101,8 @@ function createPlayerBackgroundTextDraw(
   player: Player,
   x: number,
   y: number,
-  Width: number,
-  Height: number,
+  width: number,
+  height: number,
 ) {
   const txtBackground = new TextDraw({
     player,
@@ -120,7 +120,7 @@ function createPlayerBackgroundTextDraw(
   txtBackground
     .setOutline(0)
     .setColor(0x000000ff)
-    .setTextSize(Width, Height)
+    .setTextSize(width, height)
     .setBackgroundColors(0x00000099);
   txtBackground.show();
   return txtBackground;

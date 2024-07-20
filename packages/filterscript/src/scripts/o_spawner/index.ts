@@ -1,28 +1,32 @@
 //
-// Admin player skin changer using previews. For SA-MP 0.3x and above.
+// Admin spawner using previews. For SA-MP 0.3x and above.
 // - Kye 2012
 //
 
 import type { IFilterScript, Player } from "@infernus/core";
 import {
+  DynamicObject,
   InvalidEnum,
   PlayerEvent,
   TextDraw,
   TextDrawEvent,
   TextDrawFontsEnum,
+  Vehicle,
+  VehicleModelInfoEnum,
 } from "@infernus/core";
 import * as constants from "./constants";
+import { degreesToRadians } from "filterscript/utils/convert";
 
 const gTotalItems = constants.TOTAL_ITEMS;
-const gCurrentPageTextDraw = new Map<Player, TextDraw>();
-const gHeaderTextDraw = new Map<Player, TextDraw>();
 const gBackgroundTextDraw = new Map<Player, TextDraw>();
 const gNextButtonTextDraw = new Map<Player, TextDraw>();
 const gPrevButtonTextDraw = new Map<Player, TextDraw>();
+const gCurrentPageTextDraw = new Map<Player, TextDraw>();
+const gHeaderTextDraw = new Map<Player, TextDraw>();
 const gSelectionItems = new Map<Player, TextDraw[]>();
 const gSelectionItemsTag = new Map<Player, number[]>();
-const skinChangePage = new Map<Player, number>();
-const skinChangeActive = new Set<Player>();
+const oSpawnerPage = new Map<Player, number>();
+const oSpawnerActive = new Set<Player>();
 
 function getNumberOfPages() {
   if (
@@ -36,14 +40,14 @@ function getNumberOfPages() {
 function createCurrentPageTextDraw(player: Player, x: number, y: number) {
   const txtInit = new TextDraw({ player, x, y, text: "0/0" });
   txtInit.create();
+  txtInit.useBox(false);
   txtInit
-    .useBox(false)
     .setLetterSize(0.4, 1.1)
     .setFont(1)
     .setShadow(0)
     .setOutline(1)
-    .setColor(0xaccbf1ff)
-    .show();
+    .setColor(0xaccbf1ff);
+  txtInit.show();
   return txtInit;
 }
 
@@ -63,8 +67,9 @@ function createPlayerDialogButton(
     .useBox(true)
     .setBoxColors(0x000000ff)
     .setBackgroundColors(0x000000ff)
-    .setLetterSize(0.4, 1.1);
-  txtInit.setFont(1).setShadow(0); // no shadow
+    .setLetterSize(0.4, 1.1)
+    .setFont(1);
+  txtInit.setShadow(0); // no shadow
   txtInit
     .setOutline(0)
     .setColor(0x4a5a6bff)
@@ -105,20 +110,18 @@ function createPlayerBackgroundTextDraw(
     player,
     x,
     y,
-    text: `                                            ~n~`,
+    text: "                                           ~n~",
   }); // enough space for everyone
   txtBackground.create();
-  txtBackground
-    .useBox(true)
-    .setBoxColors(0x4a5a6bbb)
-    .setLetterSize(5.0, 5.0)
-    .setFont(0)
-    .setShadow(0);
-  txtBackground
-    .setOutline(0)
-    .setColor(0x000000ff)
-    .setTextSize(width, height)
-    .setBackgroundColors(0x4a5a6bbb);
+  txtBackground.useBox(true);
+  txtBackground.setBoxColors(0x4a5a6bbb);
+  txtBackground.setLetterSize(5.0, 5.0);
+  txtBackground.setFont(0);
+  txtBackground.setShadow(0);
+  txtBackground.setOutline(0);
+  txtBackground.setColor(0xffffffff);
+  txtBackground.setTextSize(width, height);
+  txtBackground.setBackgroundColors(0x4a5a6bbb);
   txtBackground.show();
   return txtBackground;
 }
@@ -135,12 +138,15 @@ function createModelPreviewTextDraw(
 ) {
   const txtPlayerSprite = new TextDraw({ player, x, y, text: "" }); // it has to be set with SetText later
   txtPlayerSprite.create();
-  txtPlayerSprite
-    .setFont(TextDrawFontsEnum.MODEL_PREVIEW)
-    .setColor(0xffffffff)
-    .setBackgroundColors(0x88888899);
+  txtPlayerSprite.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
+  txtPlayerSprite.setColor(0xffffffff);
+  txtPlayerSprite.setBackgroundColors(0x88888899);
   txtPlayerSprite.setTextSize(width, height); // Text size is the Width:Height
-  txtPlayerSprite.setPreviewModel(modelIndex).setSelectable(true);
+  txtPlayerSprite.setPreviewModel(modelIndex);
+  if (modelIndex > 319) {
+    txtPlayerSprite.setPreviewRot(-15.0, 0.0, 0.0);
+  }
+  txtPlayerSprite.setSelectable(true);
   txtPlayerSprite.show();
   return txtPlayerSprite;
 }
@@ -154,11 +160,11 @@ function destroyPlayerModelPreviews(player: Player) {
 
 function showPlayerModelPreviews(player: Player) {
   let x = 0;
-  let baseX: number = constants.DIALOG_BASE_X;
-  let baseY: number = constants.DIALOG_BASE_Y - constants.SPRITE_DIM_Y * 0.33; // down a bit
+  let baseX = constants.DIALOG_BASE_X;
+  let baseY = constants.DIALOG_BASE_Y - constants.SPRITE_DIM_Y * 0.33; // down a bit
   let lineTracker = 0;
 
-  let itemAt = (skinChangePage.get(player) || 0) * constants.SELECTION_ITEMS;
+  let itemAt = (oSpawnerPage.get(player) || 0) * constants.SELECTION_ITEMS;
 
   // Destroy any previous ones created
   destroyPlayerModelPreviews(player);
@@ -171,28 +177,28 @@ function showPlayerModelPreviews(player: Player) {
       baseX = constants.DIALOG_BASE_X + 25.0; // in a bit from the box
       baseY += constants.SPRITE_DIM_Y + 1.0; // move on the Y for the next line
     }
-
     gSelectionItemsArr[x] = createModelPreviewTextDraw(
       player,
-      constants.gItemList[itemAt],
+      itemAt,
       baseX,
       baseY,
       constants.SPRITE_DIM_X,
       constants.SPRITE_DIM_Y,
     );
-    gSelectionItemsTagArr[x] = constants.gItemList[itemAt];
+    gSelectionItemsTagArr[x] = itemAt;
     baseX += constants.SPRITE_DIM_X + 1.0; // move on the X for the next sprite
     lineTracker++;
     if (lineTracker === constants.ITEMS_PER_LINE) lineTracker = 0;
     itemAt++;
     x++;
   }
+
   gSelectionItems.set(player, gSelectionItemsArr);
   gSelectionItemsTag.set(player, gSelectionItemsTagArr);
 }
 
 function updatePageTextDraw(player: Player) {
-  const currentPage = (skinChangePage.get(player) || 0) + 1;
+  const currentPage = (oSpawnerPage.get(player) || 0) + 1;
   const pageText = `${currentPage}/${getNumberOfPages()}`;
   const textDraw = gCurrentPageTextDraw.get(player);
   textDraw!.setString(pageText);
@@ -222,7 +228,7 @@ function createSelectionMenu(player: Player) {
     player,
     createCurrentPageTextDraw(
       player,
-      constants.DIALOG_WIDTH - 30.0,
+      constants.DIALOG_WIDTH - 50.0,
       constants.DIALOG_BASE_Y + 15.0,
     ),
   );
@@ -248,6 +254,7 @@ function createSelectionMenu(player: Player) {
       constants.PREV_TEXT,
     ),
   );
+
   showPlayerModelPreviews(player);
   updatePageTextDraw(player);
 }
@@ -268,44 +275,112 @@ function destroySelectionMenu(player: Player) {
   gPrevButtonTextDraw.delete(player);
 }
 
+function spawnVehicleInFrontOfPlayer(
+  player: Player,
+  vehicleModel: number,
+  color1: number,
+  color2: number,
+) {
+  const { x, y, z } = player.getPos()!;
+
+  let facing = degreesToRadians(player.getFacingAngle());
+
+  const { x: size_x, z: size_z } = Vehicle.getModelInfo(
+    vehicleModel,
+    VehicleModelInfoEnum.SIZE,
+  );
+
+  const distance = size_x + 0.5;
+
+  facing += 90.0;
+  if (facing > 360.0) facing -= 360.0;
+
+  const veh = new Vehicle({
+    modelId: vehicleModel,
+    x: x + distance * Math.sin(-facing),
+    y: y + distance * Math.cos(-facing),
+    z: z + size_z * 0.25,
+    z_angle: facing,
+    color: [color1, color2],
+    respawn_delay: -1,
+  });
+  veh.create();
+  return veh;
+}
+
+function spawnObjectInFrontOfPlayer(player: Player, model: number) {
+  const { x, y, z } = player.getPos()!;
+
+  let facing = degreesToRadians(player.getFacingAngle());
+
+  const distance = 5.0;
+
+  facing += 90.0;
+  if (facing > 360.0) facing -= 360.0;
+
+  const obj = new DynamicObject({
+    modelId: model,
+    x: x + distance * Math.sin(-facing),
+    y: y + distance * Math.cos(-facing),
+    z,
+    rx: 0.0,
+    ry: 0.0,
+    rz: 0.0,
+    drawDistance: 300.0,
+  });
+  obj.create();
+  return obj;
+}
+
 function handlePlayerItemSelection(player: Player, selectedItem: number) {
-  // In this case we change the player's skin
-  const tag = gSelectionItemsTag.get(player);
-  if (tag && tag[selectedItem] >= 0 && tag[selectedItem] < 319) {
+  const tag = gSelectionItemsTag.get(player)!;
+  if (tag[selectedItem] >= 0 && tag[selectedItem] < 319) {
     player.setSkin(tag[selectedItem]);
+    return;
+  }
+  if (tag[selectedItem] >= 400 && tag[selectedItem] < 612) {
+    // In this case we're spawning a vehicle for them
+    spawnVehicleInFrontOfPlayer(player, tag[selectedItem], -1, -1);
+    return;
+  }
+  if (tag[selectedItem] > 615) {
+    const obj = spawnObjectInFrontOfPlayer(player, tag[selectedItem]);
+    obj.edit(player);
     return;
   }
 }
 
-export const SkinChanger: IFilterScript = {
-  name: "skin_changer",
+export const OSpawner: IFilterScript = {
+  name: "o_spawner",
   load() {
     // Even though only Player* textdraws are used in this script,
     // OnPlayerClickTextDraw is still required to handle ESC
     const onPlayerClickGlobal = TextDrawEvent.onPlayerClickGlobal(
       ({ player, textDraw, next }) => {
-        if (!skinChangeActive.has(player)) return next();
+        if (!oSpawnerActive.has(player)) return next();
 
         // Handle: They cancelled (with ESC)
         if (textDraw === InvalidEnum.TEXT_DRAW) {
           destroySelectionMenu(player);
-          skinChangeActive.delete(player);
+          oSpawnerActive.delete(player);
           player.playSound(1085, 0.0, 0.0, 0.0);
           return next();
         }
+
+        return next();
       },
     );
 
     const onPlayerClickPlayer = TextDrawEvent.onPlayerClickPlayer(
       ({ player, textDraw, next }) => {
-        if (!skinChangeActive.has(player)) return next();
+        if (!oSpawnerActive.has(player)) return next();
 
-        const curPage = skinChangePage.get(player) || 0;
+        const curPage = oSpawnerPage.get(player) || 0;
 
         // Handle: next button
         if (textDraw === gNextButtonTextDraw.get(player)) {
           if (curPage < getNumberOfPages() - 1) {
-            skinChangePage.set(player, curPage + 1);
+            oSpawnerPage.set(player, curPage + 1);
             showPlayerModelPreviews(player);
             updatePageTextDraw(player);
             player.playSound(1083, 0.0, 0.0, 0.0);
@@ -318,7 +393,7 @@ export const SkinChanger: IFilterScript = {
         // Handle: previous button
         if (textDraw === gPrevButtonTextDraw.get(player)) {
           if (curPage > 0) {
-            skinChangePage.set(player, curPage - 1);
+            oSpawnerPage.set(player, curPage - 1);
             showPlayerModelPreviews(player);
             updatePageTextDraw(player);
             player.playSound(1084, 0.0, 0.0, 0.0);
@@ -328,19 +403,18 @@ export const SkinChanger: IFilterScript = {
           return next();
         }
 
-        // Search in the array of textdraws used for the items
-
-        skinChangeActive.delete(player);
+        oSpawnerActive.delete(player);
 
         const items = gSelectionItems.get(player);
 
+        // Search in the array of textdraws used for the items
         let x = 0;
         while (items && x !== constants.SELECTION_ITEMS) {
           if (textDraw === items[x]) {
-            handlePlayerItemSelection(player, x);
-            player.playSound(1083, 0.0, 0.0, 0.0);
             destroySelectionMenu(player);
             player.cancelSelectTextDraw();
+            handlePlayerItemSelection(player, x);
+            player.playSound(1083, 0.0, 0.0, 0.0);
             return next();
           }
           x++;
@@ -350,15 +424,15 @@ export const SkinChanger: IFilterScript = {
       },
     );
 
-    const skinChange = PlayerEvent.onCommandText(
-      "skinchange",
+    const oSpawner = PlayerEvent.onCommandText(
+      "ospawner",
       ({ player, next }) => {
         if (!player.isAdmin()) return next();
         // If there was a previously created selection menu, destroy it
         destroySelectionMenu(player);
 
-        skinChangeActive.add(player);
-        // skinChangePage.set(player, 0); // will reset the page back to the first
+        oSpawnerActive.add(player);
+        oSpawnerPage.set(player, 1);
 
         createSelectionMenu(player);
         player.selectTextDraw(0xaccbf1ff);
@@ -366,26 +440,9 @@ export const SkinChanger: IFilterScript = {
       },
     );
 
-    console.log("\n--Admin Player Skin Changer Loaded\n");
+    console.log("\n--Admin Object Spawner Loaded\n");
 
-    return [onPlayerClickGlobal, onPlayerClickPlayer, skinChange];
+    return [onPlayerClickGlobal, onPlayerClickPlayer, oSpawner];
   },
-  unload() {
-    [...gCurrentPageTextDraw.values()].forEach((t) => t.destroy());
-    [...gHeaderTextDraw.values()].forEach((t) => t.destroy());
-    [...gBackgroundTextDraw.values()].forEach((t) => t.destroy());
-    [...gNextButtonTextDraw.values()].forEach((t) => t.destroy());
-    [...gPrevButtonTextDraw.values()].forEach((t) => t.destroy());
-    [...gSelectionItems.values()].flat().forEach((t) => t.destroy());
-
-    gCurrentPageTextDraw.clear();
-    gHeaderTextDraw.clear();
-    gBackgroundTextDraw.clear();
-    gNextButtonTextDraw.clear();
-    gPrevButtonTextDraw.clear();
-    gSelectionItems.clear();
-    gSelectionItemsTag.clear();
-    skinChangePage.clear();
-    skinChangeActive.clear();
-  },
+  unload() {},
 };
