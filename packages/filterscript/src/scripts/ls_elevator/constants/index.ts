@@ -32,7 +32,7 @@ export const FloorNames = [
   "Eighteenth Floor",
   "Nineteenth Floor",
   "Penthouse",
-];
+] as const;
 
 export const FloorZOffsets = [
   0.0, // 0.0,
@@ -56,7 +56,7 @@ export const FloorZOffsets = [
   101.22425, // 8.5479 + (5.45155 * 17.0),
   106.6758, // 8.5479 + (5.45155 * 18.0),
   112.12735, // 8.5479 + (5.45155 * 19.0)
-];
+] as const;
 
 export const ELEVATOR_STATE_IDLE = 0;
 export const ELEVATOR_STATE_WAITING = 1;

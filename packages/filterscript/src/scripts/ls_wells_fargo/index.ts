@@ -16,10 +16,15 @@ import { GameText, Player, PlayerEvent } from "@infernus/core";
 import { DynamicObject } from "@infernus/core";
 
 // Stores the created object number of the replacement building object so
-// it can be destroyed when the filterscript is unloaded
+// it can be destroyed when the filterScript is unloaded
 let LSWellsFargoObject1: DynamicObject | null = null; // Building object
 
 function removeBuilding(p: Player) {
+  // Check if the player is connected and not a NPC
+  if (p.isNpc()) return;
+  // Remove default GTASA Wells Fargo Building and LOD map objects for the player
+  // (so any player currently ingame does not have to rejoin for them
+  //  to be removed when this filterScript is loaded)
   p.removeBuilding(4007, 1421.38, -1477.6, 42.2031, 250.0); // Building
   p.removeBuilding(4009, 1421.38, -1477.6, 42.2031, 250.0); // LOD
 }
@@ -51,13 +56,7 @@ export const LsWellsFargo: IFilterScript = {
     console.log("  |---------------------------------------------------");
 
     Player.getInstances().forEach((p) => {
-      // Check if the player is connected and not a NPC
-      if (!p.isNpc()) {
-        // Remove default GTASA Wells Fargo Building and LOD map objects for the player
-        // (so any player currently ingame does not have to rejoin for them
-        //  to be removed when this filterscript is loaded)
-        removeBuilding(p);
-      }
+      removeBuilding(p);
     });
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {

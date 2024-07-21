@@ -16,18 +16,19 @@ import type { IFilterScript } from "@infernus/core";
 import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
 
 // Stores the created object numbers of the replacement building objects so
-// they can be destroyed when the filterscript is unloaded
+// they can be destroyed when the filterScript is unloaded
 let sfBuilding1Object1: DynamicObject | null = null; // Land object
 let sfBuilding1Object2: DynamicObject | null = null; // Outside object
 let sfBuilding1Object3: DynamicObject | null = null; // Inside object
 
-function removeBuilding(player: Player) {
+function removeBuilding(p: Player) {
+  if (p.isNpc()) return;
   // Remove default GTASA SF Building and LOD map objects for the player
   // (so any player currently ingame does not have to rejoin for them
-  //  to be removed when this filterscript is loaded)
-  player.removeBuilding(9510, -2719.02, 861.211, 72.1562, 250.0); // Building
-  player.removeBuilding(9671, -2719.02, 861.211, 72.1562, 250.0); // LOD
-  player.removeBuilding(715, -2693.24, 852.6, 71.74, 8.0); // Tree (casts a shadow inside)
+  //  to be removed when this filterScript is loaded)
+  p.removeBuilding(9510, -2719.02, 861.211, 72.1562, 250.0); // Building
+  p.removeBuilding(9671, -2719.02, 861.211, 72.1562, 250.0); // LOD
+  p.removeBuilding(715, -2693.24, 852.6, 71.74, 8.0); // Tree (casts a shadow inside)
 }
 
 export const SFBuilding1: IFilterScript = {
@@ -89,9 +90,7 @@ export const SFBuilding1: IFilterScript = {
 
     // Loop
     Player.getInstances().forEach((p) => {
-      if (!p.isNpc()) {
-        removeBuilding(p);
-      }
+      removeBuilding(p);
     });
 
     const command = PlayerEvent.onCommandText("sfb", ({ player, next }) => {

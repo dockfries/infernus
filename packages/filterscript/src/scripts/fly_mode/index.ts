@@ -270,7 +270,7 @@ export const FlyMode: IFilterScript = {
     return [onDisconnect, flyCommand, onUpdate];
   },
   unload() {
-    // If any players are still in edit mode, boot them out before the filterscript unloads
+    // If any players are still in edit mode, boot them out before the filterScript unloads
     Player.getInstances().forEach((p) => {
       if (
         !noClipData.has(p) ||

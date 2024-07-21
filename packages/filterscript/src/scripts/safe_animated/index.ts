@@ -38,8 +38,10 @@ let safeDoorObject: DynamicObject | null = null;
 let safeDoorStatus = SAFE_DOOR_CLOSED;
 
 // Remove default GTASA safe object in Madd Dogg's Mansion office
-function removeBuilding(player: Player) {
-  player.removeBuilding(2332, 1230.646118, -806.418823, 1083.5, 10.0);
+function removeBuilding(p: Player) {
+  // Check if the player is connected and is not a NPC
+  if (p.isNpc()) return;
+  p.removeBuilding(2332, 1230.646118, -806.418823, 1083.5, 10.0);
 }
 
 export const SafeAnimated: IFilterScript = {
@@ -86,11 +88,8 @@ export const SafeAnimated: IFilterScript = {
 
     // Loop
     Player.getInstances().forEach((p) => {
-      // Check if the player is connected and is not a NPC
-      if (!p.isNpc()) {
-        // (we do this now incase the filterscipt was loaded after the player joined)
-        removeBuilding(p);
-      }
+      // (we do this now incase the filterScript was loaded after the player joined)
+      removeBuilding(p);
     });
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {

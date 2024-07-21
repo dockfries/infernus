@@ -17,6 +17,7 @@ export * from "./i_radio";
 export * from "./kylies_barn";
 export * from "./ls_beach_side";
 export * from "./ls_elevator";
+export * from "./ls_prison_walls";
 export * from "./ls_mall";
 export * from "./ls_wells_fargo";
 export * from "./max_ips";

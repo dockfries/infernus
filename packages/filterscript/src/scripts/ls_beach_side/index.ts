@@ -503,6 +503,17 @@ function getDoorsZCoordForFloor(floorId: number) {
   return constants.GROUND_Z_COORD + constants.FloorZOffsets[floorId];
 }
 
+function removeBuilding(p: Player) {
+  // Check if the player is connected and not a NPC
+  if (p.isNpc()) return;
+  // Remove the lamp post at the underground car park entrance
+  p.removeBuilding(1226, 265.481, -1581.1, 32.9311, 5.0);
+
+  // Remove the night lights object (must be removed to also remove any
+  // occulsion zones inside the building)
+  p.removeBuilding(6518, 280.297, -1606.2, 72.3984, 250.0);
+}
+
 export const LSBeachSide: ILSBeachSideFS = {
   name: "ls_beach_side",
   load(options) {
@@ -525,25 +536,11 @@ export const LSBeachSide: ILSBeachSideFS = {
     console.log("  |---------");
 
     Player.getInstances().forEach((p) => {
-      // Check if the player is connected and not a NPC
-      if (!p.isNpc()) {
-        // Remove the lamp post at the underground car park entrance
-        p.removeBuilding(1226, 265.481, -1581.1, 32.9311, 5.0);
-
-        // Remove the night lights object (must be removed to also remove any
-        // occulsion zones inside the building)
-        p.removeBuilding(6518, 280.297, -1606.2, 72.3984, 250.0);
-      }
+      removeBuilding(p);
     });
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
-      // Remove the lamp post at the underground car park entrance
-      player.removeBuilding(1226, 265.481, -1581.1, 32.9311, 5.0);
-
-      // Remove the night lights object (must be removed to also remove any
-      // occulsion zones inside the building)
-      player.removeBuilding(6518, 280.297, -1606.2, 72.3984, 250.0);
-
+      removeBuilding(player);
       return next();
     });
 

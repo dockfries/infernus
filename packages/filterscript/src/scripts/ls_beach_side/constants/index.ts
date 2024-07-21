@@ -50,7 +50,7 @@ export const FloorNames = [
   "Tenth Floor",
   "Eleventh Floor",
   "Twelfth Floor",
-];
+] as const;
 
 // Elevator floor Z heights
 export const FloorZOffsets = [
@@ -68,4 +68,4 @@ export const FloorZOffsets = [
   69.630733, // Tenth Floor = 65.130733 + 4.5
   74.130733, // Eleventh Floor = 69.630733 + 4.5
   78.630733, // Twelfth Floor = 74.130733 + 4.5
-];
+] as const;

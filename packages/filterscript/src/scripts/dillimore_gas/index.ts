@@ -16,16 +16,17 @@ import type { IFilterScript } from "@infernus/core";
 import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
 
 // Stores the created object numbers of the replacement building objects so
-// they can be destroyed when the filterscript is unloaded
+// they can be destroyed when the filterScript is unloaded
 let DillimoreGasObject1: DynamicObject | null = null; // Building exterior object
 let DillimoreGasObject2: DynamicObject | null = null; // Building interior object
 
-function removeBuilding(player: Player) {
+function removeBuilding(p: Player) {
+  if (p.isNpc()) return;
   // Remove default GTASA Dillimore Gas Station Building exterior, interior
   // and LOD map objects for the player
-  player.removeBuilding(12853, 666.711, -565.133, 17.3359, 250.0); // Building exterior
-  player.removeBuilding(12854, 666.492, -571.18, 17.3125, 250.0); // Building interior
-  player.removeBuilding(13245, 666.711, -565.133, 17.3359, 250.0); // LOD
+  p.removeBuilding(12853, 666.711, -565.133, 17.3359, 250.0); // Building exterior
+  p.removeBuilding(12854, 666.492, -571.18, 17.3125, 250.0); // Building interior
+  p.removeBuilding(13245, 666.711, -565.133, 17.3359, 250.0); // LOD
 }
 
 export const DillimoreGasStation: IFilterScript = {
@@ -72,11 +73,7 @@ export const DillimoreGasStation: IFilterScript = {
 
     // Loop
     Player.getInstances().forEach((player) => {
-      if (!player.isNpc()) {
-        // (so any player currently ingame does not have to rejoin for them
-        //  to be removed when this filterscript is loaded)
-        removeBuilding(player);
-      }
+      removeBuilding(player);
     });
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
