@@ -48,13 +48,19 @@ export const reloadUseScript = async (scriptName: string) => {
   await loadUseScript(scriptName);
 };
 
-onInit(({ next }) => {
-  preInstallScripts.forEach((fs) => loadUseScript(fs.name));
+onInit(async ({ next }) => {
+  const fsNames = preInstallScripts.map((fs) => fs.name);
+  for (const fs of fsNames) {
+    await loadUseScript(fs);
+  }
   return next();
 });
 
-onExit(({ next }) => {
-  installedScripts.forEach((fs) => unloadUseScript(fs.name));
+onExit(async ({ next }) => {
+  const fsNames = installedScripts.map((fs) => fs.name);
+  for (const fs of fsNames) {
+    await unloadUseScript(fs);
+  }
   return next();
 });
 
@@ -63,8 +69,8 @@ export const useFilterScript = function (
   ...options: Array<any>
 ): void {
   if (
-    preInstallScripts.some((fs) => fs === script) ||
-    installedScripts.some((fs) => fs === script)
+    preInstallScripts.some((fs) => fs.name === script.name) ||
+    installedScripts.some((fs) => fs.name === script.name)
   ) {
     logger.warn(`[GameMode]: script ${script.name} has already been applied`);
     return;
