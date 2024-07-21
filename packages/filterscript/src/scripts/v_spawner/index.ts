@@ -400,7 +400,7 @@ export const VSpawner: IFilterScript = {
     const vSpawner = PlayerEvent.onCommandText(
       "vspawner",
       ({ player, next }) => {
-        if (!player.isAdmin()) return next();
+        if (!player.isAdmin()) return false;
         // If there was a previously created selection menu, destroy it
         destroySelectionMenu(player);
         vSpawnerActive.add(player);

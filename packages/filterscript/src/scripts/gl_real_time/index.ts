@@ -135,7 +135,7 @@ export const GlRealTime: IGlRealTimeFS = {
     const setHour = PlayerEvent.onCommandText(
       "setHour",
       ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return next(); // this is an admin only script
+        if (!player.isAdmin()) return false; // this is an admin only script
 
         worldTimeOverride = true;
         worldTimeOverrideHour = +subcommand[0] || 0;
@@ -147,7 +147,7 @@ export const GlRealTime: IGlRealTimeFS = {
     const setMinute = PlayerEvent.onCommandText(
       "setMinute",
       ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return next(); // this is an admin only script
+        if (!player.isAdmin()) return false; // this is an admin only script
 
         worldTimeOverride = true;
         worldTimeOverrideMin = +subcommand[0] || 0;

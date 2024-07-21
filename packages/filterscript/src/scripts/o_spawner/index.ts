@@ -443,7 +443,7 @@ export const OSpawner: IFilterScript = {
     const oSpawner = PlayerEvent.onCommandText(
       "ospawner",
       ({ player, next }) => {
-        if (!player.isAdmin()) return next();
+        if (!player.isAdmin()) return false;
         // If there was a previously created selection menu, destroy it
         destroySelectionMenu(player);
 

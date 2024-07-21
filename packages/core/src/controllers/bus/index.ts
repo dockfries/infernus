@@ -59,8 +59,9 @@ function executeMiddlewares<T extends object>(
 
         return ret;
       } catch (err) {
-        const msg = `executing event [name:${name},index:${index}] error: ${err}.`;
+        const msg = `executing event [name:${name},index:${index}] error:`;
         logger.error(msg);
+        logger.error(err);
       }
       return defaultValue;
     }

@@ -70,7 +70,7 @@ export const NetStatsFs: IFilterScript = {
     const netstatCmd = PlayerEvent.onCommandText(
       ["netstats", "pnetstats"],
       ({ player, next }) => {
-        if (!player.isAdmin()) return next();
+        if (!player.isAdmin()) return false;
 
         gNetStatsTimer && clearInterval(gNetStatsTimer);
 
@@ -84,7 +84,7 @@ export const NetStatsFs: IFilterScript = {
     const netstatCmd2 = PlayerEvent.onCommandText(
       ["netstats2", "pnetstats2"],
       ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return next();
+        if (!player.isAdmin()) return false;
 
         const [gNetStatsDisplayId] = subcommand;
         if (!gNetStatsDisplayId || !Player.isConnected(+gNetStatsDisplayId))

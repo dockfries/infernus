@@ -14,7 +14,7 @@ export const NpcRecord: IFilterScript = {
     const vr = PlayerEvent.onCommandText(
       "vrecord",
       ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return next();
+        if (!player.isAdmin()) return false;
 
         // Start recording vehicle data (/vrecord recording_name[])
         // Find the recording_name[] file in /scriptfiles/
@@ -39,7 +39,7 @@ export const NpcRecord: IFilterScript = {
     const ofr = PlayerEvent.onCommandText(
       "ofrecord",
       ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return next();
+        if (!player.isAdmin()) return false;
 
         // Start recording onfoot data (/ofrecord recording_name[])
         // Find the recording_name[] file in /scriptfiles/
@@ -66,7 +66,7 @@ export const NpcRecord: IFilterScript = {
 
     // Stop recording any data
     const stop = PlayerEvent.onCommandText("stoprecord", ({ player, next }) => {
-      if (!player.isAdmin()) return next();
+      if (!player.isAdmin()) return false;
       Npc.stopRecordingPlayerData(player);
       player.sendClientMessage(0xff0000ff, "Recording: stopped.");
       return next();
