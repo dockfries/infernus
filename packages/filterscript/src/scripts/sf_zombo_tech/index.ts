@@ -335,6 +335,10 @@ function elevator_MoveToFloor(floorId: number) {
   );
   label_Elevator!.destroy();
 
+  if (elevatorTurnTimer) {
+    clearTimeout(elevatorTurnTimer);
+  }
+
   elevatorBoostTimer = setTimeout(() => {
     elevator_Boost(floorId);
   }, 2000);

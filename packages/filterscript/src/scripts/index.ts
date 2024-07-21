@@ -15,6 +15,7 @@ export * from "./gl_npcs";
 export * from "./gl_real_time";
 export * from "./i_radio";
 export * from "./kylies_barn";
+export * from "./ls_apartments1";
 export * from "./ls_beach_side";
 export * from "./ls_elevator";
 export * from "./ls_prison_walls";

@@ -1,63 +1,64 @@
-// Example FilterScript for the let LS BeachSide Building with Elevator
-
+// Example Filterscript for the let LS Apartments 1 Building with Elevator
 // Original elevator code by Zamaroht in 2010
 //
 // Updated by Kye in 2011
 // * Added a sound effect for the elevator starting/stopping
 //
 // Edited by Matite in January 2015
-// * Adapted the elevator code so it works in this let building and removed the
-//   light pole at the underground car park entrance
-//
-// Updated to v1.03 by Matite in April 2015
-// * Removed the code that removes the existing building map object and the lines
-//   that create the let objects as the original building is now replaced with
-//   the let one by SAMP instead (same as the LS Office building)
+// * Added code to remove the existing building, add the let building and
+//   edited the elevator code so it works in this let building
 //
 // Updated to v1.02 by Matite in February 2015
 // * Added code for the let car park object and edited the elevator to
 //   include the car park
 //
-// This script creates the let LS BeachSide building object, removes the
+// This script creates the let LS Apartments 1 building object, removes the
 // existing GTASA building object, adds the let car park object and creates
 // an elevator that can be used to travel between all levels.
 //
 // You can un-comment the OnPlayerCommandText callback below to enable a simple
-// teleport command (/lsb) that teleports you to the LS BeachSide building.
+// teleport command (/lsa) that teleports you to the LS Apartments 1 building.
 //
 // Warning...
 // This script uses a total of:
-// * 31 objects = 1 for the elevator, 2 for the elevator doors and 28 for the
-//   elevator floor doors
-// * 15 3D Text Labels = 14 on the floors and 1 in the elevator
+// * 27 objects = 1 for the elevator, 2 for the elevator doors, 22 for the
+//   elevator floor doors, 1 for the replacement LS Apartments 1 building
+//   and 1 for the car park
+// * 12 3D Text Labels = 11 on the floors and 1 in the elevator
 
 import {
-  Dialog,
-  DialogStylesEnum,
+  Player,
+  InvalidEnum,
   Dynamic3DTextLabel,
   DynamicObject,
-  DynamicObjectEvent,
+  DialogStylesEnum,
   GameText,
-  InvalidEnum,
-  KeysEnum,
-  Player,
+  Dialog,
   PlayerEvent,
+  DynamicObjectEvent,
+  KeysEnum,
 } from "@infernus/core";
 import * as constants from "./constants";
 import { playSoundForPlayersInRange } from "filterscript/utils/gl_common";
-import type { ILSBeachSideFS } from "./interfaces";
+import type { ILSApartments1FS } from "./interfaces";
 
-// Variables
+// Stores the created object number of the replacement building so it can be
+// destroyed when the filterscript is unloaded
+let lsApartments1Object: DynamicObject | null = null;
+
+// Stores the created object number of the let cark park so it can be
+// destroyed when the filterscript is unloaded
+let lsApartments1CPObject: DynamicObject | null = null;
 
 // Stores the created object numbers of the elevator, the elevator doors and
-// the elevator floor doors so they can be destroyed when the filtersScript
+// the elevator floor doors so they can be destroyed when the filterscript
 // is unloaded
 let obj_Elevator: DynamicObject | null = null;
 let obj_ElevatorDoors: DynamicObject[] = [];
 let obj_FloorDoors: [DynamicObject, DynamicObject][] = [];
 
 // Stores a reference to the 3D text labels used on each floor and inside the
-// elevator itself so they can be detroyed when the filtersScript is unloaded
+// elevator itself so they can be detroyed when the filterscript is unloaded
 let label_Elevator: Dynamic3DTextLabel | null = null;
 let label_Floors: Dynamic3DTextLabel[] = [];
 
@@ -74,7 +75,7 @@ let elevatorFloor: number;
 let elevatorQueue: number[];
 
 // Stores who requested the floor for the elevator queue...
-// FloorRequestedBy[floor_id] = player;  (stores who requested which floor)
+// FloorRequestedBy[floor_id] = playerid;  (stores who requested which floor)
 let floorRequestedBy: (Player | InvalidEnum.PLAYER_ID)[] = [];
 
 // Used for a timer that makes the elevator move faster after players start
@@ -82,36 +83,42 @@ let floorRequestedBy: (Player | InvalidEnum.PLAYER_ID)[] = [];
 let elevatorBoostTimer: NodeJS.Timeout | null = null;
 let elevatorTurnTimer: NodeJS.Timeout | null = null;
 
+// Callbacks
+
+// Uncomment the OnPlayerCommandText callback below (remove the "/*" and the "*/")
+// to enable a simple teleport command (/lsa) which teleports the player to
+// outside the LS Apartments 1 building.
+
 function elevator_Initialize() {
   // Create the elevator and elevator door objects
   obj_Elevator = new DynamicObject({
     modelId: 18755,
     x: constants.X_ELEVATOR_POS,
     y: constants.Y_ELEVATOR_POS,
-    z: constants.GROUND_Z_COORD,
+    z: constants.GROUND_Z_COORD + constants.ELEVATOR_OFFSET,
     rx: 0.0,
     ry: 0.0,
-    rz: 80.0,
+    rz: 0.0,
   });
   obj_Elevator.create();
   obj_ElevatorDoors[0] = new DynamicObject({
     modelId: 18757,
     x: constants.X_ELEVATOR_POS,
     y: constants.Y_ELEVATOR_POS,
-    z: constants.GROUND_Z_COORD,
+    z: constants.GROUND_Z_COORD + constants.ELEVATOR_OFFSET,
     rx: 0.0,
     ry: 0.0,
-    rz: 80.0,
+    rz: 0.0,
   });
   obj_ElevatorDoors[0].create();
   obj_ElevatorDoors[1] = new DynamicObject({
     modelId: 18756,
     x: constants.X_ELEVATOR_POS,
     y: constants.Y_ELEVATOR_POS,
-    z: constants.GROUND_Z_COORD,
+    z: constants.GROUND_Z_COORD + constants.ELEVATOR_OFFSET,
     rx: 0.0,
     ry: 0.0,
-    rz: 80.0,
+    rz: 0.0,
   });
   obj_ElevatorDoors[1].create();
 
@@ -119,8 +126,8 @@ function elevator_Initialize() {
   label_Elevator = new Dynamic3DTextLabel({
     text: "{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to use elevator",
     color: 0xccccccaa,
-    x: constants.X_ELEVATOR_POS + 1.6,
-    y: constants.Y_ELEVATOR_POS - 1.85,
+    x: constants.X_ELEVATOR_POS - 1.7,
+    y: constants.Y_ELEVATOR_POS - 1.75,
     z: constants.GROUND_Z_COORD - 0.4,
     drawDistance: 4.0,
     worldId: 0,
@@ -135,22 +142,22 @@ function elevator_Initialize() {
     // Create elevator floor door objects
     obj_FloorDoors[i][0] = new DynamicObject({
       modelId: 18757,
-      x: constants.X_ELEVATOR_POS,
-      y: constants.Y_ELEVATOR_POS - 0.245,
-      z: getDoorsZCoordForFloor(i) + 0.05,
+      x: constants.X_ELEVATOR_POS - 0.245,
+      y: constants.Y_ELEVATOR_POS,
+      z: getDoorsZCoordForFloor(i),
       rx: 0.0,
       ry: 0.0,
-      rz: 80.0,
+      rz: 0.0,
     });
     obj_FloorDoors[i][0].create();
     obj_FloorDoors[i][1] = new DynamicObject({
       modelId: 18756,
-      x: constants.X_ELEVATOR_POS,
-      y: constants.Y_ELEVATOR_POS - 0.245,
-      z: getDoorsZCoordForFloor(i) + 0.05,
+      x: constants.X_ELEVATOR_POS - 0.245,
+      y: constants.Y_ELEVATOR_POS,
+      z: getDoorsZCoordForFloor(i),
       rx: 0.0,
       ry: 0.0,
-      rz: 80.0,
+      rz: 0.0,
     });
     obj_FloorDoors[i][1].create();
 
@@ -164,8 +171,8 @@ function elevator_Initialize() {
     label_Floors[i] = new Dynamic3DTextLabel({
       text: string,
       color: 0xccccccaa,
-      x: constants.X_ELEVATOR_POS + 2,
-      y: constants.Y_ELEVATOR_POS - 3,
+      x: constants.X_ELEVATOR_POS - 2.5,
+      y: constants.Y_ELEVATOR_POS - 2.5,
       z: z - 0.2,
       drawDistance: 10.5,
       worldId: 0,
@@ -210,43 +217,39 @@ function elevator_Destroy() {
 
 function elevator_OpenDoors() {
   // Opens the elevator's doors.
-
-  const { z } = obj_ElevatorDoors[0].getPos()!;
+  const { x, z } = obj_ElevatorDoors[0].getPos()!;
   obj_ElevatorDoors[0].move(
-    constants.X_DOOR_L_OPENED,
+    x,
     constants.Y_DOOR_L_OPENED,
     z,
     constants.DOORS_SPEED,
   );
   obj_ElevatorDoors[1].move(
-    constants.X_DOOR_R_OPENED,
+    x,
     constants.Y_DOOR_R_OPENED,
     z,
     constants.DOORS_SPEED,
   );
-
   return true;
 }
 
 function elevator_CloseDoors() {
   // Closes the elevator's doors.
-
   if (elevatorState === constants.ELEVATOR_STATE_MOVING) return false;
 
-  const { z } = obj_ElevatorDoors[0].getPos()!;
+  const { x, z } = obj_ElevatorDoors[0].getPos()!;
   obj_ElevatorDoors[0].move(
-    constants.X_ELEVATOR_POS,
-    constants.Y_ELEVATOR_POS,
+    x,
+    constants.Y_DOOR_CLOSED,
     z,
     constants.DOORS_SPEED,
   );
   obj_ElevatorDoors[1].move(
-    constants.X_ELEVATOR_POS,
-    constants.Y_ELEVATOR_POS,
+    x,
+    constants.Y_DOOR_CLOSED,
     z,
     constants.DOORS_SPEED,
   );
-
   return true;
 }
 
@@ -254,14 +257,14 @@ function floor_OpenDoors(floorId: number) {
   // Opens the doors at the specified floor.
 
   obj_FloorDoors[floorId][0].move(
-    constants.X_FDOOR_L_OPENED,
-    constants.Y_FDOOR_L_OPENED,
+    constants.X_ELEVATOR_POS - 0.245,
+    constants.Y_DOOR_L_OPENED,
     getDoorsZCoordForFloor(floorId) + 0.05,
     constants.DOORS_SPEED,
   );
   obj_FloorDoors[floorId][1].move(
-    constants.X_FDOOR_R_OPENED,
-    constants.Y_FDOOR_R_OPENED,
+    constants.X_ELEVATOR_POS - 0.245,
+    constants.Y_DOOR_R_OPENED,
     getDoorsZCoordForFloor(floorId) + 0.05,
     constants.DOORS_SPEED,
   );
@@ -459,7 +462,7 @@ async function showElevatorDialog(player: Player) {
 
   const { response, listItem } = await new Dialog({
     style: DialogStylesEnum.LIST,
-    caption: "LS BeachSide Elevator...",
+    caption: "LS Apartments 1 Elevator...",
     info,
     button1: "Accept",
     button2: "Cancel",
@@ -499,36 +502,74 @@ function callElevator(player: Player, floorId: number) {
 }
 
 function getElevatorZCoordForFloor(floorId: number) {
-  // Return Z height value
-  return constants.GROUND_Z_COORD + constants.FloorZOffsets[floorId];
+  // Return Z height value plus a small offset
+  return (
+    constants.GROUND_Z_COORD +
+    constants.FloorZOffsets[floorId] +
+    constants.ELEVATOR_OFFSET
+  );
 }
 
 function getDoorsZCoordForFloor(floorId: number) {
-  // Return Z height value
-  return constants.GROUND_Z_COORD + constants.FloorZOffsets[floorId];
+  // Return Z height value plus a small offset
+  return (
+    constants.GROUND_Z_COORD +
+    constants.FloorZOffsets[floorId] +
+    constants.ELEVATOR_OFFSET
+  );
 }
 
 function removeBuilding(p: Player) {
   // Check if the player is connected and not a NPC
   if (p.isNpc()) return;
-  // Remove the lamp post at the underground car park entrance
-  p.removeBuilding(1226, 265.481, -1581.1, 32.9311, 5.0);
-
-  // Remove the night lights object (must be removed to also remove any
-  // occulsion zones inside the building)
-  p.removeBuilding(6518, 280.297, -1606.2, 72.3984, 250.0);
+  // Remove default GTASA building map object, LOD and awning shadows
+  // (so any player currently ingame does not have to rejoin for them
+  //  to be removed when this filterscript is loaded)
+  p.removeBuilding(5766, 1160.96, -1180.58, 70.4141, 250.0); // Awning shadows
+  p.removeBuilding(5767, 1160.96, -1180.58, 70.4141, 250.0); // Building
+  p.removeBuilding(5964, 1160.96, -1180.58, 70.4141, 250.0); // LOD
 }
 
-export const LSBeachSide: ILSBeachSideFS = {
-  name: "ls_beach_side",
+export const LSApartments1: ILSApartments1FS = {
+  name: "ls_apartments1",
   load(options) {
     // Display information in the Server Console
     console.log("\n");
-    console.log("  |---------");
-    console.log("  |--- LS BeachSide FilterScript");
-    console.log("  |--  Script v1.03");
-    console.log("  |--  19th April 2015");
-    console.log("  |---------");
+    console.log("  |------------------");
+    console.log("  |--- LS Apartments 1 Filterscript");
+    console.log("  |--  Script v1.02");
+    console.log("  |--  5th February 2015");
+    console.log("  |------------------");
+
+    // Create the LS Apartments 1 Building object
+    lsApartments1Object = new DynamicObject({
+      modelId: 19595,
+      x: 1160.96,
+      y: -1180.58,
+      z: 70.4141,
+      rx: 0,
+      ry: 0,
+      rz: 0,
+    });
+    lsApartments1Object.create();
+
+    // Display information in the Server Console
+    console.log("  |--  LS Apartments 1 Building object created");
+
+    // Create the LS Apartments 1 Car Park object
+    lsApartments1CPObject = new DynamicObject({
+      modelId: 19798,
+      x: 1160.96,
+      y: -1180.58,
+      z: 20.4141,
+      rx: 0,
+      ry: 0,
+      rz: 0,
+    });
+    lsApartments1CPObject.create();
+
+    // Display information in the Server Console
+    console.log("  |--  LS Apartments 1 Car Park object created");
 
     // Reset the elevator queue
     resetElevatorQueue();
@@ -537,8 +578,8 @@ export const LSBeachSide: ILSBeachSideFS = {
     elevator_Initialize();
 
     // Display information in the Server Console
-    console.log("  |--  LS BeachSide Building Elevator created");
-    console.log("  |---------");
+    console.log("  |--  LS Apartments 1 Elevator created");
+    console.log("  |------------------");
 
     Player.getInstances().forEach((p) => {
       removeBuilding(p);
@@ -570,18 +611,18 @@ export const LSBeachSide: ILSBeachSideFS = {
           clearTimeout(elevatorBoostTimer); // Kills the timer, in case the elevator reached the floor before boost.
           elevatorBoostTimer = null;
         }
-
         floorRequestedBy[elevatorFloor] = InvalidEnum.PLAYER_ID;
 
         elevator_OpenDoors();
         floor_OpenDoors(elevatorFloor);
 
         const { z } = obj_Elevator.getPos()!;
+
         label_Elevator = new Dynamic3DTextLabel({
           text: "{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to use elevator",
           color: 0xccccccaa,
-          x: constants.X_ELEVATOR_POS + 1.6,
-          y: constants.Y_ELEVATOR_POS - 1.85,
+          x: constants.X_ELEVATOR_POS - 1.7,
+          y: constants.Y_ELEVATOR_POS - 1.75,
           z: z - 0.4,
           drawDistance: 4.0,
           worldId: 0,
@@ -594,6 +635,7 @@ export const LSBeachSide: ILSBeachSideFS = {
         }
 
         elevatorState = constants.ELEVATOR_STATE_WAITING;
+
         elevatorTurnTimer = setTimeout(
           elevator_TurnToIdle,
           constants.ELEVATOR_WAIT_TIME,
@@ -608,8 +650,8 @@ export const LSBeachSide: ILSBeachSideFS = {
         // Check if the player is not in a vehicle and pressed the conversation yes key (Y by default)
         if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
           // Create variables and get the players current position
-
           const pos = player.getPos()!;
+
           // For debug
           // console.log(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
 
@@ -621,7 +663,6 @@ export const LSBeachSide: ILSBeachSideFS = {
             pos.x > constants.X_ELEVATOR_POS - 1.8
           ) {
             // The player is using the button inside the elevator
-
             // Show the elevator dialog to the player
             showElevatorDialog(player);
           } else {
@@ -629,27 +670,27 @@ export const LSBeachSide: ILSBeachSideFS = {
             if (
               pos.y < constants.Y_ELEVATOR_POS - 1.81 &&
               pos.y > constants.Y_ELEVATOR_POS - 3.8 &&
-              pos.x > constants.X_ELEVATOR_POS + 1.21 &&
-              pos.x < constants.X_ELEVATOR_POS + 3.8
+              pos.x > constants.X_ELEVATOR_POS - 3.8 &&
+              pos.x < constants.X_ELEVATOR_POS - 1.81
             ) {
               // The player is most likely using an elevator floor button... check which floor
 
               // Create variable with the number of floors to check (total floors minus 1)
-              let i = 13;
+              let i = 10;
 
               // Loop
               while (pos.z < getDoorsZCoordForFloor(i) + 3.5 && i > 0) i--;
 
               if (i === 0 && pos.z < getDoorsZCoordForFloor(0) + 2.0) i = -1;
 
-              if (i <= 12) {
+              if (i <= 9) {
                 // Check if the elevator is not moving (idle or waiting)
                 if (elevatorState !== constants.ELEVATOR_STATE_MOVING) {
                   // Check if the elevator is already on the floor it was called from
                   if (elevatorFloor === i + 1) {
                     // Display gametext message to the player
                     new GameText(
-                      "~n~~n~~n~~n~~n~~n~~n~~y~~h~LS BeachSide Elevator Is~n~~y~~h~Already On This Floor...~n~~w~Walk Inside It~n~~w~And Press '~k~~CONVERSATION_YES~'",
+                      "~n~~n~~n~~n~~n~~n~~n~~y~~h~LS Apartments 1 Elevator Is~n~~y~~h~Already On This Floor...~n~~w~Walk Inside It~n~~w~And Press '~k~~CONVERSATION_YES~'",
                       3500,
                       3,
                     ).forPlayer(player);
@@ -657,7 +698,7 @@ export const LSBeachSide: ILSBeachSideFS = {
                     // Display chat text message to the player
                     player.sendClientMessage(
                       constants.COLOR_MESSAGE_YELLOW,
-                      "* The LS BeachSide elevator is already on this floor... walk inside it and press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}'",
+                      "* The LS Apartments 1 elevator is already on this floor... walk inside it and press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}'",
                     );
 
                     // Exit here (return 1 so this callback is processed in other scripts)
@@ -670,7 +711,7 @@ export const LSBeachSide: ILSBeachSideFS = {
 
                 // Display gametext message to the player
                 new GameText(
-                  "~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~LS BeachSide Elevator~n~~g~~h~Has Been Called...~n~~w~Please Wait",
+                  "~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~LS Apartments 1 Elevator~n~~g~~h~Has Been Called...~n~~w~Please Wait",
                   3000,
                   3,
                 ).forPlayer(player);
@@ -682,19 +723,19 @@ export const LSBeachSide: ILSBeachSideFS = {
                 if (elevatorState === constants.ELEVATOR_STATE_MOVING) {
                   // Format chat text message
                   strTempString =
-                    "* The LS BeachSide elevator has been called... it is currently moving towards the " +
+                    "* The LS Apartments 1 elevator has been called... it is currently moving towards the " +
                     `${constants.FloorNames[elevatorFloor]}.`;
                 } else {
                   // Check if the floor is the car park
                   if (elevatorFloor === 0) {
                     // Format chat text message
                     strTempString =
-                      "* The LS BeachSide elevator has been called... it is currently at the " +
+                      "* The LS Apartments 1 elevator has been called... it is currently at the " +
                       `${constants.FloorNames[elevatorFloor]}.`;
                   } else {
                     // Format chat text message
                     strTempString =
-                      "* The LS BeachSide elevator has been called... it is currently on the " +
+                      "* The LS Apartments 1 elevator has been called... it is currently on the " +
                       `${constants.FloorNames[elevatorFloor]}.`;
                   }
                 }
@@ -705,48 +746,42 @@ export const LSBeachSide: ILSBeachSideFS = {
                   strTempString,
                 );
 
-                // Exit here (return 1 so this callback is processed in other scripts)
                 return next();
               }
             }
           }
         }
 
-        // Exit here (return 1 so this callback is processed in other scripts)
         return next();
       },
     );
 
     const offs = [onConnect, onMoved, onKeyStateChange];
 
-    // Un-comment the OnPlayerCommandText callback below (remove the "/*" and the "*/")
-    // to enable a simple teleport command (/lsb) which teleports the player to
-    // outside the LS BeachSide building.
-
     if (options && options.enableCommand) {
       const onCommandText = PlayerEvent.onCommandText(
-        "lsb",
+        "lsa",
         ({ player, next }) => {
-          // Check command text
           // Set the interior
           player.setInterior(0);
 
           // Set player position and facing angle
           player.setPos(
-            289.81 + Math.random() * 2,
-            -1630.65 + Math.random() * 2,
-            34.32,
+            1131.07 + Math.random() * 3,
+            -1180.72 + Math.random() * 2,
+            33.32,
           );
-          player.setFacingAngle(10);
+          player.setFacingAngle(270);
 
           // Fix camera position after teleporting
           player.setCameraBehind();
 
           // Send a gametext message to the player
-          new GameText("~b~~h~LS BeachSide!", 3000, 3).forPlayer(player);
+          new GameText("~b~~h~LS Apartments 1!", 3000, 3).forPlayer(player);
           return next();
         },
       );
+
       offs.push(onCommandText);
     }
 
@@ -763,11 +798,33 @@ export const LSBeachSide: ILSBeachSideFS = {
       elevatorTurnTimer = null;
     }
 
+    if (lsApartments1Object!.isValid()) {
+      // Destroy the LS Apartments 1 Building object
+      lsApartments1Object!.destroy();
+
+      lsApartments1Object = null;
+
+      // Display information in the Server Console
+      console.log("  |------------------");
+      console.log("  |--  LS Apartments 1 Building object destroyed");
+    }
+
+    // Check for valid object
+    if (lsApartments1CPObject!.isValid()) {
+      // Destroy the LS Apartments 1 Car Park object
+      lsApartments1CPObject!.destroy();
+
+      lsApartments1CPObject = null;
+
+      // Display information in the Server Console
+      console.log("  |--  LS Apartments 1 Car Park object destroyed");
+    }
+
     // Destroy the elevator, the elevator doors and the elevator floor doors
     elevator_Destroy();
 
     // Display information in the Server Console
-    console.log("  |--  LS BeachSide Building Elevator destroyed");
-    console.log("  |---------");
+    console.log("  |--  LS Apartments 1 Elevator destroyed");
+    console.log("  |------------------");
   },
 };
