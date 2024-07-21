@@ -64,12 +64,12 @@ let label_Floors: Dynamic3DTextLabel[] = [];
 
 // Stores the current state of the elevator (ie ELEVATOR_STATE_IDLE,
 // ELEVATOR_STATE_WAITING or ELEVATOR_STATE_MOVING)
-let elevatorState: number;
+let elevatorState: number = 0;
 
 // Stores the current floor the elevator is on or heading to... if the value is
 // ELEVATOR_STATE_IDLE or ELEVATOR_STATE_WAITING this is the current floor. If
 // the value is ELEVATOR_STATE_MOVING then it is the floor it's moving to
-let elevatorFloor: number;
+let elevatorFloor: number = 0;
 
 // Stores the elevator queue for each floor
 let elevatorQueue: number[] = [];

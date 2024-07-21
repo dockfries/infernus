@@ -262,11 +262,11 @@ function createSelectionMenu(player: Player) {
 function destroySelectionMenu(player: Player) {
   destroyPlayerModelPreviews(player);
 
-  gHeaderTextDraw.get(player)!.destroy();
-  gBackgroundTextDraw.get(player)!.destroy();
-  gCurrentPageTextDraw.get(player)!.destroy();
-  gNextButtonTextDraw.get(player)!.destroy();
-  gPrevButtonTextDraw.get(player)!.destroy();
+  gHeaderTextDraw.get(player)?.destroy();
+  gBackgroundTextDraw.get(player)?.destroy();
+  gCurrentPageTextDraw.get(player)?.destroy();
+  gNextButtonTextDraw.get(player)?.destroy();
+  gPrevButtonTextDraw.get(player)?.destroy();
 
   gHeaderTextDraw.delete(player);
   gBackgroundTextDraw.delete(player);
@@ -432,7 +432,7 @@ export const OSpawner: IFilterScript = {
         destroySelectionMenu(player);
 
         oSpawnerActive.add(player);
-        oSpawnerPage.set(player, 1);
+        // oSpawnerPage.set(player, 0);
 
         createSelectionMenu(player);
         player.selectTextDraw(0xaccbf1ff);

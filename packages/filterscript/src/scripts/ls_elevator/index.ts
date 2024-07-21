@@ -28,7 +28,8 @@ let label_Elevator: Dynamic3DTextLabel | null = null;
 let label_Floors: Dynamic3DTextLabel[] = [];
 
 // If Idle or Waiting, this is the current floor. If Moving, the floor it's moving to.
-let elevatorState: number, elevatorFloor: number;
+let elevatorState: number = 0;
+let elevatorFloor: number = 0;
 
 // Floors in queue.
 let elevatorQueue: number[] = [];

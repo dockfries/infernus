@@ -255,11 +255,11 @@ function createSelectionMenu(player: Player) {
 function destroySelectionMenu(player: Player) {
   destroyPlayerModelPreviews(player);
 
-  gHeaderTextDraw.get(player)!.destroy();
-  gBackgroundTextDraw.get(player)!.destroy();
-  gCurrentPageTextDraw.get(player)!.destroy();
-  gNextButtonTextDraw.get(player)!.destroy();
-  gPrevButtonTextDraw.get(player)!.destroy();
+  gHeaderTextDraw.get(player)?.destroy();
+  gBackgroundTextDraw.get(player)?.destroy();
+  gCurrentPageTextDraw.get(player)?.destroy();
+  gNextButtonTextDraw.get(player)?.destroy();
+  gPrevButtonTextDraw.get(player)?.destroy();
 
   gHeaderTextDraw.delete(player);
   gBackgroundTextDraw.delete(player);
