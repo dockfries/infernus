@@ -1,3 +1,37 @@
+## [0.11.0-beta.9](https://github.com/dockfries/infernus/compare/v0.11.0-beta.8...v0.11.0-beta.9) (2024-07-21)
+
+
+### Features
+
+* **core:** applyAnimation speed, time params, export animateUtils ([00ca113](https://github.com/dockfries/infernus/commit/00ca1136e629937b5f5dac86df33d90e1ec96554))
+* **core:** some vehicle natives ([4ada610](https://github.com/dockfries/infernus/commit/4ada610497e0da63396933c01d5a5780227e7057))
+* **fs:** gl_actions ([1cbd44b](https://github.com/dockfries/infernus/commit/1cbd44bbb104257f8b76289300f20e84b671891f))
+* **fs:** gl_chat, pirate_ship ([52d17c3](https://github.com/dockfries/infernus/commit/52d17c33dec67555603d2f1913c7e01d7a1d8f8a))
+* **fs:** gl_npcs, sf_building1, safe_animated ([a9a4032](https://github.com/dockfries/infernus/commit/a9a4032e522c69050dec455a47a33ee47d3436cb))
+* **fs:** kylies_barn, ls_wells_fargo ([37b10df](https://github.com/dockfries/infernus/commit/37b10df69edc24ce9106de4cc796ff13fbced374))
+* **fs:** ls_apartments1 ([c387a98](https://github.com/dockfries/infernus/commit/c387a985f6de96fd54bbb4aa73f24ba483db5ce8))
+* **fs:** ls_beach_side ([415efcb](https://github.com/dockfries/infernus/commit/415efcb2eae073d9a9bbf93b67ceaaf77f506e9e))
+* **fs:** ls_elevator ([c359ca2](https://github.com/dockfries/infernus/commit/c359ca2b343beb328753c5fb5922387a2ff45111))
+* **fs:** ls_mall, constants type as const ([f472eb6](https://github.com/dockfries/infernus/commit/f472eb64ee684d39080a31465285e4d9dc06a3bb))
+* **fs:** ls_prison_walls ([a237460](https://github.com/dockfries/infernus/commit/a23746015dfbcf873bdd590bd4bb631e2b4dfdaf))
+* **fs:** modular_houses ([d9dacdd](https://github.com/dockfries/infernus/commit/d9dacdd3680cb3cc7439001a735d2d356a3384c0))
+* **fs:** modular_island ([18ca4b8](https://github.com/dockfries/infernus/commit/18ca4b8251ee083fc1d49343431c442b3db9d820))
+* **fs:** o_spawner ([b84c1f1](https://github.com/dockfries/infernus/commit/b84c1f1218b8f75e25510a6de95f47716f10c6d2))
+* **fs:** sf_zombo_tech ([0aa8d47](https://github.com/dockfries/infernus/commit/0aa8d47de8b7cf40747b5fc035ca931a6299894c))
+* **fs:** skin_changer ([1a436df](https://github.com/dockfries/infernus/commit/1a436dfe83f6d1ca1ac122a800dc35b7c655e164))
+* **fs:** v_spawner ([979dbac](https://github.com/dockfries/infernus/commit/979dbac5300c220835f532c35dce338a01c8c017))
+
+
+### Bug Fixes
+
+* **core, fs:** some load errors, empty logger warn ([7d6298c](https://github.com/dockfries/infernus/commit/7d6298c059058ef2d2f65251f1583294deec75a0))
+* **core:** fs forEach splice ([f3b0d9c](https://github.com/dockfries/infernus/commit/f3b0d9caa043e80a4493c868096df4428040be13))
+* **core:** functions return, materialColor number type ([d374f44](https://github.com/dockfries/infernus/commit/d374f44dc62dd7105cde78bb98fd770b899ccb9b))
+* **fs:** a51 type ([7939a1c](https://github.com/dockfries/infernus/commit/7939a1c07e4abdb35d8192b1a6d7a27e68f052c3))
+* **fs:** o_v_spawner, skin_changer some errors ([0008083](https://github.com/dockfries/infernus/commit/00080834ad455201627975803ccc02957303ae94))
+* **fs:** some errors ([48c90e4](https://github.com/dockfries/infernus/commit/48c90e49cd557bef2e0365269625912590f15ed2))
+* **fs:** useFilterScript some ([3615203](https://github.com/dockfries/infernus/commit/36152038e72e8d08089ceb1a052df315e96ace74))
+
 ## [0.11.0-beta.8](https://github.com/dockfries/infernus/compare/v0.11.0-beta.7...v0.11.0-beta.8) (2024-07-03)
 
 
