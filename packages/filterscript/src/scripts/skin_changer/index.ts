@@ -148,7 +148,7 @@ function createModelPreviewTextDraw(
 function destroyPlayerModelPreviews(player: Player) {
   const items = gSelectionItems.get(player);
   if (!items) return;
-  items.forEach((item) => item.destroy());
+  items.forEach((item) => item.isValid() && item.destroy());
   gSelectionItems.delete(player);
 }
 
@@ -255,11 +255,21 @@ function createSelectionMenu(player: Player) {
 function destroySelectionMenu(player: Player) {
   destroyPlayerModelPreviews(player);
 
-  gHeaderTextDraw.get(player)?.destroy();
-  gBackgroundTextDraw.get(player)?.destroy();
-  gCurrentPageTextDraw.get(player)?.destroy();
-  gNextButtonTextDraw.get(player)?.destroy();
-  gPrevButtonTextDraw.get(player)?.destroy();
+  const headerTextDraw = gHeaderTextDraw.get(player);
+  const backgroundTextDraw = gBackgroundTextDraw.get(player);
+  const currentPageTextDraw = gCurrentPageTextDraw.get(player);
+  const nextButtonTextDraw = gNextButtonTextDraw.get(player);
+  const prevButtonTextDraw = gPrevButtonTextDraw.get(player);
+
+  [
+    headerTextDraw,
+    backgroundTextDraw,
+    currentPageTextDraw,
+    nextButtonTextDraw,
+    prevButtonTextDraw,
+  ].forEach((draw) => {
+    if (draw?.isValid()) draw.destroy();
+  });
 
   gHeaderTextDraw.delete(player);
   gBackgroundTextDraw.delete(player);
@@ -371,12 +381,22 @@ export const SkinChanger: IFilterScript = {
     return [onPlayerClickGlobal, onPlayerClickPlayer, skinChange];
   },
   unload() {
-    [...gCurrentPageTextDraw.values()].forEach((t) => t.destroy());
-    [...gHeaderTextDraw.values()].forEach((t) => t.destroy());
-    [...gBackgroundTextDraw.values()].forEach((t) => t.destroy());
-    [...gNextButtonTextDraw.values()].forEach((t) => t.destroy());
-    [...gPrevButtonTextDraw.values()].forEach((t) => t.destroy());
-    [...gSelectionItems.values()].flat().forEach((t) => t.destroy());
+    [...gCurrentPageTextDraw.values()].forEach(
+      (t) => t.isValid() && t.destroy(),
+    );
+    [...gHeaderTextDraw.values()].forEach((t) => t.isValid() && t.destroy());
+    [...gBackgroundTextDraw.values()].forEach(
+      (t) => t.isValid() && t.destroy(),
+    );
+    [...gNextButtonTextDraw.values()].forEach(
+      (t) => t.isValid() && t.destroy(),
+    );
+    [...gPrevButtonTextDraw.values()].forEach(
+      (t) => t.isValid() && t.destroy(),
+    );
+    [...gSelectionItems.values()]
+      .flat()
+      .forEach((t) => t.isValid() && t.destroy());
 
     gCurrentPageTextDraw.clear();
     gHeaderTextDraw.clear();

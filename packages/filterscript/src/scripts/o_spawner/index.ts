@@ -154,7 +154,7 @@ function createModelPreviewTextDraw(
 function destroyPlayerModelPreviews(player: Player) {
   const items = gSelectionItems.get(player);
   if (!items) return;
-  items.forEach((item) => item.destroy());
+  items.forEach((item) => item.isValid() && item.destroy());
   gSelectionItems.delete(player);
 }
 
@@ -262,11 +262,21 @@ function createSelectionMenu(player: Player) {
 function destroySelectionMenu(player: Player) {
   destroyPlayerModelPreviews(player);
 
-  gHeaderTextDraw.get(player)?.destroy();
-  gBackgroundTextDraw.get(player)?.destroy();
-  gCurrentPageTextDraw.get(player)?.destroy();
-  gNextButtonTextDraw.get(player)?.destroy();
-  gPrevButtonTextDraw.get(player)?.destroy();
+  const headerTextDraw = gHeaderTextDraw.get(player);
+  const backgroundTextDraw = gBackgroundTextDraw.get(player);
+  const currentPageTextDraw = gCurrentPageTextDraw.get(player);
+  const nextButtonTextDraw = gNextButtonTextDraw.get(player);
+  const prevButtonTextDraw = gPrevButtonTextDraw.get(player);
+
+  [
+    headerTextDraw,
+    backgroundTextDraw,
+    currentPageTextDraw,
+    nextButtonTextDraw,
+    prevButtonTextDraw,
+  ].forEach((draw) => {
+    if (draw?.isValid()) draw.destroy();
+  });
 
   gHeaderTextDraw.delete(player);
   gBackgroundTextDraw.delete(player);
@@ -283,7 +293,7 @@ function spawnVehicleInFrontOfPlayer(
 ) {
   const { x, y, z } = player.getPos()!;
 
-  let facing = degreesToRadians(player.getFacingAngle());
+  let facing = player.getFacingAngle();
 
   const { x: size_x, z: size_z } = Vehicle.getModelInfo(
     vehicleModel,
@@ -292,13 +302,16 @@ function spawnVehicleInFrontOfPlayer(
 
   const distance = size_x + 0.5;
 
+  const _x = x + distance * Math.sin(degreesToRadians(-facing));
+  const _y = y + distance * Math.cos(degreesToRadians(-facing));
+
   facing += 90.0;
   if (facing > 360.0) facing -= 360.0;
 
   const veh = new Vehicle({
     modelId: vehicleModel,
-    x: x + distance * Math.sin(-facing),
-    y: y + distance * Math.cos(-facing),
+    x: _x,
+    y: _y,
     z: z + size_z * 0.25,
     z_angle: facing,
     color: [color1, color2],
@@ -311,17 +324,20 @@ function spawnVehicleInFrontOfPlayer(
 function spawnObjectInFrontOfPlayer(player: Player, model: number) {
   const { x, y, z } = player.getPos()!;
 
-  let facing = degreesToRadians(player.getFacingAngle());
+  let facing = player.getFacingAngle();
 
   const distance = 5.0;
+
+  const _x = x + distance * Math.sin(degreesToRadians(-facing));
+  const _y = y + distance * Math.cos(degreesToRadians(-facing));
 
   facing += 90.0;
   if (facing > 360.0) facing -= 360.0;
 
   const obj = new DynamicObject({
     modelId: model,
-    x: x + distance * Math.sin(-facing),
-    y: y + distance * Math.cos(-facing),
+    x: _x,
+    y: _y,
     z,
     rx: 0.0,
     ry: 0.0,
