@@ -18,7 +18,7 @@ import {
 import * as constants from "./constants";
 import { playSoundForPlayersInRange } from "filterscript/utils/gl_common";
 
-// Warning: This script uses a total of 45 objects, 22 3D Text Labels and 1 dialog.
+// Warning: This script uses a total of 45 objects, 22 3D Text Labels.
 
 let obj_Elevator: DynamicObject | null = null;
 let obj_ElevatorDoors: DynamicObject[] = [];

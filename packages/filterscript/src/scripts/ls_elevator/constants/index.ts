@@ -3,8 +3,6 @@ export const DOORS_SPEED = 5.0; // Movement speed of the doors.
 export const ELEVATOR_WAIT_TIME = 5000; // Time in ms that the elevator will wait in each floor before continuing with the queue.
 // Be sure to give enough time for doors to open.
 
-export const DIALOG_ID = 874;
-
 // Private:
 export const X_DOOR_CLOSED = 1786.627685;
 export const X_DOOR_R_OPENED = 1785.027685;
