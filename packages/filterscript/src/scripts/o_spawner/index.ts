@@ -33,8 +33,8 @@ function getNumberOfPages() {
     gTotalItems >= constants.SELECTION_ITEMS &&
     gTotalItems % constants.SELECTION_ITEMS === 0
   ) {
-    return gTotalItems / constants.SELECTION_ITEMS;
-  } else return gTotalItems / constants.SELECTION_ITEMS + 1;
+    return Math.floor(gTotalItems / constants.SELECTION_ITEMS);
+  } else return Math.floor(gTotalItems / constants.SELECTION_ITEMS + 1);
 }
 
 function createCurrentPageTextDraw(player: Player, x: number, y: number) {

@@ -33,7 +33,7 @@ let lsPrisonWallsObject: DynamicObject | null = null;
 
 // Stores the created object numbers of the prison walls gates so they can be
 // opened or closed and destroyed when the filterScript is unloaded
-let lsPrisonGatesObject: DynamicObject[];
+let lsPrisonGatesObject: DynamicObject[] = [];
 
 // Stores a reference to the 3D text labels used on each set of gates so they
 // can be destroyed when the filterScript is unloaded

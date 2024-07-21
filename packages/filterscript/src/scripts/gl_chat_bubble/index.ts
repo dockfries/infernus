@@ -16,7 +16,7 @@ export const GlChatBubble: IFilterScript = {
       if (text.length > 128) return next();
 
       const to_others = `Says: ${text}`;
-      const to_me = `>> %s,${text}`;
+      const to_me = `>> ${player.getName()},${text}`;
 
       player.setChatBubble(to_others, MESSAGE_COLOR, 35.0, 10000);
       player.sendClientMessage(ECHO_COLOR, to_me);

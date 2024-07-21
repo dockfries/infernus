@@ -26,11 +26,10 @@ const specCommands: string[] = [];
 export const AdminSpec: IAdminSpecFS = {
   name: "admin_spec",
   load(options) {
-    if (options?.command) {
-      specCommands.push(options.command.player || "specplayer");
-      specCommands.push(options.command.vehicle || "specvehicle");
-      specCommands.push(options.command.off || "specoff");
-    }
+    specCommands.push(options?.command?.player || "specplayer");
+    specCommands.push(options?.command?.vehicle || "specvehicle");
+    specCommands.push(options?.command?.off || "specoff");
+
     // WE ONLY DEAL WITH COMMANDS FROM ADMINS IN THIS FILTERSCRIPT
     const offCommandPerformed = PlayerEvent.onCommandPerformed(
       ({ player, command, next }) => {

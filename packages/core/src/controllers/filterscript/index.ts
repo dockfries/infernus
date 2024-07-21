@@ -19,7 +19,7 @@ export const loadUseScript = async (scriptName: string) => {
     installedScripts.push(fs);
   } catch (err) {
     logger.error(`[GameMode]: script ${scriptName} load fail`);
-    logger.warn(new Error(JSON.stringify(err)));
+    logger.warn(err);
   }
 };
 export const unloadUseScript = async (scriptName: string) => {
@@ -39,7 +39,7 @@ export const unloadUseScript = async (scriptName: string) => {
     preInstallScripts.push(fs);
   } catch (err) {
     logger.error(`[GameMode]: script ${scriptName} unload fail`);
-    logger.warn(new Error(JSON.stringify(err)));
+    logger.warn(err);
   }
 };
 

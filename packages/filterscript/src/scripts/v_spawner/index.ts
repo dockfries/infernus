@@ -32,8 +32,8 @@ function getNumberOfPages() {
     gTotalItems >= constants.SELECTION_ITEMS &&
     gTotalItems % constants.SELECTION_ITEMS === 0
   ) {
-    return gTotalItems / constants.SELECTION_ITEMS;
-  } else return gTotalItems / constants.SELECTION_ITEMS + 1;
+    return Math.floor(gTotalItems / constants.SELECTION_ITEMS);
+  } else return Math.floor(gTotalItems / constants.SELECTION_ITEMS + 1);
 }
 
 function createCurrentPageTextDraw(player: Player, x: number, y: number) {
@@ -258,11 +258,11 @@ function createSelectionMenu(player: Player) {
 function destroySelectionMenu(player: Player) {
   destroyPlayerModelPreviews(player);
 
-  gHeaderTextDraw.get(player)!.destroy();
-  gBackgroundTextDraw.get(player)!.destroy();
-  gCurrentPageTextDraw.get(player)!.destroy();
-  gNextButtonTextDraw.get(player)!.destroy();
-  gPrevButtonTextDraw.get(player)!.destroy();
+  gHeaderTextDraw.get(player)?.destroy();
+  gBackgroundTextDraw.get(player)?.destroy();
+  gCurrentPageTextDraw.get(player)?.destroy();
+  gNextButtonTextDraw.get(player)?.destroy();
+  gPrevButtonTextDraw.get(player)?.destroy();
 
   gHeaderTextDraw.delete(player);
   gBackgroundTextDraw.delete(player);

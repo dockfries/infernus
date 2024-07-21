@@ -71,7 +71,7 @@ let elevatorState: number;
 let elevatorFloor: number;
 
 // Stores the elevator queue for each floor
-let elevatorQueue: number[];
+let elevatorQueue: number[] = [];
 
 // Stores who requested the floor for the elevator queue...
 // FloorRequestedBy[floor_id] = player;  (stores who requested which floor)
@@ -133,25 +133,27 @@ function elevator_Initialize() {
   // Loop
   for (let i = 0; i < constants.FloorNames.length; i++) {
     // Create elevator floor door objects
-    obj_FloorDoors[i][0] = new DynamicObject({
-      modelId: 18757,
-      x: constants.X_ELEVATOR_POS,
-      y: constants.Y_ELEVATOR_POS - 0.245,
-      z: getDoorsZCoordForFloor(i) + 0.05,
-      rx: 0.0,
-      ry: 0.0,
-      rz: 80.0,
-    });
+    obj_FloorDoors[i] = [
+      new DynamicObject({
+        modelId: 18757,
+        x: constants.X_ELEVATOR_POS,
+        y: constants.Y_ELEVATOR_POS - 0.245,
+        z: getDoorsZCoordForFloor(i) + 0.05,
+        rx: 0.0,
+        ry: 0.0,
+        rz: 80.0,
+      }),
+      new DynamicObject({
+        modelId: 18756,
+        x: constants.X_ELEVATOR_POS,
+        y: constants.Y_ELEVATOR_POS - 0.245,
+        z: getDoorsZCoordForFloor(i) + 0.05,
+        rx: 0.0,
+        ry: 0.0,
+        rz: 80.0,
+      }),
+    ];
     obj_FloorDoors[i][0].create();
-    obj_FloorDoors[i][1] = new DynamicObject({
-      modelId: 18756,
-      x: constants.X_ELEVATOR_POS,
-      y: constants.Y_ELEVATOR_POS - 0.245,
-      z: getDoorsZCoordForFloor(i) + 0.05,
-      rx: 0.0,
-      ry: 0.0,
-      rz: 80.0,
-    });
     obj_FloorDoors[i][1].create();
 
     // Format string for the floor 3D text label

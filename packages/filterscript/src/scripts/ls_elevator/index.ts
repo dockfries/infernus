@@ -31,9 +31,9 @@ let label_Floors: Dynamic3DTextLabel[] = [];
 let elevatorState: number, elevatorFloor: number;
 
 // Floors in queue.
-let elevatorQueue: number[];
+let elevatorQueue: number[] = [];
 // FloorRequestedBy[floor_id] = playerid; - Points out who requested which floor.
-let floorRequestedBy: (Player | InvalidEnum.PLAYER_ID)[];
+let floorRequestedBy: (Player | InvalidEnum.PLAYER_ID)[] = [];
 
 // Timer that makes the elevator move faster after players start surfing the object.
 let elevatorBoostTimer: NodeJS.Timeout | null = null;
@@ -86,25 +86,27 @@ function elevator_Initialize() {
   label_Elevator.create();
 
   for (let i = 0; i < constants.FloorNames.length; i++) {
-    obj_FloorDoors[i][0] = new DynamicObject({
-      modelId: 18757,
-      x: constants.X_DOOR_CLOSED,
-      y: -1303.171142,
-      z: getDoorsZCoordForFloor(i),
-      rx: 0.0,
-      ry: 0.0,
-      rz: 270.0,
-    });
+    obj_FloorDoors[i] = [
+      new DynamicObject({
+        modelId: 18757,
+        x: constants.X_DOOR_CLOSED,
+        y: -1303.171142,
+        z: getDoorsZCoordForFloor(i),
+        rx: 0.0,
+        ry: 0.0,
+        rz: 270.0,
+      }),
+      new DynamicObject({
+        modelId: 18756,
+        x: constants.X_DOOR_CLOSED,
+        y: -1303.171142,
+        z: getDoorsZCoordForFloor(i),
+        rx: 0.0,
+        ry: 0.0,
+        rz: 270.0,
+      }),
+    ];
     obj_FloorDoors[i][0].create();
-    obj_FloorDoors[i][1] = new DynamicObject({
-      modelId: 18756,
-      x: constants.X_DOOR_CLOSED,
-      y: -1303.171142,
-      z: getDoorsZCoordForFloor(i),
-      rx: 0.0,
-      ry: 0.0,
-      rz: 270.0,
-    });
     obj_FloorDoors[i][1].create();
 
     const string = `{CCCCCC}[${constants.FloorNames[i]}]\n{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to call`;

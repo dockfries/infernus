@@ -66,7 +66,7 @@ let elevatorState: number;
 let elevatorFloor: number;
 
 // Stores the elevator queue for each floor
-let elevatorQueue: number[];
+let elevatorQueue: number[] = [];
 
 // Stores who requested the floor for the elevator queue...
 // FloorRequestedBy[floor_id] = playerid;  (stores who requested which floor)
@@ -137,26 +137,27 @@ function elevator_Initialize() {
   label_Elevator.create();
 
   for (let i = 0; i < constants.FloorNames.length; i++) {
-    obj_FloorDoors[i][0] = new DynamicObject({
-      modelId: 18757,
-      x: constants.X_ELEVATOR_POS,
-      y: constants.Y_ELEVATOR_POS + 0.245,
-      z: getDoorsZCoordForFloor(i),
-      rx: 0.0,
-      ry: 0.0,
-      rz: 270.0,
-    });
+    obj_FloorDoors[i] = [
+      new DynamicObject({
+        modelId: 18757,
+        x: constants.X_ELEVATOR_POS,
+        y: constants.Y_ELEVATOR_POS + 0.245,
+        z: getDoorsZCoordForFloor(i),
+        rx: 0.0,
+        ry: 0.0,
+        rz: 270.0,
+      }),
+      new DynamicObject({
+        modelId: 18756,
+        x: constants.X_ELEVATOR_POS,
+        y: constants.Y_ELEVATOR_POS + 0.245,
+        z: getDoorsZCoordForFloor(i),
+        rx: 0.0,
+        ry: 0.0,
+        rz: 270.0,
+      }),
+    ];
     obj_FloorDoors[i][0].create();
-
-    obj_FloorDoors[i][1] = new DynamicObject({
-      modelId: 18756,
-      x: constants.X_ELEVATOR_POS,
-      y: constants.Y_ELEVATOR_POS + 0.245,
-      z: getDoorsZCoordForFloor(i),
-      rx: 0.0,
-      ry: 0.0,
-      rz: 270.0,
-    });
     obj_FloorDoors[i][1].create();
 
     const string = `{CCCCCC}[${constants.FloorNames[i]}]\n{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to call`;
@@ -188,13 +189,13 @@ function elevator_Destroy() {
   obj_Elevator!.destroy();
   obj_ElevatorDoors[0].destroy();
   obj_ElevatorDoors[1].destroy();
+  label_Elevator!.destroy();
 
   obj_Elevator = null;
   obj_ElevatorDoors = [];
-  label_Elevator = null;
 
   // Destroy the 3D text label inside the elevator
-  label_Elevator!.destroy();
+  label_Elevator = null;
 
   // Loop
   for (let i = 0; i < obj_FloorDoors.length; i++) {

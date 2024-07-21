@@ -132,6 +132,11 @@ export const FerrisWheel: IFilterScript = {
     return [moved];
   },
   unload() {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+
     let x = 0;
 
     gFerrisWheel?.destroy();

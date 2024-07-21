@@ -103,7 +103,7 @@ export function talkMessage(
 
   const msg = prefix ? `${prefix} ${message}` : message;
 
-  const msgWithName = `${playerName}: ${msg}"`;
+  const msgWithName = `${playerName}: ${msg}`;
 
   player.setChatBubble(msg, SPEECH_BUBBLE_COLOR, distance, CHAT_BUBBLE_TIME);
 
