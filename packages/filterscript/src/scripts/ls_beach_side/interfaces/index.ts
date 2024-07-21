@@ -1,7 +1,7 @@
 import type { IFilterScript } from "@infernus/core";
 
 export interface ILSBeachSideFSOptions {
-  command?: boolean;
+  enableCommand?: boolean;
 }
 
 export interface ILSBeachSideFS extends IFilterScript {

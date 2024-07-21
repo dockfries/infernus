@@ -37,6 +37,7 @@ let floorRequestedBy: (Player | InvalidEnum.PLAYER_ID)[];
 
 // Timer that makes the elevator move faster after players start surfing the object.
 let elevatorBoostTimer: NodeJS.Timeout | null = null;
+let elevatorTurnTimer: NodeJS.Timeout | null = null;
 
 // Private:
 function elevator_Initialize() {
@@ -487,8 +488,15 @@ export const LSElevator: IFilterScript = {
         });
         label_Elevator.create();
 
+        if (elevatorTurnTimer) {
+          clearTimeout(elevatorTurnTimer);
+        }
+
         elevatorState = constants.ELEVATOR_STATE_WAITING;
-        setTimeout(elevator_TurnToIdle, constants.ELEVATOR_WAIT_TIME);
+        elevatorTurnTimer = setTimeout(
+          elevator_TurnToIdle,
+          constants.ELEVATOR_WAIT_TIME,
+        );
       }
 
       return next();
@@ -546,6 +554,12 @@ export const LSElevator: IFilterScript = {
       clearTimeout(elevatorBoostTimer);
       elevatorBoostTimer = null;
     }
+
+    if (elevatorTurnTimer) {
+      clearTimeout(elevatorTurnTimer);
+      elevatorTurnTimer = null;
+    }
+
     elevator_Destroy();
   },
 };

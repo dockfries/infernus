@@ -1,35 +1,29 @@
-// Example FilterScript for the let LS BeachSide Building with Elevator
-
+// Example FilterScript for the let SF ZomboTech Building and Lab with Elevator
 // Original elevator code by Zamaroht in 2010
 //
 // Updated by Kye in 2011
 // * Added a sound effect for the elevator starting/stopping
 //
 // Edited by Matite in January 2015
-// * Adapted the elevator code so it works in this let building and removed the
-//   light pole at the underground car park entrance
+// * Added code to remove the existing building, add the let buildings and
+//   adapted the elevator code so it works in this let building
 //
-// Updated to v1.03 by Matite in April 2015
-// * Removed the code that removes the existing building map object and the lines
-//   that create the let objects as the original building is now replaced with
-//   the let one by SAMP instead (same as the LS Office building)
 //
-// Updated to v1.02 by Matite in February 2015
-// * Added code for the let car park object and edited the elevator to
-//   include the car park
-//
-// This script creates the let LS BeachSide building object, removes the
-// existing GTASA building object, adds the let car park object and creates
-// an elevator that can be used to travel between all levels.
+// This script creates the let SF ZomboTech building and the lab objects, removes
+// the existing GTASA building object and creates an elevator that can be used to
+// travel between the building foyer and the lab.
 //
 // You can un-comment the OnPlayerCommandText callback below to enable a simple
-// teleport command (/lsb) that teleports you to the LS BeachSide building.
+// teleport command (/zl) that teleports you to the ZomboTech Lab elevator.
 //
 // Warning...
 // This script uses a total of:
-// * 31 objects = 1 for the elevator, 2 for the elevator doors and 28 for the
-//   elevator floor doors
-// * 15 3D Text Labels = 14 on the floors and 1 in the elevator
+// * 9 objects = 1 for the elevator, 2 for the elevator doors, 4 for the elevator
+//   floor doors and 2 for the buildings (replacement ZomboTech building and lab)
+// * 3 3D Text Labels = 2 on the floors and 1 in the elevator
+
+// Stores the created object numbers of the replacement building and the lab so
+// they can be destroyed when the filterScript is unloaded
 
 import {
   Dialog,
@@ -45,19 +39,20 @@ import {
 } from "@infernus/core";
 import * as constants from "./constants";
 import { playSoundForPlayersInRange } from "filterscript/utils/gl_common";
-import type { ILSBeachSideFS } from "./interfaces";
+import type { ISFZomboTechFS } from "./interfaces";
 
-// Variables
+let sfZomboTechBuildingObject: DynamicObject | null = null;
+let sfZomboTechLabObject: DynamicObject | null = null;
 
 // Stores the created object numbers of the elevator, the elevator doors and
-// the elevator floor doors so they can be destroyed when the filtersScript
+// the elevator floor doors so they can be destroyed when the filterScript
 // is unloaded
 let obj_Elevator: DynamicObject | null = null;
 let obj_ElevatorDoors: DynamicObject[] = [];
 let obj_FloorDoors: [DynamicObject, DynamicObject][] = [];
 
 // Stores a reference to the 3D text labels used on each floor and inside the
-// elevator itself so they can be detroyed when the filtersScript is unloaded
+// elevator itself so they can be detroyed when the filterScript is unloaded
 let label_Elevator: Dynamic3DTextLabel | null = null;
 let label_Floors: Dynamic3DTextLabel[] = [];
 
@@ -74,7 +69,7 @@ let elevatorFloor: number;
 let elevatorQueue: number[];
 
 // Stores who requested the floor for the elevator queue...
-// FloorRequestedBy[floor_id] = player;  (stores who requested which floor)
+// FloorRequestedBy[floor_id] = playerid;  (stores who requested which floor)
 let floorRequestedBy: (Player | InvalidEnum.PLAYER_ID)[] = [];
 
 // Used for a timer that makes the elevator move faster after players start
@@ -82,8 +77,22 @@ let floorRequestedBy: (Player | InvalidEnum.PLAYER_ID)[] = [];
 let elevatorBoostTimer: NodeJS.Timeout | null = null;
 let elevatorTurnTimer: NodeJS.Timeout | null = null;
 
+// Un-comment the OnPlayerCommandText callback below (remove the "/*" and the "*/")
+// to enable a simple teleport command (/zl) which teleports the player to
+// the Zombotech Lab elevator.
+
+function removeBuilding(p: Player) {
+  if (!p.isNpc()) return;
+  // Remove default GTASA SF ZomboTech map object and LOD for the player
+  // (so any player currently ingame does not have to rejoin for them
+  //  to be removed when this filterScript is loaded)
+  p.removeBuilding(10027, -1951.6875, 660.023986, 89.507797, 250.0); // Building
+  p.removeBuilding(9939, -1951.6875, 660.023986, 89.507797, 250.0); // LOD
+}
+
 function elevator_Initialize() {
-  // Create the elevator and elevator door objects
+  // Initializes the elevator.
+
   obj_Elevator = new DynamicObject({
     modelId: 18755,
     x: constants.X_ELEVATOR_POS,
@@ -91,7 +100,7 @@ function elevator_Initialize() {
     z: constants.GROUND_Z_COORD,
     rx: 0.0,
     ry: 0.0,
-    rz: 80.0,
+    rz: 270.0,
   });
   obj_Elevator.create();
   obj_ElevatorDoors[0] = new DynamicObject({
@@ -101,7 +110,7 @@ function elevator_Initialize() {
     z: constants.GROUND_Z_COORD,
     rx: 0.0,
     ry: 0.0,
-    rz: 80.0,
+    rz: 270.0,
   });
   obj_ElevatorDoors[0].create();
   obj_ElevatorDoors[1] = new DynamicObject({
@@ -111,61 +120,54 @@ function elevator_Initialize() {
     z: constants.GROUND_Z_COORD,
     rx: 0.0,
     ry: 0.0,
-    rz: 80.0,
+    rz: 270.0,
   });
   obj_ElevatorDoors[1].create();
 
-  // Create the 3D text label for inside the elevator
   label_Elevator = new Dynamic3DTextLabel({
     text: "{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to use elevator",
     color: 0xccccccaa,
-    x: constants.X_ELEVATOR_POS + 1.6,
-    y: constants.Y_ELEVATOR_POS - 1.85,
-    z: constants.GROUND_Z_COORD - 0.4,
+    x: constants.X_ELEVATOR_POS - 1.8,
+    y: constants.Y_ELEVATOR_POS + 1.6,
+    z: constants.GROUND_Z_COORD - 0.6,
     drawDistance: 4.0,
     worldId: 0,
     testLos: true,
   });
   label_Elevator.create();
 
-  // Create variables
-
-  // Loop
   for (let i = 0; i < constants.FloorNames.length; i++) {
-    // Create elevator floor door objects
     obj_FloorDoors[i][0] = new DynamicObject({
       modelId: 18757,
       x: constants.X_ELEVATOR_POS,
-      y: constants.Y_ELEVATOR_POS - 0.245,
-      z: getDoorsZCoordForFloor(i) + 0.05,
+      y: constants.Y_ELEVATOR_POS + 0.245,
+      z: getDoorsZCoordForFloor(i),
       rx: 0.0,
       ry: 0.0,
-      rz: 80.0,
+      rz: 270.0,
     });
     obj_FloorDoors[i][0].create();
+
     obj_FloorDoors[i][1] = new DynamicObject({
       modelId: 18756,
       x: constants.X_ELEVATOR_POS,
-      y: constants.Y_ELEVATOR_POS - 0.245,
-      z: getDoorsZCoordForFloor(i) + 0.05,
+      y: constants.Y_ELEVATOR_POS + 0.245,
+      z: getDoorsZCoordForFloor(i),
       rx: 0.0,
       ry: 0.0,
-      rz: 80.0,
+      rz: 270.0,
     });
     obj_FloorDoors[i][1].create();
 
-    // Format string for the floor 3D text label
     const string = `{CCCCCC}[${constants.FloorNames[i]}]\n{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to call`;
 
-    // Get label Z position
-    const z = getDoorsZCoordForFloor(i);
+    const z = i === 0 ? 47.460277 : 25.820274;
 
-    // Create floor label
     label_Floors[i] = new Dynamic3DTextLabel({
       text: string,
       color: 0xccccccaa,
-      x: constants.X_ELEVATOR_POS + 2,
-      y: constants.Y_ELEVATOR_POS - 3,
+      x: constants.X_ELEVATOR_POS - 2.5,
+      y: constants.Y_ELEVATOR_POS + 2.5,
       z: z - 0.2,
       drawDistance: 10.5,
       worldId: 0,
@@ -174,30 +176,32 @@ function elevator_Initialize() {
     label_Floors[i].create();
   }
 
-  // Open the car park floor doors and the elevator doors
-  Floor_OpenDoors(0);
+  // Open ground floor doors:
+  floor_OpenDoors(0);
   elevator_OpenDoors();
 
-  // Exit here
   return true;
 }
 
 function elevator_Destroy() {
-  // Destroys the elevator.
-
+  // Destroys the elevator and the elevator doors
   obj_Elevator!.destroy();
   obj_ElevatorDoors[0].destroy();
   obj_ElevatorDoors[1].destroy();
-  label_Elevator!.destroy();
 
   obj_Elevator = null;
   obj_ElevatorDoors = [];
   label_Elevator = null;
 
+  // Destroy the 3D text label inside the elevator
+  label_Elevator!.destroy();
+
+  // Loop
   for (let i = 0; i < obj_FloorDoors.length; i++) {
+    // Destroy the elevator floor doors and the floor 3D text labels
     obj_FloorDoors[i][0].destroy();
     obj_FloorDoors[i][1].destroy();
-    label_Floors[i]!.destroy();
+    label_Floors[i].destroy();
   }
 
   obj_FloorDoors = [];
@@ -211,16 +215,16 @@ function elevator_Destroy() {
 function elevator_OpenDoors() {
   // Opens the elevator's doors.
 
-  const { z } = obj_ElevatorDoors[0].getPos()!;
+  const { y, z } = obj_ElevatorDoors[0].getPos()!;
   obj_ElevatorDoors[0].move(
     constants.X_DOOR_L_OPENED,
-    constants.Y_DOOR_L_OPENED,
+    y,
     z,
     constants.DOORS_SPEED,
   );
   obj_ElevatorDoors[1].move(
     constants.X_DOOR_R_OPENED,
-    constants.Y_DOOR_R_OPENED,
+    y,
     z,
     constants.DOORS_SPEED,
   );
@@ -233,16 +237,16 @@ function elevator_CloseDoors() {
 
   if (elevatorState === constants.ELEVATOR_STATE_MOVING) return false;
 
-  const { z } = obj_ElevatorDoors[0].getPos()!;
+  const { y, z } = obj_ElevatorDoors[0].getPos()!;
   obj_ElevatorDoors[0].move(
-    constants.X_ELEVATOR_POS,
-    constants.Y_ELEVATOR_POS,
+    constants.X_DOOR_CLOSED,
+    y,
     z,
     constants.DOORS_SPEED,
   );
   obj_ElevatorDoors[1].move(
-    constants.X_ELEVATOR_POS,
-    constants.Y_ELEVATOR_POS,
+    constants.X_DOOR_CLOSED,
+    y,
     z,
     constants.DOORS_SPEED,
   );
@@ -250,19 +254,19 @@ function elevator_CloseDoors() {
   return true;
 }
 
-function Floor_OpenDoors(floorId: number) {
+function floor_OpenDoors(floorId: number) {
   // Opens the doors at the specified floor.
 
   obj_FloorDoors[floorId][0].move(
-    constants.X_FDOOR_L_OPENED,
-    constants.Y_FDOOR_L_OPENED,
-    getDoorsZCoordForFloor(floorId) + 0.05,
+    constants.X_DOOR_L_OPENED,
+    constants.Y_ELEVATOR_POS + 0.245,
+    getDoorsZCoordForFloor(floorId),
     constants.DOORS_SPEED,
   );
   obj_FloorDoors[floorId][1].move(
-    constants.X_FDOOR_R_OPENED,
-    constants.Y_FDOOR_R_OPENED,
-    getDoorsZCoordForFloor(floorId) + 0.05,
+    constants.X_DOOR_R_OPENED,
+    constants.Y_ELEVATOR_POS + 0.245,
+    getDoorsZCoordForFloor(floorId),
     constants.DOORS_SPEED,
   );
 
@@ -282,14 +286,14 @@ function floor_CloseDoors(floorId: number) {
 
   obj_FloorDoors[floorId][0].move(
     constants.X_ELEVATOR_POS,
-    constants.Y_ELEVATOR_POS - 0.245,
-    getDoorsZCoordForFloor(floorId) + 0.05,
+    constants.Y_ELEVATOR_POS + 0.245,
+    getDoorsZCoordForFloor(floorId),
     constants.DOORS_SPEED,
   );
   obj_FloorDoors[floorId][1].move(
     constants.X_ELEVATOR_POS,
-    constants.Y_ELEVATOR_POS - 0.245,
-    getDoorsZCoordForFloor(floorId) + 0.05,
+    constants.Y_ELEVATOR_POS + 0.245,
+    getDoorsZCoordForFloor(floorId),
     constants.DOORS_SPEED,
   );
 
@@ -304,7 +308,7 @@ function floor_CloseDoors(floorId: number) {
   return true;
 }
 
-function Elevator_MoveToFloor(floorId: number) {
+function elevator_MoveToFloor(floorId: number) {
   // Moves the elevator to specified floor (doors are meant to be already closed).
 
   elevatorState = constants.ELEVATOR_STATE_MOVING;
@@ -368,7 +372,7 @@ function elevator_Boost(floorId: number) {
 
 function elevator_TurnToIdle() {
   elevatorState = constants.ELEVATOR_STATE_IDLE;
-  ReadNextFloorInQueue();
+  readNextFloorInQueue();
 
   return true;
 }
@@ -400,7 +404,7 @@ function addFloorToQueue(floorId: number) {
     elevatorQueue[slot] = floorId;
 
     // If needed, move the elevator.
-    if (elevatorState === constants.ELEVATOR_STATE_IDLE) ReadNextFloorInQueue();
+    if (elevatorState === constants.ELEVATOR_STATE_IDLE) readNextFloorInQueue();
 
     return true;
   }
@@ -424,7 +428,7 @@ function isFloorInQueue(floorId: number) {
   return elevatorQueue.includes(floorId);
 }
 
-function ReadNextFloorInQueue() {
+function readNextFloorInQueue() {
   // Reads the next floor in the queue, closes doors, and goes to it.
 
   if (
@@ -452,31 +456,32 @@ async function showElevatorDialog(player: Player) {
 
     info += constants.FloorNames[i] + "\n";
   }
+  {
+    const { response, listItem } = await new Dialog({
+      style: DialogStylesEnum.LIST,
+      caption: "ZomboTech Elevator...",
+      info,
+      button1: "Accept",
+      button2: "Cancel",
+    }).show(player);
 
-  const { response, listItem } = await new Dialog({
-    style: DialogStylesEnum.LIST,
-    caption: "LS BeachSide Elevator...",
-    info,
-    button1: "Accept",
-    button2: "Cancel",
-  }).show(player);
+    if (!response) return false;
 
-  if (!response) return false;
+    if (
+      floorRequestedBy[listItem] !== InvalidEnum.PLAYER_ID ||
+      isFloorInQueue(listItem)
+    )
+      new GameText("~r~The floor is already in the queue", 3500, 4).forPlayer(
+        player,
+      );
+    else if (didPlayerRequestElevator(player))
+      new GameText("~r~You already requested the elevator", 3500, 4).forPlayer(
+        player,
+      );
+    else callElevator(player, listItem);
 
-  if (
-    floorRequestedBy[listItem] !== InvalidEnum.PLAYER_ID ||
-    isFloorInQueue(listItem)
-  )
-    new GameText("~r~The floor is already in the queue", 3500, 4).forPlayer(
-      player,
-    );
-  else if (didPlayerRequestElevator(player))
-    new GameText("~r~You already requested the elevator", 3500, 4).forPlayer(
-      player,
-    );
-  else callElevator(player, listItem);
-
-  return true;
+    return true;
+  }
 }
 
 function callElevator(player: Player, floorId: number) {
@@ -495,36 +500,50 @@ function callElevator(player: Player, floorId: number) {
 }
 
 function getElevatorZCoordForFloor(floorId: number) {
-  // Return Z height value
   return constants.GROUND_Z_COORD + constants.FloorZOffsets[floorId];
 }
 
 function getDoorsZCoordForFloor(floorId: number) {
-  // Return Z height value
   return constants.GROUND_Z_COORD + constants.FloorZOffsets[floorId];
 }
 
-function removeBuilding(p: Player) {
-  // Check if the player is connected and not a NPC
-  if (p.isNpc()) return;
-  // Remove the lamp post at the underground car park entrance
-  p.removeBuilding(1226, 265.481, -1581.1, 32.9311, 5.0);
-
-  // Remove the night lights object (must be removed to also remove any
-  // occulsion zones inside the building)
-  p.removeBuilding(6518, 280.297, -1606.2, 72.3984, 250.0);
-}
-
-export const LSBeachSide: ILSBeachSideFS = {
-  name: "ls_beach_side",
+export const SFZomboTech: ISFZomboTechFS = {
+  name: "sf_zombo_tech",
   load(options) {
     // Display information in the Server Console
     console.log("\n");
-    console.log("  |---------");
-    console.log("  |--- LS BeachSide FilterScript");
-    console.log("  |--  Script v1.03");
-    console.log("  |--  19th April 2015");
-    console.log("  |---------");
+    console.log("  |---------------------------------------------------");
+    console.log("  |--- SF ZomboTech FilterScript");
+    console.log("  |--  Script v1.01");
+    console.log("  |--  12th January 2015");
+    console.log("  |---------------------------------------------------");
+
+    // Create the SF ZomboTech Building object
+    sfZomboTechBuildingObject = new DynamicObject({
+      modelId: 19593,
+      x: -1951.6875,
+      y: 660.023986,
+      z: 89.507797,
+      rx: 0,
+      ry: 0,
+      rz: 0,
+    });
+    sfZomboTechBuildingObject.create();
+
+    // Create the SF ZomboTech Lab object
+    sfZomboTechLabObject = new DynamicObject({
+      modelId: 19594,
+      x: -1951.6875,
+      y: 660.023986,
+      z: 29.507797,
+      rx: 0,
+      ry: 0,
+      rz: 0,
+    });
+    sfZomboTechLabObject.create();
+
+    // Display information in the Server Console
+    console.log("  |--  SF ZomboTech Building and Lab objects created");
 
     // Reset the elevator queue
     resetElevatorQueue();
@@ -533,8 +552,8 @@ export const LSBeachSide: ILSBeachSideFS = {
     elevator_Initialize();
 
     // Display information in the Server Console
-    console.log("  |--  LS BeachSide Building Elevator created");
-    console.log("  |---------");
+    console.log("  |--  SF ZomboTech Building Elevator created");
+    console.log("  |---------------------------------------------------");
 
     Player.getInstances().forEach((p) => {
       removeBuilding(p);
@@ -546,15 +565,13 @@ export const LSBeachSide: ILSBeachSideFS = {
     });
 
     const onMoved = DynamicObjectEvent.onMoved(({ object, next }) => {
-      // Loop
       for (let i = 0; i < obj_FloorDoors.length; i++) {
-        // Check if the object that moved was one of the elevator floor doors
         if (object === obj_FloorDoors[i][0]) {
-          const { y } = obj_FloorDoors[i][0].getPos()!;
+          const { x } = obj_FloorDoors[i][0].getPos()!;
 
-          // Some floor doors have shut, move the elevator to next floor in queue:
-          if (y < constants.Y_DOOR_L_OPENED - 0.5) {
-            Elevator_MoveToFloor(elevatorQueue[0]);
+          // A floor door has shut so move the elevator to the next floor in the queue
+          if (x === constants.X_DOOR_CLOSED) {
+            elevator_MoveToFloor(elevatorQueue[0]);
             removeFirstQueueFloor();
           }
         }
@@ -567,18 +584,18 @@ export const LSBeachSide: ILSBeachSideFS = {
           elevatorBoostTimer = null;
         }
 
-        floorRequestedBy[elevatorFloor] = InvalidEnum.PLAYER_ID;
+        floorRequestedBy[elevatorFloor] = InvalidEnum.PLAYER_TEXT_DRAW;
 
         elevator_OpenDoors();
-        Floor_OpenDoors(elevatorFloor);
+        floor_OpenDoors(elevatorFloor);
 
         const { z } = obj_Elevator.getPos()!;
         label_Elevator = new Dynamic3DTextLabel({
           text: "{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to use elevator",
           color: 0xccccccaa,
-          x: constants.X_ELEVATOR_POS + 1.6,
-          y: constants.Y_ELEVATOR_POS - 1.85,
-          z: z - 0.4,
+          x: constants.X_ELEVATOR_POS - 1.8,
+          y: constants.Y_ELEVATOR_POS + 1.6,
+          z: z - 0.6,
           drawDistance: 4.0,
           worldId: 0,
           testLos: true,
@@ -601,145 +618,90 @@ export const LSBeachSide: ILSBeachSideFS = {
 
     const onKeyStateChange = PlayerEvent.onKeyStateChange(
       ({ player, newKeys, next }) => {
-        // Check if the player is not in a vehicle and pressed the conversation yes key (Y by default)
         if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
-          // Create variables and get the players current position
-
           const pos = player.getPos()!;
-          // For debug
-          //console.logf("X = %0.2f | Y = %0.2f | Z = %0.2f", pos[0], pos[1], pos[2]);
 
-          // Check if the player is using the button inside the elevator
+          // console.log(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
+
           if (
-            pos.y > constants.Y_ELEVATOR_POS - 1.8 &&
             pos.y < constants.Y_ELEVATOR_POS + 1.8 &&
+            pos.y > constants.Y_ELEVATOR_POS - 1.8 &&
             pos.x < constants.X_ELEVATOR_POS + 1.8 &&
             pos.x > constants.X_ELEVATOR_POS - 1.8
-          ) {
-            // The player is using the button inside the elevator
-
-            // Show the elevator dialog to the player
+          )
+            // He is using the elevator button
             showElevatorDialog(player);
-          } else {
-            // Check if the player is using the button on one of the floors
+          // Is the player using a floor button?
+          else {
             if (
-              pos.y < constants.Y_ELEVATOR_POS - 1.81 &&
-              pos.y > constants.Y_ELEVATOR_POS - 3.8 &&
-              pos.x > constants.X_ELEVATOR_POS + 1.21 &&
-              pos.x < constants.X_ELEVATOR_POS + 3.8
+              pos.y > constants.Y_ELEVATOR_POS + 1.81 &&
+              pos.y < constants.Y_ELEVATOR_POS + 3.8 &&
+              pos.x < constants.X_ELEVATOR_POS - 1.81 &&
+              pos.x > constants.X_ELEVATOR_POS - 3.8
             ) {
-              // The player is most likely using an elevator floor button... check which floor
+              // Create variable
+              let i = 0;
 
-              // Create variable with the number of floors to check (total floors minus 1)
-              let i = 13;
+              // Check for ground floor
+              if (
+                pos.z > constants.GROUND_Z_COORD - 2 &&
+                pos.z < constants.GROUND_Z_COORD + 2
+              ) {
+                i = 0;
+              } else i = 1;
 
-              // Loop
-              while (pos.z < getDoorsZCoordForFloor(i) + 3.5 && i > 0) i--;
+              //console.logf("Floor = %d | State = %d | i = %d", ElevatorFloor, ElevatorState, i);
 
-              if (i === 0 && pos.z < getDoorsZCoordForFloor(0) + 2.0) i = -1;
-
-              if (i <= 12) {
-                // Check if the elevator is not moving (idle or waiting)
-                if (elevatorState !== constants.ELEVATOR_STATE_MOVING) {
-                  // Check if the elevator is already on the floor it was called from
-                  if (elevatorFloor === i + 1) {
-                    // Display gametext message to the player
-                    new GameText(
-                      "~n~~n~~n~~n~~n~~n~~n~~y~~h~LS BeachSide Elevator Is~n~~y~~h~Already On This Floor...~n~~w~Walk Inside It~n~~w~And Press '~k~~CONVERSATION_YES~'",
-                      3500,
-                      3,
-                    ).forPlayer(player);
-
-                    // Display chat text message to the player
-                    player.sendClientMessage(
-                      constants.COLOR_MESSAGE_YELLOW,
-                      "* The LS BeachSide elevator is already on this floor... walk inside it and press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}'",
-                    );
-
-                    // Exit here (return 1 so this callback is processed in other scripts)
-                    return next();
-                  }
-                }
-
-                // Call function to call the elevator to the floor
-                callElevator(player, i + 1);
-
-                // Display gametext message to the player
+              // Check if the elevator is not moving and already on the requested floor
+              if (
+                elevatorState !== constants.ELEVATOR_STATE_MOVING &&
+                elevatorFloor === i
+              ) {
+                // Display a gametext message and exit here
                 new GameText(
-                  "~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~LS BeachSide Elevator~n~~g~~h~Has Been Called...~n~~w~Please Wait",
+                  "~n~~n~~n~~n~~n~~r~ZomboTech Elevator~n~~r~Is Already On~n~~r~This Floor!",
                   3000,
-                  3,
+                  5,
                 ).forPlayer(player);
-
-                // Create variable for formatted message
-                let strTempString = "";
-
-                // Check if the elevator is moving
-                if (elevatorState === constants.ELEVATOR_STATE_MOVING) {
-                  // Format chat text message
-                  strTempString =
-                    "* The LS BeachSide elevator has been called... it is currently moving towards the " +
-                    `${constants.FloorNames[elevatorFloor]}.`;
-                } else {
-                  // Check if the floor is the car park
-                  if (elevatorFloor === 0) {
-                    // Format chat text message
-                    strTempString =
-                      "* The LS BeachSide elevator has been called... it is currently at the " +
-                      `${constants.FloorNames[elevatorFloor]}.`;
-                  } else {
-                    // Format chat text message
-                    strTempString =
-                      "* The LS BeachSide elevator has been called... it is currently on the " +
-                      `${constants.FloorNames[elevatorFloor]}.`;
-                  }
-                }
-
-                // Display formatted chat text message to the player
-                player.sendClientMessage(
-                  constants.COLOR_MESSAGE_YELLOW,
-                  strTempString,
-                );
-
-                // Exit here (return 1 so this callback is processed in other scripts)
-                return next();
+                return true;
               }
+
+              //console.logf("Call Elevator to Floor %i", i);
+
+              callElevator(player, i);
+              new GameText("~r~Elevator called", 3500, 4).forPlayer(player);
             }
           }
         }
 
-        // Exit here (return 1 so this callback is processed in other scripts)
         return next();
       },
     );
 
     const offs = [onConnect, onMoved, onKeyStateChange];
 
-    // Un-comment the OnPlayerCommandText callback below (remove the "/*" and the "*/")
-    // to enable a simple teleport command (/lsb) which teleports the player to
-    // outside the LS BeachSide building.
-
     if (options && options.enableCommand) {
       const onCommandText = PlayerEvent.onCommandText(
-        "lsb",
+        "zl",
         ({ player, next }) => {
-          // Check command text
           // Set the interior
           player.setInterior(0);
 
           // Set player position and facing angle
           player.setPos(
-            289.81 + Math.random() * 2,
-            -1630.65 + Math.random() * 2,
-            34.32,
+            -1957.11 + Math.random() * 2,
+            644.36 + Math.random() * 2,
+            47.6,
           );
-          player.setFacingAngle(10);
+          player.setFacingAngle(215);
 
           // Fix camera position after teleporting
           player.setCameraBehind();
 
           // Send a gametext message to the player
-          new GameText("~b~~h~LS BeachSide!", 3000, 3).forPlayer(player);
+          new GameText("~b~~h~ZomboTech Lab!", 3000, 3).forPlayer(player);
+
+          // Exit here
           return next();
         },
       );
@@ -759,11 +721,32 @@ export const LSBeachSide: ILSBeachSideFS = {
       elevatorTurnTimer = null;
     }
 
+    // Check for valid object
+    if (sfZomboTechBuildingObject!.isValid()) {
+      // Destroy the SF ZombotTech Building object
+      sfZomboTechBuildingObject!.destroy();
+      sfZomboTechBuildingObject = null;
+
+      // Display information in the Server Console
+      console.log("  |---------------------------------------------------");
+      console.log("  |--  SF ZomboTech Building object destroyed");
+    }
+
+    // Check for valid object
+    if (sfZomboTechLabObject!.isValid()) {
+      // Destroy the SF ZomboTech Lab object
+      sfZomboTechLabObject!.destroy();
+      sfZomboTechLabObject = null;
+
+      // Display information in the Server Console
+      console.log("  |--  SF ZomboTech Lab object destroyed");
+    }
+
     // Destroy the elevator, the elevator doors and the elevator floor doors
     elevator_Destroy();
 
     // Display information in the Server Console
-    console.log("  |--  LS BeachSide Building Elevator destroyed");
-    console.log("  |---------");
+    console.log("  |--  SF ZomboTech Building Elevator destroyed");
+    console.log("  |---------------------------------------------------");
   },
 };
