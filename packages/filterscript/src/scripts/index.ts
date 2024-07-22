@@ -34,4 +34,5 @@ export * from "./samp_anims";
 export * from "./sf_building1";
 export * from "./sf_zombo_tech";
 export * from "./skin_changer";
+export * from "./stunt_island";
 export * from "./v_spawner";
