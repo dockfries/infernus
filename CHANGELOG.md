@@ -1,3 +1,16 @@
+## [0.11.0-beta.10](https://github.com/dockfries/infernus/compare/v0.11.0-beta.9...v0.11.0-beta.10) (2024-07-22)
+
+
+### Features
+
+* **fs:** stunt_island ([59d2aba](https://github.com/dockfries/infernus/commit/59d2aba000489995052d18fdeabdead1383e19a3))
+
+
+### Bug Fixes
+
+* **core, fs:** isAdmin return,  middleware error ([ce18a2c](https://github.com/dockfries/infernus/commit/ce18a2c0ab39f34f3dbf4ebc6b71348ca64d4bf6))
+* **core, fs:** streamer event beforeEach typo, some fs unload ([d5b3941](https://github.com/dockfries/infernus/commit/d5b394107a15d1d9231f75e92c5cdb821bbdfd44))
+
 ## [0.11.0-beta.9](https://github.com/dockfries/infernus/compare/v0.11.0-beta.8...v0.11.0-beta.9) (2024-07-21)
 
 
