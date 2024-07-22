@@ -703,7 +703,6 @@ export const LSApartments1: ILSApartments1FS = {
                       "* The LS Apartments 1 elevator is already on this floor... walk inside it and press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}'",
                     );
 
-                    // Exit here (return 1 so this callback is processed in other scripts)
                     return next();
                   }
                 }

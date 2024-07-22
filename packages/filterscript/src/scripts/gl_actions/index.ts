@@ -704,5 +704,6 @@ export const GlActions: IGlActionsFS = {
     txtAnimHelper = null;
 
     gPlayerAnimLibsPreloaded.clear();
+    gPlayerUsingLoopingAnim.clear();
   },
 };

@@ -161,5 +161,6 @@ export const AdminSpec: IAdminSpecFS = {
   },
   unload() {
     specCommands.splice(0, specCommands.length);
+    myPlayers.clear();
   },
 };

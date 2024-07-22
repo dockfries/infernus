@@ -47,7 +47,7 @@ const [onPlayerEnterDynamicRaceCP] = defineEvent({
   beforeEach(playerId: number, checkpointId: number) {
     return {
       player: Player.getInstance(playerId)!,
-      pickup: DynamicRaceCP.getInstance(checkpointId)!,
+      raceCP: DynamicRaceCP.getInstance(checkpointId)!,
     };
   },
 });
@@ -58,7 +58,7 @@ const [onPlayerLeaveDynamicRaceCP] = defineEvent({
   beforeEach(playerId: number, checkpointId: number) {
     return {
       player: Player.getInstance(playerId)!,
-      pickup: DynamicRaceCP.getInstance(checkpointId)!,
+      raceCp: DynamicRaceCP.getInstance(checkpointId)!,
     };
   },
 });

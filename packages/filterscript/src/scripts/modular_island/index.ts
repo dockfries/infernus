@@ -77,7 +77,7 @@ export const ModularIsland: IModularIsLandFS = {
     return offs;
   },
   unload() {
-    createdObjects.forEach((o) => o.destroy());
+    createdObjects.forEach((o) => o.isValid() && o.destroy());
     createdObjects = [];
 
     // Display information in the Server Console

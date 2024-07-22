@@ -662,7 +662,6 @@ export const LSBeachSide: ILSBeachSideFS = {
                       "* The LS BeachSide elevator is already on this floor... walk inside it and press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}'",
                     );
 
-                    // Exit here (return 1 so this callback is processed in other scripts)
                     return next();
                   }
                 }
@@ -707,14 +706,12 @@ export const LSBeachSide: ILSBeachSideFS = {
                   strTempString,
                 );
 
-                // Exit here (return 1 so this callback is processed in other scripts)
                 return next();
               }
             }
           }
         }
 
-        // Exit here (return 1 so this callback is processed in other scripts)
         return next();
       },
     );

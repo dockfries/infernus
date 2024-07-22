@@ -460,5 +460,29 @@ export const OSpawner: IFilterScript = {
 
     return [onPlayerClickGlobal, onPlayerClickPlayer, oSpawner];
   },
-  unload() {},
+  unload() {
+    [...gCurrentPageTextDraw.values()].forEach(
+      (t) => t.isValid() && t.destroy(),
+    );
+    [...gHeaderTextDraw.values()].forEach((t) => t.isValid() && t.destroy());
+    [...gBackgroundTextDraw.values()].forEach(
+      (t) => t.isValid() && t.destroy(),
+    );
+    [...gNextButtonTextDraw.values()].forEach(
+      (t) => t.isValid() && t.destroy(),
+    );
+    [...gSelectionItems.values()]
+      .flat()
+      .forEach((t) => t.isValid() && t.destroy());
+
+    gCurrentPageTextDraw.clear();
+    gHeaderTextDraw.clear();
+    gBackgroundTextDraw.clear();
+    gNextButtonTextDraw.clear();
+    gPrevButtonTextDraw.clear();
+    gSelectionItems.clear();
+    gSelectionItemsTag.clear();
+    oSpawnerPage.clear();
+    oSpawnerActive.clear();
+  },
 };

@@ -53,6 +53,7 @@ export const unloadLabels = (
   } else {
     labelGates.forEach((v) => v.forEach((t) => t.isValid() && t.destroy()));
   }
+  labelGates.clear();
   log(options, `  |--  ${i18n?.$t("a51.labels.destroyed")}`);
 };
 

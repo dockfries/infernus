@@ -47,7 +47,7 @@ const [onPlayerEnterDynamicArea] = defineEvent({
   beforeEach(playerId: number, areaId: number) {
     return {
       player: Player.getInstance(playerId)!,
-      pickup: DynamicArea.getInstance(areaId)!,
+      area: DynamicArea.getInstance(areaId)!,
     };
   },
 });
@@ -58,7 +58,7 @@ const [onPlayerLeaveDynamicArea] = defineEvent({
   beforeEach(playerId: number, areaId: number) {
     return {
       player: Player.getInstance(playerId)!,
-      pickup: DynamicArea.getInstance(areaId)!,
+      area: DynamicArea.getInstance(areaId)!,
     };
   },
 });

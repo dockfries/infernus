@@ -47,7 +47,7 @@ const [onPlayerEnterDynamicCP] = defineEvent({
   beforeEach(playerId: number, checkpointId: number) {
     return {
       player: Player.getInstance(playerId)!,
-      pickup: DynamicCheckpoint.getInstance(checkpointId)!,
+      cp: DynamicCheckpoint.getInstance(checkpointId)!,
     };
   },
 });
@@ -58,7 +58,7 @@ const [onPlayerLeaveDynamicCP] = defineEvent({
   beforeEach(playerId: number, checkpointId: number) {
     return {
       player: Player.getInstance(playerId)!,
-      pickup: DynamicCheckpoint.getInstance(checkpointId)!,
+      cp: DynamicCheckpoint.getInstance(checkpointId)!,
     };
   },
 });
