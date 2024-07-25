@@ -27,8 +27,7 @@ export class DynamicPickup {
     } = this.sourceInfo;
     const { type, modelId: modelId, x, y, z, extended } = this.sourceInfo;
 
-    if (type < 0 || type > 22)
-      return logger.error("[StreamerPickup]: Invalid pickup type");
+    if (type < 0) return logger.error("[StreamerPickup]: Invalid pickup type");
 
     streamDistance ??= s.StreamerDistances.PICKUP_SD;
     priority ??= 0;
