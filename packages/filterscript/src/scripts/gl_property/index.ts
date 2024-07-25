@@ -426,10 +426,6 @@ function unloadProperties() {
   gLastPropertyEnterNotification.clear();
 }
 
-/************************************
- *   		Callbacks			    *
- ************************************/
-
 export const GlProperty: IFilterScript = {
   name: "gl_property",
   load() {
