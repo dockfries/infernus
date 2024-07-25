@@ -12,6 +12,7 @@ export * from "./gl_chat";
 export * from "./gl_chat_bubble";
 export * from "./gl_map_icon";
 export * from "./gl_npcs";
+export * from "./gl_property";
 export * from "./gl_real_time";
 export * from "./i_radio";
 export * from "./kylies_barn";
