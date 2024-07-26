@@ -5,18 +5,29 @@ import { logger } from "../../logger";
 const preInstallScripts: Array<IFilterScript> = [];
 const installedScripts: Array<IFilterScript> = [];
 const registeredEvents = new Map<string, Array<() => void>>();
-
 export const loadUseScript = async (scriptName: string) => {
   try {
-    const fsIdx = preInstallScripts.findIndex((fs) => fs.name === scriptName);
-    if (fsIdx === -1) return;
+    return await new Promise<void>((resolve, reject) => {
+      const fsIdx = preInstallScripts.findIndex((fs) => fs.name === scriptName);
+      if (fsIdx === -1) return;
 
-    const fs = preInstallScripts[fsIdx];
-    const events = await fs.load();
-    events.length && registeredEvents.set(scriptName, events);
+      const scripts = preInstallScripts[fsIdx];
 
-    preInstallScripts.splice(fsIdx, 1);
-    installedScripts.push(fs);
+      function load(events: Array<() => void>) {
+        events.length && registeredEvents.set(scriptName, events);
+        preInstallScripts.splice(fsIdx, 1);
+        installedScripts.push(scripts);
+        setTimeout(resolve);
+      }
+
+      const ret = scripts.load();
+
+      if (ret instanceof Promise) {
+        ret.then(load).catch(reject);
+      } else {
+        load(ret);
+      }
+    });
   } catch (err) {
     logger.error(`[GameMode]: script ${scriptName} load fail`);
     logger.warn(err);
@@ -24,19 +35,30 @@ export const loadUseScript = async (scriptName: string) => {
 };
 export const unloadUseScript = async (scriptName: string) => {
   try {
-    const fsIdx = installedScripts.findIndex((fs) => fs.name === scriptName);
-    if (fsIdx === -1) return;
+    return await new Promise<void>((resolve, reject) => {
+      const fsIdx = installedScripts.findIndex((fs) => fs.name === scriptName);
+      if (fsIdx === -1) return;
 
-    const fs = installedScripts[fsIdx];
+      const scripts = installedScripts[fsIdx];
+      const offs = registeredEvents.get(scriptName);
+      if (offs) {
+        offs.forEach((off) => off());
+        registeredEvents.delete(scriptName);
+      }
 
-    const offs = registeredEvents.get(scriptName);
-    offs && offs.forEach((off) => off());
-    registeredEvents.delete(scriptName);
+      function unload() {
+        installedScripts.splice(fsIdx, 1);
+        preInstallScripts.push(scripts);
+        setTimeout(resolve);
+      }
 
-    await fs.unload();
-
-    installedScripts.splice(fsIdx, 1);
-    preInstallScripts.push(fs);
+      const ret = scripts.unload();
+      if (ret instanceof Promise) {
+        ret.then(unload).catch(reject);
+      } else {
+        unload();
+      }
+    });
   } catch (err) {
     logger.error(`[GameMode]: script ${scriptName} unload fail`);
     logger.warn(err);
