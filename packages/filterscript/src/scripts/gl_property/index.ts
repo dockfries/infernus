@@ -134,6 +134,7 @@ function readInteriorInfo(fileName: string) {
         .split("\n");
       for (let i = 0; i < lines.length; i++) {
         const lineStr = lines[i];
+        if (!lineStr) continue;
         const lineArr = lineStr.split(" ");
         const [uniqId, inIntID, inExitX, inExitY, inExitZ, inExitA] = lineArr;
         const inName = lineArr.slice(6).join(" ");
@@ -164,7 +165,11 @@ function readPropertyFile(fileName: string) {
       const lines = data.replaceAll("\r\n", "\n").split("\n");
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        const [pIcon, enX, enY, enZ, enA, uniqIntId, p_type] = line.split(", ");
+        if (!line) continue;
+        const [pIcon, enX, enY, enZ, enA, uniqIntId, others] = line.split(", ");
+        if (!others) console.log(line);
+        const p_type = others.split(" ;")[0];
+        // const comment = others.split(' ;')[1];
         createProperty(+uniqIntId, +pIcon, +enX, +enY, +enZ, +enA, +p_type);
       }
       resolve(data);
@@ -513,8 +518,8 @@ export const GlProperty: IFilterScript = {
       if (pickup === undefined) return next();
       if (player.getInterior() === getPropertyInteriorId(pickup)) {
         // make sure they're near the exit before allowing them to exit.
-        const { x, y, z } = getPropertyExit(pickup)!;
-        if (!player.isInRangeOfPoint(4.5, x, y, z)) {
+        const { x: inExitX, y: inExitY, z: inExitZ } = getPropertyExit(pickup)!;
+        if (!player.isInRangeOfPoint(4.5, inExitX, inExitY, inExitZ)) {
           player.sendClientMessage(
             0xddaa55ff,
             "* You must be near the property exit to /exit",
@@ -522,7 +527,7 @@ export const GlProperty: IFilterScript = {
           return next();
         }
 
-        const { a } = getPropertyEntrance(pickup)!;
+        const { x, y, z, a } = getPropertyEntrance(pickup)!;
         player.setPos(x, y, z);
         player.setFacingAngle(a);
         player.setInterior(0);
