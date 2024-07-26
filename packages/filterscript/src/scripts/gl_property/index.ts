@@ -1,12 +1,12 @@
 // GRAND LARCENY Property creation and management script
 // by damospiderman 2008
 
+import fs from "fs";
 import path from "path";
-import type { Player } from "@infernus/core";
-import { DynamicPickup } from "@infernus/core";
+import type { Player, IFilterScript } from "@infernus/core";
 import {
+  DynamicPickup,
   Dynamic3DTextLabel,
-  type IFilterScript,
   PlayerEvent,
   DynamicPickupEvent,
 } from "@infernus/core";
@@ -21,7 +21,6 @@ import {
   propFile,
   propIcons,
 } from "./constants";
-import fs from "fs";
 
 //	[ Array of all the property interior info ]
 const interiorInfo = new Map<number, E_INTERIORS>();
@@ -127,7 +126,7 @@ function readInteriorInfo(fileName: string) {
     fs.readFile(fullPath, "utf8", (err, data) => {
       if (err) {
         // console.log(`Could Not Read Interiors file ( ${fileName} )`);
-        reject(err);
+        return reject(err);
       }
       const lines = data
         .replaceAll("\r\n", "\n")
@@ -181,9 +180,9 @@ function putPlayerInProperty(player: Player, prop: DynamicPickup, propVW = 0) {
   player.setInterior(interior);
   player.setVirtualWorld(propVW === 0 ? prop.id + PROP_VW : propVW);
   const intFileId = getPropertyInteriorFileId(prop);
-  //let dbgstring;
-  //format(dbgstring,sizeof(dbgstring),"PutPlayerInProperty(%d): FileInt=%d",propId,intFileId);
-  //player.sendClientMessage(0xFFFFFFFF,dbgstring);
+
+  // const dbgString = `PutPlayerInProperty(${prop.id}): FileInt=${intFileId}`;
+  // player.sendClientMessage(0xFFFFFFFF,dbgString);
 
   // the following will make the client shop scripts run if we tell it
   // the name of the shop.
@@ -204,7 +203,7 @@ function putPlayerInProperty(player: Player, prop: DynamicPickup, propVW = 0) {
   }
 }
 
-// Adds let property to property file
+// Adds new property to property file
 function addProperty(
   uniqIntId: number,
   entX: number,
@@ -329,7 +328,7 @@ function createProperty(
     text_label.create();
     propTextInfo.push(text_label);
   }
-  return pickup;
+  return pickup.id;
 }
 
 function propertyCommand(
@@ -338,8 +337,6 @@ function propertyCommand(
   subcommand: string[],
   p_type: number,
 ) {
-  // let x: number, y: number, z: number, a: number, tmp, string, uniqId, id;
-
   if (player.getInterior() !== 0 || player.getVirtualWorld() !== 0) {
     player.sendClientMessage(
       0x550000ff,
@@ -369,7 +366,7 @@ function propertyCommand(
   }
 
   const comment = subcommand[1];
-  let id;
+  let id: number;
   if (comment) {
     id = addProperty(uniqId, x, y, z, a, p_type, comment);
   } else {
@@ -603,7 +600,7 @@ export const GlProperty: IFilterScript = {
         if (player.getInterior() === 0) {
           const pos = player.getPos()!;
           plPos.set(player, [pos.x, pos.y, pos.z]);
-          plInt.set(player, player.getInterior());
+          plInt.set(player, 0);
         }
         const { x, y, z, a } = getInteriorExit(uniqId)!;
         player.setInterior(getInteriorIntID(uniqId)!);
