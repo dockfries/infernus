@@ -222,7 +222,7 @@ export const CreateVehicle = (
   rotation: number,
   color1: string | number,
   color2: string | number,
-  respawn_delay: number,
+  respawnDelay: number,
   addSiren: boolean,
 ): number => {
   return samp.callNative(
@@ -235,7 +235,7 @@ export const CreateVehicle = (
     rotation,
     rgba(color1),
     rgba(color2),
-    respawn_delay,
+    respawnDelay,
     addSiren,
   );
 };
@@ -303,11 +303,8 @@ export const GetVehicleDistanceFromPoint = (
   );
 };
 
-export const SetVehicleZAngle = (
-  vehicleId: number,
-  z_angle: number,
-): number => {
-  return samp.callNative("SetVehicleZAngle", "if", vehicleId, z_angle);
+export const SetVehicleZAngle = (vehicleId: number, zAngle: number): number => {
+  return samp.callNative("SetVehicleZAngle", "if", vehicleId, zAngle);
 };
 
 export const SetVehicleParamsForPlayer = (
@@ -652,10 +649,10 @@ export const IsValidVehicle = (vehicleId: number): boolean => {
 
 export const AddStaticVehicle = (
   modelId: number,
-  spawn_x: number,
-  spawn_y: number,
-  spawn_z: number,
-  z_angle: number,
+  spawnX: number,
+  spawnY: number,
+  spawnZ: number,
+  zAngle: number,
   color1: string | number,
   color2: string | number,
 ): number => {
@@ -663,37 +660,37 @@ export const AddStaticVehicle = (
     "AddStaticVehicle",
     "iffffii",
     modelId,
-    spawn_x,
-    spawn_y,
-    spawn_z,
-    z_angle,
-    color1,
-    color2,
+    spawnX,
+    spawnY,
+    spawnZ,
+    zAngle,
+    rgba(color1),
+    rgba(color2),
   );
 };
 
 export const AddStaticVehicleEx = (
   modelId: number,
-  spawn_x: number,
-  spawn_y: number,
-  spawn_z: number,
-  z_angle: number,
+  spawnX: number,
+  spawnY: number,
+  spawnZ: number,
+  zAngle: number,
   color1: string | number,
   color2: string | number,
-  respawn_delay: number,
+  respawnDelay: number,
   addSiren: boolean,
 ): number => {
   return samp.callNative(
     "AddStaticVehicleEx",
     "iffffiiii",
     modelId,
-    spawn_x,
-    spawn_y,
-    spawn_z,
-    z_angle,
-    color1,
-    color2,
-    respawn_delay,
+    spawnX,
+    spawnY,
+    spawnZ,
+    zAngle,
+    rgba(color1),
+    rgba(color2),
+    respawnDelay,
     addSiren,
   );
 };

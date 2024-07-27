@@ -49,7 +49,7 @@ onDialogResponse(({ next, player, dialogId, response, listItem, buffer }) => {
 export class Dialog {
   private id = -1;
   private static showingIds: number[] = [];
-  private static max_dialogId = 32767;
+  private static maxDialogId = 32767;
   private dialog: IDialog;
   static waitingQueue: Map<Player, IDialogFuncQueue> = new Map();
 
@@ -124,8 +124,8 @@ export class Dialog {
       Dialog.close(player);
 
       while (this.id === -1 || Dialog.showingIds.includes(this.id)) {
-        if (Dialog.showingIds.length === Dialog.max_dialogId) break;
-        this.id = Math.floor(Math.random() * (Dialog.max_dialogId + 1));
+        if (Dialog.showingIds.length === Dialog.maxDialogId) break;
+        this.id = Math.floor(Math.random() * (Dialog.maxDialogId + 1));
       }
 
       if (this.id === -1) {

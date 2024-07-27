@@ -6,8 +6,9 @@ import { logger } from "../../logger";
 import type { Player } from "../player";
 
 export class Npc {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
+  private constructor() {
+    throw new Error("This is a static class and cannot be instantiated.");
+  }
   private static recordStatus: ERecordStatus;
   static readonly connectNPC = w.ConnectNPC;
   static startRecordingPlayerData(

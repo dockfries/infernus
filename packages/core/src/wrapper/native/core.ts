@@ -192,12 +192,12 @@ export const DisableNameTagLOS = (): number => {
   return samp.callNative("DisableNameTagLOS", "");
 };
 
-export const LimitGlobalChatRadius = (chat_radius: number): number => {
-  return samp.callNative("LimitGlobalChatRadius", "f", chat_radius);
+export const LimitGlobalChatRadius = (chatRadius: number): number => {
+  return samp.callNative("LimitGlobalChatRadius", "f", chatRadius);
 };
 
-export const LimitPlayerMarkerRadius = (marker_radius: number): number => {
-  return samp.callNative("LimitPlayerMarkerRadius", "f", marker_radius);
+export const LimitPlayerMarkerRadius = (markerRadius: number): number => {
+  return samp.callNative("LimitPlayerMarkerRadius", "f", markerRadius);
 };
 
 export const ConnectNPC = (name: string, script: string): number => {

@@ -60,9 +60,9 @@ export const Get3DTextLabelVirtualWorld = (id: number): number => {
 };
 
 export const Get3DTextLabelAttachedData = (id: number): IAttachedData => {
-  const [attached_playerId = 0, attached_vehicleId = 0]: number[] =
+  const [attachedPlayerId = 0, attachedVehicleId = 0]: number[] =
     samp.callNative("Get3DTextLabelAttachedData", "i", id);
-  return { attached_playerId, attached_vehicleId };
+  return { attachedPlayerId, attachedVehicleId };
 };
 
 export const Create3DTextLabel = (

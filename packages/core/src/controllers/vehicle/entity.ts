@@ -36,17 +36,17 @@ export class Vehicle {
       return logger.warn(
         "[Vehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached",
       );
-    const { modelId, x, y, z, z_angle, color, respawn_delay, addSiren } =
+    const { modelId, x, y, z, zAngle, color, respawnDelay, addSiren } =
       this.sourceInfo;
     if (!ignoreRange && !isValidVehModelId(modelId)) return;
     if (this.isStatic) {
-      if (respawn_delay === undefined) {
+      if (respawnDelay === undefined) {
         this._id = v.AddStaticVehicle(
           modelId,
           x,
           y,
           z,
-          z_angle,
+          zAngle,
           color[0],
           color[1],
         );
@@ -57,10 +57,10 @@ export class Vehicle {
         x,
         y,
         z,
-        z_angle,
+        zAngle,
         color[0],
         color[1],
-        respawn_delay || -1,
+        respawnDelay || -1,
         addSiren || false,
       );
     } else {
@@ -69,10 +69,10 @@ export class Vehicle {
         x,
         y,
         z,
-        z_angle,
+        zAngle,
         color[0],
         color[1],
-        respawn_delay || -1,
+        respawnDelay || -1,
         addSiren || false,
       );
     }
@@ -161,9 +161,9 @@ export class Vehicle {
     if (this.id === -1) return 0;
     return v.GetVehicleZAngle(this.id);
   }
-  setZAngle(z_angle: number): number {
+  setZAngle(zAngle: number): number {
     if (this.id === -1) return 0;
-    return v.SetVehicleZAngle(this.id, z_angle);
+    return v.SetVehicleZAngle(this.id, zAngle);
   }
   setNumberPlate(numberplate: string): number {
     if (this.id === -1) return 0;

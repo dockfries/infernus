@@ -39,9 +39,9 @@ export const GetPlayerWeather = (playerId: number): number => {
 };
 
 export const GetPlayerWorldBounds = (playerId: number): IBounds => {
-  const [x_max = 0.0, x_min = 0.0, y_max = 0.0, y_min = 0.0]: number[] =
+  const [xMax = 0.0, xMin = 0.0, yMax = 0.0, yMin = 0.0]: number[] =
     samp.callNative("GetPlayerWorldBounds", "iFFFF", playerId);
-  return { x_max, x_min, y_max, y_min };
+  return { xMax, xMin, yMax, yMin };
 };
 
 export const GetPlayerZAim = (playerId: number): number => {
@@ -849,19 +849,19 @@ export const IsPlayerInAnyVehicle = (playerId: number): boolean => {
 
 export const SetPlayerWorldBounds = (
   playerId: number,
-  x_max: number,
-  x_min: number,
-  y_max: number,
-  y_min: number,
+  xMax: number,
+  xMin: number,
+  yMax: number,
+  yMin: number,
 ): boolean => {
   return !!samp.callNative(
     "SetPlayerWorldBounds",
     "iffff",
     playerId,
-    x_max,
-    x_min,
-    y_max,
-    y_min,
+    xMax,
+    xMin,
+    yMax,
+    yMin,
   );
 };
 

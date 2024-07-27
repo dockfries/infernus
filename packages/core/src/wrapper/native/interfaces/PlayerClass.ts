@@ -1,14 +1,14 @@
 export interface IPlayerClass {
   teamId: number;
   modelId: number;
-  spawn_x: number;
-  spawn_y: number;
-  spawn_z: number;
-  z_angle: number;
+  spawnX: number;
+  spawnY: number;
+  spawnZ: number;
+  zAngle: number;
   weapon1: number;
-  weapon1_ammo: number;
+  weapon1Ammo: number;
   weapon2: number;
-  weapon2_ammo: number;
+  weapon2Ammo: number;
   weapon3: number;
-  weapon3_ammo: number;
+  weapon3Ammo: number;
 }

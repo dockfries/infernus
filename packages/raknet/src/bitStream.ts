@@ -98,8 +98,8 @@ export class BitStream {
     patchRakNetNatives(RakNetNatives.ResetWritePointer, this.id);
   }
 
-  ignoreBits(number_of_bits: number) {
-    patchRakNetNatives(RakNetNatives.IgnoreBits, this.id, number_of_bits);
+  ignoreBits(numberOfBits: number) {
+    patchRakNetNatives(RakNetNatives.IgnoreBits, this.id, numberOfBits);
   }
 
   setWriteOffset(offset: number) {

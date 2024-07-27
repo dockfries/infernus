@@ -215,28 +215,28 @@ function addProperty(
   entY: number,
   entZ: number,
   entA: number,
-  p_type: number,
+  pType: number,
   comment = "",
 ) {
   const { inIntID: interiorId } = getInteriorExitInfo(uniqIntId)!;
 
   if (interiorId) {
-    const tmp = `${propIcons[p_type][0]}, ${entX}, ${entY}, ${entZ}, ${entA}, ${uniqIntId}, ${p_type} ; //${comment}\n`;
+    const tmp = `${propIcons[pType][0]}, ${entX}, ${entY}, ${entZ}, ${entA}, ${uniqIntId}, ${pType} ; //${comment}\n`;
     console.log("PropDB - %s", tmp);
     const fullPath = path.resolve(
       process.cwd(),
       "scriptfiles",
-      propFile[p_type],
+      propFile[pType],
     );
     fs.writeFile(fullPath, tmp, { flag: "a" }, () => {});
     return createProperty(
       uniqIntId,
-      propIcons[p_type][0],
+      propIcons[pType][0],
       entX,
       entY,
       entZ,
       entA,
-      p_type,
+      pType,
     );
   }
   return -1;
@@ -249,7 +249,7 @@ function createProperty(
   entY: number,
   entZ: number,
   entA: number,
-  p_type: number,
+  pType: number,
   name = "",
   owner = -1,
   price = 0,
@@ -273,10 +273,10 @@ function createProperty(
     eUniqIntId: uniqIntId,
     eOwner: owner,
     ePrice: price,
-    eType: p_type,
+    eType: pType,
     ePname: name,
   });
-  if (p_type === TYPE_HOUSE) {
+  if (pType === TYPE_HOUSE) {
     const text_info = "{FFFFFF}[{88EE88}House{FFFFFF}]";
     const text_label = new Dynamic3DTextLabel({
       text: text_info,
@@ -290,7 +290,7 @@ function createProperty(
     });
     text_label.create();
     propTextInfo.push(text_label);
-  } else if (p_type === TYPE_BUSINESS) {
+  } else if (pType === TYPE_BUSINESS) {
     const text_info = "{FFFFFF}[{AAAAFF}Business{FFFFFF}]";
     const text_label = new Dynamic3DTextLabel({
       text: text_info,
@@ -304,7 +304,7 @@ function createProperty(
     });
     text_label.create();
     propTextInfo.push(text_label);
-  } else if (p_type === TYPE_BANK) {
+  } else if (pType === TYPE_BANK) {
     const text_info = "{FFFFFF}[{EEEE88}Bank{FFFFFF}]";
     const text_label = new Dynamic3DTextLabel({
       text: text_info,
@@ -318,7 +318,7 @@ function createProperty(
     });
     text_label.create();
     propTextInfo.push(text_label);
-  } else if (p_type === TYPE_COP) {
+  } else if (pType === TYPE_COP) {
     const text_info = "{FFFFFF}[{EEEE88}Police Station{FFFFFF}]";
     const text_label = new Dynamic3DTextLabel({
       text: text_info,
@@ -340,7 +340,7 @@ function propertyCommand(
   player: Player,
   cmd: string,
   subcommand: string[],
-  p_type: number,
+  pType: number,
 ) {
   if (player.getInterior() !== 0 || player.getVirtualWorld() !== 0) {
     player.sendClientMessage(
@@ -373,14 +373,14 @@ function propertyCommand(
   const comment = subcommand[1];
   let id: number;
   if (comment) {
-    id = addProperty(uniqId, x, y, z, a, p_type, comment);
+    id = addProperty(uniqId, x, y, z, a, pType, comment);
   } else {
-    id = addProperty(uniqId, x, y, z, a, p_type);
+    id = addProperty(uniqId, x, y, z, a, pType);
   }
 
   if (id !== -1) {
     const interior = interiorInfo.get(uniqId)!;
-    const tmp = `Property Type ( ${p_type} ) Added Successfully: UniqId: ${id} Interior: ${interior.inIntID} IntName: ${interior.inName}`;
+    const tmp = `Property Type ( ${pType} ) Added Successfully: UniqId: ${id} Interior: ${interior.inIntID} IntName: ${interior.inName}`;
     player.sendClientMessage(0xcc7700, tmp);
   } else {
     player.sendClientMessage(

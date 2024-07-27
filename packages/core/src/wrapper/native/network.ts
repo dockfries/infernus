@@ -70,12 +70,12 @@ export const GetNetworkStats = (): string => {
   return samp.callNative("GetNetworkStats", "Si", 1024);
 };
 
-export const BlockIpAddress = (ip_address: string, timeMs: number): number => {
-  return samp.callNative("BlockIpAddress", "si", ip_address, timeMs);
+export const BlockIpAddress = (ipAddress: string, timeMs: number): number => {
+  return samp.callNative("BlockIpAddress", "si", ipAddress, timeMs);
 };
 
-export const UnBlockIpAddress = (ip_address: string): number => {
-  return samp.callNative("UnBlockIpAddress", "s", ip_address);
+export const UnBlockIpAddress = (ipAddress: string): number => {
+  return samp.callNative("UnBlockIpAddress", "s", ipAddress);
 };
 
 export const gpci = (playerId: number, charset: string): string => {

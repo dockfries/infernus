@@ -1,8 +1,10 @@
 import type { MapAndreasMode } from "./enum";
 
 export class MapAndreas {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
+  private constructor() {
+    throw new Error("This is a static class and cannot be instantiated.");
+  }
+
   static init(mode: MapAndreasMode, name: string) {
     return Boolean(samp.callNative("MapAndreas_Init", "isi", mode, name));
   }

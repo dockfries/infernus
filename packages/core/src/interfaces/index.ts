@@ -29,9 +29,9 @@ export interface IVehicle {
   x: number;
   y: number;
   z: number;
-  z_angle: number;
+  zAngle: number;
   color: [string | number, string | number];
-  respawn_delay?: number;
+  respawnDelay?: number;
   addSiren?: boolean;
 }
 

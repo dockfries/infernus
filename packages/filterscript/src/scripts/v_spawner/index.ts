@@ -311,9 +311,9 @@ function spawnVehicleInFrontOfPlayer(
     x: _x,
     y: _y,
     z: z + size_z * 0.25,
-    z_angle: facing,
+    zAngle: facing,
     color: [color1, color2],
-    respawn_delay: -1,
+    respawnDelay: -1,
   });
   veh.create();
   return veh;

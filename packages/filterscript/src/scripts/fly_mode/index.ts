@@ -79,7 +79,7 @@ function moveCamera(player: Player) {
 }
 
 function getNextCameraPosition(
-  move_mode: Move,
+  moveMode: Move,
   cp: [number, number, number],
   fv: [number, number, number],
 ) {
@@ -90,7 +90,7 @@ function getNextCameraPosition(
   let x = 0,
     y = 0,
     z = 0;
-  switch (move_mode) {
+  switch (moveMode) {
     case Move.FORWARD:
       {
         x = cp[0] + offsetX;

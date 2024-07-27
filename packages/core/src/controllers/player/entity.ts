@@ -590,8 +590,8 @@ export class Player {
       setTimeout(() => resolve(w.SetPlayerPosFindZ(this.id, x, y, z)));
     });
   }
-  setWorldBounds(x_max: number, x_min: number, y_max: number, y_min: number) {
-    return w.SetPlayerWorldBounds(this.id, x_max, x_min, y_max, y_min);
+  setWorldBounds(xMax: number, xMin: number, yMax: number, yMin: number) {
+    return w.SetPlayerWorldBounds(this.id, xMax, xMin, yMax, yMin);
   }
   clearWorldBounds() {
     return w.ClearPlayerWorldBounds(this.id);
@@ -692,15 +692,15 @@ export class Player {
     z: number,
     rotation: number,
     weapon1: WeaponEnum,
-    weapon1_ammo: number,
+    weapon1Ammo: number,
     weapon2: WeaponEnum,
-    weapon2_ammo: number,
+    weapon2Ammo: number,
     weapon3: WeaponEnum,
-    weapon3_ammo: number,
+    weapon3Ammo: number,
   ) {
     if (team < 0 || team > InvalidEnum.NO_TEAM) return false;
     if (skin < 0 || skin > 311 || skin == 74) return false;
-    if (weapon1_ammo < 0 || weapon2_ammo < 0 || weapon3_ammo < 0) return false;
+    if (weapon1Ammo < 0 || weapon2Ammo < 0 || weapon3Ammo < 0) return false;
     return w.SetSpawnInfo(
       this.id,
       team,
@@ -710,11 +710,11 @@ export class Player {
       z,
       rotation,
       weapon1,
-      weapon1_ammo,
+      weapon1Ammo,
       weapon2,
-      weapon2_ammo,
+      weapon2Ammo,
       weapon3,
-      weapon3_ammo,
+      weapon3Ammo,
     );
   }
   redirectDownload(url: string) {

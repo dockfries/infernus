@@ -74,8 +74,9 @@ import {
 import { onPluginError } from "../callbacks";
 
 export class Streamer {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
+  private constructor() {
+    throw new Error("This is a static class and cannot be instantiated.");
+  }
   static getTickRate = Streamer_GetTickRate;
   static setTickRate = Streamer_SetTickRate;
   static getPlayerTickRate(player: Player): number {

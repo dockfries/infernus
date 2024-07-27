@@ -3,8 +3,9 @@ import * as w from "core/wrapper/native";
 import type { Player } from "../player";
 
 export class NetStats {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
+  private constructor() {
+    throw new Error("This is a static class and cannot be instantiated.");
+  }
   static getNetworkStats(): string {
     return w.GetNetworkStats();
   }

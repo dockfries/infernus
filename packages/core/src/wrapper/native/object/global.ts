@@ -37,11 +37,11 @@ export const GetObjectMovingTargetRot = (objectId: number): IObjectPos => {
 
 export const GetObjectAttachedData = (objectId: number): IAttachedData => {
   const [
-    attached_vehicleId = 0,
-    attached_objectId = 0,
-    attached_playerId = 0,
+    attachedVehicleId = 0,
+    attachedObjectId = 0,
+    attachedPlayerId = 0,
   ]: number[] = samp.callNative("GetObjectAttachedData", "i", objectId);
-  return { attached_vehicleId, attached_objectId, attached_playerId };
+  return { attachedVehicleId, attachedObjectId, attachedPlayerId };
 };
 
 export const GetObjectAttachedOffset = (objectId: number): IObjectRotPos => {

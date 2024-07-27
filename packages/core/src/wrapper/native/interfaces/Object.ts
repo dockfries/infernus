@@ -38,7 +38,7 @@ export interface IMaterialText {
 }
 
 export interface IAttachedData {
-  attached_vehicleId: number;
-  attached_objectId?: number;
-  attached_playerId: number;
+  attachedVehicleId: number;
+  attachedObjectId?: number;
+  attachedPlayerId: number;
 }

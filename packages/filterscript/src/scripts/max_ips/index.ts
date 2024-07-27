@@ -9,9 +9,9 @@ import type { IMaxIpsFS } from "./interfaces";
 // Returns the number of players connecting from the
 // provided IP address
 
-function getNumberOfPlayersOnThisIP(test_ip: string) {
+function getNumberOfPlayersOnThisIP(testIp: string) {
   return Player.getInstances().filter((p) => {
-    return p.getIp() === test_ip;
+    return p.getIp() === testIp;
   }).length;
 }
 

@@ -525,9 +525,9 @@ export const StuntIsland: IStuntIsLandFS = {
         x: 89.45,
         y: 3445.0 + i * 6.0,
         z: 5.05,
-        z_angle: 90.0,
+        zAngle: 90.0,
         color: [-1, -1],
-        respawn_delay: 30,
+        respawnDelay: 30,
       });
       siInfernus[i].create();
 
