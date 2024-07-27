@@ -29,6 +29,7 @@
     "https-proxy-agent": "^5.0.1",
     "inquirer": "^9.2.12",
     "semver": "^7.6.2",
+    "update-notifier": "^6.0.2",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
@@ -37,6 +38,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/inquirer": "^9.0.7",
     "@types/semver": "^7.5.8",
+    "@types/update-notifier": "^6.0.8",
     "@types/yargs": "^17.0.32"
   }
 }

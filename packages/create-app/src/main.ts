@@ -14,6 +14,8 @@ import { hideBin } from "yargs/helpers";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 
+import updateNotifier from "update-notifier";
+
 import { downloadGitRepo } from "./utils/index";
 
 import {
@@ -254,6 +256,7 @@ function addUpdateBuilder(y: Argv) {
 }
 
 function init() {
+  updateNotifier({ pkg }).notify();
   cli
     .usage("Usage: $0 [command] <options>")
     .scriptName("infernus")
@@ -332,7 +335,7 @@ function init() {
     .demandCommand()
     .recommendCommands()
     .fail((msg, err, yargs) => {
-      yargs.showHelp();
+      yargs.showHelp("log");
       console.log("\n");
       if (err) {
         console.log(chalk.red.bold(err));
