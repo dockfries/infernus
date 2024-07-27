@@ -1,3 +1,18 @@
+## [0.11.0-beta.11](https://github.com/dockfries/infernus/compare/v0.11.0-beta.10...v0.11.0-beta.11) (2024-07-27)
+
+
+### Features
+
+* **create-app:** update-notifier ([53643c8](https://github.com/dockfries/infernus/commit/53643c85bb7667e4c31623412c4110f13dc53c1c))
+* **fs:** gl_property ([3514695](https://github.com/dockfries/infernus/commit/3514695aa5367e7aa5bc862e733ff509cb5eedaa))
+
+
+### Bug Fixes
+
+* **core:** dynamic pickup type check range ([fbd4460](https://github.com/dockfries/infernus/commit/fbd4460fe360feb66627d20b1a44ed7b0bf25114))
+* **core:** fs unload promise still pending, wrapper setTimeout ([369904b](https://github.com/dockfries/infernus/commit/369904b833ad024fe1cbe0183cb9697a96701409))
+* **fs:** gl_property exit, read p_type ([7be63c7](https://github.com/dockfries/infernus/commit/7be63c72303b38be3126142aa9452c8da66efd18))
+
 ## [0.11.0-beta.10](https://github.com/dockfries/infernus/compare/v0.11.0-beta.9...v0.11.0-beta.10) (2024-07-22)
 
 
