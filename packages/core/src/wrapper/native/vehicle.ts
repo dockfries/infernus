@@ -43,7 +43,7 @@ export const SetVehicleSpawnInfo = (
 export const GetVehicleColors = (vehicleId: number): IVehColor => {
   const [color1 = 0, color2 = 0]: number[] = samp.callNative(
     "GetVehicleColor",
-    "i",
+    "iII",
     vehicleId,
   );
   return { color1, color2 };
