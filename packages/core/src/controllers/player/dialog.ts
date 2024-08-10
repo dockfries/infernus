@@ -51,7 +51,7 @@ export class Dialog {
   private static showingIds: number[] = [];
   private static maxDialogId = 32767;
   private dialog: IDialog;
-  static waitingQueue: Map<Player, IDialogFuncQueue> = new Map();
+  static waitingQueue = new WeakMap<Player, IDialogFuncQueue>();
 
   constructor(
     dialog: IDialog = {

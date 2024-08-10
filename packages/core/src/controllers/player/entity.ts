@@ -89,7 +89,10 @@ export class Player {
     triggerOnLocaleChange(this, newLocale, oldLocale);
   }
 
-  constructor(public readonly id: number) {}
+  constructor(public readonly id: number) {
+    const player = Player.getInstance(id);
+    if (player) return player;
+  }
 
   sendClientMessage(color: string | number, msg: string): number {
     return h.SendClientMessage(this, color, msg);
