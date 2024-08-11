@@ -167,9 +167,9 @@ export const CreateExplosion = (
   Y: number,
   Z: number,
   type: number,
-  Radius: number,
+  radius: number,
 ): number => {
-  return samp.callNative("CreateExplosion", "fffif", X, Y, Z, type, Radius);
+  return samp.callNative("CreateExplosion", "fffif", X, Y, Z, type, radius);
 };
 
 export const EnableZoneNames = (enable: boolean): number => {

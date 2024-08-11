@@ -136,7 +136,7 @@ export const CreateObject = (
   rX: number,
   rY: number,
   rZ: number,
-  DrawDistance: number,
+  drawDistance: number,
 ): number => {
   return samp.callNative(
     "CreateObject",
@@ -148,43 +148,43 @@ export const CreateObject = (
     rX,
     rY,
     rZ,
-    DrawDistance,
+    drawDistance,
   );
 };
 
 export const AttachObjectToVehicle = (
   objectId: number,
   vehicleId: number,
-  OffsetX: number,
-  OffsetY: number,
-  OffsetZ: number,
-  RotX: number,
-  RotY: number,
-  RotZ: number,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
+  rotX: number,
+  rotY: number,
+  rotZ: number,
 ): number => {
   return samp.callNative(
     "AttachObjectToVehicle",
     "iiffffff",
     objectId,
     vehicleId,
-    OffsetX,
-    OffsetY,
-    OffsetZ,
-    RotX,
-    RotY,
-    RotZ,
+    offsetX,
+    offsetY,
+    offsetZ,
+    rotX,
+    rotY,
+    rotZ,
   );
 };
 
 export const AttachObjectToObject = (
   objectId: number,
   attachToId: number,
-  OffsetX: number,
-  OffsetY: number,
-  OffsetZ: number,
-  RotX: number,
-  RotY: number,
-  RotZ: number,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
+  rotX: number,
+  rotY: number,
+  rotZ: number,
   SyncRotation = true,
 ): number => {
   return samp.callNative(
@@ -192,12 +192,12 @@ export const AttachObjectToObject = (
     "iiffffffi",
     objectId,
     attachToId,
-    OffsetX,
-    OffsetY,
-    OffsetZ,
-    RotX,
-    RotY,
-    RotZ,
+    offsetX,
+    offsetY,
+    offsetZ,
+    rotX,
+    rotY,
+    rotZ,
     SyncRotation,
   );
 };
@@ -205,24 +205,24 @@ export const AttachObjectToObject = (
 export const AttachObjectToPlayer = (
   objectId: number,
   playerId: number,
-  OffsetX: number,
-  OffsetY: number,
-  OffsetZ: number,
-  RotX: number,
-  RotY: number,
-  RotZ: number,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
+  rotX: number,
+  rotY: number,
+  rotZ: number,
 ): number => {
   return samp.callNative(
     "AttachObjectToPlayer",
     "iiffffff",
     objectId,
     playerId,
-    OffsetX,
-    OffsetY,
-    OffsetZ,
-    RotX,
-    RotY,
-    RotZ,
+    offsetX,
+    offsetY,
+    offsetZ,
+    rotX,
+    rotY,
+    rotZ,
   );
 };
 
@@ -245,11 +245,11 @@ export const GetObjectPos = (objectId: number): Array<number> => {
 
 export const SetObjectRot = (
   objectId: number,
-  RotX: number,
-  RotY: number,
-  RotZ: number,
+  rotX: number,
+  rotY: number,
+  rotZ: number,
 ): number => {
-  return samp.callNative("SetObjectRot", "ifff", objectId, RotX, RotY, RotZ);
+  return samp.callNative("SetObjectRot", "ifff", objectId, rotX, rotY, rotZ);
 };
 
 export const GetObjectRot = (objectId: number): Array<number> => {
@@ -277,10 +277,10 @@ export const MoveObject = (
   X: number,
   Y: number,
   Z: number,
-  Speed: number,
-  RotX: number,
-  RotY: number,
-  RotZ: number,
+  speed: number,
+  rotX: number,
+  rotY: number,
+  rotZ: number,
 ): number => {
   return samp.callNative(
     "MoveObject",
@@ -289,10 +289,10 @@ export const MoveObject = (
     X,
     Y,
     Z,
-    Speed,
-    RotX,
-    RotY,
-    RotZ,
+    speed,
+    rotX,
+    rotY,
+    rotZ,
   );
 };
 

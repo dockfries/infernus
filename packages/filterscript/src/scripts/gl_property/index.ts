@@ -585,7 +585,7 @@ export const GlProperty: IFilterScript = {
         if (!player.isAdmin()) return false;
         //Basically lets you view an interior from the interiors.txt file by id
         if (!subcommand[0]) {
-          player.sendClientMessage(0xff00cc, `"Usage: view [uniqInteriorId]"`);
+          player.sendClientMessage(0xff00cc, `Usage: view [uniqInteriorId]`);
           return next();
         }
         if (Number.isNaN(+subcommand[0])) {

@@ -89,7 +89,7 @@ export const CargoShip: IFilterScript = {
         return 1;
       }
 
-      // const tempDebug = `The ship is at route: ${gShipCurrentPoint}"`;
+      // const tempDebug = `The ship is at route: ${gShipCurrentPoint}`;
       // Player.sendClientMessageToAll(0xffffffff, tempDebug);
 
       gMainShipObject.move(

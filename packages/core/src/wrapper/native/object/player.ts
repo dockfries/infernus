@@ -244,7 +244,7 @@ export const CreatePlayerObject = (
   rX: number,
   rY: number,
   rZ: number,
-  DrawDistance: number,
+  drawDistance: number,
 ): number => {
   return samp.callNative(
     "CreatePlayerObject",
@@ -257,7 +257,7 @@ export const CreatePlayerObject = (
     rX,
     rY,
     rZ,
-    DrawDistance,
+    drawDistance,
   );
 };
 
@@ -315,18 +315,18 @@ export const GetPlayerObjectPos = (
 export const SetPlayerObjectRot = (
   playerId: number,
   objectId: number,
-  RotX: number,
-  RotY: number,
-  RotZ: number,
+  rotX: number,
+  rotY: number,
+  rotZ: number,
 ): number => {
   return samp.callNative(
     "SetPlayerObjectRot",
     "iifff",
     playerId,
     objectId,
-    RotX,
-    RotY,
-    RotZ,
+    rotX,
+    rotY,
+    rotZ,
   );
 };
 
@@ -380,10 +380,10 @@ export const MovePlayerObject = (
   X: number,
   Y: number,
   Z: number,
-  Speed: number,
-  RotX: number,
-  RotY: number,
-  RotZ: number,
+  speed: number,
+  rotX: number,
+  rotY: number,
+  rotZ: number,
 ): number => {
   return samp.callNative(
     "MovePlayerObject",
@@ -393,10 +393,10 @@ export const MovePlayerObject = (
     X,
     Y,
     Z,
-    Speed,
-    RotX,
-    RotY,
-    RotZ,
+    speed,
+    rotX,
+    rotY,
+    rotZ,
   );
 };
 
@@ -417,12 +417,12 @@ export const IsPlayerObjectMoving = (
 };
 
 export const AttachPlayerObjectToPlayer = (
-  objectplayer: number,
+  objectPlayer: number,
   objectId: number,
-  attachplayer: number,
-  OffsetX: number,
-  OffsetY: number,
-  OffsetZ: number,
+  attachPlayer: number,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
   rX: number,
   rY: number,
   rZ: number,
@@ -430,12 +430,12 @@ export const AttachPlayerObjectToPlayer = (
   return samp.callNative(
     "AttachPlayerObjectToPlayer",
     "iiiffffff",
-    objectplayer,
+    objectPlayer,
     objectId,
-    attachplayer,
-    OffsetX,
-    OffsetY,
-    OffsetZ,
+    attachPlayer,
+    offsetX,
+    offsetY,
+    offsetZ,
     rX,
     rY,
     rZ,

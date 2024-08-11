@@ -71,7 +71,7 @@ export const Create3DTextLabel = (
   X: number,
   Y: number,
   Z: number,
-  DrawDistance: number,
+  drawDistance: number,
   virtualWorld: number,
   testLOS = false,
 ): number => {
@@ -83,7 +83,7 @@ export const Create3DTextLabel = (
     X,
     Y,
     Z,
-    DrawDistance,
+    drawDistance,
     virtualWorld,
     testLOS,
   );
@@ -96,36 +96,36 @@ export const Delete3DTextLabel = (id: number): number => {
 export const Attach3DTextLabelToPlayer = (
   id: number,
   playerId: number,
-  OffsetX: number,
-  OffsetY: number,
-  OffsetZ: number,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
 ): number => {
   return samp.callNative(
     "Attach3DTextLabelToPlayer",
     "iifff",
     id,
     playerId,
-    OffsetX,
-    OffsetY,
-    OffsetZ,
+    offsetX,
+    offsetY,
+    offsetZ,
   );
 };
 
 export const Attach3DTextLabelToVehicle = (
   id: number,
   vehicleId: number,
-  OffsetX: number,
-  OffsetY: number,
-  OffsetZ: number,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
 ): number => {
   return samp.callNative(
     "Attach3DTextLabelToVehicle",
     "iifff",
     id,
     vehicleId,
-    OffsetX,
-    OffsetY,
-    OffsetZ,
+    offsetX,
+    offsetY,
+    offsetZ,
   );
 };
 

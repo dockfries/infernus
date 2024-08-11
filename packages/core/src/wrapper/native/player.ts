@@ -763,7 +763,7 @@ export const CreateExplosionForPlayer = (
   Y: number,
   Z: number,
   type: number,
-  Radius: number,
+  radius: number,
 ): boolean => {
   return !!samp.callNative(
     "CreateExplosionForPlayer",
@@ -773,7 +773,7 @@ export const CreateExplosionForPlayer = (
     Y,
     Z,
     type,
-    Radius,
+    radius,
   );
 };
 
@@ -1030,12 +1030,12 @@ export const AttachCameraToPlayerObject = (
 
 export const InterpolateCameraPos = (
   playerId: number,
-  FromX: number,
-  FromY: number,
-  FromZ: number,
-  ToX: number,
-  ToY: number,
-  ToZ: number,
+  fromX: number,
+  fromY: number,
+  fromZ: number,
+  toX: number,
+  toY: number,
+  toZ: number,
   time: number,
   cut: CameraCutStylesEnum,
 ): boolean => {
@@ -1043,12 +1043,12 @@ export const InterpolateCameraPos = (
     "InterpolateCameraPos",
     "iffffffii",
     playerId,
-    FromX,
-    FromY,
-    FromZ,
-    ToX,
-    ToY,
-    ToZ,
+    fromX,
+    fromY,
+    fromZ,
+    toX,
+    toY,
+    toZ,
     time,
     cut,
   );
@@ -1056,12 +1056,12 @@ export const InterpolateCameraPos = (
 
 export const InterpolateCameraLookAt = (
   playerId: number,
-  FromX: number,
-  FromY: number,
-  FromZ: number,
-  ToX: number,
-  ToY: number,
-  ToZ: number,
+  fromX: number,
+  fromY: number,
+  fromZ: number,
+  toX: number,
+  toY: number,
+  toZ: number,
   time: number,
   cut: CameraCutStylesEnum,
 ): boolean => {
@@ -1069,12 +1069,12 @@ export const InterpolateCameraLookAt = (
     "InterpolateCameraLookAt",
     "iffffffii",
     playerId,
-    FromX,
-    FromY,
-    FromZ,
-    ToX,
-    ToY,
-    ToZ,
+    fromX,
+    fromY,
+    fromZ,
+    toX,
+    toY,
+    toZ,
     time,
     cut,
   );
