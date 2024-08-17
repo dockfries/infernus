@@ -12,6 +12,7 @@ import {
   StreamerItemTypes,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
+import { streamerFlag } from "../flag";
 
 export class DynamicMapIcon {
   static readonly mapIcons = new Map<number, DynamicMapIcon>();
@@ -100,16 +101,17 @@ export class DynamicMapIcon {
     return this;
   }
   destroy(): void | this {
-    if (this.id === -1)
+    if (this.id === -1 && !streamerFlag.skip)
       return logger.warn(
         "[StreamerMapIcon]: Unable to destroy the map icon before create",
       );
-    DestroyDynamicMapIcon(this.id);
+    !streamerFlag.skip && DestroyDynamicMapIcon(this.id);
     DynamicMapIcon.mapIcons.delete(this._id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
+    if (streamerFlag.skip && this.id !== -1) return true;
     return IsValidDynamicMapIcon(this.id);
   }
   toggleCallbacks(toggle = true): void | number {

@@ -15,6 +15,7 @@ import {
   StreamerItemTypes,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
+import { streamerFlag } from "../flag";
 
 export class Dynamic3DTextLabel {
   static readonly texts = new Map<number, Dynamic3DTextLabel>();
@@ -113,16 +114,17 @@ export class Dynamic3DTextLabel {
     return this;
   }
   destroy(): void | this {
-    if (this.id === -1)
+    if (this.id === -1 && !streamerFlag.skip)
       return logger.warn(
         "[Streamer3DTextLabel]: Unable to destroy before create",
       );
-    DestroyDynamic3DTextLabel(this.id);
+    !streamerFlag.skip && DestroyDynamic3DTextLabel(this.id);
     Dynamic3DTextLabel.texts.delete(this.id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
+    if (streamerFlag.skip && this.id !== -1) return true;
     return IsValidDynamic3DTextLabel(this.id);
   }
   getColor(): void | string | number {

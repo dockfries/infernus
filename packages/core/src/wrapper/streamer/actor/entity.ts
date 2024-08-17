@@ -5,6 +5,7 @@ import { getAnimateDurationByLibName } from "core/utils/animateUtils";
 import * as w from "core/wrapper/native";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
+import { streamerFlag } from "../flag";
 
 export class DynamicActor {
   static readonly actors = new Map<number, DynamicActor>();
@@ -90,16 +91,17 @@ export class DynamicActor {
     return this;
   }
   destroy(): void | this {
-    if (this.id === -1)
+    if (this.id === -1 && !streamerFlag.skip)
       return logger.warn(
         "[StreamerActor]: Unable to destroy the actor before create",
       );
-    s.DestroyDynamicActor(this.id);
+    !streamerFlag.skip && s.DestroyDynamicActor(this.id);
     DynamicActor.actors.delete(this.id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
+    if (streamerFlag.skip && this.id !== -1) return true;
     return s.IsValidDynamicActor(this.id);
   }
   isStreamedIn(forPlayer: Player): boolean {

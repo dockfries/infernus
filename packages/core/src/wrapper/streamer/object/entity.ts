@@ -10,6 +10,7 @@ import {
 } from "core/utils/helperUtils";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
+import { streamerFlag } from "../flag";
 
 export class DynamicObject {
   static readonly objects = new Map<number, DynamicObject>();
@@ -101,17 +102,18 @@ export class DynamicObject {
   }
 
   destroy(): void | this {
-    if (this.id === -1)
+    if (this.id === -1 && !streamerFlag.skip)
       return logger.warn(
         "[StreamerObject]: Unable to destroy the object before create",
       );
-    s.DestroyDynamicObject(this.id);
+    !streamerFlag.skip && s.DestroyDynamicObject(this.id);
     DynamicObject.objects.delete(this.id);
     this._id = -1;
     return this;
   }
 
   isValid(): boolean {
+    if (streamerFlag.skip && this.id !== -1) return true;
     return s.IsValidDynamicObject(this.id);
   }
 

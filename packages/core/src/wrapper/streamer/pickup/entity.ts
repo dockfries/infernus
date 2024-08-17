@@ -2,6 +2,7 @@ import type { IDynamicPickup } from "core/interfaces";
 import { logger } from "core/logger";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
+import { streamerFlag } from "../flag";
 
 export class DynamicPickup {
   static readonly pickups = new Map<number, DynamicPickup>();
@@ -84,16 +85,17 @@ export class DynamicPickup {
     return this;
   }
   destroy(): void | this {
-    if (this.id === -1)
+    if (this.id === -1 && !streamerFlag.skip)
       return logger.warn(
         "[StreamerPickup]: Unable to destroy the pickup before create",
       );
-    s.DestroyDynamicPickup(this.id);
+    !streamerFlag.skip && s.DestroyDynamicPickup(this.id);
     DynamicPickup.pickups.delete(this.id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
+    if (streamerFlag.skip && this.id !== -1) return true;
     return s.IsValidDynamicPickup(this.id);
   }
   toggleCallbacks(toggle = true): void | number {

@@ -7,6 +7,7 @@ import type { StreamerAreaTypes } from "@infernus/streamer";
 import * as s from "@infernus/streamer";
 import type { DynamicObject } from "../object";
 import { Streamer } from "../common";
+import { streamerFlag } from "../flag";
 
 export class DynamicArea {
   static readonly areas = new Map<number, DynamicArea>();
@@ -229,17 +230,17 @@ export class DynamicArea {
     return this;
   }
   destroy(): void | this {
-    if (this.id === -1)
+    if (this.id === -1 && !streamerFlag.skip)
       return logger.warn(
         "[StreamerArea]: Unable to destroy the area before create",
       );
-    s.DestroyDynamicArea(this.id);
+    !streamerFlag.skip && s.DestroyDynamicArea(this.id);
     DynamicArea.areas.delete(this.id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
-    if (this.id === -1) return false;
+    if (streamerFlag.skip && this.id !== -1) return true;
     return s.IsValidDynamicArea(this.id);
   }
   getType(): void | StreamerAreaTypes {

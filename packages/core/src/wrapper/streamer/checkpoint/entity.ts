@@ -14,6 +14,7 @@ import {
   TogglePlayerDynamicCP,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
+import { streamerFlag } from "../flag";
 
 export class DynamicCheckpoint {
   static readonly checkpoints = new Map<number, DynamicCheckpoint>();
@@ -97,16 +98,17 @@ export class DynamicCheckpoint {
     return this;
   }
   destroy(): void | this {
-    if (this.id === -1)
+    if (this.id === -1 && !streamerFlag.skip)
       return logger.warn(
         "[StreamerCheckpoint]: Unable to destroy the checkpoint before create",
       );
-    DestroyDynamicCP(this.id);
+    !streamerFlag.skip && DestroyDynamicCP(this.id);
     DynamicCheckpoint.checkpoints.delete(this.id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
+    if (streamerFlag.skip && this.id !== -1) return true;
     return IsValidDynamicCP(this.id);
   }
   togglePlayer(player: Player, toggle: boolean): void | this {
