@@ -85,9 +85,15 @@ infernus config gh_token
 
 ```sh
 # Clonar el repositorio a través del protocolo https.
-git clone https://github.com/dockfries/infernus-starter
+git clone https://github.com/dockfries/infernus-starter.git
 # o utilizar el protocolo ssh.
 git clone git@github.com:dockfries/infernus-starter.git
+
+# si necesita raknet, clonar la rama raknet
+# Clonar el repositorio a través del protocolo https.
+# git clone https://github.com/dockfries/infernus-starter.git -b raknet
+# o utilizar el protocolo ssh.
+# git clone git@github.com:dockfries/infernus-starter.git -b raknet
 # también puede descargar el repositorio directamente desde la página de GitHub.
 
 # Ingresa al directorio raíz del proyecto.

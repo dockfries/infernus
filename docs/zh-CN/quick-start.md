@@ -83,9 +83,16 @@ infernus config gh_token
 
 ```sh
 # 通过https协议克隆仓库
-git clone https://github.com/dockfries/infernus-starter
+git clone https://github.com/dockfries/infernus-starter.git
 # 或是使用ssh协议
 git clone git@github.com:dockfries/infernus-starter.git
+
+# 如果你需要raknet，克隆raknet分支
+# 通过https协议克隆仓库
+# git clone https://github.com/dockfries/infernus-starter.git -b raknet
+# 或是使用ssh协议
+# git clone git@github.com:dockfries/infernus-starter.git -b raknet
+
 # 您也可以直接在github页面下载仓库
 
 # 进入项目根目录

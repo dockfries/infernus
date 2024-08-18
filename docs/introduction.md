@@ -6,7 +6,7 @@ The name `Infernus` comes from the vehicle with the ID `411` in the game (specif
 
 ## 🚧 Work in Progress
 
-- [omp-node](https://github.com/omp-node) is currently in active development,once officially released, `Infernus` will begin to adapt.
+- [omp-node](https://github.com/omp-node) is currently in active development, it will replace `Infernus` in the future.
 - If you want to try out `omp-node` or prefer the native syntax without too much wrapping, check out [@open.mp/node](https://github.com/omp-node/node).
 
 ## Limitations
@@ -30,6 +30,9 @@ This greatly limits the development of `samp` plugins using the `node.js` ecosys
 However, `omp's` focus is primarily on building `omp` itself rather than third-party libraries.
 
 ### Terminal Blocking
+
+> [!IMPORTANT]
+> This issue has been fixed via [monkeyPatch](https://github.com/dockfries/infernus-starter/commit/b69583a607ce398131ba795007fe97af39104469) as the current solution.
 
 Due to poor compatibility between the underlying `samp-node` and certain asynchronous `node.js` libraries, there may be occasional terminal blocking.
 
