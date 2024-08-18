@@ -54,7 +54,7 @@ function successInstalled(projectName: string) {
   console.log("pnpm dev\n");
 }
 
-async function initStarter(projectName: string) {
+async function initStarter(projectName: string, isRakNet = false) {
   console.log("\n");
   const isMac = process.platform === "darwin";
   const isCreatedProject = fs.existsSync(appGeneratePath);
@@ -76,6 +76,7 @@ async function initStarter(projectName: string) {
     "dockfries",
     "infernus-starter",
     appGeneratePath,
+    isRakNet ? "raknet" : "main",
   );
 
   await decompress(starterPath, appGeneratePath, { strip: 1 });
@@ -190,7 +191,7 @@ async function createApp(args: ArgumentsCamelCase) {
 
   process.chdir(appGeneratePath);
 
-  await initStarter(appName);
+  await initStarter(appName, isRakNet);
 
   changePkgName(appName);
 

@@ -136,6 +136,6 @@ export async function downloadGitRepo(
   branch = "main",
 ) {
   const repoFileUrl = `https://github.com/${owner}/${repo}/archive/refs/heads/${branch}.zip`;
-  console.log(`download repo: ${owner}/${repo}`);
+  console.log(`download repo: ${owner}/${repo}/${branch}`);
   return await downloadFile(repoFileUrl, path.resolve(filePath, `${repo}.zip`));
 }
