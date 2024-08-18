@@ -1,3 +1,17 @@
+## [0.11.0-beta.12](https://github.com/dockfries/infernus/compare/v0.11.0-beta.11...v0.11.0-beta.12) (2024-08-18)
+
+
+### Bug Fixes
+
+* **core:** vehicle get color params ([cbbf1b1](https://github.com/dockfries/infernus/commit/cbbf1b1783147491e95ad91201dc36b11aeb1ffe))
+* **create-app:** raknet starter ([db6df22](https://github.com/dockfries/infernus/commit/db6df22146330fceff5aed5236dfab50a7529bcf))
+
+
+### Performance Improvements
+
+* **core:** maybe streamer destroy `OnGameModeExit` only need a flag ([868987b](https://github.com/dockfries/infernus/commit/868987bfddce188923a418f7a8a3e72f19e1237e))
+* **core:** player instance, dialog ([ed8c6f2](https://github.com/dockfries/infernus/commit/ed8c6f2b5c261031435064d3e673167da17ae3f6))
+
 ## [0.11.0-beta.11](https://github.com/dockfries/infernus/compare/v0.11.0-beta.10...v0.11.0-beta.11) (2024-07-27)
 
 
