@@ -99,7 +99,6 @@ export const AdminSpec: IAdminSpecFS = {
         player.spectatePlayer(specPlayer);
         player.setInterior(specPlayer.getInterior());
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const mp = myPlayers.get(player)!;
         mp.gSpectateID = specPlayer.id;
         mp.gSpectateType = ADMIN_SPEC_TYPE.PLAYER;
@@ -126,7 +125,6 @@ export const AdminSpec: IAdminSpecFS = {
         player.toggleSpectating(true);
         player.spectateVehicle(specVehicle);
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const mp = myPlayers.get(player)!;
 
         mp.gSpectateID = specVehicle.id;

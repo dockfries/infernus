@@ -97,7 +97,6 @@ export function defineEvent<T extends object>(options: Options<T>) {
   function pusher(
     cb: (ret: T & { next: () => CallbackRet }) => PromisifyCallbackRet,
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const middlewares = eventBus.get(name)!;
 
     const length = middlewares.push(cb);

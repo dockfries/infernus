@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DynamicArea } from "./entity";
 import { GameMode } from "core/controllers/gamemode";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";

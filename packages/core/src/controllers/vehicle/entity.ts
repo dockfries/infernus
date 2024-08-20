@@ -194,7 +194,6 @@ export class Vehicle {
   }
   getSpeed(magic = 180.0) {
     if (this.id === -1) return 0.0;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { x, y, z } = this.getVelocity()!;
     return GameMode.vectorSize(x, y, z) * magic;
   }

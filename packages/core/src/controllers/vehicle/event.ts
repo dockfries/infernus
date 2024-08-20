@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Player } from "../player/entity";
 import { Vehicle } from "./entity";
 import { GameMode } from "../gamemode";

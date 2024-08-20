@@ -20,7 +20,6 @@ export class CA_Object {
   constructor(obj: IDynamicObject, dc = false, newObject = true) {
     if (CA_Objects.length < MAX_CA_OBJECTS) {
       if (newObject) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.objectInstance = new DynamicObject(obj).create()!;
       }
 

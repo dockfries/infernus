@@ -317,7 +317,7 @@ export class DynamicArea {
   static getForPoint(x: number, y: number, z: number) {
     if (!DynamicArea.getNumberForPoint(x, y, z)) return [];
     const ids = s.GetDynamicAreasForPoint(x, y, z);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
     return ids.map((a) => DynamicArea.getInstance(a)!);
   }
   static getNumberForPoint(x: number, y: number, z: number): number {
@@ -333,7 +333,7 @@ export class DynamicArea {
   ) {
     if (!DynamicArea.getNumberForLine(x1, y1, z1, x2, y2, z2)) return [];
     const ids = s.GetDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
     return ids.map((a) => DynamicArea.areas.get(a)!);
   }
   static getNumberForLine(

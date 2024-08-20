@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { InvalidEnum } from "core/enums";
 import { Player } from "../player/entity";
 import { TextDraw } from "./entity";

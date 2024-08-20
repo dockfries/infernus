@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { GameMode } from "core/controllers/gamemode";
 import { DynamicMapIcon } from "./entity";
 import { defineEvent } from "core/controllers/bus";

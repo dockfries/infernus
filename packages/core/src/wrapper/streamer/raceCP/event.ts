@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/controllers/bus";
 import { GameMode } from "core/controllers/gamemode";

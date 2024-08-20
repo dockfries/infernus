@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DynamicPickup } from "./entity";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/controllers/bus";

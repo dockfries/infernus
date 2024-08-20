@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { DynamicActor } from "./entity";
 import { GameMode } from "core/controllers/gamemode";
 import { defineEvent } from "core/controllers/bus";

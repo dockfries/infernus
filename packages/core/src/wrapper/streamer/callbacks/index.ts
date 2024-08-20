@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import { defineEvent } from "core/controllers/bus";
 import type { StreamerItemTypes } from "@infernus/streamer";
 import { Player } from "core/controllers/player/entity";

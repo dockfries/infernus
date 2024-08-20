@@ -33,7 +33,6 @@ import { GameMode } from "../gamemode";
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
   beforeEach(id: number, actionId: number, memAddr: number, data: number) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return { player: Player.getInstance(id)!, actionId, memAddr, data };
   },
 });
@@ -368,7 +367,6 @@ export class Player {
   }
   getSpeed(magic = 180.0) {
     if (this.id === -1) return 0.0;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { x, y, z } = this.getVelocity()!;
     return GameMode.vectorSize(x, y, z) * magic;
   }

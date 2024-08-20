@@ -22,7 +22,6 @@ export const [onDialogResponse] = defineEvent({
     buffer: number[],
   ) {
     return {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       player: Player.getInstance(id)!,
       dialogId,
       response,

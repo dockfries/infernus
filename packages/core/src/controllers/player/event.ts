@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Player } from "./entity";
 import { defineEvent } from "../bus";
 import { I18n } from "../i18n";
@@ -51,7 +50,6 @@ export const [onText] = defineEvent({
 export const [onEnterExitModShop] = defineEvent({
   name: "OnPlayerEnterExitModShop",
   beforeEach(id: number, enterexit: number, interior: number) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return {
       player: Player.getInstance(id)!,
       enterExit: Boolean(enterexit),

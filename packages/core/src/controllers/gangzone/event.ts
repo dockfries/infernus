@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { defineEvent } from "../bus";
 import { GameMode } from "../gamemode";
 import { Player } from "../player";
