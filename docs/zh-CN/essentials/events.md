@@ -216,7 +216,7 @@ PlayerEvent.onCommandText(
   ["msg", "message"],
   ({ player, subcommand, next }) => {
     console.log(
-      `玩家 ${player.getName()}，输入了此命令，并且可能还输入了子命令 ${subcommand.toString()}`
+      `玩家 ${player.getName()}，输入了此命令，并且可能还输入了子命令 ${subcommand.toString()}`,
     );
 
     // 相当于玩家输入了/message global或/msg global
@@ -228,8 +228,65 @@ PlayerEvent.onCommandText(
       // 认为是个无效的命令,将触发后置守卫
       return false;
     }
-  }
+  },
 );
+```
+
+### 区分大小写
+
+默认情况下，命令注册时**不区分**大小写。
+
+您可以通过 `GameMode` 实例下的方法来启用、禁用、获取当前状态。
+
+```ts
+import { GameMode } from "@infernus/core";
+
+console.log(GameMode.isCmdCaseSensitive());
+
+GameMode.enableCmdCaseSensitive(); // 启用命令区分大小写
+GameMode.disableCmdCaseSensitive(); // 禁用命令区分大小写
+```
+
+:::warning
+注意，启用和禁用命令通常**不能**放在`GameMode.OnInit`等回调事件。因为通过`PlayerEvent.onCommandText`注册命令的时机早于它。
+
+假设您变更全局启用/禁用后，再导入其他包时，也会影响其他包全局命令的大小写，比如`@infernus/fs`。
+:::
+
+你可以灵活的启用或禁用，控制后续注册的命令是否区分大小写。
+
+```ts
+import { GameMode, PlayerEvent } from "@infernus/core";
+
+GameMode.disableCmdCaseSensitive();
+
+// 此时注册的命令不区分大小写，之后玩家可以通过help,HeLP等命令调用
+PlayerEvent.onCommandText("help", ({ player, next }) => {
+  player.sendClientMessage(-1, "help command (not case sensitive)");
+  return next();
+});
+
+GameMode.enableCmdCaseSensitive();
+
+// 此时注册的命令区分大小写，之后玩家只能通过Help调用
+PlayerEvent.onCommandText("Help", ({ player, next }) => {
+  player.sendClientMessage(-1, "help command (case sensitive)");
+  return next();
+});
+```
+
+### 局部区分大小写
+
+您可以传递一个配置项，指定本次注册的命令是否区分大小写，它不受全局区分大小写的影响。
+
+```ts
+PlayerEvent.onCommandText({
+  caseSensitive: false, // 指定命令是否区分大小写
+  command: "foo", // 你的命令
+  run({ player, subcommand, next }) {
+    return next();
+  },
+});
 ```
 
 ### 前置守卫
@@ -270,7 +327,7 @@ PlayerEvent.onCommandPerformed(({ player, command, next }) => {
 PlayerEvent.onCommandError(({ player, command, error, next }) => {
   player.sendClientMessage(
     "#f00",
-    `玩家${player.id}输入了${command},出现错误${error.code}, ${error.msg}`
+    `玩家${player.id}输入了${command},出现错误${error.code}, ${error.msg}`,
   );
 
   next(); // 如果后续还有onCommandError，则执行
@@ -324,7 +381,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
 onPlayerDanger(({ player, health, next }) => {
   player.sendClientMessage(
     "#ff0",
-    `危险! 您生命值仅为${health}, 3秒后系统将自动为您回血`
+    `危险! 您生命值仅为${health}, 3秒后系统将自动为您回血`,
   );
   setTimeout(() => {
     player.setHealth(100);

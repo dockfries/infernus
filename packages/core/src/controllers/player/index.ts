@@ -1,5 +1,5 @@
 import { onPause, onResume, onFpsUpdate } from "./checker";
-import type { CmdBusCallback, CommandErrors } from "./command";
+import type { CmdBusCallback, CommandErrors, ICmdOptions } from "./command";
 import {
   CmdBus,
   onCommandError,
@@ -71,4 +71,4 @@ export const PlayerEvent = Object.freeze({
 
 export { Dialog };
 
-export type { CmdBusCallback, CommandErrors };
+export type { CmdBusCallback, ICmdOptions, CommandErrors };

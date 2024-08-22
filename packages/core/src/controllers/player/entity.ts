@@ -28,7 +28,7 @@ import { logger } from "../../logger";
 import type { Vehicle } from "../vehicle/entity";
 import type { DynamicObject } from "core/wrapper/streamer";
 import { defineEvent } from "../bus";
-import { GameMode } from "../gamemode";
+import { VectorSize } from "core/wrapper/native";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
@@ -368,7 +368,7 @@ export class Player {
   getSpeed(magic = 180.0) {
     if (this.id === -1) return 0.0;
     const { x, y, z } = this.getVelocity()!;
-    return GameMode.vectorSize(x, y, z) * magic;
+    return VectorSize(x, y, z) * magic;
   }
   getKeys() {
     const [keys, upDown, leftRight] = w.GetPlayerKeys(this.id);

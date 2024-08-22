@@ -1,4 +1,8 @@
+import { createRequire } from "module";
 import { defineConfig, type DefaultTheme } from "vitepress";
+
+const require = createRequire(import.meta.url);
+const pkg = require("../../package.json");
 
 export const en_US = defineConfig({
   lang: "en-US",
@@ -53,6 +57,15 @@ function nav(): DefaultTheme.NavItem[] {
         {
           text: "samp-cef",
           link: "https://github.com/Pycckue-Bnepeg/samp-cef",
+        },
+      ],
+    },
+    {
+      text: pkg.version,
+      items: [
+        {
+          text: "Changelog",
+          link: "https://github.com/dockfries/infernus/blob/main/CHANGELOG.md",
         },
       ],
     },

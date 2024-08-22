@@ -19,10 +19,6 @@ export const eventBus = new Map<
   ((...args: any) => PromisifyCallbackRet)[]
 >();
 
-export function emptyMiddlewares(name: string) {
-  eventBus.set(name, []);
-}
-
 function transformReturnValue(
   value: PromisifyCallbackRet,
   defaultValue: boolean,
@@ -88,7 +84,7 @@ export function defineEvent<T extends object>(options: Options<T>) {
     throw new Error(msg);
   }
 
-  emptyMiddlewares(name);
+  eventBus.set(name, []);
 
   function trigger(...args: any[]) {
     return executeMiddlewares(options, ...args);
@@ -114,6 +110,8 @@ export function defineEvent<T extends object>(options: Options<T>) {
           break;
         }
       }
+
+      return currentMiddlewares.length;
     };
 
     return off;

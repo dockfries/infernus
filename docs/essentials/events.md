@@ -23,7 +23,7 @@ GameMode.onExit(({ next }) => {
 
 GameMode.onIncomingConnection(({ next, playerId, ipAddress, port }) => {
   console.log(
-    `player id:${playerId},ip:${ipAddress},port:${port} try to connect`
+    `player id:${playerId},ip:${ipAddress},port:${port} try to connect`,
   );
   return next();
 });
@@ -104,7 +104,7 @@ PlayerEvent.onCommandText("promise", ({ player, next }) => {
     fakePromise().then(() => {
       player.sendClientMessage(
         "#fff",
-        "Send a message after a delay of 1 second."
+        "Send a message after a delay of 1 second.",
       );
       resolve();
       return next();
@@ -164,7 +164,7 @@ This feature is commonly used when you only want to execute once or cancel at so
 // Define an one-time command
 const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
   console.log(
-    "This command is only executed once, and the next execution will not exist."
+    "This command is only executed once, and the next execution will not exist.",
   );
   const ret = next();
   off(); // next function should be executed before the off function
@@ -218,7 +218,7 @@ PlayerEvent.onCommandText("help", ({ player, next }) => {
 // Define a second-level command
 PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
   console.log(
-    `player ${player.getName()} want to get help information related to teleport`
+    `player ${player.getName()} want to get help information related to teleport`,
   );
   return next();
 });
@@ -228,7 +228,7 @@ PlayerEvent.onCommandText(
   ["msg", "message"],
   ({ player, subcommand, next }) => {
     console.log(
-      `player ${player.getName()} entered this command, and may also have entered a subcommand ${subcommand.toString()}`
+      `player ${player.getName()} entered this command, and may also have entered a subcommand ${subcommand.toString()}`,
     );
 
     // It is equivalent to the player entering / message global or / msg global
@@ -240,8 +240,67 @@ PlayerEvent.onCommandText(
       // Thought to be an invalid command, will trigger the rear guard
       return false;
     }
-  }
+  },
 );
+```
+
+### Case sensitivity
+
+By default, command registration **does not differentiate** between cases.
+
+You can enable, disable, and retrieve the current status through methods under the `GameMode` instance.
+
+```ts
+import { GameMode } from "@infernus/core";
+
+console.log(GameMode.isCmdCaseSensitive());
+
+GameMode.enableCmdCaseSensitive(); // Enable case sensitivity for commands
+GameMode.disableCmdCaseSensitive(); // Disable case sensitivity for commands
+```
+
+:::warning
+Note that enabling and disabling commands typically **cannot be placed** in callback events like `GameMode.OnInit.` This is because registering commands via `PlayerEvent.onCommandText` occurs earlier.
+
+Assuming you change the global enable/disable setting and then import other packages, it will also affect the case sensitivity of globally registered commands in other packages such as `@infernus/fs`.
+:::
+
+You can flexibly enable or disable to control whether subsequently registered commands are case sensitive.
+
+```ts
+import { GameMode, PlayerEvent } from "@infernus/core";
+
+GameMode.disableCmdCaseSensitive();
+
+// Commands registered at this point are not case sensitive, 
+// allowing players to use commands like help, HeLP, etc.
+PlayerEvent.onCommandText("help", ({ player, next }) => {
+  player.sendClientMessage(-1, "help command (not case sensitive)");
+  return next();
+});
+
+GameMode.enableCmdCaseSensitive();
+
+// Commands registered at this point are case sensitive, 
+// requiring players to use Help only.
+PlayerEvent.onCommandText("Help", ({ player, next }) => {
+  player.sendClientMessage(-1, "help command (case sensitive)");
+  return next();
+});
+```
+
+### Partial case sensitivity
+
+You can pass a option to specify whether the command being registered is case sensitive, independent of the global case sensitivity setting.
+
+```ts
+PlayerEvent.onCommandText({
+  caseSensitive: false, // Specify if the command is case sensitive
+  command: "foo", // Your command
+  run({ player, subcommand, next }) {
+    return next();
+  },
+});
 ```
 
 ### Before guard
@@ -282,7 +341,7 @@ If `false` is returned, the default behavior will be executed, that is, the defa
 PlayerEvent.onCommandError(({ player, command, error, next }) => {
   player.sendClientMessage(
     "#f00",
-    `player ${player.id} command ${command} with error ${error.code}, ${error.msg}`
+    `player ${player.id} command ${command} with error ${error.code}, ${error.msg}`,
   );
 
   next(); // If there are other onCommandError middleware, execute
@@ -337,7 +396,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
 onPlayerDanger(({ player, health, next }) => {
   player.sendClientMessage(
     "#ff0",
-    `DANGER! Your health is only ${health}, and the system will automatically return blood for you after 3 seconds.`
+    `DANGER! Your health is only ${health}, and the system will automatically return blood for you after 3 seconds.`,
   );
   setTimeout(() => {
     player.setHealth(100);

@@ -11,7 +11,7 @@ import {
 import { rgba } from "core/utils/colorUtils";
 import * as v from "core/wrapper/native";
 import { logger } from "core/logger";
-import { GameMode } from "../gamemode";
+import { VectorSize } from "core/wrapper/native";
 
 export class Vehicle {
   static readonly vehicles = new Map<number, Vehicle>();
@@ -195,7 +195,7 @@ export class Vehicle {
   getSpeed(magic = 180.0) {
     if (this.id === -1) return 0.0;
     const { x, y, z } = this.getVelocity()!;
-    return GameMode.vectorSize(x, y, z) * magic;
+    return VectorSize(x, y, z) * magic;
   }
   setAngularVelocity(X: number, Y: number, Z: number): number {
     if (this.id === -1) return 0;

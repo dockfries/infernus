@@ -20,6 +20,7 @@ import * as w from "core/wrapper/native";
 import { I18n } from "../i18n";
 import { logger } from "../../logger";
 import { SendRconCommand } from "core/utils/helperUtils";
+import { CmdBus } from "../player/command";
 
 export class GameMode {
   private constructor() {
@@ -40,6 +41,10 @@ export class GameMode {
   static loadUseScript = loadUseScript;
   static reloadUseScript = reloadUseScript;
   static unloadUseScript = unloadUseScript;
+
+  static enableCmdCaseSensitive = CmdBus.enableCaseSensitive;
+  static disableCmdCaseSensitive = CmdBus.disableCaseSensitive;
+  static isCmdCaseSensitive = CmdBus.isCaseSensitive;
 
   static supportAllNickname() {
     /**
