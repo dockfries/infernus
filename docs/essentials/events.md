@@ -6,7 +6,9 @@ The event of `Infernus` is close to the native event. You should go to [Open Mul
 
 Take `OnGameModeInit` as an example, in `Infernus`, it is `GameMode.onInit(callback)`.
 
-Other event classes have the same similar syntax, which you can understand with the type of `TypeScript`.
+Most other event classes end with `Event`, such as `PlayerEvent`.
+
+With the type prompt of `TypeScript`, you will definitely understand it.
 
 ```ts
 import { GameMode } from "@infernus/core";
@@ -260,9 +262,11 @@ GameMode.disableCmdCaseSensitive(); // Disable case sensitivity for commands
 ```
 
 :::warning
-Note that enabling and disabling commands typically **cannot be placed** in callback events like `GameMode.OnInit.` This is because registering commands via `PlayerEvent.onCommandText` occurs earlier.
+Note that enabling and disabling commands typically **cannot be placed** in callback events like `GameMode.OnInit`. This is because registering commands via `PlayerEvent.onCommandText` occurs earlier.
 
 Assuming you change the global enable/disable setting and then import other packages, it will also affect the case sensitivity of globally registered commands in other packages such as `@infernus/fs`.
+
+When you define multiple commands with the same name, and they include case-sensitive and case-insensitive, **the case-sensitive middleware is referred to as strict matching, and it takes precedence over the case-insensitive execution**.
 :::
 
 You can flexibly enable or disable to control whether subsequently registered commands are case sensitive.
@@ -272,7 +276,7 @@ import { GameMode, PlayerEvent } from "@infernus/core";
 
 GameMode.disableCmdCaseSensitive();
 
-// Commands registered at this point are not case sensitive, 
+// Commands registered at this point are not case sensitive,
 // allowing players to use commands like help, HeLP, etc.
 PlayerEvent.onCommandText("help", ({ player, next }) => {
   player.sendClientMessage(-1, "help command (not case sensitive)");
@@ -281,7 +285,7 @@ PlayerEvent.onCommandText("help", ({ player, next }) => {
 
 GameMode.enableCmdCaseSensitive();
 
-// Commands registered at this point are case sensitive, 
+// Commands registered at this point are case sensitive,
 // requiring players to use Help only.
 PlayerEvent.onCommandText("Help", ({ player, next }) => {
   player.sendClientMessage(-1, "help command (case sensitive)");

@@ -6,7 +6,9 @@
 
 以`OnGameModeInit`为例，在`Infernus`中即为`GameMode.onInit(callback)`。
 
-其他事件类也是一样的类似语法，配合 `TypeScript` 的类型提示您一定能理解。
+其他事件类大多以 `Event` 结尾，例如 `PlayerEvent` 。
+
+配合 `TypeScript` 的类型提示，您一定能理解。
 
 ```ts
 import { GameMode } from "@infernus/core";
@@ -251,6 +253,8 @@ GameMode.disableCmdCaseSensitive(); // 禁用命令区分大小写
 注意，启用和禁用命令通常**不能**放在`GameMode.OnInit`等回调事件。因为通过`PlayerEvent.onCommandText`注册命令的时机早于它。
 
 假设您变更全局启用/禁用后，再导入其他包时，也会影响其他包全局命令的大小写，比如`@infernus/fs`。
+
+当您定义多个同名命令，并且包含区分和不区分时，**区分大小写的中间件**被称为严格匹配，它**优先于不区分的执行**。
 :::
 
 你可以灵活的启用或禁用，控制后续注册的命令是否区分大小写。

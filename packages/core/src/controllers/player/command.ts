@@ -73,7 +73,8 @@ const [onCommandText] = defineEvent({
   identifier: "iai",
   beforeEach(id: number, buffer: number[]) {
     const player = Player.getInstance(id)!;
-    return { player, buffer };
+    const cmdText = I18n.decodeFromBuf(buffer, player.charset);
+    return { player, buffer, cmdText };
   },
 });
 
@@ -87,10 +88,8 @@ function generateCombinations(arr: any[]) {
   return result.reverse();
 }
 
-onCommandText(({ player, buffer, next }) => {
-  const rawCommand = I18n.decodeFromBuf(buffer, player.charset);
-
-  const matchedCommand = rawCommand.match(commandPattern)!;
+onCommandText(({ player, cmdText, next }) => {
+  const matchedCommand = cmdText.match(commandPattern)!;
 
   const maybes = generateCombinations(matchedCommand);
 
@@ -98,11 +97,7 @@ onCommandText(({ player, buffer, next }) => {
 
   const noStrictMainCmd = maybes
     .map((maybe) => maybe.toLowerCase())
-    .find((maybe) => {
-      return (
-        noStrictCmdMap.has(maybe) && (!strictMainCmd || maybe !== strictMainCmd)
-      );
-    });
+    .find((maybe) => noStrictCmdMap.has(maybe));
 
   const fullCommand = matchedCommand.join(" ");
 
@@ -192,15 +187,11 @@ export class CmdBus {
       const whichCmd = caseSensitive ? _cmd : _cmd.toLowerCase();
 
       if (!whichCmdMap.has(whichCmd)) {
-        let e = strictCmdMap.get(whichCmd) || noStrictCmdMap.get(whichCmd);
-
-        if (!e) {
-          e = defineEvent({
-            name: whichCmd,
-            isNative: false,
-            beforeEach: cmdBeforeEach,
-          });
-        }
+        const e = defineEvent({
+          name: caseSensitive ? "$" + whichCmd : whichCmd,
+          isNative: false,
+          beforeEach: cmdBeforeEach,
+        });
 
         whichCmdMap.set(whichCmd, e);
       }

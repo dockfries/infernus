@@ -6,7 +6,9 @@ El evento de `Infernus` es parecido al evento nativo. Deberías ir a [Open Multi
 
 Toma `OnGameModeInit` como ejemplo, en `Infernus`, es `GameMode.onInit(callback)`.
 
-Otras clases de eventos tienen la misma sintaxis similar, que puedes entender con el tipo de `TypeScript`.
+La mayoría de las otras clases de eventos terminan con `Event`, como `PlayerEvent`.
+
+Con el prompt de tipo de `TypeScript`, definitivamente lo entenderá.
 
 ```ts
 import { GameMode } from "@infernus/core";
@@ -23,7 +25,7 @@ GameMode.onExit(({ next }) => {
 
 GameMode.onIncomingConnection(({ next, playerId, ipAddress, port }) => {
   console.log(
-    `id del jugador:${playerId},ip:${ipAddress},puerto:${port} intenta conectarse`
+    `id del jugador:${playerId},ip:${ipAddress},puerto:${port} intenta conectarse`,
   );
   return next();
 });
@@ -94,7 +96,10 @@ const fakePromise = () => {
 // Puede utilizar async directamente, que es también la opción recomendada
 PlayerEvent.onCommandText("async", async ({ player, next }) => {
   await fakePromise();
-  player.sendClientMessage("#fff", "Enviar un mensaje después de un retraso de 1 segundo.");
+  player.sendClientMessage(
+    "#fff",
+    "Enviar un mensaje después de un retraso de 1 segundo.",
+  );
   return next();
 });
 
@@ -104,7 +109,7 @@ PlayerEvent.onCommandText("promise", ({ player, next }) => {
     fakePromise().then(() => {
       player.sendClientMessage(
         "#fff",
-        "Enviar un mensaje después de un retraso de 1 segundo."
+        "Enviar un mensaje después de un retraso de 1 segundo.",
       );
       resolve();
       return next();
@@ -164,7 +169,7 @@ Esta función se suele utilizar cuando sólo se desea ejecutar una vez o cancela
 // Definir un comando de una sola vez
 const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
   console.log(
-    "Este comando sólo se ejecuta una vez, y la siguiente ejecución no existirá."
+    "Este comando sólo se ejecuta una vez, y la siguiente ejecución no existirá.",
   );
   const ret = next();
   off(); // la siguiente función debe ejecutarse antes que la función off
@@ -218,7 +223,7 @@ PlayerEvent.onCommandText("ayuda", ({ player, next }) => {
 // Definir un comando de segundo nivel
 PlayerEvent.onCommandText("ayuda teletransporte", ({ player, next }) => {
   console.log(
-    `jugador ${player.getName()} desea obtener información de ayuda relacionada con la teletransportación`
+    `jugador ${player.getName()} desea obtener información de ayuda relacionada con la teletransportación`,
   );
   return next();
 });
@@ -228,7 +233,7 @@ PlayerEvent.onCommandText(
   ["msg", "mensaje"],
   ({ player, subcommand, next }) => {
     console.log(
-      `el jugador ${player.getName()} introdujo este comando, y también puede haber introducido un subcomando ${subcommand.toString()}`
+      `el jugador ${player.getName()} introdujo este comando, y también puede haber introducido un subcomando ${subcommand.toString()}`,
     );
 
     // Equivale a que el jugador introduzca /message global o /msg global
@@ -240,8 +245,69 @@ PlayerEvent.onCommandText(
       // Pensado como un subcomando inválido, activará la retaguardia
       return false;
     }
-  }
+  },
 );
+```
+
+### Sensibilidad a mayúsculas y minúsculas
+
+Por defecto, el registro de comandos **no diferencia** entre mayúsculas y minúsculas.
+
+Puedes habilitar, deshabilitar y obtener el estado actual a través de métodos en la instancia de `GameMode`.
+
+```ts
+import { GameMode } from "@infernus/core";
+
+console.log(GameMode.isCmdCaseSensitive());
+
+GameMode.enableCmdCaseSensitive(); // Habilitar sensibilidad a mayúsculas y minúsculas para comandos
+GameMode.disableCmdCaseSensitive(); // Deshabilitar sensibilidad a mayúsculas y minúsculas para comandos
+```
+
+:::warning
+Ten en cuenta que habilitar y deshabilitar comandos típicamente **no se puede realizar** en eventos de devolución de llamada como `GameMode.OnInit`. Esto se debe a que el registro de comandos a través de PlayerEvent.onCommandText ocurre antes.
+
+Si cambias la configuración global de habilitar/deshabilitar y luego importas otros paquetes, también afectará la sensibilidad a mayúsculas y minúsculas de los comandos registrados globalmente en otros paquetes como `@infernus/fs`.
+
+Cuando defines múltiples comandos con el mismo nombre e incluyen sensibilidad a mayúsculas y minúsculas, **el middleware sensible a mayúsculas y minúsculas se refiere como coincidencia estricta, y tiene prioridad sobre la ejecución insensible a mayúsculas y minúsculas.**
+:::
+
+Puedes habilitar o deshabilitar de manera flexible para controlar si los comandos registrados posteriormente son sensibles a mayúsculas y minúsculas.
+
+```ts
+import { GameMode, PlayerEvent } from "@infernus/core";
+
+GameMode.disableCmdCaseSensitive();
+
+// Los comandos registrados en este punto no son sensibles a mayúsculas y minúsculas,
+// permitiendo a los jugadores usar comandos como help, HeLP, etc.
+PlayerEvent.onCommandText("help", ({ player, next }) => {
+  player.sendClientMessage(-1, "comando help (no sensible a mayúsculas y minúsculas)");
+  return next();
+});
+
+GameMode.enableCmdCaseSensitive();
+
+// Los comandos registrados en este punto son sensibles a mayúsculas y minúsculas,
+// requiriendo que los jugadores usen únicamente Help.
+PlayerEvent.onCommandText("Help", ({ player, next }) => {
+  player.sendClientMessage(-1, "comando help (sensible a mayúsculas y minúsculas)");
+  return next();
+});
+```
+
+### Sensibilidad parcial a mayúsculas y minúsculas
+
+Puedes pasar una opción para especificar si el comando que se está registrando es sensible a mayúsculas y minúsculas, independientemente de la configuración global de sensibilidad.
+
+```ts
+PlayerEvent.onCommandText({
+  caseSensitive: false, // Especifica si el comando es sensible a mayúsculas y minúsculas
+  command: "foo", // Tu comando
+  run({ player, subcommand, next }) {
+    return next();
+  },
+});
 ```
 
 ### Antes de guardia
@@ -282,7 +348,7 @@ Si se devuelve `false`, se ejecutará el comportamiento por defecto, es decir, e
 PlayerEvent.onCommandError(({ player, command, error, next }) => {
   player.sendClientMessage(
     "#f00",
-    `player ${player.id} command ${command} with error ${error.code}, ${error.msg}`
+    `player ${player.id} command ${command} with error ${error.code}, ${error.msg}`,
   );
 
   next(); // Si existen otros middleware onCommandError, ejecute
@@ -337,7 +403,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
 onPlayerDanger(({ player, health, next }) => {
   player.sendClientMessage(
     "#ff0",
-    `¡PELIGRO! Su salud es sólo ${health}, y el sistema devolverá automáticamente la sangre para usted después de 3 segundos.`
+    `¡PELIGRO! Su salud es sólo ${health}, y el sistema devolverá automáticamente la sangre para usted después de 3 segundos.`,
   );
   setTimeout(() => {
     player.setHealth(100);
