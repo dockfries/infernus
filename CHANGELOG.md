@@ -1,3 +1,16 @@
+## [0.11.0-beta.13](https://github.com/dockfries/infernus/compare/v0.11.0-beta.12...v0.11.0-beta.13) (2024-08-23)
+
+
+### Features
+
+* **core:** cmd caseSensitive ([b6b4997](https://github.com/dockfries/infernus/commit/b6b49972a229c8a22ef3961926a19a1891176e9e))
+
+
+### Bug Fixes
+
+* **core:** cmd caseSensitive middleware ([722212d](https://github.com/dockfries/infernus/commit/722212d40769c8472566bbf4807960f1a96e6a44))
+* **core:** i18n decodeFromBuf endsWith zero ([a450eb5](https://github.com/dockfries/infernus/commit/a450eb5c29d5300a2e0db5e40afa96b0ed4eb8ff))
+
 ## [0.11.0-beta.12](https://github.com/dockfries/infernus/compare/v0.11.0-beta.11...v0.11.0-beta.12) (2024-08-18)
 
 
