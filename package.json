@@ -18,7 +18,7 @@
     "*.{ts,js}": [
       "eslint --fix"
     ],
-    "*.{ts,js,json,yaml}": [
+    "*.{ts,js,json,yml}": [
       "prettier --write"
     ]
   },
