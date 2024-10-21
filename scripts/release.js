@@ -1,8 +1,8 @@
 import path from "node:path";
 import inquirer from "inquirer";
 import { execa } from "execa";
-import { pkgDir, pkgNames, build } from "./share.js";
 import { versionBump } from "bumpp";
+import { pkgDir, pkgNames, build } from "./share.js";
 
 let pkgName, pkgPath;
 

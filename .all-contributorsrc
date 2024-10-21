@@ -37,6 +37,20 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/77627599?v=4",
       "profile": "https://github.com/lyricsdev",
       "contributions": ["bug"]
+    },
+    {
+      "login": "Vladik01-11",
+      "name": "Vladik01-11",
+      "avatar_url": "https://avatars.githubusercontent.com/u/70571714?v=4",
+      "profile": "https://github.com/Vladik01-11",
+      "contributions": ["bug"]
+    },
+    {
+      "login": "goottime",
+      "name": "goottime",
+      "avatar_url": "https://avatars.githubusercontent.com/u/96193346?v=4",
+      "profile": "https://github.com/goottime",
+      "contributions": ["bug"]
     }
   ],
   "linkToUsage": false,

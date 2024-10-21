@@ -15,7 +15,7 @@ El proyecto utiliza `pnpm` para gestionar las dependencias, por lo que es necesa
 Puede crear fácilmente un proyecto siguiendo las instrucciones de la línea de comandos.
 
 ```sh
-pnpm dlx @infernus/create-app create
+pnpm dlx @infernus/create-app@latest create
 ```
 
 ::: tip

@@ -10,7 +10,9 @@ Node.js library for scripting [Open Multiplayer](https://open.mp).
 
 Highly recommended to get started with the [infernus-starter](https://github.com/dockfries/infernus-starter) template.
 
-## Contributors
+## Contributors ✨
+
+Thanks go to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -23,6 +25,8 @@ Highly recommended to get started with the [infernus-starter](https://github.com
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/cha5e369"><img src="https://avatars.githubusercontent.com/u/77559597?v=4?s=100" width="100px;" alt="cha5e369"/><br /><sub><b>cha5e369</b></sub></a><br /><a href="https://github.com/dockfries/infernus/issues?q=author%3Acha5e369" title="Bug reports">🐛</a> <a href="#ideas-cha5e369" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/dockfries/infernus/commits?author=cha5e369" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Frank441"><img src="https://avatars.githubusercontent.com/u/79960940?v=4?s=100" width="100px;" alt="Frank441"/><br /><sub><b>Frank441</b></sub></a><br /><a href="https://github.com/dockfries/infernus/issues?q=author%3AFrank441" title="Bug reports">🐛</a> <a href="https://github.com/dockfries/infernus/commits?author=Frank441" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lyricsdev"><img src="https://avatars.githubusercontent.com/u/77627599?v=4?s=100" width="100px;" alt="Алексей"/><br /><sub><b>Алексей</b></sub></a><br /><a href="https://github.com/dockfries/infernus/issues?q=author%3Alyricsdev" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Vladik01-11"><img src="https://avatars.githubusercontent.com/u/70571714?v=4?s=100" width="100px;" alt="Vladik01-11"/><br /><sub><b>Vladik01-11</b></sub></a><br /><a href="https://github.com/dockfries/infernus/issues?q=author%3AVladik01-11" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/goottime"><img src="https://avatars.githubusercontent.com/u/96193346?v=4?s=100" width="100px;" alt="goottime"/><br /><sub><b>goottime</b></sub></a><br /><a href="https://github.com/dockfries/infernus/issues?q=author%3Agoottime" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
@@ -31,6 +35,9 @@ Highly recommended to get started with the [infernus-starter](https://github.com
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://allcontributors.org) specification.
+Contributions of any kind are welcome!
 
 ## Credits
 

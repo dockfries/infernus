@@ -15,7 +15,7 @@ The project uses `pnpm` to manage dependencies, so you need to install [pnpm](ht
 You can easily create a project according to the command line prompts.
 
 ```sh
-pnpm dlx @infernus/create-app create
+pnpm dlx @infernus/create-app@latest create
 ```
 
 ::: tip
