@@ -234,7 +234,7 @@ export class DynamicArea {
       return logger.warn(
         "[StreamerArea]: Unable to destroy the area before create",
       );
-    !streamerFlag.skip && s.DestroyDynamicArea(this.id);
+    if (!streamerFlag.skip) s.DestroyDynamicArea(this.id);
     DynamicArea.areas.delete(this.id);
     this._id = -1;
     return this;
@@ -425,7 +425,7 @@ export class DynamicArea {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) false;
+    if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.AREA, this.id);
   }
 

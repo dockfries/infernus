@@ -106,7 +106,7 @@ export class DynamicObject {
       return logger.warn(
         "[StreamerObject]: Unable to destroy the object before create",
       );
-    !streamerFlag.skip && s.DestroyDynamicObject(this.id);
+    if (!streamerFlag.skip) s.DestroyDynamicObject(this.id);
     DynamicObject.objects.delete(this.id);
     this._id = -1;
     return this;
@@ -386,7 +386,7 @@ export class DynamicObject {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) false;
+    if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.OBJECT, this.id);
   }
   setNoCameraCollision() {

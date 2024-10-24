@@ -118,7 +118,7 @@ export class Dynamic3DTextLabel {
       return logger.warn(
         "[Streamer3DTextLabel]: Unable to destroy before create",
       );
-    !streamerFlag.skip && DestroyDynamic3DTextLabel(this.id);
+    if (!streamerFlag.skip) DestroyDynamic3DTextLabel(this.id);
     Dynamic3DTextLabel.texts.delete(this.id);
     this._id = -1;
     return this;
@@ -180,7 +180,7 @@ export class Dynamic3DTextLabel {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) false;
+    if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(
       StreamerItemTypes.TEXT_3D_LABEL,
       this.id,

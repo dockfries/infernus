@@ -95,7 +95,7 @@ export class DynamicActor {
       return logger.warn(
         "[StreamerActor]: Unable to destroy the actor before create",
       );
-    !streamerFlag.skip && s.DestroyDynamicActor(this.id);
+    if (!streamerFlag.skip) s.DestroyDynamicActor(this.id);
     DynamicActor.actors.delete(this.id);
     this._id = -1;
     return this;
@@ -248,7 +248,7 @@ export class DynamicActor {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) false;
+    if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.ACTOR, this.id);
   }
 

@@ -106,7 +106,7 @@ export class DynamicRaceCP {
       return logger.warn(
         "[StreamerRaceCP]: Unable to destroy the checkpoint before create",
       );
-    !streamerFlag.skip && DestroyDynamicCP(this.id);
+    if (!streamerFlag.skip) DestroyDynamicCP(this.id);
     DynamicRaceCP.checkpoints.delete(this.id);
     this._id = -1;
     return this;
@@ -147,7 +147,7 @@ export class DynamicRaceCP {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) false;
+    if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.RACE_CP, this.id);
   }
 

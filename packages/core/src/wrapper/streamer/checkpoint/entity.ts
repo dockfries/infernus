@@ -102,7 +102,7 @@ export class DynamicCheckpoint {
       return logger.warn(
         "[StreamerCheckpoint]: Unable to destroy the checkpoint before create",
       );
-    !streamerFlag.skip && DestroyDynamicCP(this.id);
+    if (!streamerFlag.skip) DestroyDynamicCP(this.id);
     DynamicCheckpoint.checkpoints.delete(this.id);
     this._id = -1;
     return this;
@@ -139,7 +139,7 @@ export class DynamicCheckpoint {
     return Streamer.toggleItemCallbacks(StreamerItemTypes.CP, this.id, toggle);
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) false;
+    if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.CP, this.id);
   }
 

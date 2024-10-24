@@ -89,7 +89,7 @@ export class DynamicPickup {
       return logger.warn(
         "[StreamerPickup]: Unable to destroy the pickup before create",
       );
-    !streamerFlag.skip && s.DestroyDynamicPickup(this.id);
+    if (!streamerFlag.skip) s.DestroyDynamicPickup(this.id);
     DynamicPickup.pickups.delete(this.id);
     this._id = -1;
     return this;
@@ -110,7 +110,7 @@ export class DynamicPickup {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) false;
+    if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.PICKUP, this.id);
   }
 

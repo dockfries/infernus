@@ -105,7 +105,7 @@ export class DynamicMapIcon {
       return logger.warn(
         "[StreamerMapIcon]: Unable to destroy the map icon before create",
       );
-    !streamerFlag.skip && DestroyDynamicMapIcon(this.id);
+    if (!streamerFlag.skip) DestroyDynamicMapIcon(this.id);
     DynamicMapIcon.mapIcons.delete(this._id);
     this._id = -1;
     return this;
@@ -126,7 +126,7 @@ export class DynamicMapIcon {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) false;
+    if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.MAP_ICON, this.id);
   }
 
