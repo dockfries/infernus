@@ -17,8 +17,7 @@ export const SyncReader: MethodDecorator = (
   propertyKey: string | symbol,
   descriptor: PropertyDescriptor,
 ) => {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  const originalMethod = descriptor.value as Function;
+  const originalMethod = descriptor.value;
 
   descriptor.value = function (this: any, ...args: any[]) {
     const bs: BitStream = this.bs;
@@ -37,7 +36,6 @@ export const SyncWriter: MethodDecorator = (
   propertyKey: string | symbol,
   descriptor: PropertyDescriptor,
 ) => {
-  // eslint-disable-next-line @typescript-eslint/ban-types
   const originalMethod = descriptor.value;
 
   descriptor.value = function (this: any, ...args: any[]) {

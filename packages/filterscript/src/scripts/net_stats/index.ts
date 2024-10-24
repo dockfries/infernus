@@ -25,7 +25,7 @@ async function netStatsDisplay() {
       info: netStatsStr,
       button1: "Ok",
     }).show(gNetStatsPlayer as Player);
-    gNetStatsTimer && clearInterval(gNetStatsTimer);
+    if (gNetStatsTimer) clearInterval(gNetStatsTimer);
     gNetStatsPlayer = InvalidEnum.PLAYER_ID;
   } catch {
     /* empty */
@@ -57,7 +57,7 @@ async function netStatsDisplay2() {
       info: netStatsStr,
       button1: "Ok",
     }).show(gNetStatsPlayer as Player);
-    gNetStatsTimer && clearInterval(gNetStatsTimer);
+    if (gNetStatsTimer) clearInterval(gNetStatsTimer);
     gNetStatsPlayer = InvalidEnum.PLAYER_ID;
   } catch {
     /* empty */
@@ -72,7 +72,7 @@ export const NetStatsFs: IFilterScript = {
       ({ player, next }) => {
         if (!player.isAdmin()) return false;
 
-        gNetStatsTimer && clearInterval(gNetStatsTimer);
+        if (gNetStatsTimer) clearInterval(gNetStatsTimer);
 
         gNetStatsPlayer = player;
         netStatsDisplay();
@@ -92,7 +92,7 @@ export const NetStatsFs: IFilterScript = {
 
         gNetStatsDisplay = Player.getInstance(+gNetStatsDisplayId)!;
 
-        gNetStatsTimer && clearInterval(gNetStatsTimer);
+        if (gNetStatsTimer) clearInterval(gNetStatsTimer);
         gNetStatsPlayer = player;
         netStatsDisplay2();
         gNetStatsTimer = setInterval(netStatsDisplay2, 3000); // this will refresh the display every 3 seconds
@@ -106,7 +106,7 @@ export const NetStatsFs: IFilterScript = {
     return [netstatCmd, netstatCmd2];
   },
   unload() {
-    gNetStatsTimer && clearInterval(gNetStatsTimer);
+    if (gNetStatsTimer) clearInterval(gNetStatsTimer);
     gNetStatsTimer = null;
 
     gNetStatsPlayer = InvalidEnum.PLAYER_ID;

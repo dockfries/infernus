@@ -163,7 +163,7 @@ export const CargoShip: IFilterScript = {
     });
 
     const cmd2 = PlayerEvent.onCommandText("stopship", ({ next }) => {
-      gMainShipObject && gMainShipObject.stop();
+      if (gMainShipObject) gMainShipObject.stop();
       return next();
     });
 
@@ -171,7 +171,7 @@ export const CargoShip: IFilterScript = {
   },
   unload() {
     clearTimer();
-    gMainShipObject && gMainShipObject.destroy();
+    if (gMainShipObject) gMainShipObject.destroy();
     gMainShipObject = null;
     let x = 0;
     while (x !== NUM_SHIP_ATTACHMENTS) {

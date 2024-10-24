@@ -9,7 +9,7 @@ export type Options<T extends object> = {
   defaultValue?: boolean;
   identifier?: string;
   isNative?: boolean;
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   beforeEach?: (...args: any[]) => Exclude<T, Array<any> | Function>;
   afterEach?: (arg: T) => void;
 };
@@ -126,7 +126,9 @@ export function defineEvent<T extends object>(options: Options<T>) {
   const h = [pusher, trigger] as const;
 
   if (isNative) {
-    typeof identifier !== "undefined" && samp.registerEvent(name, identifier);
+    if (typeof identifier !== "undefined") {
+      samp.registerEvent(name, identifier);
+    }
     samp.on(name, trigger);
   }
 

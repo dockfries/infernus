@@ -216,15 +216,15 @@ export class CmdBus {
       let _cmd = cmd.replaceAll("/", "");
 
       if (strictCmdMap.has(_cmd)) {
-        eventBus.has(_cmd) && eventBus.delete(_cmd);
-        strictCmdMap.has(_cmd) && strictCmdMap.delete(_cmd);
+        if (eventBus.has(_cmd)) eventBus.delete(_cmd);
+        if (strictCmdMap.has(_cmd)) strictCmdMap.delete(_cmd);
       }
 
       _cmd = _cmd.toLowerCase();
 
       if (noStrictCmdMap.has(_cmd)) {
-        eventBus.has(_cmd) && eventBus.delete(_cmd);
-        noStrictCmdMap.has(_cmd) && noStrictCmdMap.delete(_cmd);
+        if (eventBus.has(_cmd)) eventBus.delete(_cmd);
+        if (noStrictCmdMap.has(_cmd)) noStrictCmdMap.delete(_cmd);
       }
     });
   }

@@ -14,7 +14,7 @@ export const loadUseScript = async (scriptName: string) => {
       const scripts = preInstallScripts[fsIdx];
 
       function load(events: Array<() => void>) {
-        events.length && registeredEvents.set(scriptName, events);
+        if (events.length) registeredEvents.set(scriptName, events);
         preInstallScripts.splice(fsIdx, 1);
         installedScripts.push(scripts);
         setTimeout(resolve);
