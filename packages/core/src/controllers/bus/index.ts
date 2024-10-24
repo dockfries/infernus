@@ -99,7 +99,9 @@ export function defineEvent<T extends object>(options: Options<T>) {
     const pushedPos = length - 1;
 
     const off = () => {
-      const currentMiddlewares = eventBus.get(name) || [];
+      const currentMiddlewares = eventBus.get(name);
+      if (!currentMiddlewares) return;
+
       const currentMaxPos = currentMiddlewares.length - 1;
 
       const endIdx = currentMaxPos < pushedPos ? currentMaxPos : pushedPos;
@@ -111,6 +113,10 @@ export function defineEvent<T extends object>(options: Options<T>) {
         }
       }
 
+      if (currentMiddlewares.length === 0) {
+        eventBus.delete(name);
+      }
+
       return currentMiddlewares.length;
     };
 
@@ -120,7 +126,7 @@ export function defineEvent<T extends object>(options: Options<T>) {
   const h = [pusher, trigger] as const;
 
   if (isNative) {
-    identifier && samp.registerEvent(name, identifier);
+    typeof identifier !== "undefined" && samp.registerEvent(name, identifier);
     samp.on(name, trigger);
   }
 

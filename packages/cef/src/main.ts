@@ -215,7 +215,7 @@ export class Cef {
     return Cef.instances.get(pid + "_" + browserId);
   }
   static getInstances() {
-    return Cef.instances.values();
+    return [...Cef.instances.values()];
   }
 }
 
