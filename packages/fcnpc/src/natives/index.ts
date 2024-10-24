@@ -138,7 +138,7 @@ export class FCNPC {
     );
     return { w, x, y, z };
   }
-  setVelocity(x: number, y: number, z: number, update_pos = false): number {
+  setVelocity(x: number, y: number, z: number, updatePos = false): number {
     return samp.callNative(
       "FCNPC_SetVelocity",
       "ifffi",
@@ -146,10 +146,10 @@ export class FCNPC {
       x,
       y,
       z,
-      update_pos,
+      updatePos,
     );
   }
-  giveVelocity(x: number, y: number, z: number, update_pos = false): number {
+  giveVelocity(x: number, y: number, z: number, updatePos = false): number {
     return samp.callNative(
       "FCNPC_GiveVelocity",
       "ifffi",
@@ -157,7 +157,7 @@ export class FCNPC {
       x,
       y,
       z,
-      update_pos,
+      updatePos,
     );
   }
   getVelocity() {
@@ -364,12 +364,20 @@ export class FCNPC {
     );
   }
   getWeaponInfo(weaponId: WeaponEnum) {
-    const [reloadTime, shootTime, clipSize, accuracy]: [
+    // eslint-disable-next-line prefer-const
+    let [reloadTime, shootTime, clipSize, accuracy, ret]: [
+      number,
       number,
       number,
       number,
       number,
     ] = samp.callNative("FCNPC_GetWeaponInfo", "iiIIIF", this.id, weaponId);
+    if (ret === 0) {
+      reloadTime = -1;
+      shootTime = -1;
+      clipSize = -1;
+      accuracy = 1.0;
+    }
     return { reloadTime, shootTime, clipSize, accuracy };
   }
   static setWeaponDefaultInfo(
@@ -390,12 +398,21 @@ export class FCNPC {
     );
   }
   static getWeaponDefaultInfo(weaponId: WeaponEnum) {
-    const [reloadTime, shootTime, clipSize, accuracy]: [
+    // eslint-disable-next-line prefer-const
+    let [reloadTime, shootTime, clipSize, accuracy, ret]: [
+      number,
       number,
       number,
       number,
       number,
     ] = samp.callNative("FCNPC_GetWeaponDefaultInfo", "iIIIF", weaponId);
+
+    if (ret === 0) {
+      reloadTime = -1;
+      shootTime = -1;
+      clipSize = -1;
+      accuracy = 1.0;
+    }
     return { reloadTime, shootTime, clipSize, accuracy };
   }
   setKeys(
@@ -471,7 +488,9 @@ export class FCNPC {
     return samp.callNative("FCNPC_ResetAnimation", "i", this.id);
   }
   getAnimation() {
-    const [animationId, delta, loop, lockX, lockY, freeze, time]: [
+    // eslint-disable-next-line prefer-const
+    let [animationId, delta, loop, lockX, lockY, freeze, time, ret]: [
+      number,
       number,
       number,
       number,
@@ -480,6 +499,15 @@ export class FCNPC {
       number,
       number,
     ] = samp.callNative("FCNPC_GetAnimation", "iIFIIIII", this.id);
+    if (ret === 0) {
+      animationId = 0;
+      delta = 4.1;
+      loop = 0;
+      lockX = 1;
+      lockY = 1;
+      freeze = 0;
+      time = 1;
+    }
     return { animationId, delta, loop, lockX, lockY, freeze, time };
   }
   applyAnimation(
@@ -534,9 +562,9 @@ export class FCNPC {
     mode: MoveMode = MoveMode.AUTO,
     pathFinding: MovePathFinding = MovePathFinding.AUTO,
     radius: number = 0.0,
-    set_angle: boolean = true,
-    min_distance: number = 0.0,
-    stop_delay: number = 250,
+    setAngle: boolean = true,
+    minDistance: number = 0.0,
+    stopDelay: number = 250,
   ): number {
     return samp.callNative(
       "FCNPC_Goto",
@@ -550,9 +578,9 @@ export class FCNPC {
       mode,
       pathFinding,
       radius,
-      set_angle,
-      min_distance,
-      stop_delay,
+      setAngle,
+      minDistance,
+      stopDelay,
     );
   }
   gotoPlayer(
@@ -562,9 +590,9 @@ export class FCNPC {
     mode: MoveMode = MoveMode.AUTO,
     pathFinding: MovePathFinding = MovePathFinding.AUTO,
     radius: number = 0.0,
-    set_angle: boolean = true,
-    min_distance: number = 0.0,
-    stop_delay: number = 250,
+    setAngle: boolean = true,
+    minDistance: number = 0.0,
+    stopDelay: number = 250,
   ) {
     return samp.callNative(
       "FCNPC_GotoPlayer",
@@ -576,9 +604,9 @@ export class FCNPC {
       mode,
       pathFinding,
       radius,
-      set_angle,
-      min_distance,
-      stop_delay,
+      setAngle,
+      minDistance,
+      stopDelay,
     );
   }
   stop(): number {
@@ -610,10 +638,10 @@ export class FCNPC {
     z: number,
     shoot: boolean = false,
     shootDelay: number = -1,
-    set_angle: boolean = true,
-    offset_from_x: number = 0.0,
-    offset_from_y: number = 0.0,
-    offset_from_z: number = 0.0,
+    setAngle: boolean = true,
+    offsetFromX: number = 0.0,
+    offsetFromY: number = 0.0,
+    offsetFromZ: number = 0.0,
     betweenCheckMode: EntityMode = EntityMode.AUTO,
     betweenCheckFlags: EntityCheck = EntityCheck.ALL,
   ): number {
@@ -626,10 +654,10 @@ export class FCNPC {
       z,
       shoot,
       shootDelay,
-      set_angle,
-      offset_from_x,
-      offset_from_y,
-      offset_from_z,
+      setAngle,
+      offsetFromX,
+      offsetFromY,
+      offsetFromZ,
       betweenCheckMode,
       betweenCheckFlags,
     );
@@ -639,13 +667,13 @@ export class FCNPC {
     player: Player,
     shoot: boolean = false,
     shootDelay: number = -1,
-    set_angle: boolean = true,
-    offset_x: number = 0.0,
-    offset_y: number = 0.0,
-    offset_z: number = 0.0,
-    offset_from_x: number = 0.0,
-    offset_from_y: number = 0.0,
-    offset_from_z: number = 0.0,
+    setAngle: boolean = true,
+    offsetX: number = 0.0,
+    offsetY: number = 0.0,
+    offsetZ: number = 0.0,
+    offsetFromX: number = 0.0,
+    offsetFromY: number = 0.0,
+    offsetFromZ: number = 0.0,
     betweenCheckMode: EntityMode = EntityMode.AUTO,
     betweenCheckFlags: EntityCheck = EntityCheck.ALL,
   ): number {
@@ -656,13 +684,13 @@ export class FCNPC {
       player.id,
       shoot,
       shootDelay,
-      set_angle,
-      offset_x,
-      offset_y,
-      offset_z,
-      offset_from_x,
-      offset_from_y,
-      offset_from_z,
+      setAngle,
+      offsetX,
+      offsetY,
+      offsetZ,
+      offsetFromX,
+      offsetFromY,
+      offsetFromZ,
       betweenCheckMode,
       betweenCheckFlags,
     );
@@ -671,13 +699,13 @@ export class FCNPC {
   stopAim(): number {
     return samp.callNative("FCNPC_StopAim", "i", this.id);
   }
-  meleeAttack(delay = -1, fighting_style = false): number {
+  meleeAttack(delay = -1, fightingStyle = false): number {
     return samp.callNative(
       "FCNPC_MeleeAttack",
       "iii",
       this.id,
       delay,
-      fighting_style,
+      fightingStyle,
     );
   }
   stopAttack(): number {
@@ -745,11 +773,13 @@ export class FCNPC {
     range: number,
     mode: EntityMode = EntityMode.AUTO,
     flags: EntityCheck = EntityCheck.ALL,
-    offset_from_x: number = 0.0,
-    offset_from_y: number = 0.0,
-    offset_from_z: number = 0.0,
+    offsetFromX: number = 0.0,
+    offsetFromY: number = 0.0,
+    offsetFromZ: number = 0.0,
   ) {
-    const [entityId, entityType, ownerId, pointX, pointY, pointZ]: [
+    // eslint-disable-next-line prefer-const
+    let [entityId, entityType, ownerId, pointX, pointY, pointZ, ret]: [
+      number,
       number,
       number,
       number,
@@ -766,10 +796,18 @@ export class FCNPC {
       range,
       mode,
       flags,
-      offset_from_x,
-      offset_from_y,
-      offset_from_z,
+      offsetFromX,
+      offsetFromY,
+      offsetFromZ,
     );
+    if (ret === 0) {
+      entityId = -1;
+      entityType = -1;
+      ownerId = -1;
+      pointX = 0.0;
+      pointY = 0.0;
+      pointZ = 0.0;
+    }
     return {
       entityId,
       entityType,

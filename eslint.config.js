@@ -7,7 +7,7 @@ export default [
     files: ["**/*.{ts,js}"],
   },
   {
-    ignores: ["docs/.vitepress", "**/dist/*"],
+    ignores: ["docs/.vitepress/cache", "**/dist"],
   },
   { languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,
