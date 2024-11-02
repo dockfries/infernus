@@ -1,6 +1,6 @@
 import path from "node:path";
 import decompress from "decompress";
-import semver from "semver";
+import semver, { type SemVer } from "semver";
 import fs from "fs-extra";
 import fg from "fast-glob";
 import inquirer from "inquirer";
@@ -477,7 +477,12 @@ export async function addDeps(
 
     reduceDeps = _deps.reduce(
       (acc, dep) => {
-        const [depName, version = "*"] = dep.split("@");
+        const arr = dep.split("@");
+        const depName = arr[0];
+        let version = arr[1] || "*";
+        if (isUpdate && version === "*" && config.dependencies![depName]) {
+          version = config.dependencies![depName];
+        }
         if (!validRange(version))
           throw new Error(`invalid deps version: ${dep}`);
         acc[depName] = version;
@@ -789,6 +794,7 @@ async function addOpenMp(versionOrRelease: any, isRemote: boolean) {
         };
       });
 
+    // todo: x86 or x64?
     const downloadAssetByEnv = assets.find((asset: any) => {
       return asset.name.endsWith(isWindows ? "zip" : "tar.gz");
     });
@@ -829,13 +835,15 @@ async function removeOpenMp(globalPath: string) {
 
 function minSatisfying(versions: string[], range: string) {
   if (range === "*") {
-    const allVersion = versions.map((version) => {
-      const coerceVersion = semver.coerce(version);
-      return coerceVersion ? version : null;
-    });
-    const filterAllVersion = allVersion.filter((s) => Boolean(s)) as string[];
-    const descVersions = semver.rsort(filterAllVersion);
-    return descVersions[0] || null;
+    const allVersion = versions
+      .map((version) => [version, semver.coerce(version)])
+      .filter((s) => Boolean(s[1])) as [string, SemVer][];
+    const descVersions = semver.rsort(allVersion.map((s) => s[1]));
+    if (!descVersions.length) return null;
+    const minSatisfying = allVersion.find(
+      (s) => s[1].version === descVersions[0].version,
+    );
+    return minSatisfying ? minSatisfying[0] : null;
   }
 
   const satisfy = semver.minSatisfying(versions, range);
