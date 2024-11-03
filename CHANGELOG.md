@@ -1,3 +1,21 @@
+## <small>0.11.1 (2024-11-03)</small>
+
+* chore(eslint, fcnpc): cache ignore, typo and default return ([a51567a](https://github.com/dockfries/infernus/commit/a51567a))
+* feat(core)!: remove logger, use throw error ([8fb796f](https://github.com/dockfries/infernus/commit/8fb796f))
+* fix(core, cef): registerEvent with empty string, off bus, cef instances ([f8faed7](https://github.com/dockfries/infernus/commit/f8faed7))
+* fix(core): player, vehicle, DynamicActor params type ([e676c87](https://github.com/dockfries/infernus/commit/e676c87))
+* fix(create-app): minSatisfying check version ([f805525](https://github.com/dockfries/infernus/commit/f805525))
+* fix(streamer): isToggleCallbacks return false ([871484b](https://github.com/dockfries/infernus/commit/871484b))
+* chore(github): add issue and PR template ([bb95a60](https://github.com/dockfries/infernus/commit/bb95a60))
+* chore(release): create-app v0.2.9 ([110c676](https://github.com/dockfries/infernus/commit/110c676))
+* chore(root): update deps, eslint ([b48edd8](https://github.com/dockfries/infernus/commit/b48edd8))
+* chore(root): update docs, readme ([21bedb5](https://github.com/dockfries/infernus/commit/21bedb5))
+* chore(workflows): docs trigger with `package.json` ([e53e298](https://github.com/dockfries/infernus/commit/e53e298))
+* feat(fcnpc): didn't work, but it might help someone in the future ([49fc8ed](https://github.com/dockfries/infernus/commit/49fc8ed))
+* ci(github): release tag ([6250ce2](https://github.com/dockfries/infernus/commit/6250ce2))
+
+
+
 ## [0.11.0-beta.13](https://github.com/dockfries/infernus/compare/v0.11.0-beta.12...v0.11.0-beta.13) (2024-08-23)
 
 
