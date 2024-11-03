@@ -1,6 +1,5 @@
 import type { TLocales } from "../../types";
 import { encode, decode, encodingExists } from "iconv-lite";
-import { logger } from "../../logger";
 import { snakeCase, merge, omit, get, mapKeys } from "lodash-unified";
 
 export class I18n {
@@ -30,8 +29,7 @@ export class I18n {
     // "server.welcome" => zh_cn["server"]["welcome"];
     const dotVal = get(incomingLocale, key, defaultLocale);
     if (dotVal === undefined) {
-      logger.warn(`[i18n]: cannot find ${locale}["${key}"]`);
-      return "undefined";
+      throw new Error(`[i18n]: cannot find ${locale}["${key}"]`);
     }
     if (typeof dotVal !== "string") return JSON.stringify(dotVal);
     let strDotVal = dotVal;
@@ -50,8 +48,7 @@ export class I18n {
   // determine if the incoming character encoding type is valid
   static isValidate(charset: string): void {
     if (!encodingExists(charset)) {
-      logger.fatal(`[i18n]: unknown charset ${charset}`);
-      process.exit(1);
+      throw new Error(`[i18n]: unknown charset ${charset}`);
     }
   }
 

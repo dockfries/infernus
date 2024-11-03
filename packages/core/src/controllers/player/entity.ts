@@ -23,7 +23,6 @@ import type { IClientResRaw } from "../../interfaces";
 import type { TPos } from "../../types";
 import { isValidAnimateName } from "../../utils/animateUtils";
 import * as h from "../../utils/helperUtils";
-import { logger } from "../../logger";
 
 import { Vehicle } from "../vehicle/entity";
 import type { DynamicObject } from "core/wrapper/streamer";
@@ -123,10 +122,7 @@ export class Player {
   }
   setDrunkLevel(level: number) {
     if (level < 0 || level > 50000) {
-      logger.error(
-        new Error("[Player]: player's drunk level ranges from 0 to 50000"),
-      );
-      return false;
+      throw new Error("[Player]: player's drunk level ranges from 0 to 50000");
     }
     return w.SetPlayerDrunkLevel(this.id, level);
   }
@@ -290,8 +286,7 @@ export class Player {
   }
   setWantedLevel(level: number) {
     if (level < 0 || level > 6) {
-      logger.error("[Player]: player's wanted level ranges from 0 to 6");
-      return false;
+      throw new Error("[Player]: player's wanted level ranges from 0 to 6");
     }
     return w.SetPlayerWantedLevel(this.id, level);
   }
@@ -306,8 +301,7 @@ export class Player {
   }
   setWeather(weather: number) {
     if (weather < 0 || weather > 255) {
-      logger.warn("[Player]: The valid weather value is only 0 to 255");
-      return false;
+      throw new Error("[Player]: The valid weather value is only 0 to 255");
     }
     return w.SetPlayerWeather(this.id, weather);
   }
@@ -316,12 +310,10 @@ export class Player {
   }
   setTime(hour: number, minute: number) {
     if (hour < 0 || hour > 23) {
-      logger.warn("[Player]: The valid hour value is only 0 to 23");
-      return false;
+      throw new Error("[Player]: The valid hour value is only 0 to 23");
     }
     if (minute < 0 || minute > 59) {
-      logger.warn("[Player]: The valid minute value is only 0 to 59");
-      return false;
+      throw new Error("[Player]: The valid minute value is only 0 to 59");
     }
     return w.SetPlayerTime(this.id, hour, minute);
   }
@@ -347,8 +339,7 @@ export class Player {
   }
   setSkillLevel(skill: WeaponSkillsEnum, level: number) {
     if (level < 0 || level > 999) {
-      logger.warn("[Player]: The valid skill level is only 0 to 999");
-      return false;
+      throw new Error("[Player]: The valid skill level is only 0 to 999");
     }
     return w.SetPlayerSkillLevel(this.id, skill, level);
   }
@@ -460,8 +451,7 @@ export class Player {
   }
   playCrimeReport(suspect: Player, crimeId: number) {
     if (crimeId < 3 || crimeId > 22) {
-      logger.warn("[Player]: Available crime ids range from 3 to 22");
-      return false;
+      throw new Error("[Player]: Available crime ids range from 3 to 22");
     }
     return w.PlayCrimeReportForPlayer(this.id, suspect.id, crimeId);
   }
@@ -517,8 +507,9 @@ export class Player {
     Radius: number,
   ) {
     if (type < 0 || type > 13) {
-      logger.error("[Player]: The valid explosion type value is only 0 to 13");
-      return false;
+      throw new Error(
+        "[Player]: The valid explosion type value is only 0 to 13",
+      );
     }
     return w.CreateExplosionForPlayer(this.id, X, Y, Z, type, Radius);
   }
@@ -556,8 +547,7 @@ export class Player {
     forceSync: boolean | ForceSyncEnum = false,
   ) {
     if (!isValidAnimateName(animLib, animName)) {
-      logger.error("[Player]: Invalid anim library or name");
-      return false;
+      throw new Error("[Player]: Invalid anim library or name");
     }
     return w.ApplyAnimation(
       this.id,
@@ -632,8 +622,7 @@ export class Player {
   }
   getWeaponData(slot: number) {
     if (slot < 0 || slot > 12) {
-      logger.error("[Player]: weapon slots range from 0 to 12");
-      return;
+      throw new Error("[Player]: weapon slots range from 0 to 12");
     }
     const [weapons, ammo] = w.GetPlayerWeaponData(this.id, slot);
     return { weapons, ammo };
@@ -729,7 +718,7 @@ export class Player {
   ) {
     const validTypes = [2, 5, 69, 70, 71, 72];
     if (!validTypes.includes(type)) {
-      return logger.error(
+      throw new Error(
         `[Player]: sendClientCheck valid types are ${validTypes.toString()}`,
       );
     }

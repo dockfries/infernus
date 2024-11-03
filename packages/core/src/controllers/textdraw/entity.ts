@@ -1,7 +1,6 @@
 import type { TextDrawAlignEnum } from "core/enums";
 import { LimitsEnum, TextDrawFontsEnum } from "core/enums";
 import type { ITextDraw } from "core/interfaces";
-import { logger } from "core/logger";
 import * as w from "core/wrapper/native";
 import { PlayerEvent, type Player } from "../player";
 
@@ -18,20 +17,20 @@ export class TextDraw {
   constructor(textDraw: ITextDraw) {
     this.sourceInfo = textDraw;
   }
-  create(): void | this {
+  create(): this {
     if (this.id !== -1)
-      return logger.warn("[TextDraw]: Unable to create the textdraw again");
+      throw new Error("[TextDraw]: Unable to create the textdraw again");
     const { x, y, text, player } = this.sourceInfo;
     if (!player) {
       if (TextDraw.getInstances(true).length === LimitsEnum.MAX_TEXT_DRAWS)
-        return logger.warn(
+        throw new Error(
           "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
         );
       this._id = w.TextDrawCreate(x, y, text);
       TextDraw.globalTextDraws.set(this.id, this);
     } else {
       if (TextDraw.getInstances(false).length === LimitsEnum.MAX_TEXT_DRAWS)
-        return logger.warn(
+        throw new Error(
           "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
         );
       this._id = w.CreatePlayerTextDraw(player.id, x, y, text);
@@ -49,9 +48,8 @@ export class TextDraw {
 
     return this;
   }
-  destroy(): void | this {
-    if (this.id === -1)
-      return TextDraw.beforeCreateWarn("destroy the textdraw");
+  destroy(): this {
+    if (this.id === -1) TextDraw.beforeCreateWarn("destroy the textdraw");
     const { player } = this.sourceInfo;
     if (!player) {
       w.TextDrawDestroy(this.id);
@@ -129,8 +127,7 @@ export class TextDraw {
       return this;
     }
     if (size < 0) {
-      logger.warn("[TextDraw]: Invalid outline value");
-      return this;
+      throw new Error("[TextDraw]: Invalid outline value");
     }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawSetOutline(player.id, this.id, size);
@@ -210,8 +207,7 @@ export class TextDraw {
       return this;
     }
     if (size < 0) {
-      logger.warn("[TextDraw]: Invalid shadow value");
-      return this;
+      throw new Error("[TextDraw]: Invalid shadow value");
     }
     const { player } = this.sourceInfo;
     if (player) w.PlayerTextDrawSetShadow(player.id, this.id, size);
@@ -224,8 +220,7 @@ export class TextDraw {
       return this;
     }
     if (text.length === 0 || text.length > 1024) {
-      logger.warn("[TextDraw]: Invalid text length");
-      return this;
+      throw new Error("[TextDraw]: Invalid text length");
     }
     const { player: _player } = this.sourceInfo;
     // not-global
@@ -261,7 +256,7 @@ export class TextDraw {
     return this;
   }
   private static beforeCreateWarn(msg: string): void {
-    logger.warn(`[TextDraw]: Unable to ${msg} before create`);
+    throw new Error(`[TextDraw]: Unable to ${msg} before create`);
   }
   // player's textdraw should be shown / hidden only for whom it is created.
   show(player?: Player) {
@@ -274,8 +269,7 @@ export class TextDraw {
     else {
       if (player) w.TextDrawShowForPlayer(player.id, this.id);
       else {
-        logger.warn("[TextDraw]: invalid player for show");
-        return this;
+        throw new Error("[TextDraw]: invalid player for show");
       }
     }
     return this;
@@ -290,8 +284,7 @@ export class TextDraw {
     else {
       if (player) w.TextDrawHideForPlayer(player.id, this.id);
       else {
-        logger.warn("[TextDraw]: invalid player for hide");
-        return this;
+        throw new Error("[TextDraw]: invalid player for hide");
       }
     }
     return this;
@@ -306,8 +299,9 @@ export class TextDraw {
       w.TextDrawShowForAll(this.id);
       return this;
     }
-    logger.warn("[TextDraw]: player's textdraw should not be show for all.");
-    return this;
+    throw new Error(
+      "[TextDraw]: player's textdraw should not be show for all.",
+    );
   }
   hideAll() {
     if (this.id === -1) {
@@ -319,8 +313,9 @@ export class TextDraw {
       w.TextDrawHideForAll(this.id);
       return this;
     }
-    logger.warn("[TextDraw]: player's textdraw should not be hide for all.");
-    return this;
+    throw new Error(
+      "[TextDraw]: player's textdraw should not be hide for all.",
+    );
   }
   isValid(): boolean {
     const p = this.sourceInfo.player;

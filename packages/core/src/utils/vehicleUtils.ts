@@ -1,5 +1,3 @@
-import { logger } from "core/logger";
-
 export const vehCommonComponentArr = [
   0x08, 0x09, 0x0a, 0x19, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, 0x50, 0x51,
   0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x60, 0x61, 0x62,
@@ -279,7 +277,6 @@ export const isValidVehComponent = (
   componentId: number,
 ): boolean => {
   if (!isValidVehModelId(modelId)) {
-    logger.error("[vehicleUtils]: Invalid model id");
     return false;
   }
   const cList = vehComponentArr[modelId - 400];

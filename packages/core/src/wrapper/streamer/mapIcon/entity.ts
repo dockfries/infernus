@@ -1,5 +1,4 @@
 import type { IDynamicMapIcon } from "core/interfaces";
-import { logger } from "core/logger";
 import { rgba } from "core/utils/colorUtils";
 
 import {
@@ -25,9 +24,9 @@ export class DynamicMapIcon {
   constructor(mapIcon: IDynamicMapIcon) {
     this.sourceInfo = mapIcon;
   }
-  create(): void | this {
+  create(): this {
     if (this.id !== -1)
-      return logger.warn("[StreamerMapIcon]: Unable to create map icon again");
+      throw new Error("[StreamerMapIcon]: Unable to create map icon again");
     let {
       style,
       streamDistance,
@@ -40,7 +39,7 @@ export class DynamicMapIcon {
     const { x, y, z, type, color: color, extended } = this.sourceInfo;
 
     if (type < 0 || type > 63)
-      return logger.error("[StreamerMapIcon]: Invalid map icon type");
+      throw new Error("[StreamerMapIcon]: Invalid map icon type");
 
     style ??= MapIconStyles.LOCAL;
     streamDistance ??= StreamerDistances.MAP_ICON_SD;
@@ -100,9 +99,9 @@ export class DynamicMapIcon {
     DynamicMapIcon.mapIcons.set(this._id, this);
     return this;
   }
-  destroy(): void | this {
+  destroy(): this {
     if (this.id === -1 && !streamerFlag.skip)
-      return logger.warn(
+      throw new Error(
         "[StreamerMapIcon]: Unable to destroy the map icon before create",
       );
     if (!streamerFlag.skip) DestroyDynamicMapIcon(this.id);
@@ -114,9 +113,9 @@ export class DynamicMapIcon {
     if (streamerFlag.skip && this.id !== -1) return true;
     return IsValidDynamicMapIcon(this.id);
   }
-  toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): number {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[StreamerMapIcon]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(

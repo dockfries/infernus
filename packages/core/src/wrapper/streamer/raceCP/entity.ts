@@ -1,7 +1,6 @@
 import type { Player } from "core/controllers/player";
 import type { IDynamicRaceCp } from "core/interfaces";
 
-import { logger } from "core/logger";
 import {
   CreateDynamicRaceCP,
   CreateDynamicRaceCPEx,
@@ -28,18 +27,17 @@ export class DynamicRaceCP {
   constructor(checkPoint: IDynamicRaceCp) {
     this.sourceInfo = checkPoint;
   }
-  create(): void | this {
+  create(): this {
     if (this.id !== -1)
-      return logger.warn("[StreamerRaceCP]: Unable to create checkpoint again");
+      throw new Error("[StreamerRaceCP]: Unable to create checkpoint again");
     let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
       this.sourceInfo;
     const { type, size, x, y, z, nextX, nextY, nextZ, extended } =
       this.sourceInfo;
 
-    if (type < 0 || type > 8)
-      return logger.error("[StreamerRaceCP]: Invalid type");
+    if (type < 0 || type > 8) throw new Error("[StreamerRaceCP]: Invalid type");
 
-    if (size < 0) return logger.error("[StreamerRaceCP]: Invalid size");
+    if (size < 0) throw new Error("[StreamerRaceCP]: Invalid size");
 
     streamDistance ??= StreamerDistances.RACE_CP_SD;
     priority ??= 0;
@@ -101,9 +99,9 @@ export class DynamicRaceCP {
     DynamicRaceCP.checkpoints.set(this._id, this);
     return this;
   }
-  destroy(): void | this {
+  destroy(): this {
     if (this.id === -1 && !streamerFlag.skip)
-      return logger.warn(
+      throw new Error(
         "[StreamerRaceCP]: Unable to destroy the checkpoint before create",
       );
     if (!streamerFlag.skip) DestroyDynamicCP(this.id);
@@ -115,9 +113,9 @@ export class DynamicRaceCP {
     if (streamerFlag.skip && this.id !== -1) return true;
     return IsValidDynamicCP(this.id);
   }
-  togglePlayer(player: Player, toggle: boolean): void | this {
+  togglePlayer(player: Player, toggle: boolean): this {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[StreamerRaceCP]: Unable to toggle the player before create",
       );
     TogglePlayerDynamicRaceCP(player.id, this.id, toggle);
@@ -135,9 +133,9 @@ export class DynamicRaceCP {
       GetPlayerVisibleDynamicRaceCP(player.id),
     );
   }
-  toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): number {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[StreamerRaceCP]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(

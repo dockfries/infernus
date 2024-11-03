@@ -1,6 +1,5 @@
 import * as w from "core/wrapper/native";
 import { LimitsEnum } from "../../enums";
-import { logger } from "../../logger";
 import { PlayerEvent, type Player } from "../player";
 import { rgba } from "../../utils/colorUtils";
 import type { IGangZone } from "core/interfaces";
@@ -23,12 +22,12 @@ export class GangZone {
 
   create(): void {
     if (this.id !== -1)
-      return logger.warn("[GangZone]: Unable to create the gangzone again");
+      throw new Error("[GangZone]: Unable to create the gangzone again");
 
     const { player } = this.sourceInfo;
     if (!player) {
       if (GangZone.getInstances(true).length === LimitsEnum.MAX_GANG_ZONES)
-        return logger.warn(
+        throw new Error(
           "[GangZone]: Unable to continue to create gangzone, maximum allowable quantity has been reached",
         );
       const { minX, minY, maxX, maxY } = this.sourceInfo;
@@ -36,7 +35,7 @@ export class GangZone {
       GangZone.globalGangZones.set(this.id, this);
     } else {
       if (GangZone.getInstances(false).length === LimitsEnum.MAX_GANG_ZONES)
-        return logger.warn(
+        throw new Error(
           "[GangZone]: Unable to continue to create gangzone, maximum allowable quantity has been reached",
         );
       const { minX, minY, maxX, maxY } = this.sourceInfo;
@@ -55,7 +54,7 @@ export class GangZone {
 
   destroy() {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[GangZone]: Unable to destroy the gangzone before create",
       );
 
@@ -73,30 +72,28 @@ export class GangZone {
 
   showForAll(color: string | number) {
     if (this.id === -1) {
-      logger.warn("[GangZone]: Unable to show the gangzone before create");
-      return this;
+      throw new Error("[GangZone]: Unable to show the gangzone before create");
     }
     const p = this.sourceInfo.player;
     if (!p) {
       w.GangZoneShowForAll(this.id, color);
       return this;
     }
-    logger.warn("[GangZone]: player's gangzone should not be show for all.");
-    return this;
+    throw new Error(
+      "[GangZone]: player's gangzone should not be show for all.",
+    );
   }
 
   showForPlayer(color: string | number, player?: Player) {
     if (this.id === -1) {
-      logger.warn("[GangZone]: Unable to show the gangzone before create");
-      return this;
+      throw new Error("[GangZone]: Unable to show the gangzone before create");
     }
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneShow(p.id, this.id, rgba(color));
     else {
       if (player) w.GangZoneShowForPlayer(player.id, this.id, color);
       else {
-        logger.warn("[GangZone]: invalid player for show");
-        return this;
+        throw new Error("[GangZone]: invalid player for show");
       }
     }
     return this;
@@ -104,30 +101,28 @@ export class GangZone {
 
   hideForAll() {
     if (this.id === -1) {
-      logger.warn("[GangZone]: Unable to hide the gangzone before create");
-      return this;
+      throw new Error("[GangZone]: Unable to hide the gangzone before create");
     }
     const p = this.sourceInfo.player;
     if (!p) {
       w.GangZoneHideForAll(this.id);
       return this;
     }
-    logger.warn("[GangZone]: player's gangzone should not be hide for all.");
-    return this;
+    throw new Error(
+      "[GangZone]: player's gangzone should not be hide for all.",
+    );
   }
 
   hideForPlayer(player?: Player) {
     if (this.id === -1) {
-      logger.warn("[GangZone]: Unable to hide the gangzone before create");
-      return this;
+      throw new Error("[GangZone]: Unable to hide the gangzone before create");
     }
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneHide(p.id, this.id);
     else {
       if (player) w.GangZoneHideForPlayer(player.id, this.id);
       else {
-        logger.warn("[GangZone]: invalid player for hide");
-        return this;
+        throw new Error("[GangZone]: invalid player for hide");
       }
     }
     return this;
@@ -135,30 +130,28 @@ export class GangZone {
 
   flashForAll(flashColor: string | number) {
     if (this.id === -1) {
-      logger.warn("[GangZone]: Unable to flash the gangzone before create");
-      return this;
+      throw new Error("[GangZone]: Unable to flash the gangzone before create");
     }
     const p = this.sourceInfo.player;
     if (!p) {
       w.GangZoneFlashForAll(this.id, flashColor);
       return this;
     }
-    logger.warn("[GangZone]: player's gangzone should not be flash for all.");
-    return this;
+    throw new Error(
+      "[GangZone]: player's gangzone should not be flash for all.",
+    );
   }
 
   flashForPlayer(player: Player, flashColor: string | number) {
     if (this.id === -1) {
-      logger.warn("[GangZone]: Unable to flash the gangzone before create");
-      return this;
+      throw new Error("[GangZone]: Unable to flash the gangzone before create");
     }
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneFlash(p.id, this.id, rgba(flashColor));
     else {
       if (player) w.GangZoneFlashForPlayer(player.id, this.id, flashColor);
       else {
-        logger.warn("[GangZone]: invalid player for flash");
-        return this;
+        throw new Error("[GangZone]: invalid player for flash");
       }
     }
     return this;
@@ -166,36 +159,32 @@ export class GangZone {
 
   stopFlashForAll() {
     if (this.id === -1) {
-      logger.warn(
+      throw new Error(
         "[GangZone]: Unable to stop flash the gangzone before create",
       );
-      return this;
     }
     const p = this.sourceInfo.player;
     if (!p) {
       w.GangZoneStopFlashForAll(this.id);
       return this;
     }
-    logger.warn(
+    throw new Error(
       "[GangZone]: player's gangzone should not be stop flash for all.",
     );
-    return this;
   }
 
   stopFlashForPlayer(player: Player) {
     if (this.id === -1) {
-      logger.warn(
+      throw new Error(
         "[GangZone]: Unable to stop flash the gangzone before create",
       );
-      return this;
     }
     const p = this.sourceInfo.player;
     if (p) w.PlayerGangZoneStopFlash(p.id, this.id);
     else {
       if (player) w.GangZoneStopFlashForPlayer(player.id, this.id);
       else {
-        logger.warn("[GangZone]: invalid player for flash");
-        return this;
+        throw new Error("[GangZone]: invalid player for flash");
       }
     }
     return this;
@@ -222,17 +211,17 @@ export class GangZone {
     return w.IsGangZoneVisibleForPlayer(player.id, this.id);
   }
 
-  getColorForPlayer(player: Player): void | number {
+  getColorForPlayer(player: Player): number {
     if (this.id === -1)
-      return logger.warn("[GangZone]: Unable to get color before create");
+      throw new Error("[GangZone]: Unable to get color before create");
     const p = this.sourceInfo.player;
     if (p) return w.PlayerGangZoneGetColor(p.id, this.id);
     return w.GangZoneGetColorForPlayer(player.id, this.id);
   }
 
-  getFlashColorForPlayer(player: Player): void | number {
+  getFlashColorForPlayer(player: Player): number {
     if (this.id === -1)
-      return logger.warn("[GangZone]: Unable to get flash color before create");
+      throw new Error("[GangZone]: Unable to get flash color before create");
     const p = this.sourceInfo.player;
     if (p) return w.PlayerGangZoneGetFlashColor(p.id, this.id);
     return w.GangZoneGetFlashColorForPlayer(player.id, this.id);
@@ -245,9 +234,9 @@ export class GangZone {
     return w.IsGangZoneFlashingForPlayer(player.id, this.id);
   }
 
-  getPos(): void | GangZonePos {
+  getPos(): GangZonePos {
     if (this.id === -1)
-      return logger.warn("[GangZone]: Unable to get position before create");
+      throw new Error("[GangZone]: Unable to get position before create");
     const p = this.sourceInfo.player;
     if (p) return w.PlayerGangZoneGetPos(p.id, this.id);
     return w.GangZoneGetPos(this.id);
@@ -255,8 +244,7 @@ export class GangZone {
 
   useCheck(toggle: boolean) {
     if (this.id === -1) {
-      logger.warn("[GangZone]: Unable to use check before create");
-      return this;
+      throw new Error("[GangZone]: Unable to use check before create");
     }
     const p = this.sourceInfo.player;
     if (p) w.UsePlayerGangZoneCheck(p.id, this.id, toggle);

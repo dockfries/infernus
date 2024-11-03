@@ -1,5 +1,4 @@
 import type { Player } from "core/controllers/player";
-import { logger } from "core/logger";
 import type { IDynamicCheckPoint } from "core/interfaces";
 import {
   CreateDynamicCP,
@@ -27,9 +26,9 @@ export class DynamicCheckpoint {
   constructor(checkPoint: IDynamicCheckPoint) {
     this.sourceInfo = checkPoint;
   }
-  create(): void | this {
+  create(): this {
     if (this.id !== -1)
-      return logger.warn(
+      throw new Error(
         "[StreamerCheckpoint]: Unable to create checkpoint again",
       );
     let {
@@ -43,7 +42,7 @@ export class DynamicCheckpoint {
     const { size, x, y, z, extended } = this.sourceInfo;
 
     if (size < 0)
-      return logger.error("[StreamerCheckpoint]: Invalid checkpoint size");
+      throw new Error("[StreamerCheckpoint]: Invalid checkpoint size");
 
     streamDistance ??= StreamerDistances.CP_SD;
     priority ??= 0;
@@ -97,9 +96,9 @@ export class DynamicCheckpoint {
     DynamicCheckpoint.checkpoints.set(this._id, this);
     return this;
   }
-  destroy(): void | this {
+  destroy(): this {
     if (this.id === -1 && !streamerFlag.skip)
-      return logger.warn(
+      throw new Error(
         "[StreamerCheckpoint]: Unable to destroy the checkpoint before create",
       );
     if (!streamerFlag.skip) DestroyDynamicCP(this.id);
@@ -111,9 +110,9 @@ export class DynamicCheckpoint {
     if (streamerFlag.skip && this.id !== -1) return true;
     return IsValidDynamicCP(this.id);
   }
-  togglePlayer(player: Player, toggle: boolean): void | this {
+  togglePlayer(player: Player, toggle: boolean): this {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[StreamerCheckpoint]: Unable to toggle the player before create",
       );
     TogglePlayerDynamicCP(player.id, this.id, toggle);
@@ -131,9 +130,9 @@ export class DynamicCheckpoint {
       GetPlayerVisibleDynamicCP(player.id),
     );
   }
-  toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): number {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[StreamerCheckpoint]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(StreamerItemTypes.CP, this.id, toggle);

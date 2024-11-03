@@ -1,6 +1,5 @@
 import type { IFilterScript } from "../../interfaces";
 import { onExit, onInit } from "../gamemode/event";
-import { logger } from "../../logger";
 
 const preInstallScripts: Array<IFilterScript> = [];
 const installedScripts: Array<IFilterScript> = [];
@@ -29,8 +28,7 @@ export const loadUseScript = async (scriptName: string) => {
       }
     });
   } catch (err) {
-    logger.error(`[GameMode]: script ${scriptName} load fail`);
-    logger.warn(err);
+    throw new Error(`[GameMode]: script ${scriptName} load fail\nerr:${err}`);
   }
 };
 export const unloadUseScript = async (scriptName: string) => {
@@ -60,8 +58,7 @@ export const unloadUseScript = async (scriptName: string) => {
       }
     });
   } catch (err) {
-    logger.error(`[GameMode]: script ${scriptName} unload fail`);
-    logger.warn(err);
+    throw new Error(`[GameMode]: script ${scriptName} unload fail\n${err}`);
   }
 };
 
@@ -94,8 +91,9 @@ export const useFilterScript = function (
     preInstallScripts.some((fs) => fs.name === script.name) ||
     installedScripts.some((fs) => fs.name === script.name)
   ) {
-    logger.warn(`[GameMode]: script ${script.name} has already been applied`);
-    return;
+    throw new Error(
+      `[GameMode]: script ${script.name} has already been applied`,
+    );
   }
   script.load = script.load.bind(script, ...options);
   preInstallScripts.push(script);

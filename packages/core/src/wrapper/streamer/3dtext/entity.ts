@@ -1,6 +1,5 @@
 import { InvalidEnum } from "core/enums";
 import type { IDynamic3DTextLabel } from "core/interfaces";
-import { logger } from "core/logger";
 import { rgba } from "core/utils/colorUtils";
 import {
   CreateDynamic3DTextLabel,
@@ -30,9 +29,9 @@ export class Dynamic3DTextLabel {
   constructor(textLabel: IDynamic3DTextLabel) {
     this.sourceInfo = textLabel;
   }
-  create(): void | this {
+  create(): this {
     if (this.id !== -1)
-      return logger.warn("[Streamer3DTextLabel]: Unable to create again");
+      throw new Error("[Streamer3DTextLabel]: Unable to create again");
     let {
       attachedPlayer,
       attachedVehicle,
@@ -113,11 +112,9 @@ export class Dynamic3DTextLabel {
     Dynamic3DTextLabel.texts.set(this.id, this);
     return this;
   }
-  destroy(): void | this {
+  destroy(): this {
     if (this.id === -1 && !streamerFlag.skip)
-      return logger.warn(
-        "[Streamer3DTextLabel]: Unable to destroy before create",
-      );
+      throw new Error("[Streamer3DTextLabel]: Unable to destroy before create");
     if (!streamerFlag.skip) DestroyDynamic3DTextLabel(this.id);
     Dynamic3DTextLabel.texts.delete(this.id);
     this._id = -1;
@@ -127,23 +124,23 @@ export class Dynamic3DTextLabel {
     if (streamerFlag.skip && this.id !== -1) return true;
     return IsValidDynamic3DTextLabel(this.id);
   }
-  getColor(): void | string | number {
+  getColor(): string | number {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[Streamer3DTextLabel]: Unable to get color before create",
       );
     return this.sourceInfo.color;
   }
   getCharset(): void | string {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[Streamer3DTextLabel]: Unable to get charset before create",
       );
     return this.sourceInfo.charset;
   }
-  getText(): void | string {
+  getText(): string {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[Streamer3DTextLabel]: Unable to get text before create",
       );
     return GetDynamic3DTextLabelText(
@@ -155,9 +152,9 @@ export class Dynamic3DTextLabel {
     color: string | number,
     text: string,
     charset = this.sourceInfo.charset,
-  ): void | number {
+  ): number {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[Streamer3DTextLabel]: Unable to update text before create",
       );
     this.sourceInfo.charset = charset;
@@ -168,9 +165,9 @@ export class Dynamic3DTextLabel {
       charset || "utf8",
     );
   }
-  toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): number {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[Streamer3DTextLabel]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(

@@ -10,7 +10,6 @@ import {
 } from "core/utils/vehicleUtils";
 import { rgba } from "core/utils/colorUtils";
 import * as v from "core/wrapper/native";
-import { logger } from "core/logger";
 import { VectorSize } from "core/wrapper/native";
 
 export class Vehicle {
@@ -31,9 +30,9 @@ export class Vehicle {
   }
   create(ignoreRange = false): void {
     if (this.id !== -1)
-      return logger.warn("[Vehicle]: Unable to create the vehicle again");
+      throw new Error("[Vehicle]: Unable to create the vehicle again");
     if (Vehicle.createdCount === LimitsEnum.MAX_VEHICLES)
-      return logger.warn(
+      throw new Error(
         "[Vehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached",
       );
     const { modelId, x, y, z, zAngle, color, respawnDelay, addSiren } =
@@ -81,9 +80,7 @@ export class Vehicle {
   }
   destroy(): void {
     if (this.id === -1)
-      return logger.warn(
-        "[Vehicle]: Unable to destroy the vehicle before create",
-      );
+      throw new Error("[Vehicle]: Unable to destroy the vehicle before create");
     v.DestroyVehicle(this.id);
     Vehicle.createdCount--;
     Vehicle.vehicles.delete(this._id);
@@ -92,19 +89,17 @@ export class Vehicle {
   addComponent(componentId: number): number {
     if (this.id === -1) return 0;
     if (!isValidVehComponent(this.getModel(), componentId)) {
-      logger.warn(
+      throw new Error(
         `[Vehicle]: Invalid component id ${componentId} attempted to attach to the vehicle ${this}`,
       );
-      return 0;
     }
     return v.AddVehicleComponent(this.id, componentId);
   }
   removeComponent(componentId: number): number {
     if (this.getComponentInSlot(Vehicle.getComponentType(componentId)) === 0) {
-      logger.warn(
+      throw new Error(
         `[Vehicle]: component id ${componentId} does not exist on this vehicle`,
       );
-      return 0;
     }
     return v.RemoveVehicleComponent(this.id, componentId);
   }
@@ -131,8 +126,9 @@ export class Vehicle {
     if (this.id === -1) return 0;
     return v.SetVehiclePos(this.id, x, y, z);
   }
-  getPos(): void | TPos {
-    if (this.id === -1) return;
+  getPos(): TPos {
+    if (this.id === -1)
+      throw new Error("[Vehicle]: Unable to getPos before create");
     return v.GetVehiclePos(this.id);
   }
   getHealth(): number {
@@ -151,7 +147,7 @@ export class Vehicle {
     if (this.id === -1) return 0;
     if (seatId < 0) return 0;
     if (seatId > 4) {
-      logger.warn(
+      throw new Error(
         "[Vehicle]: If the seat is invalid or is taken, will cause a crash when they EXIT the vehicle.",
       );
     }
@@ -168,14 +164,14 @@ export class Vehicle {
   setNumberPlate(numberplate: string): number {
     if (this.id === -1) return 0;
     if (numberplate.length < 1 || numberplate.length > 32) {
-      logger.error(
+      throw new Error(
         "[Vehicle]: The length of the number plate ranges from 32 characters",
       );
-      return 0;
     }
     if (!/^[a-zA-Z0-9]+$/.test(numberplate)) {
-      logger.error("[Vehicle]: number plates only allow letters and numbers");
-      return 0;
+      throw new Error(
+        "[Vehicle]: number plates only allow letters and numbers",
+      );
     }
     return v.SetVehicleNumberPlate(this.id, numberplate);
   }
@@ -187,8 +183,9 @@ export class Vehicle {
     if (this.id === -1) return false;
     return v.SetVehicleVelocity(this.id, X, Y, Z);
   }
-  getVelocity(): void | TPos {
-    if (this.id === -1) return;
+  getVelocity(): TPos {
+    if (this.id === -1)
+      throw new Error("[Vehicle]: Unable to getVelocity before create");
     const [x, y, z] = v.GetVehicleVelocity(this.id);
     return { x, y, z };
   }
@@ -226,8 +223,9 @@ export class Vehicle {
   ): TPos {
     return v.GetVehicleModelInfo(vehicleModel, infoType);
   }
-  getModelInfo(infoType: VehicleModelInfoEnum): void | TPos {
-    if (this.id === -1) return;
+  getModelInfo(infoType: VehicleModelInfoEnum): TPos {
+    if (this.id === -1)
+      throw new Error("[Vehicle]: Unable to getModelInfo before create");
     return Vehicle.getModelInfo(this.getModel(), infoType);
   }
   getRotationQuat() {

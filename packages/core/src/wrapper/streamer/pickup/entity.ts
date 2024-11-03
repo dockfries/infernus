@@ -1,5 +1,4 @@
 import type { IDynamicPickup } from "core/interfaces";
-import { logger } from "core/logger";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
 import { streamerFlag } from "../flag";
@@ -15,9 +14,9 @@ export class DynamicPickup {
   constructor(pickup: IDynamicPickup) {
     this.sourceInfo = pickup;
   }
-  create(): void | this {
+  create(): this {
     if (this.id !== -1)
-      return logger.warn("[StreamerPickup]: Unable to create pickup again");
+      throw new Error("[StreamerPickup]: Unable to create pickup again");
     let {
       streamDistance,
       worldId,
@@ -28,7 +27,7 @@ export class DynamicPickup {
     } = this.sourceInfo;
     const { type, modelId: modelId, x, y, z, extended } = this.sourceInfo;
 
-    if (type < 0) return logger.error("[StreamerPickup]: Invalid pickup type");
+    if (type < 0) throw new Error("[StreamerPickup]: Invalid pickup type");
 
     streamDistance ??= s.StreamerDistances.PICKUP_SD;
     priority ??= 0;
@@ -84,9 +83,9 @@ export class DynamicPickup {
     DynamicPickup.pickups.set(this._id, this);
     return this;
   }
-  destroy(): void | this {
+  destroy(): this {
     if (this.id === -1 && !streamerFlag.skip)
-      return logger.warn(
+      throw new Error(
         "[StreamerPickup]: Unable to destroy the pickup before create",
       );
     if (!streamerFlag.skip) s.DestroyDynamicPickup(this.id);
@@ -98,9 +97,9 @@ export class DynamicPickup {
     if (streamerFlag.skip && this.id !== -1) return true;
     return s.IsValidDynamicPickup(this.id);
   }
-  toggleCallbacks(toggle = true): void | number {
+  toggleCallbacks(toggle = true): number {
     if (this.id === -1)
-      return logger.warn(
+      throw new Error(
         "[StreamerPickup]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(

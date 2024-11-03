@@ -1,5 +1,3 @@
-import { logger } from "core/logger";
-
 export type CallbackRet = boolean | number | void;
 
 export type PromisifyCallbackRet = CallbackRet | Promise<CallbackRet>;
@@ -55,9 +53,8 @@ function executeMiddlewares<T extends object>(
 
         return ret;
       } catch (err) {
-        const msg = `executing event [name:${name},index:${index}] error:`;
-        logger.error(msg);
-        logger.error(err);
+        const msg = `executing event [name:${name},index:${index}] error:\n${err}`;
+        console.log(msg);
       }
       return defaultValue;
     }
@@ -80,7 +77,6 @@ export function defineEvent<T extends object>(options: Options<T>) {
 
   if (isDefined) {
     const msg = `event [name:${name}] error: already defined.`;
-    logger.error(msg);
     throw new Error(msg);
   }
 
