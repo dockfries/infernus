@@ -306,7 +306,15 @@ export class Vehicle {
     if (this.id === -1) return undefined;
     const [engine, lights, alarm, doors, bonnet, boot, objective] =
       v.GetVehicleParamsEx(this.id);
-    return { engine, lights, alarm, doors, bonnet, boot, objective };
+    return {
+      engine: !!engine,
+      lights: !!lights,
+      alarm: !!alarm,
+      doors: !!doors,
+      bonnet: !!bonnet,
+      boot: !!boot,
+      objective: !!objective,
+    };
   }
   getParamsSirenState(): number {
     if (this.id === -1) return -2;

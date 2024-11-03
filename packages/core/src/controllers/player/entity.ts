@@ -25,7 +25,7 @@ import { isValidAnimateName } from "../../utils/animateUtils";
 import * as h from "../../utils/helperUtils";
 import { logger } from "../../logger";
 
-import type { Vehicle } from "../vehicle/entity";
+import { Vehicle } from "../vehicle/entity";
 import type { DynamicObject } from "core/wrapper/streamer";
 import { defineEvent } from "../bus";
 import { VectorSize } from "core/wrapper/native";
@@ -412,13 +412,13 @@ export class Player {
     const [x, y, z] = w.GetPlayerCameraPos(this.id);
     return { x, y, z };
   }
-  getCameraTargetPlayer(players: Array<Player>): Player | undefined {
+  getCameraTargetPlayer(): Player | undefined {
     const target = w.GetPlayerCameraTargetPlayer(this.id);
-    return players.find((p) => p.id === target);
+    return Player.getInstances().find((p) => p.id === target);
   }
-  getCameraTargetVehicle(vehicles: Array<Vehicle>) {
+  getCameraTargetVehicle() {
     const target = w.GetPlayerCameraTargetVehicle(this.id);
-    return vehicles.find((v) => v.id === target);
+    return Vehicle.getInstances().find((v) => v.id === target);
   }
   getCameraZoom(): number {
     return w.GetPlayerCameraZoom(this.id);
@@ -531,18 +531,18 @@ export class Player {
   disableRemoteVehicleCollisions(disable: boolean) {
     return w.DisableRemoteVehicleCollisions(this.id, disable);
   }
-  getVehicle(vehicles: Array<Vehicle>) {
+  getVehicle() {
     if (!this.isInAnyVehicle()) return undefined;
     const vehId: number = w.GetPlayerVehicleID(this.id);
-    return vehicles.find((v) => v.id === vehId);
+    return Vehicle.getInstances().find((v) => v.id === vehId);
   }
   getVehicleSeat(): number {
     return w.GetPlayerVehicleSeat(this.id);
   }
-  getSurfingVehicle(vehicles: Array<Vehicle>) {
+  getSurfingVehicle() {
     const vehId = w.GetPlayerSurfingVehicleID(this.id);
     if (vehId === InvalidEnum.VEHICLE_ID) return undefined;
-    return vehicles.find((v) => v.id === vehId);
+    return Vehicle.getInstances().find((v) => v.id === vehId);
   }
   applyAnimation(
     animLib: string,
@@ -617,10 +617,10 @@ export class Player {
   getCustomSkin(): number {
     return w.GetPlayerCustomSkin(this.id);
   }
-  getTargetPlayer(players: Array<Player>): undefined | Player {
+  getTargetPlayer(): Player | undefined {
     const pid = w.GetPlayerTargetPlayer(this.id);
     if (pid === InvalidEnum.PLAYER_ID) return undefined;
-    return players.find((p) => p.id === pid);
+    return Player.getInstances().find((p) => p.id === pid);
   }
   getLastShotVectors() {
     const [fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ] =

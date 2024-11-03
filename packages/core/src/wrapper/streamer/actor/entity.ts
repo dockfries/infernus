@@ -1,7 +1,7 @@
 import type { Player } from "core/controllers/player";
 import type { IDynamicActor } from "core/interfaces";
 import { logger } from "core/logger";
-import { getAnimateDurationByLibName } from "core/utils/animateUtils";
+import { isValidAnimateName } from "core/utils/animateUtils";
 import * as w from "core/wrapper/native";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
@@ -125,28 +125,31 @@ export class DynamicActor {
   applyAnimation(
     animLib: string,
     animName: string,
+    speed = 4.1,
     loop = false,
     lockX = true,
     lockY = true,
     freeze = false,
+    time = 0,
   ): void | number {
     if (this.id === -1)
       return logger.warn(
         "[StreamerActor]: Unable to apply animation before create",
       );
-    const duration = getAnimateDurationByLibName(animLib, animName);
-    if (duration === undefined)
-      return logger.error("[StreamerActor]: Invalid anim library or name");
+    if (!isValidAnimateName(animLib, animName)) {
+      logger.error("[StreamerActor]: Invalid anim library or name");
+      return;
+    }
     return s.ApplyDynamicActorAnimation(
       this.id,
       animLib,
       animName,
-      4.1,
+      speed,
       loop,
       lockX,
       lockY,
       freeze,
-      loop ? 0 : duration,
+      time,
     );
   }
   clearAnimations(): void | number {
