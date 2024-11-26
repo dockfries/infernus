@@ -19,7 +19,7 @@ export enum CarModTypeEnum {
   REAR_BULLBAR,
 }
 export enum VehicleParamsEnum {
-  UNSET,
+  UNSET = -1,
   OFF,
   ON,
 }

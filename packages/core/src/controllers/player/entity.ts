@@ -421,9 +421,9 @@ export class Player {
     posZ = 0.0,
     distance = 5.0,
   ) {
-    let usepos = false;
+    let usePos = false;
     if (posX !== 0.0 || posY !== 0.0 || posZ !== 0.0) {
-      usepos = true;
+      usePos = true;
     }
     return w.PlayAudioStreamForPlayer(
       this.id,
@@ -432,7 +432,7 @@ export class Player {
       posY,
       posZ,
       distance,
-      usepos,
+      usePos,
     );
   }
   stopAudioStream() {
@@ -500,9 +500,9 @@ export class Player {
     );
   }
   createExplosion(
-    X: number,
-    Y: number,
-    Z: number,
+    x: number,
+    y: number,
+    z: number,
     type: number,
     Radius: number,
   ) {
@@ -511,7 +511,7 @@ export class Player {
         "[Player]: The valid explosion type value is only 0 to 13",
       );
     }
-    return w.CreateExplosionForPlayer(this.id, X, Y, Z, type, Radius);
+    return w.CreateExplosionForPlayer(this.id, x, y, z, type, Radius);
   }
   static isConnected(id: number): boolean {
     return w.IsPlayerConnected(id);
@@ -568,9 +568,9 @@ export class Player {
   getAnimationIndex(): number {
     return w.GetPlayerAnimationIndex(this.id);
   }
-  getAnimationName() {
-    const [animLib, animName] = w.GetAnimationName(this.getAnimationIndex());
-    return { animLib, animName };
+  getAnimationName(index: number = this.getAnimationIndex()) {
+    const [animLib, animName] = w.GetAnimationName(index);
+    return { index, animLib, animName };
   }
   setShopName(shopName: string) {
     return w.SetPlayerShopName(this.id, shopName);

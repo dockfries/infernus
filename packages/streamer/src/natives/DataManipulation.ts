@@ -1,5 +1,5 @@
 import type { StreamerItemTypes } from "../definitions/ItemTypes";
-import type { E_STREAMER } from "../enum";
+import type { E_STREAMER } from "../enums";
 
 export type StreamerArrayData =
   | E_STREAMER.AREA_ID
