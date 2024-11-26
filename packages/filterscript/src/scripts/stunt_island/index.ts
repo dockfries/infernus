@@ -125,7 +125,7 @@ export const StuntIsland: IStuntIsLandFS = {
           newState === PlayerStateEnum.PASSENGER
         ) {
           // Get the players vehicle ID
-          const player_vehicle = player.getVehicle(Vehicle.getInstances());
+          const player_vehicle = player.getVehicle();
 
           // Check if the player is driving one of the Infernuses created by this filterScript
           if (player_vehicle && isSIInfernus(player_vehicle)) {
@@ -159,7 +159,7 @@ export const StuntIsland: IStuntIsLandFS = {
           if (player.getState() !== PlayerStateEnum.DRIVER) return next();
 
           // Check if the vehicle model is an Infernus
-          const veh = player.getVehicle(Vehicle.getInstances());
+          const veh = player.getVehicle();
           if (veh && veh.getModel() === 411) {
             // Add 10x NOS
             veh.addComponent(1010);

@@ -11,11 +11,10 @@ import {
   TextDraw,
   TextDrawEvent,
   TextDrawFontsEnum,
-  Vehicle,
-  VehicleModelInfoEnum,
 } from "@infernus/core";
 import * as constants from "./constants";
 import { degreesToRadians } from "filterscript/utils/convert";
+import { spawnVehicleInFrontOfPlayer } from "filterscript/utils/gl_common";
 
 const gTotalItems = constants.TOTAL_ITEMS;
 const gBackgroundTextDraw = new Map<Player, TextDraw>();
@@ -283,42 +282,6 @@ function destroySelectionMenu(player: Player) {
   gCurrentPageTextDraw.delete(player);
   gNextButtonTextDraw.delete(player);
   gPrevButtonTextDraw.delete(player);
-}
-
-function spawnVehicleInFrontOfPlayer(
-  player: Player,
-  vehicleModel: number,
-  color1: number,
-  color2: number,
-) {
-  const { x, y, z } = player.getPos()!;
-
-  let facing = player.getFacingAngle();
-
-  const { x: size_x, z: size_z } = Vehicle.getModelInfo(
-    vehicleModel,
-    VehicleModelInfoEnum.SIZE,
-  );
-
-  const distance = size_x + 0.5;
-
-  const _x = x + distance * Math.sin(degreesToRadians(-facing));
-  const _y = y + distance * Math.cos(degreesToRadians(-facing));
-
-  facing += 90.0;
-  if (facing > 360.0) facing -= 360.0;
-
-  const veh = new Vehicle({
-    modelId: vehicleModel,
-    x: _x,
-    y: _y,
-    z: z + size_z * 0.25,
-    zAngle: facing,
-    color: [color1, color2],
-    respawnDelay: -1,
-  });
-  veh.create();
-  return veh;
 }
 
 function spawnObjectInFrontOfPlayer(player: Player, model: number) {
