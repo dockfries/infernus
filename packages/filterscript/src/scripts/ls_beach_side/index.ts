@@ -716,7 +716,7 @@ export const LSBeachSide: ILSBeachSideFS = {
       },
     );
 
-    const offs = [onConnect, onMoved, onKeyStateChange];
+    const offs: (() => any)[] = [onConnect, onMoved, onKeyStateChange];
 
     // Un-comment the OnPlayerCommandText callback below (remove the "/*" and the "*/")
     // to enable a simple teleport command (/lsb) which teleports the player to

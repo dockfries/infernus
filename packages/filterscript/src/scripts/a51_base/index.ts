@@ -95,7 +95,7 @@ export const A51Base: IA51BaseFS = {
     i18n = new I18n(defaultLocale, { zh_cn, en_us });
     if (locales) i18n.addLocales(locales);
 
-    const offs = registerEvent(_options);
+    const offs: (() => any)[] = registerEvent(_options);
 
     offs.push(loadObjects(_options, i18n));
     offs.push(registerLabelEvent(_options, i18n));

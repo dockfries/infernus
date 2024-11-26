@@ -92,18 +92,18 @@ export const GlNpcs: IGlNpcsFS = {
       return next();
     });
 
-    Npc.connectNPC(npcNames[0], "train_lv");
-    Npc.connectNPC(npcNames[1], "train_ls");
-    Npc.connectNPC(npcNames[2], "train_sf");
-    Npc.connectNPC(npcNames[3], "at400_lv");
-    Npc.connectNPC(npcNames[4], "at400_sf");
-    Npc.connectNPC(npcNames[5], "at400_ls");
+    Npc.connect(npcNames[0], "train_lv");
+    Npc.connect(npcNames[1], "train_ls");
+    Npc.connect(npcNames[2], "train_sf");
+    Npc.connect(npcNames[3], "at400_lv");
+    Npc.connect(npcNames[4], "at400_sf");
+    Npc.connect(npcNames[5], "at400_ls");
 
     // Testing
     if (options && options.test) {
-      Npc.connectNPC(npcNames[6], "onfoot_test");
-      Npc.connectNPC(npcNames[7], "mat_test2");
-      Npc.connectNPC(npcNames[8], "driver_test2");
+      Npc.connect(npcNames[6], "onfoot_test");
+      Npc.connect(npcNames[7], "mat_test2");
+      Npc.connect(npcNames[8], "driver_test2");
     }
 
     return [onConnect, onRequestClass, onSpawn];

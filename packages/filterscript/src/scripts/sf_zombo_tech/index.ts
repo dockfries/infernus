@@ -683,7 +683,7 @@ export const SFZomboTech: ISFZomboTechFS = {
       },
     );
 
-    const offs = [onConnect, onMoved, onKeyStateChange];
+    const offs: (() => any)[] = [onConnect, onMoved, onKeyStateChange];
 
     if (options && options.enableCommand) {
       const onCommandText = PlayerEvent.onCommandText(

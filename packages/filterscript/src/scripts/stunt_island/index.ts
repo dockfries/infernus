@@ -98,7 +98,7 @@ function siAutoFix() {
     if (!p.isNpc() && !siAutoFixDisabled.has(p)) {
       if (p.getState() === PlayerStateEnum.DRIVER) {
         // Get vehicle health
-        const veh = p.getVehicle(Vehicle.getInstances())!;
+        const veh = p.getVehicle()!;
         const curVehicleHealth = veh.getHealth();
 
         // Check if the vehicles health is less than 990... if so repair the vehicle
@@ -368,7 +368,7 @@ export const StuntIsland: IStuntIsLandFS = {
       if (player.isInAnyVehicle()) {
         // In a Vehicle
 
-        const veh = player.getVehicle(Vehicle.getInstances())!;
+        const veh = player.getVehicle()!;
 
         // Set vehicle position and facing angle
         veh.setPos(27.24 + Math.random() * 2, 3422.45, 6.2);
@@ -490,7 +490,7 @@ export const StuntIsland: IStuntIsLandFS = {
           return next();
         }
 
-        const veh = player.getVehicle(Vehicle.getInstances())!;
+        const veh = player.getVehicle()!;
 
         // Get Vehicle Pos
         const { x, y, z } = veh.getPos()!;

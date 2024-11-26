@@ -10,7 +10,7 @@
 // command by default.
 
 import type { IFilterScript } from "@infernus/core";
-import { GameText, PlayerEvent, DynamicObject, Vehicle } from "@infernus/core";
+import { GameText, PlayerEvent, DynamicObject } from "@infernus/core";
 import { modularHousesObjects } from "./constants";
 
 let createdObjects: DynamicObject[] = [];
@@ -77,7 +77,7 @@ export const ModularHouses: IFilterScript = {
       if (player.isInAnyVehicle()) {
         // In a Vehicle
         // Set vehicle position and facing angle
-        const vehicle = player.getVehicle(Vehicle.getInstances())!;
+        const vehicle = player.getVehicle()!;
         vehicle.setPos(
           -3305.72 + Math.random() * 2,
           1602.27 + Math.random() * 2,
