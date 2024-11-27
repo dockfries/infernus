@@ -386,8 +386,13 @@ export class Player {
   setCameraPos(x: number, y: number, z: number) {
     return w.SetPlayerCameraPos(this.id, x, y, z);
   }
-  setCameraLookAt(x: number, y: number, z: number, cut: CameraCutStylesEnum) {
-    return w.SetPlayerCameraLookAt(this.id, x, y, z, cut);
+  setCameraLookAt(
+    x: number,
+    y: number,
+    z: number,
+    style: CameraCutStylesEnum = CameraCutStylesEnum.CUT,
+  ) {
+    return w.SetPlayerCameraLookAt(this.id, x, y, z, style);
   }
   getCameraAspectRatio(): number {
     return w.GetPlayerCameraAspectRatio(this.id);

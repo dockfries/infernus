@@ -949,7 +949,7 @@ export const SetPlayerCameraLookAt = (
   x: number,
   y: number,
   z: number,
-  cut: CameraCutStylesEnum,
+  style: CameraCutStylesEnum,
 ): boolean => {
   return !!samp.callNative(
     "SetPlayerCameraLookAt",
@@ -958,7 +958,7 @@ export const SetPlayerCameraLookAt = (
     x,
     y,
     z,
-    cut,
+    style,
   );
 };
 
