@@ -111,7 +111,9 @@ GameMode.use(MyScript);
 
 ## Rewrite the official filterscript
 
-`Infernus` has tried to rewrite the official filterscript, but only a little has been implemented so far. You can try it by installing [@infernus/fs](https://github.com/dockfries/infernus/tree/main/packages/filterscript). If you are interested, you can continue to improve the official filterscript that has not been rewritten and commit to the repository.
+`Infernus` has tried to rewrite the official filterscript. You can try it by installing [@infernus/fs](https://github.com/dockfries/infernus/tree/main/packages/filterscript).
+
+If you are interested, you can refer to these cases to familiarize you with the syntax faster. You can also download the source code and modify it to better apply it in your GameMode.
 
 ```sh
 pnpm install @infernus/fs

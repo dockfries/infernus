@@ -111,7 +111,9 @@ GameMode.use(MyScript);
 
 ## 重写官方过滤脚本
 
-`Infernus` 尝试了重写官方的过滤脚本，不过目前只实现了一点点，您可以通过安装 [@infernus/fs](https://github.com/dockfries/infernus/tree/main/packages/filterscript) 来体验，如果您感兴趣也可以继续完善未重写的官方过滤脚本，将这些例子提交到仓库中。
+`Infernus` 尝试了重写官方的过滤脚本，您可以通过安装 [@infernus/fs](https://github.com/dockfries/infernus/tree/main/packages/filterscript) 来体验。
+
+如果您感兴趣，可以参考这些案例，让您更快熟悉语法，您也可以下载源码并修改，让它更好地应用到您的游戏模式中。
 
 ```sh
 pnpm install @infernus/fs
