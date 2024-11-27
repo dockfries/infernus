@@ -19,31 +19,29 @@ export const COLOR_NONE = 0x00000000;
 export const MIN_SKIN_ID = 0;
 export const MAX_SKIN_ID = 299;
 
-export const MIN_VEHI_ID = 400;
-export const MAX_VEHI_ID = 611;
+export const MIN_VEHICLE_ID = 400;
+export const MAX_VEHICLE_ID = 611;
 
 export const MIN_TIME_ID = 0;
 export const MAX_TIME_ID = 23;
 
-export const MIN_WEAT_ID = 0;
-export const MAX_WEAT_ID = 45;
+export const MIN_WEATHER_ID = 0;
+export const MAX_WEATHER_ID = 45;
 
-export const MIN_OBJE_ID = 615;
-export const MAX_OBJE_ID = 13563;
+export const MIN_OBJECT_ID = 615;
+export const MAX_OBJECT_ID = 13563;
 
 export const DEFAULT_GRA = 0.008;
 
-export const VEHI_DIS = 5.0;
-export const OBJE_DIS = 10.0;
+export const VEHICLE_DISTANCE = 5.0;
+export const OBJECT_DISTANCE = 10.0;
 
-export const CMODE_A = 0;
-export const CMODE_B = 1;
+export const CAMERA_MODE_A = 0;
+export const CAMERA_MODE_B = 1;
 
-export const O_MODE_SELECTOR = 0;
-export const O_MODE_MOVER = 1;
-export const O_MODE_ROTATOR = 2;
-
-export const PI = Math.PI;
+export const OBJECT_MODE_SELECTOR = 0;
+export const OBJECT_MODE_MOVER = 1;
+export const OBJECT_MODE_ROTATOR = 2;
 
 export const CAMERA_TIME = 40;
 
@@ -328,7 +326,7 @@ export const gPlayerTimers = new Map<Player, NodeJS.Timeout>(); // Player TimerI
 export const gWorldStatus: [number, number] = [12, 4]; // Time, Weather
 
 export const curPlayerSkin = new Map<Player, number>(); //  {MIN_SKIN_ID, ...}; // Current Player Skin ID
-export const curPlayerVehM = new Map<Player, number>(); //  {MIN_VEHI_ID, ...}; // Current Player Vehicle ID
+export const curPlayerVehM = new Map<Player, number>(); //  {MIN_VEHICLE_ID, ...}; // Current Player Vehicle ID
 export const curPlayerVehI = new Map<Player, number>(); //  {-1, ...};
 
 export const pObjectRate = new Map<Player, I_OBJ_RATE>();

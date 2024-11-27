@@ -10,19 +10,19 @@ import {
   COLOR_WHITE,
   pObjectRate,
   COLOR_GREEN,
-  O_MODE_SELECTOR,
-  O_MODE_ROTATOR,
+  OBJECT_MODE_SELECTOR,
+  OBJECT_MODE_ROTATOR,
   curPlayerObjM,
-  O_MODE_MOVER,
+  OBJECT_MODE_MOVER,
   COLOR_RED,
   curPlayerObjI,
   curPlayerCamD,
   gPlayerStatus,
   aSelNames,
-  OBJE_DIS,
+  OBJECT_DISTANCE,
   gPlayerTimers,
-  MAX_OBJE_ID,
-  MIN_OBJE_ID,
+  MAX_OBJECT_ID,
+  MIN_OBJECT_ID,
 } from "../constants";
 import { SelStatEnum } from "../enums";
 import {
@@ -44,12 +44,12 @@ function objectSelect(player: Player) {
   let obj = DynamicObject.getInstance(objId)!;
 
   switch (p_curPlayerObjM.OBJ_MOD) {
-    case O_MODE_SELECTOR: {
+    case OBJECT_MODE_SELECTOR: {
       if (upDown === KeysEnum.KEY_UP) {
         p_curPlayerObjM.OBJ_MDL += 10;
 
-        if (p_curPlayerObjM.OBJ_MDL >= MAX_OBJE_ID) {
-          p_curPlayerObjM.OBJ_MDL = MIN_OBJE_ID;
+        if (p_curPlayerObjM.OBJ_MDL >= MAX_OBJECT_ID) {
+          p_curPlayerObjM.OBJ_MDL = MIN_OBJECT_ID;
         }
 
         while (!isValidModel(p_curPlayerObjM.OBJ_MDL)) {
@@ -76,8 +76,8 @@ function objectSelect(player: Player) {
       if (upDown === KeysEnum.KEY_DOWN) {
         p_curPlayerObjM.OBJ_MDL -= 10;
 
-        if (p_curPlayerObjM.OBJ_MDL <= MIN_OBJE_ID) {
-          p_curPlayerObjM.OBJ_MDL = MAX_OBJE_ID;
+        if (p_curPlayerObjM.OBJ_MDL <= MIN_OBJECT_ID) {
+          p_curPlayerObjM.OBJ_MDL = MAX_OBJECT_ID;
         }
 
         while (!isValidModel(p_curPlayerObjM.OBJ_MDL)) {
@@ -105,8 +105,8 @@ function objectSelect(player: Player) {
       if (leftRight === KeysEnum.KEY_LEFT) {
         p_curPlayerObjM.OBJ_MDL--;
 
-        if (p_curPlayerObjM.OBJ_MDL <= MIN_OBJE_ID) {
-          p_curPlayerObjM.OBJ_MDL = MAX_OBJE_ID;
+        if (p_curPlayerObjM.OBJ_MDL <= MIN_OBJECT_ID) {
+          p_curPlayerObjM.OBJ_MDL = MAX_OBJECT_ID;
         }
 
         while (!isValidModel(p_curPlayerObjM.OBJ_MDL)) {
@@ -134,8 +134,8 @@ function objectSelect(player: Player) {
       if (leftRight === KeysEnum.KEY_RIGHT) {
         p_curPlayerObjM.OBJ_MDL++;
 
-        if (p_curPlayerObjM.OBJ_MDL >= MAX_OBJE_ID) {
-          p_curPlayerObjM.OBJ_MDL = MIN_OBJE_ID;
+        if (p_curPlayerObjM.OBJ_MDL >= MAX_OBJECT_ID) {
+          p_curPlayerObjM.OBJ_MDL = MIN_OBJECT_ID;
         }
 
         while (!isValidModel(p_curPlayerObjM.OBJ_MDL)) {
@@ -162,7 +162,7 @@ function objectSelect(player: Player) {
       break;
     }
 
-    case O_MODE_MOVER: {
+    case OBJECT_MODE_MOVER: {
       if (upDown === KeysEnum.KEY_UP) {
         p_curPlayerObjM.OBJ_Z += p_pObjectRate.OBJ_RATE_MOVE;
         p_curPlayerCamD.POS_Z += p_pObjectRate.OBJ_RATE_MOVE;
@@ -224,7 +224,7 @@ function objectSelect(player: Player) {
       break;
     }
 
-    case O_MODE_ROTATOR: {
+    case OBJECT_MODE_ROTATOR: {
       if (upDown === KeysEnum.KEY_UP) {
         p_curPlayerObjM.OBJ_RZ += p_pObjectRate.OBJ_RATE_ROT;
       }
@@ -318,24 +318,24 @@ export function registerObjectSelect(options?: IFsDebugOptions) {
     "object mode",
     ({ player, subcommand, next }) => {
       const mode = +subcommand[0];
-      if (mode >= O_MODE_SELECTOR || mode <= O_MODE_ROTATOR) {
+      if (mode >= OBJECT_MODE_SELECTOR || mode <= OBJECT_MODE_ROTATOR) {
         const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
         p_curPlayerObjM.OBJ_MOD = mode;
         curPlayerObjM.set(player, p_curPlayerObjM);
         switch (mode) {
-          case O_MODE_SELECTOR:
+          case OBJECT_MODE_SELECTOR:
             player.sendClientMessage(
               COLOR_GREEN,
               "[SUCCESS]: Object mode changed to Object Selection.",
             );
             break;
-          case O_MODE_MOVER:
+          case OBJECT_MODE_MOVER:
             player.sendClientMessage(
               COLOR_GREEN,
               "[SUCCESS]: Object mode changed to Object Mover.",
             );
             break;
-          case O_MODE_ROTATOR:
+          case OBJECT_MODE_ROTATOR:
             player.sendClientMessage(
               COLOR_GREEN,
               "[SUCCESS]: Object mode changed to Object Rotator.",
@@ -388,7 +388,7 @@ export function registerObjectSelect(options?: IFsDebugOptions) {
 
       curPlayerCamD.set(player, p_curPlayerCamD);
 
-      if (gPlayerStatus.get(player) === SelStatEnum.OBJE) {
+      if (gPlayerStatus.get(player) === SelStatEnum.OBJECT) {
         player.setCameraPos(
           p_curPlayerCamD.POS_X,
           p_curPlayerCamD.POS_Y,
@@ -472,7 +472,7 @@ export function registerObjectSelect(options?: IFsDebugOptions) {
       return next();
     }
 
-    gPlayerStatus.set(player, SelStatEnum.OBJE);
+    gPlayerStatus.set(player, SelStatEnum.OBJECT);
 
     const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
     const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
@@ -490,7 +490,10 @@ export function registerObjectSelect(options?: IFsDebugOptions) {
       p_curPlayerCamD.POS_Z,
     );
 
-    const { x: cloo_x, y: cloo_y } = getXYInFrontOfPlayer(player, OBJE_DIS);
+    const { x: cloo_x, y: cloo_y } = getXYInFrontOfPlayer(
+      player,
+      OBJECT_DISTANCE,
+    );
 
     p_curPlayerCamD.LOOK_X = cloo_x;
     p_curPlayerCamD.LOOK_Y = cloo_y;

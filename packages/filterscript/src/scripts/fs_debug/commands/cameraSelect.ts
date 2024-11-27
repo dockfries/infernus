@@ -13,8 +13,8 @@ import {
   gPlayerStatus,
   aSelNames,
   gPlayerTimers,
-  CMODE_A,
-  CMODE_B,
+  CAMERA_MODE_A,
+  CAMERA_MODE_B,
   gWorldStatus,
 } from "../constants";
 import { SelStatEnum } from "../enums";
@@ -22,8 +22,8 @@ import { IFsDebugOptions, P_CAMERA_D } from "../interfaces";
 import { getXYInFrontOfPlayer } from "../utils";
 
 function cameraSelect(player: Player) {
-  // CMODE_A 0	Up/Down = IncreaseZ/DecreaseZ; Left/Right = IncreaseX/DecreaseX; Num4/Num6 = IncreaseY/DecreaseY
-  // CMODE_B 1	Up/Down = Rotate Up/Down; Left/Right = Rotate Left/Right; Num4/Num6 = Move Left/Right
+  // CAMERA_MODE_A 0	Up/Down = IncreaseZ/DecreaseZ; Left/Right = IncreaseX/DecreaseX; Num4/Num6 = IncreaseY/DecreaseY
+  // CAMERA_MODE_B 1	Up/Down = Rotate Up/Down; Left/Right = Rotate Left/Right; Num4/Num6 = Move Left/Right
 
   const { keys, upDown, leftRight } = player.getKeys();
 
@@ -33,7 +33,7 @@ function cameraSelect(player: Player) {
 
   const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
 
-  if (p_curPlayerCamD.MODE === CMODE_A) {
+  if (p_curPlayerCamD.MODE === CAMERA_MODE_A) {
     if (leftRight === KeysEnum.KEY_RIGHT) {
       p_curPlayerCamD.POS_X += p_curPlayerCamD.RATE;
       p_curPlayerCamD.LOOK_X += p_curPlayerCamD.RATE;
@@ -161,7 +161,7 @@ function cameraSelect(player: Player) {
     }
   }
 
-  if (p_curPlayerCamD.MODE === CMODE_B) {
+  if (p_curPlayerCamD.MODE === CAMERA_MODE_B) {
     if (leftRight === KeysEnum.KEY_RIGHT) {
       // Rotate Y +
     }
@@ -192,7 +192,7 @@ function cameraSelect(player: Player) {
     player.toggleControllable(true);
     player.sendClientMessage(
       COLOR_GREEN,
-      `[SUCCESS]: Time changed to ${gWorldStatus[0]} hours and weather changed to WEATHERID ${gWorldStatus[1]}`,
+      `[SUCCESS]: Time changed to ${gWorldStatus[0]} hours and weather changed to WeatherId ${gWorldStatus[1]}`,
     );
 
     const date = new Date();
@@ -267,7 +267,7 @@ export function registerCameraSelect(options?: IFsDebugOptions) {
       );
       return next();
     }
-    gPlayerStatus.set(player, SelStatEnum.CAME);
+    gPlayerStatus.set(player, SelStatEnum.CAMERA);
     player.toggleControllable(false);
 
     const { x, y, z } = player.getPos()!;

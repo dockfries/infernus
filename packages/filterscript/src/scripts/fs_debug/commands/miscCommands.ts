@@ -3,7 +3,7 @@ import { COLOR_RED, COLOR_GREEN, aWeaponNames } from "../constants";
 import { IFsDebugOptions } from "../interfaces";
 import { getXYInFrontOfPlayer, getWeaponModelIDFromName } from "../utils";
 
-export function registerMiscCmds(options?: IFsDebugOptions) {
+export function registerMiscCommands(options?: IFsDebugOptions) {
   if (options?.miscCommands === false) return [];
 
   const goto = PlayerEvent.onCommandText(

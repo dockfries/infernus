@@ -11,10 +11,10 @@
 import { Player, PlayerEvent } from "@infernus/core";
 import {
   DEBUG_VERSION,
-  MIN_OBJE_ID,
-  CMODE_A,
+  MIN_OBJECT_ID,
+  CAMERA_MODE_A,
   MIN_SKIN_ID,
-  MIN_VEHI_ID,
+  MIN_VEHICLE_ID,
   curPlayerCamD,
   curPlayerObjI,
   curPlayerObjM,
@@ -27,11 +27,11 @@ import {
   pObjectRate,
 } from "./constants";
 import { IFsDebug, I_OBJECT, I_OBJ_RATE } from "./interfaces";
-import { registerCameraSelect } from "./commands/cameSelect";
+import { registerCameraSelect } from "./commands/cameraSelect";
 import { registerVehicleSelect } from "./commands/vehicleSelect";
-import { registerWorlSelect } from "./commands/worlSelect";
+import { registerWorldSelect } from "./commands/worldSelect";
 import { registerSkinSelect } from "./commands/skinSelect";
-import { registerMiscCmds } from "./commands/miscCommands";
+import { registerMiscCommands } from "./commands/miscCommands";
 
 export const FsDebug: IFsDebug = {
   name: "fs_debug",
@@ -45,7 +45,7 @@ export const FsDebug: IFsDebug = {
 
     Player.getInstances().forEach((player) => {
       const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
-      p_curPlayerObjM.OBJ_MDL = MIN_OBJE_ID;
+      p_curPlayerObjM.OBJ_MDL = MIN_OBJECT_ID;
       curPlayerObjM.set(player, p_curPlayerObjM);
 
       const p_pObjectRate = pObjectRate.get(player) || ({} as I_OBJ_RATE);
@@ -56,7 +56,7 @@ export const FsDebug: IFsDebug = {
 
     const onCommandReceived = PlayerEvent.onCommandReceived(
       ({ player, command, next }) => {
-        const injectCmds = [
+        const injectCommands = [
           "s",
           "ssel",
           "skin",
@@ -83,7 +83,7 @@ export const FsDebug: IFsDebug = {
           "debug",
         ];
         const mainCmd = command.split(" ")[0];
-        if (mainCmd && injectCmds.includes(mainCmd)) {
+        if (mainCmd && injectCommands.includes(mainCmd)) {
           if (options?.adminsOnly && !player.isAdmin()) return false;
           return next();
         }
@@ -103,7 +103,7 @@ export const FsDebug: IFsDebug = {
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
       curPlayerCamD.set(player, {
-        MODE: CMODE_A,
+        MODE: CAMERA_MODE_A,
         RATE: 2.0,
         POS_X: 0.0,
         POS_Y: 0.0,
@@ -113,7 +113,7 @@ export const FsDebug: IFsDebug = {
         LOOK_Z: 0.0,
       });
       curPlayerSkin.set(player, MIN_SKIN_ID); // Current Player Skin ID
-      curPlayerVehM.set(player, MIN_VEHI_ID); // Current Player Vehicle ID
+      curPlayerVehM.set(player, MIN_VEHICLE_ID); // Current Player Vehicle ID
       curPlayerVehI.set(player, -1);
       return next();
     });
@@ -129,10 +129,10 @@ export const FsDebug: IFsDebug = {
     );
 
     const offCameSelect = registerCameraSelect(options);
-    const offWorlSelect = registerWorlSelect(options);
+    const offWorldSelect = registerWorldSelect(options);
     const offVehicleSelect = registerVehicleSelect(options);
     const offSkinSelect = registerSkinSelect(options);
-    const offMiscelCmds = registerMiscCmds(options);
+    const offMiscCommands = registerMiscCommands(options);
 
     return [
       onCommandReceived,
@@ -140,10 +140,10 @@ export const FsDebug: IFsDebug = {
       onConnect,
       onClickMap,
       ...offCameSelect,
-      ...offWorlSelect,
+      ...offWorldSelect,
       ...offVehicleSelect,
       ...offSkinSelect,
-      ...offMiscelCmds,
+      ...offMiscCommands,
     ];
   },
   unload() {

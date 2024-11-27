@@ -10,9 +10,9 @@ import {
   gPlayerStatus,
   COLOR_RED,
   aSelNames,
-  MIN_VEHI_ID,
-  MAX_VEHI_ID,
-  VEHI_DIS,
+  MIN_VEHICLE_ID,
+  MAX_VEHICLE_ID,
+  VEHICLE_DISTANCE,
   curPlayerVehM,
   curPlayerVehI,
   curServerVehP,
@@ -36,25 +36,25 @@ function vehicleSelect(player: Player) {
   */
   const { keys, leftRight } = player.getKeys();
 
-  let p_curPlayerVehM = curPlayerVehM.get(player) || MIN_VEHI_ID;
+  let p_curPlayerVehM = curPlayerVehM.get(player) || MIN_VEHICLE_ID;
 
   // Right key increases Vehicle MODELID
   if (leftRight === KeysEnum.KEY_RIGHT) {
-    if (p_curPlayerVehM === MAX_VEHI_ID) {
-      p_curPlayerVehM = MIN_VEHI_ID;
+    if (p_curPlayerVehM === MAX_VEHICLE_ID) {
+      p_curPlayerVehM = MIN_VEHICLE_ID;
     } else {
       p_curPlayerVehM++;
     }
 
     new GameText(
-      `Model ID: ${curPlayerVehM}~n~Vehicle Name: ${aVehicleNames[p_curPlayerVehM - MIN_VEHI_ID]}`,
+      `Model ID: ${curPlayerVehM}~n~Vehicle Name: ${aVehicleNames[p_curPlayerVehM - MIN_VEHICLE_ID]}`,
       1500,
       3,
     ).forPlayer(player);
 
     const { z } = player.getPos()!;
 
-    const { x, y } = getXYInFrontOfPlayer(player, VEHI_DIS);
+    const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
     const angle = player.getFacingAngle();
 
     const vehId = curPlayerVehI.get(player)!;
@@ -90,21 +90,21 @@ function vehicleSelect(player: Player) {
 
   // Left key decreases Vehicle MODELID
   if (leftRight === KeysEnum.KEY_LEFT) {
-    if (p_curPlayerVehM === MIN_VEHI_ID) {
-      p_curPlayerVehM = MAX_VEHI_ID;
+    if (p_curPlayerVehM === MIN_VEHICLE_ID) {
+      p_curPlayerVehM = MAX_VEHICLE_ID;
     } else {
       p_curPlayerVehM--;
     }
 
     new GameText(
-      `Model ID: ${curPlayerVehM}~n~Vehicle Name: ${aVehicleNames[p_curPlayerVehM - MIN_VEHI_ID]}`,
+      `Model ID: ${curPlayerVehM}~n~Vehicle Name: ${aVehicleNames[p_curPlayerVehM - MIN_VEHICLE_ID]}`,
       1500,
       3,
     ).forPlayer(player);
 
     const { z } = player.getPos()!;
 
-    const { x, y } = getXYInFrontOfPlayer(player, VEHI_DIS);
+    const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
     const angle = player.getFacingAngle();
 
     const vehId = curPlayerVehI.get(player)!;
@@ -145,7 +145,7 @@ function vehicleSelect(player: Player) {
     player.toggleControllable(true);
     player.sendClientMessage(
       COLOR_GREEN,
-      `[SUCCESS]: Spawned a "${aVehicleNames[p_curPlayerVehM - MIN_VEHI_ID]}" (MODELID: ${p_curPlayerVehM}, VEHICLEID: ${vehId})`,
+      `[SUCCESS]: Spawned a "${aVehicleNames[p_curPlayerVehM - MIN_VEHICLE_ID]}" (MODELID: ${p_curPlayerVehM}, VEHICLEID: ${vehId})`,
     );
     gPlayerStatus.delete(player);
     const timer = gPlayerTimers.get(player);
@@ -181,14 +181,14 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
       let idx = getVehicleModelIDFromName(subcommand[0]);
       if (idx === -1) {
         idx = +subcommand[0];
-        if (idx < MIN_VEHI_ID || idx > MAX_VEHI_ID)
+        if (idx < MIN_VEHICLE_ID || idx > MAX_VEHICLE_ID)
           return player.sendClientMessage(
             COLOR_RED,
             "[ERROR]: Invalid MODELID/NAME",
           );
       }
       const { z } = player.getPos()!;
-      const { x, y } = getXYInFrontOfPlayer(player, VEHI_DIS);
+      const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
       const a = player.getFacingAngle();
       curPlayerVehM.set(player, idx);
       const veh = new Vehicle({
@@ -212,7 +212,7 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
 
       player.sendClientMessage(
         COLOR_GREEN,
-        `[SUCCESS]: Spawned a "${aVehicleNames[idx - MIN_VEHI_ID]}" (MODELID: ${idx}, VEHICLEID: ${veh.id})`,
+        `[SUCCESS]: Spawned a "${aVehicleNames[idx - MIN_VEHICLE_ID]}" (MODELID: ${idx}, VEHICLEID: ${veh.id})`,
       );
       return next();
     },
@@ -228,12 +228,12 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
       );
       return next();
     }
-    gPlayerStatus.set(player, SelStatEnum.VEHI);
+    gPlayerStatus.set(player, SelStatEnum.VEHICLE);
     const pos = player.getPos()!;
     let { x, y } = pos;
     const z = pos.z;
     player.setCameraPos(x, y, z + 3.0);
-    const frontXY = getXYInFrontOfPlayer(player, VEHI_DIS);
+    const frontXY = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
     x = frontXY.x;
     y = frontXY.y;
     player.setCameraLookAt(x, y, z, CameraCutStylesEnum.CUT);

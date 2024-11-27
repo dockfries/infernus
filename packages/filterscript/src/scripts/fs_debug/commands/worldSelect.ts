@@ -11,8 +11,8 @@ import {
 import {
   COLOR_RED,
   COLOR_GREEN,
-  MIN_WEAT_ID,
-  MAX_WEAT_ID,
+  MIN_WEATHER_ID,
+  MAX_WEATHER_ID,
   gWorldStatus,
   MIN_TIME_ID,
   MAX_TIME_ID,
@@ -70,8 +70,8 @@ function worldSelect(player: Player) {
 
   // Up key increases Weather ID
   if (upDown === KeysEnum.KEY_UP) {
-    if (gWorldStatus[1] === MAX_WEAT_ID) {
-      gWorldStatus[1] = MIN_WEAT_ID;
+    if (gWorldStatus[1] === MAX_WEATHER_ID) {
+      gWorldStatus[1] = MIN_WEATHER_ID;
     } else {
       gWorldStatus[1]++;
     }
@@ -85,8 +85,8 @@ function worldSelect(player: Player) {
 
   // Down key decreases Weather ID
   if (upDown === KeysEnum.KEY_DOWN) {
-    if (gWorldStatus[1] === MIN_WEAT_ID) {
-      gWorldStatus[1] = MAX_WEAT_ID;
+    if (gWorldStatus[1] === MIN_WEATHER_ID) {
+      gWorldStatus[1] = MAX_WEATHER_ID;
     } else {
       gWorldStatus[1]--;
     }
@@ -139,7 +139,7 @@ function worldSelect(player: Player) {
   }
 }
 
-export function registerWorlSelect(options?: IFsDebugOptions) {
+export function registerWorldSelect(options?: IFsDebugOptions) {
   if (options?.worldSelect === false) return [];
 
   const gravity = PlayerEvent.onCommandText(
@@ -173,7 +173,7 @@ export function registerWorlSelect(options?: IFsDebugOptions) {
         return next();
       }
       const idx = +subcommand[0];
-      if (idx < MIN_WEAT_ID || idx > MAX_WEAT_ID) {
+      if (idx < MIN_WEATHER_ID || idx > MAX_WEATHER_ID) {
         player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid WEATHERID");
         return next();
       }
@@ -218,7 +218,7 @@ export function registerWorlSelect(options?: IFsDebugOptions) {
       );
       return next();
     }
-    gPlayerStatus.set(player, SelStatEnum.WORL);
+    gPlayerStatus.set(player, SelStatEnum.WORLD);
     const pos = player.getPos()!;
     let { x, y } = pos;
     const z = pos.z;
