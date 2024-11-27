@@ -318,7 +318,7 @@ export function createPlayerCommands() {
 
   const weapdata = PlayerEvent.onCommandText("weapdata", ({ player, next }) => {
     let x = 0;
-    while (x != 13) {
+    while (x !== 13) {
       const { weapons, ammo } = player.getWeaponData(x);
       const msg = `WeapSlot(${x}) ${weapons}:${ammo}`;
       player.sendClientMessage(0xffffffff, msg);
@@ -336,7 +336,7 @@ export function createPlayerCommands() {
     virtualWorld: number,
   ) {
     Player.getInstances().forEach((p) => {
-      if (virtualWorld == -1 || virtualWorld == p.getVirtualWorld()) {
+      if (virtualWorld === -1 || virtualWorld === p.getVirtualWorld()) {
         p.createExplosion(x, y, z, type, radius);
       }
     });

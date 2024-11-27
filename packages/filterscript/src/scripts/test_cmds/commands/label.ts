@@ -50,7 +50,7 @@ export function createLabelCommands() {
       let { z } = pos;
       const { y } = pos;
       let x = 0;
-      while (x != 50) {
+      while (x !== 50) {
         const txtId = new Dynamic3DTextLabel({
           text: "Mah Labels",
           color: 0xffffffff,

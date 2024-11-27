@@ -220,7 +220,7 @@ export class DynamicActor {
   setSkin(model: number, ignoreRange = false): number {
     if (this.id === -1)
       throw new Error("[StreamerActor]: Unable to set skin before create");
-    if (!ignoreRange && (model < 0 || model > 311 || model == 74)) return 0;
+    if (!ignoreRange && (model < 0 || model > 311 || model === 74)) return 0;
     return w.SetActorSkin(this.id, model);
   }
   getSpawnInfo() {

@@ -47,7 +47,7 @@ export function createCallbacks() {
   // {
   //   if (!IsPlayerAdmin(playerid)) return 0; // this is an admin only script
 
-  //   if (dialogid == 0) { // Our example msgbox
+  //   if (dialogid === 0) { // Our example msgbox
   //     if (response) {
   //       SendClientMessage(playerid, 0xFFFFFFFF, "You selected OK");
   //     } else {
@@ -56,7 +56,7 @@ export function createCallbacks() {
   //     return 1; // we processed this. no need for other filterscripts to process it.
   //   }
 
-  //   if (dialogid == 1) { // Our example inputbox
+  //   if (dialogid === 1) { // Our example inputbox
   //     if (response) {
   //       new message[256 + 1];
   //       format(message, 256, "You replied: %s", inputtext);
@@ -67,7 +67,7 @@ export function createCallbacks() {
   //     return 1; // we processed it.
   //   }
 
-  //   if (dialogid == 2) { // Our example listbox
+  //   if (dialogid === 2) { // Our example listbox
   //     if (response) {
   //       new message[256 + 1];
   //       format(message, 256, "You selected item %d:", listitem);
@@ -135,14 +135,14 @@ export function createCallbacks() {
 
     GetWeaponName(weaponid, weaponname, 64);
 
-    if(hittype == BULLET_HIT_TYPE_PLAYER) {
+    if(hittype === BULLET_HIT_TYPE_PLAYER) {
       format(message,256,"Shooter(%d) hit Player(%d) PlayerAnim: %d Using: %s [%.2f, %.2f, %.2f]\r\n", playerid, hitid,
           GetPlayerAnimationIndex(hitid), weaponname, fX, fY, fZ);
     }
-    else if(hittype == BULLET_HIT_TYPE_VEHICLE) {
+    else if(hittype === BULLET_HIT_TYPE_VEHICLE) {
         format(message,256,"Shooter(%d) hit Vehicle(%d) Using: %s [%.2f, %.2f, %.2f]\r\n",playerid, hitid, weaponname, fX, fY, fZ);
     }
-    else if(hittype == BULLET_HIT_TYPE_NONE) {
+    else if(hittype === BULLET_HIT_TYPE_NONE) {
         format(message,256,"Shooter(%d) hit World Using: %s [%.2f, %.2f, %.2f]\r\n",playerid,weaponname,fX,fY,fZ);
     }
     else {
@@ -177,7 +177,7 @@ export function createCallbacks() {
         return 1;
     }
 
-    if(weaponid == LastShotWeapon) {
+    if(weaponid === LastShotWeapon) {
       format(message, 128, "WeaponId: %d LastShotDelta: %d", weaponid, GetTickCount() - LastShotTime);
       SendClientMessage(playerid, 0xFFFFFFFF, message);
         printf("%s", message);
@@ -198,7 +198,7 @@ export function createCallbacks() {
       new message[256+1];
       new weapname[64+1];
 
-    if(issuerid != INVALID_PLAYER_ID) {
+    if(issuerid !== INVALID_PLAYER_ID) {
         GetWeaponName(weaponid, weapname, 64);
       format(message, 256, "PlayerTakeDamage(%d) from Player(%d) (%f) weapon: (%s) bodypart: %d\r\n", playerid, issuerid, amount, weapname, bodypart);
       SendClientMessageToAll(0xFFFFFFFF, message);

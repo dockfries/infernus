@@ -221,7 +221,7 @@ export class Player {
     return w.IsPlayerStreamedIn(this.id, forPlayer.id);
   }
   setSkin(skinId: number, ignoreRange = false) {
-    if (!ignoreRange && (skinId < 0 || skinId > 311 || skinId == 74))
+    if (!ignoreRange && (skinId < 0 || skinId > 311 || skinId === 74))
       return false;
     if (this.getHealth() <= 0) return false;
     if (this.isInAnyVehicle()) return false;
@@ -689,7 +689,7 @@ export class Player {
     weapon3Ammo: number,
   ) {
     if (team < 0 || team > InvalidEnum.NO_TEAM) return false;
-    if (skin < 0 || skin > 311 || skin == 74) return false;
+    if (skin < 0 || skin > 311 || skin === 74) return false;
     if (weapon1Ammo < 0 || weapon2Ammo < 0 || weapon3Ammo < 0) return false;
     return w.SetSpawnInfo(
       this.id,

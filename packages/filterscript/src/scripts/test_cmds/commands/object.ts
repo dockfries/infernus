@@ -25,7 +25,7 @@ export function createObjectCommands() {
     "removeheld",
     ({ player, next }) => {
       let zz = 0;
-      while (zz != LimitsEnum.MAX_PLAYER_ATTACHED_OBJECTS) {
+      while (zz !== LimitsEnum.MAX_PLAYER_ATTACHED_OBJECTS) {
         if (player.isAttachedObjectSlotUsed(zz)) {
           player.removeAttachedObject(zz);
         }
@@ -140,7 +140,7 @@ export function createObjectCommands() {
     const { x, z } = pos;
     let { y } = pos;
     let lp = 0;
-    while (lp != 999) {
+    while (lp !== 999) {
       new DynamicObject({
         modelId: 1656,
         x,
@@ -396,7 +396,7 @@ export function createObjectCommands() {
     const y = pos.y;
     const z = pos.z;
     x += 1.0;
-    while (lp != 128) {
+    while (lp !== 128) {
       test_tex_objects[lp] = new DynamicObject({
         playerId: player.id,
         modelId: 19372,
@@ -411,7 +411,7 @@ export function createObjectCommands() {
       test_tex_objects[lp].create();
       test_tex_objects[lp].setMaterial(0, 0, "null", "null", 0);
 
-      if (lp % 2 == 0) {
+      if (lp % 2 === 0) {
         test_tex_objects[lp].setMaterial(
           0,
           19325,
@@ -442,7 +442,7 @@ export function createObjectCommands() {
     const y = pos.y;
     const z = pos.z;
     x += 1.0;
-    while (lp != 128) {
+    while (lp !== 128) {
       test_tex_objects[lp] = new DynamicObject({
         playerId: player.id,
         modelId: 19371,
@@ -467,7 +467,7 @@ export function createObjectCommands() {
       //   0xff000000,
       //   MaterialTextAlign.CENTER,
       // );
-      if (lp % 2 == 0) {
+      if (lp % 2 === 0) {
         test_tex_objects[lp].setMaterial(
           0,
           19371,
@@ -693,7 +693,7 @@ export function createObjectCommands() {
 
   const delptex = PlayerEvent.onCommandText("delptex", ({ next }) => {
     let lp = 0;
-    while (lp != 128) {
+    while (lp !== 128) {
       if (test_tex_objects[lp] && test_tex_objects[lp].isValid()) {
         test_tex_objects[lp].destroy();
       }

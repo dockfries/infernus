@@ -412,14 +412,14 @@ export class BitStream {
     let health, armour;
 
     health = healthArmour >> 4;
-    if (health == 0xf) {
+    if (health === 0xf) {
       health = 100;
     } else {
       health *= 7;
     }
 
     armour = healthArmour & 0xf;
-    if (armour == 0xf) {
+    if (armour === 0xf) {
       armour = 100;
     } else {
       armour *= 7;
