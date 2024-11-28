@@ -2,6 +2,10 @@ import type { TLocales } from "../../types";
 import { encode, decode, encodingExists } from "iconv-lite";
 import { snakeCase, merge, omit, get, mapKeys } from "lodash-unified";
 
+function isBuffer(value: any): value is Buffer {
+  return value instanceof Buffer;
+}
+
 export class I18n {
   constructor(
     private defaultLocale: keyof TLocales,
@@ -63,8 +67,7 @@ export class I18n {
   // convert byte stream arrays of different encodings to utf8 strings
   static decodeFromBuf(buf: Buffer | number[], charset = "utf8"): string {
     I18n.isValidate(charset);
-    const buffer =
-      buf instanceof Buffer ? buf : Buffer.from(I18n.getValidStr(buf));
+    const buffer = isBuffer(buf) ? buf : Buffer.from(I18n.getValidStr(buf));
     return decode(buffer, charset);
   }
 
