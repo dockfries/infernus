@@ -152,12 +152,12 @@ export const ArePlayerWeaponsAllowed = (playerId: number): boolean => {
 
 export const GameTextForPlayer = (
   playerId: number,
-  string: string,
+  string: number[],
   time: number,
   style: number,
 ): boolean => {
   return Boolean(
-    samp.callNative("GameTextForPlayer", "isii", playerId, string, time, style),
+    samp.callNative("GameTextForPlayer", "iaii", playerId, string, time, style),
   );
 };
 

@@ -95,11 +95,11 @@ export const GetModeRestartTime = (): number => {
 };
 
 export const GameTextForAll = (
-  string: string,
+  string: number[],
   time: number,
   style: number,
 ): number => {
-  return samp.callNative("GameTextForAll", "sii", string, time, style);
+  return samp.callNative("GameTextForAll", "aii", string, time, style);
 };
 
 export const HideGameTextForAll = (style: number) => {

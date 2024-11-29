@@ -1,3 +1,4 @@
+import { I18n } from "../i18n";
 import type { Player } from "../player";
 import * as w from "core/wrapper/native";
 
@@ -41,12 +42,21 @@ export class GameText {
     return w.HasGameText(player.id, style);
   }
 
-  forAll() {
-    w.GameTextForAll(this.text, this.time, this.style);
+  forAll(charset = "win1252") {
+    w.GameTextForAll(
+      I18n.encodeToBuf(I18n.convertSpecialChar(this.text), charset),
+      this.time,
+      this.style,
+    );
   }
 
-  forPlayer(player: Player) {
-    w.GameTextForPlayer(player.id, this.text, this.time, this.style);
+  forPlayer(player: Player, charset = "win1252") {
+    w.GameTextForPlayer(
+      player.id,
+      I18n.encodeToBuf(I18n.convertSpecialChar(this.text), charset),
+      this.time,
+      this.style,
+    );
   }
 
   hideForPlayer(player: Player) {

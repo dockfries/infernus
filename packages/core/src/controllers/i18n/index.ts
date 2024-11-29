@@ -81,4 +81,59 @@ export class I18n {
   static snakeLocaleKeys(locales: TLocales) {
     return mapKeys(locales, (_: any, key: any) => snakeCase(key));
   }
+
+  static convertSpecialChar(input: string): string {
+    const charMap: Record<string, string> = {
+      à: "\x97",
+      á: "\x98",
+      â: "\x99",
+      ä: "\x9A",
+      À: "\x80",
+      Á: "\x81",
+      Â: "\x82",
+      Ä: "\x83",
+      è: "\x9D",
+      é: "\x9E",
+      ê: "\x9F",
+      ë: "\xA0",
+      È: "\x86",
+      É: "\x87",
+      Ê: "\x88",
+      Ë: "\x89",
+      ì: "\xA1",
+      í: "\xA2",
+      î: "\xA3",
+      ï: "\xA4",
+      Ì: "\x8A",
+      Í: "\x8B",
+      Î: "\x8C",
+      Ï: "\x8D",
+      ò: "\xA5",
+      ó: "\xA6",
+      ô: "\xA7",
+      ö: "\xA8",
+      Ò: "\x8E",
+      Ó: "\x8F",
+      Ô: "\x90",
+      Ö: "\x91",
+      ù: "\xA9",
+      ú: "\xAA",
+      û: "\xAB",
+      ü: "\xAC",
+      Ù: "\x92",
+      Ú: "\x93",
+      Û: "\x94",
+      Ü: "\x95",
+      ñ: "\xAE",
+      Ñ: "\xAD",
+      "¡": "@",
+      "¿": "\xAF",
+      "`": "\xB1",
+      // "&": "&",
+    };
+    return input
+      .split("")
+      .map((char) => (char in charMap ? charMap[char] : char))
+      .join("");
+  }
 }
