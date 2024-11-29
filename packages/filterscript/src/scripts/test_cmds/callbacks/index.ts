@@ -1,10 +1,17 @@
+// import fs from "fs";
+// import path from "path";
 import {
+  // BulletHitTypesEnum,
+  // DynamicActorEvent,
   DynamicObjectEvent,
   EditResponseTypesEnum,
+  // GameMode,
+  // InvalidEnum,
+  // Player,
   PlayerEvent,
   TextDrawEvent,
+  // VehicleEvent,
 } from "@infernus/core";
-
 export function createCallbacks() {
   const offPlayerClickGlobal = TextDrawEvent.onPlayerClickGlobal(
     ({ player, textDraw, next }) => {
@@ -40,7 +47,6 @@ export function createCallbacks() {
     return next();
   });
 
-  //-------------------------------------------
   // Example of handling dialog responses.
 
   // public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
@@ -53,48 +59,73 @@ export function createCallbacks() {
   //     } else {
   //       SendClientMessage(playerid, 0xFFFFFFFF, "You selected Cancel");
   //     }
-  //     return 1; // we processed this. no need for other filterscripts to process it.
+  //     return next(); // we processed this. no need for other filterscripts to process it.
   //   }
 
   //   if (dialogid === 1) { // Our example inputbox
   //     if (response) {
-  //       new message[256 + 1];
+  //       let message[256 + 1];
   //       format(message, 256, "You replied: %s", inputtext);
   //       SendClientMessage(playerid, 0xFFFFFFFF, message);
   //     } else {
   //       SendClientMessage(playerid, 0xFFFFFFFF, "You selected Cancel");
   //     }
-  //     return 1; // we processed it.
+  //     return next(); // we processed it.
   //   }
 
   //   if (dialogid === 2) { // Our example listbox
   //     if (response) {
-  //       new message[256 + 1];
+  //       let message[256 + 1];
   //       format(message, 256, "You selected item %d:", listitem);
   //       SendClientMessage(playerid, 0xFFFFFFFF, message);
   //       SendClientMessage(playerid, 0xFFFFFFFF, inputtext);
   //     } else {
   //       SendClientMessage(playerid, 0xFFFFFFFF, "You selected Cancel");
   //     }
-  //     return 1; // we processed it.
+  //     return next(); // we processed it.
   //   }
 
   //   return 0; // we didn't handle anything.
   // }
 
-  //-------------------------------------------
-
-  //-------------------------------------------
-  /*
-  public OnPlayerEditAttachedObject( playerid, response, index, modelid, boneid,
-                    Float:fOffsetX, Float:fOffsetY, Float:fOffsetZ,
-                    Float:fRotX, Float:fRotY, Float:fRotZ,
-                      Float:fScaleX, Float:fScaleY, Float:fScaleZ )
-  {
-    SendClientMessage(playerid, 0xFFFFFFFF, "You finished editing an attached object");
-    SetPlayerAttachedObject(playerid,index,modelid,boneid,fOffsetX,fOffsetY,fOffsetZ,fRotX,fRotY,fRotZ,fScaleX,fScaleY,fScaleZ);
-    return 1;
-  }*/
+  // DynamicObjectEvent.onPlayerEditAttached(
+  //   ({
+  //     player,
+  //     index,
+  //     modelId,
+  //     boneId,
+  //     fOffsetX,
+  //     fOffsetY,
+  //     fOffsetZ,
+  //     fRotX,
+  //     fRotY,
+  //     fRotZ,
+  //     fScaleX,
+  //     fScaleY,
+  //     fScaleZ,
+  //     next,
+  //   }) => {
+  //     player.sendClientMessage(
+  //       0xffffffff,
+  //       "You finished editing an attached object",
+  //     );
+  //     player.setAttachedObject(
+  //       index,
+  //       modelId,
+  //       boneId,
+  //       fOffsetX,
+  //       fOffsetY,
+  //       fOffsetZ,
+  //       fRotX,
+  //       fRotY,
+  //       fRotZ,
+  //       fScaleX,
+  //       fScaleY,
+  //       fScaleZ,
+  //     );
+  //     return next();
+  //   },
+  // );
 
   const onPlayerEdit = DynamicObjectEvent.onPlayerEdit(
     ({ object, player, x, y, z, rX, rY, rZ, response, next }) => {
@@ -125,181 +156,151 @@ export function createCallbacks() {
     },
   );
 
-  //-------------------------------------------
-  /*
-  public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
-  {
-      new message[256+1];
-      new weaponname[64+1];
-    new File:file = fopen("playershots.txt",io_append);
+  // PlayerEvent.onWeaponShot(
+  //   ({ player, weapon, hitType, hitId, fX, fY, fZ, next }) => {
+  //     let message = "";
+  //     const weaponName = GameMode.getWeaponName(weapon);
 
-    GetWeaponName(weaponid, weaponname, 64);
+  //     const fX2 = fX.toFixed(2);
+  //     const fY2 = fY.toFixed(2);
+  //     const fZ2 = fZ.toFixed(2);
 
-    if(hittype === BULLET_HIT_TYPE_PLAYER) {
-      format(message,256,"Shooter(%d) hit Player(%d) PlayerAnim: %d Using: %s [%.2f, %.2f, %.2f]\r\n", playerid, hitid,
-          GetPlayerAnimationIndex(hitid), weaponname, fX, fY, fZ);
-    }
-    else if(hittype === BULLET_HIT_TYPE_VEHICLE) {
-        format(message,256,"Shooter(%d) hit Vehicle(%d) Using: %s [%.2f, %.2f, %.2f]\r\n",playerid, hitid, weaponname, fX, fY, fZ);
-    }
-    else if(hittype === BULLET_HIT_TYPE_NONE) {
-        format(message,256,"Shooter(%d) hit World Using: %s [%.2f, %.2f, %.2f]\r\n",playerid,weaponname,fX,fY,fZ);
-    }
-    else {
-        format(message,256,"Shooter(%d) hit Object(%d) Using: %s [%.2f, %.2f, %.2f]\r\n",playerid, hitid, weaponname, fX, fY, fZ);
-    }
+  //     if (hitType === BulletHitTypesEnum.PLAYER) {
+  //       const animIndex = Player.getInstance(hitId)!.getAnimationIndex();
+  //       message = `Shooter(${player.id}) hit Player(${hitId}) PlayerAnim: ${animIndex} Using: ${weaponName} [${fX2}, ${fY2}, ${fZ2}]\n`;
+  //     } else if (hitType === BulletHitTypesEnum.VEHICLE) {
+  //       message = `Shooter(${player.id}) hit Vehicle(${hitId}) Using: ${weaponName} [${fX2}, ${fY2}, ${fZ2}]\n`;
+  //     } else if (hitType === BulletHitTypesEnum.NONE) {
+  //       message = `Shooter(${player.id}) hit World Using: ${weaponName} [${fX2}, ${fY2}, ${fZ2}]\n`;
+  //     } else {
+  //       message = `Shooter(${player.id}) hit Object(${hitId}) Using: ${weaponName} [${fX2}, ${fY2}, ${fZ2}]\n`;
+  //     }
 
-    fwrite(file, message);
-    fclose(file);
+  //     // const { fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ } =
+  //     //   player.getLastShotVectors();
+  //     // const lastVectors = `Last Vectors: [${fOriginX.toFixed(2)}, ${fOriginY.toFixed(2)}, ${fOriginZ.toFixed(2)}] [${fHitPosX.toFixed(2)}, ${fHitPosY.toFixed(2)}, ${fHitPosZ.toFixed(2)}]`;
+  //     // player.sendClientMessage(0xFFFFFFFF, lastVectors);
 
-    //new LastVectors[128+1];
-    //new Float:OriginX, Float:OriginY, Float:OriginZ;
-    //new Float:HitX, Float:HitY, Float:HitZ;
-    //GetPlayerLastShotVectors(playerid, OriginX, OriginY, OriginZ, HitX, HitY, HitZ);
-    //format(LastVectors, 128, "Last Vectors: [%.2f, %.2f, %.2f] [%.2f, %.2f, %.2f]", OriginX, OriginY, OriginZ, HitX, HitY, HitZ);
-    //SendClientMessage(playerid, 0xFFFFFFFF, LastVectors);
+  //     player.sendClientMessage(0xffffffff, message);
+  //     return next();
+  //   },
+  // );
 
-    SendClientMessage(playerid, 0xFFFFFFFF, message);
-      return 1;
-  }*/
+  // let lastShotTime = 0;
+  // let lastShotWeapon = 0;
 
-  //-------------------------------------------
-  /*
-  new LastShotTime = 0;
-  new LastShotWeapon = 0;
+  // PlayerEvent.onWeaponShot(({ player, weapon, next }) => {
+  //   if (!lastShotTime) {
+  //     lastShotTime = Date.now();
+  //     return next();
+  //   }
+  //   if (weapon === lastShotWeapon) {
+  //     const message = `WeaponId: ${weapon} LastShotDelta: ${Date.now() - lastShotTime}`;
+  //     player.sendClientMessage(0xffffffff, message);
+  //     console.log(message);
+  //   }
+  //   lastShotWeapon = weapon;
+  //   lastShotTime = Date.now();
+  //   return next();
+  // });
 
-  public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
-  {
-    new message[128+1];
-
-    if(!LastShotTime) {
-        LastShotTime = GetTickCount();
-        return 1;
-    }
-
-    if(weaponid === LastShotWeapon) {
-      format(message, 128, "WeaponId: %d LastShotDelta: %d", weaponid, GetTickCount() - LastShotTime);
-      SendClientMessage(playerid, 0xFFFFFFFF, message);
-        printf("%s", message);
-    }
-
-    LastShotWeapon = weaponid;
-    LastShotTime = GetTickCount();
-
-      return 1;
-  }*/
-
-  //-------------------------------------------
   // Example of TakeDamage
-  /*
-  public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
-  {
-    new File:file = fopen("playershots.txt",io_append);
-      new message[256+1];
-      new weapname[64+1];
+  // PlayerEvent.onTakeDamage(
+  //   ({ player, damage, amount, weapon, bodyPart, next }) => {
+  //     const fullPath = path.resolve(
+  //       process.cwd(),
+  //       "scriptfiles",
+  //       "playershots.txt",
+  //     );
+  //     let message = "";
+  //     if (damage !== InvalidEnum.PLAYER_ID) {
+  //       const weaponName = GameMode.getWeaponName(weapon);
+  //       message = `PlayerTakeDamage(${player.id}) from Player(${damage.id}) (${amount}) weapon: (${weaponName}) bodyPart: ${bodyPart}\n`;
+  //     } else {
+  //       message = `PlayerTakeDamage(${player.id}) (${amount}) from: ${weapon}\n`;
+  //     }
+  //     fs.writeFile(fullPath, message, { flag: "a" }, () => {
+  //       Player.sendClientMessageToAll(0xffffffff, message);
+  //     });
+  //     return next();
+  //   },
+  // );
 
-    if(issuerid !== INVALID_PLAYER_ID) {
-        GetWeaponName(weaponid, weapname, 64);
-      format(message, 256, "PlayerTakeDamage(%d) from Player(%d) (%f) weapon: (%s) bodypart: %d\r\n", playerid, issuerid, amount, weapname, bodypart);
-      SendClientMessageToAll(0xFFFFFFFF, message);
-    }
-    else {
-      format(message, 256, "PlayerTakeDamage(%d) (%f) from: %d\r\n", playerid, amount, weaponid);
-      SendClientMessageToAll(0xFFFFFFFF, message);
-    }
-
-    fwrite(file, message);
-    fclose(file);
-  }*/
-
-  //-------------------------------------------
   // Example of GiveDamage
-  /*
-  public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
-  {
-    new File:file = fopen("playershots.txt",io_append);
-      new message[256+1];
-      new weapname[64+1];
+  // PlayerEvent.onGiveDamage(
+  //   ({ player, weapon, bodyPart, damage, amount, next }) => {
+  //     const fullPath = path.resolve(
+  //       process.cwd(),
+  //       "scriptfiles",
+  //       "playershots.txt",
+  //     );
+  //     const weaponName = GameMode.getWeaponName(weapon);
+  //     const message = `PlayerGiveDamage(${player.id}) to Player(${damage.id}) (${amount}) weapon: (${weaponName}) bodyPart: ${bodyPart}\n`;
+  //     fs.writeFile(fullPath, message, { flag: "a" }, () => {
+  //       Player.sendClientMessageToAll(0xffffffff, message);
+  //     });
+  //     return next();
+  //   },
+  // );
 
-      GetWeaponName(weaponid, weapname, 64);
-    format(message, 256, "PlayerGiveDamage(%d) to Player(%d) (%f) weapon: (%s) bodypart: %d\r\n", playerid, damagedid, amount, weapname, bodypart);
+  // DynamicActorEvent.onPlayerGiveDamage(
+  //   ({ player, actor, amount, weapon, bodyPart, next }) => {
+  //     const weaponName = GameMode.getWeaponName(weapon);
+  //     const message = `PlayerGiveDamageActor(${player.id}) to Actor(${actor.id}) (${amount}) weapon: (${weaponName}) bodyPart: ${bodyPart}\n`;
+  //     Player.sendClientMessageToAll(0xffffffff, message);
 
-    fwrite(file, message);
-    fclose(file);
-    SendClientMessageToAll(0xFFFFFFFF, message);
-  }*/
+  //     if (actor.isValid()) {
+  //       let fActorHealth = actor.getHealth();
+  //       fActorHealth -= amount;
+  //       if (fActorHealth < 0.0) fActorHealth = 0.0;
+  //       actor.setHealth(fActorHealth);
+  //     }
+  //     return next();
+  //   },
+  // );
 
-  //-------------------------------------------
-  /*
-  public OnPlayerGiveDamageActor(playerid, damaged_actorid, Float:amount, weaponid, bodypart)
-  {
-      new message[256+1];
-      new weapname[64+1];
+  // PlayerEvent.onDeath(({ player, killer, reason, next }) => {
+  //   player.sendDeathMessage(killer, reason);
+  //   return next();
+  // });
 
-      GetWeaponName(weaponid, weapname, 64);
-      format(message, 256, "PlayerGiveDamageActor(%d) to Actor(%d) (%f) weapon: (%s) bodypart: %d\r\n", playerid, damaged_actorid, amount, weapname, bodypart);
-      SendClientMessageToAll(0xFFFFFFFF, message);
+  // PlayerEvent.onEnterExitModShop(({ player, enterExit, interior, next }) => {
+  //   let message = "";
+  //   if (enterExit) {
+  //     message = `You entered modshop at interior ${interior}`;
+  //   } else {
+  //     message = `You exited the modshop`;
+  //   }
+  //   player.sendClientMessage(0xffffffff, message);
+  //   return next();
+  // });
 
-    if(IsValidActor(damaged_actorid)) {
-        new Float:fActorHealth;
-        GetActorHealth(damaged_actorid, fActorHealth);
-        fActorHealth -= amount;
-      if(fActorHealth < 0.0) fActorHealth = 0.0;
-      SetActorHealth(damaged_actorid, fActorHealth);
-    }
-  }
-  */ /*
-  public OnPlayerDeath(playerid, killerid, reason)
-  {
-      SendDeathMessage(killerid, playerid, reason);
-      return 1;
-  }*/
+  // VehicleEvent.onDamageStatusUpdate(({ vehicle, player, next }) => {
+  //   if (!player.isAdmin()) return next();
+  //   const { panels, doors, lights, tires } = vehicle.getDamageStatus()!;
+  //   const updateMsg = `VehicleDamage[ID:${vehicle.id} PN:0x${panels.toString(16)} DR:0x${doors.toString(16)} LT:0x${lights.toString(16)} TR:0x${tires.toString(16)}]`;
+  //   player.sendClientMessage(0xffffffff, updateMsg);
+  //   return next();
+  // });
 
-  //-------------------------------------------
-  /*
-  public OnEnterExitModShop(playerid, enterexit, interiorid)
-  {
-      new message[256+1];
-      if(enterexit) {
-      format(message, 256, "You entered modshop at interior %d", interiorid);
-      SendClientMessage(playerid, 0xFFFFFFFF, message);
-    } else {
-          format(message, 256, "You exited the modshop");
-      SendClientMessage(playerid, 0xFFFFFFFF, message);
-    }
-    return 1;
-  }
-  */ /*
-  public OnVehicleDamageStatusUpdate(vehicleid, playerid)
-  {
-    new panel, doors, lights, tires;
-    new update_msg[128+1];
-    
-    if(!IsPlayerAdmin(playerid)) return 0;
-    
-    GetVehicleDamageStatus(vehicleid,panel,doors,lights,tires);
-    format(update_msg,128,"VehicleDamage[ID:%d PN:0x%x DR:0x%x LT:0x%x TR:0x%x]",vehicleid,panel,doors,lights,tires);
-    SendClientMessage(playerid,0xFFFFFFFF,update_msg);
-    
-    return 1;
-  }*/
-  /*
-  public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat, Float:new_x, Float:new_y, Float:new_z)
-  {
-      new update_msg[128+1];
-      new Float:X, Float:Y, Float:Z;
-      
-      //if(!IsPlayerAdmin(playerid)) return 0;
-      
-      GetVehiclePos(vehicleid, X, Y, Z);
+  // VehicleEvent.onUnoccupiedUpdate(
+  //   ({ player, vehicle, passengerSeat, newX, newY, newZ, next }) => {
+  //     if (!player.isAdmin()) return next();
+  //     const { x, y, z } = vehicle.getPos();
 
-      format(update_msg,128,"NoDriverVehicleUpdate(playerid=%d vehicle=%d passenger=%d cur_pos: %.2f %.2f %.2f new_pos: %.2f %.2f %.2f)",
-      playerid, vehicleid, passenger_seat, X, Y, Z, new_x, new_y, new_z);
-        
-    SendClientMessageToAll(0xFFFFFFFF,update_msg);
-    
-    return 1;
-  }*/
+  //     const x2 = x.toFixed(2);
+  //     const y2 = y.toFixed(2);
+  //     const z2 = z.toFixed(2);
+
+  //     const newX2 = newX.toFixed(2);
+  //     const newY2 = newY.toFixed(2);
+  //     const newZ2 = newZ.toFixed(2);
+
+  //     const updateMsg = `NoDriverVehicleUpdate(playerid=${player.id} vehicle=${vehicle.id} passenger=${passengerSeat} cur_pos: ${x2} ${y2} ${z2} new_pos: ${newX2} ${newY2} ${newZ2}`;
+  //     Player.sendClientMessageToAll(0xffffffff, updateMsg);
+  //     return next();
+  //   },
+  // );
 
   return [
     offPlayerClickGlobal,
