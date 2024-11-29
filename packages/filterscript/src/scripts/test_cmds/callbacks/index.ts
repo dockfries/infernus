@@ -47,47 +47,6 @@ export function createCallbacks() {
     return next();
   });
 
-  // Example of handling dialog responses.
-
-  // public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
-  // {
-  //   if (!IsPlayerAdmin(playerid)) return 0; // this is an admin only script
-
-  //   if (dialogid === 0) { // Our example msgbox
-  //     if (response) {
-  //       SendClientMessage(playerid, 0xFFFFFFFF, "You selected OK");
-  //     } else {
-  //       SendClientMessage(playerid, 0xFFFFFFFF, "You selected Cancel");
-  //     }
-  //     return next(); // we processed this. no need for other filterscripts to process it.
-  //   }
-
-  //   if (dialogid === 1) { // Our example inputbox
-  //     if (response) {
-  //       let message[256 + 1];
-  //       format(message, 256, "You replied: %s", inputtext);
-  //       SendClientMessage(playerid, 0xFFFFFFFF, message);
-  //     } else {
-  //       SendClientMessage(playerid, 0xFFFFFFFF, "You selected Cancel");
-  //     }
-  //     return next(); // we processed it.
-  //   }
-
-  //   if (dialogid === 2) { // Our example listbox
-  //     if (response) {
-  //       let message[256 + 1];
-  //       format(message, 256, "You selected item %d:", listitem);
-  //       SendClientMessage(playerid, 0xFFFFFFFF, message);
-  //       SendClientMessage(playerid, 0xFFFFFFFF, inputtext);
-  //     } else {
-  //       SendClientMessage(playerid, 0xFFFFFFFF, "You selected Cancel");
-  //     }
-  //     return next(); // we processed it.
-  //   }
-
-  //   return 0; // we didn't handle anything.
-  // }
-
   // DynamicObjectEvent.onPlayerEditAttached(
   //   ({
   //     player,
