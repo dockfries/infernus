@@ -1,3 +1,23 @@
+## <small>0.11.2 (2024-11-29)</small>
+
+* chore(docs): fs rewrite ([3b1faf1](https://github.com/dockfries/infernus/commit/3b1faf1))
+* chore(fs): test_cmds ([3f9e057](https://github.com/dockfries/infernus/commit/3f9e057))
+* chore(fs): test_cmds dialog response ([48c63e6](https://github.com/dockfries/infernus/commit/48c63e6))
+* chore(fs): typo ([9220621](https://github.com/dockfries/infernus/commit/9220621))
+* chore(root): update deps ([4f21506](https://github.com/dockfries/infernus/commit/4f21506))
+* fix(core): `GameText` special char ([d0fc8c4](https://github.com/dockfries/infernus/commit/d0fc8c4))
+* fix(core): onPlayerWeaponShot ([8133df3](https://github.com/dockfries/infernus/commit/8133df3))
+* fix(core): setCameraLookAt default cut ([96b6420](https://github.com/dockfries/infernus/commit/96b6420))
+* fix(core): vehicle `getParamsEx`, onUnoccupiedUpdate ([b6a98e6](https://github.com/dockfries/infernus/commit/b6a98e6))
+* fix(fs): build ([d4222f0](https://github.com/dockfries/infernus/commit/d4222f0))
+* ci(release): maybe no need tag_name ([b847457](https://github.com/dockfries/infernus/commit/b847457))
+* feat(fs): fs_debug ([316dcda](https://github.com/dockfries/infernus/commit/316dcda))
+* feat(fs): test_cmds ([c3b5b4f](https://github.com/dockfries/infernus/commit/c3b5b4f))
+* chore(core, fs, raknet): three equals ([c5bc954](https://github.com/dockfries/infernus/commit/c5bc954))
+* fix(core, streamer): typo, enum ([627e502](https://github.com/dockfries/infernus/commit/627e502))
+
+
+
 ## <small>0.11.1 (2024-11-03)</small>
 
 * chore(eslint, fcnpc): cache ignore, typo and default return ([a51567a](https://github.com/dockfries/infernus/commit/a51567a))
