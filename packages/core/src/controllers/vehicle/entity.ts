@@ -280,13 +280,13 @@ export class Vehicle {
     return v.GetVehicleParamsCarWindows(this.id);
   }
   setParamsEx(
-    engine: boolean,
-    lights: boolean,
-    alarm: boolean,
-    doors: boolean,
-    bonnet: boolean,
-    boot: boolean,
-    objective: boolean,
+    engine: boolean | number,
+    lights: boolean | number,
+    alarm: boolean | number,
+    doors: boolean | number,
+    bonnet: boolean | number,
+    boot: boolean | number,
+    objective: boolean | number,
   ): number {
     if (this.id === -1) return 0;
     return v.SetVehicleParamsEx(
@@ -305,13 +305,13 @@ export class Vehicle {
     const [engine, lights, alarm, doors, bonnet, boot, objective] =
       v.GetVehicleParamsEx(this.id);
     return {
-      engine: !!engine,
-      lights: !!lights,
-      alarm: !!alarm,
-      doors: !!doors,
-      bonnet: !!bonnet,
-      boot: !!boot,
-      objective: !!objective,
+      engine: engine === 1,
+      lights: lights === 1,
+      alarm: alarm === 1,
+      doors: doors === 1,
+      bonnet: bonnet === 1,
+      boot: boot === 1,
+      objective: objective === 1,
     };
   }
   getParamsSirenState(): number {

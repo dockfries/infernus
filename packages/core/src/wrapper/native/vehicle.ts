@@ -329,13 +329,13 @@ export const ManualVehicleEngineAndLights = (): number => {
 
 export const SetVehicleParamsEx = (
   vehicleId: number,
-  engine: boolean,
-  lights: boolean,
-  alarm: boolean,
-  doors: boolean,
-  bonnet: boolean,
-  boot: boolean,
-  objective: boolean,
+  engine: boolean | number,
+  lights: boolean | number,
+  alarm: boolean | number,
+  doors: boolean | number,
+  bonnet: boolean | number,
+  boot: boolean | number,
+  objective: boolean | number,
 ): number => {
   return samp.callNative(
     "SetVehicleParamsEx",

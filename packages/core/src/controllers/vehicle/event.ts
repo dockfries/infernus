@@ -144,6 +144,33 @@ const [onTrailerUpdate] = defineEvent({
   },
 });
 
+const [onUnoccupiedUpdate] = defineEvent({
+  name: "OnUnoccupiedVehicleUpdate",
+  beforeEach(
+    vid: number,
+    pid: number,
+    passengerSeat: number,
+    newX: number,
+    newY: number,
+    newZ: number,
+    velX: number,
+    velY: number,
+    velZ: number,
+  ) {
+    return {
+      vehicle: Vehicle.getInstance(vid)!,
+      player: Player.getInstance(pid)!,
+      passengerSeat,
+      newX,
+      newY,
+      newZ,
+      velX,
+      velY,
+      velZ,
+    };
+  },
+});
+
 export const VehicleEvent = Object.freeze({
   onDamageStatusUpdate,
   onDeath,
@@ -159,4 +186,5 @@ export const VehicleEvent = Object.freeze({
   onNpcEnter,
   onNpcExit,
   onTrailerUpdate,
+  onUnoccupiedUpdate,
 });
