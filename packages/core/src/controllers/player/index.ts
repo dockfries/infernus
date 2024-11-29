@@ -27,6 +27,7 @@ import {
   onTakeDamage,
   onText,
   onUpdate,
+  onWeaponShot,
 } from "./event";
 
 import { Dialog, onDialogResponse } from "./dialog";
@@ -67,6 +68,7 @@ export const PlayerEvent = Object.freeze({
   onLocaleChange,
   onCharsetChange,
   onFpsUpdate,
+  onWeaponShot,
 });
 
 export { Dialog };

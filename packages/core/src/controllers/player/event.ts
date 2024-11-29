@@ -3,6 +3,7 @@ import { defineEvent } from "../bus";
 import { I18n } from "../i18n";
 import type {
   BodyPartsEnum,
+  BulletHitTypesEnum,
   KeysEnum,
   PlayerStateEnum,
   WeaponEnum,
@@ -230,6 +231,29 @@ export const [onFinishedDownloading] = defineEvent({
     return {
       player: Player.getInstance(id)!,
       virtualWorld,
+    };
+  },
+});
+
+export const [onWeaponShot] = defineEvent({
+  name: "OnPlayerWeaponShot",
+  beforeEach(
+    id: number,
+    weapon: WeaponEnum,
+    hitType: BulletHitTypesEnum,
+    hitId: number,
+    fX: number,
+    fY: number,
+    fZ: number,
+  ) {
+    return {
+      player: Player.getInstance(id)!,
+      weapon,
+      hitType,
+      hitId,
+      fX,
+      fY,
+      fZ,
     };
   },
 });
