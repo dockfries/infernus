@@ -110,7 +110,7 @@ export function registerSkinSelect(options?: IFsDebugOptions) {
       player,
       setInterval(() => {
         skinSelect(player);
-      }),
+      }, 200),
     );
     return next();
   });
