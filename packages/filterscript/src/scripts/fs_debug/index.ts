@@ -31,6 +31,7 @@ import { registerCameraSelect } from "./commands/cameraSelect";
 import { registerVehicleSelect } from "./commands/vehicleSelect";
 import { registerWorldSelect } from "./commands/worldSelect";
 import { registerSkinSelect } from "./commands/skinSelect";
+import { registerObjectSelect } from "./commands/objectSelect";
 import { registerMiscCommands } from "./commands/miscCommands";
 
 export const FsDebug: IFsDebug = {
@@ -132,6 +133,7 @@ export const FsDebug: IFsDebug = {
     const offWorldSelect = registerWorldSelect(options);
     const offVehicleSelect = registerVehicleSelect(options);
     const offSkinSelect = registerSkinSelect(options);
+    const offObjectCommands = registerObjectSelect(options);
     const offMiscCommands = registerMiscCommands(options);
 
     return [
@@ -143,6 +145,7 @@ export const FsDebug: IFsDebug = {
       ...offWorldSelect,
       ...offVehicleSelect,
       ...offSkinSelect,
+      ...offObjectCommands,
       ...offMiscCommands,
     ];
   },
