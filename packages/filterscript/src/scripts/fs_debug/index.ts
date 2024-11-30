@@ -8,7 +8,7 @@
 //  *  17/11/2011
 //  *    Updated to 0.5d which supports SA:MP 0.3d
 
-import { Player, PlayerEvent } from "@infernus/core";
+import { Player, PlayerEvent, Vehicle } from "@infernus/core";
 import {
   DEBUG_VERSION,
   MIN_OBJECT_ID,
@@ -25,6 +25,7 @@ import {
   gPlayerStatus,
   gPlayerTimers,
   pObjectRate,
+  OBJECT_MODE_SELECTOR,
 } from "./constants";
 import { IFsDebug, I_OBJECT, I_OBJ_RATE } from "./interfaces";
 import { registerCameraSelect } from "./commands/cameraSelect";
@@ -44,15 +45,34 @@ export const FsDebug: IFsDebug = {
     );
     console.log("  * -- LOADED         *\n  *********************\n");
 
-    Player.getInstances().forEach((player) => {
+    function initData(player: Player) {
+      curPlayerCamD.set(player, {
+        MODE: CAMERA_MODE_A,
+        RATE: 2.0,
+        POS_X: 0.0,
+        POS_Y: 0.0,
+        POS_Z: 0.0,
+        LOOK_X: 0.0,
+        LOOK_Y: 0.0,
+        LOOK_Z: 0.0,
+      });
+      curPlayerSkin.set(player, MIN_SKIN_ID); // Current Player Skin ID
+      curPlayerVehM.set(player, MIN_VEHICLE_ID); // Current Player Vehicle ID
+      curPlayerVehI.set(player, -1);
+
       const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
       p_curPlayerObjM.OBJ_MDL = MIN_OBJECT_ID;
+      p_curPlayerObjM.OBJ_MOD = OBJECT_MODE_SELECTOR;
       curPlayerObjM.set(player, p_curPlayerObjM);
 
       const p_pObjectRate = pObjectRate.get(player) || ({} as I_OBJ_RATE);
       p_pObjectRate.OBJ_RATE_ROT = 1.0;
       p_pObjectRate.OBJ_RATE_MOVE = 1.0;
       pObjectRate.set(player, p_pObjectRate);
+    }
+
+    Player.getInstances().forEach((player) => {
+      initData(player);
     });
 
     const onCommandReceived = PlayerEvent.onCommandReceived(
@@ -98,24 +118,43 @@ export const FsDebug: IFsDebug = {
         clearInterval(timer);
         gPlayerTimers.delete(player);
       }
-      gPlayerStatus.delete(player);
+      if (curPlayerCamD.has(player)) {
+        gPlayerStatus.delete(player);
+      }
+      if (curPlayerCamD.has(player)) {
+        curPlayerCamD.delete(player);
+      }
+      if (curPlayerSkin.has(player)) {
+        curPlayerSkin.delete(player);
+      }
+      if (curPlayerVehM.has(player)) {
+        curPlayerVehM.delete(player);
+      }
+      const vehId = curPlayerVehI.get(player);
+      if (vehId) {
+        curPlayerVehI.delete(player);
+        const veh = Vehicle.getInstance(vehId);
+        if (veh && curServerVehP.has(veh)) {
+          curServerVehP.delete(veh);
+        }
+      }
+      if (pObjectRate.has(player)) {
+        pObjectRate.delete(player);
+      }
+      if (curPlayerObjM.has(player)) {
+        curPlayerObjM.delete(player);
+      }
+      if (curPlayerObjI.has(player)) {
+        curPlayerObjI.delete(player);
+      }
+      if (curPlayerCamD.has(player)) {
+        curPlayerCamD.delete(player);
+      }
       return next();
     });
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
-      curPlayerCamD.set(player, {
-        MODE: CAMERA_MODE_A,
-        RATE: 2.0,
-        POS_X: 0.0,
-        POS_Y: 0.0,
-        POS_Z: 0.0,
-        LOOK_X: 0.0,
-        LOOK_Y: 0.0,
-        LOOK_Z: 0.0,
-      });
-      curPlayerSkin.set(player, MIN_SKIN_ID); // Current Player Skin ID
-      curPlayerVehM.set(player, MIN_VEHICLE_ID); // Current Player Vehicle ID
-      curPlayerVehI.set(player, -1);
+      initData(player);
       return next();
     });
 

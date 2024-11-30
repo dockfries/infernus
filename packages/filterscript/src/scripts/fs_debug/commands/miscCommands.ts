@@ -16,7 +16,7 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
         );
         return next();
       }
-      const id = +subcommand[0];
+      const id = +subcommand[0] || 0;
       if (!Player.isConnected(id)) {
         player.sendClientMessage(COLOR_RED, "[ERROR]: Not connected PLAYERID.");
         return next();
@@ -40,12 +40,12 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
         );
         return next();
       }
-      x += +subcommand[1];
+      x += +subcommand[1] || 0;
       if (subcommand[2]) {
-        y += +subcommand[2];
+        y += +subcommand[2] || 0;
       }
       if (subcommand[3]) {
-        z += +subcommand[3];
+        z += +subcommand[3] || 0;
       }
       const pVeh = player.getVehicle();
       if (pVeh) {
@@ -71,10 +71,10 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
         player.sendClientMessage(COLOR_RED, "[USAGE]: /setloc X Y Z INTERIOR");
         return next();
       }
-      const x = +subcommand[0];
-      const y = +subcommand[1];
-      const z = +subcommand[2];
-      const interior = +subcommand[3];
+      const x = +subcommand[0] || 0;
+      const y = +subcommand[1] || 0;
+      const z = +subcommand[2] || 0;
+      const interior = +subcommand[3] || 0;
       const pVeh = player.getVehicle();
       if (pVeh) {
         pVeh.setPos(x, y, z);
@@ -97,7 +97,7 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
         );
         return next();
       }
-      const id = +subcommand[0];
+      const id = +subcommand[0] || 0;
       if (!Player.isConnected(id)) {
         player.sendClientMessage(COLOR_RED, "[ERROR]: Not connected PLAYERID.");
         return next();
@@ -121,12 +121,12 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
         );
         return next();
       }
-      x += +subcommand[1];
+      x += +subcommand[1] || 0;
       if (subcommand[2]) {
-        y += +subcommand[2];
+        y += +subcommand[2] || 0;
       }
       if (subcommand[3]) {
-        z += +subcommand[3];
+        z += +subcommand[3] || 0;
       }
       const pVeh = pInstance.getVehicle();
       if (pVeh) {
@@ -156,7 +156,7 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
       }
       let weaponId = getWeaponModelIDFromName(subcommand[0]);
       if (weaponId === -1) {
-        weaponId = +subcommand[0];
+        weaponId = +subcommand[0] || 0;
         if (weaponId < 0 || weaponId > 47) {
           player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid WEAPONID/NAME");
           return next();
@@ -170,7 +170,7 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
         );
         return next();
       }
-      const idx = +subcommand[2];
+      const idx = +subcommand[1] || 0;
       player.giveWeapon(weaponId, idx);
       player.sendClientMessage(
         COLOR_GREEN,

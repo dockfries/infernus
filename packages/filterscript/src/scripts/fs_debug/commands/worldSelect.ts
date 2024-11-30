@@ -172,7 +172,7 @@ export function registerWorldSelect(options?: IFsDebugOptions) {
         );
         return next();
       }
-      const idx = +subcommand[0];
+      const idx = +subcommand[0] || 0;
       if (idx < MIN_WEATHER_ID || idx > MAX_WEATHER_ID) {
         player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid WEATHERID");
         return next();
@@ -194,7 +194,7 @@ export function registerWorldSelect(options?: IFsDebugOptions) {
         player.sendClientMessage(COLOR_RED, "[USAGE]: /t HOUR or /time HOUR");
         return next();
       }
-      const idx = +subcommand[0];
+      const idx = +subcommand[0] || 0;
       if (idx < MIN_TIME_ID || idx > MAX_TIME_ID) {
         player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid HOUR");
         return next();

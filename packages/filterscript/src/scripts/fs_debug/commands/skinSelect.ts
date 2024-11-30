@@ -123,7 +123,7 @@ export function registerSkinSelect(options?: IFsDebugOptions) {
         player.sendClientMessage(COLOR_RED, "[USAGE]: /s SKINID");
         return next();
       }
-      const idx = +subcommand[0];
+      const idx = +subcommand[0] || 0;
       if (isInvalidSkin(idx) || idx < MIN_SKIN_ID || idx > MAX_SKIN_ID) {
         player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid SKINID");
         return next();

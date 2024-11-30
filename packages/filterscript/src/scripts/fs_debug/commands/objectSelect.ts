@@ -5,6 +5,8 @@ import {
   KeysEnum,
   Player,
   GameText,
+  Streamer,
+  StreamerItemTypes,
 } from "@infernus/core";
 import {
   COLOR_WHITE,
@@ -34,6 +36,9 @@ import {
 import { getXYInFrontOfPlayer, isValidModel } from "../utils";
 
 function objectSelect(player: Player) {
+  //  streamer doesn't automatically update idle players.
+  Streamer.update(player, StreamerItemTypes.OBJECT);
+
   const { keys, upDown, leftRight } = player.getKeys();
 
   const p_curPlayerObjM = curPlayerObjM.get(player)!;
@@ -317,7 +322,7 @@ export function registerObjectSelect(options?: IFsDebugOptions) {
   const objMode = PlayerEvent.onCommandText(
     "object mode",
     ({ player, subcommand, next }) => {
-      const mode = +subcommand[0];
+      const mode = +subcommand[0] || 0;
       if (mode >= OBJECT_MODE_SELECTOR || mode <= OBJECT_MODE_ROTATOR) {
         const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
         p_curPlayerObjM.OBJ_MOD = mode;
@@ -408,7 +413,7 @@ export function registerObjectSelect(options?: IFsDebugOptions) {
   const objCamera = PlayerEvent.onCommandText(
     "object camera",
     ({ player, subcommand, next }) => {
-      const cameraId = +subcommand[0];
+      const cameraId = +subcommand[0] || 0;
       if (cameraId >= 0 && cameraId < 4) {
         const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
         const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);

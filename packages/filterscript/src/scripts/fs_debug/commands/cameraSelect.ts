@@ -15,7 +15,6 @@ import {
   gPlayerTimers,
   CAMERA_MODE_A,
   CAMERA_MODE_B,
-  gWorldStatus,
 } from "../constants";
 import { SelStatEnum } from "../enums";
 import { IFsDebugOptions, P_CAMERA_D } from "../interfaces";
@@ -190,10 +189,6 @@ function cameraSelect(player: Player) {
   if (keys & KeysEnum.ACTION) {
     player.setCameraBehind();
     player.toggleControllable(true);
-    player.sendClientMessage(
-      COLOR_GREEN,
-      `[SUCCESS]: Time changed to ${gWorldStatus[0]} hours and weather changed to WeatherId ${gWorldStatus[1]}`,
-    );
 
     const date = new Date();
     const D = date.getDate();

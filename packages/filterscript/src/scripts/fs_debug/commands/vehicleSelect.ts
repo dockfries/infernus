@@ -21,7 +21,7 @@ import {
   gPlayerTimers,
 } from "../constants";
 import { SelStatEnum } from "../enums";
-import { IFsDebugOptions } from "../interfaces";
+import { CUR_VEHICLE, IFsDebugOptions } from "../interfaces";
 import { getVehicleModelIDFromName, getXYInFrontOfPlayer } from "../utils";
 
 function vehicleSelect(player: Player) {
@@ -46,6 +46,8 @@ function vehicleSelect(player: Player) {
       p_curPlayerVehM++;
     }
 
+    curPlayerVehM.set(player, p_curPlayerVehM);
+
     new GameText(
       `Model ID: ${curPlayerVehM}~n~Vehicle Name: ${aVehicleNames[p_curPlayerVehM - MIN_VEHICLE_ID]}`,
       1500,
@@ -59,12 +61,12 @@ function vehicleSelect(player: Player) {
 
     const vehId = curPlayerVehI.get(player)!;
     let veh = Vehicle.getInstance(vehId)!;
-    if (veh) veh.destroy();
-
-    const p_curServerVehP = curServerVehP.get(veh)!;
-    p_curServerVehP.spawn = false;
-    curServerVehP.set(veh, p_curServerVehP);
-
+    if (veh) {
+      veh.destroy();
+      const p_curServerVehP = curServerVehP.get(veh) || ({} as CUR_VEHICLE);
+      p_curServerVehP.spawn = false;
+      curServerVehP.set(veh, p_curServerVehP);
+    }
     veh = new Vehicle({
       modelId: p_curPlayerVehM,
       x,
@@ -96,6 +98,8 @@ function vehicleSelect(player: Player) {
       p_curPlayerVehM--;
     }
 
+    curPlayerVehM.set(player, p_curPlayerVehM);
+
     new GameText(
       `Model ID: ${curPlayerVehM}~n~Vehicle Name: ${aVehicleNames[p_curPlayerVehM - MIN_VEHICLE_ID]}`,
       1500,
@@ -109,12 +113,12 @@ function vehicleSelect(player: Player) {
 
     const vehId = curPlayerVehI.get(player)!;
     let veh = Vehicle.getInstance(vehId)!;
-    if (veh) veh.destroy();
-
-    const p_curServerVehP = curServerVehP.get(veh)!;
-    p_curServerVehP.spawn = false;
-    curServerVehP.set(veh, p_curServerVehP);
-
+    if (veh) {
+      veh.destroy();
+      const p_curServerVehP = curServerVehP.get(veh) || ({} as CUR_VEHICLE);
+      p_curServerVehP.spawn = false;
+      curServerVehP.set(veh, p_curServerVehP);
+    }
     veh = new Vehicle({
       modelId: p_curPlayerVehM,
       x,
@@ -180,7 +184,7 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
       //***************
       let idx = getVehicleModelIDFromName(subcommand[0]);
       if (idx === -1) {
-        idx = +subcommand[0];
+        idx = +subcommand[0] || 0;
         if (idx < MIN_VEHICLE_ID || idx > MAX_VEHICLE_ID)
           return player.sendClientMessage(
             COLOR_RED,
@@ -242,6 +246,16 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
 
     const idx = curPlayerVehM.get(player)!;
 
+    const beforeVeh = curPlayerVehI.get(player);
+    if (beforeVeh) {
+      const veh = Vehicle.getInstance(beforeVeh);
+      if (veh) {
+        veh.destroy();
+        curServerVehP.delete(veh);
+      }
+      curPlayerVehI.delete(player);
+    }
+
     const veh = new Vehicle({
       modelId: idx,
       x,
@@ -254,6 +268,8 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
     veh.create();
     veh.linkToInterior(player.getInterior());
     console.log(`vsel vehicle start id = ${veh.id}`);
+
+    curPlayerVehI.set(player, veh.id);
 
     curServerVehP.set(veh, {
       spawn: true,
