@@ -8,17 +8,16 @@ const androidTimer = new Map<Player, NodeJS.Timeout>();
 const androidCheckCount = new Map<Player, number>();
 
 function checkAndroid(player: Player) {
-  if (player._isAndroid || !player.isConnected()) {
+  if (!player.isConnected()) {
     if (androidTimer.has(player)) {
       clearInterval(androidTimer.get(player));
     }
     return;
   }
 
-  let count = androidCheckCount.get(player) || 0;
+  let count = androidCheckCount.get(player) || 1;
 
-  if (count >= 10) {
-    player._isAndroid = true;
+  if (count >= Player.MAX_CHECK_ANDROID_DELAY) {
     clearInterval(androidTimer.get(player));
     triggerOnAndroidCheck(player, true);
     return;
@@ -90,7 +89,15 @@ onConnect(({ player, next }) => {
     }, 500);
   }
 
-  if (player.isNpc()) return next();
+  if (player.isNpc()) {
+    player._isAndroid = false;
+    return next();
+  }
+  if (Player.SKIP_CHECK_ANDROID) {
+    player._isAndroid = !player.isUsingOfficialClient();
+    triggerOnAndroidCheck(player, player._isAndroid);
+    return next();
+  }
   checkAndroid(player);
   const timer = setInterval(() => checkAndroid(player), 1000);
   androidTimer.set(player, timer);

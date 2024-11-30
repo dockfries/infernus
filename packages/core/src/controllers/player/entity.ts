@@ -54,11 +54,13 @@ export const [onCharsetChange, triggerOnCharsetChange] = defineEvent({
 
 export class Player {
   static readonly players = new Map<number, Player>();
+  static MAX_CHECK_ANDROID_DELAY = 10; // 10s
+  static SKIP_CHECK_ANDROID = false;
 
   private _charset = "ISO-8859-1";
   private _locale = "en_US";
 
-  _isAndroid = false;
+  _isAndroid = true;
 
   lastDrunkLevel = 0;
   lastFps = 0;
