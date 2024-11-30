@@ -4,6 +4,42 @@ import { defineEvent } from "../bus";
 import { onConnect, onDisconnect, onUpdate } from "./event";
 
 let pauseChecker: null | NodeJS.Timeout = null;
+const androidTimer = new Map<Player, NodeJS.Timeout>();
+const androidCheckCount = new Map<Player, number>();
+
+function checkAndroid(player: Player) {
+  if (player._isAndroid || !player.isConnected()) {
+    if (androidTimer.has(player)) {
+      clearInterval(androidTimer.get(player));
+    }
+    return;
+  }
+
+  let count = androidCheckCount.get(player) || 0;
+
+  if (count >= 10) {
+    player._isAndroid = true;
+    clearInterval(androidTimer.get(player));
+    triggerOnAndroidCheck(player, true);
+    return;
+  }
+
+  player
+    .sendClientCheck(0x48, 0, 0, 2)
+    .then(({ actionId }) => {
+      if (actionId === 0x48) {
+        player._isAndroid = false;
+        if (androidTimer.has(player)) {
+          clearInterval(androidTimer.get(player));
+        }
+        triggerOnAndroidCheck(player, false);
+      }
+    })
+    .catch(() => {});
+
+  count++;
+  androidCheckCount.set(player, count);
+}
 
 export const [onPause, triggerOnPause] = defineEvent({
   name: "OnPlayerPause",
@@ -29,7 +65,15 @@ export const [onFpsUpdate, triggerOnFpsUpdate] = defineEvent({
   },
 });
 
-onConnect(({ next }) => {
+export const [onAndroidCheck, triggerOnAndroidCheck] = defineEvent({
+  name: "OnAndroidCheck",
+  isNative: false,
+  beforeEach(player: Player, result: boolean) {
+    return { player, result };
+  },
+});
+
+onConnect(({ player, next }) => {
   if (!pauseChecker && Player.getInstances().length) {
     pauseChecker = setInterval(() => {
       const activePlayers = Player.getInstances().filter((p) => {
@@ -45,13 +89,23 @@ onConnect(({ next }) => {
       });
     }, 500);
   }
+
+  if (player.isNpc()) return next();
+  checkAndroid(player);
+  const timer = setInterval(() => checkAndroid(player), 1000);
+  androidTimer.set(player, timer);
   return next();
 });
 
-onDisconnect(({ next }) => {
+onDisconnect(({ player, next }) => {
   if (pauseChecker && Player.getInstances().length <= 1) {
     clearInterval(pauseChecker);
     pauseChecker = null;
+  }
+  if (androidTimer.has(player)) {
+    clearInterval(androidTimer.get(player));
+    androidTimer.delete(player);
+    androidCheckCount.delete(player);
   }
   return next();
 });

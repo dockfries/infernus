@@ -58,6 +58,8 @@ export class Player {
   private _charset = "ISO-8859-1";
   private _locale = "en_US";
 
+  _isAndroid = false;
+
   lastDrunkLevel = 0;
   lastFps = 0;
   lastUpdateTick = 0;
@@ -749,13 +751,9 @@ export class Player {
           if (timer) {
             clearTimeout(timer);
             timer = null;
-            reject(timeoutMsg);
-          } else {
-            resolve({ actionId, memAddr, data });
           }
-          const ret = next();
-          off();
-          return ret;
+          resolve({ actionId, memAddr, data });
+          return next();
         },
       );
 
@@ -959,7 +957,12 @@ export class Player {
   isInDriveByMode() {
     return w.IsPlayerInDriveByMode(this.id);
   }
-
+  isAndroid() {
+    return this.isConnected() && this._isAndroid;
+  }
+  isPC() {
+    return this.isConnected() && !this._isAndroid;
+  }
   static getInstance(id: number) {
     return this.players.get(id);
   }

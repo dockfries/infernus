@@ -1,4 +1,4 @@
-import { onPause, onResume, onFpsUpdate } from "./checker";
+import { onPause, onResume, onFpsUpdate, onAndroidCheck } from "./checker";
 import type { CmdBusCallback, CommandErrors, ICmdOptions } from "./command";
 import {
   CmdBus,
@@ -69,6 +69,7 @@ export const PlayerEvent = Object.freeze({
   onCharsetChange,
   onFpsUpdate,
   onWeaponShot,
+  onAndroidCheck,
 });
 
 export { Dialog };
