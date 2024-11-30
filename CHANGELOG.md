@@ -1,3 +1,14 @@
+## <small>0.11.3 (2024-11-30)</small>
+
+* feat(core): maybe we can try android checker? ([ebd481d](https://github.com/dockfries/infernus/commit/ebd481d))
+* feat(core): textdraw special char ([cf191a1](https://github.com/dockfries/infernus/commit/cf191a1))
+* fix(fs_debug): some errors ([3f69fb9](https://github.com/dockfries/infernus/commit/3f69fb9))
+* fix(fs): fs_debug object register ([b3ada29](https://github.com/dockfries/infernus/commit/b3ada29))
+* fix(fs): fs_debug ssel timer ([6b215f6](https://github.com/dockfries/infernus/commit/6b215f6))
+* chore(release): filterscript v0.11.7 ([54fdd83](https://github.com/dockfries/infernus/commit/54fdd83))
+
+
+
 ## <small>0.11.2 (2024-11-29)</small>
 
 * chore(docs): fs rewrite ([3b1faf1](https://github.com/dockfries/infernus/commit/3b1faf1))
