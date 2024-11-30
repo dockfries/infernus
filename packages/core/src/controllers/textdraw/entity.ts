@@ -3,6 +3,7 @@ import { LimitsEnum, TextDrawFontsEnum } from "core/enums";
 import type { ITextDraw } from "core/interfaces";
 import * as w from "core/wrapper/native";
 import { PlayerEvent, type Player } from "../player";
+import { I18n } from "../i18n";
 
 export class TextDraw {
   static readonly globalTextDraws = new Map<number, TextDraw>();
@@ -20,20 +21,23 @@ export class TextDraw {
   create(): this {
     if (this.id !== -1)
       throw new Error("[TextDraw]: Unable to create the textdraw again");
-    const { x, y, text, player } = this.sourceInfo;
+
+    const { x, y, text, player, charset = "iso-8859-1" } = this.sourceInfo;
+    const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
+
     if (!player) {
       if (TextDraw.getInstances(true).length === LimitsEnum.MAX_TEXT_DRAWS)
         throw new Error(
           "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
         );
-      this._id = w.TextDrawCreate(x, y, text);
+      this._id = w.TextDrawCreate(x, y, _text);
       TextDraw.globalTextDraws.set(this.id, this);
     } else {
       if (TextDraw.getInstances(false).length === LimitsEnum.MAX_TEXT_DRAWS)
         throw new Error(
           "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
         );
-      this._id = w.CreatePlayerTextDraw(player.id, x, y, text);
+      this._id = w.CreatePlayerTextDraw(player.id, x, y, _text);
       // Player-textdraws are automatically destroyed when a player disconnects.
       const off = PlayerEvent.onDisconnect(({ player: p, next }) => {
         const ret = next();
@@ -222,16 +226,18 @@ export class TextDraw {
     if (text.length === 0 || text.length > 1024) {
       throw new Error("[TextDraw]: Invalid text length");
     }
-    const { player: _player } = this.sourceInfo;
+    const { player: _player, charset = "iso-8859-1" } = this.sourceInfo;
+    const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
+
     // not-global
     if (_player) {
-      w.PlayerTextDrawSetString(_player.id, this.id, text);
+      w.PlayerTextDrawSetString(_player.id, this.id, _text);
       // global with player
     } else if (player) {
-      w.TextDrawSetStringForPlayer(this.id, player.id, text);
+      w.TextDrawSetStringForPlayer(this.id, player.id, _text);
       // global
     } else {
-      w.TextDrawSetString(this.id, text);
+      w.TextDrawSetString(this.id, _text);
     }
     return this;
   }

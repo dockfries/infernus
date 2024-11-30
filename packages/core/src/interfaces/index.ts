@@ -58,6 +58,7 @@ export interface ITextDraw {
   x: number;
   y: number;
   text: string;
+  charset?: string;
 }
 
 export interface IDialogFuncQueue {

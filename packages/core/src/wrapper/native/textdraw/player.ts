@@ -219,9 +219,9 @@ export const CreatePlayerTextDraw = (
   playerId: number,
   x: number,
   y: number,
-  text: string,
+  text: number[],
 ): number => {
-  return samp.callNative("CreatePlayerTextDraw", "iffs", playerId, x, y, text);
+  return samp.callNative("CreatePlayerTextDraw", "iffa", playerId, x, y, text);
 };
 
 export const PlayerTextDrawDestroy = (playerId: number, text: number): void => {
@@ -399,11 +399,11 @@ export const PlayerTextDrawHide = (playerId: number, text: number): number => {
 export const PlayerTextDrawSetString = (
   playerId: number,
   text: number,
-  string: string,
+  string: number[],
 ): number => {
   return samp.callNative(
     "PlayerTextDrawSetString",
-    "iis",
+    "iia",
     playerId,
     text,
     string,

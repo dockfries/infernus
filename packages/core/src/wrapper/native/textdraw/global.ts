@@ -122,19 +122,23 @@ export const TextDrawGetPreviewVehicleColors = (textDrawId: number) => {
 export const TextDrawSetStringForPlayer = (
   textDrawId: number,
   playerId: number,
-  string: string,
+  string: number[],
 ): void => {
   samp.callNative(
     "TextDrawSetStringForPlayer",
-    "iis",
+    "iia",
     textDrawId,
     playerId,
     string,
   );
 };
 
-export const TextDrawCreate = (x: number, y: number, text: string): number => {
-  return samp.callNative("TextDrawCreate", "ffs", x, y, text);
+export const TextDrawCreate = (
+  x: number,
+  y: number,
+  text: number[],
+): number => {
+  return samp.callNative("TextDrawCreate", "ffa", x, y, text);
 };
 
 export const TextDrawDestroy = (text: number): number => {
@@ -233,8 +237,8 @@ export const TextDrawHideForAll = (text: number): number => {
   return samp.callNative("TextDrawHideForAll", "i", text);
 };
 
-export const TextDrawSetString = (text: number, string: string): number => {
-  return samp.callNative("TextDrawSetString", "is", text, string);
+export const TextDrawSetString = (text: number, string: number[]): number => {
+  return samp.callNative("TextDrawSetString", "ia", text, string);
 };
 
 export const TextDrawSetPreviewModel = (
@@ -280,9 +284,9 @@ export const TextDrawSetPreviewVehicleColors = (
 
 export const SelectTextDraw = (
   playerId: number,
-  hovercolor: string | number,
+  hoverColor: string | number,
 ): void => {
-  samp.callNative("SelectTextDraw", "ii", playerId, rgba(hovercolor));
+  samp.callNative("SelectTextDraw", "ii", playerId, rgba(hoverColor));
 };
 
 export const CancelSelectTextDraw = (playerId: number): void => {
