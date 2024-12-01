@@ -80,8 +80,6 @@ export function defineEvent<T extends object>(options: Options<T>) {
     throw new Error(msg);
   }
 
-  eventBus.set(name, []);
-
   function trigger(...args: any[]) {
     return executeMiddlewares(options, ...args);
   }
@@ -89,8 +87,10 @@ export function defineEvent<T extends object>(options: Options<T>) {
   function pusher(
     cb: (ret: T & { next: () => CallbackRet }) => PromisifyCallbackRet,
   ) {
+    if (!eventBus.has(name)) {
+      eventBus.set(name, []);
+    }
     const middlewares = eventBus.get(name)!;
-
     const length = middlewares.push(cb);
     const pushedPos = length - 1;
 
