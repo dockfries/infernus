@@ -2,6 +2,7 @@ import type { IDynamicPickup } from "core/interfaces";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
 import { streamerFlag } from "../flag";
+import { Player } from "core/controllers";
 
 export class DynamicPickup {
   static readonly pickups = new Map<number, DynamicPickup>();
@@ -112,7 +113,26 @@ export class DynamicPickup {
     if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.PICKUP, this.id);
   }
-
+  static togglePlayerUpdate(player: Player, update = true) {
+    return Streamer.toggleItemUpdate(
+      player,
+      s.StreamerItemTypes.PICKUP,
+      update,
+    );
+  }
+  static hideForPlayer(player: Player, z = -50000) {
+    Streamer.updateEx(player, 0, 0, z);
+    return this.togglePlayerUpdate(player, false);
+  }
+  static showForPlayer(player: Player, z = -50000) {
+    const pos = player.getPos();
+    if (pos) {
+      Streamer.updateEx(player, pos.x, pos.y, pos.z);
+    } else {
+      Streamer.updateEx(player, 0, 0, z);
+    }
+    return this.togglePlayerUpdate(player, true);
+  }
   static getInstance(id: number) {
     return this.pickups.get(id);
   }

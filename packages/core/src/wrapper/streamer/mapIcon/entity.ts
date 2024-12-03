@@ -12,6 +12,7 @@ import {
 } from "@infernus/streamer";
 import { Streamer } from "../common";
 import { streamerFlag } from "../flag";
+import { Player } from "core/controllers";
 
 export class DynamicMapIcon {
   static readonly mapIcons = new Map<number, DynamicMapIcon>();
@@ -127,6 +128,26 @@ export class DynamicMapIcon {
   isToggleCallbacks(): boolean {
     if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.MAP_ICON, this.id);
+  }
+  static togglePlayerUpdate(player: Player, update = true) {
+    return Streamer.toggleItemUpdate(
+      player,
+      StreamerItemTypes.MAP_ICON,
+      update,
+    );
+  }
+  static hideForPlayer(player: Player, z = -50000) {
+    Streamer.updateEx(player, 0, 0, z);
+    return this.togglePlayerUpdate(player, false);
+  }
+  static showForPlayer(player: Player, z = -50000) {
+    const pos = player.getPos();
+    if (pos) {
+      Streamer.updateEx(player, pos.x, pos.y, pos.z);
+    } else {
+      Streamer.updateEx(player, 0, 0, z);
+    }
+    return this.togglePlayerUpdate(player, true);
   }
 
   static getInstance(id: number) {

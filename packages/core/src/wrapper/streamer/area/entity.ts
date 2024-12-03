@@ -428,6 +428,22 @@ export class DynamicArea {
     if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.AREA, this.id);
   }
+  static togglePlayerUpdate(player: Player, update = true) {
+    return Streamer.toggleItemUpdate(player, s.StreamerItemTypes.AREA, update);
+  }
+  static hideForPlayer(player: Player, z = -50000) {
+    Streamer.updateEx(player, 0, 0, z);
+    return this.togglePlayerUpdate(player, false);
+  }
+  static showForPlayer(player: Player, z = -50000) {
+    const pos = player.getPos();
+    if (pos) {
+      Streamer.updateEx(player, pos.x, pos.y, pos.z);
+    } else {
+      Streamer.updateEx(player, 0, 0, z);
+    }
+    return this.togglePlayerUpdate(player, true);
+  }
 
   static getInstance(id: number) {
     return this.areas.get(id);

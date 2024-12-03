@@ -390,7 +390,26 @@ export class DynamicObject {
   getNoCameraCollision() {
     return s.GetDynamicObjectNoCameraCol(this.id);
   }
-
+  static togglePlayerUpdate(player: Player, update = true) {
+    return Streamer.toggleItemUpdate(
+      player,
+      s.StreamerItemTypes.OBJECT,
+      update,
+    );
+  }
+  static hideForPlayer(player: Player, z = -50000) {
+    Streamer.updateEx(player, 0, 0, z);
+    return this.togglePlayerUpdate(player, false);
+  }
+  static showForPlayer(player: Player, z = -50000) {
+    const pos = player.getPos();
+    if (pos) {
+      Streamer.updateEx(player, pos.x, pos.y, pos.z);
+    } else {
+      Streamer.updateEx(player, 0, 0, z);
+    }
+    return this.togglePlayerUpdate(player, true);
+  }
   static getInstance(id: number) {
     return this.objects.get(id);
   }
