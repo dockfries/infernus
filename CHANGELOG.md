@@ -1,3 +1,13 @@
+## <small>0.11.4 (2024-12-03)</small>
+
+* feat(core): streamer static method, maybe we can add some utils ([381c683](https://github.com/dockfries/infernus/commit/381c683))
+* feat(core): vehicle toggle methods syntax sugar ([6d6701c](https://github.com/dockfries/infernus/commit/6d6701c))
+* fix(core): event pusher again crash ([5e4da77](https://github.com/dockfries/infernus/commit/5e4da77))
+* fix(core): isAndroid default true, skippable ([0f522eb](https://github.com/dockfries/infernus/commit/0f522eb))
+* chore(release): filterscript v0.11.8 ([8166163](https://github.com/dockfries/infernus/commit/8166163))
+
+
+
 ## <small>0.11.3 (2024-11-30)</small>
 
 * feat(core): maybe we can try android checker? ([ebd481d](https://github.com/dockfries/infernus/commit/ebd481d))
