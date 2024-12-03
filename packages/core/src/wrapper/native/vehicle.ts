@@ -1,4 +1,8 @@
-import type { CarModTypeEnum, VehicleModelInfoEnum } from "core/enums";
+import type {
+  CarModTypeEnum,
+  VehicleModelInfoEnum,
+  VehicleParamsEnum,
+} from "core/enums";
 import type {
   IVehColor,
   IVehMatrix,
@@ -329,13 +333,13 @@ export const ManualVehicleEngineAndLights = (): number => {
 
 export const SetVehicleParamsEx = (
   vehicleId: number,
-  engine: boolean | number,
-  lights: boolean | number,
-  alarm: boolean | number,
-  doors: boolean | number,
-  bonnet: boolean | number,
-  boot: boolean | number,
-  objective: boolean | number,
+  engine: boolean | VehicleParamsEnum,
+  lights: boolean | VehicleParamsEnum,
+  alarm: boolean | VehicleParamsEnum,
+  doors: boolean | VehicleParamsEnum,
+  bonnet: boolean | VehicleParamsEnum,
+  boot: boolean | VehicleParamsEnum,
+  objective: boolean | VehicleParamsEnum,
 ): number => {
   return samp.callNative(
     "SetVehicleParamsEx",
@@ -351,7 +355,9 @@ export const SetVehicleParamsEx = (
   );
 };
 
-export const GetVehicleParamsEx = (vehicleId: number): Array<number> => {
+export const GetVehicleParamsEx = (
+  vehicleId: number,
+): Array<VehicleParamsEnum> => {
   return samp.callNative("GetVehicleParamsEx", "iIIIIIII", vehicleId);
 };
 

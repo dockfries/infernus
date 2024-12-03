@@ -1,4 +1,8 @@
-import type { CarModTypeEnum, VehicleModelInfoEnum } from "core/enums";
+import type {
+  CarModTypeEnum,
+  VehicleModelInfoEnum,
+  VehicleParamsEnum,
+} from "core/enums";
 import { LimitsEnum } from "core/enums";
 import type { TPos } from "core/types";
 import type { IVehicle } from "core/interfaces";
@@ -280,13 +284,13 @@ export class Vehicle {
     return v.GetVehicleParamsCarWindows(this.id);
   }
   setParamsEx(
-    engine: boolean | number,
-    lights: boolean | number,
-    alarm: boolean | number,
-    doors: boolean | number,
-    bonnet: boolean | number,
-    boot: boolean | number,
-    objective: boolean | number,
+    engine: boolean | VehicleParamsEnum,
+    lights: boolean | VehicleParamsEnum,
+    alarm: boolean | VehicleParamsEnum,
+    doors: boolean | VehicleParamsEnum,
+    bonnet: boolean | VehicleParamsEnum,
+    boot: boolean | VehicleParamsEnum,
+    objective: boolean | VehicleParamsEnum,
   ): number {
     if (this.id === -1) return 0;
     return v.SetVehicleParamsEx(
@@ -301,18 +305,116 @@ export class Vehicle {
     );
   }
   getParamsEx() {
-    if (this.id === -1) return undefined;
+    if (this.id === -1)
+      return {
+        engine: -1,
+        lights: -1,
+        alarm: -1,
+        doors: -1,
+        bonnet: -1,
+        boot: -1,
+        objective: -1,
+      };
     const [engine, lights, alarm, doors, bonnet, boot, objective] =
       v.GetVehicleParamsEx(this.id);
     return {
-      engine: engine === 1,
-      lights: lights === 1,
-      alarm: alarm === 1,
-      doors: doors === 1,
-      bonnet: bonnet === 1,
-      boot: boot === 1,
-      objective: objective === 1,
+      engine,
+      lights,
+      alarm,
+      doors,
+      bonnet,
+      boot,
+      objective,
     };
+  }
+  toggleEngine(value: boolean | VehicleParamsEnum) {
+    if (this.id === -1) return 0;
+    const { lights, alarm, doors, bonnet, boot, objective } =
+      this.getParamsEx();
+    return this.setParamsEx(
+      value,
+      lights,
+      alarm,
+      doors,
+      bonnet,
+      boot,
+      objective,
+    );
+  }
+  toggleLights(value: boolean | VehicleParamsEnum) {
+    if (this.id === -1) return 0;
+    const { engine, alarm, doors, bonnet, boot, objective } =
+      this.getParamsEx();
+    return this.setParamsEx(
+      engine,
+      value,
+      alarm,
+      doors,
+      bonnet,
+      boot,
+      objective,
+    );
+  }
+  toggleAlarm(value: boolean | VehicleParamsEnum) {
+    if (this.id === -1) return 0;
+    const { engine, lights, doors, bonnet, boot, objective } =
+      this.getParamsEx();
+    return this.setParamsEx(
+      engine,
+      lights,
+      value,
+      doors,
+      bonnet,
+      boot,
+      objective,
+    );
+  }
+  toggleDoors(value: boolean | VehicleParamsEnum) {
+    if (this.id === -1) return 0;
+    const { engine, lights, alarm, bonnet, boot, objective } =
+      this.getParamsEx();
+    return this.setParamsEx(
+      engine,
+      lights,
+      alarm,
+      value,
+      bonnet,
+      boot,
+      objective,
+    );
+  }
+  toggleBonnet(value: boolean | VehicleParamsEnum) {
+    if (this.id === -1) return 0;
+    const { engine, lights, alarm, doors, boot, objective } =
+      this.getParamsEx();
+    return this.setParamsEx(
+      engine,
+      lights,
+      alarm,
+      doors,
+      value,
+      boot,
+      objective,
+    );
+  }
+  toggleBoot(value: boolean | VehicleParamsEnum) {
+    if (this.id === -1) return 0;
+    const { engine, lights, alarm, doors, bonnet, objective } =
+      this.getParamsEx();
+    return this.setParamsEx(
+      engine,
+      lights,
+      alarm,
+      doors,
+      bonnet,
+      value,
+      objective,
+    );
+  }
+  toggleObjective(value: boolean | VehicleParamsEnum) {
+    if (this.id === -1) return 0;
+    const { engine, lights, alarm, doors, bonnet, boot } = this.getParamsEx();
+    return this.setParamsEx(engine, lights, alarm, doors, bonnet, boot, value);
   }
   getParamsSirenState(): number {
     if (this.id === -1) return -2;
