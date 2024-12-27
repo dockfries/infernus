@@ -3,11 +3,28 @@ import type { CallbackRet, PromisifyCallbackRet } from "../bus";
 import { defineEvent, eventBus } from "../bus";
 import { Player } from "./entity";
 
-export type CmdBusCallback = {
+export interface CmdBusCallback {
   player: Player;
+  mainCommand: string;
   subcommand: string[];
+  cmdText: string;
+  buffer: number[];
+  isStrict: boolean;
   next: () => CallbackRet;
-};
+}
+
+export type CommandErrorTypes =
+  | "NOT_EXIST"
+  | "REJECTED"
+  | "PERFORMED"
+  | "RECEIVED_THROW"
+  | "RECEIVED_REJECTED";
+
+export interface CommandErrorRet {
+  code: number;
+  msg: string;
+  error?: any;
+}
 
 export interface ICmdOptions {
   caseSensitive?: boolean;
@@ -27,7 +44,7 @@ const noStrictCmdMap = new Map<
 
 const commandPattern = /[^/\s]+/gi;
 
-export const CommandErrors = {
+export const CommandErrors: Record<CommandErrorTypes, CommandErrorRet> = {
   NOT_EXIST: { code: 1, msg: "command does not exist" },
   REJECTED: {
     code: 2,
@@ -37,21 +54,70 @@ export const CommandErrors = {
     code: 3,
     msg: "An event registered through onCommandPerformed returned false",
   },
+  RECEIVED_THROW: {
+    code: 4,
+    msg: "An event registered through onCommandReceived throw an error",
+  },
+  RECEIVED_REJECTED: {
+    code: 5,
+    msg: "An event registered through onCommandReceived returned false",
+  },
 };
 
 export const [onCommandReceived, triggerOnReceived] = defineEvent({
   name: "OnCommandReceived",
   isNative: false,
-  beforeEach(player: Player, command: string) {
-    return { player, command };
+  throwOnError: true,
+  beforeEach(
+    player: Player,
+    command: CmdBusCallback["cmdText"],
+    cmdText: CmdBusCallback["cmdText"],
+    buffer: CmdBusCallback["buffer"],
+    strictMainCmd: CmdBusCallback["mainCommand"],
+    noStrictMainCmd: CmdBusCallback["mainCommand"],
+    hasStrict: boolean,
+    hasNoStrict: boolean,
+    subcommand: CmdBusCallback["subcommand"],
+  ) {
+    return {
+      player,
+      command,
+      cmdText,
+      buffer,
+      strictMainCmd,
+      noStrictMainCmd,
+      hasStrict,
+      hasNoStrict,
+      subcommand,
+    };
   },
 });
 
 export const [onCommandPerformed, triggerOnPerformed] = defineEvent({
   name: "OnCommandPerformed",
   isNative: false,
-  beforeEach(player: Player, command: string) {
-    return { player, command };
+  beforeEach(
+    player: Player,
+    command: CmdBusCallback["cmdText"],
+    cmdText: CmdBusCallback["cmdText"],
+    buffer: CmdBusCallback["buffer"],
+    strictMainCmd: CmdBusCallback["mainCommand"],
+    noStrictMainCmd: CmdBusCallback["mainCommand"],
+    hasStrict: boolean,
+    hasNoStrict: boolean,
+    subcommand: CmdBusCallback["subcommand"],
+  ) {
+    return {
+      player,
+      command,
+      cmdText,
+      buffer,
+      strictMainCmd,
+      noStrictMainCmd,
+      hasStrict,
+      hasNoStrict,
+      subcommand,
+    };
   },
 });
 
@@ -61,10 +127,28 @@ export const [onCommandError, triggerOnError] = defineEvent({
   defaultValue: false,
   beforeEach(
     player: Player,
-    command: string,
-    error: (typeof CommandErrors)["NOT_EXIST"],
+    error: CommandErrorRet,
+    command: CmdBusCallback["cmdText"],
+    cmdText: CmdBusCallback["cmdText"],
+    buffer: CmdBusCallback["buffer"],
+    strictMainCmd: CmdBusCallback["mainCommand"],
+    noStrictMainCmd: CmdBusCallback["mainCommand"],
+    hasStrict: boolean,
+    hasNoStrict: boolean,
+    subcommand: CmdBusCallback["subcommand"],
   ) {
-    return { player, command, error };
+    return {
+      player,
+      error,
+      command,
+      cmdText,
+      buffer,
+      strictMainCmd,
+      noStrictMainCmd,
+      hasStrict,
+      hasNoStrict,
+      subcommand,
+    };
   },
 });
 
@@ -88,7 +172,7 @@ function generateCombinations(arr: any[]) {
   return result.reverse();
 }
 
-onCommandText(({ player, cmdText, next }) => {
+onCommandText(({ player, buffer, cmdText, next }) => {
   const matchedCommand = cmdText.match(commandPattern)!;
 
   const maybes = generateCombinations(matchedCommand);
@@ -99,44 +183,102 @@ onCommandText(({ player, cmdText, next }) => {
     .map((maybe) => maybe.toLowerCase())
     .find((maybe) => noStrictCmdMap.has(maybe));
 
+  const hasStrict = !!strictMainCmd;
+  const hasNoStrict = !!noStrictMainCmd;
+
   const fullCommand = matchedCommand.join(" ");
 
-  if (!strictMainCmd && !noStrictMainCmd) {
-    return triggerOnError(player, fullCommand, CommandErrors.NOT_EXIST);
-  }
-
-  const received = triggerOnReceived(player, fullCommand);
-  if (!received) return received;
+  let subcommand: CmdBusCallback["subcommand"] = [];
 
   const mainCmdRelations = [
-    [strictMainCmd, strictCmdMap],
-    [noStrictMainCmd, noStrictCmdMap],
+    [strictMainCmd, strictCmdMap, true],
+    [noStrictMainCmd, noStrictCmdMap, false],
   ] as const;
 
-  for (const [mainCmd, cmdMap] of mainCmdRelations) {
+  const triggerParams = [
+    fullCommand,
+    cmdText,
+    buffer,
+    strictMainCmd,
+    noStrictMainCmd,
+    hasStrict,
+    hasNoStrict,
+    subcommand,
+  ] as const;
+
+  if (hasStrict || hasNoStrict) {
+    const mainCmd = mainCmdRelations[0][0] || mainCmdRelations[1][0];
+    subcommand = fullCommand.replace(mainCmd!, "").trim().split(" ");
+  } else {
+    return triggerOnError(player, CommandErrors.NOT_EXIST, ...triggerParams);
+  }
+
+  try {
+    const received = triggerOnReceived(player, ...triggerParams);
+    if (!received)
+      return triggerOnError(
+        player,
+        CommandErrors.RECEIVED_REJECTED,
+        ...triggerParams,
+      );
+  } catch (err) {
+    return triggerOnError(
+      player,
+      {
+        ...CommandErrors.RECEIVED_THROW,
+        error: err,
+      },
+      ...triggerParams,
+    );
+  }
+
+  for (const [mainCmd, cmdMap, isStrict] of mainCmdRelations) {
     if (!mainCmd) continue;
 
     const definedCommands = cmdMap.get(mainCmd)!;
 
     const [, triggerCommand] = definedCommands;
 
-    const subcommand = fullCommand.replace(mainCmd, "").trim().split(" ");
-
-    const middlewaresRet = triggerCommand(player, subcommand);
+    const middlewaresRet = triggerCommand(
+      player,
+      mainCmd,
+      subcommand,
+      cmdText,
+      buffer,
+      isStrict,
+    );
 
     if (!middlewaresRet) {
-      return triggerOnError(player, fullCommand, CommandErrors.REJECTED);
+      return triggerOnError(player, CommandErrors.REJECTED, ...triggerParams);
     }
   }
 
-  const ret = triggerOnPerformed(player, fullCommand);
-  if (!ret) return triggerOnError(player, fullCommand, CommandErrors.PERFORMED);
+  const ret = triggerOnPerformed(
+    player,
+    fullCommand,
+    cmdText,
+    buffer,
+    strictMainCmd,
+    noStrictMainCmd,
+    hasStrict,
+    hasNoStrict,
+    subcommand,
+  );
+  if (!ret)
+    return triggerOnError(player, CommandErrors.PERFORMED, ...triggerParams);
 
   return next();
 });
 
-function cmdBeforeEach(player: Player, subcommand: string[]) {
-  return { player, subcommand };
+function cmdBeforeEach(
+  player: CmdBusCallback["player"],
+  mainCommand: CmdBusCallback["mainCommand"],
+  subcommand: CmdBusCallback["subcommand"],
+  cmdText: CmdBusCallback["cmdText"],
+  buffer: CmdBusCallback["buffer"],
+  isStrict: CmdBusCallback["isStrict"],
+): Omit<CmdBusCallback, "next"> {
+  return { player, mainCommand, subcommand, cmdText, buffer, isStrict };
 }
 
 export class CmdBus {

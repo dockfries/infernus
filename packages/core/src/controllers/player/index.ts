@@ -1,5 +1,11 @@
 import { onPause, onResume, onFpsUpdate, onAndroidCheck } from "./checker";
-import type { CmdBusCallback, CommandErrors, ICmdOptions } from "./command";
+import type {
+  CmdBusCallback,
+  CommandErrorRet,
+  CommandErrors,
+  CommandErrorTypes,
+  ICmdOptions,
+} from "./command";
 import {
   CmdBus,
   onCommandError,
@@ -74,4 +80,6 @@ export const PlayerEvent = Object.freeze({
 
 export { Dialog };
 
-export type { CmdBusCallback, ICmdOptions, CommandErrors };
+export type { CmdBusCallback, ICmdOptions, CommandErrorTypes, CommandErrorRet };
+
+export { CommandErrors };

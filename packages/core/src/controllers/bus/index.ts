@@ -10,6 +10,7 @@ export type Options<T extends object> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   beforeEach?: (...args: any[]) => Exclude<T, Array<any> | Function>;
   afterEach?: (arg: T) => void;
+  throwOnError?: boolean;
 };
 
 export const eventBus = new Map<
@@ -30,7 +31,13 @@ function executeMiddlewares<T extends object>(
   options: Options<T>,
   ...args: any[]
 ) {
-  const { defaultValue = true, name, beforeEach, afterEach } = options;
+  const {
+    defaultValue = true,
+    name,
+    beforeEach,
+    afterEach,
+    throwOnError = false,
+  } = options;
 
   const middlewares = eventBus.get(name);
   if (!middlewares || !middlewares.length) return +defaultValue;
@@ -45,7 +52,7 @@ function executeMiddlewares<T extends object>(
     index++;
     if (index < middlewares.length) {
       try {
-        const ret = middlewares[index]({ next, ...enhanced });
+        const ret = middlewares[index]({ next, defaultValue, ...enhanced });
 
         if (ret instanceof Promise) {
           promises.push(ret);
@@ -54,6 +61,9 @@ function executeMiddlewares<T extends object>(
         return ret;
       } catch (err) {
         const msg = `executing event [name:${name},index:${index}] error:\n${err}`;
+        if (throwOnError) {
+          throw { error: err, message: msg };
+        }
         console.log(msg);
       }
       return defaultValue;
@@ -85,7 +95,12 @@ export function defineEvent<T extends object>(options: Options<T>) {
   }
 
   function pusher(
-    cb: (ret: T & { next: () => CallbackRet }) => PromisifyCallbackRet,
+    cb: (
+      ret: T & {
+        next: () => CallbackRet;
+        defaultValue: Options<T>["defaultValue"];
+      },
+    ) => PromisifyCallbackRet,
   ) {
     if (!eventBus.has(name)) {
       eventBus.set(name, []);
