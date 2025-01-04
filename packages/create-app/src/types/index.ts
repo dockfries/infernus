@@ -21,14 +21,20 @@ export interface GlobalConfig {
   [key: string]: any;
 }
 
+export interface LockFileDep {
+  version: string;
+  component?: boolean;
+}
+
 export interface LockFileContent {
   lockfileVersion?: number;
-  dependencies?: Record<string, { version: string }>;
+  dependencies?: Record<string, LockFileDep>;
 }
 
 export interface AddDepsOptions {
   dependencies?: string[];
   production?: boolean;
+  component?: boolean;
 }
 
 export interface RemoveDepsOptions {

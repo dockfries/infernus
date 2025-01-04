@@ -14,7 +14,12 @@ import {
   depsPath,
 } from "./config.js";
 import { downloadFile, getOctoKit, isWindows, ompRepository } from "./index.js";
-import type { LocalConfig, LockFileContent, PawnJson } from "../types/index.js";
+import type {
+  AddDepsOptions,
+  LocalConfig,
+  LockFileContent,
+  PawnJson,
+} from "../types/index.js";
 
 async function hasGlobalDepTemp(depVersionPath: string) {
   if (!fs.existsSync(depVersionPath)) return;
@@ -84,9 +89,12 @@ export async function cleanGlobalDeps(deps?: string[], onlyTmp = true) {
   return depCount;
 }
 
-async function installDeps(deps: string[], isUpdate = false, isProd = false) {
+async function installDeps(args: AddDepsOptions, isUpdate = false) {
   const start = Date.now();
   // todo: dev_dependencies & dependencies without resources
+
+  const deps = args.dependencies;
+  const isProd = args.production;
 
   if (!deps) return;
 
@@ -110,6 +118,10 @@ async function installDeps(deps: string[], isUpdate = false, isProd = false) {
     const [name, version = "*"] = dep.split("@");
 
     if (!validRange(version)) throw new Error(`invalid deps version: ${name}`);
+
+    const isComponent =
+      args.component === true || !!lockFile.dependencies?.[name].component;
+    const pluginFolderPath = getPluginOrComponentPath(isComponent);
 
     const [owner, repo] = name.split("/");
 
@@ -319,9 +331,6 @@ async function installDeps(deps: string[], isUpdate = false, isProd = false) {
       }
 
       if (archiveResource.plugins) {
-        const isOmpPlugin = getIsOmpComponent(finalVersion);
-        const pluginFolderPath = getPluginOrComponentPath(finalVersion);
-
         await fs.ensureDir(pluginFolderPath);
 
         const pluginPaths = await fg.glob(archiveResource.plugins, {
@@ -336,7 +345,7 @@ async function installDeps(deps: string[], isUpdate = false, isProd = false) {
             path.extname(pluginFileName),
           );
           await fs.copy(plugin, path.resolve(pluginFolderPath, pluginFileName));
-          if (!isOmpPlugin) legacyPluginsSet.add(pluginFileNameNoExt);
+          if (!isComponent) legacyPluginsSet.add(pluginFileNameNoExt);
         }
       }
 
@@ -378,8 +387,6 @@ async function installDeps(deps: string[], isUpdate = false, isProd = false) {
     }
 
     if (notArchiveResources.length) {
-      const pluginFolderPath = getPluginOrComponentPath(finalVersion);
-
       const assetNames = notArchiveResources.map((r) => r.name);
 
       if (!localCacheVersion) {
@@ -435,6 +442,7 @@ async function installDeps(deps: string[], isUpdate = false, isProd = false) {
       ...dependencies,
       [name]: {
         version: finalVersion,
+        component: isComponent,
       },
     };
   }
@@ -448,12 +456,8 @@ async function installDeps(deps: string[], isUpdate = false, isProd = false) {
   console.log(`Done in ${diff}s`);
 }
 
-export async function addDeps(
-  deps?: string[],
-  isUpdate = false,
-  isProd = false,
-) {
-  let _deps = deps;
+export async function addDeps(args: AddDepsOptions, isUpdate = false) {
+  let _deps = args.dependencies;
 
   const isInstallAll = !_deps || !_deps.length;
 
@@ -515,7 +519,7 @@ export async function addDeps(
     await removeDeps(waitRemoveDeps, true);
   }
 
-  await installDeps(_deps, isUpdate, isProd);
+  await installDeps(args, isUpdate);
 }
 
 export async function removeDeps(deps?: string[], onlyLockFile = false) {
@@ -548,9 +552,6 @@ export async function removeDeps(deps?: string[], onlyLockFile = false) {
 
     if (depName in lockFile.dependencies) {
       const version = lockFile.dependencies[depName].version;
-
-      const pluginFolderPath = getPluginOrComponentPath(version);
-
       const globalVersionPath = path.resolve(depsPath, depName, version);
 
       if (depName === ompRepository) {
@@ -570,6 +571,9 @@ export async function removeDeps(deps?: string[], onlyLockFile = false) {
       });
 
       for (const resource of platformResources) {
+        const isComponent = !!lockFile.dependencies[depName].component;
+        const pluginFolderPath = getPluginOrComponentPath(isComponent);
+
         if (resource.archive) {
           if (resource.includes) {
             let files = await fg.glob(resource.includes, {
@@ -749,15 +753,8 @@ export async function getIncludePath() {
   return include;
 }
 
-function getIsOmpComponent(version: string) {
-  return version.includes("-omp");
-}
-
-function getPluginOrComponentPath(version: string) {
-  return path.resolve(
-    process.cwd(),
-    getIsOmpComponent(version) ? "components" : "plugins",
-  );
+function getPluginOrComponentPath(isComponent: boolean) {
+  return path.resolve(process.cwd(), isComponent ? "components" : "plugins");
 }
 
 function cleanInvalidLockDeps(config: LocalConfig, lockFile: LockFileContent) {

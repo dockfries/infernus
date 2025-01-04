@@ -16,6 +16,8 @@ import { fileURLToPath } from "url";
 
 import updateNotifier from "update-notifier";
 
+import { execa } from "execa";
+
 import { downloadGitRepo } from "./utils/index";
 
 import {
@@ -47,10 +49,35 @@ const pkgFilePath = resolve(dirname(currentFilePath), "../package.json");
 
 const pkg = fs.readJsonSync(pkgFilePath);
 
-function successInstalled(projectName: string) {
+async function successInstalled(projectName: string) {
   console.log(`\nSuccessfully created project ${chalk.cyan(projectName)}`);
+
+  const { install } = await inquirer.prompt({
+    name: "install",
+    type: "confirm",
+    message: "Install dependencies now?",
+    default: true,
+  });
+
+  if (install) {
+    if (!appGeneratePath) throw new Error("appGeneratePath not undefined");
+    const options: any = {
+      cwd: appGeneratePath,
+      stdio: "inherit",
+    };
+    await execa(
+      "pnpm",
+      ["dlx", "@infernus/create-app@latest", "install"],
+      options,
+    );
+    await execa("pnpm", ["install"], options);
+  }
+
   console.log(`\ncd ${chalk.cyan(projectName)}`);
-  console.log(`pnpm install`);
+  if (!install) {
+    console.log(`pnpm dlx @infernus/create-app@latest install`);
+    console.log(`pnpm install`);
+  }
   console.log("pnpm dev\n");
 }
 
@@ -105,18 +132,6 @@ async function changeConfigJson(password: string, isRakNet: boolean) {
   }
 
   return writeOmpConfig(configJson);
-}
-
-function initBaseDeps(isRakNet: boolean) {
-  const deps = [
-    "openmultiplayer/open.mp",
-    "samp-incognito/samp-streamer-plugin",
-    "dockfries/samp-node",
-  ];
-  if (isRakNet) {
-    deps.push("katursis/Pawn.RakNet");
-  }
-  return addDeps(deps);
 }
 
 function generateRandomString(length: number) {
@@ -197,17 +212,15 @@ async function createApp(args: ArgumentsCamelCase) {
 
   changeConfigJson(password, isRakNet);
 
-  await initBaseDeps(isRakNet);
-
-  successInstalled(appName);
+  await successInstalled(appName);
 }
 
 async function addDependencies(args: ArgumentsCamelCase<AddDepsOptions>) {
-  return addDeps(args.dependencies, false, args.production);
+  return addDeps(args, false);
 }
 
 async function updateDependencies(args: ArgumentsCamelCase<AddDepsOptions>) {
-  return addDeps(args.dependencies, true, args.production);
+  return addDeps(args, true);
 }
 
 function removeDependencies(args: ArgumentsCamelCase<RemoveDepsOptions>) {
@@ -245,6 +258,13 @@ function addUpdateBuilder(y: Argv) {
     .option("production", {
       alias: ["p", "prod"],
       type: "boolean",
+      description: "if you do not need the .inc file, specify it",
+      default: false,
+    })
+    .option("component", {
+      alias: "c",
+      type: "boolean",
+      description: "install to components folder instead of plugins",
     })
     .check((argv: Arguments<AddDepsOptions>) => {
       if (argv.dependencies) {
