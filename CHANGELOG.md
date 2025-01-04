@@ -1,3 +1,13 @@
+## <small>0.11.5 (2025-01-04)</small>
+
+* chore(release): create-app v0.2.10 ([2000e2f](https://github.com/dockfries/infernus/commit/2000e2f))
+* fix(create-app): includes glob empty result, pawno path ([e590e33](https://github.com/dockfries/infernus/commit/e590e33))
+* fix(create-app): maybe sort omp deps before add or remove ([476d454](https://github.com/dockfries/infernus/commit/476d454))
+* feat(core): more params for command & defineEvent throwOnError ? ([1f5f453](https://github.com/dockfries/infernus/commit/1f5f453))
+* feat(create-app): install --component option ([b7ea0ec](https://github.com/dockfries/infernus/commit/b7ea0ec))
+
+
+
 ## <small>0.11.4 (2024-12-03)</small>
 
 * feat(core): streamer static method, maybe we can add some utils ([381c683](https://github.com/dockfries/infernus/commit/381c683))
