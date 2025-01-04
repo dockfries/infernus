@@ -120,7 +120,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     if (!validRange(version)) throw new Error(`invalid deps version: ${name}`);
 
     const isComponent =
-      args.component === true || !!lockFile.dependencies?.[name].component;
+      args.component === true || !!lockFile.dependencies?.[name]?.component;
     const pluginFolderPath = getPluginOrComponentPath(isComponent);
 
     const [owner, repo] = name.split("/");
@@ -353,7 +353,10 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
       if (!isProd) {
         if (archiveResource.includes) {
-          const includeFiles = await fg.glob(archiveResource.includes, {
+          const globIncPath = archiveResource.includes.map((inc) => {
+            return path.extname(inc) ? inc : inc + "/*.inc";
+          });
+          const includeFiles = await fg.glob(globIncPath, {
             absolute: true,
             cwd: depVersionPath,
           });
@@ -364,9 +367,16 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
             );
           }
         } else {
-          await fs.copy(depVersionPath, localIncPath, {
-            filter: (src) => path.extname(src) === "inc",
+          const includeFiles = await fg.glob("*.inc", {
+            absolute: true,
+            cwd: depVersionPath,
           });
+          for (const includeFolder of includeFiles) {
+            await fs.copy(
+              includeFolder,
+              path.resolve(localIncPath, path.basename(includeFolder)),
+            );
+          }
         }
       }
 
@@ -571,12 +581,15 @@ export async function removeDeps(deps?: string[], onlyLockFile = false) {
       });
 
       for (const resource of platformResources) {
-        const isComponent = !!lockFile.dependencies[depName].component;
+        const isComponent = !!lockFile.dependencies?.[depName]?.component;
         const pluginFolderPath = getPluginOrComponentPath(isComponent);
 
         if (resource.archive) {
           if (resource.includes) {
-            let files = await fg.glob(resource.includes, {
+            const globIncPath = resource.includes.map((inc) => {
+              return path.extname(inc) ? inc : inc + "/*.inc";
+            });
+            let files = await fg.glob(globIncPath, {
               cwd: globalVersionPath,
               absolute: true,
             });
@@ -741,8 +754,8 @@ export async function getIncludePath() {
   const cwd = process.cwd();
 
   const include = path.resolve(cwd, "include");
-  const pawno = path.resolve(cwd, "qawno/include");
   const qawno = path.resolve(cwd, "qawno/include");
+  const pawno = path.resolve(cwd, "pawno/include");
 
   const hasQawno = fs.existsSync(qawno);
   if (hasQawno) return qawno;
