@@ -270,6 +270,9 @@ function addUpdateBuilder(y: Argv) {
       if (argv.dependencies) {
         return true;
       } else if (argv._[0] === "install") {
+        if (argv.component) {
+          throw new Error("You can't specify component if install all");
+        }
         return true;
       }
       throw new Error("You must specify dependencies");

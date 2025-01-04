@@ -93,10 +93,17 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
   const start = Date.now();
   // todo: dev_dependencies & dependencies without resources
 
-  const deps = args.dependencies;
   const isProd = args.production;
 
-  if (!deps) return;
+  if (!args.dependencies) return;
+
+  const deps = args.dependencies.slice();
+
+  const ompIdx = deps.findIndex((dep) => dep === ompRepository);
+  if (ompIdx > 0) {
+    deps.splice(ompIdx, 1);
+    deps.unshift(ompRepository);
+  }
 
   await cleanGlobalDeps(deps);
 
@@ -111,7 +118,6 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
   const legacyPluginsSet = new Set([...ompConfig.pawn.legacy_plugins]);
 
-  const localIncPath = await getIncludePath();
   const octokit = await getOctoKit();
 
   for (const dep of deps) {
@@ -273,6 +279,9 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
       (resource) => !resource.archive,
     );
 
+    const localIncPath = await getIncludePath();
+    await fs.ensureDir(localIncPath);
+
     if (archiveResources.length) {
       let archiveResource = archiveResources[0];
 
@@ -348,8 +357,6 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
           if (!isComponent) legacyPluginsSet.add(pluginFileNameNoExt);
         }
       }
-
-      await fs.ensureDir(localIncPath);
 
       if (!isProd) {
         if (archiveResource.includes) {
@@ -551,7 +558,15 @@ export async function removeDeps(deps?: string[], onlyLockFile = false) {
 
   const waitRemovePlugins = new Set();
 
-  for (const dep of deps) {
+  const deps_ = deps.slice();
+
+  const ompIdx = deps.findIndex((dep) => dep === ompRepository);
+  if (ompIdx > -1 && ompIdx !== deps.length - 1) {
+    deps_.splice(ompIdx, 1);
+    deps_.push(ompRepository);
+  }
+
+  for (const dep of deps_) {
     const [depName] = dep.split("@");
 
     if (!onlyLockFile) {
