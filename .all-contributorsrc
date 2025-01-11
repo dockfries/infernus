@@ -8,7 +8,7 @@
       "name": "Carl You",
       "avatar_url": "https://avatars.githubusercontent.com/u/34953768?v=4",
       "profile": "https://github.com/dockfries",
-      "contributions": ["code"]
+      "contributions": ["code", "maintenance"]
     },
     {
       "login": "Andonrai",
@@ -29,7 +29,7 @@
       "name": "Frank441",
       "avatar_url": "https://avatars.githubusercontent.com/u/79960940?v=4",
       "profile": "https://github.com/Frank441",
-      "contributions": ["bug", "doc"]
+      "contributions": ["bug", "doc", "code"]
     },
     {
       "login": "lyricsdev",
