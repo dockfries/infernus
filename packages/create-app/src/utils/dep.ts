@@ -536,7 +536,13 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
     await removeDeps(waitRemoveDeps, true);
   }
 
-  await installDeps(args, isUpdate);
+  await installDeps(
+    {
+      ...args,
+      dependencies: _deps,
+    },
+    isUpdate,
+  );
 }
 
 export async function removeDeps(deps?: string[], onlyLockFile = false) {
