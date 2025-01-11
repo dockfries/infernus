@@ -37,6 +37,8 @@ infernus create <appName>
 
 # 安装一个或多个依赖，所有操作的依赖后面都可以跟版本号，它类似于npm包的语法
 infernus add openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
+# 安装组件依赖
+infernus add katursis/Pawn.RakNet@^1.6.0-omp --component
 # 服务端环境安装依赖(不复制inc文件)
 infernus add samp-incognito/samp-streamer-plugin@^2.9.6 -p
 
@@ -47,7 +49,8 @@ infernus install
 infernus install -p
 
 # 卸载一个或多个依赖
-infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
+infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin
+infernus remove katursis/Pawn.RakNet
 
 # 更新一个依赖（更新全局缓存并应用到当前目录）
 infernus update openmultiplayer/open.mp

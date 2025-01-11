@@ -39,6 +39,8 @@ infernus create <nombre de la aplicación>
 # todas las dependencias de las operaciones pueden ir seguidas de un número de versión, 
 # es similar a la sintaxis de los paquetes npm.
 infernus add openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
+# Instalar una componente dependencia
+infernus add katursis/Pawn.RakNet@^1.6.0-omp --component
 # Instalar dependencias en modo producción (no copia archivos inc)
 infernus add samp-incognito/samp-streamer-plugin@^2.9.6 -p
 
@@ -49,7 +51,8 @@ infernus install
 infernus install -p
 
 # Desinstalar una o varias dependencias
-infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
+infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin
+infernus remove katursis/Pawn.RakNet
 
 # Actualizar una dependencia (actualizar la caché global y aplicarla al directorio actual)
 infernus update openmultiplayer/open.mp

@@ -73,6 +73,10 @@ function nav(): DefaultTheme.NavItem[] {
           text: "samp-cef",
           link: "https://github.com/Pycckue-Bnepeg/samp-cef",
         },
+        {
+          text: "samp-gps",
+          link: "https://github.com/AmyrAhmady/samp-gps-plugin",
+        },
       ],
     },
     {
