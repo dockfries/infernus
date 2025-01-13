@@ -965,6 +965,9 @@ export class Player {
   isPC() {
     return this.isConnected() && !this._isAndroid;
   }
+  isUsingOmp() {
+    return w.IsPlayerUsingOmp(this.id);
+  }
   static getInstance(id: number) {
     return this.players.get(id);
   }

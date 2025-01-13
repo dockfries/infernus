@@ -1087,3 +1087,7 @@ export const IsPlayerCuffed = (playerId: number) => {
 export const IsPlayerInDriveByMode = (playerId: number) => {
   return Boolean(samp.callNative("IsPlayerInDriveByMode", "i", playerId));
 };
+
+export const IsPlayerUsingOmp = (playerId: number): boolean => {
+  return Boolean(samp.callNative("IsPlayerUsingOmp", "i", playerId));
+};
