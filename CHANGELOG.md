@@ -1,3 +1,16 @@
+## <small>0.11.6 (2025-01-13)</small>
+
+* build(release): change question order ([e4c225e](https://github.com/dockfries/infernus/commit/e4c225e))
+* feat(core): add `player.isUsingOmp` ([07acf89](https://github.com/dockfries/infernus/commit/07acf89))
+* feat(gps): wrapper for samp-gps-plugin (#46) ([a3dac5b](https://github.com/dockfries/infernus/commit/a3dac5b)), closes [#46](https://github.com/dockfries/infernus/issues/46)
+* chore(release): create-app v0.2.11 ([ba9bc96](https://github.com/dockfries/infernus/commit/ba9bc96))
+* chore(release): gps v0.0.1 ([b288d05](https://github.com/dockfries/infernus/commit/b288d05))
+* chore(root): update readme ([15f88d9](https://github.com/dockfries/infernus/commit/15f88d9))
+* docs(quick-start, nav): update ([b5bb94d](https://github.com/dockfries/infernus/commit/b5bb94d))
+* fix(create-app): install all ([e6b2921](https://github.com/dockfries/infernus/commit/e6b2921))
+
+
+
 ## <small>0.11.5 (2025-01-04)</small>
 
 * chore(release): create-app v0.2.10 ([2000e2f](https://github.com/dockfries/infernus/commit/2000e2f))
