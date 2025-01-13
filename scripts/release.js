@@ -6,13 +6,13 @@ import { pkgDir, pkgNames, build } from "./share.js";
 
 let pkgName, pkgPath;
 
-function bumpVersion() {
+function bumpVersion(isReady) {
   const isCore = pkgName === "core";
 
   const options = {
     all: true,
     push: false,
-    tag: isCore,
+    tag: isReady && isCore,
     commit: `chore(release): ${pkgName} v%s`,
     files: [
       isCore && "./package.json",
@@ -38,12 +38,18 @@ function releasePkg(isReady) {
 }
 
 export async function selectRelease() {
-  const { pkg } = await inquirer.prompt([
+  const { pkg, isReady } = await inquirer.prompt([
     {
       name: "pkg",
       message: "Which package do you want to release?",
       type: "list",
       choices: pkgNames,
+    },
+    {
+      name: "isReady",
+      message: "Are you ready to publish to npm? (N means dry run)",
+      type: "confirm",
+      default: false,
     },
   ]);
 
@@ -52,18 +58,9 @@ export async function selectRelease() {
 
   await build(pkg);
 
-  await bumpVersion(pkg);
+  await bumpVersion(isReady);
 
-  const { dry } = await inquirer.prompt([
-    {
-      name: "dry",
-      message: "Are you ready to publish to npm? The default is dry-run",
-      type: "confirm",
-      default: false,
-    },
-  ]);
-
-  await releasePkg(dry);
+  await releasePkg(isReady);
 }
 
 selectRelease();
