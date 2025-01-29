@@ -32,6 +32,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
+    "@eslint/js": "^9.19.0",
     "@rollup/plugin-json": "^6.1.0",
     "@sa-mp/node": "^0.2.0",
     "@types/lodash-es": "^4.17.12",
