@@ -610,8 +610,8 @@ export class Player {
       expireTime,
     );
   }
-  getDistanceFromPoint(X: number, Y: number, Z: number): boolean {
-    return w.GetPlayerDistanceFromPoint(this.id, X, Y, Z);
+  getDistanceFromPoint(x: number, y: number, z: number): number {
+    return w.GetPlayerDistanceFromPoint(this.id, x, y, z);
   }
   getCustomSkin(): number {
     return w.GetPlayerCustomSkin(this.id);

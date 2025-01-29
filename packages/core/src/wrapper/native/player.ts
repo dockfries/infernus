@@ -254,17 +254,17 @@ export const IsPlayerInRangeOfPoint = (
 
 export const GetPlayerDistanceFromPoint = (
   playerId: number,
-  X: number,
-  Y: number,
-  Z: number,
-): boolean => {
-  return !!samp.callNativeFloat(
+  x: number,
+  y: number,
+  z: number,
+): number => {
+  return samp.callNativeFloat(
     "GetPlayerDistanceFromPoint",
     "ifff",
     playerId,
-    X,
-    Y,
-    Z,
+    x,
+    y,
+    z,
   );
 };
 
