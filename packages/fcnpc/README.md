@@ -4,8 +4,8 @@
 
 A wrapper of the popular [SA-MP FCNPC plugin](https://github.com/ziggi/FCNPC) for samp-node.
 
-> ⚠ WIP, it's unclear whether it will work after future FCNPC open.mp port.
-> It might take polyfill to make it work, but I don't think it's a wise choice.
+> ⚠ Not applicable to [open.mp NPC Component](https://github.com/openmultiplayer/open.mp/pull/916).
+> If you are interested in using it, it may work with legacy sa-mp server.
 
 ## Getting started
 
