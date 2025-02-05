@@ -1,3 +1,12 @@
+## <small>0.11.7 (2025-02-05)</small>
+
+* chore(release): create-app v0.2.12 ([dd73a93](https://github.com/dockfries/infernus/commit/dd73a93))
+* fix(core): player.getDistanceFromPoint retval ([7d3b4c8](https://github.com/dockfries/infernus/commit/7d3b4c8))
+* fix(create-app): removeDeps lockFile dep component ([5249522](https://github.com/dockfries/infernus/commit/5249522))
+* fix(root): devDeps eslint/js ([1298bdc](https://github.com/dockfries/infernus/commit/1298bdc))
+
+
+
 ## <small>0.11.6 (2025-01-13)</small>
 
 * build(release): change question order ([e4c225e](https://github.com/dockfries/infernus/commit/e4c225e))
