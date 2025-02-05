@@ -22,7 +22,7 @@ export interface GlobalConfig {
 }
 
 export interface LockFileDep {
-  version: string;
+  version?: string;
   component?: boolean;
 }
 

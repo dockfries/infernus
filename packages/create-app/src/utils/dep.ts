@@ -533,7 +533,10 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
       );
     }
 
-    await removeDeps(waitRemoveDeps, true);
+    await removeDeps(
+      waitRemoveDeps,
+      _deps.map((dep) => dep.split("@")[0]),
+    );
   }
 
   await installDeps(
@@ -545,7 +548,7 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
   );
 }
 
-export async function removeDeps(deps?: string[], onlyLockFile = false) {
+export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
   if (!deps || !deps.length) return;
 
   const config = await readLocalConfig();
@@ -575,7 +578,7 @@ export async function removeDeps(deps?: string[], onlyLockFile = false) {
   for (const dep of deps_) {
     const [depName] = dep.split("@");
 
-    if (!onlyLockFile) {
+    if (!preInsDeps) {
       if (depName in config.dependencies) {
         delete config.dependencies[depName];
       }
@@ -583,6 +586,8 @@ export async function removeDeps(deps?: string[], onlyLockFile = false) {
 
     if (depName in lockFile.dependencies) {
       const version = lockFile.dependencies[depName].version;
+      if (!version) continue;
+
       const globalVersionPath = path.resolve(depsPath, depName, version);
 
       if (depName === ompRepository) {
@@ -670,7 +675,9 @@ export async function removeDeps(deps?: string[], onlyLockFile = false) {
         }
       }
 
-      delete lockFile.dependencies[depName];
+      if (!preInsDeps || !preInsDeps.includes(depName)) {
+        delete lockFile.dependencies[depName];
+      }
     }
   }
 
