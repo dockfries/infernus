@@ -27,7 +27,9 @@ export default [
       del({ targets: outputPath + "/*" }),
       esbuild({ target: "node16.13", minify: true }),
       typescriptPaths({ preserveExtensions: true }),
-      externals(),
+      externals({
+        include: ["reflect-metadata"],
+      }),
       json(),
     ],
   },

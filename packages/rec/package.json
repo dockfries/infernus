@@ -1,0 +1,41 @@
+{
+  "name": "@infernus/rec",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    "samp",
+    "sa:mp",
+    "sa-mp",
+    "omp",
+    "open.mp",
+    "pawn",
+    "wrapper",
+    "rec"
+  ],
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/rec#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/infernus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/infernus.git"
+  },
+  "license": "MIT",
+  "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs"
+    }
+  },
+  "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
+  "types": "dist/bundle.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {},
+  "dependencies": {
+    "reflect-metadata": "^0.2.2"
+  }
+}
