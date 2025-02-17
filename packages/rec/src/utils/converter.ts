@@ -73,7 +73,6 @@ export function jsonToRec(filePath: string, data: any[]) {
 
   if (
     !header.version ||
-    !header.type ||
     ![
       RecordTypesEnum.NONE,
       RecordTypesEnum.ONFOOT,
