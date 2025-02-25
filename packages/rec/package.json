@@ -1,6 +1,6 @@
 {
   "name": "@infernus/rec",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "File format converter from `.rec` to `.json` and vice versa, which NPCs use in SA-MP to play back recordings.",
   "keywords": [
     "samp",
