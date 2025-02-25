@@ -1,0 +1,41 @@
+{
+  "name": "@infernus/query",
+  "version": "0.0.1",
+  "description": "Simple API for send SA-MP queries with TypeScript Language.",
+  "keywords": [
+    "samp",
+    "sa:mp",
+    "sa-mp",
+    "omp",
+    "open.mp",
+    "pawn",
+    "query"
+  ],
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/query#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/infernus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/infernus.git"
+  },
+  "license": "MIT",
+  "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs"
+    }
+  },
+  "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
+  "types": "dist/bundle.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {},
+  "dependencies": {
+    "iconv-lite": "^0.6.3",
+    "jschardet": "^3.1.4"
+  }
+}
