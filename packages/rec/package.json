@@ -1,7 +1,7 @@
 {
   "name": "@infernus/rec",
   "version": "0.0.1",
-  "description": "",
+  "description": "File format converter from `.rec` to `.json` and vice versa, which NPCs use in SA-MP to play back recordings.",
   "keywords": [
     "samp",
     "sa:mp",
@@ -9,7 +9,6 @@
     "omp",
     "open.mp",
     "pawn",
-    "wrapper",
     "rec"
   ],
   "homepage": "https://github.com/dockfries/infernus/tree/main/packages/rec#readme",
