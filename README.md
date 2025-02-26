@@ -28,6 +28,10 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Vladik01-11"><img src="https://avatars.githubusercontent.com/u/70571714?v=4?s=100" width="100px;" alt="Vladik01-11"/><br /><sub><b>Vladik01-11</b></sub></a><br /><a href="https://github.com/dockfries/infernus/issues?q=author%3AVladik01-11" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/goottime"><img src="https://avatars.githubusercontent.com/u/96193346?v=4?s=100" width="100px;" alt="goottime"/><br /><sub><b>goottime</b></sub></a><br /><a href="https://github.com/dockfries/infernus/issues?q=author%3Agoottime" title="Bug reports">🐛</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://alternight.com.br/"><img src="https://avatars.githubusercontent.com/u/109999325?v=4?s=100" width="100px;" alt="Drylian"/><br /><sub><b>Drylian</b></sub></a><br /><a href="#example-drylian" title="Examples">💡</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/christhefrog"><img src="https://avatars.githubusercontent.com/u/47784402?v=4?s=100" width="100px;" alt="Chris👋"/><br /><sub><b>Chris👋</b></sub></a><br /><a href="#ideas-christhefrog" title="Ideas, Planning, & Feedback">🤔</a></td>
+    </tr>
   </tbody>
 </table>
 

@@ -51,6 +51,20 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/96193346?v=4",
       "profile": "https://github.com/goottime",
       "contributions": ["bug"]
+    },
+    {
+      "login": "drylian",
+      "name": "Drylian",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109999325?v=4",
+      "profile": "https://alternight.com.br/",
+      "contributions": ["example"]
+    },
+    {
+      "login": "christhefrog",
+      "name": "Chris👋",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47784402?v=4",
+      "profile": "https://github.com/christhefrog",
+      "contributions": ["ideas"]
     }
   ],
   "linkToUsage": false,
