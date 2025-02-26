@@ -9,13 +9,14 @@ import {
 } from "core/utils/helperUtils";
 import {
   DestroyDynamic3DTextLabel,
+  E_STREAMER,
   IsValidDynamic3DTextLabel,
   StreamerDistances,
   StreamerItemTypes,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
 import { streamerFlag } from "../flag";
-import { Player } from "core/controllers";
+import { Player, Vehicle } from "core/controllers";
 
 export class Dynamic3DTextLabel {
   static readonly texts = new Map<number, Dynamic3DTextLabel>();
@@ -183,6 +184,77 @@ export class Dynamic3DTextLabel {
       StreamerItemTypes.TEXT_3D_LABEL,
       this.id,
     );
+  }
+  setOffsets(offsetX: number, offsetY: number, offsetZ: number) {
+    if (this.id === -1) return 0;
+    const ret = Streamer.setFloatData(
+      StreamerItemTypes.TEXT_3D_LABEL,
+      this.id,
+      E_STREAMER.ATTACH_OFFSET_X,
+      offsetX,
+    );
+    Streamer.setFloatData(
+      StreamerItemTypes.TEXT_3D_LABEL,
+      this.id,
+      E_STREAMER.ATTACH_OFFSET_Y,
+      offsetY,
+    );
+    Streamer.setFloatData(
+      StreamerItemTypes.TEXT_3D_LABEL,
+      this.id,
+      E_STREAMER.ATTACH_OFFSET_Z,
+      offsetZ,
+    );
+    this.sourceInfo.x = offsetX;
+    this.sourceInfo.y = offsetY;
+    this.sourceInfo.z = offsetZ;
+    return ret;
+  }
+  attachToPlayer(
+    player: Player | InvalidEnum.PLAYER_ID,
+    offsetX: number,
+    offsetY: number,
+    offsetZ: number,
+  ): number {
+    if (this.id === -1)
+      throw new Error(
+        "[Streamer3DTextLabel]: Cannot attachToPlayer before created",
+      );
+    const playerId = typeof player === "number" ? player : player.id;
+    const ret = Streamer.setIntData(
+      StreamerItemTypes.TEXT_3D_LABEL,
+      this.id,
+      E_STREAMER.ATTACHED_PLAYER,
+      playerId,
+    );
+    if (playerId !== InvalidEnum.PLAYER_ID) {
+      this.setOffsets(offsetX, offsetY, offsetZ);
+    }
+    this.sourceInfo.attachedPlayer = playerId;
+    return ret;
+  }
+  attachToVehicle(
+    vehicle: Vehicle | InvalidEnum.VEHICLE_ID,
+    offsetX: number,
+    offsetY: number,
+    offsetZ: number,
+  ): number {
+    if (this.id === -1)
+      throw new Error(
+        "[Streamer3DTextLabel]: Cannot attachToVehicle before created",
+      );
+    const vehicleId = typeof vehicle === "number" ? vehicle : vehicle.id;
+    const ret = Streamer.setIntData(
+      StreamerItemTypes.TEXT_3D_LABEL,
+      this.id,
+      E_STREAMER.ATTACHED_VEHICLE,
+      vehicleId,
+    );
+    if (vehicleId !== InvalidEnum.VEHICLE_ID) {
+      this.setOffsets(offsetX, offsetY, offsetZ);
+    }
+    this.sourceInfo.attachedVehicle = vehicleId;
+    return ret;
   }
   static togglePlayerUpdate(player: Player, update = true) {
     return Streamer.toggleItemUpdate(

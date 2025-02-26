@@ -223,7 +223,7 @@ export class DynamicObject {
   ): number {
     if (this.id === -1 || player.id === -1)
       throw new Error(
-        "[StreamerObject]: Cannot attachToVehicle before both are created",
+        "[StreamerObject]: Cannot attachToPlayer before both are created",
       );
     return s.AttachDynamicObjectToPlayer(
       this.id,
