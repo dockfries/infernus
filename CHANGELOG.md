@@ -1,3 +1,22 @@
+## <small>0.11.8 (2025-02-27)</small>
+
+* chore(fcnpc): update readme ([f2b7252](https://github.com/dockfries/infernus/commit/f2b7252))
+* chore(readme): update contributors ([f523f6a](https://github.com/dockfries/infernus/commit/f523f6a))
+* chore(rec): change description ([f889e0e](https://github.com/dockfries/infernus/commit/f889e0e))
+* chore(release): fcnpc v0.0.1 ([72c00f9](https://github.com/dockfries/infernus/commit/72c00f9))
+* chore(release): query v0.0.1 ([509ab0a](https://github.com/dockfries/infernus/commit/509ab0a))
+* chore(release): raknet v0.11.2 ([f29a6d8](https://github.com/dockfries/infernus/commit/f29a6d8))
+* chore(release): rec v0.0.1 ([aa27290](https://github.com/dockfries/infernus/commit/aa27290))
+* chore(release): rec v0.0.2 ([214d829](https://github.com/dockfries/infernus/commit/214d829))
+* feat(core): attachTo syntax sugar for `Dynamic3DTextLabel` #48 ([62aad79](https://github.com/dockfries/infernus/commit/62aad79)), closes [#48](https://github.com/dockfries/infernus/issues/48)
+* feat(query): simple API for send SA-MP queries ([11de555](https://github.com/dockfries/infernus/commit/11de555))
+* feat(raknet): update internal packet list ([74639bf](https://github.com/dockfries/infernus/commit/74639bf))
+* feat(raknet): update rpc list ([8d07d50](https://github.com/dockfries/infernus/commit/8d07d50))
+* feat(rec): file format converter ([a4adcef](https://github.com/dockfries/infernus/commit/a4adcef))
+* fix(rec): check the none type ([18396e5](https://github.com/dockfries/infernus/commit/18396e5))
+
+
+
 ## <small>0.11.7 (2025-02-05)</small>
 
 * chore(release): create-app v0.2.12 ([dd73a93](https://github.com/dockfries/infernus/commit/dd73a93))
