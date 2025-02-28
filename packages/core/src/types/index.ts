@@ -47,3 +47,14 @@ export type {
   StreamerArrayData,
   StreamerItemTypeTuple,
 } from "@infernus/streamer";
+
+export type THookFuncNames<T> = {
+  [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
+}[keyof T];
+
+export type THookInterceptor<
+  T extends new (...args: any[]) => any,
+  K extends THookFuncNames<InstanceType<T>>,
+> = InstanceType<T>[K] extends (...args: infer A) => infer R
+  ? (this: InstanceType<T>, next: (...args: A) => R, ...args: A) => R
+  : never;
