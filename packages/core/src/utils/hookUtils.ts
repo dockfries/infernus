@@ -5,11 +5,13 @@ export function hook<
   K extends THookFuncNames<InstanceType<T>>,
 >(target: T, methodName: K, interceptor: THookInterceptor<T, K>): void {
   const prototype = target.prototype;
-  const originalMethod = Reflect.get(prototype, methodName)
+  const originalMethod = Reflect.get(prototype, methodName);
 
   if (typeof originalMethod !== "function") {
     throw new Error(`Cannot hook non-function property: ${String(methodName)}`);
   }
+
+  let callStacks = 0;
 
   const success = Reflect.set(
     prototype,
@@ -18,11 +20,15 @@ export function hook<
       this: InstanceType<T>,
       ...args: Parameters<typeof originalMethod>
     ) {
-      return interceptor.call(
-        this,
-        originalMethod.bind(this),
-        ...args,
-      );
+      try {
+        callStacks++;
+        if (callStacks > 1) {
+          return originalMethod.apply(this, args);
+        }
+        return interceptor.call(this, originalMethod.bind(this), ...args);
+      } finally {
+        callStacks--;
+      }
     },
   );
 
