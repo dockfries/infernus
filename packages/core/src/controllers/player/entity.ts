@@ -601,13 +601,15 @@ export class Player {
     color: string | number,
     drawDistance: number,
     expireTime: number,
+    charset = this.charset,
   ) {
-    return w.SetPlayerChatBubble(
+    return h.SetPlayerChatBubble(
       this.id,
       text,
       color,
       drawDistance,
       expireTime,
+      charset,
     );
   }
   getDistanceFromPoint(x: number, y: number, z: number): number {

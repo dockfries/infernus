@@ -602,24 +602,6 @@ export const GetPlayerLastShotVectors = (playerId: number): Array<number> => {
   return samp.callNative("GetPlayerLastShotVectors", "iFFFFFF", playerId);
 };
 
-export const SetPlayerChatBubble = (
-  playerId: number,
-  text: string,
-  color: string | number,
-  drawDistance: number,
-  expireTime: number,
-): boolean => {
-  return !!samp.callNative(
-    "SetPlayerChatBubble",
-    "isifi",
-    playerId,
-    text,
-    rgba(color),
-    drawDistance,
-    expireTime,
-  );
-};
-
 export const PutPlayerInVehicle = (
   playerId: number,
   vehicleId: number,

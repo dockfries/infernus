@@ -292,3 +292,23 @@ export const GetDynamicObjectMaterialText = (
     textAlignment,
   };
 };
+
+export const SetPlayerChatBubble = (
+  playerId: number,
+  text: string,
+  color: string | number,
+  drawDistance: number,
+  expireTime: number,
+  charset: string,
+): boolean => {
+  const textBuf = I18n.encodeToBuf(text, charset);
+  return !!samp.callNative(
+    "SetPlayerChatBubble",
+    "iaifi",
+    playerId,
+    textBuf,
+    rgba(color),
+    drawDistance,
+    expireTime,
+  );
+};
