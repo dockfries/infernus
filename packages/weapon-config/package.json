@@ -1,0 +1,45 @@
+{
+  "name": "@infernus/weapon-config",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    "samp",
+    "sa:mp",
+    "sa-mp",
+    "omp",
+    "open.mp",
+    "pawn",
+    "weapon-config"
+  ],
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/weapon-config#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/infernus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/infernus.git"
+  },
+  "license": "MIT",
+  "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs"
+    }
+  },
+  "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
+  "types": "dist/bundle.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {},
+  "devDependencies": {
+    "@infernus/core": "workspace:^",
+    "@infernus/raknet": "workspace:^"
+  },
+  "peerDependencies": {
+    "@infernus/core": "workspace:^",
+    "@infernus/raknet": "workspace:^"
+  }
+}

@@ -250,6 +250,15 @@ importers:
 
   packages/streamer: {}
 
+  packages/weapon-config:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+      '@infernus/raknet':
+        specifier: ^0.11.2
+        version: 0.11.2(@infernus/core@packages+core)
+
 packages:
 
   '@aashutoshrathi/word-wrap@1.2.6':
@@ -804,6 +813,11 @@ packages:
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+
+  '@infernus/raknet@0.11.2':
+    resolution: {integrity: sha512-h8MarnhyVxWnWmHdVb/UMYVOqzgasWMXsHCzOhCBmppDXL0ltqb5B1L68ISvviLD2fUwVvBn/iDcvrm9JXYiUg==}
+    peerDependencies:
+      '@infernus/core': ^0.11.7
 
   '@inquirer/checkbox@4.0.2':
     resolution: {integrity: sha512-+gznPl8ip8P8HYHYecDtUtdsh1t2jvb+sWCD72GAiZ9m45RqwrLmReDaqdC0umQfamtFXVRoMVJ2/qINKGm9Tg==}
@@ -4198,6 +4212,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify/types@2.0.0': {}
+
+  '@infernus/raknet@0.11.2(@infernus/core@packages+core)':
+    dependencies:
+      '@infernus/core': link:packages/core
 
   '@inquirer/checkbox@4.0.2(@types/node@20.17.8)':
     dependencies:
