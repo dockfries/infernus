@@ -48,13 +48,10 @@ export type {
   StreamerItemTypeTuple,
 } from "@infernus/streamer";
 
-export type THookFuncNames<T> = {
-  [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
-}[keyof T];
+export type TMethodKeys<T> = keyof {
+  [K in keyof T as T[K] extends (...args: any[]) => any ? K : never]: any;
+};
 
-export type THookInterceptor<
-  T extends new (...args: any[]) => any,
-  K extends THookFuncNames<InstanceType<T>>,
-> = InstanceType<T>[K] extends (...args: infer A) => infer R
-  ? (this: InstanceType<T>, next: (...args: A) => R, ...args: A) => R
-  : never;
+export type THookedMethods<T extends new (...args: any[]) => any> = {
+  [K in TMethodKeys<InstanceType<T>>]: OmitThisParameter<InstanceType<T>[K]>;
+};

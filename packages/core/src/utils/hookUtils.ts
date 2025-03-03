@@ -1,32 +1,44 @@
-import { THookFuncNames, THookInterceptor } from "core/types";
+import { THookedMethods, TMethodKeys } from "core/types";
 
-export function hook<
-  T extends new (...args: any[]) => any,
-  K extends THookFuncNames<InstanceType<T>>,
->(target: T, methodName: K, interceptor: THookInterceptor<T, K>): void {
+export function defineHooks<T extends new (...args: any[]) => any>(target: T) {
   const prototype = target.prototype;
-  const originalMethod = Reflect.get(prototype, methodName)
+  const methodKeys = Object.getOwnPropertyNames(prototype).filter(
+    (k) => typeof prototype[k] === "function" && k !== "constructor",
+  ) as TMethodKeys<InstanceType<T>>[];
 
-  if (typeof originalMethod !== "function") {
-    throw new Error(`Cannot hook non-function property: ${String(methodName)}`);
-  }
-
-  const success = Reflect.set(
-    prototype,
-    methodName,
-    function (
-      this: InstanceType<T>,
-      ...args: Parameters<typeof originalMethod>
-    ) {
-      return interceptor.call(
-        this,
-        originalMethod.bind(this),
-        ...args,
-      );
+  const methods = methodKeys.reduce(
+    (acc, key) => {
+      acc[key] = prototype[key];
+      return acc;
     },
+    {} as Pick<InstanceType<T>, TMethodKeys<InstanceType<T>>>,
   );
 
-  if (!success) {
-    throw new Error(`Failed to hook property: ${String(methodName)}`);
+  const methodCache = new WeakMap<InstanceType<T>, THookedMethods<T>>();
+
+  function useMethods(instance: InstanceType<T>) {
+    if (!methodCache.has(instance)) {
+      const boundMethods = Object.fromEntries(
+        methodKeys.map((key) => [key, methods[key].bind(instance)]),
+      ) as THookedMethods<T>;
+      methodCache.set(instance, boundMethods);
+    }
+    return methodCache.get(instance)!;
   }
+
+  function setHook<K extends TMethodKeys<InstanceType<T>>>(
+    method: K,
+    interceptor: (
+      this: InstanceType<T>,
+      ...args: Parameters<InstanceType<T>[K]>
+    ) => ReturnType<InstanceType<T>[K]>,
+  ) {
+    const original = Reflect.get(prototype, method);
+    if (typeof original !== "function")
+      throw new Error(`Invalid method: ${String(method)}`);
+    Reflect.set(prototype, method, interceptor);
+    return interceptor;
+  }
+
+  return [useMethods, setHook] as const;
 }
