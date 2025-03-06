@@ -1,6 +1,7 @@
 import type { TLocales } from "../../types";
 import { encode, decode, encodingExists } from "iconv-lite";
-import { snakeCase, merge, omit, get, mapKeys } from "lodash-unified";
+import { snakeCase, merge, omit, mapKeys } from "es-toolkit";
+import { get } from "es-toolkit/compat";
 
 function isBuffer(value: any): value is Buffer {
   return value instanceof Buffer;
