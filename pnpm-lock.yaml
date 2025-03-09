@@ -237,8 +237,8 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@infernus/raknet':
-        specifier: ^0.11.2
-        version: 0.11.2(@infernus/core@packages+core)
+        specifier: workspace:^
+        version: link:../raknet
 
 packages:
 

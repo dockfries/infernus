@@ -16,7 +16,7 @@ const s_PlayerHealth = new Map<Player, number>();
 const s_PlayerMaxArmour = new Map<Player, number>();
 const s_PlayerMaxHealth = new Map<Player, number>();
 
-const [usePlayerMethods, setPlayerHook] = defineHooks(Player);
+const [pMethods, setPlayerHook] = defineHooks(Player);
 
 function inflictDamage(
   player: Player,
@@ -33,10 +33,9 @@ function inflictDamage(
 function updateHealthBar(player: Player, force = false) {
   // todo
   // You can't use player.setHealth directly in hook stack, it's an endless loop, so you need to `usePlayerMethods` instead
-  const methods = usePlayerMethods(player);
   console.log(player, force);
   //
-  return methods.setHealth(100);
+  return pMethods.setHealth.call(player, 100);
 }
 
 function wc_SetPlayerHealth(player: Player, health: number, armour = -1.0) {
