@@ -210,6 +210,9 @@ importers:
 
   packages/query:
     dependencies:
+      '@dockfries/chardetng':
+        specifier: ^0.0.1
+        version: 0.0.1
       iconv-lite:
         specifier: ^0.6.3
         version: 0.6.3
@@ -418,6 +421,81 @@ packages:
         optional: true
       conventional-commits-parser:
         optional: true
+
+  '@dockfries/chardetng-android-arm64@0.0.1':
+    resolution: {integrity: sha512-jAo5xdGpiL6f8BFvedLvgVVRm1c4sDltqqbzA5H1JGuv4VvCN56GSHMxlP5opnN7y2hgp1o9TmKcGfTOLlJmVQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [android]
+
+  '@dockfries/chardetng-darwin-arm64@0.0.1':
+    resolution: {integrity: sha512-5NnzFmNzlLiflwnSi57fDT14toyKjkV3MJh7ixTo1bMc69ani5zQY0EPQ+oooRn4BXIRELe1H0lw0eSqEoDNcg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@dockfries/chardetng-darwin-universal@0.0.1':
+    resolution: {integrity: sha512-QO2OiTiWqwv4V36Q/JhkZFaelLM8gH+OxCvijjk+N8Wn3DIwJcMUWOGNB1+WmTmPJe5MR+4J4Fo/C9lpcXBc0w==}
+    engines: {node: '>= 10'}
+    os: [darwin]
+
+  '@dockfries/chardetng-darwin-x64@0.0.1':
+    resolution: {integrity: sha512-i6PBALTu5JXLA9RJyKmmTt5Q/+u5JmGuyfPcsIw8ztrsXCrmYGJ5oLVeFm/T9Jb/3vBAxv+XNTzHQwGIbxm7fg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@dockfries/chardetng-linux-arm64-gnu@0.0.1':
+    resolution: {integrity: sha512-t3cmBJ3G5bkLN7u6uRr8eD/iPA3ak5mvLmYXE/K1q2g8MP1w94Gz9eLAKmMpjMsgtbOPF+jlcqKKB9bq3Tfkaw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@dockfries/chardetng-linux-arm64-musl@0.0.1':
+    resolution: {integrity: sha512-PbLygeaP47DGsCWIgWjpMhajwmYXImoWPbZs+3ygXOs/5vI590f5in+1psi87+Uo/vXKY1LmD2qecdjOY7tRNw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@dockfries/chardetng-linux-riscv64-gnu@0.0.1':
+    resolution: {integrity: sha512-cGQLAOTGtFSaqcIspsnvW7oBrn9HYfCCgX1vX5IR/hZVw/o0eZEosD7bCUNd4MVe0sqSLzqWqx+SRCnGz9GMBQ==}
+    engines: {node: '>= 10'}
+    cpu: [riscv64]
+    os: [linux]
+
+  '@dockfries/chardetng-linux-x64-gnu@0.0.1':
+    resolution: {integrity: sha512-vbvVvrGS9A7pAoXmPAf9AJ96svPXMSfzjc7OdW91YqrrTEmEv3cEGIt4Q5ZYguSjazt6V1Vi0F3WCgPozu7hPA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@dockfries/chardetng-linux-x64-musl@0.0.1':
+    resolution: {integrity: sha512-36HkjnI8gGYM1fPnhfotrPJXIR5EwF9cYLLYLQLFxm91bbsPAMDzvp00yjG3ps+aQOk6ToaLgY8/2FvazgkCqg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@dockfries/chardetng-win32-arm64-msvc@0.0.1':
+    resolution: {integrity: sha512-4urcV2u8hA1zIm0kzIR/rl6Tr93QOVVEsztYiXYd7C5/4m14h9Q8mjagCbnltQCCFG0DvWeaeVK4kPt59kTPmg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@dockfries/chardetng-win32-ia32-msvc@0.0.1':
+    resolution: {integrity: sha512-ZLB1qFVCWzBJhqY+hkM6dMJvfB4VpB4gvQCN5O/F+JGhkyF3CtADf298U1tXrOpm8qYxRmP349wuGY+Ly/IXkw==}
+    engines: {node: '>= 10'}
+    cpu: [ia32]
+    os: [win32]
+
+  '@dockfries/chardetng-win32-x64-msvc@0.0.1':
+    resolution: {integrity: sha512-YuEkDGUJksawJtZbuJeOWAzWMiA3GE2WNtFy5tNLDLXDiBMOQ+aJG5dHxR/pbLKG7Mj9uzJwhcMOiRYBAvYz8g==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  '@dockfries/chardetng@0.0.1':
+    resolution: {integrity: sha512-oj04MQJShlA2chxBO+V2r67QC94cbv+2DgnghSEjzKtwt4GpDKDNwK92+k30iPR+aSqichBnmc/KjcyItgdqug==}
+    engines: {node: '>= 10'}
 
   '@docsearch/css@3.8.2':
     resolution: {integrity: sha512-y05ayQFyUmCXze79+56v/4HpycYF3uFqB78pLPrSV5ZKAlDuIAAJNhaRi8tTdRNXh05yxX/TyNnzD6LwSM89vQ==}
@@ -3796,6 +3874,57 @@ snapshots:
     optionalDependencies:
       conventional-commits-filter: 5.0.0
       conventional-commits-parser: 6.0.0
+
+  '@dockfries/chardetng-android-arm64@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-darwin-arm64@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-darwin-universal@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-darwin-x64@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-linux-arm64-gnu@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-linux-arm64-musl@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-linux-riscv64-gnu@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-linux-x64-gnu@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-linux-x64-musl@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-win32-arm64-msvc@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-win32-ia32-msvc@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng-win32-x64-msvc@0.0.1':
+    optional: true
+
+  '@dockfries/chardetng@0.0.1':
+    optionalDependencies:
+      '@dockfries/chardetng-android-arm64': 0.0.1
+      '@dockfries/chardetng-darwin-arm64': 0.0.1
+      '@dockfries/chardetng-darwin-universal': 0.0.1
+      '@dockfries/chardetng-darwin-x64': 0.0.1
+      '@dockfries/chardetng-linux-arm64-gnu': 0.0.1
+      '@dockfries/chardetng-linux-arm64-musl': 0.0.1
+      '@dockfries/chardetng-linux-riscv64-gnu': 0.0.1
+      '@dockfries/chardetng-linux-x64-gnu': 0.0.1
+      '@dockfries/chardetng-linux-x64-musl': 0.0.1
+      '@dockfries/chardetng-win32-arm64-msvc': 0.0.1
+      '@dockfries/chardetng-win32-ia32-msvc': 0.0.1
+      '@dockfries/chardetng-win32-x64-msvc': 0.0.1
 
   '@docsearch/css@3.8.2': {}
 

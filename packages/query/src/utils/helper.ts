@@ -1,13 +1,17 @@
 import jschardet from "jschardet";
+import { detect } from "@dockfries/chardetng";
 import iconv from "iconv-lite";
 
-// limited accuracy
-// because the node ecosystem does not have a very accurate library
 export function detectAndDecode(buffer: Buffer) {
-  const chardetResult = jschardet.detect(buffer);
-  const chardetEncoding = chardetResult
-    ? chardetResult.encoding.toLowerCase()
-    : "utf-8";
+  let chardetEncoding: string;
+  if (samp) {
+    const chardetResult = jschardet.detect(buffer);
+    chardetEncoding = chardetResult
+      ? chardetResult.encoding.toLowerCase()
+      : "utf-8";
+  } else {
+    chardetEncoding = detect(buffer) || "utf-8";
+  }
 
   let guessCharset;
   if (chardetEncoding === "ascii") {
