@@ -1,3 +1,16 @@
+## <small>0.11.9 (2025-03-17)</small>
+
+* chore(release): query v0.0.2 ([792f2f4](https://github.com/dockfries/infernus/commit/792f2f4))
+* chore(root): contributing.md ([3a1ab95](https://github.com/dockfries/infernus/commit/3a1ab95))
+* chore(root): update deps, use and bundle es-toolkit, remove lodash ([775bf49](https://github.com/dockfries/infernus/commit/775bf49))
+* feat(core): experimental hook natives #50 ([9de59d7](https://github.com/dockfries/infernus/commit/9de59d7)), closes [#50](https://github.com/dockfries/infernus/issues/50)
+* feat(query): use chardetng when run out of samp-node ([ef39c86](https://github.com/dockfries/infernus/commit/ef39c86))
+* refactor(core): hook ([e898a2b](https://github.com/dockfries/infernus/commit/e898a2b))
+* refactor(core): hook, so we should use .call for performance ([64aaf5f](https://github.com/dockfries/infernus/commit/64aaf5f))
+* fix(core): `player.setChatBubble` charset #49 ([b162188](https://github.com/dockfries/infernus/commit/b162188)), closes [#49](https://github.com/dockfries/infernus/issues/49)
+
+
+
 ## <small>0.11.8 (2025-02-27)</small>
 
 * chore(fcnpc): update readme ([f2b7252](https://github.com/dockfries/infernus/commit/f2b7252))
