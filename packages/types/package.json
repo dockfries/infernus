@@ -1,0 +1,27 @@
+{
+  "name": "@infernus/types",
+  "version": "0.0.1",
+  "description": "Minimized samp-node api types for infernus.",
+  "keywords": [
+    "samp",
+    "sa:mp",
+    "sa-mp",
+    "omp",
+    "open.mp",
+    "pawn",
+    "types"
+  ],
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/types#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/infernus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/infernus.git"
+  },
+  "license": "MIT",
+  "author": "dockfries",
+  "type": "module",
+  "types": "./index.d.ts",
+  "scripts": {}
+}

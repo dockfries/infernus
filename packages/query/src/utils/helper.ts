@@ -4,7 +4,7 @@ import iconv from "iconv-lite";
 
 export function detectAndDecode(buffer: Buffer) {
   let chardetEncoding: string;
-  if (samp) {
+  if (global.samp) {
     const chardetResult = jschardet.detect(buffer);
     chardetEncoding = chardetResult
       ? chardetResult.encoding.toLowerCase()
