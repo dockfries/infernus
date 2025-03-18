@@ -1,8 +1,7 @@
 import jschardet from "jschardet";
-import { detect } from "@dockfries/chardetng";
 import iconv from "iconv-lite";
 
-export function detectAndDecode(buffer: Buffer) {
+export async function detectAndDecode(buffer: Buffer) {
   let chardetEncoding: string;
   if (global.samp) {
     const chardetResult = jschardet.detect(buffer);
@@ -10,6 +9,7 @@ export function detectAndDecode(buffer: Buffer) {
       ? chardetResult.encoding.toLowerCase()
       : "utf-8";
   } else {
+    const { detect } = await import("@dockfries/chardetng");
     chardetEncoding = detect(buffer) || "utf-8";
   }
 
