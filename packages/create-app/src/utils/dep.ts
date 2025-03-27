@@ -3,7 +3,7 @@ import decompress from "decompress";
 import semver, { type SemVer } from "semver";
 import fs from "fs-extra";
 import fg from "fast-glob";
-import inquirer from "inquirer";
+import { select } from "@inquirer/prompts";
 import {
   readLocalConfig,
   readLockFile,
@@ -294,9 +294,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
               value: idx,
             };
           });
-          const { selectResource } = await inquirer.prompt({
-            type: "list",
-            name: "selectResource",
+          const selectResource = await select({
             message: "Multiple archive resources found, please select one",
             choices,
             default: 0,
@@ -318,9 +316,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
               value: idx,
             };
           });
-          const { selectAsset } = await inquirer.prompt({
-            type: "list",
-            name: "selectAsset",
+          const selectAsset = await select<number>({
             message: "Multiple assets found, please select one",
             choices,
             default: 0,
