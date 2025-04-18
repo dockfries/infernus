@@ -10,12 +10,13 @@ import type {
 } from "../../enums";
 import { InvalidEnum } from "../../enums";
 import { Dialog } from "./dialog";
+import { playerPool } from "./pool";
 
 export const [onConnect] = defineEvent({
   name: "OnPlayerConnect",
   beforeEach(id: number) {
     const player = new Player(id);
-    Player.players.set(id, player);
+    playerPool.set(id, player);
     Dialog.close(player);
     return { player };
   },
@@ -24,11 +25,11 @@ export const [onConnect] = defineEvent({
 export const [onDisconnect] = defineEvent({
   name: "OnPlayerDisconnect",
   beforeEach(id: number, reason: number) {
-    const player = Player.players.get(id)!;
+    const player = playerPool.get(id)!;
     return { player, reason };
   },
   afterEach({ player }) {
-    Player.players.delete(player.id);
+    playerPool.delete(player.id);
   },
 });
 

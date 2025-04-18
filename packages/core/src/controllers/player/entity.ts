@@ -28,6 +28,7 @@ import { Vehicle } from "../vehicle/entity";
 import type { DynamicObject } from "core/wrapper/streamer";
 import { defineEvent } from "../bus";
 import { VectorSize } from "core/wrapper/native";
+import { playerPool } from "./pool";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
@@ -53,7 +54,7 @@ export const [onCharsetChange, triggerOnCharsetChange] = defineEvent({
 });
 
 export class Player {
-  static readonly players = new Map<number, Player>();
+  static readonly players = playerPool;
   static MAX_CHECK_ANDROID_DELAY = 10; // 10s
   static SKIP_CHECK_ANDROID = false;
 
@@ -971,9 +972,9 @@ export class Player {
     return w.IsPlayerUsingOmp(this.id);
   }
   static getInstance(id: number) {
-    return this.players.get(id);
+    return playerPool.get(id);
   }
   static getInstances() {
-    return [...this.players.values()];
+    return [...playerPool.values()];
   }
 }

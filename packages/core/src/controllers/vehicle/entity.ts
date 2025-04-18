@@ -15,6 +15,7 @@ import {
 import { rgba } from "core/utils/colorUtils";
 import * as v from "core/wrapper/native";
 import { VectorSize } from "core/wrapper/native";
+import { playerPool } from "../player/pool";
 
 export class Vehicle {
   static readonly vehicles = new Map<number, Vehicle>();
@@ -481,13 +482,13 @@ export class Vehicle {
     if (this.id === -1) return 0;
     return v.GetVehicleSirenState(this.id);
   }
-  getDriver(players: Map<number, Player>) {
+  getDriver() {
     if (this.id === -1) return;
-    return players.get(v.GetVehicleDriver(this.id));
+    return playerPool.get(v.GetVehicleDriver(this.id));
   }
-  getLastDriver(players: Map<number, Player>) {
+  getLastDriver() {
     if (this.id === -1) return;
-    return players.get(v.GetVehicleLastDriver(this.id));
+    return playerPool.get(v.GetVehicleLastDriver(this.id));
   }
   isSirenEnabled(): boolean {
     return v.IsVehicleSirenEnabled(this.id);
