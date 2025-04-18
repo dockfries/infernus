@@ -26,8 +26,8 @@ export default [
   {
     input: inputPath,
     output: [
-      { file: outputPath + "/bundle.mjs", format: "es" },
-      { file: outputPath + "/bundle.js", format: "cjs" },
+      { file: path.resolve(outputPath + "/bundle.mjs"), format: "es" },
+      { file: path.resolve(outputPath + "/bundle.js"), format: "cjs" },
     ],
     plugins: [
       externalPlugin,
@@ -35,13 +35,13 @@ export default [
       json(),
       nodeResolve(),
       typescriptPaths({ preserveExtensions: true }),
-      del({ targets: outputPath + "/*" }),
+      del({ targets: path.resolve(outputPath + "/*") }),
       esbuild({ target: "node16.13", minify: true }),
     ],
   },
   {
     input: inputPath,
-    output: [{ file: outputPath + "/bundle.d.ts" }],
+    output: [{ file: path.resolve(outputPath + "/bundle.d.ts") }],
     plugins: [
       externalPlugin,
       dts({ compilerOptions: { paths: compilerOptions.paths } }),

@@ -17,7 +17,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
-    "types": ["@sa-mp/node", "@types/node"]
+    "types": ["@types/node", "@infernus/types"]
   },
   "include": ["packages/*/src/**/*.ts"]
 }

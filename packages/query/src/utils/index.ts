@@ -43,7 +43,7 @@ export function makePacket<T extends RequestPacket>(
   return packet;
 }
 
-export function parseResponse(
+export async function parseResponse(
   response: Buffer,
   requestType: RequestPacket = RequestPacket.INFORMATION,
   rtt: number,
@@ -78,21 +78,21 @@ export function parseResponse(
       reader += 4;
 
       info.hostnameBuffer = response.subarray(reader, reader + hostnameLen);
-      info.hostname = detectAndDecode(info.hostnameBuffer)[0];
+      info.hostname = (await detectAndDecode(info.hostnameBuffer))[0];
       reader += hostnameLen;
 
       const gameModeLen = response.readUint32LE(reader);
       reader += 4;
 
       info.gameModeBuffer = response.subarray(reader, reader + gameModeLen);
-      info.gameMode = detectAndDecode(info.gameModeBuffer)[0];
+      info.gameMode = (await detectAndDecode(info.gameModeBuffer))[0];
       reader += gameModeLen;
 
       const languageLen = response.readUint32LE(reader);
       reader += 4;
 
       info.languageBuffer = response.subarray(reader, reader + languageLen);
-      info.language = detectAndDecode(info.languageBuffer)[0];
+      info.language = (await detectAndDecode(info.languageBuffer))[0];
       reader += languageLen;
       return info;
     }
@@ -107,7 +107,7 @@ export function parseResponse(
         reader += 1;
 
         const ruleNameBuffer = response.subarray(reader, reader + ruleNameLen);
-        const ruleName = detectAndDecode(ruleNameBuffer)[0];
+        const ruleName = (await detectAndDecode(ruleNameBuffer))[0];
         reader += ruleNameLen;
 
         const ruleValueLen = response.readUInt8(reader);
@@ -117,7 +117,7 @@ export function parseResponse(
           reader,
           reader + ruleValueLen,
         );
-        const ruleValue = detectAndDecode(ruleValueBuffer)[0];
+        const ruleValue = (await detectAndDecode(ruleValueBuffer))[0];
         reader += ruleValueLen;
 
         rules.push({ ruleName, ruleNameBuffer, ruleValue, ruleValueBuffer });
@@ -135,7 +135,7 @@ export function parseResponse(
         reader += 1;
 
         const playerNickBuffer = response.subarray(reader, reader + nickLen);
-        const playerNick = detectAndDecode(playerNickBuffer)[0];
+        const playerNick = (await detectAndDecode(playerNickBuffer))[0];
         reader += nickLen;
 
         const score = response.readUInt32LE(reader);
@@ -159,7 +159,7 @@ export function parseResponse(
         reader += 1;
 
         const playerNickBuffer = response.subarray(reader, reader + nickLen);
-        const playerNick = detectAndDecode(playerNickBuffer)[0];
+        const playerNick = (await detectAndDecode(playerNickBuffer))[0];
         reader += nickLen;
 
         const score = response.readUInt32LE(reader);

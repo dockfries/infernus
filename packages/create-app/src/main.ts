@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 
-import type { ConfirmQuestion, InputQuestion, ListQuestion } from "inquirer";
-import inquirer from "inquirer";
+import { input, confirm } from "@inquirer/prompts";
 import chalk from "chalk";
 import decompress from "decompress";
 
@@ -52,9 +51,7 @@ const pkg = fs.readJsonSync(pkgFilePath);
 async function successInstalled(projectName: string) {
   console.log(`\nSuccessfully created project ${chalk.cyan(projectName)}`);
 
-  const { install } = await inquirer.prompt({
-    name: "install",
-    type: "confirm",
+  const install = await confirm({
     message: "Install dependencies now?",
     default: true,
   });
@@ -140,67 +137,59 @@ function generateRandomString(length: number) {
     .slice(2, 2 + length);
 }
 
-async function createApp(args: ArgumentsCamelCase) {
-  const appNameQuestion: InputQuestion = {
-    name: "appName",
-    message: "What do you want to call the application?",
-    default: "my-app",
-    validate(input) {
-      if (!/^[^\\/?*":<>|\r\n]+$/.test(input)) {
-        console.log(
-          chalk.red.bold(
-            "\nThe project name cannot contain special characters",
-          ),
-        );
-        return false;
-      }
-      return true;
-    },
-  };
+async function createApp(args: ArgumentsCamelCase<{ appName?: string }>) {
+  let appName = args.appName;
 
-  const questions: (InputQuestion | ListQuestion | ConfirmQuestion)[] = [
-    {
-      name: "isRakNet",
-      type: "confirm",
-      message: "Whether you need to install RakNet?",
-      default: false,
-    },
-    {
-      name: "password",
-      message: "What password do you want for rcon?",
-      suffix: " (default random)",
-      default: generateRandomString(12),
+  if (!appName) {
+    appName = await input({
+      message: "What do you want to call the application?",
+      default: "my-app",
       validate(input) {
-        if (!input.length) {
-          console.log(chalk.red.bold("\nYou have to enter a password"));
-          return false;
-        }
-        if (!/^\w+$/.test(input)) {
+        if (!/^[^\\/?*":<>|\r\n]+$/.test(input)) {
           console.log(
             chalk.red.bold(
-              "\nPlease enter a password consisting of case, digits, and underscores.",
+              "\nThe project name cannot contain special characters",
             ),
-          );
-          return false;
-        }
-        if (input.trim() === "changeme") {
-          console.log(
-            chalk.red.bold("\nThe default rcon password cannot be used."),
           );
           return false;
         }
         return true;
       },
-    },
-  ];
-
-  if (!args.appName) {
-    questions.unshift(appNameQuestion);
+    });
   }
 
-  const { appName, isRakNet, password } = await inquirer.prompt(questions);
+  const isRakNet = await confirm({
+    message: "Whether you need to install RakNet?",
+    default: false,
+  });
 
-  appGeneratePath = resolve(process.cwd(), args.appName || appName);
+  const password = await input({
+    message: "What password do you want for rcon? (default random)",
+    default: generateRandomString(12),
+    validate(input) {
+      if (!input.length) {
+        console.log(chalk.red.bold("\nYou have to enter a password"));
+        return false;
+      }
+      if (!/^\w+$/.test(input)) {
+        console.log(
+          chalk.red.bold(
+            "\nPlease enter a password consisting of case, digits, and underscores.",
+          ),
+        );
+        return false;
+      }
+      if (input.trim() === "changeme") {
+        console.log(
+          chalk.red.bold("\nThe default rcon password cannot be used."),
+        );
+        return false;
+      }
+      return true;
+    },
+  });
+
+  appGeneratePath = resolve(process.cwd(), appName);
 
   await fs.ensureDir(appGeneratePath);
 

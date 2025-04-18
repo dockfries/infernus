@@ -1,7 +1,7 @@
 import path from "node:path";
 import os from "node:os";
 import axios from "axios";
-import HttpsProxyAgent from "https-proxy-agent";
+import { HttpsProxyAgent } from "https-proxy-agent";
 import fs from "fs-extra";
 import cliProgress from "cli-progress";
 import chalk from "chalk";
@@ -18,7 +18,7 @@ export const cwd = process.cwd();
 export const ompRepository = "openmultiplayer/open.mp";
 
 export const httpsAgent = process.env.https_proxy
-  ? HttpsProxyAgent(process.env.https_proxy)
+  ? new HttpsProxyAgent(process.env.https_proxy)
   : null;
 
 const request = axios.create({ httpsAgent });

@@ -8,7 +8,7 @@ export * from "./enums";
 export * from "./interfaces";
 export * from "./types";
 
-export async function sendQuery<T extends RequestPacket>(options: Options<T>) {
+export function sendQuery<T extends RequestPacket>(options: Options<T>) {
   return new Promise<ResponseTypeMap[T] | null>((resolve, reject) => {
     const client = dgram.createSocket("udp4");
     const packet = makePacket<T>(options);
@@ -51,16 +51,11 @@ export async function sendQuery<T extends RequestPacket>(options: Options<T>) {
             return resolve(null);
           }
 
-          try {
-            const result = parseResponse(
-              responseBuffer,
-              options.opcode,
-              receiveTime - sendTime,
-            ) as ResponseTypeMap[T];
-            resolve(result);
-          } catch (error) {
-            reject(error);
-          }
+          parseResponse(responseBuffer, options.opcode, receiveTime - sendTime)
+            .then((result) => {
+              resolve(result as ResponseTypeMap[T]);
+            })
+            .catch(reject);
         });
 
         client.once("error", (err) => {

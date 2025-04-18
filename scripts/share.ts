@@ -19,7 +19,7 @@ export async function build(pkgName) {
 
   const args = [
     "-c",
-    useSelfConfig && pkgRollupConfig,
+    useSelfConfig ? pkgRollupConfig : "",
     "--environment",
     `TARGET:${pkgName}`,
   ].filter(Boolean);
