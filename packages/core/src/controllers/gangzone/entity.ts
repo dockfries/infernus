@@ -44,7 +44,9 @@ export class GangZone {
       const off = PlayerEvent.onDisconnect(({ player, next }) => {
         next();
         if (player === this.sourceInfo.player) {
-          this.destroy();
+          if (this.isValid()) {
+            this.destroy();
+          }
           off();
         }
       });

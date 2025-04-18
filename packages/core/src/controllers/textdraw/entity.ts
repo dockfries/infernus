@@ -42,7 +42,9 @@ export class TextDraw {
       const off = PlayerEvent.onDisconnect(({ player: p, next }) => {
         const ret = next();
         if (p === player) {
-          this.destroy();
+          if (this.isValid()) {
+            this.destroy();
+          }
           off();
         }
         return ret;
