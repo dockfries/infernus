@@ -1,3 +1,18 @@
+## <small>0.11.10 (2025-04-21)</small>
+
+* chore(release): e-selection v0.0.1 ([7730b97](https://github.com/dockfries/infernus/commit/7730b97))
+* chore(release): query v0.1.0 ([e883de7](https://github.com/dockfries/infernus/commit/e883de7))
+* fix(core): playerTextDraw/GangZone auto destroy valid check ([2065a19](https://github.com/dockfries/infernus/commit/2065a19))
+* fix(core): setPreviewVehColors type, objAlign enum typo, player innerProps ([f9fab4b](https://github.com/dockfries/infernus/commit/f9fab4b))
+* fix(core): vehicle getDriver should no need players params ([3eb0b2b](https://github.com/dockfries/infernus/commit/3eb0b2b))
+* fix(query): use chardetng when run out of samp-node ([495f502](https://github.com/dockfries/infernus/commit/495f502))
+* feat(core): npc natives ([98a02d4](https://github.com/dockfries/infernus/commit/98a02d4))
+* feat(e-selection): try port eSelection ([29fcc1b](https://github.com/dockfries/infernus/commit/29fcc1b))
+* feat(types): minimized samp-node api types for infernus ([32c82c6](https://github.com/dockfries/infernus/commit/32c82c6))
+* build(scripts, create-app): use `@inquirer/prompts` and `tsx` ([d2f7d0d](https://github.com/dockfries/infernus/commit/d2f7d0d))
+
+
+
 ## <small>0.11.9 (2025-03-17)</small>
 
 * chore(release): query v0.0.2 ([792f2f4](https://github.com/dockfries/infernus/commit/792f2f4))
