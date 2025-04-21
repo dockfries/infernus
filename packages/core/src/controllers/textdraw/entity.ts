@@ -170,7 +170,7 @@ export class TextDraw {
     else w.TextDrawSetPreviewRot(this.id, fRotX, fRotY, fRotZ, fZoom);
     return this;
   }
-  setPreviewVehColors(color1: string, color2: string) {
+  setPreviewVehColors(color1: string | number, color2: string | number) {
     if (this.id === -1) {
       TextDraw.beforeCreateWarn("set preview veh col");
       return this;

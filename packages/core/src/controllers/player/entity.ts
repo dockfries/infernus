@@ -28,7 +28,7 @@ import { Vehicle } from "../vehicle/entity";
 import type { DynamicObject } from "core/wrapper/streamer";
 import { defineEvent } from "../bus";
 import { VectorSize } from "core/wrapper/native";
-import { playerPool } from "./pool";
+import { IInnerPlayerProps, innerPlayerProps, playerPool } from "./pool";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
@@ -54,14 +54,16 @@ export const [onCharsetChange, triggerOnCharsetChange] = defineEvent({
 });
 
 export class Player {
+  [innerPlayerProps]: IInnerPlayerProps = {
+    isAndroid: true,
+  };
+
   static readonly players = playerPool;
   static MAX_CHECK_ANDROID_DELAY = 10; // 10s
   static SKIP_CHECK_ANDROID = false;
 
   private _charset = "ISO-8859-1";
   private _locale = "en_US";
-
-  _isAndroid = true;
 
   lastDrunkLevel = 0;
   lastFps = 0;
@@ -963,10 +965,10 @@ export class Player {
     return w.IsPlayerInDriveByMode(this.id);
   }
   isAndroid() {
-    return this.isConnected() && this._isAndroid;
+    return this.isConnected() && this[innerPlayerProps].isAndroid;
   }
   isPC() {
-    return this.isConnected() && !this._isAndroid;
+    return this.isConnected() && !this[innerPlayerProps].isAndroid;
   }
   isUsingOmp() {
     return w.IsPlayerUsingOmp(this.id);

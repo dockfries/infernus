@@ -14,7 +14,7 @@ export enum ObjectMaterialTextSizeEnum {
   _512x256 = 130,
   _512x512 = 140,
 }
-export enum ObjectMaterialAlignmmentEnum {
+export enum ObjectMaterialAlignmentEnum {
   LEFT,
   CENTER,
   RIGHT,

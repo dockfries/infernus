@@ -2,6 +2,7 @@ import { Player } from "./entity";
 import { PlayerStateEnum } from "../../enums";
 import { defineEvent } from "../bus";
 import { onConnect, onDisconnect, onUpdate } from "./event";
+import { innerPlayerProps } from "./pool";
 
 let pauseChecker: null | NodeJS.Timeout = null;
 const androidTimer = new Map<Player, NodeJS.Timeout>();
@@ -27,7 +28,7 @@ function checkAndroid(player: Player) {
     .sendClientCheck(0x48, 0, 0, 2)
     .then(({ actionId }) => {
       if (actionId === 0x48) {
-        player._isAndroid = false;
+        player[innerPlayerProps].isAndroid = false;
         if (androidTimer.has(player)) {
           clearInterval(androidTimer.get(player));
         }
@@ -90,12 +91,12 @@ onConnect(({ player, next }) => {
   }
 
   if (player.isNpc()) {
-    player._isAndroid = false;
+    player[innerPlayerProps].isAndroid = false;
     return next();
   }
   if (Player.SKIP_CHECK_ANDROID) {
-    player._isAndroid = !player.isUsingOfficialClient();
-    triggerOnAndroidCheck(player, player._isAndroid);
+    player[innerPlayerProps].isAndroid = !player.isUsingOfficialClient();
+    triggerOnAndroidCheck(player, player[innerPlayerProps].isAndroid);
     return next();
   }
   checkAndroid(player);
