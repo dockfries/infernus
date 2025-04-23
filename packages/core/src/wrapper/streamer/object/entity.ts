@@ -10,9 +10,10 @@ import {
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
 import { streamerFlag } from "../flag";
+import { dynamicObjectPool } from "./pool";
 
 export class DynamicObject {
-  static readonly objects = new Map<number, DynamicObject>();
+  static readonly objects = dynamicObjectPool;
 
   private sourceInfo: IDynamicObject;
   private _id = -1;

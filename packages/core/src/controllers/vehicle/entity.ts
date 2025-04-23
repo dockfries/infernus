@@ -16,9 +16,10 @@ import { rgba } from "core/utils/colorUtils";
 import * as v from "core/wrapper/native";
 import { VectorSize } from "core/wrapper/native";
 import { playerPool } from "../player/pool";
+import { vehiclePool } from "./pool";
 
 export class Vehicle {
-  static readonly vehicles = new Map<number, Vehicle>();
+  static readonly vehicles = vehiclePool;
 
   private static createdCount = 0;
   private readonly sourceInfo: IVehicle;
@@ -277,11 +278,11 @@ export class Vehicle {
     );
   }
   getParamsCarDoors() {
-    if (this.id === -1) return undefined;
+    if (this.id === -1) return;
     return v.GetVehicleParamsCarDoors(this.id);
   }
   getParamsCarWindows() {
-    if (this.id === -1) return undefined;
+    if (this.id === -1) return;
     return v.GetVehicleParamsCarWindows(this.id);
   }
   setParamsEx(

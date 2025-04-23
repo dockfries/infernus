@@ -203,12 +203,12 @@ export class DynamicActor {
     return s.SetDynamicActorInvulnerable(this.id, invulnerable);
   }
   getPlayerTarget(player: Player) {
-    if (this.id === -1) return undefined;
+    if (this.id === -1) return;
     const actorId = s.GetPlayerTargetDynamicActor(player.id);
     return DynamicActor.actors.get(actorId);
   }
   getPlayerCameraTarget(player: Player) {
-    if (this.id === -1) return undefined;
+    if (this.id === -1) return;
     const actorId = s.GetPlayerCameraTargetDynActor(player.id);
     return DynamicActor.actors.get(actorId);
   }

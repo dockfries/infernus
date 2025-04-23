@@ -24,11 +24,13 @@ import type { TPos } from "../../types";
 import { isValidAnimateName } from "../../utils/animateUtils";
 import * as h from "../../utils/helperUtils";
 
-import { Vehicle } from "../vehicle/entity";
+import type { Vehicle } from "../vehicle/entity";
 import type { DynamicObject } from "core/wrapper/streamer";
 import { defineEvent } from "../bus";
 import { VectorSize } from "core/wrapper/native";
 import { IInnerPlayerProps, innerPlayerProps, playerPool } from "./pool";
+import { vehiclePool } from "../vehicle/pool";
+import { dynamicObjectPool } from "core/wrapper/streamer/object/pool";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
@@ -265,7 +267,7 @@ export class Player {
       this.isWasted() ||
       this.getState() === PlayerStateEnum.NONE
     )
-      return undefined;
+      return;
     const [x, y, z] = w.GetPlayerPos(this.id);
     return { x, y, z };
   }
@@ -419,9 +421,9 @@ export class Player {
     const target = w.GetPlayerCameraTargetPlayer(this.id);
     return Player.getInstances().find((p) => p.id === target);
   }
-  getCameraTargetVehicle() {
+  getCameraTargetVehicle(): Vehicle | undefined {
     const target = w.GetPlayerCameraTargetVehicle(this.id);
-    return Vehicle.getInstances().find((v) => v.id === target);
+    return [...vehiclePool.values()].find((v) => v.id === target);
   }
   getCameraZoom(): number {
     return w.GetPlayerCameraZoom(this.id);
@@ -535,17 +537,17 @@ export class Player {
     return w.DisableRemoteVehicleCollisions(this.id, disable);
   }
   getVehicle() {
-    if (!this.isInAnyVehicle()) return undefined;
+    if (!this.isInAnyVehicle()) return;
     const vehId: number = w.GetPlayerVehicleID(this.id);
-    return Vehicle.getInstances().find((v) => v.id === vehId);
+    return [...vehiclePool.values()].find((v) => v.id === vehId);
   }
   getVehicleSeat(): number {
     return w.GetPlayerVehicleSeat(this.id);
   }
   getSurfingVehicle() {
     const vehId = w.GetPlayerSurfingVehicleID(this.id);
-    if (vehId === InvalidEnum.VEHICLE_ID) return undefined;
-    return Vehicle.getInstances().find((v) => v.id === vehId);
+    if (vehId === InvalidEnum.VEHICLE_ID) return;
+    return [...vehiclePool.values()].find((v) => v.id === vehId);
   }
   applyAnimation(
     animLib: string,
@@ -623,7 +625,7 @@ export class Player {
   }
   getTargetPlayer(): Player | undefined {
     const pid = w.GetPlayerTargetPlayer(this.id);
-    if (pid === InvalidEnum.PLAYER_ID) return undefined;
+    if (pid === InvalidEnum.PLAYER_ID) return;
     return Player.getInstances().find((p) => p.id === pid);
   }
   getLastShotVectors() {
@@ -784,17 +786,15 @@ export class Player {
   endObjectEditing() {
     return w.EndObjectEditing(this.id);
   }
-  getSurfingObject(objects: Map<number, DynamicObject>): void | DynamicObject {
+  getSurfingObject(): void | DynamicObject {
     const id: number = w.GetPlayerSurfingObjectID(this.id);
     if (id === InvalidEnum.OBJECT_ID) return;
-    return objects.get(id);
+    return dynamicObjectPool.get(id);
   }
-  getSurfingPlayerObject(
-    objects: Map<number, DynamicObject>,
-  ): void | DynamicObject {
+  getSurfingPlayerObject(): void | DynamicObject {
     const id: number = w.GetPlayerSurfingPlayerObjectID(this.id);
     if (id === InvalidEnum.OBJECT_ID) return;
-    return objects.get(id);
+    return dynamicObjectPool.get(id);
   }
   isAttachedObjectSlotUsed(index: number): boolean {
     return w.IsPlayerAttachedObjectSlotUsed(this.id, index);
