@@ -1,3 +1,4 @@
+import { distance, closest } from "fastest-levenshtein";
 import { I18n } from "../i18n";
 import type { CallbackRet, PromisifyCallbackRet } from "../bus";
 import { defineEvent, eventBus } from "../bus";
@@ -148,6 +149,14 @@ export const [onCommandError, triggerOnError] = defineEvent({
       hasStrict,
       hasNoStrict,
       subcommand,
+      getSuggestion() {
+        const suggestion = closest(cmdText, [
+          ...strictCmdMap.keys(),
+          ...noStrictCmdMap.keys(),
+        ]);
+        const _distance = distance(cmdText, suggestion);
+        return { suggestion, distance: _distance };
+      },
     };
   },
 });
@@ -222,11 +231,12 @@ onCommandText(({ player, buffer, cmdText, next }) => {
         ...triggerParams,
       );
   } catch (err) {
+    const spreadErr = typeof err === "object" ? err : { error: err };
     return triggerOnError(
       player,
       {
         ...CommandErrors.RECEIVED_THROW,
-        error: err,
+        ...spreadErr,
       },
       ...triggerParams,
     );
