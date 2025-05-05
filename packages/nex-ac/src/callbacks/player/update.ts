@@ -1545,72 +1545,67 @@ PlayerEvent.onUpdate(({ player, next }) => {
             }
             if (ac_gtc - ACInfo.get(player.id).acGtc[9] > ac_gpp)
               ACInfo.get(player.id).acSpeed = ac_s;
-            else {
-              if (ACInfo.get(player.id).acACAllow[9]) {
-                if (ac_a1 && ac_a1.id !== InvalidEnum.VEHICLE_ID) {
-                  const { x: ac_vX, y: ac_vY, z: ac_vZ } = ac_a1.getVelocity();
-                  ac_i = ac_GetSpeed(ac_vX, ac_vY, ac_vZ);
-                  if (ac_s - ac_i > 220) {
-                    if (
-                      ac_s - ac_i > 620 ||
-                      ++ACInfo.get(player.id).acCheatCount[15] >
-                        innerACConfig.AC_MAX_SPEEDHACK_WARNINGS
-                    ) {
-                      if (innerACConfig.DEBUG) {
-                        console.log(
-                          `[Nex-AC DEBUG] Speed: ${ac_s}, old speed: ${ACInfo.get(player.id).acSpeed}, veh model: ${ac_a1.getModel()}, veh speed: ${ac_i}`,
-                        );
-                      }
-                      ac_KickWithCode(player, "", 0, 9, 3);
-                      if (ACInfo.get(player.id).acKicked > 0) return false;
-                      ACInfo.get(player.id).acCheatCount[15] = 0;
-                    } else {
-                      triggerCheatWarning(
-                        player,
-                        "",
-                        0,
-                        9,
-                        3,
-                        ACInfo.get(player.id).acCheatCount[15],
+          } else {
+            if (ACInfo.get(player.id).acACAllow[9]) {
+              if (ac_a1 && ac_a1.id !== InvalidEnum.VEHICLE_ID) {
+                const { x: ac_vX, y: ac_vY, z: ac_vZ } = ac_a1.getVelocity();
+                ac_i = ac_GetSpeed(ac_vX, ac_vY, ac_vZ);
+                if (ac_s - ac_i > 220) {
+                  if (
+                    ac_s - ac_i > 620 ||
+                    ++ACInfo.get(player.id).acCheatCount[15] >
+                      innerACConfig.AC_MAX_SPEEDHACK_WARNINGS
+                  ) {
+                    if (innerACConfig.DEBUG) {
+                      console.log(
+                        `[Nex-AC DEBUG] Speed: ${ac_s}, old speed: ${ACInfo.get(player.id).acSpeed}, veh model: ${ac_a1.getModel()}, veh speed: ${ac_i}`,
                       );
                     }
-                  } else ACInfo.get(player.id).acCheatCount[15] = 0;
-                } else if (ACInfo.get(player.id).acSpeed < ac_s && ac_s > 518) {
-                  if (innerACConfig.DEBUG) {
-                    console.log(
-                      `[Nex-AC DEBUG] Speed: ${ac_s}, old speed: ${ACInfo.get(player.id).acSpeed}`,
+                    ac_KickWithCode(player, "", 0, 9, 3);
+                    if (ACInfo.get(player.id).acKicked > 0) return false;
+                    ACInfo.get(player.id).acCheatCount[15] = 0;
+                  } else {
+                    triggerCheatWarning(
+                      player,
+                      "",
+                      0,
+                      9,
+                      3,
+                      ACInfo.get(player.id).acCheatCount[15],
                     );
                   }
-
-                  ac_KickWithCode(player, "", 0, 9, 4);
-                  if (ACInfo.get(player.id).acKicked > 0) return false;
+                } else ACInfo.get(player.id).acCheatCount[15] = 0;
+              } else if (ACInfo.get(player.id).acSpeed < ac_s && ac_s > 518) {
+                if (innerACConfig.DEBUG) {
+                  console.log(
+                    `[Nex-AC DEBUG] Speed: ${ac_s}, old speed: ${ACInfo.get(player.id).acSpeed}`,
+                  );
                 }
+
+                ac_KickWithCode(player, "", 0, 9, 4);
+                if (ACInfo.get(player.id).acKicked > 0) return false;
               }
-              ACInfo.get(player.id).acSpeed = ac_s;
             }
-            ACInfo.get(player.id).acSpecAct = ac_specAct;
-            ACInfo.get(player.id).acAnim = ac_sa;
+            ACInfo.get(player.id).acSpeed = ac_s;
           }
-          ACInfo.get(player.id).acPosX = ac_pX;
-          ACInfo.get(player.id).acPosY = ac_pY;
-          ACInfo.get(player.id).acPosZ = ac_pZ;
+          ACInfo.get(player.id).acSpecAct = ac_specAct;
+          ACInfo.get(player.id).acAnim = ac_sa;
         }
-        ACInfo.get(player.id).acVeh = ac_vehId;
-        ACInfo.get(player.id).acHealth = ac_health;
-        ACInfo.get(player.id).acArmour = ac_armour;
-        if (ac_gtc - ACInfo.get(player.id).acGtc[6] > ac_gpp)
-          ACInfo.get(player.id).acHoldWeapon = ac_w;
-        ACInfo.get(player.id).acLastWeapon = ac_w;
+        ACInfo.get(player.id).acPosX = ac_pX;
+        ACInfo.get(player.id).acPosY = ac_pY;
+        ACInfo.get(player.id).acPosZ = ac_pZ;
       }
+      ACInfo.get(player.id).acVeh = ac_vehId;
+      ACInfo.get(player.id).acHealth = ac_health;
+      ACInfo.get(player.id).acArmour = ac_armour;
+      if (ac_gtc - ACInfo.get(player.id).acGtc[6] > ac_gpp)
+        ACInfo.get(player.id).acHoldWeapon = ac_w;
+      ACInfo.get(player.id).acLastWeapon = ac_w;
     }
-    ACInfo.get(player.id).acUpdateTick = ac_gtc;
-    const ac_ret = next();
-    if (
-      ACInfo.get(player.id).acACAllow[33] &&
-      !ACInfo.get(player.id).acUnFrozen
-    )
-      return false;
-    return ac_ret;
   }
-  return next();
+  ACInfo.get(player.id).acUpdateTick = ac_gtc;
+  const ac_ret = next();
+  if (ACInfo.get(player.id).acACAllow[33] && !ACInfo.get(player.id).acUnFrozen)
+    return false;
+  return ac_ret;
 });
