@@ -11,7 +11,7 @@ export interface CmdBusCallback {
   cmdText: string;
   buffer: number[];
   isStrict: boolean;
-  next: () => CallbackRet;
+  next: (value?: any) => CallbackRet;
 }
 
 export type CommandErrorTypes =
@@ -164,12 +164,24 @@ export const [onCommandError, triggerOnError] = defineEvent({
 const [onCommandText] = defineEvent({
   name: "OnPlayerCommandTextI18n",
   identifier: "iai",
+  defaultValue: false,
   beforeEach(id: number, buffer: number[]) {
     const player = Player.getInstance(id)!;
     const cmdText = I18n.decodeFromBuf(buffer, player.charset);
     return { player, buffer, cmdText };
   },
 });
+
+const [onCommandTextRaw, triggerOnCommandTextRaw] = defineEvent({
+  name: "OnPlayerCommandTextRaw",
+  isNative: false,
+  defaultValue: false,
+  beforeEach(player: Player, buffer: number[], cmdText: string) {
+    return { player, buffer, cmdText };
+  },
+});
+
+export { onCommandTextRaw };
 
 function generateCombinations(arr: any[]) {
   const result = [];
@@ -182,6 +194,9 @@ function generateCombinations(arr: any[]) {
 }
 
 onCommandText(({ player, buffer, cmdText, next }) => {
+  const stopExecute = triggerOnCommandTextRaw(player, buffer, cmdText);
+  if (stopExecute) return stopExecute;
+
   const matchedCommand = cmdText.match(commandPattern)!;
 
   const maybes = generateCombinations(matchedCommand);
@@ -277,7 +292,8 @@ onCommandText(({ player, buffer, cmdText, next }) => {
   if (!ret)
     return triggerOnError(player, CommandErrors.PERFORMED, ...triggerParams);
 
-  return next();
+  next();
+  return true;
 });
 
 function cmdBeforeEach(

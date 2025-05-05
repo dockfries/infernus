@@ -6,6 +6,7 @@ export const [onExit] = defineEvent({ name: "OnGameModeExit" });
 
 export const [onIncomingConnection] = defineEvent({
   name: "OnIncomingConnection",
+  defaultValue: false,
   beforeEach(playerId: number, ipAddress: string, port: number) {
     return { playerId, ipAddress, port };
   },
@@ -14,6 +15,7 @@ export const [onIncomingConnection] = defineEvent({
 export const [onRconCommand] = defineEvent({
   name: "OnRconCommandI18n",
   identifier: "ai",
+  defaultValue: false,
   beforeEach(buffer: number[]) {
     return { buffer, cmd: I18n.decodeFromBuf(buffer) };
   },

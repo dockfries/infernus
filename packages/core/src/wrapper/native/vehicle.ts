@@ -274,8 +274,8 @@ export const SetVehiclePos = (
   x: number,
   y: number,
   z: number,
-): number => {
-  return samp.callNative("SetVehiclePos", "ifff", vehicleId, x, y, z);
+): boolean => {
+  return !!samp.callNative("SetVehiclePos", "ifff", vehicleId, x, y, z);
 };
 
 export const GetVehicleZAngle = (vehicleId: number): number => {
@@ -572,8 +572,8 @@ export const SetVehicleAngularVelocity = (
   X: number,
   Y: number,
   Z: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "SetVehicleAngularVelocity",
     "ifff",
     vehicleId,

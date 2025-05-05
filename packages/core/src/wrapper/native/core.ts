@@ -146,8 +146,8 @@ export const GetWorldTime = (): number => {
   return samp.callNative("GetWorldTime", "");
 };
 
-export const EnableVehicleFriendlyFire = (): number => {
-  return samp.callNative("EnableVehicleFriendlyFire", "");
+export const EnableVehicleFriendlyFire = (): boolean => {
+  return !!samp.callNative("EnableVehicleFriendlyFire", "");
 };
 
 export const SetWeather = (weatherid: number): number => {
@@ -176,12 +176,12 @@ export const EnableZoneNames = (enable: boolean): number => {
   return samp.callNative("EnableZoneNames", "i", enable);
 };
 
-export const UsePlayerPedAnims = (): number => {
-  return samp.callNative("UsePlayerPedAnims", "");
+export const UsePlayerPedAnims = (): boolean => {
+  return !!samp.callNative("UsePlayerPedAnims", "");
 };
 
-export const DisableInteriorEnterExits = (): number => {
-  return samp.callNative("DisableInteriorEnterExits", "");
+export const DisableInteriorEnterExits = (): boolean => {
+  return !!samp.callNative("DisableInteriorEnterExits", "");
 };
 
 export const SetNameTagDrawDistance = (distance: number): number => {
@@ -212,8 +212,8 @@ export const GetAnimationName = (index: number): Array<string> => {
   return samp.callNative("GetAnimationName", "iSiSi", index, 32, 32);
 };
 
-export const EnableStuntBonusForAll = (enable: boolean): number => {
-  return samp.callNative("EnableStuntBonusForAll", "i", enable);
+export const EnableStuntBonusForAll = (enable: boolean): boolean => {
+  return !!samp.callNative("EnableStuntBonusForAll", "i", enable);
 };
 
 export const ToggleChatTextReplacement = (toggle: boolean): void => {

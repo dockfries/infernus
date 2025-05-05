@@ -68,14 +68,14 @@ export const ShowPlayerDialog = (
   player: Player,
   id: number,
   dialog: IDialog,
-): number => {
+): boolean => {
   const { charset } = player;
   const { style, caption, info, button1, button2 } = dialog;
   const [flag, processCaption] = processMsg(caption || "", charset);
   const [, processInfo] = processMsg(info || "", charset);
   const [, processButton1] = processMsg(button1 || "", charset);
   const [, processButton2] = processMsg(button2 || "", charset);
-  return samp.callNative(
+  return !!samp.callNative(
     "ShowPlayerDialog",
     `iii${flag.repeat(4)}`,
     player.id,

@@ -6,6 +6,7 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "lib": ["ESNext"],
     "module": "ESNext",
     "moduleResolution": "Node",
     "paths": {

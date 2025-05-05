@@ -46,7 +46,7 @@ export class Vehicle {
     if (!ignoreRange && !isValidVehModelId(modelId)) return;
     if (this.isStatic) {
       if (respawnDelay === undefined) {
-        this._id = v.AddStaticVehicle(
+        this._id = Vehicle.__inject_AddStaticVehicle(
           modelId,
           x,
           y,
@@ -57,7 +57,7 @@ export class Vehicle {
         );
         return;
       }
-      this._id = v.AddStaticVehicleEx(
+      this._id = Vehicle.__inject_AddStaticVehicleEx(
         modelId,
         x,
         y,
@@ -69,7 +69,7 @@ export class Vehicle {
         addSiren || false,
       );
     } else {
-      this._id = v.CreateVehicle(
+      this._id = Vehicle.__inject_CreateVehicle(
         modelId,
         x,
         y,
@@ -87,7 +87,7 @@ export class Vehicle {
   destroy(): void {
     if (this.id === -1)
       throw new Error("[Vehicle]: Unable to destroy the vehicle before create");
-    v.DestroyVehicle(this.id);
+    Vehicle.__inject_DestroyVehicle(this.id);
     Vehicle.createdCount--;
     Vehicle.vehicles.delete(this._id);
     this._id = -1;
@@ -128,8 +128,8 @@ export class Vehicle {
     if (this.id === -1) return 0;
     return v.RepairVehicle(this.id);
   }
-  setPos(x: number, y: number, z: number): number {
-    if (this.id === -1) return 0;
+  setPos(x: number, y: number, z: number): boolean {
+    if (this.id === -1) return false;
     return v.SetVehiclePos(this.id, x, y, z);
   }
   getPos(): TPos {
@@ -200,8 +200,8 @@ export class Vehicle {
     const { x, y, z } = this.getVelocity()!;
     return VectorSize(x, y, z) * magic;
   }
-  setAngularVelocity(X: number, Y: number, Z: number): number {
-    if (this.id === -1) return 0;
+  setAngularVelocity(X: number, Y: number, Z: number): boolean {
+    if (this.id === -1) return false;
     return v.SetVehicleAngularVelocity(this.id, X, Y, Z);
   }
   getDamageStatus() {
@@ -636,4 +636,8 @@ export class Vehicle {
   static getInstances() {
     return [...this.vehicles.values()];
   }
+  static __inject_AddStaticVehicle = v.AddStaticVehicle;
+  static __inject_AddStaticVehicleEx = v.AddStaticVehicleEx;
+  static __inject_CreateVehicle = v.CreateVehicle;
+  static __inject_DestroyVehicle = v.DestroyVehicle;
 }

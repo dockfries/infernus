@@ -2,8 +2,7 @@ import { DialogStylesEnum } from "../../enums";
 import type {
   IDialog,
   IDialogFuncQueue,
-  IDialogResRaw,
-  IDialogResResult,
+  IDialogResCommon,
 } from "../../interfaces";
 import { HidePlayerDialog } from "core/wrapper/native";
 import { I18n } from "../i18n";
@@ -14,6 +13,7 @@ import { ShowPlayerDialog } from "core/utils/helperUtils";
 export const [onDialogResponse] = defineEvent({
   name: "OnDialogResponseI18n",
   identifier: "iiiiai",
+  defaultValue: false,
   beforeEach(
     id: number,
     dialogId: number,
@@ -21,25 +21,32 @@ export const [onDialogResponse] = defineEvent({
     listItem: number,
     buffer: number[],
   ) {
+    const player = Player.getInstance(id)!;
+    const inputText = I18n.decodeFromBuf(buffer, player.charset);
     return {
-      player: Player.getInstance(id)!,
+      player,
       dialogId,
       response,
       listItem,
       buffer,
+      inputText,
     };
   },
 });
 
-onDialogResponse(({ next, player, dialogId, response, listItem, buffer }) => {
-  const callback = Dialog.waitingQueue.get(player);
-  if (!callback) return next();
-  if (callback.showId !== dialogId) return next();
-  // bug: does not trigger resolve of promise
-  // fix: it only works if you put it in an event loop
-  setTimeout(() => callback.resolve({ response, listItem, buffer }));
-  return next();
-});
+onDialogResponse(
+  ({ next, player, dialogId, response, listItem, buffer, inputText }) => {
+    const callback = Dialog.waitingQueue.get(player);
+    if (!callback) return next();
+    if (callback.showId !== dialogId) return next();
+    // bug: does not trigger resolve of promise
+    // fix: it only works if you put it in an event loop
+    setTimeout(() =>
+      callback.resolve({ response, listItem, buffer, inputText }),
+    );
+    return next();
+  },
+);
 
 /**
  * You don't need to care about the dialog id.
@@ -119,7 +126,7 @@ export class Dialog {
   }
 
   show(player: Player) {
-    return new Promise<IDialogResRaw>((resolve, reject) => {
+    return new Promise<IDialogResCommon>((resolve, reject) => {
       Dialog.close(player);
 
       while (this.id === -1 || Dialog.showingIds.includes(this.id)) {
@@ -135,17 +142,8 @@ export class Dialog {
       Dialog.showingIds.push(this.id);
       Dialog.waitingQueue.set(player, { resolve, reject, showId: this.id });
 
-      ShowPlayerDialog(player, this.id, this.dialog);
+      Dialog.__inject__ShowPlayerDialog(player, this.id, this.dialog);
     })
-      .then((DialogRes: IDialogResRaw) => {
-        const { response, listItem } = DialogRes;
-        const inputText = I18n.decodeFromBuf(DialogRes.buffer, player.charset);
-        return Promise.resolve({
-          response,
-          listItem,
-          inputText,
-        } as IDialogResResult);
-      })
       .catch((e) => Promise.reject(e))
       .finally(() => Dialog.delDialogTask(player));
   }
@@ -154,4 +152,6 @@ export class Dialog {
     Dialog.delDialogTask(player, true);
     HidePlayerDialog(player.id);
   }
+
+  static __inject__ShowPlayerDialog = ShowPlayerDialog;
 }

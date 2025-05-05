@@ -12,16 +12,10 @@ export interface IDialog {
 }
 
 export interface IDialogResCommon {
+  buffer: number[];
+  inputText: string;
   response: number;
   listItem: number;
-}
-
-export interface IDialogResRaw extends IDialogResCommon {
-  buffer: number[];
-}
-
-export interface IDialogResResult extends IDialogResCommon {
-  inputText: string;
 }
 
 export interface IVehicle {
@@ -63,7 +57,7 @@ export interface ITextDraw {
 
 export interface IDialogFuncQueue {
   showId: number;
-  resolve: (value: IDialogResRaw | PromiseLike<IDialogResRaw>) => void;
+  resolve: (value: IDialogResCommon | PromiseLike<IDialogResCommon>) => void;
   reject: (reason: string) => void;
 }
 

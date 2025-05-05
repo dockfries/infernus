@@ -12,6 +12,7 @@ GameMode.onExit(({ next }) => {
 
 const [onPlayerClickGlobal] = defineEvent({
   name: "OnPlayerClickTextDraw",
+  defaultValue: false,
   beforeEach(pid: number, tid: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -22,6 +23,7 @@ const [onPlayerClickGlobal] = defineEvent({
 });
 const [onPlayerClickPlayer] = defineEvent({
   name: "OnPlayerClickPlayerTextDraw",
+  defaultValue: false,
   beforeEach(pid: number, tid: number) {
     return {
       player: Player.getInstance(pid)!,

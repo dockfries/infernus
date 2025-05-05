@@ -48,11 +48,15 @@ function executeMiddlewares<T extends object>(
 
   let index = -1;
 
-  const next = () => {
+  const next = (value?: Partial<T>) => {
     index++;
     if (index < middlewares.length) {
       try {
-        const ret = middlewares[index]({ next, defaultValue, ...enhanced });
+        if (value) Object.assign(enhanced, value);
+
+        const params = { next, defaultValue, ...enhanced };
+
+        const ret = middlewares[index](params);
 
         if (ret instanceof Promise) {
           promises.push(ret);
@@ -97,7 +101,7 @@ export function defineEvent<T extends object>(options: Options<T>) {
   function pusher(
     cb: (
       ret: T & {
-        next: () => CallbackRet;
+        next: (value?: Partial<T>) => CallbackRet;
         defaultValue: Options<T>["defaultValue"];
       },
     ) => PromisifyCallbackRet,

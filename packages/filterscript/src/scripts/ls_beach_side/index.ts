@@ -374,7 +374,7 @@ function elevator_Boost(floorId: number) {
 
 function elevator_TurnToIdle() {
   elevatorState = constants.ELEVATOR_STATE_IDLE;
-  ReadNextFloorInQueue();
+  readNextFloorInQueue();
 
   return true;
 }
@@ -406,7 +406,7 @@ function addFloorToQueue(floorId: number) {
     elevatorQueue[slot] = floorId;
 
     // If needed, move the elevator.
-    if (elevatorState === constants.ELEVATOR_STATE_IDLE) ReadNextFloorInQueue();
+    if (elevatorState === constants.ELEVATOR_STATE_IDLE) readNextFloorInQueue();
 
     return true;
   }
@@ -430,7 +430,7 @@ function isFloorInQueue(floorId: number) {
   return elevatorQueue.includes(floorId);
 }
 
-function ReadNextFloorInQueue() {
+function readNextFloorInQueue() {
   // Reads the next floor in the queue, closes doors, and goes to it.
 
   if (

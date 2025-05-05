@@ -9,7 +9,7 @@ function isBuffer(value: any): value is Buffer {
 
 export class I18n {
   constructor(
-    private defaultLocale: keyof TLocales,
+    public defaultLocale: keyof TLocales,
     private locales: TLocales,
   ) {
     this.defaultLocale = snakeCase(defaultLocale);

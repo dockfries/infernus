@@ -51,10 +51,10 @@ export const [onText] = defineEvent({
 
 export const [onEnterExitModShop] = defineEvent({
   name: "OnPlayerEnterExitModShop",
-  beforeEach(id: number, enterexit: number, interior: number) {
+  beforeEach(id: number, enterExit: number, interior: number) {
     return {
       player: Player.getInstance(id)!,
-      enterExit: Boolean(enterexit),
+      enterExit,
       interior,
     };
   },
@@ -62,6 +62,7 @@ export const [onEnterExitModShop] = defineEvent({
 
 export const [onClickMap] = defineEvent({
   name: "OnPlayerClickMap",
+  defaultValue: false,
   beforeEach(id: number, fX: number, fY: number, fZ: number) {
     return {
       player: Player.getInstance(id)!,
@@ -74,6 +75,7 @@ export const [onClickMap] = defineEvent({
 
 export const [onClickPlayer] = defineEvent({
   name: "OnPlayerClickPlayer",
+  defaultValue: false,
   beforeEach(id: number, clickedId: number, source: number) {
     return {
       player: Player.getInstance(id)!,
@@ -100,6 +102,7 @@ export const [onDeath] = defineEvent<{
 
 export const [onGiveDamage] = defineEvent({
   name: "OnPlayerGiveDamage",
+  defaultValue: false,
   beforeEach(
     id: number,
     damage: number,
@@ -187,6 +190,7 @@ export const [onTakeDamage] = defineEvent<{
   bodyPart: BodyPartsEnum;
 }>({
   name: "OnPlayerTakeDamage",
+  defaultValue: false,
   beforeEach(
     id: number,
     damage: number | InvalidEnum.PLAYER_ID,

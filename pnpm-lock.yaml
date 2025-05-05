@@ -217,6 +217,15 @@ importers:
 
   packages/mapandreas: {}
 
+  packages/nex-ac:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+      '@infernus/raknet':
+        specifier: workspace:^
+        version: link:../raknet
+
   packages/query:
     dependencies:
       '@dockfries/chardetng':

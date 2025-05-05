@@ -180,11 +180,7 @@ export class Player {
   resetWeapons() {
     return w.ResetPlayerWeapons(this.id);
   }
-  spawn(): number {
-    if (this.isSpectating()) {
-      this.toggleSpectating(false);
-      return 1;
-    }
+  spawn(): boolean {
     return w.SpawnPlayer(this.id);
   }
   setHealth(health: number) {
@@ -589,11 +585,8 @@ export class Player {
   setShopName(shopName: string) {
     return w.SetPlayerShopName(this.id, shopName);
   }
-  setPosFindZ(x: number, y: number, z = 150) {
-    return new Promise<boolean>((resolve) => {
-      w.SetPlayerPos(this.id, x, y, z);
-      setTimeout(() => resolve(w.SetPlayerPosFindZ(this.id, x, y, z)));
-    });
+  setPosFindZ(x: number, y: number, z: number) {
+    return w.SetPlayerPosFindZ(this.id, x, y, z);
   }
   setWorldBounds(xMax: number, xMin: number, yMax: number, yMin: number) {
     return w.SetPlayerWorldBounds(this.id, xMax, xMin, yMax, yMin);

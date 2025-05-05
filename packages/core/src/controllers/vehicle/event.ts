@@ -10,6 +10,7 @@ GameMode.onExit(({ next }) => {
 
 const [onDamageStatusUpdate] = defineEvent({
   name: "OnVehicleDamageStatusUpdate",
+  defaultValue: false,
   beforeEach(vid: number, pid: number) {
     return {
       vehicle: Vehicle.getInstance(vid)!,
@@ -63,6 +64,7 @@ const [onRespray] = defineEvent({
 
 const [onSirenStateChange] = defineEvent({
   name: "OnVehicleSirenStateChange",
+  defaultValue: false,
   beforeEach(pid: number, vid: number, state: number) {
     return {
       player: Player.getInstance(pid)!,

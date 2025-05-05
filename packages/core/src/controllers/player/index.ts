@@ -11,6 +11,7 @@ import {
   onCommandError,
   onCommandPerformed,
   onCommandReceived,
+  onCommandTextRaw,
 } from "./command";
 import {
   onClickMap,
@@ -76,6 +77,7 @@ export const PlayerEvent = Object.freeze({
   onFpsUpdate,
   onWeaponShot,
   onAndroidCheck,
+  onCommandTextRaw,
 });
 
 export { Dialog };

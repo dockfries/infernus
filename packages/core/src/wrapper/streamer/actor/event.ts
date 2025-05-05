@@ -34,6 +34,7 @@ const [onDynamicActorStreamOut] = defineEvent({
 const [onPlayerGiveDamageDynamicActor] = defineEvent({
   name: "OnPlayerGiveDamageDynamicActor",
   identifier: "iiiii",
+  defaultValue: false,
   beforeEach(
     pid: number,
     aid: number,

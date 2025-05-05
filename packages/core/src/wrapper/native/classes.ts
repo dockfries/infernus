@@ -161,8 +161,8 @@ export const SetSpawnInfo = (
   weapon2Ammo: number,
   weapon3: WeaponEnum,
   weapon3Ammo: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "SetSpawnInfo",
     "iiiffffiiiiii",
     playerId,
@@ -181,8 +181,8 @@ export const SetSpawnInfo = (
   );
 };
 
-export const SpawnPlayer = (playerId: number): number => {
-  return samp.callNative("SpawnPlayer", "i", playerId);
+export const SpawnPlayer = (playerId: number): boolean => {
+  return !!samp.callNative("SpawnPlayer", "i", playerId);
 };
 
 export const GetSpawnInfo = (playerId: number): IPlayerClass => {
