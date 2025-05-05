@@ -358,14 +358,14 @@ PlayerEvent.onUpdate(({ player, next }) => {
           if (
             !innerACConfig.AC_USE_RESTAURANTS ||
             (innerACConfig.AC_USE_RESTAURANTS &&
-              ac_health - ACInfo.get(player.id).acHealth > 70) ||
-            !ac_InRestaurant(player, ACInfo.get(player.id).acInt)
+              (ac_health - ACInfo.get(player.id).acHealth > 70 ||
+                !ac_InRestaurant(player, ACInfo.get(player.id).acInt)))
           ) {
             if (
               !innerACConfig.AC_USE_VENDING_MACHINES ||
               (innerACConfig.AC_USE_VENDING_MACHINES &&
-                ac_health - ACInfo.get(player.id).acHealth > 35) ||
-              !ac_NearVendingMachine(player, ACInfo.get(player.id).acInt)
+                (ac_health - ACInfo.get(player.id).acHealth > 35 ||
+                  !ac_NearVendingMachine(player, ACInfo.get(player.id).acInt)))
             ) {
               if (innerACConfig.DEBUG)
                 console.log(
