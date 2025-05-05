@@ -1,8 +1,8 @@
 import { DynamicCheckPointEvent, DynamicRaceCPEvent } from "@infernus/core";
 import { ACInfo } from "../struct";
-import { ac_FloodDetect } from "../functions";
 import { innerACConfig } from "../config";
 import { ac_Mtfc } from "../constants";
+import { ac_FloodDetect } from "./trigger";
 
 DynamicCheckPointEvent.onPlayerEnter(({ player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;

@@ -1,7 +1,7 @@
 import { TextDrawEvent } from "@infernus/core";
 import { ACInfo } from "../struct";
-import { ac_FloodDetect } from "../functions";
 import { ac_Mtfc } from "../constants";
+import { ac_FloodDetect } from "./trigger";
 
 TextDrawEvent.onPlayerClickGlobal(({ player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return true;

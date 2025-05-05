@@ -1,8 +1,8 @@
 import { Player, PlayerEvent } from "@infernus/core";
 import { ACInfo, ACVehInfo } from "../../struct";
-import { ac_FloodDetect, ac_KickWithCode } from "../../functions";
 import { innerACConfig } from "../../config";
 import { ac_Mtfc } from "../../constants";
+import { ac_KickWithCode, ac_FloodDetect } from "../trigger";
 
 PlayerEvent.onEnterExitModShop(({ player, enterExit, interior, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;

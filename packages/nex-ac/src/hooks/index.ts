@@ -58,8 +58,8 @@ import {
   ac_IsVehicleSeatOccupied,
   ac_IsWeaponSlotWithAmmo,
 } from "../functions/is";
-import { ac_KickTimer } from "../functions/kick";
 import { ac_ACAllow, ac_NOPAllow, ac_wModel, ac_wSlot } from "../constants";
+import { ac_KickTimer } from "../callbacks/trigger";
 
 export function ac_AddStaticVehicle(
   vehicleId: number,
@@ -1093,134 +1093,6 @@ export function ac_EnableAntiNOPForPlayer(
   return true;
 }
 
-export function ac_IsAntiCheatEnabled(code: number) {
-  if (!(code >= 0 && code < ac_ACAllow.length)) return false;
-  return ac_ACAllow[code];
-}
-
-export function ac_IsAntiNOPEnabled(nopCode: number) {
-  if (!(nopCode >= 0 && nopCode < ac_NOPAllow.length)) return false;
-  return ac_NOPAllow[nopCode];
-}
-
-export function ac_IsAntiCheatEnabledForPlayer(player: Player, code: number) {
-  if (!(code >= 0 && code < ac_ACAllow.length)) return false;
-  return ACInfo.get(player.id).acACAllow[code];
-}
-
-export function ac_IsAntiNOPEnabledForPlayer(player: Player, nopCode: number) {
-  if (!(nopCode >= 0 && nopCode < ac_NOPAllow.length)) return false;
-  return ACInfo.get(player.id).acNOPAllow[nopCode];
-}
-
-export function ac_AntiCheatGetSpeed(player: Player) {
-  return ACInfo.get(player.id).acSpeed;
-}
-
-export function ac_AntiCheatGetAnimationIndex(player: Player) {
-  return ACInfo.get(player.id).acAnim;
-}
-
-export function ac_AntiCheatGetDialog(player: Player) {
-  return ACInfo.get(player.id).acDialog;
-}
-
-export function ac_AntiCheatGetInterior(player: Player) {
-  return ACInfo.get(player.id).acInt;
-}
-
-export function ac_AntiCheatGetEnterVehicle(player: Player) {
-  return ACInfo.get(player.id).acEnterVeh;
-}
-
-export function ac_AntiCheatGetEnterVehicleSeat(player: Player) {
-  return ACInfo.get(player.id).acEnterSeat;
-}
-
-export function ac_AntiCheatGetVehicleID(player: Player) {
-  return ACInfo.get(player.id).acVeh;
-}
-
-export function ac_AntiCheatGetVehicleSeat(player: Player) {
-  return ACInfo.get(player.id).acSeat;
-}
-
-export function ac_AntiCheatGetWeapon(player: Player) {
-  return ACInfo.get(player.id).acHoldWeapon;
-}
-
-export function ac_AntiCheatGetWeaponInSlot(player: Player, slot: number) {
-  return ACInfo.get(player.id).acWeapon[slot];
-}
-
-export function ac_AntiCheatGetAmmoInSlot(player: Player, slot: number) {
-  return ACInfo.get(player.id).acAmmo[slot];
-}
-
-export function ac_AntiCheatGetSpecAction(player: Player) {
-  return ACInfo.get(player.id).acSpecAct;
-}
-
-export function ac_AntiCheatGetLastSpecAction(player: Player) {
-  return ACInfo.get(player.id).acLastSpecAct;
-}
-
-export function ac_AntiCheatGetLastShotWeapon(player: Player) {
-  return ACInfo.get(player.id).acShotWeapon;
-}
-
-export function ac_AntiCheatGetLastPickup(player: Player) {
-  return ACInfo.get(player.id).acLastPickup;
-}
-
-export function ac_AntiCheatGetLastUpdateTime(player: Player) {
-  return ACInfo.get(player.id).acUpdateTick;
-}
-
-export function ac_AntiCheatGetLastReloadTime(player: Player) {
-  return ACInfo.get(player.id).acReloadTick;
-}
-
-export function ac_AntiCheatGetLastEnterVehTime(player: Player) {
-  return ACInfo.get(player.id).acEnterVehTick;
-}
-
-export function ac_AntiCheatGetLastShotTime(player: Player) {
-  return ACInfo.get(player.id).acShotTick;
-}
-
-export function ac_AntiCheatGetLastSpawnTime(player: Player) {
-  return ACInfo.get(player.id).acSpawnTick;
-}
-
-export function ac_AntiCheatIntEntExitIsEnabled(player: Player) {
-  return ACInfo.get(player.id).acIntEnterExits;
-}
-
-export function ac_AntiCheatStuntBonusIsEnabled(player: Player) {
-  return ACInfo.get(player.id).acStuntBonus;
-}
-
-export function ac_AntiCheatIsInModShop(player: Player) {
-  return ACInfo.get(player.id).acModShop;
-}
-
-export function ac_AntiCheatIsInSpectate(player: Player) {
-  return ACInfo.get(player.id).acSpec;
-}
-
-export function ac_AntiCheatIsFrozen(player: Player) {
-  return !ACInfo.get(player.id).acUnFrozen;
-}
-
-export function ac_AntiCheatIsDead(player: Player) {
-  return ACInfo.get(player.id).acDead;
-}
-
-export function ac_AntiCheatIsConnected(player: Player) {
-  return ACInfo.get(player.id).acOnline;
-}
-
 export function ac_AntiCheatKickWithDesync(player: Player, code: number) {
   if (ACInfo.get(player.id).acKicked > 0) return -1;
   const ac_gpp = player.getPing() + 150;
@@ -1235,34 +1107,6 @@ export function ac_AntiCheatKickWithDesync(player: Player, code: number) {
     ACInfo.get(player.id).acKicked = 2;
   } else ACInfo.get(player.id).acKicked = 1;
   return true;
-}
-
-export function ac_AntiCheatIsKickedWithDesync(player: Player) {
-  return ACInfo.get(player.id).acKicked;
-}
-
-export function ac_AntiCheatGetVehicleDriver(vehicleId: number) {
-  return ACVehInfo.get(vehicleId).acDriver;
-}
-
-export function ac_AntiCheatGetVehicleInterior(vehicleId: number) {
-  return ACVehInfo.get(vehicleId).acInt;
-}
-
-export function ac_AntiCheatGetVehiclePaintjob(vehicleId: number) {
-  return ACVehInfo.get(vehicleId).acPaintJob;
-}
-
-export function ac_AntiCheatGetVehicleSpeed(vehicleId: number) {
-  return ACVehInfo.get(vehicleId).acSpeed;
-}
-
-export function ac_AntiCheatIsVehicleSpawned(vehicleId: number) {
-  return ACVehInfo.get(vehicleId).acSpawned;
-}
-
-export function ac_AntiCheatGetNextDialog(player: Player) {
-  return ACInfo.get(player.id).acNextDialog;
 }
 
 export function acc_AddStaticVehicle(

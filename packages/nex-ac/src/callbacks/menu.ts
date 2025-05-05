@@ -1,7 +1,7 @@
 import { LimitsEnum, MenuEvent } from "@infernus/core";
 import { ACInfo } from "../struct";
-import { ac_FloodDetect } from "../functions";
 import { ac_Mtfc } from "../constants";
+import { ac_FloodDetect } from "./trigger";
 
 MenuEvent.onPlayerSelectedRow(({ player, next }) => {
   if (

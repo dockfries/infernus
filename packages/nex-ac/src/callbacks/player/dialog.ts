@@ -1,8 +1,8 @@
 import { PlayerEvent } from "@infernus/core";
 import { ACInfo } from "../../struct";
-import { ac_FloodDetect, ac_KickWithCode } from "../../functions";
 import { innerACConfig } from "../../config";
 import { ac_Mtfc } from "../../constants";
+import { ac_FloodDetect, ac_KickWithCode } from "../trigger";
 
 PlayerEvent.onDialogResponse(
   ({ player, dialogId, listItem, inputText, next }) => {

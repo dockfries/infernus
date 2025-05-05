@@ -8,7 +8,6 @@ import {
 } from "@infernus/core";
 import { ACInfo, ACVehInfo } from "../struct";
 import {
-  ac_FloodDetect,
   ac_GetSpeed,
   ac_GetVectorDist,
   ac_IsABoatEx,
@@ -19,12 +18,15 @@ import {
   ac_IsCompatible,
   ac_IsUpsideDown,
   ac_IsValidVehicleModel,
-  ac_KickWithCode,
   setVehicleFakePosForPlayer,
   setVehicleFakeZAngleForPlayer,
 } from "../functions";
 import { innerACConfig } from "../config";
-import { triggerCheatWarning } from "./trigger";
+import {
+  ac_FloodDetect,
+  ac_KickWithCode,
+  triggerCheatWarning,
+} from "./trigger";
 import { ac_cPrice, ac_Mtfc } from "../constants";
 
 VehicleEvent.onPlayerEnter(({ player, vehicle, isPassenger, next }) => {

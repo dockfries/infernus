@@ -1,7 +1,8 @@
 import { DynamicActorEvent } from "@infernus/core";
 import { ACInfo } from "../struct";
-import { ac_IsValidDamageReason, ac_KickWithCode } from "../functions";
+import { ac_IsValidDamageReason } from "../functions";
 import { innerACConfig } from "../config";
+import { ac_KickWithCode } from "./trigger";
 
 DynamicActorEvent.onPlayerGiveDamage(
   ({ player, actor, bodyPart, amount, weapon, next }) => {

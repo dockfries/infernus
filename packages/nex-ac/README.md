@@ -18,8 +18,10 @@ pnpm add @infernus/core @infernus/raknet @infernus/nex-ac
 ## Example
 
 ```ts
-import { defineNexACConfig, onCheatDetected, antiCheatKickWithDesync, $t } from "@infernus/nex-ac";
-import { GameMode } from "@infernus/core";
+import { GameMode } from '@infernus/core'
+import { $t, antiCheatKickWithDesync, defineNexACConfig, onCheatDetected } from '@infernus/nex-ac'
+
+// other imports and code
 
 defineNexACConfig(() => {
   return {
@@ -30,8 +32,8 @@ defineNexACConfig(() => {
 
 onCheatDetected(({ player, ipAddress, type, code, next }) => {
   if (type) {
-    GameMode.blockIpAddress(ipAddress, 0);
-    return next();
+    GameMode.blockIpAddress(ipAddress, 0)
+    return next()
   }
 
   switch (code) {
@@ -41,22 +43,22 @@ onCheatDetected(({ player, ipAddress, type, code, next }) => {
     case 14:
     case 22:
     case 32: {
-      return next();
+      return next()
     }
     case 40: {
-      player.sendClientMessage(-1, $t("MAX_CONNECTS_MSG", null, player.locale));
-      break;
+      player.sendClientMessage(-1, $t('MAX_CONNECTS_MSG', null, player.locale))
+      break
     }
     case 41: {
-      player.sendClientMessage(-1, $t("UNKNOWN_CLIENT_MSG", null, player.locale));
-      break;
+      player.sendClientMessage(-1, $t('UNKNOWN_CLIENT_MSG', null, player.locale))
+      break
     }
     default: {
-      player.sendClientMessage(-1, $t("KICK_MSG", [code], player.locale));
-      break;
+      player.sendClientMessage(-1, $t('KICK_MSG', [code], player.locale))
+      break
     }
   }
-  antiCheatKickWithDesync(player, code);
-  return next();
-});
+  antiCheatKickWithDesync(player, code)
+  return next()
+})
 ```

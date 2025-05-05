@@ -11,18 +11,17 @@ import {
 } from "@infernus/core";
 import { ACInfo, ACVehInfo } from "../../struct";
 import {
-  ac_FloodDetect,
-  ac_IpToInt,
   ac_IsAnAircraft,
   ac_IsAnAircraftRC,
   ac_IsValidVehicleModel,
   ac_IsValidWeapon,
-  ac_KickWithCode,
 } from "../../functions";
 import { innerGameModeConfig, innerACConfig } from "../../config";
 import { ac_ACAllow, ac_Mtfc, ac_NOPAllow, ac_wSlot } from "../../constants";
 import { ac_Timer } from "../../functions/timer";
 import { $t } from "../../lang";
+import { ac_IpToInt } from "../../utils/covert";
+import { ac_KickWithCode, ac_FloodDetect } from "../trigger";
 
 PlayerEvent.onConnect(({ player, next }) => {
   ACInfo.get(player.id).acVeh =

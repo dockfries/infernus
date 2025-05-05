@@ -5,6 +5,12 @@ import {
   PacketRpcReliability,
   PacketRpcValueType,
 } from "@infernus/raknet";
+import {
+  ac_EnableAntiCheat,
+  ac_EnableAntiNOP,
+  ac_EnableAntiCheatForPlayer,
+  ac_EnableAntiNOPForPlayer,
+} from "../hooks";
 
 const AC_RPC_SetVehiclePos = 159;
 const AC_RPC_SetVehicleZAngle = 160;
@@ -55,4 +61,30 @@ export function setVehicleFakeZAngleForPlayer(
   );
   bs.delete();
   return 1;
+}
+
+export function enableAntiCheat(code: number, enable: boolean) {
+  return ac_EnableAntiCheat(code, enable);
+}
+
+export function enableAntiNOP(nopCode: number, enable: boolean) {
+  return ac_EnableAntiNOP(nopCode, enable);
+}
+
+export function enableAntiCheatForPlayer(
+  player: Player,
+  code: number,
+  enable: boolean,
+) {
+  if (!player.isConnected()) return 0;
+  return ac_EnableAntiCheatForPlayer(player, code, enable);
+}
+
+export function enableAntiNOPForPlayer(
+  player: Player,
+  nopCode: number,
+  enable: boolean,
+) {
+  if (!player.isConnected()) return 0;
+  return ac_EnableAntiNOPForPlayer(player, nopCode, enable);
 }

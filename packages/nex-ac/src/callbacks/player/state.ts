@@ -7,7 +7,6 @@ import {
 } from "@infernus/core";
 import { ACInfo, ACVehInfo } from "../../struct";
 import {
-  ac_FloodDetect,
   ac_GetMaxPassengers,
   ac_GetVectorDist,
   ac_IsABikeEx,
@@ -16,10 +15,10 @@ import {
   ac_IsAnAircraftEx,
   ac_IsARemoteControlEx,
   ac_IsATrainPartEx,
-  ac_KickWithCode,
 } from "../../functions";
 import { innerACConfig } from "../../config";
 import { ac_Mtfc } from "../../constants";
+import { ac_FloodDetect, ac_KickWithCode } from "../trigger";
 
 PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;

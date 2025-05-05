@@ -28,11 +28,14 @@ import {
   ac_IsValidFloat,
   ac_IsValidSkin,
   ac_IsValidVehicleModel,
-  ac_KickWithCode,
   ac_NearVendingMachine,
 } from "../../functions";
 import { innerGameModeConfig, innerACConfig } from "../../config";
-import { triggerCheatWarning, triggerNOPWarning } from "../trigger";
+import {
+  ac_KickWithCode,
+  triggerCheatWarning,
+  triggerNOPWarning,
+} from "../trigger";
 import { ac_AmmuNationInfo, ac_pAmmo, ac_wSlot } from "../../constants";
 import { orig_playerMethods } from "../../hooks/origin";
 import { $t } from "../../lang";

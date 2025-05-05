@@ -27,11 +27,11 @@ import {
   ac_GetSpeed,
   ac_GetVectorDist,
   ac_IsValidFloat,
-  ac_KickWithCode,
   setVehicleFakePosForPlayer,
   setVehicleFakeZAngleForPlayer,
 } from "../functions";
 import { innerACConfig } from "../config";
+import { ac_KickWithCode } from "./trigger";
 
 onIncomingPacket(({ playerId, next }) => {
   if (ACInfo.get(playerId).acKicked > 0 && ACInfo.get(playerId).acOnline)

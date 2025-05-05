@@ -5,13 +5,10 @@ import {
   WeaponEnum,
 } from "@infernus/core";
 import { ACInfo } from "../../struct";
-import {
-  ac_IsValidDamageReason,
-  ac_IsValidWeapon,
-  ac_KickWithCode,
-} from "../../functions";
+import { ac_IsValidDamageReason, ac_IsValidWeapon } from "../../functions";
 import { innerACConfig } from "../../config";
 import { ac_wSlot } from "../../constants";
+import { ac_KickWithCode } from "../trigger";
 
 PlayerEvent.onTakeDamage(
   ({ player, bodyPart, amount, damage, weapon, next }) => {

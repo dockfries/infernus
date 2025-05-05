@@ -7,16 +7,16 @@ import {
   ACInfo,
   ACVehInfo,
 } from "../struct";
-import { ac_IpToInt, ac_KickWithCode } from "../functions/misc";
 import {
   innerGameModeConfig,
   innerACConfig,
   ac_LoadCfg,
   ac_LoadNOPCfg,
 } from "../config";
-import { triggerCheatWarning } from "./trigger";
+import { ac_KickWithCode, triggerCheatWarning } from "./trigger";
 import { ac_ACAllow, ac_sInfo, NEX_AC_VERSION } from "../constants";
 import { $t } from "../lang";
+import { ac_IpToInt } from "../utils/covert";
 
 GameMode.onInit(({ next }) => {
   ACInfo.clear();

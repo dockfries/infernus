@@ -18,10 +18,9 @@ import {
   ac_InCasino,
   ac_InRestaurant,
   ac_IsBulletWeapon,
-  ac_KickWithCode,
 } from "../../functions";
 import { innerGameModeConfig, innerACConfig } from "../../config";
-import { triggerCheatWarning } from "../trigger";
+import { ac_KickWithCode, triggerCheatWarning } from "../trigger";
 import { ac_wMinRange, ac_wSlot } from "../../constants";
 
 PlayerEvent.onWeaponShot(

@@ -1,7 +1,7 @@
 import { PlayerEvent } from "@infernus/core";
 import { ACInfo } from "../../struct";
-import { ac_FloodDetect } from "../../functions";
 import { ac_Mtfc } from "../../constants";
+import { ac_FloodDetect } from "../trigger";
 
 PlayerEvent.onClickMap(({ player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return true;

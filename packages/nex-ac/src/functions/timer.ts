@@ -11,8 +11,11 @@ import {
 } from "@infernus/core";
 import { ACInfo, ACVehInfo } from "../struct";
 import { innerACConfig, innerGameModeConfig } from "../config";
-import { ac_KickWithCode } from "./misc";
-import { triggerCheatWarning, triggerNOPWarning } from "../callbacks/trigger";
+import {
+  ac_KickWithCode,
+  triggerCheatWarning,
+  triggerNOPWarning,
+} from "../callbacks/trigger";
 import { ac_AmmuNationInfo, ac_pAmmo, ac_wSlot } from "../constants";
 import {
   ac_InAmmuNation,

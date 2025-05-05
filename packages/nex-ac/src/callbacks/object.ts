@@ -5,13 +5,10 @@ import {
   StreamerItemTypes,
 } from "@infernus/core";
 import { ACInfo } from "../struct";
-import {
-  ac_FloodDetect,
-  ac_IsBrokenObjectModel,
-  ac_KickWithCode,
-} from "../functions";
+import { ac_IsBrokenObjectModel } from "../functions";
 import { innerACConfig } from "../config";
 import { ac_Mtfc } from "../constants";
+import { ac_FloodDetect, ac_KickWithCode } from "./trigger";
 
 DynamicObjectEvent.onPlayerSelect(({ player, object, modelId, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
