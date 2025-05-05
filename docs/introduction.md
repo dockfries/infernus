@@ -7,7 +7,7 @@ The name `Infernus` comes from the vehicle with the ID `411` in the game (specif
 ## 🚧 Work in Progress
 
 - [omp-node](https://github.com/omp-node) is currently in active development, it will replace `Infernus` in the future.
-- If you want to try out `omp-node` or prefer the native syntax without too much wrapping, check out [@open.mp/node](https://github.com/omp-node/node).
+- If you want to try out `omp-node` or prefer the native syntax without too much wrapping, check out [@open.mp/node](https://github.com/omp-node/core).
 
 ## Limitations
 

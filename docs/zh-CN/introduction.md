@@ -7,7 +7,7 @@
 ## 🚧 施工中
 
 - [omp-node](https://github.com/omp-node) 目前正在积极开发中，未来它会取代`Infernus`。
-- 如果您想尝鲜`omp-node`，或更喜欢原生语法而没有过多封装，请关注 [@open.mp/node](https://github.com/omp-node/node)。
+- 如果您想尝鲜`omp-node`，或更喜欢原生语法而没有过多封装，请关注 [@open.mp/node](https://github.com/omp-node/core)。
 
 ## 缺陷
 
