@@ -257,13 +257,13 @@ export class Player {
   setPos(x: number, y: number, z: number) {
     return w.SetPlayerPos(this.id, x, y, z);
   }
-  getPos(): TPos | undefined {
-    if (
-      this.isSpectating() ||
-      this.isWasted() ||
-      this.getState() === PlayerStateEnum.NONE
-    )
-      return;
+  getPos(): TPos {
+    // if (
+    //   this.isSpectating() ||
+    //   this.isWasted() ||
+    //   this.getState() === PlayerStateEnum.NONE
+    // )
+    //   return ;
     const [x, y, z] = w.GetPlayerPos(this.id);
     return { x, y, z };
   }
@@ -557,7 +557,9 @@ export class Player {
     forceSync: boolean | ForceSyncEnum = false,
   ) {
     if (!isValidAnimateName(animLib, animName)) {
-      throw new Error("[Player]: Invalid anim library or name");
+      throw new Error(
+        `[Player]: Invalid anim library or name ${animLib} ${animName}`,
+      );
     }
     return w.ApplyAnimation(
       this.id,
