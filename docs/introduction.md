@@ -4,10 +4,25 @@ The name `Infernus` comes from the vehicle with the ID `411` in the game (specif
 
 `Infernus` is a library built on top of `samp-node`, which allows calling the game's `SDK` from the `JavaScript` layer.
 
+> [!WARNING]
+> Infernus project has entered maintenance mode and will be gradually archived. Future ecosystem development will be led by the omp-node community, and we warmly welcome interested developers to join and contribute.
+
 ## 🚧 Work in Progress
 
 - [omp-node](https://github.com/omp-node) is currently in active development, it will replace `Infernus` in the future.
 - If you want to try out `omp-node` or prefer the native syntax without too much wrapping, check out [@open.mp/node](https://github.com/omp-node/core).
+
+### Comparison
+
+| /              | Infernus + samp-node                                                               | omp-node                     |
+| -------------- | ---------------------------------------------------------------------------------- | ---------------------------- |
+| Runtime        | Windows: Node.js 16/20<br/>Linux: Node.js 16                                       | Windows/Linux: Node.js 18+   |
+| Module System  | CommonJS                                                                           | ESModule                     |
+| Architecture   | x86                                                                                | x86/x64                      |
+| Implementation | Via sampgdk→fakeamx→native calls                                                   | Direct omp-gdk/omp-sdk calls |
+| Performance    | Relatively slower                                                                  | More optimized               |
+| Compatibility  | Third-party plugins via polyfill layer                                             | Requires SDK adaptation      |
+| Philosophy     | 1. Full Infernus rewrite recommended (avoid Pawn)<br>2. Mandatory Steamer adoption | See official documentation   |
 
 ## Limitations
 

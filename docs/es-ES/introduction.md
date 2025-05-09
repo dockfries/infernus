@@ -4,10 +4,25 @@ El nombre `Infernus` proviene del vehículo con el ID `411` en el juego (concret
 
 `Infernus` es una biblioteca construida sobre `samp-node`, que permite llamar al `SDK` del juego desde la capa de `JavaScript`.
 
+> [!WARNING]
+> El proyecto Infernus ha entrado en modo de mantenimiento y será archivado gradualmente. El desarrollo futuro del ecosistema estará liderado por la comunidad omp-node, y damos una cálida bienvenida a los desarrolladores interesados a unirse y contribuir.
+
 ## 🚧 Trabajo en Curso
 
 - [omp-node](https://github.com/omp-node) está actualmente en desarrollo activo, reemplazará a `Infernus` en el futuro.
 - si quiere probar `omp-node` o prefiere la sintaxis nativa sin demasiado envoltorio, revise [@open.mp/node](https://github.com/omp-node/core).
+
+### Comparación
+
+| /              | Infernus + samp-node                                                                         | omp-node                     |
+| -------------- | -------------------------------------------------------------------------------------------- | ---------------------------- |
+| Runtime        | Windows: Node.js 16/20<br/>Linux: Node.js 16                                                 | Windows/Linux: Node.js 18+   |
+| Module System  | CommonJS                                                                                     | ESModule                     |
+| Architecture   | x86                                                                                          | x86/x64                      |
+| Implementation | Via sampgdk→fakeamx→native calls                                                             | Direct omp-gdk/omp-sdk calls |
+| Performance    | Relativamente más lento                                                                      | Más optimizado               |
+| Compatibility  | Plugins de terceros vía capa polyfill                                                        | Requiere adaptación del SDK  |
+| Philosophy     | 1. Reescribir completamente con Infernus (evitar Pawn)<br>2. Adopción obligatoria de Steamer | Ver documentación oficial    |
 
 ## Limitaciones
 

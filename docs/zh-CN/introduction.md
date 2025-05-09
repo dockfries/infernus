@@ -4,10 +4,25 @@
 
 `Infernus` 是一个基于 `samp-node` 打造的库，用于在 `JavaScript` 层调用游戏的 `sdk`。
 
+> [!WARNING]
+> Infernus项目已进入维护阶段并将逐步归档，后续生态建设将由omp-node社区主导推进，诚邀感兴趣的开发者共同参与。
+
 ## 🚧 施工中
 
-- [omp-node](https://github.com/omp-node) 目前正在积极开发中，未来它会取代`Infernus`。
+- [omp-node](https://github.com/omp-node) 目前正在积极开发中，**未来它会取代`Infernus`。**
 - 如果您想尝鲜`omp-node`，或更喜欢原生语法而没有过多封装，请关注 [@open.mp/node](https://github.com/omp-node/core)。
+
+### 差异
+
+| /          | Infernus + samp-node                                                            | omp-node                    |
+| ---------- | ------------------------------------------------------------------------------- | --------------------------- |
+| 运行环境   | Windows平台：Node.js 16/20<br/>Linux平台：Node.js 16                            | Windows,Linux: Node.js 18+  |
+| 模块规范   | CommonJS                                                                        | ESModule                    |
+| 架构支持   | x86                                                                             | x86/x64                     |
+| 底层实现   | 通过sampgdk→fakeamx→原生调用                                                    | 直接调用omp-gdk/omp-sdk     |
+| 执行效率   | 相对较低                                                                        | 性能更优                    |
+| 兼容性策略 | 通过兼容层polyfill支持三方插件                                                  | 插件需适配sdk并使用特定版本 |
+| 设计理念   | 1. 提倡完全使用Infernus重构，避免Pawn代码开发<br>2. 强制采用Steamer替代原生接口 | 详见官方技术                |
 
 ## 缺陷
 
