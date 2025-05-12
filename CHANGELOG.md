@@ -1,3 +1,20 @@
+## <small>0.11.11 (2025-05-12)</small>
+
+* chore(nex-ac): adjust file path ([36c0625](https://github.com/dockfries/infernus/commit/36c0625))
+* chore(release): streamer v0.11.3 ([820b72f](https://github.com/dockfries/infernus/commit/820b72f))
+* chore(root): update deps ([9523dc0](https://github.com/dockfries/infernus/commit/9523dc0))
+* chore(weapon-config): remove some comments ([4c0176c](https://github.com/dockfries/infernus/commit/4c0176c))
+* feat(core): onCommandError getSuggestion ([f155e95](https://github.com/dockfries/infernus/commit/f155e95))
+* feat(nex-ac): try port, but there must be bugs ([3ecdb72](https://github.com/dockfries/infernus/commit/3ecdb72))
+* feat(weapon-config): try port, but there are bugs ([c0fcf77](https://github.com/dockfries/infernus/commit/c0fcf77))
+* docs(intro): update omp-node link ([9940b28](https://github.com/dockfries/infernus/commit/9940b28))
+* docs(introduction): slow update status ([4e63c0f](https://github.com/dockfries/infernus/commit/4e63c0f))
+* fix(core): getSurfing should no need params ([25b55eb](https://github.com/dockfries/infernus/commit/25b55eb))
+* fix(nex-ac): maybe else ([5ff8a91](https://github.com/dockfries/infernus/commit/5ff8a91))
+* fix(nex-ac): maybe if ([d2bd7e8](https://github.com/dockfries/infernus/commit/d2bd7e8))
+
+
+
 ## <small>0.11.10 (2025-04-21)</small>
 
 * chore(release): e-selection v0.0.1 ([7730b97](https://github.com/dockfries/infernus/commit/7730b97))
