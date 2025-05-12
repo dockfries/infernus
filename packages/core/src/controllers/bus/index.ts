@@ -18,6 +18,8 @@ export const eventBus = new Map<
   ((...args: any) => PromisifyCallbackRet)[]
 >();
 
+const triggerBus = new Map<string, (...args: any[]) => number>();
+
 function transformReturnValue(
   value: PromisifyCallbackRet,
   defaultValue: boolean,
@@ -147,5 +149,11 @@ export function defineEvent<T extends object>(options: Options<T>) {
     samp.on(name, trigger);
   }
 
+  triggerBus.set(name, trigger);
+
   return h;
+}
+
+export function useTrigger(eventName: string) {
+  return triggerBus.get(eventName);
 }

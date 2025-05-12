@@ -28,8 +28,8 @@ export function rayCastExplode(
   let LAT: number, LON: number, x: number, y: number, z: number;
   for (let lat = -180.0, lon = -90.0; lat < 180.0; lat += intensity * 0.75) {
     for (lon = -90.0; lon < 90.0; lon += intensity) {
-      LAT = (lat * 3.141593) / 180.0;
-      LON = (lon * 3.141593) / 180.0;
+      LAT = (lat * Math.PI) / 180.0;
+      LON = (lon * Math.PI) / 180.0;
       x = -radius * Math.cos(LAT) * Math.cos(LON);
       y = radius * Math.cos(LAT) * Math.sin(LON);
       z = radius * Math.sin(LAT);

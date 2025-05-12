@@ -254,6 +254,15 @@ importers:
 
   packages/types: {}
 
+  packages/weapon-config:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+      '@infernus/raknet':
+        specifier: workspace:^
+        version: link:../raknet
+
 packages:
 
   '@aashutoshrathi/word-wrap@1.2.6':

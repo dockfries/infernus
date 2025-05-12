@@ -3,7 +3,7 @@ import type { IAnimateInfo } from "core/interfaces";
 export const animateLib = new Map<string, Array<IAnimateInfo>>([
   ["AIRPORT", [{ n: "thrw_barl_thrw", d: 2.0 }]],
   [
-    "Attractors",
+    "ATTRACTORS",
     [
       { n: "Stepsit_in", d: 1.67 },
       { n: "Stepsit_loop", d: 3.33 },
@@ -1452,7 +1452,7 @@ export const animateLib = new Map<string, Array<IAnimateInfo>>([
     ],
   ],
   [
-    "ped",
+    "PED",
     [
       { n: "abseil", d: 0.03 },
       { n: "ARRESTgun", d: 0.67 },
@@ -2488,7 +2488,7 @@ export const animateLib = new Map<string, Array<IAnimateInfo>>([
 export const isValidAnimateLib = (lib: string) => {
   // return Boolean(samp.callNative('IsValidAnimationLibrary', 's', lib))
 
-  const animLib = animateLib.get(lib);
+  const animLib = animateLib.get(lib.toUpperCase());
   if (animLib === undefined) return false;
   return animLib;
 };

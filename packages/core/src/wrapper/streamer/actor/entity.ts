@@ -136,7 +136,9 @@ export class DynamicActor {
         "[StreamerActor]: Unable to apply animation before create",
       );
     if (!isValidAnimateName(animLib, animName)) {
-      throw new Error("[StreamerActor]: Invalid anim library or name");
+      throw new Error(
+        `[StreamerActor]: Invalid anim library or name ${animLib} ${animName}`,
+      );
     }
     return s.ApplyDynamicActorAnimation(
       this.id,

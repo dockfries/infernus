@@ -30,14 +30,19 @@ export class TextDraw {
         throw new Error(
           "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
         );
-      this._id = w.TextDrawCreate(x, y, _text);
+      this._id = TextDraw.__inject__TextDrawCreate(x, y, _text);
       TextDraw.globalTextDraws.set(this.id, this);
     } else {
       if (TextDraw.getInstances(false).length === LimitsEnum.MAX_TEXT_DRAWS)
         throw new Error(
           "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
         );
-      this._id = w.CreatePlayerTextDraw(player.id, x, y, _text);
+      this._id = TextDraw.__inject__CreatePlayerTextDraw(
+        player.id,
+        x,
+        y,
+        _text,
+      );
       // Player-textdraws are automatically destroyed when a player disconnects.
       const off = PlayerEvent.onDisconnect(({ player: p, next }) => {
         const ret = next();
@@ -58,10 +63,10 @@ export class TextDraw {
     if (this.id === -1) TextDraw.beforeCreateWarn("destroy the textdraw");
     const { player } = this.sourceInfo;
     if (!player) {
-      w.TextDrawDestroy(this.id);
+      TextDraw.__inject__TextDrawDestroy(this.id);
       TextDraw.globalTextDraws.delete(this.id);
     } else {
-      w.PlayerTextDrawDestroy(player.id, this.id);
+      TextDraw.__inject__PlayerTextDrawDestroy(player.id, this.id);
       TextDraw.playerTextDraws.delete(this.id);
     }
     this._id = -1;
@@ -73,8 +78,9 @@ export class TextDraw {
       return this;
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawFont(player.id, this.id, style);
-    else w.TextDrawFont(this.id, style);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawFont(player.id, this.id, style);
+    else TextDraw.__inject__TextDrawFont(this.id, style);
     return this;
   }
   setColor(color: string | number) {
@@ -83,8 +89,9 @@ export class TextDraw {
       return this;
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawColor(player.id, this.id, color);
-    else w.TextDrawColor(this.id, color);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawColor(player.id, this.id, color);
+    else TextDraw.__inject__TextDrawColor(this.id, color);
     return this;
   }
   setBoxColors(color: string | number) {
@@ -93,8 +100,9 @@ export class TextDraw {
       return this;
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawBoxColor(player.id, this.id, color);
-    else w.TextDrawBoxColor(this.id, color);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawBoxColor(player.id, this.id, color);
+    else TextDraw.__inject__TextDrawBoxColor(this.id, color);
     return this;
   }
   setBackgroundColors(color: string | number) {
@@ -103,8 +111,13 @@ export class TextDraw {
       return this;
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawBackgroundColor(player.id, this.id, color);
-    else w.TextDrawBackgroundColor(this.id, color);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawBackgroundColor(
+        player.id,
+        this.id,
+        color,
+      );
+    else TextDraw.__inject__TextDrawBackgroundColor(this.id, color);
     return this;
   }
   setAlignment(alignment: TextDrawAlignEnum) {
@@ -113,8 +126,9 @@ export class TextDraw {
       return this;
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawAlignment(player.id, this.id, alignment);
-    else w.TextDrawAlignment(this.id, alignment);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawAlignment(player.id, this.id, alignment);
+    else TextDraw.__inject__TextDrawAlignment(this.id, alignment);
     return this;
   }
   setLetterSize(x: number, y: number) {
@@ -123,8 +137,9 @@ export class TextDraw {
       return this;
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawLetterSize(player.id, this.id, x, y);
-    else w.TextDrawLetterSize(this.id, x, y);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawLetterSize(player.id, this.id, x, y);
+    else TextDraw.__inject__TextDrawLetterSize(this.id, x, y);
     return this;
   }
   setOutline(size: number) {
@@ -136,8 +151,9 @@ export class TextDraw {
       throw new Error("[TextDraw]: Invalid outline value");
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawSetOutline(player.id, this.id, size);
-    else w.TextDrawSetOutline(this.id, size);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawSetOutline(player.id, this.id, size);
+    else TextDraw.__inject__TextDrawSetOutline(this.id, size);
     return this;
   }
   setPreviewModel(modelIndex: number) {
@@ -147,8 +163,13 @@ export class TextDraw {
     }
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawSetPreviewModel(player.id, this.id, modelIndex);
-    else w.TextDrawSetPreviewModel(this.id, modelIndex);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawSetPreviewModel(
+        player.id,
+        this.id,
+        modelIndex,
+      );
+    else TextDraw.__inject__TextDrawSetPreviewModel(this.id, modelIndex);
     return this;
   }
   setPreviewRot(fRotX: number, fRotY: number, fRotZ: number, fZoom = 1) {
@@ -159,7 +180,7 @@ export class TextDraw {
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
     if (player)
-      w.PlayerTextDrawSetPreviewRot(
+      TextDraw.__inject__PlayerTextDrawSetPreviewRot(
         player.id,
         this.id,
         fRotX,
@@ -167,7 +188,14 @@ export class TextDraw {
         fRotZ,
         fZoom,
       );
-    else w.TextDrawSetPreviewRot(this.id, fRotX, fRotY, fRotZ, fZoom);
+    else
+      TextDraw.__inject__TextDrawSetPreviewRot(
+        this.id,
+        fRotX,
+        fRotY,
+        fRotZ,
+        fZoom,
+      );
     return this;
   }
   setPreviewVehColors(color1: string | number, color2: string | number) {
@@ -178,13 +206,18 @@ export class TextDraw {
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const { player } = this.sourceInfo;
     if (player)
-      w.PlayerTextDrawSetPreviewVehicleColors(
+      TextDraw.__inject__PlayerTextDrawSetPreviewVehicleColors(
         player.id,
         this.id,
         color1,
         color2,
       );
-    else w.TextDrawSetPreviewVehicleColors(this.id, color1, color2);
+    else
+      TextDraw.__inject__TextDrawSetPreviewVehicleColors(
+        this.id,
+        color1,
+        color2,
+      );
     return this;
   }
   setProportional(set = true) {
@@ -193,8 +226,9 @@ export class TextDraw {
       return this;
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawSetProportional(player.id, this.id, set);
-    else w.TextDrawSetProportional(this.id, set);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawSetProportional(player.id, this.id, set);
+    else TextDraw.__inject__TextDrawSetProportional(this.id, set);
     return this;
   }
   setSelectable(set: boolean) {
@@ -203,8 +237,9 @@ export class TextDraw {
       return this;
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawSetSelectable(player.id, this.id, set);
-    else w.TextDrawSetSelectable(this.id, set);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawSetSelectable(player.id, this.id, set);
+    else TextDraw.__inject__TextDrawSetSelectable(this.id, set);
     return this;
   }
   setShadow(size: number) {
@@ -216,8 +251,9 @@ export class TextDraw {
       throw new Error("[TextDraw]: Invalid shadow value");
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawSetShadow(player.id, this.id, size);
-    else w.TextDrawSetShadow(this.id, size);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawSetShadow(player.id, this.id, size);
+    else TextDraw.__inject__TextDrawSetShadow(this.id, size);
     return this;
   }
   setString(text: string, player?: Player) {
@@ -233,13 +269,13 @@ export class TextDraw {
 
     // not-global
     if (_player) {
-      w.PlayerTextDrawSetString(_player.id, this.id, _text);
+      TextDraw.__inject__PlayerTextDrawSetString(_player.id, this.id, _text);
       // global with player
     } else if (player) {
-      w.TextDrawSetStringForPlayer(this.id, player.id, _text);
+      TextDraw.__inject__TextDrawSetStringForPlayer(this.id, player.id, _text);
       // global
     } else {
-      w.TextDrawSetString(this.id, _text);
+      TextDraw.__inject__TextDrawSetString(this.id, _text);
     }
     return this;
   }
@@ -249,8 +285,9 @@ export class TextDraw {
       return this;
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawTextSize(player.id, this.id, x, y);
-    else w.TextDrawTextSize(this.id, x, y);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawTextSize(player.id, this.id, x, y);
+    else TextDraw.__inject__TextDrawTextSize(this.id, x, y);
     return this;
   }
   useBox(use: boolean) {
@@ -259,8 +296,9 @@ export class TextDraw {
       return this;
     }
     const { player } = this.sourceInfo;
-    if (player) w.PlayerTextDrawUseBox(player.id, this.id, use);
-    else w.TextDrawUseBox(this.id, use);
+    if (player)
+      TextDraw.__inject__PlayerTextDrawUseBox(player.id, this.id, use);
+    else TextDraw.__inject__TextDrawUseBox(this.id, use);
     return this;
   }
   private static beforeCreateWarn(msg: string): void {
@@ -273,9 +311,9 @@ export class TextDraw {
       return this;
     }
     const p = this.sourceInfo.player;
-    if (p) w.PlayerTextDrawShow(p.id, this.id);
+    if (p) TextDraw.__inject__PlayerTextDrawShow(p.id, this.id);
     else {
-      if (player) w.TextDrawShowForPlayer(player.id, this.id);
+      if (player) TextDraw.__inject__TextDrawShowForPlayer(player.id, this.id);
       else {
         throw new Error("[TextDraw]: invalid player for show");
       }
@@ -288,9 +326,9 @@ export class TextDraw {
       return this;
     }
     const p = this.sourceInfo.player;
-    if (p) w.PlayerTextDrawHide(p.id, this.id);
+    if (p) TextDraw.__inject__PlayerTextDrawHide(p.id, this.id);
     else {
-      if (player) w.TextDrawHideForPlayer(player.id, this.id);
+      if (player) TextDraw.__inject__TextDrawHideForPlayer(player.id, this.id);
       else {
         throw new Error("[TextDraw]: invalid player for hide");
       }
@@ -304,7 +342,7 @@ export class TextDraw {
     }
     const p = this.sourceInfo.player;
     if (!p) {
-      w.TextDrawShowForAll(this.id);
+      TextDraw.__inject__TextDrawShowForAll(this.id);
       return this;
     }
     throw new Error(
@@ -318,7 +356,7 @@ export class TextDraw {
     }
     const p = this.sourceInfo.player;
     if (!p) {
-      w.TextDrawHideForAll(this.id);
+      TextDraw.__inject__TextDrawHideForAll(this.id);
       return this;
     }
     throw new Error(
@@ -327,23 +365,23 @@ export class TextDraw {
   }
   isValid(): boolean {
     const p = this.sourceInfo.player;
-    if (p) return w.IsValidPlayerTextDraw(p.id, this.id);
-    return w.IsValidTextDraw(this.id);
+    if (p) return TextDraw.__inject__IsValidPlayerTextDraw(p.id, this.id);
+    return TextDraw.__inject__IsValidTextDraw(this.id);
   }
   isVisibleForPlayer(player?: Player): boolean {
     if (this.id === -1) return false;
 
     const { player: p } = this.sourceInfo;
-    if (p) return w.IsPlayerTextDrawVisible(p.id, this.id);
+    if (p) return TextDraw.__inject__IsPlayerTextDrawVisible(p.id, this.id);
 
     if (!player) return false;
-    return w.IsTextDrawVisibleForPlayer(player.id, this.id);
+    return TextDraw.__inject__IsTextDrawVisibleForPlayer(player.id, this.id);
   }
   getString(): string {
     if (this.id === -1) return this.sourceInfo.text;
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetString(p.id, this.id);
-    return w.TextDrawGetString(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetString(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetString(this.id);
   }
   setPos(fX: number, fY: number) {
     if (this.id === -1) {
@@ -351,107 +389,114 @@ export class TextDraw {
       return this;
     }
     const p = this.sourceInfo.player;
-    if (p) w.PlayerTextDrawSetPos(p.id, this.id, fX, fY);
-    else w.TextDrawSetPos(this.id, fX, fY);
+    if (p) TextDraw.__inject__PlayerTextDrawSetPos(p.id, this.id, fX, fY);
+    else TextDraw.__inject__TextDrawSetPos(this.id, fX, fY);
     return this;
   }
   getLetterSize() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get letter size");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetLetterSize(p.id, this.id);
-    return w.TextDrawGetLetterSize(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetLetterSize(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetLetterSize(this.id);
   }
   getTextSize() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get text size");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetTextSize(p.id, this.id);
-    return w.TextDrawGetTextSize(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetTextSize(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetTextSize(this.id);
   }
   getPos() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get position");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetPos(p.id, this.id);
-    return w.TextDrawGetPos(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetPos(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetPos(this.id);
   }
   getColor() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get color");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetColor(p.id, this.id);
-    return w.TextDrawGetColor(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetColor(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetColor(this.id);
   }
   getBoxColor() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get box color");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetBoxColor(p.id, this.id);
-    return w.TextDrawGetBoxColor(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetBoxColor(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetBoxColor(this.id);
   }
   getBackgroundColor() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get bg color");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetBackgroundColor(p.id, this.id);
-    return w.TextDrawGetBackgroundColor(this.id);
+    if (p)
+      return TextDraw.__inject__PlayerTextDrawGetBackgroundColor(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetBackgroundColor(this.id);
   }
   getShadow() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get shadow");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetShadow(p.id, this.id);
-    return w.TextDrawGetShadow(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetShadow(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetShadow(this.id);
   }
   getOutline() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get outline");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetOutline(p.id, this.id);
-    return w.TextDrawGetOutline(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetOutline(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetOutline(this.id);
   }
   getFont() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get font");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetFont(p.id, this.id);
-    return w.TextDrawGetFont(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetFont(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetFont(this.id);
   }
   isBox() {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawIsBox(p.id, this.id);
-    return w.TextDrawIsBox(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawIsBox(p.id, this.id);
+    return TextDraw.__inject__TextDrawIsBox(this.id);
   }
   isProportional() {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawIsProportional(p.id, this.id);
-    return w.TextDrawIsProportional(this.id);
+    if (p)
+      return TextDraw.__inject__PlayerTextDrawIsProportional(p.id, this.id);
+    return TextDraw.__inject__TextDrawIsProportional(this.id);
   }
   isSelectable() {
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawIsSelectable(p.id, this.id);
-    return w.TextDrawIsSelectable(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawIsSelectable(p.id, this.id);
+    return TextDraw.__inject__TextDrawIsSelectable(this.id);
   }
   getAlignment() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get alignment");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetAlignment(p.id, this.id);
-    return w.TextDrawGetAlignment(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetAlignment(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetAlignment(this.id);
   }
   getPreviewModel() {
     if (this.id === -1) return TextDraw.beforeCreateWarn("get preview model");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetPreviewModel(p.id, this.id);
-    return w.TextDrawGetPreviewModel(this.id);
+    if (p)
+      return TextDraw.__inject__PlayerTextDrawGetPreviewModel(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetPreviewModel(this.id);
   }
   getPreviewRot() {
     if (this.id === -1)
       return TextDraw.beforeCreateWarn("get preview rotation");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetPreviewRot(p.id, this.id);
-    return w.TextDrawGetPreviewRot(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetPreviewRot(p.id, this.id);
+    return TextDraw.__inject__TextDrawGetPreviewRot(this.id);
   }
   getPreviewVehColors() {
     if (this.id === -1)
       return TextDraw.beforeCreateWarn("get preview vel colors");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerTextDrawGetPreviewVehicleColors(p.id, this.id);
-    return w.TextDrawGetPreviewVehicleColors(this.id);
+    if (p)
+      return TextDraw.__inject__PlayerTextDrawGetPreviewVehicleColors(
+        p.id,
+        this.id,
+      );
+    return TextDraw.__inject__TextDrawGetPreviewVehicleColors(this.id);
   }
   isGlobal() {
     return !!this.sourceInfo.player;
@@ -466,4 +511,98 @@ export class TextDraw {
     if (isGlobal) return [...this.globalTextDraws.values()];
     return [...this.playerTextDraws.values()];
   }
+
+  static __inject__TextDrawCreate = w.TextDrawCreate;
+  static __inject__CreatePlayerTextDraw = w.CreatePlayerTextDraw;
+  static __inject__TextDrawDestroy = w.TextDrawDestroy;
+  static __inject__PlayerTextDrawDestroy = w.PlayerTextDrawDestroy;
+  static __inject__TextDrawFont = w.TextDrawFont;
+  static __inject__PlayerTextDrawFont = w.PlayerTextDrawFont;
+  static __inject__TextDrawColor = w.TextDrawColor;
+  static __inject__PlayerTextDrawColor = w.PlayerTextDrawColor;
+  static __inject__TextDrawBoxColor = w.TextDrawBoxColor;
+  static __inject__PlayerTextDrawBoxColor = w.PlayerTextDrawBoxColor;
+  static __inject__TextDrawBackgroundColor = w.TextDrawBackgroundColor;
+  static __inject__PlayerTextDrawBackgroundColor =
+    w.PlayerTextDrawBackgroundColor;
+  static __inject__TextDrawAlignment = w.TextDrawAlignment;
+  static __inject__PlayerTextDrawAlignment = w.PlayerTextDrawAlignment;
+  static __inject__TextDrawLetterSize = w.TextDrawLetterSize;
+  static __inject__PlayerTextDrawLetterSize = w.PlayerTextDrawLetterSize;
+  static __inject__TextDrawSetOutline = w.TextDrawSetOutline;
+  static __inject__PlayerTextDrawSetOutline = w.PlayerTextDrawSetOutline;
+  static __inject__TextDrawSetPreviewModel = w.TextDrawSetPreviewModel;
+  static __inject__PlayerTextDrawSetPreviewModel =
+    w.PlayerTextDrawSetPreviewModel;
+  static __inject__TextDrawSetPreviewRot = w.TextDrawSetPreviewRot;
+  static __inject__PlayerTextDrawSetPreviewRot = w.PlayerTextDrawSetPreviewRot;
+  static __inject__TextDrawSetPreviewVehicleColors =
+    w.TextDrawSetPreviewVehicleColors;
+  static __inject__PlayerTextDrawSetPreviewVehicleColors =
+    w.PlayerTextDrawSetPreviewVehicleColors;
+  static __inject__TextDrawSetProportional = w.TextDrawSetProportional;
+  static __inject__PlayerTextDrawSetProportional =
+    w.PlayerTextDrawSetProportional;
+  static __inject__TextDrawSetSelectable = w.TextDrawSetSelectable;
+  static __inject__PlayerTextDrawSetSelectable = w.PlayerTextDrawSetSelectable;
+  static __inject__TextDrawSetShadow = w.TextDrawSetShadow;
+  static __inject__PlayerTextDrawSetShadow = w.PlayerTextDrawSetShadow;
+  static __inject__PlayerTextDrawSetString = w.PlayerTextDrawSetString;
+  static __inject__TextDrawSetStringForPlayer = w.TextDrawSetStringForPlayer;
+  static __inject__TextDrawSetString = w.TextDrawSetString;
+  static __inject__TextDrawTextSize = w.TextDrawTextSize;
+  static __inject__PlayerTextDrawTextSize = w.PlayerTextDrawTextSize;
+  static __inject__PlayerTextDrawUseBox = w.PlayerTextDrawUseBox;
+  static __inject__TextDrawUseBox = w.TextDrawUseBox;
+  static __inject__PlayerTextDrawShow = w.PlayerTextDrawShow;
+  static __inject__TextDrawShowForPlayer = w.TextDrawShowForPlayer;
+  static __inject__PlayerTextDrawHide = w.PlayerTextDrawHide;
+  static __inject__TextDrawHideForPlayer = w.TextDrawHideForPlayer;
+  static __inject__TextDrawShowForAll = w.TextDrawShowForAll;
+  static __inject__TextDrawHideForAll = w.TextDrawHideForAll;
+  static __inject__IsValidPlayerTextDraw = w.IsValidPlayerTextDraw;
+  static __inject__IsValidTextDraw = w.IsValidTextDraw;
+  static __inject__IsPlayerTextDrawVisible = w.IsPlayerTextDrawVisible;
+  static __inject__IsTextDrawVisibleForPlayer = w.IsTextDrawVisibleForPlayer;
+  static __inject__PlayerTextDrawGetString = w.PlayerTextDrawGetString;
+  static __inject__TextDrawGetString = w.TextDrawGetString;
+  static __inject__PlayerTextDrawSetPos = w.PlayerTextDrawSetPos;
+  static __inject__TextDrawSetPos = w.TextDrawSetPos;
+  static __inject__PlayerTextDrawGetLetterSize = w.PlayerTextDrawGetLetterSize;
+  static __inject__TextDrawGetLetterSize = w.TextDrawGetLetterSize;
+  static __inject__PlayerTextDrawGetTextSize = w.PlayerTextDrawGetTextSize;
+  static __inject__TextDrawGetTextSize = w.TextDrawGetTextSize;
+  static __inject__PlayerTextDrawGetPos = w.PlayerTextDrawGetPos;
+  static __inject__TextDrawGetPos = w.TextDrawGetPos;
+  static __inject__PlayerTextDrawGetColor = w.PlayerTextDrawGetColor;
+  static __inject__TextDrawGetColor = w.TextDrawGetColor;
+  static __inject__PlayerTextDrawGetBoxColor = w.PlayerTextDrawGetBoxColor;
+  static __inject__TextDrawGetBoxColor = w.TextDrawGetBoxColor;
+  static __inject__PlayerTextDrawGetBackgroundColor =
+    w.PlayerTextDrawGetBackgroundColor;
+  static __inject__TextDrawGetBackgroundColor = w.TextDrawGetBackgroundColor;
+  static __inject__PlayerTextDrawGetShadow = w.PlayerTextDrawGetShadow;
+  static __inject__TextDrawGetShadow = w.TextDrawGetShadow;
+  static __inject__PlayerTextDrawGetOutline = w.PlayerTextDrawGetOutline;
+  static __inject__TextDrawGetOutline = w.TextDrawGetOutline;
+  static __inject__PlayerTextDrawGetFont = w.PlayerTextDrawGetFont;
+  static __inject__TextDrawGetFont = w.TextDrawGetFont;
+  static __inject__PlayerTextDrawIsBox = w.PlayerTextDrawIsBox;
+  static __inject__TextDrawIsBox = w.TextDrawIsBox;
+  static __inject__PlayerTextDrawIsProportional =
+    w.PlayerTextDrawIsProportional;
+  static __inject__TextDrawIsProportional = w.TextDrawIsProportional;
+  static __inject__PlayerTextDrawIsSelectable = w.PlayerTextDrawIsSelectable;
+  static __inject__TextDrawIsSelectable = w.TextDrawIsSelectable;
+  static __inject__PlayerTextDrawGetAlignment = w.PlayerTextDrawGetAlignment;
+  static __inject__TextDrawGetAlignment = w.TextDrawGetAlignment;
+  static __inject__PlayerTextDrawGetPreviewModel =
+    w.PlayerTextDrawGetPreviewModel;
+  static __inject__TextDrawGetPreviewModel = w.TextDrawGetPreviewModel;
+  static __inject__PlayerTextDrawGetPreviewRot = w.PlayerTextDrawGetPreviewRot;
+  static __inject__TextDrawGetPreviewRot = w.TextDrawGetPreviewRot;
+  static __inject__TextDrawGetPreviewVehicleColors =
+    w.TextDrawGetPreviewVehicleColors;
+  static __inject__PlayerTextDrawGetPreviewVehicleColors =
+    w.PlayerTextDrawGetPreviewVehicleColors;
 }
