@@ -19,13 +19,13 @@
   ],
   "scripts": {},
   "dependencies": {
-    "@inquirer/prompts": "^7.4.0",
-    "@octokit/core": "^6.1.4",
-    "axios": "^1.8.3",
+    "@inquirer/prompts": "^7.5.1",
+    "@octokit/core": "^6.1.5",
+    "axios": "^1.9.0",
     "chalk": "^5.4.1",
     "cli-progress": "^3.12.0",
     "decompress": "^4.2.1",
-    "execa": "^9.5.2",
+    "execa": "^9.5.3",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.0",
     "https-proxy-agent": "^7.0.6",
@@ -37,7 +37,7 @@
     "@types/cli-progress": "^3.11.6",
     "@types/decompress": "^4.2.7",
     "@types/fs-extra": "^11.0.4",
-    "@types/semver": "^7.5.8",
+    "@types/semver": "^7.7.0",
     "@types/update-notifier": "^6.0.8",
     "@types/yargs": "^17.0.33"
   }
