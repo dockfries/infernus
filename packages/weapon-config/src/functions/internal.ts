@@ -404,7 +404,6 @@ export function updateHealthBar(player: Player, force = false) {
     (playerArmour.get(player.id) / playerMaxArmour.get(player.id)) * 100.0,
   );
 
-  // Make the values reflect what the client should see
   if (isDying.get(player.id)) {
     health = 0;
     armour = 0;
@@ -1031,7 +1030,6 @@ export function processDamage(editable: IProcessDamageArgs) {
           editable.amount = 1.32000005245208740234375;
         }
 
-        // Be extra sure about this one
         if (
           editable.issuer !== InvalidEnum.PLAYER_ID &&
           orig_playerMethods.getFightingStyle.call(editable.issuer) !==
@@ -1042,9 +1040,7 @@ export function processDamage(editable: IProcessDamageArgs) {
         break;
       }
 
-      // Melee damage has been tampered with
       default: {
-        // Chainsaw damage will be checked later
         if (melee && editable.weaponId !== WC_WeaponEnum.CHAINSAW) {
           return InvalidDamageEnum.INVALID_DAMAGE;
         }
@@ -1089,7 +1085,6 @@ export function processDamage(editable: IProcessDamageArgs) {
       break;
     }
 
-    // Shotguns and sawed-off shotguns shoot 15 bullets, each inflicting 3.3 damage
     case (WC_WeaponEnum.SHOTGUN, WC_WeaponEnum.SAWEDOFF): {
       editable.bullets = editable.amount / 3.30000019073486328125;
 
@@ -1104,16 +1099,13 @@ export function processDamage(editable: IProcessDamageArgs) {
   if (editable.bullets) {
     const f = floatFraction(editable.bullets);
 
-    // The damage for each bullet has been tampered with
     if (f > 0.01 && f < 0.99) {
       return InvalidDamageEnum.INVALID_DAMAGE;
     }
 
-    // Divide the damage amount by the number of bullets
     editable.amount /= editable.bullets;
   }
 
-  // Check chainsaw damage
   if (editable.weaponId === WC_WeaponEnum.CHAINSAW) {
     switch (editable.amount) {
       case 6.6000003814697265625:
@@ -1129,8 +1121,6 @@ export function processDamage(editable: IProcessDamageArgs) {
       }
     }
   } else if (editable.weaponId === WC_WeaponEnum.DEAGLE) {
-    // Check deagle damage
-
     switch (editable.amount) {
       case 46.200000762939453125:
       case 23.1000003814697265625: {
@@ -1143,7 +1133,6 @@ export function processDamage(editable: IProcessDamageArgs) {
     }
   }
 
-  // Check gun damage
   let def_amount = 0.0;
 
   switch (editable.weaponId) {
@@ -1190,7 +1179,6 @@ export function processDamage(editable: IProcessDamageArgs) {
     return InvalidDamageEnum.INVALID_DAMAGE;
   }
 
-  // Adjust the damage
   switch (s_DamageType[editable.weaponId]) {
     case DamageTypeEnum.MULTIPLIER: {
       if (s_WeaponDamage[editable.weaponId] !== 1.0) {
@@ -2120,12 +2108,11 @@ export function damageFeedAddHit(
       break;
     }
 
-    // Remove it and add it on top below
     if (arr[i]!.issuer === issuerId) {
-      // Multiple weapons
-      if (arr[i]!.weapon !== weapon) {
-        //weapon = -1;
-      }
+      // // Multiple weapons
+      // if (arr[i]!.weapon !== weapon) {
+      //   //weapon = -1;
+      // }
 
       amount += arr[i]!.amount;
       idx = i;
@@ -2136,7 +2123,6 @@ export function damageFeedAddHit(
   if (idx === -1) {
     idx = 0;
 
-    // Insert it at the top
     for (let i = arr.length - 1; i >= 1; i--) {
       arr[i] = arr[i - 1];
     }
@@ -2429,12 +2415,10 @@ export function sendLastSyncPacket(
     lastSyncData.get(player.id).armour = fakeArmour.get(player.id);
   }
 
-  // Make them appear standing still if paused
   if (wc_IsPlayerPaused(player)) {
     lastSyncData.get(player.id).velocity = [0.0, 0.0, 0.0];
   }
 
-  // Animations are only sent when they are changed
   if (!animation) {
     lastSyncData.get(player.id).animationId = 0;
     lastSyncData.get(player.id).animationFlags = 0;

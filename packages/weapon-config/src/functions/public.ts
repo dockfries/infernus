@@ -171,7 +171,6 @@ export function averageHitRate(player: Player, hits: number) {
   ) {
     prev_idx = (idx - i - 1) % lastHitTicks.get(player.id).length;
 
-    // JIT plugin fix
     if (prev_idx < 0) {
       prev_idx += lastHitTicks.get(player.id).length;
     }
@@ -180,7 +179,6 @@ export function averageHitRate(player: Player, hits: number) {
     prev_weapon = lastHitWeapons.get(player.id)[prev_idx];
     this_idx = (idx - i) % lastHitTicks.get(player.id).length;
 
-    // JIT plugin fix
     if (this_idx < 0) {
       this_idx += lastHitTicks.get(player.id).length;
     }
@@ -228,7 +226,6 @@ export function setWeaponDamage(
   amount: number,
   ...args: number[]
 ) {
-  // ...args: any[]
   if (weaponId < WC_WeaponEnum.UNARMED || weaponId >= s_WeaponDamage.length) {
     return 0;
   }
@@ -344,7 +341,6 @@ export function setCustomFallDamage(
   innerGameModeConfig.customFallDamage = toggle;
 
   if (toggle) {
-    // wc_WeaponEnum.COLLISION instead of magic number causes tag mismatch with omp-stdlib
     s_WeaponDamage[54] = damage_multiplier;
     innerGameModeConfig.fallDeathVelocity = -Math.abs(death_velocity);
   }
@@ -525,7 +521,6 @@ export function getRejectedHit(player: Player, idx: number) {
     (rejectedHitsIdx.get(player.id) - idx) %
     innerWeaponConfig.MAX_REJECTED_HITS;
 
-  // JIT plugin fix
   if (real_idx < 0) {
     real_idx += innerWeaponConfig.MAX_REJECTED_HITS;
   }
