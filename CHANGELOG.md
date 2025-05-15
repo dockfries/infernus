@@ -1,3 +1,13 @@
+## <small>0.11.12 (2025-05-15)</small>
+
+* chore(release): nex-ac v0.0.1 ([b9d95ae](https://github.com/dockfries/infernus/commit/b9d95ae))
+* chore(weapon-config): update readme, export emulated ([9dc1083](https://github.com/dockfries/infernus/commit/9dc1083))
+* chore(weapon-config): wtf s_FakeQuat == s_FakeQuat and angle != angle? ([d834912](https://github.com/dockfries/infernus/commit/d834912))
+* refactor(weapon-config): build circular deps ([c4f5f63](https://github.com/dockfries/infernus/commit/c4f5f63))
+* fix(weapon-config): some issues ([527d260](https://github.com/dockfries/infernus/commit/527d260))
+
+
+
 ## <small>0.11.11 (2025-05-12)</small>
 
 * chore(nex-ac): adjust file path ([36c0625](https://github.com/dockfries/infernus/commit/36c0625))
