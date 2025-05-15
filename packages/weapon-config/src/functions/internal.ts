@@ -145,6 +145,12 @@ import {
 } from "../callbacks/custom";
 import { wc_GetWeaponName, wc_SetPlayerHealth } from "../hooks";
 import { BitStream, OnFootSync, PacketRpcValueType } from "@infernus/raknet";
+import { withTriggerOptions } from "core/controllers/bus";
+import {
+  internalLeaveDynamicCP,
+  internalLeaveDynamicRaceCP,
+  internalPlayerDeath,
+} from "../callbacks";
 
 export function scriptInit() {
   innerGameModeConfig.lagCompMode = !!GameMode.getConsoleVarAsInt(
@@ -1412,7 +1418,7 @@ export function inflictDamage(
     playerHealth.set(editable.player.id, 0.0);
   }
 
-  triggerOnPlayerDamageDone(
+  onPlayerDamageDone(
     editable.player,
     editable.amount,
     editable.issuerId,
@@ -1537,11 +1543,16 @@ export function inflictDamage(
 
     if (cBugAllowed.get(editable.player.id)) {
       useTrigger("OnPlayerDeath")!(
-        editable.player.id,
-        typeof editable.issuerId === "number"
-          ? editable.issuerId
-          : editable.issuerId.id,
-        editable.weaponId,
+        withTriggerOptions({
+          skipToNext: internalPlayerDeath,
+          args: [
+            editable.player.id,
+            typeof editable.issuerId === "number"
+              ? editable.issuerId
+              : editable.issuerId.id,
+            editable.weaponId,
+          ],
+        }),
       );
     } else {
       if (delayedDeathTimer.get(editable.player.id)) {
@@ -1575,9 +1586,14 @@ export function wc_DelayedDeath(
   }
 
   useTrigger("OnPlayerDeath")!(
-    player.id,
-    typeof issuerId === "number" ? issuerId : issuerId.id,
-    reason,
+    withTriggerOptions({
+      skipToNext: internalPlayerDeath,
+      args: [
+        player.id,
+        typeof issuerId === "number" ? issuerId : issuerId.id,
+        reason,
+      ],
+    }),
   );
 }
 
@@ -1675,11 +1691,21 @@ export function playerDeath(
   const dynCp = DynamicCheckpoint.getPlayerVisible(player);
   const dynRaceCp = DynamicRaceCP.getPlayerVisible(player);
   if (dynCp && dynCp.isPlayerIn(player)) {
-    useTrigger("OnPlayerLeaveDynamicCP")!(player.id, dynCp.id);
+    useTrigger("OnPlayerLeaveDynamicCP")!(
+      withTriggerOptions({
+        skipToNext: internalLeaveDynamicCP,
+        args: [player.id, dynCp.id],
+      }),
+    );
   }
 
   if (dynRaceCp && dynRaceCp.isPlayerIn(player)) {
-    useTrigger("OnPlayerLeaveDynamicRaceCP")!(player.id, dynRaceCp.id);
+    useTrigger("OnPlayerLeaveDynamicRaceCP")!(
+      withTriggerOptions({
+        skipToNext: internalLeaveDynamicRaceCP,
+        args: [player.id, dynRaceCp.id],
+      }),
+    );
   }
 }
 
@@ -2002,7 +2028,7 @@ export function damageFeedUpdateText(player: Player) {
     if (
       damageFeedHitsTaken.get(player.id)[i]!.issuer === InvalidEnum.PLAYER_ID
     ) {
-      buf = `${buf}${weapon} +${(damageFeedHitsTaken.get(player.id)[i]!.amount + 0.009).toFixed(2)} (${playerHealth.get(player.id).toFixed(2)})~n~`;
+      buf = `${buf}${weapon} -${(damageFeedHitsTaken.get(player.id)[i]!.amount + 0.009).toFixed(2)} (${playerHealth.get(player.id).toFixed(2)})~n~`;
     } else {
       buf = `${buf}${damageFeedHitsTaken.get(player.id)[i]!.name} - ${weapon} -${(damageFeedHitsTaken.get(player.id)[i]!.amount + 0.009).toFixed(2)} (${playerHealth.get(damageFeedHitsGiven.get(player.id)[i]!.issuer).toFixed(2)})~n~`;
     }
@@ -2124,7 +2150,11 @@ export function damageFeedAddHit(
     idx = 0;
 
     for (let i = arr.length - 1; i >= 1; i--) {
-      arr[i] = arr[i - 1];
+      if (arr[i - 1]) {
+        arr[i] = { ...arr[i - 1]! };
+      } else {
+        arr[i] = null;
+      }
     }
   }
 
@@ -2499,7 +2529,7 @@ export function wc_PlayerDeathRespawn(player: Player) {
 }
 
 export function onInvalidWeaponDamage(
-  player: Player,
+  player: Player | InvalidEnum.PLAYER_ID,
   damaged: Player,
   amount: number,
   weapon: number,
@@ -2508,7 +2538,7 @@ export function onInvalidWeaponDamage(
   given: boolean,
 ) {
   debugMessageRedAll(
-    `OnInvalidWeaponDamage(${player.id}, ${damaged.id}, ${amount}, ${weapon}, ${bodyPart}, ${error}, ${given}})`,
+    `OnInvalidWeaponDamage(${typeof player === "number" ? player : player.id}, ${damaged.id}, ${amount}, ${weapon}, ${bodyPart}, ${error}, ${given}})`,
   );
 
   triggerOnInvalidWeaponDamage(

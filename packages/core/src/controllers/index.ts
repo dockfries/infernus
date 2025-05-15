@@ -9,4 +9,10 @@ export * from "./menu";
 export * from "./gangzone";
 export * from "../wrapper/streamer";
 export * from "./textdraw";
-export { defineEvent, useTrigger } from "./bus";
+export {
+  defineEvent,
+  useTrigger,
+  withTriggerOptions,
+  type ExecMiddlewareOptions,
+  type defineEventOptions,
+} from "./bus";

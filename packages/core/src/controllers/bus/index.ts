@@ -2,7 +2,7 @@ export type CallbackRet = boolean | number | void;
 
 export type PromisifyCallbackRet = CallbackRet | Promise<CallbackRet>;
 
-export type Options<T extends object> = {
+export interface defineEventOptions<T extends object> {
   name: string;
   defaultValue?: boolean;
   identifier?: string;
@@ -11,7 +11,12 @@ export type Options<T extends object> = {
   beforeEach?: (...args: any[]) => Exclude<T, Array<any> | Function>;
   afterEach?: (arg: T) => void;
   throwOnError?: boolean;
-};
+}
+
+export interface ExecMiddlewareOptions {
+  args: any[];
+  skipToNext?: (...args: any[]) => any;
+}
 
 export const eventBus = new Map<
   string,
@@ -30,7 +35,8 @@ function transformReturnValue(
 }
 
 function executeMiddlewares<T extends object>(
-  options: Options<T>,
+  options: defineEventOptions<T>,
+  startIndex: number,
   ...args: any[]
 ) {
   const {
@@ -48,7 +54,7 @@ function executeMiddlewares<T extends object>(
 
   const promises: Promise<CallbackRet>[] = [];
 
-  let index = -1;
+  let index = startIndex;
 
   const next = (value?: Partial<T>) => {
     index++;
@@ -86,7 +92,7 @@ function executeMiddlewares<T extends object>(
   return transformReturnValue(next(), defaultValue);
 }
 
-export function defineEvent<T extends object>(options: Options<T>) {
+export function defineEvent<T extends object>(options: defineEventOptions<T>) {
   const { name, identifier, isNative = true } = options;
 
   const isDefined = eventBus.has(name);
@@ -96,15 +102,34 @@ export function defineEvent<T extends object>(options: Options<T>) {
     throw new Error(msg);
   }
 
-  function trigger(...args: any[]) {
-    return executeMiddlewares(options, ...args);
+  function trigger(...argsOrOptions: any[]) {
+    const isOptions =
+      argsOrOptions.length === 1 &&
+      typeof argsOrOptions[0] === "object" &&
+      argsOrOptions[0].__trigger__;
+
+    if (isOptions) {
+      const execOptions = argsOrOptions[0] as ExecMiddlewareOptions;
+      let execStart = -1;
+      if (execOptions.skipToNext) {
+        const middlewares = eventBus.get(name);
+        if (middlewares && middlewares.length) {
+          const funcIndex = middlewares.indexOf(execOptions.skipToNext);
+          if (funcIndex > -1) {
+            execStart = funcIndex;
+          }
+        }
+      }
+      return executeMiddlewares(options, execStart, ...execOptions.args);
+    }
+    return executeMiddlewares(options, -1, ...argsOrOptions);
   }
 
   function pusher(
     cb: (
       ret: T & {
         next: (value?: Partial<T>) => CallbackRet;
-        defaultValue: Options<T>["defaultValue"];
+        defaultValue: defineEventOptions<T>["defaultValue"];
       },
     ) => PromisifyCallbackRet,
   ) {
@@ -156,4 +181,10 @@ export function defineEvent<T extends object>(options: Options<T>) {
 
 export function useTrigger(eventName: string) {
   return triggerBus.get(eventName);
+}
+
+export function withTriggerOptions(options: ExecMiddlewareOptions) {
+  return Object.assign(options, {
+    __trigger__: true,
+  });
 }

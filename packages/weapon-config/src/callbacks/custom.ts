@@ -106,7 +106,7 @@ export const [onInvalidWeaponDamage, triggerOnInvalidWeaponDamage] =
     name: "OnInvalidWeaponDamage",
     isNative: false,
     beforeEach(
-      player: Player,
+      player: Player | InvalidEnum.PLAYER_ID,
       damaged: Player,
       amount: number,
       weapon: number,

@@ -26,6 +26,7 @@ import {
   inflictDamage,
   IProcessDamageArgs,
   isVehicleArmedWithWeapon,
+  onInvalidWeaponDamage,
   onPlayerDamageDone,
   onPlayerDeathFinished,
   playerDeath,
@@ -147,9 +148,7 @@ import {
   IEditableOnPlayerDamage,
   IEditableOnPlayerPrepareDeath,
   IEditableOnPlayerUseVendingMachine,
-  triggerOnInvalidWeaponDamage,
   triggerOnPlayerDamage,
-  triggerOnPlayerDamageDone,
   triggerOnPlayerPrepareDeath,
   triggerOnPlayerUseVendingMachine,
 } from "./custom";
@@ -177,6 +176,7 @@ import {
   s_WeaponRange,
   sc_VendingMachines,
 } from "../constants";
+import { withTriggerOptions } from "core/controllers/bus";
 
 GameMode.onInit(({ next }) => {
   scriptInit();
@@ -653,7 +653,9 @@ PlayerEvent.onRequestClass(({ player, classId, next }) => {
   }
 });
 
-PlayerEvent.onDeath(({ player, killer, reason, next }) => {
+export const internalPlayerDeath: Parameters<
+  (typeof PlayerEvent)["onDeath"]
+>[0] = ({ player, killer, reason, next }) => {
   trueDeath.set(player.id, true);
   inClassSelection.set(player.id, false);
 
@@ -892,7 +894,9 @@ PlayerEvent.onDeath(({ player, killer, reason, next }) => {
   updateHealthBar(editable.player);
 
   return 1;
-});
+};
+
+PlayerEvent.onDeath(internalPlayerDeath);
 
 export function wc_CbugPunishment(player: Player, weapon: number) {
   freezeSyncPacket(player, false);
@@ -1414,7 +1418,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
   }
 
   if (!orig_playerMethods.isConnected.call(damage)) {
-    triggerOnInvalidWeaponDamage(
+    onInvalidWeaponDamage(
       player,
       damage,
       amount,
@@ -1608,9 +1612,10 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
       }, 2200);
 
       useTrigger("OnPlayerDeath")!(
-        editable.player.id,
-        editable.issuerId.id,
-        editable.weaponId,
+        withTriggerOptions({
+          skipToNext: internalPlayerDeath,
+          args: [editable.player.id, editable.issuerId.id, editable.weaponId],
+        }),
       );
 
       debugMessage(
@@ -1701,7 +1706,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
     }
 
     if (err !== InvalidDamageEnum.INVALID_DISTANCE) {
-      triggerOnInvalidWeaponDamage(
+      onInvalidWeaponDamage(
         editable.issuer,
         editable.player,
         editable.amount,
@@ -2007,8 +2012,8 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
         playerArmour.get(editable.player.id),
       );
 
-      triggerOnPlayerDamageDone(
-        editable.player.id,
+      onPlayerDamageDone(
+        editable.player,
         playerHealth.get(editable.player.id) +
           playerArmour.get(editable.player.id),
         editable.issuerId,
@@ -2027,9 +2032,10 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
       );
 
       useTrigger("OnPlayerDeath")!(
-        editable.player.id,
-        editable.issuerId,
-        weapon,
+        withTriggerOptions({
+          skipToNext: internalPlayerDeath,
+          args: [editable.player.id, editable.issuerId, weapon],
+        }),
       );
 
       orig_playerMethods.setHealth.call(editable.player, 0x7f7fffff);
@@ -2184,7 +2190,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
     }
 
     if (err !== InvalidDamageEnum.INVALID_DISTANCE) {
-      triggerOnInvalidWeaponDamage(
+      onInvalidWeaponDamage(
         editable.issuer,
         editable.player,
         editable.amount,
@@ -2469,7 +2475,7 @@ PlayerEvent.onWeaponShot(
 
         debugMessage(
           player,
-          `(shot) last: ${tick - prev_tick} last 3: ${averageShootRate(player, 3)}`,
+          `(shot) last: ${tick - prev_tick} last 3: ${averageShootRate(player, 3).ret}`,
         );
       }
     }
@@ -2678,7 +2684,12 @@ PlayerEvent.onWeaponShot(
 );
 
 export function wc_KillVehicle(vehicle: Vehicle, killer: Player) {
-  useTrigger("OnVehicleDeath")!(vehicle.id, killer.id);
+  useTrigger("OnVehicleDeath")!(
+    withTriggerOptions({
+      skipToNext: internalVehicleDeath,
+      args: [vehicle.id, killer.id],
+    }),
+  );
   vehicleRespawnTimer.set(
     vehicle.id,
     setTimeout(() => {
@@ -2703,7 +2714,10 @@ VehicleEvent.onSpawn(({ vehicle, next }) => {
   return next();
 });
 
-VehicleEvent.onDeath(({ vehicle, next }) => {
+const internalVehicleDeath: Parameters<(typeof VehicleEvent)["onDeath"]>[0] = ({
+  vehicle,
+  next,
+}) => {
   if (vehicleRespawnTimer.get(vehicle.id)) {
     clearTimeout(vehicleRespawnTimer.get(vehicle.id)!);
     vehicleRespawnTimer.set(vehicle.id, null);
@@ -2713,7 +2727,9 @@ VehicleEvent.onDeath(({ vehicle, next }) => {
     return next();
   }
   return 1;
-});
+};
+
+VehicleEvent.onDeath(internalVehicleDeath);
 
 DynamicCheckPointEvent.onPlayerEnter(({ player, next }) => {
   if (!wc_IsPlayerSpawned(player)) {
@@ -2722,12 +2738,16 @@ DynamicCheckPointEvent.onPlayerEnter(({ player, next }) => {
   return next();
 });
 
-DynamicCheckPointEvent.onPlayerLeave(({ player, next }) => {
+export const internalLeaveDynamicCP: Parameters<
+  (typeof DynamicCheckPointEvent)["onPlayerLeave"]
+>[0] = ({ player, next }) => {
   if (isDying.get(player.id)) {
     return 0;
   }
   return next();
-});
+};
+
+DynamicCheckPointEvent.onPlayerLeave(internalLeaveDynamicCP);
 
 DynamicRaceCPEvent.onPlayerEnter(({ player, next }) => {
   if (!wc_IsPlayerSpawned(player)) {
@@ -2736,12 +2756,16 @@ DynamicRaceCPEvent.onPlayerEnter(({ player, next }) => {
   return next();
 });
 
-DynamicRaceCPEvent.onPlayerLeave(({ player, next }) => {
+export const internalLeaveDynamicRaceCP: Parameters<
+  (typeof DynamicRaceCPEvent)["onPlayerLeave"]
+>[0] = ({ player, next }) => {
   if (isDying.get(player.id)) {
     return 0;
   }
   return next();
-});
+};
+
+DynamicRaceCPEvent.onPlayerLeave(internalLeaveDynamicRaceCP);
 
 PlayerEvent.onClickMap(({ player, next }) => {
   if (
