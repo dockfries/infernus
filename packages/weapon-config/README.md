@@ -18,4 +18,26 @@ pnpm add @infernus/core @infernus/raknet @infernus/weapon-config
 ## Example
 
 ```ts
+// if you using nex-ac, import it before weapon-config
+
+import { GameMode } from "@infernus/core";
+import {
+  defineWeaponConfig,
+  setVehiclePassengerDamage,
+  setKnifeSync,
+} from "@infernus/weapon-config";
+
+// other imports and code
+
+defineWeaponConfig(() => {
+  return {
+    DEBUG: true,
+  };
+});
+
+GameMode.onInit(({ next }) => {
+  setVehiclePassengerDamage(true);
+  setKnifeSync(true);
+  return next();
+});
 ```

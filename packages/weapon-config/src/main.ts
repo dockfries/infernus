@@ -2,6 +2,8 @@ import "./callbacks/index";
 import "./callbacks/raknet";
 import "./hooks";
 
+export { setDisableSyncBugs, setKnifeSync } from "./functions/emulated";
+
 export {
   onInvalidWeaponDamage,
   onPlayerDamage,
@@ -23,6 +25,7 @@ export {
   getWeaponShootRate,
   returnWeaponName,
 } from "./functions/public/get";
+
 export {
   isBulletWeapon,
   isDamageFeedActive,
@@ -32,6 +35,7 @@ export {
   wc_IsPlayerPaused,
   wc_IsPlayerSpawned,
 } from "./functions/public/is";
+
 export {
   damagePlayer,
   setCbugAllowed,
