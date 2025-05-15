@@ -131,10 +131,12 @@ import {
   world,
 } from "../struct";
 import { WC_WeaponEnum } from "../enums";
-import { g_WeaponName } from "../constants";
 import { innerWeaponConfig } from "../config";
-import { wc_IsPlayerSpawned } from "../functions/public";
-import { inflictDamage, updateHealthBar } from "../functions/internal";
+import { wc_IsPlayerSpawned } from "../functions/public/is";
+import { inflictDamage } from "../functions/internal/damage";
+import { updateHealthBar } from "../functions/internal/set";
+
+export * from "./weapon";
 
 export const wc_SpawnPlayer = setPlayerHook("spawn", function () {
   if (
@@ -277,23 +279,6 @@ export const wc_SendDeathMessage = setPlayerHook(
     return 1;
   },
 );
-
-export function setWeaponName(weaponId: WC_WeaponEnum, name: string) {
-  if (weaponId < WC_WeaponEnum.UNARMED || weaponId >= g_WeaponName.length) {
-    return false;
-  }
-  g_WeaponName[weaponId] = name;
-  return true;
-}
-
-export const wc_GetWeaponName = function (weaponId: number) {
-  if (weaponId < WC_WeaponEnum.UNARMED || weaponId >= g_WeaponName.length) {
-    return `Weapon ${weaponId}`;
-  }
-  return g_WeaponName[weaponId];
-};
-
-GameMode.getWeaponName = wc_GetWeaponName;
 
 export const wc_ApplyAnimation = setPlayerHook(
   "applyAnimation",

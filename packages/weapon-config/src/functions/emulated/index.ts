@@ -1,4 +1,4 @@
-import { innerGameModeConfig } from "../config";
+import { innerGameModeConfig } from "../../config";
 
 export function setDisableSyncBugs(toggle: boolean) {
   innerGameModeConfig.disableSyncBugs = toggle;

@@ -27,7 +27,7 @@ import {
   tempSyncData,
 } from "../struct";
 import { innerGameModeConfig } from "../config";
-import { isBulletWeapon } from "../functions/public";
+import { isBulletWeapon } from "../functions/public/is";
 
 IPacket(wc_PLAYER_SYNC, ({ playerId, bs, next }) => {
   const onFootSync = new OnFootSync(bs);

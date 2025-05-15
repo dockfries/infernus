@@ -1,3 +1,7 @@
+import "./callbacks/index";
+import "./callbacks/raknet";
+import "./hooks";
+
 export {
   onInvalidWeaponDamage,
   onPlayerDamage,
@@ -7,18 +11,9 @@ export {
   onRejectedHit,
 } from "./callbacks/custom";
 
-import "./callbacks/index";
-import "./callbacks/raknet";
-import "./hooks";
-
-export { defineWeaponConfig, type IWeaponConfig } from "./config";
-
-export * from "./enums";
-
 export {
   averageHitRate,
   averageShootRate,
-  damagePlayer,
   enableHealthBarForPlayer,
   getCbugAllowed,
   getRejectedHit,
@@ -26,12 +21,19 @@ export {
   getWeaponDamage,
   getWeaponMaxRange,
   getWeaponShootRate,
+  returnWeaponName,
+} from "./functions/public/get";
+export {
   isBulletWeapon,
   isDamageFeedActive,
   isHighRateWeapon,
   isMeleeWeapon,
   isPlayerDying,
-  returnWeaponName,
+  wc_IsPlayerPaused,
+  wc_IsPlayerSpawned,
+} from "./functions/public/is";
+export {
+  damagePlayer,
   setCbugAllowed,
   setCustomArmourRules,
   setCustomFallDamage,
@@ -46,6 +48,8 @@ export {
   setWeaponDamage,
   setWeaponMaxRange,
   setWeaponShootRate,
-  wc_IsPlayerPaused,
-  wc_IsPlayerSpawned,
-} from "./functions/public";
+} from "./functions/public/set";
+
+export { defineWeaponConfig, type IWeaponConfig } from "./config";
+
+export * from "./enums";
