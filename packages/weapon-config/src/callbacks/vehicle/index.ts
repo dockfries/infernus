@@ -99,4 +99,6 @@ const internalVehicleDeath: Parameters<(typeof VehicleEvent)["onDeath"]>[0] = ({
   return 1;
 };
 
-VehicleEvent.onDeath(internalVehicleDeath);
+VehicleEvent.onDeath(internalVehicleDeath, true);
+
+samp.defined._INC_WEAPON_INTERNAL.vehicleDeath = internalVehicleDeath;

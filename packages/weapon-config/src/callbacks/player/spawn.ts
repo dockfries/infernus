@@ -491,4 +491,6 @@ export const internalPlayerDeath: Parameters<
   return 1;
 };
 
-PlayerEvent.onDeath(internalPlayerDeath);
+PlayerEvent.onDeath(internalPlayerDeath, true);
+
+samp.defined._INC_WEAPON_INTERNAL.playerDeath = internalPlayerDeath;

@@ -1,3 +1,4 @@
+import "./defined";
 import "./callbacks/index";
 import "./callbacks/raknet";
 import "./hooks";

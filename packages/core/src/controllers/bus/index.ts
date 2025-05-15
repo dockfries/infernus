@@ -132,12 +132,13 @@ export function defineEvent<T extends object>(options: defineEventOptions<T>) {
         defaultValue: defineEventOptions<T>["defaultValue"];
       },
     ) => PromisifyCallbackRet,
+    unshift = false,
   ) {
     if (!eventBus.has(name)) {
       eventBus.set(name, []);
     }
     const middlewares = eventBus.get(name)!;
-    const length = middlewares.push(cb);
+    const length = unshift ? middlewares.unshift(cb) : middlewares.push(cb);
     const pushedPos = length - 1;
 
     const off = () => {

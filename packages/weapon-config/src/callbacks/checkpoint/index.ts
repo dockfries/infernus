@@ -18,7 +18,7 @@ export const internalLeaveDynamicCP: Parameters<
   return next();
 };
 
-DynamicCheckPointEvent.onPlayerLeave(internalLeaveDynamicCP);
+DynamicCheckPointEvent.onPlayerLeave(internalLeaveDynamicCP, true);
 
 DynamicRaceCPEvent.onPlayerEnter(({ player, next }) => {
   if (!wc_IsPlayerSpawned(player)) {
@@ -36,4 +36,8 @@ export const internalLeaveDynamicRaceCP: Parameters<
   return next();
 };
 
-DynamicRaceCPEvent.onPlayerLeave(internalLeaveDynamicRaceCP);
+DynamicRaceCPEvent.onPlayerLeave(internalLeaveDynamicRaceCP, true);
+
+samp.defined._INC_WEAPON_INTERNAL.leaveDynamicCP = internalLeaveDynamicCP;
+samp.defined._INC_WEAPON_INTERNAL.leaveDynamicRaceCP =
+  internalLeaveDynamicRaceCP;
