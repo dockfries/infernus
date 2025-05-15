@@ -4,7 +4,7 @@ import { wc_PLAYER_SYNC } from "../../constants";
 import { orig_playerMethods } from "../../hooks/origin";
 import {
   lastSyncData,
-  fakeQuat,
+  // fakeQuat,
   fakeHealth,
   fakeArmour,
   syncData,
@@ -31,8 +31,8 @@ export function sendLastSyncPacket(
     [PacketRpcValueType.UInt16, player.id],
   );
 
-  // if (s_FakeQuat.get(player.id)[0] === s_FakeQuat.get(player.id)[0]) { ????
-  lastSyncData.get(player.id).quaternion = [...fakeQuat.get(player.id)];
+  // if (s_FakeQuat.get(player.id)[0] === s_FakeQuat.get(player.id)[0]) {
+  // lastSyncData.get(player.id).quaternion = [...fakeQuat.get(player.id)];
   // }
 
   if (fakeHealth.get(player.id) !== 255) {

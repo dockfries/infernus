@@ -220,9 +220,9 @@ export const vehicleRespawnTimer = new SafetyMap<number, NodeJS.Timeout | null>(
 
 export const fakeHealth = new SafetyMap<number, number>(() => 0);
 export const fakeArmour = new SafetyMap<number, number>(() => 0);
-export const fakeQuat = new SafetyMap<number, [number, number, number, number]>(
-  () => [0, 0, 0, 0],
-);
+// export const fakeQuat = new SafetyMap<number, [number, number, number, number]>(
+//   () => [0, 0, 0, 0],
+// );
 export const syncDataFrozen = new SafetyMap<number, boolean>(() => false);
 
 export const lastSyncData = new SafetyMap<number, IOnFootSync>(() => {

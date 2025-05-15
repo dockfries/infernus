@@ -72,7 +72,7 @@ import { orig_playerMethods } from "../..//hooks/origin";
 import { damageFeedUpdate } from "../../functions/internal/damageFeed";
 import { freezeSyncPacket } from "../../functions/internal/raknet";
 import {
-  setFakeFacingAngle,
+  // setFakeFacingAngle,
   setHealthBarVisible,
 } from "../../functions/internal/set";
 import { removeDefaultVendingMachines } from "../../functions/internal/vendingMachines";
@@ -180,7 +180,7 @@ PlayerEvent.onConnect(({ player, next }) => {
 
   orig_playerMethods.setTeam.call(player, playerTeam.get(player.id));
   freezeSyncPacket(player, false);
-  setFakeFacingAngle(player);
+  // setFakeFacingAngle(player);
   damageFeedUpdate(player);
 
   if (innerWeaponConfig.CUSTOM_VENDING_MACHINES) {

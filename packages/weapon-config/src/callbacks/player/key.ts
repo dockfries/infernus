@@ -38,7 +38,7 @@ import {
   triggerOnPlayerUseVendingMachine,
 } from "../custom";
 import { freezeSyncPacket } from "../../functions/internal/raknet";
-import { setFakeFacingAngle } from "../../functions/internal/set";
+// import { setFakeFacingAngle } from "../../functions/internal/set";
 import { wc_VendingMachineUsed } from "../../functions/internal/vendingMachines";
 import { angleBetweenPoints } from "../../utils/math";
 
@@ -150,7 +150,7 @@ PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
                 clearTimeout(delayedDeathTimer.get(i.id)!);
                 delayedDeathTimer.set(i.id, null);
                 orig_playerMethods.clearAnimations.call(i, true);
-                setFakeFacingAngle(i);
+                // setFakeFacingAngle(i);
                 freezeSyncPacket(i, false);
 
                 isDying.set(i.id, false);

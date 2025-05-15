@@ -38,11 +38,11 @@ import {
   world,
   fakeHealth,
   fakeArmour,
-  fakeQuat,
+  // fakeQuat,
 } from "../../struct";
 import { angleBetweenPoints, wc_CalculateBar } from "../../utils/math";
 import { clearAnimationsForPlayer } from "./anim";
-import { getRotationQuaternion } from "./get";
+// import { getRotationQuaternion } from "./get";
 import { sendLastSyncPacket, updateSyncData } from "./raknet";
 
 export function wc_SpawnForStreamedIn(player: Player) {
@@ -86,7 +86,7 @@ export function makePlayerFacePlayer(
   orig_playerMethods.setFacingAngle.call(player, angle);
 
   if (forceSync) {
-    setFakeFacingAngle(player, angle);
+    // setFakeFacingAngle(player, angle);
     updateSyncData(player);
   }
 }
@@ -341,17 +341,17 @@ export function setFakeArmour(player: Player, armour: number) {
   return 1;
 }
 
-export function setFakeFacingAngle(player: Player, angle = 0x7fffffff) {
-  if (!orig_playerMethods.isConnected.call(player)) {
-    return 0;
-  }
+// export function setFakeFacingAngle(player: Player, angle = 0x7fffffff) {
+//   if (!orig_playerMethods.isConnected.call(player)) {
+//     return 0;
+//   }
 
-  const { qw, qx, qy, qz } = getRotationQuaternion(0.0, 0.0, angle);
+//   // const { qw, qx, qy, qz } = getRotationQuaternion(0.0, 0.0, angle);
 
-  fakeQuat.set(player.id, [qw, qx, qy, qz]);
+//   // fakeQuat.set(player.id, [qw, qx, qy, qz]);
 
-  return 1;
-}
+//   return 1;
+// }
 
 export function spawnPlayerForWorld(player: Player) {
   if (!orig_playerMethods.isConnected.call(player)) {

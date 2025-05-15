@@ -53,7 +53,7 @@ import {
 import {
   updateHealthBar,
   updatePlayerVirtualWorld,
-  setFakeFacingAngle,
+  // setFakeFacingAngle,
   spawnPlayerInPlace,
 } from "../../functions/internal/set";
 import {
@@ -184,7 +184,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
   updatePlayerVirtualWorld(player);
   updateHealthBar(player, true);
   freezeSyncPacket(player, false);
-  setFakeFacingAngle(player);
+  // setFakeFacingAngle(player);
   damageFeedUpdate(player);
 
   if (orig_playerMethods.getTeam.call(player) !== playerTeam.get(player.id)) {

@@ -43,7 +43,7 @@ import {
   setHealthBarVisible,
   setFakeHealth,
   setFakeArmour,
-  setFakeFacingAngle,
+  // setFakeFacingAngle,
 } from "./set";
 import {
   createVendingMachines,
@@ -209,7 +209,7 @@ export function scriptExit() {
     setFakeHealth(player, 255);
     setFakeArmour(player, 255);
     freezeSyncPacket(player, false);
-    setFakeFacingAngle(player);
+    // setFakeFacingAngle(player);
     setHealthBarVisible(player, false);
 
     if (
