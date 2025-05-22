@@ -27,7 +27,7 @@ export function sendQuery<T extends RequestPacket>(options: Options<T>) {
         let responseBuffer: Buffer | null = null;
         let interval: NodeJS.Timeout | null = setTimeout(
           () => client.close(),
-          options.timeout || 10 * 1000,
+          options.timeout || 1 * 1000,
         );
 
         function clearReqTimer() {
