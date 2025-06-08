@@ -45,7 +45,6 @@ function startMovingTimer() {
   );
 }
 
-// todo debug?: boolean
 export const PirateShip: IPirateShipFS = {
   name: "pirate_ship",
   load(options) {
