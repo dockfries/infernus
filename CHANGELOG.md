@@ -1,3 +1,19 @@
+## <small>0.11.13 (2025-06-08)</small>
+
+* chore(create-app): open.mp select tips ([1c1f107](https://github.com/dockfries/infernus/commit/1c1f107))
+* chore(fs): import node module with `node:` ([2fcbc27](https://github.com/dockfries/infernus/commit/2fcbc27))
+* chore(release): create-app v0.2.13 ([55df0d9](https://github.com/dockfries/infernus/commit/55df0d9))
+* chore(release): create-app v0.2.14 ([3734d7a](https://github.com/dockfries/infernus/commit/3734d7a))
+* chore(release): query v0.1.1 ([2c5c8f9](https://github.com/dockfries/infernus/commit/2c5c8f9))
+* chore(release): weapon-config v0.0.1 ([89f7a35](https://github.com/dockfries/infernus/commit/89f7a35))
+* chore(root): update deps ([10634d7](https://github.com/dockfries/infernus/commit/10634d7))
+* fix((create-app): assetsByEnv.length ([e79baf1](https://github.com/dockfries/infernus/commit/e79baf1))
+* fix(core, weapon-config): idk, maybe we should unshift it, because special order? ([8b6f9cf](https://github.com/dockfries/infernus/commit/8b6f9cf))
+* feat(create-app): manually select open.mp asset (drawback is global cache like other deps) ([e55a8dd](https://github.com/dockfries/infernus/commit/e55a8dd))
+* fix(query): udp not require too long timeouts because it makes no sense ([0f0d84f](https://github.com/dockfries/infernus/commit/0f0d84f))
+
+
+
 ## <small>0.11.12 (2025-05-15)</small>
 
 * chore(release): nex-ac v0.0.1 ([b9d95ae](https://github.com/dockfries/infernus/commit/b9d95ae))
