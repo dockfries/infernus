@@ -213,7 +213,7 @@ function elevator_Destroy() {
 function elevator_OpenDoors() {
   // Opens the elevator's doors.
 
-  const { z } = obj_ElevatorDoors[0].getPos()!;
+  const { z } = obj_ElevatorDoors[0].getPos();
   obj_ElevatorDoors[0].move(
     constants.X_DOOR_L_OPENED,
     constants.Y_DOOR_L_OPENED,
@@ -235,7 +235,7 @@ function elevator_CloseDoors() {
 
   if (elevatorState === constants.ELEVATOR_STATE_MOVING) return false;
 
-  const { z } = obj_ElevatorDoors[0].getPos()!;
+  const { z } = obj_ElevatorDoors[0].getPos();
   obj_ElevatorDoors[0].move(
     constants.X_ELEVATOR_POS,
     constants.Y_ELEVATOR_POS,
@@ -556,7 +556,7 @@ export const LSBeachSide: ILSBeachSideFS = {
       for (let i = 0; i < obj_FloorDoors.length; i++) {
         // Check if the object that moved was one of the elevator floor doors
         if (object === obj_FloorDoors[i][0]) {
-          const { y } = obj_FloorDoors[i][0].getPos()!;
+          const { y } = obj_FloorDoors[i][0].getPos();
 
           // Some floor doors have shut, move the elevator to next floor in queue:
           if (y < constants.Y_DOOR_L_OPENED - 0.5) {
@@ -578,7 +578,7 @@ export const LSBeachSide: ILSBeachSideFS = {
         elevator_OpenDoors();
         floor_OpenDoors(elevatorFloor);
 
-        const { z } = obj_Elevator.getPos()!;
+        const { z } = obj_Elevator.getPos();
         label_Elevator = new Dynamic3DTextLabel({
           text: "{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to use elevator",
           color: 0xccccccaa,
@@ -611,7 +611,7 @@ export const LSBeachSide: ILSBeachSideFS = {
         if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
           // Create variables and get the players current position
 
-          const pos = player.getPos()!;
+          const pos = player.getPos();
           // For debug
           // console.log(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
 

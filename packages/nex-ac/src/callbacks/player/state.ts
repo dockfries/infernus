@@ -92,7 +92,7 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
           newState === PlayerStateEnum.ONFOOT
         ) {
           let ac_dist = 0;
-          const pos = player.getPos()!;
+          const pos = player.getPos();
           const { x: ac_x, y: ac_y } = pos;
           let ac_z = pos.z;
           ac_dist = player.getDistanceFromPoint(
@@ -150,7 +150,7 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
           newState === PlayerStateEnum.ONFOOT
         ) {
           let ac_dist = 0;
-          const { x: ac_x, y: ac_y, z: ac_z } = player.getPos()!;
+          const { x: ac_x, y: ac_y, z: ac_z } = player.getPos();
           ac_dist = player.getDistanceFromPoint(
             ACInfo.get(player.id).acSetPosX,
             ACInfo.get(player.id).acSetPosY,
@@ -228,7 +228,7 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
           oldState <= PlayerStateEnum.PASSENGER
         ) {
           ACInfo.get(player.id).acLastModel = 0;
-          const pos = player.getPos()!;
+          const pos = player.getPos();
           ACInfo.get(player.id).acPosX = pos.x;
           ACInfo.get(player.id).acPosY = pos.y;
           ACInfo.get(player.id).acPosZ = pos.z;
@@ -390,7 +390,7 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
             Player.getInstance(ac_s)!.clearAnimations(true);
           }
           ACVehInfo.get(ac_vehId).acDriver = player.id;
-          const pos = player.getPos()!;
+          const pos = player.getPos();
           ACInfo.get(player.id).acPosX = pos.x;
           ACInfo.get(player.id).acPosY = pos.y;
           ACInfo.get(player.id).acPosZ = pos.z;

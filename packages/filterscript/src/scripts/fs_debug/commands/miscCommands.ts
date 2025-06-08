@@ -23,7 +23,7 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
       }
       const pInstance = Player.getInstance(id)!;
       const interior = pInstance.getInterior();
-      const pos = pInstance.getPos()!;
+      const pos = pInstance.getPos();
       let x = pos.x;
       let y = pos.y;
       let z = pos.z;
@@ -104,7 +104,7 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
       }
       const pInstance = Player.getInstance(id)!;
       const interior = player.getInterior();
-      const pos = player.getPos()!;
+      const pos = player.getPos();
       let x = pos.x;
       let y = pos.y;
       let z = pos.z;

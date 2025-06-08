@@ -54,7 +54,7 @@ function vehicleSelect(player: Player) {
       3,
     ).forPlayer(player);
 
-    const { z } = player.getPos()!;
+    const { z } = player.getPos();
 
     const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
     const angle = player.getFacingAngle();
@@ -106,7 +106,7 @@ function vehicleSelect(player: Player) {
       3,
     ).forPlayer(player);
 
-    const { z } = player.getPos()!;
+    const { z } = player.getPos();
 
     const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
     const angle = player.getFacingAngle();
@@ -191,7 +191,7 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
             "[ERROR]: Invalid MODELID/NAME",
           );
       }
-      const { z } = player.getPos()!;
+      const { z } = player.getPos();
       const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
       const a = player.getFacingAngle();
       curPlayerVehM.set(player, idx);
@@ -233,7 +233,7 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
       return next();
     }
     gPlayerStatus.set(player, SelStatEnum.VEHICLE);
-    const pos = player.getPos()!;
+    const pos = player.getPos();
     let { x, y } = pos;
     const z = pos.z;
     player.setCameraPos(x, y, z + 3.0);

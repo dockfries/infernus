@@ -265,7 +265,7 @@ export function registerCameraSelect(options?: IFsDebugOptions) {
     gPlayerStatus.set(player, SelStatEnum.CAMERA);
     player.toggleControllable(false);
 
-    const { x, y, z } = player.getPos()!;
+    const { x, y, z } = player.getPos();
 
     const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
 

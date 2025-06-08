@@ -482,7 +482,7 @@ export function registerObjectSelect(options?: IFsDebugOptions) {
     const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
     const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
 
-    const { x, y, z } = player.getPos()!;
+    const { x, y, z } = player.getPos();
 
     p_curPlayerCamD.POS_X = x;
     p_curPlayerCamD.POS_Y = y;

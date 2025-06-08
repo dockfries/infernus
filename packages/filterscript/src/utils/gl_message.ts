@@ -70,7 +70,7 @@ export function localMessage(
     player.setChatBubble(message, color, distance, CHAT_BUBBLE_TIME);
   }
 
-  const { x: fPlayerX, y: fPlayerY, z: fPlayerZ } = player.getPos()!;
+  const { x: fPlayerX, y: fPlayerY, z: fPlayerZ } = player.getPos();
 
   // for every player
   Player.getInstances().forEach((p) => {
@@ -110,7 +110,7 @@ export function talkMessage(
   // Send to originating player
   player.sendClientMessage(LOCAL_TALK_COLOR, msgWithName);
 
-  const { x: fPlayerX, y: fPlayerY, z: fPlayerZ } = player.getPos()!;
+  const { x: fPlayerX, y: fPlayerY, z: fPlayerZ } = player.getPos();
 
   // for every player
   Player.getInstances().forEach((i) => {

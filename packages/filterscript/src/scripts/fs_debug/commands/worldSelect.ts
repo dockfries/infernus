@@ -219,7 +219,7 @@ export function registerWorldSelect(options?: IFsDebugOptions) {
       return next();
     }
     gPlayerStatus.set(player, SelStatEnum.WORLD);
-    const pos = player.getPos()!;
+    const pos = player.getPos();
     let { x, y } = pos;
     const z = pos.z;
     player.setCameraPos(x, y, z + 40.0);

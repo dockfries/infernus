@@ -70,7 +70,7 @@ export function spawnVehicleInFrontOfPlayer(
   color1: number,
   color2: number,
 ) {
-  const { x, y, z } = player.getPos()!;
+  const { x, y, z } = player.getPos();
 
   let facing = player.getFacingAngle();
 

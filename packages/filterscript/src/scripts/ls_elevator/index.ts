@@ -161,7 +161,7 @@ function elevator_Destroy() {
 function elevator_OpenDoors() {
   // Opens the elevator's doors.
 
-  const { y, z } = obj_ElevatorDoors[0].getPos()!;
+  const { y, z } = obj_ElevatorDoors[0].getPos();
   obj_ElevatorDoors[0].move(
     constants.X_DOOR_L_OPENED,
     y,
@@ -183,7 +183,7 @@ function elevator_CloseDoors() {
 
   if (elevatorState === constants.ELEVATOR_STATE_MOVING) return false;
 
-  const { y, z } = obj_ElevatorDoors[0].getPos()!;
+  const { y, z } = obj_ElevatorDoors[0].getPos();
 
   obj_ElevatorDoors[0].move(
     constants.X_DOOR_CLOSED,
@@ -461,7 +461,7 @@ export const LSElevator: IFilterScript = {
     const onMoved = DynamicObjectEvent.onMoved(({ object, next }) => {
       for (let i = 0; i < obj_FloorDoors.length; i++) {
         if (object === obj_FloorDoors[i][0]) {
-          const { x } = obj_FloorDoors[i][0].getPos()!;
+          const { x } = obj_FloorDoors[i][0].getPos();
           if (x < constants.X_DOOR_L_OPENED - 0.5) {
             // Some floor doors have shut, move the elevator to next floor in queue:
             elevator_MoveToFloor(elevatorQueue[0]);
@@ -482,7 +482,7 @@ export const LSElevator: IFilterScript = {
         elevator_OpenDoors();
         floor_OpenDoors(elevatorFloor);
 
-        const { z } = obj_Elevator.getPos()!;
+        const { z } = obj_Elevator.getPos();
         label_Elevator = new Dynamic3DTextLabel({
           text: "{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to use elevator",
           color: 0xccccccaa,
@@ -512,7 +512,7 @@ export const LSElevator: IFilterScript = {
     const onKeyStateChange = PlayerEvent.onKeyStateChange(
       ({ player, newKeys, next }) => {
         if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
-          const pos = player.getPos()!;
+          const pos = player.getPos();
           if (
             pos.y < -1301.4 &&
             pos.y > -1303.2417 &&

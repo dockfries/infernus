@@ -97,7 +97,7 @@ export function registerSkinSelect(options?: IFsDebugOptions) {
       return next();
     }
     gPlayerStatus.set(player, SelStatEnum.SKIN);
-    const pos = player.getPos()!;
+    const pos = player.getPos();
     let { x, y } = pos;
     const { z } = pos;
     player.setCameraLookAt(x, y, z, CameraCutStylesEnum.CUT);

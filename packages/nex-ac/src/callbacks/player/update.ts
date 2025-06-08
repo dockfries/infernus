@@ -85,7 +85,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
             ACInfo.get(player.id).acSet[11] = -1;
         }
       }
-      const { x: ac_pX, y: ac_pY, z: ac_pZ } = player.getPos()!;
+      const { x: ac_pX, y: ac_pY, z: ac_pZ } = player.getPos();
       if (ac_gtc - ACInfo.get(player.id).acGtc[6] > ac_gpp) {
         if (ACInfo.get(player.id).acSetWeapon[ac_s] > 0) {
           if (

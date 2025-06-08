@@ -171,7 +171,7 @@ function cancelFlyMode(player: Player, isConnected = true) {
 
 function flyMode(player: Player) {
   // Create an invisible object for the players camera to be attached to
-  const { x, y, z } = player.getPos()!;
+  const { x, y, z } = player.getPos();
 
   const clip = noClipData.get(player)!;
 

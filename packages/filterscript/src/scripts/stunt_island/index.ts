@@ -177,7 +177,7 @@ export const StuntIsland: IStuntIsLandFS = {
         if (!siRaceCp.has(player)) return next();
         siRaceCp.get(player)!.destroy();
         // Get the player pos
-        const { x, y, z } = player.getPos()!;
+        const { x, y, z } = player.getPos();
 
         // Increase current checkpoint
         siPlayerCP.set(player, (siPlayerCP.get(player) || 0) + 1);
@@ -493,7 +493,7 @@ export const StuntIsland: IStuntIsLandFS = {
         const veh = player.getVehicle()!;
 
         // Get Vehicle Pos
-        const { x, y, z } = veh.getPos()!;
+        const { x, y, z } = veh.getPos();
         const a = veh.getZAngle();
 
         // Flip the vehicle

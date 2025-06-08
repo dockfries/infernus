@@ -350,7 +350,7 @@ function propertyCommand(
     return 1;
   }
 
-  const { x, y, z } = player.getPos()!;
+  const { x, y, z } = player.getPos();
   const a = player.getFacingAngle();
 
   if (!subcommand[0]) {
@@ -603,7 +603,7 @@ export const GlProperty: IFilterScript = {
           return next();
         }
         if (player.getInterior() === 0) {
-          const pos = player.getPos()!;
+          const pos = player.getPos();
           plPos.set(player, [pos.x, pos.y, pos.z]);
           plInt.set(player, 0);
         }
