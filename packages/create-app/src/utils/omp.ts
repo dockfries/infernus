@@ -29,11 +29,13 @@ export async function addOpenMp(versionOrRelease: any, isRemote: boolean) {
       };
     });
 
-    const selectedAssetIdx = (await select({
-      message: "Multiple assets found, please select one",
-      choices,
-      default: 0,
-    })) as number;
+    const selectedAssetIdx = assetsByEnv.length
+      ? ((await select({
+          message: "Please select one open.mp asset",
+          choices,
+          default: 0,
+        })) as number)
+      : 0;
 
     const assetByEnv = assetsByEnv[selectedAssetIdx];
 
