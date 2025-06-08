@@ -1,8 +1,8 @@
 // GRAND LARCENY Property creation and management script
 // by damospiderman 2008
 
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import type { Player, IFilterScript } from "@infernus/core";
 import {
   DynamicPickup,
