@@ -1,6 +1,5 @@
 import path from "node:path";
 import decompress from "decompress";
-import semver, { type SemVer } from "semver";
 import fs from "fs-extra";
 import fg from "fast-glob";
 import { select } from "@inquirer/prompts";
@@ -13,13 +12,17 @@ import {
   writeOmpConfig,
   depsPath,
 } from "./config.js";
-import { downloadFile, getOctoKit, isWindows, ompRepository } from "./index.js";
+import { downloadFile, getRepoRelease, getTimeDiff } from "./api.js";
 import type {
   AddDepsOptions,
   LocalConfig,
   LockFileContent,
   PawnJson,
 } from "../types/index.js";
+import { minSatisfying, validRange } from "./semver.js";
+import { addOpenMp, removeOpenMp } from "./omp.js";
+import { getPawnJson, getIncludePath, getPlugOrCompPath } from "./pawn.js";
+import { ompRepository, isWindows } from "../constants/index.js";
 
 async function hasGlobalDepTemp(depVersionPath: string) {
   if (!fs.existsSync(depVersionPath)) return;
@@ -118,8 +121,6 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
   const legacyPluginsSet = new Set([...ompConfig.pawn.legacy_plugins]);
 
-  const octokit = await getOctoKit();
-
   for (const dep of deps) {
     const [name, version = "*"] = dep.split("@");
 
@@ -127,7 +128,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
     const isComponent =
       args.component === true || !!lockFile.dependencies?.[name]?.component;
-    const pluginFolderPath = getPluginOrComponentPath(isComponent);
+    const pluginFolderPath = getPlugOrCompPath(isComponent);
 
     const [owner, repo] = name.split("/");
 
@@ -150,65 +151,11 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
       }
     }
 
-    let matchedRelease: any = null;
+    const matchedRelease: any = null;
     let pawnJson: null | PawnJson = null;
 
     if (!localCacheFolder) {
-      const isFixedVersion = /^\d+\.\d+\.\d+(-[a-z]?)?$/.test(version);
-      const getReleaseRoute = "GET /repos/{owner}/{repo}/releases/tags/{tag}";
-      const isStartsWithV = version.startsWith("v");
-
-      if (isFixedVersion) {
-        try {
-          matchedRelease = (
-            await octokit.request(getReleaseRoute, {
-              owner,
-              repo,
-              tag: isStartsWithV ? version : `v${version}`,
-            })
-          ).data;
-        } catch (err: any) {
-          if (err.status === 404 && !isStartsWithV) {
-            matchedRelease = (
-              await octokit.request(getReleaseRoute, {
-                owner,
-                repo,
-                tag: version,
-              })
-            ).data;
-          }
-        }
-      } else {
-        let hasNext = true;
-
-        let releaseUrl = `/repos/${owner}/${repo}/releases`;
-
-        while (!matchedRelease && hasNext) {
-          const rawResponse = await getPaginatedData(releaseUrl);
-          const releases = rawResponse.response.data;
-
-          releaseUrl = rawResponse.url;
-          hasNext = rawResponse.hasNext;
-
-          const versions = releases.map((release: any) => release.tag_name);
-
-          if (!versions.length) {
-            hasNext = false;
-            break;
-          }
-
-          if (!version || version === "*") {
-            matchedRelease = releases[0];
-            break;
-          } else {
-            const matchedVersion = minSatisfying(versions, version);
-            if (matchedVersion) {
-              const idx = versions.indexOf(matchedVersion);
-              matchedRelease = releases[idx];
-            }
-          }
-        }
-      }
+      const matchedRelease = await getRepoRelease(owner, repo, version);
       if (!matchedRelease)
         throw new Error(`not found satisfactory deps: ${name}`);
 
@@ -604,7 +551,7 @@ export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
 
       for (const resource of platformResources) {
         const isComponent = !!lockFile.dependencies?.[depName]?.component;
-        const pluginFolderPath = getPluginOrComponentPath(isComponent);
+        const pluginFolderPath = getPlugOrCompPath(isComponent);
 
         if (resource.archive) {
           if (resource.includes) {
@@ -700,100 +647,6 @@ export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
   console.log(`Done in ${diff}s`);
 }
 
-async function getPawnJson(owner: string, repo: string, ref: string) {
-  const localPawnJsonPath = path.resolve(
-    depsPath,
-    owner,
-    repo,
-    ref,
-    "pawn.json",
-  );
-
-  try {
-    return (await fs.readJson(localPawnJsonPath)) as PawnJson;
-  } catch {
-    /* empty */
-  }
-
-  const octokit = await getOctoKit();
-
-  const getContentRoute = "GET /repos/{owner}/{repo}/contents/{path}";
-
-  const options = {
-    owner,
-    repo,
-    path: "pawn.json",
-    headers: {
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  };
-
-  let response: any;
-  try {
-    response = await octokit.request(getContentRoute, { ...options, ref });
-  } catch (err: any) {
-    if (err.status === 404) {
-      response = await octokit.request(getContentRoute, options);
-    }
-  }
-
-  if (response.status !== 200 && response.status !== 302)
-    throw `Failed to get ${owner}/${repo} ${ref} pawn.json`;
-
-  const pawnJsonStr = Buffer.from(response.data.content, "base64").toString();
-  const pawnJson: PawnJson = JSON.parse(pawnJsonStr);
-  return pawnJson;
-}
-
-function parsePaginatedData(data: any) {
-  if (Array.isArray(data)) return data;
-  if (!data) return [];
-  delete data.incomplete_results;
-  delete data.repository_selection;
-  delete data.total_count;
-  const namespaceKey = Object.keys(data)[0];
-  data = data[namespaceKey];
-  return data;
-}
-
-async function getPaginatedData(url: string) {
-  const octokit = await getOctoKit();
-  const nextPattern = /(?<=<)([\S]*)(?=>; rel="Next")/i;
-  const response = await octokit.request(`GET ${url}`, {
-    headers: {
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
-  response.data = parsePaginatedData(response.data);
-  const linkHeader = response.headers.link;
-  let hasNext = false;
-  if (linkHeader) {
-    hasNext = linkHeader.includes(`rel="next"`);
-    if (hasNext) url = linkHeader.match(nextPattern)![0];
-  }
-  return { response, url, hasNext };
-}
-
-export async function getIncludePath() {
-  const cwd = process.cwd();
-
-  const include = path.resolve(cwd, "include");
-  const qawno = path.resolve(cwd, "qawno/include");
-  const pawno = path.resolve(cwd, "pawno/include");
-
-  const hasQawno = fs.existsSync(qawno);
-  if (hasQawno) return qawno;
-
-  const hasPawno = fs.existsSync(pawno);
-  if (hasPawno) return pawno;
-
-  return include;
-}
-
-function getPluginOrComponentPath(isComponent: boolean) {
-  return path.resolve(process.cwd(), isComponent ? "components" : "plugins");
-}
-
 function cleanInvalidLockDeps(config: LocalConfig, lockFile: LockFileContent) {
   if (!config.dependencies || !lockFile || !lockFile.dependencies) return 0;
 
@@ -809,95 +662,6 @@ function cleanInvalidLockDeps(config: LocalConfig, lockFile: LockFileContent) {
   return count;
 }
 
-async function addOpenMp(versionOrRelease: any, isRemote: boolean) {
-  let globalOmpPath: string;
-
-  if (isRemote) {
-    const release = versionOrRelease;
-    const version = release.tag_name;
-    globalOmpPath = path.resolve(depsPath, ompRepository, version);
-
-    await fs.ensureDir(globalOmpPath);
-
-    const assets = release.assets
-      .filter((asset: any) => !["dynssl", "debug"].includes(asset.name))
-      .map((asset: any) => {
-        return {
-          name: asset.name,
-          browser_download_url: asset.browser_download_url,
-        };
-      });
-
-    // todo: x86 or x64?
-    const downloadAssetByEnv = assets.find((asset: any) => {
-      return asset.name.endsWith(isWindows ? "zip" : "tar.gz");
-    });
-
-    const downloadOmpPath =
-      globalOmpPath + "." + path.extname(downloadAssetByEnv.name);
-
-    console.log(`download dep: ${ompRepository} ${version}`);
-    const ompTmpPath = await downloadFile(
-      downloadAssetByEnv.browser_download_url,
-      downloadOmpPath,
-    );
-    await decompress(ompTmpPath, globalOmpPath, { strip: 1 });
-    await fs.remove(ompTmpPath);
-  } else {
-    const version = versionOrRelease;
-    globalOmpPath = path.resolve(depsPath, ompRepository, version);
-  }
-  await fs.copy(globalOmpPath, process.cwd(), { overwrite: false });
-}
-
-async function removeOpenMp(globalPath: string) {
-  if (!globalPath.includes(depsPath)) {
-    throw new Error(
-      "Due to security policy, your path may be redirected to a non-cached path!",
-    );
-  }
-  const files = await fg("**", {
-    cwd: globalPath,
-    ignore: ["config.json", "bans.json", "gamemodes/**"],
-  });
-  return Promise.all(
-    files.map((file) => {
-      return fs.remove(path.resolve(process.cwd(), file));
-    }),
-  );
-}
-
-function minSatisfying(versions: string[], range: string) {
-  if (range === "*") {
-    const allVersion = versions
-      .map((version) => [version, semver.coerce(version)])
-      .filter((s) => Boolean(s[1])) as [string, SemVer][];
-    const descVersions = semver.rsort(allVersion.map((s) => s[1]));
-    if (!descVersions.length) return null;
-    const minSatisfying = allVersion.find(
-      (s) => s[1].version === descVersions[0].version,
-    );
-    return minSatisfying ? minSatisfying[0] : null;
-  }
-
-  const satisfy = semver.minSatisfying(versions, range);
-  if (satisfy) return satisfy;
-  const coerceRange = semver.coerce(range);
-  if (!coerceRange) return null;
-  return versions.find((version) => {
-    const coerceVersion = semver.coerce(version);
-    if (!coerceVersion) return;
-    return semver.minSatisfying([coerceVersion], coerceRange.version);
-  });
-}
-
-function validRange(range: string) {
-  if (range === "*") return true;
-  const coerceRange = semver.coerce(range);
-  if (!coerceRange) return false;
-  return semver.validRange(coerceRange.version);
-}
-
 function movePluginToLast(arr: string[], targetItem: string) {
   const targetIndex = arr.findIndex((item) => item === targetItem);
   if (targetIndex !== -1) {
@@ -905,10 +669,4 @@ function movePluginToLast(arr: string[], targetItem: string) {
     arr.push(targetItem);
   }
   return arr;
-}
-
-function getTimeDiff(start: number, end: number) {
-  const timeDiff = end - start;
-  const seconds = (timeDiff / 1000).toFixed(1);
-  return seconds;
 }

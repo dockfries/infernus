@@ -1,25 +1,15 @@
 import path from "node:path";
-import os from "node:os";
 import axios from "axios";
-import { HttpsProxyAgent } from "https-proxy-agent";
 import fs from "fs-extra";
 import cliProgress from "cli-progress";
 import chalk from "chalk";
 import type { OctokitOptions } from "@octokit/core";
 import { Octokit } from "@octokit/core";
 import { readGlobalConfig } from "./config";
+import { httpsAgent } from "../constants";
+import { minSatisfying } from "./semver";
 
 let delayTry = 500;
-
-export const isWindows = os.platform() === "win32";
-
-export const cwd = process.cwd();
-
-export const ompRepository = "openmultiplayer/open.mp";
-
-export const httpsAgent = process.env.https_proxy
-  ? new HttpsProxyAgent(process.env.https_proxy)
-  : null;
 
 const request = axios.create({ httpsAgent });
 
@@ -138,4 +128,107 @@ export async function downloadGitRepo(
   const repoFileUrl = `https://github.com/${owner}/${repo}/archive/refs/heads/${branch}.zip`;
   console.log(`download repo: ${owner}/${repo}/${branch}`);
   return await downloadFile(repoFileUrl, path.resolve(filePath, `${repo}.zip`));
+}
+
+function parsePaginatedData(data: any) {
+  if (Array.isArray(data)) return data;
+  if (!data) return [];
+  delete data.incomplete_results;
+  delete data.repository_selection;
+  delete data.total_count;
+  const namespaceKey = Object.keys(data)[0];
+  data = data[namespaceKey];
+  return data;
+}
+
+export async function getPaginatedData(url: string) {
+  const octokit = await getOctoKit();
+  const nextPattern = /(?<=<)([\S]*)(?=>; rel="Next")/i;
+  const response = await octokit.request(`GET ${url}`, {
+    headers: {
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  });
+  response.data = parsePaginatedData(response.data);
+  const linkHeader = response.headers.link;
+  let hasNext = false;
+  if (linkHeader) {
+    hasNext = linkHeader.includes(`rel="next"`);
+    if (hasNext) url = linkHeader.match(nextPattern)![0];
+  }
+  return { response, url, hasNext };
+}
+
+export function getTimeDiff(start: number, end: number) {
+  const timeDiff = end - start;
+  const seconds = (timeDiff / 1000).toFixed(1);
+  return seconds;
+}
+
+export async function getRepoRelease(
+  owner: string,
+  repo: string,
+  version: string,
+) {
+  const octokit = await getOctoKit();
+
+  let matchedRelease = null;
+
+  const getReleaseRoute = "GET /repos/{owner}/{repo}/releases/tags/{tag}";
+  const isFixedVersion = /^\d+\.\d+\.\d+(-[a-z]?)?$/.test(version);
+  const isStartsWithV = version.startsWith("v");
+
+  if (isFixedVersion) {
+    try {
+      matchedRelease = (
+        await octokit.request(getReleaseRoute, {
+          owner,
+          repo,
+          tag: isStartsWithV ? version : `v${version}`,
+        })
+      ).data;
+    } catch (err: any) {
+      if (err.status === 404 && !isStartsWithV) {
+        matchedRelease = (
+          await octokit.request(getReleaseRoute, {
+            owner,
+            repo,
+            tag: version,
+          })
+        ).data;
+      }
+    }
+  } else {
+    let hasNext = true;
+
+    let releaseUrl = `/repos/${owner}/${repo}/releases`;
+
+    while (!matchedRelease && hasNext) {
+      const rawResponse = await getPaginatedData(releaseUrl);
+      const releases = rawResponse.response.data;
+
+      releaseUrl = rawResponse.url;
+      hasNext = rawResponse.hasNext;
+
+      const versions = releases.map((release: any) => release.tag_name);
+
+      if (!versions.length) {
+        hasNext = false;
+        break;
+      }
+
+      if (!version || version === "*") {
+        matchedRelease = releases[0];
+        break;
+      } else {
+        const matchedVersion = minSatisfying(versions, version);
+        if (matchedVersion) {
+          const idx = versions.indexOf(matchedVersion);
+          matchedRelease = releases[idx];
+        }
+      }
+    }
+  }
+
+  return matchedRelease;
 }

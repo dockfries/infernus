@@ -17,7 +17,7 @@ import updateNotifier from "update-notifier";
 
 import { execa } from "execa";
 
-import { downloadGitRepo } from "./utils/index";
+import { downloadGitRepo } from "./utils/api";
 
 import {
   addDeps,
