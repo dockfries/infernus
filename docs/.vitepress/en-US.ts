@@ -36,7 +36,7 @@ function nav(): DefaultTheme.NavItem[] {
         },
         {
           text: "samp-node",
-          link: "https://github.com/AmyrAhmady/samp-node",
+          link: "https://github.com/dockfries/samp-node",
         },
         {
           text: "Streamer",

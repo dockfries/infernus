@@ -40,7 +40,7 @@ export const zh_CN = defineConfig({
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: "首页", link: "/zh-CN/" },
-    { text: "Open Multiplayer", link: "https://open.mp/zh-cn" },
+    { text: "Open Multiplayer", link: "https://open.mp/zh-CN" },
     {
       text: "插件",
       items: [
@@ -50,7 +50,7 @@ function nav(): DefaultTheme.NavItem[] {
         },
         {
           text: "samp-node",
-          link: "https://github.com/AmyrAhmady/samp-node",
+          link: "https://github.com/dockfries/samp-node",
         },
         {
           text: "Streamer",
