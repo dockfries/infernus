@@ -30,7 +30,7 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://alternight.com.br/"><img src="https://avatars.githubusercontent.com/u/109999325?v=4?s=100" width="100px;" alt="Drylian"/><br /><sub><b>Drylian</b></sub></a><br /><a href="#example-drylian" title="Examples">💡</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/christhefrog"><img src="https://avatars.githubusercontent.com/u/47784402?v=4?s=100" width="100px;" alt="Chris👋"/><br /><sub><b>Chris👋</b></sub></a><br /><a href="#ideas-christhefrog" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kchmie"><img src="https://avatars.githubusercontent.com/u/47784402?v=4?s=100" width="100px;" alt="Chris"/><br /><sub><b>Chris</b></sub></a><br /><a href="#ideas-kchmie" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
   </tbody>
 </table>
