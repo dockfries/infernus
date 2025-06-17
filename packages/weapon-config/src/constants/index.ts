@@ -28,15 +28,15 @@ export const g_HitRejectReasons = new I18n("en_US", {
   },
 }).$t;
 
-export const wc_PLAYER_SYNC = 207;
-export const wc_VEHICLE_SYNC = 200;
-export const wc_PASSENGER_SYNC = 211;
-export const wc_AIM_SYNC = 203;
+export const WC_PLAYER_SYNC = 207;
+export const WC_VEHICLE_SYNC = 200;
+export const WC_PASSENGER_SYNC = 211;
+export const WC_AIM_SYNC = 203;
 
-export const wc_RPC_CLEAR_ANIMATIONS = 87;
-export const wc_RPC_REQUEST_SPAWN = 129;
+export const WC_RPC_CLEAR_ANIMATIONS = 87;
+export const WC_RPC_REQUEST_SPAWN = 129;
 
-export const wc_RPC_SET_POS_FIND_Z = 13;
+export const WC_RPC_SET_POS_FIND_Z = 13;
 
 export const s_ValidDamageGiven = [
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,

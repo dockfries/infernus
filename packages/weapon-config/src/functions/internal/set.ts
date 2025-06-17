@@ -7,7 +7,7 @@ import {
 } from "@infernus/core";
 import { BitStream, PacketRpcValueType } from "@infernus/raknet";
 import { innerWeaponConfig, innerGameModeConfig } from "../../config";
-import { wc_RPC_REQUEST_SPAWN } from "../../constants";
+import { WC_RPC_REQUEST_SPAWN } from "../../constants";
 import {
   orig_playerMethods,
   orig_PlayerTextDrawTextSize,
@@ -364,7 +364,7 @@ export function spawnPlayerForWorld(player: Player) {
 
   Player.getInstances().forEach((i) => {
     if (i !== player) {
-      bs.sendRPC(i, wc_RPC_REQUEST_SPAWN);
+      bs.sendRPC(i, WC_RPC_REQUEST_SPAWN);
     }
   });
 

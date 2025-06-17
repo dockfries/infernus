@@ -1,6 +1,6 @@
 import { Player, SpecialActionsEnum, PlayerStateEnum } from "@infernus/core";
 import { BitStream, PacketRpcValueType, OnFootSync } from "@infernus/raknet";
-import { wc_PLAYER_SYNC } from "../../constants";
+import { WC_PLAYER_SYNC } from "../../constants";
 import { orig_playerMethods } from "../../hooks/origin";
 import {
   lastSyncData,
@@ -27,7 +27,7 @@ export function sendLastSyncPacket(
   const bs = new BitStream();
 
   bs.writeValue(
-    [PacketRpcValueType.UInt8, wc_PLAYER_SYNC],
+    [PacketRpcValueType.UInt8, WC_PLAYER_SYNC],
     [PacketRpcValueType.UInt16, player.id],
   );
 

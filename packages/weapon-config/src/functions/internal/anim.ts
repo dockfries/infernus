@@ -1,6 +1,6 @@
 import { Player } from "@infernus/core";
 import { BitStream, PacketRpcValueType } from "@infernus/raknet";
-import { wc_RPC_CLEAR_ANIMATIONS } from "../../constants";
+import { WC_RPC_CLEAR_ANIMATIONS } from "../../constants";
 import { orig_playerMethods } from "../../hooks/origin";
 
 export function clearAnimationsForPlayer(player: Player, forPlayer: Player) {
@@ -14,7 +14,7 @@ export function clearAnimationsForPlayer(player: Player, forPlayer: Player) {
   const bs = new BitStream();
 
   bs.writeValue([PacketRpcValueType.UInt16, player.id]);
-  bs.sendRPC(forPlayer, wc_RPC_CLEAR_ANIMATIONS);
+  bs.sendRPC(forPlayer, WC_RPC_CLEAR_ANIMATIONS);
   bs.delete();
 
   return 1;

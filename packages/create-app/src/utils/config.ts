@@ -5,7 +5,7 @@ import type { LocalConfig, GlobalConfig, LockFileContent } from "../types";
 
 const globalDir = path.resolve(os.homedir(), ".infernus");
 const globalConfigPath = path.resolve(globalDir, "config.json");
-export const depsPath = path.resolve(os.homedir(), ".infernus", "dependencies");
+export const depsPath = path.resolve(globalDir, "dependencies");
 
 fs.ensureDirSync(globalDir);
 fs.ensureDirSync(depsPath);

@@ -8,11 +8,11 @@ import {
   PassengerSync,
 } from "@infernus/raknet";
 import {
-  wc_AIM_SYNC,
-  wc_PASSENGER_SYNC,
-  wc_PLAYER_SYNC,
-  wc_RPC_SET_POS_FIND_Z,
-  wc_VEHICLE_SYNC,
+  WC_AIM_SYNC,
+  WC_PASSENGER_SYNC,
+  WC_PLAYER_SYNC,
+  WC_RPC_SET_POS_FIND_Z,
+  WC_VEHICLE_SYNC,
 } from "../constants";
 import {
   blockAdminTeleport,
@@ -29,7 +29,7 @@ import {
 import { innerGameModeConfig } from "../config";
 import { isBulletWeapon } from "../functions/public/is";
 
-IPacket(wc_PLAYER_SYNC, ({ playerId, bs, next }) => {
+IPacket(WC_PLAYER_SYNC, ({ playerId, bs, next }) => {
   const onFootSync = new OnFootSync(bs);
   let onFootData = onFootSync.readSync()!;
 
@@ -129,7 +129,7 @@ IPacket(wc_PLAYER_SYNC, ({ playerId, bs, next }) => {
   return next();
 });
 
-IPacket(wc_VEHICLE_SYNC, ({ playerId, bs, next }) => {
+IPacket(WC_VEHICLE_SYNC, ({ playerId, bs, next }) => {
   const inCarSync = new InCarSync(bs);
   const inCarData = inCarSync.readSync()!;
 
@@ -146,7 +146,7 @@ IPacket(wc_VEHICLE_SYNC, ({ playerId, bs, next }) => {
   return next();
 });
 
-IPacket(wc_PASSENGER_SYNC, ({ playerId, bs, next }) => {
+IPacket(WC_PASSENGER_SYNC, ({ playerId, bs, next }) => {
   const passengerSync = new PassengerSync(bs);
   const passengerData = passengerSync.readSync()!;
 
@@ -163,7 +163,7 @@ IPacket(wc_PASSENGER_SYNC, ({ playerId, bs, next }) => {
   return next();
 });
 
-IPacket(wc_AIM_SYNC, ({ playerId, bs, next }) => {
+IPacket(WC_AIM_SYNC, ({ playerId, bs, next }) => {
   const aimSync = new AimSync(bs);
   const aimData = aimSync.readSync()!;
   if (
@@ -185,7 +185,7 @@ IPacket(wc_AIM_SYNC, ({ playerId, bs, next }) => {
   return next();
 });
 
-ORPC(wc_RPC_SET_POS_FIND_Z, ({ playerId, next }) => {
+ORPC(WC_RPC_SET_POS_FIND_Z, ({ playerId, next }) => {
   if (blockAdminTeleport.get(playerId)) {
     blockAdminTeleport.set(playerId, false);
     return 0;
