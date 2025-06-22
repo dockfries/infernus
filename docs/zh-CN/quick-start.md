@@ -26,11 +26,24 @@ pnpm dlx @infernus/create-app@latest create
 
 `@infernus/create-app` 是一个类似于`sampctl`的工具，尝试通过解析`pawn.json`规则来管理包依赖，你可以用它来简单的管理插件或是`open.mp`基座依赖。
 
+#### 缓存
+
+:::warning
+通常`pnpm dlx`产生的缓存作用过大，建议时常手动删除`dlx`缓存，否则即使您定义了`@latest`也仍然是过时的版本。
+:::
+
+- windows: `C:\Users\%USERNAME%\AppData\Local\pnpm-cache\dlx`
+- linux: `~/.cache/pnpm/dlx`
+
+[点击查看缓存目录](https://pnpm.io/settings#cachedir)
+
 #### 示例
 
 ```sh
 # 全局安装cli工具
 pnpm add @infernus/create-app -g
+# 如果已全局安装
+pnpm update @infernus/create-app -g
 
 # 创建一个项目
 infernus create <appName>

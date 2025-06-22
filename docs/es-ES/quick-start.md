@@ -26,17 +26,30 @@ Debido a que el CLI llama internamente al `github HTTP API`, si tu entorno de re
 
 `@infernus/create-app` es una herramienta similar a `sampctl` que gestiona las dependencias de paquetes analizando las reglas de `pawn.json`. Puede utilizarlo para simplemente administrar dependencias de base de plugins o `open.mp`.
 
+#### Caché
+
+:::warning
+Generalmente, la caché generada por `pnpm dlx` es demasiado persistente. Se recomienda eliminar manualmente la caché de `dlx` periódicamente. De lo contrario, incluso si especifica `@latest`, podría ejecutar versiones desactualizadas.
+:::
+
+- Windows: `C:\Users\%USERNAME%\AppData\Local\pnpm-cache\dlx`
+- Linux: `~/.cache/pnpm/dlx`
+
+[Haga clic para ver el directorio de caché](https://pnpm.io/settings#cachedir)
+
 #### Ejemplo
 
 ```sh
 # Instalar la herramienta CLI globalmente
 pnpm add @infernus/create-app -g
+# Si está instalado globalmente
+pnpm update @infernus/create-app -g
 
 # Crear un proyecto
 infernus create <nombre de la aplicación>
 
-# Instalar una o más dependencias, 
-# todas las dependencias de las operaciones pueden ir seguidas de un número de versión, 
+# Instalar una o más dependencias,
+# todas las dependencias de las operaciones pueden ir seguidas de un número de versión,
 # es similar a la sintaxis de los paquetes npm.
 infernus add openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
 # Instalar una componente dependencia
