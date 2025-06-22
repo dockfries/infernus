@@ -4,7 +4,7 @@ import decompress from "decompress";
 import fs from "fs-extra";
 import fg from "fast-glob";
 import { downloadFile } from "./api";
-import { depsPath } from "./config";
+import { GLOBAL_DEPS_PATH } from "./config";
 import { ompRepository, isWindows } from "../constants";
 
 export async function addOpenMp(versionOrRelease: any, isRemote: boolean) {
@@ -13,7 +13,7 @@ export async function addOpenMp(versionOrRelease: any, isRemote: boolean) {
   if (isRemote) {
     const release = versionOrRelease;
     const version = release.tag_name;
-    globalOmpPath = path.resolve(depsPath, ompRepository, version);
+    globalOmpPath = path.resolve(GLOBAL_DEPS_PATH, ompRepository, version);
 
     await fs.ensureDir(globalOmpPath);
 
@@ -51,13 +51,13 @@ export async function addOpenMp(versionOrRelease: any, isRemote: boolean) {
     await fs.remove(ompTmpPath);
   } else {
     const version = versionOrRelease;
-    globalOmpPath = path.resolve(depsPath, ompRepository, version);
+    globalOmpPath = path.resolve(GLOBAL_DEPS_PATH, ompRepository, version);
   }
   await fs.copy(globalOmpPath, process.cwd(), { overwrite: false });
 }
 
 export async function removeOpenMp(globalPath: string) {
-  if (!globalPath.includes(depsPath)) {
+  if (!globalPath.includes(GLOBAL_DEPS_PATH)) {
     throw new Error(
       "Due to security policy, your path may be redirected to a non-cached path!",
     );

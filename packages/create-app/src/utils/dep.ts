@@ -10,7 +10,8 @@ import {
   writeLocalConfig,
   writeLockFile,
   writeOmpConfig,
-  depsPath,
+  GLOBAL_DEPS_PATH,
+  INF_CONFIG_NAME,
 } from "./config.js";
 import { downloadFile, getRepoRelease, getTimeDiff } from "./api.js";
 import type {
@@ -36,15 +37,15 @@ async function hasGlobalDepTemp(depVersionPath: string) {
 
 export async function cleanAllGlobalDeps() {
   try {
-    const files = await fs.readdir(depsPath);
+    const files = await fs.readdir(GLOBAL_DEPS_PATH);
 
     const depCount = files.filter((file) => {
-      const fileOrDirPath = path.join(depsPath, file);
+      const fileOrDirPath = path.join(GLOBAL_DEPS_PATH, file);
       const stats = fs.statSync(fileOrDirPath);
       return stats.isDirectory();
     }).length;
 
-    await fs.emptyDir(depsPath);
+    await fs.emptyDir(GLOBAL_DEPS_PATH);
 
     console.log(`cleared ${depCount} global dependency caches`);
     return depCount;
@@ -61,7 +62,7 @@ export async function cleanGlobalDeps(deps?: string[], onlyTmp = true) {
     const [name, version = "*"] = dep.split("@");
     const [owner, repo] = name.split("/");
 
-    const depPath = path.resolve(depsPath, owner, repo);
+    const depPath = path.resolve(GLOBAL_DEPS_PATH, owner, repo);
 
     const isExist = fs.existsSync(depPath);
 
@@ -135,7 +136,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     let localCacheFolder = null;
     let localCacheVersion = null;
 
-    const depAllVersionPath = path.resolve(depsPath, name);
+    const depAllVersionPath = path.resolve(GLOBAL_DEPS_PATH, name);
     const isExistDepAllVersion = fs.existsSync(depAllVersionPath);
     if (isExistDepAllVersion) {
       const files = await fs.readdir(depAllVersionPath);
@@ -151,17 +152,17 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
       }
     }
 
-    const matchedRelease: any = null;
+    let matchedRelease: any = null;
     let pawnJson: null | PawnJson = null;
 
     if (!localCacheFolder) {
-      const matchedRelease = await getRepoRelease(owner, repo, version);
+      matchedRelease = await getRepoRelease(owner, repo, version);
       if (!matchedRelease)
         throw new Error(`not found satisfactory deps: ${name}`);
 
       if (isUpdate) {
         const cacheFolder = path.resolve(
-          depsPath,
+          GLOBAL_DEPS_PATH,
           name,
           matchedRelease.tag_name,
         );
@@ -207,7 +208,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
     const finalVersion = localCacheVersion || matchedRelease!.tag_name;
 
-    const depVersionPath = path.resolve(depsPath, name, finalVersion);
+    const depVersionPath = path.resolve(GLOBAL_DEPS_PATH, name, finalVersion);
 
     const pawnJsonPath = path.resolve(depVersionPath, "pawn.json");
     await fs.ensureFile(pawnJsonPath);
@@ -436,6 +437,10 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
         throw new Error(`invalid deps version: ${depName}@${depVersion}`);
       return `${depName}@${depVersion}`;
     });
+
+    if (!_deps || !_deps.length) {
+      throw new Error(`no deps found, pls check ${INF_CONFIG_NAME}`);
+    }
   } else {
     if (!_deps) return;
 
@@ -531,7 +536,11 @@ export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
       const version = lockFile.dependencies[depName].version;
       if (!version) continue;
 
-      const globalVersionPath = path.resolve(depsPath, depName, version);
+      const globalVersionPath = path.resolve(
+        GLOBAL_DEPS_PATH,
+        depName,
+        version,
+      );
 
       if (depName === ompRepository) {
         await removeOpenMp(globalVersionPath);

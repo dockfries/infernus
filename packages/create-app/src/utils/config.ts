@@ -5,10 +5,13 @@ import type { LocalConfig, GlobalConfig, LockFileContent } from "../types";
 
 const globalDir = path.resolve(os.homedir(), ".infernus");
 const globalConfigPath = path.resolve(globalDir, "config.json");
-export const depsPath = path.resolve(globalDir, "dependencies");
+
+export const GLOBAL_DEPS_PATH = path.resolve(globalDir, "dependencies");
+export const INF_CONFIG_NAME = "infernus.json";
+export const INF_LOCK_NAME = "infernus-lock.json";
 
 fs.ensureDirSync(globalDir);
-fs.ensureDirSync(depsPath);
+fs.ensureDirSync(GLOBAL_DEPS_PATH);
 
 export async function readGlobalConfig() {
   try {
@@ -59,11 +62,11 @@ export function writeOmpConfig(config: object) {
 }
 
 function getConfigPath() {
-  return path.resolve(process.cwd(), "infernus.json");
+  return path.resolve(process.cwd(), INF_CONFIG_NAME);
 }
 
 function getLockPath() {
-  return path.resolve(process.cwd(), "infernus-lock.json");
+  return path.resolve(process.cwd(), INF_LOCK_NAME);
 }
 
 function getOmpConfigPath() {

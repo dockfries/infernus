@@ -2,11 +2,11 @@ import path from "node:path";
 import fs from "fs-extra";
 import { getOctoKit } from "./api";
 import { PawnJson } from "../types";
-import { depsPath } from "./config";
+import { GLOBAL_DEPS_PATH } from "./config";
 
 export async function getPawnJson(owner: string, repo: string, ref: string) {
   const localPawnJsonPath = path.resolve(
-    depsPath,
+    GLOBAL_DEPS_PATH,
     owner,
     repo,
     ref,
