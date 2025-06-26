@@ -6,7 +6,7 @@ import {
   beingResynced,
   inClassSelection,
   forceClassSelection,
-  lastUpdate,
+  lastUpdateTick,
   damageFeedPlayer,
 } from "../../struct";
 
@@ -55,7 +55,7 @@ export function wc_IsPlayerSpawned(player: Player) {
 }
 
 export function wc_IsPlayerPaused(player: Player) {
-  return Date.now() - lastUpdate.get(player.id) > 2000;
+  return Date.now() - lastUpdateTick.get(player.id) > 2000;
 }
 
 export function isDamageFeedActive(player: Player | -1 = -1) {

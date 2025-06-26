@@ -8,7 +8,7 @@ import {
   lastShotIdx,
   lastShot,
   lastHitIdx,
-  rejectedHitsIdx,
+  rejectedHitIdx,
   shotsFired,
   hitsIssued,
   playerTeam,
@@ -19,14 +19,14 @@ import {
   lastAnim,
   lastZVelo,
   lastZ,
-  lastUpdate,
+  lastUpdateTick,
   damageFeedTimer,
-  damageFeedLastUpdate,
+  damageFeedUpdateTick,
   spectating,
   healthBarVisible,
   lastSentHealth,
   lastSentArmour,
-  lastStop,
+  lastStopTick,
   lastVehicleEnterTime,
   trueDeath,
   inClassSelection,
@@ -36,7 +36,7 @@ import {
   playerFallbackSpawnInfo,
   deathSkip,
   lastVehicleTick,
-  previousHitI,
+  previousHitIdx,
   cBugAllowed,
   cBugFroze,
   deathTimer,
@@ -88,7 +88,7 @@ PlayerEvent.onConnect(({ player, next }) => {
   lastShotIdx.set(player.id, 0);
   lastShot.get(player.id).tick = 0;
   lastHitIdx.set(player.id, 0);
-  rejectedHitsIdx.set(player.id, 0);
+  rejectedHitIdx.set(player.id, 0);
   shotsFired.set(player.id, 0);
   hitsIssued.set(player.id, 0);
   playerTeam.set(player.id, InvalidEnum.NO_TEAM);
@@ -99,14 +99,14 @@ PlayerEvent.onConnect(({ player, next }) => {
   lastAnim.set(player.id, -1);
   lastZVelo.set(player.id, 0.0);
   lastZ.set(player.id, 0.0);
-  lastUpdate.set(player.id, tick);
+  lastUpdateTick.set(player.id, tick);
   damageFeedTimer.set(player.id, null);
-  damageFeedLastUpdate.set(player.id, tick);
+  damageFeedUpdateTick.set(player.id, tick);
   spectating.set(player.id, InvalidEnum.PLAYER_ID);
   healthBarVisible.set(player.id, false);
   lastSentHealth.set(player.id, 0);
   lastSentArmour.set(player.id, 0);
-  lastStop.set(player.id, tick);
+  lastStopTick.set(player.id, tick);
   lastVehicleEnterTime.set(player.id, 0);
   trueDeath.set(player.id, true);
   inClassSelection.set(player.id, false);
@@ -116,7 +116,7 @@ PlayerEvent.onConnect(({ player, next }) => {
   playerFallbackSpawnInfo.get(player.id).skin = -1;
   deathSkip.set(player.id, 0);
   lastVehicleTick.set(player.id, 0);
-  previousHitI.set(player.id, 0);
+  previousHitIdx.set(player.id, 0);
   cBugAllowed.set(player.id, innerGameModeConfig.cBugGlobal);
   cBugFroze.set(player.id, 0);
   deathTimer.set(player.id, null);

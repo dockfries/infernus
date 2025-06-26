@@ -11,8 +11,8 @@ import {
   playerTeam,
   isDying,
   beingResynced,
-  lastUpdate,
-  lastStop,
+  lastUpdateTick,
+  lastStopTick,
   trueDeath,
   inClassSelection,
   forceClassSelection,
@@ -78,8 +78,8 @@ PlayerEvent.onSpawn(({ player, next }) => {
   }
 
   const tick = Date.now();
-  lastUpdate.set(player.id, tick);
-  lastStop.set(player.id, tick);
+  lastUpdateTick.set(player.id, tick);
+  lastStopTick.set(player.id, tick);
 
   if (beingResynced.get(player.id)) {
     beingResynced.set(player.id, false);
@@ -402,6 +402,7 @@ export const internalPlayerDeath: Parameters<
 
   if (playerHealth.get(editable.player.id) <= 0.0005) {
     playerHealth.set(editable.player.id, 0.0);
+    playerArmour.set(editable.player.id, 0.0);
     isDying.set(editable.player.id, true);
 
     lastDeathTick.set(editable.player.id, Date.now());

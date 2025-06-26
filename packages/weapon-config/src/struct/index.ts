@@ -82,9 +82,67 @@ export class SpawnInfo {
   ammo3: number = 0;
 }
 
+export const playerMaxHealth = new SafetyMap<number, number>(() => 100.0);
+export const playerHealth = new SafetyMap<number, number>(() => 100.0);
+export const playerMaxArmour = new SafetyMap<number, number>(() => 100.0);
+export const playerArmour = new SafetyMap<number, number>(() => 0.0);
+export const lastSentHealth = new SafetyMap<number, number>(() => 0.0);
+export const lastSentArmour = new SafetyMap<number, number>(() => 0.0);
+
 export const lastExplosive = new SafetyMap<number, number>(
   () => WC_WeaponEnum.UNKNOWN,
 );
+export const playerTeam = new SafetyMap<number, number>(
+  () => InvalidEnum.NO_TEAM,
+);
+export const spectating = new SafetyMap<number, number>(
+  () => InvalidEnum.PLAYER_ID,
+);
+export const lastUpdateTick = new SafetyMap<number, number>(() => -1);
+export const lastVehicleEnterTime = new SafetyMap<number, number>(() => 0);
+export const lastVehicleTick = new SafetyMap<number, number>(() => 0);
+
+export const enableHealthBar = new SafetyMap<number, boolean>(() => false);
+export const healthBarVisible = new SafetyMap<number, boolean>(() => false);
+export const healthBarForeground = new SafetyMap<number, TextDraw | null>(
+  () => null,
+);
+
+export const damageFeedPlayer = new SafetyMap<number, number>(() => -1);
+export const damageFeedTaken = new SafetyMap<number, TextDraw | null>(
+  () => null,
+);
+export const damageFeedGiven = new SafetyMap<number, TextDraw | null>(
+  () => null,
+);
+export const damageFeedHitsGiven = new SafetyMap<
+  number,
+  (DamageFeedHit | null)[]
+>(() => []); // wc_FEED_HEIGHT
+export const damageFeedHitsTaken = new SafetyMap<
+  number,
+  (DamageFeedHit | null)[]
+>(() => []); // wc_FEED_HEIGHT
+export const damageFeedUpdateTick = new SafetyMap<number, number>(() => 0);
+export const damageFeedTimer = new SafetyMap<number, NodeJS.Timeout | null>(
+  () => null,
+);
+
+export const internalTextDraw = new SafetyMap<number, boolean>(() => false);
+export const internalPlayerTextDraw = new SafetyMap<number, boolean[]>(
+  () => [],
+); // [PlayerText:MAX_PLAYER_TEXT_DRAWS]
+
+export const lastAnim = new SafetyMap<number, number>(() => -1);
+export const lastZVelo = new SafetyMap<number, number>(() => 0.0);
+export const lastZ = new SafetyMap<number, number>(() => 0.0);
+export const lastStopTick = new SafetyMap<number, number>(() => 0);
+
+export const cBugAllowed = new SafetyMap<number, boolean>(() => true);
+export const cBugFroze = new SafetyMap<number, number>(() => 0);
+
+export const shotsFired = new SafetyMap<number, number>(() => 0);
+export const hitsIssued = new SafetyMap<number, number>(() => 0);
 export const lastShot = new SafetyMap<number, ShotInfo>(() => new ShotInfo());
 export const lastShotTicks = new SafetyMap<number, number[]>(() =>
   Array.from({ length: 10 }).map(() => 0),
@@ -100,61 +158,19 @@ export const lastHitWeapons = new SafetyMap<number, number[]>(() =>
   Array.from({ length: 10 }).map(() => 0),
 );
 export const lastHitIdx = new SafetyMap<number, number>(() => 0);
-export const shotsFired = new SafetyMap<number, number>(() => 0);
-export const hitsIssued = new SafetyMap<number, number>(() => 0);
 
-export const playerMaxHealth = new SafetyMap<number, number>(() => 100.0);
-export const playerHealth = new SafetyMap<number, number>(() => 100.0);
-export const playerMaxArmour = new SafetyMap<number, number>(() => 100.0);
-export const playerArmour = new SafetyMap<number, number>(() => 0.0);
-export const lastSentHealth = new SafetyMap<number, number>(() => 0.0);
-export const lastSentArmour = new SafetyMap<number, number>(() => 0.0);
-
-export const playerTeam = new SafetyMap<number, number>(
-  () => InvalidEnum.NO_TEAM,
-);
-export const isDying = new SafetyMap<number, boolean>(() => false);
-export const deathTimer = new SafetyMap<number, NodeJS.Timeout | null>(
-  () => null,
-);
-export const healthBarVisible = new SafetyMap<number, boolean>(() => false);
-export const spawnForStreamedIn = new SafetyMap<number, boolean>(() => false);
-
-export const cBugAllowed = new SafetyMap<number, boolean>(() => true);
-export const cBugFroze = new SafetyMap<number, number>(() => 0);
-
-export const damageFeedPlayer = new SafetyMap<number, number>(() => -1);
 export const rejectedHits = new SafetyMap<number, (RejectedHit | null)[]>(
   () => [],
 ); // wc_MAX_REJECTED_HITS
-export const rejectedHitsIdx = new SafetyMap<number, number>(() => 0);
-export const world = new SafetyMap<number, number>(() => 0);
-export const lastAnim = new SafetyMap<number, number>(() => -1);
-export const lastZVelo = new SafetyMap<number, number>(() => 0.0);
-export const lastZ = new SafetyMap<number, number>(() => 0.0);
-export const lastUpdate = new SafetyMap<number, number>(() => -1);
-export const damageFeedTaken = new SafetyMap<number, TextDraw | null>(
-  () => null,
+export const rejectedHitIdx = new SafetyMap<number, number>(() => 0);
+
+export const previousHits = new SafetyMap<number, HitInfo[]>(() =>
+  Array.from({ length: 10 }).map(() => new HitInfo()),
 );
-export const damageFeedGiven = new SafetyMap<number, TextDraw | null>(
-  () => null,
-);
-export const damageFeedHitsGiven = new SafetyMap<
-  number,
-  (DamageFeedHit | null)[]
->(() => []); // wc_FEED_HEIGHT
-export const damageFeedHitsTaken = new SafetyMap<
-  number,
-  (DamageFeedHit | null)[]
->(() => []); // wc_FEED_HEIGHT
-export const damageFeedTimer = new SafetyMap<number, NodeJS.Timeout | null>(
-  () => null,
-);
-export const damageFeedLastUpdate = new SafetyMap<number, number>(() => 0);
-export const spectating = new SafetyMap<number, number>(
-  () => InvalidEnum.PLAYER_ID,
-);
-export const lastStop = new SafetyMap<number, number>(() => 0);
+export const previousHitIdx = new SafetyMap<number, number>(() => 0);
+
+export const damageDoneHealth = new SafetyMap<number, number>(() => 0);
+export const damageDoneArmour = new SafetyMap<number, number>(() => 0);
 
 export const alreadyConnected = new SafetyMap<number, boolean>(() => false);
 export const firstSpawn = new SafetyMap<number, boolean>(() => true);
@@ -163,29 +179,21 @@ export const vendingUseTimer = new SafetyMap<number, NodeJS.Timeout | null>(
   () => null,
 );
 
-export const beingResynced = new SafetyMap<number, boolean>(() => false);
-export const knifeTimeout = new SafetyMap<number, NodeJS.Timeout | null>(
-  () => null,
-);
-export const syncData = new SafetyMap<number, ResyncData>(
-  () => new ResyncData(),
-);
-
-export const healthBarForeground = new SafetyMap<number, TextDraw | null>(
-  () => null,
-);
 export const damageRangeSteps: number[] = []; // 55
 export const damageRangeRanges = new SafetyMap<number, number[]>(() => []); // 55 wc_MAX_DAMAGE_RANGES
 export const damageRangeValues = new SafetyMap<number, number[]>(() => []); // 55 wc_MAX_DAMAGE_RANGES
-export const lastVehicleShooter = new SafetyMap<number, number>(
-  () => InvalidEnum.PLAYER_ID,
-);
-export const internalTextDraw = new SafetyMap<number, boolean>(() => false);
-export const internalPlayerTextDraw = new SafetyMap<number, boolean[]>(
-  () => [],
-); // [PlayerText:MAX_PLAYER_TEXT_DRAWS]
-export const lastVehicleEnterTime = new SafetyMap<number, number>(() => 0);
+
+export const isDying = new SafetyMap<number, boolean>(() => false);
 export const trueDeath = new SafetyMap<number, boolean>(() => false);
+export const world = new SafetyMap<number, number>(() => 0);
+export const lastDeathTick = new SafetyMap<number, number>(() => 0);
+export const delayedDeathTimer = new SafetyMap<number, NodeJS.Timeout | null>(
+  () => null,
+);
+export const deathTimer = new SafetyMap<number, NodeJS.Timeout | null>(
+  () => null,
+);
+
 export const inClassSelection = new SafetyMap<number, boolean>(() => false);
 export const forceClassSelection = new SafetyMap<number, boolean>(() => false);
 export const classSpawnInfo = new SafetyMap<number, SpawnInfo>(
@@ -201,19 +209,20 @@ export const playerClass = new SafetyMap<number, number>(() => -2);
 export const spawnInfoModified = new SafetyMap<number, boolean>(() => false);
 export const deathSkip = new SafetyMap<number, number>(() => 0);
 export const deathSkipTick = new SafetyMap<number, number>(() => 0);
-export const lastDeathTick = new SafetyMap<number, number>(() => 0);
-export const lastVehicleTick = new SafetyMap<number, number>(() => 0);
-export const previousHits = new SafetyMap<number, HitInfo[]>(() =>
-  Array.from({ length: 10 }).map(() => new HitInfo()),
-);
-export const previousHitI = new SafetyMap<number, number>(() => 0);
-export const damageDoneHealth = new SafetyMap<number, number>(() => 0);
-export const damageDoneArmour = new SafetyMap<number, number>(() => 0);
-export const delayedDeathTimer = new SafetyMap<number, NodeJS.Timeout | null>(
+
+export const beingResynced = new SafetyMap<number, boolean>(() => false);
+export const spawnForStreamedIn = new SafetyMap<number, boolean>(() => false);
+export const knifeTimeout = new SafetyMap<number, NodeJS.Timeout | null>(
   () => null,
 );
+export const syncData = new SafetyMap<number, ResyncData>(
+  () => new ResyncData(),
+);
+
 export const vehicleAlive = new SafetyMap<number, boolean>(() => false);
-export const enableHealthBar = new SafetyMap<number, boolean>(() => false);
+export const lastVehicleShooter = new SafetyMap<number, number>(
+  () => InvalidEnum.PLAYER_ID,
+);
 export const vehicleRespawnTimer = new SafetyMap<number, NodeJS.Timeout | null>(
   () => null,
 );

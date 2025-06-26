@@ -28,7 +28,7 @@ import {
 } from "../../enums";
 import { orig_playerMethods, orig_vehicleMethods } from "../../hooks/origin";
 import {
-  rejectedHitsIdx,
+  rejectedHitIdx,
   rejectedHits,
   RejectedHit,
   lastExplosive,
@@ -75,7 +75,7 @@ export function addRejectedHit(
     player.id >= 0 &&
     player.id < LimitsEnum.MAX_PLAYERS
   ) {
-    let idx = rejectedHitsIdx.get(player.id);
+    let idx = rejectedHitIdx.get(player.id);
 
     if (
       rejectedHits.get(player.id)[idx] &&
@@ -87,7 +87,7 @@ export function addRejectedHit(
         idx = 0;
       }
 
-      rejectedHitsIdx.set(player.id, idx);
+      rejectedHitIdx.set(player.id, idx);
     }
 
     const time = Date.now() / 1000;

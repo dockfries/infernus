@@ -20,7 +20,7 @@ import {
   damageFeedHitsGiven,
   DamageFeedHit,
   damageFeedHitsTaken,
-  damageFeedLastUpdate,
+  damageFeedUpdateTick,
   playerHealth,
   spectating,
 } from "../../struct";
@@ -181,7 +181,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
   }
 
   if (
-    tick - damageFeedLastUpdate.get(player.id) <
+    tick - damageFeedUpdateTick.get(player.id) <
       innerGameModeConfig.damageFeedMaxUpdateRate &&
     modified
   ) {
@@ -192,7 +192,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
           wc_DamageFeedUpdate(player);
         },
         innerGameModeConfig.damageFeedMaxUpdateRate -
-          (tick - damageFeedLastUpdate.get(player.id)),
+          (tick - damageFeedUpdateTick.get(player.id)),
       ),
     );
   } else {
@@ -214,7 +214,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
     if (modified) {
       damageFeedUpdateText(player);
 
-      damageFeedLastUpdate.set(player.id, tick);
+      damageFeedUpdateTick.set(player.id, tick);
     }
   }
 }

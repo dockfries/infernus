@@ -16,7 +16,7 @@ import {
 import { orig_playerMethods } from "../../hooks/origin";
 import {
   isDying,
-  lastStop,
+  lastStopTick,
   blockAdminTeleport,
   cBugAllowed,
   cBugFroze,
@@ -49,7 +49,7 @@ PlayerEvent.onClickMap(({ player, next }) => {
     wc_IsPlayerTeleportAllowed.call(player)
   ) {
     if (!isDying.get(player.id)) {
-      lastStop.set(player.id, Date.now());
+      lastStopTick.set(player.id, Date.now());
     } else {
       blockAdminTeleport.set(player.id, true);
     }

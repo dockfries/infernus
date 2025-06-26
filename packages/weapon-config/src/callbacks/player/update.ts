@@ -18,8 +18,8 @@ import {
   deathSkipTick,
   playerTeam,
   spawnForStreamedIn,
-  lastUpdate,
-  lastStop,
+  lastUpdateTick,
+  lastStopTick,
   lastZVelo,
   lastZ,
   lastAnim,
@@ -103,7 +103,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
     spawnForStreamedIn.set(player.id, false);
   }
 
-  lastUpdate.set(player.id, tick);
+  lastUpdateTick.set(player.id, tick);
 
   if (innerGameModeConfig.customFallDamage) {
     let { z: vz } = orig_playerMethods.getVelocity.call(player);
@@ -119,7 +119,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
       surfing = true;
     }
 
-    if (surfing || tick - lastStop.get(player.id) < 2000) {
+    if (surfing || tick - lastStopTick.get(player.id) < 2000) {
       vz = 0.0;
       lastZVelo.set(player.id, 0.0);
     } else {

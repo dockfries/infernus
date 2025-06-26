@@ -23,7 +23,7 @@ import {
   playerMaxArmour,
   damageDoneHealth,
   damageDoneArmour,
-  rejectedHitsIdx,
+  rejectedHitIdx,
   rejectedHits,
 } from "../../struct";
 import { debugMessage } from "../../utils/debug";
@@ -209,8 +209,7 @@ export function getRejectedHit(player: Player, idx: number) {
   }
 
   let real_idx =
-    (rejectedHitsIdx.get(player.id) - idx) %
-    innerWeaponConfig.MAX_REJECTED_HITS;
+    (rejectedHitIdx.get(player.id) - idx) % innerWeaponConfig.MAX_REJECTED_HITS;
 
   if (real_idx < 0) {
     real_idx += innerWeaponConfig.MAX_REJECTED_HITS;

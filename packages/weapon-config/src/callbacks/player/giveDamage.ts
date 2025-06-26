@@ -44,7 +44,7 @@ import {
   inflictDamage,
 } from "../../functions/internal/damage";
 import { playerDeath } from "../../functions/internal/death";
-import { hasSameTeam } from "../../functions/internal/is";
+import { hasSameTeam, isVehicleBike } from "../../functions/internal/is";
 import {
   wc_SetSpawnForStreamedIn,
   wc_SpawnForStreamedIn,
@@ -437,7 +437,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
     }
   }
 
-  let valId = true;
+  let valid = true;
 
   if (
     orig_playerMethods.getState.call(editable.issuer) === PlayerStateEnum.DRIVER
@@ -447,11 +447,17 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
         editable.weaponId <= WeaponEnum.MP5) ||
       editable.weaponId === WeaponEnum.TEC9
     ) {
-      const { keys } = orig_playerMethods.getKeys.call(editable.issuer);
+      const vehicle = orig_playerMethods.getVehicle.call(editable.issuer)!;
 
-      valId = Boolean(keys & KeysEnum.LOOK_RIGHT || keys & KeysEnum.LOOK_LEFT);
+      if (!isVehicleBike(vehicle)) {
+        const { keys } = orig_playerMethods.getKeys.call(editable.issuer);
+
+        valid = Boolean(
+          keys & KeysEnum.LOOK_RIGHT || keys & KeysEnum.LOOK_LEFT,
+        );
+      }
     } else {
-      valId = false;
+      valid = false;
     }
   } else if (
     isBulletWeapon(editable.weaponId) &&
@@ -462,14 +468,14 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
       (tick - lastShot.get(editable.issuer.id).tick > 1500 &&
         editable.weaponId !== WeaponEnum.SNIPER)
     ) {
-      valId = false;
+      valid = false;
       debugMessageRed(editable.issuer, "last shot not valid");
     } else if (
       editable.weaponId >= WeaponEnum.SHOTGUN &&
       editable.weaponId <= WeaponEnum.SHOTGSPA
     ) {
       if (lastShot.get(editable.issuer.id).hits >= 2) {
-        valId = false;
+        valid = false;
         addRejectedHit(
           editable.issuer,
           editable.player,
@@ -480,10 +486,11 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
       }
     } else if (lastShot.get(editable.issuer.id).hits > 0) {
       if (
-        lastShot.get(editable.issuer.id).hits >= 3 &&
-        editable.weaponId !== WeaponEnum.SNIPER
+        lastShot.get(editable.issuer.id).hits >= 6 ||
+        (lastShot.get(editable.issuer.id).hits >= 3 &&
+          editable.weaponId !== WeaponEnum.SNIPER)
       ) {
-        valId = false;
+        valid = false;
         addRejectedHit(
           editable.issuer,
           editable.player,
@@ -499,7 +506,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
       }
     }
 
-    if (valId) {
+    if (valid && editable.weaponId !== WeaponEnum.SNIPER) {
       const dist = orig_playerMethods.getDistanceFromPoint.call(
         editable.player,
         lastShot.get(editable.issuer.id).hX,
@@ -523,7 +530,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
           (!in_veh && (!suf_obj || suf_obj.id === InvalidEnum.OBJECT_ID)) ||
           dist > 50.0
         ) {
-          valId = false;
+          valid = false;
           addRejectedHit(
             editable.issuer,
             editable.player,
@@ -538,7 +545,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
     lastShot.get(editable.issuer.id).hits += 1;
   }
 
-  if (!valId) {
+  if (!valid) {
     return 0;
   }
 

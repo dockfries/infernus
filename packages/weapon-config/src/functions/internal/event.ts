@@ -15,7 +15,7 @@ import {
   playerHealth,
   playerMaxHealth,
   deathTimer,
-  previousHitI,
+  previousHitIdx,
   previousHits,
   damageDoneHealth,
   damageDoneArmour,
@@ -100,17 +100,17 @@ export function onPlayerDamageDone(
   weapon: number,
   bodyPart: number,
 ) {
-  const idx = previousHitI.get(player.id);
+  const idx = previousHitIdx.get(player.id);
 
-  previousHitI.set(
+  previousHitIdx.set(
     player.id,
-    (previousHitI.get(player.id) - 1) % previousHits.get(player.id).length,
+    (previousHitIdx.get(player.id) - 1) % previousHits.get(player.id).length,
   );
 
-  if (previousHitI.get(player.id) < 0) {
-    previousHitI.set(
+  if (previousHitIdx.get(player.id) < 0) {
+    previousHitIdx.set(
       player.id,
-      previousHitI.get(player.id) + previousHits.get(player.id).length,
+      previousHitIdx.get(player.id) + previousHits.get(player.id).length,
     );
   }
 

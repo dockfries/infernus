@@ -18,9 +18,9 @@ import {
   internalTextDraw,
   playerTeam,
   world,
-  lastUpdate,
-  damageFeedLastUpdate,
-  lastStop,
+  lastUpdateTick,
+  damageFeedUpdateTick,
+  lastStopTick,
   lastVehicleEnterTime,
   trueDeath,
   inClassSelection,
@@ -133,9 +133,9 @@ export function scriptInit() {
     }
 
     world.set(player.id, worldId);
-    lastUpdate.set(player.id, tick);
-    damageFeedLastUpdate.set(player.id, tick);
-    lastStop.set(player.id, tick);
+    lastUpdateTick.set(player.id, tick);
+    damageFeedUpdateTick.set(player.id, tick);
+    lastStopTick.set(player.id, tick);
     lastVehicleEnterTime.set(player.id, 0);
     trueDeath.set(player.id, true);
     inClassSelection.set(player.id, true);

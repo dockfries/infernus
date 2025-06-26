@@ -113,7 +113,7 @@ import {
   internalPlayerTextDraw,
   internalTextDraw,
   isDying,
-  lastStop,
+  lastStopTick,
   lastVehicleShooter,
   playerArmour,
   playerClass,
@@ -304,7 +304,7 @@ export const wc_ClearAnimations = setPlayerHook(
     ) {
       return false;
     }
-    lastStop.set(this.id, Date.now());
+    lastStopTick.set(this.id, Date.now());
     return orig_playerMethods.clearAnimations.call(this, ...args);
   },
 );
@@ -497,7 +497,7 @@ export const wc_TogglePlayerControllable = setPlayerHook(
     ) {
       return false;
     }
-    lastStop.set(this.id, Date.now());
+    lastStopTick.set(this.id, Date.now());
     return orig_playerMethods.toggleControllable.call(this, toggle);
   },
 );
@@ -510,7 +510,7 @@ export const wc_SetPlayerPos = setPlayerHook("setPos", function (x, y, z) {
   ) {
     return false;
   }
-  lastStop.set(this.id, Date.now());
+  lastStopTick.set(this.id, Date.now());
   return orig_playerMethods.setPos.call(this, x, y, z);
 });
 
@@ -524,7 +524,7 @@ export const wc_SetPlayerPosFindZ = setPlayerHook(
     ) {
       return false;
     }
-    lastStop.set(this.id, Date.now());
+    lastStopTick.set(this.id, Date.now());
     return orig_playerMethods.setPosFindZ.call(this, x, y, z);
   },
 );
@@ -541,7 +541,7 @@ export const wc_SetPlayerVelocity = setPlayerHook(
     }
 
     if (x === 0.0 && y === 0.0 && z === 0.0) {
-      lastStop.set(this.id, Date.now());
+      lastStopTick.set(this.id, Date.now());
     }
 
     return orig_playerMethods.setVelocity.call(this, x, y, z);
