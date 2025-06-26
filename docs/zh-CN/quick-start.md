@@ -24,7 +24,7 @@ pnpm dlx @infernus/create-app@latest create
 [点此了解API频率限制](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-primary-rate-limits)
 :::
 
-`@infernus/create-app` 是一个类似于`sampctl`的工具，尝试通过解析`pawn.json`规则来管理包依赖，你可以用它来简单的管理插件或是`open.mp`基座依赖。
+`@infernus/create-app` 是一个类似于`sampctl`的工具，尝试通过解析`pawn.json`规则来管理包依赖，您可以用它来简单的管理插件或是`open.mp`基座依赖。
 
 #### 缓存
 
@@ -103,7 +103,7 @@ git clone https://github.com/dockfries/infernus-starter.git
 # 或是使用ssh协议
 git clone git@github.com:dockfries/infernus-starter.git
 
-# 如果你需要raknet，克隆raknet分支
+# 如果您需要raknet，克隆raknet分支
 # 通过https协议克隆仓库
 # git clone https://github.com/dockfries/infernus-starter.git -b raknet
 # 或是使用ssh协议

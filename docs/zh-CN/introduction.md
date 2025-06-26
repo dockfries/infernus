@@ -44,6 +44,12 @@
 
 当然对于 `omp` 而言，它们的重心是打造好 `omp` 本身，而不是在第三方上。
 
+### Sqlite和Bindings支持
+
+很遗憾，本项目是基于32位的嵌入式`node.js`，不支持`node-sqlite`和一些通过其他编程语言如rust的`bindings`的调用。
+
+也许在未来64位的`omp-node`上迎刃而解。
+
 ### 终端阻塞
 
 > [!IMPORTANT]重要信息

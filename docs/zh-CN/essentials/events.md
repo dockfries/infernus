@@ -257,7 +257,7 @@ GameMode.disableCmdCaseSensitive(); // 禁用命令区分大小写
 当您定义多个同名命令，并且包含区分和不区分时，**区分大小写的中间件**被称为严格匹配，它**优先于不区分的执行**。
 :::
 
-你可以灵活的启用或禁用，控制后续注册的命令是否区分大小写。
+您可以灵活的启用或禁用，控制后续注册的命令是否区分大小写。
 
 ```ts
 import { GameMode, PlayerEvent } from "@infernus/core";
@@ -286,7 +286,7 @@ PlayerEvent.onCommandText("Help", ({ player, next }) => {
 ```ts
 PlayerEvent.onCommandText({
   caseSensitive: false, // 指定命令是否区分大小写
-  command: "foo", // 你的命令
+  command: "foo", // 您的命令
   run({ player, subcommand, next }) {
     return next();
   },

@@ -44,6 +44,12 @@ Esto limita bastante el desarrollo de plugins de `samp` usando el ecosistema de 
 
 Sin embargo, el enfoque de `omp` está principalmente en construir `omp` en sí en lugar de bibliotecas de terceros.
 
+### Soporte para Sqlite y Bindings
+
+Lamentablemente, este proyecto está basado en un `node.js` embebido de 32 bits, que no es compatible con `node-sqlite` ni con llamadas a `bindings` de otros lenguajes de programación como Rust.
+
+Quizás esto se resuelva en el futuro con un `omp-node` de 64 bits.
+
 ### Bloqueo de terminal
 
 > [!IMPORTANT]

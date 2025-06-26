@@ -44,6 +44,12 @@ This greatly limits the development of `samp` plugins using the `node.js` ecosys
 
 However, `omp's` focus is primarily on building `omp` itself rather than third-party libraries.
 
+### Sqlite and Bindings Support
+
+Unfortunately, this project is based on a 32-bit embedded `node.js`, which does not support `node-sqlite` or calls to `bindings` from other programming languages like Rust.
+
+Perhaps this will be resolved in the future with a 64-bit `omp-node`.
+
 ### Terminal Blocking
 
 > [!IMPORTANT]

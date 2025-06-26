@@ -86,6 +86,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
 function sidebarEssentials(): DefaultTheme.SidebarItem[] {
   return [
     { text: "Events", link: "events" },
+    { text: "Hooks", link: "hooks" },
     { text: "Lifecycle", link: "life-cycle" },
     { text: "Internationalization", link: "i18n" },
     { text: "Dialogs", link: "dialogs" },
