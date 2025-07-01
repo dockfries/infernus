@@ -1,0 +1,47 @@
+{
+  "name": "@infernus/qrcode",
+  "version": "0.0.2",
+  "description": "Generate simple qrcode objects for infernus.",
+  "keywords": [
+    "samp",
+    "sa:mp",
+    "sa-mp",
+    "omp",
+    "open.mp",
+    "pawn",
+    "wrapper",
+    "qrcode"
+  ],
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/qrcode#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/infernus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/infernus.git"
+  },
+  "license": "MIT",
+  "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs"
+    }
+  },
+  "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
+  "types": "dist/bundle.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {},
+  "devDependencies": {
+    "@infernus/core": "workspace:^"
+  },
+  "peerDependencies": {
+    "@infernus/core": "workspace:^"
+  },
+  "dependencies": {
+    "qrcode-generator": "^2.0.2"
+  }
+}
