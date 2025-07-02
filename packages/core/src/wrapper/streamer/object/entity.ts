@@ -32,7 +32,7 @@ export class DynamicObject {
       streamDistance,
       drawDistance: drawDistance,
       worldId,
-      interiorId: interiorId,
+      interiorId,
       playerId,
       areaId,
       priority,

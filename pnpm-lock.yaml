@@ -215,6 +215,12 @@ importers:
         specifier: workspace:^
         version: link:../core
 
+  packages/map-loader:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+
   packages/mapandreas: {}
 
   packages/nex-ac:
