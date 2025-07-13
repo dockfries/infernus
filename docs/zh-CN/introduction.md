@@ -16,13 +16,13 @@
 
 | /          | Infernus + samp-node                                                            | omp-node                    |
 | ---------- | ------------------------------------------------------------------------------- | --------------------------- |
-| 运行环境   | Windows平台：Node.js 16/20<br/>Linux平台：Node.js 16                            | Windows,Linux: Node.js 18+  |
+| 运行环境   | Windows/Linux: Node.js 20.19+                                                   | Windows/Linux: Node.js 18+  |
 | 模块规范   | CommonJS                                                                        | ESModule                    |
-| 架构支持   | x86                                                                             | x86/x64                     |
+| 架构支持   | 仅x86                                                                           | x64                         |
 | 底层实现   | 通过sampgdk→fakeamx→原生调用                                                    | 直接调用omp-gdk/omp-sdk     |
 | 执行效率   | 相对较低                                                                        | 性能更优                    |
 | 兼容性策略 | 通过兼容层polyfill支持三方插件                                                  | 插件需适配sdk并使用特定版本 |
-| 设计理念   | 1. 提倡完全使用Infernus重构，避免Pawn代码开发<br>2. 强制采用Steamer替代原生接口 | 详见官方技术                |
+| 设计理念   | 1. 提倡完全使用Infernus重构，避免Pawn代码开发<br>2. 强制采用Steamer替代原生接口 | 详见官方文档                |
 
 ## 缺陷
 
@@ -34,15 +34,17 @@
 **总的来说目前生态并不稳定，这是多方面因素导致的。**
 :::
 
-### Samp Node 生态
+### 生态系统
 
-原有的以 `pawn` 开发的库，比如 `fcnpc`，`colandreas`，`nexac` 等等著名的库，如果您的项目必须依赖这些，那么目前而言会出现两种情况：无人开发或是不兼容。
+::: info
+[点击查看已实现的生态包](https://github.com/dockfries/infernus/tree/main/packages)，不保证和原型库执行结果相同，且一定存在BUG。
+:::
+
+原有的以 `pawn` 开发的库，如果您的项目必须依赖这些，那么目前而言会出现两种情况：无人开发或是不兼容。
 
 由于 `samp-node` 的插件开发是基于 `samp` 而不是基于 `omp`，所以对于 `omp` 而言，一些插件生态基本无法兼容，比如无法访问到一些插件的 `native` 函数，比如 `raknet`。
 
-这极大程度上的限制了基于 `node` 的 `samp` 插件生态库开发，这一点需要 `samp-node` 的作者和社区共同努力推进。
-
-当然对于 `omp` 而言，它们的重心是打造好 `omp` 本身，而不是在第三方上。
+这极大程度上的限制了基于 `node` 的 `samp` 插件生态库开发，这一点需要社区共同努力推进。
 
 ### Sqlite和Bindings支持
 
@@ -53,7 +55,7 @@
 ### 终端阻塞
 
 > [!IMPORTANT]重要信息
-> 已通过 [monkeyPatch](https://github.com/dockfries/infernus-starter/commit/b69583a607ce398131ba795007fe97af39104469) 作为目前的解决方案，修复了此问题。
+> 已通过 [monkeyPatch](https://github.com/dockfries/infernus-starter/blob/main/src/polyfill.js) 作为目前的解决方案，修复了此问题。
 
 由于底层的 `samp-node` 对于部分异步的 `node` 生态库的兼容性不佳，会导致概率性的终端阻塞。
 

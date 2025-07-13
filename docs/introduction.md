@@ -16,9 +16,9 @@ The name `Infernus` comes from the vehicle with the ID `411` in the game (specif
 
 | /              | Infernus + samp-node                                                               | omp-node                     |
 | -------------- | ---------------------------------------------------------------------------------- | ---------------------------- |
-| Runtime        | Windows: Node.js 16/20<br/>Linux: Node.js 16                                       | Windows/Linux: Node.js 18+   |
+| Runtime        | Windows/Linux: Node.js 20.19+                                                      | Windows/Linux: Node.js 18+   |
 | Module System  | CommonJS                                                                           | ESModule                     |
-| Architecture   | x86                                                                                | x86/x64                      |
+| Architecture   | x86 only                                                                           | x64                          |
 | Implementation | Via sampgdk→fakeamx→native calls                                                   | Direct omp-gdk/omp-sdk calls |
 | Performance    | Relatively slower                                                                  | More optimized               |
 | Compatibility  | Third-party plugins via polyfill layer                                             | Requires SDK adaptation      |
@@ -34,15 +34,17 @@ Several limitations significantly impact the development experience. **It is rec
 **Overall, the ecosystem is currently unstable due to various factors.**
 :::
 
-### Samp Node Ecosystem
+### Ecosystem
 
-Existing libraries developed in `Pawn`, such as `fcnpc`, `colandreas`, `nexac`, and other well-known libraries, may present two situations if your project depends on them: **nobody maintenance or incompatible**.
+::: info
+[Click to view implemented ecosystem packages](https://github.com/dockfries/infernus/tree/main/packages). Note that results may differ from original libraries and some bugs are expected.
+:::
+
+Existing libraries developed in `Pawn`, may present two situations if your project depends on them: **nobody maintenance or incompatible**.
 
 Since `samp-node` plugin development is based on `samp` and not `omp`, certain plugin ecosystems are not compatible. For example, accessing certain plugins' native functions, such as `raknet`, is not possible.
 
-This greatly limits the development of `samp` plugins using the `node.js` ecosystem. It requires joint efforts from samp-node's authors and the community to address this issue.
-
-However, `omp's` focus is primarily on building `omp` itself rather than third-party libraries.
+This greatly limits the development of `samp` plugins using the `node.js` ecosystem. It requires joint efforts from the community to address this issue.
 
 ### Sqlite and Bindings Support
 
@@ -53,7 +55,7 @@ Perhaps this will be resolved in the future with a 64-bit `omp-node`.
 ### Terminal Blocking
 
 > [!IMPORTANT]
-> This issue has been fixed via [monkeyPatch](https://github.com/dockfries/infernus-starter/commit/b69583a607ce398131ba795007fe97af39104469) as the current solution.
+> This issue has been fixed via [monkeyPatch](https://github.com/dockfries/infernus-starter/blob/main/src/polyfill.js) as the current solution.
 
 Due to poor compatibility between the underlying `samp-node` and certain asynchronous `node.js` libraries, there may be occasional terminal blocking.
 
