@@ -46,9 +46,23 @@
 
 这极大程度上的限制了基于 `node` 的 `samp` 插件生态库开发，这一点需要社区共同努力推进。
 
-### Sqlite和Bindings支持
+### Bindings支持
 
-很遗憾，本项目是基于32位的嵌入式`node.js`，不支持`node-sqlite`和一些通过其他编程语言如rust的`bindings`的调用。
+很遗憾，本项目是基于32位的嵌入式`node.js`，对于`bindings`的支持是不稳定的，你可能会遇到报错等情况。
+
+在使用本项目前，请注意以下版本要求：
+
+1. **Node版本匹配**
+   - 请确保你的Node主版本号与samp-node依赖的版本一致
+   - 例如samp-node依赖22.17.0，则只能使用22.x版本
+   - 不兼容的版本如18.x、20.x、24.x等将无法正常工作
+
+2. 如果项目已经创建：
+   - 先检查Node版本是否符合要求
+   - 删除node_modules文件夹
+   - 重新运行`pnpm install`
+
+> 环境支持说明：目前better-sqlite3模块已在Windows平台测试通过
 
 也许在未来64位的`omp-node`上迎刃而解。
 

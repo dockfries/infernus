@@ -46,9 +46,23 @@ Teniendo en cuenta que el plugin desarrollo de `samp-node` está basado en `samp
 
 Esto limita bastante el desarrollo de plugins de `samp` usando el ecosistema de `node.js`. Requiere un trabajo conjunto de la comunidad para abordar este problema.
 
-### Soporte para Sqlite y Bindings
+### Soporte de bindings
 
-Lamentablemente, este proyecto está basado en un `node.js` embebido de 32 bits, que no es compatible con `node-sqlite` ni con llamadas a `bindings` de otros lenguajes de programación como Rust.
+Lamentablemente, este proyecto está basado en un `node.js` embebido de 32 bits, y el soporte para `bindings` es inestable - puedes encontrarte con errores.
+
+Antes de usar este proyecto, ten en cuenta:
+
+1. **Compatibilidad de versiones**
+   - Asegúrate que la versión principal de Node coincida con lo que necesita samp-node
+   - Ejemplo: si samp-node requiere 22.17.0, solo usa versiones 22.x
+   - Versiones como 18.x, 20.x, 24.x no son compatibles
+
+2. Para proyectos existentes:
+   - Primero verifica la versión de Node
+   - Borra la carpeta node_modules
+   - Ejecuta `pnpm install` nuevamente
+
+> Nota: El módulo better-sqlite3 ha sido probado en Windows
 
 Quizás esto se resuelva en el futuro con un `omp-node` de 64 bits.
 
