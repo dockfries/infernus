@@ -1,69 +1,90 @@
-import fs from "node:fs";
-import readline from "node:readline";
 import { DynamicObject, Player } from "@infernus/core";
 import { INTERNAL_MAP } from "../constants";
 import { objParser } from "./object";
-import { IMapLoadOptions, InternalMapConfig } from "../interfaces";
-
-function processLineByLine(filePath: string) {
-  const fileStream = fs.createReadStream(filePath);
-
-  return readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity,
-  });
-}
+import { IMapLoadOptions, RemoveBuildingArgs } from "../interfaces";
+import { materialTextParser } from "./materialText";
+import { materialParser } from "./material";
+import { removeBuildingParser } from "./removeBuilding";
+import { processLineByLine } from "../utils";
+import { MapLoaderError } from "../utils/error";
 
 export async function mapReader(options: IMapLoadOptions) {
-  let materialObj: DynamicObject | null = null;
+  let currentLine = 0;
+  let materialTarget: DynamicObject | null = null;
 
-  let lineCount = 0;
-
-  const rl = processLineByLine(options.filePath);
-
-  const rmvs: InternalMapConfig["rmvs"][0] = [];
+  const removeBuilding: RemoveBuildingArgs = [];
   const objects: DynamicObject[] = [];
 
+  function parseLine(lineStr: string) {
+    currentLine++;
+
+    const line = lineStr.split(" ");
+    const operator = line[0];
+    if (operator === "rmv") {
+      removeBuilding.push(removeBuildingParser(line));
+    } else if (operator === "mat") {
+      if (!materialTarget) {
+        throw new MapLoaderError({
+          msg: `parseLine: no object target, cannot material`,
+        });
+      }
+      materialParser(materialTarget, line);
+    } else if (operator === "txt") {
+      if (!materialTarget) {
+        throw new MapLoaderError({
+          msg: `parseLine: no object target, cannot materialText`,
+        });
+      }
+      materialTextParser(materialTarget, line, options);
+    } else {
+      materialTarget = objParser(line, options);
+      objects.push(materialTarget);
+    }
+  }
+
+  let rl: ReturnType<typeof processLineByLine> | null = null;
+
   try {
-    for await (const lineStr of rl) {
-      lineCount++;
-      const line = lineStr.split(" ");
-      const operator = line[0];
-      if (operator === "rmv") {
-        // rmvParser
-        rmvs.push(line);
-      } else if (operator === "mat") {
-        // matParser(materialObj)
-        if (!materialObj) {
-          throw new Error(`no object found, cannot material`);
+    const { source } = options;
+    if (typeof source === "string") {
+      rl = processLineByLine(source);
+      for await (const lineStr of rl) {
+        parseLine(lineStr);
+      }
+    } else {
+      let isDone = false;
+
+      while (!isDone) {
+        const lines = await source(() => {
+          isDone = true;
+        });
+
+        if (!lines.length) {
+          isDone = true;
+          break;
         }
-        // materialObj.setMaterial()
-      } else if (operator === "txt") {
-        // txtParser(materialObj)
-        if (!materialObj) {
-          throw new Error(`no object found, cannot materialText`);
+
+        for (const lineStr of lines as string[]) {
+          parseLine(lineStr);
         }
-      } else {
-        materialObj = objParser(line, options);
-        objects.push(materialObj);
       }
     }
 
-    let rmvIdx = -1;
-    if (rmvs.length) {
-      rmvIdx = INTERNAL_MAP.rmvs.push(rmvs);
+    let removeBuildingIdx = -1;
+    if (removeBuilding.length) {
+      removeBuildingIdx = INTERNAL_MAP.removeBuilding.push(removeBuilding);
     }
 
     Player.getInstances().forEach((p) => {
-      rmvs.flat().forEach((rmv) => {
+      removeBuilding.forEach((rmv) => {
         p.removeBuilding(...rmv);
       });
     });
 
     return {
       objects,
-      rmvs,
-      rmvIdx,
+      removeBuilding,
+      removeBuildingIdx,
     };
   } catch (err) {
     objects.forEach((obj) => {
@@ -72,24 +93,16 @@ export async function mapReader(options: IMapLoadOptions) {
       }
     });
     objects.length = 0;
-    rmvs.length = 0;
-    throw new Error(
-      `[MapLoader]: Error -> filePath:${options.filePath} line: ${lineCount} \n` +
-        JSON.stringify(err),
-    );
+    removeBuilding.length = 0;
+
+    if (err instanceof MapLoaderError) {
+      err.context.msg = `lineNo: ${currentLine} ${err.context.msg}`;
+    }
+
+    throw err;
+  } finally {
+    if (rl) {
+      rl.close();
+    }
   }
-}
-
-export function paginateMapReader() {
-  // let materialObj: DynamicObject | null = null;
-
-  return {
-    read() {
-      // todo parseLine
-    },
-    done() {
-      // materialObj = null;
-      // INTERNAL_MAP.loadedMaps.set(++INTERNAL_MAP.uniqId, {});
-    },
-  };
 }

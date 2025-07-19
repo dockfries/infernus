@@ -1,7 +1,7 @@
 import { InternalMapConfig } from "../interfaces";
 
 export const INTERNAL_MAP: InternalMapConfig = {
-  rmvs: [],
+  removeBuilding: [],
   uniqId: 0,
   loadedMaps: new Map(),
 };

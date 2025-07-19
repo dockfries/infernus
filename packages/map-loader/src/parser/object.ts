@@ -1,22 +1,49 @@
-import { DynamicObject } from "packages/core/dist/bundle";
+import { DynamicObject } from "@infernus/core";
 import { IMapLoadOptions } from "../interfaces";
+import { ensureLength, MapLoaderError } from "../utils/error";
 
 export function objParser(line: string[], options: IMapLoadOptions) {
-  if (line.length <= 7) {
-    throw new Error("object parser error");
-  }
+  ensureLength("objParser", line, 8, line.length);
 
   const objInfo = line.map((item) => {
     const num = Number(item);
     if (Number.isNaN(num)) {
-      throw new Error(`invalid value ${item}`);
+      throw new MapLoaderError({ msg: `invalid value ${item}` });
     }
     return num;
   });
 
-  const [modelId, x, y, z, rx, ry, rz, interiorId] = objInfo;
+  const [
+    modelId,
+    x,
+    y,
+    z,
+    rx,
+    ry,
+    rz,
+    worldId,
+    interiorId,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    playerId,
+    streamDistance,
+    drawDistance,
+    areaId,
+    priority,
+  ] = objInfo;
 
-  const { xOffset = 0, yOffset = 0, zOffset = 0, worldId, areaId } = options;
+  const {
+    xOffset = 0,
+    yOffset = 0,
+    zOffset = 0,
+    playerId: overwritePlayerId,
+    worldId: defaultWorldId,
+    interiorId: defaultInteriorId,
+    areaId: defaultAreaId,
+    priority: defaultPriority,
+    streamDistance: defaultStreamDistance,
+    drawDistance: defaultDrawDistance,
+    overwrite,
+  } = options;
 
   return new DynamicObject({
     modelId,
@@ -26,8 +53,18 @@ export function objParser(line: string[], options: IMapLoadOptions) {
     rx,
     ry,
     rz,
-    worldId,
-    areaId,
-    interiorId,
+    worldId: overwrite ? defaultWorldId : (worldId ?? defaultWorldId),
+    areaId: overwrite ? defaultAreaId : (areaId ?? defaultAreaId),
+    interiorId: overwrite
+      ? defaultInteriorId
+      : (interiorId ?? defaultInteriorId),
+    streamDistance: overwrite
+      ? defaultStreamDistance
+      : (streamDistance ?? defaultStreamDistance),
+    drawDistance: overwrite
+      ? defaultDrawDistance
+      : (drawDistance ?? defaultDrawDistance),
+    playerId: overwritePlayerId,
+    priority: overwrite ? defaultPriority : (priority ?? defaultPriority),
   }).create();
 }

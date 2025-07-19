@@ -3,28 +3,33 @@ import "./parser/removeBuilding";
 import { mapReader } from "./parser/reader";
 import { INTERNAL_MAP } from "./constants";
 import type { IMapLoadOptions } from "./interfaces";
+import { uniqId } from "./utils";
+import { MapLoaderError } from "./utils/error";
 
 export async function loadMap(options: IMapLoadOptions) {
-  const { filePath, removeBuilding } = options;
+  const { objects, removeBuilding, removeBuildingIdx } =
+    await mapReader(options);
 
-  const { objects, rmvs, rmvIdx } = await mapReader(options);
-
-  INTERNAL_MAP.uniqId++;
-  INTERNAL_MAP.loadedMaps.set(INTERNAL_MAP.uniqId, {
-    filePath,
+  INTERNAL_MAP.loadedMaps.set(uniqId(), {
+    options,
     objects,
-    rmvIdx,
+    removeBuildingIdx,
   });
 
-  removeBuilding(rmvs);
+  const { afterRemoveBuilding } = options;
+
+  if (afterRemoveBuilding) {
+    afterRemoveBuilding(removeBuilding);
+  }
 
   return objects;
 }
 
 export function unloadMap(mapId: number) {
   if (!INTERNAL_MAP.loadedMaps.has(mapId)) {
-    throw new Error("");
+    throw new MapLoaderError({ msg: `invalid mapId ${mapId}` });
   }
+
   const map = INTERNAL_MAP.loadedMaps.get(mapId)!;
 
   map.objects.forEach((obj) => {
@@ -33,18 +38,26 @@ export function unloadMap(mapId: number) {
     }
   });
 
-  if (map.rmvIdx > -1) {
-    INTERNAL_MAP.rmvs.splice(map.rmvIdx, 1);
+  if (map.removeBuildingIdx > -1) {
+    INTERNAL_MAP.removeBuilding.splice(map.removeBuildingIdx, 1);
   }
 
   INTERNAL_MAP.loadedMaps.delete(mapId);
+
+  return map.options;
 }
 
-export function reloadMaps() {}
+export function reloadMap(mapId: number) {
+  loadMap(unloadMap(mapId));
+}
 
-// when exit, clear loadedMaps, no need unloadMap manual
+export function reloadMaps() {
+  INTERNAL_MAP.loadedMaps.keys().forEach((mapId) => {
+    reloadMap(mapId);
+  });
+}
+
 GameMode.onExit(({ next }) => {
   INTERNAL_MAP.loadedMaps.clear();
-  INTERNAL_MAP.uniqId = 0;
   return next();
 });

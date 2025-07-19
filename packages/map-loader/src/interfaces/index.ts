@@ -1,26 +1,34 @@
 import type { DynamicObject, Player } from "@infernus/core";
 
-export interface InternalMapConfig {
-  rmvs: Array<
-    Array<Parameters<InstanceType<typeof Player>["removeBuilding"]>[]>
-  >;
-  uniqId: number;
-  loadedMaps: Map<number, IMapInfo>;
-}
-
-export interface IMapInfo {
-  filePath: string;
-  objects: DynamicObject[];
-  rmvIdx: number;
-}
+export type RemoveBuildingArgs = Array<
+  Parameters<InstanceType<typeof Player>["removeBuilding"]>
+>;
 
 export interface IMapLoadOptions {
-  filePath: string;
+  source: string | ((done: () => void) => Promise<string[]>);
   xOffset?: number;
   yOffset?: number;
   zOffset?: number;
+  playerId?: number | number[];
   worldId?: number | number[];
   areaId?: number | number[];
+  interiorId?: number | number[];
+  priority?: number;
+  streamDistance?: number;
+  drawDistance?: number;
+  overwrite?: boolean;
+  charset?: string;
   // if someone wanna use Colandreas maybe useful?
-  removeBuilding: (rmvs: InternalMapConfig["rmvs"][0]) => void;
+  afterRemoveBuilding?: (removeBuilding: RemoveBuildingArgs) => void;
+}
+
+export interface IMapInfo {
+  options: IMapLoadOptions;
+  objects: DynamicObject[];
+  removeBuildingIdx: number;
+}
+
+export interface InternalMapConfig {
+  removeBuilding: RemoveBuildingArgs[];
+  loadedMaps: Map<number, IMapInfo>;
 }
