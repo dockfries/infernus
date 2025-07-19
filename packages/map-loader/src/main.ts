@@ -7,22 +7,24 @@ import { uniqId } from "./utils";
 import { MapLoaderError } from "./utils/error";
 
 export async function loadMap(options: IMapLoadOptions) {
-  const { objects, removeBuilding, removeBuildingIdx } =
+  const { objects, removedBuilding, removedBuildingIdx } =
     await mapReader(options);
 
-  INTERNAL_MAP.loadedMaps.set(uniqId(), {
+  const id = uniqId();
+
+  INTERNAL_MAP.loadedMaps.set(id, {
     options,
     objects,
-    removeBuildingIdx,
+    removedBuildingIdx,
   });
 
-  const { afterRemoveBuilding } = options;
+  const { onLoaded } = options;
 
-  if (afterRemoveBuilding) {
-    afterRemoveBuilding(removeBuilding);
+  if (onLoaded) {
+    onLoaded(removedBuilding);
   }
 
-  return objects;
+  return id;
 }
 
 export function unloadMap(mapId: number) {
@@ -32,23 +34,38 @@ export function unloadMap(mapId: number) {
 
   const map = INTERNAL_MAP.loadedMaps.get(mapId)!;
 
+  const { onUnloaded } = map.options;
+
   map.objects.forEach((obj) => {
     if (obj.isValid()) {
       obj.destroy();
     }
   });
 
-  if (map.removeBuildingIdx > -1) {
-    INTERNAL_MAP.removeBuilding.splice(map.removeBuildingIdx, 1);
+  const removedBuilding =
+    map.removedBuildingIdx > -1
+      ? INTERNAL_MAP.removedBuilding[map.removedBuildingIdx]
+      : [];
+
+  if (map.removedBuildingIdx > -1) {
+    INTERNAL_MAP.removedBuilding.splice(map.removedBuildingIdx, 1);
   }
 
   INTERNAL_MAP.loadedMaps.delete(mapId);
 
-  return map.options;
+  if (onUnloaded) {
+    onUnloaded(removedBuilding);
+  }
+
+  return mapId;
 }
 
 export function reloadMap(mapId: number) {
-  loadMap(unloadMap(mapId));
+  const mapInfo = INTERNAL_MAP.loadedMaps.get(mapId);
+  if (!mapInfo) {
+    throw new MapLoaderError({ msg: `invalid mapId ${mapId}` });
+  }
+  loadMap(mapInfo.options);
 }
 
 export function reloadMaps() {

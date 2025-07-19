@@ -12,7 +12,7 @@ export async function mapReader(options: IMapLoadOptions) {
   let currentLine = 0;
   let materialTarget: DynamicObject | null = null;
 
-  const removeBuilding: RemoveBuildingArgs = [];
+  const removedBuilding: RemoveBuildingArgs = [];
   const objects: DynamicObject[] = [];
 
   function parseLine(lineStr: string) {
@@ -21,7 +21,7 @@ export async function mapReader(options: IMapLoadOptions) {
     const line = lineStr.split(" ");
     const operator = line[0];
     if (operator === "rmv") {
-      removeBuilding.push(removeBuildingParser(line));
+      removedBuilding.push(removeBuildingParser(line));
     } else if (operator === "mat") {
       if (!materialTarget) {
         throw new MapLoaderError({
@@ -70,21 +70,21 @@ export async function mapReader(options: IMapLoadOptions) {
       }
     }
 
-    let removeBuildingIdx = -1;
-    if (removeBuilding.length) {
-      removeBuildingIdx = INTERNAL_MAP.removeBuilding.push(removeBuilding);
+    let removedBuildingIdx = -1;
+    if (removedBuilding.length) {
+      removedBuildingIdx = INTERNAL_MAP.removedBuilding.push(removedBuilding);
     }
 
     Player.getInstances().forEach((p) => {
-      removeBuilding.forEach((rmv) => {
+      removedBuilding.forEach((rmv) => {
         p.removeBuilding(...rmv);
       });
     });
 
     return {
       objects,
-      removeBuilding,
-      removeBuildingIdx,
+      removedBuilding,
+      removedBuildingIdx,
     };
   } catch (err) {
     objects.forEach((obj) => {
@@ -93,10 +93,11 @@ export async function mapReader(options: IMapLoadOptions) {
       }
     });
     objects.length = 0;
-    removeBuilding.length = 0;
+    removedBuilding.length = 0;
 
     if (err instanceof MapLoaderError) {
       err.context.msg = `lineNo: ${currentLine} ${err.context.msg}`;
+      throw new MapLoaderError(err.context);
     }
 
     throw err;

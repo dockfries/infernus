@@ -19,16 +19,17 @@ export interface IMapLoadOptions {
   overwrite?: boolean;
   charset?: string;
   // if someone wanna use Colandreas maybe useful?
-  afterRemoveBuilding?: (removeBuilding: RemoveBuildingArgs) => void;
+  onLoaded?: (removedBuilding: RemoveBuildingArgs) => void;
+  onUnloaded?: (removedBuilding: RemoveBuildingArgs) => void;
 }
 
 export interface IMapInfo {
   options: IMapLoadOptions;
   objects: DynamicObject[];
-  removeBuildingIdx: number;
+  removedBuildingIdx: number;
 }
 
 export interface InternalMapConfig {
-  removeBuilding: RemoveBuildingArgs[];
+  removedBuilding: RemoveBuildingArgs[];
   loadedMaps: Map<number, IMapInfo>;
 }

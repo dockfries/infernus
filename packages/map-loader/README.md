@@ -5,7 +5,7 @@
 ## Getting started
 
 ```sh
-pnpm add map-loader @infernus/map-loader
+pnpm add @infernus/core @infernus/map-loader
 ```
 
 ## Example

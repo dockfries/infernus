@@ -4,7 +4,7 @@ import { RemoveBuildingArgs } from "../interfaces";
 import { ensureLength } from "../utils/error";
 
 PlayerEvent.onConnect(({ player, next }) => {
-  const removeBuildGroup = INTERNAL_MAP.removeBuilding.flat();
+  const removeBuildGroup = INTERNAL_MAP.removedBuilding.flat();
   removeBuildGroup.forEach((removeBuilding) => {
     player.removeBuilding(...removeBuilding);
   });
