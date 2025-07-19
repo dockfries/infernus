@@ -1,11 +1,7 @@
 import { StreamerDistances } from "@infernus/core";
 import { ensureLength } from "../utils/error";
 
-export function objConverter(line: string) {
-  const funcMatch = line.match(/^.*Create(Dynamic)?Object(Ex)?\(/);
-
-  if (!funcMatch) throw new Error("");
-
+export function objConverter(funcMatch: RegExpMatchArray, line: string) {
   let funcName = "CreateObject";
 
   if (funcMatch[2]) {

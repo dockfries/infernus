@@ -17,9 +17,11 @@ export function ensureLength(
   minLength: number,
   length: number,
 ) {
-  throw new MapLoaderError({
-    type,
-    msg: `Expected ${minLength} elements, got ${length}`,
-    details: JSON.stringify(details),
-  });
+  if (length < minLength) {
+    throw new MapLoaderError({
+      type,
+      msg: `Expected ${minLength} elements, got ${length}`,
+      details: JSON.stringify(details),
+    });
+  }
 }

@@ -5,10 +5,6 @@ import {
 import { ensureLength } from "../utils/error";
 
 export function materialTextConverter(line: string) {
-  const funcMatch = line.match(/^.*Set(Dynamic)?ObjectMaterialText\(/);
-
-  if (!funcMatch) throw new Error("");
-
   const params = line
     .replace(/^.*Set(Dynamic)?ObjectMaterialText\(|\);\s*(\w+)?/g, "")
     .split(",")
@@ -19,8 +15,8 @@ export function materialTextConverter(line: string) {
   const [
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     objectId,
-    text,
     materialIndex,
+    text,
     materialSize,
     fontFace,
     bold,
@@ -64,8 +60,8 @@ export function materialTextConverter(line: string) {
   }
 
   return {
-    text,
     materialIndex: +materialIndex,
+    text,
     materialSize: _materialSize,
     fontFace,
     bold: Boolean(bold),

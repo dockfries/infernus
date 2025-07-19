@@ -7,11 +7,10 @@ export function materialTextParser(
   line: string[],
   options: IMapLoadOptions,
 ) {
-  ensureLength("materialTextParser", line, 4, line.length);
+  ensureLength("materialTextParser", line, 10, line.length);
 
   const [
     materialIndex,
-    text,
     materialSize,
     fontFace = "Arial",
     fontSize = 24,
@@ -19,6 +18,7 @@ export function materialTextParser(
     fontColor = 0xffffffff,
     backColor = 0,
     textAlignment = 0,
+    text,
   ] = line.slice(1);
 
   return obj.setMaterialText(

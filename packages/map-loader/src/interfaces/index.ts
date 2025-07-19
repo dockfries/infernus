@@ -33,3 +33,8 @@ export interface InternalMapConfig {
   removedBuilding: RemoveBuildingArgs[];
   loadedMaps: Map<number, IMapInfo>;
 }
+
+export interface IMapConverterOptions {
+  input: string;
+  output: string;
+}

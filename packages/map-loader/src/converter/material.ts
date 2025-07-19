@@ -1,10 +1,7 @@
+/* eslint-disable prefer-const */
 import { ensureLength } from "../utils/error";
 
 export function materialConverter(line: string) {
-  const funcMatch = line.match(/^.*Set(Dynamic)?ObjectMaterial\(/);
-
-  if (!funcMatch) throw new Error("");
-
   const params = line
     .replace(/^.*Set(Dynamic)?ObjectMaterial\(|\);\s*(\w+)?/g, "")
     .split(",")
@@ -12,7 +9,7 @@ export function materialConverter(line: string) {
 
   ensureLength("materialConverter", params, 6, params.length);
 
-  const [
+  let [
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     objectId,
     index,
@@ -21,6 +18,17 @@ export function materialConverter(line: string) {
     textureName,
     color,
   ] = params;
+
+  if (
+    modelId === "16644" &&
+    textureLib == "a51_detailstuff" &&
+    textureName == "roucghstonebrtb"
+  ) {
+    modelId = "18888";
+    textureLib = "forcefields";
+    textureName = "white";
+  }
+
   return {
     index: +index,
     modelId: +modelId,

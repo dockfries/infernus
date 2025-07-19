@@ -6,6 +6,11 @@ import type { IMapLoadOptions } from "./interfaces";
 import { uniqId } from "./utils";
 import { MapLoaderError } from "./utils/error";
 
+GameMode.onExit(({ next }) => {
+  INTERNAL_MAP.loadedMaps.clear();
+  return next();
+});
+
 export async function loadMap(options: IMapLoadOptions) {
   const { objects, removedBuilding, removedBuildingIdx } =
     await mapReader(options);
@@ -74,7 +79,5 @@ export function reloadMaps() {
   });
 }
 
-GameMode.onExit(({ next }) => {
-  INTERNAL_MAP.loadedMaps.clear();
-  return next();
-});
+export { mapConverter } from "./converter/converter";
+export * from "./interfaces";
