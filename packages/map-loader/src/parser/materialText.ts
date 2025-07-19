@@ -18,8 +18,9 @@ export function materialTextParser(
     fontColor = 0xffffffff,
     backColor = 0,
     textAlignment = 0,
-    text,
   ] = line.slice(1);
+
+  const text = line.slice(10).join(" ");
 
   return obj.setMaterialText(
     options.charset,
