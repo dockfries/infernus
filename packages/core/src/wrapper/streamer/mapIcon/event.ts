@@ -4,9 +4,11 @@ import { defineEvent } from "core/controllers/bus";
 import type { Player } from "core/controllers/player/entity";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { StreamerItemTypes } from "core/enums";
+import { dynamicMapIconPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {
   DynamicMapIcon.getInstances().forEach((m) => m.destroy());
+  dynamicMapIconPool.clear();
   return next();
 });
 

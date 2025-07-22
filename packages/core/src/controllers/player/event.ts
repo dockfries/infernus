@@ -10,7 +10,7 @@ import type {
 } from "../../enums";
 import { InvalidEnum } from "../../enums";
 import { Dialog } from "./dialog";
-import { playerPool } from "./pool";
+import { playerPool } from "core/utils/pools";
 
 export const [onConnect] = defineEvent({
   name: "OnPlayerConnect",

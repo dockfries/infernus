@@ -3,10 +3,13 @@ import { Player } from "../player/entity";
 import { TextDraw } from "./entity";
 import { GameMode } from "../gamemode";
 import { defineEvent } from "../bus";
+import { globalTextDrawPool, playerTextDrawPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {
   TextDraw.getInstances(true).forEach((t) => t.destroy());
   TextDraw.getInstances(false).forEach((t) => t.destroy());
+  globalTextDrawPool.clear();
+  playerTextDrawPool.clear();
   return next();
 });
 

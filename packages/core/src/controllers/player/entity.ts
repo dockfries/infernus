@@ -28,9 +28,14 @@ import type { Vehicle } from "../vehicle/entity";
 import type { DynamicObject } from "core/wrapper/streamer";
 import { defineEvent } from "../bus";
 import { VectorSize } from "core/wrapper/native";
-import { IInnerPlayerProps, innerPlayerProps, playerPool } from "./pool";
-import { vehiclePool } from "../vehicle/pool";
-import { dynamicObjectPool } from "core/wrapper/streamer/object/pool";
+import {
+  IInnerPlayerProps,
+  innerPlayerProps,
+  playerPool,
+  dynamicObjectPool,
+  vehiclePool,
+} from "core/utils/pools";
+import { CmdBus } from "./command";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
@@ -60,7 +65,6 @@ export class Player {
     isAndroid: true,
   };
 
-  static readonly players = playerPool;
   static MAX_CHECK_ANDROID_DELAY = 10; // 10s
   static SKIP_CHECK_ANDROID = false;
 
@@ -449,12 +453,12 @@ export class Player {
     return w.StopAudioStreamForPlayer(this.id);
   }
   playSound(
-    soundid: number,
+    soundId: number,
     relativeX = 0.0,
     relativeY = 0.0,
     relativeZ = 0.0,
   ) {
-    return w.PlayerPlaySound(this.id, soundid, relativeX, relativeY, relativeZ);
+    return w.PlayerPlaySound(this.id, soundId, relativeX, relativeY, relativeZ);
   }
   static getMaxPlayers(): number {
     return w.GetMaxPlayers();
@@ -527,7 +531,7 @@ export class Player {
     return w.IsPlayerConnected(id);
   }
   isConnected(): boolean {
-    return w.IsPlayerConnected(this.id);
+    return Player.isConnected(this.id);
   }
   disableRemoteVehicleCollisions(disable: boolean) {
     return w.DisableRemoteVehicleCollisions(this.id, disable);
@@ -967,6 +971,9 @@ export class Player {
   }
   isUsingOmp() {
     return w.IsPlayerUsingOmp(this.id);
+  }
+  simulateCommand(cmdText: string | number[]) {
+    return CmdBus.simulate(this, cmdText);
   }
   static getInstance(id: number) {
     return playerPool.get(id);

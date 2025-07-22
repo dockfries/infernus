@@ -4,12 +4,11 @@ import type { ITextDraw } from "core/interfaces";
 import * as w from "core/wrapper/native";
 import { PlayerEvent, type Player } from "../player";
 import { I18n } from "../i18n";
+import { globalTextDrawPool, playerTextDrawPool } from "core/utils/pools";
+import { INTERNAL_FLAGS } from "core/utils/flags";
 
 export class TextDraw {
-  static readonly globalTextDraws = new Map<number, TextDraw>();
-  static readonly playerTextDraws = new Map<number, TextDraw>();
-
-  private readonly sourceInfo: ITextDraw;
+  private sourceInfo: ITextDraw;
 
   private _id = -1;
   get id() {
@@ -19,8 +18,7 @@ export class TextDraw {
     this.sourceInfo = textDraw;
   }
   create(): this {
-    if (this.id !== -1)
-      throw new Error("[TextDraw]: Unable to create the textdraw again");
+    if (this.id !== -1) throw new Error("[TextDraw]: Unable to create again");
 
     const { x, y, text, player, charset = "iso-8859-1" } = this.sourceInfo;
     const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
@@ -31,7 +29,7 @@ export class TextDraw {
           "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
         );
       this._id = TextDraw.__inject__TextDrawCreate(x, y, _text);
-      TextDraw.globalTextDraws.set(this.id, this);
+      globalTextDrawPool.set(this.id, this);
     } else {
       if (TextDraw.getInstances(false).length === LimitsEnum.MAX_TEXT_DRAWS)
         throw new Error(
@@ -54,7 +52,7 @@ export class TextDraw {
         }
         return ret;
       });
-      TextDraw.playerTextDraws.set(this.id, this);
+      playerTextDrawPool.set(this.id, this);
     }
 
     return this;
@@ -63,11 +61,15 @@ export class TextDraw {
     if (this.id === -1) TextDraw.beforeCreateWarn("destroy the textdraw");
     const { player } = this.sourceInfo;
     if (!player) {
-      TextDraw.__inject__TextDrawDestroy(this.id);
-      TextDraw.globalTextDraws.delete(this.id);
+      if (!INTERNAL_FLAGS.skip) {
+        TextDraw.__inject__TextDrawDestroy(this.id);
+      }
+      globalTextDrawPool.delete(this.id);
     } else {
-      TextDraw.__inject__PlayerTextDrawDestroy(player.id, this.id);
-      TextDraw.playerTextDraws.delete(this.id);
+      if (!INTERNAL_FLAGS.skip) {
+        TextDraw.__inject__PlayerTextDrawDestroy(player.id, this.id);
+      }
+      playerTextDrawPool.delete(this.id);
     }
     this._id = -1;
     return this;
@@ -364,6 +366,7 @@ export class TextDraw {
     );
   }
   isValid(): boolean {
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
     const p = this.sourceInfo.player;
     if (p) return TextDraw.__inject__IsValidPlayerTextDraw(p.id, this.id);
     return TextDraw.__inject__IsValidTextDraw(this.id);
@@ -503,13 +506,13 @@ export class TextDraw {
   }
 
   static getInstance(id: number, isGlobal: boolean) {
-    if (isGlobal) return this.globalTextDraws.get(id);
-    return this.playerTextDraws.get(id);
+    if (isGlobal) return globalTextDrawPool.get(id);
+    return playerTextDrawPool.get(id);
   }
 
   static getInstances(isGlobal: boolean) {
-    if (isGlobal) return [...this.globalTextDraws.values()];
-    return [...this.playerTextDraws.values()];
+    if (isGlobal) return [...globalTextDrawPool.values()];
+    return [...playerTextDrawPool.values()];
   }
 
   static __inject__TextDrawCreate = w.TextDrawCreate;

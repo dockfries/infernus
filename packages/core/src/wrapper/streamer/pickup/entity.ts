@@ -1,23 +1,33 @@
 import type { IDynamicPickup } from "core/interfaces";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
-import { streamerFlag } from "../flag";
+import { INTERNAL_FLAGS } from "../../../utils/flags";
 import { Player } from "core/controllers";
+import { dynamicPickupPool } from "core/utils/pools";
 
 export class DynamicPickup {
-  static readonly pickups = new Map<number, DynamicPickup>();
-
-  private sourceInfo: IDynamicPickup;
+  private sourceInfo: IDynamicPickup | null = null;
   private _id = -1;
   get id(): number {
     return this._id;
   }
-  constructor(pickup: IDynamicPickup) {
-    this.sourceInfo = pickup;
+  constructor(pickupOrId: IDynamicPickup | null) {
+    if (typeof pickupOrId === "number") {
+      const obj = DynamicPickup.getInstance(pickupOrId);
+      if (obj) {
+        return obj;
+      }
+      this._id = pickupOrId;
+      dynamicPickupPool.set(this._id, this);
+    } else {
+      this.sourceInfo = pickupOrId;
+    }
   }
   create(): this {
     if (this.id !== -1)
-      throw new Error("[StreamerPickup]: Unable to create pickup again");
+      throw new Error("[StreamerPickup]: Unable to create again");
+    if (!this.sourceInfo)
+      throw new Error("[StreamerPickup]: Unable to create with only id");
     let {
       streamDistance,
       worldId,
@@ -26,7 +36,7 @@ export class DynamicPickup {
       areaId,
       priority,
     } = this.sourceInfo;
-    const { type, modelId: modelId, x, y, z, extended } = this.sourceInfo;
+    const { type, modelId, x, y, z, extended } = this.sourceInfo;
 
     if (type < 0) throw new Error("[StreamerPickup]: Invalid pickup type");
 
@@ -81,23 +91,23 @@ export class DynamicPickup {
       );
     }
 
-    DynamicPickup.pickups.set(this._id, this);
+    dynamicPickupPool.set(this._id, this);
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !streamerFlag.skip)
+    if (this.id === -1 && !INTERNAL_FLAGS.skip)
       throw new Error(
         "[StreamerPickup]: Unable to destroy the pickup before create",
       );
-    if (!streamerFlag.skip)
+    if (!INTERNAL_FLAGS.skip)
       DynamicPickup.__inject_DestroyDynamicPickup(this.id);
-    DynamicPickup.pickups.delete(this.id);
+    dynamicPickupPool.delete(this.id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
-    if (streamerFlag.skip && this.id !== -1) return true;
-    return s.IsValidDynamicPickup(this.id);
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    return DynamicPickup.isValid(this.id);
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === -1)
@@ -114,6 +124,7 @@ export class DynamicPickup {
     if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.PICKUP, this.id);
   }
+  static isValid = s.IsValidDynamicPickup;
   static togglePlayerUpdate(player: Player, update = true) {
     return Streamer.toggleItemUpdate(
       player,
@@ -135,10 +146,10 @@ export class DynamicPickup {
     return this.togglePlayerUpdate(player, true);
   }
   static getInstance(id: number) {
-    return this.pickups.get(id);
+    return dynamicPickupPool.get(id);
   }
   static getInstances() {
-    return [...this.pickups.values()];
+    return [...dynamicPickupPool.values()];
   }
 
   static __inject_CreateDynamicPickup = s.CreateDynamicPickup;

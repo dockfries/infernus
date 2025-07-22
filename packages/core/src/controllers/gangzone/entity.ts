@@ -4,11 +4,10 @@ import { PlayerEvent, type Player } from "../player";
 import { rgba } from "../../utils/colorUtils";
 import type { IGangZone } from "core/interfaces";
 import type { GangZonePos } from "core/wrapper/native/interfaces";
+import { INTERNAL_FLAGS } from "core/utils/flags";
+import { globalGangZonePool, playerGangZonePool } from "core/utils/pools";
 
 export class GangZone {
-  static readonly globalGangZones = new Map<number, GangZone>();
-  static readonly playerGangZones = new Map<number, GangZone>();
-
   readonly sourceInfo: IGangZone;
 
   constructor(gangZone: IGangZone) {
@@ -21,8 +20,7 @@ export class GangZone {
   }
 
   create(): void {
-    if (this.id !== -1)
-      throw new Error("[GangZone]: Unable to create the gangzone again");
+    if (this.id !== -1) throw new Error("[GangZone]: Unable to create again");
 
     const { player } = this.sourceInfo;
     if (!player) {
@@ -32,7 +30,7 @@ export class GangZone {
         );
       const { minX, minY, maxX, maxY } = this.sourceInfo;
       this._id = w.GangZoneCreate(minX, minY, maxX, maxY);
-      GangZone.globalGangZones.set(this.id, this);
+      globalGangZonePool.set(this.id, this);
     } else {
       if (GangZone.getInstances(false).length === LimitsEnum.MAX_GANG_ZONES)
         throw new Error(
@@ -50,7 +48,7 @@ export class GangZone {
           off();
         }
       });
-      GangZone.playerGangZones.set(this.id, this);
+      playerGangZonePool.set(this.id, this);
     }
   }
 
@@ -62,11 +60,15 @@ export class GangZone {
 
     const { player } = this.sourceInfo;
     if (!player) {
-      w.GangZoneDestroy(this.id);
-      GangZone.globalGangZones.delete(this.id);
+      if (!INTERNAL_FLAGS.skip) {
+        w.GangZoneDestroy(this.id);
+      }
+      globalGangZonePool.delete(this.id);
     } else {
-      w.PlayerGangZoneDestroy(player.id, this.id);
-      GangZone.playerGangZones.delete(this.id);
+      if (!INTERNAL_FLAGS.skip) {
+        w.PlayerGangZoneDestroy(player.id, this.id);
+      }
+      playerGangZonePool.delete(this.id);
     }
 
     this._id = -1;
@@ -193,10 +195,11 @@ export class GangZone {
   }
 
   isValid(): boolean {
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
     if (this.id === -1) return false;
     const p = this.sourceInfo.player;
-    if (p) return w.IsValidPlayerGangZone(p.id, this.id);
-    return w.IsValidGangZone(this.id);
+    if (p) return GangZone.isValidPlayer(p.id, this.id);
+    return GangZone.isValidGlobal(this.id);
   }
 
   isPlayerIn(player: Player): boolean {
@@ -254,13 +257,16 @@ export class GangZone {
     return this;
   }
 
+  static isValidPlayer = w.IsValidPlayerGangZone;
+  static isValidGlobal = w.IsValidGangZone;
+
   static getInstance(id: number, isGlobal: boolean) {
-    if (isGlobal) return this.globalGangZones.get(id);
-    return this.playerGangZones.get(id);
+    if (isGlobal) return globalGangZonePool.get(id);
+    return playerGangZonePool.get(id);
   }
 
   static getInstances(isGlobal: boolean) {
-    if (isGlobal) return [...this.globalGangZones.values()];
-    return [...this.playerGangZones.values()];
+    if (isGlobal) return [...globalGangZonePool.values()];
+    return [...playerGangZonePool.values()];
   }
 }

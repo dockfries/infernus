@@ -11,23 +11,33 @@ import {
   StreamerItemTypes,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { streamerFlag } from "../flag";
+import { INTERNAL_FLAGS } from "../../../utils/flags";
 import { Player } from "core/controllers";
+import { dynamicMapIconPool } from "core/utils/pools";
 
 export class DynamicMapIcon {
-  static readonly mapIcons = new Map<number, DynamicMapIcon>();
-
-  private sourceInfo: IDynamicMapIcon;
+  private sourceInfo: IDynamicMapIcon | null = null;
   private _id = -1;
   get id(): number {
     return this._id;
   }
-  constructor(mapIcon: IDynamicMapIcon) {
-    this.sourceInfo = mapIcon;
+  constructor(mapIconOrId: IDynamicMapIcon | null) {
+    if (typeof mapIconOrId === "number") {
+      const obj = DynamicMapIcon.getInstance(mapIconOrId);
+      if (obj) {
+        return obj;
+      }
+      this._id = mapIconOrId;
+      dynamicMapIconPool.set(this._id, this);
+    } else {
+      this.sourceInfo = mapIconOrId;
+    }
   }
   create(): this {
     if (this.id !== -1)
-      throw new Error("[StreamerMapIcon]: Unable to create map icon again");
+      throw new Error("[StreamerMapIcon]: Unable to create again");
+    if (!this.sourceInfo)
+      throw new Error("[StreamerMapIcon]: Unable to create with only id");
     let {
       style,
       streamDistance,
@@ -70,7 +80,7 @@ export class DynamicMapIcon {
         areaId,
         priority,
       );
-      DynamicMapIcon.mapIcons.set(this._id, this);
+      dynamicMapIconPool.set(this._id, this);
       return this;
     }
 
@@ -97,22 +107,24 @@ export class DynamicMapIcon {
       areaId,
       priority,
     );
-    DynamicMapIcon.mapIcons.set(this._id, this);
+    dynamicMapIconPool.set(this._id, this);
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !streamerFlag.skip)
+    if (this.id === -1 && !INTERNAL_FLAGS.skip)
       throw new Error(
         "[StreamerMapIcon]: Unable to destroy the map icon before create",
       );
-    if (!streamerFlag.skip) DestroyDynamicMapIcon(this.id);
-    DynamicMapIcon.mapIcons.delete(this._id);
+    if (!INTERNAL_FLAGS.skip) {
+      DestroyDynamicMapIcon(this.id);
+    }
+    dynamicMapIconPool.delete(this._id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
-    if (streamerFlag.skip && this.id !== -1) return true;
-    return IsValidDynamicMapIcon(this.id);
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    return DynamicMapIcon.isValid(this.id);
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === -1)
@@ -129,6 +141,7 @@ export class DynamicMapIcon {
     if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.MAP_ICON, this.id);
   }
+  static isValid = IsValidDynamicMapIcon;
   static togglePlayerUpdate(player: Player, update = true) {
     return Streamer.toggleItemUpdate(
       player,
@@ -151,9 +164,9 @@ export class DynamicMapIcon {
   }
 
   static getInstance(id: number) {
-    return this.mapIcons.get(id);
+    return dynamicMapIconPool.get(id);
   }
   static getInstances() {
-    return [...this.mapIcons.values()];
+    return [...dynamicMapIconPool.values()];
   }
 }

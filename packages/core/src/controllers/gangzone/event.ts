@@ -1,3 +1,4 @@
+import { globalGangZonePool, playerGangZonePool } from "core/utils/pools";
 import { defineEvent } from "../bus";
 import { GameMode } from "../gamemode";
 import { Player } from "../player";
@@ -6,6 +7,8 @@ import { GangZone } from "./entity";
 GameMode.onExit(({ next }) => {
   GangZone.getInstances(true).forEach((g) => g.destroy());
   GangZone.getInstances(false).forEach((g) => g.destroy());
+  globalGangZonePool.clear();
+  playerGangZonePool.clear();
   return next();
 });
 

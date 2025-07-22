@@ -3,9 +3,11 @@ import { GameMode } from "core/controllers/gamemode";
 import { defineEvent } from "core/controllers/bus";
 import { Player } from "core/controllers/player/entity";
 import type { WeaponEnum, BodyPartsEnum } from "core/enums";
+import { dynamicActorPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {
   DynamicActor.getInstances().forEach((a) => a.destroy());
+  dynamicActorPool.clear();
   return next();
 });
 

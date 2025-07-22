@@ -1,3 +1,4 @@
+import util from "node:util";
 import type { TLocales } from "../../types";
 import { encode, decode, encodingExists } from "iconv-lite";
 import { snakeCase, merge, omit, mapKeys } from "es-toolkit";
@@ -39,13 +40,7 @@ export class I18n {
     if (typeof dotVal !== "string") return JSON.stringify(dotVal);
     let strDotVal = dotVal;
     if (replaceable && replaceable.length) {
-      // %s Used to declare as a slot and for future replacement
-      const placeholder = /%s/i;
-      for (let i = 0; i < replaceable.length; i++) {
-        const matches = strDotVal.match(placeholder);
-        if (matches === null) break;
-        strDotVal = strDotVal.replace(placeholder, replaceable[i]);
-      }
+      strDotVal = util.format(strDotVal, ...replaceable);
     }
     return strDotVal;
   };

@@ -4,40 +4,50 @@ import type { Vehicle } from "core/controllers/vehicle";
 import type { Player } from "core/controllers/player";
 import { rgba } from "core/utils/colorUtils";
 import {
+  GetDynamicObjectMaterial,
   GetDynamicObjectMaterialText,
   SetDynamicObjectMaterialText,
 } from "core/utils/helperUtils";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
-import { streamerFlag } from "../flag";
-import { dynamicObjectPool } from "./pool";
+import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { dynamicObjectPool } from "core/utils/pools";
 
 export class DynamicObject {
-  static readonly objects = dynamicObjectPool;
-
-  private sourceInfo: IDynamicObject;
+  private sourceInfo: IDynamicObject | null = null;
   private _id = -1;
   get id(): number {
     return this._id;
   }
 
-  constructor(object: IDynamicObject) {
-    this.sourceInfo = object;
+  constructor(objectOrId: IDynamicObject | number) {
+    if (typeof objectOrId === "number") {
+      const obj = DynamicObject.getInstance(objectOrId);
+      if (obj) {
+        return obj;
+      }
+      this._id = objectOrId;
+      dynamicObjectPool.set(this._id, this);
+    } else {
+      this.sourceInfo = objectOrId;
+    }
   }
 
   create(): this {
     if (this.id !== -1)
-      throw new Error("[StreamerObject]: Unable to create object again");
+      throw new Error("[StreamerObject]: Unable to create again");
+    if (!this.sourceInfo)
+      throw new Error("[StreamerObject]: Unable to create with only id");
     let {
       streamDistance,
       drawDistance: drawDistance,
       worldId,
-      interiorId: interiorId,
+      interiorId,
       playerId,
       areaId,
       priority,
     } = this.sourceInfo;
-    const { modelId: modelId, x, y, z, rx, ry, rz, extended } = this.sourceInfo;
+    const { modelId, x, y, z, rx, ry, rz, extended } = this.sourceInfo;
 
     streamDistance ??= s.StreamerDistances.OBJECT_SD;
     drawDistance ??= s.StreamerDistances.OBJECT_DD;
@@ -97,27 +107,36 @@ export class DynamicObject {
       );
     }
 
-    DynamicObject.objects.set(this._id, this);
+    dynamicObjectPool.set(this._id, this);
     return this;
   }
 
   destroy(): this {
-    if (this.id === -1 && !streamerFlag.skip)
+    if (this.id === -1 && !INTERNAL_FLAGS.skip)
       throw new Error(
         "[StreamerObject]: Unable to destroy the object before create",
       );
-    if (!streamerFlag.skip) s.DestroyDynamicObject(this.id);
-    DynamicObject.objects.delete(this.id);
+    if (!INTERNAL_FLAGS.skip) {
+      s.DestroyDynamicObject(this.id);
+    }
+    dynamicObjectPool.delete(this.id);
     this._id = -1;
     return this;
   }
 
   isValid(): boolean {
-    if (streamerFlag.skip && this.id !== -1) return true;
-    return s.IsValidDynamicObject(this.id);
+    if (INTERNAL_FLAGS.skip && this.sourceInfo && this.id !== -1) return true;
+    return DynamicObject.isValid(this.id);
   }
 
   getModel() {
+    if (!this.sourceInfo) {
+      return Streamer.getIntData(
+        s.StreamerItemTypes.OBJECT,
+        this._id,
+        s.E_STREAMER.MODEL_ID,
+      );
+    }
     return this.sourceInfo.modelId;
   }
 
@@ -281,15 +300,10 @@ export class DynamicObject {
     return s.RemoveDynamicObjectMaterial(this.id, materialIndex);
   }
 
-  getMaterial(materialIndex: number, txdName: string, textureName: string) {
+  getMaterial(materialIndex: number) {
     if (this.id === -1)
       throw new Error("[StreamerObject]: Unable to get material before create");
-    return s.GetDynamicObjectMaterial(
-      this.id,
-      materialIndex,
-      txdName,
-      textureName,
-    );
+    return GetDynamicObjectMaterial(this.id, materialIndex);
   }
 
   setMaterial(
@@ -329,12 +343,12 @@ export class DynamicObject {
     return GetDynamicObjectMaterialText(
       this.id,
       materialIndex,
-      this.sourceInfo.charset || "utf8",
+      this.sourceInfo?.charset || "utf8",
     );
   }
 
   setMaterialText(
-    charset = this.sourceInfo.charset,
+    charset = this.sourceInfo?.charset,
     materialIndex: number,
     text: string,
     materialSize: number = s.MaterialTextSizes.SIZE_256x128,
@@ -349,7 +363,9 @@ export class DynamicObject {
       throw new Error(
         "[StreamerObject]: Unable to set material text before create",
       );
-    this.sourceInfo.charset = charset;
+    if (this.sourceInfo) {
+      this.sourceInfo.charset = charset;
+    }
     return SetDynamicObjectMaterialText(
       charset || "utf8",
       this.id,
@@ -368,7 +384,7 @@ export class DynamicObject {
   getPlayerCameraTarget(player: Player) {
     const dynId = s.GetPlayerCameraTargetDynObject(player.id);
     if (dynId === InvalidEnum.OBJECT_ID) return;
-    return DynamicObject.objects.get(dynId);
+    return dynamicObjectPool.get(dynId);
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === -1)
@@ -391,6 +407,7 @@ export class DynamicObject {
   getNoCameraCollision() {
     return s.GetDynamicObjectNoCameraCol(this.id);
   }
+  static isValid = s.IsValidDynamicObject;
   static togglePlayerUpdate(player: Player, update = true) {
     return Streamer.toggleItemUpdate(
       player,
@@ -412,9 +429,9 @@ export class DynamicObject {
     return this.togglePlayerUpdate(player, true);
   }
   static getInstance(id: number) {
-    return this.objects.get(id);
+    return dynamicObjectPool.get(id);
   }
   static getInstances() {
-    return [...this.objects.values()];
+    return [...dynamicObjectPool.values()];
   }
 }

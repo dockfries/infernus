@@ -15,28 +15,39 @@ import {
 import { rgba } from "core/utils/colorUtils";
 import * as v from "core/wrapper/native";
 import { VectorSize } from "core/wrapper/native";
-import { playerPool } from "../player/pool";
-import { vehiclePool } from "./pool";
+import { vehiclePool, playerPool } from "core/utils/pools";
+import { INTERNAL_FLAGS } from "core/utils/flags";
 
 export class Vehicle {
-  static readonly vehicles = vehiclePool;
-
+  private sourceInfo: IVehicle | null = null;
+  private readonly isStatic: boolean = false;
   private static createdCount = 0;
-  private readonly sourceInfo: IVehicle;
-  private readonly isStatic: boolean;
 
   private _id = -1;
   get id(): number {
     return this._id;
   }
 
-  constructor(veh: IVehicle, isStatic = false) {
-    this.sourceInfo = veh;
-    this.isStatic = isStatic;
+  constructor(vehOrId: IVehicle | number, isStatic = false) {
+    if (typeof vehOrId === "number") {
+      const obj = Vehicle.getInstance(vehOrId);
+      if (obj) {
+        return obj;
+      }
+      this._id = vehOrId;
+      vehiclePool.set(this._id, this);
+      if (this.isValid()) {
+        Vehicle.createdCount++;
+      }
+    } else {
+      this.sourceInfo = vehOrId;
+      this.isStatic = isStatic;
+    }
   }
   create(ignoreRange = false): void {
-    if (this.id !== -1)
-      throw new Error("[Vehicle]: Unable to create the vehicle again");
+    if (this.id !== -1) throw new Error("[Vehicle]: Unable to create again");
+    if (!this.sourceInfo)
+      throw new Error("[Vehicle]: Unable to create with only id");
     if (Vehicle.createdCount === LimitsEnum.MAX_VEHICLES)
       throw new Error(
         "[Vehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached",
@@ -82,14 +93,17 @@ export class Vehicle {
       );
     }
     Vehicle.createdCount++;
-    Vehicle.vehicles.set(this._id, this);
+    vehiclePool.set(this._id, this);
   }
   destroy(): void {
-    if (this.id === -1)
+    if (this.id === -1 && !INTERNAL_FLAGS.skip) {
       throw new Error("[Vehicle]: Unable to destroy the vehicle before create");
-    Vehicle.__inject_DestroyVehicle(this.id);
+    }
+    if (!INTERNAL_FLAGS.skip) {
+      Vehicle.__inject_DestroyVehicle(this.id);
+    }
     Vehicle.createdCount--;
-    Vehicle.vehicles.delete(this._id);
+    vehiclePool.delete(this._id);
     this._id = -1;
   }
   addComponent(componentId: number): number {
@@ -461,7 +475,8 @@ export class Vehicle {
     );
   }
   isValid(): boolean {
-    return v.IsValidVehicle(this.id);
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    return Vehicle.isValid(this.id);
   }
   getMatrix() {
     if (this.id === -1) return;
@@ -631,10 +646,10 @@ export class Vehicle {
   static getModelCount = v.GetVehicleModelCount;
 
   static getInstance(id: number) {
-    return this.vehicles.get(id);
+    return vehiclePool.get(id);
   }
   static getInstances() {
-    return [...this.vehicles.values()];
+    return [...vehiclePool.values()];
   }
   static __inject_AddStaticVehicle = v.AddStaticVehicle;
   static __inject_AddStaticVehicleEx = v.AddStaticVehicleEx;

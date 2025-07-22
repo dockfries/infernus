@@ -9,9 +9,10 @@ import { I18n } from "../i18n";
 import { Npc } from "./entity";
 import { Player } from "../player";
 import { GameMode } from "../gamemode";
+import { npcPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {
-  Npc.npcs.clear();
+  npcPool.clear();
   return next();
 });
 

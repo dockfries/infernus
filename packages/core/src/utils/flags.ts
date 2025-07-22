@@ -1,15 +1,15 @@
 import { GameMode } from "core/controllers/gamemode";
 
-export const streamerFlag = {
+export const INTERNAL_FLAGS = {
   skip: false,
 };
 
 GameMode.onInit(({ next }) => {
-  streamerFlag.skip = false;
+  INTERNAL_FLAGS.skip = false;
   return next();
 });
 
 GameMode.onExit(({ next }) => {
-  streamerFlag.skip = true;
+  INTERNAL_FLAGS.skip = true;
   return next();
 });

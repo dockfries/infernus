@@ -30,11 +30,11 @@
     "dist"
   ],
   "dependencies": {
-    "@infernus/streamer": "workspace:^",
     "iconv-lite": "^0.6.3"
   },
   "devDependencies": {
-    "es-toolkit": "^1.39.3",
+    "@infernus/streamer": "workspace:^",
+    "es-toolkit": "^1.39.7",
     "fastest-levenshtein": "^1.0.16"
   }
 }

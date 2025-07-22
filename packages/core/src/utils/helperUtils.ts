@@ -259,6 +259,32 @@ export const SetDynamicObjectMaterialText = (
   );
 };
 
+export const GetDynamicObjectMaterial = (
+  objectId: number,
+  materialIndex: number,
+  charset: string = "utf8",
+) => {
+  const [modelId, txdNameBuf, textureNameBuf, materialColor]: [
+    number,
+    number[],
+    number[],
+    number,
+  ] = samp.callNative(
+    "GetDynamicObjectMaterial",
+    "iiIAAIii",
+    objectId,
+    materialIndex,
+    64,
+    64,
+  );
+  return {
+    modelId,
+    txdName: I18n.decodeFromBuf(I18n.getValidStr(txdNameBuf), charset),
+    textureName: I18n.decodeFromBuf(I18n.getValidStr(textureNameBuf), charset),
+    materialColor,
+  };
+};
+
 export const GetDynamicObjectMaterialText = (
   objectId: number,
   materialIndex: number,
@@ -268,6 +294,7 @@ export const GetDynamicObjectMaterialText = (
     text,
     materialSize,
     fontFace,
+    fontSize,
     bold,
     fontColor,
     backColor,
@@ -279,13 +306,14 @@ export const GetDynamicObjectMaterialText = (
     materialIndex,
     2048,
     32,
-  ) as [number[], number, number[], number, number, number, number];
+  ) as [number[], number, number[], number, number, number, number, number];
   const textStr = I18n.decodeFromBuf(text, charset);
   const fontFaceStr = I18n.decodeFromBuf(fontFace, charset);
   return {
     text: textStr,
     materialSize,
     fontFace: fontFaceStr,
+    fontSize,
     bold,
     fontColor,
     backColor,
