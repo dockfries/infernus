@@ -1,3 +1,27 @@
+## <small>0.11.14 (2025-07-22)</small>
+
+* chore(create-app, weapon-config): typo ([294d804](https://github.com/dockfries/infernus/commit/294d804))
+* chore(fs, nex-ac): now getPos no need assert ([e13e365](https://github.com/dockfries/infernus/commit/e13e365))
+* chore(root, create-app): update deps ([5552e37](https://github.com/dockfries/infernus/commit/5552e37))
+* docs(hooks, sqlite): update docs ([39d7f03](https://github.com/dockfries/infernus/commit/39d7f03))
+* feat(map-loader): init ([04d390c](https://github.com/dockfries/infernus/commit/04d390c))
+* feat(qrcode): simple qrcode ([375ad38](https://github.com/dockfries/infernus/commit/375ad38))
+* refactor(core): pools, $t format, streamer bundle & fix getMaterialInfo, player simulateCmd ([0f1832e](https://github.com/dockfries/infernus/commit/0f1832e))
+* docs(intro): update ([e6a4322](https://github.com/dockfries/infernus/commit/e6a4322))
+* docs(intro): update ([e1c4837](https://github.com/dockfries/infernus/commit/e1c4837))
+* docs(nav): update nav ([75c6c64](https://github.com/dockfries/infernus/commit/75c6c64))
+* docs(quick-start): dlx cache ([ed80e1c](https://github.com/dockfries/infernus/commit/ed80e1c))
+* chore(deps): update ([996287f](https://github.com/dockfries/infernus/commit/996287f))
+* chore(release): create-app v0.2.15 ([d0dfe86](https://github.com/dockfries/infernus/commit/d0dfe86))
+* chore(release): qrcode v0.0.3 ([e9669a9](https://github.com/dockfries/infernus/commit/e9669a9))
+* chore(release): weapon-config v0.0.2 ([cef5ac7](https://github.com/dockfries/infernus/commit/cef5ac7))
+* chore(release): weapon-config v0.0.3 ([3cf74fd](https://github.com/dockfries/infernus/commit/3cf74fd))
+* chore(root): update readme ([b9cf8a0](https://github.com/dockfries/infernus/commit/b9cf8a0))
+* fix(create-app): tag_name error ([ba37dbe](https://github.com/dockfries/infernus/commit/ba37dbe))
+* fix(weapon-config): 329, 331 ([801e7ef](https://github.com/dockfries/infernus/commit/801e7ef))
+
+
+
 ## <small>0.11.13 (2025-06-08)</small>
 
 * chore(create-app): open.mp select tips ([1c1f107](https://github.com/dockfries/infernus/commit/1c1f107))
