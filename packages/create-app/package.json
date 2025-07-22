@@ -19,9 +19,9 @@
   ],
   "scripts": {},
   "dependencies": {
-    "@inquirer/prompts": "^7.5.3",
-    "@octokit/core": "^7.0.2",
-    "axios": "^1.9.0",
+    "@inquirer/prompts": "^7.6.0",
+    "@octokit/core": "^7.0.3",
+    "axios": "^1.10.0",
     "chalk": "^5.4.1",
     "cli-progress": "^3.12.0",
     "decompress": "^4.2.1",
