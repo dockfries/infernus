@@ -2,7 +2,7 @@ import { Player } from "./entity";
 import { PlayerStateEnum } from "../../enums";
 import { defineEvent } from "../bus";
 import { onConnect, onDisconnect, onUpdate } from "./event";
-import { innerPlayerProps } from "./pool";
+import { innerPlayerProps } from "core/utils/pools";
 
 let pauseChecker: null | NodeJS.Timeout = null;
 const androidTimer = new Map<Player, NodeJS.Timeout>();

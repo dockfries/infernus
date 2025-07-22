@@ -2,10 +2,10 @@ import * as w from "core/wrapper/native";
 
 import type { Player } from "../player";
 import { LimitsEnum } from "../../enums";
+import { menuPool } from "core/utils/pools";
+import { INTERNAL_FLAGS } from "core/utils/flags";
 
 export class Menu {
-  private static readonly menus = new Map<number, Menu>();
-
   private _itemCount = 0;
   get itemCount() {
     return this._itemCount;
@@ -99,14 +99,16 @@ export class Menu {
       this.col1width,
       this.col2width,
     );
-    Menu.menus.set(this._id, this);
+    menuPool.set(this._id, this);
     return this;
   }
   destroy(): this {
     if (this._id === -1)
       throw new Error("[Menu]: Cannot destroy before create");
-    w.DestroyMenu(this.id);
-    Menu.menus.delete(this._id);
+    if (!INTERNAL_FLAGS.skip) {
+      w.DestroyMenu(this.id);
+    }
+    menuPool.delete(this._id);
     this._id = -1;
     return this;
   }
@@ -145,7 +147,8 @@ export class Menu {
     w.DisableMenuRow(this.id, row);
   }
   isValid(): boolean {
-    return w.IsValidMenu(this.id);
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    return Menu.isValid(this.id);
   }
   showForPlayer(player: Player): number {
     if (this._id === -1)
@@ -191,12 +194,12 @@ export class Menu {
       throw new Error("[Menu]: invalid getItem range");
     return w.GetMenuItem(this.id, column, item);
   }
-
+  static isValid = w.IsValidMenu;
   static getInstance(id: number) {
-    return this.menus.get(id);
+    return menuPool.get(id);
   }
   static getInstances() {
-    return [...this.menus.values()];
+    return [...menuPool.values()];
   }
   static getInstanceByPlayer(player: Player) {
     return this.getInstances().find(

@@ -4,22 +4,32 @@ import { isValidAnimateName } from "core/utils/animateUtils";
 import * as w from "core/wrapper/native";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
-import { streamerFlag } from "../flag";
+import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { dynamicActorPool } from "core/utils/pools";
 
 export class DynamicActor {
-  static readonly actors = new Map<number, DynamicActor>();
-
-  private sourceInfo: IDynamicActor;
+  private sourceInfo: IDynamicActor | null = null;
   private _id = -1;
   get id(): number {
     return this._id;
   }
-  constructor(actor: IDynamicActor) {
-    this.sourceInfo = actor;
+  constructor(actorOrId: IDynamicActor | number) {
+    if (typeof actorOrId === "number") {
+      const obj = DynamicActor.getInstance(actorOrId);
+      if (obj) {
+        return obj;
+      }
+      this._id = actorOrId;
+      dynamicActorPool.set(this._id, this);
+    } else {
+      this.sourceInfo = actorOrId;
+    }
   }
   create(): this {
     if (this.id !== -1)
-      throw new Error("[StreamerActor]: Unable to create actor again");
+      throw new Error("[StreamerActor]: Unable to create again");
+    if (!this.sourceInfo)
+      throw new Error("[StreamerActor]: Unable to create with only id");
     let {
       streamDistance,
       worldId,
@@ -86,22 +96,24 @@ export class DynamicActor {
       );
     }
 
-    DynamicActor.actors.set(this.id, this);
+    dynamicActorPool.set(this.id, this);
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !streamerFlag.skip)
+    if (this.id === -1 && !INTERNAL_FLAGS.skip)
       throw new Error(
         "[StreamerActor]: Unable to destroy the actor before create",
       );
-    if (!streamerFlag.skip) s.DestroyDynamicActor(this.id);
-    DynamicActor.actors.delete(this.id);
+    if (!INTERNAL_FLAGS.skip) {
+      s.DestroyDynamicActor(this.id);
+    }
+    dynamicActorPool.delete(this.id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
-    if (streamerFlag.skip && this.id !== -1) return true;
-    return s.IsValidDynamicActor(this.id);
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    return DynamicActor.isValid(this.id);
   }
   isStreamedIn(forPlayer: Player): boolean {
     if (this.id === -1) return false;
@@ -207,12 +219,12 @@ export class DynamicActor {
   getPlayerTarget(player: Player) {
     if (this.id === -1) return;
     const actorId = s.GetPlayerTargetDynamicActor(player.id);
-    return DynamicActor.actors.get(actorId);
+    return dynamicActorPool.get(actorId);
   }
   getPlayerCameraTarget(player: Player) {
     if (this.id === -1) return;
     const actorId = s.GetPlayerCameraTargetDynActor(player.id);
-    return DynamicActor.actors.get(actorId);
+    return dynamicActorPool.get(actorId);
   }
   getSkin(): number {
     if (this.id === -1)
@@ -252,6 +264,7 @@ export class DynamicActor {
     if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.ACTOR, this.id);
   }
+  static isValid = s.IsValidDynamicActor;
   static togglePlayerUpdate(player: Player, update = true) {
     return Streamer.toggleItemUpdate(player, s.StreamerItemTypes.ACTOR, update);
   }
@@ -270,9 +283,9 @@ export class DynamicActor {
   }
 
   static getInstance(id: number) {
-    return this.actors.get(id);
+    return dynamicActorPool.get(id);
   }
   static getInstances() {
-    return [...this.actors.values()];
+    return [...dynamicActorPool.values()];
   }
 }

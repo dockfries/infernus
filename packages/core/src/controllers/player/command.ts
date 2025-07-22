@@ -2,7 +2,8 @@ import { distance, closest } from "fastest-levenshtein";
 import { I18n } from "../i18n";
 import type { CallbackRet, PromisifyCallbackRet } from "../bus";
 import { defineEvent, eventBus } from "../bus";
-import { Player } from "./entity";
+import type { Player } from "./entity";
+import { playerPool } from "core/utils/pools";
 
 export interface CmdBusCallback {
   player: Player;
@@ -161,13 +162,20 @@ export const [onCommandError, triggerOnError] = defineEvent({
   },
 });
 
-const [onCommandText] = defineEvent({
+const [onCommandText, triggerOnCommandText] = defineEvent({
   name: "OnPlayerCommandTextI18n",
   identifier: "iai",
   defaultValue: false,
-  beforeEach(id: number, buffer: number[]) {
-    const player = Player.getInstance(id)!;
-    const cmdText = I18n.decodeFromBuf(buffer, player.charset);
+  beforeEach(id: number, bufferOrText: number[] | string) {
+    const player = playerPool.get(id)!;
+    let buffer = bufferOrText;
+    let cmdText = "";
+    if (typeof bufferOrText === "string") {
+      cmdText = bufferOrText;
+      buffer = I18n.encodeToBuf(cmdText, "utf-8");
+    } else {
+      cmdText = I18n.decodeFromBuf(bufferOrText, player.charset);
+    }
     return { player, buffer, cmdText };
   },
 });
@@ -404,5 +412,8 @@ export class CmdBus {
   }
   static isCaseSensitive() {
     return CmdBus.caseSensitive;
+  }
+  static simulate(player: Player, cmdText: string | number[]) {
+    return triggerOnCommandText(player.id, cmdText);
   }
 }

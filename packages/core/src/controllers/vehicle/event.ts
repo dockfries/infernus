@@ -2,9 +2,11 @@ import { Player } from "../player/entity";
 import { Vehicle } from "./entity";
 import { GameMode } from "../gamemode";
 import { defineEvent } from "../bus";
+import { vehiclePool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {
   Vehicle.getInstances().forEach((v) => v.destroy());
+  vehiclePool.clear();
   return next();
 });
 

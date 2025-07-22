@@ -232,25 +232,6 @@ export const RemoveDynamicObjectMaterial = (
   );
 };
 
-export const GetDynamicObjectMaterial = (
-  objectId: number,
-  materialIndex: number,
-  txdName: string,
-  textureName: string,
-) => {
-  const [modelId, materialColor]: [number, string | number] = samp.callNative(
-    "GetDynamicObjectMaterial",
-    "iiIssIii",
-    objectId,
-    materialIndex,
-    txdName,
-    textureName,
-    64,
-    64,
-  );
-  return { modelId, materialColor };
-};
-
 export const SetDynamicObjectMaterial = (
   objectId: number,
   materialIndex: number,
@@ -295,37 +276,6 @@ export const RemoveDynamicObjectMaterialText = (
     objectId,
     materialIndex,
   );
-};
-
-export const GetDynamicObjectMaterialText = (
-  objectId: number,
-  materialIndex: number,
-) => {
-  const [
-    text,
-    materialSize,
-    fontFace,
-    bold,
-    fontColor,
-    backColor,
-    textAlignment,
-  ]: [string, number, string, number, number, number, number] = samp.callNative(
-    "GetDynamicObjectMaterialText",
-    "iiSISIIIIIii",
-    objectId,
-    materialIndex,
-    2048,
-    32,
-  );
-  return {
-    text,
-    materialSize,
-    fontFace,
-    bold,
-    fontColor,
-    backColor,
-    textAlignment,
-  };
 };
 
 export const SetDynamicObjectMaterialText = (

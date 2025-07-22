@@ -10,9 +10,10 @@ import {
   WeaponStatesEnum,
 } from "core/enums";
 import { Vehicle } from "../vehicle";
+import { npcPool } from "core/utils/pools";
+import { INTERNAL_FLAGS } from "core/utils/flags";
 
 export class Npc {
-  static readonly npcs = new Map<number, Npc>();
   private id = InvalidEnum.PLAYER_ID;
   private name = "";
   private static recordStatus: ERecordStatus;
@@ -27,18 +28,21 @@ export class Npc {
         return instance;
       }
     }
-    Npc.npcs.set(id, this);
+    npcPool.set(id, this);
     return this;
   }
   getName() {
     return this.name;
   }
   destroy() {
-    samp.callNative("NPC_Destroy", "i", this.id);
+    if (!INTERNAL_FLAGS.skip) {
+      samp.callNative("NPC_Destroy", "i", this.id);
+    }
     return this;
   }
   isValid() {
-    return !!samp.callNative("NPC_IsValid", "i", this.id);
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    return Npc.isValid(this.id);
   }
   spawn() {
     samp.callNative("NPC_Spawn", "i", this.id);
@@ -434,10 +438,13 @@ export class Npc {
     w.ResumeRecordingPlayback();
     Npc.recordStatus = ERecordStatus.start;
   }
+  static isValid(id: number) {
+    return !!samp.callNative("NPC_IsValid", "i", id);
+  }
   static getInstance(id: number) {
-    return this.npcs.get(id);
+    return npcPool.get(id);
   }
   static getInstances() {
-    return [...this.npcs.values()];
+    return [...npcPool.values()];
   }
 }

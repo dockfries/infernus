@@ -1,30 +1,40 @@
 import { InvalidEnum } from "core/enums";
 import type { Player } from "core/controllers/player";
 import type { Vehicle } from "core/controllers/vehicle";
-import type { TDynamicArea, TDynamicAreaTypes } from "core/types";
+import type { TDynamicArea } from "core/types";
 import type { StreamerAreaTypes } from "@infernus/streamer";
 import * as s from "@infernus/streamer";
 import type { DynamicObject } from "../object";
 import { Streamer } from "../common";
-import { streamerFlag } from "../flag";
+import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { dynamicAreasPool } from "core/utils/pools";
 
 export class DynamicArea {
-  static readonly areas = new Map<number, DynamicArea>();
-
-  private sourceInfo: TDynamicArea;
+  private sourceInfo: TDynamicArea | null = null;
   private _id = -1;
-  get type(): TDynamicAreaTypes {
-    return this.sourceInfo.type;
+  get type() {
+    return this.sourceInfo?.type;
   }
   get id(): number {
     return this._id;
   }
-  constructor(area: TDynamicArea) {
-    this.sourceInfo = area;
+  constructor(areaOrId: TDynamicArea | number) {
+    if (typeof areaOrId === "number") {
+      const obj = DynamicArea.getInstance(areaOrId);
+      if (obj) {
+        return obj;
+      }
+      this._id = areaOrId;
+      dynamicAreasPool.set(this._id, this);
+    } else {
+      this.sourceInfo = areaOrId;
+    }
   }
   create(): this {
     if (this.id !== -1)
-      throw new Error("[StreamerArea]: Unable to create area again");
+      throw new Error("[StreamerArea]: Unable to create again");
+    if (!this.sourceInfo)
+      throw new Error("[StreamerArea]: Unable to create with only id");
     let { worldId, interiorId: interiorId, playerId } = this.sourceInfo;
     const { type, extended } = this.sourceInfo;
 
@@ -222,22 +232,24 @@ export class DynamicArea {
         );
       }
     }
-    DynamicArea.areas.set(this._id, this);
+    dynamicAreasPool.set(this._id, this);
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !streamerFlag.skip)
+    if (this.id === -1 && !INTERNAL_FLAGS.skip)
       throw new Error(
         "[StreamerArea]: Unable to destroy the area before create",
       );
-    if (!streamerFlag.skip) s.DestroyDynamicArea(this.id);
-    DynamicArea.areas.delete(this.id);
+    if (!INTERNAL_FLAGS.skip) {
+      s.DestroyDynamicArea(this.id);
+    }
+    dynamicAreasPool.delete(this.id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
-    if (streamerFlag.skip && this.id !== -1) return true;
-    return s.IsValidDynamicArea(this.id);
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    return DynamicArea.isValid(this.id);
   }
   getType(): StreamerAreaTypes {
     if (this.id !== -1)
@@ -281,7 +293,7 @@ export class DynamicArea {
   static getPlayerAreas(player: Player): Array<DynamicArea | undefined> {
     if (!DynamicArea.getPlayerAreasNumber(player)) return [];
     const ids = s.GetPlayerDynamicAreas(player.id);
-    return ids.map((a) => DynamicArea.areas.get(a));
+    return ids.map((a) => dynamicAreasPool.get(a));
   }
   static getPlayerAreasNumber(player: Player) {
     return s.GetPlayerNumberDynamicAreas(player.id);
@@ -334,7 +346,7 @@ export class DynamicArea {
     if (!DynamicArea.getNumberForLine(x1, y1, z1, x2, y2, z2)) return [];
     const ids = s.GetDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
 
-    return ids.map((a) => DynamicArea.areas.get(a)!);
+    return ids.map((a) => dynamicAreasPool.get(a)!);
   }
   static getNumberForLine(
     x1: number,
@@ -428,6 +440,7 @@ export class DynamicArea {
     if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.AREA, this.id);
   }
+  static isValid = s.IsValidDynamicArea;
   static togglePlayerUpdate(player: Player, update = true) {
     return Streamer.toggleItemUpdate(player, s.StreamerItemTypes.AREA, update);
   }
@@ -446,9 +459,9 @@ export class DynamicArea {
   }
 
   static getInstance(id: number) {
-    return this.areas.get(id);
+    return dynamicAreasPool.get(id);
   }
   static getInstances() {
-    return [...this.areas.values()];
+    return [...dynamicAreasPool.values()];
   }
 }

@@ -39,11 +39,7 @@ onDialogResponse(
     const callback = Dialog.waitingQueue.get(player);
     if (!callback) return next();
     if (callback.showId !== dialogId) return next();
-    // bug: does not trigger resolve of promise
-    // fix: it only works if you put it in an event loop
-    setTimeout(() =>
-      callback.resolve({ response, listItem, buffer, inputText }),
-    );
+    callback.resolve({ response, listItem, buffer, inputText });
     return next();
   },
 );

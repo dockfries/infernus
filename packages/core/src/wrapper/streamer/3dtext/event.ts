@@ -4,9 +4,11 @@ import { defineEvent } from "core/controllers/bus";
 import { GameMode } from "core/controllers/gamemode";
 import { Dynamic3DTextLabel } from "./entity";
 import type { Player } from "core/controllers/player/entity";
+import { dynamic3DTextLabelPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {
   Dynamic3DTextLabel.getInstances().forEach((t) => t.destroy());
+  dynamic3DTextLabelPool.clear();
   return next();
 });
 

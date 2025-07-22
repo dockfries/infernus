@@ -15,25 +15,35 @@ import {
   StreamerItemTypes,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { streamerFlag } from "../flag";
+import { INTERNAL_FLAGS } from "../../../utils/flags";
 import { Player, Vehicle } from "core/controllers";
+import { dynamic3DTextLabelPool } from "core/utils/pools";
 
 export class Dynamic3DTextLabel {
-  static readonly texts = new Map<number, Dynamic3DTextLabel>();
-
-  private sourceInfo: IDynamic3DTextLabel;
+  private sourceInfo: IDynamic3DTextLabel | null = null;
 
   private _id = -1;
   get id(): number {
     return this._id;
   }
 
-  constructor(textLabel: IDynamic3DTextLabel) {
-    this.sourceInfo = textLabel;
+  constructor(textLabelOrId: IDynamic3DTextLabel | number) {
+    if (typeof textLabelOrId === "number") {
+      const obj = Dynamic3DTextLabel.getInstance(textLabelOrId);
+      if (obj) {
+        return obj;
+      }
+      this._id = textLabelOrId;
+      dynamic3DTextLabelPool.set(this._id, this);
+    } else {
+      this.sourceInfo = textLabelOrId;
+    }
   }
   create(): this {
     if (this.id !== -1)
       throw new Error("[Streamer3DTextLabel]: Unable to create again");
+    if (!this.sourceInfo)
+      throw new Error("[Streamer3DTextLabel]: Unable to create with only id");
     let {
       attachedPlayer,
       attachedVehicle,
@@ -111,26 +121,35 @@ export class Dynamic3DTextLabel {
         priority,
       );
     }
-    Dynamic3DTextLabel.texts.set(this.id, this);
+    dynamic3DTextLabelPool.set(this.id, this);
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !streamerFlag.skip)
+    if (this.id === -1 && !INTERNAL_FLAGS.skip)
       throw new Error("[Streamer3DTextLabel]: Unable to destroy before create");
-    if (!streamerFlag.skip) DestroyDynamic3DTextLabel(this.id);
-    Dynamic3DTextLabel.texts.delete(this.id);
+    if (!INTERNAL_FLAGS.skip) {
+      DestroyDynamic3DTextLabel(this.id);
+    }
+    dynamic3DTextLabelPool.delete(this.id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
-    if (streamerFlag.skip && this.id !== -1) return true;
-    return IsValidDynamic3DTextLabel(this.id);
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    return Dynamic3DTextLabel.isValid(this.id);
   }
   getColor(): string | number {
     if (this.id === -1)
       throw new Error(
         "[Streamer3DTextLabel]: Unable to get color before create",
       );
+    if (!this.sourceInfo) {
+      return Streamer.getIntData(
+        StreamerItemTypes.TEXT_3D_LABEL,
+        this._id,
+        E_STREAMER.COLOR,
+      );
+    }
     return this.sourceInfo.color;
   }
   getCharset(): void | string {
@@ -138,7 +157,7 @@ export class Dynamic3DTextLabel {
       throw new Error(
         "[Streamer3DTextLabel]: Unable to get charset before create",
       );
-    return this.sourceInfo.charset;
+    return this.sourceInfo?.charset;
   }
   getText(): string {
     if (this.id === -1)
@@ -147,25 +166,20 @@ export class Dynamic3DTextLabel {
       );
     return GetDynamic3DTextLabelText(
       this.id,
-      this.sourceInfo.charset || "utf8",
+      this.sourceInfo?.charset || "utf8",
     );
   }
-  updateText(
-    color: string | number,
-    text: string,
-    charset = this.sourceInfo.charset,
-  ): number {
+  updateText(color: string | number, text: string, charset?: string): number {
     if (this.id === -1)
       throw new Error(
         "[Streamer3DTextLabel]: Unable to update text before create",
       );
-    this.sourceInfo.charset = charset;
-    return UpdateDynamic3DTextLabelText(
-      this.id,
-      rgba(color),
-      text,
-      charset || "utf8",
-    );
+    let _charset = "";
+    if (this.sourceInfo) {
+      _charset = charset || this.sourceInfo.charset || "utf8";
+      this.sourceInfo.charset = _charset;
+    }
+    return UpdateDynamic3DTextLabelText(this.id, rgba(color), text, _charset);
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === -1)
@@ -205,9 +219,11 @@ export class Dynamic3DTextLabel {
       E_STREAMER.ATTACH_OFFSET_Z,
       offsetZ,
     );
-    this.sourceInfo.x = offsetX;
-    this.sourceInfo.y = offsetY;
-    this.sourceInfo.z = offsetZ;
+    if (this.sourceInfo) {
+      this.sourceInfo.x = offsetX;
+      this.sourceInfo.y = offsetY;
+      this.sourceInfo.z = offsetZ;
+    }
     return ret;
   }
   attachToPlayer(
@@ -230,7 +246,9 @@ export class Dynamic3DTextLabel {
     if (playerId !== InvalidEnum.PLAYER_ID) {
       this.setOffsets(offsetX, offsetY, offsetZ);
     }
-    this.sourceInfo.attachedPlayer = playerId;
+    if (this.sourceInfo) {
+      this.sourceInfo.attachedPlayer = playerId;
+    }
     return ret;
   }
   attachToVehicle(
@@ -253,9 +271,12 @@ export class Dynamic3DTextLabel {
     if (vehicleId !== InvalidEnum.VEHICLE_ID) {
       this.setOffsets(offsetX, offsetY, offsetZ);
     }
-    this.sourceInfo.attachedVehicle = vehicleId;
+    if (this.sourceInfo) {
+      this.sourceInfo.attachedVehicle = vehicleId;
+    }
     return ret;
   }
+  static isValid = IsValidDynamic3DTextLabel;
   static togglePlayerUpdate(player: Player, update = true) {
     return Streamer.toggleItemUpdate(
       player,
@@ -277,9 +298,9 @@ export class Dynamic3DTextLabel {
     return this.togglePlayerUpdate(player, true);
   }
   static getInstance(id: number) {
-    return this.texts.get(id);
+    return dynamic3DTextLabelPool.get(id);
   }
   static getInstances() {
-    return [...this.texts.values()];
+    return [...dynamic3DTextLabelPool.values()];
   }
 }

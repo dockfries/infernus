@@ -4,9 +4,11 @@ import { GameMode } from "core/controllers/gamemode";
 import { StreamerItemTypes } from "core/enums";
 import { DynamicRaceCP } from "./entity";
 import { Player } from "core/controllers/player/entity";
+import { dynamicRaceCheckpointPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {
   DynamicRaceCP.getInstances().forEach((r) => r.destroy());
+  dynamicRaceCheckpointPool.clear();
   return next();
 });
 

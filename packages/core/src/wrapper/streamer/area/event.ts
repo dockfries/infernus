@@ -4,9 +4,11 @@ import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/controllers/bus";
 import { Player } from "core/controllers/player/entity";
 import { StreamerItemTypes } from "core/enums";
+import { dynamicAreasPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {
   DynamicArea.getInstances().forEach((a) => a.destroy());
+  dynamicAreasPool.clear();
   return next();
 });
 

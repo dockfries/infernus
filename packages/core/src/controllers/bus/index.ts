@@ -68,6 +68,7 @@ function executeMiddlewares<T extends object>(
 
         if (ret instanceof Promise) {
           promises.push(ret);
+          return defaultValue;
         }
 
         return ret;

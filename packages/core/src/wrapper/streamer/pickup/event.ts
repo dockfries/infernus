@@ -4,9 +4,11 @@ import { defineEvent } from "core/controllers/bus";
 import { StreamerItemTypes } from "core/enums";
 import { GameMode } from "core/controllers/gamemode";
 import { Player } from "core/controllers/player/entity";
+import { dynamicPickupPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {
   DynamicPickup.getInstances().forEach((p) => p.destroy());
+  dynamicPickupPool.clear();
   return next();
 });
 

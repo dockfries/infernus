@@ -5,9 +5,11 @@ import { defineEvent } from "core/controllers/bus";
 import { Player } from "core/controllers/player/entity";
 import type { WeaponEnum } from "core/enums";
 import { StreamerItemTypes } from "core/enums";
+import { dynamicObjectPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {
   DynamicObject.getInstances().forEach((o) => o.destroy());
+  dynamicObjectPool.clear();
   return next();
 });
 

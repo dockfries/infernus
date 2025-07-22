@@ -14,22 +14,32 @@ import {
   TogglePlayerDynamicRaceCP,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { streamerFlag } from "../flag";
+import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { dynamicRaceCheckpointPool } from "core/utils/pools";
 
 export class DynamicRaceCP {
-  static readonly checkpoints = new Map<number, DynamicRaceCP>();
-
-  private sourceInfo: IDynamicRaceCp;
+  private sourceInfo: IDynamicRaceCp | null = null;
   private _id = -1;
   get id(): number {
     return this._id;
   }
-  constructor(checkPoint: IDynamicRaceCp) {
-    this.sourceInfo = checkPoint;
+  constructor(checkPointOrId: IDynamicRaceCp | number) {
+    if (typeof checkPointOrId === "number") {
+      const obj = DynamicRaceCP.getInstance(checkPointOrId);
+      if (obj) {
+        return obj;
+      }
+      this._id = checkPointOrId;
+      dynamicRaceCheckpointPool.set(this._id, this);
+    } else {
+      this.sourceInfo = checkPointOrId;
+    }
   }
   create(): this {
     if (this.id !== -1)
-      throw new Error("[StreamerRaceCP]: Unable to create checkpoint again");
+      throw new Error("[StreamerRaceCP]: Unable to create again");
+    if (!this.sourceInfo)
+      throw new Error("[StreamerRaceCP]: Unable to create with only id");
     let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
       this.sourceInfo;
     const { type, size, x, y, z, nextX, nextY, nextZ, extended } =
@@ -96,22 +106,24 @@ export class DynamicRaceCP {
       );
     }
 
-    DynamicRaceCP.checkpoints.set(this._id, this);
+    dynamicRaceCheckpointPool.set(this._id, this);
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !streamerFlag.skip)
+    if (this.id === -1 && !INTERNAL_FLAGS.skip)
       throw new Error(
         "[StreamerRaceCP]: Unable to destroy the checkpoint before create",
       );
-    if (!streamerFlag.skip) DestroyDynamicCP(this.id);
-    DynamicRaceCP.checkpoints.delete(this.id);
+    if (!INTERNAL_FLAGS.skip) {
+      DestroyDynamicCP(this.id);
+    }
+    dynamicRaceCheckpointPool.delete(this.id);
     this._id = -1;
     return this;
   }
   isValid(): boolean {
-    if (streamerFlag.skip && this.id !== -1) return true;
-    return IsValidDynamicCP(this.id);
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    return DynamicRaceCP.isValid(this.id);
   }
   togglePlayer(player: Player, toggle: boolean): this {
     if (this.id === -1)
@@ -129,7 +141,7 @@ export class DynamicRaceCP {
     return IsPlayerInDynamicRaceCP(player.id, this.id);
   }
   static getPlayerVisible(player: Player) {
-    return DynamicRaceCP.checkpoints.get(
+    return dynamicRaceCheckpointPool.get(
       GetPlayerVisibleDynamicRaceCP(player.id),
     );
   }
@@ -148,6 +160,7 @@ export class DynamicRaceCP {
     if (this.id === -1) return false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.RACE_CP, this.id);
   }
+  static isValid = IsValidDynamicCP;
   static togglePlayerUpdate(player: Player, update = true) {
     return Streamer.toggleItemUpdate(player, StreamerItemTypes.RACE_CP, update);
   }
@@ -165,9 +178,9 @@ export class DynamicRaceCP {
     return this.togglePlayerUpdate(player, true);
   }
   static getInstance(id: number) {
-    return this.checkpoints.get(id);
+    return dynamicRaceCheckpointPool.get(id);
   }
   static getInstances() {
-    return [...this.checkpoints.values()];
+    return [...dynamicRaceCheckpointPool.values()];
   }
 }
