@@ -150,6 +150,15 @@ const [onSpawn] = defineEvent({
   },
 });
 
+const [onRespawn] = defineEvent({
+  name: "OnNpcRespawn",
+  beforeEach(id: number) {
+    return {
+      npc: Npc.getInstance(id)!,
+    };
+  },
+});
+
 export const NpcEvent = Object.freeze({
   onConnect,
   onDisconnect,
@@ -164,4 +173,5 @@ export const NpcEvent = Object.freeze({
   onGiveDamage,
   onDeath,
   onSpawn,
+  onRespawn,
 });

@@ -48,6 +48,10 @@ export class Npc {
     samp.callNative("NPC_Spawn", "i", this.id);
     return this;
   }
+  respawn() {
+    samp.callNative("NPC_Respawn", "i", this.id);
+    return this;
+  }
   setPos(x: number, y: number, z: number) {
     samp.callNative("NPC_SetPos", "ifff", this.id, x, y, z);
     return this;
@@ -102,6 +106,16 @@ export class Npc {
       targetPosX,
       targetPosY,
       targetPosZ,
+      moveType,
+      moveSpeed,
+    );
+  }
+  moveToPlayer(player: Player, moveType: number, moveSpeed = -1.0) {
+    return !!samp.callNative(
+      "NPC_MoveToPlayer",
+      "iiif",
+      this.id,
+      player.id,
       moveType,
       moveSpeed,
     );
