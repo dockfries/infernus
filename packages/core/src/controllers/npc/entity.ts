@@ -14,14 +14,18 @@ import { npcPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 
 export class Npc {
-  private id = InvalidEnum.PLAYER_ID;
-  private name = "";
+  private _id = InvalidEnum.PLAYER_ID;
+  private _name = "";
   private static recordStatus: ERecordStatus;
+
+  get id() {
+    return this._id;
+  }
 
   constructor(name: string) {
     const id: number = samp.callNative("NPC_Create", "s", name);
-    this.id = id;
-    this.name = name;
+    this._id = id;
+    this._name = name;
     if (id !== InvalidEnum.PLAYER_ID) {
       const instance = Npc.getInstance(id);
       if (instance) {
@@ -32,63 +36,63 @@ export class Npc {
     return this;
   }
   getName() {
-    return this.name;
+    return this._name;
   }
   destroy() {
     if (!INTERNAL_FLAGS.skip) {
-      samp.callNative("NPC_Destroy", "i", this.id);
+      samp.callNative("NPC_Destroy", "i", this._id);
     }
     return this;
   }
   isValid() {
-    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
-    return Npc.isValid(this.id);
+    if (INTERNAL_FLAGS.skip && this._id !== -1) return true;
+    return Npc.isValid(this._id);
   }
   spawn() {
-    samp.callNative("NPC_Spawn", "i", this.id);
+    samp.callNative("NPC_Spawn", "i", this._id);
     return this;
   }
   respawn() {
-    samp.callNative("NPC_Respawn", "i", this.id);
+    samp.callNative("NPC_Respawn", "i", this._id);
     return this;
   }
   setPos(x: number, y: number, z: number) {
-    samp.callNative("NPC_SetPos", "ifff", this.id, x, y, z);
+    samp.callNative("NPC_SetPos", "ifff", this._id, x, y, z);
     return this;
   }
   setRot(rX: number, rY: number, rZ: number) {
-    samp.callNative("NPC_SetRot", "ifff", this.id, rX, rY, rZ);
+    samp.callNative("NPC_SetRot", "ifff", this._id, rX, rY, rZ);
     return this;
   }
   getRot() {
     const [rX, rY, rZ]: [number, number, number] = samp.callNative(
       "NPC_GetRot",
       "iFFF",
-      this.id,
+      this._id,
     );
     return { rX, rY, rZ };
   }
   setFacingAngle(angle: number) {
-    samp.callNative("NPC_SetFacingAngle", "if", this.id, angle);
+    samp.callNative("NPC_SetFacingAngle", "if", this._id, angle);
     return this;
   }
   getFacingAngle() {
     const [angle]: [number] = samp.callNative(
       "NPC_GetFacingAngle",
       "iF",
-      this.id,
+      this._id,
     );
     return angle;
   }
   setVirtualWorld(virtualWorld: number) {
-    samp.callNative("NPC_SetVirtualWorld", "ii", this.id, virtualWorld);
+    samp.callNative("NPC_SetVirtualWorld", "ii", this._id, virtualWorld);
     return this;
   }
   getVirtualWorld() {
     const [virtualWorld]: [number] = samp.callNative(
       "NPC_GetVirtualWorld",
       "iI",
-      this.id,
+      this._id,
     );
     return virtualWorld;
   }
@@ -102,7 +106,7 @@ export class Npc {
     return !!samp.callNative(
       "NPC_Move",
       "ifffif",
-      this.id,
+      this._id,
       targetPosX,
       targetPosY,
       targetPosZ,
@@ -114,52 +118,52 @@ export class Npc {
     return !!samp.callNative(
       "NPC_MoveToPlayer",
       "iiif",
-      this.id,
+      this._id,
       player.id,
       moveType,
       moveSpeed,
     );
   }
   stopMove() {
-    samp.callNative("NPC_StopMove", "i", this.id);
+    samp.callNative("NPC_StopMove", "i", this._id);
     return this;
   }
   isMoving() {
-    return !!samp.callNative("NPC_IsMoving", "ifffif", this.id);
+    return !!samp.callNative("NPC_IsMoving", "ifffif", this._id);
   }
   setSkin(model: number) {
-    samp.callNative("NPC_SetSkin", "ii", this.id, model);
+    samp.callNative("NPC_SetSkin", "ii", this._id, model);
     return this;
   }
   isStreamedIn(player: Player) {
-    return !!samp.callNative("NPC_IsStreamedIn", "ii", this.id, player.id);
+    return !!samp.callNative("NPC_IsStreamedIn", "ii", this._id, player.id);
   }
   isAnyStreamedIn() {
-    return !!samp.callNative("NPC_IsAnyStreamedIn", "i", this.id);
+    return !!samp.callNative("NPC_IsAnyStreamedIn", "i", this._id);
   }
   setInterior(interior: number) {
-    samp.callNative("NPC_SetInterior", "ii", this.id, interior);
+    samp.callNative("NPC_SetInterior", "ii", this._id, interior);
     return this;
   }
   getInterior() {
-    return samp.callNative("NPC_GetInterior", "i", this.id) as number;
+    return samp.callNative("NPC_GetInterior", "i", this._id) as number;
   }
   setHealth(health: number) {
-    samp.callNative("NPC_SetHealth", "if", this.id, health);
+    samp.callNative("NPC_SetHealth", "if", this._id, health);
     return this;
   }
   getHealth() {
-    return samp.callNativeFloat("NPC_GetHealth", "i", this.id) as number;
+    return samp.callNativeFloat("NPC_GetHealth", "i", this._id) as number;
   }
   setArmour(armour: number) {
-    samp.callNative("NPC_SetArmour", "if", this.id, armour);
+    samp.callNative("NPC_SetArmour", "if", this._id, armour);
     return this;
   }
   getArmour() {
-    return samp.callNativeFloat("NPC_GetArmour", "i", this.id) as number;
+    return samp.callNativeFloat("NPC_GetArmour", "i", this._id) as number;
   }
   isDead() {
-    return !!samp.callNative("NPC_IsDead", "i", this.id);
+    return !!samp.callNative("NPC_IsDead", "i", this._id);
   }
   applyAnimation(
     animLib: string,
@@ -175,7 +179,7 @@ export class Npc {
     samp.callNative(
       "NPC_ApplyAnimation",
       "issfiiiiii",
-      this.id,
+      this._id,
       animLib,
       animName,
       delta,
@@ -189,18 +193,18 @@ export class Npc {
     return this;
   }
   setWeapon(weapon: WeaponEnum) {
-    samp.callNative("NPC_SetWeapon", "ii", this.id, weapon);
+    samp.callNative("NPC_SetWeapon", "ii", this._id, weapon);
     return this;
   }
   getWeapon() {
-    return samp.callNative("NPC_GetWeapon", "i", this.id) as WeaponEnum;
+    return samp.callNative("NPC_GetWeapon", "i", this._id) as WeaponEnum;
   }
   setAmmo(ammo: number) {
-    samp.callNative("NPC_SetAmmo", "ii", this.id, ammo);
+    samp.callNative("NPC_SetAmmo", "ii", this._id, ammo);
     return this;
   }
   getAmmo() {
-    return samp.callNative("NPC_GetAmmo", "ii", this.id) as number;
+    return samp.callNative("NPC_GetAmmo", "ii", this._id) as number;
   }
   setKeys(upAndDown: number, leftAndDown: number, keys: number) {
     samp.callNative("NPC_SetKeys", "iiii", upAndDown, leftAndDown, keys);
@@ -208,73 +212,73 @@ export class Npc {
   }
   getKeys() {
     const [upAndDown, leftAndDown, keys]: [number, number, number] =
-      samp.callNative("NPC_GetKeys", "iIII", this.id);
+      samp.callNative("NPC_GetKeys", "iIII", this._id);
     return { upAndDown, leftAndDown, keys };
   }
   setWeaponSkillLevel(skill: WeaponSkillsEnum, level: number) {
-    samp.callNative("NPC_SetWeaponSkillLevel", "iii", this.id, skill, level);
+    samp.callNative("NPC_SetWeaponSkillLevel", "iii", this._id, skill, level);
     return this;
   }
   getWeaponSkillLevel(skill: WeaponSkillsEnum) {
     return samp.callNative(
       "NPC_GetWeaponSkillLevel",
       "ii",
-      this.id,
+      this._id,
       skill,
     ) as number;
   }
   meleeAttack(time: number, secondaryAttack: boolean) {
-    samp.callNative("NPC_MeleeAttack", "iii", this.id, time, secondaryAttack);
+    samp.callNative("NPC_MeleeAttack", "iii", this._id, time, secondaryAttack);
     return this;
   }
   stopMeleeAttack() {
-    samp.callNative("NPC_StopMeleeAttack", "i", this.id);
+    samp.callNative("NPC_StopMeleeAttack", "i", this._id);
     return this;
   }
   isMeleeAttacking() {
-    return !!samp.callNative("NPC_IsMeleeAttacking", "i", this.id);
+    return !!samp.callNative("NPC_IsMeleeAttacking", "i", this._id);
   }
   setFightingStyle(style: FightingStylesEnum) {
-    samp.callNative("NPC_SetFightingStyle", "ii", this.id, style);
+    samp.callNative("NPC_SetFightingStyle", "ii", this._id, style);
     return this;
   }
   getFightingStyle() {
     return samp.callNative(
       "NPC_GetFightingStyle",
       "i",
-      this.id,
+      this._id,
     ) as FightingStylesEnum;
   }
   enableReloading(enable: boolean) {
-    samp.callNative("NPC_EnableReloading", "ii", this.id, enable);
+    samp.callNative("NPC_EnableReloading", "ii", this._id, enable);
     return this;
   }
   isReloadEnabled() {
-    return !!samp.callNative("NPC_IsReloadEnabled", "i", this.id);
+    return !!samp.callNative("NPC_IsReloadEnabled", "i", this._id);
   }
   isReloading() {
-    return !!samp.callNative("NPC_IsReloading", "i", this.id);
+    return !!samp.callNative("NPC_IsReloading", "i", this._id);
   }
   enableInfiniteAmmo(enable: boolean) {
-    samp.callNative("NPC_EnableInfiniteAmmo", "ii", this.id, enable);
+    samp.callNative("NPC_EnableInfiniteAmmo", "ii", this._id, enable);
     return this;
   }
   isInfiniteAmmoEnabled() {
-    return !!samp.callNative("NPC_IsInfiniteAmmoEnabled", "i", this.id);
+    return !!samp.callNative("NPC_IsInfiniteAmmoEnabled", "i", this._id);
   }
   getWeaponState() {
     return samp.callNative(
       "NPC_GetWeaponState",
       "i",
-      this.id,
+      this._id,
     ) as WeaponStatesEnum;
   }
   setAmmoInClip(ammo: number) {
-    samp.callNative("NPC_SetAmmoInClip", "ii", this.id, ammo);
+    samp.callNative("NPC_SetAmmoInClip", "ii", this._id, ammo);
     return this;
   }
   getAmmoInClip() {
-    return samp.callNative("NPC_GetAmmoInClip", "i", this.id) as number;
+    return samp.callNative("NPC_GetAmmoInClip", "i", this._id) as number;
   }
   shoot(
     weapon: WeaponStatesEnum,
@@ -292,7 +296,7 @@ export class Npc {
     samp.callNative(
       "NPC_Shoot",
       "iiiffffffii",
-      this.id,
+      this._id,
       weapon,
       hitId,
       hitType,
@@ -308,7 +312,7 @@ export class Npc {
     return this;
   }
   isShooting() {
-    return !!samp.callNative("NPC_IsShooting", "i", this.id);
+    return !!samp.callNative("NPC_IsShooting", "i", this._id);
   }
   aimAt(
     pointX: number,
@@ -325,7 +329,7 @@ export class Npc {
     samp.callNative(
       "NPC_AimAt",
       "ifffiiifffi",
-      this.id,
+      this._id,
       pointX,
       pointY,
       pointZ,
@@ -355,7 +359,7 @@ export class Npc {
     samp.callNative(
       "NPC_AimAtPlayer",
       "iiiiiffffffi",
-      this.id,
+      this._id,
       player.id,
       shoot,
       shootDelay,
@@ -371,24 +375,24 @@ export class Npc {
     return this;
   }
   stopAim() {
-    samp.callNative("NPC_StopAim", "i", this.id);
+    samp.callNative("NPC_StopAim", "i", this._id);
     return this;
   }
   isAiming() {
-    return !!samp.callNative("NPC_IsAiming", "i", this.id);
+    return !!samp.callNative("NPC_IsAiming", "i", this._id);
   }
   isAimingAtPlayer(player: Player) {
-    return !!samp.callNative("NPC_IsAimingAtPlayer", "ii", this.id, player.id);
+    return !!samp.callNative("NPC_IsAimingAtPlayer", "ii", this._id, player.id);
   }
   setWeaponAccuracy(weapon: WeaponEnum, accuracy: number) {
-    samp.callNative("NPC_SetWeaponAccuracy", "iif", this.id, weapon, accuracy);
+    samp.callNative("NPC_SetWeaponAccuracy", "iif", this._id, weapon, accuracy);
     return this;
   }
   getWeaponAccuracy(weapon: number) {
     return samp.callNativeFloat(
       "NPC_GetWeaponAccuracy",
       "ii",
-      this.id,
+      this._id,
       weapon,
     ) as number;
   }
@@ -396,7 +400,7 @@ export class Npc {
     samp.callNative(
       "NPC_EnterVehicle",
       "iiii",
-      this.id,
+      this._id,
       vehicle,
       seatId,
       moveType,
@@ -404,7 +408,7 @@ export class Npc {
     return this;
   }
   exitVehicle() {
-    samp.callNative("NPC_ExitVehicle", "i", this.id);
+    samp.callNative("NPC_ExitVehicle", "i", this._id);
     return this;
   }
   static readonly connect = w.ConnectNPC;
