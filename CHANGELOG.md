@@ -1,3 +1,13 @@
+## <small>0.11.15 (2025-08-03)</small>
+
+* chore(release): map-loader v0.0.1 ([4b6f452](https://github.com/dockfries/infernus/commit/4b6f452))
+* chore(root): update deps ([6fdfc6f](https://github.com/dockfries/infernus/commit/6fdfc6f))
+* fix(core): npc id public ([1360f91](https://github.com/dockfries/infernus/commit/1360f91))
+* feat(core): npc 1106 ([eda67c7](https://github.com/dockfries/infernus/commit/eda67c7))
+* build(deps): bump axios from 1.10.0 to 1.11.0 (#53) ([061ce57](https://github.com/dockfries/infernus/commit/061ce57)), closes [#53](https://github.com/dockfries/infernus/issues/53)
+
+
+
 ## <small>0.11.14 (2025-07-22)</small>
 
 * chore(create-app, weapon-config): typo ([294d804](https://github.com/dockfries/infernus/commit/294d804))
