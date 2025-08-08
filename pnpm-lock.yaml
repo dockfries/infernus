@@ -191,6 +191,12 @@ importers:
         specifier: ^17.0.33
         version: 17.0.33
 
+  packages/drift-detection:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+
   packages/e-selection:
     devDependencies:
       '@infernus/core':
