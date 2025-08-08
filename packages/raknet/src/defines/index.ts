@@ -1,3 +1,9 @@
+if (!samp.defined) {
+  samp.defined = {};
+}
+
+samp.defined.PAWNRAKNET_INC_ = true;
+
 export const PR_MAX_HANDLERS = 256;
 export const PR_MAX_WEAPON_SLOTS = 13;
 

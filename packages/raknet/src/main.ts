@@ -1,3 +1,5 @@
+import "./defines";
+
 export * from "./callbacks";
 export * from "./defines";
 export * from "./enums";
