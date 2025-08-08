@@ -1,3 +1,4 @@
+import "./definitions";
 export * from "./definitions";
 export * from "./natives";
 export * from "./functions";
