@@ -1,4 +1,5 @@
 import { DynamicObject, GameMode } from "@infernus/core";
+import { createRequire } from "node:module";
 import "./parser/removeBuilding";
 import { mapReader } from "./parser/reader";
 import { INTERNAL_MAP, INVALID_MAP_ID } from "./constants";
@@ -57,6 +58,21 @@ export function unloadMap(mapId: number) {
   }
 
   INTERNAL_MAP.loadedMaps.delete(mapId);
+
+  if (samp.defined && samp.defined._colandreas_included) {
+    try {
+      const require =
+        typeof global.require !== "undefined"
+          ? global.require
+          : createRequire(import.meta.url);
+      const colandreas: typeof import("@infernus/colandreas") = require("@infernus/colandreas");
+      removedBuilding.forEach((rmv) => {
+        colandreas.restoreBuilding(...rmv);
+      });
+    } catch {
+      /* empty */
+    }
+  }
 
   if (onUnloaded) {
     onUnloaded(removedBuilding);

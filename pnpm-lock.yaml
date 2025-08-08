@@ -223,6 +223,9 @@ importers:
 
   packages/map-loader:
     devDependencies:
+      '@infernus/colandreas':
+        specifier: workspace:^
+        version: link:../colandreas
       '@infernus/core':
         specifier: workspace:^
         version: link:../core

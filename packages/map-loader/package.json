@@ -36,9 +36,16 @@
   ],
   "scripts": {},
   "devDependencies": {
+    "@infernus/colandreas": "workspace:^",
     "@infernus/core": "workspace:^"
   },
   "peerDependencies": {
+    "@infernus/colandreas": "workspace:^",
     "@infernus/core": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@infernus/colandreas": {
+      "optional": true
+    }
   }
 }
