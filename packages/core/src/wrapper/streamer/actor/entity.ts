@@ -171,11 +171,7 @@ export class DynamicActor {
       );
     return s.ClearDynamicActorAnimations(this.id);
   }
-  getFacingAngle(): number {
-    if (this.id === -1)
-      throw new Error(
-        "[StreamerActor]: Unable to get facing angle before create",
-      );
+  getFacingAngle() {
     return s.GetDynamicActorFacingAngle(this.id);
   }
   setFacingAngle(ang: number): number {
@@ -195,9 +191,7 @@ export class DynamicActor {
       throw new Error("[StreamerActor]: Unable to set pos before create");
     return s.SetDynamicActorPos(this.id, x, y, z);
   }
-  getHealth(): number {
-    if (this.id === -1)
-      throw new Error("[StreamerActor]: Unable to get health before create");
+  getHealth() {
     return s.GetDynamicActorHealth(this.id);
   }
   setHealth(health: number): number {

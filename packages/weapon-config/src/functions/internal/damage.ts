@@ -115,7 +115,7 @@ export function addRejectedHit(
       damaged.id < LimitsEnum.MAX_PLAYERS
     ) {
       rejectedHits.get(player.id)[idx]!.name =
-        orig_playerMethods.getName.call(damaged);
+        orig_playerMethods.getName.call(damaged).name;
     } else {
       rejectedHits.get(player.id)[idx]!.name = "#\0";
     }

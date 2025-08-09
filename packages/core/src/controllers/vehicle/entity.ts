@@ -4,7 +4,6 @@ import type {
   VehicleParamsEnum,
 } from "core/enums";
 import { LimitsEnum } from "core/enums";
-import type { TPos } from "core/types";
 import type { IVehicle } from "core/interfaces";
 import type { Player } from "../player/entity";
 import {
@@ -146,13 +145,10 @@ export class Vehicle {
     if (this.id === -1) return false;
     return v.SetVehiclePos(this.id, x, y, z);
   }
-  getPos(): TPos {
-    if (this.id === -1)
-      throw new Error("[Vehicle]: Unable to getPos before create");
+  getPos() {
     return v.GetVehiclePos(this.id);
   }
-  getHealth(): number {
-    if (this.id === -1) return 0;
+  getHealth() {
     return v.GetVehicleHealth(this.id);
   }
   setHealth(health: number): number {
@@ -173,8 +169,7 @@ export class Vehicle {
     }
     return v.PutPlayerInVehicle(player.id, this.id, seatId);
   }
-  getZAngle(): number {
-    if (this.id === -1) return 0;
+  getZAngle() {
     return v.GetVehicleZAngle(this.id);
   }
   setZAngle(zAngle: number): number {
@@ -203,11 +198,8 @@ export class Vehicle {
     if (this.id === -1) return false;
     return v.SetVehicleVelocity(this.id, X, Y, Z);
   }
-  getVelocity(): TPos {
-    if (this.id === -1)
-      throw new Error("[Vehicle]: Unable to getVelocity before create");
-    const [x, y, z] = v.GetVehicleVelocity(this.id);
-    return { x, y, z };
+  getVelocity() {
+    return v.GetVehicleVelocity(this.id);
   }
   getSpeed(magic = 180.0) {
     if (this.id === -1) return 0.0;
@@ -237,21 +229,14 @@ export class Vehicle {
   getModel(): number {
     return v.GetVehicleModel(this.id);
   }
-  static getModelInfo(
-    vehicleModel: number,
-    infoType: VehicleModelInfoEnum,
-  ): TPos {
+  static getModelInfo(vehicleModel: number, infoType: VehicleModelInfoEnum) {
     return v.GetVehicleModelInfo(vehicleModel, infoType);
   }
-  getModelInfo(infoType: VehicleModelInfoEnum): TPos {
-    if (this.id === -1)
-      throw new Error("[Vehicle]: Unable to getModelInfo before create");
+  getModelInfo(infoType: VehicleModelInfoEnum) {
     return Vehicle.getModelInfo(this.getModel(), infoType);
   }
   getRotationQuat() {
-    if (this.id === -1) return;
-    const [w, x, y, z] = v.GetVehicleRotationQuat(this.id);
-    return { w, x, y, z };
+    return v.GetVehicleRotationQuat(this.id);
   }
   setRespawn(): number {
     if (this.id === -1) return 0;
@@ -565,8 +550,7 @@ export class Vehicle {
     if (this.id === -1) return 0;
     return v.SetVehicleRespawnDelay(this.id, delay);
   }
-  getNumberPlate(): string {
-    if (this.id === -1) return "";
+  getNumberPlate() {
     return v.GetVehicleNumberPlate(this.id);
   }
   getInterior(): number {

@@ -1,6 +1,7 @@
 import { rgba } from "core/utils/colorUtils";
 import type { ITextDrawCommonSize, ITextDrawRot } from "../interfaces/TextDraw";
 import type { TextDrawAlignEnum } from "core/enums";
+import { ICommonRetVal } from "core/interfaces";
 
 export const IsValidTextDraw = (textDrawId: number): boolean => {
   return Boolean(samp.callNative("IsValidTextDraw", "i", textDrawId));
@@ -15,9 +16,14 @@ export const IsTextDrawVisibleForPlayer = (
   );
 };
 
-export const TextDrawGetString = (textDrawId: number): string => {
-  const [str] = samp.callNative("TextDrawGetString", "iSi", textDrawId, 1024);
-  return str;
+export const TextDrawGetString = (textDrawId: number) => {
+  const [str, ret] = samp.callNative(
+    "TextDrawGetString",
+    "iSi",
+    textDrawId,
+    1024,
+  ) as [string, number];
+  return { str, ret };
 };
 
 // You can change textdraw pos with it, but you need to use TextDrawShowForPlayer() after that
@@ -31,33 +37,35 @@ export const TextDrawSetPos = (
 
 export const TextDrawGetLetterSize = (
   textDrawId: number,
-): ITextDrawCommonSize => {
-  const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
+): ITextDrawCommonSize & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, ret]: [number, number, number] = samp.callNative(
     "TextDrawGetLetterSize",
     "iFF",
     textDrawId,
   );
-  return { fX, fY };
+  return { fX, fY, ret };
 };
 
 export const TextDrawGetTextSize = (
   textDrawId: number,
-): ITextDrawCommonSize => {
-  const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
+): ITextDrawCommonSize & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, ret]: [number, number, number] = samp.callNative(
     "TextDrawGetTextSize",
     "iFF",
     textDrawId,
   );
-  return { fX, fY };
+  return { fX, fY, ret };
 };
 
-export const TextDrawGetPos = (textDrawId: number): ITextDrawCommonSize => {
-  const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
+export const TextDrawGetPos = (
+  textDrawId: number,
+): ITextDrawCommonSize & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, ret]: number[] = samp.callNative(
     "TextDrawGetPos",
     "iFF",
     textDrawId,
   );
-  return { fX, fY };
+  return { fX, fY, ret };
 };
 
 export const TextDrawGetColor = (textDrawId: number): number => {
@@ -104,19 +112,21 @@ export const TextDrawGetPreviewModel = (textDrawId: number): number => {
   return samp.callNative("TextDrawGetPreviewModel", "i", textDrawId);
 };
 
-export const TextDrawGetPreviewRot = (textDrawId: number): ITextDrawRot => {
-  const [fRotX = 0.0, fRotY = 0.0, fRotZ = 0.0, fZoom = 0.0]: number[] =
+export const TextDrawGetPreviewRot = (
+  textDrawId: number,
+): ITextDrawRot & ICommonRetVal => {
+  const [fRotX = 0.0, fRotY = 0.0, fRotZ = 0.0, fZoom = 0.0, ret]: number[] =
     samp.callNative("TextDrawGetPreviewRot", "iFFFF", textDrawId);
-  return { fRotX, fRotY, fRotZ, fZoom };
+  return { fRotX, fRotY, fRotZ, fZoom, ret };
 };
 
 export const TextDrawGetPreviewVehicleColors = (textDrawId: number) => {
-  const [color1, color2]: number[] = samp.callNative(
+  const [color1, color2, ret]: [number, number, number] = samp.callNative(
     "TextDrawGetPreviewVehCol",
     "iII",
     textDrawId,
   );
-  return { color1, color2 };
+  return { color1, color2, ret };
 };
 
 export const TextDrawSetStringForPlayer = (

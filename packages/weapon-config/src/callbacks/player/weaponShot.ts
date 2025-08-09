@@ -399,7 +399,7 @@ PlayerEvent.onWeaponShot(
         if (!has_driver && has_passenger) {
           let health = orig_vehicleMethods.getHealth.call(
             Vehicle.getInstance(hitId)!,
-          );
+          ).health;
 
           if (weapon >= WeaponEnum.SHOTGUN && weapon <= WeaponEnum.SHOTGSPA) {
             health -= 120.0;
@@ -438,7 +438,7 @@ PlayerEvent.onWeaponShot(
         if (!has_occupant) {
           let health = orig_vehicleMethods.getHealth.call(
             Vehicle.getInstance(hitId),
-          );
+          ).health;
 
           if (health >= 250.0) {
             if (weapon >= WeaponEnum.SHOTGUN && weapon <= WeaponEnum.SHOTGSPA) {

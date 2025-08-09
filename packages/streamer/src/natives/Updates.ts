@@ -51,8 +51,12 @@ export const Streamer_IsToggleItemUpdate = (
   );
 };
 
-export const Streamer_GetLastUpdateTime = (): number => {
-  return samp.callNative("Streamer_GetLastUpdateTime", "F");
+export const Streamer_GetLastUpdateTime = () => {
+  const [time, ret]: [number, number] = samp.callNative(
+    "Streamer_GetLastUpdateTime",
+    "F",
+  );
+  return { time, ret };
 };
 
 export const Streamer_Update = (playerId: number, type = -1): number => {

@@ -15,6 +15,7 @@ import type { IBounds } from "./interfaces/Bounds";
 import type { IOffsets } from "./interfaces/Offsets";
 import type { IQuat } from "./interfaces/Quat";
 import { rgba } from "core/utils/colorUtils";
+import { ICommonRetVal } from "core/interfaces";
 
 export const TogglePlayerWidescreen = (
   playerId: number,
@@ -38,29 +39,37 @@ export const GetPlayerWeather = (playerId: number): number => {
   return samp.callNative("GetPlayerWeather", "i", playerId);
 };
 
-export const GetPlayerWorldBounds = (playerId: number): IBounds => {
-  const [xMax = 0.0, xMin = 0.0, yMax = 0.0, yMin = 0.0]: number[] =
+export const GetPlayerWorldBounds = (
+  playerId: number,
+): IBounds & ICommonRetVal => {
+  const [xMax = 0.0, xMin = 0.0, yMax = 0.0, yMin = 0.0, ret]: number[] =
     samp.callNative("GetPlayerWorldBounds", "iFFFF", playerId);
-  return { xMax, xMin, yMax, yMin };
+  return { xMax, xMin, yMax, yMin, ret };
 };
 
 export const GetPlayerZAim = (playerId: number): number => {
   return samp.callNativeFloat("GetPlayerZAim", "i", playerId);
 };
 
-export const GetPlayerSurfingOffsets = (playerId: number): IOffsets => {
-  const [fOffsetX = 0.0, fOffsetY = 0.0, fOffsetZ = 0.0]: number[] =
+export const GetPlayerSurfingOffsets = (
+  playerId: number,
+): IOffsets & ICommonRetVal => {
+  const [fOffsetX = 0.0, fOffsetY = 0.0, fOffsetZ = 0.0, ret]: number[] =
     samp.callNative("GetPlayerSurfingOffsets", "iFFF", playerId);
-  return { fOffsetX, fOffsetY, fOffsetZ };
+  return { fOffsetX, fOffsetY, fOffsetZ, ret };
 };
 
-export const GetPlayerRotationQuat = (playerId: number): IQuat => {
-  const [w = 0.0, x = 0.0, y = 0.0, z = 0.0]: number[] = samp.callNative(
-    "GetPlayerRotationQuat",
-    "iFFFF",
-    playerId,
-  );
-  return { w, x, y, z };
+export const GetPlayerRotationQuat = (
+  playerId: number,
+): IQuat & ICommonRetVal => {
+  const [w = 0.0, x = 0.0, y = 0.0, z = 0.0, ret]: [
+    number,
+    number,
+    number,
+    number,
+    number,
+  ] = samp.callNative("GetPlayerRotationQuat", "iFFFF", playerId);
+  return { w, x, y, z, ret };
 };
 
 export const GetPlayerDialogID = (playerId: number): number => {
@@ -212,8 +221,13 @@ export const SetPlayerPosFindZ = (
   return !!samp.callNative("SetPlayerPosFindZ", "ifff", playerId, x, y, z);
 };
 
-export const GetPlayerPos = (playerId: number): Array<number> => {
-  return samp.callNative("GetPlayerPos", "iFFF", playerId);
+export const GetPlayerPos = (playerId: number) => {
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
+    "GetPlayerPos",
+    "iFFF",
+    playerId,
+  );
+  return { x, y, z, ret };
 };
 
 export const SetPlayerFacingAngle = (
@@ -223,13 +237,13 @@ export const SetPlayerFacingAngle = (
   return !!samp.callNative("SetPlayerFacingAngle", "if", playerId, ang);
 };
 
-export const GetPlayerFacingAngle = (playerId: number): number => {
-  const [angle] = samp.callNative(
+export const GetPlayerFacingAngle = (playerId: number) => {
+  const [angle, ret]: [number, number] = samp.callNative(
     "GetPlayerFacingAngle",
     "iF",
     playerId,
-  ) as unknown as number[];
-  return angle;
+  );
+  return { angle, ret };
 };
 
 export const IsPlayerInRangeOfPoint = (
@@ -292,26 +306,26 @@ export const SetPlayerHealth = (playerId: number, health: number): boolean => {
   return !!samp.callNative("SetPlayerHealth", "if", playerId, health);
 };
 
-export const GetPlayerHealth = (playerId: number): number => {
-  const [health] = samp.callNative(
+export const GetPlayerHealth = (playerId: number) => {
+  const [health, ret]: [number, number] = samp.callNative(
     "GetPlayerHealth",
     "iF",
     playerId,
-  ) as unknown as number[];
-  return health;
+  );
+  return { health, ret };
 };
 
 export const SetPlayerArmour = (playerId: number, armour: number): boolean => {
   return !!samp.callNative("SetPlayerArmour", "if", playerId, armour);
 };
 
-export const GetPlayerArmour = (playerId: number): number => {
-  const [armour] = samp.callNative(
+export const GetPlayerArmour = (playerId: number) => {
+  const [armour, ret]: [number, number] = samp.callNative(
     "GetPlayerArmour",
     "iF",
     playerId,
-  ) as unknown as number[];
-  return armour;
+  );
+  return { armour, ret };
 };
 
 export const SetPlayerAmmo = (
@@ -403,11 +417,14 @@ export const SetPlayerArmedWeapon = (
   return !!samp.callNative("SetPlayerArmedWeapon", "ii", playerId, weaponId);
 };
 
-export const GetPlayerWeaponData = (
-  playerId: number,
-  slot: number,
-): Array<number> => {
-  return samp.callNative("GetPlayerWeaponData", "iiII", playerId, slot);
+export const GetPlayerWeaponData = (playerId: number, slot: number) => {
+  const [weapons, ammo, ret]: [number, number, number] = samp.callNative(
+    "GetPlayerWeaponData",
+    "iiII",
+    playerId,
+    slot,
+  );
+  return { weapons, ammo, ret };
 };
 
 export const GivePlayerMoney = (playerId: number, money: number): boolean => {
@@ -434,7 +451,9 @@ export const GetPlayerWeapon = (playerId: number): number => {
   return samp.callNative("GetPlayerWeapon", "i", playerId);
 };
 
-export const GetPlayerKeys = (playerId: number): Array<KeysEnum> => {
+export const GetPlayerKeys = (
+  playerId: number,
+): [KeysEnum, KeysEnum, KeysEnum, number] => {
   return samp.callNative("GetPlayerKeys", "iIII", playerId);
 };
 
@@ -446,8 +465,13 @@ export const SetPlayerTime = (
   return !!samp.callNative("SetPlayerTime", "iii", playerId, hour, minute);
 };
 
-export const GetPlayerTime = (playerId: number): Array<number> => {
-  return samp.callNative("GetPlayerTime", "iII", playerId);
+export const GetPlayerTime = (playerId: number) => {
+  const [hour, minute, ret]: [number, number, number] = samp.callNative(
+    "GetPlayerTime",
+    "iII",
+    playerId,
+  );
+  return { hour, minute, ret };
 };
 
 export const TogglePlayerClock = (
@@ -501,8 +525,13 @@ export const SetPlayerVelocity = (
   return !!samp.callNative("SetPlayerVelocity", "ifff", playerId, X, Y, Z);
 };
 
-export const GetPlayerVelocity = (playerId: number): Array<number> => {
-  return samp.callNative("GetPlayerVelocity", "iFFF", playerId);
+export const GetPlayerVelocity = (playerId: number) => {
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
+    "GetPlayerVelocity",
+    "iFFF",
+    playerId,
+  );
+  return { x, y, z, ret };
 };
 
 export const PlayCrimeReportForPlayer = (
@@ -598,8 +627,17 @@ export const RemoveBuildingForPlayer = (
   );
 };
 
-export const GetPlayerLastShotVectors = (playerId: number): Array<number> => {
-  return samp.callNative("GetPlayerLastShotVectors", "iFFFFFF", playerId);
+export const GetPlayerLastShotVectors = (playerId: number) => {
+  const [fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ, ret]: [
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+  ] = samp.callNative("GetPlayerLastShotVectors", "iFFFFFF", playerId);
+  return { fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ, ret };
 };
 
 export const PutPlayerInVehicle = (
@@ -948,12 +986,22 @@ export const SetCameraBehindPlayer = (playerId: number): boolean => {
   return !!samp.callNative("SetCameraBehindPlayer", "i", playerId);
 };
 
-export const GetPlayerCameraPos = (playerId: number): Array<number> => {
-  return samp.callNative("GetPlayerCameraPos", "iFFF", playerId);
+export const GetPlayerCameraPos = (playerId: number) => {
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
+    "GetPlayerCameraPos",
+    "iFFF",
+    playerId,
+  );
+  return { x, y, z, ret };
 };
 
-export const GetPlayerCameraFrontVector = (playerId: number): Array<number> => {
-  return samp.callNative("GetPlayerCameraFrontVector", "iFFF", playerId);
+export const GetPlayerCameraFrontVector = (playerId: number) => {
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
+    "GetPlayerCameraFrontVector",
+    "iFFF",
+    playerId,
+  );
+  return { x, y, z, ret };
 };
 
 export const GetPlayerCameraMode = (playerId: number): CameraModesEnum => {

@@ -98,14 +98,14 @@ export const Streamer_SetVisibleItems = (
 export const Streamer_GetRadiusMultiplier = (
   type: StreamerItemTypes,
   playerId = -1,
-): number => {
-  const [m] = samp.callNative(
+) => {
+  const [multiplier, ret]: [number, number] = samp.callNative(
     "Streamer_GetRadiusMultiplier",
     "iFi",
     type,
     playerId,
   );
-  return m;
+  return { multiplier, ret };
 };
 
 export const Streamer_SetRadiusMultiplier = (
@@ -122,12 +122,14 @@ export const Streamer_SetRadiusMultiplier = (
   );
 };
 
-export const Streamer_GetTypePriority = (): StreamerItemTypeTuple | number => {
-  return samp.callNative(
-    "Streamer_GetTypePriority",
-    "Ai",
-    StreamerMiscellaneous.MAX_TYPES,
-  );
+export const Streamer_GetTypePriority = () => {
+  const [priority, ret]: [StreamerItemTypeTuple | number, number] =
+    samp.callNative(
+      "Streamer_GetTypePriority",
+      "Ai",
+      StreamerMiscellaneous.MAX_TYPES,
+    );
+  return { priority, ret };
 };
 
 export const Streamer_SetTypePriority = (
@@ -141,16 +143,24 @@ export const Streamer_SetTypePriority = (
   );
 };
 
-export const Streamer_GetCellDistance = (): number => {
-  return samp.callNative("Streamer_GetCellDistance", "F");
+export const Streamer_GetCellDistance = () => {
+  const [distance, ret]: [number, number] = samp.callNative(
+    "Streamer_GetCellDistance",
+    "F",
+  );
+  return { distance, ret };
 };
 
 export const Streamer_SetCellDistance = (distance = 600.0): number => {
   return samp.callNative("Streamer_SetCellDistance", "f", distance);
 };
 
-export const Streamer_GetCellSize = (): number => {
-  return samp.callNative("Streamer_GetCellSize", "F");
+export const Streamer_GetCellSize = () => {
+  const [size, ret]: [number, number] = samp.callNative(
+    "Streamer_GetCellSize",
+    "F",
+  );
+  return { size, ret };
 };
 
 export const Streamer_SetCellSize = (size = 300.0): number => {

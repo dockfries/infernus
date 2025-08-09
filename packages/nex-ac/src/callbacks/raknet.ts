@@ -340,7 +340,7 @@ IPacket(AC_TRAILER_SYNC, ({ playerId, bs, next }) => {
     }
     ac_KickWithCode(Player.getInstance(playerId)!, "", 0, 5, 2);
     ACVehInfo.get(trailerId)!.acZAngle =
-      Vehicle.getInstance(trailerId)!.getZAngle();
+      Vehicle.getInstance(trailerId)!.getZAngle().angle;
     if (
       Vehicle.getInstance(trailerId)!.isStreamedIn(
         Player.getInstance(playerId)!,

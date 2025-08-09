@@ -171,8 +171,11 @@ export class GameMode {
   static isValidCustomModel = w.IsValidCustomModel;
   static getCustomModePath = w.GetCustomModePath;
   static getConsoleVarAsString(varname: string, charset = "utf8") {
-    const consoleVar = w.GetConsoleVarAsByteArray(varname);
-    return I18n.decodeFromBuf(I18n.getValidStr(consoleVar), charset);
+    const { consoleVarBuf, ret } = w.GetConsoleVarAsByteArray(varname);
+    return {
+      consoleVar: I18n.decodeFromBuf(I18n.getValidStr(consoleVarBuf), charset),
+      ret,
+    };
   }
   static getRestartTime = w.GetModeRestartTime;
   static setRestartTime = w.SetModeRestartTime;

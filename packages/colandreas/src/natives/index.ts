@@ -36,7 +36,7 @@ export function rayCastLine(
   endY: number,
   endZ: number,
 ) {
-  const [x, y, z, result] = samp.callNative(
+  const [x, y, z, ret] = samp.callNative(
     "CA_RayCastLine",
     "ffffffFFF",
     startX,
@@ -47,9 +47,9 @@ export function rayCastLine(
     endZ,
   ) as number[];
 
-  if (!result) return null;
+  if (!ret) return null;
 
-  return { result, x, y, z };
+  return { ret, x, y, z };
 }
 
 export function rayCastLineID(
@@ -60,7 +60,7 @@ export function rayCastLineID(
   endY: number,
   endZ: number,
 ) {
-  const [x, y, z, result] = samp.callNative(
+  const [x, y, z, ret] = samp.callNative(
     "CA_RayCastLineID",
     "ffffffFFF",
     startX,
@@ -71,9 +71,9 @@ export function rayCastLineID(
     endZ,
   ) as number[];
 
-  if (!result) return null;
+  if (!ret) return null;
 
-  return { result, x, y, z };
+  return { ret, x, y, z };
 }
 
 export function rayCastLineExtraID(
@@ -85,7 +85,7 @@ export function rayCastLineExtraID(
   endY: number,
   endZ: number,
 ) {
-  const [x, y, z, result] = samp.callNative(
+  const [x, y, z, ret] = samp.callNative(
     "CA_RayCastLineExtraID",
     "iffffffFFF",
     type,
@@ -97,9 +97,9 @@ export function rayCastLineExtraID(
     endZ,
   ) as number[];
 
-  if (!result) return null;
+  if (!ret) return null;
 
-  return { result, x, y, z };
+  return { ret, x, y, z };
 }
 
 export function rayCastMultiLine(
@@ -111,7 +111,7 @@ export function rayCastMultiLine(
   endZ: number,
   size = MAX_MULTICAST_SIZE,
 ) {
-  const [x, y, z, dist, modelIds, result] = samp.callNative(
+  const [x, y, z, dist, modelIds, ret] = samp.callNative(
     "CA_RayCastMultiLine",
     "ffffffVVVVAi",
     startX,
@@ -123,10 +123,10 @@ export function rayCastMultiLine(
     size,
   ) as [number[], number[], number[], number[], number[], number];
 
-  const len = result > 0 ? result : 0;
+  const len = ret > 0 ? ret : 0;
 
   return {
-    collisions: result,
+    collisions: ret,
     x: x.slice(0, len),
     y: y.slice(0, len),
     z: z.slice(0, len),
@@ -143,7 +143,7 @@ export function rayCastLineAngle(
   endY: number,
   endZ: number,
 ) {
-  const [x, y, z, rx, ry, rz, result] = samp.callNative(
+  const [x, y, z, rx, ry, rz, ret] = samp.callNative(
     "CA_RayCastLineAngle",
     "ffffffFFFFFF",
     startX,
@@ -154,9 +154,9 @@ export function rayCastLineAngle(
     endZ,
   ) as number[];
 
-  if (!result) return null;
+  if (!ret) return null;
 
-  return { result, x, y, z, rx, ry, rz };
+  return { ret, x, y, z, rx, ry, rz };
 }
 
 export function rayCastReflectionVector(
@@ -167,7 +167,7 @@ export function rayCastReflectionVector(
   endY: number,
   endZ: number,
 ) {
-  const [x, y, z, nx, ny, nz, result] = samp.callNative(
+  const [x, y, z, nx, ny, nz, ret] = samp.callNative(
     "CA_RayCastReflectionVector",
     "ffffffFFFFFF",
     startX,
@@ -178,9 +178,9 @@ export function rayCastReflectionVector(
     endZ,
   ) as number[];
 
-  if (!result) return null;
+  if (!ret) return null;
 
-  return { result, x, y, z, nx, ny, nz };
+  return { ret, x, y, z, nx, ny, nz };
 }
 
 export function rayCastLineNormal(
@@ -191,7 +191,7 @@ export function rayCastLineNormal(
   endY: number,
   endZ: number,
 ) {
-  const [x, y, z, nx, ny, nz, result] = samp.callNative(
+  const [x, y, z, nx, ny, nz, ret] = samp.callNative(
     "CA_RayCastLineNormal",
     "ffffffFFFFFF",
     startX,
@@ -202,9 +202,9 @@ export function rayCastLineNormal(
     endZ,
   ) as number[];
 
-  if (!result) return null;
+  if (!ret) return null;
 
-  return { result, x, y, z, nx, ny, nz };
+  return { ret, x, y, z, nx, ny, nz };
 }
 
 export function contactTest(
@@ -222,48 +222,43 @@ export function contactTest(
 }
 
 export function eulerToQuat(rx: number, ry: number, rz: number) {
-  const [x, y, z, w] = samp.callNative(
-    "CA_EulerToQuat",
-    "fffFFFF",
-    rx,
-    ry,
-    rz,
-  ) as number[];
-  return { x, y, z, w };
+  const [x, y, z, w, ret]: [number, number, number, number, number] =
+    samp.callNative("CA_EulerToQuat", "fffFFFF", rx, ry, rz);
+  return { x, y, z, w, ret };
 }
 
 export function quatToEuler(x: number, y: number, z: number, w: number) {
-  const [rx, ry, rz] = samp.callNative(
+  const [rx, ry, rz, ret]: [number, number, number, number] = samp.callNative(
     "CA_QuatToEuler",
-    "ffff",
+    "ffffFFF",
     x,
     y,
     z,
     w,
-  ) as number[];
-  return { rx, ry, rz };
+  );
+  return { rx, ry, rz, ret };
 }
 
 export function getModelBoundingSphere(modelId: number) {
-  const [offX, offY, offZ, radius, result] = samp.callNative(
+  const [offX, offY, offZ, radius, ret] = samp.callNative(
     "CA_GetModelBoundingSphere",
     "iFFFF",
     modelId,
   ) as number[];
 
-  if (!result) return null;
+  if (!ret) return null;
 
   return { offX, offY, offZ, radius };
 }
 
 export function getModelBoundingBox(modelId: number) {
-  const [minX, minY, minZ, maxX, maxY, maxZ, result] = samp.callNative(
+  const [minX, minY, minZ, maxX, maxY, maxZ, ret] = samp.callNative(
     "CA_GetModelBoundingBox",
     "iFFFFFF",
     modelId,
   ) as number[];
 
-  if (!result) return null;
+  if (!ret) return null;
 
   return { minX, minY, minZ, maxX, maxY, maxZ };
 }
@@ -276,7 +271,7 @@ export function rayCastLineEx(
   endY: number,
   endZ: number,
 ) {
-  const [x, y, z, rx, ry, rz, rw, cx, cy, cz, result] = samp.callNative(
+  const [x, y, z, rx, ry, rz, rw, cx, cy, cz, ret] = samp.callNative(
     "CA_RayCastLineEx",
     "ffffffFFFFFFFFFF",
     startX,
@@ -287,7 +282,7 @@ export function rayCastLineEx(
     endZ,
   ) as number[];
 
-  if (!result) return null;
+  if (!ret) return null;
 
   return { x, y, z, rx, ry, rz, rw, cx, cy, cz };
 }
@@ -300,7 +295,7 @@ export function rayCastLineAngleEx(
   endY: number,
   endZ: number,
 ) {
-  const [x, y, z, rx, ry, rz, ocx, ocy, ocz, orx, ory, orz, result] =
+  const [x, y, z, rx, ry, rz, ocx, ocy, ocz, orx, ory, orz, ret] =
     samp.callNative(
       "CA_RayCastLineAngleEx",
       "ffffffFFFFFFFFFFFF",
@@ -312,7 +307,7 @@ export function rayCastLineAngleEx(
       endZ,
     ) as number[];
 
-  if (!result) return null;
+  if (!ret) return null;
 
   return { x, y, z, rx, ry, rz, ocx, ocy, ocz, orx, ory, orz };
 }

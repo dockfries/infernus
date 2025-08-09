@@ -92,9 +92,13 @@ export const ClearDynamicActorAnimations = (actorId: number): number => {
   return samp.callNative("ClearDynamicActorAnimations", "i", actorId);
 };
 
-export const GetDynamicActorFacingAngle = (actorId: number): number => {
-  const [angle] = samp.callNative("GetDynamicActorFacingAngle", "iF", actorId);
-  return angle;
+export const GetDynamicActorFacingAngle = (actorId: number) => {
+  const [angle, ret]: [number, number] = samp.callNative(
+    "GetDynamicActorFacingAngle",
+    "iF",
+    actorId,
+  );
+  return { angle, ret };
 };
 
 export const SetDynamicActorFacingAngle = (
@@ -105,12 +109,12 @@ export const SetDynamicActorFacingAngle = (
 };
 
 export const GetDynamicActorPos = (actorId: number) => {
-  const [x, y, z]: number[] = samp.callNative(
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
     "GetDynamicActorPos",
     "iFFF",
     actorId,
   );
-  return { x, y, z };
+  return { x, y, z, ret };
 };
 
 export const SetDynamicActorPos = (
@@ -122,9 +126,13 @@ export const SetDynamicActorPos = (
   return samp.callNative("SetDynamicActorPos", "ifff", actorId, x, y, z);
 };
 
-export const GetDynamicActorHealth = (actorId: number): number => {
-  const [health] = samp.callNative("GetDynamicActorHealth", "iF", actorId);
-  return health;
+export const GetDynamicActorHealth = (actorId: number) => {
+  const [health, ret]: [number, number] = samp.callNative(
+    "GetDynamicActorHealth",
+    "iF",
+    actorId,
+  );
+  return { health, ret };
 };
 
 export const SetDynamicActorHealth = (
@@ -168,7 +176,8 @@ export const GetDynamicActorAnimation = (actorId: number) => {
     lockY = 0,
     freeze = 0,
     time = 0,
-  ]: [string, string, number, number, number, number, number, number] =
+    ret,
+  ]: [string, string, number, number, number, number, number, number, number] =
     samp.callNative("GetDynamicActorAnimation", "iSSFIIIIIii", actorId, 32, 32);
-  return { animLib, animName, fDelta, loop, lockX, lockY, freeze, time };
+  return { animLib, animName, fDelta, loop, lockX, lockY, freeze, time, ret };
 };

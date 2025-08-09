@@ -51,7 +51,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
     if (deathSkipTick.get(player.id)) {
       if (tick - deathSkipTick.get(player.id) > 1000) {
         const { x, y, z } = orig_playerMethods.getPos.call(player)!;
-        const r = orig_playerMethods.getFacingAngle.call(player);
+        const r = orig_playerMethods.getFacingAngle.call(player).angle;
 
         orig_playerMethods.setSpawnInfo.call(
           player,

@@ -1,3 +1,4 @@
+import { ICommonRetVal } from "core/interfaces";
 import type { IObjectPos } from "../interfaces/Object";
 
 export const IsValidPickup = (pickupId: number): boolean => {
@@ -13,13 +14,13 @@ export const IsPickupStreamedIn = (
   );
 };
 
-export const GetPickupPos = (pickupId: number): IObjectPos => {
-  const [fX, fY, fZ]: number[] = samp.callNative(
+export const GetPickupPos = (pickupId: number): IObjectPos & ICommonRetVal => {
+  const [fX, fY, fZ, ret]: [number, number, number, number] = samp.callNative(
     "GetPickupPos",
     "iFFF",
     pickupId,
   );
-  return { fX, fY, fZ };
+  return { fX, fY, fZ, ret };
 };
 
 export const GetPickupModel = (pickupId: number): number => {

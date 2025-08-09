@@ -351,7 +351,7 @@ function propertyCommand(
   }
 
   const { x, y, z } = player.getPos();
-  const a = player.getFacingAngle();
+  const a = player.getFacingAngle().angle;
 
   if (!subcommand[0]) {
     const string = `Usage: ${cmd} [uniqInteriorId] [optional-comment]`;

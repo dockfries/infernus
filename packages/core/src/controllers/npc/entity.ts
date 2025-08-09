@@ -65,36 +65,36 @@ export class Npc {
     return this;
   }
   getRot() {
-    const [rX, rY, rZ]: [number, number, number] = samp.callNative(
+    const [rX, rY, rZ, ret]: [number, number, number, number] = samp.callNative(
       "NPC_GetRot",
       "iFFF",
       this._id,
     );
-    return { rX, rY, rZ };
+    return { rX, rY, rZ, ret };
   }
   setFacingAngle(angle: number) {
     samp.callNative("NPC_SetFacingAngle", "if", this._id, angle);
     return this;
   }
   getFacingAngle() {
-    const [angle]: [number] = samp.callNative(
+    const [angle, ret]: [number, number] = samp.callNative(
       "NPC_GetFacingAngle",
       "iF",
       this._id,
     );
-    return angle;
+    return { angle, ret };
   }
   setVirtualWorld(virtualWorld: number) {
     samp.callNative("NPC_SetVirtualWorld", "ii", this._id, virtualWorld);
     return this;
   }
   getVirtualWorld() {
-    const [virtualWorld]: [number] = samp.callNative(
+    const [virtualWorld, ret]: [number, number] = samp.callNative(
       "NPC_GetVirtualWorld",
       "iI",
       this._id,
     );
-    return virtualWorld;
+    return { virtualWorld, ret };
   }
   move(
     targetPosX: number,
@@ -211,9 +211,13 @@ export class Npc {
     return this;
   }
   getKeys() {
-    const [upAndDown, leftAndDown, keys]: [number, number, number] =
-      samp.callNative("NPC_GetKeys", "iIII", this._id);
-    return { upAndDown, leftAndDown, keys };
+    const [upAndDown, leftAndDown, keys, ret]: [
+      number,
+      number,
+      number,
+      number,
+    ] = samp.callNative("NPC_GetKeys", "iIII", this._id);
+    return { upAndDown, leftAndDown, keys, ret };
   }
   setWeaponSkillLevel(skill: WeaponSkillsEnum, level: number) {
     samp.callNative("NPC_SetWeaponSkillLevel", "iii", this._id, skill, level);

@@ -139,8 +139,8 @@ PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
             ) {
               previousHits.get(i.id)[j].issuer = InvalidEnum.PLAYER_ID;
 
-              health = wc_GetPlayerHealth.call(i);
-              armour = wc_GetPlayerArmour.call(i);
+              health = wc_GetPlayerHealth.call(i).health;
+              armour = wc_GetPlayerArmour.call(i).armour;
 
               if (isDying.get(i.id)) {
                 if (!delayedDeathTimer.get(i.id)) {

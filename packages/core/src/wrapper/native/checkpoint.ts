@@ -1,3 +1,4 @@
+import { ICommonRetVal } from "core/interfaces";
 import type { ICheckPoint, IRaceCheckPoint } from "./interfaces/CheckPoint";
 
 export const SetPlayerCheckpoint = (
@@ -64,13 +65,12 @@ export const IsPlayerCheckpointActive = (playerId: number): boolean => {
   return Boolean(samp.callNative("IsPlayerCheckpointActive", "i", playerId));
 };
 
-export const GetPlayerCheckpoint = (playerId: number): ICheckPoint => {
-  const [fX = 0.0, fY = 0.0, fZ = 0.0, fSize = 0.0]: number[] = samp.callNative(
-    "GetPlayerCheckpoint",
-    "iFFFF",
-    playerId,
-  );
-  return { fX, fY, fZ, fSize };
+export const GetPlayerCheckpoint = (
+  playerId: number,
+): ICheckPoint & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, fZ = 0.0, fSize = 0.0, ret]: number[] =
+    samp.callNative("GetPlayerCheckpoint", "iFFFF", playerId);
+  return { fX, fY, fZ, fSize, ret };
 };
 
 export const IsPlayerRaceCheckpointActive = (playerId: number): boolean => {
@@ -79,7 +79,9 @@ export const IsPlayerRaceCheckpointActive = (playerId: number): boolean => {
   );
 };
 
-export const GetPlayerRaceCheckpoint = (playerId: number): IRaceCheckPoint => {
+export const GetPlayerRaceCheckpoint = (
+  playerId: number,
+): IRaceCheckPoint & ICommonRetVal => {
   const [
     fX = 0.0,
     fY = 0.0,
@@ -88,10 +90,11 @@ export const GetPlayerRaceCheckpoint = (playerId: number): IRaceCheckPoint => {
     fNextY = 0.0,
     fNextZ = 0.0,
     fSize = 0.0,
+    ret,
   ]: number[] = samp.callNative(
     "GetPlayerRaceCheckpoint",
     "iFFFFFFF",
     playerId,
   );
-  return { fX, fY, fZ, fNextX, fNextY, fNextZ, fSize };
+  return { fX, fY, fZ, fNextX, fNextY, fNextZ, fSize, ret };
 };

@@ -53,7 +53,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
         isModelACar(vehicle.getModel())
       ) {
         const { x: vX, y: vY } = vehicle.getVelocity();
-        const angle = vehicle.getZAngle();
+        const angle = vehicle.getZAngle().angle;
         const speed = vehicle.getSpeed(180.0);
 
         let direction = (Math.atan2(vY, vX) * 180) / Math.PI;
@@ -78,7 +78,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               driftPlayer.driftState = DriftStateEnum.DRIFTING;
               driftPlayer.startTimestamp = Date.now();
 
-              driftPlayer.vHealth = vehicle.getHealth();
+              driftPlayer.vHealth = vehicle.getHealth().health;
 
               const { x, y, z } = player.getPos();
 
@@ -96,7 +96,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 DriftOptionsEnum.DAMAGE_CHECK_ENABLED &&
               driftPlayer.playerFlags & DriftOptionsEnum.DAMAGE_CHECK_ENABLED
             ) {
-              const vehicleHealth = vehicle.getHealth();
+              const vehicleHealth = vehicle.getHealth().health;
 
               if (vehicleHealth < driftPlayer.vHealth) {
                 driftPlayer.driftState = DriftStateEnum.NONE;

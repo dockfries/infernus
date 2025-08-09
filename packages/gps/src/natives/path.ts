@@ -30,9 +30,9 @@ export class GpsPath {
   constructor(public pathId = INVALID_PATH_ID) {}
 
   destroy(): this {
-    const retVal = samp.callNative("DestroyPath", "i", this.pathId);
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    const ret = samp.callNative("DestroyPath", "i", this.pathId);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return this;
   }
@@ -43,64 +43,64 @@ export class GpsPath {
   }
 
   getSize(): number {
-    const [size, retVal]: number[] = samp.callNative(
+    const [size, ret]: number[] = samp.callNative(
       "GetPathSize",
       "iI",
       this.pathId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return size;
   }
 
   getLength(): number {
-    const [length, retVal]: number[] = samp.callNative(
+    const [length, ret]: number[] = samp.callNative(
       "GetPathLength",
       "iF",
       this.pathId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return length;
   }
 
   getNode(index: number): MapNode {
-    const [nodeId, retVal]: number[] = samp.callNative(
+    const [nodeId, ret]: number[] = samp.callNative(
       "GetPathNode",
       "iiI",
       this.pathId,
       index,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return new MapNode(nodeId);
   }
 
   getNodeIndex(node: MapNode): number {
-    const [index, retVal]: number[] = samp.callNative(
+    const [index, ret]: number[] = samp.callNative(
       "GetPathNodeIndex",
       "iiI",
       this.pathId,
       node.nodeId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return index;
   }
 
   static findSync(node: MapNode, target: MapNode): GpsPath {
-    const [pathId, retVal]: number[] = samp.callNative(
+    const [pathId, ret]: number[] = samp.callNative(
       "FindPath",
       "iiI",
       node.nodeId,
       target.nodeId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return new GpsPath(pathId);
   }
@@ -109,7 +109,7 @@ export class GpsPath {
   static find(node: MapNode, target: MapNode): Promise<GpsPath> {
     return new Promise<GpsPath>((resolve, reject) => {
       const taskId = randomTaskId();
-      const retVal = samp.callPublic(
+      const ret = samp.callPublic(
         "FindPathAsync",
         "iii",
         node.nodeId,
@@ -117,21 +117,21 @@ export class GpsPath {
         taskId,
       );
 
-      if (retVal !== GpsError.None) {
-        return reject(new GpsException(retVal));
+      if (ret !== GpsError.None) {
+        return reject(new GpsException(ret));
       }
 
       let isOffExit = false;
 
       const offExit = GameMode.onExit(({ next }) => {
-        const retVal = next();
+        const ret = next();
         offExit();
         isOffExit = true;
         if (taskIdQueue.has(taskId)) {
           taskIdQueue.delete(taskId);
         }
         reject(new GpsException(GpsError.Internal));
-        return retVal;
+        return ret;
       });
 
       const offTask = onFindPathResponse(({ path, task, next }) => {
@@ -139,13 +139,13 @@ export class GpsPath {
           if (!isOffExit) {
             offExit();
           }
-          const retVal = next();
+          const ret = next();
           offTask();
           if (taskIdQueue.has(taskId)) {
             taskIdQueue.delete(taskId);
           }
           resolve(new GpsPath(path));
-          return retVal;
+          return ret;
         }
         return next();
       });

@@ -91,7 +91,7 @@ export function ac_Timer(player: Player) {
               ACInfo.get(player.id).acPosZ,
               StreamerItemTypes.PICKUP,
               ACInfo.get(player.id).acLastPickup - LimitsEnum.MAX_PICKUPS,
-            );
+            ).distance;
             ac_t =
               Streamer.getIntData(
                 StreamerItemTypes.PICKUP,

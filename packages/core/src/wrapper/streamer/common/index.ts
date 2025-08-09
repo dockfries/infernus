@@ -132,7 +132,7 @@ export class Streamer {
   static getRadiusMultiplier(
     type: StreamerItemTypes,
     player: number | Player = -1,
-  ): number {
+  ) {
     if (player instanceof Player) {
       return Streamer_GetRadiusMultiplier(type, player.id);
     }
@@ -186,7 +186,7 @@ export class Streamer {
   static isToggleItemUpdate(player: Player, type: StreamerItemTypes): boolean {
     return Streamer_IsToggleItemUpdate(player.id, type);
   }
-  static getLastUpdateTime(): number {
+  static getLastUpdateTime() {
     return Streamer_GetLastUpdateTime();
   }
   static update(player: Player, type: StreamerItemTypes | -1 = -1): number {

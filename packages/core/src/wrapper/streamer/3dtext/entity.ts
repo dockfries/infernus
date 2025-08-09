@@ -159,11 +159,7 @@ export class Dynamic3DTextLabel {
       );
     return this.sourceInfo?.charset;
   }
-  getText(): string {
-    if (this.id === -1)
-      throw new Error(
-        "[Streamer3DTextLabel]: Unable to get text before create",
-      );
+  getText() {
     return GetDynamic3DTextLabelText(
       this.id,
       this.sourceInfo?.charset || "utf8",
@@ -290,7 +286,7 @@ export class Dynamic3DTextLabel {
   }
   static showForPlayer(player: Player, z = -50000) {
     const pos = player.getPos();
-    if (pos) {
+    if (pos.ret) {
       Streamer.updateEx(player, pos.x, pos.y, pos.z);
     } else {
       Streamer.updateEx(player, 0, 0, z);

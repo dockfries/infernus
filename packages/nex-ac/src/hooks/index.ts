@@ -224,9 +224,12 @@ export function ac_CreateDynamicPickup(
   return true;
 }
 
-export const ac_GetPlayerVersion = setPlayerHook("getIp", function () {
-  const ip = orig_playerMethods.getIp.call(this);
-  return ip.replaceAll("%", "").replaceAll("~k~", "");
+export const ac_GetPlayerVersion = setPlayerHook("getVersion", function () {
+  const version = orig_playerMethods.getVersion.call(this);
+  return {
+    version: version.version.replaceAll("%", "").replaceAll("~k~", ""),
+    ret: version.ret,
+  };
 });
 
 export function ac_DestroyVehicle(vehicleId: number) {
@@ -662,7 +665,7 @@ export function ac_PutPlayerInVehicle(
       ACVehInfo.get(vehicle.id).acDriver === InvalidEnum.PLAYER_ID
     ) {
       ACVehInfo.get(vehicle.id).acZAngle =
-        orig_vehicleMethods.getZAngle.call(vehicle);
+        orig_vehicleMethods.getZAngle.call(vehicle).angle;
       orig_vehicleMethods.setPos.call(
         vehicle,
         ACInfo.get(player.id).acPutPosX,

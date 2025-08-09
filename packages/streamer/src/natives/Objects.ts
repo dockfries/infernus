@@ -46,12 +46,12 @@ export const IsValidDynamicObject = (objectId: number): boolean => {
 };
 
 export const GetDynamicObjectPos = (objectId: number) => {
-  const [x, y, z]: number[] = samp.callNative(
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
     "GetDynamicObjectPos",
     "iFFF",
     objectId,
   );
-  return { x, y, z };
+  return { x, y, z, ret };
 };
 
 export const SetDynamicObjectPos = (
@@ -64,12 +64,12 @@ export const SetDynamicObjectPos = (
 };
 
 export const GetDynamicObjectRot = (objectId: number) => {
-  const [rx, ry, rz]: number[] = samp.callNative(
+  const [rx, ry, rz, ret]: [number, number, number, number] = samp.callNative(
     "GetDynamicObjectRot",
     "iFFF",
     objectId,
   );
-  return { rx, ry, rz };
+  return { rx, ry, rz, ret };
 };
 
 export const SetDynamicObjectRot = (

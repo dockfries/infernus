@@ -1,5 +1,6 @@
 import type { WeaponEnum } from "core/enums";
 import type { IPlayerClass } from "./interfaces/PlayerClass";
+import { ICommonRetVal } from "core/interfaces";
 
 export const GetAvailableClasses = (): number => {
   return samp.callNative("GetAvailableClasses", "");
@@ -7,8 +8,9 @@ export const GetAvailableClasses = (): number => {
 
 // when getting a class through AddPlayerClass(without ex), teamId may be 255.
 // bug: zAngle The value of does not look accurate? not sure of the cause of the problem
-export const GetPlayerClass = (classId: number): boolean | IPlayerClass => {
-  if (classId < GetAvailableClasses() || classId > 319) return false;
+export const GetPlayerClass = (
+  classId: number,
+): IPlayerClass & ICommonRetVal => {
   const res: number[] = samp.callNative(
     "GetPlayerClass",
     "iIIFFFFIIIIII",
@@ -27,6 +29,7 @@ export const GetPlayerClass = (classId: number): boolean | IPlayerClass => {
     weapon2Ammo = 0,
     weapon3 = 0,
     weapon3Ammo = 0,
+    ret,
   ] = res;
   return {
     teamId,
@@ -41,6 +44,7 @@ export const GetPlayerClass = (classId: number): boolean | IPlayerClass => {
     weapon2Ammo,
     weapon3,
     weapon3Ammo,
+    ret,
   };
 };
 
@@ -185,7 +189,9 @@ export const SpawnPlayer = (playerId: number): boolean => {
   return !!samp.callNative("SpawnPlayer", "i", playerId);
 };
 
-export const GetSpawnInfo = (playerId: number): IPlayerClass => {
+export const GetSpawnInfo = (
+  playerId: number,
+): IPlayerClass & ICommonRetVal => {
   const [
     teamId,
     modelId = 0,
@@ -199,6 +205,7 @@ export const GetSpawnInfo = (playerId: number): IPlayerClass => {
     weapon2Ammo = 0,
     weapon3 = 0,
     weapon3Ammo = 0,
+    ret,
   ]: number[] = samp.callNative("GetSpawnInfo", "iIIFFFFIIIIII", playerId);
   return {
     teamId,
@@ -213,5 +220,6 @@ export const GetSpawnInfo = (playerId: number): IPlayerClass => {
     weapon2Ammo,
     weapon3,
     weapon3Ammo,
+    ret,
   };
 };

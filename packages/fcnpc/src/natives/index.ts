@@ -94,12 +94,12 @@ export class FCNPC {
     return samp.callNative("FCNPC_GivePosition", "ifff", this.id, x, y, z);
   }
   getPosition() {
-    const [x, y, z]: [number, number, number] = samp.callNative(
+    const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
       "FCNPC_GetPosition",
       "iFFF",
       this.id,
     );
-    return { x, y, z };
+    return { x, y, z, ret };
   }
   setAngle(angle: number): number {
     return samp.callNative("FCNPC_SetAngle", "if", this.id, angle);
@@ -131,12 +131,9 @@ export class FCNPC {
     );
   }
   getQuaternion() {
-    const [w, x, y, z]: [number, number, number, number] = samp.callNative(
-      "FCNPC_GetQuaternion",
-      "iFFFF",
-      this.id,
-    );
-    return { w, x, y, z };
+    const [w, x, y, z, ret]: [number, number, number, number, number] =
+      samp.callNative("FCNPC_GetQuaternion", "iFFFF", this.id);
+    return { w, x, y, z, ret };
   }
   setVelocity(x: number, y: number, z: number, updatePos = false): number {
     return samp.callNative(
@@ -161,12 +158,12 @@ export class FCNPC {
     );
   }
   getVelocity() {
-    const [x, y, z]: [number, number, number] = samp.callNative(
+    const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
       "FCNPC_GetVelocity",
       "iFFF",
       this.id,
     );
-    return { x, y, z };
+    return { x, y, z, ret };
   }
   setSpeed(speed: number): number {
     return samp.callNative("FCNPC_SetSpeed", "if", this.id, speed);
@@ -378,7 +375,7 @@ export class FCNPC {
       clipSize = -1;
       accuracy = 1.0;
     }
-    return { reloadTime, shootTime, clipSize, accuracy };
+    return { reloadTime, shootTime, clipSize, accuracy, ret };
   }
   static setWeaponDefaultInfo(
     weaponId: WeaponEnum,
@@ -413,7 +410,7 @@ export class FCNPC {
       clipSize = -1;
       accuracy = 1.0;
     }
-    return { reloadTime, shootTime, clipSize, accuracy };
+    return { reloadTime, shootTime, clipSize, accuracy, ret };
   }
   setKeys(
     upDownAnalog: number,
@@ -430,9 +427,13 @@ export class FCNPC {
     );
   }
   getKeys() {
-    const [upDownAnalog, leftRightAnalog, keys]: [number, number, number] =
-      samp.callNative("FCNPC_GetKeys", "iIII", this.id);
-    return { upDownAnalog, leftRightAnalog, keys };
+    const [upDownAnalog, leftRightAnalog, keys, ret]: [
+      number,
+      number,
+      number,
+      number,
+    ] = samp.callNative("FCNPC_GetKeys", "iIII", this.id);
+    return { upDownAnalog, leftRightAnalog, keys, ret };
   }
   setSpecialAction(action: SpecialActionsEnum): number {
     return samp.callNative("FCNPC_SetSpecialAction", "ii", this.id, action);
@@ -508,7 +509,7 @@ export class FCNPC {
       freeze = 0;
       time = 1;
     }
-    return { animationId, delta, loop, lockX, lockY, freeze, time };
+    return { animationId, delta, loop, lockX, lockY, freeze, time, ret };
   }
   applyAnimation(
     animationId: number,
@@ -624,12 +625,12 @@ export class FCNPC {
     );
   }
   getDestination() {
-    const [x, y, z]: [number, number, number] = samp.callNative(
+    const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
       "FCNPC_GetDestination",
       "iFFF",
       this.id,
     );
-    return { x, y, z };
+    return { x, y, z, ret };
   }
 
   aimAt(
@@ -906,12 +907,12 @@ export class FCNPC {
     );
   }
   getSurfingOffsets() {
-    const [x, y, z]: [number, number, number] = samp.callNative(
+    const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
       "FCNPC_GetSurfingOffsets",
       "iFFF",
       this.id,
     );
-    return { x, y, z };
+    return { x, y, z, ret };
   }
   setSurfingVehicle(vehicle: Vehicle): number {
     return samp.callNative(
@@ -1004,14 +1005,14 @@ export class FCNPC {
   setPlayingPlaybackPath(path: string): number {
     return samp.callNative("FCNPC_SetPlayingPlaybackPath", "is", this.id, path);
   }
-  getPlayingPlaybackPath(): string {
-    const [path]: [string] = samp.callNative(
+  getPlayingPlaybackPath() {
+    const [path, ret]: [string, number] = samp.callNative(
       "FCNPC_GetPlayingPlaybackPath",
       "iSi",
       this.id,
       255,
     );
-    return path;
+    return { path, ret };
   }
 
   playNode(
@@ -1111,9 +1112,13 @@ export class FCNPC {
     );
   }
 
-  static getPluginVersion(): string {
-    const [ret] = samp.callNative("FCNPC_GetPluginVersion", "Si", 16);
-    return ret;
+  static getPluginVersion() {
+    const [version, ret]: [string, number] = samp.callNative(
+      "FCNPC_GetPluginVersion",
+      "Si",
+      16,
+    );
+    return { version, ret };
   }
   static setUpdateRate(rate: number): number {
     return samp.callNative("FCNPC_SetUpdateRate", "i", rate);

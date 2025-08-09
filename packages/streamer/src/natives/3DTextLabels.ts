@@ -46,9 +46,14 @@ export const IsValidDynamic3DTextLabel = (id: number): boolean => {
   return Boolean(samp.callNative("IsValidDynamic3DTextLabel", "i", id));
 };
 
-export const GetDynamic3DTextLabelText = (id: number): string => {
-  const [text] = samp.callNative("GetDynamic3DTextLabelText", "iSi", id, 1024);
-  return text;
+export const GetDynamic3DTextLabelText = (id: number) => {
+  const [text, ret]: [string, number] = samp.callNative(
+    "GetDynamic3DTextLabelText",
+    "iSi",
+    id,
+    1024,
+  );
+  return { text, ret };
 };
 
 export const UpdateDynamic3DTextLabelText = (

@@ -12,15 +12,15 @@ export const Streamer_GetFloatData = (
   type: StreamerItemTypes,
   id: number,
   data: E_STREAMER,
-): number => {
-  const [ret] = samp.callNative(
+) => {
+  const [val, ret]: [number, number] = samp.callNative(
     "Streamer_GetFloatData",
     "iiiF",
     type,
     id,
     data,
   );
-  return ret;
+  return { val, ret };
 };
 
 export const Streamer_SetFloatData = (
@@ -60,16 +60,16 @@ export const Streamer_GetArrayData = (
   type: StreamerItemTypes,
   id: number,
   data: StreamerArrayData,
-): number[] => {
-  const [arrayData] = samp.callNative(
+) => {
+  const [arrayData, ret] = samp.callNative(
     "Streamer_GetArrayData",
     "iiiAi",
     type,
     id,
     data,
     Streamer_GetArrayDataLength(type, id, data),
-  ) as [number[]];
-  return arrayData;
+  ) as [number[], number];
+  return { arrayData, ret };
 };
 
 export const Streamer_SetArrayData = (

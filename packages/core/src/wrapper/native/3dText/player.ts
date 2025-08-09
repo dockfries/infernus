@@ -1,5 +1,6 @@
 import { rgba } from "core/utils/colorUtils";
 import type { IAttachedData, IObjectPos } from "../interfaces/Object";
+import { ICommonRetVal } from "core/interfaces";
 
 export const IsValidPlayer3DTextLabel = (
   playerId: number,
@@ -10,18 +11,15 @@ export const IsValidPlayer3DTextLabel = (
   );
 };
 
-export const GetPlayer3DTextLabelText = (
-  playerId: number,
-  id: number,
-): string => {
-  const [text] = samp.callNative(
+export const GetPlayer3DTextLabelText = (playerId: number, id: number) => {
+  const [text, ret]: [string, number] = samp.callNative(
     "GetPlayer3DTextLabelText",
     "iiSi",
     playerId,
     id,
     144,
   );
-  return text;
+  return { text, ret };
 };
 
 export const GetPlayer3DTextLabelColor = (
@@ -34,14 +32,10 @@ export const GetPlayer3DTextLabelColor = (
 export const GetPlayer3DTextLabelPos = (
   playerId: number,
   id: number,
-): IObjectPos => {
-  const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
-    "GetPlayer3DTextLabelPos",
-    "iiFFF",
-    playerId,
-    id,
-  );
-  return { fX, fY, fZ };
+): IObjectPos & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
+    samp.callNative("GetPlayer3DTextLabelPos", "iiFFF", playerId, id);
+  return { fX, fY, fZ, ret };
 };
 
 export const SetPlayer3DTextLabelDrawDistance = (

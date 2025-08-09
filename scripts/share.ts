@@ -6,8 +6,13 @@ export const rootPkgJsonPath = path.resolve(process.cwd(), "package.json");
 
 export const pkgDir = path.resolve(process.cwd(), "./packages");
 
+const excludePkg = ["types"];
+
 export const pkgNames = fs.readdirSync(pkgDir).filter((dirPath) => {
-  return fs.statSync(path.resolve(pkgDir, dirPath)).isDirectory();
+  return (
+    fs.statSync(path.resolve(pkgDir, dirPath)).isDirectory() &&
+    !excludePkg.includes(dirPath)
+  );
 });
 
 export async function build(pkgName) {

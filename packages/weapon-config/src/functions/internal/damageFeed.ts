@@ -234,7 +234,9 @@ export function damageFeedUpdateText(player: Player) {
     if (damageFeedHitsGiven.get(player.id)[i]!.weapon === -1) {
       weapon = "Multiple";
     } else {
-      weapon = wc_GetWeaponName(damageFeedHitsGiven.get(player.id)[i]!.weapon);
+      weapon = wc_GetWeaponName(
+        damageFeedHitsGiven.get(player.id)[i]!.weapon,
+      ).name;
     }
 
     if (
@@ -280,7 +282,9 @@ export function damageFeedUpdateText(player: Player) {
     if (damageFeedHitsTaken.get(player.id)[i]!.weapon === -1) {
       weapon = "Multiple";
     } else {
-      weapon = wc_GetWeaponName(damageFeedHitsTaken.get(player.id)[i]!.weapon);
+      weapon = wc_GetWeaponName(
+        damageFeedHitsTaken.get(player.id)[i]!.weapon,
+      ).name;
     }
 
     if (
@@ -426,7 +430,7 @@ export function damageFeedAddHit(
   arr[idx]!.weapon = weapon;
 
   if (typeof issuerId !== "number") {
-    arr[idx]!.name = orig_playerMethods.getName.call(issuerId);
+    arr[idx]!.name = orig_playerMethods.getName.call(issuerId).name;
   }
 
   damageFeedUpdate(player, true);

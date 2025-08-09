@@ -334,7 +334,7 @@ VehicleEvent.onDeath(({ vehicle, killer, next }) => {
     ACInfo.get(killer.id).acCall[27] = ACInfo.get(killer.id).acCall[15] =
       ac_gtc;
   }
-  const ac_health = vehicle.getHealth();
+  const ac_health = vehicle.getHealth().health;
   const { w: ac_w, x: ac_x, y: ac_y, z: ac_z } = vehicle.getRotationQuat()!;
   if (ac_health < 250.0 || ac_IsUpsideDown(ac_w, ac_x, ac_y, ac_z))
     ACVehInfo.get(vehicle.id).acSpawned = false;
@@ -467,7 +467,7 @@ VehicleEvent.onUnoccupiedUpdate(
 
         ac_KickWithCode(player, "", 0, 5, 4);
 
-        ACVehInfo.get(vehicleId).acZAngle = vehicle.getZAngle();
+        ACVehInfo.get(vehicleId).acZAngle = vehicle.getZAngle().angle;
 
         setVehicleFakeZAngleForPlayer(
           player,
@@ -598,7 +598,7 @@ VehicleEvent.onUnoccupiedUpdate(
 
       ac_KickWithCode(player, "", 0, 5, 1);
 
-      ACVehInfo.get(vehicleId).acZAngle = vehicle.getZAngle();
+      ACVehInfo.get(vehicleId).acZAngle = vehicle.getZAngle().angle;
 
       setVehicleFakeZAngleForPlayer(
         player,

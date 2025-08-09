@@ -79,7 +79,7 @@ export function isPlayerBehindPlayer(
   const { x: x1, y: y1 } = orig_playerMethods.getPos.call(player)!;
   const { x: x2, y: y2 } = orig_playerMethods.getPos.call(target)!;
 
-  let ang = orig_playerMethods.getFacingAngle.call(target);
+  let ang = orig_playerMethods.getFacingAngle.call(target).angle;
 
   let angDiff = angleBetweenPoints(x1, y1, x2, y2);
 

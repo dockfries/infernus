@@ -182,12 +182,12 @@ export class Menu {
       return { fColumn1: this.col1width, fColumn2: this.col2width };
     return w.GetMenuColumnWidth(this.id);
   }
-  getColumnHeader(column: number): string {
+  getColumnHeader(column: number) {
     if (this._id === -1)
       throw new Error("[Menu]: Cannot get column header before create");
     return w.GetMenuColumnHeader(this.id, column);
   }
-  getItem(column: number, item: number): string {
+  getItem(column: number, item: number) {
     if (this._id === -1)
       throw new Error("[Menu]: Cannot get item before create");
     if (item < 0 || item > this.getItems(column) - 1)

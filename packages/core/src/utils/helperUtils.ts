@@ -88,14 +88,17 @@ export const ShowPlayerDialog = (
   );
 };
 
-export const GetPlayerName = (player: Player): string => {
-  const [buf]: [number[]] = samp.callNative(
+export const GetPlayerName = (player: Player) => {
+  const [buf, ret]: [number[], number] = samp.callNative(
     "GetPlayerName",
     "iAi",
     player.id,
     LimitsEnum.MAX_PLAYER_NAME,
   );
-  return I18n.decodeFromBuf(I18n.getValidStr(buf), player.charset);
+  return {
+    name: I18n.decodeFromBuf(I18n.getValidStr(buf), player.charset),
+    ret,
+  };
 };
 
 export const SetPlayerName = (player: Player, name: string): number => {
@@ -215,17 +218,17 @@ export const UpdateDynamic3DTextLabelText = (
   return samp.callNative("UpdateDynamic3DTextLabelText", "iia", id, color, buf);
 };
 
-export const GetDynamic3DTextLabelText = (
-  id: number,
-  charset: string,
-): string => {
-  const [buf]: [number[]] = samp.callNative(
+export const GetDynamic3DTextLabelText = (id: number, charset: string) => {
+  const [buf, ret]: [number[], number] = samp.callNative(
     "GetDynamic3DTextLabelText",
     "iAi",
     id,
     1024,
   );
-  return I18n.decodeFromBuf(I18n.getValidStr(buf), charset);
+  return {
+    text: I18n.decodeFromBuf(I18n.getValidStr(buf), charset),
+    ret,
+  };
 };
 
 export const SetDynamicObjectMaterialText = (
@@ -264,10 +267,11 @@ export const GetDynamicObjectMaterial = (
   materialIndex: number,
   charset: string = "utf8",
 ) => {
-  const [modelId, txdNameBuf, textureNameBuf, materialColor]: [
+  const [modelId, txdNameBuf, textureNameBuf, materialColor, ret]: [
     number,
     number[],
     number[],
+    number,
     number,
   ] = samp.callNative(
     "GetDynamicObjectMaterial",
@@ -282,6 +286,7 @@ export const GetDynamicObjectMaterial = (
     txdName: I18n.decodeFromBuf(I18n.getValidStr(txdNameBuf), charset),
     textureName: I18n.decodeFromBuf(I18n.getValidStr(textureNameBuf), charset),
     materialColor,
+    ret,
   };
 };
 
@@ -299,6 +304,7 @@ export const GetDynamicObjectMaterialText = (
     fontColor,
     backColor,
     textAlignment,
+    ret,
   ] = samp.callNative(
     "GetDynamicObjectMaterialText",
     "iiAIAIIIIIii",
@@ -306,7 +312,17 @@ export const GetDynamicObjectMaterialText = (
     materialIndex,
     2048,
     32,
-  ) as [number[], number, number[], number, number, number, number, number];
+  ) as [
+    number[],
+    number,
+    number[],
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+  ];
   const textStr = I18n.decodeFromBuf(text, charset);
   const fontFaceStr = I18n.decodeFromBuf(fontFace, charset);
   return {
@@ -318,6 +334,7 @@ export const GetDynamicObjectMaterialText = (
     fontColor,
     backColor,
     textAlignment,
+    ret,
   };
 };
 

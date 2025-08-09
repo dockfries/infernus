@@ -16,20 +16,24 @@ export class FCNPCNode {
     return !!samp.callNative("FCNPC_SetNodePoint", "ii", this.id, pointId);
   }
   getPointPosition(pointId: number) {
-    const [x, y, z]: [number, number, number] = samp.callNative(
+    const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
       "FCNPC_GetNodePointPosition",
       "iFFF",
       this.id,
       pointId,
     );
-    return { x, y, z };
+    return { x, y, z, ret };
   }
   getPointCount(): number {
     return samp.callNative("FCNPC_GetNodePointCount", "i", this.id);
   }
   getInfo() {
-    const [vehNodes, pedNodes, naviNode]: [number, number, number] =
-      samp.callNative("FCNPC_GetNodeInfo", "iIII", this.id);
-    return { vehNodes, pedNodes, naviNode };
+    const [vehNodes, pedNodes, naviNode, ret]: [
+      number,
+      number,
+      number,
+      number,
+    ] = samp.callNative("FCNPC_GetNodeInfo", "iIII", this.id);
+    return { vehNodes, pedNodes, naviNode, ret };
   }
 }

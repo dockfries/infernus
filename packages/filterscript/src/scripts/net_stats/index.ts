@@ -22,7 +22,7 @@ async function netStatsDisplay() {
     await new Dialog({
       style: DialogStylesEnum.MSGBOX,
       caption: "Server NetStats",
-      info: netStatsStr,
+      info: netStatsStr.stats,
       button1: "Ok",
     }).show(gNetStatsPlayer as Player);
     if (gNetStatsTimer) clearInterval(gNetStatsTimer);

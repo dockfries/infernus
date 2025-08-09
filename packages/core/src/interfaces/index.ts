@@ -187,3 +187,7 @@ export interface IFilterScript {
   unload: () => any;
   [propName: string | number | symbol]: any;
 }
+
+export interface ICommonRetVal {
+  ret: number;
+}

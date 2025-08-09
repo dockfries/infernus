@@ -1,5 +1,6 @@
 import { rgba } from "core/utils/colorUtils";
 import type { IAttachedData, IObjectPos } from "../interfaces/Object";
+import { ICommonRetVal } from "core/interfaces";
 
 export const IsValid3DTextLabel = (id: number): boolean => {
   return Boolean(samp.callNative("IsValid3DTextLabel", "i", id));
@@ -14,22 +15,22 @@ export const Is3DTextLabelStreamedIn = (
   );
 };
 
-export const Get3DTextLabelText = (id: number): string => {
-  const [text] = samp.callNative("Get3DTextLabelText", "iSi", id, 144);
-  return text;
+export const Get3DTextLabelText = (id: number) => {
+  const [text, ret] = samp.callNative("Get3DTextLabelText", "iSi", id, 144);
+  return { text, ret };
 };
 
 export const Get3DTextLabelColor = (id: number): number => {
   return samp.callNative("Get3DTextLabelColor", "i", id);
 };
 
-export const Get3DTextLabelPos = (id: number): IObjectPos => {
-  const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
+export const Get3DTextLabelPos = (id: number): IObjectPos & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: number[] = samp.callNative(
     "Get3DTextLabelPos",
     "iFFF",
     id,
   );
-  return { fX, fY, fZ };
+  return { fX, fY, fZ, ret };
 };
 
 export const Set3DTextLabelDrawDistance = (id: number, dist: number): void => {

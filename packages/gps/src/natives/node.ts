@@ -18,9 +18,9 @@ export class MapNode {
   }
 
   destroy(): this {
-    const retVal = samp.callNative("DestroyMapNode", "i", this.nodeId);
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    const ret = samp.callNative("DestroyMapNode", "i", this.nodeId);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     this.nodeId = INVALID_MAP_NODE_ID;
     return this;
@@ -31,57 +31,57 @@ export class MapNode {
   }
 
   getPos() {
-    const [x, y, z, retVal]: [number, number, number, number] = samp.callNative(
+    const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
       "GetMapNodePos",
       "iFFF",
       this.nodeId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
-    return { x, y, z };
+    return { x, y, z, ret };
   }
 
   getConnectionCount(): number {
-    const [count, retVal]: number[] = samp.callNative(
+    const [count, ret]: number[] = samp.callNative(
       "GetMapNodeConnectionCount",
       "iI",
       this.nodeId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return count;
   }
 
   getDistanceBetween(second: MapNode): number {
-    const [distance, retVal]: number[] = samp.callNative(
+    const [distance, ret]: number[] = samp.callNative(
       "GetDistanceBetweenMapNodes",
       "iiF",
       this.nodeId,
       second.nodeId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return distance;
   }
 
   getAngleBetween(second: MapNode): number {
-    const [angle, retVal]: number[] = samp.callNative(
+    const [angle, ret]: number[] = samp.callNative(
       "GetAngleBetweenMapNodes",
       "iiF",
       this.nodeId,
       second.nodeId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return angle;
   }
 
   getDistanceFromPoint(x: number, y: number, z: number): number {
-    const [distance, retVal]: number[] = samp.callNative(
+    const [distance, ret]: number[] = samp.callNative(
       "GetMapNodeDistanceFromPoint",
       "ifffF",
       this.nodeId,
@@ -89,22 +89,22 @@ export class MapNode {
       y,
       z,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return distance;
   }
 
   getAngleFromPoint(x: number, y: number): number {
-    const [angle, retVal]: number[] = samp.callNative(
+    const [angle, ret]: number[] = samp.callNative(
       "GetMapNodeAngleFromPoint",
       "iffF",
       this.nodeId,
       x,
       y,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return angle;
   }
@@ -115,9 +115,9 @@ export class MapNode {
   }
 
   getRandom(): MapNode {
-    const [nodeId, retVal]: number[] = samp.callNative("GetRandomMapNode", "I");
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    const [nodeId, ret]: number[] = samp.callNative("GetRandomMapNode", "I");
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return new MapNode(nodeId);
   }
@@ -128,7 +128,7 @@ export class MapNode {
     z: number,
     ignoredNode = INVALID_MAP_NODE_ID,
   ): MapNode {
-    const [nodeId, retVal]: number[] = samp.callNative(
+    const [nodeId, ret]: number[] = samp.callNative(
       "GetClosestMapNodeToPoint",
       "fffIi",
       x,
@@ -136,8 +136,8 @@ export class MapNode {
       z,
       ignoredNode,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return new MapNode(nodeId);
   }

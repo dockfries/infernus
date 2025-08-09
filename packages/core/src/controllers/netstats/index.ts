@@ -6,10 +6,10 @@ export class NetStats {
   private constructor() {
     throw new Error("This is a static class and cannot be instantiated.");
   }
-  static getNetworkStats(): string {
+  static getNetworkStats() {
     return w.GetNetworkStats();
   }
-  static getPlayerNetworkStats(player: Player): string {
+  static getPlayerNetworkStats(player: Player) {
     return w.GetPlayerNetworkStats(player.id);
   }
   static getBytesReceived(player: Player): number {
@@ -24,7 +24,7 @@ export class NetStats {
   static getConnectedTime(player: Player): number {
     return w.NetStats_GetConnectedTime(player.id);
   }
-  static getIpPort(player: Player): string {
+  static getIpPort(player: Player) {
     return w.NetStats_GetIpPort(player.id);
   }
   static getMessagesReceived(player: Player): number {

@@ -3,7 +3,7 @@ import { LimitsEnum } from "../../enums";
 import { PlayerEvent, type Player } from "../player";
 import { rgba } from "../../utils/colorUtils";
 import type { IGangZone } from "core/interfaces";
-import type { GangZonePos } from "core/wrapper/native/interfaces";
+import type { IGangZonePos } from "core/wrapper/native/interfaces";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 import { globalGangZonePool, playerGangZonePool } from "core/utils/pools";
 
@@ -239,7 +239,7 @@ export class GangZone {
     return w.IsGangZoneFlashingForPlayer(player.id, this.id);
   }
 
-  getPos(): GangZonePos {
+  getPos(): IGangZonePos {
     if (this.id === -1)
       throw new Error("[GangZone]: Unable to get position before create");
     const p = this.sourceInfo.player;

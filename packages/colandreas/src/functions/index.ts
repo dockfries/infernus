@@ -180,7 +180,7 @@ function isNearWater(instance: Player | Vehicle, dist: number, height: number) {
         x + dist * Math.sin(degreesToRadians(i * 60.0)),
         y + dist * Math.cos(degreesToRadians(i * 60.0)),
         z - height,
-      )?.result === WATER_OBJECT
+      )?.ret === WATER_OBJECT
     )
       return true;
   return false;
@@ -217,7 +217,7 @@ function isFacingWater(
       x + dist * Math.sin(degreesToRadians(-r)),
       y + dist * Math.cos(degreesToRadians(-r)),
       z - height,
-    )?.result === WATER_OBJECT
+    )?.ret === WATER_OBJECT
   )
     return true;
   return false;

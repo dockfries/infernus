@@ -1,3 +1,4 @@
+import { ICommonRetVal } from "core/interfaces";
 import type { IActorAnimation, IActorSpawn } from "./interfaces/Actor";
 
 export const GetActorSkin = (actorId: number): number => {
@@ -8,13 +9,17 @@ export const SetActorSkin = (actorId: number, model: number): number => {
   return samp.callNative("SetActorSkin", "ii", actorId, model);
 };
 
-export const GetActorSpawnInfo = (actorId: number): IActorSpawn => {
-  const [skinId = 0, fX = 0, fY = 0, fZ = 0, fAngle = 0]: number[] =
+export const GetActorSpawnInfo = (
+  actorId: number,
+): IActorSpawn & ICommonRetVal => {
+  const [skinId = 0, fX = 0, fY = 0, fZ = 0, fAngle = 0, ret]: number[] =
     samp.callNative("GetActorSpawnInfo", "iIFFFF", actorId);
-  return { skinId, fX, fY, fZ, fAngle };
+  return { skinId, fX, fY, fZ, fAngle, ret };
 };
 
-export const GetActorAnimation = (actorId: number): IActorAnimation => {
+export const GetActorAnimation = (
+  actorId: number,
+): IActorAnimation & ICommonRetVal => {
   const [
     animLib,
     animName,
@@ -24,9 +29,10 @@ export const GetActorAnimation = (actorId: number): IActorAnimation => {
     lockY = 0,
     freeze = 0,
     time = 0,
-  ]: [string, string, number, number, number, number, number, number] =
+    ret,
+  ]: [string, string, number, number, number, number, number, number, number] =
     samp.callNative("GetActorAnimation", "iSiSiFIIIII", actorId, 32, 32);
-  return { animLib, animName, fDelta, loop, lockX, lockY, freeze, time };
+  return { animLib, animName, fDelta, loop, lockX, lockY, freeze, time, ret };
 };
 
 export const CreateActor = (
@@ -102,34 +108,39 @@ export const SetActorPos = (
   return samp.callNative("SetActorPos", "ifff", actorId, X, Y, Z);
 };
 
-export const GetActorPos = (actorId: number): Array<number> => {
-  return samp.callNative("GetActorPos", "iFFF", actorId);
+export const GetActorPos = (actorId: number) => {
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
+    "GetActorPos",
+    "iFFF",
+    actorId,
+  );
+  return { x, y, z, ret };
 };
 
 export const SetActorFacingAngle = (actorId: number, ang: number): number => {
   return samp.callNative("SetActorFacingAngle", "if", actorId, ang);
 };
 
-export const GetActorFacingAngle = (actorId: number): number => {
-  const [angle] = samp.callNative(
+export const GetActorFacingAngle = (actorId: number) => {
+  const [angle, ret]: [number, number] = samp.callNative(
     "GetActorFacingAngle",
     "iF",
     actorId,
-  ) as unknown as number[];
-  return angle;
+  );
+  return { angle, ret };
 };
 
 export const SetActorHealth = (actorId: number, health: number): number => {
   return samp.callNative("SetActorHealth", "if", actorId, health);
 };
 
-export const GetActorHealth = (actorId: number): number => {
-  const [health] = samp.callNative(
+export const GetActorHealth = (actorId: number) => {
+  const [health, ret]: [number, number] = samp.callNative(
     "GetActorHealth",
     "iF",
     actorId,
-  ) as unknown as number[];
-  return health;
+  );
+  return { health, ret };
 };
 
 export const SetActorInvulnerable = (

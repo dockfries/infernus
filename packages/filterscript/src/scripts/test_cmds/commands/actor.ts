@@ -9,7 +9,7 @@ export function createActorCommands() {
       const pos = player.getPos();
       if (!pos) return next();
       const { x, y, z } = pos;
-      const ang = player.getFacingAngle();
+      const ang = player.getFacingAngle().angle;
       test_actor_id = new DynamicActor({
         modelId: 305,
         x: x + 1.0,
@@ -46,7 +46,7 @@ export function createActorCommands() {
   const actorface = PlayerEvent.onCommandText(
     "actorface",
     ({ player, next }) => {
-      const ang = player.getFacingAngle();
+      const ang = player.getFacingAngle().angle;
       test_actor_id?.setFacingAngle(ang);
       return next();
     },

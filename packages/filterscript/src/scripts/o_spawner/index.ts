@@ -287,7 +287,7 @@ function destroySelectionMenu(player: Player) {
 function spawnObjectInFrontOfPlayer(player: Player, model: number) {
   const { x, y, z } = player.getPos();
 
-  let facing = player.getFacingAngle();
+  let facing = player.getFacingAngle().angle;
 
   const distance = 5.0;
 

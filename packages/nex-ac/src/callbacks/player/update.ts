@@ -192,7 +192,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   ac_pZ,
                   StreamerItemTypes.PICKUP,
                   ACInfo.get(player.id).acLastPickup - LimitsEnum.MAX_PICKUPS,
-                );
+                ).distance;
               if (
                 ACInfo.get(player.id).acLastPickup > LimitsEnum.MAX_PICKUPS &&
                 Streamer.getIntData(
@@ -290,7 +290,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
           ACInfo.get(player.id).acAmmo[ac_s] = ac_a;
         }
       }
-      ac_tmp = player.getHealth();
+      ac_tmp = player.getHealth().health;
       let ac_health = ac_tmp < 0 ? Math.ceil(ac_tmp) : Math.floor(ac_tmp);
       if (ACInfo.get(player.id).acSet[1] !== -1) {
         if (ACInfo.get(player.id).acSet[1] > 255) {
@@ -377,7 +377,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
           }
         }
       }
-      ac_tmp = player.getArmour();
+      ac_tmp = player.getArmour().armour;
       let ac_armour = ac_tmp < 0 ? Math.ceil(ac_tmp) : Math.floor(ac_tmp);
       if (ACInfo.get(player.id).acSet[2] !== -1) {
         if (ACInfo.get(player.id).acSet[2] > 255) {
@@ -593,7 +593,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
           }
           if (ac_sa === PlayerStateEnum.DRIVER) {
             ACVehInfo.get(ac_vehId).acDriver = player.id;
-            ACVehInfo.get(ac_vehId).acZAngle = ac_veh!.getZAngle();
+            ACVehInfo.get(ac_vehId).acZAngle = ac_veh!.getZAngle().angle;
             ACInfo.get(player.id).acGtc[8] = ac_gtc + 1650;
             ACInfo.get(player.id).acSetVehHealth = -1.0;
             ACInfo.get(player.id).acPosX = ACInfo.get(player.id).acLastPosX =
@@ -785,7 +785,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               player.clearAnimations(true);
               return false;
             }
-            const ac_vHealth = ac_veh!.getHealth();
+            const ac_vHealth = ac_veh!.getHealth().health;
             if (ACInfo.get(player.id).acSetVehHealth !== -1.0) {
               if (ACInfo.get(player.id).acSetVehHealth === ac_vHealth) {
                 ACInfo.get(player.id).acSetVehHealth = -1.0;
@@ -972,7 +972,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               }
             }
             const ac_spDiff = ac_vsp - ACVehInfo.get(ac_vehId).acSpeed;
-            const ac_zAngle = ac_veh!.getZAngle();
+            const ac_zAngle = ac_veh!.getZAngle().angle;
             if (ac_gtc - ACInfo.get(player.id).acGtc[8] > ac_gpp) {
               if (ACInfo.get(player.id).acACAllow[10]) {
                 if (ac_spDiff > 220 || ac_vsp > 620) {

@@ -1,5 +1,6 @@
 import { rgba } from "core/utils/colorUtils";
-import type { GangZonePos } from "../interfaces/GangZone";
+import type { IGangZonePos } from "../interfaces/GangZone";
+import { ICommonRetVal } from "core/interfaces";
 
 export const IsValidGangZone = (zoneId: number): boolean => {
   return Boolean(samp.callNative("IsValidGangZone", "i", zoneId));
@@ -49,10 +50,12 @@ export const IsGangZoneFlashingForPlayer = (
   );
 };
 
-export const GangZoneGetPos = (zoneId: number): GangZonePos => {
-  const [fMinX = 0.0, fMinY = 0.0, fMaxX = 0.0, fMaxY = 0.0]: number[] =
+export const GangZoneGetPos = (
+  zoneId: number,
+): IGangZonePos & ICommonRetVal => {
+  const [fMinX = 0.0, fMinY = 0.0, fMaxX = 0.0, fMaxY = 0.0, ret]: number[] =
     samp.callNative("GangZoneGetPos", "iFFFF", zoneId);
-  return { fMinX, fMinY, fMaxX, fMaxY };
+  return { fMinX, fMinY, fMaxX, fMaxY, ret };
 };
 
 export const UseGangZoneCheck = (zoneId: number, toggle: boolean): void => {

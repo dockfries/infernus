@@ -383,8 +383,8 @@ export class TextDraw {
   getString(): string {
     if (this.id === -1) return this.sourceInfo.text;
     const p = this.sourceInfo.player;
-    if (p) return TextDraw.__inject__PlayerTextDrawGetString(p.id, this.id);
-    return TextDraw.__inject__TextDrawGetString(this.id);
+    if (p) return TextDraw.__inject__PlayerTextDrawGetString(p.id, this.id).str;
+    return TextDraw.__inject__TextDrawGetString(this.id).str;
   }
   setPos(fX: number, fY: number) {
     if (this.id === -1) {

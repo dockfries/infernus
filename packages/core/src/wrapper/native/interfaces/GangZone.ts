@@ -1,4 +1,4 @@
-export interface GangZonePos {
+export interface IGangZonePos {
   fMinX: number;
   fMinY: number;
   fMaxX: number;

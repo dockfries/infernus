@@ -288,7 +288,7 @@ export function setHealthBarVisible(player: Player, toggle: boolean) {
 
 export function spawnPlayerInPlace(player: Player) {
   const { x, y, z } = orig_playerMethods.getPos.call(player)!;
-  const r = orig_playerMethods.getFacingAngle.call(player);
+  const r = orig_playerMethods.getFacingAngle.call(player).angle;
 
   orig_playerMethods.setSpawnInfo.call(
     player,

@@ -20,7 +20,6 @@ import {
 } from "../../enums";
 
 import type { IClientResRaw } from "../../interfaces";
-import type { TPos } from "../../types";
 import { isValidAnimateName } from "../../utils/animateUtils";
 import * as h from "../../utils/helperUtils";
 
@@ -190,7 +189,7 @@ export class Player {
   setHealth(health: number) {
     return w.SetPlayerHealth(this.id, health);
   }
-  getHealth(): number {
+  getHealth() {
     return w.GetPlayerHealth(this.id);
   }
   toggleClock(toggle: boolean) {
@@ -232,7 +231,7 @@ export class Player {
   setSkin(skinId: number, ignoreRange = false) {
     if (!ignoreRange && (skinId < 0 || skinId > 311 || skinId === 74))
       return false;
-    if (this.getHealth() <= 0) return false;
+    if (this.getHealth().health <= 0) return false;
     if (this.isInAnyVehicle()) return false;
     if (this.getSpecialAction() === SpecialActionsEnum.DUCK) return false;
     return w.SetPlayerSkin(this.id, skinId);
@@ -261,15 +260,8 @@ export class Player {
   setPos(x: number, y: number, z: number) {
     return w.SetPlayerPos(this.id, x, y, z);
   }
-  getPos(): TPos {
-    // if (
-    //   this.isSpectating() ||
-    //   this.isWasted() ||
-    //   this.getState() === PlayerStateEnum.NONE
-    // )
-    //   return ;
-    const [x, y, z] = w.GetPlayerPos(this.id);
-    return { x, y, z };
+  getPos() {
+    return w.GetPlayerPos(this.id);
   }
   isSpectating(): boolean {
     return this.getState() === PlayerStateEnum.SPECTATING;
@@ -280,8 +272,7 @@ export class Player {
   getState(): PlayerStateEnum {
     return w.GetPlayerState(this.id);
   }
-  getVersion(): string {
-    if (this.isNpc()) return "";
+  getVersion() {
     return w.GetPlayerVersion(this.id);
   }
   setVirtualWorld(worldId: number) {
@@ -305,7 +296,7 @@ export class Player {
   setFacingAngle(ang: number) {
     return w.SetPlayerFacingAngle(this.id, ang);
   }
-  getFacingAngle(): number {
+  getFacingAngle() {
     return w.GetPlayerFacingAngle(this.id);
   }
   setWeather(weather: number) {
@@ -327,8 +318,7 @@ export class Player {
     return w.SetPlayerTime(this.id, hour, minute);
   }
   getTime() {
-    const [hour, minute] = w.GetPlayerTime(this.id);
-    return { hour, minute };
+    return w.GetPlayerTime(this.id);
   }
   removeBuilding(
     modelId: number,
@@ -352,7 +342,7 @@ export class Player {
     }
     return w.SetPlayerSkillLevel(this.id, skill, level);
   }
-  getName(): string {
+  getName() {
     return h.GetPlayerName(this);
   }
   setName(name: string): number {
@@ -361,9 +351,8 @@ export class Player {
   setVelocity(x: number, y: number, z: number) {
     return w.SetPlayerVelocity(this.id, x, y, z);
   }
-  getVelocity(): TPos {
-    const [x, y, z] = w.GetPlayerVelocity(this.id);
-    return { x, y, z };
+  getVelocity() {
+    return w.GetPlayerVelocity(this.id);
   }
   getSpeed(magic = 180.0) {
     if (this.id === -1) return 0.0;
@@ -374,7 +363,7 @@ export class Player {
     const [keys, upDown, leftRight] = w.GetPlayerKeys(this.id);
     return { keys, upDown, leftRight };
   }
-  getIp(): string {
+  getIp() {
     return w.GetPlayerIp(this.id);
   }
   getFightingStyle(): FightingStylesEnum {
@@ -386,7 +375,7 @@ export class Player {
   setArmour(armour: number) {
     return w.SetPlayerArmour(this.id, armour);
   }
-  getArmour(): number {
+  getArmour() {
     return w.GetPlayerArmour(this.id);
   }
   setCameraBehind() {
@@ -406,16 +395,14 @@ export class Player {
   getCameraAspectRatio(): number {
     return w.GetPlayerCameraAspectRatio(this.id);
   }
-  getCameraFrontVector(): TPos {
-    const [x, y, z] = w.GetPlayerCameraFrontVector(this.id);
-    return { x, y, z };
+  getCameraFrontVector() {
+    return w.GetPlayerCameraFrontVector(this.id);
   }
   getCameraMode(): CameraModesEnum {
     return w.GetPlayerCameraMode(this.id);
   }
-  getCameraPos(): TPos {
-    const [x, y, z] = w.GetPlayerCameraPos(this.id);
-    return { x, y, z };
+  getCameraPos() {
+    return w.GetPlayerCameraPos(this.id);
   }
   getCameraTargetPlayer(): Player | undefined {
     const target = w.GetPlayerCameraTargetPlayer(this.id);
@@ -628,19 +615,13 @@ export class Player {
     return Player.getInstances().find((p) => p.id === pid);
   }
   getLastShotVectors() {
-    const [fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ] =
-      w.GetPlayerLastShotVectors(this.id);
-    return { fOriginX, fOriginY, fOriginZ, fHitPosX, fHitPosY, fHitPosZ };
+    return w.GetPlayerLastShotVectors(this.id);
   }
   getWeapon(): WeaponEnum | -1 {
     return w.GetPlayerWeapon(this.id);
   }
   getWeaponData(slot: number) {
-    if (slot < 0 || slot > 12) {
-      throw new Error("[Player]: weapon slots range from 0 to 12");
-    }
-    const [weapons, ammo] = w.GetPlayerWeaponData(this.id, slot);
-    return { weapons, ammo };
+    return w.GetPlayerWeaponData(this.id, slot);
   }
   getWeaponState(): WeaponStatesEnum {
     return w.GetPlayerWeaponState(this.id);
@@ -874,7 +855,7 @@ export class Player {
     return w.GetPlayerRaceCheckpoint(this.id);
   }
   getWorldBounds() {
-    w.GetPlayerWorldBounds(this.id);
+    return w.GetPlayerWorldBounds(this.id);
   }
   isInModShop(): boolean {
     return w.IsPlayerInModShop(this.id);

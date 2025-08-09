@@ -57,7 +57,7 @@ function vehicleSelect(player: Player) {
     const { z } = player.getPos();
 
     const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
-    const angle = player.getFacingAngle();
+    const angle = player.getFacingAngle().angle;
 
     const vehId = curPlayerVehI.get(player)!;
     let veh = Vehicle.getInstance(vehId)!;
@@ -109,7 +109,7 @@ function vehicleSelect(player: Player) {
     const { z } = player.getPos();
 
     const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
-    const angle = player.getFacingAngle();
+    const angle = player.getFacingAngle().angle;
 
     const vehId = curPlayerVehI.get(player)!;
     let veh = Vehicle.getInstance(vehId)!;
@@ -193,7 +193,7 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
       }
       const { z } = player.getPos();
       const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
-      const a = player.getFacingAngle();
+      const a = player.getFacingAngle().angle;
       curPlayerVehM.set(player, idx);
       const veh = new Vehicle({
         modelId: idx,
@@ -242,7 +242,7 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
     y = frontXY.y;
     player.setCameraLookAt(x, y, z, CameraCutStylesEnum.CUT);
     player.toggleControllable(false);
-    const a = player.getFacingAngle();
+    const a = player.getFacingAngle().angle;
 
     const idx = curPlayerVehM.get(player)!;
 

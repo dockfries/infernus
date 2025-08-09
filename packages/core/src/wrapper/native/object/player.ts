@@ -6,6 +6,7 @@ import type {
   IObjectPos,
   IObjectRotPos,
 } from "../interfaces/Object";
+import { ICommonRetVal } from "core/interfaces";
 
 export const GetPlayerObjectDrawDistance = (
   playerId: number,
@@ -48,63 +49,62 @@ export const GetPlayerObjectMoveSpeed = (
 export const GetPlayerObjectTarget = (
   playerId: number,
   objectId: number,
-): IObjectPos => {
-  const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
-    "GetPlayerObjectTarget",
-    "iiFFF",
-    playerId,
-    objectId,
-  );
-  return { fX, fY, fZ };
+): IObjectPos & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
+    samp.callNative("GetPlayerObjectTarget", "iiFFF", playerId, objectId);
+  return { fX, fY, fZ, ret };
 };
 
 export const GetPlayerObjectMovingTargetPos = (
   playerId: number,
   objectId: number,
-): IObjectPos => {
-  const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
-    "GetPlayerObjectMovingTargetPos",
-    "iiFFF",
-    playerId,
-    objectId,
-  );
-  return { fX, fY, fZ };
+): IObjectPos & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
+    samp.callNative(
+      "GetPlayerObjectMovingTargetPos",
+      "iiFFF",
+      playerId,
+      objectId,
+    );
+  return { fX, fY, fZ, ret };
 };
 
 export const GetPlayerObjectMovingTargetRot = (
   playerId: number,
   objectId: number,
-): IObjectPos => {
-  const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
-    "GetPlayerObjectMovingTargetRot",
-    "iiFFF",
-    playerId,
-    objectId,
-  );
-  return { fX, fY, fZ };
+): IObjectPos & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
+    samp.callNative(
+      "GetPlayerObjectMovingTargetRot",
+      "iiFFF",
+      playerId,
+      objectId,
+    );
+  return { fX, fY, fZ, ret };
 };
 
 export const GetPlayerObjectAttachedData = (
   playerId: number,
   objectId: number,
-): IAttachedData => {
+): IAttachedData & ICommonRetVal => {
   const [
     attachedVehicleId = 0,
     attachedObjectId = 0,
     attachedPlayerId = 0,
-  ]: number[] = samp.callNative(
+    ret,
+  ]: [number, number, number, number] = samp.callNative(
     "GetPlayerObjectAttachedData",
     "iiIII",
     playerId,
     objectId,
   );
-  return { attachedVehicleId, attachedObjectId, attachedPlayerId };
+  return { attachedVehicleId, attachedObjectId, attachedPlayerId, ret };
 };
 
 export const GetPlayerObjectAttachedOffset = (
   playerId: number,
   objectId: number,
-): IObjectRotPos => {
+): IObjectRotPos & ICommonRetVal => {
   const [
     fX = 0.0,
     fY = 0.0,
@@ -112,13 +112,14 @@ export const GetPlayerObjectAttachedOffset = (
     fRotX = 0.0,
     fRotY = 0.0,
     fRotZ = 0.0,
+    ret,
   ]: number[] = samp.callNative(
     "GetPlayerObjectAttachedOffset",
     "iiFFFFFF",
     playerId,
     objectId,
   );
-  return { fX, fY, fZ, fRotX, fRotY, fRotZ };
+  return { fX, fY, fZ, fRotX, fRotY, fRotZ, ret };
 };
 
 export const GetPlayerObjectSyncRotation = (
@@ -154,11 +155,12 @@ export const GetPlayerObjectMaterial = (
   playerId: number,
   objectId: number,
   materialIndex: number,
-): IMaterial => {
-  const [modelId = 0, txdName, textureName, materialColor = 0]: [
+): IMaterial & ICommonRetVal => {
+  const [modelId = 0, txdName, textureName, materialColor = 0, ret]: [
     number,
     string,
     string,
+    number,
     number,
   ] = samp.callNative(
     "GetPlayerObjectMaterial",
@@ -169,14 +171,14 @@ export const GetPlayerObjectMaterial = (
     64,
     64,
   );
-  return { modelId, txdName, textureName, materialColor };
+  return { modelId, txdName, textureName, materialColor, ret };
 };
 
 export const GetPlayerObjectMaterialText = (
   playerId: number,
   objectId: number,
   materialIndex: number,
-): IMaterialText => {
+): IMaterialText & ICommonRetVal => {
   const [
     text,
     materialSize = 0,
@@ -186,7 +188,8 @@ export const GetPlayerObjectMaterialText = (
     fontColor = 0,
     backColor = 0,
     textAlignment = 0,
-  ]: [string, number, string, number, number, number, number, number] =
+    ret,
+  ]: [string, number, string, number, number, number, number, number, number] =
     samp.callNative(
       "GetPlayerObjectMaterialText",
       "iiiSiISiIIIII",
@@ -206,6 +209,7 @@ export const GetPlayerObjectMaterialText = (
     fontColor,
     backColor,
     textAlignment,
+    ret,
   };
 };
 
@@ -305,11 +309,14 @@ export const SetPlayerObjectPos = (
   );
 };
 
-export const GetPlayerObjectPos = (
-  playerId: number,
-  objectId: number,
-): Array<number> => {
-  return samp.callNative("GetPlayerObjectPos", "iiFFF", playerId, objectId);
+export const GetPlayerObjectPos = (playerId: number, objectId: number) => {
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
+    "GetPlayerObjectPos",
+    "iiFFF",
+    playerId,
+    objectId,
+  );
+  return { x, y, z, ret };
 };
 
 export const SetPlayerObjectRot = (
@@ -330,11 +337,14 @@ export const SetPlayerObjectRot = (
   );
 };
 
-export const GetPlayerObjectRot = (
-  playerId: number,
-  objectId: number,
-): Array<number> => {
-  return samp.callNative("GetPlayerObjectRot", "iiFFF", playerId, objectId);
+export const GetPlayerObjectRot = (playerId: number, objectId: number) => {
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
+    "GetPlayerObjectRot",
+    "iiFFF",
+    playerId,
+    objectId,
+  );
+  return { x, y, z, ret };
 };
 
 export const GetPlayerObjectModel = (

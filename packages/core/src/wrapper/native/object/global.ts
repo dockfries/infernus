@@ -8,6 +8,7 @@ import type {
   IObjectRotPos,
 } from "../interfaces/Object";
 import type { BoneIdsEnum } from "core/enums/player";
+import { ICommonRetVal } from "core/interfaces";
 
 export const GetObjectDrawDistance = (objectId: number): number => {
   return samp.callNativeFloat("GetObjectDrawDistance", "i", objectId);
@@ -17,22 +18,20 @@ export const GetObjectMoveSpeed = (objectId: number): number => {
   return samp.callNativeFloat("GetObjectMoveSpeed", "i", objectId);
 };
 
-export const GetObjectMovingTargetPos = (objectId: number): IObjectPos => {
-  const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
-    "GetObjectMovingTargetPos",
-    "i",
-    objectId,
-  );
-  return { fX, fY, fZ };
+export const GetObjectMovingTargetPos = (
+  objectId: number,
+): IObjectPos & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
+    samp.callNative("GetObjectMovingTargetPos", "iFFF", objectId);
+  return { fX, fY, fZ, ret };
 };
 
-export const GetObjectMovingTargetRot = (objectId: number): IObjectPos => {
-  const [fX = 0.0, fY = 0.0, fZ = 0.0]: number[] = samp.callNative(
-    "GetObjectMovingTargetRot",
-    "i",
-    objectId,
-  );
-  return { fX, fY, fZ };
+export const GetObjectMovingTargetRot = (
+  objectId: number,
+): IObjectPos & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
+    samp.callNative("GetObjectMovingTargetRot", "iFFF", objectId);
+  return { fX, fY, fZ, ret };
 };
 
 export const GetObjectAttachedData = (objectId: number): IAttachedData => {
@@ -73,11 +72,12 @@ export const IsObjectMaterialSlotUsed = (
 export const GetObjectMaterial = (
   objectId: number,
   materialIndex: number,
-): IMaterial => {
-  const [modelId = 0, txdName, textureName, materialColor = 0]: [
+): IMaterial & ICommonRetVal => {
+  const [modelId = 0, txdName, textureName, materialColor = 0, ret]: [
     number,
     string,
     string,
+    number,
     number,
   ] = samp.callNative(
     "GetObjectMaterial",
@@ -87,13 +87,13 @@ export const GetObjectMaterial = (
     64,
     64,
   );
-  return { modelId, txdName, textureName, materialColor };
+  return { modelId, txdName, textureName, materialColor, ret };
 };
 
 export const GetObjectMaterialText = (
   objectId: number,
   materialIndex: number,
-): IMaterialText => {
+): IMaterialText & ICommonRetVal => {
   const [
     text,
     materialSize = 0,
@@ -103,7 +103,8 @@ export const GetObjectMaterialText = (
     fontColor = 0,
     backColor = 0,
     textAlignment = 0,
-  ]: [string, number, string, number, number, number, number, number] =
+    ret,
+  ]: [string, number, string, number, number, number, number, number, number] =
     samp.callNative(
       "GetObjectMaterialText",
       "iiSiISiIIIII",
@@ -121,6 +122,7 @@ export const GetObjectMaterialText = (
     fontColor,
     backColor,
     textAlignment,
+    ret,
   };
 };
 
@@ -239,8 +241,13 @@ export const SetObjectPos = (
   return samp.callNative("SetObjectPos", "ifff", objectId, X, Y, Z);
 };
 
-export const GetObjectPos = (objectId: number): Array<number> => {
-  return samp.callNative("GetObjectPos", "iFFF", objectId);
+export const GetObjectPos = (objectId: number) => {
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
+    "GetObjectPos",
+    "iFFF",
+    objectId,
+  );
+  return { x, y, z, ret };
 };
 
 export const SetObjectRot = (
@@ -252,8 +259,13 @@ export const SetObjectRot = (
   return samp.callNative("SetObjectRot", "ifff", objectId, rotX, rotY, rotZ);
 };
 
-export const GetObjectRot = (objectId: number): Array<number> => {
-  return samp.callNative("GetObjectRot", "iFFF", objectId);
+export const GetObjectRot = (objectId: number) => {
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
+    "GetObjectRot",
+    "iFFF",
+    objectId,
+  );
+  return { x, y, z, ret };
 };
 
 export const GetObjectModel = (objectId: number): number => {
@@ -417,20 +429,30 @@ export const RedirectDownload = (playerId: number, url: string): number => {
   return samp.callNative("RedirectDownload", "is", playerId, url);
 };
 
-export const FindModelFileNameFromCRC = (crc: number): string => {
-  const [name] = samp.callNative("FindModelFileNameFromCRC", "iSi", crc, 255);
-  return name;
+export const FindModelFileNameFromCRC = (crc: number) => {
+  const [name, ret] = samp.callNative(
+    "FindModelFileNameFromCRC",
+    "iSi",
+    crc,
+    255,
+  ) as [string, number];
+  return { name, ret };
 };
 
-export const FindTextureFileNameFromCRC = (crc: number): string => {
-  const [name] = samp.callNative("FindTextureFileNameFromCRC", "iSi", crc, 255);
-  return name;
+export const FindTextureFileNameFromCRC = (crc: number) => {
+  const [name, ret] = samp.callNative(
+    "FindTextureFileNameFromCRC",
+    "iSi",
+    crc,
+    255,
+  ) as [string, number];
+  return { name, ret };
 };
 
 export const GetPlayerAttachedObject = (
   playerId: number,
   index: number,
-): IAttachedObject => {
+): IAttachedObject & ICommonRetVal => {
   const [
     modelId = 0,
     bone = 0,
@@ -445,6 +467,7 @@ export const GetPlayerAttachedObject = (
     fScaleZ = 0.0,
     materialColor1 = 0,
     materialColor2 = 0,
+    ret,
   ]: number[] = samp.callNative(
     "GetPlayerAttachedObject",
     "iiIIFFFFFFFFFII",
@@ -465,6 +488,7 @@ export const GetPlayerAttachedObject = (
     fScaleZ,
     materialColor1,
     materialColor2,
+    ret,
   };
 };
 
@@ -528,12 +552,12 @@ export const IsValidCustomModel = (modelId: number): boolean => {
 
 export const GetCustomModePath = (modelId: number) => {
   if (!IsValidCustomModel(modelId)) return null;
-  const [dffPath, txdPath] = samp.callNative(
+  const [dffPath, txdPath, ret]: [string, string, number] = samp.callNative(
     "GetCustomModePath",
     "iSiSi",
     modelId,
     255,
     255,
   );
-  return { dffPath, txdPath };
+  return { dffPath, txdPath, ret };
 };

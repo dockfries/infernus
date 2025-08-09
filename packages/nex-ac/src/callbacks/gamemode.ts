@@ -55,7 +55,7 @@ GameMode.onInit(({ next }) => {
     "game.lag_compensation_mode",
   );
   if (innerACConfig.AC_USE_NPC) {
-    const ac_strTmp = GameMode.getConsoleVarAsString("network.bind");
+    const ac_strTmp = GameMode.getConsoleVarAsString("network.bind").consoleVar;
     innerGameModeConfig.ac_BindAddr = ac_IpToInt(ac_strTmp);
   }
   console.log(" ");

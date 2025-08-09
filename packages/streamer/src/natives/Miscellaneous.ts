@@ -7,8 +7,8 @@ export const Streamer_GetDistanceToItem = (
   type: StreamerItemTypes,
   id: number,
   dimensions: 2 | 3 = 3,
-): number => {
-  const [distance] = samp.callNative(
+) => {
+  const [distance, ret] = samp.callNative(
     "Streamer_GetDistanceToItem",
     "fffiiFi",
     x,
@@ -17,8 +17,8 @@ export const Streamer_GetDistanceToItem = (
     type,
     id,
     dimensions,
-  ) as [number];
-  return distance;
+  ) as [number, number];
+  return { distance, ret };
 };
 
 export const Streamer_ToggleItem = (
@@ -183,13 +183,13 @@ export const Streamer_GetAllVisibleItems = (
 };
 
 export const Streamer_GetItemPos = (type: StreamerItemTypes, id: number) => {
-  const [x, y, z]: number[] = samp.callNative(
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
     "Streamer_GetItemPos",
     "iiFFF",
     type,
     id,
   );
-  return { x, y, z };
+  return { x, y, z, ret };
 };
 
 export const Streamer_SetItemPos = (
@@ -203,13 +203,13 @@ export const Streamer_SetItemPos = (
 };
 
 export const Streamer_GetItemOffset = (type: StreamerItemTypes, id: number) => {
-  const [x, y, z]: number[] = samp.callNative(
+  const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
     "Streamer_GetItemOffset",
     "iiFFF",
     type,
     id,
   );
-  return { x, y, z };
+  return { x, y, z, ret };
 };
 
 export const Streamer_SetItemOffset = (

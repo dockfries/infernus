@@ -148,8 +148,14 @@ export function scriptInit() {
 
     const state = orig_playerMethods.getState.call(player);
     if (state >= PlayerStateEnum.ONFOOT && state <= PlayerStateEnum.PASSENGER) {
-      playerHealth.set(player.id, orig_playerMethods.getHealth.call(player));
-      playerArmour.set(player.id, orig_playerMethods.getArmour.call(player));
+      playerHealth.set(
+        player.id,
+        orig_playerMethods.getHealth.call(player).health,
+      );
+      playerArmour.set(
+        player.id,
+        orig_playerMethods.getArmour.call(player).armour,
+      );
 
       if (playerHealth.get(player.id) === 0.0) {
         playerHealth.set(player.id, playerMaxHealth.get(player.id));

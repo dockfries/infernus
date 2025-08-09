@@ -189,7 +189,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
 
       let forceSync = 2;
 
-      const a = orig_playerMethods.getFacingAngle.call(editable.player);
+      const a = orig_playerMethods.getFacingAngle.call(editable.player).angle;
       orig_playerMethods.setFacingAngle.call(editable.issuerId, a);
 
       orig_playerMethods.setVelocity.call(editable.player, 0.0, 0.0, 0.0);

@@ -28,7 +28,7 @@ PlayerEvent.onConnect(({ player, next }) => {
     ACInfo.get(player.id).acKickVeh =
     ACInfo.get(player.id).acKicked =
       0;
-  ACInfo.get(player.id).acIp = player.getIp();
+  ACInfo.get(player.id).acIp = player.getIp().ip;
   ACInfo.get(player.id).acIpInt = ac_IpToInt(ACInfo.get(player.id).acIp);
   if (innerACConfig.AC_USE_NPC) {
     if (ac_ACAllow[36] && player.isNpc()) {
@@ -53,7 +53,7 @@ PlayerEvent.onConnect(({ player, next }) => {
   }
 
   if (ac_ACAllow[41] && !player.isNpc()) {
-    const ac_ver = player.getVersion();
+    const ac_ver = player.getVersion().version;
     if (!ac_ver.includes(innerACConfig.AC_CLIENT_VERSION)) {
       if (innerACConfig.DEBUG) {
         console.log($t("DEBUG_CODE_2", [player.id, ac_ver]));

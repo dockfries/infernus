@@ -1,4 +1,5 @@
-import type { GangZonePos } from "../interfaces/GangZone";
+import { ICommonRetVal } from "core/interfaces";
+import type { IGangZonePos } from "../interfaces/GangZone";
 
 export const CreatePlayerGangZone = (
   playerId: number,
@@ -108,10 +109,15 @@ export const IsPlayerGangZoneFlashing = (
 export const PlayerGangZoneGetPos = (
   playerId: number,
   zoneId: number,
-): GangZonePos => {
-  const [fMinX = 0.0, fMinY = 0.0, fMaxX = 0.0, fMaxY = 0.0]: number[] =
-    samp.callNative("PlayerGangZoneGetPos", "iiFFFF", playerId, zoneId);
-  return { fMinX, fMinY, fMaxX, fMaxY };
+): IGangZonePos & ICommonRetVal => {
+  const [fMinX = 0.0, fMinY = 0.0, fMaxX = 0.0, fMaxY = 0.0, ret]: [
+    number,
+    number,
+    number,
+    number,
+    number,
+  ] = samp.callNative("PlayerGangZoneGetPos", "iiFFFF", playerId, zoneId);
+  return { fMinX, fMinY, fMaxX, fMaxY, ret };
 };
 
 export const UsePlayerGangZoneCheck = (

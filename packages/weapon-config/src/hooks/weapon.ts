@@ -12,9 +12,9 @@ export function setWeaponName(weaponId: WC_WeaponEnum, name: string) {
 
 export const wc_GetWeaponName = function (weaponId: number) {
   if (weaponId < WC_WeaponEnum.UNARMED || weaponId >= g_WeaponName.length) {
-    return `Weapon ${weaponId}`;
+    return { name: `Weapon ${weaponId}`, ret: 1 };
   }
-  return g_WeaponName[weaponId];
+  return { name: g_WeaponName[weaponId], ret: 1 };
 };
 
 GameMode.getWeaponName = wc_GetWeaponName;

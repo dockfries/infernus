@@ -64,7 +64,7 @@ export class FCNPCMovePath {
     );
   }
   getPoint(pointId: number) {
-    const [x, y, z]: [number, number, number] = samp.callNative(
+    const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
       "FCNPC_GetMovePathPoint",
       "iiFFF",
       this.id,
@@ -73,7 +73,7 @@ export class FCNPCMovePath {
       0,
       0,
     );
-    return { x, y, z };
+    return { x, y, z, ret };
   }
   getNumberOfPoints(): number {
     return samp.callNative("FCNPC_GetNumberMovePathPoint", "i", this.id);

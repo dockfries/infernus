@@ -57,13 +57,13 @@ export const EnableAllAnimations = (enable: boolean) => {
 };
 
 export const GetConsoleVarAsByteArray = (varname: string) => {
-  const [buf] = samp.callNative(
+  const [consoleVarBuf, ret]: [number[], number] = samp.callNative(
     "GetConsoleVarAsString",
     "sAi",
     varname,
     64,
-  ) as [number[]];
-  return buf;
+  );
+  return { consoleVarBuf, ret };
 };
 
 export const GetConsoleVarAsInt = (varname: string): number => {
@@ -208,8 +208,12 @@ export const GetServerTickRate = (): number => {
   return samp.callNative("GetServerTickRate", "");
 };
 
-export const GetAnimationName = (index: number): Array<string> => {
-  return samp.callNative("GetAnimationName", "iSiSi", index, 32, 32);
+export const GetAnimationName = (index: number) => {
+  return samp.callNative("GetAnimationName", "iSiSi", index, 32, 32) as [
+    string,
+    string,
+    number,
+  ];
 };
 
 export const EnableStuntBonusForAll = (enable: boolean): boolean => {
@@ -228,7 +232,10 @@ export const GetWeaponSlot = (weaponId: number): number => {
   return samp.callNative("GetWeaponSlot", "i", weaponId);
 };
 
-export const GetWeaponName = (weaponId: number): string => {
-  const [name] = samp.callNative("GetWeaponName", "iSi", weaponId, 32);
-  return name;
+export const GetWeaponName = (weaponId: number) => {
+  const [name, ret] = samp.callNative("GetWeaponName", "iSi", weaponId, 32) as [
+    string,
+    number,
+  ];
+  return { name, ret };
 };

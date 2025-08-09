@@ -24,8 +24,8 @@ export const GlNpcs: IGlNpcsFS = {
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
       if (!player.isNpc()) return next();
-      const ip_addr_npc = GameMode.getConsoleVarAsString("bind");
-      let ip_addr_server = player.getIp();
+      const ip_addr_npc = GameMode.getConsoleVarAsString("bind").consoleVar;
+      let ip_addr_server = player.getIp().ip;
 
       if (!ip_addr_server) {
         ip_addr_server = "127.0.0.1";
@@ -48,7 +48,7 @@ export const GlNpcs: IGlNpcsFS = {
     const onRequestClass = PlayerEvent.onRequestClass(({ player, next }) => {
       if (!player.isNpc()) return next(); // We only deal with NPC players in this script
 
-      const playerName = player.getName();
+      const playerName = player.getName().name;
 
       if (playerName in spawnInfo) {
         const [team, skin, x, y, z, rotation] =
@@ -75,7 +75,7 @@ export const GlNpcs: IGlNpcsFS = {
     const onSpawn = PlayerEvent.onSpawn(({ player, next }) => {
       if (!player.isNpc()) return next(); // We only deal with NPC players in this script
 
-      const playerName = player.getName();
+      const playerName = player.getName().name;
 
       if (playerName in vehiclePutId) {
         const veh = Vehicle.getInstance(

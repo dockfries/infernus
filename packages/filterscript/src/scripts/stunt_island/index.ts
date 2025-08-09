@@ -99,7 +99,7 @@ function siAutoFix() {
       if (p.getState() === PlayerStateEnum.DRIVER) {
         // Get vehicle health
         const veh = p.getVehicle()!;
-        const curVehicleHealth = veh.getHealth();
+        const curVehicleHealth = veh.getHealth().health;
 
         // Check if the vehicles health is less than 990... if so repair the vehicle
         // (repairs bodywork and sets vehicle health to 1000)
@@ -235,7 +235,7 @@ export const StuntIsland: IStuntIsLandFS = {
           const totalLapTime = Date.now() - siPlayerStartTime.get(player)!;
 
           // Get player name and store
-          const playerName = player.getName();
+          const playerName = player.getName().name;
 
           // Create variable
           let strTempString = "";
@@ -494,7 +494,7 @@ export const StuntIsland: IStuntIsLandFS = {
 
         // Get Vehicle Pos
         const { x, y, z } = veh.getPos();
-        const a = veh.getZAngle();
+        const a = veh.getZAngle().angle;
 
         // Flip the vehicle
         veh.setPos(x, y, z + 2);

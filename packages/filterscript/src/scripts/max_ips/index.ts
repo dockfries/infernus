@@ -11,7 +11,7 @@ import type { IMaxIpsFS } from "./interfaces";
 
 function getNumberOfPlayersOnThisIP(testIp: string) {
   return Player.getInstances().filter((p) => {
-    return p.getIp() === testIp;
+    return p.getIp().ip === testIp;
   }).length;
 }
 
@@ -22,7 +22,7 @@ export const MaxIps: IMaxIpsFS = {
       options && options.maxConnections ? options.maxConnections : 3;
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
-      const connecting_ip = player.getIp();
+      const connecting_ip = player.getIp().ip;
       const num_players_on_ip = getNumberOfPlayersOnThisIP(connecting_ip);
       if (num_players_on_ip > maxConnections) {
         console.log(

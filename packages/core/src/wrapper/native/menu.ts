@@ -15,40 +15,33 @@ export const GetMenuItems = (menuId: number, column: number): number => {
 };
 
 export const GetMenuPos = (menuId: number) => {
-  const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
+  const [fX = 0.0, fY = 0.0, ret]: [number, number, number] = samp.callNative(
     "GetMenuPos",
     "iFF",
     menuId,
   );
-  return { fX, fY };
+  return { fX, fY, ret };
 };
 
 export const GetMenuColumnWidth = (menuId: number) => {
-  const [fColumn1 = 0.0, fColumn2 = 0.0]: number[] = samp.callNative(
-    "GetMenuColumnWidth",
-    "iFF",
-    menuId,
-  );
-  return { fColumn1, fColumn2 };
+  const [fColumn1 = 0.0, fColumn2 = 0.0, ret]: [number, number, number] =
+    samp.callNative("GetMenuColumnWidth", "iFF", menuId);
+  return { fColumn1, fColumn2, ret };
 };
 
-export const GetMenuColumnHeader = (menuId: number, column: number): string => {
-  const [header] = samp.callNative(
+export const GetMenuColumnHeader = (menuId: number, column: number) => {
+  const [header, ret]: [string, number] = samp.callNative(
     "GetMenuColumnHeader",
     "iiSi",
     menuId,
     column,
     31,
   );
-  return header;
+  return { header, ret };
 };
 
-export const GetMenuItem = (
-  menuId: number,
-  column: number,
-  itemId: number,
-): string => {
-  const [item] = samp.callNative(
+export const GetMenuItem = (menuId: number, column: number, itemId: number) => {
+  const [item, ret]: [string, number] = samp.callNative(
     "GetMenuItem",
     "iiiSi",
     menuId,
@@ -56,7 +49,7 @@ export const GetMenuItem = (
     itemId,
     31,
   );
-  return item;
+  return { item, ret };
 };
 
 export const CreateMenu = (

@@ -256,13 +256,7 @@ export class DynamicArea {
       throw new Error("[StreamerArea]: Unable to get type before create");
     return s.GetDynamicAreaType(this.id);
   }
-  getPolygonPoints(): number[] {
-    if (this.id !== -1)
-      throw new Error(
-        "[StreamerArea]: Unable to getPolygonPoints before create",
-      );
-    if (this.type !== "polygon")
-      throw new Error("[StreamerArea]: getPolygonPoints invalid area type");
+  getPolygonPoints() {
     return s.GetDynamicPolygonPoints(this.id);
   }
   getPolygonNumberPoints(): number {
@@ -292,7 +286,7 @@ export class DynamicArea {
   }
   static getPlayerAreas(player: Player): Array<DynamicArea | undefined> {
     if (!DynamicArea.getPlayerAreasNumber(player)) return [];
-    const ids = s.GetPlayerDynamicAreas(player.id);
+    const ids = s.GetPlayerDynamicAreas(player.id).areas;
     return ids.map((a) => dynamicAreasPool.get(a));
   }
   static getPlayerAreasNumber(player: Player) {
@@ -328,7 +322,7 @@ export class DynamicArea {
   }
   static getForPoint(x: number, y: number, z: number) {
     if (!DynamicArea.getNumberForPoint(x, y, z)) return [];
-    const ids = s.GetDynamicAreasForPoint(x, y, z);
+    const ids = s.GetDynamicAreasForPoint(x, y, z).areas;
 
     return ids.map((a) => DynamicArea.getInstance(a)!);
   }
@@ -344,7 +338,7 @@ export class DynamicArea {
     z2: number,
   ) {
     if (!DynamicArea.getNumberForLine(x1, y1, z1, x2, y2, z2)) return [];
-    const ids = s.GetDynamicAreasForLine(x1, y1, z1, x2, y2, z2);
+    const ids = s.GetDynamicAreasForLine(x1, y1, z1, x2, y2, z2).areas;
 
     return ids.map((a) => dynamicAreasPool.get(a)!);
   }

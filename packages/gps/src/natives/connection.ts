@@ -6,74 +6,74 @@ import { MapNode } from "./node";
 export class GpsConnection {
   constructor(public connectionId = INVALID_CONNECTION_ID) {}
   create(source: MapNode, target: MapNode): this {
-    const [connectionId, retVal]: number[] = samp.callNative(
+    const [connectionId, ret]: number[] = samp.callNative(
       "CreateConnection",
       "iiI",
       source.nodeId,
       target.nodeId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     this.connectionId = connectionId;
     return this;
   }
 
   destroy(): this {
-    const retVal = samp.callNative("DestroyConnection", "i", this.connectionId);
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    const ret = samp.callNative("DestroyConnection", "i", this.connectionId);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     this.connectionId = INVALID_CONNECTION_ID;
     return this;
   }
 
   getSource(): MapNode {
-    const [nodeId, retVal]: number[] = samp.callNative(
+    const [nodeId, ret]: number[] = samp.callNative(
       "GetConnectionSource",
       "iI",
       this.connectionId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return new MapNode(nodeId);
   }
 
   getTarget(): MapNode {
-    const [nodeId, retVal]: number[] = samp.callNative(
+    const [nodeId, ret]: number[] = samp.callNative(
       "GetConnectionTarget",
       "iI",
       this.connectionId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return new MapNode(nodeId);
   }
 
   static getMapNode(node: MapNode, index: number): GpsConnection {
-    const [connectionId, retVal]: number[] = samp.callNative(
+    const [connectionId, ret]: number[] = samp.callNative(
       "GetMapNodeConnection",
       "iiI",
       node.nodeId,
       index,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return new GpsConnection(connectionId);
   }
 
   static getBetweenMapNodes(node: MapNode, target: MapNode): GpsConnection {
-    const [connectionId, retVal]: number[] = samp.callNative(
+    const [connectionId, ret]: number[] = samp.callNative(
       "GetConnectionBetweenMapNodes",
       "iiI",
       node.nodeId,
       target.nodeId,
     );
-    if (retVal !== GpsError.None) {
-      throw new GpsException(retVal);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
     }
     return new GpsConnection(connectionId);
   }

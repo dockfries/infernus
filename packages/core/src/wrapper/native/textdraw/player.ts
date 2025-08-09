@@ -1,6 +1,7 @@
 import { rgba } from "core/utils/colorUtils";
 import type { ITextDrawCommonSize, ITextDrawRot } from "../interfaces/TextDraw";
 import type { TextDrawAlignEnum } from "core/enums";
+import { ICommonRetVal } from "core/interfaces";
 
 export const IsValidPlayerTextDraw = (
   playerId: number,
@@ -21,15 +22,15 @@ export const IsPlayerTextDrawVisible = (
 export const PlayerTextDrawGetString = (
   playerId: number,
   textDrawId: number,
-): string => {
-  const [str] = samp.callNative(
+) => {
+  const [str, ret] = samp.callNative(
     "PlayerTextDrawGetString",
     "iiSi",
     playerId,
     textDrawId,
     1024,
-  ) as [string];
-  return str;
+  ) as [string, number];
+  return { str, ret };
 };
 
 export const PlayerTextDrawSetPos = (
@@ -44,40 +45,40 @@ export const PlayerTextDrawSetPos = (
 export const PlayerTextDrawGetLetterSize = (
   playerId: number,
   textDrawId: number,
-): ITextDrawCommonSize => {
-  const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
+): ITextDrawCommonSize & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, ret]: number[] = samp.callNative(
     "PlayerTextDrawGetLetterSize",
     "iiFF",
     playerId,
     textDrawId,
   );
-  return { fX, fY };
+  return { fX, fY, ret };
 };
 
 export const PlayerTextDrawGetTextSize = (
   playerId: number,
   textDrawId: number,
-): ITextDrawCommonSize => {
-  const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
+): ITextDrawCommonSize & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, ret]: number[] = samp.callNative(
     "PlayerTextDrawGetTextSize",
     "iiFF",
     playerId,
     textDrawId,
   );
-  return { fX, fY };
+  return { fX, fY, ret };
 };
 
 export const PlayerTextDrawGetPos = (
   playerId: number,
   textDrawId: number,
-): ITextDrawCommonSize => {
-  const [fX = 0.0, fY = 0.0]: number[] = samp.callNative(
+): ITextDrawCommonSize & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, ret]: number[] = samp.callNative(
     "PlayerTextDrawGetPos",
     "iiFF",
     playerId,
     textDrawId,
   );
-  return { fX, fY };
+  return { fX, fY, ret };
 };
 
 export const PlayerTextDrawGetColor = (
@@ -206,13 +207,13 @@ export const PlayerTextDrawGetPreviewVehicleColors = (
   playerId: number,
   textDrawId: number,
 ) => {
-  const [color1, color2]: number[] = samp.callNative(
+  const [color1, color2, ret]: number[] = samp.callNative(
     "PlayerTextDrawGetPreviewVehCol",
     "iiII",
     playerId,
     textDrawId,
   );
-  return { color1, color2 };
+  return { color1, color2, ret };
 };
 
 export const CreatePlayerTextDraw = (

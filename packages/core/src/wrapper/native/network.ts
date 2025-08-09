@@ -35,9 +35,14 @@ export const NetStats_ConnectionStatus = (
   return samp.callNative("NetStats_ConnectionStatus", "i", playerId);
 };
 
-export const NetStats_GetIpPort = (playerId: number): string => {
-  const [ipp] = samp.callNative("NetStats_GetIpPort", "iSi", playerId, 128 + 6);
-  return ipp;
+export const NetStats_GetIpPort = (playerId: number) => {
+  const [ipPort, ret] = samp.callNative(
+    "NetStats_GetIpPort",
+    "iSi",
+    playerId,
+    128 + 6,
+  ) as [string, number];
+  return { ipPort, ret };
 };
 
 export const IsPlayerAdmin = (playerId: number): boolean => {
@@ -56,18 +61,23 @@ export const Ban = (playerId: number): boolean => {
   return !!samp.callNative("Ban", "i", playerId);
 };
 
-export const GetPlayerNetworkStats = (playerId: number): string => {
-  const [stats] = samp.callNative(
+export const GetPlayerNetworkStats = (playerId: number) => {
+  const [stats, ret] = samp.callNative(
     "GetPlayerNetworkStats",
     "iSi",
     playerId,
     1024,
-  );
-  return stats;
+  ) as [string, number];
+  return { stats, ret };
 };
 
-export const GetNetworkStats = (): string => {
-  return samp.callNative("GetNetworkStats", "Si", 1024);
+export const GetNetworkStats = () => {
+  const [stats, ret]: [string, number] = samp.callNative(
+    "GetNetworkStats",
+    "Si",
+    1024,
+  );
+  return { stats, ret };
 };
 
 export const BlockIpAddress = (ipAddress: string, timeMs: number): number => {
@@ -78,9 +88,17 @@ export const UnBlockIpAddress = (ipAddress: string): number => {
   return samp.callNative("UnBlockIpAddress", "s", ipAddress);
 };
 
-export const gpci = (playerId: number, charset: string): string => {
-  const [ret] = samp.callNative("gpci", "iAi", playerId, 41);
-  return I18n.decodeFromBuf(I18n.getValidStr(ret), charset);
+export const gpci = (playerId: number, charset: string) => {
+  const [val, ret]: [number[], number] = samp.callNative(
+    "gpci",
+    "iAi",
+    playerId,
+    41,
+  );
+  return {
+    val: I18n.decodeFromBuf(I18n.getValidStr(val), charset),
+    ret,
+  };
 };
 
 export const SendClientCheck = (
@@ -113,12 +131,20 @@ export const GetPlayerRawIp = (playerId: number): string => {
   return samp.callNative("GetPlayerRawIp", "i", playerId);
 };
 
-export const GetPlayerIp = (playerId: number): string => {
-  const [ip] = samp.callNative("GetPlayerIp", "iSi", playerId, 128);
-  return ip;
+export const GetPlayerIp = (playerId: number) => {
+  const [ip, ret] = samp.callNative("GetPlayerIp", "iSi", playerId, 128) as [
+    string,
+    number,
+  ];
+  return { ip, ret };
 };
 
-export const GetPlayerVersion = (playerId: number): string => {
-  const [version] = samp.callNative("GetPlayerVersion", "iSi", playerId, 24);
-  return version;
+export const GetPlayerVersion = (playerId: number) => {
+  const [version, ret] = samp.callNative(
+    "GetPlayerVersion",
+    "iSi",
+    playerId,
+    24,
+  ) as [string, number];
+  return { version, ret };
 };

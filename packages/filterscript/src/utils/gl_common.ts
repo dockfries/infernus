@@ -58,7 +58,9 @@ export function returnUser(idOrName: string) {
     return result;
   }
   // name
-  const count = Player.getInstances().filter((p) => p.getName() === idOrName);
+  const count = Player.getInstances().filter(
+    (p) => p.getName().name === idOrName,
+  );
   if (!count.length) return RETURN_USER_FAILURE;
   if (count.length > 1) return RETURN_USER_MULTIPLE;
   return count[0].id;
@@ -72,7 +74,7 @@ export function spawnVehicleInFrontOfPlayer(
 ) {
   const { x, y, z } = player.getPos();
 
-  let facing = player.getFacingAngle();
+  let facing = player.getFacingAngle().angle;
 
   const { x: size_x, z: size_z } = Vehicle.getModelInfo(
     vehicleModel,

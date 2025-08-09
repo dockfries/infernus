@@ -165,7 +165,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
     playerFallbackSpawnInfo.get(player.id).posY = y;
     playerFallbackSpawnInfo.get(player.id).posZ = z;
     playerFallbackSpawnInfo.get(player.id).rot =
-      orig_playerMethods.getFacingAngle.call(player);
+      orig_playerMethods.getFacingAngle.call(player).angle;
   }
 
   if (isDying.get(player.id)) {
@@ -435,9 +435,9 @@ export const internalPlayerDeath: Parameters<
       let r = 0;
 
       if (vehicle) {
-        r = orig_vehicleMethods.getZAngle.call(vehicle);
+        r = orig_vehicleMethods.getZAngle.call(vehicle).angle;
       } else {
-        r = orig_playerMethods.getFacingAngle.call(editable.player);
+        r = orig_playerMethods.getFacingAngle.call(editable.player).angle;
       }
 
       deathSkip.set(editable.player.id, 2);
