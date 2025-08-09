@@ -14,28 +14,27 @@ export function antiCheatGetArmour(player: Player) {
 }
 
 export function antiCheatGetWeaponData(player: Player, slot: number) {
-  if (!player.isConnected()) return { weapons: null, ammo: null, result: 0 };
-  if (!(slot >= 0 && slot <= 12))
-    return { weapons: null, ammo: null, result: -1 };
+  if (!player.isConnected()) return { weapons: null, ammo: null, ret: 0 };
+  if (!(slot >= 0 && slot <= 12)) return { weapons: null, ammo: null, ret: -1 };
   const weapons = ACInfo.get(player.id).acWeapon[slot];
   const ammo = ACInfo.get(player.id).acAmmo[slot];
-  return { weapons, ammo };
+  return { weapons, ammo, ret: 1 };
 }
 
 export function antiCheatGetPos(player: Player) {
-  if (!player.isConnected()) return { x: 0, y: 0, z: 0, result: false };
+  if (!player.isConnected()) return { x: 0, y: 0, z: 0, ret: false };
   const x = ACInfo.get(player.id).acPosX;
   const y = ACInfo.get(player.id).acPosY;
   const z = ACInfo.get(player.id).acPosZ;
-  return { x, y, z, result: true };
+  return { x, y, z, ret: true };
 }
 
 export function antiCheatGetSpawnPos(player: Player) {
-  if (!player.isConnected()) return { x: 0, y: 0, z: 0, result: false };
+  if (!player.isConnected()) return { x: 0, y: 0, z: 0, ret: false };
   const x = ACInfo.get(player.id).acSpawnPosX;
   const y = ACInfo.get(player.id).acSpawnPosY;
   const z = ACInfo.get(player.id).acSpawnPosZ;
-  return { x, y, z, result: true };
+  return { x, y, z, ret: true };
 }
 
 export function antiCheatGetSpawnWeapon(player: Player) {
@@ -84,7 +83,7 @@ export function antiCheatGetVehiclePos(vehicle: Vehicle) {
   const x = ACVehInfo.get(vehicle.id).acPosX;
   const y = ACVehInfo.get(vehicle.id).acPosY;
   const z = ACVehInfo.get(vehicle.id).acPosZ;
-  return { x, y, z, result: true };
+  return { x, y, z, ret: true };
 }
 
 export function antiCheatGetVehicleVelocity(vehicle: Vehicle) {
