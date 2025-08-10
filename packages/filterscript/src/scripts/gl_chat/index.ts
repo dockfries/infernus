@@ -51,7 +51,7 @@ function processActionText(
 ) {
   let actionText = "";
   let actionBubble = "";
-  const playerName = player.getName();
+  const playerName = player.getName().name;
 
   if (actionType === gl_message.ACTION_DO) {
     actionText = `* ${message} ((${playerName}))`;
@@ -86,7 +86,7 @@ function globalOOCMessage(player: Player, message: string) {
     return;
   }
 
-  const playerName = player.getName();
+  const playerName = player.getName().name;
   const msg = `(( ${playerName}: ${message} ))`;
 
   // for every player
@@ -121,7 +121,7 @@ function toggleOOC(player: Player) {
 }
 
 function processLocalOOC(player: Player, message: string) {
-  const playerName = player.getName();
+  const playerName = player.getName().name;
   const new_message = `${playerName} (( ${message} ))`;
   gl_message.localMessage(
     gl_message.TALK_DISTANCE,
@@ -133,7 +133,7 @@ function processLocalOOC(player: Player, message: string) {
 
 function processMegaphone(player: Player, message: string) {
   // Todo: add permissions on megaphone usage
-  const playerName = player.getName();
+  const playerName = player.getName().name;
   const new_message = `(megaphone) ${playerName} >> ${message}`;
   gl_message.localMessage(
     gl_message.MEGAPHONE_DISTANCE,
@@ -145,8 +145,8 @@ function processMegaphone(player: Player, message: string) {
 }
 
 function processWhisper(player: Player, toPlayer: Player, message: string) {
-  const playerName = player.getName();
-  const toPlayerName = toPlayer.getName();
+  const playerName = player.getName().name;
+  const toPlayerName = toPlayer.getName().name;
   let pmMessage = `>> ${toPlayerName}(${toPlayer.id}): ${message};`;
   player.sendClientMessage(gl_message.WHISPER_COLOR, pmMessage);
 

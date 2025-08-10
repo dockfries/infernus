@@ -42,7 +42,7 @@ export class DynamicMapIcon {
       style,
       streamDistance,
       worldId,
-      interiorId: interiorId,
+      interiorId,
       playerId,
       areaId,
       priority,

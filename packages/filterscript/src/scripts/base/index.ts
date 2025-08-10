@@ -47,8 +47,8 @@ export const Base: IFilterScript = {
         }
 
         const iPlayer = Player.getInstance(+id)!;
-        const iName = iPlayer.getName();
-        const pName = player.getName();
+        const iName = iPlayer.getName().name;
+        const pName = player.getName().name;
 
         let message = `>> ${iName}(${id}): ${gMessage}`;
         player.sendClientMessage(ColorEnum.PM_OUTGOING, message);
@@ -94,7 +94,7 @@ export const Base: IFilterScript = {
         }
 
         const iPlayer = Player.getInstance(+id)!;
-        const iName = iPlayer.getName();
+        const iName = iPlayer.getName().name;
 
         iPlayer.sendClientMessage(
           ColorEnum.ADMINFS_MESSAGE,
@@ -148,7 +148,7 @@ export const Base: IFilterScript = {
         }
 
         const iPlayer = Player.getInstance(+id)!;
-        const iName = iPlayer.getName();
+        const iName = iPlayer.getName().name;
 
         iPlayer.sendClientMessage(
           ColorEnum.ADMINFS_MESSAGE,

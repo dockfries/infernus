@@ -451,10 +451,10 @@ export const GetPlayerWeapon = (playerId: number): number => {
   return samp.callNative("GetPlayerWeapon", "i", playerId);
 };
 
-export const GetPlayerKeys = (
-  playerId: number,
-): [KeysEnum, KeysEnum, KeysEnum, number] => {
-  return samp.callNative("GetPlayerKeys", "iIII", playerId);
+export const GetPlayerKeys = (playerId: number) => {
+  const [keys, upDown, leftRight, ret]: [KeysEnum, KeysEnum, KeysEnum, number] =
+    samp.callNative("GetPlayerKeys", "iIII", playerId);
+  return { keys, upDown, leftRight, ret };
 };
 
 export const SetPlayerTime = (

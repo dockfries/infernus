@@ -33,7 +33,7 @@ export const AntiFlood: IFilterScript = {
         text.length > 1 &&
         player.isAdmin()
       ) {
-        const szPlayerName = player.getName();
+        const szPlayerName = player.getName().name;
 
         const str = `Admin ${szPlayerName}: ${text.slice(1, text.length)}`;
 

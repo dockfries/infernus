@@ -360,8 +360,7 @@ export class Player {
     return VectorSize(x, y, z) * magic;
   }
   getKeys() {
-    const [keys, upDown, leftRight] = w.GetPlayerKeys(this.id);
-    return { keys, upDown, leftRight };
+    return w.GetPlayerKeys(this.id);
   }
   getIp() {
     return w.GetPlayerIp(this.id);

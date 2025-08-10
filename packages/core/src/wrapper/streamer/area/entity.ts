@@ -35,7 +35,7 @@ export class DynamicArea {
       throw new Error("[StreamerArea]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[StreamerArea]: Unable to create with only id");
-    let { worldId, interiorId: interiorId, playerId } = this.sourceInfo;
+    let { worldId, interiorId, playerId } = this.sourceInfo;
     const { type, extended } = this.sourceInfo;
 
     if (extended) {

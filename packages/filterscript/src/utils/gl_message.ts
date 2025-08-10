@@ -99,7 +99,7 @@ export function talkMessage(
 ) {
   if (!message) return;
 
-  const playerName = player.getName();
+  const playerName = player.getName().name;
 
   const msg = prefix ? `${prefix} ${message}` : message;
 

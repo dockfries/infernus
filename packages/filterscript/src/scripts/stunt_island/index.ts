@@ -204,7 +204,7 @@ export const StuntIsland: IStuntIsLandFS = {
           ).forPlayer(player);
 
           // Format chat text message for all
-          const playerName = player.getName();
+          const playerName = player.getName().name;
           const strTempString = `* ${playerName} (ID:${player.id}) started their timed lap.`;
           Player.sendClientMessageToAll(COLOR_MESSAGE_YELLOW, strTempString);
 

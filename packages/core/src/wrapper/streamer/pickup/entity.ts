@@ -28,14 +28,8 @@ export class DynamicPickup {
       throw new Error("[StreamerPickup]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[StreamerPickup]: Unable to create with only id");
-    let {
-      streamDistance,
-      worldId,
-      interiorId: interiorId,
-      playerId,
-      areaId,
-      priority,
-    } = this.sourceInfo;
+    let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
+      this.sourceInfo;
     const { type, modelId, x, y, z, extended } = this.sourceInfo;
 
     if (type < 0) throw new Error("[StreamerPickup]: Invalid pickup type");

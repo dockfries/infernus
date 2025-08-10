@@ -39,14 +39,8 @@ export class DynamicCheckpoint {
       throw new Error("[StreamerCheckpoint]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[StreamerCheckpoint]: Unable to create with only id");
-    let {
-      streamDistance,
-      worldId,
-      interiorId: interiorId,
-      playerId,
-      areaId,
-      priority,
-    } = this.sourceInfo;
+    let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
+      this.sourceInfo;
     const { size, x, y, z, extended } = this.sourceInfo;
 
     if (size < 0)

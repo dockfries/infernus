@@ -95,7 +95,7 @@ export function createPlayerCommands() {
     ({ player, subcommand, next }) => {
       const [style] = subcommand;
       player.setFightingStyle(+style);
-      const name = player.getName();
+      const name = player.getName().name;
       Player.sendClientMessageToAll(
         0x4499ccff,
         `(${name}) fighting style changed to ${style}`,

@@ -209,7 +209,7 @@ export function createCallbacks() {
   //     Player.sendClientMessageToAll(0xffffffff, message);
 
   //     if (actor.isValid()) {
-  //       let fActorHealth = actor.getHealth();
+  //       let fActorHealth = actor.getHealth().health;
   //       fActorHealth -= amount;
   //       if (fActorHealth < 0.0) fActorHealth = 0.0;
   //       actor.setHealth(fActorHealth);

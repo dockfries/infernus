@@ -33,7 +33,7 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
         y = frontXY.y;
         player.setInterior(interior);
         player.setPos(x, y, z);
-        const pName = pInstance.getName();
+        const pName = pInstance.getName().name;
         player.sendClientMessage(
           COLOR_GREEN,
           `[SUCCESS]: You have warped to ${pName} (ID: ${id}).`,
@@ -55,7 +55,7 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
         player.setPos(x, y, z);
       }
       player.setInterior(interior);
-      const pName = pInstance.getName();
+      const pName = pInstance.getName().name;
       player.sendClientMessage(
         COLOR_GREEN,
         `[SUCCESS]: You have warped to ${pName} (ID: ${id}).`,
@@ -114,7 +114,7 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
         y = frontXY.y;
         pInstance.setInterior(interior);
         pInstance.setPos(x, y, z);
-        const pName = pInstance.getName();
+        const pName = pInstance.getName().name;
         player.sendClientMessage(
           COLOR_GREEN,
           `[SUCCESS]: You have brought ${pName} (ID: ${id}) to you.`,
@@ -135,7 +135,7 @@ export function registerMiscCommands(options?: IFsDebugOptions) {
       } else {
         pInstance.setPos(x, y, z);
       }
-      const pName = pInstance.getName();
+      const pName = pInstance.getName().name;
       player.sendClientMessage(
         COLOR_GREEN,
         `[SUCCESS]: You have brought ${pName} (ID: ${id}) to you.`,

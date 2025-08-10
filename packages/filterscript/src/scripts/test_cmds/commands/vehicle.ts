@@ -70,7 +70,7 @@ export function createVehCommands() {
         mode: "a",
       },
       () => {
-        const name = player.getName();
+        const name = player.getName().name;
         Player.sendClientMessageToAll(
           0xffffffff,
           `Veh ID ${vehicleId} marked as bad vehicle by ${name}`,

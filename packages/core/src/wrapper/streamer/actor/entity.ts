@@ -30,14 +30,8 @@ export class DynamicActor {
       throw new Error("[StreamerActor]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[StreamerActor]: Unable to create with only id");
-    let {
-      streamDistance,
-      worldId,
-      interiorId: interiorId,
-      playerId,
-      areaId,
-      priority,
-    } = this.sourceInfo;
+    let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
+      this.sourceInfo;
     const { modelId, x, y, z, r, invulnerable, health, extended } =
       this.sourceInfo;
 
