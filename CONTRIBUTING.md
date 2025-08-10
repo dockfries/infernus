@@ -9,7 +9,7 @@ Thanks for lending a hand 👋
 - We use [pnpm](https://pnpm.js.org/) to manage dependencies.
 - Install dependencies with `pnpm -w install`.
 - Build packages with `pnpm -w build`.
-- If you are starting a build for the first time, please build `streamer` once, then `core`.
+- If you are starting a build for the first time, please run once `pnpm -w build-all`.
 
 ### Coding conventions
 
