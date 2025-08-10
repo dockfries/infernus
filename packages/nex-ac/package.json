@@ -1,6 +1,6 @@
 {
   "name": "@infernus/nex-ac",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A wrapper of the popular SA-MP nex-ac library for samp-node.",
   "keywords": [
     "samp",
