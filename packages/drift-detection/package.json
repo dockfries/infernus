@@ -1,6 +1,6 @@
 {
   "name": "@infernus/drift-detection",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A wrapper of the popular SA-MP driftDetection library for samp-node.",
   "keywords": [
     "samp",
