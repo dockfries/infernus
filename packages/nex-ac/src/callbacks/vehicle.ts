@@ -348,7 +348,7 @@ VehicleEvent.onDamageStatusUpdate(({ player, vehicle, next }) => {
     doors: ac_doors,
     lights: ac_lights,
     tires: ac_tires,
-  } = vehicle.getDamageStatus()!;
+  } = vehicle.getDamageStatus();
   const vehicleId = vehicle.id;
   if (
     ACVehInfo.get(vehicleId).acPanels !== ac_panels ||

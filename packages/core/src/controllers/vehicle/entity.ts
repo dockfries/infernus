@@ -211,7 +211,6 @@ export class Vehicle {
     return v.SetVehicleAngularVelocity(this.id, X, Y, Z);
   }
   getDamageStatus() {
-    if (this.id === -1) return;
     return v.GetVehicleDamageStatus(this.id);
   }
   updateDamageStatus(
@@ -219,9 +218,8 @@ export class Vehicle {
     doors: number,
     lights: number,
     tires: number,
-  ): void {
-    if (this.id === -1) return;
-    v.UpdateVehicleDamageStatus(this.id, panels, doors, lights, tires);
+  ) {
+    return v.UpdateVehicleDamageStatus(this.id, panels, doors, lights, tires);
   }
   getDistanceFromPoint(X: number, Y: number, Z: number): number {
     return v.GetVehicleDistanceFromPoint(this.id, X, Y, Z);
@@ -277,11 +275,9 @@ export class Vehicle {
     );
   }
   getParamsCarDoors() {
-    if (this.id === -1) return;
     return v.GetVehicleParamsCarDoors(this.id);
   }
   getParamsCarWindows() {
-    if (this.id === -1) return;
     return v.GetVehicleParamsCarWindows(this.id);
   }
   setParamsEx(
@@ -450,21 +446,16 @@ export class Vehicle {
     return v.AttachTrailerToVehicle(trailer.id, this.id);
   }
   detachTrailer() {
-    if (this.id === -1) return;
     if (this.isTrailerAttached()) v.DetachTrailerFromVehicle(this.id);
   }
   getTrailer() {
-    if (this.id === -1) return;
-    return Vehicle.getInstances().find(
-      (_v) => _v.id === v.GetVehicleTrailer(this.id),
-    );
+    return Vehicle.getInstance(v.GetVehicleTrailer(this.id));
   }
   isValid(): boolean {
     if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
     return Vehicle.isValid(this.id);
   }
   getMatrix() {
-    if (this.id === -1) return;
     return v.GetVehicleMatrix(this.id);
   }
   getTrainSpeed(): number {
@@ -484,11 +475,9 @@ export class Vehicle {
     return v.GetVehicleSirenState(this.id);
   }
   getDriver() {
-    if (this.id === -1) return;
     return playerPool.get(v.GetVehicleDriver(this.id));
   }
   getLastDriver() {
-    if (this.id === -1) return;
     return playerPool.get(v.GetVehicleLastDriver(this.id));
   }
   isSirenEnabled(): boolean {
@@ -562,7 +551,6 @@ export class Vehicle {
     return v.GetVehiclePaintjob(this.id);
   }
   getColors() {
-    if (this.id === -1) return;
     return v.GetVehicleColors(this.id);
   }
   setSpawnInfo(
@@ -593,11 +581,9 @@ export class Vehicle {
     );
   }
   getSpawnInfo() {
-    if (this.id === -1) return;
     return v.GetVehicleSpawnInfo(this.id);
   }
   getRandomColorPair() {
-    if (this.id === -1) return;
     return v.GetRandomVehicleColorPair(this.getModel());
   }
   show() {

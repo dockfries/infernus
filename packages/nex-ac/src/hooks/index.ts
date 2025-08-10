@@ -803,7 +803,7 @@ export function ac_UpdateVehicleDamageStatus(
   ACVehInfo.get(vehicle.id).acDoors = doors;
   ACVehInfo.get(vehicle.id).acLights = lights;
   ACVehInfo.get(vehicle.id).acTires = tires;
-  // return true;
+  return 1;
 }
 
 export function ac_SetVehicleParamsEx(

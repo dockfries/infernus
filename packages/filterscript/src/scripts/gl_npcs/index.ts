@@ -9,7 +9,7 @@ import { npcNames, spawnInfo, vehiclePutId } from "./constants";
 import type { IGlNpcsFS } from "./interfaces";
 
 function setVehicleTireStatus(vehicle: Vehicle, tireStatus: number) {
-  const { panels, doors, lights } = vehicle.getDamageStatus()!;
+  const { panels, doors, lights } = vehicle.getDamageStatus();
   vehicle.updateDamageStatus(panels, doors, lights, tireStatus);
 }
 

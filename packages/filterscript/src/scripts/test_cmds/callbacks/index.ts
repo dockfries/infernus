@@ -236,7 +236,7 @@ export function createCallbacks() {
 
   // VehicleEvent.onDamageStatusUpdate(({ vehicle, player, next }) => {
   //   if (!player.isAdmin()) return next();
-  //   const { panels, doors, lights, tires } = vehicle.getDamageStatus()!;
+  //   const { panels, doors, lights, tires } = vehicle.getDamageStatus();
   //   const updateMsg = `VehicleDamage[ID:${vehicle.id} PN:0x${panels.toString(16)} DR:0x${doors.toString(16)} LT:0x${lights.toString(16)} TR:0x${tires.toString(16)}]`;
   //   player.sendClientMessage(0xffffffff, updateMsg);
   //   return next();

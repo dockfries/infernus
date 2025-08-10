@@ -205,12 +205,10 @@ export class DynamicActor {
     return s.SetDynamicActorInvulnerable(this.id, invulnerable);
   }
   getPlayerTarget(player: Player) {
-    if (this.id === -1) return;
     const actorId = s.GetPlayerTargetDynamicActor(player.id);
     return dynamicActorPool.get(actorId);
   }
   getPlayerCameraTarget(player: Player) {
-    if (this.id === -1) return;
     const actorId = s.GetPlayerCameraTargetDynActor(player.id);
     return dynamicActorPool.get(actorId);
   }
