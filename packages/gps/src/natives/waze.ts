@@ -53,7 +53,7 @@ async function updateWaze(player: Player, x: number, y: number, z: number) {
 
   const pos = player.getPos();
 
-  if (!pos) {
+  if (!pos.ret) {
     return stopWazeGPS(player);
   }
 
@@ -85,7 +85,7 @@ function onPlayerWazeRouters(path: GpsPath, player: Player) {
   if (size === 1) return stopWazeGPS(player);
 
   const pos = player.getPos();
-  if (!pos) return true;
+  if (!pos.ret) return true;
 
   const node = MapNode.getClosestToPoint(pos.x, pos.y, pos.z);
   let { x, y } = node.getPos();

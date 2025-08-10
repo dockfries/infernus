@@ -7,7 +7,7 @@ export function createActorCommands() {
     "actoratme",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
       const { x, y, z } = pos;
       const ang = player.getFacingAngle().angle;
       test_actor_id = new DynamicActor({
@@ -54,7 +54,7 @@ export function createActorCommands() {
 
   const actorpos = PlayerEvent.onCommandText("actorpos", ({ player, next }) => {
     const pos = player.getPos();
-    if (!pos) return next();
+    if (!pos.ret) return next();
     const { x, y, z } = pos;
     test_actor_id?.setPos(x + 1.0, y + 1.0, z);
     return next();

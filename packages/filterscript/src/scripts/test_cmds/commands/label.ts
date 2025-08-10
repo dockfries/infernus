@@ -46,7 +46,7 @@ export function createLabelCommands() {
     "manylabels",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
       let { z } = pos;
       const { y } = pos;
       let x = 0;
@@ -82,7 +82,7 @@ export function createLabelCommands() {
     "playerlabel",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
 
       const { x, y, z } = pos;
 

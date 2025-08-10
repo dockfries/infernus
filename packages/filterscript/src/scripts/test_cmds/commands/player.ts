@@ -24,7 +24,7 @@ export function createPlayerCommands() {
       if (!p) return next();
 
       const pos = p.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
 
       const { x, y, z } = pos;
 
@@ -46,7 +46,7 @@ export function createPlayerCommands() {
       if (!p) return next();
 
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
 
       const { x, y, z } = pos;
 
@@ -107,7 +107,7 @@ export function createPlayerCommands() {
   const myfacingangle = PlayerEvent.onCommandText(
     "myfacingangle",
     ({ player, next }) => {
-      const angle = player.getFacingAngle();
+      const angle = player.getFacingAngle().angle;
       Player.sendClientMessageToAll(0x4499ccff, `Facing: ${angle}`);
       return next();
     },
@@ -178,7 +178,7 @@ export function createPlayerCommands() {
     "dropaudio",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (pos) {
+      if (pos.ret) {
         player.playAudioStream(
           "http://somafm.com/tags.pls",
           pos.x,
@@ -246,7 +246,7 @@ export function createPlayerCommands() {
     "cam_interp",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (pos) {
+      if (pos.ret) {
         const { x, y, z } = pos;
         player.interpolateCameraPos(
           x,
@@ -266,7 +266,7 @@ export function createPlayerCommands() {
     "cam_interp_look",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (pos) {
+      if (pos.ret) {
         const { x, y, z } = pos;
         player.interpolateCameraPos(
           x,
@@ -347,7 +347,7 @@ export function createPlayerCommands() {
     ({ player, subcommand, next }) => {
       const [radius] = subcommand;
       const pos = player.getPos();
-      if (pos) {
+      if (pos.ret) {
         const { x, y, z } = pos;
         createExplosionEx(x + 10.0, y + 10.0, z + 10.0, 1, 2.0, +radius);
       }

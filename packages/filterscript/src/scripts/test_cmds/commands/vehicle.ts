@@ -349,7 +349,7 @@ export function createVehCommands() {
     "vmodelsize",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
       const veh = player.getVehicle();
       if (!veh) {
         player.sendClientMessage(

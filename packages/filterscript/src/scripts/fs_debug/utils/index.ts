@@ -12,11 +12,11 @@ export function isInvalidSkin(skinId: number) {
 export function getXYInFrontOfPlayer(player: Player, distance = 0) {
   // Created by Y_Less
   let { x, y } = player.getPos();
-  let angle = player.getFacingAngle();
+  let angle = player.getFacingAngle().angle;
 
   const veh = player.getVehicle();
   if (veh) {
-    angle = veh.getZAngle();
+    angle = veh.getZAngle().angle;
   }
 
   x += distance * Math.sin(degreesToRadians(-angle));

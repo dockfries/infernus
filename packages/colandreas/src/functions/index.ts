@@ -46,7 +46,7 @@ export function rayCastExplode(
 
 function isOnSurface(instance: Player | Vehicle, tolerance: number) {
   const ret = instance.getPos();
-  if (!ret) return false;
+  if (!ret.ret) return false;
   const { x, y, z } = ret;
 
   return Boolean(rayCastLine(x, y, z, x, y, z - tolerance));
@@ -112,7 +112,7 @@ export function removeBreakableBuildings() {
 
 function isInWater(instance: Player | Vehicle) {
   const pos = instance.getPos();
-  if (!pos) return false;
+  if (!pos.ret) return false;
   const { x, y, z } = pos;
 
   const {
@@ -167,7 +167,7 @@ export function isVehicleInWater(vehicle: Vehicle) {
 
 function isNearWater(instance: Player | Vehicle, dist: number, height: number) {
   const pos = instance.getPos();
-  if (!pos) return false;
+  if (!pos.ret) return false;
 
   const { x, y, z } = pos;
 
@@ -205,17 +205,17 @@ function isFacingWater(
       ? instance.getFacingAngle()
       : instance.getZAngle();
 
-  if (!pos || !r) return false;
+  if (!pos.ret || !r.ret) return false;
 
   const { x, y, z } = pos;
 
   if (
     rayCastLine(
-      x + dist * Math.sin(degreesToRadians(-r)),
-      y + dist * Math.cos(degreesToRadians(-r)),
+      x + dist * Math.sin(degreesToRadians(-r.angle)),
+      y + dist * Math.cos(degreesToRadians(-r.angle)),
       z,
-      x + dist * Math.sin(degreesToRadians(-r)),
-      y + dist * Math.cos(degreesToRadians(-r)),
+      x + dist * Math.sin(degreesToRadians(-r.angle)),
+      y + dist * Math.cos(degreesToRadians(-r.angle)),
       z - height,
     )?.ret === WATER_OBJECT
   )
@@ -242,14 +242,14 @@ function isBlocked(instance: Player | Vehicle, dist: number, height: number) {
       ? instance.getFacingAngle()
       : instance.getZAngle();
 
-  if (!pos || !a) return false;
+  if (!pos.ret || !a.ret) return false;
 
   const { x, y } = pos;
   let { z } = pos;
   z -= 1.0 + height;
 
-  const endX = x + dist * Math.sin(degreesToRadians(-a));
-  const endY = y + dist * Math.cos(degreesToRadians(-a));
+  const endX = x + dist * Math.sin(degreesToRadians(-a.angle));
+  const endY = y + dist * Math.cos(degreesToRadians(-a.angle));
   return Boolean(rayCastLine(x, y, z, endX, endY, z));
 }
 

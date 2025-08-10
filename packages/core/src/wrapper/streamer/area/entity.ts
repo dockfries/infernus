@@ -444,7 +444,7 @@ export class DynamicArea {
   }
   static showForPlayer(player: Player, z = -50000) {
     const pos = player.getPos();
-    if (pos) {
+    if (pos.ret) {
       Streamer.updateEx(player, pos.x, pos.y, pos.z);
     } else {
       Streamer.updateEx(player, 0, 0, z);

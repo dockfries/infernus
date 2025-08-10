@@ -12,7 +12,7 @@ export function createMapIconCommands() {
     "mapicontest",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
       const { x, y, z } = pos;
       new DynamicCheckpoint({
         playerId: player.id,
@@ -79,7 +79,7 @@ export function createMapIconCommands() {
     "mapicontest2",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
       const { x, y, z } = pos;
       if (mapIconArr[0].isValid()) {
         mapIconArr[0].destroy();

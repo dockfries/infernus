@@ -108,7 +108,7 @@ export function createObjectCommands() {
 
   const objvehst = PlayerEvent.onCommandText("objvehst", ({ player, next }) => {
     const pos = player.getPos();
-    if (!pos) return next();
+    if (!pos.ret) return next();
     const { x, y, z } = pos;
     const objVeh = new Vehicle({
       modelId: 563,
@@ -136,7 +136,7 @@ export function createObjectCommands() {
 
   const objlim1 = PlayerEvent.onCommandText("objlim1", ({ player, next }) => {
     const pos = player.getPos();
-    if (!pos) return next();
+    if (!pos.ret) return next();
     const { x, z } = pos;
     let { y } = pos;
     let lp = 0;
@@ -179,7 +179,7 @@ export function createObjectCommands() {
     ({ player, next }) => {
       if (!edit_objectid) {
         const pos = player.getPos();
-        if (!pos) return next();
+        if (!pos.ret) return next();
         const { x, y, z } = pos;
         edit_objectid = new DynamicObject({
           playerId: player.id,
@@ -225,7 +225,7 @@ export function createObjectCommands() {
     ({ player, next }) => {
       if (!edit_objectid) {
         const pos = player.getPos();
-        if (!pos) return next();
+        if (!pos.ret) return next();
         const { x, y, z } = pos;
         edit_objectid = new DynamicObject({
           playerId: player.id,
@@ -253,7 +253,7 @@ export function createObjectCommands() {
     "cam_on_obj",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
       const { x, y, z } = pos;
       if (!edit_objectid) {
         edit_objectid = new DynamicObject({
@@ -279,7 +279,7 @@ export function createObjectCommands() {
     "cam_on_train",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
       if (!edit_objectid) {
         const { x, y, z } = pos;
         edit_objectid = new DynamicObject({
@@ -391,7 +391,7 @@ export function createObjectCommands() {
   const crptex = PlayerEvent.onCommandText("crptex", ({ player, next }) => {
     let lp = 0;
     const pos = player.getPos();
-    if (!pos) return next();
+    if (!pos.ret) return next();
     let x = pos.x;
     const y = pos.y;
     const z = pos.z;
@@ -437,7 +437,7 @@ export function createObjectCommands() {
   const crpmix = PlayerEvent.onCommandText("crpmix", ({ player, next }) => {
     let lp = 0;
     const pos = player.getPos();
-    if (!pos) return next();
+    if (!pos.ret) return next();
     let x = pos.x;
     const y = pos.y;
     const z = pos.z;
@@ -517,7 +517,7 @@ export function createObjectCommands() {
 
   const crptext = PlayerEvent.onCommandText("crptext", ({ player, next }) => {
     const pos = player.getPos();
-    if (!pos) return next();
+    if (!pos.ret) return next();
 
     let x = pos.x + 1.0;
     const y = pos.y;
@@ -709,7 +709,7 @@ export function createObjectCommands() {
   // Damian's bed that crashed because material object id and original object id were the same
   const crashbed = PlayerEvent.onCommandText("crashbed", ({ player, next }) => {
     const pos = player.getPos();
-    if (!pos) return next();
+    if (!pos.ret) return next();
 
     const { x, y, z } = pos;
 
@@ -760,7 +760,7 @@ export function createObjectCommands() {
     "crash_hobj",
     ({ player, next }) => {
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
       //2385
       //;index_id:model_id:txd_name:txd_txt:txd_color(0 if no color);
       //;0:2748:pizza_furn:CJ_WOOD6:0;
@@ -802,7 +802,7 @@ export function createObjectCommands() {
     "crobj",
     ({ player, subcommand, next }) => {
       const pos = player.getPos();
-      if (!pos) return next();
+      if (!pos.ret) return next();
       const { x, y, z } = pos;
       const [modelId] = subcommand;
       new DynamicObject({
