@@ -1,3 +1,20 @@
+## 0.12.0 (2025-08-10)
+
+* feat(colandreas, map-loader): maybe can check colandreas this way? ([2f5196d](https://github.com/dockfries/infernus/commit/2f5196d))
+* feat(core)!: get methods should return ret, so break changes ([0ece293](https://github.com/dockfries/infernus/commit/0ece293))
+* feat(nex-ac)!: result rename to ret ([1fa7fc7](https://github.com/dockfries/infernus/commit/1fa7fc7))
+* fix(core, colandreas, fs, gps): getPos/facingAngle ([3fed03a](https://github.com/dockfries/infernus/commit/3fed03a))
+* fix(core, fs, nex-ac): getMethods ([9fd4393](https://github.com/dockfries/infernus/commit/9fd4393))
+* fix(core, fs): getMethods ([d9ae995](https://github.com/dockfries/infernus/commit/d9ae995))
+* feat(colandreas): global defined ([1156059](https://github.com/dockfries/infernus/commit/1156059))
+* feat(distance): init ([884b920](https://github.com/dockfries/infernus/commit/884b920))
+* feat(drift-detection): init ([edd4cf4](https://github.com/dockfries/infernus/commit/edd4cf4))
+* feat(raknet): global defined ([ff2ff20](https://github.com/dockfries/infernus/commit/ff2ff20))
+* chore(release): drift-detection v0.0.1 ([fe09681](https://github.com/dockfries/infernus/commit/fe09681))
+* chore(root): update CONTRIBUTING.md ([e87c8b3](https://github.com/dockfries/infernus/commit/e87c8b3))
+
+
+
 ## <small>0.11.15 (2025-08-03)</small>
 
 * chore(release): map-loader v0.0.1 ([4b6f452](https://github.com/dockfries/infernus/commit/4b6f452))
