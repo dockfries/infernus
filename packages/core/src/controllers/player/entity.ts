@@ -102,6 +102,7 @@ export class Player {
   constructor(public readonly id: number) {
     const player = Player.getInstance(id);
     if (player) return player;
+    playerPool.set(id, this);
   }
 
   sendClientMessage(color: string | number, msg: string): number {

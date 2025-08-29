@@ -6,7 +6,7 @@ import {
   NPCMoveTypeEnum,
   NPCMoveSpeedEnum,
 } from "../../enums";
-import type { Player } from "../player";
+import { Player } from "../player";
 import {
   BulletHitTypesEnum,
   FightingStylesEnum,
@@ -15,7 +15,7 @@ import {
   WeaponStatesEnum,
 } from "core/enums";
 import { Vehicle } from "../vehicle";
-import { npcPool } from "core/utils/pools";
+import { npcPool, playerPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 
 export class Npc {
@@ -32,6 +32,9 @@ export class Npc {
     this._id = id;
     this._name = name;
     if (id !== InvalidEnum.PLAYER_ID) {
+      if (playerPool.has(id)) {
+        new Player(id);
+      }
       const instance = Npc.getInstance(id);
       if (instance) {
         return instance;

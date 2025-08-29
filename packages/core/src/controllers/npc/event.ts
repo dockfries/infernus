@@ -75,6 +75,9 @@ const [onDestroy] = defineEvent({
       npc: Npc.getInstance(id)!,
     };
   },
+  afterEach({ npc }) {
+    npcPool.delete(npc.id);
+  },
 });
 
 const [onWeaponStateChange] = defineEvent({
