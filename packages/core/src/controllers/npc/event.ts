@@ -159,6 +159,62 @@ const [onRespawn] = defineEvent({
   },
 });
 
+const [onPlaybackStart] = defineEvent({
+  name: "OnNPCPlaybackStart",
+  beforeEach(id: number, recordId: number) {
+    return { npc: Npc.getInstance(id)!, recordId };
+  },
+});
+const [onPlaybackEnd] = defineEvent({
+  name: "OnNPCPlaybackEnd",
+  beforeEach(id: number, recordId: number) {
+    return { npc: Npc.getInstance(id)!, recordId };
+  },
+});
+const [onWeaponShot] = defineEvent({
+  name: "OnNPCWeaponShot",
+  beforeEach(
+    id: number,
+    weapon: number,
+    hitType: number,
+    hitId: number,
+    fX: number,
+    fY: number,
+    fZ: number,
+  ) {
+    return { npc: Npc.getInstance(id)!, weapon, hitType, hitId, fX, fY, fZ };
+  },
+});
+const [onFinishNodePoint] = defineEvent({
+  name: "OnNPCFinishNodePoint",
+  beforeEach(id: number, nodeId: number, pointId: number) {
+    return {
+      npc: Npc.getInstance(id)!,
+      nodeId,
+      pointId,
+    };
+  },
+});
+const [onFinishNode] = defineEvent({
+  name: "OnNPCFinishNode",
+  beforeEach(id: number, nodeId: number) {
+    return {
+      npc: Npc.getInstance(id)!,
+      nodeId,
+    };
+  },
+});
+const [onChangeNode] = defineEvent({
+  name: "OnNPCChangeNode",
+  beforeEach(id: number, newNodeId: number, oldNodeId: number) {
+    return {
+      npc: Npc.getInstance(id)!,
+      newNodeId,
+      oldNodeId,
+    };
+  },
+});
+
 export const NpcEvent = Object.freeze({
   onConnect,
   onDisconnect,
@@ -168,10 +224,16 @@ export const NpcEvent = Object.freeze({
   onFinishMove,
   onCreate,
   onDestroy,
+  onSpawn,
+  onRespawn,
   onWeaponStateChange,
   onTakeDamage,
   onGiveDamage,
   onDeath,
-  onSpawn,
-  onRespawn,
+  onPlaybackStart,
+  onPlaybackEnd,
+  onWeaponShot,
+  onFinishNodePoint,
+  onFinishNode,
+  onChangeNode,
 });

@@ -1,6 +1,11 @@
 import * as w from "core/wrapper/native";
 import type { RecordTypesEnum } from "../../enums";
-import { ERecordStatus, InvalidEnum } from "../../enums";
+import {
+  NPCRecordStatusEnum,
+  InvalidEnum,
+  NPCMoveTypeEnum,
+  NPCMoveSpeedEnum,
+} from "../../enums";
 import type { Player } from "../player";
 import {
   BulletHitTypesEnum,
@@ -16,7 +21,7 @@ import { INTERNAL_FLAGS } from "core/utils/flags";
 export class Npc {
   private _id = InvalidEnum.PLAYER_ID;
   private _name = "";
-  private static recordStatus: ERecordStatus;
+  private static recordStatus: NPCRecordStatusEnum;
 
   get id() {
     return this._id;
@@ -400,12 +405,79 @@ export class Npc {
       weapon,
     ) as number;
   }
+  setWeaponReloadTime(weapon: number, time: number) {
+    return samp.callNative(
+      "NPC_SetWeaponReloadTime",
+      "iii",
+      this._id,
+      weapon,
+      time,
+    ) as number;
+  }
+  getWeaponReloadTime(weapon: number) {
+    return samp.callNative(
+      "NPC_GetWeaponReloadTime",
+      "ii",
+      this._id,
+      weapon,
+    ) as number;
+  }
+  getWeaponActualReloadTime(weapon: number) {
+    return samp.callNative(
+      "NPC_GetWeaponActualReloadTime",
+      "ii",
+      this._id,
+      weapon,
+    ) as number;
+  }
+  setWeaponShootTime(weapon: number, time: number) {
+    return samp.callNative(
+      "NPC_SetWeaponShootTime",
+      "iii",
+      this._id,
+      weapon,
+      time,
+    ) as number;
+  }
+  getWeaponShootTime(weapon: number) {
+    return samp.callNative(
+      "NPC_GetWeaponShootTime",
+      "ii",
+      this._id,
+      weapon,
+    ) as number;
+  }
+  setWeaponClipSize(weapon: number, size: number) {
+    return samp.callNative(
+      "NPC_SetWeaponClipSize",
+      "iii",
+      this._id,
+      weapon,
+      size,
+    ) as number;
+  }
+  getWeaponClipSize(weapon: number) {
+    return samp.callNative(
+      "NPC_GetWeaponClipSize",
+      "ii",
+      this._id,
+      weapon,
+    ) as number;
+  }
+  getWeaponActualClipSize(weapon: number) {
+    return samp.callNative(
+      "NPC_GetWeaponActualClipSize",
+      "ii",
+      this._id,
+      weapon,
+    ) as number;
+  }
   enterVehicle(vehicle: Vehicle, seatId: number, moveType: number) {
     samp.callNative(
       "NPC_EnterVehicle",
       "iiii",
       this._id,
-      vehicle,
+      vehicle.id,
       seatId,
       moveType,
     );
@@ -415,6 +487,444 @@ export class Npc {
     samp.callNative("NPC_ExitVehicle", "i", this._id);
     return this;
   }
+  putInVehicle(vehicle: Vehicle, seat: number) {
+    return samp.callNative(
+      "NPC_PutInVehicle",
+      "iii",
+      this._id,
+      vehicle.id,
+      seat,
+    ) as number;
+  }
+  removeFromVehicle() {
+    return samp.callNative("NPC_RemoveFromVehicle", "i", this._id) as number;
+  }
+  getVehicle() {
+    return samp.callNative("NPC_GetVehicle", "i", this._id) as number;
+  }
+  getVehicleID() {
+    return samp.callNative("NPC_GetVehicle", "i", this._id) as number;
+  }
+  getVehicleSeat() {
+    return samp.callNative("NPC_GetVehicleSeat", "i", this._id) as number;
+  }
+  getEnteringVehicle() {
+    return samp.callNative("NPC_GetEnteringVehicle", "i", this._id) as number;
+  }
+  getEnteringVehicleId() {
+    return samp.callNative("NPC_GetEnteringVehicle", "i", this._id) as number;
+  }
+  getEnteringVehicleSeat() {
+    return samp.callNative(
+      "NPC_GetEnteringVehicleSeat",
+      "i",
+      this._id,
+    ) as number;
+  }
+  isEnteringVehicle() {
+    return !!samp.callNative("NPC_IsEnteringVehicle", "i", this._id);
+  }
+  useVehicleSiren(use = true) {
+    return samp.callNative(
+      "NPC_UseVehicleSiren",
+      "ii",
+      this._id,
+      use,
+    ) as number;
+  }
+  isVehicleSirenUsed() {
+    return !!samp.callNative("NPC_IsVehicleSirenUsed", "i", this._id);
+  }
+  setVehicleHealth(health: number) {
+    return samp.callNative(
+      "NPC_SetVehicleHealth",
+      "if",
+      this._id,
+      health,
+    ) as number;
+  }
+  getVehicleHealth() {
+    return samp.callNativeFloat(
+      "NPC_GetVehicleHealth",
+      "i",
+      this._id,
+    ) as number;
+  }
+  setVehicleHydraThrusters(direction: number) {
+    return samp.callNative(
+      "NPC_SetVehicleHydraThrusters",
+      "ii",
+      this._id,
+      direction,
+    ) as number;
+  }
+  getVehicleHydraThrusters() {
+    return samp.callNative(
+      "NPC_GetVehicleHydraThrusters",
+      "i",
+      this._id,
+    ) as number;
+  }
+  setVehicleGearState(gearState: number) {
+    return samp.callNative(
+      "NPC_SetVehicleGearState",
+      "ii",
+      this._id,
+      gearState,
+    ) as number;
+  }
+  getVehicleGearState() {
+    return samp.callNative("NPC_GetVehicleGearState", "i", this._id) as number;
+  }
+  setVehicleTrainSpeed(speed: number) {
+    return samp.callNative(
+      "NPC_SetVehicleTrainSpeed",
+      "if",
+      this._id,
+      speed,
+    ) as number;
+  }
+  getVehicleTrainSpeed() {
+    return samp.callNativeFloat(
+      "NPC_GetVehicleTrainSpeed",
+      "i",
+      this._id,
+    ) as number;
+  }
+  resetAnimation() {
+    return samp.callNative("NPC_ResetAnimation", "i", this._id) as number;
+  }
+  setAnimation(
+    animationId: number,
+    delta: number,
+    loop: boolean,
+    lockX: boolean,
+    lockY: boolean,
+    freeze: boolean,
+    time: number,
+  ) {
+    return samp.callNative(
+      "NPC_SetAnimation",
+      "iifiiiii",
+      this._id,
+      animationId,
+      delta,
+      loop,
+      lockX,
+      lockY,
+      freeze,
+      time,
+    ) as number;
+  }
+  getAnimation() {
+    const [
+      animationId,
+      delta,
+      loop,
+      lockX,
+      lockY,
+      freeze,
+      time,
+      ret,
+    ]: number[] = samp.callNative("NPC_GetAnimation", "iIFIIIII", this._id);
+    return {
+      animationId,
+      delta,
+      loop: !!loop,
+      lockX: !!lockX,
+      lockY: !!lockY,
+      freeze: !!freeze,
+      time,
+      ret,
+    };
+  }
+  clearAnimations() {
+    return samp.callNative("NPC_ClearAnimations", "i", this._id) as number;
+  }
+  setSpecialAction(action: number) {
+    return samp.callNative(
+      "NPC_SetSpecialAction",
+      "ii",
+      this._id,
+      action,
+    ) as number;
+  }
+  getSpecialAction() {
+    return samp.callNative("NPC_SetSpecialAction", "i", this._id) as number;
+  }
+  startPlayback(
+    recordName: string,
+    autoUnload: boolean,
+    startX: number,
+    startY: number,
+    startZ: number,
+    rotX: number,
+    rotY: number,
+    rotZ: number,
+  ) {
+    return samp.callNative(
+      "NPC_StartPlayback",
+      "isiffffff",
+      this._id,
+      recordName,
+      autoUnload,
+      startX,
+      startY,
+      startZ,
+      rotX,
+      rotY,
+      rotZ,
+    ) as number;
+  }
+  NPC_StartPlaybackEx(
+    recordId: number,
+    autoUnload: boolean,
+    startX: number,
+    startY: number,
+    startZ: number,
+    rotX: number,
+    rotY: number,
+    rotZ: number,
+  ) {
+    return samp.callNative(
+      "NPC_StartPlaybackEx",
+      "iiiffffff",
+      this._id,
+      recordId,
+      autoUnload,
+      startX,
+      startY,
+      startZ,
+      rotX,
+      rotY,
+      rotZ,
+    ) as number;
+  }
+
+  stopPlayback() {
+    return samp.callNative("NPC_StopPlayback", "i", this._id) as number;
+  }
+
+  pausePlayback(paused: boolean) {
+    return samp.callNative(
+      "NPC_PausePlayback",
+      "ii",
+      this._id,
+      paused,
+    ) as number;
+  }
+
+  isPlayingPlayback() {
+    return !!samp.callNative("NPC_IsPlayingPlayback", "i", this._id);
+  }
+  isPlaybackPaused() {
+    return !!samp.callNative("NPC_IsPlaybackPaused", "i", this._id);
+  }
+  playNode(
+    node: number,
+    moveType = NPCMoveTypeEnum.JOG,
+    speed = NPCMoveSpeedEnum.AUTO,
+    radius = 0.0,
+    setAngle = true,
+  ) {
+    return !!samp.callNative(
+      "NPC_PlayNode",
+      "iiiffi",
+      this._id,
+      node,
+      moveType,
+      speed,
+      radius,
+      setAngle,
+    );
+  }
+  stopPlayingNode() {
+    return !!samp.callNative("NPC_StopPlayingNode", "i", this._id);
+  }
+  pausePlayingNode() {
+    return !!samp.callNative("NPC_PausePlayingNode", "i", this._id);
+  }
+  resumePlayingNode() {
+    return !!samp.callNative("NPC_ResumePlayingNode", "i", this._id);
+  }
+  isPlayingNodePaused() {
+    return !!samp.callNative("NPC_IsPlayingNodePaused", "i", this._id);
+  }
+  isPlayingNode() {
+    return !!samp.callNative("NPC_IsPlayingNode", "i", this._id);
+  }
+  changeNode(node: number, link: number) {
+    return samp.callNative(
+      "NPC_ChangeNode",
+      "iii",
+      this._id,
+      node,
+      link,
+    ) as number;
+  }
+  updateNodePoint(point: number) {
+    return !!samp.callNative("NPC_UpdateNodePoint", "ii", this._id, point);
+  }
+
+  static loadRecord(filePath: string) {
+    return samp.callNative("NPC_LoadRecord", "s", filePath) as number;
+  }
+
+  static unloadRecord(recordId: number) {
+    return !!samp.callNative("NPC_UnloadRecord", "i", recordId);
+  }
+  static isValidRecord(recordId: number) {
+    return !!samp.callNative("NPC_IsValidRecord", "i", recordId);
+  }
+
+  static getRecordCount() {
+    return samp.callNative("NPC_GetRecordCount", "") as number;
+  }
+
+  static unloadAllRecords() {
+    return !!samp.callNative("NPC_UnloadAllRecords", "");
+  }
+
+  static createPath() {
+    return samp.callNative("NPC_CreatePath", "") as number;
+  }
+
+  static destroyPath(pathId: number) {
+    return !!samp.callNative("NPC_DestroyPath", "i", pathId);
+  }
+
+  static destroyAllPath() {
+    return !!samp.callNative("NPC_DestroyAllPath", "");
+  }
+
+  static getPathCount() {
+    return samp.callNative("NPC_GetPathCount", "") as number;
+  }
+
+  static addPointToPath(
+    pathId: number,
+    x: number,
+    y: number,
+    z: number,
+    stopRange: number,
+  ) {
+    return !!samp.callNative(
+      "NPC_AddPointToPath",
+      "iffff",
+      pathId,
+      x,
+      y,
+      z,
+      stopRange,
+    );
+  }
+
+  static removePointFromPath(pathId: number, pointIndex: number) {
+    return !!samp.callNative(
+      "NPC_RemovePointFromPath",
+      "ii",
+      pathId,
+      pointIndex,
+    );
+  }
+
+  static clearPath(pathId: number) {
+    return !!samp.callNative("NPC_ClearPath", "i", pathId);
+  }
+
+  static getPathPointCount(pathId: number) {
+    return samp.callNative("NPC_GetPathPointCount", "i", pathId) as number;
+  }
+
+  static getPathPoint(pathId: number, pointIndex: number) {
+    const [x, y, z, stopRange, ret]: number[] = samp.callNative(
+      "NPC_GetPathPoint",
+      "ii",
+      pathId,
+      pointIndex,
+    );
+    return { x, y, z, stopRange, ret };
+  }
+
+  static isValidPath(pathId: number) {
+    return !!samp.callNative("NPC_IsValidPath", "i", pathId);
+  }
+
+  getCurrentPathPointIndex() {
+    return samp.callNative(
+      "NPC_GetCurrentPathPointIndex",
+      "i",
+      this._id,
+    ) as number;
+  }
+
+  moveByPath(
+    pathId: number,
+    moveType = NPCMoveTypeEnum.JOG,
+    moveSpeed = NPCMoveSpeedEnum.AUTO,
+    reversed = false,
+  ) {
+    return !!samp.callNative(
+      "NPC_MoveByPath",
+      "iiifi",
+      this._id,
+      pathId,
+      moveType,
+      moveSpeed,
+      reversed,
+    );
+  }
+
+  static openNode(nodeId: number) {
+    return !!samp.callNative("NPC_OpenNode", "i", nodeId);
+  }
+
+  static closeNode(nodeId: number) {
+    return !!samp.callNative("NPC_CloseNode", "i", nodeId);
+  }
+
+  static isNodeOpen(nodeId: number) {
+    return !!samp.callNative("NPC_IsNodeOpen", "i", nodeId);
+  }
+
+  static getNodeType(nodeId: number) {
+    return samp.callNative("NPC_GetNodeType", "i", nodeId) as number;
+  }
+
+  static setNodePoint(nodeId: number, pointId: number) {
+    return !!samp.callNative("NPC_SetNodePoint", "ii", nodeId, pointId);
+  }
+
+  static getNodePointPosition(nodeId: number) {
+    const [x, y, z, ret] = samp.callNative(
+      "NPC_GetNodePointPosition",
+      "iFFF",
+      nodeId,
+    );
+    return {
+      x,
+      y,
+      z,
+      ret: !!ret,
+    };
+  }
+  static getNodePointCount(nodeId: number) {
+    return samp.callNative("NPC_GetNodePointCount", "i", nodeId) as number;
+  }
+  static getNodeInfo(nodeId: number) {
+    const [vehNodes, pedNodes, naviNode, ret] = samp.callNative(
+      "NPC_GetNodePointPosition",
+      "iIII",
+      nodeId,
+    );
+    return {
+      vehNodes,
+      pedNodes,
+      naviNode,
+      ret: !!ret,
+    };
+  }
+
   static readonly connect = w.ConnectNPC;
   static startRecordingPlayerData(
     player: Player,
@@ -436,29 +946,29 @@ export class Npc {
     playbacktype: RecordTypesEnum,
     recordname: string,
   ): void {
-    if (Npc.recordStatus >= ERecordStatus.start)
+    if (Npc.recordStatus >= NPCRecordStatusEnum.START)
       throw new Error("[NpcFunc]: The current status cannot be replayed");
     w.StartRecordingPlayback(playbacktype, recordname);
-    Npc.recordStatus = ERecordStatus.start;
+    Npc.recordStatus = NPCRecordStatusEnum.START;
   }
   static stopRecordingPlayback(): void {
-    if (Npc.recordStatus < ERecordStatus.start)
+    if (Npc.recordStatus < NPCRecordStatusEnum.START)
       throw new Error("[NpcFunc]: The current status cannot be stopped");
     w.StopRecordingPlayback();
-    Npc.recordStatus = ERecordStatus.none;
+    Npc.recordStatus = NPCRecordStatusEnum.NONE;
   }
 
   static pauseRecordingPlayback() {
-    if (Npc.recordStatus !== ERecordStatus.start)
+    if (Npc.recordStatus !== NPCRecordStatusEnum.START)
       throw new Error("[NpcFunc]: The current status cannot be paused");
     w.PauseRecordingPlayback();
-    Npc.recordStatus = ERecordStatus.pause;
+    Npc.recordStatus = NPCRecordStatusEnum.PAUSE;
   }
   static resumeRecordingPlayback() {
-    if (Npc.recordStatus !== ERecordStatus.pause)
+    if (Npc.recordStatus !== NPCRecordStatusEnum.PAUSE)
       throw new Error("[NpcFunc]: The current status cannot be paused");
     w.ResumeRecordingPlayback();
-    Npc.recordStatus = ERecordStatus.start;
+    Npc.recordStatus = NPCRecordStatusEnum.START;
   }
   static isValid(id: number) {
     return !!samp.callNative("NPC_IsValid", "i", id);
