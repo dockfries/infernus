@@ -178,7 +178,11 @@ export function wcc_setPlayerHealth(
   if (health <= 0.0) {
     playerArmour.set(player.id, 0.0);
     playerHealth.set(player.id, 0.0);
-    inflictDamage(player, 0.0);
+    if (player.isNpc()) {
+      updateHealthBar(player, true);
+    } else {
+      inflictDamage(player, 0.0);
+    }
   } else {
     if (armour !== -1.0) {
       if (armour > playerMaxArmour.get(player.id)) {
