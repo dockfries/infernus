@@ -1013,12 +1013,12 @@ export class Npc {
   static readonly connect = w.ConnectNPC;
   static startRecordingPlayerData(
     player: Player,
-    recordtype: RecordTypesEnum,
-    recordname: string,
+    recordType: RecordTypesEnum,
+    recordName: string,
   ): void {
     if (player.isRecording)
       throw new Error("[NpcFunc]: It should be stopped before recording");
-    w.StartRecordingPlayerData(player.id, recordtype, recordname);
+    w.StartRecordingPlayerData(player.id, recordType, recordName);
     player.isRecording = true;
   }
   static stopRecordingPlayerData(player: Player): void {
@@ -1028,12 +1028,12 @@ export class Npc {
     player.isRecording = false;
   }
   static startRecordingPlayback(
-    playbacktype: RecordTypesEnum,
-    recordname: string,
+    playbackType: RecordTypesEnum,
+    recordName: string,
   ): void {
     if (Npc.recordStatus >= NPCRecordStatusEnum.START)
       throw new Error("[NpcFunc]: The current status cannot be replayed");
-    w.StartRecordingPlayback(playbacktype, recordname);
+    w.StartRecordingPlayback(playbackType, recordName);
     Npc.recordStatus = NPCRecordStatusEnum.START;
   }
   static stopRecordingPlayback(): void {
