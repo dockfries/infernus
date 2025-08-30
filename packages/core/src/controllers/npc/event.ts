@@ -218,6 +218,16 @@ const [onChangeNode] = defineEvent({
   },
 });
 
+const [onFinishMovePath] = defineEvent({
+  name: "OnNPCFinishMovePath",
+  beforeEach(id: number, pathId: number) {
+    return {
+      npc: Npc.getInstance(id)!,
+      pathId,
+    };
+  },
+});
+
 export const NpcEvent = Object.freeze({
   onConnect,
   onDisconnect,
@@ -239,4 +249,5 @@ export const NpcEvent = Object.freeze({
   onFinishNodePoint,
   onFinishNode,
   onChangeNode,
+  onFinishMovePath,
 });

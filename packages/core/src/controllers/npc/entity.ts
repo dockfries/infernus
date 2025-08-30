@@ -5,6 +5,7 @@ import {
   InvalidEnum,
   NPCMoveTypeEnum,
   NPCMoveSpeedEnum,
+  StreamerItemTypes,
 } from "../../enums";
 import { Player } from "../player";
 import {
@@ -17,6 +18,8 @@ import {
 import { Vehicle } from "../vehicle";
 import { npcPool, playerPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
+import { DynamicObject } from "core/wrapper/streamer/object";
+import { Streamer } from "core/wrapper/streamer";
 
 export class Npc {
   private _id = InvalidEnum.PLAYER_ID;
@@ -97,12 +100,7 @@ export class Npc {
     return this;
   }
   getVirtualWorld() {
-    const [virtualWorld, ret]: [number, number] = samp.callNative(
-      "NPC_GetVirtualWorld",
-      "iI",
-      this._id,
-    );
-    return { virtualWorld, ret };
+    return samp.callNative("NPC_GetVirtualWorld", "i", this._id) as number;
   }
   move(
     targetPosX: number,
@@ -503,7 +501,7 @@ export class Npc {
     return samp.callNative("NPC_RemoveFromVehicle", "i", this._id) as number;
   }
   getVehicle() {
-    return samp.callNative("NPC_GetVehicle", "i", this._id) as number;
+    return Vehicle.getInstance(this.getVehicleID());
   }
   getVehicleID() {
     return samp.callNative("NPC_GetVehicle", "i", this._id) as number;
@@ -512,7 +510,7 @@ export class Npc {
     return samp.callNative("NPC_GetVehicleSeat", "i", this._id) as number;
   }
   getEnteringVehicle() {
-    return samp.callNative("NPC_GetEnteringVehicle", "i", this._id) as number;
+    return Vehicle.getInstance(this.getEnteringVehicleId());
   }
   getEnteringVehicleId() {
     return samp.callNative("NPC_GetEnteringVehicle", "i", this._id) as number;
@@ -679,7 +677,7 @@ export class Npc {
       rotZ,
     ) as number;
   }
-  NPC_StartPlaybackEx(
+  startPlaybackEx(
     recordId: number,
     autoUnload: boolean,
     startX: number,
@@ -767,6 +765,90 @@ export class Npc {
   }
   updateNodePoint(point: number) {
     return !!samp.callNative("NPC_UpdateNodePoint", "ii", this._id, point);
+  }
+
+  setInvulnerable(toggle: boolean) {
+    return samp.callNative(
+      "NPC_SetInvulnerable",
+      "ii",
+      this._id,
+      toggle,
+    ) as number;
+  }
+  isInvulnerable() {
+    return !!samp.callNative("NPC_IsInvulnerable", "i", this._id);
+  }
+  setSurfingOffsets(x: number, y: number, z: number) {
+    return samp.callNative(
+      "NPC_SetSurfingOffsets",
+      "ifff",
+      this._id,
+      x,
+      y,
+      z,
+    ) as number;
+  }
+  getSurfingOffsets() {
+    const [x, y, z, ret]: number[] = samp.callNative(
+      "NPC_GetSurfingOffsets",
+      "iFFF",
+      this._id,
+    );
+    return { x, y, z, ret };
+  }
+  setSurfingVehicle(vehicle: Vehicle) {
+    return samp.callNative(
+      "NPC_SetSurfingVehicle",
+      "ii",
+      this._id,
+      vehicle.id,
+    ) as number;
+  }
+  getSurfingVehicle() {
+    return Vehicle.getInstance(this.getSurfingVehicleId());
+  }
+  getSurfingVehicleId() {
+    return samp.callNative("NPC_GetSurfingVehicle", "i", this._id) as number;
+  }
+  private setSurfingPlayerObject(objectId: number) {
+    return samp.callNative(
+      "NPC_SetSurfingPlayerObject",
+      "ii",
+      this._id,
+      objectId,
+    ) as number;
+  }
+  private getSurfingPlayerObject() {
+    return samp.callNative(
+      "NPC_GetSurfingPlayerObject",
+      "i",
+      this._id,
+    ) as number;
+  }
+  resetSurfingData() {
+    return samp.callNative("NPC_ResetSurfingData", "i", this._id) as number;
+  }
+
+  setSurfingDynamicObject(object: DynamicObject) {
+    return this.setSurfingPlayerObject(
+      Streamer.getItemInternalID(
+        new Player(this._id),
+        StreamerItemTypes.OBJECT,
+        object.id,
+      ),
+    );
+  }
+
+  getSurfingDynamicObject() {
+    return DynamicObject.getInstance(this.getSurfingDynamicObjectId());
+  }
+
+  getSurfingDynamicObjectId() {
+    return Streamer.getItemStreamerID(
+      new Player(this._id),
+      StreamerItemTypes.OBJECT,
+      this.getSurfingPlayerObject(),
+    );
   }
 
   static loadRecord(filePath: string) {
