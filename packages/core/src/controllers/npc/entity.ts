@@ -135,7 +135,7 @@ export class Npc {
     return this;
   }
   isMoving() {
-    return !!samp.callNative("NPC_IsMoving", "ifffif", this._id);
+    return !!samp.callNative("NPC_IsMoving", "i", this._id);
   }
   setSkin(model: number) {
     samp.callNative("NPC_SetSkin", "ii", this._id, model);
@@ -210,10 +210,17 @@ export class Npc {
     return this;
   }
   getAmmo() {
-    return samp.callNative("NPC_GetAmmo", "ii", this._id) as number;
+    return samp.callNative("NPC_GetAmmo", "i", this._id) as number;
   }
   setKeys(upAndDown: number, leftAndDown: number, keys: number) {
-    samp.callNative("NPC_SetKeys", "iiii", upAndDown, leftAndDown, keys);
+    samp.callNative(
+      "NPC_SetKeys",
+      "iiii",
+      this._id,
+      upAndDown,
+      leftAndDown,
+      keys,
+    );
     return this;
   }
   getKeys() {
@@ -701,11 +708,9 @@ export class Npc {
       rotZ,
     ) as number;
   }
-
   stopPlayback() {
     return samp.callNative("NPC_StopPlayback", "i", this._id) as number;
   }
-
   pausePlayback(paused: boolean) {
     return samp.callNative(
       "NPC_PausePlayback",
@@ -714,7 +719,6 @@ export class Npc {
       paused,
     ) as number;
   }
-
   isPlayingPlayback() {
     return !!samp.callNative("NPC_IsPlayingPlayback", "i", this._id);
   }
@@ -766,7 +770,6 @@ export class Npc {
   updateNodePoint(point: number) {
     return !!samp.callNative("NPC_UpdateNodePoint", "ii", this._id, point);
   }
-
   setInvulnerable(toggle: boolean) {
     return samp.callNative(
       "NPC_SetInvulnerable",
@@ -828,7 +831,6 @@ export class Npc {
   resetSurfingData() {
     return samp.callNative("NPC_ResetSurfingData", "i", this._id) as number;
   }
-
   setSurfingDynamicObject(object: DynamicObject) {
     return this.setSurfingPlayerObject(
       Streamer.getItemInternalID(
@@ -838,11 +840,9 @@ export class Npc {
       ),
     );
   }
-
   getSurfingDynamicObject() {
     return DynamicObject.getInstance(this.getSurfingDynamicObjectId());
   }
-
   getSurfingDynamicObjectId() {
     return Streamer.getItemStreamerID(
       new Player(this._id),
@@ -850,42 +850,33 @@ export class Npc {
       this.getSurfingPlayerObject(),
     );
   }
-
   static loadRecord(filePath: string) {
     return samp.callNative("NPC_LoadRecord", "s", filePath) as number;
   }
-
   static unloadRecord(recordId: number) {
     return !!samp.callNative("NPC_UnloadRecord", "i", recordId);
   }
   static isValidRecord(recordId: number) {
     return !!samp.callNative("NPC_IsValidRecord", "i", recordId);
   }
-
   static getRecordCount() {
     return samp.callNative("NPC_GetRecordCount", "") as number;
   }
-
   static unloadAllRecords() {
     return !!samp.callNative("NPC_UnloadAllRecords", "");
   }
-
   static createPath() {
     return samp.callNative("NPC_CreatePath", "") as number;
   }
-
   static destroyPath(pathId: number) {
     return !!samp.callNative("NPC_DestroyPath", "i", pathId);
   }
-
   static destroyAllPath() {
     return !!samp.callNative("NPC_DestroyAllPath", "");
   }
-
   static getPathCount() {
     return samp.callNative("NPC_GetPathCount", "") as number;
   }
-
   static addPointToPath(
     pathId: number,
     x: number,
@@ -903,7 +894,6 @@ export class Npc {
       stopRange,
     );
   }
-
   static removePointFromPath(pathId: number, pointIndex: number) {
     return !!samp.callNative(
       "NPC_RemovePointFromPath",
@@ -912,15 +902,12 @@ export class Npc {
       pointIndex,
     );
   }
-
   static clearPath(pathId: number) {
     return !!samp.callNative("NPC_ClearPath", "i", pathId);
   }
-
   static getPathPointCount(pathId: number) {
     return samp.callNative("NPC_GetPathPointCount", "i", pathId) as number;
   }
-
   static getPathPoint(pathId: number, pointIndex: number) {
     const [x, y, z, stopRange, ret]: number[] = samp.callNative(
       "NPC_GetPathPoint",
@@ -930,11 +917,9 @@ export class Npc {
     );
     return { x, y, z, stopRange, ret };
   }
-
   static isValidPath(pathId: number) {
     return !!samp.callNative("NPC_IsValidPath", "i", pathId);
   }
-
   getCurrentPathPointIndex() {
     return samp.callNative(
       "NPC_GetCurrentPathPointIndex",
@@ -942,7 +927,6 @@ export class Npc {
       this._id,
     ) as number;
   }
-
   moveByPath(
     pathId: number,
     moveType = NPCMoveTypeEnum.JOG,
@@ -959,27 +943,39 @@ export class Npc {
       reversed,
     );
   }
-
+  hasPathPointInRadius(
+    pathId: number,
+    x: number,
+    y: number,
+    z: number,
+    radius: number,
+  ) {
+    return !!samp.callNative(
+      "NPC_HasPathPointInRange",
+      "iiffff",
+      this._id,
+      pathId,
+      x,
+      y,
+      z,
+      radius,
+    );
+  }
   static openNode(nodeId: number) {
     return !!samp.callNative("NPC_OpenNode", "i", nodeId);
   }
-
   static closeNode(nodeId: number) {
     return !!samp.callNative("NPC_CloseNode", "i", nodeId);
   }
-
   static isNodeOpen(nodeId: number) {
     return !!samp.callNative("NPC_IsNodeOpen", "i", nodeId);
   }
-
   static getNodeType(nodeId: number) {
     return samp.callNative("NPC_GetNodeType", "i", nodeId) as number;
   }
-
   static setNodePoint(nodeId: number, pointId: number) {
     return !!samp.callNative("NPC_SetNodePoint", "ii", nodeId, pointId);
   }
-
   static getNodePointPosition(nodeId: number) {
     const [x, y, z, ret] = samp.callNative(
       "NPC_GetNodePointPosition",
@@ -1009,7 +1005,6 @@ export class Npc {
       ret: !!ret,
     };
   }
-
   static readonly connect = w.ConnectNPC;
   static startRecordingPlayerData(
     player: Player,
@@ -1042,7 +1037,6 @@ export class Npc {
     w.StopRecordingPlayback();
     Npc.recordStatus = NPCRecordStatusEnum.NONE;
   }
-
   static pauseRecordingPlayback() {
     if (Npc.recordStatus !== NPCRecordStatusEnum.START)
       throw new Error("[NpcFunc]: The current status cannot be paused");
