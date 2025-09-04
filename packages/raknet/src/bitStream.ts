@@ -161,35 +161,35 @@ export class BitStream {
   // macros
 
   readInt8() {
-    return this.readValue(PacketRpcValueType.Int8);
+    return this.readValue(PacketRpcValueType.Int8) as number;
   }
 
   readInt16() {
-    return this.readValue(PacketRpcValueType.Int16);
+    return this.readValue(PacketRpcValueType.Int16) as number;
   }
 
   readInt32() {
-    return this.readValue(PacketRpcValueType.Int32);
+    return this.readValue(PacketRpcValueType.Int32) as number;
   }
 
   readUint8() {
-    return this.readValue(PacketRpcValueType.UInt8);
+    return this.readValue(PacketRpcValueType.UInt8) as number;
   }
 
   readUint16() {
-    return this.readValue(PacketRpcValueType.UInt16);
+    return this.readValue(PacketRpcValueType.UInt16) as number;
   }
 
   readUint32() {
-    return this.readValue(PacketRpcValueType.UInt32);
+    return this.readValue(PacketRpcValueType.UInt32) as number;
   }
 
   readFloat() {
-    return this.readValue(PacketRpcValueType.Float);
+    return this.readValue(PacketRpcValueType.Float) as number;
   }
 
   readBool() {
-    return this.readValue(PacketRpcValueType.Bool);
+    return this.readValue(PacketRpcValueType.Bool) as boolean;
   }
 
   readString(size = 1024) {
@@ -197,35 +197,35 @@ export class BitStream {
   }
 
   readCompressedInt8() {
-    return this.readValue(PacketRpcValueType.CInt8);
+    return this.readValue(PacketRpcValueType.CInt8) as number;
   }
 
   readCompressedInt16() {
-    return this.readValue(PacketRpcValueType.CInt16);
+    return this.readValue(PacketRpcValueType.CInt16) as number;
   }
 
   readCompressedInt32() {
-    return this.readValue(PacketRpcValueType.CInt32);
+    return this.readValue(PacketRpcValueType.CInt32) as number;
   }
 
   readCompressedUint8() {
-    return this.readValue(PacketRpcValueType.CUInt8);
+    return this.readValue(PacketRpcValueType.CUInt8) as number;
   }
 
   readCompressedUint16() {
-    return this.readValue(PacketRpcValueType.CUInt16);
+    return this.readValue(PacketRpcValueType.CUInt16) as number;
   }
 
   readCompressedUint32() {
-    return this.readValue(PacketRpcValueType.CUInt32);
+    return this.readValue(PacketRpcValueType.CUInt32) as number;
   }
 
   readCompressedFloat() {
-    return this.readValue(PacketRpcValueType.CFloat);
+    return this.readValue(PacketRpcValueType.CFloat) as number;
   }
 
   readCompressedBool() {
-    return this.readValue(PacketRpcValueType.CBool);
+    return this.readValue(PacketRpcValueType.CBool) as boolean;
   }
 
   readCompressedString(size: number, charset?: string) {
@@ -233,23 +233,23 @@ export class BitStream {
   }
 
   readBits(size: number) {
-    return this.readValue([PacketRpcValueType.Bits, size]);
+    return this.readValue([PacketRpcValueType.Bits, size]) as number;
   }
 
   readFloat3() {
-    return this.readValue(PacketRpcValueType.Float3);
+    return this.readValue(PacketRpcValueType.Float3) as Vector3<number>;
   }
 
   readFloat4() {
-    return this.readValue(PacketRpcValueType.Float4);
+    return this.readValue(PacketRpcValueType.Float4) as Vector4<number>;
   }
 
   readVector() {
-    return this.readValue(PacketRpcValueType.Vector);
+    return this.readValue(PacketRpcValueType.Vector) as Vector3<number>;
   }
 
   readNormQuat() {
-    return this.readValue(PacketRpcValueType.NormQuat);
+    return this.readValue(PacketRpcValueType.NormQuat) as Vector4<number>;
   }
 
   readString8(charset?: string) {
