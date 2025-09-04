@@ -1,3 +1,26 @@
+## <small>0.12.1 (2025-09-04)</small>
+
+* chore(core): npc typo ([552e306](https://github.com/dockfries/infernus/commit/552e306))
+* chore(release): colandreas v0.1.0 ([0f03710](https://github.com/dockfries/infernus/commit/0f03710))
+* chore(release): distance v0.0.1 ([485bf98](https://github.com/dockfries/infernus/commit/485bf98))
+* chore(release): drift-detection v0.1.0 ([ab3eab3](https://github.com/dockfries/infernus/commit/ab3eab3))
+* chore(release): fcnpc v0.1.0 ([b314523](https://github.com/dockfries/infernus/commit/b314523))
+* chore(release): filterscript v0.12.0 ([af5f40a](https://github.com/dockfries/infernus/commit/af5f40a))
+* chore(release): map-loader v0.1.0 ([af1586e](https://github.com/dockfries/infernus/commit/af1586e))
+* chore(release): mapandreas v0.3.0 ([da6dfcf](https://github.com/dockfries/infernus/commit/da6dfcf))
+* chore(release): nex-ac v0.1.0 ([b340386](https://github.com/dockfries/infernus/commit/b340386))
+* chore(release): raknet v0.12.0 ([0cac3da](https://github.com/dockfries/infernus/commit/0cac3da))
+* chore(release): weapon-config v0.1.0 ([09b4ffd](https://github.com/dockfries/infernus/commit/09b4ffd))
+* chore(release): weapon-config v0.1.1 ([14a9fee](https://github.com/dockfries/infernus/commit/14a9fee))
+* feat(core): add onNpcFinishMovePathPoint ([fe38204](https://github.com/dockfries/infernus/commit/fe38204))
+* feat(core): npc apis ([8af6a88](https://github.com/dockfries/infernus/commit/8af6a88))
+* feat(core): npc apis ([1c1b799](https://github.com/dockfries/infernus/commit/1c1b799))
+* feat(core): npc apis ([d1d961e](https://github.com/dockfries/infernus/commit/d1d961e))
+* feat(core): npc create maybe put in player pool before onPlayerConnect? ([4f72f2d](https://github.com/dockfries/infernus/commit/4f72f2d))
+* fix(weapon-config): fix recursion when setting health to NPC ([e6c609d](https://github.com/dockfries/infernus/commit/e6c609d))
+
+
+
 ## 0.12.0 (2025-08-10)
 
 * feat(colandreas, map-loader): maybe can check colandreas this way? ([2f5196d](https://github.com/dockfries/infernus/commit/2f5196d))
