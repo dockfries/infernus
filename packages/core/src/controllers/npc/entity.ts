@@ -22,7 +22,7 @@ import { DynamicObject } from "core/wrapper/streamer/object";
 import { Streamer } from "core/wrapper/streamer";
 
 export class Npc {
-  private _id = InvalidEnum.PLAYER_ID;
+  private _id: number = InvalidEnum.PLAYER_ID;
   private _name = "";
   private static recordStatus: NPCRecordStatusEnum;
 
