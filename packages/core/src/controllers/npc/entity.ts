@@ -6,6 +6,7 @@ import {
   NPCMoveTypeEnum,
   NPCMoveSpeedEnum,
   StreamerItemTypes,
+  NPCEntityCheckEnum,
 } from "../../enums";
 import { Player } from "../player";
 import {
@@ -107,7 +108,7 @@ export class Npc {
     targetPosY: number,
     targetPosZ: number,
     moveType: number,
-    moveSpeed = -1.0,
+    moveSpeed: number = NPCMoveSpeedEnum.AUTO,
   ) {
     return !!samp.callNative(
       "NPC_Move",
@@ -120,7 +121,11 @@ export class Npc {
       moveSpeed,
     );
   }
-  moveToPlayer(player: Player, moveType: number, moveSpeed = -1.0) {
+  moveToPlayer(
+    player: Player,
+    moveType: number,
+    moveSpeed: number = NPCMoveSpeedEnum.AUTO,
+  ) {
     return !!samp.callNative(
       "NPC_MoveToPlayer",
       "iiif",
@@ -308,7 +313,7 @@ export class Npc {
     offsetY: number,
     offsetZ: number,
     isHit: boolean,
-    checkInBetweenFlags: number,
+    checkInBetweenFlags = NPCEntityCheckEnum.ALL,
   ) {
     samp.callNative(
       "NPC_Shoot",
@@ -341,7 +346,7 @@ export class Npc {
     offsetFromX: number,
     offsetFromY: number,
     offsetFromZ: number,
-    checkInBetweenFlags: number,
+    checkInBetweenFlags = NPCEntityCheckEnum.ALL,
   ) {
     samp.callNative(
       "NPC_AimAt",
@@ -371,7 +376,7 @@ export class Npc {
     offsetFromX: number,
     offsetFromY: number,
     offsetFromZ: number,
-    checkInBetweenFlags: number,
+    checkInBetweenFlags = NPCEntityCheckEnum.ALL,
   ) {
     samp.callNative(
       "NPC_AimAtPlayer",
@@ -728,7 +733,7 @@ export class Npc {
   playNode(
     node: number,
     moveType = NPCMoveTypeEnum.JOG,
-    speed = NPCMoveSpeedEnum.AUTO,
+    speed: number = NPCMoveSpeedEnum.AUTO,
     radius = 0.0,
     setAngle = true,
   ) {
@@ -930,7 +935,7 @@ export class Npc {
   moveByPath(
     pathId: number,
     moveType = NPCMoveTypeEnum.JOG,
-    moveSpeed = NPCMoveSpeedEnum.AUTO,
+    moveSpeed: number = NPCMoveSpeedEnum.AUTO,
     reversed = false,
   ) {
     return !!samp.callNative(
