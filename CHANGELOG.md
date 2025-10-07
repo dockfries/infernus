@@ -1,3 +1,14 @@
+## <small>0.12.2 (2025-10-07)</small>
+
+* fix(core): iconv-lite import esm ([aa750ce](https://github.com/dockfries/infernus/commit/aa750ce))
+* fix(core): npc id type ([0720271](https://github.com/dockfries/infernus/commit/0720271))
+* fix(raknet): some read macros return type ([f8cca22](https://github.com/dockfries/infernus/commit/f8cca22))
+* feat(core): npc max_npcs, invalid id, types ([00939f5](https://github.com/dockfries/infernus/commit/00939f5))
+* feat(core): npc node,path,record class, remove deprecate funcs ([d02da25](https://github.com/dockfries/infernus/commit/d02da25))
+* chore(release): raknet v0.12.1 ([6ed824e](https://github.com/dockfries/infernus/commit/6ed824e))
+
+
+
 ## <small>0.12.1 (2025-09-04)</small>
 
 * chore(core): npc typo ([552e306](https://github.com/dockfries/infernus/commit/552e306))
