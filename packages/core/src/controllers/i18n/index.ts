@@ -1,8 +1,10 @@
 import util from "node:util";
 import type { TLocales } from "../../types";
-import { encode, decode, encodingExists } from "iconv-lite";
+import iconv from "iconv-lite";
 import { snakeCase, merge, omit, mapKeys } from "es-toolkit";
 import { get } from "es-toolkit/compat";
+
+const { encode, decode, encodingExists } = iconv;
 
 function isBuffer(value: any): value is Buffer {
   return value instanceof Buffer;
