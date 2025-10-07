@@ -9,33 +9,22 @@ import { I18n } from "../i18n";
 import { Npc } from "./entity";
 import { Player } from "../player";
 import { GameMode } from "../gamemode";
-import { npcPool } from "core/utils/pools";
+import {
+  npcNodePool,
+  npcPathPool,
+  npcPool,
+  npcRecordPool,
+} from "core/utils/pools";
+import { NpcRecord } from "./record";
+import { NpcNode } from "./node";
+import { NpcPath } from "./path";
 
 GameMode.onExit(({ next }) => {
   npcPool.clear();
+  npcNodePool.clear();
+  npcPathPool.clear();
+  npcRecordPool.clear();
   return next();
-});
-
-const [onConnect] = defineEvent({
-  name: "OnNpcConnect",
-  beforeEach(myPlayerId: number) {
-    return { myPlayerId };
-  },
-});
-
-const [onDisconnect] = defineEvent({
-  name: "OnNpcDisconnect",
-  beforeEach(reason: string) {
-    return { reason };
-  },
-});
-
-const [onModeInit] = defineEvent({
-  name: "OnNpcModeInit",
-});
-
-const [onModeExit] = defineEvent({
-  name: "OnNpcModeExit",
 });
 
 const [onClientMessage] = defineEvent({
@@ -165,13 +154,21 @@ const [onRespawn] = defineEvent({
 const [onPlaybackStart] = defineEvent({
   name: "OnNPCPlaybackStart",
   beforeEach(id: number, recordId: number) {
-    return { npc: Npc.getInstance(id)!, recordId };
+    return {
+      npc: Npc.getInstance(id)!,
+      record: NpcRecord.getInstance(recordId),
+      recordId,
+    };
   },
 });
 const [onPlaybackEnd] = defineEvent({
   name: "OnNPCPlaybackEnd",
   beforeEach(id: number, recordId: number) {
-    return { npc: Npc.getInstance(id)!, recordId };
+    return {
+      npc: Npc.getInstance(id)!,
+      record: NpcRecord.getInstance(recordId),
+      recordId,
+    };
   },
 });
 const [onWeaponShot] = defineEvent({
@@ -185,7 +182,15 @@ const [onWeaponShot] = defineEvent({
     fY: number,
     fZ: number,
   ) {
-    return { npc: Npc.getInstance(id)!, weapon, hitType, hitId, fX, fY, fZ };
+    return {
+      npc: Npc.getInstance(id)!,
+      weapon,
+      hitType,
+      hitId,
+      fX,
+      fY,
+      fZ,
+    };
   },
 });
 const [onFinishNodePoint] = defineEvent({
@@ -193,6 +198,7 @@ const [onFinishNodePoint] = defineEvent({
   beforeEach(id: number, nodeId: number, pointId: number) {
     return {
       npc: Npc.getInstance(id)!,
+      node: NpcNode.getInstance(nodeId),
       nodeId,
       pointId,
     };
@@ -203,6 +209,7 @@ const [onFinishNode] = defineEvent({
   beforeEach(id: number, nodeId: number) {
     return {
       npc: Npc.getInstance(id)!,
+      node: NpcNode.getInstance(nodeId),
       nodeId,
     };
   },
@@ -212,6 +219,8 @@ const [onChangeNode] = defineEvent({
   beforeEach(id: number, newNodeId: number, oldNodeId: number) {
     return {
       npc: Npc.getInstance(id)!,
+      newNode: NpcNode.getInstance(newNodeId),
+      oldNode: NpcNode.getInstance(oldNodeId),
       newNodeId,
       oldNodeId,
     };
@@ -223,6 +232,7 @@ const [onFinishMovePath] = defineEvent({
   beforeEach(id: number, pathId: number) {
     return {
       npc: Npc.getInstance(id)!,
+      path: NpcPath.getInstance(pathId),
       pathId,
     };
   },
@@ -233,6 +243,7 @@ const [onFinishMovePathPoint] = defineEvent({
   beforeEach(id: number, pathId: number, pointIndex: number) {
     return {
       npc: Npc.getInstance(id)!,
+      path: NpcPath.getInstance(pathId),
       pathId,
       pointIndex,
     };
@@ -240,10 +251,6 @@ const [onFinishMovePathPoint] = defineEvent({
 });
 
 export const NpcEvent = Object.freeze({
-  onConnect,
-  onDisconnect,
-  onModeInit,
-  onModeExit,
   onClientMessage,
   onFinishMove,
   onCreate,

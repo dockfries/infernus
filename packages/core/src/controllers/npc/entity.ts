@@ -1,50 +1,45 @@
 import * as w from "core/wrapper/native";
-import type { RecordTypesEnum } from "../../enums";
 import {
-  NPCRecordStatusEnum,
+  RecordTypesEnum,
   InvalidEnum,
   NPCMoveTypeEnum,
   NPCMoveSpeedEnum,
   StreamerItemTypes,
   NPCEntityCheckEnum,
-} from "../../enums";
-import { Player } from "../player";
-import {
   BulletHitTypesEnum,
   FightingStylesEnum,
   WeaponEnum,
   WeaponSkillsEnum,
   WeaponStatesEnum,
 } from "core/enums";
+import { Player } from "../player";
 import { Vehicle } from "../vehicle";
-import { npcPool, playerPool } from "core/utils/pools";
+import { npcPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 import { DynamicObject } from "core/wrapper/streamer/object";
 import { Streamer } from "core/wrapper/streamer";
+import { NpcRecord } from "./record";
+import { NpcNode } from "./node";
 
 export class Npc {
   private _id: number = InvalidEnum.PLAYER_ID;
   private _name = "";
-  private static recordStatus: NPCRecordStatusEnum;
 
   get id() {
     return this._id;
   }
 
   constructor(name: string) {
-    const id: number = samp.callNative("NPC_Create", "s", name);
-    this._id = id;
+    this._id = samp.callNative("NPC_Create", "s", name);
     this._name = name;
-    if (id !== InvalidEnum.PLAYER_ID) {
-      if (playerPool.has(id)) {
-        new Player(id);
-      }
-      const instance = Npc.getInstance(id);
+    if (this._id !== InvalidEnum.PLAYER_ID) {
+      new Player(this._id);
+      const instance = Npc.getInstance(this._id);
       if (instance) {
         return instance;
       }
     }
-    npcPool.set(id, this);
+    npcPool.set(this._id, this);
     return this;
   }
   getName() {
@@ -690,7 +685,7 @@ export class Npc {
     ) as number;
   }
   startPlaybackEx(
-    recordId: number,
+    record: NpcRecord,
     autoUnload: boolean,
     startX: number,
     startY: number,
@@ -703,7 +698,7 @@ export class Npc {
       "NPC_StartPlaybackEx",
       "iiiffffff",
       this._id,
-      recordId,
+      record.id,
       autoUnload,
       startX,
       startY,
@@ -731,7 +726,7 @@ export class Npc {
     return !!samp.callNative("NPC_IsPlaybackPaused", "i", this._id);
   }
   playNode(
-    node: number,
+    node: NpcNode,
     moveType = NPCMoveTypeEnum.JOG,
     speed: number = NPCMoveSpeedEnum.AUTO,
     radius = 0.0,
@@ -741,7 +736,7 @@ export class Npc {
       "NPC_PlayNode",
       "iiiffi",
       this._id,
-      node,
+      node.id,
       moveType,
       speed,
       radius,
@@ -763,17 +758,17 @@ export class Npc {
   isPlayingNode() {
     return !!samp.callNative("NPC_IsPlayingNode", "i", this._id);
   }
-  changeNode(node: number, link: number) {
+  changeNode(node: NpcNode, link: number) {
     return samp.callNative(
       "NPC_ChangeNode",
       "iii",
       this._id,
-      node,
+      node.id,
       link,
     ) as number;
   }
-  updateNodePoint(point: number) {
-    return !!samp.callNative("NPC_UpdateNodePoint", "ii", this._id, point);
+  updateNodePoint(pointId: number) {
+    return !!samp.callNative("NPC_UpdateNodePoint", "ii", this._id, pointId);
   }
   setInvulnerable(toggle: boolean) {
     return samp.callNative(
@@ -855,162 +850,6 @@ export class Npc {
       this.getSurfingPlayerObject(),
     );
   }
-  static loadRecord(filePath: string) {
-    return samp.callNative("NPC_LoadRecord", "s", filePath) as number;
-  }
-  static unloadRecord(recordId: number) {
-    return !!samp.callNative("NPC_UnloadRecord", "i", recordId);
-  }
-  static isValidRecord(recordId: number) {
-    return !!samp.callNative("NPC_IsValidRecord", "i", recordId);
-  }
-  static getRecordCount() {
-    return samp.callNative("NPC_GetRecordCount", "") as number;
-  }
-  static unloadAllRecords() {
-    return !!samp.callNative("NPC_UnloadAllRecords", "");
-  }
-  static createPath() {
-    return samp.callNative("NPC_CreatePath", "") as number;
-  }
-  static destroyPath(pathId: number) {
-    return !!samp.callNative("NPC_DestroyPath", "i", pathId);
-  }
-  static destroyAllPath() {
-    return !!samp.callNative("NPC_DestroyAllPath", "");
-  }
-  static getPathCount() {
-    return samp.callNative("NPC_GetPathCount", "") as number;
-  }
-  static addPointToPath(
-    pathId: number,
-    x: number,
-    y: number,
-    z: number,
-    stopRange: number,
-  ) {
-    return !!samp.callNative(
-      "NPC_AddPointToPath",
-      "iffff",
-      pathId,
-      x,
-      y,
-      z,
-      stopRange,
-    );
-  }
-  static removePointFromPath(pathId: number, pointIndex: number) {
-    return !!samp.callNative(
-      "NPC_RemovePointFromPath",
-      "ii",
-      pathId,
-      pointIndex,
-    );
-  }
-  static clearPath(pathId: number) {
-    return !!samp.callNative("NPC_ClearPath", "i", pathId);
-  }
-  static getPathPointCount(pathId: number) {
-    return samp.callNative("NPC_GetPathPointCount", "i", pathId) as number;
-  }
-  static getPathPoint(pathId: number, pointIndex: number) {
-    const [x, y, z, stopRange, ret]: number[] = samp.callNative(
-      "NPC_GetPathPoint",
-      "ii",
-      pathId,
-      pointIndex,
-    );
-    return { x, y, z, stopRange, ret };
-  }
-  static isValidPath(pathId: number) {
-    return !!samp.callNative("NPC_IsValidPath", "i", pathId);
-  }
-  getCurrentPathPointIndex() {
-    return samp.callNative(
-      "NPC_GetCurrentPathPointIndex",
-      "i",
-      this._id,
-    ) as number;
-  }
-  moveByPath(
-    pathId: number,
-    moveType = NPCMoveTypeEnum.JOG,
-    moveSpeed: number = NPCMoveSpeedEnum.AUTO,
-    reversed = false,
-  ) {
-    return !!samp.callNative(
-      "NPC_MoveByPath",
-      "iiifi",
-      this._id,
-      pathId,
-      moveType,
-      moveSpeed,
-      reversed,
-    );
-  }
-  hasPathPointInRadius(
-    pathId: number,
-    x: number,
-    y: number,
-    z: number,
-    radius: number,
-  ) {
-    return !!samp.callNative(
-      "NPC_HasPathPointInRange",
-      "iiffff",
-      this._id,
-      pathId,
-      x,
-      y,
-      z,
-      radius,
-    );
-  }
-  static openNode(nodeId: number) {
-    return !!samp.callNative("NPC_OpenNode", "i", nodeId);
-  }
-  static closeNode(nodeId: number) {
-    return !!samp.callNative("NPC_CloseNode", "i", nodeId);
-  }
-  static isNodeOpen(nodeId: number) {
-    return !!samp.callNative("NPC_IsNodeOpen", "i", nodeId);
-  }
-  static getNodeType(nodeId: number) {
-    return samp.callNative("NPC_GetNodeType", "i", nodeId) as number;
-  }
-  static setNodePoint(nodeId: number, pointId: number) {
-    return !!samp.callNative("NPC_SetNodePoint", "ii", nodeId, pointId);
-  }
-  static getNodePointPosition(nodeId: number) {
-    const [x, y, z, ret] = samp.callNative(
-      "NPC_GetNodePointPosition",
-      "iFFF",
-      nodeId,
-    );
-    return {
-      x,
-      y,
-      z,
-      ret: !!ret,
-    };
-  }
-  static getNodePointCount(nodeId: number) {
-    return samp.callNative("NPC_GetNodePointCount", "i", nodeId) as number;
-  }
-  static getNodeInfo(nodeId: number) {
-    const [vehNodes, pedNodes, naviNode, ret] = samp.callNative(
-      "NPC_GetNodePointPosition",
-      "iIII",
-      nodeId,
-    );
-    return {
-      vehNodes,
-      pedNodes,
-      naviNode,
-      ret: !!ret,
-    };
-  }
-  static readonly connect = w.ConnectNPC;
   static startRecordingPlayerData(
     player: Player,
     recordType: RecordTypesEnum,
@@ -1026,33 +865,6 @@ export class Npc {
       throw new Error("[NpcFunc]: It should be started before stop");
     w.StopRecordingPlayerData(player.id);
     player.isRecording = false;
-  }
-  static startRecordingPlayback(
-    playbackType: RecordTypesEnum,
-    recordName: string,
-  ): void {
-    if (Npc.recordStatus >= NPCRecordStatusEnum.START)
-      throw new Error("[NpcFunc]: The current status cannot be replayed");
-    w.StartRecordingPlayback(playbackType, recordName);
-    Npc.recordStatus = NPCRecordStatusEnum.START;
-  }
-  static stopRecordingPlayback(): void {
-    if (Npc.recordStatus < NPCRecordStatusEnum.START)
-      throw new Error("[NpcFunc]: The current status cannot be stopped");
-    w.StopRecordingPlayback();
-    Npc.recordStatus = NPCRecordStatusEnum.NONE;
-  }
-  static pauseRecordingPlayback() {
-    if (Npc.recordStatus !== NPCRecordStatusEnum.START)
-      throw new Error("[NpcFunc]: The current status cannot be paused");
-    w.PauseRecordingPlayback();
-    Npc.recordStatus = NPCRecordStatusEnum.PAUSE;
-  }
-  static resumeRecordingPlayback() {
-    if (Npc.recordStatus !== NPCRecordStatusEnum.PAUSE)
-      throw new Error("[NpcFunc]: The current status cannot be paused");
-    w.ResumeRecordingPlayback();
-    Npc.recordStatus = NPCRecordStatusEnum.START;
   }
   static isValid(id: number) {
     return !!samp.callNative("NPC_IsValid", "i", id);

@@ -3,6 +3,9 @@ import type { Vehicle } from "core/controllers/vehicle/entity";
 import type { GangZone } from "core/controllers/gangzone/entity";
 import type { Menu } from "core/controllers/menu/entity";
 import type { Npc } from "core/controllers/npc/entity";
+import type { NpcNode } from "core/controllers/npc/node";
+import type { NpcPath } from "core/controllers/npc/path";
+import type { NpcRecord } from "core/controllers/npc/record";
 
 import type { TextDraw } from "core/controllers/textdraw/entity";
 import type { DynamicObject } from "core/wrapper/streamer/object";
@@ -26,6 +29,9 @@ export const globalGangZonePool = new Map<number, GangZone>();
 export const playerGangZonePool = new Map<number, GangZone>();
 export const menuPool = new Map<number, Menu>();
 export const npcPool = new Map<number, Npc>();
+export const npcNodePool = new Map<number, NpcNode>();
+export const npcPathPool = new Map<number, NpcPath>();
+export const npcRecordPool = new Map<number, NpcRecord>();
 export const globalTextDrawPool = new Map<number, TextDraw>();
 export const playerTextDrawPool = new Map<number, TextDraw>();
 

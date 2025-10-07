@@ -124,20 +124,6 @@ const [onPlayerExit] = defineEvent({
   },
 });
 
-const [onNpcEnter] = defineEvent({
-  name: "OnNpcEnterVehicle",
-  beforeEach(vid: number, seatId: number) {
-    return {
-      vehicle: Vehicle.getInstance(vid)!,
-      seatId,
-    };
-  },
-});
-
-const [onNpcExit] = defineEvent({
-  name: "OnNpcExitVehicle",
-});
-
 const [onTrailerUpdate] = defineEvent({
   name: "OnTrailerUpdate",
   beforeEach(pid: number, vid: number) {
@@ -187,8 +173,6 @@ export const VehicleEvent = Object.freeze({
   onStreamOut,
   onPlayerEnter,
   onPlayerExit,
-  onNpcEnter,
-  onNpcExit,
   onTrailerUpdate,
   onUnoccupiedUpdate,
 });
