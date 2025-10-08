@@ -16,11 +16,11 @@ The name `Infernus` comes from the vehicle with the ID `411` in the game (specif
 
 | /              | Infernus + samp-node                                                               | omp-node                     |
 | -------------- | ---------------------------------------------------------------------------------- | ---------------------------- |
-| Runtime        | Windows/Linux: Node.js 20.19+                                                      | Windows/Linux: Node.js 18+   |
-| Module System  | CommonJS                                                                           | ESModule                     |
-| Architecture   | x86 only                                                                           | x64                          |
+| Runtime        | Windows/Linux: Node.js 22.17+                                                      | Windows/Linux: Node.js 18+   |
+| Module System  | CommonJS/ESModule(experimental)                                                    | ESModule                     |
+| Architecture   | x86 only                                                                           | x86/x64                      |
 | Implementation | Via sampgdk→fakeamx→native calls                                                   | Direct omp-gdk/omp-sdk calls |
-| Performance    | Relatively slower                                                                  | More optimized               |
+| Performance    | Slow                                                                               | Fast                         |
 | Compatibility  | Third-party plugins via polyfill layer                                             | Requires SDK adaptation      |
 | Philosophy     | 1. Full Infernus rewrite recommended (avoid Pawn)<br>2. Mandatory Steamer adoption | See official documentation   |
 
@@ -97,12 +97,24 @@ If you are unsure how to start a project, please refer to the [Quick Start](./qu
 | 4   | `Samp Node`         | Bridge to the underlying `SDK`                  |
 | 5   | `Omp` Game Server   | Underlying game server                          |
 
-## Why Develop
+## Why Development
 
-For beginners in programming or frontend developers, getting started with game script development using `Pawn`, a procedural language similar to `C`, can be challenging. Additionally, performing basic low-level operations in `Pawn`, such as string concatenation, deletion, and array manipulation, is more cumbersome compared to object-oriented `JavaScript`.
+For programming beginners or front-end developers, using a procedural language like Pawn (which resembles C) for game scripting presents a significant learning curve. Compared to modern object-oriented languages like JavaScript, Pawn's foundational APIs are more cumbersome—elementary operations such as string concatenation or array manipulation require manual implementation, increasing development complexity.
 
-Furthermore, implementing asynchronous functionality is quite difficult within the `Pawn` language ecosystem. Internationalization is typically achieved using `UTF-8` encoding, but since the release of `sa` was quite early, it did not utilize `UTF-8` for internationalization. Instead, it relied on different charsets based on the `ANSI` of the Windows system, such as `ISO-8859-1` in Western countries and `GBK` encoding in China.
+Furthermore, the Pawn language ecosystem exhibits notable limitations:
 
-Developing localized scripts in `Pawn` often requires setting the file encoding to match the localized Windows system language charset. This can lead to unforeseen encoding issues, such as storing `GBK` data in a `UTF-8` database, which may result in garbled data if not handled properly.
+1.  **Weak Asynchronous Support**: It natively lacks modern asynchronous programming paradigms like `Promise/Async` found in JavaScript.
+2.  **Internationalization Challenges**: Since the Pawn compiler (SA-MP) was developed earlier, its character encoding relies on the operating system's locale settings:
+    - Western systems typically use `ISO-8859-1` encoding;
+    - Chinese systems rely on `GBK` encoding;
+    - This creates incompatibility with the universal `UTF-8` standard.
 
-By using `JavaScript` for development, we can leverage the power of the `Node.js` ecosystem, including libraries for date and time processing (e.g., `dayjs`), databases (e.g., `MySQL`, `Redis`, `MongoDB`), and asynchronous programming (e.g., `Promises, Async/await`). This allows us to replace `Pawn` ecosystem libraries with equivalent ones from the `Node.js` ecosystem.
+This strong dependency on specific encodings can lead to unforeseen compatibility issues. For instance, directly storing `GBK` data into a `UTF-8` database without proper conversion will result in garbled text.
+
+In contrast, a JavaScript-based approach leverages the full advantages of the Node.js ecosystem:
+
+- **Rich Toolchain**: Access to robust libraries for date handling (e.g., Day.js), database drivers (e.g., MySQL, Redis, MongoDB), and more.
+- **Standardized Asynchrony**: Native support for `Promise/Async` for managing asynchronous operations.
+- **Encoding Uniformity**: End-to-end use of `UTF-8` encoding, effectively avoiding internationalization compatibility problems.
+
+By transitioning to the JavaScript technology stack, developers can significantly reduce the learning barrier while gaining more robust internationalization support and access to modern development tools.

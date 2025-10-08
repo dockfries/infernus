@@ -16,11 +16,11 @@ El nombre `Infernus` proviene del vehículo con el ID `411` en el juego (concret
 
 | /              | Infernus + samp-node                                                                         | omp-node                     |
 | -------------- | -------------------------------------------------------------------------------------------- | ---------------------------- |
-| Runtime        | Windows/Linux: Node.js 20.19+                                                                | Windows/Linux: Node.js 18+   |
-| Module System  | CommonJS                                                                                     | ESModule                     |
-| Architecture   | x86 only                                                                                     | x64                          |
+| Runtime        | Windows/Linux: Node.js 22.17+                                                                | Windows/Linux: Node.js 18+   |
+| Module System  | CommonJS/ESModule(experimental)                                                              | ESModule                     |
+| Architecture   | x86 only                                                                                     | x86/x64                      |
 | Implementation | Via sampgdk→fakeamx→native calls                                                             | Direct omp-gdk/omp-sdk calls |
-| Performance    | Relativamente más lento                                                                      | Más optimizado               |
+| Performance    | Lento                                                                                        | Rápido                       |
 | Compatibility  | Plugins de terceros vía capa polyfill                                                        | Requiere adaptación del SDK  |
 | Philosophy     | 1. Reescribir completamente con Infernus (evitar Pawn)<br>2. Adopción obligatoria de Steamer | Ver documentación oficial    |
 
@@ -99,10 +99,22 @@ Si no está seguro de cómo iniciar un proyecto, consulte el [Inicio rápido](./
 
 ## ¿Por qué desarrollar?
 
-Para los principiantes en programación o los desarrolladores frontales (front-end developers), iniciarse en el desarrollo de scripts de juegos utilizando «Pawn», un lenguaje procedimental similar a «C», puede resultar complicado. Además, realizar operaciones básicas de bajo nivel en `Pawn`, como la concatenación de cadenas, la eliminación y la manipulación de matrices, es más engorroso en comparación con `JavaScript` orientado a objetos.
+Para principiantes en programación o desarrolladores front-end, utilizar un lenguaje procedural como Pawn (similar a C) para crear scripts de juego supone una curva de aprendizaje considerable. En comparación con lenguajes modernos orientados a objetos como JavaScript, las API básicas de Pawn son más engorrosas: operaciones fundamentales como la concatenación de cadenas o la manipulación de arrays requieren implementación manual, lo que incrementa la complejidad del desarrollo.
 
-Además, implementar funcionalidades asíncronas es bastante difícil dentro del ecosistema del lenguaje `Pawn`. La internacionalización se consigue normalmente utilizando la codificación `UTF-8`, pero como el lanzamiento de `sa` fue bastante temprano, no utilizó `UTF-8` para la internacionalización. En su lugar, utilizaba diferentes conjuntos de caracteres basados en la norma `ANSI` del sistema Windows, como `ISO-8859-1` en los países occidentales y la codificación `GBK` en China.
+Además, el ecosistema del lenguaje Pawn presenta limitaciones importantes:
 
-El desarrollo de scripts localizados en `Pawn` a menudo requiere configurar la codificación del archivo para que coincida con el conjunto de caracteres del idioma localizado del sistema Windows. Esto puede dar lugar a problemas de codificación imprevistos, como el almacenamiento de datos `GBK` en una base de datos `UTF-8`, que puede dar lugar a datos confusos si no se manejan correctamente.
+1.  **Soporte Asíncrono Débil**: Carece de forma nativa de paradigmas de programación asíncrona modernos como `Promise/Async` disponibles en JavaScript.
+2.  **Barreras para la Internacionalización**: Dado que el compilador Pawn (SA-MP) se creó en una etapa temprana, su esquema de codificación de caracteres depende de la configuración regional del sistema operativo:
+    - Los sistemas occidentales suelen utilizar la codificación `ISO-8859-1`;
+    - Los sistemas chinos dependen de la codificación `GBK`;
+    - Esto genera incompatibilidad con el estándar universal `UTF-8`.
 
-Al utilizar `JavaScript` para el desarrollo, podemos aprovechar la potencia del ecosistema `Node.js`, incluyendo librerías para el procesamiento de fecha y hora (por ejemplo, `dayjs`), bases de datos (por ejemplo, `MySQL`, `Redis`, `MongoDB`), y programación asíncrona (por ejemplo, `Promises, Async/await`). Esto nos permite sustituir las librerías del ecosistema `Pawn` por otras equivalentes del ecosistema `Node.js`.
+Esta fuerte dependencia de codificaciones específicas puede provocar problemas de compatibilidad imprevistos. Por ejemplo, almacenar datos en `GBK` directamente en una base de datos `UTF-8` sin una conversión adecuada dará lugar a texto corrupto o ilegible.
+
+Por el contrario, un enfoque basado en JavaScript aprovecha las ventajas del ecosistema Node.js:
+
+- **Caja de Herramientas Rica**: Acceso a librerías sólidas para manejo de fechas (Day.js), controladores de bases de datos (MySQL, Redis, MongoDB), entre otros.
+- **Asincronía Estandarizada**: Soporte nativo para `Promise/Async` para gestionar operaciones asíncronas.
+- **Uniformidad en la Codificación**: Uo de la codificación `UTF-8` de extremo a extremo, evitando eficazmente problemas de compatibilidad en internacionalización.
+
+Al migrar a la pila tecnológica de JavaScript, los desarrolladores pueden reducir significativamente la barrera de entrada y acceder simultáneamente a un soporte de internacionalización más robusto y a herramientas de desarrollo modernas.
