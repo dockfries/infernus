@@ -15,7 +15,15 @@ export const pkgNames = fs.readdirSync(pkgDir).filter((dirPath) => {
   );
 });
 
-export async function build(pkgName) {
+function onceSIGINTKill(subProc: ReturnType<typeof execa>) {
+  process.once("SIGINT", async (signal) => {
+    subProc.kill(signal);
+    await subProc;
+    process.exit(subProc.exitCode);
+  });
+}
+
+export async function build(pkgName: string) {
   const pkgPath = path.resolve(pkgDir, pkgName);
 
   const pkgRollupConfig = path.resolve(pkgPath, "rollup.config.js");
@@ -29,8 +37,12 @@ export async function build(pkgName) {
     `TARGET:${pkgName}`,
   ].filter(Boolean);
 
-  await execa("rollup", args, {
+  const subProc = execa("rollup", args, {
     cwd: useSelfConfig ? pkgPath : process.cwd(),
     stdio: "inherit",
   });
+
+  onceSIGINTKill(subProc);
+
+  await subProc;
 }

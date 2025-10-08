@@ -48,6 +48,16 @@ const pkgFilePath = resolve(dirname(currentFilePath), "../package.json");
 
 const pkg = fs.readJsonSync(pkgFilePath);
 
+function onceSIGINTKill(subProc: ReturnType<typeof execa<any>>) {
+  const fn = async (signal: NodeJS.Signals) => {
+    subProc.kill(signal);
+    await subProc;
+    process.exit(subProc.exitCode);
+  };
+  process.once("SIGINT", fn);
+  return fn;
+}
+
 async function successInstalled(projectName: string) {
   console.log(`\nSuccessfully created project ${chalk.cyan(projectName)}`);
 
@@ -58,16 +68,28 @@ async function successInstalled(projectName: string) {
 
   if (install) {
     if (!appGeneratePath) throw new Error("appGeneratePath not undefined");
+
     const options: any = {
       cwd: appGeneratePath,
       stdio: "inherit",
     };
-    await execa(
+
+    let subProc = execa(
       "pnpm",
       ["dlx", "@infernus/create-app@latest", "install"],
       options,
     );
-    await execa("pnpm", ["install"], options);
+
+    const onceFn = onceSIGINTKill(subProc);
+
+    await subProc;
+
+    subProc = execa("pnpm", ["install"], options);
+
+    process.off("SIGINT", onceFn);
+    onceSIGINTKill(subProc);
+
+    await subProc;
   }
 
   console.log(`\ncd ${chalk.cyan(projectName)}`);
