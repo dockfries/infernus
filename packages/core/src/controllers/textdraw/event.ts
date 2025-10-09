@@ -15,6 +15,7 @@ GameMode.onExit(({ next }) => {
 
 const [onPlayerClickGlobal] = defineEvent({
   name: "OnPlayerClickTextDraw",
+  identifier: "ii",
   defaultValue: false,
   beforeEach(pid: number, tid: number) {
     return {
@@ -26,6 +27,7 @@ const [onPlayerClickGlobal] = defineEvent({
 });
 const [onPlayerClickPlayer] = defineEvent({
   name: "OnPlayerClickPlayerTextDraw",
+  identifier: "ii",
   defaultValue: false,
   beforeEach(pid: number, tid: number) {
     return {

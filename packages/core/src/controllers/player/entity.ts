@@ -17,6 +17,7 @@ import {
   InvalidEnum,
   CameraCutStylesEnum,
   DamageDeathReasonEnum,
+  LimitsEnum,
 } from "../../enums";
 
 import type { IClientResRaw } from "../../interfaces";
@@ -38,6 +39,7 @@ import { CmdBus } from "./command";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
+  identifier: "iiii",
   beforeEach(id: number, actionId: number, memAddr: number, data: number) {
     return { player: Player.getInstance(id)!, actionId, memAddr, data };
   },
@@ -100,6 +102,11 @@ export class Player {
   }
 
   constructor(public readonly id: number) {
+    if (id < 0 || id >= LimitsEnum.MAX_PLAYERS) {
+      throw new Error(
+        `Invalid player ID: ${id} (valid range: 0-${LimitsEnum.MAX_PLAYERS - 1})`,
+      );
+    }
     const player = Player.getInstance(id);
     if (player) return player;
     playerPool.set(id, this);

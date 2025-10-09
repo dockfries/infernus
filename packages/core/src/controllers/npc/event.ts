@@ -41,6 +41,7 @@ const [onClientMessage] = defineEvent({
 
 const [onFinishMove] = defineEvent({
   name: "OnNPCFinishMove",
+  identifier: "i",
   beforeEach(id: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -50,6 +51,7 @@ const [onFinishMove] = defineEvent({
 
 const [onCreate] = defineEvent({
   name: "OnNPCCreate",
+  identifier: "i",
   beforeEach(id: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -59,6 +61,7 @@ const [onCreate] = defineEvent({
 
 const [onDestroy] = defineEvent({
   name: "OnNPCDestroy",
+  identifier: "i",
   beforeEach(id: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -71,6 +74,7 @@ const [onDestroy] = defineEvent({
 
 const [onWeaponStateChange] = defineEvent({
   name: "OnNPCWeaponStateChange",
+  identifier: "iii",
   beforeEach(id: number, newState: PlayerStateEnum, oldState: PlayerStateEnum) {
     return {
       npc: Npc.getInstance(id)!,
@@ -82,6 +86,7 @@ const [onWeaponStateChange] = defineEvent({
 
 const [onTakeDamage] = defineEvent({
   name: "OnNPCTakeDamage",
+  identifier: "iiiii",
   beforeEach(
     id: number,
     damager: number,
@@ -101,6 +106,7 @@ const [onTakeDamage] = defineEvent({
 
 const [onGiveDamage] = defineEvent({
   name: "OnNPCGiveDamage",
+  identifier: "iiiii",
   beforeEach(
     id: number,
     damager: number,
@@ -120,14 +126,13 @@ const [onGiveDamage] = defineEvent({
 
 const [onDeath] = defineEvent({
   name: "OnNPCDeath",
-  beforeEach(
-    id: number,
-    killer: InvalidEnum.PLAYER_ID | Player,
-    reason: number,
-  ) {
+  identifier: "iii",
+  beforeEach(id: number, killer: number, reason: number) {
+    const _killer: InvalidEnum.PLAYER_ID | Player =
+      Player.getInstance(killer) || InvalidEnum.PLAYER_ID;
     return {
       npc: Npc.getInstance(id)!,
-      killer,
+      killer: _killer,
       reason,
     };
   },
@@ -135,6 +140,7 @@ const [onDeath] = defineEvent({
 
 const [onSpawn] = defineEvent({
   name: "OnNpcSpawn",
+  identifier: "i",
   beforeEach(id: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -144,6 +150,7 @@ const [onSpawn] = defineEvent({
 
 const [onRespawn] = defineEvent({
   name: "OnNpcRespawn",
+  identifier: "i",
   beforeEach(id: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -153,6 +160,7 @@ const [onRespawn] = defineEvent({
 
 const [onPlaybackStart] = defineEvent({
   name: "OnNPCPlaybackStart",
+  identifier: "ii",
   beforeEach(id: number, recordId: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -163,6 +171,7 @@ const [onPlaybackStart] = defineEvent({
 });
 const [onPlaybackEnd] = defineEvent({
   name: "OnNPCPlaybackEnd",
+  identifier: "ii",
   beforeEach(id: number, recordId: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -173,6 +182,7 @@ const [onPlaybackEnd] = defineEvent({
 });
 const [onWeaponShot] = defineEvent({
   name: "OnNPCWeaponShot",
+  identifier: "iiiifff",
   beforeEach(
     id: number,
     weapon: number,
@@ -195,6 +205,7 @@ const [onWeaponShot] = defineEvent({
 });
 const [onFinishNodePoint] = defineEvent({
   name: "OnNPCFinishNodePoint",
+  identifier: "iii",
   beforeEach(id: number, nodeId: number, pointId: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -206,6 +217,7 @@ const [onFinishNodePoint] = defineEvent({
 });
 const [onFinishNode] = defineEvent({
   name: "OnNPCFinishNode",
+  identifier: "ii",
   beforeEach(id: number, nodeId: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -216,6 +228,7 @@ const [onFinishNode] = defineEvent({
 });
 const [onChangeNode] = defineEvent({
   name: "OnNPCChangeNode",
+  identifier: "iii",
   beforeEach(id: number, newNodeId: number, oldNodeId: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -229,6 +242,7 @@ const [onChangeNode] = defineEvent({
 
 const [onFinishMovePath] = defineEvent({
   name: "OnNPCFinishMovePath",
+  identifier: "ii",
   beforeEach(id: number, pathId: number) {
     return {
       npc: Npc.getInstance(id)!,
@@ -240,6 +254,7 @@ const [onFinishMovePath] = defineEvent({
 
 const [onFinishMovePathPoint] = defineEvent({
   name: "OnNPCFinishMovePathPoint",
+  identifier: "iii",
   beforeEach(id: number, pathId: number, pointIndex: number) {
     return {
       npc: Npc.getInstance(id)!,

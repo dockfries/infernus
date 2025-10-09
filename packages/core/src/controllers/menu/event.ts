@@ -12,6 +12,7 @@ GameMode.onExit(({ next }) => {
 
 const [onPlayerExited] = defineEvent({
   name: "OnPlayerExitedMenu",
+  identifier: "i",
   beforeEach(pid: number) {
     return { player: Player.getInstance(pid)! };
   },
@@ -19,6 +20,7 @@ const [onPlayerExited] = defineEvent({
 
 const [onPlayerSelectedRow] = defineEvent({
   name: "OnPlayerSelectedMenuRow",
+  identifier: "ii",
   beforeEach(pid: number, row: number) {
     const player = Player.getInstance(pid)!;
     const menu = Menu.getInstanceByPlayer(player)!;

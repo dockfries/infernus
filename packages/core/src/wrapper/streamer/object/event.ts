@@ -126,6 +126,7 @@ const [onPlayerShootDynamicObject] = defineEvent({
 
 const [onPlayerEditAttachedObject] = defineEvent({
   name: "OnPlayerEditAttachedObject",
+  identifier: "iiiiifffffffff",
   defaultValue: false,
   beforeEach(
     pid: number,

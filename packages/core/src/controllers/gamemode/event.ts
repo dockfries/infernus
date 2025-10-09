@@ -1,11 +1,18 @@
 import { defineEvent } from "../bus";
 import { I18n } from "../i18n";
 
-export const [onInit] = defineEvent({ name: "OnGameModeInit" });
-export const [onExit] = defineEvent({ name: "OnGameModeExit" });
+export const [onInit] = defineEvent({
+  name: "OnGameModeInit",
+  identifier: "",
+});
+export const [onExit] = defineEvent({
+  name: "OnGameModeExit",
+  identifier: "",
+});
 
 export const [onIncomingConnection] = defineEvent({
   name: "OnIncomingConnection",
+  identifier: "isi",
   defaultValue: false,
   beforeEach(playerId: number, ipAddress: string, port: number) {
     return { playerId, ipAddress, port };

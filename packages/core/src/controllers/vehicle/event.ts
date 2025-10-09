@@ -12,6 +12,7 @@ GameMode.onExit(({ next }) => {
 
 const [onDamageStatusUpdate] = defineEvent({
   name: "OnVehicleDamageStatusUpdate",
+  identifier: "ii",
   defaultValue: false,
   beforeEach(vid: number, pid: number) {
     return {
@@ -23,6 +24,7 @@ const [onDamageStatusUpdate] = defineEvent({
 
 const [onDeath] = defineEvent({
   name: "OnVehicleDeath",
+  identifier: "ii",
   beforeEach(vid: number, pid: number) {
     return {
       vehicle: Vehicle.getInstance(vid)!,
@@ -33,6 +35,7 @@ const [onDeath] = defineEvent({
 
 const [onMod] = defineEvent({
   name: "OnVehicleMod",
+  identifier: "iii",
   beforeEach(pid: number, vid: number, componentId: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -44,6 +47,7 @@ const [onMod] = defineEvent({
 
 const [onPaintjob] = defineEvent({
   name: "OnVehiclePaintjob",
+  identifier: "iii",
   beforeEach(pid: number, vid: number, paintjobId: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -55,6 +59,7 @@ const [onPaintjob] = defineEvent({
 
 const [onRespray] = defineEvent({
   name: "OnVehicleRespray",
+  identifier: "iiii",
   beforeEach(pid: number, vid: number, color1: number, color2: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -66,6 +71,7 @@ const [onRespray] = defineEvent({
 
 const [onSirenStateChange] = defineEvent({
   name: "OnVehicleSirenStateChange",
+  identifier: "iii",
   defaultValue: false,
   beforeEach(pid: number, vid: number, state: number) {
     return {
@@ -78,6 +84,7 @@ const [onSirenStateChange] = defineEvent({
 
 const [onSpawn] = defineEvent({
   name: "OnVehicleSpawn",
+  identifier: "i",
   beforeEach(vid: number) {
     return { vehicle: Vehicle.getInstance(vid)! };
   },
@@ -85,6 +92,7 @@ const [onSpawn] = defineEvent({
 
 const [onStreamIn] = defineEvent({
   name: "OnVehicleStreamIn",
+  identifier: "ii",
   beforeEach(vid: number, forPlayer: number) {
     return {
       vehicle: Vehicle.getInstance(vid)!,
@@ -95,6 +103,7 @@ const [onStreamIn] = defineEvent({
 
 const [onStreamOut] = defineEvent({
   name: "OnVehicleStreamOut",
+  identifier: "ii",
   beforeEach(vid: number, forPlayer: number) {
     return {
       vehicle: Vehicle.getInstance(vid)!,
@@ -105,6 +114,7 @@ const [onStreamOut] = defineEvent({
 
 const [onPlayerEnter] = defineEvent({
   name: "OnPlayerEnterVehicle",
+  identifier: "iii",
   beforeEach(pid: number, vid: number, isPassenger: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -116,6 +126,7 @@ const [onPlayerEnter] = defineEvent({
 
 const [onPlayerExit] = defineEvent({
   name: "OnPlayerExitVehicle",
+  identifier: "ii",
   beforeEach(pid: number, vid: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -126,6 +137,7 @@ const [onPlayerExit] = defineEvent({
 
 const [onTrailerUpdate] = defineEvent({
   name: "OnTrailerUpdate",
+  identifier: "ii",
   beforeEach(pid: number, vid: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -136,6 +148,7 @@ const [onTrailerUpdate] = defineEvent({
 
 const [onUnoccupiedUpdate] = defineEvent({
   name: "OnUnoccupiedVehicleUpdate",
+  identifier: "iiiffffff",
   beforeEach(
     vid: number,
     pid: number,

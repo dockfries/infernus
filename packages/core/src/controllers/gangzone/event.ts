@@ -14,6 +14,7 @@ GameMode.onExit(({ next }) => {
 
 const [onPlayerEnterGlobal] = defineEvent({
   name: "OnPlayerEnterGangZone",
+  identifier: "ii",
   beforeEach(pid: number, gid: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -24,6 +25,7 @@ const [onPlayerEnterGlobal] = defineEvent({
 
 const [onPlayerLeaveGlobal] = defineEvent({
   name: "OnPlayerLeaveGangZone",
+  identifier: "ii",
   beforeEach(pid: number, gid: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -34,6 +36,7 @@ const [onPlayerLeaveGlobal] = defineEvent({
 
 const [onPlayerEnterPlayer] = defineEvent({
   name: "OnPlayerEnterPlayerGangZone",
+  identifier: "ii",
   beforeEach(pid: number, gid: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -44,6 +47,7 @@ const [onPlayerEnterPlayer] = defineEvent({
 
 const [onPlayerLeavePlayer] = defineEvent({
   name: "OnPlayerLeavePlayerGangZone",
+  identifier: "ii",
   beforeEach(pid: number, gid: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -54,6 +58,7 @@ const [onPlayerLeavePlayer] = defineEvent({
 
 const [onPlayerClickGlobal] = defineEvent({
   name: "OnPlayerClickGangZone",
+  identifier: "ii",
   beforeEach(pid: number, gid: number) {
     return {
       player: Player.getInstance(pid)!,
@@ -64,6 +69,7 @@ const [onPlayerClickGlobal] = defineEvent({
 
 const [onPlayerClickPlayer] = defineEvent({
   name: "OnPlayerClickPlayerGangZone",
+  identifier: "ii",
   beforeEach(pid: number, gid: number) {
     return {
       player: Player.getInstance(pid)!,

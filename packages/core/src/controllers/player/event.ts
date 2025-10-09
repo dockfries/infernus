@@ -14,6 +14,7 @@ import { playerPool } from "core/utils/pools";
 
 export const [onConnect] = defineEvent({
   name: "OnPlayerConnect",
+  identifier: "i",
   beforeEach(id: number) {
     const player = new Player(id);
     playerPool.set(id, player);
@@ -24,6 +25,7 @@ export const [onConnect] = defineEvent({
 
 export const [onDisconnect] = defineEvent({
   name: "OnPlayerDisconnect",
+  identifier: "ii",
   beforeEach(id: number, reason: number) {
     const player = playerPool.get(id)!;
     return { player, reason };
@@ -35,6 +37,7 @@ export const [onDisconnect] = defineEvent({
 
 export const [onUpdate] = defineEvent({
   name: "OnPlayerUpdate",
+  identifier: "i",
   beforeEach(id: number) {
     return { player: Player.getInstance(id)! };
   },
@@ -51,6 +54,7 @@ export const [onText] = defineEvent({
 
 export const [onEnterExitModShop] = defineEvent({
   name: "OnPlayerEnterExitModShop",
+  identifier: "iii",
   beforeEach(id: number, enterExit: number, interior: number) {
     return {
       player: Player.getInstance(id)!,
@@ -62,6 +66,7 @@ export const [onEnterExitModShop] = defineEvent({
 
 export const [onClickMap] = defineEvent({
   name: "OnPlayerClickMap",
+  identifier: "ifff",
   defaultValue: false,
   beforeEach(id: number, fX: number, fY: number, fZ: number) {
     return {
@@ -75,6 +80,7 @@ export const [onClickMap] = defineEvent({
 
 export const [onClickPlayer] = defineEvent({
   name: "OnPlayerClickPlayer",
+  identifier: "iii",
   defaultValue: false,
   beforeEach(id: number, clickedId: number, source: number) {
     return {
@@ -85,16 +91,15 @@ export const [onClickPlayer] = defineEvent({
   },
 });
 
-export const [onDeath] = defineEvent<{
-  player: Player;
-  killer: Player | InvalidEnum.PLAYER_ID;
-  reason: number;
-}>({
+export const [onDeath] = defineEvent({
   name: "OnPlayerDeath",
+  identifier: "iii",
   beforeEach(id: number, killer: number, reason: number) {
+    const _killer: InvalidEnum.PLAYER_ID | Player =
+      Player.getInstance(killer) || InvalidEnum.PLAYER_ID;
     return {
       player: Player.getInstance(id)!,
-      killer: Player.getInstance(killer) || InvalidEnum.PLAYER_ID,
+      killer: _killer,
       reason,
     };
   },
@@ -102,6 +107,7 @@ export const [onDeath] = defineEvent<{
 
 export const [onGiveDamage] = defineEvent({
   name: "OnPlayerGiveDamage",
+  identifier: "iiiii",
   defaultValue: false,
   beforeEach(
     id: number,
@@ -122,6 +128,7 @@ export const [onGiveDamage] = defineEvent({
 
 export const [onKeyStateChange] = defineEvent({
   name: "OnPlayerKeyStateChange",
+  identifier: "iii",
   beforeEach(id: number, newKeys: KeysEnum, oldKeys: KeysEnum) {
     return {
       player: Player.getInstance(id)!,
@@ -133,6 +140,7 @@ export const [onKeyStateChange] = defineEvent({
 
 export const [onRequestClass] = defineEvent({
   name: "OnPlayerRequestClass",
+  identifier: "ii",
   beforeEach(id: number, classId: number) {
     return {
       player: Player.getInstance(id)!,
@@ -143,6 +151,7 @@ export const [onRequestClass] = defineEvent({
 
 export const [onRequestSpawn] = defineEvent({
   name: "OnPlayerRequestSpawn",
+  identifier: "i",
   beforeEach(id: number) {
     return { player: Player.getInstance(id)! };
   },
@@ -150,6 +159,7 @@ export const [onRequestSpawn] = defineEvent({
 
 export const [onSpawn] = defineEvent({
   name: "OnPlayerSpawn",
+  identifier: "i",
   beforeEach(id: number) {
     return { player: Player.getInstance(id)! };
   },
@@ -157,6 +167,7 @@ export const [onSpawn] = defineEvent({
 
 export const [onStateChange] = defineEvent({
   name: "OnPlayerStateChange",
+  identifier: "iii",
   beforeEach(id: number, newState: PlayerStateEnum, oldState: PlayerStateEnum) {
     return { player: Player.getInstance(id)!, newState, oldState };
   },
@@ -164,6 +175,7 @@ export const [onStateChange] = defineEvent({
 
 export const [onStreamIn] = defineEvent({
   name: "OnPlayerSteamIn",
+  identifier: "ii",
   beforeEach(id: number, forPlayer: number) {
     return {
       player: Player.getInstance(id)!,
@@ -174,6 +186,7 @@ export const [onStreamIn] = defineEvent({
 
 export const [onStreamOut] = defineEvent({
   name: "OnPlayerSteamOut",
+  identifier: "ii",
   beforeEach(id: number, forPlayer: number) {
     return {
       player: Player.getInstance(id)!,
@@ -182,25 +195,22 @@ export const [onStreamOut] = defineEvent({
   },
 });
 
-export const [onTakeDamage] = defineEvent<{
-  player: Player;
-  damage: Player | InvalidEnum.PLAYER_ID;
-  amount: number;
-  weapon: WeaponEnum;
-  bodyPart: BodyPartsEnum;
-}>({
+export const [onTakeDamage] = defineEvent({
   name: "OnPlayerTakeDamage",
+  identifier: "iiiii",
   defaultValue: false,
   beforeEach(
     id: number,
-    damage: number | InvalidEnum.PLAYER_ID,
+    damage: number,
     amount: number,
     weapon: WeaponEnum,
     bodyPart: BodyPartsEnum,
   ) {
+    const _damage: InvalidEnum.PLAYER_ID | Player =
+      Player.getInstance(damage) || InvalidEnum.PLAYER_ID;
     return {
       player: Player.getInstance(id)!,
-      damage: Player.getInstance(damage) || InvalidEnum.PLAYER_ID,
+      damage: _damage,
       amount,
       weapon,
       bodyPart,
@@ -210,6 +220,7 @@ export const [onTakeDamage] = defineEvent<{
 
 export const [onInteriorChange] = defineEvent({
   name: "OnPlayerInteriorChange",
+  identifier: "iii",
   beforeEach(id: number, newInteriorId: number, oldInteriorId: number) {
     return {
       player: Player.getInstance(id)!,
@@ -221,6 +232,7 @@ export const [onInteriorChange] = defineEvent({
 
 export const [onRequestDownload] = defineEvent({
   name: "OnPlayerRequestDownload",
+  identifier: "iii",
   beforeEach(id: number, type: number, crc: number) {
     return {
       player: Player.getInstance(id)!,
@@ -232,6 +244,7 @@ export const [onRequestDownload] = defineEvent({
 
 export const [onFinishedDownloading] = defineEvent({
   name: "OnPlayerFinishedDownloading",
+  identifier: "ii",
   beforeEach(id: number, virtualWorld: number) {
     return {
       player: Player.getInstance(id)!,
@@ -242,6 +255,7 @@ export const [onFinishedDownloading] = defineEvent({
 
 export const [onWeaponShot] = defineEvent({
   name: "OnPlayerWeaponShot",
+  identifier: "iiiifff",
   beforeEach(
     id: number,
     weapon: WeaponEnum,
