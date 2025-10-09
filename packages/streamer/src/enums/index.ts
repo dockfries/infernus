@@ -56,7 +56,7 @@ export enum E_STREAMER {
 export enum MaterialTextAlign {
   LEFT = 0,
   CENTER = 1,
-  RIGHt = 2,
+  RIGHT = 2,
 }
 
 export enum MaterialTextSizes {

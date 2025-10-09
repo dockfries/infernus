@@ -1,4 +1,10 @@
 import type { StreamerItemTypes } from "../definitions/ItemTypes";
+import {
+  SERVER_WIDE,
+  DEFAULT_MAX_ITEMS,
+  DEFAULT_RANGE,
+  DEFAULT_WORLD_ID,
+} from "../constants";
 
 export const Streamer_GetDistanceToItem = (
   x: number,
@@ -105,7 +111,7 @@ export const Streamer_IsItemVisible = (
 export const Streamer_DestroyAllVisibleItems = (
   playerId: number,
   type: StreamerItemTypes,
-  serverWide = 1,
+  serverWide = SERVER_WIDE,
 ): number => {
   return samp.callNative(
     "Streamer_DestroyAllVisibleItems",
@@ -119,7 +125,7 @@ export const Streamer_DestroyAllVisibleItems = (
 export const Streamer_CountVisibleItems = (
   playerId: number,
   type: StreamerItemTypes,
-  serverWide = 1,
+  serverWide = SERVER_WIDE,
 ): number => {
   return samp.callNative(
     "Streamer_CountVisibleItems",
@@ -132,14 +138,14 @@ export const Streamer_CountVisibleItems = (
 
 export const Streamer_DestroyAllItems = (
   type: StreamerItemTypes,
-  serverWide = 1,
+  serverWide = SERVER_WIDE,
 ): number => {
   return samp.callNative("Streamer_DestroyAllItems", "ii", type, serverWide);
 };
 
 export const Streamer_CountItems = (
   type: StreamerItemTypes,
-  serverWide = 1,
+  serverWide = SERVER_WIDE,
 ): number => {
   return samp.callNative("Streamer_CountItems", "ii", type, serverWide);
 };
@@ -149,9 +155,9 @@ export const Streamer_GetNearbyItems = (
   y: number,
   z: number,
   type: StreamerItemTypes,
-  maxItems = 32,
-  range = 300.0,
-  worldId = -1,
+  maxItems = DEFAULT_MAX_ITEMS,
+  range = DEFAULT_RANGE,
+  worldId = DEFAULT_WORLD_ID,
 ): number[] => {
   const [items = [], found = 0] = samp.callNative(
     "Streamer_GetNearbyItems",
@@ -170,7 +176,7 @@ export const Streamer_GetNearbyItems = (
 export const Streamer_GetAllVisibleItems = (
   playerId: number,
   type: StreamerItemTypes,
-  maxItems: number = 32,
+  maxItems: number = DEFAULT_MAX_ITEMS,
 ): number[] => {
   const [items_ = [], found = 0] = samp.callNative(
     "Streamer_GetAllVisibleItems",

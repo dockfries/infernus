@@ -1,4 +1,15 @@
 import { StreamerDistances } from "../definitions/Distances";
+import {
+  INVALID_PLAYER_ID,
+  INVALID_VEHICLE_ID,
+  DEFAULT_WORLD_ID,
+  DEFAULT_INTERIOR_ID,
+  DEFAULT_PLAYER_ID,
+  DEFAULT_AREA_ID,
+  DEFAULT_PRIORITY,
+  DEFAULT_TEST_LOS,
+  MAX_STRING_LENGTH,
+} from "../constants";
 
 export const CreateDynamic3DTextLabel = (
   text: string,
@@ -7,15 +18,15 @@ export const CreateDynamic3DTextLabel = (
   y: number,
   z: number,
   drawDistance: number,
-  attachedPlayer = 0xffff,
-  attachedVehicle = 0xffff,
-  testLos = false,
-  worldId = -1,
-  interiorId = -1,
-  playerId = -1,
+  attachedPlayer = INVALID_PLAYER_ID,
+  attachedVehicle = INVALID_VEHICLE_ID,
+  testLos = DEFAULT_TEST_LOS,
+  worldId = DEFAULT_WORLD_ID,
+  interiorId = DEFAULT_INTERIOR_ID,
+  playerId = DEFAULT_PLAYER_ID,
   streamDistance: number = StreamerDistances.TEXT_3D_LABEL_SD,
-  areaId = -1,
-  priority = 0,
+  areaId = DEFAULT_AREA_ID,
+  priority = DEFAULT_PRIORITY,
 ): number => {
   return samp.callNative(
     "CreateDynamic3DTextLabel",
@@ -51,7 +62,7 @@ export const GetDynamic3DTextLabelText = (id: number) => {
     "GetDynamic3DTextLabelText",
     "iSi",
     id,
-    1024,
+    MAX_STRING_LENGTH,
   );
   return { text, ret };
 };

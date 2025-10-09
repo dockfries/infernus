@@ -1,5 +1,23 @@
 import { StreamerDistances } from "../definitions/Distances";
 import { MaterialTextSizes } from "../enums";
+import {
+  DEFAULT_WORLD_ID,
+  DEFAULT_INTERIOR_ID,
+  DEFAULT_PLAYER_ID,
+  DEFAULT_AREA_ID,
+  DEFAULT_PRIORITY,
+  DEFAULT_ROTATION_X,
+  DEFAULT_ROTATION_Y,
+  DEFAULT_ROTATION_Z,
+  DEFAULT_SYNC_ROTATION,
+  DEFAULT_FONT_FACE,
+  DEFAULT_FONT_SIZE,
+  DEFAULT_FONT_BOLD,
+  DEFAULT_MATERIAL_COLOR,
+  DEFAULT_FONT_COLOR,
+  DEFAULT_BACK_COLOR,
+  DEFAULT_TEXT_ALIGNMENT,
+} from "../constants";
 
 export const CreateDynamicObject = (
   modelId: number,
@@ -9,13 +27,13 @@ export const CreateDynamicObject = (
   rx: number,
   ry: number,
   rz: number,
-  worldId = -1,
-  interiorId = -1,
-  playerId = -1,
+  worldId = DEFAULT_WORLD_ID,
+  interiorId = DEFAULT_INTERIOR_ID,
+  playerId = DEFAULT_PLAYER_ID,
   streamDistance: number = StreamerDistances.OBJECT_SD,
   drawDistance: number = StreamerDistances.OBJECT_DD,
-  areaId = -1,
-  priority = 0,
+  areaId = DEFAULT_AREA_ID,
+  priority = DEFAULT_PRIORITY,
 ): number => {
   return samp.callNative(
     "CreateDynamicObject",
@@ -87,9 +105,9 @@ export const MoveDynamicObject = (
   y: number,
   z: number,
   speed: number,
-  rx = -1000.0,
-  ry = -1000.0,
-  rz = -1000.0,
+  rx = DEFAULT_ROTATION_X,
+  ry = DEFAULT_ROTATION_Y,
+  rz = DEFAULT_ROTATION_Z,
 ): number => {
   return samp.callNative(
     "MoveDynamicObject",
@@ -134,7 +152,7 @@ export const AttachDynamicObjectToObject = (
   rx: number,
   ry: number,
   rz: number,
-  syncRotation = true,
+  syncRotation = DEFAULT_SYNC_ROTATION,
 ): number => {
   return samp.callNative(
     "AttachDynamicObjectToObject",
@@ -238,7 +256,7 @@ export const SetDynamicObjectMaterial = (
   modelId: number,
   txdName: string,
   textureName: string,
-  materialColor = 0,
+  materialColor = DEFAULT_MATERIAL_COLOR,
 ): number => {
   return samp.callNative(
     "SetDynamicObjectMaterial",
@@ -283,12 +301,12 @@ export const SetDynamicObjectMaterialText = (
   materialIndex: number,
   text: string,
   materialSize: number = MaterialTextSizes.SIZE_256x128,
-  fontFace = "Arial",
-  fontsize = 24,
-  bold = 1,
-  fontColor = 0xffffffff,
-  backColor = 0,
-  textAlignment = 0,
+  fontFace = DEFAULT_FONT_FACE,
+  fontsize = DEFAULT_FONT_SIZE,
+  bold = DEFAULT_FONT_BOLD,
+  fontColor = DEFAULT_FONT_COLOR,
+  backColor = DEFAULT_BACK_COLOR,
+  textAlignment = DEFAULT_TEXT_ALIGNMENT,
 ): number => {
   return samp.callNative(
     "SetDynamicObjectMaterialText",
