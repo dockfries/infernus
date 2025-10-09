@@ -1,3 +1,17 @@
+## <small>0.12.3 (2025-10-09)</small>
+
+* chore(release): create-app v0.2.16 ([1bfdd97](https://github.com/dockfries/infernus/commit/1bfdd97))
+* feat(streamer): add constants module and refactor magic values ([f0442fb](https://github.com/dockfries/infernus/commit/f0442fb))
+* fix(build): `SIGINT` kill ([5daa071](https://github.com/dockfries/infernus/commit/5daa071))
+* fix(core): correct logical errors and resource handling in core controllers ([213ccaf](https://github.com/dockfries/infernus/commit/213ccaf))
+* fix(core): correct typos and parameter naming in core entities ([e67f051](https://github.com/dockfries/infernus/commit/e67f051))
+* fix(core): missing events identifier, some type ([b6260bd](https://github.com/dockfries/infernus/commit/b6260bd))
+* fix(raknet): improve type safety and error handling in BitStream ([0311a5d](https://github.com/dockfries/infernus/commit/0311a5d))
+* refactor(create-app): improve error handling and proxy configuration ([1fc9e08](https://github.com/dockfries/infernus/commit/1fc9e08))
+* docs(intro): update ([0d50c96](https://github.com/dockfries/infernus/commit/0d50c96))
+
+
+
 ## <small>0.12.2 (2025-10-07)</small>
 
 * fix(core): iconv-lite import esm ([aa750ce](https://github.com/dockfries/infernus/commit/aa750ce))
