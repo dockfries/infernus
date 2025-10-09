@@ -125,7 +125,7 @@ export class DynamicObject {
   }
 
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.sourceInfo && this.id !== -1) return true;
+    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
     return DynamicObject.isValid(this.id);
   }
 
@@ -331,6 +331,7 @@ export class DynamicObject {
   }
 
   removeMaterialText(materialIndex: number) {
+    if (this.id === -1) return 0;
     if (!this.isMaterialTextUsed(materialIndex)) return 0;
     return s.RemoveDynamicObjectMaterialText(this.id, materialIndex);
   }

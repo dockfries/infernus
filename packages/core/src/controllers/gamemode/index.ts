@@ -154,10 +154,10 @@ export class GameMode {
     if (newId > -1000 || newId < -30000) {
       throw new Error("[GameMode]: AddSimpleModel - Error newId range");
     }
-    if (dffName.trim().length < 0) {
+    if (dffName.trim().length === 0) {
       throw new Error("[GameMode]: AddSimpleModel - Empty dffName");
     }
-    if (txdName.trim().length < 0) {
+    if (txdName.trim().length === 0) {
       throw new Error("[GameMode]: AddSimpleModel - Empty txdName");
     }
     if (timeOn !== undefined && (timeOn < 0 || timeOn > 23)) {

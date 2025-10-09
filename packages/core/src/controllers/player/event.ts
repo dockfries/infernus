@@ -174,7 +174,7 @@ export const [onStateChange] = defineEvent({
 });
 
 export const [onStreamIn] = defineEvent({
-  name: "OnPlayerSteamIn",
+  name: "OnPlayerStreamIn",
   identifier: "ii",
   beforeEach(id: number, forPlayer: number) {
     return {
@@ -185,7 +185,7 @@ export const [onStreamIn] = defineEvent({
 });
 
 export const [onStreamOut] = defineEvent({
-  name: "OnPlayerSteamOut",
+  name: "OnPlayerStreamOut",
   identifier: "ii",
   beforeEach(id: number, forPlayer: number) {
     return {

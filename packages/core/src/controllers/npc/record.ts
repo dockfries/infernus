@@ -29,11 +29,12 @@ export class NpcRecord {
   }
 
   unload() {
+    const oldId = this._id;
     const ret = !!samp.callNative("NPC_UnloadRecord", "i", this._id);
     if (ret) {
       this._id = -1;
       this._filePath = "";
-      npcRecordPool.delete(this._id);
+      npcRecordPool.delete(oldId);
     }
     return ret;
   }

@@ -13,7 +13,7 @@ export class DynamicArea {
   private sourceInfo: TDynamicArea | null = null;
   private _id = -1;
   get type() {
-    return this.sourceInfo?.type;
+    return this.sourceInfo?.type ?? undefined;
   }
   get id(): number {
     return this._id;
@@ -324,7 +324,7 @@ export class DynamicArea {
     if (!DynamicArea.getNumberForPoint(x, y, z)) return [];
     const ids = s.GetDynamicAreasForPoint(x, y, z).areas;
 
-    return ids.map((a) => DynamicArea.getInstance(a)!);
+    return ids.map((a) => DynamicArea.getInstance(a)).filter(Boolean);
   }
   static getNumberForPoint(x: number, y: number, z: number): number {
     return s.GetNumberDynamicAreasForPoint(x, y, z);
@@ -340,7 +340,7 @@ export class DynamicArea {
     if (!DynamicArea.getNumberForLine(x1, y1, z1, x2, y2, z2)) return [];
     const ids = s.GetDynamicAreasForLine(x1, y1, z1, x2, y2, z2).areas;
 
-    return ids.map((a) => dynamicAreasPool.get(a)!);
+    return ids.map((a) => DynamicArea.getInstance(a)).filter(Boolean);
   }
   static getNumberForLine(
     x1: number,
@@ -411,7 +411,7 @@ export class DynamicArea {
   toggleSpectateMode(toggle: boolean): number {
     if (this.id === -1)
       throw new Error(
-        "[StreamerArea]: Unable to toggle specate mode before create",
+        "[StreamerArea]: Unable to toggle spectate mode before create",
       );
     return s.ToggleDynAreaSpectateMode(this.id, toggle);
   }

@@ -4,7 +4,7 @@ import type { IDynamicRaceCp } from "core/interfaces";
 import {
   CreateDynamicRaceCP,
   CreateDynamicRaceCPEx,
-  DestroyDynamicCP,
+  DestroyDynamicRaceCP,
   GetPlayerVisibleDynamicRaceCP,
   IsPlayerInDynamicRaceCP,
   IsValidDynamicCP,
@@ -115,7 +115,7 @@ export class DynamicRaceCP {
         "[StreamerRaceCP]: Unable to destroy the checkpoint before create",
       );
     if (!INTERNAL_FLAGS.skip) {
-      DestroyDynamicCP(this.id);
+      DestroyDynamicRaceCP(this.id);
     }
     dynamicRaceCheckpointPool.delete(this.id);
     this._id = -1;

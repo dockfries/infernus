@@ -203,7 +203,7 @@ export class Vehicle {
   }
   getSpeed(magic = 180.0) {
     if (this.id === -1) return 0.0;
-    const { x, y, z } = this.getVelocity()!;
+    const { x, y, z } = this.getVelocity();
     return VectorSize(x, y, z) * magic;
   }
   setAngularVelocity(X: number, Y: number, Z: number): boolean {

@@ -12,6 +12,8 @@ function checkAndroid(player: Player) {
   if (!player.isConnected()) {
     if (androidTimer.has(player)) {
       clearInterval(androidTimer.get(player));
+      androidTimer.delete(player);
+      androidCheckCount.delete(player);
     }
     return;
   }
@@ -20,6 +22,8 @@ function checkAndroid(player: Player) {
 
   if (count >= Player.MAX_CHECK_ANDROID_DELAY) {
     clearInterval(androidTimer.get(player));
+    androidTimer.delete(player);
+    androidCheckCount.delete(player);
     triggerOnAndroidCheck(player, true);
     return;
   }
@@ -31,6 +35,8 @@ function checkAndroid(player: Player) {
         player[innerPlayerProps].isAndroid = false;
         if (androidTimer.has(player)) {
           clearInterval(androidTimer.get(player));
+          androidTimer.delete(player);
+          androidCheckCount.delete(player);
         }
         triggerOnAndroidCheck(player, false);
       }

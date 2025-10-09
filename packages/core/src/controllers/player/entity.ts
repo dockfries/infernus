@@ -364,7 +364,7 @@ export class Player {
   }
   getSpeed(magic = 180.0) {
     if (this.id === -1) return 0.0;
-    const { x, y, z } = this.getVelocity()!;
+    const { x, y, z } = this.getVelocity();
     return VectorSize(x, y, z) * magic;
   }
   getKeys() {

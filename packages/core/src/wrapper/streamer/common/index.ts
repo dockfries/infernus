@@ -144,7 +144,7 @@ export class Streamer {
     player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
-      return Streamer_SetRadiusMultiplier(type, player.id);
+      return Streamer_SetRadiusMultiplier(type, multiplier, player.id);
     }
     return Streamer_SetRadiusMultiplier(type, multiplier, player);
   }

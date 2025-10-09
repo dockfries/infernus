@@ -8,10 +8,10 @@ export class NpcNode {
   }
 
   constructor(id: number) {
+    this._id = id;
     if (npcNodePool.has(this._id)) {
       return npcNodePool.get(this._id)!;
     }
-    this._id = id;
     npcNodePool.set(this._id, this);
   }
 

@@ -126,7 +126,10 @@ export class Dialog {
       Dialog.close(player);
 
       while (this.id === -1 || Dialog.showingIds.includes(this.id)) {
-        if (Dialog.showingIds.length === Dialog.maxDialogId) break;
+        if (Dialog.showingIds.length >= Dialog.maxDialogId) {
+          this.id = -1;
+          break;
+        }
         this.id = Math.floor(Math.random() * (Dialog.maxDialogId + 1));
       }
 
