@@ -106,7 +106,7 @@ export class Dialog {
   //#endregion
 
   private static delDialogTask(player: Player, reject = false): boolean {
-    // if player disconnect and still await response
+    // if player disconnects and still await response
     // should stop promise waiting
     const task = Dialog.waitingQueue.get(player);
     if (!task) return false;

@@ -512,14 +512,14 @@ export class Player {
     y: number,
     z: number,
     type: number,
-    Radius: number,
+    radius: number,
   ) {
     if (type < 0 || type > 13) {
       throw new Error(
         "[Player]: The valid explosion type value is only 0 to 13",
       );
     }
-    return w.CreateExplosionForPlayer(this.id, x, y, z, type, Radius);
+    return w.CreateExplosionForPlayer(this.id, x, y, z, type, radius);
   }
   static isConnected(id: number): boolean {
     return w.IsPlayerConnected(id);

@@ -180,7 +180,7 @@ export class Vehicle {
     if (this.id === -1) return 0;
     if (numberplate.length < 1 || numberplate.length > 32) {
       throw new Error(
-        "[Vehicle]: The length of the number plate ranges from 32 characters",
+        "[Vehicle]: The length of the number plate ranges up to 32 characters",
       );
     }
     if (!/^[a-zA-Z0-9]+$/.test(numberplate)) {

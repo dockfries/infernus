@@ -12,7 +12,7 @@ export enum WeaponEnum {
   FIST = 0,
   BRASSKNUCKLE = 1,
   GOLFCLUB = 2,
-  NITESTICK = 3,
+  NIGHTSTICK = 3,
   KNIFE = 4,
   BAT = 5,
   SHOVEL = 6,
