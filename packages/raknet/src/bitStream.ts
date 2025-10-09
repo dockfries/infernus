@@ -476,7 +476,15 @@ export class BitStream {
 
   readRconCommand() {
     const data: Partial<IRconCommand> = {};
-    [data.command] = this.readValue(PacketRpcValueType.String32) as any;
+    const commandArray = this.readValue(
+      PacketRpcValueType.String32,
+    ) as number[];
+
+    if (!Array.isArray(commandArray)) {
+      throw new Error("Failed to read RCON command: expected array");
+    }
+
+    data.command = commandArray;
     return data as IRconCommand;
   }
 
@@ -548,11 +556,11 @@ export class BitStream {
     orderingChannel = 0,
   ) {
     players.forEach((p) => {
-      if (
-        excludedPlayer !== InvalidEnum.PLAYER_ID &&
-        (p === excludedPlayer || vehicle.isStreamedIn(p))
-      )
-        return;
+      if (excludedPlayer !== InvalidEnum.PLAYER_ID) {
+        if (p === excludedPlayer || !vehicle.isStreamedIn(p)) {
+          return;
+        }
+      }
       this.sendPacket(p.id, priority, reliability, orderingChannel);
     });
   }
@@ -567,11 +575,11 @@ export class BitStream {
     orderingChannel = 0,
   ) {
     players.forEach((p) => {
-      if (
-        excludedPlayer !== InvalidEnum.PLAYER_ID &&
-        (p === excludedPlayer || vehicle.isStreamedIn(p))
-      )
-        return;
+      if (excludedPlayer !== InvalidEnum.PLAYER_ID) {
+        if (p === excludedPlayer || !vehicle.isStreamedIn(p)) {
+          return;
+        }
+      }
       this.sendRPC(p.id, rpcId, priority, reliability, orderingChannel);
     });
   }

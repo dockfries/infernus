@@ -28,7 +28,7 @@ export const readStringX = (
   return I18n.decodeFromBuf(validByteArr, charset);
 };
 
-export const patchRakNetNatives = (...args: any[]) => {
+export const patchRakNetNatives = (...args: (number | string | boolean)[]) => {
   return samp.callPublic("RakNetNatives", `a`, args);
 };
 

@@ -24,7 +24,7 @@ export class MarkersSync extends BitStream implements IPacketListSync {
     const numberOfPlayers = this.bs.readInt32() as number;
 
     if (numberOfPlayers < 0 || numberOfPlayers > LimitsEnum.MAX_PLAYERS) {
-      return;
+      return null;
     }
 
     data.numberOfPlayers = numberOfPlayers;
@@ -33,7 +33,7 @@ export class MarkersSync extends BitStream implements IPacketListSync {
       const playerId = this.bs.readUint16() as number;
 
       if (playerId >= LimitsEnum.MAX_PLAYERS) {
-        return;
+        return null;
       }
 
       data.playerIsParticipant[playerId] = true;

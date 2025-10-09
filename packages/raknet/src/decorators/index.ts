@@ -13,13 +13,16 @@ export const SyncId = (value: PacketIdList): ClassDecorator => {
 };
 
 export const SyncReader: MethodDecorator = (
-  target: any,
+  target: object,
   propertyKey: string | symbol,
   descriptor: PropertyDescriptor,
 ) => {
   const originalMethod = descriptor.value;
 
-  descriptor.value = function (this: any, ...args: any[]) {
+  descriptor.value = function (
+    this: { bs: BitStream; _packetId: number },
+    ...args: unknown[]
+  ) {
     const bs: BitStream = this.bs;
 
     bs.resetReadPointer();
@@ -32,13 +35,16 @@ export const SyncReader: MethodDecorator = (
 };
 
 export const SyncWriter: MethodDecorator = (
-  target: any,
+  target: object,
   propertyKey: string | symbol,
   descriptor: PropertyDescriptor,
 ) => {
   const originalMethod = descriptor.value;
 
-  descriptor.value = function (this: any, ...args: any[]) {
+  descriptor.value = function (
+    this: { bs: BitStream; _packetId: number },
+    ...args: unknown[]
+  ) {
     const bs: BitStream = this.bs;
 
     bs.resetWritePointer();
