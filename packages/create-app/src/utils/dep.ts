@@ -25,8 +25,8 @@ import { addOpenMp, removeOpenMp } from "./omp.js";
 import { getPawnJson, getIncludePath, getPlugOrCompPath } from "./pawn.js";
 import { ompRepository, isWindows } from "../constants/index.js";
 
-async function hasGlobalDepTemp(depVersionPath: string) {
-  if (!fs.existsSync(depVersionPath)) return;
+async function hasGlobalDepTemp(depVersionPath: string): Promise<boolean> {
+  if (!fs.existsSync(depVersionPath)) return false;
   const files = await fs.readdir(depVersionPath);
   return (
     !files.length ||

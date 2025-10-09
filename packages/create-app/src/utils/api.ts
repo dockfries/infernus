@@ -6,12 +6,13 @@ import chalk from "chalk";
 import type { OctokitOptions } from "@octokit/core";
 import { Octokit } from "@octokit/core";
 import { readGlobalConfig } from "./config";
-import { httpsAgent } from "../constants";
+import { proxyAgent } from "../constants";
 import { minSatisfying } from "./semver";
 
 let delayTry = 500;
+const MAX_RETRY_ATTEMPTS = 5;
 
-const request = axios.create({ httpsAgent });
+const request = axios.create({ httpsAgent: proxyAgent });
 
 let octokitInstance: null | Octokit = null;
 
@@ -25,7 +26,7 @@ async function getGithubToken() {
 
   return null;
 }
-export async function getOctoKit() {
+export async function getOctokit() {
   if (octokitInstance) return octokitInstance;
 
   const auth = await getGithubToken();
@@ -40,7 +41,7 @@ export async function getOctoKit() {
 
   const options: OctokitOptions = {
     request: {
-      agent: httpsAgent,
+      agent: proxyAgent,
       headers: {
         "X-GitHub-Api-Version": "2022-11-28",
       },
@@ -51,7 +52,11 @@ export async function getOctoKit() {
   return octokitInstance;
 }
 
-export async function downloadFile(url: string, filePath: string) {
+export async function downloadFile(
+  url: string,
+  filePath: string,
+  retryCount = 0,
+) {
   const bar = new cliProgress.SingleBar({
     format: "[{bar}] {percentage}% | ETA: {eta}s | {value}/{total} Chunks",
   });
@@ -78,6 +83,12 @@ export async function downloadFile(url: string, filePath: string) {
   } catch (err: any) {
     if (err.status === 404) throw err;
 
+    if (retryCount >= MAX_RETRY_ATTEMPTS) {
+      throw new Error(
+        `Download failed after ${MAX_RETRY_ATTEMPTS} attempts: ${err.message}`,
+      );
+    }
+
     return new Promise<string>((resolve) => {
       delayTry = delayTry * 2;
 
@@ -86,7 +97,7 @@ export async function downloadFile(url: string, filePath: string) {
 
       console.log(
         chalk.yellow.bold(
-          `\ndownloadFile failed, try ${delayTry / 1000} seconds later again`,
+          `\ndownloadFile failed, try ${delayTry / 1000} seconds later again (attempt ${retryCount + 1}/${MAX_RETRY_ATTEMPTS})`,
         ),
       );
       console.log(
@@ -94,7 +105,7 @@ export async function downloadFile(url: string, filePath: string) {
       );
 
       setTimeout(() => {
-        downloadFile(url, filePath).then(resolve);
+        downloadFile(url, filePath, retryCount + 1).then(resolve);
       }, delayTry);
     });
   }
@@ -142,7 +153,7 @@ function parsePaginatedData(data: any) {
 }
 
 export async function getPaginatedData(url: string) {
-  const octokit = await getOctoKit();
+  const octokit = await getOctokit();
   const nextPattern = /(?<=<)([\S]*)(?=>; rel="Next")/i;
   const response = await octokit.request(`GET ${url}`, {
     headers: {
@@ -170,7 +181,7 @@ export async function getRepoRelease(
   repo: string,
   version: string,
 ) {
-  const octokit = await getOctoKit();
+  const octokit = await getOctokit();
 
   let matchedRelease = null;
 

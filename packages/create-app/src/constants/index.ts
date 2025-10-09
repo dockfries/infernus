@@ -5,6 +5,6 @@ export const isWindows = os.platform() === "win32";
 
 export const ompRepository = "openmultiplayer/open.mp";
 
-export const httpsAgent = process.env.https_proxy
+export const proxyAgent = process.env.https_proxy
   ? new HttpsProxyAgent(process.env.https_proxy)
   : null;

@@ -48,7 +48,7 @@ const pkgFilePath = resolve(dirname(currentFilePath), "../package.json");
 
 const pkg = fs.readJsonSync(pkgFilePath);
 
-function onceSIGINTKill(subProc: ReturnType<typeof execa<any>>) {
+function onceSIGINTKill(subProc: any) {
   const fn = async (signal: NodeJS.Signals) => {
     subProc.kill(signal);
     await subProc;
@@ -69,9 +69,9 @@ async function successInstalled(projectName: string) {
   if (install) {
     if (!appGeneratePath) throw new Error("appGeneratePath not undefined");
 
-    const options: any = {
+    const options = {
       cwd: appGeneratePath,
-      stdio: "inherit",
+      stdio: "inherit" as const,
     };
 
     let subProc = execa(
@@ -107,13 +107,13 @@ async function initStarter(projectName: string, isRakNet = false) {
   if (isCreatedProject) {
     const files = await fs.readdir(appGeneratePath);
     if (files.length)
-      throw `The project directory ${projectName} already exists`;
+      throw new Error(`The project directory ${projectName} already exists`);
   }
 
   if (isMac) {
     console.log(
       chalk.yellow(
-        "You are using a mac system and cannot run directly on the mac system after the configuration is complete",
+        "You are using a macOS system and cannot run directly on the macOS system after the configuration is complete",
       ),
     );
   }

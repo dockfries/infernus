@@ -1,6 +1,6 @@
 import path from "node:path";
 import fs from "fs-extra";
-import { getOctoKit } from "./api";
+import { getOctokit } from "./api";
 import { PawnJson } from "../types";
 import { GLOBAL_DEPS_PATH } from "./config";
 
@@ -19,7 +19,7 @@ export async function getPawnJson(owner: string, repo: string, ref: string) {
     /* empty */
   }
 
-  const octokit = await getOctoKit();
+  const octokit = await getOctokit();
 
   const getContentRoute = "GET /repos/{owner}/{repo}/contents/{path}";
 
@@ -42,7 +42,7 @@ export async function getPawnJson(owner: string, repo: string, ref: string) {
   }
 
   if (response.status !== 200 && response.status !== 302)
-    throw `Failed to get ${owner}/${repo} ${ref} pawn.json`;
+    throw new Error(`Failed to get ${owner}/${repo} ${ref} pawn.json`);
 
   const pawnJsonStr = Buffer.from(response.data.content, "base64").toString();
   const pawnJson: PawnJson = JSON.parse(pawnJsonStr);
