@@ -139,7 +139,7 @@ const [onDeath] = defineEvent({
 });
 
 const [onSpawn] = defineEvent({
-  name: "OnNpcSpawn",
+  name: "OnNPCSpawn",
   identifier: "i",
   beforeEach(id: number) {
     return {
@@ -149,7 +149,7 @@ const [onSpawn] = defineEvent({
 });
 
 const [onRespawn] = defineEvent({
-  name: "OnNpcRespawn",
+  name: "OnNPCRespawn",
   identifier: "i",
   beforeEach(id: number) {
     return {
