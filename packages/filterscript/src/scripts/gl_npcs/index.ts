@@ -4,9 +4,17 @@
 //
 //-------------------------------------------------
 
-import { Vehicle, GameMode, Npc, PlayerEvent } from "@infernus/core";
-import { npcNames, spawnInfo, vehiclePutId } from "./constants";
+import {
+  Vehicle,
+  GameMode,
+  Npc,
+  PlayerEvent,
+  NpcEvent,
+  Player,
+} from "@infernus/core";
+import { npcNames, spawnInfo, vehCreateInfo } from "./constants";
 import type { IGlNpcsFS } from "./interfaces";
+import { initNpcModes } from "./npcmodes";
 
 function setVehicleTireStatus(vehicle: Vehicle, tireStatus: number) {
   const { panels, doors, lights } = vehicle.getDamageStatus();
@@ -22,7 +30,14 @@ export const GlNpcs: IGlNpcsFS = {
     // to connect NPCs externally you will need to modify
     // the code in this callback.
 
-    const onConnect = PlayerEvent.onConnect(({ player, next }) => {
+    const vehCreatedInfo: Record<string, Vehicle> = {};
+
+    Object.entries(vehCreateInfo).forEach(([npcName, vehInfo]) => {
+      vehCreatedInfo[npcName] = new Vehicle(vehInfo);
+      vehCreatedInfo[npcName].create();
+    });
+
+    const offConnect = PlayerEvent.onConnect(({ player, next }) => {
       if (!player.isNpc()) return next();
       const ip_addr_npc = GameMode.getConsoleVarAsString("bind").consoleVar;
       let ip_addr_server = player.getIp().ip;
@@ -45,7 +60,7 @@ export const GlNpcs: IGlNpcsFS = {
       return next();
     });
 
-    const onRequestClass = PlayerEvent.onRequestClass(({ player, next }) => {
+    const offRequestClass = PlayerEvent.onRequestClass(({ player, next }) => {
       if (!player.isNpc()) return next(); // We only deal with NPC players in this script
 
       const playerName = player.getName().name;
@@ -72,19 +87,15 @@ export const GlNpcs: IGlNpcsFS = {
       return next();
     });
 
-    const onSpawn = PlayerEvent.onSpawn(({ player, next }) => {
-      if (!player.isNpc()) return next(); // We only deal with NPC players in this script
+    const offSpawn = NpcEvent.onSpawn(({ npc, next }) => {
+      const playerName = npc.getName();
 
-      const playerName = player.getName().name;
+      if (playerName in vehCreatedInfo) {
+        const veh = vehCreatedInfo[playerName];
+        npc.putInVehicle(veh, 0);
+        Player.getInstance(npc.id)!.setColor(0xffffffff);
 
-      if (playerName in vehiclePutId) {
-        const veh = Vehicle.getInstance(
-          vehiclePutId[playerName as keyof typeof vehiclePutId],
-        );
-        veh!.putPlayerIn(player, 0);
-        player.setColor(0xffffffff);
-
-        if (playerName === "DriverTest2" && options && options.test) {
+        if (playerName === "DriverTest2") {
           setVehicleTireStatus(veh!, 0xff);
         }
       }
@@ -92,21 +103,30 @@ export const GlNpcs: IGlNpcsFS = {
       return next();
     });
 
-    Npc.connect(npcNames[0], "train_lv");
-    Npc.connect(npcNames[1], "train_ls");
-    Npc.connect(npcNames[2], "train_sf");
-    Npc.connect(npcNames[3], "at400_lv");
-    Npc.connect(npcNames[4], "at400_sf");
-    Npc.connect(npcNames[5], "at400_ls");
+    npcNames.slice(0, 6).forEach((name) => {
+      new Npc(name).spawn();
+    });
 
     // Testing
     if (options && options.test) {
-      Npc.connect(npcNames[6], "onfoot_test");
-      Npc.connect(npcNames[7], "mat_test2");
-      Npc.connect(npcNames[8], "driver_test2");
+      npcNames.slice(6).forEach((name) => {
+        new Npc(name).spawn();
+      });
     }
 
-    return [onConnect, onRequestClass, onSpawn];
+    return [
+      offConnect,
+      offRequestClass,
+      offSpawn,
+      ...initNpcModes(),
+      () => {
+        Object.values(vehCreatedInfo).forEach((veh) => {
+          if (veh.isValid()) {
+            veh.destroy();
+          }
+        });
+      },
+    ];
   },
   unload() {},
 };
