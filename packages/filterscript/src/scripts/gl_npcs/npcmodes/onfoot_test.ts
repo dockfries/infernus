@@ -5,7 +5,7 @@ export function initOnFootTest() {
   const NPC_NAME = npcNames[6];
 
   function nextPlayback(npc: Npc) {
-    npc.startPlayback("recordings/truth1.rec", true, 0, 0, 0, 0, 0, 0);
+    npc.startPlayback("truth1", true, 0, 0, 0, 0, 0, 0);
   }
 
   const offPlaybackEnd = NpcEvent.onPlaybackEnd(({ npc, next }) => {

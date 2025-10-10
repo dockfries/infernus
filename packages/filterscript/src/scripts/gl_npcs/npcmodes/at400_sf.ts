@@ -16,38 +16,11 @@ export function initAt400SF() {
     if (gPlaybackFileCycle >= NUM_PLAYBACK_FILES) gPlaybackFileCycle = 0;
 
     if (gPlaybackFileCycle == 0) {
-      npc.startPlayback(
-        "recordings/at400_sf_to_ls_x1.rec",
-        true,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-      );
+      npc.startPlayback("at400_sf_to_ls_x1", true, 0, 0, 0, 0, 0, 0);
     } else if (gPlaybackFileCycle == 1) {
-      npc.startPlayback(
-        "recordings/at400_ls_to_lv_x1.rec",
-        true,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-      );
+      npc.startPlayback("at400_ls_to_lv_x1", true, 0, 0, 0, 0, 0, 0);
     } else if (gPlaybackFileCycle == 2) {
-      npc.startPlayback(
-        "recordings/at400_lv_to_sf_x1.rec",
-        true,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-      );
+      npc.startPlayback("at400_lv_to_sf_x1", true, 0, 0, 0, 0, 0, 0);
     }
 
     gPlaybackFileCycle++;

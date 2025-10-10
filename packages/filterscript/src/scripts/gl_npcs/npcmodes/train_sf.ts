@@ -16,38 +16,11 @@ export function initTrainSf() {
     if (gPlaybackFileCycle >= NUM_PLAYBACK_FILES) gPlaybackFileCycle = 0;
 
     if (gPlaybackFileCycle == 0) {
-      npc.startPlayback(
-        "recordings/train_sf_to_lv1.rec",
-        true,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-      );
+      npc.startPlayback("train_sf_to_lv1", true, 0, 0, 0, 0, 0, 0);
     } else if (gPlaybackFileCycle == 1) {
-      npc.startPlayback(
-        "recordings/train_lv_to_ls1.rec",
-        true,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-      );
+      npc.startPlayback("train_lv_to_ls1", true, 0, 0, 0, 0, 0, 0);
     } else if (gPlaybackFileCycle == 2) {
-      npc.startPlayback(
-        "recordings/train_ls_to_sf1.rec",
-        true,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-      );
+      npc.startPlayback("train_ls_to_sf1", true, 0, 0, 0, 0, 0, 0);
     }
 
     gPlaybackFileCycle++;

@@ -5,7 +5,7 @@ export function initDriverTest2() {
   const NPC_NAME = npcNames[8];
 
   function nextPlayback(npc: Npc) {
-    npc.startPlayback("recordings/driver_test2.rec", true, 0, 0, 0, 0, 0, 0);
+    npc.startPlayback("driver_test2", true, 0, 0, 0, 0, 0, 0);
   }
 
   const offPlaybackEnd = NpcEvent.onPlaybackEnd(({ npc, next }) => {

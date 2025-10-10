@@ -5,7 +5,7 @@ export function initMatTest2() {
   const NPC_NAME = npcNames[7];
 
   function nextPlayback(npc: Npc) {
-    npc.startPlayback("recordings/carmod968.rec", true, 0, 0, 0, 0, 0, 0);
+    npc.startPlayback("carmod968", true, 0, 0, 0, 0, 0, 0);
   }
 
   const offPlaybackEnd = NpcEvent.onPlaybackEnd(({ npc, next }) => {
