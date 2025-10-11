@@ -9,8 +9,7 @@ import {
   GameMode,
   Npc,
   PlayerEvent,
-  NpcEvent,
-  Player,
+  PlayerStateEnum,
 } from "@infernus/core";
 import { npcNames, spawnInfo, vehCreateInfo } from "./constants";
 import type { IGlNpcsFS } from "./interfaces";
@@ -33,13 +32,14 @@ export const GlNpcs: IGlNpcsFS = {
     const vehCreatedInfo: Record<string, Vehicle> = {};
 
     Object.entries(vehCreateInfo).forEach(([npcName, vehInfo]) => {
-      vehCreatedInfo[npcName] = new Vehicle(vehInfo);
+      vehCreatedInfo[npcName] = new Vehicle(vehInfo, true);
       vehCreatedInfo[npcName].create();
     });
 
     const offConnect = PlayerEvent.onConnect(({ player, next }) => {
       if (!player.isNpc()) return next();
-      const ip_addr_npc = GameMode.getConsoleVarAsString("bind").consoleVar;
+      const ip_addr_npc =
+        GameMode.getConsoleVarAsString("network.bind").consoleVar;
       let ip_addr_server = player.getIp().ip;
 
       if (!ip_addr_server) {
@@ -87,21 +87,28 @@ export const GlNpcs: IGlNpcsFS = {
       return next();
     });
 
-    const offSpawn = NpcEvent.onSpawn(({ npc, next }) => {
-      const playerName = npc.getName();
+    const offStateChange = PlayerEvent.onStateChange(
+      ({ player, newState, next }) => {
+        if (!player.isNpc()) return next();
 
-      if (playerName in vehCreatedInfo) {
-        const veh = vehCreatedInfo[playerName];
-        npc.putInVehicle(veh, 0);
-        Player.getInstance(npc.id)!.setColor(0xffffffff);
+        if (newState !== PlayerStateEnum.ONFOOT) return next();
 
-        if (playerName === "DriverTest2") {
-          setVehicleTireStatus(veh!, 0xff);
+        const playerName = player.getName().name;
+
+        if (playerName in vehCreatedInfo) {
+          player.setColor(0xffffffff);
+
+          const veh = vehCreatedInfo[playerName];
+          Npc.getInstance(player.id)!.putInVehicle(veh, 0);
+
+          if (playerName === "DriverTest2") {
+            setVehicleTireStatus(veh!, 0xff);
+          }
         }
-      }
 
-      return next();
-    });
+        return next();
+      },
+    );
 
     npcNames.slice(0, 6).forEach((name) => {
       new Npc(name).spawn();
@@ -117,7 +124,7 @@ export const GlNpcs: IGlNpcsFS = {
     return [
       offConnect,
       offRequestClass,
-      offSpawn,
+      offStateChange,
       ...initNpcModes(),
       () => {
         Object.values(vehCreatedInfo).forEach((veh) => {

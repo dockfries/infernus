@@ -1,4 +1,4 @@
-import { Npc, NpcEvent } from "@infernus/core";
+import { Npc, NpcEvent, PlayerEvent } from "@infernus/core";
 import { npcNames } from "../constants";
 
 export function initOnFootTest() {
@@ -15,12 +15,12 @@ export function initOnFootTest() {
     return next();
   });
 
-  const offSpawn = NpcEvent.onSpawn(({ npc, next }) => {
-    if (npc.getName() === NPC_NAME) {
-      nextPlayback(npc);
+  const offStateChange = PlayerEvent.onStateChange(({ player, next }) => {
+    if (player.isNpc() && player.getName().name === NPC_NAME) {
+      nextPlayback(Npc.getInstance(player.id)!);
     }
     return next();
   });
 
-  return [offPlaybackEnd, offSpawn];
+  return [offPlaybackEnd, offStateChange];
 }

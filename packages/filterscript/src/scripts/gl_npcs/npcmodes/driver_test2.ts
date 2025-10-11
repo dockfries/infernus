@@ -1,4 +1,4 @@
-import { Npc, NpcEvent, VehicleEvent } from "@infernus/core";
+import { Npc, NpcEvent, PlayerEvent, PlayerStateEnum } from "@infernus/core";
 import { npcNames } from "../constants";
 
 export function initDriverTest2() {
@@ -15,19 +15,21 @@ export function initDriverTest2() {
     return next();
   });
 
-  const offPlayerEnter = VehicleEvent.onPlayerEnter(({ player, next }) => {
-    if (player.isNpc() && player.getName().name === NPC_NAME) {
-      nextPlayback(Npc.getInstance(player.id)!);
-    }
-    return next();
-  });
+  const offStateChange = PlayerEvent.onStateChange(
+    ({ player, newState, next }) => {
+      if (player.isNpc() && player.getName().name === NPC_NAME) {
+        const npc = Npc.getInstance(player.id)!;
+        if (newState === PlayerStateEnum.DRIVER) {
+          nextPlayback(npc);
+        } else {
+          if (npc.isPlayingPlayback()) {
+            npc.stopPlayback();
+          }
+        }
+      }
+      return next();
+    },
+  );
 
-  const offPlayerExit = VehicleEvent.onPlayerExit(({ player, next }) => {
-    if (player.isNpc() && player.getName().name === NPC_NAME) {
-      Npc.getInstance(player.id)!.stopPlayback();
-    }
-    return next();
-  });
-
-  return [offPlaybackEnd, offPlayerEnter, offPlayerExit];
+  return [offPlaybackEnd, offStateChange];
 }
