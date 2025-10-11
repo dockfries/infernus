@@ -19,17 +19,17 @@
   ],
   "scripts": {},
   "dependencies": {
-    "@inquirer/prompts": "^7.8.0",
-    "@octokit/core": "^7.0.3",
-    "axios": "^1.11.0",
-    "chalk": "^5.4.1",
+    "@inquirer/prompts": "^7.8.6",
+    "@octokit/core": "^7.0.5",
+    "axios": "^1.12.2",
+    "chalk": "^5.6.2",
     "cli-progress": "^3.12.0",
     "decompress": "^4.2.1",
     "execa": "^9.6.0",
     "fast-glob": "^3.3.3",
-    "fs-extra": "^11.3.0",
+    "fs-extra": "^11.3.2",
     "https-proxy-agent": "^7.0.6",
-    "semver": "^7.7.2",
+    "semver": "^7.7.3",
     "update-notifier": "^7.3.1",
     "yargs": "^18.0.0"
   },
@@ -37,7 +37,7 @@
     "@types/cli-progress": "^3.11.6",
     "@types/decompress": "^4.2.7",
     "@types/fs-extra": "^11.0.4",
-    "@types/semver": "^7.7.0",
+    "@types/semver": "^7.7.1",
     "@types/update-notifier": "^6.0.8",
     "@types/yargs": "^17.0.33"
   }

@@ -49,6 +49,8 @@ export class Npc {
     if (!INTERNAL_FLAGS.skip) {
       samp.callNative("NPC_Destroy", "i", this._id);
     }
+    npcPool.delete(this._id);
+    this._id = -1;
     return this;
   }
   isValid() {

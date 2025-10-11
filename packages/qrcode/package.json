@@ -42,6 +42,6 @@
     "@infernus/core": "workspace:^"
   },
   "dependencies": {
-    "qrcode-generator": "^2.0.2"
+    "qrcode-generator": "^2.0.4"
   }
 }

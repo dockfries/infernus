@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@infernus/streamer": "workspace:^",
-    "es-toolkit": "^1.39.8",
+    "es-toolkit": "^1.40.0",
     "fastest-levenshtein": "^1.0.16"
   }
 }
