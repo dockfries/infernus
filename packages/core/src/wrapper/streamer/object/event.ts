@@ -53,7 +53,7 @@ const [onDynamicObjectMoved] = defineEvent({
 
 const [onPlayerEditDynamicObject] = defineEvent({
   name: "OnPlayerEditDynamicObject",
-  identifier: "iiiiiiiii",
+  identifier: "iiiffffff",
   defaultValue: false,
   beforeEach(
     pid: number,
@@ -82,7 +82,7 @@ const [onPlayerEditDynamicObject] = defineEvent({
 
 const [onPlayerSelectDynamicObject] = defineEvent({
   name: "OnPlayerSelectDynamicObject",
-  identifier: "iiiiii",
+  identifier: "iiifff",
   beforeEach(
     pid: number,
     oid: number,
@@ -104,7 +104,7 @@ const [onPlayerSelectDynamicObject] = defineEvent({
 
 const [onPlayerShootDynamicObject] = defineEvent({
   name: "OnPlayerShootDynamicObject",
-  identifier: "iiiiii",
+  identifier: "iiifff",
   beforeEach(
     pid: number,
     weapon: WeaponEnum,
