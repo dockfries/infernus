@@ -20,9 +20,28 @@ import { NpcNode } from "./node";
 import { NpcPath } from "./path";
 
 GameMode.onExit(({ next }) => {
+  Npc.getInstances().forEach((npc) => {
+    if (npc.isValid()) {
+      npc.destroy();
+    }
+  });
   npcPool.clear();
+
+  NpcNode.getInstances().forEach((node) => {
+    if (node.isOpen()) {
+      node.close();
+    }
+  });
   npcNodePool.clear();
+
+  NpcPath.destroyAll();
   npcPathPool.clear();
+
+  NpcRecord.getInstances().forEach((record) => {
+    if (record.isValid()) {
+      record.unload();
+    }
+  });
   npcRecordPool.clear();
   return next();
 });

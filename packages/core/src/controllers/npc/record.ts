@@ -1,3 +1,4 @@
+import { INTERNAL_FLAGS } from "core/utils/flags";
 import { npcRecordPool } from "core/utils/pools";
 
 export class NpcRecord {
@@ -30,16 +31,23 @@ export class NpcRecord {
 
   unload() {
     const oldId = this._id;
-    const ret = !!samp.callNative("NPC_UnloadRecord", "i", this._id);
-    if (ret) {
-      this._id = -1;
-      this._filePath = "";
-      npcRecordPool.delete(oldId);
+    if (!INTERNAL_FLAGS.skip) {
+      const ret = !!samp.callNative("NPC_UnloadRecord", "i", this._id);
+      if (ret) {
+        this._id = -1;
+        this._filePath = "";
+        npcRecordPool.delete(oldId);
+      }
+      return ret;
     }
-    return ret;
+    this._id = -1;
+    this._filePath = "";
+    npcRecordPool.delete(oldId);
+    return true;
   }
 
   isValid() {
+    if (INTERNAL_FLAGS.skip && this._id !== -1) return true;
     return NpcRecord.isValid(this._id);
   }
 

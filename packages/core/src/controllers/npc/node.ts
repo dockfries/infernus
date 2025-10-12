@@ -1,3 +1,4 @@
+import { INTERNAL_FLAGS } from "core/utils/flags";
 import { npcNodePool } from "core/utils/pools";
 
 export class NpcNode {
@@ -22,13 +23,20 @@ export class NpcNode {
     }
   }
   close() {
-    const ret = !!samp.callNative("NPC_CloseNode", "i", this._id);
-    if (ret) {
-      npcNodePool.delete(this._id);
+    if (!INTERNAL_FLAGS.skip) {
+      const ret = !!samp.callNative("NPC_CloseNode", "i", this._id);
+      if (ret) {
+        npcNodePool.delete(this._id);
+        this._id = -1;
+      }
+      return ret;
     }
-    return ret;
+    npcNodePool.delete(this._id);
+    this._id = -1;
+    return true;
   }
   isOpen() {
+    if (INTERNAL_FLAGS.skip && this._id !== -1) return true;
     return !!samp.callNative("NPC_IsNodeOpen", "i", this._id);
   }
   getType() {
