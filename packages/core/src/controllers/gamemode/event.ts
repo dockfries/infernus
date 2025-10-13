@@ -1,10 +1,21 @@
 import { defineEvent } from "../bus";
 import { I18n } from "../i18n";
 
-export const [onInit] = defineEvent({
+export const [onSampGdkInit] = defineEvent({
   name: "OnGameModeInit",
   identifier: "",
 });
+
+export const [onInit, triggerOnInit] = defineEvent({
+  name: "OnGameModeInitReal",
+  isNative: false,
+});
+
+onSampGdkInit(() => {
+  Promise.resolve().then(triggerOnInit);
+  return;
+});
+
 export const [onExit] = defineEvent({
   name: "OnGameModeExit",
   identifier: "",
