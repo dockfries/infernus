@@ -1,3 +1,17 @@
+## <small>0.12.4 (2025-10-13)</small>
+
+* fix(core): maybe compat sampgdk and npc component ([5651196](https://github.com/dockfries/infernus/commit/5651196))
+* fix(core): npc spawn, respawn event name case ([d6d862d](https://github.com/dockfries/infernus/commit/d6d862d))
+* fix(fs): gl_npcs, startPlayback is fixed path `npcmodes/records` ([7d3ef29](https://github.com/dockfries/infernus/commit/7d3ef29))
+* feat(core): npc gamemodeexit clear skip ([eb53aa3](https://github.com/dockfries/infernus/commit/eb53aa3))
+* refactor(core): change identifiers to float type (#55) ([53e2900](https://github.com/dockfries/infernus/commit/53e2900)), closes [#55](https://github.com/dockfries/infernus/issues/55)
+* refactor(fs): gl_npcs npc component ([d84b48b](https://github.com/dockfries/infernus/commit/d84b48b))
+* refactor(gl_npcs): npcmodes useStateChange, change npc vehicle model info ([95d4fa9](https://github.com/dockfries/infernus/commit/95d4fa9))
+* chore(deps): update dependencies and fix NPC cleanup ([3f04507](https://github.com/dockfries/infernus/commit/3f04507))
+* chore(release): raknet v0.12.2 ([2e6a746](https://github.com/dockfries/infernus/commit/2e6a746))
+
+
+
 ## <small>0.12.3 (2025-10-09)</small>
 
 * chore(release): create-app v0.2.16 ([1bfdd97](https://github.com/dockfries/infernus/commit/1bfdd97))
