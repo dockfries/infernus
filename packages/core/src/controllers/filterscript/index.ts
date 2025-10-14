@@ -31,6 +31,7 @@ export const loadUseScript = async (scriptName: string) => {
     throw new Error(`[GameMode]: script ${scriptName} load fail\nerr:${err}`);
   }
 };
+
 export const unloadUseScript = async (scriptName: string) => {
   try {
     return await new Promise<void>((resolve, reject) => {
@@ -65,6 +66,10 @@ export const unloadUseScript = async (scriptName: string) => {
 export const reloadUseScript = async (scriptName: string) => {
   await unloadUseScript(scriptName);
   await loadUseScript(scriptName);
+};
+
+export const isUseScriptLoaded = (scriptName: string) => {
+  return registeredEvents.has(scriptName);
 };
 
 onInit(async ({ next }) => {

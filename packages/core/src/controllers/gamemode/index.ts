@@ -13,6 +13,7 @@ import {
   loadUseScript,
   reloadUseScript,
   unloadUseScript,
+  isUseScriptLoaded,
 } from "../filterscript";
 
 import * as w from "core/wrapper/native";
@@ -32,7 +33,10 @@ export class GameMode {
   static onRconCommand = onRconCommand;
   static onRconLoginAttempt = onRconLoginAttempt;
 
-  static use(plugin: IFilterScript, ...options: Array<any>) {
+  static use<T extends IFilterScript>(
+    plugin: T,
+    ...options: Parameters<T["load"]>
+  ) {
     useFilterScript(plugin, ...options);
     return this;
   }
@@ -40,6 +44,7 @@ export class GameMode {
   static loadUseScript = loadUseScript;
   static reloadUseScript = reloadUseScript;
   static unloadUseScript = unloadUseScript;
+  static isUseScriptLoaded = isUseScriptLoaded;
 
   static enableCmdCaseSensitive = CmdBus.enableCaseSensitive;
   static disableCmdCaseSensitive = CmdBus.disableCaseSensitive;
