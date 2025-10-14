@@ -233,6 +233,9 @@ export class Vehicle {
   getModelInfo(infoType: VehicleModelInfoEnum) {
     return Vehicle.getModelInfo(this.getModel(), infoType);
   }
+  getRotation() {
+    return v.GetVehicleRotation(this.id);
+  }
   getRotationQuat() {
     return v.GetVehicleRotationQuat(this.id);
   }

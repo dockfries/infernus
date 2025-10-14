@@ -302,6 +302,12 @@ export const GetVehicleZAngle = (vehicleId: number) => {
   return { angle, ret };
 };
 
+export const GetVehicleRotation = (vehicleId: number) => {
+  const [x, y, z, ret]: [number, number, number, number, number] =
+    samp.callNative("GetVehicleRotation", "iFFF", vehicleId);
+  return { x, y, z, ret };
+};
+
 export const GetVehicleRotationQuat = (vehicleId: number) => {
   const [w, x, y, z, ret]: [number, number, number, number, number] =
     samp.callNative("GetVehicleRotationQuat", "iFFFF", vehicleId);
