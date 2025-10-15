@@ -1,3 +1,11 @@
+## <small>0.12.5 (2025-10-15)</small>
+
+* feat(core): add isUseScriptLoaded, support generic speculation load arguments ([e8864b8](https://github.com/dockfries/infernus/commit/e8864b8))
+* feat(core): vehicle getRotation ([428f2f6](https://github.com/dockfries/infernus/commit/428f2f6))
+* chore(release): filterscript v0.12.1 ([59882c8](https://github.com/dockfries/infernus/commit/59882c8))
+
+
+
 ## <small>0.12.4 (2025-10-13)</small>
 
 * fix(core): maybe compat sampgdk and npc component ([5651196](https://github.com/dockfries/infernus/commit/5651196))
