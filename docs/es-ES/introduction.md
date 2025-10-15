@@ -14,10 +14,12 @@ El nombre `Infernus` proviene del vehículo con el ID `411` en el juego (concret
 
 ### Comparación
 
+> En relación con omp-node, la información concreta está sujeta a la documentación oficial posterior. El siguiente contenido es meramente informativo.
+
 | /              | Infernus + samp-node                                                                         | omp-node                     |
 | -------------- | -------------------------------------------------------------------------------------------- | ---------------------------- |
-| Runtime        | Windows/Linux: Node.js 22.17+                                                                | Windows/Linux: Node.js 18+   |
-| Module System  | CommonJS/ESModule(experimental)                                                              | ESModule                     |
+| Runtime        | Windows/Linux: Node.js 22.20.0                                                               | Windows/Linux: Node.js 18+   |
+| Module System  | CommonJS/ESModule                                                                            | ESModule                     |
 | Architecture   | x86 only                                                                                     | x86/x64                      |
 | Implementation | Via sampgdk→fakeamx→native calls                                                             | Direct omp-gdk/omp-sdk calls |
 | Performance    | Lento                                                                                        | Rápido                       |
@@ -46,40 +48,29 @@ Teniendo en cuenta que el plugin desarrollo de `samp-node` está basado en `samp
 
 Esto limita bastante el desarrollo de plugins de `samp` usando el ecosistema de `node.js`. Requiere un trabajo conjunto de la comunidad para abordar este problema.
 
-### Soporte de bindings
+### Soporte para 32 bits y Bindings
 
-Lamentablemente, este proyecto está basado en un `node.js` embebido de 32 bits, y el soporte para `bindings` es inestable - puedes encontrarte con errores.
+Lamentablemente, este proyecto está basado en `node.js` embebido de 32 bits, y el soporte para `bindings` es inestable. Puede que encuentres errores y otros problemas.
 
-Antes de usar este proyecto, ten en cuenta:
+Antes de usar este proyecto, ten en cuenta los siguientes requisitos de versión:
 
-1. **Compatibilidad de versiones**
-   - Asegúrate que la versión principal de Node coincida con lo que necesita samp-node
-   - Ejemplo: si samp-node requiere 22.17.0, solo usa versiones 22.x
-   - Versiones como 18.x, 20.x, 24.x no son compatibles
+1. **Coincidencia de Versión de Node**
+   - Asegúrate de que la versión principal de Node coincida con la versión requerida por samp-node
+   - Por ejemplo, si samp-node depende de 22.20.0, solo se pueden usar versiones 22.x
+   - Versiones incompatibles como 18.x, 20.x, 24.x, etc. no funcionarán correctamente
 
-2. Para proyectos existentes:
-   - Primero verifica la versión de Node
-   - Borra la carpeta node_modules
-   - Ejecuta `pnpm install` nuevamente
+2. Si el proyecto ya ha sido creado:
+   - Primero verifica si la versión de Node cumple con los requisitos
+   - Elimina la carpeta node_modules
+   - Vuelve a ejecutar `pnpm install`
 
-> Nota: El módulo better-sqlite3 ha sido probado en Windows
+> Nota de soporte del entorno: El módulo better-sqlite3 ha sido probado y verificado en la plataforma Windows.
 
-Quizás esto se resuelva en el futuro con un `omp-node` de 64 bits.
+Este problema podría resolverse en el futuro con `omp-node` de 64 bits.
 
-### Bloqueo de terminal
+El entorno de 32 bits de `node` tiene limitaciones de memoria. Se recomienda configurar un proyecto separado de `node` para operaciones de base de datos, ejecutándose en `node` de 64 bits de la máquina host. Por ejemplo, usa `nestjs` para construir una `api` específicamente para operaciones `CRUD`. El servidor de juegos puede acceder a ella mediante solicitudes `http`, o puedes probar métodos más avanzados como `rpc` o `socket` para la comunicación.
 
-> [!IMPORTANT]
-> Este problema se ha solucionado a través de [monkeyPatch](https://github.com/dockfries/infernus-starter/blob/main/src/polyfill.js) como la solución actual.
-
-Debido a la pobre compatibilidad entre el `samp-node` subyacente y ciertas librerías asíncronas de `node.js`, ocasionalmente puede haber bloqueo de terminal.
-
-Por ejemplo, cuando usas librerías de orm como `typeorm/sequelize`, puede casar bloqueo de terminal y el server deja de responder hasta que manualmente presionas enter en la terminal.
-
-Por lo tanto, es recomendado adoptar un enfoque de desarrollo distribuido, aunque pueda parecer molesto.
-
-Un enfoque es crear un proyecto separado de `node.js` para las operaciones de base de datos, como el uso de `NestJS` para construir una `API` específicamente para operaciones `CRUD`. El servidor del juego puede acceder a la lógica de la base de datos a través de peticiones `HTTP`, o puedes explorar métodos de comunicación avanzada como `RPC` o `sockets`.
-
-El beneficio de este enfoque es que el servidor del juego solo maneja la lógica del juego, mientras que la lógica de la base de datos está transferida en otro proyecto. Adicionalmente, puedes desarrollar un sistema de administración que comparta la misma `API` que el servidor del juego.
+La ventaja es que el servidor solo maneja la lógica del juego, mientras que la lógica de la base de datos es manejada por un proyecto separado. Adicionalmente, puedes desarrollar un sistema de administración que use el mismo conjunto de `api` que el servidor de juegos.
 
 ## Composición
 
