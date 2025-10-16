@@ -132,7 +132,7 @@ export function playerDeath(
 
   triggerOnPlayerPrepareDeath(player, animLib, animName, editable);
 
-  updateHealthBar(player);
+  updateHealthBar(player, false, true);
   freezeSyncPacket(player, freezeSync);
 
   if (editable.respawnTime === -1) {

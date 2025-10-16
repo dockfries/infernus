@@ -48,8 +48,8 @@ export function sendLastSyncPacket(
   }
 
   if (!animation) {
-    lastSyncData.get(player.id).animationId = 0;
-    lastSyncData.get(player.id).animationFlags = 0;
+    lastSyncData.get(player.id).animationId = animation & 0xffff;
+    lastSyncData.get(player.id).animationFlags = (animation >> 16) & 0xffff;
   }
 
   const ofs = new OnFootSync(bs);

@@ -4,7 +4,7 @@ import { isDying, inClassSelection } from "../../struct";
 
 PlayerEvent.onStreamIn(({ player, forPlayer, next }) => {
   if (isDying.get(player.id) || inClassSelection.get(player.id)) {
-    sendLastSyncPacket(player, forPlayer!, 0x2e040000 + 1150);
+    sendLastSyncPacket(player, forPlayer!, 0x2e040000 + 1151);
   }
   return next();
 });

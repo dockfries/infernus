@@ -44,6 +44,7 @@ import { angleBetweenPoints, wc_CalculateBar } from "../../utils/math";
 import { clearAnimationsForPlayer } from "./anim";
 // import { getRotationQuaternion } from "./get";
 import { sendLastSyncPacket, updateSyncData } from "./raknet";
+import { wc_IsPlayerPaused } from "../public/is";
 
 export function wc_SpawnForStreamedIn(player: Player) {
   if (!orig_playerMethods.isConnected.call(player)) {
@@ -91,7 +92,11 @@ export function makePlayerFacePlayer(
   }
 }
 
-export function updateHealthBar(player: Player, force = false) {
+export function updateHealthBar(
+  player: Player,
+  force = false,
+  forceSync = false,
+) {
   if (beingResynced.get(player.id) || forceClassSelection.get(player.id)) {
     return;
   }
@@ -136,7 +141,9 @@ export function updateHealthBar(player: Player, force = false) {
   setFakeHealth(player, health);
   setFakeArmour(player, armour);
 
-  updateSyncData(player);
+  if (forceSync || wc_IsPlayerPaused(player)) {
+    updateSyncData(player);
+  }
 
   if (health !== lastSentHealth.get(player.id)) {
     lastSentHealth.set(player.id, health);

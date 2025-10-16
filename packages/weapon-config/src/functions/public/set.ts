@@ -248,3 +248,7 @@ export function resyncPlayer(player: Player) {
   beingResynced.set(player.id, true);
   spawnPlayerInPlace(player);
 }
+
+export function setCbugDeathDelay(toggle: boolean) {
+  innerGameModeConfig.cBugDeathDelay = toggle;
+}

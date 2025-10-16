@@ -895,7 +895,10 @@ export function inflictDamage(
       }
     }
 
-    if (cBugAllowed.get(editable.player.id)) {
+    if (
+      cBugAllowed.get(editable.player.id) ||
+      !innerGameModeConfig.cBugDeathDelay
+    ) {
       useTrigger("OnPlayerDeath")!(
         withTriggerOptions({
           skipToNext: internalPlayerDeath,

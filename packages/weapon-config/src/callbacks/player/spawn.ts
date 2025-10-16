@@ -487,7 +487,7 @@ export const internalPlayerDeath: Parameters<
     }
   }
 
-  updateHealthBar(editable.player);
+  updateHealthBar(editable.player, false, true);
 
   return 1;
 };

@@ -17,6 +17,7 @@ export interface IWeaponConfigGM {
   disableSyncBugs: boolean;
   knifeSync: boolean;
   cBugGlobal: boolean;
+  cBugDeathDelay: boolean;
   damageArmourToggle: [boolean, boolean];
   customVendingMachines: boolean;
   healthBarBorder: TextDraw | null;
@@ -40,6 +41,7 @@ export const innerGameModeConfig: IWeaponConfigGM = {
   disableSyncBugs: true,
   knifeSync: true,
   cBugGlobal: true,
+  cBugDeathDelay: true,
   damageArmourToggle: [false, false],
   customVendingMachines: true,
   healthBarBorder: null,
