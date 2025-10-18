@@ -6,7 +6,7 @@ import {
 } from "../constants";
 import { DriftStateEnum, DriftOptionsEnum } from "../enums";
 import { IDriftPlayer } from "../interfaces";
-import { SafetyMap } from "./safetyMap";
+import { SafetyMap } from "shared/utils/safetyMap";
 
 export const internalVar = {
   g_DriftPlayers: new SafetyMap<Player, IDriftPlayer>(() => {

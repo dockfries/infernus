@@ -1,6 +1,6 @@
 import { VehicleParamsEnum } from "@infernus/core";
 import { ac_ACAllow, ac_Mtfc, ac_NOPAllow } from "../constants";
-import { SafetyMap } from "../utils/safetyMap";
+import { SafetyMap } from "shared/utils/safetyMap";
 
 export class ACInfoStruct {
   acPosX: number = 0.0;

@@ -1,7 +1,7 @@
 import type { ICommonOptions } from "filterscript/interfaces";
 import type { KeysEnum } from "@infernus/core";
 import { Player, Vehicle, VehicleModelInfoEnum } from "@infernus/core";
-import { degreesToRadians } from "./convert";
+import { degreesToRadians } from "shared/utils/convert";
 
 export const isKeyJustDown = (
   key: KeysEnum,

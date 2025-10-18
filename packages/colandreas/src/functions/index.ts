@@ -2,7 +2,7 @@ import type { Vehicle } from "@infernus/core";
 import { Player, GameMode } from "@infernus/core";
 import { rayCastLine, rayCastMultiLine, removeBuilding } from "../natives";
 import { FLOAT_INFINITY, WATER_OBJECT } from "../definitions";
-import { degreesToRadians } from "../utils";
+import { degreesToRadians } from "shared/utils/convert";
 
 export function findZ_For2DCoord(x: number, y: number) {
   return rayCastLine(x, y, 700.0, x, y, -1000.0)?.z;

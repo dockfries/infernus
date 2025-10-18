@@ -13,7 +13,7 @@ import {
   TextDrawFontsEnum,
 } from "@infernus/core";
 import * as constants from "./constants";
-import { degreesToRadians } from "filterscript/utils/convert";
+import { degreesToRadians } from "shared/utils/convert";
 import { spawnVehicleInFrontOfPlayer } from "filterscript/utils/gl_common";
 
 const gTotalItems = constants.TOTAL_ITEMS;

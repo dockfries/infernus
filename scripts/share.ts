@@ -6,7 +6,7 @@ export const rootPkgJsonPath = path.resolve(process.cwd(), "package.json");
 
 export const pkgDir = path.resolve(process.cwd(), "./packages");
 
-const excludePkg = ["types"];
+const excludePkg = ["types", "shared"];
 
 export const pkgNames = fs.readdirSync(pkgDir).filter((dirPath) => {
   return (

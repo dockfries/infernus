@@ -1,5 +1,5 @@
 import { Player } from "@infernus/core";
-import { degreesToRadians } from "filterscript/utils/convert";
+import { degreesToRadians } from "shared/utils/convert";
 import { aVehicleNames, aWeaponNames } from "../constants";
 
 export function isInvalidSkin(skinId: number) {

@@ -13,7 +13,8 @@
     "paths": {
       "core/*": ["packages/core/src/*"],
       "raknet/*": ["packages/raknet/src/*"],
-      "filterscript/*": ["packages/filterscript/src/*"]
+      "filterscript/*": ["packages/filterscript/src/*"],
+      "shared/*": ["packages/shared/src/*"]
     },
     "rootDir": ".",
     "skipLibCheck": true,

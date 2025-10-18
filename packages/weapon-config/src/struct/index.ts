@@ -1,7 +1,7 @@
 import { DynamicObject, InvalidEnum, TextDraw } from "@infernus/core";
 import { IOnFootSync } from "@infernus/raknet";
 import { WC_WeaponEnum } from "../enums";
-import { SafetyMap } from "../utils/safetyMap";
+import { SafetyMap } from "shared/utils/safetyMap";
 
 export class DamageFeedHit {
   issuer: number = InvalidEnum.PLAYER_ID;
