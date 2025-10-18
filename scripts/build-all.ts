@@ -1,6 +1,6 @@
 import { pkgNames, build } from "./share";
 
-const fixedSort = ["streamer", "core"];
+const fixedSort = ["streamer", "core", "raknet"];
 
 async function buildAll() {
   const _pkgNames = fixedSort.concat(
