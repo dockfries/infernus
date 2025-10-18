@@ -21,31 +21,13 @@ export class FCNPCMovePath {
       z,
     );
   }
-  // idk whether two-dimensional arrays can work.
-  // If it doesn't work, manually forEach addPoint?
-  // fcnpc source is just to help you make a loop
-  addPoints(points: [number, number, number][]): number {
-    return samp.callNative(
-      "FCNPC_AddPointsToMovePath",
-      "iai",
-      this.id,
-      points,
-      points.length,
-    );
-  }
-  // ibid
-  addPoints2(pointsX: number[], pointsY: number[], pointsZ: number[]): number {
-    if (pointsX.length !== pointsY.length || pointsX.length !== pointsZ.length)
-      return 0;
-    return samp.callNative(
-      "FCNPC_AddPointsToMovePath2",
-      "iaaai",
-      this.id,
-      pointsX,
-      pointsY,
-      pointsZ,
-      pointsX.length,
-    );
+  addPoints(points: [number, number, number][]): number[] {
+    const results: number[] = [];
+    points.forEach((point) => {
+      const result = this.addPoint(point[0], point[1], point[2]);
+      results.push(result);
+    });
+    return results;
   }
   removePoint(pointId: number) {
     return !!samp.callNative(
