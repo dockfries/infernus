@@ -66,6 +66,7 @@ export interface IDynamic {
   interiorId?: TStreamerExtendable;
   playerId?: TStreamerExtendable;
   extended?: boolean;
+  priority?: number;
 }
 
 export interface IDynamicCommon extends IDynamic {
@@ -74,7 +75,6 @@ export interface IDynamicCommon extends IDynamic {
   z: number;
   areaId?: TStreamerExtendable;
   streamDistance?: number;
-  priority?: number;
 }
 
 export interface IDynamicMapIcon extends IDynamicCommon {

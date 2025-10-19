@@ -35,7 +35,8 @@ export class DynamicArea {
       throw new Error("[StreamerArea]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[StreamerArea]: Unable to create with only id");
-    let { worldId, interiorId, playerId } = this.sourceInfo;
+    let { worldId, interiorId, playerId, priority } = this.sourceInfo;
+    priority ??= 0;
     const { type, extended } = this.sourceInfo;
 
     if (extended) {
@@ -57,16 +58,10 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       } else if (type === "cuboid") {
-        const {
-          minX: minX,
-          minY: minY,
-          minZ,
-          maxX: maxX,
-          maxY: maxY,
-          maxZ,
-        } = this.sourceInfo;
+        const { minX, minY, minZ, maxX, maxY, maxZ } = this.sourceInfo;
         this._id = s.CreateDynamicCuboidEx(
           minX,
           minY,
@@ -77,6 +72,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       } else if (type === "cylinder") {
         const { x, y, minZ: minZ, maxZ: maxZ, size } = this.sourceInfo;
@@ -91,6 +87,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       } else if (type === "polygon") {
         const { points, minZ, maxZ } = this.sourceInfo;
@@ -105,6 +102,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       } else if (type === "rectangle") {
         const {
@@ -121,6 +119,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       } else {
         const { x, y, z, size } = this.sourceInfo;
@@ -134,6 +133,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       }
     } else {
@@ -154,6 +154,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       } else if (type === "cuboid") {
         const {
@@ -174,6 +175,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       } else if (type === "cylinder") {
         const { x, y, minZ: minZ, maxZ: maxZ, size } = this.sourceInfo;
@@ -187,6 +189,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       } else if (type === "polygon") {
         const { points, minZ, maxZ } = this.sourceInfo;
@@ -201,6 +204,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       } else if (type === "rectangle") {
         const {
@@ -217,6 +221,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       } else {
         const { x, y, z, size } = this.sourceInfo;
@@ -229,6 +234,7 @@ export class DynamicArea {
           worldId,
           interiorId,
           playerId,
+          priority,
         );
       }
     }

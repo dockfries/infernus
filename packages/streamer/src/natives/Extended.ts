@@ -232,10 +232,11 @@ export const CreateDynamicCircleEx = (
   worlds: number[] = [-1],
   interiors: number[] = [-1],
   players: number[] = [-1],
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicCircleEx",
-    "fffaaaiii",
+    "fffaaaiiii",
     x,
     y,
     size,
@@ -245,6 +246,7 @@ export const CreateDynamicCircleEx = (
     worlds.length,
     interiors.length,
     players.length,
+    priority,
   );
 };
 
@@ -257,10 +259,11 @@ export const CreateDynamicCylinderEx = (
   worlds: number[] = [-1],
   interiors: number[] = [-1],
   players: number[] = [-1],
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicCylinderEx",
-    "fffffaaaiii",
+    "fffffaaaiiii",
     x,
     y,
     minZ,
@@ -272,6 +275,7 @@ export const CreateDynamicCylinderEx = (
     worlds.length,
     interiors.length,
     players.length,
+    priority,
   );
 };
 
@@ -283,10 +287,11 @@ export const CreateDynamicSphereEx = (
   worlds: number[] = [-1],
   interiors: number[] = [-1],
   players: number[] = [-1],
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicSphereEx",
-    "ffffaaaiii",
+    "ffffaaaiiii",
     x,
     y,
     z,
@@ -297,6 +302,7 @@ export const CreateDynamicSphereEx = (
     worlds.length,
     interiors.length,
     players.length,
+    priority,
   );
 };
 
@@ -308,10 +314,11 @@ export const CreateDynamicRectangleEx = (
   worlds: number[] = [-1],
   interiors: number[] = [-1],
   players: number[] = [-1],
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicRectangleEx",
-    "ffffaaaiii",
+    "ffffaaaiiii",
     minX,
     minY,
     maxX,
@@ -322,6 +329,7 @@ export const CreateDynamicRectangleEx = (
     worlds.length,
     interiors.length,
     players.length,
+    priority,
   );
 };
 
@@ -335,10 +343,11 @@ export const CreateDynamicCuboidEx = (
   worlds: number[] = [-1],
   interiors: number[] = [-1],
   players: number[] = [-1],
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicCuboidEx",
-    "ffffffaaaiii",
+    "ffffffaaaiiii",
     minX,
     minY,
     minZ,
@@ -351,6 +360,7 @@ export const CreateDynamicCuboidEx = (
     worlds.length,
     interiors.length,
     players.length,
+    priority,
   );
 };
 
@@ -364,10 +374,11 @@ export const CreateDynamicCubeEx = (
   worlds: number[] = [-1],
   interiors: number[] = [-1],
   players: number[] = [-1],
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicCubeEx",
-    "ffffffaaaiii",
+    "ffffffaaaiiii",
     minX,
     minY,
     minZ,
@@ -380,6 +391,7 @@ export const CreateDynamicCubeEx = (
     worlds.length,
     interiors.length,
     players.length,
+    priority,
   );
 };
 
@@ -390,10 +402,11 @@ export const CreateDynamicPolygonEx = (
   worlds: number[] = [-1],
   interiors: number[] = [-1],
   players: number[] = [-1],
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicPolygonEx",
-    "affiaaaiii",
+    "affiaaaiiii",
     points,
     minZ,
     maxZ,
@@ -404,6 +417,7 @@ export const CreateDynamicPolygonEx = (
     worlds.length,
     interiors.length,
     players.length,
+    priority,
   );
 };
 

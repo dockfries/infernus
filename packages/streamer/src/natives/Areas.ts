@@ -7,16 +7,18 @@ export const CreateDynamicCircle = (
   worldId = -1,
   interiorId = -1,
   playerId = -1,
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicCircle",
-    "fffiii",
+    "fffiiii",
     x,
     y,
     size,
     worldId,
     interiorId,
     playerId,
+    priority,
   );
 };
 
@@ -29,10 +31,11 @@ export const CreateDynamicCylinder = (
   worldId = -1,
   interiorId = -1,
   playerId = -1,
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicCylinder",
-    "fffffiii",
+    "fffffiiii",
     x,
     y,
     minZ,
@@ -41,6 +44,7 @@ export const CreateDynamicCylinder = (
     worldId,
     interiorId,
     playerId,
+    priority,
   );
 };
 
@@ -52,10 +56,11 @@ export const CreateDynamicSphere = (
   worldId = -1,
   interiorId = -1,
   playerId = -1,
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicSphere",
-    "ffffiii",
+    "ffffiiii",
     x,
     y,
     z,
@@ -63,6 +68,7 @@ export const CreateDynamicSphere = (
     worldId,
     interiorId,
     playerId,
+    priority,
   );
 };
 
@@ -74,10 +80,11 @@ export const CreateDynamicRectangle = (
   worldId = -1,
   interiorId = -1,
   playerId = -1,
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicRectangle",
-    "ffffiii",
+    "ffffiiii",
     minX,
     minY,
     maxX,
@@ -85,6 +92,7 @@ export const CreateDynamicRectangle = (
     worldId,
     interiorId,
     playerId,
+    priority,
   );
 };
 
@@ -98,10 +106,11 @@ export const CreateDynamicCuboid = (
   worldId = -1,
   interiorId = -1,
   playerId = -1,
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicCuboid",
-    "ffffffiii",
+    "ffffffiiii",
     minX,
     minY,
     minZ,
@@ -111,6 +120,7 @@ export const CreateDynamicCuboid = (
     worldId,
     interiorId,
     playerId,
+    priority,
   );
 };
 
@@ -121,10 +131,11 @@ export const CreateDynamicPolygon = (
   worldId = -1,
   interiorId = -1,
   playerId = -1,
+  priority = 0,
 ): number => {
   return samp.callNative(
     "CreateDynamicPolygon",
-    "affiiii",
+    "affiiiii",
     points,
     minZ,
     maxZ,
@@ -132,6 +143,7 @@ export const CreateDynamicPolygon = (
     worldId,
     interiorId,
     playerId,
+    priority,
   );
 };
 
