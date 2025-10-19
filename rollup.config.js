@@ -64,7 +64,10 @@ export default [
     output: [{ file: path.resolve(outputPath + "/bundle.d.ts") }],
     plugins: [
       externalPlugin,
-      dts({ compilerOptions: { paths: compilerOptions.paths } }),
+      dts({
+        includeExternal: ["@infernus/streamer"],
+        compilerOptions: { paths: compilerOptions.paths },
+      }),
     ],
   },
 ];
