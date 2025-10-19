@@ -1,3 +1,17 @@
+## <small>0.12.6 (2025-10-19)</small>
+
+* fix(build): rollup build dts includeExternal streamer ([713ab8f](https://github.com/dockfries/infernus/commit/713ab8f))
+* fix(build): script build-all raknet should be fixed ([b836927](https://github.com/dockfries/infernus/commit/b836927))
+* fix(core): streamer area missing priority ([326518a](https://github.com/dockfries/infernus/commit/326518a))
+* fix(weapon-config): sync upstream 339~341 pr ([1b7d586](https://github.com/dockfries/infernus/commit/1b7d586))
+* refactor(fcnpc): addPoints remove two-dimensional array ([0e8153a](https://github.com/dockfries/infernus/commit/0e8153a))
+* refactor(shared): shared utilities ([497afec](https://github.com/dockfries/infernus/commit/497afec))
+* chore(release): weapon-config v0.1.2 ([9236d86](https://github.com/dockfries/infernus/commit/9236d86))
+* chore(workspace): update deps ([39a3be3](https://github.com/dockfries/infernus/commit/39a3be3))
+* docs(intro): update ([aced22c](https://github.com/dockfries/infernus/commit/aced22c))
+
+
+
 ## <small>0.12.5 (2025-10-15)</small>
 
 * feat(core): add isUseScriptLoaded, support generic speculation load arguments ([e8864b8](https://github.com/dockfries/infernus/commit/e8864b8))
