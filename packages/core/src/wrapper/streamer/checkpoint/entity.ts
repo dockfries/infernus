@@ -9,6 +9,7 @@ import {
   IsValidDynamicCP,
   StreamerDistances,
   StreamerItemTypes,
+  StreamerMiscellaneous,
   TogglePlayerAllDynamicCPs,
   TogglePlayerDynamicCP,
 } from "@infernus/streamer";
@@ -18,7 +19,7 @@ import { dynamicCheckpointPool } from "core/utils/pools";
 
 export class DynamicCheckpoint {
   private sourceInfo: IDynamicCheckPoint | null = null;
-  private _id = -1;
+  private _id: number = StreamerMiscellaneous.INVALID_ID;
   get id(): number {
     return this._id;
   }
@@ -35,7 +36,7 @@ export class DynamicCheckpoint {
     }
   }
   create(): this {
-    if (this.id !== -1)
+    if (this.id !== StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerCheckpoint]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[StreamerCheckpoint]: Unable to create with only id");
@@ -99,7 +100,7 @@ export class DynamicCheckpoint {
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !INTERNAL_FLAGS.skip)
+    if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new Error(
         "[StreamerCheckpoint]: Unable to destroy the checkpoint before create",
       );
@@ -107,15 +108,16 @@ export class DynamicCheckpoint {
       DestroyDynamicCP(this.id);
     }
     dynamicCheckpointPool.delete(this.id);
-    this._id = -1;
+    this._id = StreamerMiscellaneous.INVALID_ID;
     return this;
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID)
+      return true;
     return DynamicCheckpoint.isValid(this.id);
   }
   togglePlayer(player: Player, toggle: boolean): this {
-    if (this.id === -1)
+    if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[StreamerCheckpoint]: Unable to toggle the player before create",
       );
@@ -123,18 +125,18 @@ export class DynamicCheckpoint {
     return this;
   }
   isPlayerIn(player: Player): boolean {
-    if (this.id === -1) return false;
+    if (this.id === StreamerMiscellaneous.INVALID_ID) return false;
     return IsPlayerInDynamicCP(player.id, this.id);
   }
   toggleCallbacks(toggle = true): number {
-    if (this.id === -1)
+    if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[StreamerCheckpoint]: Unable to toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(StreamerItemTypes.CP, this.id, toggle);
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) return false;
+    if (this.id === StreamerMiscellaneous.INVALID_ID) return false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.CP, this.id);
   }
   static isValid = IsValidDynamicCP;

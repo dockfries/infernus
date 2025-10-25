@@ -1,8 +1,9 @@
+import { InvalidEnum } from "core/enums";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 import { npcNodePool } from "core/utils/pools";
 
 export class NpcNode {
-  private _id: number = -1;
+  private _id: number = InvalidEnum.NODE_ID;
 
   get id() {
     return this._id;
@@ -27,16 +28,16 @@ export class NpcNode {
       const ret = !!samp.callNative("NPC_CloseNode", "i", this._id);
       if (ret) {
         npcNodePool.delete(this._id);
-        this._id = -1;
+        this._id = InvalidEnum.NODE_ID;
       }
       return ret;
     }
     npcNodePool.delete(this._id);
-    this._id = -1;
+    this._id = InvalidEnum.NODE_ID;
     return true;
   }
   isOpen() {
-    if (INTERNAL_FLAGS.skip && this._id !== -1) return true;
+    if (INTERNAL_FLAGS.skip && this._id !== InvalidEnum.NODE_ID) return true;
     return !!samp.callNative("NPC_IsNodeOpen", "i", this._id);
   }
   getType() {

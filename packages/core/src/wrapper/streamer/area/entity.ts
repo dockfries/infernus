@@ -11,7 +11,7 @@ import { dynamicAreasPool } from "core/utils/pools";
 
 export class DynamicArea {
   private sourceInfo: TDynamicArea | null = null;
-  private _id = -1;
+  private _id: number = s.StreamerMiscellaneous.INVALID_ID;
   get type() {
     return this.sourceInfo?.type ?? undefined;
   }
@@ -31,7 +31,7 @@ export class DynamicArea {
     }
   }
   create(): this {
-    if (this.id !== -1)
+    if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerArea]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[StreamerArea]: Unable to create with only id");
@@ -242,7 +242,7 @@ export class DynamicArea {
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !INTERNAL_FLAGS.skip)
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new Error(
         "[StreamerArea]: Unable to destroy the area before create",
       );
@@ -250,15 +250,16 @@ export class DynamicArea {
       s.DestroyDynamicArea(this.id);
     }
     dynamicAreasPool.delete(this.id);
-    this._id = -1;
+    this._id = s.StreamerMiscellaneous.INVALID_ID;
     return this;
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    if (INTERNAL_FLAGS.skip && this.id !== s.StreamerMiscellaneous.INVALID_ID)
+      return true;
     return DynamicArea.isValid(this.id);
   }
   getType(): StreamerAreaTypes {
-    if (this.id !== -1)
+    if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerArea]: Unable to get type before create");
     return s.GetDynamicAreaType(this.id);
   }
@@ -266,7 +267,7 @@ export class DynamicArea {
     return s.GetDynamicPolygonPoints(this.id);
   }
   getPolygonNumberPoints(): number {
-    if (this.id !== -1)
+    if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[StreamerArea]: Unable to getPolygonNumberPoints number before create",
       );
@@ -277,14 +278,14 @@ export class DynamicArea {
     return s.GetDynamicPolygonNumberPoints(this.id);
   }
   isPlayerIn(player: Player, recheck = false): boolean {
-    if (this.id === -1) return false;
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
     return s.IsPlayerInDynamicArea(player.id, this.id, recheck);
   }
   static isPlayerInAny(player: Player, recheck = false): boolean {
     return s.IsPlayerInAnyDynamicArea(player.id, recheck);
   }
   isAnyPlayerIn(recheck = false): boolean {
-    if (this.id === -1) return false;
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
     return s.IsAnyPlayerInDynamicArea(this.id, recheck);
   }
   static isAnyPlayerInAny(recheck = false): boolean {
@@ -299,7 +300,7 @@ export class DynamicArea {
     return s.GetPlayerNumberDynamicAreas(player.id);
   }
   isPointIn(x: number, y: number, z: number): boolean {
-    if (this.id === -1) return false;
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
     return s.IsPointInDynamicArea(this.id, x, y, z);
   }
   static isPointInAny(x: number, y: number, z: number): boolean {
@@ -313,7 +314,7 @@ export class DynamicArea {
     y2: number,
     z2: number,
   ): boolean {
-    if (this.id === -1) return false;
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
     return s.IsLineInDynamicArea(this.id, x1, y1, z1, x2, y2, z2);
   }
   static isLineInAny(
@@ -364,7 +365,10 @@ export class DynamicArea {
     offsetY = 0.0,
     offsetZ = 0.0,
   ): number {
-    if (this.id === -1 || obj.id === -1)
+    if (
+      this.id === s.StreamerMiscellaneous.INVALID_ID ||
+      obj.id === s.StreamerMiscellaneous.INVALID_ID
+    )
       throw new Error(
         "[StreamerArea]: Unable to toggle attach to object before create",
       );
@@ -384,7 +388,10 @@ export class DynamicArea {
     offsetY = 0.0,
     offsetZ = 0.0,
   ): number {
-    if (this.id === -1 || player.id === -1)
+    if (
+      this.id === s.StreamerMiscellaneous.INVALID_ID ||
+      player.id === InvalidEnum.PLAYER_ID
+    )
       throw new Error(
         "[StreamerArea]: Unable to toggle attach to player before create",
       );
@@ -402,7 +409,10 @@ export class DynamicArea {
     offsetY = 0.0,
     offsetZ = 0.0,
   ): number {
-    if (this.id === -1 || vehicle.id === -1)
+    if (
+      this.id === s.StreamerMiscellaneous.INVALID_ID ||
+      vehicle.id === InvalidEnum.VEHICLE_ID
+    )
       throw new Error(
         "[StreamerArea]: Unable to toggle attach to vehicle before create",
       );
@@ -415,18 +425,18 @@ export class DynamicArea {
     );
   }
   toggleSpectateMode(toggle: boolean): number {
-    if (this.id === -1)
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[StreamerArea]: Unable to toggle spectate mode before create",
       );
     return s.ToggleDynAreaSpectateMode(this.id, toggle);
   }
   isToggleSpectateMode(): boolean {
-    if (this.id === -1) return false;
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
     return s.IsToggleDynAreaSpectateMode(this.id);
   }
   toggleCallbacks(toggle = true): number {
-    if (this.id === -1)
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[StreamerArea]: Unable to toggle callbacks before create",
       );
@@ -437,7 +447,7 @@ export class DynamicArea {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) return false;
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.AREA, this.id);
   }
   static isValid = s.IsValidDynamicArea;

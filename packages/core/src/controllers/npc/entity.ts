@@ -22,7 +22,7 @@ import { NpcRecord } from "./record";
 import { NpcNode } from "./node";
 
 export class Npc {
-  private _id: number = InvalidEnum.PLAYER_ID;
+  private _id: number = InvalidEnum.NPC_ID;
   private _name = "";
 
   get id() {
@@ -50,11 +50,11 @@ export class Npc {
       samp.callNative("NPC_Destroy", "i", this._id);
     }
     npcPool.delete(this._id);
-    this._id = -1;
+    this._id = InvalidEnum.NPC_ID;
     return this;
   }
   isValid() {
-    if (INTERNAL_FLAGS.skip && this._id !== -1) return true;
+    if (INTERNAL_FLAGS.skip && this._id !== InvalidEnum.NPC_ID) return true;
     return Npc.isValid(this._id);
   }
   spawn() {
@@ -139,9 +139,15 @@ export class Npc {
   isMoving() {
     return !!samp.callNative("NPC_IsMoving", "i", this._id);
   }
+  isMovingToPlayer(player: Player) {
+    return !!samp.callNative("NPC_IsMovingToPlayer", "ii", this._id, player.id);
+  }
   setSkin(model: number) {
     samp.callNative("NPC_SetSkin", "ii", this._id, model);
     return this;
+  }
+  getSkin() {
+    return samp.callNative("NPC_GetSkin", "i", this._id) as number;
   }
   isStreamedIn(player: Player) {
     return !!samp.callNative("NPC_IsStreamedIn", "ii", this._id, player.id);
@@ -284,6 +290,9 @@ export class Npc {
   }
   isInfiniteAmmoEnabled() {
     return !!samp.callNative("NPC_IsInfiniteAmmoEnabled", "i", this._id);
+  }
+  setWeaponState(weaponState: WeaponStatesEnum) {
+    return !!samp.callNative("NPC_SetWeaponState", "ii", this._id, weaponState);
   }
   getWeaponState() {
     return samp.callNative(
@@ -851,6 +860,49 @@ export class Npc {
       StreamerItemTypes.OBJECT,
       this.getSurfingPlayerObject(),
     );
+  }
+  isSpawned() {
+    return !!samp.callNative("NPC_IsSpawned", "i", this._id);
+  }
+  kill(killer: Player | number, reason: number) {
+    return !!samp.callNative(
+      "NPC_Kill",
+      "iii",
+      this._id,
+      typeof killer === "number" ? killer : killer.id,
+      reason,
+    );
+  }
+  setVelocity(x: number, y: number, z: number) {
+    return !!samp.callNative("NPC_SetVelocity", "ifff", this._id, x, y, z);
+  }
+  getVelocity() {
+    const [x, y, z, ret]: number[] = samp.callNative(
+      "NPC_GetVelocity",
+      "iFFF",
+      this._id,
+    );
+    return { x, y, z, ret };
+  }
+  getPlayerAimingAt() {
+    const playerId: number = samp.callNative(
+      "NPC_GetPlayerAimingAt",
+      "i",
+      this._id,
+    );
+    if (playerId !== InvalidEnum.PLAYER_ID)
+      return Player.getInstance(playerId)!;
+    return null;
+  }
+  getPlayerMovingTo() {
+    const playerId: number = samp.callNative(
+      "NPC_GetPlayerMovingTo",
+      "i",
+      this._id,
+    );
+    if (playerId !== InvalidEnum.PLAYER_ID)
+      return Player.getInstance(playerId)!;
+    return null;
   }
   static startRecordingPlayerData(
     player: Player,

@@ -1,8 +1,9 @@
+import { InvalidEnum } from "core/enums";
 import { NPCMoveSpeedEnum, NPCMoveTypeEnum } from "core/enums/npc";
 import { npcPathPool } from "core/utils/pools";
 
 export class NpcPath {
-  private _id: number = -1;
+  private _id: number = InvalidEnum.PATH_ID;
 
   get id() {
     return this._id;
@@ -22,7 +23,7 @@ export class NpcPath {
   destroy() {
     const ret = !!samp.callNative("NPC_DestroyPath", "i", this._id);
     if (ret) {
-      this._id = -1;
+      this._id = InvalidEnum.PATH_ID;
       npcPathPool.delete(this._id);
     }
     return ret;

@@ -7,7 +7,7 @@ import { dynamicPickupPool } from "core/utils/pools";
 
 export class DynamicPickup {
   private sourceInfo: IDynamicPickup | null = null;
-  private _id = -1;
+  private _id: number = s.StreamerMiscellaneous.INVALID_ID;
   get id(): number {
     return this._id;
   }
@@ -24,7 +24,7 @@ export class DynamicPickup {
     }
   }
   create(): this {
-    if (this.id !== -1)
+    if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerPickup]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[StreamerPickup]: Unable to create with only id");
@@ -89,22 +89,23 @@ export class DynamicPickup {
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !INTERNAL_FLAGS.skip)
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new Error(
         "[StreamerPickup]: Unable to destroy the pickup before create",
       );
     if (!INTERNAL_FLAGS.skip)
       DynamicPickup.__inject_DestroyDynamicPickup(this.id);
     dynamicPickupPool.delete(this.id);
-    this._id = -1;
+    this._id = s.StreamerMiscellaneous.INVALID_ID;
     return this;
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    if (INTERNAL_FLAGS.skip && this.id !== s.StreamerMiscellaneous.INVALID_ID)
+      return true;
     return DynamicPickup.isValid(this.id);
   }
   toggleCallbacks(toggle = true): number {
-    if (this.id === -1)
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[StreamerPickup]: Unable to toggle callbacks before create",
       );
@@ -115,7 +116,7 @@ export class DynamicPickup {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) return false;
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.PICKUP, this.id);
   }
   static isValid = s.IsValidDynamicPickup;

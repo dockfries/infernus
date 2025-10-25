@@ -49,7 +49,7 @@ onDialogResponse(
  * If you need to change the value dynamically, you should do it by setter method.
  */
 export class Dialog {
-  private id = -1;
+  private _id = -1;
   private static showingIds: number[] = [];
   private static maxDialogId = 32767;
   private dialog: IDialog;
@@ -125,23 +125,23 @@ export class Dialog {
     return new Promise<IDialogResCommon>((resolve, reject) => {
       Dialog.close(player);
 
-      while (this.id === -1 || Dialog.showingIds.includes(this.id)) {
+      while (this._id === -1 || Dialog.showingIds.includes(this._id)) {
         if (Dialog.showingIds.length >= Dialog.maxDialogId) {
-          this.id = -1;
+          this._id = -1;
           break;
         }
-        this.id = Math.floor(Math.random() * (Dialog.maxDialogId + 1));
+        this._id = Math.floor(Math.random() * (Dialog.maxDialogId + 1));
       }
 
-      if (this.id === -1) {
+      if (this._id === -1) {
         reject("[Dialog]: The maximum number of dialogs is reached");
         return;
       }
 
-      Dialog.showingIds.push(this.id);
-      Dialog.waitingQueue.set(player, { resolve, reject, showId: this.id });
+      Dialog.showingIds.push(this._id);
+      Dialog.waitingQueue.set(player, { resolve, reject, showId: this._id });
 
-      Dialog.__inject__ShowPlayerDialog(player, this.id, this.dialog);
+      Dialog.__inject__ShowPlayerDialog(player, this._id, this.dialog);
     })
       .catch((e) => Promise.reject(e))
       .finally(() => Dialog.delDialogTask(player));

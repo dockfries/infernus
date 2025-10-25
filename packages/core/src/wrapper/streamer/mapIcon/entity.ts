@@ -9,6 +9,7 @@ import {
   CreateDynamicMapIcon,
   MapIconStyles,
   StreamerItemTypes,
+  StreamerMiscellaneous,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
@@ -17,7 +18,7 @@ import { dynamicMapIconPool } from "core/utils/pools";
 
 export class DynamicMapIcon {
   private sourceInfo: IDynamicMapIcon | null = null;
-  private _id = -1;
+  private _id: number = StreamerMiscellaneous.INVALID_ID;
   get id(): number {
     return this._id;
   }
@@ -34,7 +35,7 @@ export class DynamicMapIcon {
     }
   }
   create(): this {
-    if (this.id !== -1)
+    if (this.id !== StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerMapIcon]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[StreamerMapIcon]: Unable to create with only id");
@@ -111,7 +112,7 @@ export class DynamicMapIcon {
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !INTERNAL_FLAGS.skip)
+    if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new Error(
         "[StreamerMapIcon]: Unable to destroy the map icon before create",
       );
@@ -119,15 +120,16 @@ export class DynamicMapIcon {
       DestroyDynamicMapIcon(this.id);
     }
     dynamicMapIconPool.delete(this._id);
-    this._id = -1;
+    this._id = StreamerMiscellaneous.INVALID_ID;
     return this;
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID)
+      return true;
     return DynamicMapIcon.isValid(this.id);
   }
   toggleCallbacks(toggle = true): number {
-    if (this.id === -1)
+    if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[StreamerMapIcon]: Unable to toggle callbacks before create",
       );
@@ -138,7 +140,7 @@ export class DynamicMapIcon {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) return false;
+    if (this.id === StreamerMiscellaneous.INVALID_ID) return false;
     return Streamer.isToggleItemCallbacks(StreamerItemTypes.MAP_ICON, this.id);
   }
   static isValid = IsValidDynamicMapIcon;

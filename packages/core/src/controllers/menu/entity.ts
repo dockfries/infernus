@@ -1,7 +1,7 @@
 import * as w from "core/wrapper/native";
 
 import type { Player } from "../player";
-import { LimitsEnum } from "../../enums";
+import { InvalidEnum, LimitsEnum } from "../../enums";
 import { menuPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 
@@ -11,7 +11,7 @@ export class Menu {
     return this._itemCount;
   }
 
-  private _id = -1;
+  private _id: number = InvalidEnum.MENU;
   get id() {
     return this._id;
   }
@@ -85,7 +85,8 @@ export class Menu {
     this._col2width = col2width;
   }
   create(): this {
-    if (this._id !== -1) throw new Error("[Menu]: Cannot be created twice");
+    if (this._id !== InvalidEnum.MENU)
+      throw new Error("[Menu]: Cannot be created twice");
     if (Menu.getInstances().length === LimitsEnum.MAX_MENUS) {
       throw new Error(
         "[Menu]: The maximum number of menus allowed to be created has been reached 128",
@@ -103,17 +104,17 @@ export class Menu {
     return this;
   }
   destroy(): this {
-    if (this._id === -1)
+    if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot destroy before create");
     if (!INTERNAL_FLAGS.skip) {
       w.DestroyMenu(this.id);
     }
     menuPool.delete(this._id);
-    this._id = -1;
+    this._id = InvalidEnum.MENU;
     return this;
   }
   addItem(column: number, title: string): this {
-    if (this._id === -1)
+    if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot addItem before create");
     if (this._itemCount === LimitsEnum.MAX_MENU_ROW)
       throw new Error(
@@ -126,7 +127,7 @@ export class Menu {
     return this;
   }
   setColumnHeader(column: number, header: string): this {
-    if (this._id === -1)
+    if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot  setColumnHeader before create");
     if (column !== 0 && column !== 1)
       throw new Error("[Menu]: Wrong number of columns");
@@ -134,61 +135,61 @@ export class Menu {
     return this;
   }
   disable(): this {
-    if (this._id === -1)
+    if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot disable menu before create");
     w.DisableMenu(this.id);
     return this;
   }
   disableRow(row: number) {
-    if (this._id === -1)
+    if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot disable row before create");
     if (row < 0 || row > this.itemCount - 1)
       throw new Error("[Menu]: Wrong number of rows");
     w.DisableMenuRow(this.id, row);
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    if (INTERNAL_FLAGS.skip && this.id !== InvalidEnum.MENU) return true;
     return Menu.isValid(this.id);
   }
   showForPlayer(player: Player): number {
-    if (this._id === -1)
+    if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot show menu before create");
     return w.ShowMenuForPlayer(this.id, player.id);
   }
   hideForPlayer(player: Player): number {
-    if (this._id === -1)
+    if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot hide menu before create");
     return w.HideMenuForPlayer(this.id, player.id);
   }
   isDisabled(): boolean {
-    if (this._id === -1) return false;
+    if (this._id === InvalidEnum.MENU) return false;
     return w.IsMenuDisabled(this.id);
   }
   isRowDisabled(row: number): boolean {
-    if (this._id === -1) return false;
+    if (this._id === InvalidEnum.MENU) return false;
     if (row < 0 || row > this._itemCount) return false;
     return w.IsMenuRowDisabled(this.id, row);
   }
   getItems(column: number): number {
-    if (this._id === -1) return 0;
+    if (this._id === InvalidEnum.MENU) return 0;
     return w.GetMenuItems(this.id, column);
   }
   getPos() {
-    if (this._id === -1) return { fX: this.x, fY: this.y };
+    if (this._id === InvalidEnum.MENU) return { fX: this.x, fY: this.y };
     return w.GetMenuPos(this.id);
   }
   getColumnWidth() {
-    if (this.id === -1)
+    if (this.id === InvalidEnum.MENU)
       return { fColumn1: this.col1width, fColumn2: this.col2width };
     return w.GetMenuColumnWidth(this.id);
   }
   getColumnHeader(column: number) {
-    if (this._id === -1)
+    if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot get column header before create");
     return w.GetMenuColumnHeader(this.id, column);
   }
   getItem(column: number, item: number) {
-    if (this._id === -1)
+    if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot get item before create");
     if (item < 0 || item > this.getItems(column) - 1)
       throw new Error("[Menu]: invalid getItem range");

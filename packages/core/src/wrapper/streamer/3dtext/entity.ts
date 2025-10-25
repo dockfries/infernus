@@ -13,6 +13,7 @@ import {
   IsValidDynamic3DTextLabel,
   StreamerDistances,
   StreamerItemTypes,
+  StreamerMiscellaneous,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
@@ -22,7 +23,7 @@ import { dynamic3DTextLabelPool } from "core/utils/pools";
 export class Dynamic3DTextLabel {
   private sourceInfo: IDynamic3DTextLabel | null = null;
 
-  private _id = -1;
+  private _id: number = StreamerMiscellaneous.INVALID_ID;
   get id(): number {
     return this._id;
   }
@@ -40,7 +41,7 @@ export class Dynamic3DTextLabel {
     }
   }
   create(): this {
-    if (this.id !== -1)
+    if (this.id !== StreamerMiscellaneous.INVALID_ID)
       throw new Error("[Streamer3DTextLabel]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[Streamer3DTextLabel]: Unable to create with only id");
@@ -125,21 +126,22 @@ export class Dynamic3DTextLabel {
     return this;
   }
   destroy(): this {
-    if (this.id === -1 && !INTERNAL_FLAGS.skip)
+    if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new Error("[Streamer3DTextLabel]: Unable to destroy before create");
     if (!INTERNAL_FLAGS.skip) {
       DestroyDynamic3DTextLabel(this.id);
     }
     dynamic3DTextLabelPool.delete(this.id);
-    this._id = -1;
+    this._id = StreamerMiscellaneous.INVALID_ID;
     return this;
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== -1) return true;
+    if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID)
+      return true;
     return Dynamic3DTextLabel.isValid(this.id);
   }
   getColor(): string | number {
-    if (this.id === -1)
+    if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[Streamer3DTextLabel]: Unable to get color before create",
       );
@@ -153,7 +155,7 @@ export class Dynamic3DTextLabel {
     return this.sourceInfo.color;
   }
   getCharset(): void | string {
-    if (this.id === -1)
+    if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[Streamer3DTextLabel]: Unable to get charset before create",
       );
@@ -166,7 +168,7 @@ export class Dynamic3DTextLabel {
     );
   }
   updateText(color: string | number, text: string, charset?: string): number {
-    if (this.id === -1)
+    if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[Streamer3DTextLabel]: Unable to update text before create",
       );
@@ -178,7 +180,7 @@ export class Dynamic3DTextLabel {
     return UpdateDynamic3DTextLabelText(this.id, rgba(color), text, _charset);
   }
   toggleCallbacks(toggle = true): number {
-    if (this.id === -1)
+    if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[Streamer3DTextLabel]: Unable to toggle callbacks before create",
       );
@@ -189,14 +191,14 @@ export class Dynamic3DTextLabel {
     );
   }
   isToggleCallbacks(): boolean {
-    if (this.id === -1) return false;
+    if (this.id === StreamerMiscellaneous.INVALID_ID) return false;
     return Streamer.isToggleItemCallbacks(
       StreamerItemTypes.TEXT_3D_LABEL,
       this.id,
     );
   }
   setOffsets(offsetX: number, offsetY: number, offsetZ: number) {
-    if (this.id === -1) return 0;
+    if (this.id === StreamerMiscellaneous.INVALID_ID) return 0;
     const ret = Streamer.setFloatData(
       StreamerItemTypes.TEXT_3D_LABEL,
       this.id,
@@ -228,7 +230,7 @@ export class Dynamic3DTextLabel {
     offsetY: number,
     offsetZ: number,
   ): number {
-    if (this.id === -1)
+    if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[Streamer3DTextLabel]: Cannot attachToPlayer before created",
       );
@@ -253,7 +255,7 @@ export class Dynamic3DTextLabel {
     offsetY: number,
     offsetZ: number,
   ): number {
-    if (this.id === -1)
+    if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
         "[Streamer3DTextLabel]: Cannot attachToVehicle before created",
       );
