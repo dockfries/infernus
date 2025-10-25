@@ -1,3 +1,9 @@
+## <small>0.12.7 (2025-10-25)</small>
+
+* feat(core): npc new natives, entity invalid enum ([05d0981](https://github.com/dockfries/infernus/commit/05d0981))
+
+
+
 ## <small>0.12.6 (2025-10-19)</small>
 
 * fix(build): rollup build dts includeExternal streamer ([713ab8f](https://github.com/dockfries/infernus/commit/713ab8f))
