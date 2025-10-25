@@ -21,6 +21,7 @@ import * as w from "core/wrapper/native";
 import { I18n } from "../i18n";
 import { SendRconCommand } from "core/utils/helperUtils";
 import { CmdBus } from "../player/command";
+import { LimitsEnum } from "core/enums";
 
 export class GameMode {
   private constructor() {
@@ -156,7 +157,10 @@ export class GameMode {
     if (baseId < 0) {
       throw new Error("[GameMode]: AddSimpleModel - Error baseId");
     }
-    if (newId > -1000 || newId < -30000) {
+    if (
+      newId > LimitsEnum.MAX_CUSTOM_OBJECT_ID ||
+      newId < LimitsEnum.MIN_CUSTOM_OBJECT_ID
+    ) {
       throw new Error("[GameMode]: AddSimpleModel - Error newId range");
     }
     if (dffName.trim().length === 0) {
