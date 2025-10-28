@@ -19,6 +19,12 @@ import type { DynamicRaceCP } from "core/wrapper/streamer/raceCP";
 
 export interface IInnerPlayerProps {
   isAndroid: boolean;
+  lastDrunkLevel: number;
+  lastFps: number;
+  lastUpdateTick: number;
+  lastUpdateFpsTick: number;
+  isPaused: boolean;
+  isRecording: boolean;
 }
 
 export const innerPlayerProps = Symbol();

@@ -89,7 +89,7 @@ onConnect(({ player, next }) => {
 
       activePlayers.forEach((p) => {
         if (Date.now() - p.lastUpdateTick > 1000) {
-          p.isPaused = true;
+          p[innerPlayerProps].isPaused = true;
           triggerOnPause(p, p.lastUpdateTick);
         }
       });
@@ -134,18 +134,18 @@ function fpsHeartbeat(player: Player) {
 
     if (nowDrunkLevel < 100) {
       player.setDrunkLevel(2000);
-      player.lastDrunkLevel = 2000;
-      player.lastFps = 0;
+      player[innerPlayerProps].lastDrunkLevel = 2000;
+      player[innerPlayerProps].lastFps = 0;
       return;
     }
 
-    player.lastUpdateFpsTick = now;
+    player[innerPlayerProps].lastUpdateFpsTick = now;
 
     const oldFps = player.lastFps;
     const newFps = player.lastDrunkLevel - nowDrunkLevel - 1;
 
-    player.lastFps = newFps;
-    player.lastDrunkLevel = nowDrunkLevel;
+    player[innerPlayerProps].lastFps = newFps;
+    player[innerPlayerProps].lastDrunkLevel = nowDrunkLevel;
 
     triggerOnFpsUpdate(player, newFps, oldFps);
   }
@@ -155,7 +155,7 @@ onUpdate(({ player, next }) => {
   if (!player.isNpc()) {
     const now = Date.now();
     if (player.isPaused) {
-      player.isPaused = false;
+      player[innerPlayerProps].isPaused = false;
       triggerOnResume(
         player,
         player.lastUpdateTick,
@@ -163,7 +163,7 @@ onUpdate(({ player, next }) => {
         now - player.lastUpdateTick,
       );
     }
-    player.lastUpdateTick = now;
+    player[innerPlayerProps].lastUpdateTick = now;
     fpsHeartbeat(player);
   }
 

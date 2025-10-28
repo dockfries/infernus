@@ -62,24 +62,45 @@ export const [onCharsetChange, triggerOnCharsetChange] = defineEvent({
 });
 
 export class Player {
-  [innerPlayerProps]: IInnerPlayerProps = {
-    isAndroid: true,
-  };
-
   static MAX_CHECK_ANDROID_DELAY = 10; // 10s
   static SKIP_CHECK_ANDROID = false;
 
   private _charset = "ISO-8859-1";
   private _locale = "en_US";
 
-  lastDrunkLevel = 0;
-  lastFps = 0;
-  lastUpdateTick = 0;
-  lastUpdateFpsTick = 0;
+  [innerPlayerProps]: IInnerPlayerProps = {
+    isAndroid: true,
+    lastDrunkLevel: 0,
+    lastFps: 0,
+    lastUpdateTick: 0,
+    lastUpdateFpsTick: 0,
+    isPaused: false,
+    isRecording: false,
+  };
 
-  isPaused = false;
+  get lastDrunkLevel() {
+    return this[innerPlayerProps].lastDrunkLevel;
+  }
 
-  isRecording = false;
+  get lastFps() {
+    return this[innerPlayerProps].lastFps;
+  }
+
+  get lastUpdateTick() {
+    return this[innerPlayerProps].lastUpdateTick;
+  }
+
+  get lastUpdateFpsTick() {
+    return this[innerPlayerProps].lastUpdateFpsTick;
+  }
+
+  get isPaused() {
+    return this[innerPlayerProps].isPaused;
+  }
+
+  get isRecording() {
+    return this[innerPlayerProps].isRecording;
+  }
 
   get charset() {
     return this._charset;
