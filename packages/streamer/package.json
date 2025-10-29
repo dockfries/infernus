@@ -26,7 +26,8 @@
   "exports": {
     ".": {
       "require": "./dist/bundle.js",
-      "import": "./dist/bundle.mjs"
+      "import": "./dist/bundle.mjs",
+      "types": "./dist/bundle.d.ts"
     }
   },
   "main": "dist/bundle.js",
