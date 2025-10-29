@@ -1,6 +1,6 @@
 {
   "name": "@infernus/samp-voice",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A wrapper of the popular SA-MP voice library for samp-node.",
   "keywords": [
     "samp",
