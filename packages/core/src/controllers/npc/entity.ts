@@ -20,6 +20,7 @@ import { DynamicObject } from "core/wrapper/streamer/object";
 import { Streamer } from "core/wrapper/streamer";
 import { NpcRecord } from "./record";
 import { NpcNode } from "./node";
+import { ObjectMp } from "../object/entity";
 
 export class Npc {
   private _id: number = InvalidEnum.NPC_ID;
@@ -825,7 +826,41 @@ export class Npc {
   getSurfingVehicleId() {
     return samp.callNative("NPC_GetSurfingVehicle", "i", this._id) as number;
   }
-  private setSurfingPlayerObject(objectId: number) {
+  setSurfingObject(objectMp: ObjectMp) {
+    if (!objectMp.isGlobal()) {
+      return 0;
+    }
+    return samp.callNative(
+      "NPC_SetSurfingObject",
+      "ii",
+      this._id,
+      objectMp.id,
+    ) as number;
+  }
+  getSurfingObject() {
+    return ObjectMp.getInstance(this.getSurfingObjectId());
+  }
+  private getSurfingObjectId() {
+    return samp.callNative("NPC_GetSurfingObject", "i", this._id) as number;
+  }
+  setSurfingPlayerObject(objectMp: ObjectMp) {
+    if (objectMp.isGlobal()) {
+      return 0;
+    }
+    return samp.callNative(
+      "NPC_SetSurfingPlayerObject",
+      "ii",
+      this._id,
+      objectMp.id,
+    ) as number;
+  }
+  getSurfingPlayerObject() {
+    return ObjectMp.getInstance(
+      this.getSurfingPlayerObjectId(),
+      this.getPlayer(),
+    );
+  }
+  private _setSurfingPlayerObject(objectId: number) {
     return samp.callNative(
       "NPC_SetSurfingPlayerObject",
       "ii",
@@ -833,7 +868,7 @@ export class Npc {
       objectId,
     ) as number;
   }
-  private getSurfingPlayerObject() {
+  private getSurfingPlayerObjectId() {
     return samp.callNative(
       "NPC_GetSurfingPlayerObject",
       "i",
@@ -844,7 +879,7 @@ export class Npc {
     return samp.callNative("NPC_ResetSurfingData", "i", this._id) as number;
   }
   setSurfingDynamicObject(object: DynamicObject) {
-    return this.setSurfingPlayerObject(
+    return this._setSurfingPlayerObject(
       Streamer.getItemInternalID(
         new Player(this._id),
         StreamerItemTypes.OBJECT,
@@ -859,7 +894,7 @@ export class Npc {
     return Streamer.getItemStreamerID(
       new Player(this._id),
       StreamerItemTypes.OBJECT,
-      this.getSurfingPlayerObject(),
+      this.getSurfingPlayerObjectId(),
     );
   }
   isSpawned() {

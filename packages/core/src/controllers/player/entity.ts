@@ -25,17 +25,16 @@ import { isValidAnimateName } from "../../utils/animateUtils";
 import * as h from "../../utils/helperUtils";
 
 import type { Vehicle } from "../vehicle/entity";
-import type { DynamicObject } from "core/wrapper/streamer";
 import { defineEvent } from "../bus";
 import { VectorSize } from "core/wrapper/native";
 import {
   IInnerPlayerProps,
   innerPlayerProps,
   playerPool,
-  dynamicObjectPool,
   vehiclePool,
 } from "core/utils/pools";
 import { CmdBus } from "./command";
+import { ObjectMp } from "../object/entity";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
@@ -794,15 +793,15 @@ export class Player {
   endObjectEditing() {
     return w.EndObjectEditing(this.id);
   }
-  getSurfingObject(): void | DynamicObject {
+  getSurfingObject() {
     const id: number = w.GetPlayerSurfingObjectID(this.id);
     if (id === InvalidEnum.OBJECT_ID) return;
-    return dynamicObjectPool.get(id);
+    return ObjectMp.getInstance(id);
   }
-  getSurfingPlayerObject(): void | DynamicObject {
+  getSurfingPlayerObject() {
     const id: number = w.GetPlayerSurfingPlayerObjectID(this.id);
     if (id === InvalidEnum.OBJECT_ID) return;
-    return dynamicObjectPool.get(id);
+    return ObjectMp.getInstance(id, this);
   }
   isAttachedObjectSlotUsed(index: number): boolean {
     return w.IsPlayerAttachedObjectSlotUsed(this.id, index);

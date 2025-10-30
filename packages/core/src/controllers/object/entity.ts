@@ -2,10 +2,10 @@ import { InvalidEnum, MaterialTextSizes } from "core/enums";
 import { IObjectMp } from "core/interfaces";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 import { objectMpPool, playerObjectPool } from "core/utils/pools";
+import { rgba } from "core/utils/colorUtils";
 import * as o from "core/wrapper/native";
-import { Player } from "../player/entity";
+import type { Player } from "../player/entity";
 import { Vehicle } from "../vehicle/entity";
-import { rgba } from "core/main";
 import {
   GetObjectMaterialText,
   SetObjectMaterialText,
