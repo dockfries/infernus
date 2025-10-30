@@ -1,11 +1,11 @@
 import * as w from "core/wrapper/native";
 import { InvalidEnum, LimitsEnum } from "../../enums";
-import { PlayerEvent, type Player } from "../player";
+import { Player, PlayerEvent } from "../player";
 import { rgba } from "../../utils/colorUtils";
 import type { IGangZone } from "core/interfaces";
 import type { IGangZonePos } from "core/wrapper/native/interfaces";
 import { INTERNAL_FLAGS } from "core/utils/flags";
-import { globalGangZonePool, playerGangZonePool } from "core/utils/pools";
+import { gangZonePool, playerGangZonePool } from "core/utils/pools";
 
 export class GangZone {
   readonly sourceInfo: IGangZone;
@@ -25,17 +25,17 @@ export class GangZone {
 
     const { player } = this.sourceInfo;
     if (!player) {
-      if (GangZone.getInstances(true).length === LimitsEnum.MAX_GANG_ZONES)
+      if (GangZone.getInstances().length === LimitsEnum.MAX_GANG_ZONES)
         throw new Error(
-          "[GangZone]: Unable to continue to create gangzone, maximum allowable quantity has been reached",
+          "[GangZone]: Unable to create gangzone, maximum has been reached",
         );
       const { minX, minY, maxX, maxY } = this.sourceInfo;
       this._id = w.GangZoneCreate(minX, minY, maxX, maxY);
-      globalGangZonePool.set(this.id, this);
+      gangZonePool.set(this.id, this);
     } else {
-      if (GangZone.getInstances(false).length === LimitsEnum.MAX_GANG_ZONES)
+      if (GangZone.getInstances(player).length === LimitsEnum.MAX_GANG_ZONES)
         throw new Error(
-          "[GangZone]: Unable to continue to create gangzone, maximum allowable quantity has been reached",
+          "[GangZone]: Unable to create player gangzone, maximum has been reached",
         );
       const { minX, minY, maxX, maxY } = this.sourceInfo;
       this._id = w.CreatePlayerGangZone(player.id, minX, minY, maxX, maxY);
@@ -49,7 +49,10 @@ export class GangZone {
           off();
         }
       });
-      playerGangZonePool.set(this.id, this);
+      if (!playerGangZonePool.has(player)) {
+        playerGangZonePool.set(player, new Map());
+      }
+      playerGangZonePool.get(player)!.set(this._id, this);
     }
   }
 
@@ -64,12 +67,19 @@ export class GangZone {
       if (!INTERNAL_FLAGS.skip) {
         w.GangZoneDestroy(this.id);
       }
-      globalGangZonePool.delete(this.id);
+      gangZonePool.delete(this.id);
     } else {
       if (!INTERNAL_FLAGS.skip) {
         w.PlayerGangZoneDestroy(player.id, this.id);
       }
-      playerGangZonePool.delete(this.id);
+      if (playerGangZonePool.has(player)) {
+        const perPlayerGangZone = playerGangZonePool.get(player)!;
+        perPlayerGangZone.delete(this.id);
+
+        if (!perPlayerGangZone.size) {
+          playerGangZonePool.delete(player);
+        }
+      }
     }
 
     this._id = InvalidEnum.GANG_ZONE;
@@ -261,13 +271,25 @@ export class GangZone {
   static isValidPlayer = w.IsValidPlayerGangZone;
   static isValidGlobal = w.IsValidGangZone;
 
-  static getInstance(id: number, isGlobal: boolean) {
-    if (isGlobal) return globalGangZonePool.get(id);
-    return playerGangZonePool.get(id);
+  static getInstance(gangZoneId: number, player?: Player) {
+    if (!player) return gangZonePool.get(gangZoneId);
+
+    if (player.id === InvalidEnum.PLAYER_ID) return;
+    return playerGangZonePool.get(player)?.get(gangZoneId);
   }
 
-  static getInstances(isGlobal: boolean) {
-    if (isGlobal) return [...globalGangZonePool.values()];
-    return [...playerGangZonePool.values()];
+  static getInstances(player?: Player) {
+    if (!player) return [...gangZonePool.values()];
+
+    if (player.id === InvalidEnum.PLAYER_ID) return [];
+    return [...(playerGangZonePool.get(player)?.values() || [])];
+  }
+
+  static getPlayersInstances(): [Player, GangZone[]][] {
+    return Array.from(playerGangZonePool.entries()).map(
+      ([player, gangZones]) => {
+        return [player, Array.from(gangZones.values())];
+      },
+    );
   }
 }

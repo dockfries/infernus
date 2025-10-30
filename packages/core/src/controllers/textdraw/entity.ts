@@ -27,14 +27,14 @@ export class TextDraw {
     if (!player) {
       if (TextDraw.getInstances(true).length === LimitsEnum.MAX_TEXT_DRAWS)
         throw new Error(
-          "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
+          "[TextDraw]: Unable to create textdraw, maximum has been reached",
         );
       this._id = TextDraw.__inject__TextDrawCreate(x, y, _text);
       globalTextDrawPool.set(this.id, this);
     } else {
       if (TextDraw.getInstances(false).length === LimitsEnum.MAX_TEXT_DRAWS)
         throw new Error(
-          "[TextDraw]: Unable to continue to create textdraw, maximum allowable quantity has been reached",
+          "[TextDraw]: Unable to create textdraw, maximum has been reached",
         );
       this._id = TextDraw.__inject__CreatePlayerTextDraw(
         player.id,

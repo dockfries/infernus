@@ -1,4 +1,4 @@
-import { InvalidEnum, MaterialTextSizes } from "core/enums";
+import { InvalidEnum, LimitsEnum, MaterialTextSizes } from "core/enums";
 import { IObjectMp } from "core/interfaces";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 import { objectMpPool, playerObjectPool } from "core/utils/pools";
@@ -33,10 +33,6 @@ export class ObjectMp {
       this._id = objectOrId;
       if (this.isGlobal()) {
         objectMpPool.set(this._id, this);
-      } else {
-        if (!playerObjectPool.get(player!)) {
-          playerObjectPool.set(player!, []);
-        }
       }
     } else {
       this.sourceInfo = objectOrId;
@@ -53,6 +49,11 @@ export class ObjectMp {
     const { modelId, x, y, z, rx, ry, rz, drawDistance } = this.sourceInfo;
 
     if (this.isGlobal()) {
+      if (ObjectMp.getInstances().length === LimitsEnum.MAX_OBJECTS)
+        throw new Error(
+          "[ObjectMp]: Unable to create object, maximum has been reached",
+        );
+
       this._id = o.CreateObject(modelId, x, y, z, rx, ry, rz, drawDistance);
       objectMpPool.set(this._id, this);
       return this;
@@ -60,6 +61,16 @@ export class ObjectMp {
 
     const playerId = this.getPlayerId();
     if (playerId === InvalidEnum.PLAYER_ID) return this;
+
+    const player = this.getPlayer()!;
+    if (ObjectMp.getInstances(player).length === LimitsEnum.MAX_OBJECTS)
+      throw new Error(
+        "[ObjectMp]: Unable to create player object, maximum has been reached",
+      );
+
+    if (!playerObjectPool.has(player)) {
+      playerObjectPool.set(player, new Map());
+    }
 
     this._id = o.CreatePlayerObject(
       playerId,
@@ -72,12 +83,12 @@ export class ObjectMp {
       rz,
       drawDistance,
     );
-    playerObjectPool.get(this.getPlayer()!)!.push(this);
+    playerObjectPool.get(this.getPlayer()!)!.set(this.id, this);
     return this;
   }
 
   destroy(): this {
-    if (this.id === InvalidEnum.OBJECT_ID && !INTERNAL_FLAGS.skip)
+    if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Unable to destroy the object before create");
 
     if (this.isGlobal()) {
@@ -96,14 +107,13 @@ export class ObjectMp {
         o.DestroyPlayerObject(playerId, this.id);
       }
 
-      const arr = playerObjectPool
-        .get(player)
-        ?.filter((obj) => obj.id !== this.id);
+      if (playerObjectPool.has(player)) {
+        const perPlayerMap = playerObjectPool.get(player)!;
+        perPlayerMap.delete(this.id);
 
-      if (arr && arr.length > 0) {
-        playerObjectPool.set(player, arr);
-      } else {
-        playerObjectPool.delete(player);
+        if (perPlayerMap.size === 0) {
+          playerObjectPool.delete(player);
+        }
       }
     }
 
@@ -600,7 +610,7 @@ export class ObjectMp {
     if (!player) return objectMpPool.get(objectId);
 
     if (player.id === InvalidEnum.PLAYER_ID) return;
-    return playerObjectPool.get(player)?.find((obj) => obj.id === objectId);
+    return playerObjectPool.get(player)?.get(objectId);
   }
 
   static getInstances(player?: Player) {
@@ -610,7 +620,9 @@ export class ObjectMp {
     return [...(playerObjectPool.get(player)?.values() || [])];
   }
 
-  static getPlayersInstances() {
-    return [...playerObjectPool.entries()];
+  static getPlayersInstances(): [Player, ObjectMp[]][] {
+    return Array.from(playerObjectPool.entries()).map(([player, objects]) => {
+      return [player, Array.from(objects.values())];
+    });
   }
 }

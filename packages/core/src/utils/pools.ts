@@ -34,8 +34,8 @@ export const innerPlayerProps = Symbol();
 
 export const playerPool = new Map<number, Player>();
 export const vehiclePool = new Map<number, Vehicle>();
-export const globalGangZonePool = new Map<number, GangZone>();
-export const playerGangZonePool = new Map<number, GangZone>();
+export const gangZonePool = new Map<number, GangZone>();
+export const playerGangZonePool = new Map<Player, Map<number, GangZone>>();
 export const menuPool = new Map<number, Menu>();
 export const npcPool = new Map<number, Npc>();
 export const npcNodePool = new Map<number, NpcNode>();
@@ -54,5 +54,5 @@ export const dynamicPickupPool = new Map<number, DynamicPickup>();
 export const dynamicRaceCPPool = new Map<number, DynamicRaceCP>();
 
 export const objectMpPool = new Map<number, ObjectMp>();
-export const playerObjectPool = new Map<Player, ObjectMp[]>();
+export const playerObjectPool = new Map<Player, Map<number, ObjectMp>>();
 export const actorPool = new Map<number, Actor>();

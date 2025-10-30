@@ -50,7 +50,7 @@ export class Vehicle {
       throw new Error("[Vehicle]: Unable to create with only id");
     if (Vehicle.createdCount === LimitsEnum.MAX_VEHICLES)
       throw new Error(
-        "[Vehicle]: Unable to continue to create vehicle, maximum allowable quantity has been reached",
+        "[Vehicle]: Unable to create vehicle, maximum has been reached",
       );
     const { modelId, x, y, z, zAngle, color, respawnDelay, addSiren } =
       this.sourceInfo;
