@@ -6,21 +6,21 @@ export const SetPlayerCheckpoint = (
   x: number,
   y: number,
   z: number,
-  size: number,
-): number => {
-  return samp.callNative(
+  radius: number,
+): boolean => {
+  return !!samp.callNative(
     "SetPlayerCheckpoint",
     "iffff",
     playerId,
     x,
     y,
     z,
-    size,
+    radius,
   );
 };
 
-export const DisablePlayerCheckpoint = (playerId: number): number => {
-  return samp.callNative("DisablePlayerCheckpoint", "i", playerId);
+export const DisablePlayerCheckpoint = (playerId: number): boolean => {
+  return !!samp.callNative("DisablePlayerCheckpoint", "i", playerId);
 };
 
 export const SetPlayerRaceCheckpoint = (
@@ -32,9 +32,9 @@ export const SetPlayerRaceCheckpoint = (
   nextX: number,
   nextY: number,
   nextZ: number,
-  size: number,
-): number => {
-  return samp.callNative(
+  radius: number,
+): boolean => {
+  return !!samp.callNative(
     "SetPlayerRaceCheckpoint",
     "iifffffff",
     playerId,
@@ -45,24 +45,24 @@ export const SetPlayerRaceCheckpoint = (
     nextX,
     nextY,
     nextZ,
-    size,
+    radius,
   );
 };
 
-export const DisablePlayerRaceCheckpoint = (playerId: number): number => {
-  return samp.callNative("DisablePlayerRaceCheckpoint", "i", playerId);
+export const DisablePlayerRaceCheckpoint = (playerId: number): boolean => {
+  return !!samp.callNative("DisablePlayerRaceCheckpoint", "i", playerId);
 };
 
 export const IsPlayerInCheckpoint = (playerId: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerInCheckpoint", "i", playerId));
+  return !!samp.callNative("IsPlayerInCheckpoint", "i", playerId);
 };
 
 export const IsPlayerInRaceCheckpoint = (playerId: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerInRaceCheckpoint", "i", playerId));
+  return !!samp.callNative("IsPlayerInRaceCheckpoint", "i", playerId);
 };
 
 export const IsPlayerCheckpointActive = (playerId: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerCheckpointActive", "i", playerId));
+  return !!samp.callNative("IsPlayerCheckpointActive", "i", playerId);
 };
 
 export const GetPlayerCheckpoint = (
@@ -74,9 +74,7 @@ export const GetPlayerCheckpoint = (
 };
 
 export const IsPlayerRaceCheckpointActive = (playerId: number): boolean => {
-  return Boolean(
-    samp.callNative("IsPlayerRaceCheckpointActive", "i", playerId),
-  );
+  return !!samp.callNative("IsPlayerRaceCheckpointActive", "i", playerId);
 };
 
 export const GetPlayerRaceCheckpoint = (

@@ -16,7 +16,7 @@ import {
 } from "@infernus/streamer";
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
-import { dynamicRaceCheckpointPool } from "core/utils/pools";
+import { dynamicRaceCPPool } from "core/utils/pools";
 
 export class DynamicRaceCP {
   private sourceInfo: IDynamicRaceCp | null = null;
@@ -31,7 +31,7 @@ export class DynamicRaceCP {
         return obj;
       }
       this._id = checkPointOrId;
-      dynamicRaceCheckpointPool.set(this._id, this);
+      dynamicRaceCPPool.set(this._id, this);
     } else {
       this.sourceInfo = checkPointOrId;
     }
@@ -107,7 +107,7 @@ export class DynamicRaceCP {
       );
     }
 
-    dynamicRaceCheckpointPool.set(this._id, this);
+    dynamicRaceCPPool.set(this._id, this);
     return this;
   }
   destroy(): this {
@@ -118,7 +118,7 @@ export class DynamicRaceCP {
     if (!INTERNAL_FLAGS.skip) {
       DestroyDynamicRaceCP(this.id);
     }
-    dynamicRaceCheckpointPool.delete(this.id);
+    dynamicRaceCPPool.delete(this.id);
     this._id = -StreamerMiscellaneous.INVALID_ID;
     return this;
   }
@@ -143,9 +143,7 @@ export class DynamicRaceCP {
     return IsPlayerInDynamicRaceCP(player.id, this.id);
   }
   static getPlayerVisible(player: Player) {
-    return dynamicRaceCheckpointPool.get(
-      GetPlayerVisibleDynamicRaceCP(player.id),
-    );
+    return dynamicRaceCPPool.get(GetPlayerVisibleDynamicRaceCP(player.id));
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
@@ -180,9 +178,9 @@ export class DynamicRaceCP {
     return this.togglePlayerUpdate(player, true);
   }
   static getInstance(id: number) {
-    return dynamicRaceCheckpointPool.get(id);
+    return dynamicRaceCPPool.get(id);
   }
   static getInstances() {
-    return [...dynamicRaceCheckpointPool.values()];
+    return [...dynamicRaceCPPool.values()];
   }
 }

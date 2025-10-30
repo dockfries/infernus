@@ -51,7 +51,7 @@ export const dynamicAreasPool = new Map<number, DynamicArea>();
 export const dynamicCheckpointPool = new Map<number, DynamicCheckpoint>();
 export const dynamicMapIconPool = new Map<number, DynamicMapIcon>();
 export const dynamicPickupPool = new Map<number, DynamicPickup>();
-export const dynamicRaceCheckpointPool = new Map<number, DynamicRaceCP>();
+export const dynamicRaceCPPool = new Map<number, DynamicRaceCP>();
 
 export const objectMpPool = new Map<number, ObjectMp>();
 export const playerObjectPool = new Map<Player, ObjectMp[]>();
