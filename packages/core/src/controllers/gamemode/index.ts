@@ -81,9 +81,9 @@ export class GameMode {
   static addPlayerClass = w.AddPlayerClass;
   static addPlayerClassEx = w.AddPlayerClassEx;
   static createExplosion(
-    X: number,
-    Y: number,
-    Z: number,
+    x: number,
+    y: number,
+    z: number,
     type: number,
     radius: number,
   ): number {
@@ -92,7 +92,7 @@ export class GameMode {
         "[GameMode]: The valid explosion type value is only 0 to 13",
       );
     }
-    return w.CreateExplosion(X, Y, Z, type, radius);
+    return w.CreateExplosion(x, y, z, type, radius);
   }
   static manualVehicleEngineAndLights = w.ManualVehicleEngineAndLights;
   static blockIpAddress = w.BlockIpAddress;
@@ -104,11 +104,11 @@ export class GameMode {
     newId: number,
     dffName: string,
     txdName: string,
-  ): number {
+  ): boolean {
     if (this.checkSimpleModel(virtualWorld, baseId, newId, dffName, txdName)) {
       return w.AddSimpleModel(virtualWorld, baseId, newId, dffName, txdName);
     }
-    return 0;
+    return false;
   }
   static addSimpleModelTimed(
     virtualWorld: number,
@@ -118,7 +118,7 @@ export class GameMode {
     txdName: string,
     timeOn: number,
     timeOff: number,
-  ): number {
+  ): boolean {
     if (
       this.checkSimpleModel(
         virtualWorld,
@@ -140,7 +140,7 @@ export class GameMode {
         timeOff,
       );
     }
-    return 0;
+    return false;
   }
   static checkSimpleModel(
     virtualWorld: number,
@@ -150,7 +150,7 @@ export class GameMode {
     txdName: string,
     timeOn?: number,
     timeOff?: number,
-  ): number {
+  ): boolean {
     if (virtualWorld < -1) {
       throw new Error("[GameMode]: AddSimpleModel - Error virtual world");
     }
@@ -175,7 +175,7 @@ export class GameMode {
     if (timeOff !== undefined && (timeOff < 0 || timeOff > 23)) {
       throw new Error("[GameMode]: AddSimpleModel - Error time off range");
     }
-    return 1;
+    return true;
   }
   static isValidCustomModel = w.IsValidCustomModel;
   static getCustomModePath = w.GetCustomModePath;

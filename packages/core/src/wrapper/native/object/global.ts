@@ -237,11 +237,11 @@ export const EditAttachedObject = (playerId: number, index: number) => {
 
 export const SetObjectPos = (
   objectId: number,
-  X: number,
-  Y: number,
-  Z: number,
+  x: number,
+  y: number,
+  z: number,
 ): boolean => {
-  return !!samp.callNative("SetObjectPos", "ifff", objectId, X, Y, Z);
+  return !!samp.callNative("SetObjectPos", "ifff", objectId, x, y, z);
 };
 
 export const GetObjectPos = (objectId: number) => {

@@ -204,3 +204,11 @@ export interface IObjectMp {
   charset?: string;
   player?: Player;
 }
+
+export interface IActor {
+  skin: number;
+  x: number;
+  y: number;
+  z: number;
+  rotation: number;
+}

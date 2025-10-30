@@ -8,16 +8,17 @@ import type { NpcPath } from "core/controllers/npc/path";
 import type { NpcRecord } from "core/controllers/npc/record";
 import type { TextDraw } from "core/controllers/textdraw/entity";
 
-import type { DynamicObject } from "core/wrapper/streamer/object";
-import type { Dynamic3DTextLabel } from "core/wrapper/streamer/3dtext";
-import type { DynamicActor } from "core/wrapper/streamer/actor";
-import type { DynamicArea } from "core/wrapper/streamer/area";
-import type { DynamicCheckpoint } from "core/wrapper/streamer/checkpoint";
-import type { DynamicMapIcon } from "core/wrapper/streamer/mapIcon";
-import type { DynamicPickup } from "core/wrapper/streamer/pickup";
-import type { DynamicRaceCP } from "core/wrapper/streamer/raceCP";
+import type { DynamicObject } from "core/wrapper/streamer/object/entity";
+import type { Dynamic3DTextLabel } from "core/wrapper/streamer/3dtext/entity";
+import type { DynamicActor } from "core/wrapper/streamer/actor/entity";
+import type { DynamicArea } from "core/wrapper/streamer/area/entity";
+import type { DynamicCheckpoint } from "core/wrapper/streamer/checkpoint/entity";
+import type { DynamicMapIcon } from "core/wrapper/streamer/mapIcon/entity";
+import type { DynamicPickup } from "core/wrapper/streamer/pickup/entity";
+import type { DynamicRaceCP } from "core/wrapper/streamer/raceCP/entity";
 
 import type { ObjectMp } from "core/controllers/object/entity";
+import type { Actor } from "core/controllers/actor/entity";
 
 export interface IInnerPlayerProps {
   isAndroid: boolean;
@@ -54,3 +55,4 @@ export const dynamicRaceCheckpointPool = new Map<number, DynamicRaceCP>();
 
 export const objectMpPool = new Map<number, ObjectMp>();
 export const playerObjectPool = new Map<Player, ObjectMp[]>();
+export const actorPool = new Map<number, Actor>();

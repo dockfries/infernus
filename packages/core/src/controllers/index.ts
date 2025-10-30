@@ -9,6 +9,7 @@ export * from "./menu";
 export * from "./gangzone";
 export * from "./textdraw";
 export * from "./object";
+export * from "./actor";
 export * from "../wrapper/streamer";
 export {
   defineEvent,

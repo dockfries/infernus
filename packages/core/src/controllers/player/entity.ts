@@ -844,8 +844,8 @@ export class Player {
       materialColor2,
     );
   }
-  removeAttachedObject(index: number): number {
-    if (!this.isAttachedObjectSlotUsed(index)) return 0;
+  removeAttachedObject(index: number): boolean {
+    if (!this.isAttachedObjectSlotUsed(index)) return false;
     return w.RemovePlayerAttachedObject(this.id, index);
   }
   getAnimationFlags(): number {

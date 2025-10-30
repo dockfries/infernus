@@ -5,8 +5,8 @@ export const GetActorSkin = (actorId: number): number => {
   return samp.callNative("GetActorSkin", "i", actorId);
 };
 
-export const SetActorSkin = (actorId: number, model: number): number => {
-  return samp.callNative("SetActorSkin", "ii", actorId, model);
+export const SetActorSkin = (actorId: number, model: number): boolean => {
+  return !!samp.callNative("SetActorSkin", "ii", actorId, model);
 };
 
 export const GetActorSpawnInfo = (
@@ -36,33 +36,31 @@ export const GetActorAnimation = (
 };
 
 export const CreateActor = (
-  modelId: number,
-  X: number,
-  Y: number,
-  Z: number,
-  Rotation: number,
+  skin: number,
+  x: number,
+  y: number,
+  z: number,
+  rotation: number,
 ): number => {
-  return samp.callNative("CreateActor", "iffff", modelId, X, Y, Z, Rotation);
+  return samp.callNative("CreateActor", "iffff", skin, x, y, z, rotation);
 };
 
-export const DestroyActor = (actorId: number): number => {
-  return samp.callNative("DestroyActor", "i", actorId);
+export const DestroyActor = (actorId: number): boolean => {
+  return !!samp.callNative("DestroyActor", "i", actorId);
 };
 
 export const IsActorStreamedIn = (
   actorId: number,
   forPlayerId: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsActorStreamedIn", "ii", actorId, forPlayerId),
-  );
+  return !!samp.callNative("IsActorStreamedIn", "ii", actorId, forPlayerId);
 };
 
 export const SetActorVirtualWorld = (
   actorId: number,
   vWorld: number,
-): number => {
-  return samp.callNative("SetActorVirtualWorld", "ii", actorId, vWorld);
+): boolean => {
+  return !!samp.callNative("SetActorVirtualWorld", "ii", actorId, vWorld);
 };
 
 export const GetActorVirtualWorld = (actorId: number): number => {
@@ -79,8 +77,8 @@ export const ApplyActorAnimation = (
   lockY: boolean,
   freeze: boolean,
   time: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "ApplyActorAnimation",
     "issfiiiii",
     actorId,
@@ -95,17 +93,17 @@ export const ApplyActorAnimation = (
   );
 };
 
-export const ClearActorAnimations = (actorId: number): number => {
-  return samp.callNative("ClearActorAnimations", "i", actorId);
+export const ClearActorAnimations = (actorId: number): boolean => {
+  return !!samp.callNative("ClearActorAnimations", "i", actorId);
 };
 
 export const SetActorPos = (
   actorId: number,
-  X: number,
-  Y: number,
-  Z: number,
-): number => {
-  return samp.callNative("SetActorPos", "ifff", actorId, X, Y, Z);
+  x: number,
+  y: number,
+  z: number,
+): boolean => {
+  return !!samp.callNative("SetActorPos", "ifff", actorId, x, y, z);
 };
 
 export const GetActorPos = (actorId: number) => {
@@ -114,11 +112,11 @@ export const GetActorPos = (actorId: number) => {
     "iFFF",
     actorId,
   );
-  return { x, y, z, ret };
+  return { x, y, z, ret: !!ret };
 };
 
-export const SetActorFacingAngle = (actorId: number, ang: number): number => {
-  return samp.callNative("SetActorFacingAngle", "if", actorId, ang);
+export const SetActorFacingAngle = (actorId: number, ang: number): boolean => {
+  return !!samp.callNative("SetActorFacingAngle", "if", actorId, ang);
 };
 
 export const GetActorFacingAngle = (actorId: number) => {
@@ -127,11 +125,11 @@ export const GetActorFacingAngle = (actorId: number) => {
     "iF",
     actorId,
   );
-  return { angle, ret };
+  return { angle, ret: !!ret };
 };
 
-export const SetActorHealth = (actorId: number, health: number): number => {
-  return samp.callNative("SetActorHealth", "if", actorId, health);
+export const SetActorHealth = (actorId: number, health: number): boolean => {
+  return !!samp.callNative("SetActorHealth", "if", actorId, health);
 };
 
 export const GetActorHealth = (actorId: number) => {
@@ -140,20 +138,20 @@ export const GetActorHealth = (actorId: number) => {
     "iF",
     actorId,
   );
-  return { health, ret };
+  return { health, ret: !!ret };
 };
 
 export const SetActorInvulnerable = (
   actorId: number,
   invulnerable: boolean,
-): number => {
-  return samp.callNative("SetActorInvulnerable", "ii", actorId, invulnerable);
+): boolean => {
+  return !!samp.callNative("SetActorInvulnerable", "ii", actorId, invulnerable);
 };
 
 export const IsActorInvulnerable = (actorId: number): boolean => {
-  return Boolean(samp.callNative("IsActorInvulnerable", "i", actorId));
+  return !!samp.callNative("IsActorInvulnerable", "i", actorId);
 };
 
 export const IsValidActor = (actorId: number): boolean => {
-  return Boolean(samp.callNative("IsValidActor", "i", actorId));
+  return !!samp.callNative("IsValidActor", "i", actorId);
 };

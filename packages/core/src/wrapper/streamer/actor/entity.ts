@@ -218,10 +218,11 @@ export class DynamicActor {
       throw new Error("[StreamerActor]: Unable to get skin before create");
     return w.GetActorSkin(this.id);
   }
-  setSkin(model: number, ignoreRange = false): number {
+  setSkin(model: number, ignoreRange = false): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerActor]: Unable to set skin before create");
-    if (!ignoreRange && (model < 0 || model > 311 || model === 74)) return 0;
+    if (!ignoreRange && (model < 0 || model > 311 || model === 74))
+      return false;
     return w.SetActorSkin(this.id, model);
   }
   getSpawnInfo() {

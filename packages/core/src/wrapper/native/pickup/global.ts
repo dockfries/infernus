@@ -37,12 +37,12 @@ export const GetPickupVirtualWorld = (pickupId: number): number => {
 
 export const SetPickupPos = (
   pickupId: number,
-  X: number,
-  Y: number,
-  Z: number,
+  x: number,
+  y: number,
+  z: number,
   update = true,
 ): number => {
-  return samp.callNative("SetPickupPos", "ifffi", pickupId, X, Y, Z, update);
+  return samp.callNative("SetPickupPos", "ifffi", pickupId, x, y, z, update);
 };
 
 export const SetPickupModel = (

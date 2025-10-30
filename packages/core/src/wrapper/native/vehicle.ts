@@ -316,17 +316,17 @@ export const GetVehicleRotationQuat = (vehicleId: number) => {
 
 export const GetVehicleDistanceFromPoint = (
   vehicleId: number,
-  X: number,
-  Y: number,
-  Z: number,
+  x: number,
+  y: number,
+  z: number,
 ): number => {
   return samp.callNativeFloat(
     "GetVehicleDistanceFromPoint",
     "ifff",
     vehicleId,
-    X,
-    Y,
-    Z,
+    x,
+    y,
+    z,
   );
 };
 
@@ -587,28 +587,28 @@ export const GetVehicleVelocity = (vehicleId: number) => {
 
 export const SetVehicleVelocity = (
   vehicleId: number,
-  X: number,
-  Y: number,
-  Z: number,
+  x: number,
+  y: number,
+  z: number,
 ) => {
   return Boolean(
-    samp.callNative("SetVehicleVelocity", "ifff", vehicleId, X, Y, Z),
+    samp.callNative("SetVehicleVelocity", "ifff", vehicleId, x, y, z),
   );
 };
 
 export const SetVehicleAngularVelocity = (
   vehicleId: number,
-  X: number,
-  Y: number,
-  Z: number,
+  x: number,
+  y: number,
+  z: number,
 ): boolean => {
   return !!samp.callNative(
     "SetVehicleAngularVelocity",
     "ifff",
     vehicleId,
-    X,
-    Y,
-    Z,
+    x,
+    y,
+    z,
   );
 };
 

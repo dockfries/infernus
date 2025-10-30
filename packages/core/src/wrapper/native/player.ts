@@ -518,11 +518,11 @@ export const GetPlayerFightingStyle = (
 
 export const SetPlayerVelocity = (
   playerId: number,
-  X: number,
-  Y: number,
-  Z: number,
+  x: number,
+  y: number,
+  z: number,
 ): boolean => {
-  return !!samp.callNative("SetPlayerVelocity", "ifff", playerId, X, Y, Z);
+  return !!samp.callNative("SetPlayerVelocity", "ifff", playerId, x, y, z);
 };
 
 export const GetPlayerVelocity = (playerId: number) => {
@@ -779,9 +779,9 @@ export const GetPlayerCustomSkin = (playerId: number): number => {
 
 export const CreateExplosionForPlayer = (
   playerId: number,
-  X: number,
-  Y: number,
-  Z: number,
+  x: number,
+  y: number,
+  z: number,
   type: number,
   radius: number,
 ): boolean => {
@@ -789,9 +789,9 @@ export const CreateExplosionForPlayer = (
     "CreateExplosionForPlayer",
     "ifffif",
     playerId,
-    X,
-    Y,
-    Z,
+    x,
+    y,
+    z,
     type,
     radius,
   );

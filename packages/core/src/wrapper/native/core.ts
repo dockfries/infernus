@@ -163,13 +163,13 @@ export const SetGravity = (gravity: number): number => {
 };
 
 export const CreateExplosion = (
-  X: number,
-  Y: number,
-  Z: number,
+  x: number,
+  y: number,
+  z: number,
   type: number,
   radius: number,
 ): number => {
-  return samp.callNative("CreateExplosion", "fffif", X, Y, Z, type, radius);
+  return samp.callNative("CreateExplosion", "fffif", x, y, z, type, radius);
 };
 
 export const EnableZoneNames = (enable: boolean): number => {
