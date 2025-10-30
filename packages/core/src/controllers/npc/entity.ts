@@ -32,15 +32,16 @@ export class Npc {
   constructor(name: string) {
     this._id = samp.callNative("NPC_Create", "s", name);
     this._name = name;
-    if (this._id !== InvalidEnum.PLAYER_ID) {
-      new Player(this._id);
-      const instance = Npc.getInstance(this._id);
-      if (instance) {
-        return instance;
+    if (this._id !== InvalidEnum.NPC_ID) {
+      if (!this.getPlayer()) {
+        new Player(this._id);
       }
+      npcPool.set(this._id, this);
     }
-    npcPool.set(this._id, this);
     return this;
+  }
+  getPlayer() {
+    return Player.getInstance(this._id)!;
   }
   getName() {
     return this._name;
