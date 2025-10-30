@@ -41,8 +41,8 @@ export const npcPool = new Map<number, Npc>();
 export const npcNodePool = new Map<number, NpcNode>();
 export const npcPathPool = new Map<number, NpcPath>();
 export const npcRecordPool = new Map<number, NpcRecord>();
-export const globalTextDrawPool = new Map<number, TextDraw>();
-export const playerTextDrawPool = new Map<number, TextDraw>();
+export const textDrawPool = new Map<number, TextDraw>();
+export const playerTextDrawPool = new Map<Player, Map<number, TextDraw>>();
 
 export const dynamicObjectPool = new Map<number, DynamicObject>();
 export const dynamic3DTextLabelPool = new Map<number, Dynamic3DTextLabel>();

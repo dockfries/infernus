@@ -4,7 +4,7 @@ import type { ITextDraw } from "core/interfaces";
 import * as w from "core/wrapper/native";
 import { PlayerEvent, type Player } from "../player";
 import { I18n } from "../i18n";
-import { globalTextDrawPool, playerTextDrawPool } from "core/utils/pools";
+import { textDrawPool, playerTextDrawPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 
 export class TextDraw {
@@ -25,14 +25,14 @@ export class TextDraw {
     const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
 
     if (!player) {
-      if (TextDraw.getInstances(true).length === LimitsEnum.MAX_TEXT_DRAWS)
+      if (TextDraw.getInstances().length === LimitsEnum.MAX_TEXT_DRAWS)
         throw new Error(
           "[TextDraw]: Unable to create textdraw, maximum has been reached",
         );
       this._id = TextDraw.__inject__TextDrawCreate(x, y, _text);
-      globalTextDrawPool.set(this.id, this);
+      textDrawPool.set(this.id, this);
     } else {
-      if (TextDraw.getInstances(false).length === LimitsEnum.MAX_TEXT_DRAWS)
+      if (TextDraw.getInstances(player).length === LimitsEnum.MAX_TEXT_DRAWS)
         throw new Error(
           "[TextDraw]: Unable to create textdraw, maximum has been reached",
         );
@@ -53,7 +53,10 @@ export class TextDraw {
         }
         return ret;
       });
-      playerTextDrawPool.set(this.id, this);
+      if (!playerTextDrawPool.has(player)) {
+        playerTextDrawPool.set(player, new Map());
+      }
+      playerTextDrawPool.get(player)!.set(this._id, this);
     }
 
     return this;
@@ -66,12 +69,19 @@ export class TextDraw {
       if (!INTERNAL_FLAGS.skip) {
         TextDraw.__inject__TextDrawDestroy(this.id);
       }
-      globalTextDrawPool.delete(this.id);
+      textDrawPool.delete(this.id);
     } else {
       if (!INTERNAL_FLAGS.skip) {
         TextDraw.__inject__PlayerTextDrawDestroy(player.id, this.id);
       }
-      playerTextDrawPool.delete(this.id);
+      if (playerTextDrawPool.has(player)) {
+        const perPlayerTextDraw = playerTextDrawPool.get(player)!;
+        perPlayerTextDraw.delete(this.id);
+
+        if (!perPlayerTextDraw.size) {
+          playerTextDrawPool.delete(player);
+        }
+      }
     }
     this._id = InvalidEnum.TEXT_DRAW;
     return this;
@@ -518,14 +528,26 @@ export class TextDraw {
     return !!this.sourceInfo.player;
   }
 
-  static getInstance(id: number, isGlobal: boolean) {
-    if (isGlobal) return globalTextDrawPool.get(id);
-    return playerTextDrawPool.get(id);
+  static getInstance(textDrawId: number, player?: Player) {
+    if (!player) return textDrawPool.get(textDrawId);
+
+    if (player.id === InvalidEnum.PLAYER_ID) return;
+    return playerTextDrawPool.get(player)?.get(textDrawId);
   }
 
-  static getInstances(isGlobal: boolean) {
-    if (isGlobal) return [...globalTextDrawPool.values()];
-    return [...playerTextDrawPool.values()];
+  static getInstances(player?: Player) {
+    if (!player) return [...textDrawPool.values()];
+
+    if (player.id === InvalidEnum.PLAYER_ID) return [];
+    return [...(playerTextDrawPool.get(player)?.values() || [])];
+  }
+
+  static getPlayersInstances(): [Player, TextDraw[]][] {
+    return Array.from(playerTextDrawPool.entries()).map(
+      ([player, textDraws]) => {
+        return [player, Array.from(textDraws.values())];
+      },
+    );
   }
 
   static __inject__TextDrawCreate = w.TextDrawCreate;
