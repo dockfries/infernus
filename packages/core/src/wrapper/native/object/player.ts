@@ -260,7 +260,7 @@ export const SetPlayerObjectPos = (
   X: number,
   Y: number,
   Z: number,
-): number => {
+): boolean => {
   return samp.callNative(
     "SetPlayerObjectPos",
     "iifff",
@@ -288,7 +288,7 @@ export const SetPlayerObjectRot = (
   rotX: number,
   rotY: number,
   rotZ: number,
-): number => {
+): boolean => {
   return samp.callNative(
     "SetPlayerObjectRot",
     "iifff",
@@ -423,8 +423,8 @@ export const SetPlayerObjectMaterial = (
   txdName: string,
   textureName: string,
   materialColor: string | number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "SetPlayerObjectMaterial",
     "iiiissi",
     playerId,

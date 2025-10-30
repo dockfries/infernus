@@ -153,6 +153,34 @@ export const AttachObjectToVehicle = (
   );
 };
 
+export const AttachPlayerObjectToObject = (
+  playerId: number,
+  objectId: number,
+  parentId: number,
+  offsetX: number,
+  offsetY: number,
+  offsetZ: number,
+  rotX: number,
+  rotY: number,
+  rotZ: number,
+  syncRotation = true,
+): boolean => {
+  return !!samp.callNative(
+    "AttachPlayerObjectToObject",
+    "iiiffffffi",
+    playerId,
+    objectId,
+    parentId,
+    offsetX,
+    offsetY,
+    offsetZ,
+    rotX,
+    rotY,
+    rotZ,
+    syncRotation,
+  );
+};
+
 export const AttachObjectToObject = (
   objectId: number,
   attachToId: number,
@@ -162,9 +190,9 @@ export const AttachObjectToObject = (
   rotX: number,
   rotY: number,
   rotZ: number,
-  SyncRotation = true,
-): number => {
-  return samp.callNative(
+  syncRotation = true,
+): boolean => {
+  return !!samp.callNative(
     "AttachObjectToObject",
     "iiffffffi",
     objectId,
@@ -175,7 +203,7 @@ export const AttachObjectToObject = (
     rotX,
     rotY,
     rotZ,
-    SyncRotation,
+    syncRotation,
   );
 };
 
@@ -212,8 +240,8 @@ export const SetObjectPos = (
   X: number,
   Y: number,
   Z: number,
-): number => {
-  return samp.callNative("SetObjectPos", "ifff", objectId, X, Y, Z);
+): boolean => {
+  return !!samp.callNative("SetObjectPos", "ifff", objectId, X, Y, Z);
 };
 
 export const GetObjectPos = (objectId: number) => {
@@ -230,8 +258,8 @@ export const SetObjectRot = (
   rotX: number,
   rotY: number,
   rotZ: number,
-): number => {
-  return samp.callNative("SetObjectRot", "ifff", objectId, rotX, rotY, rotZ);
+): boolean => {
+  return !!samp.callNative("SetObjectRot", "ifff", objectId, rotX, rotY, rotZ);
 };
 
 export const GetObjectRot = (objectId: number) => {
@@ -319,8 +347,8 @@ export const SetObjectMaterial = (
   txdName: string,
   textureName: string,
   materialColor: string | number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "SetObjectMaterial",
     "iiissi",
     objectId,
@@ -342,8 +370,8 @@ export const AddSimpleModel = (
   newId: number,
   dffName: string,
   txdName: string,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "AddSimpleModel",
     "iiiss",
     virtualWorld,
@@ -362,8 +390,8 @@ export const AddSimpleModelTimed = (
   txdName: string,
   timeOn: number,
   timeOff: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "AddSimpleModelTimed",
     "iiissii",
     virtualWorld,
@@ -376,8 +404,8 @@ export const AddSimpleModelTimed = (
   );
 };
 
-export const RedirectDownload = (playerId: number, url: string): number => {
-  return samp.callNative("RedirectDownload", "is", playerId, url);
+export const RedirectDownload = (playerId: number, url: string): boolean => {
+  return !!samp.callNative("RedirectDownload", "is", playerId, url);
 };
 
 export const FindModelFileNameFromCRC = (crc: number) => {
@@ -459,8 +487,8 @@ export const SetPlayerAttachedObject = (
   fScaleZ: number,
   materialColor1: string | number,
   materialColor2: string | number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "SetPlayerAttachedObject",
     "iiiifffffffffii",
     playerId,
@@ -484,8 +512,8 @@ export const SetPlayerAttachedObject = (
 export const RemovePlayerAttachedObject = (
   playerId: number,
   index: number,
-): number => {
-  return samp.callNative("RemovePlayerAttachedObject", "ii", playerId, index);
+): boolean => {
+  return !!samp.callNative("RemovePlayerAttachedObject", "ii", playerId, index);
 };
 
 export const IsPlayerAttachedObjectSlotUsed = (

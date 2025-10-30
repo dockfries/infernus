@@ -155,7 +155,7 @@ export class ObjectMp {
     return o.GetPlayerObjectPos(this.getPlayerId(), this.id);
   }
 
-  setPos(x: number, y: number, z: number): number {
+  setPos(x: number, y: number, z: number): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Cannot set position before create");
     if (this.isGlobal()) {
@@ -173,7 +173,7 @@ export class ObjectMp {
     return o.GetPlayerObjectRot(this.getPlayerId(), this.id);
   }
 
-  setRot(rx: number, ry: number, rz: number): number {
+  setRot(rx: number, ry: number, rz: number): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Cannot set rotation before create");
     if (this.isGlobal()) {
@@ -254,11 +254,7 @@ export class ObjectMp {
     ry: number,
     rz: number,
     syncRotation = true,
-  ): number {
-    if (!this.isGlobal() || !attachTo.isGlobal()) {
-      throw new Error("[ObjectMp]: Cannot attach to player object");
-    }
-
+  ): boolean {
     if (
       this.id === InvalidEnum.OBJECT_ID ||
       attachTo.id === InvalidEnum.OBJECT_ID
@@ -267,16 +263,34 @@ export class ObjectMp {
         "[ObjectMp]: Cannot attachToObject before both are created",
       );
 
-    return o.AttachObjectToObject(
-      this.id,
-      attachTo.id,
-      offsetX,
-      offsetY,
-      offsetZ,
-      rx,
-      ry,
-      rz,
-      syncRotation,
+    if (this.isGlobal() && attachTo.isGlobal()) {
+      return o.AttachObjectToObject(
+        this.id,
+        attachTo.id,
+        offsetX,
+        offsetY,
+        offsetZ,
+        rx,
+        ry,
+        rz,
+        syncRotation,
+      );
+    } else if (!this.isGlobal() && !attachTo.isGlobal()) {
+      return o.AttachPlayerObjectToObject(
+        this.getPlayerId(),
+        this.id,
+        attachTo.id,
+        offsetX,
+        offsetY,
+        offsetZ,
+        rx,
+        ry,
+        rz,
+        syncRotation,
+      );
+    }
+    throw new Error(
+      "[ObjectMp]: Cannot attachToObject with global and player object",
     );
   }
 
@@ -394,7 +408,7 @@ export class ObjectMp {
     txdName: string,
     textureName: string,
     materialColor: string | number = "#000",
-  ): number {
+  ): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Unable to set material before create");
     if (this.isGlobal()) {

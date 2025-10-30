@@ -129,7 +129,7 @@ const [onPlayerEditAttached] = defineEvent({
   },
 });
 
-const [onGlobalMoved] = defineEvent({
+const [onMoved] = defineEvent({
   name: "OnObjectMoved",
   identifier: "i",
   beforeEach(objectId) {
@@ -155,6 +155,6 @@ export const ObjectMpEvent = Object.freeze({
   onSelect,
   onEdit,
   onPlayerEditAttached,
-  onGlobalMoved,
+  onMoved,
   onPlayerMoved,
 });
