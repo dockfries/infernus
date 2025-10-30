@@ -13,8 +13,8 @@ import type { IFilterScript } from "@infernus/core";
 import {
   Dialog,
   DialogStylesEnum,
-  DynamicObjectEvent,
   LimitsEnum,
+  ObjectMpEvent,
   PlayerEvent,
 } from "@infernus/core";
 import { attachmentBones, attachmentObjects } from "./constants";
@@ -106,7 +106,7 @@ export const Attachments: IFilterScript = {
       },
     );
 
-    const offAttached = DynamicObjectEvent.onPlayerEditAttached(
+    const offAttached = ObjectMpEvent.onPlayerEditAttached(
       ({
         player,
         next,

@@ -1,6 +1,7 @@
 import {
   DynamicObjectEvent,
   E_STREAMER,
+  ObjectMpEvent,
   Streamer,
   StreamerItemTypes,
 } from "@infernus/core";
@@ -43,7 +44,7 @@ DynamicObjectEvent.onPlayerSelect(({ player, object, modelId, next }) => {
   return next();
 });
 
-DynamicObjectEvent.onPlayerEditAttached(
+ObjectMpEvent.onPlayerEditAttached(
   ({ player, modelId, index, boneId, next }) => {
     if (ACInfo.get(player.id).acKicked > 0) return true;
     if (
