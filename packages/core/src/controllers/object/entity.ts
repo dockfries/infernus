@@ -79,29 +79,34 @@ export class ObjectMp {
   destroy(): this {
     if (this.id === InvalidEnum.OBJECT_ID && !INTERNAL_FLAGS.skip)
       throw new Error("[ObjectMp]: Unable to destroy the object before create");
-    if (!INTERNAL_FLAGS.skip) {
-      if (this.isGlobal()) {
+
+    if (this.isGlobal()) {
+      if (!INTERNAL_FLAGS.skip) {
         o.DestroyObject(this.id);
-        objectMpPool.delete(this.id);
-      } else {
-        const playerId = this.getPlayerId()!;
+      }
+      objectMpPool.delete(this.id);
+    } else {
+      const playerId = this.getPlayerId()!;
 
-        if (playerId === InvalidEnum.PLAYER_ID) return this;
+      if (playerId === InvalidEnum.PLAYER_ID) return this;
 
-        const player = this.getPlayer()!;
+      const player = this.getPlayer()!;
+
+      if (!INTERNAL_FLAGS.skip) {
         o.DestroyPlayerObject(playerId, this.id);
+      }
 
-        const arr = playerObjectPool
-          .get(player)
-          ?.filter((obj) => obj.id !== this.id);
+      const arr = playerObjectPool
+        .get(player)
+        ?.filter((obj) => obj.id !== this.id);
 
-        if (arr && arr.length > 0) {
-          playerObjectPool.set(player, arr);
-        } else {
-          playerObjectPool.delete(player);
-        }
+      if (arr && arr.length > 0) {
+        playerObjectPool.set(player, arr);
+      } else {
+        playerObjectPool.delete(player);
       }
     }
+
     this._id = InvalidEnum.OBJECT_ID;
     return this;
   }
