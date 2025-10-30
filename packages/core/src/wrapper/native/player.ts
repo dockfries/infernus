@@ -893,8 +893,8 @@ export const SetPlayerMarkerForPlayer = (
   playerId: number,
   showPlayerId: number,
   color: string | number,
-): boolean => {
-  return !!samp.callNative(
+) => {
+  samp.callNative(
     "SetPlayerMarkerForPlayer",
     "iii",
     playerId,

@@ -193,6 +193,29 @@ export class Player {
   getColor(): number {
     return w.GetPlayerColor(this.id);
   }
+  setMapIcon(
+    iconId: number,
+    x: number,
+    y: number,
+    z: number,
+    markerType: number,
+    color: string | number,
+    style: number,
+  ) {
+    return w.SetPlayerMapIcon(
+      this.id,
+      iconId,
+      x,
+      y,
+      z,
+      markerType,
+      color,
+      style,
+    );
+  }
+  removeMapIcon(iconId: number) {
+    return w.RemovePlayerMapIcon(this.id, iconId);
+  }
   setMarker(showPlayer: Player, color: string | number) {
     w.SetPlayerMarkerForPlayer(this.id, showPlayer.id, color);
   }
