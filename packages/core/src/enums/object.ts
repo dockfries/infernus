@@ -14,12 +14,15 @@ export enum ObjectMaterialTextSizeEnum {
   _512x256 = 130,
   _512x512 = 140,
 }
+
 export enum ObjectMaterialAlignmentEnum {
   LEFT,
   CENTER,
   RIGHT,
 }
+
 export enum SelectObjectTypesEnum {
+  UNKNOWN = -1,
   GLOBAL_OBJECT = 1,
   PLAYER_OBJECT,
 }

@@ -3,7 +3,6 @@ import type {
   IAttachedData,
   IAttachedObject,
   IMaterial,
-  IMaterialText,
   IObjectPos,
   IObjectRotPos,
 } from "../interfaces/Object";
@@ -18,11 +17,23 @@ export const GetObjectMoveSpeed = (objectId: number): number => {
   return samp.callNativeFloat("GetObjectMoveSpeed", "i", objectId);
 };
 
+export const SetObjectMoveSpeed = (objectId: number, fSpeed: number) => {
+  return samp.callNativeFloat("SetObjectMoveSpeed", "if", objectId, fSpeed);
+};
+
 export const GetObjectMovingTargetPos = (
   objectId: number,
 ): IObjectPos & ICommonRetVal => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
     samp.callNative("GetObjectMovingTargetPos", "iFFF", objectId);
+  return { fX, fY, fZ, ret };
+};
+
+export const GetObjectTarget = (
+  objectId: number,
+): IObjectPos & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
+    samp.callNative("GetObjectTarget", "iFFF", objectId);
   return { fX, fY, fZ, ret };
 };
 
@@ -90,51 +101,15 @@ export const GetObjectMaterial = (
   return { modelId, txdName, textureName, materialColor, ret };
 };
 
-export const GetObjectMaterialText = (
-  objectId: number,
-  materialIndex: number,
-): IMaterialText & ICommonRetVal => {
-  const [
-    text,
-    materialSize = 0,
-    fontFace,
-    fontsize = 0,
-    bold = 0,
-    fontColor = 0,
-    backColor = 0,
-    textAlignment = 0,
-    ret,
-  ]: [string, number, string, number, number, number, number, number, number] =
-    samp.callNative(
-      "GetObjectMaterialText",
-      "iiSiISiIIIII",
-      objectId,
-      materialIndex,
-      2048,
-      32,
-    );
-  return {
-    text,
-    materialSize,
-    fontFace,
-    fontsize,
-    bold,
-    fontColor,
-    backColor,
-    textAlignment,
-    ret,
-  };
-};
-
 export const HasObjectCameraCollision = (objectId: number): boolean => {
   return Boolean(samp.callNative("HasObjectCameraCollision", "i", objectId));
 };
 
 export const CreateObject = (
   modelId: number,
-  X: number,
-  Y: number,
-  Z: number,
+  x: number,
+  y: number,
+  z: number,
   rX: number,
   rY: number,
   rZ: number,
@@ -144,9 +119,9 @@ export const CreateObject = (
     "CreateObject",
     "ifffffff",
     modelId,
-    X,
-    Y,
-    Z,
+    x,
+    y,
+    z,
     rX,
     rY,
     rZ,
@@ -163,8 +138,8 @@ export const AttachObjectToVehicle = (
   rotX: number,
   rotY: number,
   rotZ: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "AttachObjectToVehicle",
     "iiffffff",
     objectId,
@@ -213,8 +188,8 @@ export const AttachObjectToPlayer = (
   rotX: number,
   rotY: number,
   rotZ: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "AttachObjectToPlayer",
     "iiffffff",
     objectId,
@@ -273,7 +248,11 @@ export const GetObjectModel = (objectId: number): number => {
 };
 
 export const SetObjectNoCameraCollision = (objectId: number): boolean => {
-  return Boolean(samp.callNative("SetObjectNoCameraCollision", "i", objectId));
+  return Boolean(samp.callNative("SetObjectNoCameraCol", "i", objectId));
+};
+
+export const IsObjectNoCameraCol = (objectId: number): boolean => {
+  return Boolean(samp.callNative("IsObjectNoCameraCol", "i", objectId));
 };
 
 export const IsValidObject = (objectId: number): boolean => {
@@ -286,9 +265,9 @@ export const DestroyObject = (objectId: number): number => {
 
 export const MoveObject = (
   objectId: number,
-  X: number,
-  Y: number,
-  Z: number,
+  x: number,
+  y: number,
+  z: number,
   speed: number,
   rotX: number,
   rotY: number,
@@ -298,9 +277,9 @@ export const MoveObject = (
     "MoveObject",
     "ifffffff",
     objectId,
-    X,
-    Y,
-    Z,
+    x,
+    y,
+    z,
     speed,
     rotX,
     rotY,
@@ -350,34 +329,6 @@ export const SetObjectMaterial = (
     txdName,
     textureName,
     rgba(materialColor),
-  );
-};
-
-export const SetObjectMaterialText = (
-  objectId: number,
-  text: string,
-  materialIndex: number,
-  materialSize: number,
-  fontFace: string,
-  fontsize: number,
-  bold = true,
-  fontColor: string | number,
-  backColor: string | number,
-  textAlignment: number,
-): number => {
-  return samp.callNative(
-    "SetObjectMaterialText",
-    "isiisiiiii",
-    objectId,
-    text,
-    materialIndex,
-    materialSize,
-    fontFace,
-    fontsize,
-    bold,
-    rgba(fontColor),
-    rgba(backColor),
-    textAlignment,
   );
 };
 

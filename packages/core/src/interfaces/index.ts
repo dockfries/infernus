@@ -191,3 +191,16 @@ export interface IFilterScript {
 export interface ICommonRetVal {
   ret: number;
 }
+
+export interface IObjectMp {
+  modelId: number;
+  x: number;
+  y: number;
+  z: number;
+  rx: number;
+  ry: number;
+  rz: number;
+  drawDistance: number;
+  charset?: string;
+  player?: Player;
+}

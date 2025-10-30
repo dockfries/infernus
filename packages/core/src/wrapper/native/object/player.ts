@@ -2,7 +2,6 @@ import { rgba } from "core/utils/colorUtils";
 import type {
   IAttachedData,
   IMaterial,
-  IMaterialText,
   IObjectPos,
   IObjectRotPos,
 } from "../interfaces/Object";
@@ -125,8 +124,8 @@ export const GetPlayerObjectAttachedOffset = (
 export const GetPlayerObjectSyncRotation = (
   playerId: number,
   objectId: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "GetPlayerObjectSyncRotation",
     "ii",
     playerId,
@@ -174,45 +173,6 @@ export const GetPlayerObjectMaterial = (
   return { modelId, txdName, textureName, materialColor, ret };
 };
 
-export const GetPlayerObjectMaterialText = (
-  playerId: number,
-  objectId: number,
-  materialIndex: number,
-): IMaterialText & ICommonRetVal => {
-  const [
-    text,
-    materialSize = 0,
-    fontFace,
-    fontsize = 0,
-    bold = 0,
-    fontColor = 0,
-    backColor = 0,
-    textAlignment = 0,
-    ret,
-  ]: [string, number, string, number, number, number, number, number, number] =
-    samp.callNative(
-      "GetPlayerObjectMaterialText",
-      "iiiSiISiIIIII",
-      playerId,
-      objectId,
-      materialIndex,
-      2048,
-      32,
-    );
-
-  return {
-    text,
-    materialSize,
-    fontFace,
-    fontsize,
-    bold,
-    fontColor,
-    backColor,
-    textAlignment,
-    ret,
-  };
-};
-
 export const IsPlayerObjectNoCameraCol = (
   playerId: number,
   objectId: number,
@@ -222,7 +182,7 @@ export const IsPlayerObjectNoCameraCol = (
   );
 };
 
-export const GetPlayerCameraTargetPlayerObj = (playerId: number): number => {
+export const GetPlayerCameraTargetPlayerObject = (playerId: number): number => {
   return samp.callNative("GetPlayerCameraTargetPlayerObj", "i", playerId);
 };
 
@@ -234,8 +194,11 @@ export const BeginPlayerObjectEditing = (
   playerId: number,
   objectId: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("BeginPlayerObjectEditing", "ii", playerId, objectId),
+  return !!samp.callNative(
+    "BeginPlayerObjectEditing",
+    "ii",
+    playerId,
+    objectId,
   );
 };
 
@@ -275,8 +238,8 @@ export const AttachPlayerObjectToVehicle = (
   fRotX: number,
   fRotY: number,
   RotZ: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "AttachPlayerObjectToVehicle",
     "iiiffffff",
     playerId,
@@ -436,8 +399,8 @@ export const AttachPlayerObjectToPlayer = (
   rX: number,
   rY: number,
   rZ: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "AttachPlayerObjectToPlayer",
     "iiiffffff",
     objectPlayer,
@@ -449,36 +412,6 @@ export const AttachPlayerObjectToPlayer = (
     rX,
     rY,
     rZ,
-  );
-};
-
-export const SetPlayerObjectMaterialText = (
-  playerId: number,
-  objectId: number,
-  text: string,
-  materialIndex: number,
-  materialSize: number,
-  fontFace: string,
-  fontsize: number,
-  bold = true,
-  fontColor: string | number,
-  backColor: string | number,
-  textAlignment: number,
-): number => {
-  return samp.callNative(
-    "SetPlayerObjectMaterialText",
-    "iisiisiiiii",
-    playerId,
-    objectId,
-    text,
-    materialIndex,
-    materialSize,
-    fontFace,
-    fontsize,
-    bold,
-    rgba(fontColor),
-    rgba(backColor),
-    textAlignment,
   );
 };
 

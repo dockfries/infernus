@@ -124,51 +124,11 @@ const [onPlayerShootDynamicObject] = defineEvent({
   },
 });
 
-const [onPlayerEditAttachedObject] = defineEvent({
-  name: "OnPlayerEditAttachedObject",
-  identifier: "iiiiifffffffff",
-  defaultValue: false,
-  beforeEach(
-    pid: number,
-    response: number,
-    index: number,
-    modelId: number,
-    boneId: number,
-    fOffsetX: number,
-    fOffsetY: number,
-    fOffsetZ: number,
-    fRotX: number,
-    fRotY: number,
-    fRotZ: number,
-    fScaleX: number,
-    fScaleY: number,
-    fScaleZ: number,
-  ) {
-    return {
-      player: Player.getInstance(pid)!,
-      response,
-      index,
-      modelId,
-      boneId,
-      fOffsetX,
-      fOffsetY,
-      fOffsetZ,
-      fRotX,
-      fRotY,
-      fRotZ,
-      fScaleX,
-      fScaleY,
-      fScaleZ,
-    };
-  },
-});
-
 export const DynamicObjectEvent = Object.freeze({
   onMoved: onDynamicObjectMoved,
   onPlayerEdit: onPlayerEditDynamicObject,
   onPlayerSelect: onPlayerSelectDynamicObject,
   onPlayerShoot: onPlayerShootDynamicObject,
-  onPlayerEditAttached: onPlayerEditAttachedObject,
   onStreamIn,
   onStreamOut,
 });

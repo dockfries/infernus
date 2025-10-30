@@ -1,7 +1,8 @@
-import { I18n } from "core/controllers/i18n";
 import type { Player } from "../controllers/player/entity";
+import type { ICommonRetVal, IDialog } from "../interfaces";
+import type { IMaterialText } from "core/wrapper/native/interfaces";
+import { I18n } from "core/controllers/i18n";
 import { LimitsEnum } from "../enums";
-import type { IDialog } from "../interfaces";
 import { rgba } from "./colorUtils";
 
 type processTuple = [string, string | number[]];
@@ -356,4 +357,166 @@ export const SetPlayerChatBubble = (
     drawDistance,
     expireTime,
   );
+};
+
+export const SetObjectMaterialText = (
+  charset: string,
+  objectId: number,
+  text: string,
+  materialIndex: number,
+  materialSize: number,
+  fontFace: string,
+  fontSize: number,
+  bold = true,
+  fontColor: string | number,
+  backColor: string | number,
+  textAlignment: number,
+): boolean => {
+  const textBuf = I18n.encodeToBuf(text, charset);
+  const fontFaceBuf = I18n.encodeToBuf(fontFace, charset);
+  return !!samp.callNative(
+    "SetObjectMaterialText",
+    "iaiiaiiiii",
+    objectId,
+    textBuf,
+    materialIndex,
+    materialSize,
+    fontFaceBuf,
+    fontSize,
+    bold,
+    rgba(fontColor),
+    rgba(backColor),
+    textAlignment,
+  );
+};
+
+export const GetObjectMaterialText = (
+  objectId: number,
+  materialIndex: number,
+  charset: string,
+): IMaterialText & ICommonRetVal => {
+  const [
+    text,
+    materialSize = 0,
+    fontFace,
+    fontSize = 0,
+    bold = 0,
+    fontColor = 0,
+    backColor = 0,
+    textAlignment = 0,
+    ret,
+  ]: [
+    number[],
+    number,
+    number[],
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+  ] = samp.callNative(
+    "GetObjectMaterialText",
+    "iiAiIAiIIIII",
+    objectId,
+    materialIndex,
+    2048,
+    32,
+  );
+  const textStr = I18n.decodeFromBuf(text, charset);
+  const fontFaceStr = I18n.decodeFromBuf(fontFace, charset);
+  return {
+    text: textStr,
+    materialSize,
+    fontFace: fontFaceStr,
+    fontSize,
+    bold,
+    fontColor,
+    backColor,
+    textAlignment,
+    ret,
+  };
+};
+
+export const SetPlayerObjectMaterialText = (
+  charset: string,
+  playerId: number,
+  objectId: number,
+  text: string,
+  materialIndex: number,
+  materialSize: number,
+  fontFace: string,
+  fontsize: number,
+  bold = true,
+  fontColor: string | number,
+  backColor: string | number,
+  textAlignment: number,
+): boolean => {
+  const textBuf = I18n.encodeToBuf(text, charset);
+  const fontFaceBuf = I18n.encodeToBuf(fontFace, charset);
+  return !!samp.callNative(
+    "SetPlayerObjectMaterialText",
+    "iiaiiaiiiii",
+    playerId,
+    objectId,
+    textBuf,
+    materialIndex,
+    materialSize,
+    fontFaceBuf,
+    fontsize,
+    bold,
+    rgba(fontColor),
+    rgba(backColor),
+    textAlignment,
+  );
+};
+
+export const GetPlayerObjectMaterialText = (
+  playerId: number,
+  objectId: number,
+  materialIndex: number,
+  charset: string,
+): IMaterialText & ICommonRetVal => {
+  const [
+    text,
+    materialSize = 0,
+    fontFace,
+    fontsize = 0,
+    bold = 0,
+    fontColor = 0,
+    backColor = 0,
+    textAlignment = 0,
+    ret,
+  ]: [
+    number[],
+    number,
+    number[],
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+  ] = samp.callNative(
+    "GetPlayerObjectMaterialText",
+    "iiiAiIAiIIIII",
+    playerId,
+    objectId,
+    materialIndex,
+    2048,
+    32,
+  );
+  const textStr = I18n.decodeFromBuf(text, charset);
+  const fontFaceStr = I18n.decodeFromBuf(fontFace, charset);
+  return {
+    text: textStr,
+    materialSize,
+    fontFace: fontFaceStr,
+    fontSize: fontsize,
+    bold,
+    fontColor,
+    backColor,
+    textAlignment,
+    ret,
+  };
 };

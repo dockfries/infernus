@@ -7,8 +7,9 @@ export * from "./netstats";
 export * from "./gametext";
 export * from "./menu";
 export * from "./gangzone";
-export * from "../wrapper/streamer";
 export * from "./textdraw";
+export * from "./object";
+export * from "../wrapper/streamer";
 export {
   defineEvent,
   useTrigger,

@@ -6,8 +6,8 @@ import type { Npc } from "core/controllers/npc/entity";
 import type { NpcNode } from "core/controllers/npc/node";
 import type { NpcPath } from "core/controllers/npc/path";
 import type { NpcRecord } from "core/controllers/npc/record";
-
 import type { TextDraw } from "core/controllers/textdraw/entity";
+
 import type { DynamicObject } from "core/wrapper/streamer/object";
 import type { Dynamic3DTextLabel } from "core/wrapper/streamer/3dtext";
 import type { DynamicActor } from "core/wrapper/streamer/actor";
@@ -16,6 +16,8 @@ import type { DynamicCheckpoint } from "core/wrapper/streamer/checkpoint";
 import type { DynamicMapIcon } from "core/wrapper/streamer/mapIcon";
 import type { DynamicPickup } from "core/wrapper/streamer/pickup";
 import type { DynamicRaceCP } from "core/wrapper/streamer/raceCP";
+
+import type { ObjectMp } from "core/controllers/object/entity";
 
 export interface IInnerPlayerProps {
   isAndroid: boolean;
@@ -49,3 +51,6 @@ export const dynamicCheckpointPool = new Map<number, DynamicCheckpoint>();
 export const dynamicMapIconPool = new Map<number, DynamicMapIcon>();
 export const dynamicPickupPool = new Map<number, DynamicPickup>();
 export const dynamicRaceCheckpointPool = new Map<number, DynamicRaceCP>();
+
+export const objectMpPool = new Map<number, ObjectMp>();
+export const playerObjectPool = new Map<Player, ObjectMp[]>();

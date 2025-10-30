@@ -30,7 +30,7 @@ export interface IMaterialText {
   text: string;
   materialSize: number;
   fontFace: string;
-  fontsize: number;
+  fontSize: number;
   bold: number;
   fontColor: number;
   backColor: number;
