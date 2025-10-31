@@ -1,3 +1,37 @@
+## 0.13.0 (2025-10-31)
+
+* feat(core): add Actor entity class and update native wrapper ([855fdeb](https://github.com/dockfries/infernus/commit/855fdeb))
+* feat(core): add origin object/playerObject in same ObjectMp ([5577b43](https://github.com/dockfries/infernus/commit/5577b43))
+* feat(core): add Pickup entity and improve entity constructors ([8f081f3](https://github.com/dockfries/infernus/commit/8f081f3))
+* feat(core): add textdraw isPlayer ([4d7e619](https://github.com/dockfries/infernus/commit/4d7e619))
+* feat(core): improve object attachment and return type consistency ([7a8cd43](https://github.com/dockfries/infernus/commit/7a8cd43))
+* feat(core): make object drawDistance optional with default value ([62e2cb4](https://github.com/dockfries/infernus/commit/62e2cb4))
+* feat(core): more __inject__ methods ([f12efea](https://github.com/dockfries/infernus/commit/f12efea))
+* feat(core): more LimitsEnum ([154f605](https://github.com/dockfries/infernus/commit/154f605))
+* feat(core): npc getPlayer ([d76729c](https://github.com/dockfries/infernus/commit/d76729c))
+* feat(core): npc/player surfing object ([1ce048b](https://github.com/dockfries/infernus/commit/1ce048b))
+* feat(player): add player map icon api ([0af89c8](https://github.com/dockfries/infernus/commit/0af89c8))
+* feat(samp-voice): try port samp-voice ([1aa9ffc](https://github.com/dockfries/infernus/commit/1aa9ffc))
+* feat(weapon-config): use origin checkpoint logic replace streamer, add pickup event ([d2ef2b2](https://github.com/dockfries/infernus/commit/d2ef2b2))
+* refactor(core): move player internal properties ([52c7c84](https://github.com/dockfries/infernus/commit/52c7c84))
+* refactor(core): objectMp destroy methods ([2c247f2](https://github.com/dockfries/infernus/commit/2c247f2))
+* refactor(core): rename controller to components, rename utils ([6d58269](https://github.com/dockfries/infernus/commit/6d58269))
+* refactor(core): reorganize exports and consolidate utils module ([42577db](https://github.com/dockfries/infernus/commit/42577db))
+* refactor(core): reorganize pickup exports and remove npc module ([4ddb3a7](https://github.com/dockfries/infernus/commit/4ddb3a7))
+* refactor(core): undefined type checking, some entity isGlobal ([01eeea8](https://github.com/dockfries/infernus/commit/01eeea8))
+* refactor(core): validation checks for maximum limits ([264cbbe](https://github.com/dockfries/infernus/commit/264cbbe))
+* feat(core, fs, streamer): add TextLabel component, rename Los to LOS ([a99e7f3](https://github.com/dockfries/infernus/commit/a99e7f3))
+* feat(core, nex-ac): pickup inject ([c1d66b7](https://github.com/dockfries/infernus/commit/c1d66b7))
+* feat(core)!: add checkpoint and raceCp ([e0dbf45](https://github.com/dockfries/infernus/commit/e0dbf45))
+* refactor(core, e-selection): rename internalProps ([f600245](https://github.com/dockfries/infernus/commit/f600245))
+* refactor(fs, nex-ac): onPlayerEditAttached ([e7c845e](https://github.com/dockfries/infernus/commit/e7c845e))
+* fix(core): gangzone perPlayerPool manage ([dbc1579](https://github.com/dockfries/infernus/commit/dbc1579))
+* fix(core): textDraw perPlayerPool manage ([bd9f149](https://github.com/dockfries/infernus/commit/bd9f149))
+* chore(packages): add exports.types in package.json ([550fbaa](https://github.com/dockfries/infernus/commit/550fbaa))
+* chore(release): samp-voice v0.0.2 ([e85825a](https://github.com/dockfries/infernus/commit/e85825a))
+
+
+
 ## <small>0.12.7 (2025-10-25)</small>
 
 * feat(core): npc new natives, entity invalid enum ([05d0981](https://github.com/dockfries/infernus/commit/05d0981))
