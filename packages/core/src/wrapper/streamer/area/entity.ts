@@ -1,6 +1,6 @@
 import { InvalidEnum } from "core/enums";
-import type { Player } from "core/controllers/player";
-import type { Vehicle } from "core/controllers/vehicle";
+import type { Player } from "core/components/player";
+import type { Vehicle } from "core/components/vehicle";
 import type { TDynamicArea } from "core/types";
 import type { StreamerAreaTypes } from "@infernus/streamer";
 import * as s from "@infernus/streamer";

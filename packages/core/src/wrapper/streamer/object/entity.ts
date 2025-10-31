@@ -1,13 +1,13 @@
 import { InvalidEnum } from "core/enums";
 import type { IDynamicObject } from "core/interfaces";
-import type { Vehicle } from "core/controllers/vehicle";
-import type { Player } from "core/controllers/player";
-import { rgba } from "core/utils/colorUtils";
+import type { Vehicle } from "core/components/vehicle";
+import type { Player } from "core/components/player";
+import { rgba } from "core/utils/color";
 import {
   GetDynamicObjectMaterial,
   GetDynamicObjectMaterialText,
   SetDynamicObjectMaterialText,
-} from "core/utils/helperUtils";
+} from "core/utils/helper";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";

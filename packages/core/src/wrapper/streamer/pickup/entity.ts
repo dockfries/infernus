@@ -2,7 +2,7 @@ import type { IDynamicPickup } from "core/interfaces";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
-import { Player } from "core/controllers";
+import { Player } from "core/components";
 import { dynamicPickupPool } from "core/utils/pools";
 
 export class DynamicPickup {

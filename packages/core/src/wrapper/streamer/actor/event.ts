@@ -1,7 +1,7 @@
 import { DynamicActor } from "./entity";
-import { GameMode } from "core/controllers/gamemode";
-import { defineEvent } from "core/controllers/bus";
-import { Player } from "core/controllers/player/entity";
+import { GameMode } from "core/components/gamemode";
+import { defineEvent } from "core/utils/bus";
+import { Player } from "core/components/player/entity";
 import type { WeaponEnum, BodyPartsEnum } from "core/enums";
 import { dynamicActorPool } from "core/utils/pools";
 

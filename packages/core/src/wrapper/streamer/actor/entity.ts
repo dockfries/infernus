@@ -1,6 +1,6 @@
-import type { Player } from "core/controllers/player";
+import type { Player } from "core/components/player";
 import type { IDynamicActor } from "core/interfaces";
-import { isValidAnimateName } from "core/utils/animateUtils";
+import { isValidAnimateName } from "core/utils/animate";
 import * as w from "core/wrapper/native";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";

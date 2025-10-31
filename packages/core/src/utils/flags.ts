@@ -1,4 +1,4 @@
-import { GameMode } from "core/controllers/gamemode";
+import { GameMode } from "core/components/gamemode";
 
 export const INTERNAL_FLAGS = {
   skip: false,

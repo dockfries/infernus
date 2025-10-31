@@ -1,6 +1,6 @@
-import { defineEvent } from "core/controllers/bus";
+import { defineEvent } from "core/utils/bus";
 import type { StreamerItemTypes } from "@infernus/streamer";
-import { Player } from "core/controllers/player/entity";
+import { Player } from "core/components/player/entity";
 
 export const [onItemStreamIn] = defineEvent({
   name: "Streamer_OnItemStreamIn",

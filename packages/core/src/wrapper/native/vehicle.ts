@@ -8,7 +8,7 @@ import type {
   IVehMatrix,
   IVehSpawnInfo,
 } from "./interfaces/Vehicle";
-import { rgba } from "core/utils/colorUtils";
+import { rgba } from "core/utils/color";
 import { ICommonRetVal } from "core/interfaces";
 
 export const GetVehicleSpawnInfo = (

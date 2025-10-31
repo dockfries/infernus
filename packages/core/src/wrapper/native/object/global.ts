@@ -1,4 +1,4 @@
-import { rgba } from "core/utils/colorUtils";
+import { rgba } from "core/utils/color";
 import type {
   IAttachedData,
   IAttachedObject,

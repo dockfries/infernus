@@ -1,8 +1,8 @@
 import { DynamicObject } from "./entity";
-import { GameMode } from "core/controllers/gamemode";
+import { GameMode } from "core/components/gamemode";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
-import { defineEvent } from "core/controllers/bus";
-import { Player } from "core/controllers/player/entity";
+import { defineEvent } from "core/utils/bus";
+import { Player } from "core/components/player/entity";
 import type { WeaponEnum } from "core/enums";
 import { StreamerItemTypes } from "core/enums";
 import { dynamicObjectPool } from "core/utils/pools";

@@ -1,12 +1,12 @@
-import type { Player } from "core/controllers/player/entity";
-import type { Vehicle } from "core/controllers/vehicle/entity";
-import type { GangZone } from "core/controllers/gangzone/entity";
-import type { Menu } from "core/controllers/menu/entity";
-import type { Npc } from "core/controllers/npc/entity";
-import type { NpcNode } from "core/controllers/npc/node";
-import type { NpcPath } from "core/controllers/npc/path";
-import type { NpcRecord } from "core/controllers/npc/record";
-import type { TextDraw } from "core/controllers/textdraw/entity";
+import type { Player } from "core/components/player/entity";
+import type { Vehicle } from "core/components/vehicle/entity";
+import type { GangZone } from "core/components/gangzone/entity";
+import type { Menu } from "core/components/menu/entity";
+import type { Npc } from "core/components/npc/entity";
+import type { NpcNode } from "core/components/npc/node";
+import type { NpcPath } from "core/components/npc/path";
+import type { NpcRecord } from "core/components/npc/record";
+import type { TextDraw } from "core/components/textdraw/entity";
 
 import type { DynamicObject } from "core/wrapper/streamer/object/entity";
 import type { Dynamic3DTextLabel } from "core/wrapper/streamer/3dtext/entity";
@@ -17,9 +17,9 @@ import type { DynamicMapIcon } from "core/wrapper/streamer/mapIcon/entity";
 import type { DynamicPickup } from "core/wrapper/streamer/pickup/entity";
 import type { DynamicRaceCP } from "core/wrapper/streamer/raceCP/entity";
 
-import type { ObjectMp } from "core/controllers/object/entity";
-import type { Actor } from "core/controllers/actor/entity";
-import type { Pickup } from "core/controllers/pickup/entity";
+import type { ObjectMp } from "core/components/object/entity";
+import type { Actor } from "core/components/actor/entity";
+import type { Pickup } from "core/components/pickup/entity";
 
 export const internalPlayerProps = Symbol("internalPlayerProps");
 

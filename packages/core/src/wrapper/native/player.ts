@@ -14,7 +14,7 @@ import type {
 import type { IBounds } from "./interfaces/Bounds";
 import type { IOffsets } from "./interfaces/Offsets";
 import type { IQuat } from "./interfaces/Quat";
-import { rgba } from "core/utils/colorUtils";
+import { rgba } from "core/utils/color";
 import { ICommonRetVal } from "core/interfaces";
 
 export const TogglePlayerWidescreen = (

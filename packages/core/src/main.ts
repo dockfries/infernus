@@ -1,9 +1,9 @@
-export * from "./controllers";
+export * from "./components";
 export * from "./interfaces";
 export * from "./wrapper/native/interfaces";
 export * from "./types";
 export * from "./enums";
-export { rgba } from "./utils/colorUtils";
-export * from "./utils/keyUtils";
-export * from "./utils/animateUtils";
-export * from "./utils/hookUtils";
+export { rgba } from "./utils/color";
+export * from "./utils/key";
+export * from "./utils/animate";
+export * from "./utils/hook";

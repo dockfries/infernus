@@ -1,8 +1,8 @@
 import { DynamicCheckpoint } from "./entity";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
-import { defineEvent } from "core/controllers/bus";
-import { GameMode } from "core/controllers/gamemode";
-import { Player } from "core/controllers/player/entity";
+import { defineEvent } from "core/utils/bus";
+import { GameMode } from "core/components/gamemode";
+import { Player } from "core/components/player/entity";
 import { StreamerItemTypes } from "core/enums";
 import { dynamicCheckpointPool } from "core/utils/pools";
 

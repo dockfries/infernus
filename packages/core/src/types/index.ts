@@ -1,4 +1,4 @@
-import type { Player } from "core/controllers/player/entity";
+import type { Player } from "core/components/player/entity";
 import type {
   IDynamicCircle,
   IDynamicCylinder,

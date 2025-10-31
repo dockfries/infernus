@@ -1,9 +1,9 @@
 import { DynamicPickup } from "./entity";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
-import { defineEvent } from "core/controllers/bus";
+import { defineEvent } from "core/utils/bus";
 import { StreamerItemTypes } from "core/enums";
-import { GameMode } from "core/controllers/gamemode";
-import { Player } from "core/controllers/player/entity";
+import { GameMode } from "core/components/gamemode";
+import { Player } from "core/components/player/entity";
 import { dynamicPickupPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {

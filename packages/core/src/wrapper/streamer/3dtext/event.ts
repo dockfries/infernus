@@ -1,9 +1,9 @@
 import { StreamerItemTypes } from "@infernus/streamer";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
-import { defineEvent } from "core/controllers/bus";
-import { GameMode } from "core/controllers/gamemode";
+import { defineEvent } from "core/utils/bus";
+import { GameMode } from "core/components/gamemode";
 import { Dynamic3DTextLabel } from "./entity";
-import type { Player } from "core/controllers/player/entity";
+import type { Player } from "core/components/player/entity";
 import { dynamic3DTextLabelPool } from "core/utils/pools";
 
 GameMode.onExit(({ next }) => {

@@ -1,4 +1,4 @@
-import { rgba } from "core/utils/colorUtils";
+import { rgba } from "core/utils/color";
 import type { ITextDrawCommonSize, ITextDrawRot } from "../interfaces/TextDraw";
 import type { TextDrawAlignEnum } from "core/enums";
 import { ICommonRetVal } from "core/interfaces";

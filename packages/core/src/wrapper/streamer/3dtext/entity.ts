@@ -1,12 +1,12 @@
 import { InvalidEnum } from "core/enums";
 import type { IDynamic3DTextLabel } from "core/interfaces";
-import { rgba } from "core/utils/colorUtils";
+import { rgba } from "core/utils/color";
 import {
   CreateDynamic3DTextLabel,
   CreateDynamic3DTextLabelEx,
   GetDynamic3DTextLabelText,
   UpdateDynamic3DTextLabelText,
-} from "core/utils/helperUtils";
+} from "core/utils/helper";
 import {
   DestroyDynamic3DTextLabel,
   E_STREAMER,
@@ -17,7 +17,7 @@ import {
 } from "@infernus/streamer";
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
-import { Player, Vehicle } from "core/controllers";
+import { Player, Vehicle } from "core/components";
 import { dynamic3DTextLabelPool } from "core/utils/pools";
 
 export class Dynamic3DTextLabel {

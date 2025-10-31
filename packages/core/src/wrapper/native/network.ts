@@ -1,4 +1,4 @@
-import { I18n } from "core/controllers/i18n";
+import { I18n } from "core/utils/i18n";
 import type { ConnectionStatusEnum } from "core/enums";
 
 export const NetStats_GetConnectedTime = (playerId: number): number => {

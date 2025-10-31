@@ -1,4 +1,4 @@
-import { Player } from "core/controllers/player";
+import { Player } from "core/components/player";
 import type { StreamerItemTypes } from "@infernus/streamer";
 import {
   Streamer_AmxUnloadDestroyItems,

@@ -1,5 +1,5 @@
 import type { IDynamicMapIcon } from "core/interfaces";
-import { rgba } from "core/utils/colorUtils";
+import { rgba } from "core/utils/color";
 
 import {
   IsValidDynamicMapIcon,
@@ -13,7 +13,7 @@ import {
 } from "@infernus/streamer";
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
-import { Player } from "core/controllers";
+import { Player } from "core/components";
 import { dynamicMapIconPool } from "core/utils/pools";
 
 export class DynamicMapIcon {
