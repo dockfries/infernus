@@ -12,12 +12,3 @@ export * from "./actor";
 export * from "./pickup";
 
 export * from "../wrapper/streamer";
-
-export {
-  defineEvent,
-  useTrigger,
-  withTriggerOptions,
-  type ExecMiddlewareOptions,
-  type defineEventOptions,
-} from "../utils/bus";
-export * from "../utils/i18n";

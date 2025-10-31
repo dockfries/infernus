@@ -1,3 +1,5 @@
+export * from "../wrapper/native/interfaces";
+
 import type { MapIconStyles } from "@infernus/streamer";
 import type { DialogStylesEnum } from "../enums";
 import type { TDynamicAreaTypes, TStreamerExtendable } from "../types";
