@@ -1,5 +1,5 @@
 import { ICommonRetVal } from "core/interfaces";
-import type { IObjectPos } from "../interfaces/Object";
+import type { IObjectPos } from "./interfaces/Object";
 
 export const IsValidPickup = (pickupId: number): boolean => {
   return !!samp.callNative("IsValidPickup", "i", pickupId);

@@ -12,7 +12,6 @@ export * from "./classes";
 export * from "./network";
 
 export * from "./player";
-export * from "./npc";
 export * from "./actor";
 
 export * from "./vehicle";
@@ -31,4 +30,4 @@ export * from "./textdraw/player";
 export * from "./object/global";
 export * from "./object/player";
 
-export * from "./pickup/global";
+export * from "./pickup";
