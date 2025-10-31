@@ -45,7 +45,7 @@ DynamicPickupEvent.onPlayerPickUp(({ pickup, player, next }) => {
         StreamerItemTypes.PICKUP,
         pickup.id,
       );
-      if (ACInfo.get(player.id).acSet[7] == -1 || ac_dist_set >= 15.0) {
+      if (ACInfo.get(player.id).acSet[7] === -1 || ac_dist_set >= 15.0) {
         if (innerACConfig.DEBUG) {
           console.log(
             `[Nex-AC debug] Dyn pickupid: ${pickup.id}, dist: ${ac_dist}, dist set: ${ac_dist_set}, acSet[7]: ${ACInfo.get(player.id).acSet[7]}, playerid: ${player.id}`,
@@ -84,7 +84,7 @@ DynamicPickupEvent.onPlayerPickUp(({ pickup, player, next }) => {
           ac_i -= 100;
           const ac_s = ac_wSlot[ac_i];
           if (
-            ACInfo.get(player.id).acWeapon[ac_s] == ac_i ||
+            ACInfo.get(player.id).acWeapon[ac_s] === ac_i ||
             (ac_IsAmmoSharingInSlot(ac_s) &&
               ACInfo.get(player.id).acWeapon[ac_s] > 0)
           )
@@ -137,7 +137,7 @@ PickUpEvent.onPlayerPickUp(({ pickup, player, next }) => {
             : ACInfo.get(player.id).acSetPosZ) -
             ACPickInfo.get(player.id).acPosZ,
         );
-        if (ACInfo.get(player.id).acSet[7] == -1 || ac_dist_set >= 15.0) {
+        if (ACInfo.get(player.id).acSet[7] === -1 || ac_dist_set >= 15.0) {
           if (innerACConfig.DEBUG) {
             console.log(
               `[Nex-AC debug] Pickupid: ${pickup.id}, dist: ${ac_dist}, dist set: ${ac_dist_set}, acSet[7]: ${ACInfo.get(player.id).acSet[7]}, player.id: ${player.id}`,
@@ -169,7 +169,7 @@ PickUpEvent.onPlayerPickUp(({ pickup, player, next }) => {
           const ac_i = ACPickInfo.get(pickup.id).acWeapon;
           const ac_s = ac_wSlot[ac_i];
           if (
-            ACInfo.get(player.id).acWeapon[ac_s] == ac_i ||
+            ACInfo.get(player.id).acWeapon[ac_s] === ac_i ||
             (ac_IsAmmoSharingInSlot(ac_s) &&
               ACInfo.get(player.id).acWeapon[ac_s] > 0)
           )

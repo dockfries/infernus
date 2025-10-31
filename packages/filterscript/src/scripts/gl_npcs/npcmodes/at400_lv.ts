@@ -15,11 +15,11 @@ export function initAt400LV() {
   function nextPlayback(npc: Npc) {
     if (gPlaybackFileCycle >= NUM_PLAYBACK_FILES) gPlaybackFileCycle = 0;
 
-    if (gPlaybackFileCycle == 0) {
+    if (gPlaybackFileCycle === 0) {
       npc.startPlayback("at400_lv_to_sf_x1", true, 0, 0, 0, 0, 0, 0);
-    } else if (gPlaybackFileCycle == 1) {
+    } else if (gPlaybackFileCycle === 1) {
       npc.startPlayback("at400_sf_to_ls_x1", true, 0, 0, 0, 0, 0, 0);
-    } else if (gPlaybackFileCycle == 2) {
+    } else if (gPlaybackFileCycle === 2) {
       npc.startPlayback("at400_ls_to_lv_x1", true, 0, 0, 0, 0, 0, 0);
     }
 

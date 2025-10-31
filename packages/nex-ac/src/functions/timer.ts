@@ -156,7 +156,7 @@ export function ac_Timer(player: Player) {
                       ACInfo.get(player.id).acLastPickup >=
                         LimitsEnum.MAX_PICKUPS &&
                       ACPickInfo.get(ACInfo.get(player.id).acLastPickup)
-                        .acWeapon == ac_w &&
+                        .acWeapon === ac_w &&
                       ac_a <=
                         (ac_IsAmmoSharingInSlot(ac_i)
                           ? ACInfo.get(player.id).acAmmo[ac_i] + ac_pAmmo[ac_w]

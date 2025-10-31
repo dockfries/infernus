@@ -201,7 +201,7 @@ export function ac_CreatePickup(
             modelId === 372
           ) {
             for (let ac_i = 46; ac_i >= 1; --ac_i) {
-              if (ac_wModel[ac_i] != modelId) continue;
+              if (ac_wModel[ac_i] !== modelId) continue;
               ACPickInfo.get(pickupId).acType = 4;
               ACPickInfo.get(pickupId).acWeapon = ac_i;
               break;
@@ -1012,7 +1012,7 @@ export function ac_SetPickupModelOrType(
           modelId === 372
         ) {
           for (let ac_i = 46; ac_i >= 1; --ac_i) {
-            if (ac_wModel[ac_i] != modelId) continue;
+            if (ac_wModel[ac_i] !== modelId) continue;
             ACPickInfo.get(pickupId).acType = 4;
             ACPickInfo.get(pickupId).acWeapon = ac_i;
             break;
