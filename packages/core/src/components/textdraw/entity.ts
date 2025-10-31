@@ -533,7 +533,7 @@ export class TextDraw {
     return TextDraw.__inject__TextDrawGetPreviewVehicleColors(this.id);
   }
   isGlobal() {
-    return !!this.sourceInfo.player;
+    return !this.sourceInfo.player;
   }
 
   static getInstance(textDrawId: number, player?: Player) {

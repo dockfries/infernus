@@ -162,7 +162,7 @@ export class TextLabel {
 
   isGlobal() {
     const player = this.sourceInfo ? this.sourceInfo.player : this._player;
-    return typeof player === "undefined";
+    return !player;
   }
 
   isPlayer() {

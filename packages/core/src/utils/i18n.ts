@@ -36,7 +36,7 @@ export class I18n {
     const defaultLocale = get(this.locales[this.defaultLocale], key);
     // "server.welcome" => zh_cn["server"]["welcome"];
     const dotVal = get(incomingLocale, key, defaultLocale);
-    if (dotVal === undefined) {
+    if (typeof dotVal === "undefined") {
       throw new Error(`[i18n]: cannot find ${locale}["${key}"]`);
     }
     if (typeof dotVal !== "string") return JSON.stringify(dotVal);

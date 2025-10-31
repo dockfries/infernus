@@ -2489,7 +2489,7 @@ export const isValidAnimateLib = (lib: string) => {
   // return Boolean(samp.callNative('IsValidAnimationLibrary', 's', lib))
 
   const animLib = animateLib.get(lib.toUpperCase());
-  if (animLib === undefined) return false;
+  if (typeof animLib === "undefined") return false;
   return animLib;
 };
 

@@ -294,9 +294,9 @@ export const isValidVehModelId = (modelId: number): boolean => {
 
 export const isValidPaintJob = (
   modelId: number,
-  paintjobId: number,
+  paintJobId: number,
 ): boolean => {
-  if (paintjobId < 0 || paintjobId > 2) return false;
+  if (paintJobId < 0 || paintJobId > 2) return false;
   const validModels = new Map<number, number>([
     [483, 0],
     [534, 2],
@@ -313,6 +313,6 @@ export const isValidPaintJob = (
     [576, 2],
   ]);
   const highestPaintJobId = validModels.get(modelId);
-  if (highestPaintJobId === undefined) return false;
-  return paintjobId <= highestPaintJobId;
+  if (typeof highestPaintJobId === "undefined") return false;
+  return paintJobId <= highestPaintJobId;
 };
