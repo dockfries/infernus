@@ -2,14 +2,14 @@ import {
   Player,
   useTrigger,
   withTriggerOptions,
-  DynamicCheckpoint,
-  DynamicRaceCP,
   SpecialActionsEnum,
   InvalidEnum,
+  Checkpoint,
+  RaceCheckpoint,
 } from "@infernus/core";
 import {
-  internalLeaveDynamicCP,
-  internalLeaveDynamicRaceCP,
+  internalLeaveCP,
+  internalLeaveRaceCP,
 } from "../../callbacks/checkpoint";
 import {
   IEditableOnPlayerPrepareDeath,
@@ -172,22 +172,20 @@ export function playerDeath(
     orig_PlayerTextDrawHide(player.id, healthBarForeground.get(player.id)!.id);
   }
 
-  const dynCp = DynamicCheckpoint.getPlayerVisible(player);
-  const dynRaceCp = DynamicRaceCP.getPlayerVisible(player);
-  if (dynCp && dynCp.isPlayerIn(player)) {
-    useTrigger("OnPlayerLeaveDynamicCP")!(
+  if (Checkpoint.isPlayerIn(player)) {
+    useTrigger("OnPlayerLeaveCheckpoint")!(
       withTriggerOptions({
-        skipToNext: internalLeaveDynamicCP,
-        args: [player.id, dynCp.id],
+        skipToNext: internalLeaveCP,
+        args: [player.id],
       }),
     );
   }
 
-  if (dynRaceCp && dynRaceCp.isPlayerIn(player)) {
-    useTrigger("OnPlayerLeaveDynamicRaceCP")!(
+  if (RaceCheckpoint.isPlayerIn(player)) {
+    useTrigger("OnPlayerLeaveRaceCheckpoint")!(
       withTriggerOptions({
-        skipToNext: internalLeaveDynamicRaceCP,
-        args: [player.id, dynRaceCp.id],
+        skipToNext: internalLeaveRaceCP,
+        args: [player.id],
       }),
     );
   }

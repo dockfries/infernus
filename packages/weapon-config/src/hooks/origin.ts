@@ -1,7 +1,7 @@
 import {
   defineHooks,
-  DynamicCheckpoint,
-  DynamicRaceCP,
+  Checkpoint,
+  RaceCheckpoint,
   GameMode,
   Player,
   TextDraw,
@@ -10,9 +10,9 @@ import {
 
 export const [orig_playerMethods, setPlayerHook] = defineHooks(Player);
 export const [orig_vehicleMethods, setVehicleHook] = defineHooks(Vehicle);
-export const [orig_checkpointMethods, setCheckpointHook] =
-  defineHooks(DynamicCheckpoint);
-export const [orig_raceCPMethods, setRaceCPHook] = defineHooks(DynamicRaceCP);
+
+export const orig_IsPlayerInCheckpoint = Checkpoint.isPlayerIn;
+export const orig_IsPlayerInRaceCheckpoint = RaceCheckpoint.isPlayerIn;
 
 export const orig_AddStaticVehicle = Vehicle.__inject_AddStaticVehicle;
 export const orig_AddStaticVehicleEx = Vehicle.__inject_AddStaticVehicleEx;

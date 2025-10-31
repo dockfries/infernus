@@ -1,16 +1,16 @@
-import { DynamicCheckPointEvent, DynamicRaceCPEvent } from "@infernus/core";
+import { CheckPointEvent, RaceCpEvent } from "@infernus/core";
 import { isDying } from "../../struct";
 import { wc_IsPlayerSpawned } from "../../functions/public/is";
 
-DynamicCheckPointEvent.onPlayerEnter(({ player, next }) => {
+CheckPointEvent.onPlayerEnter(({ player, next }) => {
   if (!wc_IsPlayerSpawned(player)) {
     return 0;
   }
   return next();
 });
 
-export const internalLeaveDynamicCP: Parameters<
-  (typeof DynamicCheckPointEvent)["onPlayerLeave"]
+export const internalLeaveCP: Parameters<
+  (typeof CheckPointEvent)["onPlayerLeave"]
 >[0] = ({ player, next }) => {
   if (isDying.get(player.id)) {
     return 0;
@@ -18,17 +18,17 @@ export const internalLeaveDynamicCP: Parameters<
   return next();
 };
 
-DynamicCheckPointEvent.onPlayerLeave(internalLeaveDynamicCP, true);
+CheckPointEvent.onPlayerLeave(internalLeaveCP, true);
 
-DynamicRaceCPEvent.onPlayerEnter(({ player, next }) => {
+RaceCpEvent.onPlayerEnter(({ player, next }) => {
   if (!wc_IsPlayerSpawned(player)) {
     return 0;
   }
   return next();
 });
 
-export const internalLeaveDynamicRaceCP: Parameters<
-  (typeof DynamicRaceCPEvent)["onPlayerLeave"]
+export const internalLeaveRaceCP: Parameters<
+  (typeof RaceCpEvent)["onPlayerLeave"]
 >[0] = ({ player, next }) => {
   if (isDying.get(player.id)) {
     return 0;
@@ -36,8 +36,7 @@ export const internalLeaveDynamicRaceCP: Parameters<
   return next();
 };
 
-DynamicRaceCPEvent.onPlayerLeave(internalLeaveDynamicRaceCP, true);
+RaceCpEvent.onPlayerLeave(internalLeaveRaceCP, true);
 
-samp.defined._INC_WEAPON_INTERNAL.leaveDynamicCP = internalLeaveDynamicCP;
-samp.defined._INC_WEAPON_INTERNAL.leaveDynamicRaceCP =
-  internalLeaveDynamicRaceCP;
+samp.defined._INC_WEAPON_INTERNAL.leaveCP = internalLeaveCP;
+samp.defined._INC_WEAPON_INTERNAL.leaveRaceCP = internalLeaveRaceCP;

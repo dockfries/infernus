@@ -1,9 +1,11 @@
 import {
+  Checkpoint,
   GameMode,
   InvalidEnum,
   LimitsEnum,
   Player,
   PlayerStateEnum,
+  RaceCheckpoint,
   TextDraw,
   TextDrawAlignEnum,
   Vehicle,
@@ -13,11 +15,12 @@ import {
   orig_AddPlayerClassEx,
   orig_AddStaticVehicle,
   orig_AddStaticVehicleEx,
-  orig_checkpointMethods,
   orig_CreatePlayerTextDraw,
   orig_CreateVehicle,
   orig_DestroyVehicle,
   orig_EditPlayerClass,
+  orig_IsPlayerInCheckpoint,
+  orig_IsPlayerInRaceCheckpoint,
   orig_IsPlayerTextDrawVisible,
   orig_IsTextDrawVisibleForPlayer,
   orig_IsValidPlayerTextDraw,
@@ -60,7 +63,6 @@ import {
   orig_PlayerTextDrawShow,
   orig_PlayerTextDrawTextSize,
   orig_PlayerTextDrawUseBox,
-  orig_raceCPMethods,
   orig_TextDrawAlignment,
   orig_TextDrawBackgroundColor,
   orig_TextDrawBoxColor,
@@ -102,9 +104,7 @@ import {
   orig_TextDrawShowForPlayer,
   orig_TextDrawTextSize,
   orig_TextDrawUseBox,
-  setCheckpointHook,
   setPlayerHook,
-  setRaceCPHook,
 } from "./origin";
 import {
   classSpawnInfo,
@@ -694,25 +694,23 @@ export function wc_AddStaticVehicleEx(
 
 Vehicle.__inject_AddStaticVehicleEx = wc_AddStaticVehicleEx;
 
-export const wc_IsPlayerInCheckpoint = setCheckpointHook(
-  "isPlayerIn",
-  function (player) {
-    if (!wc_IsPlayerSpawned(player)) {
-      return false;
-    }
-    return orig_checkpointMethods.isPlayerIn.call(this, player);
-  },
-);
+export function wc_IsPlayerInCheckpoint(player: Player) {
+  if (!wc_IsPlayerSpawned(player)) {
+    return false;
+  }
+  return orig_IsPlayerInCheckpoint(player);
+}
 
-export const wc_IsPlayerInRaceCheckpoint = setRaceCPHook(
-  "isPlayerIn",
-  function (player) {
-    if (!wc_IsPlayerSpawned(player)) {
-      return false;
-    }
-    return orig_raceCPMethods.isPlayerIn.call(this, player);
-  },
-);
+Checkpoint.isPlayerIn = wc_IsPlayerInCheckpoint;
+
+export function wc_IsPlayerInRaceCheckpoint(player: Player) {
+  if (!wc_IsPlayerSpawned(player)) {
+    return false;
+  }
+  return orig_IsPlayerInRaceCheckpoint(player);
+}
+
+RaceCheckpoint.isPlayerIn = wc_IsPlayerInRaceCheckpoint;
 
 export const wc_SetPlayerSpecialAction = setPlayerHook(
   "setSpecialAction",
