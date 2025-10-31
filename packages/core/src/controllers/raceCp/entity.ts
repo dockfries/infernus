@@ -7,7 +7,7 @@ import {
 } from "core/wrapper/native";
 import { Player } from "../player/entity";
 
-export default class RaceCheckpoint {
+export class RaceCheckpoint {
   static set(
     player: Player,
     type: number,

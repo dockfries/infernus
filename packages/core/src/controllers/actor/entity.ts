@@ -37,6 +37,9 @@ export class Actor {
 
   constructor(actorOrId: IActor | number) {
     if (typeof actorOrId === "number") {
+      const actor = Actor.getInstance(actorOrId);
+      if (actor) return actor;
+
       this._id = actorOrId;
     } else {
       this.sourceInfo = actorOrId;

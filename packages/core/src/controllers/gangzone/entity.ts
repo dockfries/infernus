@@ -10,16 +10,16 @@ import { gangZonePool, playerGangZonePool } from "core/utils/pools";
 export class GangZone {
   readonly sourceInfo: IGangZone;
 
-  constructor(gangZone: IGangZone) {
-    this.sourceInfo = gangZone;
-  }
-
   private _id: number = InvalidEnum.GANG_ZONE;
   get id() {
     return this._id;
   }
 
-  create(): void {
+  constructor(gangZone: IGangZone) {
+    this.sourceInfo = gangZone;
+  }
+
+  create() {
     if (this.id !== InvalidEnum.GANG_ZONE)
       throw new Error("[GangZone]: Unable to create again");
 
@@ -54,6 +54,8 @@ export class GangZone {
       }
       playerGangZonePool.get(player)!.set(this._id, this);
     }
+
+    return this;
   }
 
   destroy() {

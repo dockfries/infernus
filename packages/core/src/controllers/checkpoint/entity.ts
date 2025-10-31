@@ -7,7 +7,7 @@ import {
 } from "core/wrapper/native";
 import { Player } from "../player/entity";
 
-export default class Checkpoint {
+export class Checkpoint {
   static set(player: Player, x: number, y: number, z: number, radius: number) {
     return SetPlayerCheckpoint(player.id, x, y, z, radius);
   }

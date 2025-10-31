@@ -14,6 +14,7 @@ export class TextDraw {
   get id() {
     return this._id;
   }
+
   constructor(textDraw: ITextDraw) {
     this.sourceInfo = textDraw;
   }

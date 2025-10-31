@@ -19,6 +19,7 @@ import type { DynamicRaceCP } from "core/wrapper/streamer/raceCP/entity";
 
 import type { ObjectMp } from "core/controllers/object/entity";
 import type { Actor } from "core/controllers/actor/entity";
+import type { Pickup } from "core/controllers/pickup/entity";
 
 export interface IInnerPlayerProps {
   isAndroid: boolean;
@@ -56,3 +57,4 @@ export const dynamicRaceCPPool = new Map<number, DynamicRaceCP>();
 export const objectMpPool = new Map<number, ObjectMp>();
 export const playerObjectPool = new Map<Player, Map<number, ObjectMp>>();
 export const actorPool = new Map<number, Actor>();
+export const pickupPool = new Map<number, Pickup>();

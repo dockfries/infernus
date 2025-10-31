@@ -212,3 +212,13 @@ export interface IActor {
   z: number;
   rotation: number;
 }
+
+export interface IPickup {
+  model: number;
+  type: number;
+  x: number;
+  y: number;
+  z: number;
+  virtualWorld: number;
+  isStatic?: boolean;
+}

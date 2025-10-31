@@ -14,4 +14,5 @@ export enum InvalidEnum {
   GANG_ZONE = NPC_ID,
   _3DTEXT_ID = PLAYER_ID,
   PLAYER_3DTEXT_ID = PLAYER_ID,
+  PICKUP_ID = NPC_ID,
 }
