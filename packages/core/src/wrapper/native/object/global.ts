@@ -113,7 +113,7 @@ export const CreateObject = (
   rX: number,
   rY: number,
   rZ: number,
-  drawDistance: number,
+  drawDistance = 0.0,
 ): number => {
   return samp.callNative(
     "CreateObject",

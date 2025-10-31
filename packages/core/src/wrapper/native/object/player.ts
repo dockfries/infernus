@@ -211,7 +211,7 @@ export const CreatePlayerObject = (
   rX: number,
   rY: number,
   rZ: number,
-  drawDistance: number,
+  drawDistance = 0.0,
 ): number => {
   return samp.callNative(
     "CreatePlayerObject",

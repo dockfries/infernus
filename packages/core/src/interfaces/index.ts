@@ -203,7 +203,7 @@ export interface IObjectMp {
   rx: number;
   ry: number;
   rz: number;
-  drawDistance: number;
+  drawDistance?: number;
   charset?: string;
   player?: Player;
 }

@@ -46,7 +46,16 @@ export class ObjectMp {
     if (this.id !== InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Unable to create again");
 
-    const { modelId, x, y, z, rx, ry, rz, drawDistance } = this.sourceInfo;
+    const {
+      modelId,
+      x,
+      y,
+      z,
+      rx,
+      ry,
+      rz,
+      drawDistance = 0.0,
+    } = this.sourceInfo;
 
     if (this.isGlobal()) {
       this._id = ObjectMp.__inject__CreateObject(
