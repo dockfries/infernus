@@ -14,7 +14,7 @@ import {
 } from "core/enums";
 import { Player } from "../player";
 import { Vehicle } from "../vehicle";
-import { innerPlayerProps, npcPool } from "core/utils/pools";
+import { internalPlayerProps, npcPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 import { DynamicObject } from "core/wrapper/streamer/object";
 import { Streamer } from "core/wrapper/streamer";
@@ -948,13 +948,13 @@ export class Npc {
     if (player.isRecording)
       throw new Error("[NpcFunc]: It should be stopped before recording");
     w.StartRecordingPlayerData(player.id, recordType, recordName);
-    player[innerPlayerProps].isRecording = true;
+    player[internalPlayerProps].isRecording = true;
   }
   static stopRecordingPlayerData(player: Player): void {
     if (!player.isRecording)
       throw new Error("[NpcFunc]: It should be started before stop");
     w.StopRecordingPlayerData(player.id);
-    player[innerPlayerProps].isRecording = false;
+    player[internalPlayerProps].isRecording = false;
   }
   static isValid(id: number) {
     return !!samp.callNative("NPC_IsValid", "i", id);

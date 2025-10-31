@@ -222,3 +222,13 @@ export interface IPickup {
   virtualWorld: number;
   isStatic?: boolean;
 }
+
+export interface IInnerPlayerProps {
+  isAndroid: boolean;
+  lastDrunkLevel: number;
+  lastFps: number;
+  lastUpdateTick: number;
+  lastUpdateFpsTick: number;
+  isPaused: boolean;
+  isRecording: boolean;
+}

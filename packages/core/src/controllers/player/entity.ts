@@ -20,19 +20,14 @@ import {
   LimitsEnum,
 } from "../../enums";
 
-import type { IClientResRaw } from "../../interfaces";
+import type { IClientResRaw, IInnerPlayerProps } from "../../interfaces";
 import { isValidAnimateName } from "../../utils/animateUtils";
 import * as h from "../../utils/helperUtils";
 
 import type { Vehicle } from "../vehicle/entity";
 import { defineEvent } from "../bus";
 import { VectorSize } from "core/wrapper/native";
-import {
-  IInnerPlayerProps,
-  innerPlayerProps,
-  playerPool,
-  vehiclePool,
-} from "core/utils/pools";
+import { internalPlayerProps, playerPool, vehiclePool } from "core/utils/pools";
 import { CmdBus } from "./command";
 import { ObjectMp } from "../object/entity";
 
@@ -67,7 +62,7 @@ export class Player {
   private _charset = "ISO-8859-1";
   private _locale = "en_US";
 
-  [innerPlayerProps]: IInnerPlayerProps = {
+  [internalPlayerProps]: IInnerPlayerProps = {
     isAndroid: true,
     lastDrunkLevel: 0,
     lastFps: 0,
@@ -78,27 +73,27 @@ export class Player {
   };
 
   get lastDrunkLevel() {
-    return this[innerPlayerProps].lastDrunkLevel;
+    return this[internalPlayerProps].lastDrunkLevel;
   }
 
   get lastFps() {
-    return this[innerPlayerProps].lastFps;
+    return this[internalPlayerProps].lastFps;
   }
 
   get lastUpdateTick() {
-    return this[innerPlayerProps].lastUpdateTick;
+    return this[internalPlayerProps].lastUpdateTick;
   }
 
   get lastUpdateFpsTick() {
-    return this[innerPlayerProps].lastUpdateFpsTick;
+    return this[internalPlayerProps].lastUpdateFpsTick;
   }
 
   get isPaused() {
-    return this[innerPlayerProps].isPaused;
+    return this[internalPlayerProps].isPaused;
   }
 
   get isRecording() {
-    return this[innerPlayerProps].isRecording;
+    return this[internalPlayerProps].isRecording;
   }
 
   get charset() {
@@ -995,10 +990,10 @@ export class Player {
     return w.IsPlayerInDriveByMode(this.id);
   }
   isAndroid() {
-    return this.isConnected() && this[innerPlayerProps].isAndroid;
+    return this.isConnected() && this[internalPlayerProps].isAndroid;
   }
   isPC() {
-    return this.isConnected() && !this[innerPlayerProps].isAndroid;
+    return this.isConnected() && !this[internalPlayerProps].isAndroid;
   }
   isUsingOmp() {
     return w.IsPlayerUsingOmp(this.id);

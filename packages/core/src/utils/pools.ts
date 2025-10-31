@@ -21,17 +21,7 @@ import type { ObjectMp } from "core/controllers/object/entity";
 import type { Actor } from "core/controllers/actor/entity";
 import type { Pickup } from "core/controllers/pickup/entity";
 
-export interface IInnerPlayerProps {
-  isAndroid: boolean;
-  lastDrunkLevel: number;
-  lastFps: number;
-  lastUpdateTick: number;
-  lastUpdateFpsTick: number;
-  isPaused: boolean;
-  isRecording: boolean;
-}
-
-export const innerPlayerProps = Symbol();
+export const internalPlayerProps = Symbol("internalPlayerProps");
 
 export const playerPool = new Map<number, Player>();
 export const vehiclePool = new Map<number, Vehicle>();

@@ -40,7 +40,7 @@ export interface IModelOptions {
   coolDownMs?: number;
 }
 
-interface IInnerModelProps {
+interface IInternalModelProps {
   rightArrow: TextDraw | null;
   leftArrow: TextDraw | null;
   backgroundTd: TextDraw | null;
@@ -57,10 +57,10 @@ interface IInnerModelProps {
   destroy: (cancelSel?: boolean) => void;
 }
 
-const innerPropsKey = Symbol();
+const internalPropsKey = Symbol("modelProps");
 
 export class ModelSelectionMenu {
-  [innerPropsKey]: IInnerModelProps = {
+  [internalPropsKey]: IInternalModelProps = {
     rightArrow: null,
     leftArrow: null,
     backgroundTd: null,
@@ -81,18 +81,18 @@ export class ModelSelectionMenu {
         }
       };
 
-      destroyIfValid(this[innerPropsKey].rightArrow);
-      destroyIfValid(this[innerPropsKey].leftArrow);
-      destroyIfValid(this[innerPropsKey].backgroundTd);
-      destroyIfValid(this[innerPropsKey].topBanner);
-      destroyIfValid(this[innerPropsKey].bottomBanner);
-      destroyIfValid(this[innerPropsKey].closeButton);
+      destroyIfValid(this[internalPropsKey].rightArrow);
+      destroyIfValid(this[internalPropsKey].leftArrow);
+      destroyIfValid(this[internalPropsKey].backgroundTd);
+      destroyIfValid(this[internalPropsKey].topBanner);
+      destroyIfValid(this[internalPropsKey].bottomBanner);
+      destroyIfValid(this[internalPropsKey].closeButton);
       destroyIfValid(this.headerTd);
       destroyIfValid(this.pageNumber);
 
-      this[innerPropsKey].itemsTd.forEach(destroyIfValid);
+      this[internalPropsKey].itemsTd.forEach(destroyIfValid);
       this.itemsTextTd.forEach(destroyIfValid);
-      this[innerPropsKey].itemsTd = [];
+      this[internalPropsKey].itemsTd = [];
       this.itemsTextTd = [];
 
       if (playerMenus.has(this.player)) {
@@ -123,9 +123,9 @@ export class ModelSelectionMenu {
   constructor(options: IModelOptions) {
     this.player = options.player;
 
-    this[innerPropsKey].models = options.models;
-    this[innerPropsKey].maxItemPerPage = options.maxItemPerPage || 18;
-    this[innerPropsKey].coolDownMs = options.coolDownMs || 600;
+    this[internalPropsKey].models = options.models;
+    this[internalPropsKey].maxItemPerPage = options.maxItemPerPage || 18;
+    this[internalPropsKey].coolDownMs = options.coolDownMs || 600;
 
     this.headerText = options.headerText || "header";
 
@@ -135,12 +135,13 @@ export class ModelSelectionMenu {
     this.itemBgColor = options.itemBgColor || 0xd3d3d344;
     this.itemTextColor = options.itemTextColor || 0xd3d3d3aa;
 
-    this[innerPropsKey].currentPage = 1;
-    this[innerPropsKey].pageCount = Math.ceil(
-      this[innerPropsKey].models.length / this[innerPropsKey].maxItemPerPage,
+    this[internalPropsKey].currentPage = 1;
+    this[internalPropsKey].pageCount = Math.ceil(
+      this[internalPropsKey].models.length /
+        this[internalPropsKey].maxItemPerPage,
     );
-    this[innerPropsKey].coolDownTick = Date.now();
-    this[innerPropsKey].itemsTd = [];
+    this[internalPropsKey].coolDownTick = Date.now();
+    this[internalPropsKey].itemsTd = [];
     this.itemsTextTd = [];
   }
 
@@ -299,7 +300,7 @@ export class ModelSelectionMenu {
   private createMenuItems() {
     let x = 78.0;
     let y = 162.0;
-    for (let i = 0; i < this[innerPropsKey].maxItemPerPage; i++) {
+    for (let i = 0; i < this[internalPropsKey].maxItemPerPage; i++) {
       if (i > 0 && i % 6 === 0) {
         x = 140.0;
         y += 55.0;
@@ -307,7 +308,7 @@ export class ModelSelectionMenu {
         x += 62.0;
       }
 
-      this[innerPropsKey].itemsTd[i] = new TextDraw({
+      this[internalPropsKey].itemsTd[i] = new TextDraw({
         player: this.player,
         x,
         y,
@@ -355,37 +356,37 @@ export class ModelSelectionMenu {
         return;
       }
 
-      this[innerPropsKey].backgroundTd = this.createBackground();
-      this[innerPropsKey].rightArrow = this.createRightArrow();
-      this[innerPropsKey].leftArrow = this.createLeftArrow();
-      this[innerPropsKey].topBanner = this.createTopBanner();
-      this[innerPropsKey].bottomBanner = this.createBottomBanner();
-      this[innerPropsKey].closeButton = this.createCloseButton();
+      this[internalPropsKey].backgroundTd = this.createBackground();
+      this[internalPropsKey].rightArrow = this.createRightArrow();
+      this[internalPropsKey].leftArrow = this.createLeftArrow();
+      this[internalPropsKey].topBanner = this.createTopBanner();
+      this[internalPropsKey].bottomBanner = this.createBottomBanner();
+      this[internalPropsKey].closeButton = this.createCloseButton();
       this.pageNumber = this.createPageNumber();
       this.headerTd = this.createHeaderText();
       this.createMenuItems();
 
-      for (let i = 0; i < this[innerPropsKey].models.length; i++) {
-        if (i >= this[innerPropsKey].maxItemPerPage) break;
-        this.setModelBox(i, this[innerPropsKey].models[i]);
+      for (let i = 0; i < this[internalPropsKey].models.length; i++) {
+        if (i >= this[internalPropsKey].maxItemPerPage) break;
+        this.setModelBox(i, this[internalPropsKey].models[i]);
       }
 
-      const page = `1/${this[innerPropsKey].pageCount}}`;
+      const page = `1/${this[internalPropsKey].pageCount}}`;
       this.pageNumber.setString(page).show();
       this.headerTd.show();
 
-      this[innerPropsKey].rightArrow.show();
-      this[innerPropsKey].leftArrow.show();
-      this[innerPropsKey].backgroundTd.show();
-      this[innerPropsKey].topBanner.show();
-      this[innerPropsKey].bottomBanner.show();
-      this[innerPropsKey].closeButton.show();
+      this[internalPropsKey].rightArrow.show();
+      this[internalPropsKey].leftArrow.show();
+      this[internalPropsKey].backgroundTd.show();
+      this[internalPropsKey].topBanner.show();
+      this[internalPropsKey].bottomBanner.show();
+      this[internalPropsKey].closeButton.show();
 
       this.player.selectTextDraw(-1);
 
       modelSelectionTask.set(this.player, {
         resolve: (response) => {
-          this[innerPropsKey].destroy();
+          this[internalPropsKey].destroy();
           setTimeout(() => {
             resolve(response);
           }, 0);
@@ -395,7 +396,7 @@ export class ModelSelectionMenu {
             reason === 0
               ? "[ModelSelectionMenu]: player disconnected"
               : "[ModelSelectionMenu]: player second request show";
-          this[innerPropsKey].destroy(reason === 1);
+          this[internalPropsKey].destroy(reason === 1);
           setTimeout(() => {
             reject(reasonText);
           }, 0);
@@ -406,7 +407,7 @@ export class ModelSelectionMenu {
   }
 
   private setModelBox(index: number, model: IModelData) {
-    const td = this[innerPropsKey].itemsTd[index];
+    const td = this[internalPropsKey].itemsTd[index];
     const tdText = this.itemsTextTd[index];
 
     td.setPreviewModel(model.modelId);
@@ -430,21 +431,21 @@ export class ModelSelectionMenu {
   }
 
   setPage(page: number) {
-    if (page < 1 || page > this[innerPropsKey].pageCount) return false;
+    if (page < 1 || page > this[internalPropsKey].pageCount) return false;
 
-    const start = this[innerPropsKey].maxItemPerPage * (page - 1);
+    const start = this[internalPropsKey].maxItemPerPage * (page - 1);
 
-    this[innerPropsKey].itemsTd.forEach((t) => t.hide());
+    this[internalPropsKey].itemsTd.forEach((t) => t.hide());
     this.itemsTextTd.forEach((t) => t.hide());
 
-    for (let i = 0; i < this[innerPropsKey].maxItemPerPage; i++) {
-      if (start + i >= this[innerPropsKey].models.length) break;
-      this.setModelBox(i, this[innerPropsKey].models[start + i]);
+    for (let i = 0; i < this[internalPropsKey].maxItemPerPage; i++) {
+      if (start + i >= this[internalPropsKey].models.length) break;
+      this.setModelBox(i, this[internalPropsKey].models[start + i]);
     }
 
-    this[innerPropsKey].currentPage = page;
+    this[internalPropsKey].currentPage = page;
 
-    const pageText = `${page}/${this[innerPropsKey].pageCount}`;
+    const pageText = `${page}/${this[internalPropsKey].pageCount}`;
     this.pageNumber!.setString(pageText).show();
     return true;
   }
@@ -477,13 +478,13 @@ TextDrawEvent.onPlayerClickPlayer(
     const modelSelection = playerMenus.get(player)!;
 
     if (
-      Date.now() - modelSelection[innerPropsKey].coolDownTick <=
-      modelSelection[innerPropsKey].coolDownMs
+      Date.now() - modelSelection[internalPropsKey].coolDownTick <=
+      modelSelection[internalPropsKey].coolDownMs
     )
       return next();
 
-    modelSelection[innerPropsKey].coolDownTick =
-      Date.now() + modelSelection[innerPropsKey].coolDownMs;
+    modelSelection[internalPropsKey].coolDownTick =
+      Date.now() + modelSelection[internalPropsKey].coolDownMs;
 
     const task = modelSelectionTask.get(player)!;
 
@@ -492,34 +493,35 @@ TextDrawEvent.onPlayerClickPlayer(
       return next();
     }
 
-    if (textDraw === modelSelection[innerPropsKey].closeButton) {
+    if (textDraw === modelSelection[internalPropsKey].closeButton) {
       task.resolve(null);
       return defaultValue;
     }
 
-    if (textDraw === modelSelection[innerPropsKey].rightArrow) {
+    if (textDraw === modelSelection[internalPropsKey].rightArrow) {
       if (
-        modelSelection[innerPropsKey].currentPage ===
-        modelSelection[innerPropsKey].pageCount
+        modelSelection[internalPropsKey].currentPage ===
+        modelSelection[internalPropsKey].pageCount
       )
         return defaultValue;
-      modelSelection.setPage(modelSelection[innerPropsKey].currentPage + 1);
+      modelSelection.setPage(modelSelection[internalPropsKey].currentPage + 1);
       return defaultValue;
     }
 
-    if (textDraw === modelSelection[innerPropsKey].leftArrow) {
-      if (modelSelection[innerPropsKey].currentPage <= 1) return defaultValue;
-      modelSelection.setPage(modelSelection[innerPropsKey].currentPage - 1);
+    if (textDraw === modelSelection[internalPropsKey].leftArrow) {
+      if (modelSelection[internalPropsKey].currentPage <= 1)
+        return defaultValue;
+      modelSelection.setPage(modelSelection[internalPropsKey].currentPage - 1);
       return defaultValue;
     }
 
     let index = 0;
-    for (const item of modelSelection[innerPropsKey].itemsTd) {
+    for (const item of modelSelection[internalPropsKey].itemsTd) {
       if (item === textDraw) {
         const start =
-          modelSelection[innerPropsKey].maxItemPerPage *
-          (modelSelection[innerPropsKey].currentPage - 1);
-        task.resolve(modelSelection[innerPropsKey].models[start + index]);
+          modelSelection[internalPropsKey].maxItemPerPage *
+          (modelSelection[internalPropsKey].currentPage - 1);
+        task.resolve(modelSelection[internalPropsKey].models[start + index]);
         return defaultValue;
       }
       index++;

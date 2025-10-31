@@ -2,7 +2,7 @@ import { Player } from "./entity";
 import { PlayerStateEnum } from "../../enums";
 import { defineEvent } from "../bus";
 import { onConnect, onDisconnect, onUpdate } from "./event";
-import { innerPlayerProps } from "core/utils/pools";
+import { internalPlayerProps } from "core/utils/pools";
 
 let pauseChecker: null | NodeJS.Timeout = null;
 const androidTimer = new Map<Player, NodeJS.Timeout>();
@@ -32,7 +32,7 @@ function checkAndroid(player: Player) {
     .sendClientCheck(0x48, 0, 0, 2)
     .then(({ actionId }) => {
       if (actionId === 0x48) {
-        player[innerPlayerProps].isAndroid = false;
+        player[internalPlayerProps].isAndroid = false;
         if (androidTimer.has(player)) {
           clearInterval(androidTimer.get(player));
           androidTimer.delete(player);
@@ -89,7 +89,7 @@ onConnect(({ player, next }) => {
 
       activePlayers.forEach((p) => {
         if (Date.now() - p.lastUpdateTick > 1000) {
-          p[innerPlayerProps].isPaused = true;
+          p[internalPlayerProps].isPaused = true;
           triggerOnPause(p, p.lastUpdateTick);
         }
       });
@@ -97,12 +97,12 @@ onConnect(({ player, next }) => {
   }
 
   if (player.isNpc()) {
-    player[innerPlayerProps].isAndroid = false;
+    player[internalPlayerProps].isAndroid = false;
     return next();
   }
   if (Player.SKIP_CHECK_ANDROID) {
-    player[innerPlayerProps].isAndroid = !player.isUsingOfficialClient();
-    triggerOnAndroidCheck(player, player[innerPlayerProps].isAndroid);
+    player[internalPlayerProps].isAndroid = !player.isUsingOfficialClient();
+    triggerOnAndroidCheck(player, player[internalPlayerProps].isAndroid);
     return next();
   }
   checkAndroid(player);
@@ -134,18 +134,18 @@ function fpsHeartbeat(player: Player) {
 
     if (nowDrunkLevel < 100) {
       player.setDrunkLevel(2000);
-      player[innerPlayerProps].lastDrunkLevel = 2000;
-      player[innerPlayerProps].lastFps = 0;
+      player[internalPlayerProps].lastDrunkLevel = 2000;
+      player[internalPlayerProps].lastFps = 0;
       return;
     }
 
-    player[innerPlayerProps].lastUpdateFpsTick = now;
+    player[internalPlayerProps].lastUpdateFpsTick = now;
 
     const oldFps = player.lastFps;
     const newFps = player.lastDrunkLevel - nowDrunkLevel - 1;
 
-    player[innerPlayerProps].lastFps = newFps;
-    player[innerPlayerProps].lastDrunkLevel = nowDrunkLevel;
+    player[internalPlayerProps].lastFps = newFps;
+    player[internalPlayerProps].lastDrunkLevel = nowDrunkLevel;
 
     triggerOnFpsUpdate(player, newFps, oldFps);
   }
@@ -155,7 +155,7 @@ onUpdate(({ player, next }) => {
   if (!player.isNpc()) {
     const now = Date.now();
     if (player.isPaused) {
-      player[innerPlayerProps].isPaused = false;
+      player[internalPlayerProps].isPaused = false;
       triggerOnResume(
         player,
         player.lastUpdateTick,
@@ -163,7 +163,7 @@ onUpdate(({ player, next }) => {
         now - player.lastUpdateTick,
       );
     }
-    player[innerPlayerProps].lastUpdateTick = now;
+    player[internalPlayerProps].lastUpdateTick = now;
     fpsHeartbeat(player);
   }
 
