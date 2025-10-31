@@ -533,7 +533,23 @@ export class TextDraw {
     return TextDraw.__inject__TextDrawGetPreviewVehicleColors(this.id);
   }
   isGlobal() {
-    return !this.sourceInfo.player;
+    return !this.getPlayer();
+  }
+
+  isPlayer() {
+    return !this.isGlobal();
+  }
+
+  getPlayer() {
+    if (this.sourceInfo && this.sourceInfo.player) {
+      return this.sourceInfo.player;
+    }
+    return null;
+  }
+
+  getPlayerId() {
+    const player = this.getPlayer();
+    return player ? player.id : InvalidEnum.PLAYER_ID;
   }
 
   static getInstance(textDrawId: number, player?: Player) {
