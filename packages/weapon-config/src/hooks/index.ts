@@ -604,7 +604,7 @@ export function wc_DestroyVehicle(vehicleId: number) {
   return 0;
 }
 
-Vehicle.__inject_DestroyVehicle = wc_DestroyVehicle;
+Vehicle.__inject__DestroyVehicle = wc_DestroyVehicle;
 
 export function wc_CreateVehicle(
   vehicleType: number,
@@ -636,7 +636,7 @@ export function wc_CreateVehicle(
   return id;
 }
 
-Vehicle.__inject_CreateVehicle = wc_CreateVehicle;
+Vehicle.__inject__CreateVehicle = wc_CreateVehicle;
 
 export function wc_AddStaticVehicle(
   modelId: number,
@@ -662,7 +662,7 @@ export function wc_AddStaticVehicle(
   return id;
 }
 
-Vehicle.__inject_AddStaticVehicle = wc_AddStaticVehicle;
+Vehicle.__inject__AddStaticVehicle = wc_AddStaticVehicle;
 
 export function wc_AddStaticVehicleEx(
   modelId: number,
@@ -692,7 +692,7 @@ export function wc_AddStaticVehicleEx(
   return id;
 }
 
-Vehicle.__inject_AddStaticVehicleEx = wc_AddStaticVehicleEx;
+Vehicle.__inject__AddStaticVehicleEx = wc_AddStaticVehicleEx;
 
 export function wc_IsPlayerInCheckpoint(player: Player) {
   if (!wc_IsPlayerSpawned(player)) {

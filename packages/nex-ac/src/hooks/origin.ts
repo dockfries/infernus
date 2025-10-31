@@ -3,6 +3,7 @@ import {
   Dialog,
   DynamicPickup,
   GameMode,
+  Pickup,
   Player,
   Streamer,
   Vehicle,
@@ -10,16 +11,14 @@ import {
 
 export const [orig_playerMethods, setPlayerHook] = defineHooks(Player);
 export const [orig_vehicleMethods, setVehicleHook] = defineHooks(Vehicle);
-export const [orig_pickMethods, setDynamicPickupHook] =
-  defineHooks(DynamicPickup);
 
 export const orig_StreamerUpdate = Streamer.update;
 export const orig_StreamerUpdateEx = Streamer.updateEx;
 
-export const orig_AddStaticVehicle = Vehicle.__inject_AddStaticVehicle;
-export const orig_AddStaticVehicleEx = Vehicle.__inject_AddStaticVehicleEx;
-export const orig_CreateVehicle = Vehicle.__inject_CreateVehicle;
-export const orig_DestroyVehicle = Vehicle.__inject_DestroyVehicle;
+export const orig_AddStaticVehicle = Vehicle.__inject__AddStaticVehicle;
+export const orig_AddStaticVehicleEx = Vehicle.__inject__AddStaticVehicleEx;
+export const orig_CreateVehicle = Vehicle.__inject__CreateVehicle;
+export const orig_DestroyVehicle = Vehicle.__inject__DestroyVehicle;
 
 export const orig_ShowPlayerDialog = Dialog.__inject__ShowPlayerDialog;
 
@@ -32,9 +31,17 @@ export const orig_DisableInteriorEnterExits =
 export const orig_AddPlayerClass = GameMode.addPlayerClass;
 export const orig_AddPlayerClassEx = GameMode.addPlayerClassEx;
 
+export const orig_CreatePickup = Pickup.__inject__CreatePickup;
+export const orig_DestroyPickup = Pickup.__inject__DestroyPickup;
+export const orig_GetPickupModel = Pickup.__inject__GetPickupModel;
+export const orig_GetPickupType = Pickup.__inject__GetPickupType;
+export const orig_SetPickupPos = Pickup.__inject__SetPickupPos;
+export const orig_SetPickupModel = Pickup.__inject__SetPickupModel;
+export const orig_SetPickupType = Pickup.__inject__SetPickupType;
+
 export const orig_CreateDynamicPickup =
-  DynamicPickup.__inject_CreateDynamicPickup;
+  DynamicPickup.__inject__CreateDynamicPickup;
 export const orig_CreateDynamicPickupEx =
-  DynamicPickup.__inject_CreateDynamicPickupEx;
+  DynamicPickup.__inject__CreateDynamicPickupEx;
 export const orig_DestroyDynamicPickup =
-  DynamicPickup.__inject_DestroyDynamicPickup;
+  DynamicPickup.__inject__DestroyDynamicPickup;

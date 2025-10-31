@@ -16,7 +16,7 @@ GameMode.onExit(({ next }) => {
   return next();
 });
 
-const [onSelect] = defineEvent({
+const [onPlayerSelect] = defineEvent({
   name: "OnPlayerSelectObject",
   identifier: "iiiifff",
   defaultValue: false,
@@ -53,7 +53,7 @@ const [onSelect] = defineEvent({
   },
 });
 
-const [onEdit] = defineEvent({
+const [onPlayerEdit] = defineEvent({
   name: "OnPlayerEditObject",
   identifier: "iiiiffffff",
   defaultValue: false,
@@ -129,7 +129,7 @@ const [onPlayerEditAttached] = defineEvent({
   },
 });
 
-const [onMoved] = defineEvent({
+const [onGlobalMoved] = defineEvent({
   name: "OnObjectMoved",
   identifier: "i",
   beforeEach(objectId) {
@@ -152,9 +152,9 @@ const [onPlayerMoved] = defineEvent({
 });
 
 export const ObjectMpEvent = Object.freeze({
-  onSelect,
-  onEdit,
+  onPlayerSelect,
+  onPlayerEdit,
   onPlayerEditAttached,
-  onMoved,
+  onGlobalMoved,
   onPlayerMoved,
 });

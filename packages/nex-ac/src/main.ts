@@ -15,6 +15,7 @@ export {
   antiCheatGetVehiclePos,
   antiCheatGetVehicleSpawnPos,
   antiCheatGetVehicleSpawnZAngle,
+  antiCheatGetPickupPos,
   antiCheatGetVehicleVelocity,
   antiCheatGetVehicleZAngle,
   antiCheatGetWeaponData,

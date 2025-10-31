@@ -130,11 +130,22 @@ export class ACVehInfoStruct {
   acSpawned: boolean = false;
 }
 
+export class ACPickInfoStruct {
+  acPosX: number = 0;
+  acPosY: number = 0;
+  acPosZ: number = 0;
+  acType: number = 0;
+  acWeapon: number = 0;
+}
+
 export const ACInfo = new SafetyMap<number, ACInfoStruct>(
   () => new ACInfoStruct(),
 );
 export const ACVehInfo = new SafetyMap<number, ACVehInfoStruct>(
   () => new ACVehInfoStruct(),
+);
+export const ACPickInfo = new SafetyMap<number, ACPickInfoStruct>(
+  () => new ACPickInfoStruct(),
 );
 export const ac_ClassPos = new SafetyMap<number, [number, number, number]>(
   () => [0, 0, 0],

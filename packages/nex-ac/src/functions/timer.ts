@@ -9,7 +9,7 @@ import {
   Vehicle,
   WeaponEnum,
 } from "@infernus/core";
-import { ACInfo, ACVehInfo } from "../struct";
+import { ACInfo, ACPickInfo, ACVehInfo } from "../struct";
 import { innerACConfig, innerGameModeConfig } from "../config";
 import {
   ac_KickWithCode,
@@ -152,14 +152,32 @@ export function ac_Timer(player: Player) {
               if (ACInfo.get(player.id).acWeapon[ac_i] !== ac_w) {
                 if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
                   if (
-                    ACInfo.get(player.id).acLastPickup >
+                    (ACInfo.get(player.id).acLastPickup >= 0 &&
+                      ACInfo.get(player.id).acLastPickup >=
+                        LimitsEnum.MAX_PICKUPS &&
+                      ACPickInfo.get(ACInfo.get(player.id).acLastPickup)
+                        .acWeapon == ac_w &&
+                      ac_a <=
+                        (ac_IsAmmoSharingInSlot(ac_i)
+                          ? ACInfo.get(player.id).acAmmo[ac_i] + ac_pAmmo[ac_w]
+                          : ac_pAmmo[ac_w]) &&
+                      player.isInRangeOfPoint(
+                        15.0,
+                        ACPickInfo.get(ACInfo.get(player.id).acLastPickup)
+                          .acPosX,
+                        ACPickInfo.get(ACInfo.get(player.id).acLastPickup)
+                          .acPosY,
+                        ACPickInfo.get(ACInfo.get(player.id).acLastPickup)
+                          .acPosZ,
+                      )) ||
+                    (ACInfo.get(player.id).acLastPickup >
                       LimitsEnum.MAX_PICKUPS &&
-                    ac_t === ac_w &&
-                    ac_a <=
-                      (ac_IsAmmoSharingInSlot(ac_i)
-                        ? ACInfo.get(player.id).acAmmo[ac_i] + ac_pAmmo[ac_w]
-                        : ac_pAmmo[ac_w]) &&
-                    ac_pick_dist <= 15.0
+                      ac_t === ac_w &&
+                      ac_a <=
+                        (ac_IsAmmoSharingInSlot(ac_i)
+                          ? ACInfo.get(player.id).acAmmo[ac_i] + ac_pAmmo[ac_w]
+                          : ac_pAmmo[ac_w]) &&
+                      ac_pick_dist <= 15.0)
                   ) {
                     ACInfo.get(player.id).acWeapon[ac_i] = ac_w;
                     ACInfo.get(player.id).acAmmo[ac_i] = ac_a;

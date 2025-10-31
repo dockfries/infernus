@@ -53,7 +53,7 @@ export class Vehicle {
     if (!ignoreRange && !isValidVehModelId(modelId)) return;
     if (this.isStatic) {
       if (typeof respawnDelay === "undefined") {
-        this._id = Vehicle.__inject_AddStaticVehicle(
+        this._id = Vehicle.__inject__AddStaticVehicle(
           modelId,
           x,
           y,
@@ -64,7 +64,7 @@ export class Vehicle {
         );
         return;
       }
-      this._id = Vehicle.__inject_AddStaticVehicleEx(
+      this._id = Vehicle.__inject__AddStaticVehicleEx(
         modelId,
         x,
         y,
@@ -76,7 +76,7 @@ export class Vehicle {
         addSiren || false,
       );
     } else {
-      this._id = Vehicle.__inject_CreateVehicle(
+      this._id = Vehicle.__inject__CreateVehicle(
         modelId,
         x,
         y,
@@ -103,7 +103,7 @@ export class Vehicle {
       throw new Error("[Vehicle]: Unable to destroy the vehicle before create");
     }
     if (!INTERNAL_FLAGS.skip) {
-      Vehicle.__inject_DestroyVehicle(this.id);
+      Vehicle.__inject__DestroyVehicle(this.id);
     }
     Vehicle.createdCount--;
     vehiclePool.delete(this._id);
@@ -631,8 +631,8 @@ export class Vehicle {
   static getInstances() {
     return [...vehiclePool.values()];
   }
-  static __inject_AddStaticVehicle = v.AddStaticVehicle;
-  static __inject_AddStaticVehicleEx = v.AddStaticVehicleEx;
-  static __inject_CreateVehicle = v.CreateVehicle;
-  static __inject_DestroyVehicle = v.DestroyVehicle;
+  static __inject__AddStaticVehicle = v.AddStaticVehicle;
+  static __inject__AddStaticVehicleEx = v.AddStaticVehicleEx;
+  static __inject__CreateVehicle = v.CreateVehicle;
+  static __inject__DestroyVehicle = v.DestroyVehicle;
 }

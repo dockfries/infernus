@@ -23,8 +23,8 @@ const [onPlayerGiveDamage] = defineEvent({
     bodyPart: BodyPartsEnum,
   ) {
     return {
-      player: Player.getInstance(playerId),
-      actor: Actor.getInstance(damagedActorId),
+      player: Player.getInstance(playerId)!,
+      actor: Actor.getInstance(damagedActorId)!,
       amount,
       weapon,
       bodyPart,
@@ -37,8 +37,8 @@ const [onStreamIn] = defineEvent({
   identifier: "ii",
   beforeEach(actorId: number, forPlayerId: number) {
     return {
-      actor: Actor.getInstance(actorId),
-      player: Player.getInstance(forPlayerId),
+      actor: Actor.getInstance(actorId)!,
+      player: Player.getInstance(forPlayerId)!,
     };
   },
 });
@@ -48,8 +48,8 @@ const [onStreamOut] = defineEvent({
   identifier: "ii",
   beforeEach(actorId: number, forPlayerId: number) {
     return {
-      actor: Actor.getInstance(actorId),
-      player: Player.getInstance(forPlayerId),
+      actor: Actor.getInstance(actorId)!,
+      player: Player.getInstance(forPlayerId)!,
     };
   },
 });

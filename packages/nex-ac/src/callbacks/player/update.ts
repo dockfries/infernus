@@ -10,7 +10,7 @@ import {
   Vehicle,
   WeaponEnum,
 } from "@infernus/core";
-import { ACInfo, ACVehInfo } from "../../struct";
+import { ACInfo, ACPickInfo, ACVehInfo } from "../../struct";
 import {
   ac_GetSpeed,
   ac_GetVectorDist,
@@ -194,18 +194,32 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   ACInfo.get(player.id).acLastPickup - LimitsEnum.MAX_PICKUPS,
                 ).distance;
               if (
-                ACInfo.get(player.id).acLastPickup > LimitsEnum.MAX_PICKUPS &&
-                Streamer.getIntData(
-                  StreamerItemTypes.PICKUP,
-                  ACInfo.get(player.id).acLastPickup - LimitsEnum.MAX_PICKUPS,
-                  E_STREAMER.EXTRA_ID,
-                ) ===
-                  ac_w + 100 &&
-                ac_a <=
-                  (ac_IsAmmoSharingInSlot(ac_s)
-                    ? ACInfo.get(player.id).acAmmo[ac_s] + ac_pAmmo[ac_w]
-                    : ac_pAmmo[ac_w]) &&
-                ac_tmp <= 15.0
+                (ACInfo.get(player.id).acLastPickup >= 0 &&
+                  ACInfo.get(player.id).acLastPickup < LimitsEnum.MAX_PICKUPS &&
+                  ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acWeapon ==
+                    ac_w &&
+                  ac_a <=
+                    (ac_IsAmmoSharingInSlot(ac_s)
+                      ? ACInfo.get(player.id).acAmmo[ac_s] + ac_pAmmo[ac_w]
+                      : ac_pAmmo[ac_w]) &&
+                  player.isInRangeOfPoint(
+                    15.0,
+                    ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acPosX,
+                    ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acPosY,
+                    ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acPosZ,
+                  )) ||
+                (ACInfo.get(player.id).acLastPickup > LimitsEnum.MAX_PICKUPS &&
+                  Streamer.getIntData(
+                    StreamerItemTypes.PICKUP,
+                    ACInfo.get(player.id).acLastPickup - LimitsEnum.MAX_PICKUPS,
+                    E_STREAMER.EXTRA_ID,
+                  ) ===
+                    ac_w + 100 &&
+                  ac_a <=
+                    (ac_IsAmmoSharingInSlot(ac_s)
+                      ? ACInfo.get(player.id).acAmmo[ac_s] + ac_pAmmo[ac_w]
+                      : ac_pAmmo[ac_w]) &&
+                  ac_tmp <= 15.0)
               ) {
                 ACInfo.get(player.id).acWeapon[ac_s] = ac_w;
                 ACInfo.get(player.id).acAmmo[ac_s] = ac_a;

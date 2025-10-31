@@ -1,7 +1,7 @@
-import { GameMode, Player, Vehicle } from "@infernus/core";
+import { GameMode, LimitsEnum, Pickup, Player, Vehicle } from "@infernus/core";
 import { ac_MaxPassengers } from "../constants";
 import { ac_IsValidVehicleModel } from "./is";
-import { ACInfo, ACVehInfo } from "../struct";
+import { ACInfo, ACPickInfo, ACVehInfo } from "../struct";
 
 export function antiCheatGetHealth(player: Player) {
   if (!player.isConnected()) return 0;
@@ -134,6 +134,29 @@ export function antiCheatGetVehicleSpawnPos(vehicle: Vehicle) {
 export function antiCheatGetVehicleSpawnZAngle(vehicle: Vehicle) {
   if (vehicle.getModel() <= 0) return 0;
   return ACVehInfo.get(vehicle.id).acSpawnZAngle;
+}
+
+export function antiCheatGetPickupPos(pickup: Pickup) {
+  const pickupId = pickup.id;
+  if (
+    !(pickupId >= 0 && pickupId < LimitsEnum.MAX_PICKUPS) ||
+    ACPickInfo.get(pickupId).acType <= 0
+  )
+    return {
+      x: 0,
+      y: 0,
+      z: 0,
+      result: false,
+    };
+  const x = ACPickInfo.get(pickupId).acPosX;
+  const y = ACPickInfo.get(pickupId).acPosY;
+  const z = ACPickInfo.get(pickupId).acPosZ;
+  return {
+    x,
+    y,
+    z,
+    result: true,
+  };
 }
 
 export function ac_GetMaxPassengers(modelId: number) {

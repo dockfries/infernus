@@ -14,10 +14,10 @@ export const [orig_vehicleMethods, setVehicleHook] = defineHooks(Vehicle);
 export const orig_IsPlayerInCheckpoint = Checkpoint.isPlayerIn;
 export const orig_IsPlayerInRaceCheckpoint = RaceCheckpoint.isPlayerIn;
 
-export const orig_AddStaticVehicle = Vehicle.__inject_AddStaticVehicle;
-export const orig_AddStaticVehicleEx = Vehicle.__inject_AddStaticVehicleEx;
-export const orig_CreateVehicle = Vehicle.__inject_CreateVehicle;
-export const orig_DestroyVehicle = Vehicle.__inject_DestroyVehicle;
+export const orig_AddStaticVehicle = Vehicle.__inject__AddStaticVehicle;
+export const orig_AddStaticVehicleEx = Vehicle.__inject__AddStaticVehicleEx;
+export const orig_CreateVehicle = Vehicle.__inject__CreateVehicle;
+export const orig_DestroyVehicle = Vehicle.__inject__DestroyVehicle;
 
 export const orig_AddPlayerClass = GameMode.addPlayerClass;
 export const orig_AddPlayerClassEx = GameMode.addPlayerClassEx;

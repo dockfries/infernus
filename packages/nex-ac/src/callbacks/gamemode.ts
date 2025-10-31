@@ -5,6 +5,7 @@ import {
   ac_ClassWeapon,
   ac_ipTables,
   ACInfo,
+  ACPickInfo,
   ACVehInfo,
 } from "../struct";
 import {
@@ -21,6 +22,7 @@ import { ac_IpToInt } from "../utils/covert";
 GameMode.onInit(({ next }) => {
   ACInfo.clear();
   ACVehInfo.clear();
+  ACPickInfo.clear();
   ac_ClassPos.clear();
   ac_ClassWeapon.clear();
   ac_ClassAmmo.clear();

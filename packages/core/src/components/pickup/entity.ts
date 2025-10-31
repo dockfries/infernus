@@ -29,9 +29,16 @@ export class Pickup {
     }
     const { model, type, virtualWorld, x, y, z, isStatic } = this.sourceInfo;
     if (isStatic) {
-      p.AddStaticPickup(model, type, x, y, z, virtualWorld);
+      Pickup.__inject__AddStaticPickup(model, type, x, y, z, virtualWorld);
     } else {
-      this._id = p.CreatePickup(model, type, x, y, z, virtualWorld);
+      this._id = Pickup.__inject__CreatePickup(
+        model,
+        type,
+        x,
+        y,
+        z,
+        virtualWorld,
+      );
 
       if (
         Pickup.getInstances().length === LimitsEnum.MAX_PICKUPS ||
@@ -55,7 +62,7 @@ export class Pickup {
     }
 
     if (!INTERNAL_FLAGS.skip) {
-      p.DestroyPickup(this.id);
+      Pickup.__inject__DestroyPickup(this.id);
     }
     pickupPool.delete(this.id);
   }
@@ -67,66 +74,66 @@ export class Pickup {
 
   isStreamedIn(player: Player): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
-    return p.IsPickupStreamedIn(player.id, this.id);
+    return Pickup.__inject__IsPickupStreamedIn(player.id, this.id);
   }
 
   getPos() {
-    return p.GetPickupPos(this.id);
+    return Pickup.__inject__GetPickupPos(this.id);
   }
 
   getModel(): number {
     if (this.id === InvalidEnum.PICKUP_ID) return 0;
-    return p.GetPickupModel(this.id);
+    return Pickup.__inject__GetPickupModel(this.id);
   }
 
   getType(): number {
     if (this.id === InvalidEnum.PICKUP_ID) return 0;
-    return p.GetPickupType(this.id);
+    return Pickup.__inject__GetPickupType(this.id);
   }
 
   getVirtualWorld(): number {
     if (this.id === InvalidEnum.PICKUP_ID) return 0;
-    return p.GetPickupVirtualWorld(this.id);
+    return Pickup.__inject__GetPickupVirtualWorld(this.id);
   }
 
   setPos(x: number, y: number, z: number, update: boolean): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
-    return p.SetPickupPos(this.id, x, y, z, update);
+    return Pickup.__inject__SetPickupPos(this.id, x, y, z, update);
   }
 
   setModel(model: number, update = true): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
-    return p.SetPickupModel(this.id, model, update);
+    return Pickup.__inject__SetPickupModel(this.id, model, update);
   }
 
   setType(type: number, update = true): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
-    return p.SetPickupType(this.id, type, update);
+    return Pickup.__inject__SetPickupType(this.id, type, update);
   }
 
   setVirtualWorld(virtualWorld: number): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
-    return p.SetPickupVirtualWorld(this.id, virtualWorld);
+    return Pickup.__inject__SetPickupVirtualWorld(this.id, virtualWorld);
   }
 
   showForPlayer(player: Player): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
-    return p.ShowPickupForPlayer(player.id, this.id);
+    return Pickup.__inject__ShowPickupForPlayer(player.id, this.id);
   }
 
   hideForPlayer(player: Player): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
-    return p.HidePickupForPlayer(player.id, this.id);
+    return Pickup.__inject__HidePickupForPlayer(player.id, this.id);
   }
 
   isHiddenForPlayer(player: Player): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
-    return p.IsPickupHiddenForPlayer(player.id, this.id);
+    return Pickup.__inject__IsPickupHiddenForPlayer(player.id, this.id);
   }
 
   static isValid(id: number) {
     if (id === InvalidEnum.PICKUP_ID) return false;
-    return p.IsValidPickup(id);
+    return Pickup.__inject__IsValidPickup(id);
   }
 
   static getInstance(id: number) {
@@ -136,4 +143,21 @@ export class Pickup {
   static getInstances() {
     return [...pickupPool.values()];
   }
+
+  static __inject__CreatePickup = p.CreatePickup;
+  static __inject__AddStaticPickup = p.AddStaticPickup;
+  static __inject__DestroyPickup = p.DestroyPickup;
+  static __inject__IsPickupStreamedIn = p.IsPickupStreamedIn;
+  static __inject__GetPickupPos = p.GetPickupPos;
+  static __inject__GetPickupModel = p.GetPickupModel;
+  static __inject__GetPickupType = p.GetPickupType;
+  static __inject__GetPickupVirtualWorld = p.GetPickupVirtualWorld;
+  static __inject__SetPickupPos = p.SetPickupPos;
+  static __inject__SetPickupModel = p.SetPickupModel;
+  static __inject__SetPickupType = p.SetPickupType;
+  static __inject__SetPickupVirtualWorld = p.SetPickupVirtualWorld;
+  static __inject__ShowPickupForPlayer = p.ShowPickupForPlayer;
+  static __inject__HidePickupForPlayer = p.HidePickupForPlayer;
+  static __inject__IsPickupHiddenForPlayer = p.IsPickupHiddenForPlayer;
+  static __inject__IsValidPickup = p.IsValidPickup;
 }

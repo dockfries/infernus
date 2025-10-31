@@ -132,6 +132,6 @@ export const CreatePickup = (
   );
 };
 
-export const DestroyPickup = (pickup: number): number => {
-  return samp.callNative("DestroyPickup", "i", pickup);
+export const DestroyPickup = (pickup: number): boolean => {
+  return !!samp.callNative("DestroyPickup", "i", pickup);
 };

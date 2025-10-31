@@ -6,6 +6,7 @@ import {
   IDialog,
   InvalidEnum,
   LimitsEnum,
+  Pickup,
   Player,
   PlayerStateEnum,
   SpecialActionsEnum,
@@ -19,6 +20,7 @@ import {
   ac_ClassPos,
   ac_ClassWeapon,
   ACInfo,
+  ACPickInfo,
   ACVehInfo,
   ACVehInfoStruct,
 } from "../struct";
@@ -35,13 +37,20 @@ import {
   orig_AddStaticVehicleEx,
   orig_CreateDynamicPickup,
   orig_CreateDynamicPickupEx,
+  orig_CreatePickup,
   orig_CreateVehicle,
   orig_DestroyDynamicPickup,
+  orig_DestroyPickup,
   orig_DestroyVehicle,
   orig_DisableInteriorEnterExits,
   orig_EnableStuntBonusForAll,
   orig_EnableVehicleFriendlyFire,
+  orig_GetPickupModel,
+  orig_GetPickupType,
   orig_playerMethods,
+  orig_SetPickupModel,
+  orig_SetPickupPos,
+  orig_SetPickupType,
   orig_ShowPlayerDialog,
   orig_StreamerUpdateEx,
   orig_UsePlayerPedAnims,
@@ -156,6 +165,59 @@ export function ac_SetSpawnInfo(
   return true;
 }
 
+export function ac_CreatePickup(
+  pickupId: number,
+  modelId: number,
+  type: number,
+  ac_X: number,
+  ac_Y: number,
+  ac_Z: number,
+) {
+  ACPickInfo.get(pickupId).acType = 5;
+  ACPickInfo.get(pickupId).acWeapon = 0;
+  if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
+    if ((type >= 2 && type <= 5) || type === 15 || type === 22) {
+      switch (modelId) {
+        case 370: {
+          ACPickInfo.get(pickupId).acType = 1;
+          break;
+        }
+        case 1240: {
+          ACPickInfo.get(pickupId).acType = 2;
+          break;
+        }
+        case 1242: {
+          ACPickInfo.get(pickupId).acType = 3;
+          break;
+        }
+        default: {
+          if (
+            (modelId >= 321 && modelId <= 326) ||
+            modelId === 331 ||
+            (modelId >= 333 && modelId <= 339) ||
+            (modelId >= 341 && modelId <= 353) ||
+            (modelId >= 355 && modelId <= 369) ||
+            modelId === 371 ||
+            modelId === 372
+          ) {
+            for (let ac_i = 46; ac_i >= 1; --ac_i) {
+              if (ac_wModel[ac_i] != modelId) continue;
+              ACPickInfo.get(pickupId).acType = 4;
+              ACPickInfo.get(pickupId).acWeapon = ac_i;
+              break;
+            }
+          }
+          break;
+        }
+      }
+    }
+  }
+  ACPickInfo.get(pickupId).acPosX = ac_X;
+  ACPickInfo.get(pickupId).acPosY = ac_Y;
+  ACPickInfo.get(pickupId).acPosZ = ac_Z;
+  return true;
+}
+
 export function ac_CreateDynamicPickup(
   pickupId: number,
   modelId: number,
@@ -251,6 +313,21 @@ export function ac_DestroyVehicle(vehicleId: number) {
     });
   }
   return orig_DestroyVehicle(vehicleId);
+}
+
+export function ac_DestroyPickup(pickupId: number) {
+  if (!orig_DestroyPickup(pickupId)) return false;
+  ACPickInfo.get(pickupId).acWeapon = 0;
+  ACPickInfo.get(pickupId).acType = 0;
+  if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
+    Player.getInstances().forEach((ac_i) => {
+      {
+        if (ACInfo.get(ac_i.id).acLastPickup !== pickupId) return;
+        ACInfo.get(ac_i.id).acLastPickup = -1;
+      }
+    });
+  }
+  return true;
 }
 
 export function ac_DestroyDynamicPickup(pickupId: number) {
@@ -888,6 +965,66 @@ export function ac_SetVehicleToRespawn(vehicle: Vehicle) {
   return orig_vehicleMethods.setRespawn.call(vehicle);
 }
 
+export function ac_SetPickupPos(
+  pickupId: number,
+  ac_X: number,
+  ac_Y: number,
+  ac_Z: number,
+) {
+  ACPickInfo.get(pickupId).acPosX = ac_X;
+  ACPickInfo.get(pickupId).acPosY = ac_Y;
+  ACPickInfo.get(pickupId).acPosZ = ac_Z;
+  return true;
+}
+
+export function ac_SetPickupModelOrType(
+  pickupId: number,
+  modelOrType: boolean,
+  modelId: number,
+  type: number,
+) {
+  ACPickInfo.get(pickupId).acType = 5;
+  ACPickInfo.get(pickupId).acWeapon = 0;
+  if (modelOrType) modelId = orig_GetPickupModel(pickupId);
+  else type = orig_GetPickupType(pickupId);
+  if ((type >= 2 && type <= 5) || type === 15 || type === 22) {
+    switch (modelId) {
+      case 370: {
+        ACPickInfo.get(pickupId).acType = 1;
+        break;
+      }
+      case 1240: {
+        ACPickInfo.get(pickupId).acType = 2;
+        break;
+      }
+      case 1242: {
+        ACPickInfo.get(pickupId).acType = 3;
+        break;
+      }
+      default: {
+        if (
+          (modelId >= 321 && modelId <= 326) ||
+          modelId === 331 ||
+          (modelId >= 333 && modelId <= 339) ||
+          (modelId >= 341 && modelId <= 353) ||
+          (modelId >= 355 && modelId <= 369) ||
+          modelId === 371 ||
+          modelId === 372
+        ) {
+          for (let ac_i = 46; ac_i >= 1; --ac_i) {
+            if (ac_wModel[ac_i] != modelId) continue;
+            ACPickInfo.get(pickupId).acType = 4;
+            ACPickInfo.get(pickupId).acWeapon = ac_i;
+            break;
+          }
+        }
+        break;
+      }
+    }
+  }
+  return true;
+}
+
 export function ac_EnableAntiCheat(code: number, enable = true) {
   if (!(code >= 0 && code < ac_ACAllow.length)) return false;
   if (code === 42) {
@@ -1136,7 +1273,7 @@ export function acc_AddStaticVehicle(
   return ac_vehId;
 }
 
-Vehicle.__inject_AddStaticVehicle = acc_AddStaticVehicle;
+Vehicle.__inject__AddStaticVehicle = acc_AddStaticVehicle;
 
 export function acc_AddStaticVehicleEx(
   modelId: number,
@@ -1166,7 +1303,7 @@ export function acc_AddStaticVehicleEx(
   return ac_vehId;
 }
 
-Vehicle.__inject_AddStaticVehicleEx = acc_AddStaticVehicleEx;
+Vehicle.__inject__AddStaticVehicleEx = acc_AddStaticVehicleEx;
 
 export function acc_CreateVehicle(
   vehicleType: number,
@@ -1196,7 +1333,7 @@ export function acc_CreateVehicle(
   return ac_vehId;
 }
 
-Vehicle.__inject_CreateVehicle = acc_CreateVehicle;
+Vehicle.__inject__CreateVehicle = acc_CreateVehicle;
 
 export function acc_AddPlayerClass(
   modelId: number,
@@ -1293,6 +1430,40 @@ export const acc_SetSpawnInfo = setPlayerHook(
   },
 );
 
+export function acc_AddStaticPickup(
+  model: number,
+  type: number,
+  x: number,
+  y: number,
+  z: number,
+  virtualWorld = 0,
+) {
+  const ac_pickId = orig_CreatePickup(model, type, x, y, z, virtualWorld);
+  if (ac_pickId !== -1) {
+    ac_CreatePickup(ac_pickId, model, type, x, y, z);
+  }
+  return ac_pickId;
+}
+
+Pickup.__inject__AddStaticPickup = acc_AddStaticPickup;
+
+export function acc_CreatePickup(
+  model: number,
+  type: number,
+  x: number,
+  y: number,
+  z: number,
+  virtualWorld = 0,
+) {
+  const ac_pickId = orig_CreatePickup(model, type, x, y, z, virtualWorld);
+  if (ac_pickId !== -1) {
+    ac_CreatePickup(ac_pickId, model, type, x, y, z);
+  }
+  return ac_pickId;
+}
+
+Pickup.__inject__CreatePickup = acc_CreatePickup;
+
 export function acc_CreateDynamicPickup(
   modelId: number,
   type: number,
@@ -1327,7 +1498,7 @@ export function acc_CreateDynamicPickup(
   return ac_pickId;
 }
 
-DynamicPickup.__inject_CreateDynamicPickup = acc_CreateDynamicPickup;
+DynamicPickup.__inject__CreateDynamicPickup = acc_CreateDynamicPickup;
 
 export function acc_CreateDynamicPickupEx(
   modelId: number,
@@ -1363,19 +1534,25 @@ export function acc_CreateDynamicPickupEx(
   return ac_pickId;
 }
 
-DynamicPickup.__inject_CreateDynamicPickupEx = acc_CreateDynamicPickupEx;
+DynamicPickup.__inject__CreateDynamicPickupEx = acc_CreateDynamicPickupEx;
 
 export function acc_DestroyVehicle(vehicleId: number) {
   return ac_DestroyVehicle(vehicleId);
 }
 
-Vehicle.__inject_DestroyVehicle = acc_DestroyVehicle;
+Vehicle.__inject__DestroyVehicle = acc_DestroyVehicle;
+
+export function acc_DestroyPickup(pickupId: number) {
+  return ac_DestroyPickup(pickupId);
+}
+
+Pickup.__inject__DestroyPickup = acc_DestroyPickup;
 
 export function acc_DestroyDynamicPickup(pickupId: number) {
   return ac_DestroyDynamicPickup(pickupId);
 }
 
-DynamicPickup.__inject_DestroyDynamicPickup = acc_DestroyDynamicPickup;
+DynamicPickup.__inject__DestroyDynamicPickup = acc_DestroyDynamicPickup;
 
 export function acc_DisableInteriorEnterExits() {
   return ac_DisableInteriorEnterExits();
@@ -1687,3 +1864,45 @@ export const acc_SetVehicleToRespawn = setVehicleHook(
     return ac_SetVehicleToRespawn(this);
   },
 );
+
+export function acc_SetPickupPos(
+  pickupId: number,
+  x: number,
+  y: number,
+  z: number,
+  update = true,
+) {
+  if (!orig_SetPickupPos(pickupId, x, y, z, update)) return false;
+  ac_SetPickupPos(pickupId, x, y, z);
+  return true;
+}
+
+Pickup.__inject__SetPickupPos = acc_SetPickupPos;
+
+export function acc_SetPickupModel(
+  pickupId: number,
+  model: number,
+  update = true,
+) {
+  if (!orig_SetPickupModel(pickupId, model, update)) return false;
+  if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
+    ac_SetPickupModelOrType(pickupId, false, model, 0);
+  }
+  return true;
+}
+
+Pickup.__inject__SetPickupModel = acc_SetPickupModel;
+
+export function acc_SetPickupType(
+  pickupId: number,
+  type: number,
+  update = true,
+) {
+  if (!orig_SetPickupType(pickupId, type, update)) return false;
+  if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
+    ac_SetPickupModelOrType(pickupId, true, 0, type);
+  }
+  return true;
+}
+
+Pickup.__inject__SetPickupType = acc_SetPickupType;
