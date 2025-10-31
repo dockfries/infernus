@@ -92,9 +92,7 @@ export class Vehicle {
       this._id === InvalidEnum.VEHICLE_ID ||
       Vehicle.createdCount === LimitsEnum.MAX_VEHICLES
     )
-      throw new Error(
-        "[Vehicle]: Unable to create vehicle, maximum has been reached",
-      );
+      throw new Error("[Vehicle]: Unable to create vehicle");
     Vehicle.createdCount++;
     vehiclePool.set(this._id, this);
   }

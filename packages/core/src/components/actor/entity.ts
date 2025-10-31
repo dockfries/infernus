@@ -34,7 +34,7 @@ export class Actor {
       this._id === InvalidEnum.ACTOR_ID ||
       Actor.getInstances().length === LimitsEnum.MAX_ACTORS
     ) {
-      throw new Error("[Actor]: Maximum number of actors reached");
+      throw new Error("[Actor]: Unable to create actor");
     }
     actorPool.set(this._id, this);
     return this;

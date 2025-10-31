@@ -134,7 +134,7 @@ export class Dialog {
       }
 
       if (this._id === -1) {
-        reject("[Dialog]: The maximum number of dialogs is reached");
+        reject("[Dialog]: Unable to create dialog");
         return;
       }
 

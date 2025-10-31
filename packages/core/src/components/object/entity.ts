@@ -73,9 +73,7 @@ export class ObjectMp {
         this.id === InvalidEnum.OBJECT_ID ||
         ObjectMp.getInstances().length === LimitsEnum.MAX_OBJECTS
       )
-        throw new Error(
-          "[ObjectMp]: Unable to create object, maximum has been reached",
-        );
+        throw new Error("[ObjectMp]: Unable to create object");
 
       objectMpPool.set(this._id, this);
       return this;
@@ -101,9 +99,7 @@ export class ObjectMp {
       this.id === InvalidEnum.OBJECT_ID ||
       ObjectMp.getInstances(player).length === LimitsEnum.MAX_OBJECTS
     )
-      throw new Error(
-        "[ObjectMp]: Unable to create player object, maximum has been reached",
-      );
+      throw new Error("[ObjectMp]: Unable to create player object");
 
     if (!playerObjectPool.has(player)) {
       playerObjectPool.set(player, new Map());

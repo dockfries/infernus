@@ -31,9 +31,7 @@ export class TextDraw {
         this.id === InvalidEnum.TEXT_DRAW ||
         TextDraw.getInstances().length === LimitsEnum.MAX_TEXT_DRAWS
       )
-        throw new Error(
-          "[TextDraw]: Unable to create textdraw, maximum has been reached",
-        );
+        throw new Error("[TextDraw]: Unable to create textdraw");
       textDrawPool.set(this.id, this);
     } else {
       this._id = TextDraw.__inject__CreatePlayerTextDraw(
@@ -46,9 +44,7 @@ export class TextDraw {
         this.id === InvalidEnum.TEXT_DRAW ||
         TextDraw.getInstances(player).length === LimitsEnum.MAX_TEXT_DRAWS
       )
-        throw new Error(
-          "[TextDraw]: Unable to create textdraw, maximum has been reached",
-        );
+        throw new Error("[TextDraw]: Unable to create player textdraw");
 
       // Player-textdraws are automatically destroyed when a player disconnects.
       const off = PlayerEvent.onDisconnect(({ player: p, next }) => {

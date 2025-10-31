@@ -79,9 +79,7 @@ export class TextLabel {
         this.id === InvalidEnum._3DTEXT_ID ||
         TextLabel.getInstances().length === LimitsEnum.MAX_3DTEXT_GLOBAL
       )
-        throw new Error(
-          "[TextLabel]: Unable to create textLabel, maximum has been reached",
-        );
+        throw new Error("[TextLabel]: Unable to create textLabel");
 
       textLabelPool.set(this._id, this);
       return this;
@@ -113,9 +111,7 @@ export class TextLabel {
       this.id === InvalidEnum._3DTEXT_ID ||
       TextLabel.getInstances(player).length === LimitsEnum.MAX_3DTEXT_PLAYER
     )
-      throw new Error(
-        "[TextLabel]: Unable to create player textLabel, maximum has been reached",
-      );
+      throw new Error("[TextLabel]: Unable to create playerTextLabel");
 
     if (!playerTextLabelPool.has(player)) {
       playerTextLabelPool.set(player, new Map());

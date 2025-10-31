@@ -44,7 +44,7 @@ export class Pickup {
         Pickup.getInstances().length === LimitsEnum.MAX_PICKUPS ||
         this._id === InvalidEnum.PICKUP_ID
       ) {
-        throw new Error("[Pickup]: Maximum number of pickups reached");
+        throw new Error("[Pickup]: Unable to create pickup");
       }
 
       pickupPool.set(this.id, this);

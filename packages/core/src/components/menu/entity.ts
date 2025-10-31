@@ -99,9 +99,7 @@ export class Menu {
       this.id === InvalidEnum.MENU ||
       Menu.getInstances().length === LimitsEnum.MAX_MENUS
     ) {
-      throw new Error(
-        "[Menu]: The maximum number of menus allowed to be created has been reached 128",
-      );
+      throw new Error("[Menu]: Unable to create menu");
     }
     menuPool.set(this._id, this);
     return this;
@@ -120,9 +118,7 @@ export class Menu {
     if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot addItem before create");
     if (this._itemCount === LimitsEnum.MAX_MENU_ROW)
-      throw new Error(
-        "[Menu]: The maximum number of items allowed to be added has been reached 12",
-      );
+      throw new Error("[Menu]: Unable to create menu item");
     if (column !== 0 && column !== 1)
       throw new Error("[Menu]: Wrong number of columns");
     Menu.__inject__AddMenuItem(this.id, column, title);
