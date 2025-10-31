@@ -48,7 +48,7 @@ export class Dynamic3DTextLabel {
     let {
       attachedPlayer,
       attachedVehicle,
-      testLos,
+      testLOS,
       streamDistance,
       worldId,
       interiorId,
@@ -62,7 +62,7 @@ export class Dynamic3DTextLabel {
     attachedPlayer ??= InvalidEnum.PLAYER_ID;
     attachedVehicle ??= InvalidEnum.VEHICLE_ID;
     streamDistance ??= StreamerDistances.TEXT_3D_LABEL_SD;
-    testLos ??= false;
+    testLOS ??= false;
     priority ??= 0;
 
     if (extended) {
@@ -84,7 +84,7 @@ export class Dynamic3DTextLabel {
         drawDistance,
         attachedPlayer,
         attachedVehicle,
-        testLos,
+        testLOS,
         streamDistance,
         worldId,
         interiorId,
@@ -113,7 +113,7 @@ export class Dynamic3DTextLabel {
         drawDistance,
         attachedPlayer,
         attachedVehicle,
-        testLos,
+        testLOS,
         worldId,
         interiorId,
         playerId,

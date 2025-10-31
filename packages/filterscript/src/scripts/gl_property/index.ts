@@ -286,7 +286,7 @@ function createProperty(
       z: entZ + 0.75,
       drawDistance: 20.0,
       worldId: 0,
-      testLos: true,
+      testLOS: true,
     });
     text_label.create();
     propTextInfo.push(text_label);
@@ -300,7 +300,7 @@ function createProperty(
       z: entZ + 0.75,
       drawDistance: 20.0,
       worldId: 0,
-      testLos: true,
+      testLOS: true,
     });
     text_label.create();
     propTextInfo.push(text_label);
@@ -314,7 +314,7 @@ function createProperty(
       z: entZ + 0.75,
       drawDistance: 20.0,
       worldId: 0,
-      testLos: true,
+      testLOS: true,
     });
     text_label.create();
     propTextInfo.push(text_label);
@@ -328,7 +328,7 @@ function createProperty(
       z: entZ + 0.75,
       drawDistance: 20.0,
       worldId: 0,
-      testLos: true,
+      testLOS: true,
     });
     text_label.create();
     propTextInfo.push(text_label);

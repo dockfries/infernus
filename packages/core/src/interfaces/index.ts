@@ -3,7 +3,8 @@ export * from "../wrapper/native/interfaces";
 import type { MapIconStyles } from "@infernus/streamer";
 import type { DialogStylesEnum } from "../enums";
 import type { TDynamicAreaTypes, TStreamerExtendable } from "../types";
-import type { Player } from "../components/player";
+import type { Player } from "../components/player/entity";
+import type { Vehicle } from "../components/vehicle/entity";
 
 export interface IDialog {
   style?: DialogStylesEnum;
@@ -114,7 +115,7 @@ export interface IDynamic3DTextLabel extends IDynamicCommon {
   color: string | number;
   attachedPlayer?: number;
   attachedVehicle?: number;
-  testLos?: boolean;
+  testLOS?: boolean;
   drawDistance: number;
 }
 
@@ -233,4 +234,19 @@ export interface IInnerPlayerProps {
   lastUpdateFpsTick: number;
   isPaused: boolean;
   isRecording: boolean;
+}
+
+export interface ITextLabel {
+  text: string;
+  color: string | number;
+  x: number;
+  y: number;
+  z: number;
+  drawDistance: number;
+  virtualWorld: number;
+  testLOS: boolean;
+  charset?: string;
+  player?: Player;
+  attachedPlayer?: Player;
+  attachedVehicle?: Vehicle;
 }

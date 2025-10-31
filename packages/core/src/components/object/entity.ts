@@ -41,10 +41,10 @@ export class ObjectMp {
   }
 
   create(): this {
-    if (this.id !== InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[ObjectMp]: Unable to create with only id");
+    if (this.id !== InvalidEnum.OBJECT_ID)
+      throw new Error("[ObjectMp]: Unable to create again");
 
     const { modelId, x, y, z, rx, ry, rz, drawDistance } = this.sourceInfo;
 

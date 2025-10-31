@@ -13,7 +13,7 @@ export function createLabelCommands() {
         y: -1.6,
         z: -0.35,
         drawDistance: 15.0,
-        testLos: false,
+        testLOS: false,
         attachedVehicle: veh.id,
       });
       // tail of the vehicle toward the ground
@@ -34,7 +34,7 @@ export function createLabelCommands() {
         y: 0.0,
         z: -0.4,
         drawDistance: 40.0,
-        testLos: false,
+        testLOS: false,
         attachedPlayer: player.id,
       });
       txtId.create();
@@ -58,7 +58,7 @@ export function createLabelCommands() {
           y,
           z,
           drawDistance: 100.0,
-          testLos: false,
+          testLOS: false,
         });
         txtId.create();
         z = z + 0.1;
@@ -118,7 +118,7 @@ export function createLabelCommands() {
         z: -0.35,
         drawDistance: 20.0,
         attachedVehicle: veh.id,
-        testLos: true,
+        testLOS: true,
       });
 
       player3dTextId.create();
@@ -144,7 +144,7 @@ export function createLabelCommands() {
         z: 0.0,
         drawDistance: 30.0,
         attachedPlayer: +attachPlayerId,
-        testLos: true,
+        testLOS: true,
       });
       player3dTextId.create();
 

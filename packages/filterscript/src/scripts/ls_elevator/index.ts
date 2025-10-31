@@ -82,7 +82,7 @@ function elevator_Initialize() {
     z: 13.6491,
     drawDistance: 4.0,
     worldId: 0,
-    testLos: true,
+    testLOS: true,
   });
   label_Elevator.create();
 
@@ -121,7 +121,7 @@ function elevator_Initialize() {
       y: -1300.766,
       z,
       drawDistance: 10.5,
-      testLos: true,
+      testLOS: true,
     });
     label_Floors[i].create();
   }
@@ -491,7 +491,7 @@ export const LSElevator: IFilterScript = {
           z: z - 0.9,
           drawDistance: 4.0,
           worldId: 0,
-          testLos: true,
+          testLOS: true,
         });
         label_Elevator.create();
 

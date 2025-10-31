@@ -124,7 +124,7 @@ function elevator_Initialize() {
     z: constants.GROUND_Z_COORD - 0.4,
     drawDistance: 4.0,
     worldId: 0,
-    testLos: true,
+    testLOS: true,
   });
   label_Elevator.create();
 
@@ -171,7 +171,7 @@ function elevator_Initialize() {
       z: z - 0.2,
       drawDistance: 10.5,
       worldId: 0,
-      testLos: true,
+      testLOS: true,
     });
     label_Floors[i].create();
   }
@@ -587,7 +587,7 @@ export const LSBeachSide: ILSBeachSideFS = {
           z: z - 0.4,
           drawDistance: 4.0,
           worldId: 0,
-          testLos: true,
+          testLOS: true,
         });
         label_Elevator.create();
 

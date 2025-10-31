@@ -20,6 +20,7 @@ import type { DynamicRaceCP } from "core/wrapper/streamer/raceCP/entity";
 import type { ObjectMp } from "core/components/object/entity";
 import type { Actor } from "core/components/actor/entity";
 import type { Pickup } from "core/components/pickup/entity";
+import type { TextLabel } from "core/components/textlabel";
 
 export const internalPlayerProps = Symbol("internalPlayerProps");
 
@@ -48,3 +49,5 @@ export const objectMpPool = new Map<number, ObjectMp>();
 export const playerObjectPool = new Map<Player, Map<number, ObjectMp>>();
 export const actorPool = new Map<number, Actor>();
 export const pickupPool = new Map<number, Pickup>();
+export const textLabelPool = new Map<number, TextLabel>();
+export const playerTextLabelPool = new Map<Player, Map<number, TextLabel>>();

@@ -135,7 +135,7 @@ export const CreateDynamic3DTextLabel = (
   drawDistance: number,
   attachedPlayer: number,
   attachedVehicle: number,
-  testLos: boolean,
+  testLOS: boolean,
   worldId: number,
   interiorId: number,
   playerId: number,
@@ -155,7 +155,7 @@ export const CreateDynamic3DTextLabel = (
     drawDistance,
     attachedPlayer,
     attachedVehicle,
-    testLos,
+    testLOS,
     worldId,
     interiorId,
     playerId,
@@ -174,7 +174,7 @@ export const CreateDynamic3DTextLabelEx = (
   drawDistance: number,
   attachedPlayer: number,
   attachedVehicle: number,
-  testLos: boolean,
+  testLOS: boolean,
   streamDistance: number,
   worlds: number[],
   interiors: number[],
@@ -195,7 +195,7 @@ export const CreateDynamic3DTextLabelEx = (
     drawDistance,
     attachedPlayer,
     attachedVehicle,
-    testLos,
+    testLOS,
     streamDistance,
     worlds,
     interiors,
@@ -519,4 +519,121 @@ export const GetPlayerObjectMaterialText = (
     textAlignment,
     ret,
   };
+};
+
+export const Create3DTextLabel = (
+  charset: string,
+  text: string,
+  color: string | number,
+  x: number,
+  y: number,
+  z: number,
+  drawDistance: number,
+  virtualWorld: number,
+  testLOS = false,
+): number => {
+  const buf = I18n.encodeToBuf(text, charset);
+  return samp.callNative(
+    "Create3DTextLabel",
+    "aiffffii",
+    buf,
+    rgba(color),
+    x,
+    y,
+    z,
+    drawDistance,
+    virtualWorld,
+    testLOS,
+  );
+};
+
+export const CreatePlayer3DTextLabel = (
+  charset: string,
+  playerId: number,
+  text: string,
+  color: string | number,
+  x: number,
+  y: number,
+  z: number,
+  drawDistance: number,
+  attachedPlayer: number,
+  attachedVehicle: number,
+  testLOS: boolean,
+): number => {
+  const buf = I18n.encodeToBuf(text, charset);
+  return samp.callNative(
+    "CreatePlayer3DTextLabel",
+    "iaiffffiii",
+    playerId,
+    buf,
+    rgba(color),
+    x,
+    y,
+    z,
+    drawDistance,
+    attachedPlayer,
+    attachedVehicle,
+    testLOS,
+  );
+};
+
+export const Update3DTextLabelText = (
+  charset: string,
+  id: number,
+  color: string | number,
+  text: string,
+): boolean => {
+  const buf = I18n.encodeToBuf(text, charset);
+  return !!samp.callNative(
+    "Update3DTextLabelText",
+    "iia",
+    id,
+    rgba(color),
+    buf,
+  );
+};
+
+export const UpdatePlayer3DTextLabelText = (
+  charset: string,
+  playerId: number,
+  id: number,
+  color: string | number,
+  text: string,
+): boolean => {
+  const buf = I18n.encodeToBuf(text, charset);
+  return !!samp.callNative(
+    "UpdatePlayer3DTextLabelText",
+    "iiia",
+    playerId,
+    id,
+    rgba(color),
+    buf,
+  );
+};
+
+export const Get3DTextLabelText = (charset: string, id: number) => {
+  const [buf, ret]: [number[], number] = samp.callNative(
+    "Get3DTextLabelText",
+    "iAi",
+    id,
+    144,
+  );
+  const text = I18n.decodeFromBuf(buf, charset);
+  return { text, buf, ret };
+};
+
+export const GetPlayer3DTextLabelText = (
+  charset: string,
+  playerId: number,
+  id: number,
+) => {
+  const [buf, ret]: [number[], number] = samp.callNative(
+    "GetPlayer3DTextLabelText",
+    "iiAi",
+    playerId,
+    id,
+    144,
+  );
+  const text = I18n.decodeFromBuf(buf, charset);
+  return { text, buf, ret };
 };

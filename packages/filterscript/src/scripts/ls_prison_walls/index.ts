@@ -142,7 +142,7 @@ export const LSPrisonWalls: IFilterScript = {
       z: 13.54,
       drawDistance: 10.5,
       worldId: 0,
-      testLos: true,
+      testLOS: true,
     });
     labelGates[0].create();
 
@@ -156,7 +156,7 @@ export const LSPrisonWalls: IFilterScript = {
       z: 13.54,
       drawDistance: 10.5,
       worldId: 0,
-      testLos: true,
+      testLOS: true,
     });
     labelGates[1].create();
 
