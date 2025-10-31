@@ -1,4 +1,4 @@
-import * as w from "core/wrapper/native";
+import * as g from "core/wrapper/native";
 import { InvalidEnum, LimitsEnum } from "../../enums";
 import { Player, PlayerEvent } from "../player";
 import { rgba } from "../../utils/color";
@@ -26,7 +26,7 @@ export class GangZone {
     const { player } = this.sourceInfo;
     if (!player) {
       const { minX, minY, maxX, maxY } = this.sourceInfo;
-      this._id = w.GangZoneCreate(minX, minY, maxX, maxY);
+      this._id = GangZone.__inject__GangZoneCreate(minX, minY, maxX, maxY);
 
       if (
         this.id === InvalidEnum.GANG_ZONE ||
@@ -39,7 +39,13 @@ export class GangZone {
       gangZonePool.set(this.id, this);
     } else {
       const { minX, minY, maxX, maxY } = this.sourceInfo;
-      this._id = w.CreatePlayerGangZone(player.id, minX, minY, maxX, maxY);
+      this._id = GangZone.__inject__CreatePlayerGangZone(
+        player.id,
+        minX,
+        minY,
+        maxX,
+        maxY,
+      );
 
       if (
         this.id === InvalidEnum.GANG_ZONE ||
@@ -77,12 +83,12 @@ export class GangZone {
     const { player } = this.sourceInfo;
     if (!player) {
       if (!INTERNAL_FLAGS.skip) {
-        w.GangZoneDestroy(this.id);
+        GangZone.__inject__GangZoneDestroy(this.id);
       }
       gangZonePool.delete(this.id);
     } else {
       if (!INTERNAL_FLAGS.skip) {
-        w.PlayerGangZoneDestroy(player.id, this.id);
+        GangZone.__inject__PlayerGangZoneDestroy(player.id, this.id);
       }
       if (playerGangZonePool.has(player)) {
         const perPlayerGangZone = playerGangZonePool.get(player)!;
@@ -103,7 +109,7 @@ export class GangZone {
     }
     const p = this.sourceInfo.player;
     if (!p) {
-      w.GangZoneShowForAll(this.id, color);
+      GangZone.__inject__GangZoneShowForAll(this.id, color);
       return this;
     }
     throw new Error(
@@ -116,9 +122,10 @@ export class GangZone {
       throw new Error("[GangZone]: Unable to show the gangzone before create");
     }
     const p = this.sourceInfo.player;
-    if (p) w.PlayerGangZoneShow(p.id, this.id, rgba(color));
+    if (p) GangZone.__inject__PlayerGangZoneShow(p.id, this.id, rgba(color));
     else {
-      if (player) w.GangZoneShowForPlayer(player.id, this.id, color);
+      if (player)
+        GangZone.__inject__GangZoneShowForPlayer(player.id, this.id, color);
       else {
         throw new Error("[GangZone]: invalid player for show");
       }
@@ -132,7 +139,7 @@ export class GangZone {
     }
     const p = this.sourceInfo.player;
     if (!p) {
-      w.GangZoneHideForAll(this.id);
+      GangZone.__inject__GangZoneHideForAll(this.id);
       return this;
     }
     throw new Error(
@@ -145,9 +152,9 @@ export class GangZone {
       throw new Error("[GangZone]: Unable to hide the gangzone before create");
     }
     const p = this.sourceInfo.player;
-    if (p) w.PlayerGangZoneHide(p.id, this.id);
+    if (p) GangZone.__inject__PlayerGangZoneHide(p.id, this.id);
     else {
-      if (player) w.GangZoneHideForPlayer(player.id, this.id);
+      if (player) GangZone.__inject__GangZoneHideForPlayer(player.id, this.id);
       else {
         throw new Error("[GangZone]: invalid player for hide");
       }
@@ -161,7 +168,7 @@ export class GangZone {
     }
     const p = this.sourceInfo.player;
     if (!p) {
-      w.GangZoneFlashForAll(this.id, flashColor);
+      GangZone.__inject__GangZoneFlashForAll(this.id, flashColor);
       return this;
     }
     throw new Error(
@@ -174,9 +181,15 @@ export class GangZone {
       throw new Error("[GangZone]: Unable to flash the gangzone before create");
     }
     const p = this.sourceInfo.player;
-    if (p) w.PlayerGangZoneFlash(p.id, this.id, rgba(flashColor));
+    if (p)
+      GangZone.__inject__PlayerGangZoneFlash(p.id, this.id, rgba(flashColor));
     else {
-      if (player) w.GangZoneFlashForPlayer(player.id, this.id, flashColor);
+      if (player)
+        GangZone.__inject__GangZoneFlashForPlayer(
+          player.id,
+          this.id,
+          flashColor,
+        );
       else {
         throw new Error("[GangZone]: invalid player for flash");
       }
@@ -192,7 +205,7 @@ export class GangZone {
     }
     const p = this.sourceInfo.player;
     if (!p) {
-      w.GangZoneStopFlashForAll(this.id);
+      GangZone.__inject__GangZoneStopFlashForAll(this.id);
       return this;
     }
     throw new Error(
@@ -207,9 +220,10 @@ export class GangZone {
       );
     }
     const p = this.sourceInfo.player;
-    if (p) w.PlayerGangZoneStopFlash(p.id, this.id);
+    if (p) GangZone.__inject__PlayerGangZoneStopFlash(p.id, this.id);
     else {
-      if (player) w.GangZoneStopFlashForPlayer(player.id, this.id);
+      if (player)
+        GangZone.__inject__GangZoneStopFlashForPlayer(player.id, this.id);
       else {
         throw new Error("[GangZone]: invalid player for flash");
       }
@@ -228,46 +242,49 @@ export class GangZone {
   isPlayerIn(player: Player): boolean {
     if (this.id === InvalidEnum.GANG_ZONE) return false;
     const p = this.sourceInfo.player;
-    if (p) return w.IsPlayerInPlayerGangZone(p.id, this.id);
-    return w.IsPlayerInGangZone(player.id, this.id);
+    if (p) return GangZone.__inject__IsPlayerInPlayerGangZone(p.id, this.id);
+    return GangZone.__inject__IsPlayerInGangZone(player.id, this.id);
   }
 
   isVisibleForPlayer(player: Player): boolean {
     if (this.id === InvalidEnum.GANG_ZONE) return false;
     const p = this.sourceInfo.player;
-    if (p) return w.IsPlayerGangZoneVisible(p.id, this.id);
-    return w.IsGangZoneVisibleForPlayer(player.id, this.id);
+    if (p) return GangZone.__inject__IsPlayerGangZoneVisible(p.id, this.id);
+    return GangZone.__inject__IsGangZoneVisibleForPlayer(player.id, this.id);
   }
 
   getColorForPlayer(player: Player): number {
     if (this.id === InvalidEnum.GANG_ZONE)
       throw new Error("[GangZone]: Unable to get color before create");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerGangZoneGetColor(p.id, this.id);
-    return w.GangZoneGetColorForPlayer(player.id, this.id);
+    if (p) return GangZone.__inject__PlayerGangZoneGetColor(p.id, this.id);
+    return GangZone.__inject__GangZoneGetColorForPlayer(player.id, this.id);
   }
 
   getFlashColorForPlayer(player: Player): number {
     if (this.id === InvalidEnum.GANG_ZONE)
       throw new Error("[GangZone]: Unable to get flash color before create");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerGangZoneGetFlashColor(p.id, this.id);
-    return w.GangZoneGetFlashColorForPlayer(player.id, this.id);
+    if (p) return GangZone.__inject__PlayerGangZoneGetFlashColor(p.id, this.id);
+    return GangZone.__inject__GangZoneGetFlashColorForPlayer(
+      player.id,
+      this.id,
+    );
   }
 
   isFlashingForPlayer(player: Player): boolean {
     if (this.id === InvalidEnum.GANG_ZONE) return false;
     const p = this.sourceInfo.player;
-    if (p) return w.IsPlayerGangZoneFlashing(p.id, this.id);
-    return w.IsGangZoneFlashingForPlayer(player.id, this.id);
+    if (p) return GangZone.__inject__IsPlayerGangZoneFlashing(p.id, this.id);
+    return GangZone.__inject__IsGangZoneFlashingForPlayer(player.id, this.id);
   }
 
   getPos(): IGangZonePos {
     if (this.id === InvalidEnum.GANG_ZONE)
       throw new Error("[GangZone]: Unable to get position before create");
     const p = this.sourceInfo.player;
-    if (p) return w.PlayerGangZoneGetPos(p.id, this.id);
-    return w.GangZoneGetPos(this.id);
+    if (p) return GangZone.__inject__PlayerGangZoneGetPos(p.id, this.id);
+    return GangZone.__inject__GangZoneGetPos(this.id);
   }
 
   useCheck(toggle: boolean) {
@@ -275,13 +292,17 @@ export class GangZone {
       throw new Error("[GangZone]: Unable to use check before create");
     }
     const p = this.sourceInfo.player;
-    if (p) w.UsePlayerGangZoneCheck(p.id, this.id, toggle);
-    else w.UseGangZoneCheck(this.id, toggle);
+    if (p) GangZone.__inject__UsePlayerGangZoneCheck(p.id, this.id, toggle);
+    else GangZone.__inject__UseGangZoneCheck(this.id, toggle);
     return this;
   }
 
-  static isValidPlayer = w.IsValidPlayerGangZone;
-  static isValidGlobal = w.IsValidGangZone;
+  static isValidPlayer(playerId: number, zoneId: number) {
+    return GangZone.__inject__IsValidPlayerGangZone(playerId, zoneId);
+  }
+  static isValidGlobal(zoneId: number) {
+    return GangZone.__inject__IsValidGangZone(zoneId);
+  }
 
   static getInstance(gangZoneId: number, player?: Player) {
     if (!player) return gangZonePool.get(gangZoneId);
@@ -304,4 +325,38 @@ export class GangZone {
       },
     );
   }
+
+  static __inject__GangZoneCreate = g.GangZoneCreate;
+  static __inject__GangZoneDestroy = g.GangZoneDestroy;
+  static __inject__GangZoneShowForAll = g.GangZoneShowForAll;
+  static __inject__GangZoneHideForAll = g.GangZoneHideForAll;
+  static __inject__GangZoneFlashForAll = g.GangZoneFlashForAll;
+  static __inject__GangZoneStopFlashForAll = g.GangZoneStopFlashForAll;
+  static __inject__GangZoneGetPos = g.GangZoneGetPos;
+  static __inject__UseGangZoneCheck = g.UseGangZoneCheck;
+  static __inject__CreatePlayerGangZone = g.CreatePlayerGangZone;
+  static __inject__PlayerGangZoneDestroy = g.PlayerGangZoneDestroy;
+  static __inject__PlayerGangZoneShow = g.PlayerGangZoneShow;
+  static __inject__GangZoneShowForPlayer = g.GangZoneShowForPlayer;
+  static __inject__PlayerGangZoneHide = g.PlayerGangZoneHide;
+  static __inject__GangZoneHideForPlayer = g.GangZoneHideForPlayer;
+  static __inject__PlayerGangZoneFlash = g.PlayerGangZoneFlash;
+  static __inject__GangZoneFlashForPlayer = g.GangZoneFlashForPlayer;
+  static __inject__PlayerGangZoneStopFlash = g.PlayerGangZoneStopFlash;
+  static __inject__GangZoneStopFlashForPlayer = g.GangZoneStopFlashForPlayer;
+  static __inject__PlayerGangZoneGetPos = g.PlayerGangZoneGetPos;
+  static __inject__UsePlayerGangZoneCheck = g.UsePlayerGangZoneCheck;
+  static __inject__IsPlayerInGangZone = g.IsPlayerInGangZone;
+  static __inject__IsPlayerInPlayerGangZone = g.IsPlayerInPlayerGangZone;
+  static __inject__IsGangZoneVisibleForPlayer = g.IsGangZoneVisibleForPlayer;
+  static __inject__IsPlayerGangZoneVisible = g.IsPlayerGangZoneVisible;
+  static __inject__GangZoneGetColorForPlayer = g.GangZoneGetColorForPlayer;
+  static __inject__PlayerGangZoneGetColor = g.PlayerGangZoneGetColor;
+  static __inject__GangZoneGetFlashColorForPlayer =
+    g.GangZoneGetFlashColorForPlayer;
+  static __inject__PlayerGangZoneGetFlashColor = g.PlayerGangZoneGetFlashColor;
+  static __inject__IsGangZoneFlashingForPlayer = g.IsGangZoneFlashingForPlayer;
+  static __inject__IsPlayerGangZoneFlashing = g.IsPlayerGangZoneFlashing;
+  static __inject__IsValidPlayerGangZone = g.IsValidPlayerGangZone;
+  static __inject__IsValidGangZone = g.IsValidGangZone;
 }

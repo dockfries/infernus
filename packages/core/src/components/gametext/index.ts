@@ -35,15 +35,15 @@ export class GameText {
   }
 
   static hideForAll(style: number) {
-    w.HideGameTextForAll(style);
+    GameText.__inject__HideGameTextForAll(style);
   }
 
   static has(player: Player, style: number) {
-    return w.HasGameText(player.id, style);
+    return GameText.__inject__HasGameText(player.id, style);
   }
 
   forAll(charset = "win1252") {
-    w.GameTextForAll(
+    GameText.__inject__GameTextForAll(
       I18n.encodeToBuf(I18n.convertSpecialChar(this.text), charset),
       this.time,
       this.style,
@@ -51,7 +51,7 @@ export class GameText {
   }
 
   forPlayer(player: Player, charset = "win1252") {
-    w.GameTextForPlayer(
+    GameText.__inject__GameTextForPlayer(
       player.id,
       I18n.encodeToBuf(I18n.convertSpecialChar(this.text), charset),
       this.time,
@@ -60,6 +60,12 @@ export class GameText {
   }
 
   hideForPlayer(player: Player) {
-    return w.HideGameTextForPlayer(player.id, this.style);
+    return GameText.__inject__HideGameTextForPlayer(player.id, this.style);
   }
+
+  static __inject__HideGameTextForAll = w.HideGameTextForAll;
+  static __inject__HasGameText = w.HasGameText;
+  static __inject__GameTextForAll = w.GameTextForAll;
+  static __inject__GameTextForPlayer = w.GameTextForPlayer;
+  static __inject__HideGameTextForPlayer = w.HideGameTextForPlayer;
 }
