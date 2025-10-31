@@ -49,12 +49,16 @@ export class ObjectMp {
     const { modelId, x, y, z, rx, ry, rz, drawDistance } = this.sourceInfo;
 
     if (this.isGlobal()) {
-      if (ObjectMp.getInstances().length === LimitsEnum.MAX_OBJECTS)
+      this._id = o.CreateObject(modelId, x, y, z, rx, ry, rz, drawDistance);
+
+      if (
+        this.id === InvalidEnum.OBJECT_ID ||
+        ObjectMp.getInstances().length === LimitsEnum.MAX_OBJECTS
+      )
         throw new Error(
           "[ObjectMp]: Unable to create object, maximum has been reached",
         );
 
-      this._id = o.CreateObject(modelId, x, y, z, rx, ry, rz, drawDistance);
       objectMpPool.set(this._id, this);
       return this;
     }
@@ -63,14 +67,6 @@ export class ObjectMp {
     if (playerId === InvalidEnum.PLAYER_ID) return this;
 
     const player = this.getPlayer()!;
-    if (ObjectMp.getInstances(player).length === LimitsEnum.MAX_OBJECTS)
-      throw new Error(
-        "[ObjectMp]: Unable to create player object, maximum has been reached",
-      );
-
-    if (!playerObjectPool.has(player)) {
-      playerObjectPool.set(player, new Map());
-    }
 
     this._id = o.CreatePlayerObject(
       playerId,
@@ -83,6 +79,17 @@ export class ObjectMp {
       rz,
       drawDistance,
     );
+    if (
+      this.id === InvalidEnum.OBJECT_ID ||
+      ObjectMp.getInstances(player).length === LimitsEnum.MAX_OBJECTS
+    )
+      throw new Error(
+        "[ObjectMp]: Unable to create player object, maximum has been reached",
+      );
+
+    if (!playerObjectPool.has(player)) {
+      playerObjectPool.set(player, new Map());
+    }
     playerObjectPool.get(this.getPlayer()!)!.set(this.id, this);
     return this;
   }

@@ -87,11 +87,6 @@ export class Menu {
   create(): this {
     if (this._id !== InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot be created twice");
-    if (Menu.getInstances().length === LimitsEnum.MAX_MENUS) {
-      throw new Error(
-        "[Menu]: The maximum number of menus allowed to be created has been reached 128",
-      );
-    }
     this._id = w.CreateMenu(
       this.title,
       this.columns,
@@ -100,6 +95,14 @@ export class Menu {
       this.col1width,
       this.col2width,
     );
+    if (
+      this.id === InvalidEnum.MENU ||
+      Menu.getInstances().length === LimitsEnum.MAX_MENUS
+    ) {
+      throw new Error(
+        "[Menu]: The maximum number of menus allowed to be created has been reached 128",
+      );
+    }
     menuPool.set(this._id, this);
     return this;
   }

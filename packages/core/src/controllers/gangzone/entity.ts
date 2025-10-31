@@ -25,20 +25,30 @@ export class GangZone {
 
     const { player } = this.sourceInfo;
     if (!player) {
-      if (GangZone.getInstances().length === LimitsEnum.MAX_GANG_ZONES)
+      const { minX, minY, maxX, maxY } = this.sourceInfo;
+      this._id = w.GangZoneCreate(minX, minY, maxX, maxY);
+
+      if (
+        this.id === InvalidEnum.GANG_ZONE ||
+        GangZone.getInstances().length === LimitsEnum.MAX_GANG_ZONES
+      )
         throw new Error(
           "[GangZone]: Unable to create gangzone, maximum has been reached",
         );
-      const { minX, minY, maxX, maxY } = this.sourceInfo;
-      this._id = w.GangZoneCreate(minX, minY, maxX, maxY);
+
       gangZonePool.set(this.id, this);
     } else {
-      if (GangZone.getInstances(player).length === LimitsEnum.MAX_GANG_ZONES)
+      const { minX, minY, maxX, maxY } = this.sourceInfo;
+      this._id = w.CreatePlayerGangZone(player.id, minX, minY, maxX, maxY);
+
+      if (
+        this.id === InvalidEnum.GANG_ZONE ||
+        GangZone.getInstances(player).length === LimitsEnum.MAX_GANG_ZONES
+      )
         throw new Error(
           "[GangZone]: Unable to create player gangzone, maximum has been reached",
         );
-      const { minX, minY, maxX, maxY } = this.sourceInfo;
-      this._id = w.CreatePlayerGangZone(player.id, minX, minY, maxX, maxY);
+
       // PlayerGangZones automatically destroyed when player disconnect
       const off = PlayerEvent.onDisconnect(({ player, next }) => {
         next();

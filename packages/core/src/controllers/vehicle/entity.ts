@@ -48,15 +48,11 @@ export class Vehicle {
       throw new Error("[Vehicle]: Unable to create again");
     if (!this.sourceInfo)
       throw new Error("[Vehicle]: Unable to create with only id");
-    if (Vehicle.createdCount === LimitsEnum.MAX_VEHICLES)
-      throw new Error(
-        "[Vehicle]: Unable to create vehicle, maximum has been reached",
-      );
     const { modelId, x, y, z, zAngle, color, respawnDelay, addSiren } =
       this.sourceInfo;
     if (!ignoreRange && !isValidVehModelId(modelId)) return;
     if (this.isStatic) {
-      if (respawnDelay === undefined) {
+      if (typeof respawnDelay === "undefined") {
         this._id = Vehicle.__inject_AddStaticVehicle(
           modelId,
           x,
@@ -92,6 +88,13 @@ export class Vehicle {
         addSiren || false,
       );
     }
+    if (
+      this._id === InvalidEnum.VEHICLE_ID ||
+      Vehicle.createdCount === LimitsEnum.MAX_VEHICLES
+    )
+      throw new Error(
+        "[Vehicle]: Unable to create vehicle, maximum has been reached",
+      );
     Vehicle.createdCount++;
     vehiclePool.set(this._id, this);
   }
@@ -105,6 +108,9 @@ export class Vehicle {
     Vehicle.createdCount--;
     vehiclePool.delete(this._id);
     this._id = InvalidEnum.VEHICLE_ID;
+    if (!Vehicle.getInstances().length) {
+      Vehicle.createdCount = 0;
+    }
   }
   addComponent(componentId: number): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;

@@ -49,11 +49,14 @@ export class Actor {
   create() {
     if (this._id !== InvalidEnum.ACTOR_ID)
       throw new Error("[Actor]: Cannot be created twice");
-    if (Actor.getInstances().length === LimitsEnum.MAX_ACTORS) {
-      throw new Error("[Actor]: Maximum number of actors reached");
-    }
     const { skin, x, y, z, rotation } = this.sourceInfo!;
     this._id = CreateActor(skin, x, y, z, rotation);
+    if (
+      this._id === InvalidEnum.ACTOR_ID ||
+      Actor.getInstances().length === LimitsEnum.MAX_ACTORS
+    ) {
+      throw new Error("[Actor]: Maximum number of actors reached");
+    }
     actorPool.set(this._id, this);
     return this;
   }
