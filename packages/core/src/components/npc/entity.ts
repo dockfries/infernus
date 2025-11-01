@@ -847,12 +847,7 @@ export class Npc {
     if (objectMp.isGlobal()) {
       return 0;
     }
-    return samp.callNative(
-      "NPC_SetSurfingPlayerObject",
-      "ii",
-      this._id,
-      objectMp.id,
-    ) as number;
+    return this._setSurfingPlayerObject(objectMp.id);
   }
   getSurfingPlayerObject() {
     return ObjectMp.getInstance(
