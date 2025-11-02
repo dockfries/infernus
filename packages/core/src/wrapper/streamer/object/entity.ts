@@ -397,7 +397,7 @@ export class DynamicObject {
 
   getPlayerCameraTarget(player: Player) {
     const dynId = s.GetPlayerCameraTargetDynObject(player.id);
-    if (dynId === InvalidEnum.OBJECT_ID) return;
+    if (dynId === s.StreamerMiscellaneous.INVALID_ID) return;
     return dynamicObjectPool.get(dynId);
   }
   toggleCallbacks(toggle = true): number {
