@@ -1,5 +1,129 @@
-import { DynamicActor } from "@infernus/core";
+import { Actor, DynamicActor } from "@infernus/core";
 import { vectorSize } from "./math";
+
+export function getActorDistanceToPoint2D(actor: Actor, x: number, y: number) {
+  const { x: x2, y: y2, ret } = actor.getPos();
+  if (ret) {
+    return vectorSize(x - x2, y - y2, 0);
+  }
+  return Number.NaN;
+}
+
+export function isActorInRangeOfPoint2D(
+  actor: Actor,
+  range: number,
+  x: number,
+  y: number,
+) {
+  const { x: x2, y: y2, ret } = actor.getPos();
+  return !!(ret && vectorSize(x - x2, y - y2, 0) <= range);
+}
+
+export function getActorDistanceToPoint3D(
+  actor: Actor,
+  x: number,
+  y: number,
+  z: number,
+) {
+  const { x: x2, y: y2, z: z2, ret } = actor.getPos();
+  if (ret) {
+    return vectorSize(x - x2, y - y2, z - z2);
+  }
+  return Number.NaN;
+}
+
+export function isActorInRangeOfPoint3D(
+  actor: Actor,
+  range: number,
+  x: number,
+  y: number,
+  z: number,
+) {
+  const { x: x2, y: y2, z: z2, ret } = actor.getPos();
+  return !!(ret && vectorSize(x - x2, y - y2, z - z2) <= range);
+}
+
+export function getActorDistanceToActor(actor: Actor, target: Actor) {
+  const { x: x1, y: y1, z: z1, ret: ret1 } = actor.getPos();
+  const { x: x2, y: y2, z: z2, ret: ret2 } = target.getPos();
+  if (ret1 && ret2) {
+    return vectorSize(x1 - x2, y1 - y2, z1 - z2);
+  }
+  return Number.NaN;
+}
+
+export function isActorInRangeOfActor(
+  actor: Actor,
+  target: Actor,
+  range: number,
+) {
+  const { x: x1, y: y1, z: z1, ret: ret1 } = actor.getPos();
+  const { x: x2, y: y2, z: z2, ret: ret2 } = target.getPos();
+  return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
+}
+
+export function getClosestActorToActor(actor: Actor): Actor | null {
+  const { x, y, z, ret } = actor.getPos();
+  if (!ret) {
+    return null;
+  }
+  let distance = Number.POSITIVE_INFINITY;
+  let closest: Actor | null = null;
+  let distance2 = 0;
+  Actor.getInstances().forEach((i) => {
+    if (
+      i !== actor &&
+      (distance2 = getActorDistanceToPoint3D(i, x, y, z)) < distance
+    ) {
+      distance = distance2;
+      closest = i;
+    }
+  });
+  return closest;
+}
+
+export function getActorDistanceToPoint(
+  actor: Actor,
+  x: number,
+  y: number,
+): number;
+export function getActorDistanceToPoint(
+  actor: Actor,
+  x: number,
+  y: number,
+  z: number,
+): number;
+export function getActorDistanceToPoint(
+  actor: Actor,
+  ...args: [number, number] | [number, number, number]
+): number {
+  return args.length === 2
+    ? getActorDistanceToPoint2D(actor, ...args)
+    : getActorDistanceToPoint3D(actor, ...args);
+}
+
+export function isActorInRangeOfPoint(
+  actor: Actor,
+  range: number,
+  x: number,
+  y: number,
+): boolean;
+export function isActorInRangeOfPoint(
+  actor: Actor,
+  range: number,
+  x: number,
+  y: number,
+  z: number,
+): boolean;
+export function isActorInRangeOfPoint(
+  actor: Actor,
+  range: number,
+  ...args: [number, number] | [number, number, number]
+): boolean {
+  return args.length === 2
+    ? isActorInRangeOfPoint2D(actor, range, ...args)
+    : isActorInRangeOfPoint3D(actor, range, ...args);
+}
 
 export function getDynActorDistanceToPoint2D(
   actor: DynamicActor,
