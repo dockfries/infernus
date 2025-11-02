@@ -1,4 +1,4 @@
-import { VehicleParamsEnum } from "@infernus/core";
+import { LimitsEnum, VehicleParamsEnum } from "@infernus/core";
 import { ac_ACAllow, ac_Mtfc, ac_NOPAllow } from "../constants";
 import { SafetyMap } from "shared/utils/safetyMap";
 
@@ -63,20 +63,23 @@ export class ACInfoStruct {
   acKicked: number = 0;
   acIpInt: number = 0;
   acIp: string = "";
-  acSet: number[] = []; // 12
-  acGtc: number[] = []; // 20
-  acWeapon: number[] = []; // 13
-  acAmmo: number[] = []; // 13
-  acSetWeapon: number[] = []; // 13
-  acGiveAmmo: number[] = []; // 13
-  acGtcSetWeapon: number[] = []; // 13
-  acGtcGiveAmmo: number[] = []; // 13
-  acNOPCount: number[] = []; // 12
-  acCheatCount: number[] = []; // 22
-  acCall: (typeof ac_Mtfc)[0] = [];
-  acFloodCount: (typeof ac_Mtfc)[0] = []; // // typeof instead of sizeof
-  acNOPAllow: typeof ac_NOPAllow = []; // typeof instead of sizeof
-  acACAllow: typeof ac_ACAllow = []; // // typeof instead of sizeof
+  acSet: number[] = Array.from({ length: 12 }, () => 0);
+  acGtc: number[] = Array.from({ length: 20 }, () => 0);
+  acWeapon: number[] = Array.from({ length: 13 }, () => 0);
+  acAmmo: number[] = Array.from({ length: 13 }, () => 0);
+  acSetWeapon: number[] = Array.from({ length: 13 }, () => 0);
+  acGiveAmmo: number[] = Array.from({ length: 13 }, () => 0);
+  acGtcSetWeapon: number[] = Array.from({ length: 13 }, () => 0);
+  acGtcGiveAmmo: number[] = Array.from({ length: 13 }, () => 0);
+  acNOPCount: number[] = Array.from({ length: 12 }, () => 0);
+  acCheatCount: number[] = Array.from({ length: 22 }, () => 0);
+  acCall: (typeof ac_Mtfc)[0] = Array.from({ length: ac_Mtfc.length }, () => 0);
+  acFloodCount: (typeof ac_Mtfc)[0] = Array.from(
+    { length: ac_Mtfc.length },
+    () => 0,
+  );
+  acNOPAllow: typeof ac_NOPAllow = [...ac_NOPAllow];
+  acACAllow: typeof ac_ACAllow = [...ac_ACAllow];
   acStuntBonus: boolean = false;
   acModShop: boolean = false;
   acUnFrozen: boolean = false;
@@ -126,7 +129,10 @@ export class ACVehInfoStruct {
   acSpeed: number = 0;
   acTrSpeed: number = 0;
   acPaintJob: number = 0;
-  acLocked: (boolean | VehicleParamsEnum)[] = [];
+  acLocked: (boolean | VehicleParamsEnum)[] = Array.from(
+    { length: LimitsEnum.MAX_PLAYERS },
+    () => false,
+  );
   acSpawned: boolean = false;
 }
 
