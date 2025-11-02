@@ -147,7 +147,7 @@ function ac_AntiCheatKickWithDesync(player: Player, code: number) {
     () => {
       ac_KickTimer(player);
     },
-    ac_gpp > innerACConfig.AC_MAX_PING ? innerACConfig.AC_MAX_PING : ac_gpp,
+    Math.min(ac_gpp, innerACConfig.AC_MAX_PING),
   );
   if (player.getState() === PlayerStateEnum.DRIVER) {
     if (code === 4) ACInfo.get(player.id).acKickVeh = player.getVehicle()!.id;

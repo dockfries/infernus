@@ -138,7 +138,7 @@ export function ac_Timer(player: Player) {
                   } else {
                     triggerNOPWarning(
                       player,
-                      13,
+                      0,
                       ACInfo.get(player.id).acNOPCount[0],
                     );
                   }
@@ -245,7 +245,7 @@ export function ac_Timer(player: Player) {
                     } else {
                       triggerNOPWarning(
                         player,
-                        14,
+                        1,
                         ACInfo.get(player.id).acNOPCount[1],
                       );
                     }
@@ -570,7 +570,7 @@ export function ac_Timer(player: Player) {
 
               ACInfo.get(player.id).acSet[6] = -1;
             } else {
-              triggerNOPWarning(player, 7, ACInfo.get(player.id).acNOPCount[9]);
+              triggerNOPWarning(player, 9, ACInfo.get(player.id).acNOPCount[9]);
             }
           } else if (
             ++ACInfo.get(player.id).acNOPCount[9] >
@@ -603,7 +603,7 @@ export function ac_Timer(player: Player) {
 
               ACInfo.get(player.id).acSet[0] = -1;
             } else {
-              triggerNOPWarning(player, 5, ACInfo.get(player.id).acNOPCount[2]);
+              triggerNOPWarning(player, 2, ACInfo.get(player.id).acNOPCount[2]);
             }
           } else if (
             ++ACInfo.get(player.id).acNOPCount[2] >

@@ -238,11 +238,10 @@ VehicleEvent.onPaintjob(({ player, vehicle, paintjobId, next }) => {
     else if (!ACInfo.get(player.id).acModShop)
       ac_KickWithCode(player, "", 0, 23, 4);
   }
-  if (ACInfo.get(player.id).acKicked < 1) {
-    const vehicleId = vehicle.id;
-    if (paintjobId === 255) ACVehInfo.get(vehicleId).acPaintJob = 3;
-    else ACVehInfo.get(vehicleId).acPaintJob = paintjobId;
-  }
+  const vehicleId = vehicle.id;
+  if (ACInfo.get(player.id).acKicked > 0) return false;
+  else if (paintjobId === 255) ACVehInfo.get(vehicleId).acPaintJob = 3;
+  else ACVehInfo.get(vehicleId).acPaintJob = paintjobId;
   ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[13] = ac_gtc;
   return next();
 });
@@ -310,6 +309,9 @@ VehicleEvent.onSpawn(({ vehicle, next }) => {
       ACInfo.get(ac_i.id).acSetPosTick = ACInfo.get(ac_i.id).acGtc[10] = ac_gtc;
     if (ACInfo.get(ac_i.id).acSet[8] === vehicleId)
       ACInfo.get(ac_i.id).acSet[8] = -1;
+    if (ACInfo.get(ac_i.id).acVeh === vehicleId) {
+      ACInfo.get(ac_i.id).acSetPosTick = ACInfo.get(ac_i.id).acGtc[10] = ac_gtc;
+    }
   });
   return next();
 });

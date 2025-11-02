@@ -123,7 +123,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               } else {
                 triggerNOPWarning(
                   player,
-                  1,
+                  0,
                   ACInfo.get(player.id).acNOPCount[0],
                 );
               }
@@ -165,7 +165,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               } else {
                 triggerNOPWarning(
                   player,
-                  2,
+                  1,
                   ACInfo.get(player.id).acNOPCount[1],
                 );
               }
@@ -428,7 +428,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
             } else {
               triggerNOPWarning(
                 player.id,
-                4,
+                5,
                 ACInfo.get(player.id).acNOPCount[5],
               );
             }
@@ -543,7 +543,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
           } else {
             triggerNOPWarning(
               player.id,
-              6,
+              8,
               ACInfo.get(player.id).acNOPCount[8],
             );
           }
@@ -659,7 +659,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               if (ACInfo.get(player.id).acKicked > 0) return false;
               ACInfo.get(player.id).acSet[8] = -1;
             } else {
-              triggerNOPWarning(player, 9, ACInfo.get(player.id).acNOPCount[7]);
+              triggerNOPWarning(player, 7, ACInfo.get(player.id).acNOPCount[7]);
             }
           } else if (
             ++ACInfo.get(player.id).acNOPCount[7] >
@@ -829,7 +829,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   } else {
                     triggerNOPWarning(
                       player.id,
-                      11,
+                      4,
                       ACInfo.get(player.id).acNOPCount[4],
                     );
                   }
@@ -1242,9 +1242,14 @@ PlayerEvent.onUpdate(({ player, next }) => {
               ac_i = player.getSkin();
               if (
                 (ac_sa === 1231 || ac_sa === 1246) &&
-                ac_w !== WeaponEnum.PARACHUTE &&
                 ac_IsValidSkin(ac_i) &&
-                ac_i !== 0
+                ac_i !== 0 &&
+                ac_w !== WeaponEnum.PARACHUTE &&
+                ac_specAct != SpecialActionsEnum.USECELLPHONE &&
+                !(
+                  ac_specAct >= SpecialActionsEnum.DRINK_BEER &&
+                  ac_specAct <= 25
+                )
               ) {
                 if (
                   ++ACInfo.get(player.id).acCheatCount[17] >
@@ -1281,6 +1286,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               if (
                 ACInfo.get(player.id).acACAllow[52] &&
                 ACInfo.get(player.id).acNOPAllow[6] &&
+                ac_vZ > -0.1 &&
                 ac_specAct !== SpecialActionsEnum.DUCK &&
                 !(
                   ac_specAct >= SpecialActionsEnum.ENTER_VEHICLE &&
@@ -1305,7 +1311,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 } else {
                   triggerNOPWarning(
                     player,
-                    12,
+                    6,
                     ACInfo.get(player.id).acNOPCount[6],
                   );
                 }

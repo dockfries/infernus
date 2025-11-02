@@ -1,4 +1,4 @@
-export const NEX_AC_VERSION = "1.9.66";
+export const NEX_AC_VERSION = "1.9.67";
 export const AC_SERVER_OMP_VERSION = "open.mp";
 
 export const ac_wSlot = [
@@ -60,20 +60,6 @@ export const ac_AmmuNationInfo = [
   [3500, 120],
   [4500, 150],
   [300, 60],
-];
-
-export const ac_AmmuNations = [
-  [296.506, -38.168, 1000.547],
-  [295.741, -80.479, 1000.534],
-  [290.242, -109.508, 1000.545],
-  [312.791, -165.949, 998.618],
-  [308.148, -141.104, 998.618],
-];
-
-export const ac_Restaurants = [
-  [374.0, -119.641, 1000.539],
-  [368.789, -6.857, 1000.839],
-  [375.566, -68.222, 1000.549],
 ];
 
 export const ac_PayNSpray = [

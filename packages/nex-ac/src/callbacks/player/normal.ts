@@ -31,17 +31,19 @@ PlayerEvent.onConnect(({ player, next }) => {
   ACInfo.get(player.id).acIp = player.getIp().ip;
   ACInfo.get(player.id).acIpInt = ac_IpToInt(ACInfo.get(player.id).acIp);
   if (innerACConfig.AC_USE_NPC) {
-    if (ac_ACAllow[36] && player.isNpc()) {
-      const ac_rslt =
-        ACInfo.get(player.id).acIpInt === innerGameModeConfig.ac_BindAddr;
+    if (player.isNpc()) {
+      if (ac_ACAllow[36]) {
+        const ac_rslt =
+          ACInfo.get(player.id).acIpInt === innerGameModeConfig.ac_BindAddr;
 
-      if (ACInfo.get(player.id).acIp !== "127.0.0.1" && !ac_rslt) {
-        if (innerACConfig.DEBUG) {
-          console.log(
-            `[Nex-AC DEBUG] NPC's IP: '${ACInfo.get(player.id).acIp}'`,
-          );
+        if (ACInfo.get(player.id).acIp !== "127.0.0.1" && !ac_rslt) {
+          if (innerACConfig.DEBUG) {
+            console.log(
+              `[Nex-AC DEBUG] NPC's IP: '${ACInfo.get(player.id).acIp}'`,
+            );
+          }
+          ac_KickWithCode(player, "", 0, 36);
         }
-        ac_KickWithCode(player, "", 0, 36);
       }
     }
   } else {
@@ -52,7 +54,7 @@ PlayerEvent.onConnect(({ player, next }) => {
     ac_KickWithCode(player, "", 0, 48, 1);
   }
 
-  if (ac_ACAllow[41] && !player.isNpc()) {
+  if (ac_ACAllow[41]) {
     const ac_ver = player.getVersion().version;
     if (!ac_ver.includes(innerACConfig.AC_CLIENT_VERSION)) {
       if (innerACConfig.DEBUG) {

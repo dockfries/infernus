@@ -470,8 +470,7 @@ PlayerEvent.onWeaponShot(
         ac_KickWithCode(player, "", 0, 17, 1);
         if (ACInfo.get(player.id).acKicked > 0) return false;
         ACInfo.get(player.id).acAmmo[ac_s] = ac_t;
-      }
-      if (ACInfo.get(player.id).acAmmo[ac_s] < ac_t) {
+      } else if (ACInfo.get(player.id).acAmmo[ac_s] < ac_t) {
         if (weapon === WeaponEnum.MINIGUN) {
           if (++ACInfo.get(player.id).acCheatCount[7] > 9) {
             if (innerACConfig.DEBUG) {

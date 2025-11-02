@@ -1,9 +1,7 @@
 import { Player, Vehicle } from "@infernus/core";
 import {
-  ac_AmmuNations,
   ac_Casinos,
   ac_PayNSpray,
-  ac_Restaurants,
   ac_vMachines,
   ac_vMods,
   ac_vType,
@@ -163,39 +161,15 @@ export function ac_IsVehicleSeatOccupied(vehicle: Vehicle, seat: number) {
 export function ac_InRestaurant(player: Player, interiorId: number) {
   switch (interiorId) {
     case 5: {
-      if (
-        player.isInRangeOfPoint(
-          3.0,
-          ac_Restaurants[0][0],
-          ac_Restaurants[0][1],
-          ac_Restaurants[0][2],
-        )
-      )
-        return true;
+      if (player.isInRangeOfPoint(3.0, 374.0, -119.641, 1000.539)) return true;
       break;
     }
     case 9: {
-      if (
-        player.isInRangeOfPoint(
-          3.0,
-          ac_Restaurants[1][0],
-          ac_Restaurants[1][1],
-          ac_Restaurants[1][2],
-        )
-      )
-        return true;
+      if (player.isInRangeOfPoint(3.0, 368.789, -6.857, 1000.839)) return true;
       break;
     }
     case 10: {
-      if (
-        player.isInRangeOfPoint(
-          3.0,
-          ac_Restaurants[2][0],
-          ac_Restaurants[2][1],
-          ac_Restaurants[2][2],
-        )
-      )
-        return true;
+      if (player.isInRangeOfPoint(3.0, 375.566, -68.222, 1000.549)) return true;
       break;
     }
   }
@@ -205,57 +179,23 @@ export function ac_InRestaurant(player: Player, interiorId: number) {
 export function ac_InAmmuNation(player: Player, interiorId: number) {
   switch (interiorId) {
     case 1: {
-      if (
-        player.isInRangeOfPoint(
-          3.0,
-          ac_AmmuNations[0][0],
-          ac_AmmuNations[0][1],
-          ac_AmmuNations[0][2],
-        )
-      )
-        return true;
+      if (player.isInRangeOfPoint(3.0, 296.506, -38.168, 1000.547)) return true;
       break;
     }
     case 4: {
-      if (
-        player.isInRangeOfPoint(
-          3.0,
-          ac_AmmuNations[1][0],
-          ac_AmmuNations[1][1],
-          ac_AmmuNations[1][2],
-        )
-      )
-        return true;
+      if (player.isInRangeOfPoint(3.0, 295.741, -80.479, 1000.534)) return true;
       break;
     }
     case 6: {
       if (
-        player.isInRangeOfPoint(
-          3.0,
-          ac_AmmuNations[2][0],
-          ac_AmmuNations[2][1],
-          ac_AmmuNations[2][2],
-        ) ||
-        player.isInRangeOfPoint(
-          3.0,
-          ac_AmmuNations[3][0],
-          ac_AmmuNations[3][1],
-          ac_AmmuNations[3][2],
-        )
+        player.isInRangeOfPoint(3.0, 290.242, -109.508, 1000.545) ||
+        player.isInRangeOfPoint(3.0, 312.791, -165.949, 998.618)
       )
         return true;
       break;
     }
     case 7: {
-      if (
-        player.isInRangeOfPoint(
-          3.0,
-          ac_AmmuNations[4][0],
-          ac_AmmuNations[4][1],
-          ac_AmmuNations[4][2],
-        )
-      )
-        return true;
+      if (player.isInRangeOfPoint(3.0, 308.148, -141.104, 998.618)) return true;
       break;
     }
   }

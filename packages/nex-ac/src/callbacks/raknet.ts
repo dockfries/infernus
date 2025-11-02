@@ -201,13 +201,13 @@ IPacket(AC_ONFOOT_SYNC, ({ playerId, bs, next }) => {
     ac_fData.surfingVehicleId = 0;
     syncBs.writeSync(ac_fData);
   }
-  const ac_gtc = Date.now();
+  let ac_i = Date.now();
   if (
     (ac_fData.specialAction === SpecialActionsEnum.ENTER_VEHICLE &&
-      ac_gtc - ACInfo.get(playerId).acEnterVehTick > 3850) ||
+      ac_i - ACInfo.get(playerId).acEnterVehTick > 3850) ||
     (ac_fData.specialAction === SpecialActionsEnum.EXIT_VEHICLE &&
       ACInfo.get(playerId).acVeh === 0 &&
-      ac_gtc - ACInfo.get(playerId).acGtc[15] > 1350)
+      ac_i - ACInfo.get(playerId).acGtc[15] > 1350)
   ) {
     ac_fData.specialAction = 0;
     syncBs.writeSync(ac_fData);
@@ -216,7 +216,8 @@ IPacket(AC_ONFOOT_SYNC, ({ playerId, bs, next }) => {
     ac_fData.weaponId === WeaponEnum.BOMB &&
     ACInfo.get(playerId).acCamMode !== 4
   ) {
-    ac_fData.weaponId = 0;
+    ac_i = ACInfo.get(playerId).acWeapon[0];
+    ac_fData.weaponId = ac_i;
     syncBs.writeSync(ac_fData);
   }
   return next();

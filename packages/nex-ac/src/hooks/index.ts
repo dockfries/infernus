@@ -8,7 +8,6 @@ import {
   LimitsEnum,
   Pickup,
   Player,
-  PlayerStateEnum,
   SpecialActionsEnum,
   Streamer,
   StreamerItemTypes,
@@ -63,12 +62,12 @@ import {
   ac_IsABusEx,
   ac_IsAmmoSharingInSlot,
   ac_IsARemoteControlEx,
+  ac_IsATrainPartEx,
   ac_IsValidWeapon,
   ac_IsVehicleSeatOccupied,
   ac_IsWeaponSlotWithAmmo,
 } from "../functions/is";
 import { ac_ACAllow, ac_NOPAllow, ac_wModel, ac_wSlot } from "../constants";
-import { ac_KickTimer } from "../callbacks/trigger";
 
 export function ac_AddStaticVehicle(
   vehicleId: number,
@@ -457,6 +456,7 @@ export function ac_SetPlayerHealth(player: Player, health: number) {
   ACInfo.get(player.id).acNOPCount[3] = 0;
   ACInfo.get(player.id).acSet[1] =
     health < 0 ? Math.ceil(health) : Math.floor(health);
+  if (ACInfo.get(player.id).acSet[1] < 0) ACInfo.get(player.id).acSet[1] = 0;
   ACInfo.get(player.id).acGtc[2] = Date.now() + 2650;
   return true;
 }
@@ -467,6 +467,7 @@ export function ac_SetPlayerArmour(player: Player, armour: number) {
   ACInfo.get(player.id).acNOPCount[5] = 0;
   ACInfo.get(player.id).acSet[2] =
     armour < 0 ? Math.ceil(armour) : Math.floor(armour);
+  if (ACInfo.get(player.id).acSet[2] < 0) ACInfo.get(player.id).acSet[2] = 0;
   ACInfo.get(player.id).acGtc[4] = Date.now() + 2650;
   return true;
 }
@@ -762,7 +763,8 @@ export function ac_PutPlayerInVehicle(
 export function ac_RemovePlayerFromVehicle(player: Player) {
   if (!orig_playerMethods.removeFromVehicle.call(player)) return false;
   const ac_veh = Vehicle.getInstance(ACInfo.get(player.id).acVeh);
-  if (!ac_IsARemoteControlEx(ac_veh ? ac_veh.getModel() : 0)) {
+  const ac_model = ac_veh ? ac_veh.getModel() : 0;
+  if (!ac_IsATrainPartEx(ac_model) && !ac_IsARemoteControlEx(ac_model)) {
     ACInfo.get(player.id).acSet[9] = 1;
     ACInfo.get(player.id).acGtc[7] = Date.now() + 4650;
   }
@@ -1230,22 +1232,6 @@ export function ac_EnableAntiNOPForPlayer(
 ) {
   if (!(nopCode >= 0 && nopCode < ac_NOPAllow.length)) return -1;
   ACInfo.get(player.id).acNOPAllow[nopCode] = enable;
-  return true;
-}
-
-export function ac_AntiCheatKickWithDesync(player: Player, code: number) {
-  if (ACInfo.get(player.id).acKicked > 0) return -1;
-  const ac_gpp = player.getPing() + 150;
-  ACInfo.get(player.id).acKickTimerID = setTimeout(
-    () => {
-      ac_KickTimer(player);
-    },
-    ac_gpp > innerACConfig.AC_MAX_PING ? innerACConfig.AC_MAX_PING : ac_gpp,
-  );
-  if (player.getState() === PlayerStateEnum.DRIVER) {
-    if (code === 4) ACInfo.get(player.id).acKickVeh = player.getVehicle()!.id;
-    ACInfo.get(player.id).acKicked = 2;
-  } else ACInfo.get(player.id).acKicked = 1;
   return true;
 }
 
@@ -1820,7 +1806,7 @@ export const acc_LinkVehicleToInterior = setVehicleHook(
 export const acc_ChangeVehiclePaintjob = setVehicleHook(
   "changePaintjob",
   function (paintjobId) {
-    if (orig_vehicleMethods.getModel.call(this) <= 0) return 1;
+    if (!(this.id >= 1 && this.id < LimitsEnum.MAX_VEHICLES)) return 1;
     return ac_ChangeVehiclePaintjob(this, paintjobId);
   },
 );
@@ -1860,7 +1846,7 @@ export const acc_SetVehicleParamsForPlayer = setVehicleHook(
 export const acc_SetVehicleToRespawn = setVehicleHook(
   "setRespawn",
   function () {
-    if (orig_vehicleMethods.getModel.call(this) <= 0) return 0;
+    if (!(this.id >= 1 && this.id < LimitsEnum.MAX_VEHICLES)) return 0;
     return ac_SetVehicleToRespawn(this);
   },
 );
