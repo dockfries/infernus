@@ -17,6 +17,9 @@ importers:
       '@eslint/js':
         specifier: ^9.37.0
         version: 9.37.0
+      '@infernus/streamer':
+        specifier: workspace:^
+        version: link:packages/streamer
       '@infernus/types':
         specifier: workspace:^
         version: link:packages/types
@@ -126,9 +129,6 @@ importers:
         specifier: ^0.6.3
         version: 0.6.3
     devDependencies:
-      '@infernus/streamer':
-        specifier: workspace:^
-        version: link:../streamer
       es-toolkit:
         specifier: ^1.40.0
         version: 1.40.0
