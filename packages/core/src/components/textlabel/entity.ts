@@ -63,7 +63,7 @@ export class TextLabel {
     } = this.sourceInfo;
 
     if (this.isGlobal()) {
-      this._id = Create3DTextLabel(
+      this._id = TextLabel.__inject__.Create3DTextLabel(
         charset,
         text,
         color,
@@ -90,7 +90,7 @@ export class TextLabel {
 
     const player = this.getPlayer()!;
 
-    this._id = CreatePlayer3DTextLabel(
+    this._id = TextLabel.__inject__.CreatePlayer3DTextLabel(
       charset,
       playerId,
       text,
@@ -128,7 +128,7 @@ export class TextLabel {
 
     if (this.isGlobal()) {
       if (!INTERNAL_FLAGS.skip) {
-        TextLabel.__inject__Delete3DTextLabel(this.id);
+        TextLabel.__inject__.Delete3DTextLabel(this.id);
       }
       textLabelPool.delete(this.id);
     } else {
@@ -139,7 +139,7 @@ export class TextLabel {
       const player = this.getPlayer()!;
 
       if (!INTERNAL_FLAGS.skip) {
-        TextLabel.__inject__DeletePlayer3DTextLabel(playerId, this.id);
+        TextLabel.__inject__.DeletePlayer3DTextLabel(playerId, this.id);
       }
 
       if (playerTextLabelPool.has(player)) {
@@ -198,7 +198,7 @@ export class TextLabel {
         "[TextLabel]: Unable to attach to player, textLabel is not global",
       );
     }
-    return TextLabel.__inject__Attach3DTextLabelToPlayer(
+    return TextLabel.__inject__.Attach3DTextLabelToPlayer(
       this.id,
       player.id,
       offsetX,
@@ -219,7 +219,7 @@ export class TextLabel {
         "[TextLabel]: Unable to attach to vehicle, textLabel is not global",
       );
     }
-    return TextLabel.__inject__Attach3DTextLabelToVehicle(
+    return TextLabel.__inject__.Attach3DTextLabelToVehicle(
       this.id,
       vehicle.id,
       offsetX,
@@ -235,9 +235,14 @@ export class TextLabel {
   ): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (this.isGlobal()) {
-      return Update3DTextLabelText(charset, this.id, color, text);
+      return TextLabel.__inject__.Update3DTextLabelText(
+        charset,
+        this.id,
+        color,
+        text,
+      );
     }
-    return UpdatePlayer3DTextLabelText(
+    return TextLabel.__inject__.UpdatePlayer3DTextLabelText(
       charset,
       this.getPlayerId(),
       this.id,
@@ -253,21 +258,25 @@ export class TextLabel {
         "[TextLabel]: Unable to check stream in, textLabel is not global",
       );
     }
-    return TextLabel.__inject__Is3DTextLabelStreamedIn(this.id, player.id);
+    return TextLabel.__inject__.Is3DTextLabelStreamedIn(this.id, player.id);
   }
 
   getText(charset = this.sourceInfo?.charset || "utf8") {
     if (this.isGlobal()) {
-      return Get3DTextLabelText(charset, this.id);
+      return TextLabel.__inject__.Get3DTextLabelText(charset, this.id);
     }
-    return GetPlayer3DTextLabelText(charset, this.getPlayerId(), this.id);
+    return TextLabel.__inject__.GetPlayer3DTextLabelText(
+      charset,
+      this.getPlayerId(),
+      this.id,
+    );
   }
 
   getColor(): number {
     if (this.isGlobal()) {
-      return TextLabel.__inject__Get3DTextLabelColor(this.id);
+      return TextLabel.__inject__.Get3DTextLabelColor(this.id);
     }
-    return TextLabel.__inject__GetPlayer3DTextLabelColor(
+    return TextLabel.__inject__.GetPlayer3DTextLabelColor(
       this.getPlayerId(),
       this.id,
     );
@@ -275,9 +284,9 @@ export class TextLabel {
 
   getPos() {
     if (this.isGlobal()) {
-      return TextLabel.__inject__Get3DTextLabelPos(this.id);
+      return TextLabel.__inject__.Get3DTextLabelPos(this.id);
     }
-    return TextLabel.__inject__GetPlayer3DTextLabelPos(
+    return TextLabel.__inject__.GetPlayer3DTextLabelPos(
       this.getPlayerId(),
       this.id,
     );
@@ -286,9 +295,9 @@ export class TextLabel {
   setDrawDistance(distance: number): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (this.isGlobal()) {
-      return TextLabel.__inject__Set3DTextLabelDrawDistance(this.id, distance);
+      return TextLabel.__inject__.Set3DTextLabelDrawDistance(this.id, distance);
     }
-    return TextLabel.__inject__SetPlayer3DTextLabelDrawDistance(
+    return TextLabel.__inject__.SetPlayer3DTextLabelDrawDistance(
       this.getPlayerId(),
       this.id,
       distance,
@@ -297,9 +306,9 @@ export class TextLabel {
 
   getDrawDistance(): number {
     if (this.isGlobal()) {
-      return TextLabel.__inject__Get3DTextLabelDrawDistance(this.id);
+      return TextLabel.__inject__.Get3DTextLabelDrawDistance(this.id);
     }
-    return TextLabel.__inject__GetPlayer3DTextLabelDrawDistance(
+    return TextLabel.__inject__.GetPlayer3DTextLabelDrawDistance(
       this.getPlayerId(),
       this.id,
     );
@@ -308,9 +317,9 @@ export class TextLabel {
   getLOS(): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (this.isGlobal()) {
-      return TextLabel.__inject__Get3DTextLabelLOS(this.id);
+      return TextLabel.__inject__.Get3DTextLabelLOS(this.id);
     }
-    return TextLabel.__inject__GetPlayer3DTextLabelLOS(
+    return TextLabel.__inject__.GetPlayer3DTextLabelLOS(
       this.getPlayerId(),
       this.id,
     );
@@ -319,9 +328,9 @@ export class TextLabel {
   setLOS(status: boolean): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (this.isGlobal()) {
-      return TextLabel.__inject__Set3DTextLabelLOS(this.id, status);
+      return TextLabel.__inject__.Set3DTextLabelLOS(this.id, status);
     }
-    return TextLabel.__inject__SetPlayer3DTextLabelLOS(
+    return TextLabel.__inject__.SetPlayer3DTextLabelLOS(
       this.getPlayerId(),
       this.id,
       status,
@@ -331,9 +340,9 @@ export class TextLabel {
   getVirtualWorld(): number {
     if (this.id === InvalidEnum._3DTEXT_ID) return 0;
     if (this.isGlobal()) {
-      return TextLabel.__inject__Get3DTextLabelVirtualWorld(this.id);
+      return TextLabel.__inject__.Get3DTextLabelVirtualWorld(this.id);
     }
-    return TextLabel.__inject__GetPlayer3DTextLabelVirtualWorld(
+    return TextLabel.__inject__.GetPlayer3DTextLabelVirtualWorld(
       this.getPlayerId(),
       this.id,
     );
@@ -342,9 +351,9 @@ export class TextLabel {
   setVirtualWorld(world: number): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (this.isGlobal()) {
-      return TextLabel.__inject__Set3DTextLabelVirtualWorld(this.id, world);
+      return TextLabel.__inject__.Set3DTextLabelVirtualWorld(this.id, world);
     }
-    return TextLabel.__inject__SetPlayer3DTextLabelVirtualWorld(
+    return TextLabel.__inject__.SetPlayer3DTextLabelVirtualWorld(
       this.getPlayerId(),
       this.id,
       world,
@@ -353,9 +362,9 @@ export class TextLabel {
 
   getAttachedData() {
     if (this.isGlobal()) {
-      return TextLabel.__inject__Get3DTextLabelAttachedData(this.id);
+      return TextLabel.__inject__.Get3DTextLabelAttachedData(this.id);
     }
-    return TextLabel.__inject__GetPlayer3DTextLabelAttachedData(
+    return TextLabel.__inject__.GetPlayer3DTextLabelAttachedData(
       this.getPlayerId(),
       this.id,
     );
@@ -364,8 +373,8 @@ export class TextLabel {
   static isValid(textLabelId: number, playerId?: number) {
     if (playerId === InvalidEnum.PLAYER_ID) return false;
     return typeof playerId === "undefined"
-      ? TextLabel.__inject__IsValid3DTextLabel(textLabelId)
-      : TextLabel.__inject__IsValidPlayer3DTextLabel(playerId, textLabelId);
+      ? TextLabel.__inject__.IsValid3DTextLabel(textLabelId)
+      : TextLabel.__inject__.IsValidPlayer3DTextLabel(playerId, textLabelId);
   }
 
   static getInstance(textLabelId: number, player?: Player) {
@@ -390,34 +399,37 @@ export class TextLabel {
     );
   }
 
-  static __inject__Delete3DTextLabel = tg.Delete3DTextLabel;
-  static __inject__Attach3DTextLabelToPlayer = tg.Attach3DTextLabelToPlayer;
-  static __inject__Attach3DTextLabelToVehicle = tg.Attach3DTextLabelToVehicle;
-  static __inject__Is3DTextLabelStreamedIn = tg.Is3DTextLabelStreamedIn;
-  static __inject__Get3DTextLabelColor = tg.Get3DTextLabelColor;
-  static __inject__Get3DTextLabelPos = tg.Get3DTextLabelPos;
-  static __inject__Set3DTextLabelDrawDistance = tg.Set3DTextLabelDrawDistance;
-  static __inject__Get3DTextLabelDrawDistance = tg.Get3DTextLabelDrawDistance;
-  static __inject__Get3DTextLabelLOS = tg.Get3DTextLabelLOS;
-  static __inject__Set3DTextLabelLOS = tg.Set3DTextLabelLOS;
-  static __inject__Get3DTextLabelVirtualWorld = tg.Get3DTextLabelVirtualWorld;
-  static __inject__Set3DTextLabelVirtualWorld = tg.Set3DTextLabelVirtualWorld;
-  static __inject__Get3DTextLabelAttachedData = tg.Get3DTextLabelAttachedData;
-  static __inject__IsValid3DTextLabel = tg.IsValid3DTextLabel;
-  static __inject__DeletePlayer3DTextLabel = tp.DeletePlayer3DTextLabel;
-  static __inject__GetPlayer3DTextLabelColor = tp.GetPlayer3DTextLabelColor;
-  static __inject__GetPlayer3DTextLabelPos = tp.GetPlayer3DTextLabelPos;
-  static __inject__SetPlayer3DTextLabelDrawDistance =
-    tp.SetPlayer3DTextLabelDrawDistance;
-  static __inject__GetPlayer3DTextLabelDrawDistance =
-    tp.GetPlayer3DTextLabelDrawDistance;
-  static __inject__GetPlayer3DTextLabelLOS = tp.GetPlayer3DTextLabelLOS;
-  static __inject__SetPlayer3DTextLabelLOS = tp.SetPlayer3DTextLabelLOS;
-  static __inject__GetPlayer3DTextLabelVirtualWorld =
-    tp.GetPlayer3DTextLabelVirtualWorld;
-  static __inject__SetPlayer3DTextLabelVirtualWorld =
-    tp.SetPlayer3DTextLabelVirtualWorld;
-  static __inject__GetPlayer3DTextLabelAttachedData =
-    tp.GetPlayer3DTextLabelAttachedData;
-  static __inject__IsValidPlayer3DTextLabel = tp.IsValidPlayer3DTextLabel;
+  static __inject__ = {
+    Create3DTextLabel,
+    CreatePlayer3DTextLabel,
+    Get3DTextLabelText,
+    GetPlayer3DTextLabelText,
+    Update3DTextLabelText,
+    UpdatePlayer3DTextLabelText,
+    Delete3DTextLabel: tg.Delete3DTextLabel,
+    Attach3DTextLabelToPlayer: tg.Attach3DTextLabelToPlayer,
+    Attach3DTextLabelToVehicle: tg.Attach3DTextLabelToVehicle,
+    Is3DTextLabelStreamedIn: tg.Is3DTextLabelStreamedIn,
+    Get3DTextLabelColor: tg.Get3DTextLabelColor,
+    Get3DTextLabelPos: tg.Get3DTextLabelPos,
+    Set3DTextLabelDrawDistance: tg.Set3DTextLabelDrawDistance,
+    Get3DTextLabelDrawDistance: tg.Get3DTextLabelDrawDistance,
+    Get3DTextLabelLOS: tg.Get3DTextLabelLOS,
+    Set3DTextLabelLOS: tg.Set3DTextLabelLOS,
+    Get3DTextLabelVirtualWorld: tg.Get3DTextLabelVirtualWorld,
+    Set3DTextLabelVirtualWorld: tg.Set3DTextLabelVirtualWorld,
+    Get3DTextLabelAttachedData: tg.Get3DTextLabelAttachedData,
+    IsValid3DTextLabel: tg.IsValid3DTextLabel,
+    DeletePlayer3DTextLabel: tp.DeletePlayer3DTextLabel,
+    GetPlayer3DTextLabelColor: tp.GetPlayer3DTextLabelColor,
+    GetPlayer3DTextLabelPos: tp.GetPlayer3DTextLabelPos,
+    SetPlayer3DTextLabelDrawDistance: tp.SetPlayer3DTextLabelDrawDistance,
+    GetPlayer3DTextLabelDrawDistance: tp.GetPlayer3DTextLabelDrawDistance,
+    GetPlayer3DTextLabelLOS: tp.GetPlayer3DTextLabelLOS,
+    SetPlayer3DTextLabelLOS: tp.SetPlayer3DTextLabelLOS,
+    GetPlayer3DTextLabelVirtualWorld: tp.GetPlayer3DTextLabelVirtualWorld,
+    SetPlayer3DTextLabelVirtualWorld: tp.SetPlayer3DTextLabelVirtualWorld,
+    GetPlayer3DTextLabelAttachedData: tp.GetPlayer3DTextLabelAttachedData,
+    IsValidPlayer3DTextLabel: tp.IsValidPlayer3DTextLabel,
+  };
 }

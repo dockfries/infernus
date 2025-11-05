@@ -19,7 +19,7 @@ export class RaceCheckpoint {
     nextZ: number,
     radius: number,
   ) {
-    return SetPlayerRaceCheckpoint(
+    return RaceCheckpoint.__inject__.SetPlayerRaceCheckpoint(
       player.id,
       type,
       x,
@@ -33,18 +33,26 @@ export class RaceCheckpoint {
   }
 
   static disable(player: Player) {
-    return DisablePlayerRaceCheckpoint(player.id);
+    return RaceCheckpoint.__inject__.DisablePlayerRaceCheckpoint(player.id);
   }
 
   static isPlayerIn(player: Player) {
-    return IsPlayerInRaceCheckpoint(player.id);
+    return RaceCheckpoint.__inject__.IsPlayerInRaceCheckpoint(player.id);
   }
 
   static isActive(player: Player) {
-    return IsPlayerRaceCheckpointActive(player.id);
+    return RaceCheckpoint.__inject__.IsPlayerRaceCheckpointActive(player.id);
   }
 
   static get(player: Player) {
-    return GetPlayerRaceCheckpoint(player.id);
+    return RaceCheckpoint.__inject__.GetPlayerRaceCheckpoint(player.id);
   }
+
+  static __inject__ = {
+    DisablePlayerRaceCheckpoint,
+    GetPlayerRaceCheckpoint,
+    IsPlayerRaceCheckpointActive,
+    IsPlayerInRaceCheckpoint,
+    SetPlayerRaceCheckpoint,
+  };
 }

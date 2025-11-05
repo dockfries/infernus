@@ -63,7 +63,7 @@ export class DynamicObject {
       if (typeof areaId === "number") areaId = [-1];
       else areaId ??= [-1];
 
-      this._id = s.CreateDynamicObjectEx(
+      this._id = DynamicObject.__inject__.CreateDynamicObjectEx(
         modelId,
         x,
         y,
@@ -89,7 +89,7 @@ export class DynamicObject {
       if (Array.isArray(areaId)) areaId = -1;
       else areaId ??= -1;
 
-      this._id = s.CreateDynamicObject(
+      this._id = DynamicObject.__inject__.CreateDynamicObject(
         modelId,
         x,
         y,
@@ -117,7 +117,7 @@ export class DynamicObject {
         "[StreamerObject]: Unable to destroy the object before create",
       );
     if (!INTERNAL_FLAGS.skip) {
-      s.DestroyDynamicObject(this.id);
+      DynamicObject.__inject__.DestroyDynamicObject(this.id);
     }
     dynamicObjectPool.delete(this.id);
     this._id = s.StreamerMiscellaneous.INVALID_ID;
@@ -144,25 +144,25 @@ export class DynamicObject {
   getPos() {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerObject]: Cannot get position before create");
-    return s.GetDynamicObjectPos(this.id);
+    return DynamicObject.__inject__.GetDynamicObjectPos(this.id);
   }
 
   setPos(x: number, y: number, z: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerObject]: Cannot set position before create");
-    return s.SetDynamicObjectPos(this.id, x, y, z);
+    return DynamicObject.__inject__.SetDynamicObjectPos(this.id, x, y, z);
   }
 
   getRot() {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerObject]: Cannot get rotation before create");
-    return s.GetDynamicObjectRot(this.id);
+    return DynamicObject.__inject__.GetDynamicObjectRot(this.id);
   }
 
   setRot(rx: number, ry: number, rz: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerObject]: Cannot set rotation before create");
-    return s.SetDynamicObjectRot(this.id, rx, ry, rz);
+    return DynamicObject.__inject__.SetDynamicObjectRot(this.id, rx, ry, rz);
   }
 
   move(
@@ -184,18 +184,27 @@ export class DynamicObject {
         "[StreamerObject]: speed more than 120 seconds, warn if it's not intentional",
       );
     if (this.isMoving()) this.stop();
-    return s.MoveDynamicObject(this.id, x, y, z, speed, rx, ry, rz);
+    return DynamicObject.__inject__.MoveDynamicObject(
+      this.id,
+      x,
+      y,
+      z,
+      speed,
+      rx,
+      ry,
+      rz,
+    );
   }
 
   stop(): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerObject]: Cannot stop moving before create");
-    return s.StopDynamicObject(this.id);
+    return DynamicObject.__inject__.StopDynamicObject(this.id);
   }
 
   isMoving(): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
-    return s.IsDynamicObjectMoving(this.id);
+    return DynamicObject.__inject__.IsDynamicObjectMoving(this.id);
   }
 
   attachCamera(player: Player): number {
@@ -206,7 +215,10 @@ export class DynamicObject {
       throw new Error(
         "[StreamerObject]: Cannot attachCamera before both are created",
       );
-    return s.AttachCameraToDynamicObject(player.id, this.id);
+    return DynamicObject.__inject__.AttachCameraToDynamicObject(
+      player.id,
+      this.id,
+    );
   }
 
   attachToObject(
@@ -226,7 +238,7 @@ export class DynamicObject {
       throw new Error(
         "[StreamerObject]: Cannot attachToObject before both are created",
       );
-    return s.AttachDynamicObjectToObject(
+    return DynamicObject.__inject__.AttachDynamicObjectToObject(
       this.id,
       attachTo.id,
       offsetX,
@@ -255,7 +267,7 @@ export class DynamicObject {
       throw new Error(
         "[StreamerObject]: Cannot attachToPlayer before both are created",
       );
-    return s.AttachDynamicObjectToPlayer(
+    return DynamicObject.__inject__.AttachDynamicObjectToPlayer(
       this.id,
       player.id,
       offsetX,
@@ -283,7 +295,7 @@ export class DynamicObject {
       throw new Error(
         "[StreamerObject]: Cannot attachToVehicle before both are created",
       );
-    return s.AttachDynamicObjectToVehicle(
+    return DynamicObject.__inject__.AttachDynamicObjectToVehicle(
       this.id,
       vehicle.id,
       offsetX,
@@ -299,24 +311,33 @@ export class DynamicObject {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerObject]: Unable to edit before create");
     player.endObjectEditing();
-    return s.EditDynamicObject(player.id, this.id);
+    return DynamicObject.__inject__.EditDynamicObject(player.id, this.id);
   }
 
   isMaterialUsed(materialIndex: number): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
-    return s.IsDynamicObjectMaterialUsed(this.id, materialIndex);
+    return DynamicObject.__inject__.IsDynamicObjectMaterialUsed(
+      this.id,
+      materialIndex,
+    );
   }
 
   removeMaterial(materialIndex: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return 0;
     if (!this.isMaterialUsed(materialIndex)) return 0;
-    return s.RemoveDynamicObjectMaterial(this.id, materialIndex);
+    return DynamicObject.__inject__.RemoveDynamicObjectMaterial(
+      this.id,
+      materialIndex,
+    );
   }
 
   getMaterial(materialIndex: number) {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerObject]: Unable to get material before create");
-    return GetDynamicObjectMaterial(this.id, materialIndex);
+    return DynamicObject.__inject__.GetDynamicObjectMaterial(
+      this.id,
+      materialIndex,
+    );
   }
 
   setMaterial(
@@ -328,7 +349,7 @@ export class DynamicObject {
   ): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerObject]: Unable to set material before create");
-    return s.SetDynamicObjectMaterial(
+    return DynamicObject.__inject__.SetDynamicObjectMaterial(
       this.id,
       materialIndex,
       modelId,
@@ -340,13 +361,19 @@ export class DynamicObject {
 
   isMaterialTextUsed(materialIndex: number): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
-    return s.IsDynamicObjectMaterialTextUsed(this.id, materialIndex);
+    return DynamicObject.__inject__.IsDynamicObjectMaterialTextUsed(
+      this.id,
+      materialIndex,
+    );
   }
 
   removeMaterialText(materialIndex: number) {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return 0;
     if (!this.isMaterialTextUsed(materialIndex)) return 0;
-    return s.RemoveDynamicObjectMaterialText(this.id, materialIndex);
+    return DynamicObject.__inject__.RemoveDynamicObjectMaterialText(
+      this.id,
+      materialIndex,
+    );
   }
 
   getMaterialText(materialIndex: number) {
@@ -354,7 +381,7 @@ export class DynamicObject {
       throw new Error(
         "[StreamerObject]: Unable to get material text before create",
       );
-    return GetDynamicObjectMaterialText(
+    return DynamicObject.__inject__.GetDynamicObjectMaterialText(
       this.id,
       materialIndex,
       this.sourceInfo?.charset || "utf8",
@@ -380,7 +407,7 @@ export class DynamicObject {
     if (this.sourceInfo) {
       this.sourceInfo.charset = charset;
     }
-    return SetDynamicObjectMaterialText(
+    return DynamicObject.__inject__.SetDynamicObjectMaterialText(
       charset || "utf8",
       this.id,
       materialIndex,
@@ -396,7 +423,9 @@ export class DynamicObject {
   }
 
   getPlayerCameraTarget(player: Player) {
-    const dynId = s.GetPlayerCameraTargetDynObject(player.id);
+    const dynId = DynamicObject.__inject__.GetPlayerCameraTargetDynObject(
+      player.id,
+    );
     if (dynId === s.StreamerMiscellaneous.INVALID_ID) return;
     return dynamicObjectPool.get(dynId);
   }
@@ -416,10 +445,10 @@ export class DynamicObject {
     return Streamer.isToggleItemCallbacks(s.StreamerItemTypes.OBJECT, this.id);
   }
   setNoCameraCollision() {
-    return s.SetDynamicObjectNoCameraCol(this.id);
+    return DynamicObject.__inject__.SetDynamicObjectNoCameraCol(this.id);
   }
   getNoCameraCollision() {
-    return s.GetDynamicObjectNoCameraCol(this.id);
+    return DynamicObject.__inject__.GetDynamicObjectNoCameraCol(this.id);
   }
   static isValid = s.IsValidDynamicObject;
   static togglePlayerUpdate(player: Player, update = true) {
@@ -448,4 +477,33 @@ export class DynamicObject {
   static getInstances() {
     return [...dynamicObjectPool.values()];
   }
+
+  static __inject__ = {
+    CreateDynamicObjectEx: s.CreateDynamicObjectEx,
+    CreateDynamicObject: s.CreateDynamicObject,
+    DestroyDynamicObject: s.DestroyDynamicObject,
+    GetDynamicObjectPos: s.GetDynamicObjectPos,
+    SetDynamicObjectPos: s.SetDynamicObjectPos,
+    GetDynamicObjectRot: s.GetDynamicObjectRot,
+    SetDynamicObjectRot: s.SetDynamicObjectRot,
+    MoveDynamicObject: s.MoveDynamicObject,
+    StopDynamicObject: s.StopDynamicObject,
+    IsDynamicObjectMoving: s.IsDynamicObjectMoving,
+    AttachCameraToDynamicObject: s.AttachCameraToDynamicObject,
+    AttachDynamicObjectToObject: s.AttachDynamicObjectToObject,
+    AttachDynamicObjectToPlayer: s.AttachDynamicObjectToPlayer,
+    AttachDynamicObjectToVehicle: s.AttachDynamicObjectToVehicle,
+    EditDynamicObject: s.EditDynamicObject,
+    IsDynamicObjectMaterialUsed: s.IsDynamicObjectMaterialUsed,
+    RemoveDynamicObjectMaterial: s.RemoveDynamicObjectMaterial,
+    GetDynamicObjectMaterial,
+    SetDynamicObjectMaterial: s.SetDynamicObjectMaterial,
+    IsDynamicObjectMaterialTextUsed: s.IsDynamicObjectMaterialTextUsed,
+    RemoveDynamicObjectMaterialText: s.RemoveDynamicObjectMaterialText,
+    GetDynamicObjectMaterialText,
+    SetDynamicObjectMaterialText,
+    GetPlayerCameraTargetDynObject: s.GetPlayerCameraTargetDynObject,
+    SetDynamicObjectNoCameraCol: s.SetDynamicObjectNoCameraCol,
+    GetDynamicObjectNoCameraCol: s.GetDynamicObjectNoCameraCol,
+  };
 }

@@ -141,7 +141,7 @@ export class Dialog {
       Dialog.showingIds.push(this._id);
       Dialog.waitingQueue.set(player, { resolve, reject, showId: this._id });
 
-      Dialog.__inject__ShowPlayerDialog(player, this._id, this.dialog);
+      Dialog.__inject__.ShowPlayerDialog(player, this._id, this.dialog);
     })
       .catch((e) => Promise.reject(e))
       .finally(() => Dialog.delDialogTask(player));
@@ -149,8 +149,11 @@ export class Dialog {
 
   static close(player: Player) {
     Dialog.delDialogTask(player, true);
-    HidePlayerDialog(player.id);
+    Dialog.__inject__.HidePlayerDialog(player.id);
   }
 
-  static __inject__ShowPlayerDialog = ShowPlayerDialog;
+  static __inject__ = {
+    ShowPlayerDialog,
+    HidePlayerDialog,
+  };
 }

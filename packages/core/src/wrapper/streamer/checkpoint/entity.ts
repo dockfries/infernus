@@ -60,7 +60,7 @@ export class DynamicCheckpoint {
       if (typeof areaId === "number") areaId = [-1];
       else areaId ??= [-1];
 
-      this._id = CreateDynamicCPEx(
+      this._id = DynamicCheckpoint.__inject__.CreateDynamicCPEx(
         x,
         y,
         z,
@@ -82,7 +82,7 @@ export class DynamicCheckpoint {
       if (Array.isArray(areaId)) areaId = -1;
       else areaId ??= -1;
 
-      this._id = CreateDynamicCP(
+      this._id = DynamicCheckpoint.__inject__.CreateDynamicCP(
         x,
         y,
         z,
@@ -105,7 +105,7 @@ export class DynamicCheckpoint {
         "[StreamerCheckpoint]: Unable to destroy the checkpoint before create",
       );
     if (!INTERNAL_FLAGS.skip) {
-      DestroyDynamicCP(this.id);
+      DynamicCheckpoint.__inject__.DestroyDynamicCP(this.id);
     }
     dynamicCheckpointPool.delete(this.id);
     this._id = StreamerMiscellaneous.INVALID_ID;
@@ -121,12 +121,16 @@ export class DynamicCheckpoint {
       throw new Error(
         "[StreamerCheckpoint]: Unable to toggle the player before create",
       );
-    TogglePlayerDynamicCP(player.id, this.id, toggle);
+    DynamicCheckpoint.__inject__.TogglePlayerDynamicCP(
+      player.id,
+      this.id,
+      toggle,
+    );
     return this;
   }
   isPlayerIn(player: Player): boolean {
     if (this.id === StreamerMiscellaneous.INVALID_ID) return false;
-    return IsPlayerInDynamicCP(player.id, this.id);
+    return DynamicCheckpoint.__inject__.IsPlayerInDynamicCP(player.id, this.id);
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
@@ -141,10 +145,15 @@ export class DynamicCheckpoint {
   }
   static isValid = IsValidDynamicCP;
   static togglePlayerAll(player: Player, toggle: boolean): number {
-    return TogglePlayerAllDynamicCPs(player.id, toggle);
+    return DynamicCheckpoint.__inject__.TogglePlayerAllDynamicCPs(
+      player.id,
+      toggle,
+    );
   }
   static getPlayerVisible(player: Player) {
-    return dynamicCheckpointPool.get(GetPlayerVisibleDynamicCP(player.id));
+    return dynamicCheckpointPool.get(
+      DynamicCheckpoint.__inject__.GetPlayerVisibleDynamicCP(player.id),
+    );
   }
   static togglePlayerUpdate(player: Player, update = true) {
     return Streamer.toggleItemUpdate(player, StreamerItemTypes.CP, update);
@@ -168,4 +177,14 @@ export class DynamicCheckpoint {
   static getInstances() {
     return [...dynamicCheckpointPool.values()];
   }
+
+  static __inject__ = {
+    CreateDynamicCP,
+    CreateDynamicCPEx,
+    DestroyDynamicCP,
+    GetPlayerVisibleDynamicCP,
+    IsPlayerInDynamicCP,
+    TogglePlayerAllDynamicCPs,
+    TogglePlayerDynamicCP,
+  };
 }

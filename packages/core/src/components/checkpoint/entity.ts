@@ -9,22 +9,36 @@ import { Player } from "../player/entity";
 
 export class Checkpoint {
   static set(player: Player, x: number, y: number, z: number, radius: number) {
-    return SetPlayerCheckpoint(player.id, x, y, z, radius);
+    return Checkpoint.__inject__.SetPlayerCheckpoint(
+      player.id,
+      x,
+      y,
+      z,
+      radius,
+    );
   }
 
   static disable(player: Player) {
-    return DisablePlayerCheckpoint(player.id);
+    return Checkpoint.__inject__.DisablePlayerCheckpoint(player.id);
   }
 
   static isPlayerIn(player: Player) {
-    return IsPlayerInCheckpoint(player.id);
+    return Checkpoint.__inject__.IsPlayerInCheckpoint(player.id);
   }
 
   static isActive(player: Player) {
-    return IsPlayerCheckpointActive(player.id);
+    return Checkpoint.__inject__.IsPlayerCheckpointActive(player.id);
   }
 
   static get(player: Player) {
-    return GetPlayerCheckpoint(player.id);
+    return Checkpoint.__inject__.GetPlayerCheckpoint(player.id);
   }
+
+  static __inject__ = {
+    DisablePlayerCheckpoint,
+    GetPlayerCheckpoint,
+    IsPlayerCheckpointActive,
+    IsPlayerInCheckpoint,
+    SetPlayerCheckpoint,
+  };
 }

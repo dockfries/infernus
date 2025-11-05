@@ -67,7 +67,7 @@ export class DynamicMapIcon {
       if (typeof areaId === "number") areaId = [-1];
       else areaId ??= [-1];
 
-      this._id = CreateDynamicMapIconEx(
+      this._id = DynamicMapIcon.__inject__.CreateDynamicMapIconEx(
         x,
         y,
         z,
@@ -94,7 +94,7 @@ export class DynamicMapIcon {
     if (Array.isArray(areaId)) areaId = -1;
     else areaId ??= -1;
 
-    this._id = CreateDynamicMapIcon(
+    this._id = DynamicMapIcon.__inject__.CreateDynamicMapIcon(
       x,
       y,
       z,
@@ -117,7 +117,7 @@ export class DynamicMapIcon {
         "[StreamerMapIcon]: Unable to destroy the map icon before create",
       );
     if (!INTERNAL_FLAGS.skip) {
-      DestroyDynamicMapIcon(this.id);
+      DynamicMapIcon.__inject__.DestroyDynamicMapIcon(this.id);
     }
     dynamicMapIconPool.delete(this._id);
     this._id = StreamerMiscellaneous.INVALID_ID;
@@ -171,4 +171,10 @@ export class DynamicMapIcon {
   static getInstances() {
     return [...dynamicMapIconPool.values()];
   }
+
+  static __inject__ = {
+    CreateDynamicMapIconEx,
+    CreateDynamicMapIcon,
+    DestroyDynamicMapIcon,
+  };
 }

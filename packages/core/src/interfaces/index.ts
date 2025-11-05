@@ -250,3 +250,7 @@ export interface ITextLabel {
   attachedPlayer?: Player;
   attachedVehicle?: Vehicle;
 }
+
+export interface IClassInjections {
+  __inject__: Record<string, (...args: any[]) => any>;
+}

@@ -53,7 +53,7 @@ export class Vehicle {
     if (!ignoreRange && !isValidVehModelId(modelId)) return;
     if (this.isStatic) {
       if (typeof respawnDelay === "undefined") {
-        this._id = Vehicle.__inject__AddStaticVehicle(
+        this._id = Vehicle.__inject__.AddStaticVehicle(
           modelId,
           x,
           y,
@@ -64,7 +64,7 @@ export class Vehicle {
         );
         return;
       }
-      this._id = Vehicle.__inject__AddStaticVehicleEx(
+      this._id = Vehicle.__inject__.AddStaticVehicleEx(
         modelId,
         x,
         y,
@@ -76,7 +76,7 @@ export class Vehicle {
         addSiren || false,
       );
     } else {
-      this._id = Vehicle.__inject__CreateVehicle(
+      this._id = Vehicle.__inject__.CreateVehicle(
         modelId,
         x,
         y,
@@ -101,7 +101,7 @@ export class Vehicle {
       throw new Error("[Vehicle]: Unable to destroy the vehicle before create");
     }
     if (!INTERNAL_FLAGS.skip) {
-      Vehicle.__inject__DestroyVehicle(this.id);
+      Vehicle.__inject__.DestroyVehicle(this.id);
     }
     Vehicle.createdCount--;
     vehiclePool.delete(this._id);
@@ -117,7 +117,7 @@ export class Vehicle {
         `[Vehicle]: Invalid component id ${componentId} attempted to attach to the vehicle ${this}`,
       );
     }
-    return Vehicle.__inject__AddVehicleComponent(this.id, componentId);
+    return Vehicle.__inject__.AddVehicleComponent(this.id, componentId);
   }
   removeComponent(componentId: number): number {
     if (this.getComponentInSlot(Vehicle.getComponentType(componentId)) === 0) {
@@ -125,44 +125,44 @@ export class Vehicle {
         `[Vehicle]: component id ${componentId} does not exist on this vehicle`,
       );
     }
-    return Vehicle.__inject__RemoveVehicleComponent(this.id, componentId);
+    return Vehicle.__inject__.RemoveVehicleComponent(this.id, componentId);
   }
   getComponentInSlot(slot: CarModTypeEnum) {
-    return Vehicle.__inject__GetVehicleComponentInSlot(this.id, slot);
+    return Vehicle.__inject__.GetVehicleComponentInSlot(this.id, slot);
   }
   linkToInterior(interiorId: number): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__LinkVehicleToInterior(this.id, interiorId);
+    return Vehicle.__inject__.LinkVehicleToInterior(this.id, interiorId);
   }
   setVirtualWorld(worldId: number): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleVirtualWorld(this.id, worldId);
+    return Vehicle.__inject__.SetVehicleVirtualWorld(this.id, worldId);
   }
   getVirtualWorld(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__GetVehicleVirtualWorld(this.id);
+    return Vehicle.__inject__.GetVehicleVirtualWorld(this.id);
   }
   repair(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__RepairVehicle(this.id);
+    return Vehicle.__inject__.RepairVehicle(this.id);
   }
   setPos(x: number, y: number, z: number): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__SetVehiclePos(this.id, x, y, z);
+    return Vehicle.__inject__.SetVehiclePos(this.id, x, y, z);
   }
   getPos() {
-    return Vehicle.__inject__GetVehiclePos(this.id);
+    return Vehicle.__inject__.GetVehiclePos(this.id);
   }
   getHealth() {
-    return Vehicle.__inject__GetVehicleHealth(this.id);
+    return Vehicle.__inject__.GetVehicleHealth(this.id);
   }
   setHealth(health: number): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleHealth(this.id, health);
+    return Vehicle.__inject__.SetVehicleHealth(this.id, health);
   }
   isPlayerIn(player: Player): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__IsPlayerInVehicle(player.id, this.id);
+    return Vehicle.__inject__.IsPlayerInVehicle(player.id, this.id);
   }
   putPlayerIn(player: Player, seatId: number) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
@@ -172,14 +172,14 @@ export class Vehicle {
         "[Vehicle]: If the seat is invalid or is taken, will cause a crash when they EXIT the vehicle.",
       );
     }
-    return Vehicle.__inject__PutPlayerInVehicle(player.id, this.id, seatId);
+    return Vehicle.__inject__.PutPlayerInVehicle(player.id, this.id, seatId);
   }
   getZAngle() {
-    return Vehicle.__inject__GetVehicleZAngle(this.id);
+    return Vehicle.__inject__.GetVehicleZAngle(this.id);
   }
   setZAngle(zAngle: number): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleZAngle(this.id, zAngle);
+    return Vehicle.__inject__.SetVehicleZAngle(this.id, zAngle);
   }
   setNumberPlate(numberplate: string): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
@@ -193,18 +193,18 @@ export class Vehicle {
         "[Vehicle]: number plates only allow letters and numbers",
       );
     }
-    return Vehicle.__inject__SetVehicleNumberPlate(this.id, numberplate);
+    return Vehicle.__inject__.SetVehicleNumberPlate(this.id, numberplate);
   }
   changeColors(color1: string | number, color2: string | number): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__ChangeVehicleColors(this.id, color1, color2);
+    return Vehicle.__inject__.ChangeVehicleColors(this.id, color1, color2);
   }
   setVelocity(X: number, Y: number, Z: number) {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__SetVehicleVelocity(this.id, X, Y, Z);
+    return Vehicle.__inject__.SetVehicleVelocity(this.id, X, Y, Z);
   }
   getVelocity() {
-    return Vehicle.__inject__GetVehicleVelocity(this.id);
+    return Vehicle.__inject__.GetVehicleVelocity(this.id);
   }
   getSpeed(magic = 180.0) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0.0;
@@ -213,10 +213,10 @@ export class Vehicle {
   }
   setAngularVelocity(X: number, Y: number, Z: number): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__SetVehicleAngularVelocity(this.id, X, Y, Z);
+    return Vehicle.__inject__.SetVehicleAngularVelocity(this.id, X, Y, Z);
   }
   getDamageStatus() {
-    return Vehicle.__inject__GetVehicleDamageStatus(this.id);
+    return Vehicle.__inject__.GetVehicleDamageStatus(this.id);
   }
   updateDamageStatus(
     panels: number,
@@ -224,7 +224,7 @@ export class Vehicle {
     lights: number,
     tires: number,
   ) {
-    return Vehicle.__inject__UpdateVehicleDamageStatus(
+    return Vehicle.__inject__.UpdateVehicleDamageStatus(
       this.id,
       panels,
       doors,
@@ -233,30 +233,30 @@ export class Vehicle {
     );
   }
   getDistanceFromPoint(X: number, Y: number, Z: number): number {
-    return Vehicle.__inject__GetVehicleDistanceFromPoint(this.id, X, Y, Z);
+    return Vehicle.__inject__.GetVehicleDistanceFromPoint(this.id, X, Y, Z);
   }
   getModel(): number {
-    return Vehicle.__inject__GetVehicleModel(this.id);
+    return Vehicle.__inject__.GetVehicleModel(this.id);
   }
   static getModelInfo(vehicleModel: number, infoType: VehicleModelInfoEnum) {
-    return Vehicle.__inject__GetVehicleModelInfo(vehicleModel, infoType);
+    return Vehicle.__inject__.GetVehicleModelInfo(vehicleModel, infoType);
   }
   getModelInfo(infoType: VehicleModelInfoEnum) {
     return Vehicle.getModelInfo(this.getModel(), infoType);
   }
   getRotation() {
-    return Vehicle.__inject__GetVehicleRotation(this.id);
+    return Vehicle.__inject__.GetVehicleRotation(this.id);
   }
   getRotationQuat() {
-    return Vehicle.__inject__GetVehicleRotationQuat(this.id);
+    return Vehicle.__inject__.GetVehicleRotationQuat(this.id);
   }
   setRespawn(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleToRespawn(this.id);
+    return Vehicle.__inject__.SetVehicleToRespawn(this.id);
   }
   isStreamedIn(forPlayer: Player): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__IsVehicleStreamedIn(this.id, forPlayer.id);
+    return Vehicle.__inject__.IsVehicleStreamedIn(this.id, forPlayer.id);
   }
   setParamsCarDoors(
     driver: boolean,
@@ -265,7 +265,7 @@ export class Vehicle {
     backRight: boolean,
   ): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleParamsCarDoors(
+    return Vehicle.__inject__.SetVehicleParamsCarDoors(
       this.id,
       driver,
       passenger,
@@ -280,7 +280,7 @@ export class Vehicle {
     backRight: boolean,
   ) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleParamsCarWindows(
+    return Vehicle.__inject__.SetVehicleParamsCarWindows(
       this.id,
       driver,
       passenger,
@@ -289,10 +289,10 @@ export class Vehicle {
     );
   }
   getParamsCarDoors() {
-    return Vehicle.__inject__GetVehicleParamsCarDoors(this.id);
+    return Vehicle.__inject__.GetVehicleParamsCarDoors(this.id);
   }
   getParamsCarWindows() {
-    return Vehicle.__inject__GetVehicleParamsCarWindows(this.id);
+    return Vehicle.__inject__.GetVehicleParamsCarWindows(this.id);
   }
   setParamsEx(
     engine: boolean | VehicleParamsEnum,
@@ -304,7 +304,7 @@ export class Vehicle {
     objective: boolean | VehicleParamsEnum,
   ): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleParamsEx(
+    return Vehicle.__inject__.SetVehicleParamsEx(
       this.id,
       engine,
       lights,
@@ -327,7 +327,7 @@ export class Vehicle {
         objective: -1,
       };
     const [engine, lights, alarm, doors, bonnet, boot, objective] =
-      Vehicle.__inject__GetVehicleParamsEx(this.id);
+      Vehicle.__inject__.GetVehicleParamsEx(this.id);
     return {
       engine,
       lights,
@@ -429,7 +429,7 @@ export class Vehicle {
   }
   getParamsSirenState(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return -2;
-    return Vehicle.__inject__GetVehicleParamsSirenState(this.id);
+    return Vehicle.__inject__.GetVehicleParamsSirenState(this.id);
   }
   setParamsForPlayer(
     player: Player,
@@ -437,7 +437,7 @@ export class Vehicle {
     doorsLocked: boolean,
   ): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleParamsForPlayer(
+    return Vehicle.__inject__.SetVehicleParamsForPlayer(
       this.id,
       player.id,
       objective,
@@ -446,22 +446,22 @@ export class Vehicle {
   }
   isTrailerAttached(): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__IsTrailerAttachedToVehicle(this.id);
+    return Vehicle.__inject__.IsTrailerAttachedToVehicle(this.id);
   }
   changePaintjob(paintjobId: 0 | 1 | 2): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
     if (!isValidPaintJob(this.getModel(), paintjobId)) return 0;
     this.changeColors("#fff", "#fff");
-    Vehicle.__inject__ChangeVehiclePaintjob(this.id, paintjobId);
+    Vehicle.__inject__.ChangeVehiclePaintjob(this.id, paintjobId);
     return 1;
   }
   attachTrailer(trailer: Vehicle): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__AttachTrailerToVehicle(trailer.id, this.id);
+    return Vehicle.__inject__.AttachTrailerToVehicle(trailer.id, this.id);
   }
   detachTrailer() {
     if (this.isTrailerAttached())
-      Vehicle.__inject__DetachTrailerFromVehicle(this.id);
+      Vehicle.__inject__.DetachTrailerFromVehicle(this.id);
   }
   getTrailer() {
     return Vehicle.getInstance(v.GetVehicleTrailer(this.id));
@@ -471,23 +471,23 @@ export class Vehicle {
     return Vehicle.isValid(this.id);
   }
   getMatrix() {
-    return Vehicle.__inject__GetVehicleMatrix(this.id);
+    return Vehicle.__inject__.GetVehicleMatrix(this.id);
   }
   getTrainSpeed(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__GetVehicleTrainSpeed(this.id);
+    return Vehicle.__inject__.GetVehicleTrainSpeed(this.id);
   }
   getHydraReactorAngle(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__GetVehicleHydraReactorAngle(this.id);
+    return Vehicle.__inject__.GetVehicleHydraReactorAngle(this.id);
   }
   getLandingGearState(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__GetVehicleLandingGearState(this.id);
+    return Vehicle.__inject__.GetVehicleLandingGearState(this.id);
   }
   getSirenState(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__GetVehicleSirenState(this.id);
+    return Vehicle.__inject__.GetVehicleSirenState(this.id);
   }
   getDriver() {
     return playerPool.get(v.GetVehicleDriver(this.id));
@@ -496,77 +496,77 @@ export class Vehicle {
     return playerPool.get(v.GetVehicleLastDriver(this.id));
   }
   isSirenEnabled(): boolean {
-    return Vehicle.__inject__IsVehicleSirenEnabled(this.id);
+    return Vehicle.__inject__.IsVehicleSirenEnabled(this.id);
   }
   toggleSirenEnabled(enabled: boolean): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__ToggleVehicleSirenEnabled(this.id, enabled);
+    return Vehicle.__inject__.ToggleVehicleSirenEnabled(this.id, enabled);
   }
   setParamsSirenState(enabled: boolean): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleParamsSirenState(this.id, enabled);
+    return Vehicle.__inject__.SetVehicleParamsSirenState(this.id, enabled);
   }
   isDead(): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return true;
-    return Vehicle.__inject__IsVehicleDead(this.id);
+    return Vehicle.__inject__.IsVehicleDead(this.id);
   }
   setDead(dead: boolean): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__SetVehicleDead(this.id, dead);
+    return Vehicle.__inject__.SetVehicleDead(this.id, dead);
   }
   setBeenOccupied(occupied: boolean) {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__SetVehicleBeenOccupied(this.id, occupied);
+    return Vehicle.__inject__.SetVehicleBeenOccupied(this.id, occupied);
   }
   getRespawnTick(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__GetVehicleRespawnTick(this.id);
+    return Vehicle.__inject__.GetVehicleRespawnTick(this.id);
   }
   setRespawnTick(ticks: number) {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__SetVehicleRespawnTick(this.id, ticks);
+    return Vehicle.__inject__.SetVehicleRespawnTick(this.id, ticks);
   }
   isOccupied(): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__IsVehicleOccupied(this.id);
+    return Vehicle.__inject__.IsVehicleOccupied(this.id);
   }
   hasBeenOccupied(): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__HasVehicleBeenOccupied(this.id);
+    return Vehicle.__inject__.HasVehicleBeenOccupied(this.id);
   }
   getOccupiedTick(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__GetVehicleOccupiedTick(this.id);
+    return Vehicle.__inject__.GetVehicleOccupiedTick(this.id);
   }
   setOccupiedTick(ticks: number): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleOccupiedTick(this.id, ticks);
+    return Vehicle.__inject__.SetVehicleOccupiedTick(this.id, ticks);
   }
   getCab(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__GetVehicleCab(this.id);
+    return Vehicle.__inject__.GetVehicleCab(this.id);
   }
   getRespawnDelay(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__GetVehicleRespawnDelay(this.id);
+    return Vehicle.__inject__.GetVehicleRespawnDelay(this.id);
   }
   setRespawnDelay(delay: number): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__SetVehicleRespawnDelay(this.id, delay);
+    return Vehicle.__inject__.SetVehicleRespawnDelay(this.id, delay);
   }
   getNumberPlate() {
-    return Vehicle.__inject__GetVehicleNumberPlate(this.id);
+    return Vehicle.__inject__.GetVehicleNumberPlate(this.id);
   }
   getInterior(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__GetVehicleInterior(this.id);
+    return Vehicle.__inject__.GetVehicleInterior(this.id);
   }
   getPaintjob(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return InvalidEnum.VEHICLE_ID;
-    return Vehicle.__inject__GetVehiclePaintjob(this.id);
+    return Vehicle.__inject__.GetVehiclePaintjob(this.id);
   }
   getColors() {
-    return Vehicle.__inject__GetVehicleColors(this.id);
+    return Vehicle.__inject__.GetVehicleColors(this.id);
   }
   setSpawnInfo(
     modelId: number,
@@ -582,7 +582,7 @@ export class Vehicle {
   ): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
     if (!ignoreRange && !isValidVehModelId(modelId)) return 0;
-    return Vehicle.__inject__SetVehicleSpawnInfo(
+    return Vehicle.__inject__.SetVehicleSpawnInfo(
       this.id,
       modelId,
       fX,
@@ -596,52 +596,52 @@ export class Vehicle {
     );
   }
   getSpawnInfo() {
-    return Vehicle.__inject__GetVehicleSpawnInfo(this.id);
+    return Vehicle.__inject__.GetVehicleSpawnInfo(this.id);
   }
   getRandomColorPair() {
-    return Vehicle.__inject__GetRandomVehicleColorPair(this.getModel());
+    return Vehicle.__inject__.GetRandomVehicleColorPair(this.getModel());
   }
   show() {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__ShowVehicle(this.id);
+    return Vehicle.__inject__.ShowVehicle(this.id);
   }
   hide() {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__HideVehicle(this.id);
+    return Vehicle.__inject__.HideVehicle(this.id);
   }
   isHidden() {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__IsVehicleHidden(this.id);
+    return Vehicle.__inject__.IsVehicleHidden(this.id);
   }
   getVehicleOccupant(seatId: number) {
-    return Vehicle.__inject__GetVehicleOccupant(this.id, seatId);
+    return Vehicle.__inject__.GetVehicleOccupant(this.id, seatId);
   }
   getVehicleMaxPassengers() {
-    return Vehicle.__inject__GetVehicleMaxPassengers(this.getModel());
+    return Vehicle.__inject__.GetVehicleMaxPassengers(this.getModel());
   }
   countVehicleOccupants() {
-    return Vehicle.__inject__CountVehicleOccupants(this.getModel());
+    return Vehicle.__inject__.CountVehicleOccupants(this.getModel());
   }
   static getVehicleMaxPassengers(modelId: number) {
-    return Vehicle.__inject__GetVehicleMaxPassengers(modelId);
+    return Vehicle.__inject__.GetVehicleMaxPassengers(modelId);
   }
   static getRandomColorPair(modelId: number) {
-    return Vehicle.__inject__GetRandomVehicleColorPair(modelId);
+    return Vehicle.__inject__.GetRandomVehicleColorPair(modelId);
   }
   static getComponentType(component: number) {
-    return Vehicle.__inject__GetVehicleComponentType(component);
+    return Vehicle.__inject__.GetVehicleComponentType(component);
   }
   static colorIndexToColor(index: number, alpha = 0xff) {
-    return Vehicle.__inject__VehicleColorIndexToColor(index, alpha);
+    return Vehicle.__inject__.VehicleColorIndexToColor(index, alpha);
   }
   static isValid(vehicleId: number) {
-    return Vehicle.__inject__IsValidVehicle(vehicleId);
+    return Vehicle.__inject__.IsValidVehicle(vehicleId);
   }
   static getModelsUsed() {
-    return Vehicle.__inject__GetVehicleModelsUsed();
+    return Vehicle.__inject__.GetVehicleModelsUsed();
   }
   static getModelCount(modelId: number) {
-    return Vehicle.__inject__GetVehicleModelCount(modelId);
+    return Vehicle.__inject__.GetVehicleModelCount(modelId);
   }
 
   static getInstance(id: number) {
@@ -651,90 +651,92 @@ export class Vehicle {
     return [...vehiclePool.values()];
   }
 
-  static __inject__AddStaticVehicle = v.AddStaticVehicle;
-  static __inject__AddStaticVehicleEx = v.AddStaticVehicleEx;
-  static __inject__CreateVehicle = v.CreateVehicle;
-  static __inject__DestroyVehicle = v.DestroyVehicle;
-  static __inject__AddVehicleComponent = v.AddVehicleComponent;
-  static __inject__RemoveVehicleComponent = v.RemoveVehicleComponent;
-  static __inject__GetVehicleComponentInSlot = v.GetVehicleComponentInSlot;
-  static __inject__LinkVehicleToInterior = v.LinkVehicleToInterior;
-  static __inject__SetVehicleVirtualWorld = v.SetVehicleVirtualWorld;
-  static __inject__GetVehicleVirtualWorld = v.GetVehicleVirtualWorld;
-  static __inject__RepairVehicle = v.RepairVehicle;
-  static __inject__SetVehiclePos = v.SetVehiclePos;
-  static __inject__GetVehiclePos = v.GetVehiclePos;
-  static __inject__GetVehicleHealth = v.GetVehicleHealth;
-  static __inject__SetVehicleHealth = v.SetVehicleHealth;
-  static __inject__IsPlayerInVehicle = v.IsPlayerInVehicle;
-  static __inject__PutPlayerInVehicle = v.PutPlayerInVehicle;
-  static __inject__GetVehicleZAngle = v.GetVehicleZAngle;
-  static __inject__SetVehicleZAngle = v.SetVehicleZAngle;
-  static __inject__SetVehicleNumberPlate = v.SetVehicleNumberPlate;
-  static __inject__ChangeVehicleColors = v.ChangeVehicleColors;
-  static __inject__SetVehicleVelocity = v.SetVehicleVelocity;
-  static __inject__GetVehicleVelocity = v.GetVehicleVelocity;
-  static __inject__SetVehicleAngularVelocity = v.SetVehicleAngularVelocity;
-  static __inject__GetVehicleDamageStatus = v.GetVehicleDamageStatus;
-  static __inject__UpdateVehicleDamageStatus = v.UpdateVehicleDamageStatus;
-  static __inject__GetVehicleDistanceFromPoint = v.GetVehicleDistanceFromPoint;
-  static __inject__GetVehicleModel = v.GetVehicleModel;
-  static __inject__GetVehicleModelInfo = v.GetVehicleModelInfo;
-  static __inject__GetVehicleRotation = v.GetVehicleRotation;
-  static __inject__GetVehicleRotationQuat = v.GetVehicleRotationQuat;
-  static __inject__SetVehicleToRespawn = v.SetVehicleToRespawn;
-  static __inject__IsVehicleStreamedIn = v.IsVehicleStreamedIn;
-  static __inject__SetVehicleParamsCarDoors = v.SetVehicleParamsCarDoors;
-  static __inject__SetVehicleParamsCarWindows = v.SetVehicleParamsCarWindows;
-  static __inject__GetVehicleParamsCarDoors = v.GetVehicleParamsCarDoors;
-  static __inject__GetVehicleParamsCarWindows = v.GetVehicleParamsCarWindows;
-  static __inject__SetVehicleParamsEx = v.SetVehicleParamsEx;
-  static __inject__GetVehicleParamsEx = v.GetVehicleParamsEx;
-  static __inject__GetVehicleParamsSirenState = v.GetVehicleParamsSirenState;
-  static __inject__SetVehicleParamsForPlayer = v.SetVehicleParamsForPlayer;
-  static __inject__IsTrailerAttachedToVehicle = v.IsTrailerAttachedToVehicle;
-  static __inject__ChangeVehiclePaintjob = v.ChangeVehiclePaintjob;
-  static __inject__AttachTrailerToVehicle = v.AttachTrailerToVehicle;
-  static __inject__DetachTrailerFromVehicle = v.DetachTrailerFromVehicle;
-  static __inject__GetVehicleTrailer = v.GetVehicleTrailer;
-  static __inject__GetVehicleMatrix = v.GetVehicleMatrix;
-  static __inject__GetVehicleTrainSpeed = v.GetVehicleTrainSpeed;
-  static __inject__GetVehicleHydraReactorAngle = v.GetVehicleHydraReactorAngle;
-  static __inject__GetVehicleLandingGearState = v.GetVehicleLandingGearState;
-  static __inject__GetVehicleSirenState = v.GetVehicleSirenState;
-  static __inject__GetVehicleDriver = v.GetVehicleDriver;
-  static __inject__GetVehicleLastDriver = v.GetVehicleLastDriver;
-  static __inject__IsVehicleSirenEnabled = v.IsVehicleSirenEnabled;
-  static __inject__ToggleVehicleSirenEnabled = v.ToggleVehicleSirenEnabled;
-  static __inject__SetVehicleParamsSirenState = v.SetVehicleParamsSirenState;
-  static __inject__IsVehicleDead = v.IsVehicleDead;
-  static __inject__SetVehicleDead = v.SetVehicleDead;
-  static __inject__SetVehicleBeenOccupied = v.SetVehicleBeenOccupied;
-  static __inject__GetVehicleRespawnTick = v.GetVehicleRespawnTick;
-  static __inject__SetVehicleRespawnTick = v.SetVehicleRespawnTick;
-  static __inject__IsVehicleOccupied = v.IsVehicleOccupied;
-  static __inject__HasVehicleBeenOccupied = v.HasVehicleBeenOccupied;
-  static __inject__GetVehicleOccupiedTick = v.GetVehicleOccupiedTick;
-  static __inject__SetVehicleOccupiedTick = v.SetVehicleOccupiedTick;
-  static __inject__GetVehicleCab = v.GetVehicleCab;
-  static __inject__GetVehicleRespawnDelay = v.GetVehicleRespawnDelay;
-  static __inject__SetVehicleRespawnDelay = v.SetVehicleRespawnDelay;
-  static __inject__GetVehicleNumberPlate = v.GetVehicleNumberPlate;
-  static __inject__GetVehicleInterior = v.GetVehicleInterior;
-  static __inject__GetVehiclePaintjob = v.GetVehiclePaintjob;
-  static __inject__GetVehicleColors = v.GetVehicleColors;
-  static __inject__SetVehicleSpawnInfo = v.SetVehicleSpawnInfo;
-  static __inject__GetVehicleSpawnInfo = v.GetVehicleSpawnInfo;
-  static __inject__GetRandomVehicleColorPair = v.GetRandomVehicleColorPair;
-  static __inject__ShowVehicle = v.ShowVehicle;
-  static __inject__HideVehicle = v.HideVehicle;
-  static __inject__IsVehicleHidden = v.IsVehicleHidden;
-  static __inject__GetVehicleOccupant = v.GetVehicleOccupant;
-  static __inject__GetVehicleMaxPassengers = v.GetVehicleMaxPassengers;
-  static __inject__CountVehicleOccupants = v.CountVehicleOccupants;
-  static __inject__GetVehicleComponentType = v.GetVehicleComponentType;
-  static __inject__VehicleColorIndexToColor = v.VehicleColorIndexToColor;
-  static __inject__IsValidVehicle = v.IsValidVehicle;
-  static __inject__GetVehicleModelsUsed = v.GetVehicleModelsUsed;
-  static __inject__GetVehicleModelCount = v.GetVehicleModelCount;
+  static __inject__ = {
+    AddStaticVehicle: v.AddStaticVehicle,
+    AddStaticVehicleEx: v.AddStaticVehicleEx,
+    CreateVehicle: v.CreateVehicle,
+    DestroyVehicle: v.DestroyVehicle,
+    AddVehicleComponent: v.AddVehicleComponent,
+    RemoveVehicleComponent: v.RemoveVehicleComponent,
+    GetVehicleComponentInSlot: v.GetVehicleComponentInSlot,
+    LinkVehicleToInterior: v.LinkVehicleToInterior,
+    SetVehicleVirtualWorld: v.SetVehicleVirtualWorld,
+    GetVehicleVirtualWorld: v.GetVehicleVirtualWorld,
+    RepairVehicle: v.RepairVehicle,
+    SetVehiclePos: v.SetVehiclePos,
+    GetVehiclePos: v.GetVehiclePos,
+    GetVehicleHealth: v.GetVehicleHealth,
+    SetVehicleHealth: v.SetVehicleHealth,
+    IsPlayerInVehicle: v.IsPlayerInVehicle,
+    PutPlayerInVehicle: v.PutPlayerInVehicle,
+    GetVehicleZAngle: v.GetVehicleZAngle,
+    SetVehicleZAngle: v.SetVehicleZAngle,
+    SetVehicleNumberPlate: v.SetVehicleNumberPlate,
+    ChangeVehicleColors: v.ChangeVehicleColors,
+    SetVehicleVelocity: v.SetVehicleVelocity,
+    GetVehicleVelocity: v.GetVehicleVelocity,
+    SetVehicleAngularVelocity: v.SetVehicleAngularVelocity,
+    GetVehicleDamageStatus: v.GetVehicleDamageStatus,
+    UpdateVehicleDamageStatus: v.UpdateVehicleDamageStatus,
+    GetVehicleDistanceFromPoint: v.GetVehicleDistanceFromPoint,
+    GetVehicleModel: v.GetVehicleModel,
+    GetVehicleModelInfo: v.GetVehicleModelInfo,
+    GetVehicleRotation: v.GetVehicleRotation,
+    GetVehicleRotationQuat: v.GetVehicleRotationQuat,
+    SetVehicleToRespawn: v.SetVehicleToRespawn,
+    IsVehicleStreamedIn: v.IsVehicleStreamedIn,
+    SetVehicleParamsCarDoors: v.SetVehicleParamsCarDoors,
+    SetVehicleParamsCarWindows: v.SetVehicleParamsCarWindows,
+    GetVehicleParamsCarDoors: v.GetVehicleParamsCarDoors,
+    GetVehicleParamsCarWindows: v.GetVehicleParamsCarWindows,
+    SetVehicleParamsEx: v.SetVehicleParamsEx,
+    GetVehicleParamsEx: v.GetVehicleParamsEx,
+    GetVehicleParamsSirenState: v.GetVehicleParamsSirenState,
+    SetVehicleParamsForPlayer: v.SetVehicleParamsForPlayer,
+    IsTrailerAttachedToVehicle: v.IsTrailerAttachedToVehicle,
+    ChangeVehiclePaintjob: v.ChangeVehiclePaintjob,
+    AttachTrailerToVehicle: v.AttachTrailerToVehicle,
+    DetachTrailerFromVehicle: v.DetachTrailerFromVehicle,
+    GetVehicleTrailer: v.GetVehicleTrailer,
+    GetVehicleMatrix: v.GetVehicleMatrix,
+    GetVehicleTrainSpeed: v.GetVehicleTrainSpeed,
+    GetVehicleHydraReactorAngle: v.GetVehicleHydraReactorAngle,
+    GetVehicleLandingGearState: v.GetVehicleLandingGearState,
+    GetVehicleSirenState: v.GetVehicleSirenState,
+    GetVehicleDriver: v.GetVehicleDriver,
+    GetVehicleLastDriver: v.GetVehicleLastDriver,
+    IsVehicleSirenEnabled: v.IsVehicleSirenEnabled,
+    ToggleVehicleSirenEnabled: v.ToggleVehicleSirenEnabled,
+    SetVehicleParamsSirenState: v.SetVehicleParamsSirenState,
+    IsVehicleDead: v.IsVehicleDead,
+    SetVehicleDead: v.SetVehicleDead,
+    SetVehicleBeenOccupied: v.SetVehicleBeenOccupied,
+    GetVehicleRespawnTick: v.GetVehicleRespawnTick,
+    SetVehicleRespawnTick: v.SetVehicleRespawnTick,
+    IsVehicleOccupied: v.IsVehicleOccupied,
+    HasVehicleBeenOccupied: v.HasVehicleBeenOccupied,
+    GetVehicleOccupiedTick: v.GetVehicleOccupiedTick,
+    SetVehicleOccupiedTick: v.SetVehicleOccupiedTick,
+    GetVehicleCab: v.GetVehicleCab,
+    GetVehicleRespawnDelay: v.GetVehicleRespawnDelay,
+    SetVehicleRespawnDelay: v.SetVehicleRespawnDelay,
+    GetVehicleNumberPlate: v.GetVehicleNumberPlate,
+    GetVehicleInterior: v.GetVehicleInterior,
+    GetVehiclePaintjob: v.GetVehiclePaintjob,
+    GetVehicleColors: v.GetVehicleColors,
+    SetVehicleSpawnInfo: v.SetVehicleSpawnInfo,
+    GetVehicleSpawnInfo: v.GetVehicleSpawnInfo,
+    GetRandomVehicleColorPair: v.GetRandomVehicleColorPair,
+    ShowVehicle: v.ShowVehicle,
+    HideVehicle: v.HideVehicle,
+    IsVehicleHidden: v.IsVehicleHidden,
+    GetVehicleOccupant: v.GetVehicleOccupant,
+    GetVehicleMaxPassengers: v.GetVehicleMaxPassengers,
+    CountVehicleOccupants: v.CountVehicleOccupants,
+    GetVehicleComponentType: v.GetVehicleComponentType,
+    VehicleColorIndexToColor: v.VehicleColorIndexToColor,
+    IsValidVehicle: v.IsValidVehicle,
+    GetVehicleModelsUsed: v.GetVehicleModelsUsed,
+    GetVehicleModelCount: v.GetVehicleModelCount,
+  };
 }

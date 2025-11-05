@@ -47,7 +47,7 @@ export class DynamicPickup {
       if (typeof areaId === "number") areaId = [-1];
       else areaId ??= [-1];
 
-      this._id = DynamicPickup.__inject__CreateDynamicPickupEx(
+      this._id = DynamicPickup.__inject__.CreateDynamicPickupEx(
         modelId,
         type,
         x,
@@ -70,7 +70,7 @@ export class DynamicPickup {
       if (Array.isArray(areaId)) areaId = -1;
       else areaId ??= -1;
 
-      this._id = DynamicPickup.__inject__CreateDynamicPickup(
+      this._id = DynamicPickup.__inject__.CreateDynamicPickup(
         modelId,
         type,
         x,
@@ -94,7 +94,7 @@ export class DynamicPickup {
         "[StreamerPickup]: Unable to destroy the pickup before create",
       );
     if (!INTERNAL_FLAGS.skip)
-      DynamicPickup.__inject__DestroyDynamicPickup(this.id);
+      DynamicPickup.__inject__.DestroyDynamicPickup(this.id);
     dynamicPickupPool.delete(this.id);
     this._id = s.StreamerMiscellaneous.INVALID_ID;
     return this;
@@ -147,7 +147,9 @@ export class DynamicPickup {
     return [...dynamicPickupPool.values()];
   }
 
-  static __inject__CreateDynamicPickup = s.CreateDynamicPickup;
-  static __inject__CreateDynamicPickupEx = s.CreateDynamicPickupEx;
-  static __inject__DestroyDynamicPickup = s.DestroyDynamicPickup;
+  static __inject__ = {
+    CreateDynamicPickup: s.CreateDynamicPickup,
+    CreateDynamicPickupEx: s.CreateDynamicPickupEx,
+    DestroyDynamicPickup: s.DestroyDynamicPickup,
+  };
 }

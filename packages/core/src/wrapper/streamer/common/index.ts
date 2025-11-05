@@ -1,100 +1,30 @@
 import { Player } from "core/components/player";
 import type { StreamerItemTypes } from "@infernus/streamer";
-import {
-  Streamer_AmxUnloadDestroyItems,
-  Streamer_AppendArrayData,
-  Streamer_CountItems,
-  Streamer_CountVisibleItems,
-  Streamer_DestroyAllItems,
-  Streamer_DestroyAllVisibleItems,
-  Streamer_GetAllVisibleItems,
-  Streamer_GetArrayData,
-  Streamer_GetArrayDataLength,
-  Streamer_GetCellDistance,
-  Streamer_GetCellSize,
-  Streamer_GetChunkSize,
-  Streamer_GetChunkTickRate,
-  Streamer_GetDistanceToItem,
-  Streamer_GetFloatData,
-  Streamer_GetIntData,
-  Streamer_GetItemInternalID,
-  Streamer_GetItemOffset,
-  Streamer_GetItemPos,
-  Streamer_GetItemStreamerID,
-  Streamer_GetLastUpdateTime,
-  Streamer_GetMaxItems,
-  Streamer_GetNearbyItems,
-  Streamer_GetPlayerTickRate,
-  Streamer_GetRadiusMultiplier,
-  Streamer_GetTickRate,
-  Streamer_GetTypePriority,
-  Streamer_GetUpperBound,
-  Streamer_GetVisibleItems,
-  Streamer_IsInArrayData,
-  Streamer_IsItemVisible,
-  Streamer_IsToggleCameraUpdate,
-  Streamer_IsToggleChunkStream,
-  Streamer_IsToggleErrorCallback,
-  Streamer_IsToggleIdleUpdate,
-  Streamer_IsToggleItem,
-  Streamer_IsToggleItemCallbacks,
-  Streamer_IsToggleItemInvAreas,
-  Streamer_IsToggleItemStatic,
-  Streamer_IsToggleItemUpdate,
-  Streamer_ProcessActiveItems,
-  Streamer_RemoveArrayData,
-  Streamer_SetArrayData,
-  Streamer_SetCellDistance,
-  Streamer_SetCellSize,
-  Streamer_SetChunkSize,
-  Streamer_SetChunkTickRate,
-  Streamer_SetFloatData,
-  Streamer_SetIntData,
-  Streamer_SetItemOffset,
-  Streamer_SetItemPos,
-  Streamer_SetMaxItems,
-  Streamer_SetPlayerTickRate,
-  Streamer_SetRadiusMultiplier,
-  Streamer_SetTickRate,
-  Streamer_SetTypePriority,
-  Streamer_SetVisibleItems,
-  Streamer_ToggleAllItems,
-  Streamer_ToggleCameraUpdate,
-  Streamer_ToggleChunkStream,
-  Streamer_ToggleErrorCallback,
-  Streamer_ToggleIdleUpdate,
-  Streamer_ToggleItem,
-  Streamer_ToggleItemCallbacks,
-  Streamer_ToggleItemInvAreas,
-  Streamer_ToggleItemStatic,
-  Streamer_ToggleItemUpdate,
-  Streamer_Update,
-  Streamer_UpdateEx,
-} from "@infernus/streamer";
+import * as s from "@infernus/streamer";
 import { onPluginError } from "../callbacks";
 
 export class Streamer {
   private constructor() {
     throw new Error("This is a static class and cannot be instantiated.");
   }
-  static getTickRate = Streamer_GetTickRate;
-  static setTickRate = Streamer_SetTickRate;
+  static getTickRate = s.Streamer_GetTickRate;
+  static setTickRate = s.Streamer_SetTickRate;
   static getPlayerTickRate(player: Player): number {
-    return Streamer_GetPlayerTickRate(player.id);
+    return s.Streamer_GetPlayerTickRate(player.id);
   }
   static setPlayerTickRate(player: Player, rate = 50): number {
-    return Streamer_SetPlayerTickRate(player.id, rate);
+    return s.Streamer_SetPlayerTickRate(player.id, rate);
   }
-  static toggleChunkStream = Streamer_ToggleChunkStream;
-  static isToggleChunkStream = Streamer_IsToggleChunkStream;
+  static toggleChunkStream = s.Streamer_ToggleChunkStream;
+  static isToggleChunkStream = s.Streamer_IsToggleChunkStream;
   static getChunkTickRate(
     type: StreamerItemTypes,
     player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
-      return Streamer_GetChunkTickRate(type, player.id);
+      return s.Streamer_GetChunkTickRate(type, player.id);
     }
-    return Streamer_GetChunkTickRate(type, player);
+    return s.Streamer_GetChunkTickRate(type, player);
   }
   static setChunkTickRate(
     type: StreamerItemTypes,
@@ -102,22 +32,22 @@ export class Streamer {
     player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
-      return Streamer_SetChunkTickRate(type, rate, player.id);
+      return s.Streamer_SetChunkTickRate(type, rate, player.id);
     }
-    return Streamer_SetChunkTickRate(type, rate, player);
+    return s.Streamer_SetChunkTickRate(type, rate, player);
   }
-  static getChunkSize = Streamer_GetChunkSize;
-  static setChunkSize = Streamer_SetChunkSize;
-  static getMaxItems = Streamer_GetMaxItems;
-  static setMaxItems = Streamer_SetMaxItems;
+  static getChunkSize = s.Streamer_GetChunkSize;
+  static setChunkSize = s.Streamer_SetChunkSize;
+  static getMaxItems = s.Streamer_GetMaxItems;
+  static setMaxItems = s.Streamer_SetMaxItems;
   static getVisibleItems(
     type: StreamerItemTypes,
     player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
-      return Streamer_GetVisibleItems(type, player.id);
+      return s.Streamer_GetVisibleItems(type, player.id);
     }
-    return Streamer_GetVisibleItems(type, player);
+    return s.Streamer_GetVisibleItems(type, player);
   }
   static setVisibleItems(
     type: StreamerItemTypes,
@@ -125,18 +55,18 @@ export class Streamer {
     player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
-      return Streamer_SetVisibleItems(type, items, player.id);
+      return s.Streamer_SetVisibleItems(type, items, player.id);
     }
-    return Streamer_SetVisibleItems(type, items, player);
+    return s.Streamer_SetVisibleItems(type, items, player);
   }
   static getRadiusMultiplier(
     type: StreamerItemTypes,
     player: number | Player = -1,
   ) {
     if (player instanceof Player) {
-      return Streamer_GetRadiusMultiplier(type, player.id);
+      return s.Streamer_GetRadiusMultiplier(type, player.id);
     }
-    return Streamer_GetRadiusMultiplier(type, player);
+    return s.Streamer_GetRadiusMultiplier(type, player);
   }
   static setRadiusMultiplier(
     type: StreamerItemTypes,
@@ -144,53 +74,53 @@ export class Streamer {
     player: number | Player = -1,
   ): number {
     if (player instanceof Player) {
-      return Streamer_SetRadiusMultiplier(type, multiplier, player.id);
+      return s.Streamer_SetRadiusMultiplier(type, multiplier, player.id);
     }
-    return Streamer_SetRadiusMultiplier(type, multiplier, player);
+    return s.Streamer_SetRadiusMultiplier(type, multiplier, player);
   }
-  static getTypePriority = Streamer_GetTypePriority;
-  static setTypePriority = Streamer_SetTypePriority;
-  static getCellDistance = Streamer_GetCellDistance;
-  static setCellDistance = Streamer_SetCellDistance;
-  static getCellSize = Streamer_GetCellSize;
-  static setCellSize = Streamer_SetCellSize;
-  static toggleItemStatic = Streamer_ToggleItemStatic;
-  static isToggleItemStatic = Streamer_IsToggleItemStatic;
-  static toggleItemInvAreas = Streamer_ToggleItemInvAreas;
-  static isToggleItemInvAreas = Streamer_IsToggleItemInvAreas;
-  static toggleItemCallbacks = Streamer_ToggleItemCallbacks;
-  static isToggleItemCallbacks = Streamer_IsToggleItemCallbacks;
-  static toggleErrorCallback = Streamer_ToggleErrorCallback;
-  static isToggleErrorCallback = Streamer_IsToggleErrorCallback;
-  static amxUnloadDestroyItems = Streamer_AmxUnloadDestroyItems;
-  static processActiveItems = Streamer_ProcessActiveItems;
+  static getTypePriority = s.Streamer_GetTypePriority;
+  static setTypePriority = s.Streamer_SetTypePriority;
+  static getCellDistance = s.Streamer_GetCellDistance;
+  static setCellDistance = s.Streamer_SetCellDistance;
+  static getCellSize = s.Streamer_GetCellSize;
+  static setCellSize = s.Streamer_SetCellSize;
+  static toggleItemStatic = s.Streamer_ToggleItemStatic;
+  static isToggleItemStatic = s.Streamer_IsToggleItemStatic;
+  static toggleItemInvAreas = s.Streamer_ToggleItemInvAreas;
+  static isToggleItemInvAreas = s.Streamer_IsToggleItemInvAreas;
+  static toggleItemCallbacks = s.Streamer_ToggleItemCallbacks;
+  static isToggleItemCallbacks = s.Streamer_IsToggleItemCallbacks;
+  static toggleErrorCallback = s.Streamer_ToggleErrorCallback;
+  static isToggleErrorCallback = s.Streamer_IsToggleErrorCallback;
+  static amxUnloadDestroyItems = s.Streamer_AmxUnloadDestroyItems;
+  static processActiveItems = s.Streamer_ProcessActiveItems;
   static toggleIdleUpdate(player: Player, toggle: boolean): number {
-    return Streamer_ToggleIdleUpdate(player.id, toggle);
+    return s.Streamer_ToggleIdleUpdate(player.id, toggle);
   }
   static isToggleIdleUpdate(player: Player): boolean {
-    return Streamer_IsToggleIdleUpdate(player.id);
+    return s.Streamer_IsToggleIdleUpdate(player.id);
   }
   static toggleCameraUpdate(player: Player, toggle: boolean): number {
-    return Streamer_ToggleCameraUpdate(player.id, toggle);
+    return s.Streamer_ToggleCameraUpdate(player.id, toggle);
   }
   static isToggleCameraUpdate(player: Player): boolean {
-    return Streamer_IsToggleCameraUpdate(player.id);
+    return s.Streamer_IsToggleCameraUpdate(player.id);
   }
   static toggleItemUpdate(
     player: Player,
     type: StreamerItemTypes,
     toggle: boolean,
   ): number {
-    return Streamer_ToggleItemUpdate(player.id, type, toggle);
+    return s.Streamer_ToggleItemUpdate(player.id, type, toggle);
   }
   static isToggleItemUpdate(player: Player, type: StreamerItemTypes): boolean {
-    return Streamer_IsToggleItemUpdate(player.id, type);
+    return s.Streamer_IsToggleItemUpdate(player.id, type);
   }
   static getLastUpdateTime() {
-    return Streamer_GetLastUpdateTime();
+    return s.Streamer_GetLastUpdateTime();
   }
   static update(player: Player, type: StreamerItemTypes | -1 = -1): number {
-    return Streamer_Update(player.id, type);
+    return s.Streamer_Update(player.id, type);
   }
   static updateEx(
     player: Player,
@@ -203,7 +133,7 @@ export class Streamer {
     compensatedTime?: number,
     freezePlayer?: boolean,
   ): number {
-    return Streamer_UpdateEx(
+    return s.Streamer_UpdateEx(
       player.id,
       x,
       y,
@@ -215,21 +145,21 @@ export class Streamer {
       freezePlayer,
     );
   }
-  static getDistanceToItem = Streamer_GetDistanceToItem;
+  static getDistanceToItem = s.Streamer_GetDistanceToItem;
   static toggleItem(
     player: Player,
     type: StreamerItemTypes,
     id: number,
     toggle: boolean,
   ): number {
-    return Streamer_ToggleItem(player.id, type, id, toggle);
+    return s.Streamer_ToggleItem(player.id, type, id, toggle);
   }
   static isToggleItem(
     player: Player,
     type: StreamerItemTypes,
     id: number,
   ): boolean {
-    return Streamer_IsToggleItem(player.id, type, id);
+    return s.Streamer_IsToggleItem(player.id, type, id);
   }
   static toggleAllItems(
     player: Player,
@@ -237,67 +167,67 @@ export class Streamer {
     toggle: boolean,
     exceptions: number[] = [-1],
   ): number {
-    return Streamer_ToggleAllItems(player.id, type, toggle, exceptions);
+    return s.Streamer_ToggleAllItems(player.id, type, toggle, exceptions);
   }
   static getItemInternalID(
     player: Player,
     type: StreamerItemTypes,
     streamerId: number,
   ): number {
-    return Streamer_GetItemInternalID(player.id, type, streamerId);
+    return s.Streamer_GetItemInternalID(player.id, type, streamerId);
   }
   static getItemStreamerID(
     player: Player,
     type: StreamerItemTypes,
     internalId: number,
   ): number {
-    return Streamer_GetItemStreamerID(player.id, type, internalId);
+    return s.Streamer_GetItemStreamerID(player.id, type, internalId);
   }
   static isItemVisible(
     player: Player,
     type: StreamerItemTypes,
     id: number,
   ): boolean {
-    return Streamer_IsItemVisible(player.id, type, id);
+    return s.Streamer_IsItemVisible(player.id, type, id);
   }
   static destroyAllVisibleItems(
     player: Player,
     type: StreamerItemTypes,
     serverWide = 1,
   ): number {
-    return Streamer_DestroyAllVisibleItems(player.id, type, serverWide);
+    return s.Streamer_DestroyAllVisibleItems(player.id, type, serverWide);
   }
   static countVisibleItems(
     player: Player,
     type: StreamerItemTypes,
     serverWide = 1,
   ): number {
-    return Streamer_CountVisibleItems(player.id, type, serverWide);
+    return s.Streamer_CountVisibleItems(player.id, type, serverWide);
   }
-  static destroyAllItems = Streamer_DestroyAllItems;
-  static countItems = Streamer_CountItems;
-  static getNearbyItems = Streamer_GetNearbyItems;
+  static destroyAllItems = s.Streamer_DestroyAllItems;
+  static countItems = s.Streamer_CountItems;
+  static getNearbyItems = s.Streamer_GetNearbyItems;
   static getAllVisibleItems(
     player: Player,
     type: StreamerItemTypes,
     maxItems?: number,
   ) {
-    return Streamer_GetAllVisibleItems(player.id, type, maxItems);
+    return s.Streamer_GetAllVisibleItems(player.id, type, maxItems);
   }
-  static getItemPos = Streamer_GetItemPos;
-  static setItemPos = Streamer_SetItemPos;
-  static getItemOffset = Streamer_GetItemOffset;
-  static setItemOffset = Streamer_SetItemOffset;
-  static getFloatData = Streamer_GetFloatData;
-  static setFloatData = Streamer_SetFloatData;
-  static getIntData = Streamer_GetIntData;
-  static setIntData = Streamer_SetIntData;
-  static getArrayData = Streamer_GetArrayData;
-  static setArrayData = Streamer_SetArrayData;
-  static isInArrayData = Streamer_IsInArrayData;
-  static appendArrayData = Streamer_AppendArrayData;
-  static removeArrayData = Streamer_RemoveArrayData;
-  static getArrayDataLength = Streamer_GetArrayDataLength;
-  static getUpperBound = Streamer_GetUpperBound;
+  static getItemPos = s.Streamer_GetItemPos;
+  static setItemPos = s.Streamer_SetItemPos;
+  static getItemOffset = s.Streamer_GetItemOffset;
+  static setItemOffset = s.Streamer_SetItemOffset;
+  static getFloatData = s.Streamer_GetFloatData;
+  static setFloatData = s.Streamer_SetFloatData;
+  static getIntData = s.Streamer_GetIntData;
+  static setIntData = s.Streamer_SetIntData;
+  static getArrayData = s.Streamer_GetArrayData;
+  static setArrayData = s.Streamer_SetArrayData;
+  static isInArrayData = s.Streamer_IsInArrayData;
+  static appendArrayData = s.Streamer_AppendArrayData;
+  static removeArrayData = s.Streamer_RemoveArrayData;
+  static getArrayDataLength = s.Streamer_GetArrayDataLength;
+  static getUpperBound = s.Streamer_GetUpperBound;
   static onPluginError = onPluginError;
 }

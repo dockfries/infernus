@@ -29,7 +29,7 @@ export class Actor {
     if (this._id !== InvalidEnum.ACTOR_ID)
       throw new Error("[Actor]: Cannot be created twice");
     const { skin, x, y, z, rotation } = this.sourceInfo!;
-    this._id = Actor.__inject__CreateActor(skin, x, y, z, rotation);
+    this._id = Actor.__inject__.CreateActor(skin, x, y, z, rotation);
     if (
       this._id === InvalidEnum.ACTOR_ID ||
       Actor.getInstances().length === LimitsEnum.MAX_ACTORS
@@ -44,7 +44,7 @@ export class Actor {
     if (this._id === InvalidEnum.ACTOR_ID)
       throw new Error("[Actor]: Cannot before create");
     if (!INTERNAL_FLAGS.skip) {
-      Actor.__inject__DestroyActor(this._id);
+      Actor.__inject__.DestroyActor(this._id);
     }
     actorPool.delete(this._id);
     this._id = InvalidEnum.ACTOR_ID;
@@ -53,17 +53,17 @@ export class Actor {
 
   isStreamIn(forPlayer: Player) {
     if (this._id === InvalidEnum.ACTOR_ID) return false;
-    return Actor.__inject__IsActorStreamedIn(this.id, forPlayer.id);
+    return Actor.__inject__.IsActorStreamedIn(this.id, forPlayer.id);
   }
 
   setVirtualWorld(vWorld: number) {
     if (this._id === InvalidEnum.ACTOR_ID) return false;
-    return Actor.__inject__SetActorVirtualWorld(this.id, vWorld);
+    return Actor.__inject__.SetActorVirtualWorld(this.id, vWorld);
   }
 
   getVirtualWorld() {
     if (this._id === InvalidEnum.ACTOR_ID) return 0;
-    return Actor.__inject__GetActorVirtualWorld(this.id);
+    return Actor.__inject__.GetActorVirtualWorld(this.id);
   }
 
   applyAnimation(
@@ -77,7 +77,7 @@ export class Actor {
     time: number,
   ) {
     if (this._id === InvalidEnum.ACTOR_ID) return false;
-    return Actor.__inject__ApplyActorAnimation(
+    return Actor.__inject__.ApplyActorAnimation(
       this.id,
       animLib,
       animName,
@@ -92,53 +92,53 @@ export class Actor {
 
   clearAnimations() {
     if (this._id === InvalidEnum.ACTOR_ID) return false;
-    return Actor.__inject__ClearActorAnimations(this.id);
+    return Actor.__inject__.ClearActorAnimations(this.id);
   }
 
   setPos(x: number, y: number, z: number) {
     if (this._id === InvalidEnum.ACTOR_ID) return false;
-    return Actor.__inject__SetActorPos(this.id, x, y, z);
+    return Actor.__inject__.SetActorPos(this.id, x, y, z);
   }
 
   getPos() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new Error("[Actor]: Cannot getPos before create");
     }
-    return Actor.__inject__GetActorPos(this.id);
+    return Actor.__inject__.GetActorPos(this.id);
   }
 
   setFacingAngle(ang: number) {
     if (this._id === InvalidEnum.ACTOR_ID) return false;
-    return Actor.__inject__SetActorFacingAngle(this.id, ang);
+    return Actor.__inject__.SetActorFacingAngle(this.id, ang);
   }
 
   getFacingAngle() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new Error("[Actor]: Cannot getFacingAngle before create");
     }
-    return Actor.__inject__GetActorFacingAngle(this.id);
+    return Actor.__inject__.GetActorFacingAngle(this.id);
   }
 
   setHealth(health: number) {
     if (this._id === InvalidEnum.ACTOR_ID) return false;
-    return Actor.__inject__SetActorHealth(this.id, health);
+    return Actor.__inject__.SetActorHealth(this.id, health);
   }
 
   getHealth() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new Error("[Actor]: Cannot getHealth before create");
     }
-    return Actor.__inject__GetActorHealth(this.id);
+    return Actor.__inject__.GetActorHealth(this.id);
   }
 
   setInvulnerable(invulnerable: boolean) {
     if (this._id === InvalidEnum.ACTOR_ID) return false;
-    return Actor.__inject__SetActorInvulnerable(this.id, invulnerable);
+    return Actor.__inject__.SetActorInvulnerable(this.id, invulnerable);
   }
 
   isInvulnerable() {
     if (this._id === InvalidEnum.ACTOR_ID) return false;
-    return Actor.__inject__IsActorInvulnerable(this.id);
+    return Actor.__inject__.IsActorInvulnerable(this.id);
   }
 
   isValid() {
@@ -147,7 +147,7 @@ export class Actor {
 
   setSkin(skin: number) {
     if (this._id === InvalidEnum.ACTOR_ID) return false;
-    return Actor.__inject__SetActorSkin(this.id, skin);
+    return Actor.__inject__.SetActorSkin(this.id, skin);
   }
 
   getSkin() {
@@ -157,25 +157,25 @@ export class Actor {
     if (this.sourceInfo) {
       return this.sourceInfo.skin;
     }
-    return Actor.__inject__GetActorSkin(this.id);
+    return Actor.__inject__.GetActorSkin(this.id);
   }
 
   getAnimation() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new Error("[Actor]: Cannot getAnimation before create");
     }
-    return Actor.__inject__GetActorAnimation(this.id);
+    return Actor.__inject__.GetActorAnimation(this.id);
   }
 
   getSpawnInfo() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new Error("[Actor]: Cannot getSpawnInfo before create");
     }
-    return Actor.__inject__GetActorSpawnInfo(this.id);
+    return Actor.__inject__.GetActorSpawnInfo(this.id);
   }
 
   static isValid(id: number) {
-    return Actor.__inject__IsValidActor(id);
+    return Actor.__inject__.IsValidActor(id);
   }
 
   static getInstance(id: number) {
@@ -186,24 +186,26 @@ export class Actor {
     return [...actorPool.values()];
   }
 
-  static __inject__ApplyActorAnimation = a.ApplyActorAnimation;
-  static __inject__ClearActorAnimations = a.ClearActorAnimations;
-  static __inject__CreateActor = a.CreateActor;
-  static __inject__DestroyActor = a.DestroyActor;
-  static __inject__GetActorAnimation = a.GetActorAnimation;
-  static __inject__GetActorFacingAngle = a.GetActorFacingAngle;
-  static __inject__GetActorHealth = a.GetActorHealth;
-  static __inject__GetActorPos = a.GetActorPos;
-  static __inject__GetActorSkin = a.GetActorSkin;
-  static __inject__GetActorSpawnInfo = a.GetActorSpawnInfo;
-  static __inject__GetActorVirtualWorld = a.GetActorVirtualWorld;
-  static __inject__IsActorInvulnerable = a.IsActorInvulnerable;
-  static __inject__IsActorStreamedIn = a.IsActorStreamedIn;
-  static __inject__IsValidActor = a.IsValidActor;
-  static __inject__SetActorFacingAngle = a.SetActorFacingAngle;
-  static __inject__SetActorHealth = a.SetActorHealth;
-  static __inject__SetActorInvulnerable = a.SetActorInvulnerable;
-  static __inject__SetActorPos = a.SetActorPos;
-  static __inject__SetActorSkin = a.SetActorSkin;
-  static __inject__SetActorVirtualWorld = a.SetActorVirtualWorld;
+  static __inject__ = {
+    ApplyActorAnimation: a.ApplyActorAnimation,
+    ClearActorAnimations: a.ClearActorAnimations,
+    CreateActor: a.CreateActor,
+    DestroyActor: a.DestroyActor,
+    GetActorAnimation: a.GetActorAnimation,
+    GetActorFacingAngle: a.GetActorFacingAngle,
+    GetActorHealth: a.GetActorHealth,
+    GetActorPos: a.GetActorPos,
+    GetActorSkin: a.GetActorSkin,
+    GetActorSpawnInfo: a.GetActorSpawnInfo,
+    GetActorVirtualWorld: a.GetActorVirtualWorld,
+    IsActorInvulnerable: a.IsActorInvulnerable,
+    IsActorStreamedIn: a.IsActorStreamedIn,
+    IsValidActor: a.IsValidActor,
+    SetActorFacingAngle: a.SetActorFacingAngle,
+    SetActorHealth: a.SetActorHealth,
+    SetActorInvulnerable: a.SetActorInvulnerable,
+    SetActorPos: a.SetActorPos,
+    SetActorSkin: a.SetActorSkin,
+    SetActorVirtualWorld: a.SetActorVirtualWorld,
+  };
 }

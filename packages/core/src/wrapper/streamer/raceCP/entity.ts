@@ -63,7 +63,7 @@ export class DynamicRaceCP {
       if (typeof areaId === "number") areaId = [-1];
       else areaId ??= [-1];
 
-      this._id = CreateDynamicRaceCPEx(
+      this._id = DynamicRaceCP.__inject__.CreateDynamicRaceCPEx(
         type,
         x,
         y,
@@ -89,7 +89,7 @@ export class DynamicRaceCP {
       if (Array.isArray(areaId)) areaId = -1;
       else areaId ??= -1;
 
-      this._id = CreateDynamicRaceCP(
+      this._id = DynamicRaceCP.__inject__.CreateDynamicRaceCP(
         type,
         x,
         y,
@@ -116,7 +116,7 @@ export class DynamicRaceCP {
         "[StreamerRaceCP]: Unable to destroy the checkpoint before create",
       );
     if (!INTERNAL_FLAGS.skip) {
-      DestroyDynamicRaceCP(this.id);
+      DynamicRaceCP.__inject__.DestroyDynamicRaceCP(this.id);
     }
     dynamicRaceCPPool.delete(this.id);
     this._id = -StreamerMiscellaneous.INVALID_ID;
@@ -132,18 +132,27 @@ export class DynamicRaceCP {
       throw new Error(
         "[StreamerRaceCP]: Unable to toggle the player before create",
       );
-    TogglePlayerDynamicRaceCP(player.id, this.id, toggle);
+    DynamicRaceCP.__inject__.TogglePlayerDynamicRaceCP(
+      player.id,
+      this.id,
+      toggle,
+    );
     return this;
   }
   static togglePlayerAll(player: Player, toggle: boolean): number {
-    return TogglePlayerAllDynamicRaceCPs(player.id, toggle);
+    return DynamicRaceCP.__inject__.TogglePlayerAllDynamicRaceCPs(
+      player.id,
+      toggle,
+    );
   }
   isPlayerIn(player: Player): boolean {
     if (this.id === StreamerMiscellaneous.INVALID_ID) return false;
-    return IsPlayerInDynamicRaceCP(player.id, this.id);
+    return DynamicRaceCP.__inject__.IsPlayerInDynamicRaceCP(player.id, this.id);
   }
   static getPlayerVisible(player: Player) {
-    return dynamicRaceCPPool.get(GetPlayerVisibleDynamicRaceCP(player.id));
+    return dynamicRaceCPPool.get(
+      DynamicRaceCP.__inject__.GetPlayerVisibleDynamicRaceCP(player.id),
+    );
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
@@ -183,4 +192,18 @@ export class DynamicRaceCP {
   static getInstances() {
     return [...dynamicRaceCPPool.values()];
   }
+
+  static __inject__ = {
+    CreateDynamicRaceCP,
+    CreateDynamicRaceCPEx,
+    DestroyDynamicRaceCP,
+    GetPlayerVisibleDynamicRaceCP,
+    IsPlayerInDynamicRaceCP,
+    IsValidDynamicCP,
+    StreamerDistances,
+    StreamerItemTypes,
+    StreamerMiscellaneous,
+    TogglePlayerAllDynamicRaceCPs,
+    TogglePlayerDynamicRaceCP,
+  };
 }

@@ -75,7 +75,7 @@ export class Dynamic3DTextLabel {
       if (typeof areaId === "number") areaId = [-1];
       else areaId ??= [-1];
 
-      this._id = CreateDynamic3DTextLabelEx(
+      this._id = Dynamic3DTextLabel.__inject__.CreateDynamic3DTextLabelEx(
         text,
         rgba(color),
         x,
@@ -103,7 +103,7 @@ export class Dynamic3DTextLabel {
       if (Array.isArray(areaId)) areaId = -1;
       else areaId ??= -1;
 
-      this._id = CreateDynamic3DTextLabel(
+      this._id = Dynamic3DTextLabel.__inject__.CreateDynamic3DTextLabel(
         charset || "utf8",
         text,
         rgba(color),
@@ -129,7 +129,7 @@ export class Dynamic3DTextLabel {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new Error("[Streamer3DTextLabel]: Unable to destroy before create");
     if (!INTERNAL_FLAGS.skip) {
-      DestroyDynamic3DTextLabel(this.id);
+      Dynamic3DTextLabel.__inject__.DestroyDynamic3DTextLabel(this.id);
     }
     dynamic3DTextLabelPool.delete(this.id);
     this._id = StreamerMiscellaneous.INVALID_ID;
@@ -162,7 +162,7 @@ export class Dynamic3DTextLabel {
     return this.sourceInfo?.charset;
   }
   getText() {
-    return GetDynamic3DTextLabelText(
+    return Dynamic3DTextLabel.__inject__.GetDynamic3DTextLabelText(
       this.id,
       this.sourceInfo?.charset || "utf8",
     );
@@ -177,7 +177,12 @@ export class Dynamic3DTextLabel {
       _charset = charset || this.sourceInfo.charset || "utf8";
       this.sourceInfo.charset = _charset;
     }
-    return UpdateDynamic3DTextLabelText(this.id, rgba(color), text, _charset);
+    return Dynamic3DTextLabel.__inject__.UpdateDynamic3DTextLabelText(
+      this.id,
+      rgba(color),
+      text,
+      _charset,
+    );
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
@@ -301,4 +306,13 @@ export class Dynamic3DTextLabel {
   static getInstances() {
     return [...dynamic3DTextLabelPool.values()];
   }
+
+  static __inject__ = {
+    CreateDynamic3DTextLabel,
+    CreateDynamic3DTextLabelEx,
+    GetDynamic3DTextLabelText,
+    UpdateDynamic3DTextLabelText,
+    DestroyDynamic3DTextLabel,
+    IsValidDynamic3DTextLabel,
+  };
 }
