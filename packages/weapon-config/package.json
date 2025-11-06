@@ -1,6 +1,6 @@
 {
   "name": "@infernus/weapon-config",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A wrapper of the popular SA-MP weapon-config library for samp-node.",
   "keywords": [
     "samp",
