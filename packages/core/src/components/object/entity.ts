@@ -324,7 +324,7 @@ export class ObjectMp {
         syncRotation,
       );
     } else if (!this.isGlobal() && !attachTo.isGlobal()) {
-      return ObjectMp.__inject__.attachToObjectPlayer(
+      return ObjectMp.__inject__.attachPlayerToObject(
         this.getPlayerId(),
         this.id,
         attachTo.id,
@@ -353,9 +353,6 @@ export class ObjectMp {
   ): boolean {
     if (this.id === InvalidEnum.OBJECT_ID) return false;
     if (this.isGlobal()) {
-      if (!player) {
-        throw new Error("[ObjectMp]: Cannot attachCamera without player");
-      }
       return ObjectMp.__inject__.attachToPlayer(
         this.id,
         player.id,
@@ -367,7 +364,7 @@ export class ObjectMp {
         rz,
       );
     }
-    return ObjectMp.__inject__.attachToPlayerPlayer(
+    return ObjectMp.__inject__.attachPlayerToPlayer(
       this.getPlayerId(),
       this.id,
       player.id,
@@ -402,7 +399,7 @@ export class ObjectMp {
         rz,
       );
     }
-    return ObjectMp.__inject__.attachToVehiclePlayer(
+    return ObjectMp.__inject__.attachPlayerToVehicle(
       this.getPlayerId(),
       this.id,
       vehicle.id,
@@ -727,12 +724,12 @@ export class ObjectMp {
     isMovingPlayer: o.IsPlayerObjectMoving,
     attachCamera: o.AttachCameraToObject,
     attachCameraPlayer: o.AttachCameraToPlayerObject,
-    attachToPlayer: o.AttachObjectToPlayer,
     attachToObject: o.AttachObjectToObject,
-    attachToObjectPlayer: o.AttachPlayerObjectToObject,
-    attachToPlayerPlayer: o.AttachPlayerObjectToPlayer,
+    attachToPlayer: o.AttachObjectToPlayer,
     attachToVehicle: o.AttachObjectToVehicle,
-    attachToVehiclePlayer: o.AttachPlayerObjectToVehicle,
+    attachPlayerToObject: o.AttachPlayerObjectToObject,
+    attachPlayerToPlayer: o.AttachPlayerObjectToPlayer,
+    attachPlayerToVehicle: o.AttachPlayerObjectToVehicle,
     beginEditing: o.BeginObjectEditing,
     beginEditingPlayer: o.BeginPlayerObjectEditing,
     endEditing: o.EndObjectEditing,
