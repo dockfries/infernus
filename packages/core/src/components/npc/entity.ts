@@ -31,7 +31,7 @@ export class Npc {
   }
 
   constructor(name: string) {
-    this._id = Npc.__inject__.NPC_Create(name);
+    this._id = Npc.__inject__.create(name);
     this._name = name;
     if (this._id !== InvalidEnum.NPC_ID) {
       if (!this.getPlayer()) {
@@ -49,7 +49,7 @@ export class Npc {
   }
   destroy() {
     if (!INTERNAL_FLAGS.skip) {
-      Npc.__inject__.NPC_Destroy(this._id);
+      Npc.__inject__.destroy(this._id);
     }
     npcPool.delete(this._id);
     this._id = InvalidEnum.NPC_ID;
@@ -60,37 +60,37 @@ export class Npc {
     return Npc.isValid(this._id);
   }
   spawn() {
-    Npc.__inject__.NPC_Spawn(this._id);
+    Npc.__inject__.spawn(this._id);
     return this;
   }
   respawn() {
-    Npc.__inject__.NPC_Respawn(this._id);
+    Npc.__inject__.respawn(this._id);
     return this;
   }
   setPos(x: number, y: number, z: number) {
-    Npc.__inject__.NPC_SetPos(this._id, x, y, z);
+    Npc.__inject__.setPos(this._id, x, y, z);
     return this;
   }
   setRot(rX: number, rY: number, rZ: number) {
-    Npc.__inject__.NPC_SetRot(this._id, rX, rY, rZ);
+    Npc.__inject__.setRot(this._id, rX, rY, rZ);
     return this;
   }
   getRot() {
-    return Npc.__inject__.NPC_GetRot(this._id);
+    return Npc.__inject__.getRot(this._id);
   }
   setFacingAngle(angle: number) {
-    Npc.__inject__.NPC_SetFacingAngle(this._id, angle);
+    Npc.__inject__.setFacingAngle(this._id, angle);
     return this;
   }
   getFacingAngle() {
-    return Npc.__inject__.NPC_GetFacingAngle(this._id);
+    return Npc.__inject__.getFacingAngle(this._id);
   }
   setVirtualWorld(virtualWorld: number) {
-    Npc.__inject__.NPC_SetVirtualWorld(this._id, virtualWorld);
+    Npc.__inject__.setVirtualWorld(this._id, virtualWorld);
     return this;
   }
   getVirtualWorld() {
-    return Npc.__inject__.NPC_GetVirtualWorld(this._id);
+    return Npc.__inject__.getVirtualWorld(this._id);
   }
   move(
     targetPosX: number,
@@ -99,7 +99,7 @@ export class Npc {
     moveType: number,
     moveSpeed: number = NPCMoveSpeedEnum.AUTO,
   ) {
-    return Npc.__inject__.NPC_Move(
+    return Npc.__inject__.move(
       this._id,
       targetPosX,
       targetPosY,
@@ -113,7 +113,7 @@ export class Npc {
     moveType: number,
     moveSpeed: number = NPCMoveSpeedEnum.AUTO,
   ) {
-    return Npc.__inject__.NPC_MoveToPlayer(
+    return Npc.__inject__.moveToPlayer(
       this._id,
       player.id,
       moveType,
@@ -121,51 +121,51 @@ export class Npc {
     );
   }
   stopMove() {
-    Npc.__inject__.NPC_StopMove(this._id);
+    Npc.__inject__.stopMove(this._id);
     return this;
   }
   isMoving() {
-    return Npc.__inject__.NPC_IsMoving(this._id);
+    return Npc.__inject__.isMoving(this._id);
   }
   isMovingToPlayer(player: Player) {
-    return Npc.__inject__.NPC_IsMovingToPlayer(this._id, player.id);
+    return Npc.__inject__.isMovingToPlayer(this._id, player.id);
   }
   setSkin(model: number) {
-    Npc.__inject__.NPC_SetSkin(this._id, model);
+    Npc.__inject__.setSkin(this._id, model);
     return this;
   }
   getSkin() {
-    return Npc.__inject__.NPC_GetSkin(this._id);
+    return Npc.__inject__.getSkin(this._id);
   }
   isStreamedIn(player: Player) {
-    return Npc.__inject__.NPC_IsStreamedIn(this._id, player.id);
+    return Npc.__inject__.isStreamedIn(this._id, player.id);
   }
   isAnyStreamedIn() {
-    return Npc.__inject__.NPC_IsAnyStreamedIn(this._id);
+    return Npc.__inject__.isAnyStreamedIn(this._id);
   }
   setInterior(interior: number) {
-    Npc.__inject__.NPC_SetInterior(this._id, interior);
+    Npc.__inject__.setInterior(this._id, interior);
     return this;
   }
   getInterior() {
-    return Npc.__inject__.NPC_GetInterior(this._id);
+    return Npc.__inject__.getInterior(this._id);
   }
   setHealth(health: number) {
-    Npc.__inject__.NPC_SetHealth(this._id, health);
+    Npc.__inject__.setHealth(this._id, health);
     return this;
   }
   getHealth() {
-    return Npc.__inject__.NPC_GetHealth(this._id);
+    return Npc.__inject__.getHealth(this._id);
   }
   setArmour(armour: number) {
-    Npc.__inject__.NPC_SetArmour(this._id, armour);
+    Npc.__inject__.setArmour(this._id, armour);
     return this;
   }
   getArmour() {
-    return Npc.__inject__.NPC_GetArmour(this._id);
+    return Npc.__inject__.getArmour(this._id);
   }
   isDead() {
-    return Npc.__inject__.NPC_IsDead(this._id);
+    return Npc.__inject__.isDead(this._id);
   }
   applyAnimation(
     animLib: string,
@@ -178,7 +178,7 @@ export class Npc {
     time: number,
     sync: number,
   ) {
-    Npc.__inject__.NPC_ApplyAnimation(
+    Npc.__inject__.applyAnimation(
       this._id,
       animLib,
       animName,
@@ -193,80 +193,80 @@ export class Npc {
     return this;
   }
   setWeapon(weapon: WeaponEnum) {
-    Npc.__inject__.NPC_SetWeapon(this._id, weapon);
+    Npc.__inject__.setWeapon(this._id, weapon);
     return this;
   }
   getWeapon() {
-    return Npc.__inject__.NPC_GetWeapon(this._id);
+    return Npc.__inject__.getWeapon(this._id);
   }
   setAmmo(ammo: number) {
-    Npc.__inject__.NPC_SetAmmo(this._id, ammo);
+    Npc.__inject__.setAmmo(this._id, ammo);
     return this;
   }
   getAmmo() {
-    return Npc.__inject__.NPC_GetAmmo(this._id);
+    return Npc.__inject__.getAmmo(this._id);
   }
   setKeys(upAndDown: number, leftAndDown: number, keys: number) {
-    Npc.__inject__.NPC_SetKeys(this._id, upAndDown, leftAndDown, keys);
+    Npc.__inject__.setKeys(this._id, upAndDown, leftAndDown, keys);
     return this;
   }
   getKeys() {
-    return Npc.__inject__.NPC_GetKeys(this._id);
+    return Npc.__inject__.getKeys(this._id);
   }
   setWeaponSkillLevel(skill: WeaponSkillsEnum, level: number) {
-    Npc.__inject__.NPC_SetWeaponSkillLevel(this._id, skill, level);
+    Npc.__inject__.setWeaponSkillLevel(this._id, skill, level);
     return this;
   }
   getWeaponSkillLevel(skill: WeaponSkillsEnum) {
-    return Npc.__inject__.NPC_GetWeaponSkillLevel(this._id, skill);
+    return Npc.__inject__.getWeaponSkillLevel(this._id, skill);
   }
   meleeAttack(time: number, secondaryAttack: boolean) {
-    Npc.__inject__.NPC_MeleeAttack(this._id, time, secondaryAttack);
+    Npc.__inject__.meleeAttack(this._id, time, secondaryAttack);
     return this;
   }
   stopMeleeAttack() {
-    Npc.__inject__.NPC_StopMeleeAttack(this._id);
+    Npc.__inject__.stopMeleeAttack(this._id);
     return this;
   }
   isMeleeAttacking() {
-    return Npc.__inject__.NPC_IsMeleeAttacking(this._id);
+    return Npc.__inject__.isMeleeAttacking(this._id);
   }
   setFightingStyle(style: FightingStylesEnum) {
-    Npc.__inject__.NPC_SetFightingStyle(this._id, style);
+    Npc.__inject__.setFightingStyle(this._id, style);
     return this;
   }
   getFightingStyle() {
-    return Npc.__inject__.NPC_GetFightingStyle(this._id);
+    return Npc.__inject__.getFightingStyle(this._id);
   }
   enableReloading(enable: boolean) {
-    Npc.__inject__.NPC_EnableReloading(this._id, enable);
+    Npc.__inject__.enableReloading(this._id, enable);
     return this;
   }
   isReloadEnabled() {
-    return Npc.__inject__.NPC_IsReloadEnabled(this._id);
+    return Npc.__inject__.isReloadEnabled(this._id);
   }
   isReloading() {
-    return Npc.__inject__.NPC_IsReloading(this._id);
+    return Npc.__inject__.isReloading(this._id);
   }
   enableInfiniteAmmo(enable: boolean) {
-    Npc.__inject__.NPC_EnableInfiniteAmmo(this._id, enable);
+    Npc.__inject__.enableInfiniteAmmo(this._id, enable);
     return this;
   }
   isInfiniteAmmoEnabled() {
-    return Npc.__inject__.NPC_IsInfiniteAmmoEnabled(this._id);
+    return Npc.__inject__.isInfiniteAmmoEnabled(this._id);
   }
   setWeaponState(weaponState: WeaponStatesEnum) {
-    return Npc.__inject__.NPC_SetWeaponState(this._id, weaponState);
+    return Npc.__inject__.setWeaponState(this._id, weaponState);
   }
   getWeaponState() {
-    return Npc.__inject__.NPC_GetWeaponState(this._id);
+    return Npc.__inject__.getWeaponState(this._id);
   }
   setAmmoInClip(ammo: number) {
-    Npc.__inject__.NPC_SetAmmoInClip(this._id, ammo);
+    Npc.__inject__.setAmmoInClip(this._id, ammo);
     return this;
   }
   getAmmoInClip() {
-    return Npc.__inject__.NPC_GetAmmoInClip(this._id);
+    return Npc.__inject__.getAmmoInClip(this._id);
   }
   shoot(
     weapon: WeaponStatesEnum,
@@ -281,7 +281,7 @@ export class Npc {
     isHit: boolean,
     checkInBetweenFlags = NPCEntityCheckEnum.ALL,
   ) {
-    Npc.__inject__.NPC_Shoot(
+    Npc.__inject__.shoot(
       this._id,
       weapon,
       hitId,
@@ -298,7 +298,7 @@ export class Npc {
     return this;
   }
   isShooting() {
-    return Npc.__inject__.NPC_IsShooting(this._id);
+    return Npc.__inject__.isShooting(this._id);
   }
   aimAt(
     pointX: number,
@@ -312,7 +312,7 @@ export class Npc {
     offsetFromZ: number,
     checkInBetweenFlags = NPCEntityCheckEnum.ALL,
   ) {
-    Npc.__inject__.NPC_AimAt(
+    Npc.__inject__.aimAt(
       this._id,
       pointX,
       pointY,
@@ -340,7 +340,7 @@ export class Npc {
     offsetFromZ: number,
     checkInBetweenFlags = NPCEntityCheckEnum.ALL,
   ) {
-    Npc.__inject__.NPC_AimAtPlayer(
+    Npc.__inject__.aimAtPlayer(
       this._id,
       player.id,
       shoot,
@@ -357,113 +357,113 @@ export class Npc {
     return this;
   }
   stopAim() {
-    Npc.__inject__.NPC_StopAim(this._id);
+    Npc.__inject__.stopAim(this._id);
     return this;
   }
   isAiming() {
-    return Npc.__inject__.NPC_IsAiming(this._id);
+    return Npc.__inject__.isAiming(this._id);
   }
   isAimingAtPlayer(player: Player) {
-    return Npc.__inject__.NPC_IsAimingAtPlayer(this._id, player.id);
+    return Npc.__inject__.isAimingAtPlayer(this._id, player.id);
   }
   setWeaponAccuracy(weapon: WeaponEnum, accuracy: number) {
-    Npc.__inject__.NPC_SetWeaponAccuracy(this._id, weapon, accuracy);
+    Npc.__inject__.setWeaponAccuracy(this._id, weapon, accuracy);
     return this;
   }
   getWeaponAccuracy(weapon: number) {
-    return Npc.__inject__.NPC_GetWeaponAccuracy(this._id, weapon);
+    return Npc.__inject__.getWeaponAccuracy(this._id, weapon);
   }
   setWeaponReloadTime(weapon: number, time: number) {
-    return Npc.__inject__.NPC_SetWeaponReloadTime(this._id, weapon, time);
+    return Npc.__inject__.setWeaponReloadTime(this._id, weapon, time);
   }
   getWeaponReloadTime(weapon: number) {
-    return Npc.__inject__.NPC_GetWeaponReloadTime(this._id, weapon);
+    return Npc.__inject__.getWeaponReloadTime(this._id, weapon);
   }
   getWeaponActualReloadTime(weapon: number) {
-    return Npc.__inject__.NPC_GetWeaponActualReloadTime(this._id, weapon);
+    return Npc.__inject__.getWeaponActualReloadTime(this._id, weapon);
   }
   setWeaponShootTime(weapon: number, time: number) {
-    return Npc.__inject__.NPC_SetWeaponShootTime(this._id, weapon, time);
+    return Npc.__inject__.setWeaponShootTime(this._id, weapon, time);
   }
   getWeaponShootTime(weapon: number) {
-    return Npc.__inject__.NPC_GetWeaponShootTime(this._id, weapon);
+    return Npc.__inject__.getWeaponShootTime(this._id, weapon);
   }
   setWeaponClipSize(weapon: number, size: number) {
-    return Npc.__inject__.NPC_SetWeaponClipSize(this._id, weapon, size);
+    return Npc.__inject__.setWeaponClipSize(this._id, weapon, size);
   }
   getWeaponClipSize(weapon: number) {
-    return Npc.__inject__.NPC_GetWeaponClipSize(this._id, weapon);
+    return Npc.__inject__.getWeaponClipSize(this._id, weapon);
   }
   getWeaponActualClipSize(weapon: number) {
-    return Npc.__inject__.NPC_GetWeaponActualClipSize(this._id, weapon);
+    return Npc.__inject__.getWeaponActualClipSize(this._id, weapon);
   }
   enterVehicle(vehicle: Vehicle, seatId: number, moveType: number) {
-    Npc.__inject__.NPC_EnterVehicle(this._id, vehicle.id, seatId, moveType);
+    Npc.__inject__.enterVehicle(this._id, vehicle.id, seatId, moveType);
     return this;
   }
   exitVehicle() {
-    Npc.__inject__.NPC_ExitVehicle(this._id);
+    Npc.__inject__.exitVehicle(this._id);
     return this;
   }
   putInVehicle(vehicle: Vehicle, seat: number) {
-    return Npc.__inject__.NPC_PutInVehicle(this._id, vehicle.id, seat);
+    return Npc.__inject__.putInVehicle(this._id, vehicle.id, seat);
   }
   removeFromVehicle() {
-    return Npc.__inject__.NPC_RemoveFromVehicle(this._id);
+    return Npc.__inject__.removeFromVehicle(this._id);
   }
   getVehicle() {
     return Vehicle.getInstance(this.getVehicleID());
   }
   getVehicleID() {
-    return Npc.__inject__.NPC_GetVehicle(this._id);
+    return Npc.__inject__.getVehicle(this._id);
   }
   getVehicleSeat() {
-    return Npc.__inject__.NPC_GetVehicleSeat(this._id);
+    return Npc.__inject__.getVehicleSeat(this._id);
   }
   getEnteringVehicle() {
     return Vehicle.getInstance(this.getEnteringVehicleId());
   }
   getEnteringVehicleId() {
-    return Npc.__inject__.NPC_GetEnteringVehicle(this._id);
+    return Npc.__inject__.getEnteringVehicle(this._id);
   }
   getEnteringVehicleSeat() {
-    return Npc.__inject__.NPC_GetEnteringVehicleSeat(this._id);
+    return Npc.__inject__.getEnteringVehicleSeat(this._id);
   }
   isEnteringVehicle() {
-    return Npc.__inject__.NPC_IsEnteringVehicle(this._id);
+    return Npc.__inject__.isEnteringVehicle(this._id);
   }
   useVehicleSiren(use = true) {
-    return Npc.__inject__.NPC_UseVehicleSiren(this._id, use);
+    return Npc.__inject__.useVehicleSiren(this._id, use);
   }
   isVehicleSirenUsed() {
-    return Npc.__inject__.NPC_IsVehicleSirenUsed(this._id);
+    return Npc.__inject__.isVehicleSirenUsed(this._id);
   }
   setVehicleHealth(health: number) {
-    return Npc.__inject__.NPC_SetVehicleHealth(this._id, health);
+    return Npc.__inject__.setVehicleHealth(this._id, health);
   }
   getVehicleHealth() {
-    return Npc.__inject__.NPC_GetVehicleHealth(this._id);
+    return Npc.__inject__.getVehicleHealth(this._id);
   }
   setVehicleHydraThrusters(direction: number) {
-    return Npc.__inject__.NPC_SetVehicleHydraThrusters(this._id, direction);
+    return Npc.__inject__.setVehicleHydraThrusters(this._id, direction);
   }
   getVehicleHydraThrusters() {
-    return Npc.__inject__.NPC_GetVehicleHydraThrusters(this._id);
+    return Npc.__inject__.getVehicleHydraThrusters(this._id);
   }
   setVehicleGearState(gearState: number) {
-    return Npc.__inject__.NPC_SetVehicleGearState(this._id, gearState);
+    return Npc.__inject__.setVehicleGearState(this._id, gearState);
   }
   getVehicleGearState() {
-    return Npc.__inject__.NPC_GetVehicleGearState(this._id);
+    return Npc.__inject__.getVehicleGearState(this._id);
   }
   setVehicleTrainSpeed(speed: number) {
-    return Npc.__inject__.NPC_SetVehicleTrainSpeed(this._id, speed);
+    return Npc.__inject__.setVehicleTrainSpeed(this._id, speed);
   }
   getVehicleTrainSpeed() {
-    return Npc.__inject__.NPC_GetVehicleTrainSpeed(this._id);
+    return Npc.__inject__.getVehicleTrainSpeed(this._id);
   }
   resetAnimation() {
-    return Npc.__inject__.NPC_ResetAnimation(this._id);
+    return Npc.__inject__.resetAnimation(this._id);
   }
   setAnimation(
     animationId: number,
@@ -474,7 +474,7 @@ export class Npc {
     freeze: boolean,
     time: number,
   ) {
-    return Npc.__inject__.NPC_SetAnimation(
+    return Npc.__inject__.setAnimation(
       this._id,
       animationId,
       delta,
@@ -486,16 +486,16 @@ export class Npc {
     );
   }
   getAnimation() {
-    return Npc.__inject__.NPC_GetAnimation(this._id);
+    return Npc.__inject__.getAnimation(this._id);
   }
   clearAnimations() {
-    return Npc.__inject__.NPC_ClearAnimations(this._id);
+    return Npc.__inject__.clearAnimations(this._id);
   }
   setSpecialAction(action: number) {
-    return Npc.__inject__.NPC_SetSpecialAction(this._id, action);
+    return Npc.__inject__.setSpecialAction(this._id, action);
   }
   getSpecialAction() {
-    return Npc.__inject__.NPC_GetSpecialAction(this._id);
+    return Npc.__inject__.getSpecialAction(this._id);
   }
   startPlayback(
     recordName: string,
@@ -507,7 +507,7 @@ export class Npc {
     rotY: number,
     rotZ: number,
   ) {
-    return Npc.__inject__.NPC_StartPlayback(
+    return Npc.__inject__.startPlayback(
       this._id,
       recordName,
       autoUnload,
@@ -529,7 +529,7 @@ export class Npc {
     rotY: number,
     rotZ: number,
   ) {
-    return Npc.__inject__.NPC_StartPlaybackEx(
+    return Npc.__inject__.startPlaybackEx(
       this._id,
       record.id,
       autoUnload,
@@ -542,16 +542,16 @@ export class Npc {
     );
   }
   stopPlayback() {
-    return Npc.__inject__.NPC_StopPlayback(this._id);
+    return Npc.__inject__.stopPlayback(this._id);
   }
   pausePlayback(paused: boolean) {
-    return Npc.__inject__.NPC_PausePlayback(this._id, paused);
+    return Npc.__inject__.pausePlayback(this._id, paused);
   }
   isPlayingPlayback() {
-    return Npc.__inject__.NPC_IsPlayingPlayback(this._id);
+    return Npc.__inject__.isPlayingPlayback(this._id);
   }
   isPlaybackPaused() {
-    return Npc.__inject__.NPC_IsPlaybackPaused(this._id);
+    return Npc.__inject__.isPlaybackPaused(this._id);
   }
   playNode(
     node: NpcNode,
@@ -560,7 +560,7 @@ export class Npc {
     radius = 0.0,
     setAngle = true,
   ) {
-    return Npc.__inject__.NPC_PlayNode(
+    return Npc.__inject__.playNode(
       this._id,
       node.id,
       moveType,
@@ -570,58 +570,58 @@ export class Npc {
     );
   }
   stopPlayingNode() {
-    return Npc.__inject__.NPC_StopPlayingNode(this._id);
+    return Npc.__inject__.stopPlayingNode(this._id);
   }
   pausePlayingNode() {
-    return Npc.__inject__.NPC_PausePlayingNode(this._id);
+    return Npc.__inject__.pausePlayingNode(this._id);
   }
   resumePlayingNode() {
-    return Npc.__inject__.NPC_ResumePlayingNode(this._id);
+    return Npc.__inject__.resumePlayingNode(this._id);
   }
   isPlayingNodePaused() {
-    return Npc.__inject__.NPC_IsPlayingNodePaused(this._id);
+    return Npc.__inject__.isPlayingNodePaused(this._id);
   }
   isPlayingNode() {
-    return Npc.__inject__.NPC_IsPlayingNode(this._id);
+    return Npc.__inject__.isPlayingNode(this._id);
   }
   changeNode(node: NpcNode, link: number) {
-    return Npc.__inject__.NPC_ChangeNode(this._id, node.id, link);
+    return Npc.__inject__.changeNode(this._id, node.id, link);
   }
   updateNodePoint(pointId: number) {
-    return Npc.__inject__.NPC_UpdateNodePoint(this._id, pointId);
+    return Npc.__inject__.updateNodePoint(this._id, pointId);
   }
   setInvulnerable(toggle: boolean) {
-    return Npc.__inject__.NPC_SetInvulnerable(this._id, toggle);
+    return Npc.__inject__.setInvulnerable(this._id, toggle);
   }
   isInvulnerable() {
-    return Npc.__inject__.NPC_IsInvulnerable(this._id);
+    return Npc.__inject__.isInvulnerable(this._id);
   }
   setSurfingOffsets(x: number, y: number, z: number) {
-    return Npc.__inject__.NPC_SetSurfingOffsets(this._id, x, y, z);
+    return Npc.__inject__.setSurfingOffsets(this._id, x, y, z);
   }
   getSurfingOffsets() {
-    return Npc.__inject__.NPC_GetSurfingOffsets(this._id);
+    return Npc.__inject__.getSurfingOffsets(this._id);
   }
   setSurfingVehicle(vehicle: Vehicle) {
-    return Npc.__inject__.NPC_SetSurfingVehicle(this._id, vehicle.id);
+    return Npc.__inject__.setSurfingVehicle(this._id, vehicle.id);
   }
   getSurfingVehicle() {
     return Vehicle.getInstance(this.getSurfingVehicleId());
   }
   getSurfingVehicleId() {
-    return Npc.__inject__.NPC_GetSurfingVehicle(this._id);
+    return Npc.__inject__.getSurfingVehicle(this._id);
   }
   setSurfingObject(objectMp: ObjectMp) {
     if (!objectMp.isGlobal()) {
       return 0;
     }
-    return Npc.__inject__.NPC_SetSurfingObject(this._id, objectMp.id);
+    return Npc.__inject__.setSurfingObject(this._id, objectMp.id);
   }
   getSurfingObject() {
     return ObjectMp.getInstance(this.getSurfingObjectId());
   }
   private getSurfingObjectId() {
-    return Npc.__inject__.NPC_GetSurfingObject(this._id);
+    return Npc.__inject__.getSurfingObject(this._id);
   }
   setSurfingPlayerObject(objectMp: ObjectMp) {
     if (objectMp.isGlobal()) {
@@ -636,13 +636,13 @@ export class Npc {
     );
   }
   private _setSurfingPlayerObject(objectId: number) {
-    return Npc.__inject__.NPC_SetSurfingPlayerObject(this._id, objectId);
+    return Npc.__inject__.setSurfingPlayerObject(this._id, objectId);
   }
   private getSurfingPlayerObjectId() {
-    return Npc.__inject__.NPC_GetSurfingPlayerObject(this._id);
+    return Npc.__inject__.getSurfingPlayerObject(this._id);
   }
   resetSurfingData() {
-    return Npc.__inject__.NPC_ResetSurfingData(this._id);
+    return Npc.__inject__.resetSurfingData(this._id);
   }
   setSurfingDynamicObject(object: DynamicObject) {
     return this._setSurfingPlayerObject(
@@ -664,29 +664,29 @@ export class Npc {
     );
   }
   isSpawned() {
-    return Npc.__inject__.NPC_IsSpawned(this._id);
+    return Npc.__inject__.isSpawned(this._id);
   }
   kill(killer: Player | number, reason: number) {
-    return Npc.__inject__.NPC_Kill(
+    return Npc.__inject__.kill(
       this._id,
       typeof killer === "number" ? killer : killer.id,
       reason,
     );
   }
   setVelocity(x: number, y: number, z: number) {
-    return Npc.__inject__.NPC_SetVelocity(this._id, x, y, z);
+    return Npc.__inject__.setVelocity(this._id, x, y, z);
   }
   getVelocity() {
-    return Npc.__inject__.NPC_GetVelocity(this._id);
+    return Npc.__inject__.getVelocity(this._id);
   }
   getPlayerAimingAt() {
-    const playerId = Npc.__inject__.NPC_GetPlayerAimingAt(this._id);
+    const playerId = Npc.__inject__.getPlayerAimingAt(this._id);
     if (playerId !== InvalidEnum.PLAYER_ID)
       return Player.getInstance(playerId)!;
     return null;
   }
   getPlayerMovingTo() {
-    const playerId = Npc.__inject__.NPC_GetPlayerMovingTo(this._id);
+    const playerId = Npc.__inject__.getPlayerMovingTo(this._id);
     if (playerId !== InvalidEnum.PLAYER_ID)
       return Player.getInstance(playerId)!;
     return null;
@@ -698,17 +698,17 @@ export class Npc {
   ): void {
     if (player.isRecording)
       throw new Error("[NpcFunc]: It should be stopped before recording");
-    Npc.__inject__.StartRecordingPlayerData(player.id, recordType, recordName);
+    Npc.__inject__.startRecordingPlayerData(player.id, recordType, recordName);
     player[internalPlayerProps].isRecording = true;
   }
   static stopRecordingPlayerData(player: Player): void {
     if (!player.isRecording)
       throw new Error("[NpcFunc]: It should be started before stop");
-    Npc.__inject__.StopRecordingPlayerData(player.id);
+    Npc.__inject__.stopRecordingPlayerData(player.id);
     player[internalPlayerProps].isRecording = false;
   }
   static isValid(id: number) {
-    return Npc.__inject__.NPC_IsValid(id);
+    return Npc.__inject__.isValid(id);
   }
   static getInstance(id: number) {
     return npcPool.get(id);
@@ -718,132 +718,132 @@ export class Npc {
   }
 
   static __inject__ = {
-    NPC_Create: w.NPC_Create,
-    NPC_Destroy: w.NPC_Destroy,
-    NPC_IsValid: w.NPC_IsValid,
-    NPC_Spawn: w.NPC_Spawn,
-    NPC_Respawn: w.NPC_Respawn,
-    NPC_SetPos: w.NPC_SetPos,
-    NPC_SetRot: w.NPC_SetRot,
-    NPC_GetRot: w.NPC_GetRot,
-    NPC_SetFacingAngle: w.NPC_SetFacingAngle,
-    NPC_GetFacingAngle: w.NPC_GetFacingAngle,
-    NPC_SetVirtualWorld: w.NPC_SetVirtualWorld,
-    NPC_GetVirtualWorld: w.NPC_GetVirtualWorld,
-    NPC_Move: w.NPC_Move,
-    NPC_MoveToPlayer: w.NPC_MoveToPlayer,
-    NPC_StopMove: w.NPC_StopMove,
-    NPC_IsMoving: w.NPC_IsMoving,
-    NPC_IsMovingToPlayer: w.NPC_IsMovingToPlayer,
-    NPC_SetSkin: w.NPC_SetSkin,
-    NPC_GetSkin: w.NPC_GetSkin,
-    NPC_IsStreamedIn: w.NPC_IsStreamedIn,
-    NPC_IsAnyStreamedIn: w.NPC_IsAnyStreamedIn,
-    NPC_SetInterior: w.NPC_SetInterior,
-    NPC_GetInterior: w.NPC_GetInterior,
-    NPC_SetHealth: w.NPC_SetHealth,
-    NPC_GetHealth: w.NPC_GetHealth,
-    NPC_SetArmour: w.NPC_SetArmour,
-    NPC_GetArmour: w.NPC_GetArmour,
-    NPC_IsDead: w.NPC_IsDead,
-    NPC_ApplyAnimation: w.NPC_ApplyAnimation,
-    NPC_SetWeapon: w.NPC_SetWeapon,
-    NPC_GetWeapon: w.NPC_GetWeapon,
-    NPC_SetAmmo: w.NPC_SetAmmo,
-    NPC_GetAmmo: w.NPC_GetAmmo,
-    NPC_SetKeys: w.NPC_SetKeys,
-    NPC_GetKeys: w.NPC_GetKeys,
-    NPC_SetWeaponSkillLevel: w.NPC_SetWeaponSkillLevel,
-    NPC_GetWeaponSkillLevel: w.NPC_GetWeaponSkillLevel,
-    NPC_MeleeAttack: w.NPC_MeleeAttack,
-    NPC_StopMeleeAttack: w.NPC_StopMeleeAttack,
-    NPC_IsMeleeAttacking: w.NPC_IsMeleeAttacking,
-    NPC_SetFightingStyle: w.NPC_SetFightingStyle,
-    NPC_GetFightingStyle: w.NPC_GetFightingStyle,
-    NPC_EnableReloading: w.NPC_EnableReloading,
-    NPC_IsReloadEnabled: w.NPC_IsReloadEnabled,
-    NPC_IsReloading: w.NPC_IsReloading,
-    NPC_EnableInfiniteAmmo: w.NPC_EnableInfiniteAmmo,
-    NPC_IsInfiniteAmmoEnabled: w.NPC_IsInfiniteAmmoEnabled,
-    NPC_SetWeaponState: w.NPC_SetWeaponState,
-    NPC_GetWeaponState: w.NPC_GetWeaponState,
-    NPC_SetAmmoInClip: w.NPC_SetAmmoInClip,
-    NPC_GetAmmoInClip: w.NPC_GetAmmoInClip,
-    NPC_Shoot: w.NPC_Shoot,
-    NPC_IsShooting: w.NPC_IsShooting,
-    NPC_AimAt: w.NPC_AimAt,
-    NPC_AimAtPlayer: w.NPC_AimAtPlayer,
-    NPC_StopAim: w.NPC_StopAim,
-    NPC_IsAiming: w.NPC_IsAiming,
-    NPC_IsAimingAtPlayer: w.NPC_IsAimingAtPlayer,
-    NPC_SetWeaponAccuracy: w.NPC_SetWeaponAccuracy,
-    NPC_GetWeaponAccuracy: w.NPC_GetWeaponAccuracy,
-    NPC_SetWeaponReloadTime: w.NPC_SetWeaponReloadTime,
-    NPC_GetWeaponReloadTime: w.NPC_GetWeaponReloadTime,
-    NPC_GetWeaponActualReloadTime: w.NPC_GetWeaponActualReloadTime,
-    NPC_SetWeaponShootTime: w.NPC_SetWeaponShootTime,
-    NPC_GetWeaponShootTime: w.NPC_GetWeaponShootTime,
-    NPC_SetWeaponClipSize: w.NPC_SetWeaponClipSize,
-    NPC_GetWeaponClipSize: w.NPC_GetWeaponClipSize,
-    NPC_GetWeaponActualClipSize: w.NPC_GetWeaponActualClipSize,
-    NPC_EnterVehicle: w.NPC_EnterVehicle,
-    NPC_ExitVehicle: w.NPC_ExitVehicle,
-    NPC_PutInVehicle: w.NPC_PutInVehicle,
-    NPC_RemoveFromVehicle: w.NPC_RemoveFromVehicle,
-    NPC_GetVehicle: w.NPC_GetVehicle,
-    NPC_GetVehicleSeat: w.NPC_GetVehicleSeat,
-    NPC_GetEnteringVehicle: w.NPC_GetEnteringVehicle,
-    NPC_GetEnteringVehicleSeat: w.NPC_GetEnteringVehicleSeat,
-    NPC_IsEnteringVehicle: w.NPC_IsEnteringVehicle,
-    NPC_UseVehicleSiren: w.NPC_UseVehicleSiren,
-    NPC_IsVehicleSirenUsed: w.NPC_IsVehicleSirenUsed,
-    NPC_SetVehicleHealth: w.NPC_SetVehicleHealth,
-    NPC_GetVehicleHealth: w.NPC_GetVehicleHealth,
-    NPC_SetVehicleHydraThrusters: w.NPC_SetVehicleHydraThrusters,
-    NPC_GetVehicleHydraThrusters: w.NPC_GetVehicleHydraThrusters,
-    NPC_SetVehicleGearState: w.NPC_SetVehicleGearState,
-    NPC_GetVehicleGearState: w.NPC_GetVehicleGearState,
-    NPC_SetVehicleTrainSpeed: w.NPC_SetVehicleTrainSpeed,
-    NPC_GetVehicleTrainSpeed: w.NPC_GetVehicleTrainSpeed,
-    NPC_ResetAnimation: w.NPC_ResetAnimation,
-    NPC_SetAnimation: w.NPC_SetAnimation,
-    NPC_GetAnimation: w.NPC_GetAnimation,
-    NPC_ClearAnimations: w.NPC_ClearAnimations,
-    NPC_SetSpecialAction: w.NPC_SetSpecialAction,
-    NPC_GetSpecialAction: w.NPC_GetSpecialAction,
-    NPC_StartPlayback: w.NPC_StartPlayback,
-    NPC_StartPlaybackEx: w.NPC_StartPlaybackEx,
-    NPC_StopPlayback: w.NPC_StopPlayback,
-    NPC_PausePlayback: w.NPC_PausePlayback,
-    NPC_IsPlayingPlayback: w.NPC_IsPlayingPlayback,
-    NPC_IsPlaybackPaused: w.NPC_IsPlaybackPaused,
-    NPC_PlayNode: w.NPC_PlayNode,
-    NPC_StopPlayingNode: w.NPC_StopPlayingNode,
-    NPC_PausePlayingNode: w.NPC_PausePlayingNode,
-    NPC_ResumePlayingNode: w.NPC_ResumePlayingNode,
-    NPC_IsPlayingNodePaused: w.NPC_IsPlayingNodePaused,
-    NPC_IsPlayingNode: w.NPC_IsPlayingNode,
-    NPC_ChangeNode: w.NPC_ChangeNode,
-    NPC_UpdateNodePoint: w.NPC_UpdateNodePoint,
-    NPC_SetInvulnerable: w.NPC_SetInvulnerable,
-    NPC_IsInvulnerable: w.NPC_IsInvulnerable,
-    NPC_SetSurfingOffsets: w.NPC_SetSurfingOffsets,
-    NPC_GetSurfingOffsets: w.NPC_GetSurfingOffsets,
-    NPC_SetSurfingVehicle: w.NPC_SetSurfingVehicle,
-    NPC_GetSurfingVehicle: w.NPC_GetSurfingVehicle,
-    NPC_SetSurfingObject: w.NPC_SetSurfingObject,
-    NPC_GetSurfingObject: w.NPC_GetSurfingObject,
-    NPC_SetSurfingPlayerObject: w.NPC_SetSurfingPlayerObject,
-    NPC_GetSurfingPlayerObject: w.NPC_GetSurfingPlayerObject,
-    NPC_ResetSurfingData: w.NPC_ResetSurfingData,
-    NPC_IsSpawned: w.NPC_IsSpawned,
-    NPC_Kill: w.NPC_Kill,
-    NPC_SetVelocity: w.NPC_SetVelocity,
-    NPC_GetVelocity: w.NPC_GetVelocity,
-    NPC_GetPlayerAimingAt: w.NPC_GetPlayerAimingAt,
-    NPC_GetPlayerMovingTo: w.NPC_GetPlayerMovingTo,
+    create: w.NPC_Create,
+    destroy: w.NPC_Destroy,
+    isValid: w.NPC_IsValid,
+    spawn: w.NPC_Spawn,
+    respawn: w.NPC_Respawn,
+    setPos: w.NPC_SetPos,
+    setRot: w.NPC_SetRot,
+    getRot: w.NPC_GetRot,
+    setFacingAngle: w.NPC_SetFacingAngle,
+    getFacingAngle: w.NPC_GetFacingAngle,
+    setVirtualWorld: w.NPC_SetVirtualWorld,
+    getVirtualWorld: w.NPC_GetVirtualWorld,
+    move: w.NPC_Move,
+    moveToPlayer: w.NPC_MoveToPlayer,
+    stopMove: w.NPC_StopMove,
+    isMoving: w.NPC_IsMoving,
+    isMovingToPlayer: w.NPC_IsMovingToPlayer,
+    setSkin: w.NPC_SetSkin,
+    getSkin: w.NPC_GetSkin,
+    isStreamedIn: w.NPC_IsStreamedIn,
+    isAnyStreamedIn: w.NPC_IsAnyStreamedIn,
+    setInterior: w.NPC_SetInterior,
+    getInterior: w.NPC_GetInterior,
+    setHealth: w.NPC_SetHealth,
+    getHealth: w.NPC_GetHealth,
+    setArmour: w.NPC_SetArmour,
+    getArmour: w.NPC_GetArmour,
+    isDead: w.NPC_IsDead,
+    applyAnimation: w.NPC_ApplyAnimation,
+    setWeapon: w.NPC_SetWeapon,
+    getWeapon: w.NPC_GetWeapon,
+    setAmmo: w.NPC_SetAmmo,
+    getAmmo: w.NPC_GetAmmo,
+    setKeys: w.NPC_SetKeys,
+    getKeys: w.NPC_GetKeys,
+    setWeaponSkillLevel: w.NPC_SetWeaponSkillLevel,
+    getWeaponSkillLevel: w.NPC_GetWeaponSkillLevel,
+    meleeAttack: w.NPC_MeleeAttack,
+    stopMeleeAttack: w.NPC_StopMeleeAttack,
+    isMeleeAttacking: w.NPC_IsMeleeAttacking,
+    setFightingStyle: w.NPC_SetFightingStyle,
+    getFightingStyle: w.NPC_GetFightingStyle,
+    enableReloading: w.NPC_EnableReloading,
+    isReloadEnabled: w.NPC_IsReloadEnabled,
+    isReloading: w.NPC_IsReloading,
+    enableInfiniteAmmo: w.NPC_EnableInfiniteAmmo,
+    isInfiniteAmmoEnabled: w.NPC_IsInfiniteAmmoEnabled,
+    setWeaponState: w.NPC_SetWeaponState,
+    getWeaponState: w.NPC_GetWeaponState,
+    setAmmoInClip: w.NPC_SetAmmoInClip,
+    getAmmoInClip: w.NPC_GetAmmoInClip,
+    shoot: w.NPC_Shoot,
+    isShooting: w.NPC_IsShooting,
+    aimAt: w.NPC_AimAt,
+    aimAtPlayer: w.NPC_AimAtPlayer,
+    stopAim: w.NPC_StopAim,
+    isAiming: w.NPC_IsAiming,
+    isAimingAtPlayer: w.NPC_IsAimingAtPlayer,
+    setWeaponAccuracy: w.NPC_SetWeaponAccuracy,
+    getWeaponAccuracy: w.NPC_GetWeaponAccuracy,
+    setWeaponReloadTime: w.NPC_SetWeaponReloadTime,
+    getWeaponReloadTime: w.NPC_GetWeaponReloadTime,
+    getWeaponActualReloadTime: w.NPC_GetWeaponActualReloadTime,
+    setWeaponShootTime: w.NPC_SetWeaponShootTime,
+    getWeaponShootTime: w.NPC_GetWeaponShootTime,
+    setWeaponClipSize: w.NPC_SetWeaponClipSize,
+    getWeaponClipSize: w.NPC_GetWeaponClipSize,
+    getWeaponActualClipSize: w.NPC_GetWeaponActualClipSize,
+    enterVehicle: w.NPC_EnterVehicle,
+    exitVehicle: w.NPC_ExitVehicle,
+    putInVehicle: w.NPC_PutInVehicle,
+    removeFromVehicle: w.NPC_RemoveFromVehicle,
+    getVehicle: w.NPC_GetVehicle,
+    getVehicleSeat: w.NPC_GetVehicleSeat,
+    getEnteringVehicle: w.NPC_GetEnteringVehicle,
+    getEnteringVehicleSeat: w.NPC_GetEnteringVehicleSeat,
+    isEnteringVehicle: w.NPC_IsEnteringVehicle,
+    useVehicleSiren: w.NPC_UseVehicleSiren,
+    isVehicleSirenUsed: w.NPC_IsVehicleSirenUsed,
+    setVehicleHealth: w.NPC_SetVehicleHealth,
+    getVehicleHealth: w.NPC_GetVehicleHealth,
+    setVehicleHydraThrusters: w.NPC_SetVehicleHydraThrusters,
+    getVehicleHydraThrusters: w.NPC_GetVehicleHydraThrusters,
+    setVehicleGearState: w.NPC_SetVehicleGearState,
+    getVehicleGearState: w.NPC_GetVehicleGearState,
+    setVehicleTrainSpeed: w.NPC_SetVehicleTrainSpeed,
+    getVehicleTrainSpeed: w.NPC_GetVehicleTrainSpeed,
+    resetAnimation: w.NPC_ResetAnimation,
+    setAnimation: w.NPC_SetAnimation,
+    getAnimation: w.NPC_GetAnimation,
+    clearAnimations: w.NPC_ClearAnimations,
+    setSpecialAction: w.NPC_SetSpecialAction,
+    getSpecialAction: w.NPC_GetSpecialAction,
+    startPlayback: w.NPC_StartPlayback,
+    startPlaybackEx: w.NPC_StartPlaybackEx,
+    stopPlayback: w.NPC_StopPlayback,
+    pausePlayback: w.NPC_PausePlayback,
+    isPlayingPlayback: w.NPC_IsPlayingPlayback,
+    isPlaybackPaused: w.NPC_IsPlaybackPaused,
+    playNode: w.NPC_PlayNode,
+    stopPlayingNode: w.NPC_StopPlayingNode,
+    pausePlayingNode: w.NPC_PausePlayingNode,
+    resumePlayingNode: w.NPC_ResumePlayingNode,
+    isPlayingNodePaused: w.NPC_IsPlayingNodePaused,
+    isPlayingNode: w.NPC_IsPlayingNode,
+    changeNode: w.NPC_ChangeNode,
+    updateNodePoint: w.NPC_UpdateNodePoint,
+    setInvulnerable: w.NPC_SetInvulnerable,
+    isInvulnerable: w.NPC_IsInvulnerable,
+    setSurfingOffsets: w.NPC_SetSurfingOffsets,
+    getSurfingOffsets: w.NPC_GetSurfingOffsets,
+    setSurfingVehicle: w.NPC_SetSurfingVehicle,
+    getSurfingVehicle: w.NPC_GetSurfingVehicle,
+    setSurfingObject: w.NPC_SetSurfingObject,
+    getSurfingObject: w.NPC_GetSurfingObject,
+    setSurfingPlayerObject: w.NPC_SetSurfingPlayerObject,
+    getSurfingPlayerObject: w.NPC_GetSurfingPlayerObject,
+    resetSurfingData: w.NPC_ResetSurfingData,
+    isSpawned: w.NPC_IsSpawned,
+    kill: w.NPC_Kill,
+    setVelocity: w.NPC_SetVelocity,
+    getVelocity: w.NPC_GetVelocity,
+    getPlayerAimingAt: w.NPC_GetPlayerAimingAt,
+    getPlayerMovingTo: w.NPC_GetPlayerMovingTo,
 
-    StartRecordingPlayerData: w.StartRecordingPlayerData,
-    StopRecordingPlayerData: w.StopRecordingPlayerData,
+    startRecordingPlayerData: w.StartRecordingPlayerData,
+    stopRecordingPlayerData: w.StopRecordingPlayerData,
   };
 }

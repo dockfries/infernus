@@ -58,7 +58,7 @@ export class ObjectMp {
     } = this.sourceInfo;
 
     if (this.isGlobal()) {
-      this._id = ObjectMp.__inject__.CreateObject(
+      this._id = ObjectMp.__inject__.create(
         modelId,
         x,
         y,
@@ -84,7 +84,7 @@ export class ObjectMp {
 
     const player = this.getPlayer()!;
 
-    this._id = ObjectMp.__inject__.CreatePlayerObject(
+    this._id = ObjectMp.__inject__.createPlayer(
       playerId,
       modelId,
       x,
@@ -114,7 +114,7 @@ export class ObjectMp {
 
     if (this.isGlobal()) {
       if (!INTERNAL_FLAGS.skip) {
-        ObjectMp.__inject__.DestroyObject(this.id);
+        ObjectMp.__inject__.destroy(this.id);
       }
       objectMpPool.delete(this.id);
     } else {
@@ -125,7 +125,7 @@ export class ObjectMp {
       const player = this.getPlayer()!;
 
       if (!INTERNAL_FLAGS.skip) {
-        ObjectMp.__inject__.DestroyPlayerObject(playerId, this.id);
+        ObjectMp.__inject__.destroyPlayer(playerId, this.id);
       }
 
       if (playerObjectPool.has(player)) {
@@ -175,12 +175,9 @@ export class ObjectMp {
   getModel() {
     if (!this.sourceInfo) {
       if (this.isGlobal()) {
-        return ObjectMp.__inject__.GetObjectModel(this.id);
+        return ObjectMp.__inject__.getModel(this.id);
       }
-      return ObjectMp.__inject__.GetPlayerObjectModel(
-        this.getPlayerId(),
-        this.id,
-      );
+      return ObjectMp.__inject__.getModelPlayer(this.getPlayerId(), this.id);
     }
     return this.sourceInfo.modelId;
   }
@@ -189,18 +186,18 @@ export class ObjectMp {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Cannot get position before create");
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.GetObjectPos(this.id);
+      return ObjectMp.__inject__.getPos(this.id);
     }
-    return ObjectMp.__inject__.GetPlayerObjectPos(this.getPlayerId(), this.id);
+    return ObjectMp.__inject__.getPosPlayer(this.getPlayerId(), this.id);
   }
 
   setPos(x: number, y: number, z: number): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Cannot set position before create");
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.SetObjectPos(this.id, x, y, z);
+      return ObjectMp.__inject__.setPos(this.id, x, y, z);
     }
-    return ObjectMp.__inject__.SetPlayerObjectPos(
+    return ObjectMp.__inject__.setPosPlayer(
       this.getPlayerId(),
       this.id,
       x,
@@ -213,18 +210,18 @@ export class ObjectMp {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Cannot get rotation before create");
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.GetObjectRot(this.id);
+      return ObjectMp.__inject__.getRot(this.id);
     }
-    return ObjectMp.__inject__.GetPlayerObjectRot(this.getPlayerId(), this.id);
+    return ObjectMp.__inject__.getRotPlayer(this.getPlayerId(), this.id);
   }
 
   setRot(rx: number, ry: number, rz: number): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Cannot set rotation before create");
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.SetObjectRot(this.id, rx, ry, rz);
+      return ObjectMp.__inject__.setRot(this.id, rx, ry, rz);
     }
-    return ObjectMp.__inject__.SetPlayerObjectRot(
+    return ObjectMp.__inject__.setRotPlayer(
       this.getPlayerId(),
       this.id,
       rx,
@@ -253,18 +250,9 @@ export class ObjectMp {
       );
     if (this.isMoving()) this.stop();
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.MoveObject(
-        this.id,
-        x,
-        y,
-        z,
-        speed,
-        rx,
-        ry,
-        rz,
-      );
+      return ObjectMp.__inject__.move(this.id, x, y, z, speed, rx, ry, rz);
     }
-    return ObjectMp.__inject__.MovePlayerObject(
+    return ObjectMp.__inject__.movePlayer(
       this.getPlayerId(),
       this.id,
       x,
@@ -281,20 +269,17 @@ export class ObjectMp {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Cannot stop moving before create");
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.StopObject(this.id);
+      return ObjectMp.__inject__.stop(this.id);
     }
-    return ObjectMp.__inject__.StopPlayerObject(this.getPlayerId(), this.id);
+    return ObjectMp.__inject__.stopPlayer(this.getPlayerId(), this.id);
   }
 
   isMoving(): boolean {
     if (this.id === InvalidEnum.OBJECT_ID) return false;
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.IsObjectMoving(this.id);
+      return ObjectMp.__inject__.isMoving(this.id);
     }
-    return ObjectMp.__inject__.IsPlayerObjectMoving(
-      this.getPlayerId(),
-      this.id,
-    );
+    return ObjectMp.__inject__.isMovingPlayer(this.getPlayerId(), this.id);
   }
 
   attachCamera(player?: Player): boolean {
@@ -303,12 +288,9 @@ export class ObjectMp {
       if (!player) {
         throw new Error("[ObjectMp]: Cannot attachCamera without player");
       }
-      return ObjectMp.__inject__.AttachCameraToObject(player.id, this.id);
+      return ObjectMp.__inject__.attachCamera(player.id, this.id);
     }
-    return ObjectMp.__inject__.AttachCameraToPlayerObject(
-      this.getPlayerId(),
-      this.id,
-    );
+    return ObjectMp.__inject__.attachCameraPlayer(this.getPlayerId(), this.id);
   }
 
   attachToObject(
@@ -330,7 +312,7 @@ export class ObjectMp {
       );
 
     if (this.isGlobal() && attachTo.isGlobal()) {
-      return ObjectMp.__inject__.AttachObjectToObject(
+      return ObjectMp.__inject__.attachToObject(
         this.id,
         attachTo.id,
         offsetX,
@@ -342,7 +324,7 @@ export class ObjectMp {
         syncRotation,
       );
     } else if (!this.isGlobal() && !attachTo.isGlobal()) {
-      return ObjectMp.__inject__.AttachPlayerObjectToObject(
+      return ObjectMp.__inject__.attachToObjectPlayer(
         this.getPlayerId(),
         this.id,
         attachTo.id,
@@ -374,7 +356,7 @@ export class ObjectMp {
       if (!player) {
         throw new Error("[ObjectMp]: Cannot attachCamera without player");
       }
-      return ObjectMp.__inject__.AttachObjectToPlayer(
+      return ObjectMp.__inject__.attachToPlayer(
         this.id,
         player.id,
         offsetX,
@@ -385,7 +367,7 @@ export class ObjectMp {
         rz,
       );
     }
-    return ObjectMp.__inject__.AttachPlayerObjectToPlayer(
+    return ObjectMp.__inject__.attachToPlayerPlayer(
       this.getPlayerId(),
       this.id,
       player.id,
@@ -409,7 +391,7 @@ export class ObjectMp {
   ): boolean {
     if (this.id === InvalidEnum.OBJECT_ID) return false;
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.AttachObjectToVehicle(
+      return ObjectMp.__inject__.attachToVehicle(
         this.id,
         vehicle.id,
         offsetX,
@@ -420,7 +402,7 @@ export class ObjectMp {
         rz,
       );
     }
-    return ObjectMp.__inject__.AttachPlayerObjectToVehicle(
+    return ObjectMp.__inject__.attachToVehiclePlayer(
       this.getPlayerId(),
       this.id,
       vehicle.id,
@@ -438,20 +420,17 @@ export class ObjectMp {
       throw new Error("[ObjectMp]: Unable to edit before create");
     player.endObjectEditing();
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.BeginObjectEditing(player.id, this.id);
+      return ObjectMp.__inject__.beginEditing(player.id, this.id);
     }
-    return ObjectMp.__inject__.BeginPlayerObjectEditing(player.id, this.id);
+    return ObjectMp.__inject__.beginEditingPlayer(player.id, this.id);
   }
 
   isMaterialUsed(materialIndex: number): boolean {
     if (this.id === InvalidEnum.OBJECT_ID) return false;
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.IsObjectMaterialSlotUsed(
-        this.id,
-        materialIndex,
-      );
+      return ObjectMp.__inject__.isMaterialSlotUsed(this.id, materialIndex);
     }
-    return ObjectMp.__inject__.IsPlayerObjectMaterialSlotUsed(
+    return ObjectMp.__inject__.isMaterialSlotUsedPlayer(
       this.getPlayerId(),
       this.id,
       materialIndex,
@@ -462,9 +441,9 @@ export class ObjectMp {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Unable to get material before create");
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.GetObjectMaterial(this.id, materialIndex);
+      return ObjectMp.__inject__.getMaterial(this.id, materialIndex);
     }
-    return ObjectMp.__inject__.GetPlayerObjectMaterial(
+    return ObjectMp.__inject__.getMaterialPlayer(
       this.getPlayerId(),
       this.id,
       materialIndex,
@@ -481,7 +460,7 @@ export class ObjectMp {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Unable to set material before create");
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.SetObjectMaterial(
+      return ObjectMp.__inject__.setMaterial(
         this.id,
         materialIndex,
         modelId,
@@ -490,7 +469,7 @@ export class ObjectMp {
         rgba(materialColor),
       );
     }
-    return ObjectMp.__inject__.SetPlayerObjectMaterial(
+    return ObjectMp.__inject__.setMaterialPlayer(
       this.getPlayerId(),
       this.id,
       materialIndex,
@@ -505,13 +484,13 @@ export class ObjectMp {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Unable to get material text before create");
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.GetObjectMaterialText(
+      return ObjectMp.__inject__.getMaterialText(
         this.id,
         materialIndex,
         this.sourceInfo?.charset || "utf8",
       );
     }
-    return ObjectMp.__inject__.GetPlayerObjectMaterialText(
+    return ObjectMp.__inject__.getMaterialTextPlayer(
       this.getPlayerId(),
       this.id,
       materialIndex,
@@ -569,11 +548,11 @@ export class ObjectMp {
 
   static getPlayerCameraTarget(player: Player, isGlobal = true) {
     if (isGlobal) {
-      const id = ObjectMp.__inject__.GetPlayerCameraTargetObject(player.id);
+      const id = ObjectMp.__inject__.getCameraTarget(player.id);
       if (id === InvalidEnum.OBJECT_ID) return;
       return objectMpPool.get(id);
     }
-    const id = ObjectMp.__inject__.GetPlayerCameraTargetPlayerObject(player.id);
+    const id = ObjectMp.__inject__.getCameraTargetPlayer(player.id);
     if (id === InvalidEnum.OBJECT_ID) return;
     return ObjectMp.getPlayersInstances()
       .map(([, o]) => o)
@@ -584,9 +563,9 @@ export class ObjectMp {
   setNoCameraCollision(): boolean {
     if (this.id === InvalidEnum.OBJECT_ID) return false;
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.SetObjectNoCameraCollision(this.id);
+      return ObjectMp.__inject__.setNoCameraCollision(this.id);
     }
-    return ObjectMp.__inject__.SetPlayerObjectNoCameraCollision(
+    return ObjectMp.__inject__.setNoCameraCollisionPlayer(
       this.getPlayerId(),
       this.id,
     );
@@ -595,12 +574,9 @@ export class ObjectMp {
   isNoCameraCol(): boolean {
     if (this.id === InvalidEnum.OBJECT_ID) return false;
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.IsObjectNoCameraCol(this.id);
+      return ObjectMp.__inject__.isNoCameraCol(this.id);
     }
-    return ObjectMp.__inject__.IsPlayerObjectNoCameraCol(
-      this.getPlayerId(),
-      this.id,
-    );
+    return ObjectMp.__inject__.isNoCameraColPlayer(this.getPlayerId(), this.id);
   }
 
   hasCameraCollision() {
@@ -610,9 +586,9 @@ export class ObjectMp {
   getDrawDistance(): number {
     if (this.id === InvalidEnum.OBJECT_ID) return 0.0;
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.GetObjectDrawDistance(this.id);
+      return ObjectMp.__inject__.getDrawDistance(this.id);
     }
-    return ObjectMp.__inject__.GetPlayerObjectDrawDistance(
+    return ObjectMp.__inject__.getDrawDistancePlayer(
       this.getPlayerId(),
       this.id,
     );
@@ -621,9 +597,9 @@ export class ObjectMp {
   setMoveSpeed(speed: number): boolean {
     if (this.id === InvalidEnum.OBJECT_ID) return false;
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.SetObjectMoveSpeed(this.id, speed);
+      return ObjectMp.__inject__.setMoveSpeed(this.id, speed);
     }
-    return ObjectMp.__inject__.SetPlayerObjectMoveSpeed(
+    return ObjectMp.__inject__.setMoveSpeedPlayer(
       this.getPlayerId(),
       this.id,
       speed,
@@ -633,19 +609,16 @@ export class ObjectMp {
   getMoveSpeed() {
     if (this.id === InvalidEnum.OBJECT_ID) return 0.0;
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.GetObjectMoveSpeed(this.id);
+      return ObjectMp.__inject__.getMoveSpeed(this.id);
     }
-    return ObjectMp.__inject__.GetPlayerObjectMoveSpeed(
-      this.getPlayerId(),
-      this.id,
-    );
+    return ObjectMp.__inject__.getMoveSpeedPlayer(this.getPlayerId(), this.id);
   }
 
   getMovingTargetPos() {
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.GetObjectMovingTargetPos(this.id);
+      return ObjectMp.__inject__.getMovingTargetPos(this.id);
     }
-    return ObjectMp.__inject__.GetPlayerObjectMovingTargetPos(
+    return ObjectMp.__inject__.getMovingTargetPosPlayer(
       this.getPlayerId(),
       this.id,
     );
@@ -653,9 +626,9 @@ export class ObjectMp {
 
   getSyncRotation() {
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.GetObjectSyncRotation(this.id);
+      return ObjectMp.__inject__.getSyncRotation(this.id);
     }
-    return ObjectMp.__inject__.GetPlayerObjectSyncRotation(
+    return ObjectMp.__inject__.getSyncRotationPlayer(
       this.getPlayerId(),
       this.id,
     );
@@ -663,9 +636,9 @@ export class ObjectMp {
 
   getAttachedOffset() {
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.GetObjectAttachedOffset(this.id);
+      return ObjectMp.__inject__.getAttachedOffset(this.id);
     }
-    return ObjectMp.__inject__.GetPlayerObjectAttachedOffset(
+    return ObjectMp.__inject__.getAttachedOffsetPlayer(
       this.getPlayerId(),
       this.id,
     );
@@ -673,19 +646,16 @@ export class ObjectMp {
 
   getTarget() {
     if (this.isGlobal()) {
-      return ObjectMp.__inject__.GetObjectTarget(this.id);
+      return ObjectMp.__inject__.getTarget(this.id);
     }
-    return ObjectMp.__inject__.GetPlayerObjectTarget(
-      this.getPlayerId(),
-      this.id,
-    );
+    return ObjectMp.__inject__.getTargetPlayer(this.getPlayerId(), this.id);
   }
 
   static isValid(objectId: number, playerId?: number) {
     if (playerId === InvalidEnum.PLAYER_ID) return false;
     return typeof playerId === "undefined"
-      ? ObjectMp.__inject__.IsValidObject(objectId)
-      : ObjectMp.__inject__.IsValidPlayerObject(playerId, objectId);
+      ? ObjectMp.__inject__.isValid(objectId)
+      : ObjectMp.__inject__.isValidPlayer(playerId, objectId);
   }
 
   static getInstance(objectId: number, player?: Player) {
@@ -709,68 +679,68 @@ export class ObjectMp {
   }
 
   static __inject__ = {
-    CreateObject: o.CreateObject,
-    CreatePlayerObject: o.CreatePlayerObject,
-    DestroyObject: o.DestroyObject,
-    DestroyPlayerObject: o.DestroyPlayerObject,
-    SetObjectMaterialText: SetObjectMaterialText,
-    SetPlayerObjectMaterialText: SetPlayerObjectMaterialText,
-    SetObjectNoCameraCollision: o.SetObjectNoCameraCollision,
-    SetPlayerObjectNoCameraCollision: o.SetPlayerObjectNoCameraCollision,
-    IsObjectNoCameraCol: o.IsObjectNoCameraCol,
-    IsPlayerObjectNoCameraCol: o.IsPlayerObjectNoCameraCol,
-    GetObjectDrawDistance: o.GetObjectDrawDistance,
-    GetPlayerObjectDrawDistance: o.GetPlayerObjectDrawDistance,
-    SetObjectMoveSpeed: o.SetObjectMoveSpeed,
-    SetPlayerObjectMoveSpeed: o.SetPlayerObjectMoveSpeed,
-    GetObjectMoveSpeed: o.GetObjectMoveSpeed,
-    GetPlayerObjectMoveSpeed: o.GetPlayerObjectMoveSpeed,
-    GetObjectMovingTargetPos: o.GetObjectMovingTargetPos,
-    GetPlayerObjectMovingTargetPos: o.GetPlayerObjectMovingTargetPos,
-    GetObjectSyncRotation: o.GetObjectSyncRotation,
-    GetPlayerObjectSyncRotation: o.GetPlayerObjectSyncRotation,
-    GetObjectAttachedOffset: o.GetObjectAttachedOffset,
-    GetPlayerObjectAttachedOffset: o.GetPlayerObjectAttachedOffset,
-    GetObjectTarget: o.GetObjectTarget,
-    GetPlayerObjectTarget: o.GetPlayerObjectTarget,
-    IsValidObject: o.IsValidObject,
-    IsValidPlayerObject: o.IsValidPlayerObject,
-    GetPlayerCameraTargetObject: o.GetPlayerCameraTargetObject,
-    GetPlayerCameraTargetPlayerObject: o.GetPlayerCameraTargetPlayerObject,
-    GetObjectModel: o.GetObjectModel,
-    GetPlayerObjectModel: o.GetPlayerObjectModel,
-    GetObjectPos: o.GetObjectPos,
-    GetPlayerObjectPos: o.GetPlayerObjectPos,
-    GetObjectRot: o.GetObjectRot,
-    GetPlayerObjectRot: o.GetPlayerObjectRot,
-    SetObjectPos: o.SetObjectPos,
-    SetPlayerObjectPos: o.SetPlayerObjectPos,
-    SetObjectRot: o.SetObjectRot,
-    SetPlayerObjectRot: o.SetPlayerObjectRot,
-    MoveObject: o.MoveObject,
-    MovePlayerObject: o.MovePlayerObject,
-    SetObjectMaterial: o.SetObjectMaterial,
-    SetPlayerObjectMaterial: o.SetPlayerObjectMaterial,
-    StopObject: o.StopObject,
-    StopPlayerObject: o.StopPlayerObject,
-    IsObjectMoving: o.IsObjectMoving,
-    IsPlayerObjectMoving: o.IsPlayerObjectMoving,
-    AttachCameraToObject: o.AttachCameraToObject,
-    AttachCameraToPlayerObject: o.AttachCameraToPlayerObject,
-    AttachObjectToPlayer: o.AttachObjectToPlayer,
-    AttachObjectToObject: o.AttachObjectToObject,
-    AttachPlayerObjectToObject: o.AttachPlayerObjectToObject,
-    AttachPlayerObjectToPlayer: o.AttachPlayerObjectToPlayer,
-    AttachObjectToVehicle: o.AttachObjectToVehicle,
-    AttachPlayerObjectToVehicle: o.AttachPlayerObjectToVehicle,
-    BeginObjectEditing: o.BeginObjectEditing,
-    BeginPlayerObjectEditing: o.BeginPlayerObjectEditing,
-    EndObjectEditing: o.EndObjectEditing,
-    GetObjectMaterial: o.GetObjectMaterial,
-    GetPlayerObjectMaterial: o.GetPlayerObjectMaterial,
-    IsObjectMaterialSlotUsed: o.IsObjectMaterialSlotUsed,
-    IsPlayerObjectMaterialSlotUsed: o.IsPlayerObjectMaterialSlotUsed,
-    GetObjectMaterialText,
-    GetPlayerObjectMaterialText,
+    create: o.CreateObject,
+    createPlayer: o.CreatePlayerObject,
+    destroy: o.DestroyObject,
+    destroyPlayer: o.DestroyPlayerObject,
+    setMaterialText: SetObjectMaterialText,
+    setMaterialTextPlayer: SetPlayerObjectMaterialText,
+    setNoCameraCollision: o.SetObjectNoCameraCollision,
+    setNoCameraCollisionPlayer: o.SetPlayerObjectNoCameraCollision,
+    isNoCameraCol: o.IsObjectNoCameraCol,
+    isNoCameraColPlayer: o.IsPlayerObjectNoCameraCol,
+    getDrawDistance: o.GetObjectDrawDistance,
+    getDrawDistancePlayer: o.GetPlayerObjectDrawDistance,
+    setMoveSpeed: o.SetObjectMoveSpeed,
+    setMoveSpeedPlayer: o.SetPlayerObjectMoveSpeed,
+    getMoveSpeed: o.GetObjectMoveSpeed,
+    getMoveSpeedPlayer: o.GetPlayerObjectMoveSpeed,
+    getMovingTargetPos: o.GetObjectMovingTargetPos,
+    getMovingTargetPosPlayer: o.GetPlayerObjectMovingTargetPos,
+    getSyncRotation: o.GetObjectSyncRotation,
+    getSyncRotationPlayer: o.GetPlayerObjectSyncRotation,
+    getAttachedOffset: o.GetObjectAttachedOffset,
+    getAttachedOffsetPlayer: o.GetPlayerObjectAttachedOffset,
+    getTarget: o.GetObjectTarget,
+    getTargetPlayer: o.GetPlayerObjectTarget,
+    isValid: o.IsValidObject,
+    isValidPlayer: o.IsValidPlayerObject,
+    getCameraTarget: o.GetPlayerCameraTargetObject,
+    getCameraTargetPlayer: o.GetPlayerCameraTargetPlayerObject,
+    getModel: o.GetObjectModel,
+    getModelPlayer: o.GetPlayerObjectModel,
+    getPos: o.GetObjectPos,
+    getPosPlayer: o.GetPlayerObjectPos,
+    getRot: o.GetObjectRot,
+    getRotPlayer: o.GetPlayerObjectRot,
+    setPos: o.SetObjectPos,
+    setPosPlayer: o.SetPlayerObjectPos,
+    setRot: o.SetObjectRot,
+    setRotPlayer: o.SetPlayerObjectRot,
+    move: o.MoveObject,
+    movePlayer: o.MovePlayerObject,
+    setMaterial: o.SetObjectMaterial,
+    setMaterialPlayer: o.SetPlayerObjectMaterial,
+    stop: o.StopObject,
+    stopPlayer: o.StopPlayerObject,
+    isMoving: o.IsObjectMoving,
+    isMovingPlayer: o.IsPlayerObjectMoving,
+    attachCamera: o.AttachCameraToObject,
+    attachCameraPlayer: o.AttachCameraToPlayerObject,
+    attachToPlayer: o.AttachObjectToPlayer,
+    attachToObject: o.AttachObjectToObject,
+    attachToObjectPlayer: o.AttachPlayerObjectToObject,
+    attachToPlayerPlayer: o.AttachPlayerObjectToPlayer,
+    attachToVehicle: o.AttachObjectToVehicle,
+    attachToVehiclePlayer: o.AttachPlayerObjectToVehicle,
+    beginEditing: o.BeginObjectEditing,
+    beginEditingPlayer: o.BeginPlayerObjectEditing,
+    endEditing: o.EndObjectEditing,
+    getMaterial: o.GetObjectMaterial,
+    getMaterialPlayer: o.GetPlayerObjectMaterial,
+    isMaterialSlotUsed: o.IsObjectMaterialSlotUsed,
+    isMaterialSlotUsedPlayer: o.IsPlayerObjectMaterialSlotUsed,
+    getMaterialText: GetObjectMaterialText,
+    getMaterialTextPlayer: GetPlayerObjectMaterialText,
   };
 }

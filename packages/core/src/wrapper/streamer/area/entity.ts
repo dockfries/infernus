@@ -51,7 +51,7 @@ export class DynamicArea {
         const { x, y, size } = this.sourceInfo;
         if (size < 0)
           throw new Error("[StreamerArea]: Invalid circle extend size");
-        this._id = DynamicArea.__inject__.CreateDynamicCircleEx(
+        this._id = DynamicArea.__inject__.createCircleEx(
           x,
           y,
           size,
@@ -62,7 +62,7 @@ export class DynamicArea {
         );
       } else if (type === "cuboid") {
         const { minX, minY, minZ, maxX, maxY, maxZ } = this.sourceInfo;
-        this._id = DynamicArea.__inject__.CreateDynamicCuboidEx(
+        this._id = DynamicArea.__inject__.createCuboidEx(
           minX,
           minY,
           minZ,
@@ -78,7 +78,7 @@ export class DynamicArea {
         const { x, y, minZ: minZ, maxZ: maxZ, size } = this.sourceInfo;
         if (size < 0)
           throw new Error("[StreamerArea]: Invalid cylinder extend size");
-        this._id = DynamicArea.__inject__.CreateDynamicCylinderEx(
+        this._id = DynamicArea.__inject__.createCylinderEx(
           x,
           y,
           minZ,
@@ -95,7 +95,7 @@ export class DynamicArea {
           throw new Error(
             "[StreamerArea]: Unable to create polygon extended with asymmetrical points",
           );
-        this._id = DynamicArea.__inject__.CreateDynamicPolygonEx(
+        this._id = DynamicArea.__inject__.createPolygonEx(
           points,
           minZ,
           maxZ,
@@ -111,7 +111,7 @@ export class DynamicArea {
           maxX: maxX,
           maxY: maxY,
         } = this.sourceInfo;
-        this._id = DynamicArea.__inject__.CreateDynamicRectangleEx(
+        this._id = DynamicArea.__inject__.createRectangleEx(
           minX,
           minY,
           maxX,
@@ -125,7 +125,7 @@ export class DynamicArea {
         const { x, y, z, size } = this.sourceInfo;
         if (size < 0)
           throw new Error("[StreamerArea]: Invalid sphere extended size");
-        this._id = DynamicArea.__inject__.CreateDynamicSphereEx(
+        this._id = DynamicArea.__inject__.createSphereEx(
           x,
           y,
           z,
@@ -147,7 +147,7 @@ export class DynamicArea {
       if (type === "circle") {
         const { x, y, size } = this.sourceInfo;
         if (size < 0) throw new Error("[StreamerArea]: Invalid circle size");
-        this._id = DynamicArea.__inject__.CreateDynamicCircle(
+        this._id = DynamicArea.__inject__.createCircle(
           x,
           y,
           size,
@@ -165,7 +165,7 @@ export class DynamicArea {
           maxY: maxY,
           maxZ,
         } = this.sourceInfo;
-        this._id = DynamicArea.__inject__.CreateDynamicCuboid(
+        this._id = DynamicArea.__inject__.createCuboid(
           minX,
           minY,
           minZ,
@@ -180,7 +180,7 @@ export class DynamicArea {
       } else if (type === "cylinder") {
         const { x, y, minZ: minZ, maxZ: maxZ, size } = this.sourceInfo;
         if (size < 0) throw new Error("[StreamerArea]: Invalid cylinder size");
-        this._id = DynamicArea.__inject__.CreateDynamicCylinder(
+        this._id = DynamicArea.__inject__.createCylinder(
           x,
           y,
           minZ,
@@ -197,7 +197,7 @@ export class DynamicArea {
           throw new Error(
             "[StreamerArea]: Unable to create polygon with asymmetrical points",
           );
-        this._id = DynamicArea.__inject__.CreateDynamicPolygon(
+        this._id = DynamicArea.__inject__.createPolygon(
           points,
           minZ,
           maxZ,
@@ -213,7 +213,7 @@ export class DynamicArea {
           maxX: maxX,
           maxY: maxY,
         } = this.sourceInfo;
-        this._id = DynamicArea.__inject__.CreateDynamicRectangle(
+        this._id = DynamicArea.__inject__.createRectangle(
           minX,
           minY,
           maxX,
@@ -226,7 +226,7 @@ export class DynamicArea {
       } else {
         const { x, y, z, size } = this.sourceInfo;
         if (size < 0) throw new Error("[StreamerArea]: Invalid sphere size");
-        this._id = DynamicArea.__inject__.CreateDynamicSphere(
+        this._id = DynamicArea.__inject__.createSphere(
           x,
           y,
           z,
@@ -247,7 +247,7 @@ export class DynamicArea {
         "[StreamerArea]: Unable to destroy the area before create",
       );
     if (!INTERNAL_FLAGS.skip) {
-      DynamicArea.__inject__.DestroyDynamicArea(this.id);
+      DynamicArea.__inject__.destroy(this.id);
     }
     dynamicAreasPool.delete(this.id);
     this._id = s.StreamerMiscellaneous.INVALID_ID;
@@ -261,10 +261,10 @@ export class DynamicArea {
   getType(): StreamerAreaTypes {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new Error("[StreamerArea]: Unable to get type before create");
-    return DynamicArea.__inject__.GetDynamicAreaType(this.id);
+    return DynamicArea.__inject__.getType(this.id);
   }
   getPolygonPoints() {
-    return DynamicArea.__inject__.GetDynamicPolygonPoints(this.id);
+    return DynamicArea.__inject__.getPolygonPoints(this.id);
   }
   getPolygonNumberPoints(): number {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
@@ -275,40 +275,36 @@ export class DynamicArea {
       throw new Error(
         "[StreamerArea]: getPolygonNumberPoints invalid area type",
       );
-    return DynamicArea.__inject__.GetDynamicPolygonNumberPoints(this.id);
+    return DynamicArea.__inject__.getPolygonNumberPoints(this.id);
   }
   isPlayerIn(player: Player, recheck = false): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
-    return DynamicArea.__inject__.IsPlayerInDynamicArea(
-      player.id,
-      this.id,
-      recheck,
-    );
+    return DynamicArea.__inject__.isPlayerIn(player.id, this.id, recheck);
   }
   static isPlayerInAny(player: Player, recheck = false): boolean {
-    return DynamicArea.__inject__.IsPlayerInAnyDynamicArea(player.id, recheck);
+    return DynamicArea.__inject__.isPlayerInAny(player.id, recheck);
   }
   isAnyPlayerIn(recheck = false): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
-    return DynamicArea.__inject__.IsAnyPlayerInDynamicArea(this.id, recheck);
+    return DynamicArea.__inject__.isAnyPlayerIn(this.id, recheck);
   }
   static isAnyPlayerInAny(recheck = false): boolean {
-    return DynamicArea.__inject__.IsAnyPlayerInAnyDynamicArea(recheck);
+    return DynamicArea.__inject__.isAnyPlayerInAny(recheck);
   }
   static getPlayerAreas(player: Player): Array<DynamicArea | undefined> {
     if (!DynamicArea.getPlayerAreasNumber(player)) return [];
-    const ids = DynamicArea.__inject__.GetPlayerDynamicAreas(player.id).areas;
+    const ids = DynamicArea.__inject__.getPlayerAreas(player.id).areas;
     return ids.map((a) => dynamicAreasPool.get(a));
   }
   static getPlayerAreasNumber(player: Player) {
-    return DynamicArea.__inject__.GetPlayerNumberDynamicAreas(player.id);
+    return DynamicArea.__inject__.getPlayerAreasNumber(player.id);
   }
   isPointIn(x: number, y: number, z: number): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
-    return DynamicArea.__inject__.IsPointInDynamicArea(this.id, x, y, z);
+    return DynamicArea.__inject__.isPointIn(this.id, x, y, z);
   }
   static isPointInAny(x: number, y: number, z: number): boolean {
-    return DynamicArea.__inject__.IsPointInAnyDynamicArea(x, y, z);
+    return DynamicArea.__inject__.isPointInAny(x, y, z);
   }
   isLineIn(
     x1: number,
@@ -319,15 +315,7 @@ export class DynamicArea {
     z2: number,
   ): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
-    return DynamicArea.__inject__.IsLineInDynamicArea(
-      this.id,
-      x1,
-      y1,
-      z1,
-      x2,
-      y2,
-      z2,
-    );
+    return DynamicArea.__inject__.isLineIn(this.id, x1, y1, z1, x2, y2, z2);
   }
   static isLineInAny(
     x1: number,
@@ -337,23 +325,16 @@ export class DynamicArea {
     y2: number,
     z2: number,
   ): boolean {
-    return DynamicArea.__inject__.IsLineInAnyDynamicArea(
-      x1,
-      y1,
-      z1,
-      x2,
-      y2,
-      z2,
-    );
+    return DynamicArea.__inject__.isLineInAny(x1, y1, z1, x2, y2, z2);
   }
   static getForPoint(x: number, y: number, z: number) {
     if (!DynamicArea.getNumberForPoint(x, y, z)) return [];
-    const ids = DynamicArea.__inject__.GetDynamicAreasForPoint(x, y, z).areas;
+    const ids = DynamicArea.__inject__.getForPoint(x, y, z).areas;
 
     return ids.map((a) => DynamicArea.getInstance(a)).filter(Boolean);
   }
   static getNumberForPoint(x: number, y: number, z: number): number {
-    return DynamicArea.__inject__.GetNumberDynamicAreasForPoint(x, y, z);
+    return DynamicArea.__inject__.getNumberForPoint(x, y, z);
   }
   static getForLine(
     x1: number,
@@ -364,14 +345,7 @@ export class DynamicArea {
     z2: number,
   ) {
     if (!DynamicArea.getNumberForLine(x1, y1, z1, x2, y2, z2)) return [];
-    const ids = DynamicArea.__inject__.GetDynamicAreasForLine(
-      x1,
-      y1,
-      z1,
-      x2,
-      y2,
-      z2,
-    ).areas;
+    const ids = DynamicArea.__inject__.getForLine(x1, y1, z1, x2, y2, z2).areas;
 
     return ids.map((a) => DynamicArea.getInstance(a)).filter(Boolean);
   }
@@ -383,14 +357,7 @@ export class DynamicArea {
     y2: number,
     z2: number,
   ): number {
-    return DynamicArea.__inject__.GetNumberDynamicAreasForLine(
-      x1,
-      y1,
-      z1,
-      x2,
-      y2,
-      z2,
-    );
+    return DynamicArea.__inject__.getNumberForLine(x1, y1, z1, x2, y2, z2);
   }
   attachToObject(
     obj: DynamicObject,
@@ -405,7 +372,7 @@ export class DynamicArea {
       throw new Error(
         "[StreamerArea]: Unable to toggle attach to object before create",
       );
-    return DynamicArea.__inject__.AttachDynamicAreaToObject(
+    return DynamicArea.__inject__.attachToObject(
       this.id,
       obj.id,
       s.StreamerObjectTypes.DYNAMIC,
@@ -428,7 +395,7 @@ export class DynamicArea {
       throw new Error(
         "[StreamerArea]: Unable to toggle attach to player before create",
       );
-    return DynamicArea.__inject__.AttachDynamicAreaToPlayer(
+    return DynamicArea.__inject__.attachToPlayer(
       this.id,
       player.id,
       offsetX,
@@ -449,7 +416,7 @@ export class DynamicArea {
       throw new Error(
         "[StreamerArea]: Unable to toggle attach to vehicle before create",
       );
-    return DynamicArea.__inject__.AttachDynamicAreaToVehicle(
+    return DynamicArea.__inject__.attachToVehicle(
       this.id,
       vehicle.id,
       offsetX,
@@ -462,11 +429,11 @@ export class DynamicArea {
       throw new Error(
         "[StreamerArea]: Unable to toggle spectate mode before create",
       );
-    return DynamicArea.__inject__.ToggleDynAreaSpectateMode(this.id, toggle);
+    return DynamicArea.__inject__.toggleSpectateMode(this.id, toggle);
   }
   isToggleSpectateMode(): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
-    return DynamicArea.__inject__.IsToggleDynAreaSpectateMode(this.id);
+    return DynamicArea.__inject__.isToggleSpectateMode(this.id);
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
@@ -509,40 +476,40 @@ export class DynamicArea {
   }
 
   static __inject__ = {
-    CreateDynamicCircleEx: s.CreateDynamicCircleEx,
-    CreateDynamicCuboidEx: s.CreateDynamicCuboidEx,
-    CreateDynamicCylinderEx: s.CreateDynamicCylinderEx,
-    CreateDynamicPolygonEx: s.CreateDynamicPolygonEx,
-    CreateDynamicRectangleEx: s.CreateDynamicRectangleEx,
-    CreateDynamicSphereEx: s.CreateDynamicSphereEx,
-    CreateDynamicCircle: s.CreateDynamicCircle,
-    CreateDynamicCuboid: s.CreateDynamicCuboid,
-    CreateDynamicCylinder: s.CreateDynamicCylinder,
-    CreateDynamicPolygon: s.CreateDynamicPolygon,
-    CreateDynamicRectangle: s.CreateDynamicRectangle,
-    CreateDynamicSphere: s.CreateDynamicSphere,
-    DestroyDynamicArea: s.DestroyDynamicArea,
-    GetDynamicAreaType: s.GetDynamicAreaType,
-    GetDynamicPolygonPoints: s.GetDynamicPolygonPoints,
-    GetDynamicPolygonNumberPoints: s.GetDynamicPolygonNumberPoints,
-    IsPlayerInDynamicArea: s.IsPlayerInDynamicArea,
-    IsPlayerInAnyDynamicArea: s.IsPlayerInAnyDynamicArea,
-    IsAnyPlayerInDynamicArea: s.IsAnyPlayerInDynamicArea,
-    IsAnyPlayerInAnyDynamicArea: s.IsAnyPlayerInAnyDynamicArea,
-    GetPlayerDynamicAreas: s.GetPlayerDynamicAreas,
-    GetPlayerNumberDynamicAreas: s.GetPlayerNumberDynamicAreas,
-    IsPointInDynamicArea: s.IsPointInDynamicArea,
-    IsPointInAnyDynamicArea: s.IsPointInAnyDynamicArea,
-    IsLineInDynamicArea: s.IsLineInDynamicArea,
-    IsLineInAnyDynamicArea: s.IsLineInAnyDynamicArea,
-    GetDynamicAreasForPoint: s.GetDynamicAreasForPoint,
-    GetNumberDynamicAreasForPoint: s.GetNumberDynamicAreasForPoint,
-    GetDynamicAreasForLine: s.GetDynamicAreasForLine,
-    GetNumberDynamicAreasForLine: s.GetNumberDynamicAreasForLine,
-    AttachDynamicAreaToObject: s.AttachDynamicAreaToObject,
-    AttachDynamicAreaToPlayer: s.AttachDynamicAreaToPlayer,
-    AttachDynamicAreaToVehicle: s.AttachDynamicAreaToVehicle,
-    ToggleDynAreaSpectateMode: s.ToggleDynAreaSpectateMode,
-    IsToggleDynAreaSpectateMode: s.IsToggleDynAreaSpectateMode,
+    createCircleEx: s.CreateDynamicCircleEx,
+    createCuboidEx: s.CreateDynamicCuboidEx,
+    createCylinderEx: s.CreateDynamicCylinderEx,
+    createPolygonEx: s.CreateDynamicPolygonEx,
+    createRectangleEx: s.CreateDynamicRectangleEx,
+    createSphereEx: s.CreateDynamicSphereEx,
+    createCircle: s.CreateDynamicCircle,
+    createCuboid: s.CreateDynamicCuboid,
+    createCylinder: s.CreateDynamicCylinder,
+    createPolygon: s.CreateDynamicPolygon,
+    createRectangle: s.CreateDynamicRectangle,
+    createSphere: s.CreateDynamicSphere,
+    destroy: s.DestroyDynamicArea,
+    getType: s.GetDynamicAreaType,
+    getPolygonPoints: s.GetDynamicPolygonPoints,
+    getPolygonNumberPoints: s.GetDynamicPolygonNumberPoints,
+    isPlayerIn: s.IsPlayerInDynamicArea,
+    isPlayerInAny: s.IsPlayerInAnyDynamicArea,
+    isAnyPlayerIn: s.IsAnyPlayerInDynamicArea,
+    isAnyPlayerInAny: s.IsAnyPlayerInAnyDynamicArea,
+    getPlayerAreas: s.GetPlayerDynamicAreas,
+    getPlayerAreasNumber: s.GetPlayerNumberDynamicAreas,
+    isPointIn: s.IsPointInDynamicArea,
+    isPointInAny: s.IsPointInAnyDynamicArea,
+    isLineIn: s.IsLineInDynamicArea,
+    isLineInAny: s.IsLineInAnyDynamicArea,
+    getForPoint: s.GetDynamicAreasForPoint,
+    getNumberForPoint: s.GetNumberDynamicAreasForPoint,
+    getForLine: s.GetDynamicAreasForLine,
+    getNumberForLine: s.GetNumberDynamicAreasForLine,
+    attachToObject: s.AttachDynamicAreaToObject,
+    attachToPlayer: s.AttachDynamicAreaToPlayer,
+    attachToVehicle: s.AttachDynamicAreaToVehicle,
+    toggleSpectateMode: s.ToggleDynAreaSpectateMode,
+    isToggleSpectateMode: s.IsToggleDynAreaSpectateMode,
   };
 }
