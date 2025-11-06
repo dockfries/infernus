@@ -17,7 +17,10 @@ const inputPath = path.resolve(packageDir, `src/main.ts`);
 const outputPath = path.resolve(packageDir, `dist`);
 
 const externalPlugin = externals({
-  packagePath: path.resolve(packageDir, "package.json"),
+  packagePath: [
+    path.resolve("./package.json"),
+    path.resolve(packageDir, "package.json"),
+  ],
 });
 
 const require = createRequire(import.meta.url);
@@ -55,7 +58,7 @@ export default [
       json(),
       nodeResolve(),
       typescriptPaths({ preserveExtensions: true }),
-      esbuild({ target: "node16.13", minify: true }),
+      esbuild({ target: "node20", minify: true }),
     ],
   },
   // d.ts
