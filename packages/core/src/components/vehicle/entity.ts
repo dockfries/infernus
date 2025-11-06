@@ -53,7 +53,7 @@ export class Vehicle {
     if (!ignoreRange && !isValidVehModelId(modelId)) return;
     if (this.isStatic) {
       if (typeof respawnDelay === "undefined") {
-        this._id = Vehicle.__inject__.addStaticVehicle(
+        this._id = Vehicle.__inject__.addStatic(
           modelId,
           x,
           y,
@@ -64,7 +64,7 @@ export class Vehicle {
         );
         return;
       }
-      this._id = Vehicle.__inject__.addStaticVehicleEx(
+      this._id = Vehicle.__inject__.addStaticEx(
         modelId,
         x,
         y,
@@ -612,17 +612,17 @@ export class Vehicle {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.isHidden(this.id);
   }
-  getVehicleOccupant(seatId: number) {
-    return Vehicle.__inject__.getVehicleOccupant(this.id, seatId);
+  getOccupant(seatId: number) {
+    return Vehicle.__inject__.getOccupant(this.id, seatId);
   }
-  getVehicleMaxPassengers() {
-    return Vehicle.__inject__.getVehicleMaxPassengers(this.getModel());
+  getMaxPassengers() {
+    return Vehicle.__inject__.getMaxPassengers(this.getModel());
   }
-  countVehicleOccupants() {
-    return Vehicle.__inject__.countVehicleOccupants(this.getModel());
+  countOccupants() {
+    return Vehicle.__inject__.countOccupants(this.getModel());
   }
-  static getVehicleMaxPassengers(modelId: number) {
-    return Vehicle.__inject__.getVehicleMaxPassengers(modelId);
+  static getMaxPassengers(modelId: number) {
+    return Vehicle.__inject__.getMaxPassengers(modelId);
   }
   static getRandomColorPair(modelId: number) {
     return Vehicle.__inject__.getRandomColorPair(modelId);
@@ -651,8 +651,8 @@ export class Vehicle {
   }
 
   static __inject__ = {
-    addStaticVehicle: v.AddStaticVehicle,
-    addStaticVehicleEx: v.AddStaticVehicleEx,
+    addStatic: v.AddStaticVehicle,
+    addStaticEx: v.AddStaticVehicleEx,
     create: v.CreateVehicle,
     destroy: v.DestroyVehicle,
     addComponent: v.AddVehicleComponent,
@@ -728,9 +728,9 @@ export class Vehicle {
     show: v.ShowVehicle,
     hide: v.HideVehicle,
     isHidden: v.IsVehicleHidden,
-    getVehicleOccupant: v.GetVehicleOccupant,
-    getVehicleMaxPassengers: v.GetVehicleMaxPassengers,
-    countVehicleOccupants: v.CountVehicleOccupants,
+    getOccupant: v.GetVehicleOccupant,
+    getMaxPassengers: v.GetVehicleMaxPassengers,
+    countOccupants: v.CountVehicleOccupants,
     getComponentType: v.GetVehicleComponentType,
     colorIndexToColor: v.VehicleColorIndexToColor,
     isValid: v.IsValidVehicle,

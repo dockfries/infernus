@@ -1259,7 +1259,7 @@ export function acc_AddStaticVehicle(
   return ac_vehId;
 }
 
-Vehicle.__inject__.AddStaticVehicle = acc_AddStaticVehicle;
+Vehicle.__inject__.addStatic = acc_AddStaticVehicle;
 
 export function acc_AddStaticVehicleEx(
   modelId: number,
@@ -1289,7 +1289,7 @@ export function acc_AddStaticVehicleEx(
   return ac_vehId;
 }
 
-Vehicle.__inject__.AddStaticVehicleEx = acc_AddStaticVehicleEx;
+Vehicle.__inject__.addStaticEx = acc_AddStaticVehicleEx;
 
 export function acc_CreateVehicle(
   vehicleType: number,
@@ -1319,7 +1319,7 @@ export function acc_CreateVehicle(
   return ac_vehId;
 }
 
-Vehicle.__inject__.CreateVehicle = acc_CreateVehicle;
+Vehicle.__inject__.create = acc_CreateVehicle;
 
 export function acc_AddPlayerClass(
   modelId: number,
@@ -1431,7 +1431,7 @@ export function acc_AddStaticPickup(
   return ac_pickId;
 }
 
-Pickup.__inject__.AddStaticPickup = acc_AddStaticPickup;
+Pickup.__inject__.addStatic = acc_AddStaticPickup;
 
 export function acc_CreatePickup(
   model: number,
@@ -1448,7 +1448,7 @@ export function acc_CreatePickup(
   return ac_pickId;
 }
 
-Pickup.__inject__.CreatePickup = acc_CreatePickup;
+Pickup.__inject__.create = acc_CreatePickup;
 
 export function acc_CreateDynamicPickup(
   modelId: number,
@@ -1484,7 +1484,7 @@ export function acc_CreateDynamicPickup(
   return ac_pickId;
 }
 
-DynamicPickup.__inject__.CreateDynamicPickup = acc_CreateDynamicPickup;
+DynamicPickup.__inject__.create = acc_CreateDynamicPickup;
 
 export function acc_CreateDynamicPickupEx(
   modelId: number,
@@ -1520,25 +1520,25 @@ export function acc_CreateDynamicPickupEx(
   return ac_pickId;
 }
 
-DynamicPickup.__inject__.CreateDynamicPickupEx = acc_CreateDynamicPickupEx;
+DynamicPickup.__inject__.createEx = acc_CreateDynamicPickupEx;
 
 export function acc_DestroyVehicle(vehicleId: number) {
   return ac_DestroyVehicle(vehicleId);
 }
 
-Vehicle.__inject__.DestroyVehicle = acc_DestroyVehicle;
+Vehicle.__inject__.destroy = acc_DestroyVehicle;
 
 export function acc_DestroyPickup(pickupId: number) {
   return ac_DestroyPickup(pickupId);
 }
 
-Pickup.__inject__.DestroyPickup = acc_DestroyPickup;
+Pickup.__inject__.destroy = acc_DestroyPickup;
 
 export function acc_DestroyDynamicPickup(pickupId: number) {
   return ac_DestroyDynamicPickup(pickupId);
 }
 
-DynamicPickup.__inject__.DestroyDynamicPickup = acc_DestroyDynamicPickup;
+DynamicPickup.__inject__.destroy = acc_DestroyDynamicPickup;
 
 export function acc_DisableInteriorEnterExits() {
   return ac_DisableInteriorEnterExits();
@@ -1584,7 +1584,7 @@ export function acc_ShowPlayerDialog(
   return false;
 }
 
-Dialog.__inject__.ShowPlayerDialog = acc_ShowPlayerDialog;
+Dialog.__inject__.show = acc_ShowPlayerDialog;
 
 export const acc_TogglePlayerControllable = setPlayerHook(
   "toggleControllable",
@@ -1863,7 +1863,7 @@ export function acc_SetPickupPos(
   return true;
 }
 
-Pickup.__inject__.SetPickupPos = acc_SetPickupPos;
+Pickup.__inject__.setPos = acc_SetPickupPos;
 
 export function acc_SetPickupModel(
   pickupId: number,
@@ -1877,7 +1877,7 @@ export function acc_SetPickupModel(
   return true;
 }
 
-Pickup.__inject__.SetPickupModel = acc_SetPickupModel;
+Pickup.__inject__.setModel = acc_SetPickupModel;
 
 export function acc_SetPickupType(
   pickupId: number,
@@ -1891,4 +1891,4 @@ export function acc_SetPickupType(
   return true;
 }
 
-Pickup.__inject__.SetPickupType = acc_SetPickupType;
+Pickup.__inject__.setType = acc_SetPickupType;
