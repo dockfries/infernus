@@ -1,3 +1,33 @@
+## <small>0.13.1 (2025-11-06)</small>
+
+* refactor(core): entity create fail message, maybe other reason fail, not maximum ([8ff6f5e](https://github.com/dockfries/infernus/commit/8ff6f5e))
+* refactor(core): extract npc setSurfingPlayerObject method ([1f5af82](https://github.com/dockfries/infernus/commit/1f5af82))
+* refactor(core): gangzone, object, textdraw, textlabel constructor id ([783aa6c](https://github.com/dockfries/infernus/commit/783aa6c))
+* refactor(core): move streamer from core devDeps to root deps ([49ad2f5](https://github.com/dockfries/infernus/commit/49ad2f5))
+* refactor(core): objectMp attachTo methods ([d713ae4](https://github.com/dockfries/infernus/commit/d713ae4))
+* refactor(core): restructure Menu class and NPC function exports ([ff94e49](https://github.com/dockfries/infernus/commit/ff94e49))
+* feat(core, filterscript): add charset to menu ([5f78d48](https://github.com/dockfries/infernus/commit/5f78d48))
+* feat(core, streamer, nex-ac, weapon-config): change __inject__ methods ([e13443f](https://github.com/dockfries/infernus/commit/e13443f))
+* refactor(core. nex-ac, weapon-config): __inject__ naming ([bad527a](https://github.com/dockfries/infernus/commit/bad527a))
+* refactor(fs, nex-ac): replace loose equality with strict equality ([3ee1be9](https://github.com/dockfries/infernus/commit/3ee1be9))
+* docs(intro): update ([33b7592](https://github.com/dockfries/infernus/commit/33b7592))
+* feat(core): improve error handling and afterEach execution in bus middleware ([28d683e](https://github.com/dockfries/infernus/commit/28d683e))
+* feat(core): make __inject__ methods lowercase and shorthand ([a856a68](https://github.com/dockfries/infernus/commit/a856a68))
+* feat(core): player, npc __inject__ ([8ce007e](https://github.com/dockfries/infernus/commit/8ce007e))
+* feat(distance): add actor, object functions ([e668837](https://github.com/dockfries/infernus/commit/e668837))
+* feat(nex-ac): 1.9.67 ([575649a](https://github.com/dockfries/infernus/commit/575649a))
+* feat(nex-ac): initialize arrays with proper sizes in ACInfoStruct ([623f595](https://github.com/dockfries/infernus/commit/623f595))
+* chore(release): distance v0.1.0 ([f5bb3fe](https://github.com/dockfries/infernus/commit/f5bb3fe))
+* chore(release): filterscript v0.13.0 ([306d377](https://github.com/dockfries/infernus/commit/306d377))
+* chore(release): nex-ac v0.2.0 ([290517a](https://github.com/dockfries/infernus/commit/290517a))
+* chore(release): nex-ac v0.2.1 ([a585374](https://github.com/dockfries/infernus/commit/a585374))
+* chore(release): weapon-config v0.2.0 ([cc89837](https://github.com/dockfries/infernus/commit/cc89837))
+* chore(root): update contributor src ([bcc9085](https://github.com/dockfries/infernus/commit/bcc9085))
+* fix(core): streamer getPlayerCameraTarget Streamer.INVALID_ID ([ac3ca61](https://github.com/dockfries/infernus/commit/ac3ca61))
+* fix(nex-ac): rename ru locale file to ru-RU ([5041ea8](https://github.com/dockfries/infernus/commit/5041ea8))
+
+
+
 ## 0.13.0 (2025-10-31)
 
 * feat(core): add Actor entity class and update native wrapper ([855fdeb](https://github.com/dockfries/infernus/commit/855fdeb))
