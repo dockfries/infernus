@@ -24,7 +24,7 @@ export const SetPlayerObjectMoveSpeed = (
   objectId: number,
   fSpeed: number,
 ) => {
-  return samp.callNativeFloat(
+  return !!samp.callNativeFloat(
     "SetPlayerObjectMoveSpeed",
     "iif",
     playerId,

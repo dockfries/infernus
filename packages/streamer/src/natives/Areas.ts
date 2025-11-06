@@ -216,7 +216,11 @@ export const GetPlayerDynamicAreas = (playerId: number) => {
 };
 
 export const GetPlayerNumberDynamicAreas = (playerId: number) => {
-  return samp.callNative("GetPlayerNumberDynamicAreas", "i", playerId);
+  return samp.callNative(
+    "GetPlayerNumberDynamicAreas",
+    "i",
+    playerId,
+  ) as number;
 };
 
 export const IsPointInDynamicArea = (

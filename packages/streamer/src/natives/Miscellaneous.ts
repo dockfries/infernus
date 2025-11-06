@@ -205,7 +205,15 @@ export const Streamer_SetItemPos = (
   y: number,
   z: number,
 ) => {
-  return samp.callNative("Streamer_SetItemPos", "iifff", type, id, x, y, z);
+  return samp.callNative(
+    "Streamer_SetItemPos",
+    "iifff",
+    type,
+    id,
+    x,
+    y,
+    z,
+  ) as number;
 };
 
 export const Streamer_GetItemOffset = (type: StreamerItemTypes, id: number) => {
@@ -225,5 +233,13 @@ export const Streamer_SetItemOffset = (
   y: number,
   z: number,
 ) => {
-  return samp.callNative("Streamer_SetItemOffset", "iifff", type, id, x, y, z);
+  return samp.callNative(
+    "Streamer_SetItemOffset",
+    "iifff",
+    type,
+    id,
+    x,
+    y,
+    z,
+  ) as number;
 };

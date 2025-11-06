@@ -251,6 +251,10 @@ export interface ITextLabel {
   attachedVehicle?: Vehicle;
 }
 
-export interface IClassInjections {
-  __inject__: Record<string, (...args: any[]) => any>;
+export interface IMenu {
+  title: string;
+  columns: number;
+  x: number;
+  y: number;
+  colWidth: [number, number];
 }

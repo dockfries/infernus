@@ -110,7 +110,7 @@ export class ObjectMp {
 
   destroy(): this {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Unable to destroy the object before create");
+      throw new Error("[ObjectMp]: Unable to destroy before create");
 
     if (this.isGlobal()) {
       if (!INTERNAL_FLAGS.skip) {

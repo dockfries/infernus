@@ -17,6 +17,8 @@ export class Pickup {
   constructor(pickupOrId: IPickup | number) {
     if (typeof pickupOrId === "number") {
       this._id = pickupOrId;
+      const pickup = Pickup.getInstance(this._id);
+      if (pickup) return pickup;
       pickupPool.set(this.id, this);
     } else {
       this.sourceInfo = pickupOrId;
@@ -24,7 +26,10 @@ export class Pickup {
   }
 
   create() {
-    if (this.id !== InvalidEnum.PICKUP_ID || !this.sourceInfo) {
+    if (!this.sourceInfo) {
+      throw new Error("[Pickup]: Unable to create with only id");
+    }
+    if (this.id !== InvalidEnum.PICKUP_ID) {
       throw new Error("[Pickup]: Cannot be created twice");
     }
     const { model, type, virtualWorld, x, y, z, isStatic } = this.sourceInfo;

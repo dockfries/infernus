@@ -10,15 +10,15 @@ import type { BoneIdsEnum } from "core/enums/player";
 import { ICommonRetVal } from "core/interfaces";
 
 export const GetObjectDrawDistance = (objectId: number): number => {
-  return samp.callNativeFloat("GetObjectDrawDistance", "i", objectId);
+  return samp.callNativeFloat("GetObjectDrawDistance", "i", objectId) as number;
 };
 
 export const GetObjectMoveSpeed = (objectId: number): number => {
-  return samp.callNativeFloat("GetObjectMoveSpeed", "i", objectId);
+  return samp.callNativeFloat("GetObjectMoveSpeed", "i", objectId) as number;
 };
 
 export const SetObjectMoveSpeed = (objectId: number, fSpeed: number) => {
-  return samp.callNativeFloat("SetObjectMoveSpeed", "if", objectId, fSpeed);
+  return !!samp.callNativeFloat("SetObjectMoveSpeed", "if", objectId, fSpeed);
 };
 
 export const GetObjectMovingTargetPos = (

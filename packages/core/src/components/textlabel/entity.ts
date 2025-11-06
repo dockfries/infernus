@@ -35,6 +35,11 @@ export class TextLabel {
       this._id = textLabelOrId;
       if (this.isGlobal()) {
         textLabelPool.set(this._id, this);
+      } else if (player) {
+        if (!playerTextLabelPool.has(player)) {
+          playerTextLabelPool.set(player, new Map());
+        }
+        playerTextLabelPool.get(this.getPlayer()!)!.set(this.id, this);
       }
     } else {
       this.sourceInfo = textLabelOrId;
