@@ -637,3 +637,88 @@ export const GetPlayer3DTextLabelText = (
   const text = I18n.decodeFromBuf(buf, charset);
   return { text, buf, ret };
 };
+
+export const GetMenuColumnHeader = (
+  menuId: number,
+  column: number,
+  charset: string,
+) => {
+  const [buf, ret]: [number[], number] = samp.callNative(
+    "GetMenuColumnHeader",
+    "iiAi",
+    menuId,
+    column,
+    31,
+  );
+  const header = I18n.decodeFromBuf(buf, charset);
+  return { header, buf, ret };
+};
+
+export const GetMenuItem = (
+  menuId: number,
+  column: number,
+  itemId: number,
+  charset: string,
+) => {
+  const [buf, ret]: [number[], number] = samp.callNative(
+    "GetMenuItem",
+    "iiiAi",
+    menuId,
+    column,
+    itemId,
+    31,
+  );
+  const item = I18n.decodeFromBuf(buf, charset);
+  return { item, buf, ret };
+};
+
+export const CreateMenu = (
+  title: string,
+  columns: number,
+  x: number,
+  y: number,
+  col1width: number,
+  col2width: number,
+  charset: string,
+): number => {
+  return samp.callNative(
+    "CreateMenu",
+    "aiffff",
+    I18n.encodeToBuf(title, charset),
+    columns,
+    x,
+    y,
+    col1width,
+    col2width,
+  );
+};
+
+export const AddMenuItem = (
+  menuId: number,
+  column: number,
+  menuText: string,
+  charset: string,
+): number => {
+  return samp.callNative(
+    "AddMenuItem",
+    "iia",
+    menuId,
+    column,
+    I18n.encodeToBuf(menuText, charset),
+  );
+};
+
+export const SetMenuColumnHeader = (
+  menuId: number,
+  column: number,
+  columnHeader: string,
+  charset: string,
+): number => {
+  return samp.callNative(
+    "SetMenuColumnHeader",
+    "iia",
+    menuId,
+    column,
+    I18n.encodeToBuf(columnHeader, charset),
+  );
+};

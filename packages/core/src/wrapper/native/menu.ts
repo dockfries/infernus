@@ -29,73 +29,8 @@ export const GetMenuColumnWidth = (menuId: number) => {
   return { fColumn1, fColumn2, ret };
 };
 
-export const GetMenuColumnHeader = (menuId: number, column: number) => {
-  const [header, ret]: [string, number] = samp.callNative(
-    "GetMenuColumnHeader",
-    "iiSi",
-    menuId,
-    column,
-    31,
-  );
-  return { header, ret };
-};
-
-export const GetMenuItem = (menuId: number, column: number, itemId: number) => {
-  const [item, ret]: [string, number] = samp.callNative(
-    "GetMenuItem",
-    "iiiSi",
-    menuId,
-    column,
-    itemId,
-    31,
-  );
-  return { item, ret };
-};
-
-export const CreateMenu = (
-  title: string,
-  columns: number,
-  x: number,
-  y: number,
-  col1width: number,
-  col2width: number,
-): number => {
-  return samp.callNative(
-    "CreateMenu",
-    "siffff",
-    title,
-    columns,
-    x,
-    y,
-    col1width,
-    col2width,
-  );
-};
-
 export const DestroyMenu = (menuId: number): number => {
   return samp.callNative("DestroyMenu", "i", menuId);
-};
-
-export const AddMenuItem = (
-  menuId: number,
-  column: number,
-  menutext: string,
-): number => {
-  return samp.callNative("AddMenuItem", "iis", menuId, column, menutext);
-};
-
-export const SetMenuColumnHeader = (
-  menuId: number,
-  column: number,
-  columnHeader: string,
-): number => {
-  return samp.callNative(
-    "SetMenuColumnHeader",
-    "iis",
-    menuId,
-    column,
-    columnHeader,
-  );
 };
 
 export const ShowMenuForPlayer = (menuId: number, playerId: number): number => {

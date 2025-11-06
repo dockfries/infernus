@@ -14,7 +14,13 @@ function handleTestMenuSelection(player: Player, row: number) {
 }
 
 function initTestMenu() {
-  testMenu = new Menu("Test Menu", 1, 200.0, 150.0, 200.0, 200.0);
+  testMenu = new Menu({
+    title: "Test Menu",
+    columns: 1,
+    x: 200.0,
+    y: 150.0,
+    colWidth: [200.0, 200.0],
+  });
 
   testMenu.create();
 

@@ -5,6 +5,13 @@ import { InvalidEnum, LimitsEnum } from "../../enums";
 import { menuPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 import { IMenu } from "core/interfaces";
+import {
+  CreateMenu,
+  AddMenuItem,
+  GetMenuItem,
+  GetMenuColumnHeader,
+  SetMenuColumnHeader,
+} from "core/utils/helper";
 
 export class Menu {
   private sourceInfo: IMenu | null = null;
@@ -32,7 +39,14 @@ export class Menu {
     if (this._id !== InvalidEnum.MENU) {
       throw new Error("[Menu]: Cannot be created twice");
     }
-    const { title, columns, x, y, colWidth } = this.sourceInfo!;
+    const {
+      title,
+      columns,
+      x,
+      y,
+      colWidth,
+      charset = "ISO-8859-1",
+    } = this.sourceInfo!;
     const [col1Width, col2Width] = colWidth;
     this._id = Menu.__inject__.create(
       title,
@@ -41,6 +55,7 @@ export class Menu {
       y,
       col1Width,
       col2Width,
+      charset,
     );
     if (
       this.id === InvalidEnum.MENU ||
@@ -68,16 +83,26 @@ export class Menu {
       throw new Error("[Menu]: Cannot addItem before create");
     if (column !== 0 && column !== 1)
       throw new Error("[Menu]: Wrong number of columns");
-    Menu.__inject__.addItem(this.id, column, title);
+    Menu.__inject__.addItem(
+      this.id,
+      column,
+      title,
+      this.sourceInfo?.charset || "ISO-8859-1",
+    );
     return this;
   }
 
   setColumnHeader(column: number, header: string): this {
     if (this._id === InvalidEnum.MENU)
-      throw new Error("[Menu]: Cannot  setColumnHeader before create");
+      throw new Error("[Menu]: Cannot setColumnHeader before create");
     if (column !== 0 && column !== 1)
       throw new Error("[Menu]: Wrong number of columns");
-    Menu.__inject__.setColumnHeader(this.id, column, header);
+    Menu.__inject__.setColumnHeader(
+      this.id,
+      column,
+      header,
+      this.sourceInfo?.charset || "ISO-8859-1",
+    );
     return this;
   }
 
@@ -137,7 +162,11 @@ export class Menu {
   getColumnHeader(column: number) {
     if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot get column header before create");
-    return Menu.__inject__.getColumnHeader(this.id, column);
+    return Menu.__inject__.getColumnHeader(
+      this.id,
+      column,
+      this.sourceInfo?.charset || "ISO-8859-1",
+    );
   }
 
   getItem(column: number, item: number) {
@@ -145,7 +174,12 @@ export class Menu {
       throw new Error("[Menu]: Cannot get item before create");
     if (item < 0 || item > this.getItems(column) - 1)
       throw new Error("[Menu]: invalid getItem range");
-    return Menu.__inject__.getItem(this.id, column, item);
+    return Menu.__inject__.getItem(
+      this.id,
+      column,
+      item,
+      this.sourceInfo?.charset || "ISO-8859-1",
+    );
   }
 
   static isValid(menuId: number) {
@@ -167,10 +201,10 @@ export class Menu {
   }
 
   static __inject__ = {
-    create: w.CreateMenu,
+    create: CreateMenu,
     destroy: w.DestroyMenu,
-    addItem: w.AddMenuItem,
-    setColumnHeader: w.SetMenuColumnHeader,
+    addItem: AddMenuItem,
+    setColumnHeader: SetMenuColumnHeader,
     disable: w.DisableMenu,
     disableRow: w.DisableMenuRow,
     isValid: w.IsValidMenu,
@@ -181,8 +215,8 @@ export class Menu {
     getItems: w.GetMenuItems,
     getPos: w.GetMenuPos,
     getColumnWidth: w.GetMenuColumnWidth,
-    getColumnHeader: w.GetMenuColumnHeader,
-    getItem: w.GetMenuItem,
+    getColumnHeader: GetMenuColumnHeader,
+    getItem: GetMenuItem,
     getPlayerMenu: w.GetPlayerMenu,
   };
 }

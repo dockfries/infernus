@@ -22,7 +22,7 @@ export class TextDraw {
     if (this.id !== InvalidEnum.TEXT_DRAW)
       throw new Error("[TextDraw]: Unable to create again");
 
-    const { x, y, text, player, charset = "iso-8859-1" } = this.sourceInfo;
+    const { x, y, text, player, charset = "ISO-8859-1" } = this.sourceInfo;
     const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
 
     if (!player) {
@@ -253,7 +253,7 @@ export class TextDraw {
     if (text.length === 0 || text.length > 1024) {
       throw new Error("[TextDraw]: Invalid text length");
     }
-    const { player: _player, charset = "iso-8859-1" } = this.sourceInfo;
+    const { player: _player, charset = "ISO-8859-1" } = this.sourceInfo;
     const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
 
     // not-global

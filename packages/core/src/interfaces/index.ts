@@ -257,4 +257,5 @@ export interface IMenu {
   x: number;
   y: number;
   colWidth: [number, number];
+  charset?: string;
 }
