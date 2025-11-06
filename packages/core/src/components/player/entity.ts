@@ -128,23 +128,31 @@ export class Player {
   }
 
   sendClientMessage(color: string | number, msg: string): number {
-    return h.SendClientMessage(this, color, msg);
+    return Player.__inject__.SendClientMessage(this, color, msg);
   }
 
   static sendClientMessageToAll(color: string | number, msg: string) {
-    h.SendClientMessageToAll(Player.getInstances(), color, msg);
+    Player.__inject__.SendClientMessageToAll(Player.getInstances(), color, msg);
   }
 
   sendMessageToPlayer(player: Player, message: string): number {
-    return h.SendPlayerMessageToPlayer(player, this.id, message);
+    return Player.__inject__.SendPlayerMessageToPlayer(
+      player,
+      this.id,
+      message,
+    );
   }
 
   sendMessageToAll(message: string): number {
-    return h.SendPlayerMessageToAll(Player.getInstances(), this.id, message);
+    return Player.__inject__.SendPlayerMessageToAll(
+      Player.getInstances(),
+      this.id,
+      message,
+    );
   }
 
   isNpc(): boolean {
-    return w.IsPlayerNPC(this.id);
+    return Player.__inject__.IsPlayerNPC(this.id);
   }
 
   // first call will return 0;
@@ -153,40 +161,44 @@ export class Player {
     return this.lastFps;
   }
   getDrunkLevel(): number {
-    return w.GetPlayerDrunkLevel(this.id);
+    return Player.__inject__.GetPlayerDrunkLevel(this.id);
   }
   setDrunkLevel(level: number) {
     if (level < 0 || level > 50000) {
       throw new Error("[Player]: player's drunk level ranges from 0 to 50000");
     }
-    return w.SetPlayerDrunkLevel(this.id, level);
+    return Player.__inject__.SetPlayerDrunkLevel(this.id, level);
   }
   allowTeleport(allow: boolean) {
-    return w.AllowPlayerTeleport(this.id, allow);
+    return Player.__inject__.AllowPlayerTeleport(this.id, allow);
   }
   isTeleportAllowed() {
-    return w.IsPlayerTeleportAllowed(this.id);
+    return Player.__inject__.IsPlayerTeleportAllowed(this.id);
   }
   enableCameraTarget(enable: boolean) {
-    return w.EnablePlayerCameraTarget(this.id, enable);
+    return Player.__inject__.EnablePlayerCameraTarget(this.id, enable);
   }
   enableStuntBonus(enable: boolean) {
-    return w.EnableStuntBonusForPlayer(this.id, enable);
+    return Player.__inject__.EnableStuntBonusForPlayer(this.id, enable);
   }
   getInterior(): number {
-    return w.GetPlayerInterior(this.id);
+    return Player.__inject__.GetPlayerInterior(this.id);
   }
   setInterior(interiorId: number) {
-    return w.SetPlayerInterior(this.id, interiorId);
+    return Player.__inject__.SetPlayerInterior(this.id, interiorId);
   }
   showNameTag(showPlayer: Player, show: boolean) {
-    return w.ShowPlayerNameTagForPlayer(this.id, showPlayer.id, show);
+    return Player.__inject__.ShowPlayerNameTagForPlayer(
+      this.id,
+      showPlayer.id,
+      show,
+    );
   }
   setColor(color: string | number) {
-    return w.SetPlayerColor(this.id, color);
+    return Player.__inject__.SetPlayerColor(this.id, color);
   }
   getColor(): number {
-    return w.GetPlayerColor(this.id);
+    return Player.__inject__.GetPlayerColor(this.id);
   }
   setMapIcon(
     iconId: number,
@@ -197,7 +209,7 @@ export class Player {
     color: string | number,
     style: number,
   ) {
-    return w.SetPlayerMapIcon(
+    return Player.__inject__.SetPlayerMapIcon(
       this.id,
       iconId,
       x,
@@ -209,70 +221,78 @@ export class Player {
     );
   }
   removeMapIcon(iconId: number) {
-    return w.RemovePlayerMapIcon(this.id, iconId);
+    return Player.__inject__.RemovePlayerMapIcon(this.id, iconId);
   }
   setMarker(showPlayer: Player, color: string | number) {
-    w.SetPlayerMarkerForPlayer(this.id, showPlayer.id, color);
+    Player.__inject__.SetPlayerMarkerForPlayer(this.id, showPlayer.id, color);
   }
   getMarker(targetPlayer: Player) {
-    return w.GetPlayerMarkerForPlayer(this.id, targetPlayer.id);
+    return Player.__inject__.GetPlayerMarkerForPlayer(this.id, targetPlayer.id);
   }
   resetMoney() {
-    return w.ResetPlayerMoney(this.id);
+    return Player.__inject__.ResetPlayerMoney(this.id);
   }
   getMoney(): number {
-    return w.GetPlayerMoney(this.id);
+    return Player.__inject__.GetPlayerMoney(this.id);
   }
   giveMoney(money: number) {
-    return w.GivePlayerMoney(this.id, money);
+    return Player.__inject__.GivePlayerMoney(this.id, money);
   }
   resetWeapons() {
-    return w.ResetPlayerWeapons(this.id);
+    return Player.__inject__.ResetPlayerWeapons(this.id);
   }
   spawn(): boolean {
-    return w.SpawnPlayer(this.id);
+    return Player.__inject__.SpawnPlayer(this.id);
   }
   setHealth(health: number) {
-    return w.SetPlayerHealth(this.id, health);
+    return Player.__inject__.SetPlayerHealth(this.id, health);
   }
   getHealth() {
-    return w.GetPlayerHealth(this.id);
+    return Player.__inject__.GetPlayerHealth(this.id);
   }
   toggleClock(toggle: boolean) {
-    return w.TogglePlayerClock(this.id, toggle);
+    return Player.__inject__.TogglePlayerClock(this.id, toggle);
   }
   toggleControllable(toggle: boolean) {
-    return w.TogglePlayerControllable(this.id, toggle);
+    return Player.__inject__.TogglePlayerControllable(this.id, toggle);
   }
   toggleSpectating(toggle: boolean) {
-    return w.TogglePlayerSpectating(this.id, toggle);
+    return Player.__inject__.TogglePlayerSpectating(this.id, toggle);
   }
   spectatePlayer(targetPlayer: Player, mode = SpectateModesEnum.NORMAL) {
-    return w.PlayerSpectatePlayer(this.id, targetPlayer.id, mode);
+    return Player.__inject__.PlayerSpectatePlayer(
+      this.id,
+      targetPlayer.id,
+      mode,
+    );
   }
   spectateVehicle(targetVehicle: Vehicle, mode = SpectateModesEnum.NORMAL) {
-    return w.PlayerSpectateVehicle(this.id, targetVehicle.id, mode);
+    return Player.__inject__.PlayerSpectateVehicle(
+      this.id,
+      targetVehicle.id,
+      mode,
+    );
   }
   forceClassSelection() {
-    return w.ForceClassSelection(this.id);
+    return Player.__inject__.ForceClassSelection(this.id);
   }
   kick() {
-    return w.Kick(this.id);
+    return Player.__inject__.Kick(this.id);
   }
   ban() {
-    return w.Ban(this.id);
+    return Player.__inject__.Ban(this.id);
   }
   banEx(reason: string, charset: string) {
-    return h.BanEx(this.id, reason, charset);
+    return Player.__inject__.BanEx(this.id, reason, charset);
   }
   isAdmin() {
-    return w.IsPlayerAdmin(this.id);
+    return Player.__inject__.IsPlayerAdmin(this.id);
   }
   isInRangeOfPoint(range: number, x: number, y: number, z: number) {
-    return w.IsPlayerInRangeOfPoint(this.id, range, x, y, z);
+    return Player.__inject__.IsPlayerInRangeOfPoint(this.id, range, x, y, z);
   }
   isStreamedIn(forPlayer: Player) {
-    return w.IsPlayerStreamedIn(this.id, forPlayer.id);
+    return Player.__inject__.IsPlayerStreamedIn(this.id, forPlayer.id);
   }
   setSkin(skinId: number, ignoreRange = false) {
     if (!ignoreRange && (skinId < 0 || skinId > 311 || skinId === 74))
@@ -280,34 +300,34 @@ export class Player {
     if (this.getHealth().health <= 0) return false;
     if (this.isInAnyVehicle()) return false;
     if (this.getSpecialAction() === SpecialActionsEnum.DUCK) return false;
-    return w.SetPlayerSkin(this.id, skinId);
+    return Player.__inject__.SetPlayerSkin(this.id, skinId);
   }
   getSkin(): number {
-    return w.GetPlayerSkin(this.id);
+    return Player.__inject__.GetPlayerSkin(this.id);
   }
   isInAnyVehicle(): boolean {
-    return w.IsPlayerInAnyVehicle(this.id);
+    return Player.__inject__.IsPlayerInAnyVehicle(this.id);
   }
   getSpecialAction(): SpecialActionsEnum {
-    return w.GetPlayerSpecialAction(this.id);
+    return Player.__inject__.GetPlayerSpecialAction(this.id);
   }
   setSpecialAction(actionId: SpecialActionsEnum) {
-    return w.SetPlayerSpecialAction(this.id, actionId);
+    return Player.__inject__.SetPlayerSpecialAction(this.id, actionId);
   }
   setScore(score: number) {
-    return w.SetPlayerScore(this.id, score);
+    return Player.__inject__.SetPlayerScore(this.id, score);
   }
   getScore(): number {
-    return w.GetPlayerScore(this.id);
+    return Player.__inject__.GetPlayerScore(this.id);
   }
   getPing(): number {
-    return w.GetPlayerPing(this.id) || 0;
+    return Player.__inject__.GetPlayerPing(this.id) || 0;
   }
   setPos(x: number, y: number, z: number) {
-    return w.SetPlayerPos(this.id, x, y, z);
+    return Player.__inject__.SetPlayerPos(this.id, x, y, z);
   }
   getPos() {
-    return w.GetPlayerPos(this.id);
+    return Player.__inject__.GetPlayerPos(this.id);
   }
   isSpectating(): boolean {
     return this.getState() === PlayerStateEnum.SPECTATING;
@@ -316,43 +336,43 @@ export class Player {
     return this.getState() === PlayerStateEnum.WASTED;
   }
   getState(): PlayerStateEnum {
-    return w.GetPlayerState(this.id);
+    return Player.__inject__.GetPlayerState(this.id);
   }
   getVersion() {
-    return w.GetPlayerVersion(this.id);
+    return Player.__inject__.GetPlayerVersion(this.id);
   }
   setVirtualWorld(worldId: number) {
-    return w.SetPlayerVirtualWorld(this.id, worldId);
+    return Player.__inject__.SetPlayerVirtualWorld(this.id, worldId);
   }
   getVirtualWorld(): number {
-    return w.GetPlayerVirtualWorld(this.id);
+    return Player.__inject__.GetPlayerVirtualWorld(this.id);
   }
   removeFromVehicle() {
-    return w.RemovePlayerFromVehicle(this.id);
+    return Player.__inject__.RemovePlayerFromVehicle(this.id);
   }
   setWantedLevel(level: number) {
     if (level < 0 || level > 6) {
       throw new Error("[Player]: player's wanted level ranges from 0 to 6");
     }
-    return w.SetPlayerWantedLevel(this.id, level);
+    return Player.__inject__.SetPlayerWantedLevel(this.id, level);
   }
   getWantedLevel(): number {
-    return w.GetPlayerWantedLevel(this.id);
+    return Player.__inject__.GetPlayerWantedLevel(this.id);
   }
   setFacingAngle(ang: number) {
-    return w.SetPlayerFacingAngle(this.id, ang);
+    return Player.__inject__.SetPlayerFacingAngle(this.id, ang);
   }
   getFacingAngle() {
-    return w.GetPlayerFacingAngle(this.id);
+    return Player.__inject__.GetPlayerFacingAngle(this.id);
   }
   setWeather(weather: number) {
     if (weather < 0 || weather > 255) {
       throw new Error("[Player]: The valid weather value is only 0 to 255");
     }
-    return w.SetPlayerWeather(this.id, weather);
+    return Player.__inject__.SetPlayerWeather(this.id, weather);
   }
   getWeather(): number {
-    return w.GetPlayerWeather(this.id);
+    return Player.__inject__.GetPlayerWeather(this.id);
   }
   setTime(hour: number, minute: number) {
     if (hour < 0 || hour > 23) {
@@ -361,10 +381,10 @@ export class Player {
     if (minute < 0 || minute > 59) {
       throw new Error("[Player]: The valid minute value is only 0 to 59");
     }
-    return w.SetPlayerTime(this.id, hour, minute);
+    return Player.__inject__.SetPlayerTime(this.id, hour, minute);
   }
   getTime() {
-    return w.GetPlayerTime(this.id);
+    return Player.__inject__.GetPlayerTime(this.id);
   }
   removeBuilding(
     modelId: number,
@@ -373,32 +393,39 @@ export class Player {
     fZ: number,
     fRadius: number,
   ) {
-    return w.RemoveBuildingForPlayer(this.id, modelId, fX, fY, fZ, fRadius);
+    return Player.__inject__.RemoveBuildingForPlayer(
+      this.id,
+      modelId,
+      fX,
+      fY,
+      fZ,
+      fRadius,
+    );
   }
   setTeam(team: number): void {
     if (team < 0 || team > InvalidEnum.NO_TEAM) return;
-    w.SetPlayerTeam(this.id, team);
+    Player.__inject__.SetPlayerTeam(this.id, team);
   }
   getTeam(): number {
-    return w.GetPlayerTeam(this.id);
+    return Player.__inject__.GetPlayerTeam(this.id);
   }
   setSkillLevel(skill: WeaponSkillsEnum, level: number) {
     if (level < 0 || level > 999) {
       throw new Error("[Player]: The valid skill level is only 0 to 999");
     }
-    return w.SetPlayerSkillLevel(this.id, skill, level);
+    return Player.__inject__.SetPlayerSkillLevel(this.id, skill, level);
   }
   getName() {
-    return h.GetPlayerName(this);
+    return Player.__inject__.GetPlayerName(this);
   }
   setName(name: string): number {
-    return h.SetPlayerName(this, name);
+    return Player.__inject__.SetPlayerName(this, name);
   }
   setVelocity(x: number, y: number, z: number) {
-    return w.SetPlayerVelocity(this.id, x, y, z);
+    return Player.__inject__.SetPlayerVelocity(this.id, x, y, z);
   }
   getVelocity() {
-    return w.GetPlayerVelocity(this.id);
+    return Player.__inject__.GetPlayerVelocity(this.id);
   }
   getSpeed(magic = 180.0) {
     if (this.id === -1) return 0.0;
@@ -406,28 +433,28 @@ export class Player {
     return VectorSize(x, y, z) * magic;
   }
   getKeys() {
-    return w.GetPlayerKeys(this.id);
+    return Player.__inject__.GetPlayerKeys(this.id);
   }
   getIp() {
-    return w.GetPlayerIp(this.id);
+    return Player.__inject__.GetPlayerIp(this.id);
   }
   getFightingStyle(): FightingStylesEnum {
-    return w.GetPlayerFightingStyle(this.id);
+    return Player.__inject__.GetPlayerFightingStyle(this.id);
   }
   setFightingStyle(style: FightingStylesEnum) {
-    return w.SetPlayerFightingStyle(this.id, style);
+    return Player.__inject__.SetPlayerFightingStyle(this.id, style);
   }
   setArmour(armour: number) {
-    return w.SetPlayerArmour(this.id, armour);
+    return Player.__inject__.SetPlayerArmour(this.id, armour);
   }
   getArmour() {
-    return w.GetPlayerArmour(this.id);
+    return Player.__inject__.GetPlayerArmour(this.id);
   }
   setCameraBehind() {
-    return w.SetCameraBehindPlayer(this.id);
+    return Player.__inject__.SetCameraBehindPlayer(this.id);
   }
   setCameraPos(x: number, y: number, z: number) {
-    return w.SetPlayerCameraPos(this.id, x, y, z);
+    return Player.__inject__.SetPlayerCameraPos(this.id, x, y, z);
   }
   setCameraLookAt(
     x: number,
@@ -435,30 +462,30 @@ export class Player {
     z: number,
     style: CameraCutStylesEnum = CameraCutStylesEnum.CUT,
   ) {
-    return w.SetPlayerCameraLookAt(this.id, x, y, z, style);
+    return Player.__inject__.SetPlayerCameraLookAt(this.id, x, y, z, style);
   }
   getCameraAspectRatio(): number {
-    return w.GetPlayerCameraAspectRatio(this.id);
+    return Player.__inject__.GetPlayerCameraAspectRatio(this.id);
   }
   getCameraFrontVector() {
-    return w.GetPlayerCameraFrontVector(this.id);
+    return Player.__inject__.GetPlayerCameraFrontVector(this.id);
   }
   getCameraMode(): CameraModesEnum {
-    return w.GetPlayerCameraMode(this.id);
+    return Player.__inject__.GetPlayerCameraMode(this.id);
   }
   getCameraPos() {
-    return w.GetPlayerCameraPos(this.id);
+    return Player.__inject__.GetPlayerCameraPos(this.id);
   }
   getCameraTargetPlayer(): Player | undefined {
-    const target = w.GetPlayerCameraTargetPlayer(this.id);
+    const target = Player.__inject__.GetPlayerCameraTargetPlayer(this.id);
     return Player.getInstances().find((p) => p.id === target);
   }
   getCameraTargetVehicle(): Vehicle | undefined {
-    const target = w.GetPlayerCameraTargetVehicle(this.id);
+    const target = Player.__inject__.GetPlayerCameraTargetVehicle(this.id);
     return [...vehiclePool.values()].find((v) => v.id === target);
   }
   getCameraZoom(): number {
-    return w.GetPlayerCameraZoom(this.id);
+    return Player.__inject__.GetPlayerCameraZoom(this.id);
   }
   playAudioStream(
     url: string,
@@ -471,7 +498,7 @@ export class Player {
     if (posX !== 0.0 || posY !== 0.0 || posZ !== 0.0) {
       usePos = true;
     }
-    return w.PlayAudioStreamForPlayer(
+    return Player.__inject__.PlayAudioStreamForPlayer(
       this.id,
       url,
       posX,
@@ -482,7 +509,7 @@ export class Player {
     );
   }
   stopAudioStream() {
-    return w.StopAudioStreamForPlayer(this.id);
+    return Player.__inject__.StopAudioStreamForPlayer(this.id);
   }
   playSound(
     soundId: number,
@@ -490,16 +517,26 @@ export class Player {
     relativeY = 0.0,
     relativeZ = 0.0,
   ) {
-    return w.PlayerPlaySound(this.id, soundId, relativeX, relativeY, relativeZ);
+    return Player.__inject__.PlayerPlaySound(
+      this.id,
+      soundId,
+      relativeX,
+      relativeY,
+      relativeZ,
+    );
   }
   static getMaxPlayers(): number {
-    return w.GetMaxPlayers();
+    return Player.__inject__.GetMaxPlayers();
   }
   playCrimeReport(suspect: Player, crimeId: number) {
     if (crimeId < 3 || crimeId > 22) {
       throw new Error("[Player]: Available crime ids range from 3 to 22");
     }
-    return w.PlayCrimeReportForPlayer(this.id, suspect.id, crimeId);
+    return Player.__inject__.PlayCrimeReportForPlayer(
+      this.id,
+      suspect.id,
+      crimeId,
+    );
   }
   interpolateCameraPos(
     fromX: number,
@@ -511,7 +548,7 @@ export class Player {
     time: number,
     cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT,
   ) {
-    return w.InterpolateCameraPos(
+    return Player.__inject__.InterpolateCameraPos(
       this.id,
       fromX,
       fromY,
@@ -533,7 +570,7 @@ export class Player {
     time: number,
     cut: CameraCutStylesEnum = CameraCutStylesEnum.CUT,
   ) {
-    return w.InterpolateCameraLookAt(
+    return Player.__inject__.InterpolateCameraLookAt(
       this.id,
       fromX,
       fromY,
@@ -557,27 +594,34 @@ export class Player {
         "[Player]: The valid explosion type value is only 0 to 13",
       );
     }
-    return w.CreateExplosionForPlayer(this.id, x, y, z, type, radius);
+    return Player.__inject__.CreateExplosionForPlayer(
+      this.id,
+      x,
+      y,
+      z,
+      type,
+      radius,
+    );
   }
   static isConnected(id: number): boolean {
-    return w.IsPlayerConnected(id);
+    return Player.__inject__.IsPlayerConnected(id);
   }
   isConnected(): boolean {
     return Player.isConnected(this.id);
   }
   disableRemoteVehicleCollisions(disable: boolean) {
-    return w.DisableRemoteVehicleCollisions(this.id, disable);
+    return Player.__inject__.DisableRemoteVehicleCollisions(this.id, disable);
   }
   getVehicle() {
     if (!this.isInAnyVehicle()) return;
-    const vehId: number = w.GetPlayerVehicleID(this.id);
+    const vehId: number = Player.__inject__.GetPlayerVehicleID(this.id);
     return [...vehiclePool.values()].find((v) => v.id === vehId);
   }
   getVehicleSeat(): number {
-    return w.GetPlayerVehicleSeat(this.id);
+    return Player.__inject__.GetPlayerVehicleSeat(this.id);
   }
   getSurfingVehicle() {
-    const vehId = w.GetPlayerSurfingVehicleID(this.id);
+    const vehId = Player.__inject__.GetPlayerSurfingVehicleID(this.id);
     if (vehId === InvalidEnum.VEHICLE_ID) return;
     return [...vehiclePool.values()].find((v) => v.id === vehId);
   }
@@ -597,7 +641,7 @@ export class Player {
         `[Player]: Invalid anim library or name ${animLib} ${animName}`,
       );
     }
-    return w.ApplyAnimation(
+    return Player.__inject__.ApplyAnimation(
       this.id,
       animLib,
       animName,
@@ -611,26 +655,32 @@ export class Player {
     );
   }
   clearAnimations(forceSync = false) {
-    return w.ClearAnimations(this.id, forceSync);
+    return Player.__inject__.ClearAnimations(this.id, forceSync);
   }
   getAnimationIndex(): number {
-    return w.GetPlayerAnimationIndex(this.id);
+    return Player.__inject__.GetPlayerAnimationIndex(this.id);
   }
   getAnimationName(index: number = this.getAnimationIndex()) {
-    const [animLib, animName] = w.GetAnimationName(index);
+    const [animLib, animName] = Player.__inject__.GetAnimationName(index);
     return { index, animLib, animName };
   }
   setShopName(shopName: string) {
-    return w.SetPlayerShopName(this.id, shopName);
+    return Player.__inject__.SetPlayerShopName(this.id, shopName);
   }
   setPosFindZ(x: number, y: number, z: number) {
-    return w.SetPlayerPosFindZ(this.id, x, y, z);
+    return Player.__inject__.SetPlayerPosFindZ(this.id, x, y, z);
   }
   setWorldBounds(xMax: number, xMin: number, yMax: number, yMin: number) {
-    return w.SetPlayerWorldBounds(this.id, xMax, xMin, yMax, yMin);
+    return Player.__inject__.SetPlayerWorldBounds(
+      this.id,
+      xMax,
+      xMin,
+      yMax,
+      yMin,
+    );
   }
   clearWorldBounds() {
-    return w.ClearPlayerWorldBounds(this.id);
+    return Player.__inject__.ClearPlayerWorldBounds(this.id);
   }
   setChatBubble(
     text: string,
@@ -639,7 +689,7 @@ export class Player {
     expireTime: number,
     charset = this.charset,
   ) {
-    return h.SetPlayerChatBubble(
+    return Player.__inject__.SetPlayerChatBubble(
       this.id,
       text,
       color,
@@ -649,39 +699,39 @@ export class Player {
     );
   }
   getDistanceFromPoint(x: number, y: number, z: number): number {
-    return w.GetPlayerDistanceFromPoint(this.id, x, y, z);
+    return Player.__inject__.GetPlayerDistanceFromPoint(this.id, x, y, z);
   }
   getCustomSkin(): number {
-    return w.GetPlayerCustomSkin(this.id);
+    return Player.__inject__.GetPlayerCustomSkin(this.id);
   }
   getTargetPlayer(): Player | undefined {
-    const pid = w.GetPlayerTargetPlayer(this.id);
+    const pid = Player.__inject__.GetPlayerTargetPlayer(this.id);
     if (pid === InvalidEnum.PLAYER_ID) return;
     return Player.getInstances().find((p) => p.id === pid);
   }
   getLastShotVectors() {
-    return w.GetPlayerLastShotVectors(this.id);
+    return Player.__inject__.GetPlayerLastShotVectors(this.id);
   }
   getWeapon(): WeaponEnum | -1 {
-    return w.GetPlayerWeapon(this.id);
+    return Player.__inject__.GetPlayerWeapon(this.id);
   }
   getWeaponData(slot: number) {
-    return w.GetPlayerWeaponData(this.id, slot);
+    return Player.__inject__.GetPlayerWeaponData(this.id, slot);
   }
   getWeaponState(): WeaponStatesEnum {
-    return w.GetPlayerWeaponState(this.id);
+    return Player.__inject__.GetPlayerWeaponState(this.id);
   }
   giveWeapon(weaponId: WeaponEnum, ammo: number) {
-    return w.GivePlayerWeapon(this.id, weaponId, ammo);
+    return Player.__inject__.GivePlayerWeapon(this.id, weaponId, ammo);
   }
   setAmmo(weaponId: number, ammo: number) {
-    return w.SetPlayerAmmo(this.id, weaponId, ammo);
+    return Player.__inject__.SetPlayerAmmo(this.id, weaponId, ammo);
   }
   getAmmo(): number {
-    return w.GetPlayerAmmo(this.id);
+    return Player.__inject__.GetPlayerAmmo(this.id);
   }
   setArmedWeapon(weaponId: number) {
-    return w.SetPlayerArmedWeapon(this.id, weaponId);
+    return Player.__inject__.SetPlayerArmedWeapon(this.id, weaponId);
   }
   // not test
   clearDeathMessage() {
@@ -697,7 +747,7 @@ export class Player {
     killer: Player | InvalidEnum.PLAYER_ID,
     weapon: WeaponEnum | DamageDeathReasonEnum,
   ) {
-    return w.SendDeathMessage(
+    return Player.__inject__.SendDeathMessage(
       killer === InvalidEnum.PLAYER_ID ? killer : killer.id,
       this.id,
       weapon,
@@ -708,7 +758,7 @@ export class Player {
     killee: Player | InvalidEnum.PLAYER_ID,
     weapon: WeaponEnum | DamageDeathReasonEnum,
   ) {
-    return w.SendDeathMessageToPlayer(
+    return Player.__inject__.SendDeathMessageToPlayer(
       this.id,
       killer === InvalidEnum.PLAYER_ID ? killer : killer.id,
       killee === InvalidEnum.PLAYER_ID ? killee : killee.id,
@@ -732,7 +782,7 @@ export class Player {
     if (team < 0 || team > InvalidEnum.NO_TEAM) return false;
     if (skin < 0 || skin > 311 || skin === 74) return false;
     if (weapon1Ammo < 0 || weapon2Ammo < 0 || weapon3Ammo < 0) return false;
-    return w.SetSpawnInfo(
+    return Player.__inject__.SetSpawnInfo(
       this.id,
       team,
       skin,
@@ -749,7 +799,7 @@ export class Player {
     );
   }
   redirectDownload(url: string) {
-    return w.RedirectDownload(this.id, url);
+    return Player.__inject__.RedirectDownload(this.id, url);
   }
   sendClientCheck(
     type: number,
@@ -796,36 +846,44 @@ export class Player {
         reject(timeoutMsg);
       }, shouldResTime);
 
-      w.SendClientCheck(this.id, type, memAddr, memOffset, byteCount);
+      Player.__inject__.SendClientCheck(
+        this.id,
+        type,
+        memAddr,
+        memOffset,
+        byteCount,
+      );
     });
   }
   selectTextDraw(color: string | number): void {
-    w.SelectTextDraw(this.id, color);
+    Player.__inject__.SelectTextDraw(this.id, color);
   }
   cancelSelectTextDraw(): void {
-    w.CancelSelectTextDraw(this.id);
+    Player.__inject__.CancelSelectTextDraw(this.id);
   }
   beginObjectSelecting() {
-    return w.BeginObjectSelecting(this.id);
+    return Player.__inject__.BeginObjectSelecting(this.id);
   }
   endObjectEditing() {
-    return w.EndObjectEditing(this.id);
+    return Player.__inject__.EndObjectEditing(this.id);
   }
   getSurfingObject() {
-    const id: number = w.GetPlayerSurfingObjectID(this.id);
+    const id: number = Player.__inject__.GetPlayerSurfingObjectID(this.id);
     if (id === InvalidEnum.OBJECT_ID) return;
     return ObjectMp.getInstance(id);
   }
   getSurfingPlayerObject() {
-    const id: number = w.GetPlayerSurfingPlayerObjectID(this.id);
+    const id: number = Player.__inject__.GetPlayerSurfingPlayerObjectID(
+      this.id,
+    );
     if (id === InvalidEnum.OBJECT_ID) return;
     return ObjectMp.getInstance(id, this);
   }
   isAttachedObjectSlotUsed(index: number): boolean {
-    return w.IsPlayerAttachedObjectSlotUsed(this.id, index);
+    return Player.__inject__.IsPlayerAttachedObjectSlotUsed(this.id, index);
   }
   editAttachedObject(index: number) {
-    return w.EditAttachedObject(this.id, index);
+    return Player.__inject__.EditAttachedObject(this.id, index);
   }
   setAttachedObject(
     index: number,
@@ -844,7 +902,7 @@ export class Player {
     materialColor2: string | number = 0,
   ) {
     if (this.isAttachedObjectSlotUsed(index)) return 0;
-    return w.SetPlayerAttachedObject(
+    return Player.__inject__.SetPlayerAttachedObject(
       this.id,
       index,
       modelId,
@@ -864,7 +922,7 @@ export class Player {
   }
   removeAttachedObject(index: number): boolean {
     if (!this.isAttachedObjectSlotUsed(index)) return false;
-    return w.RemovePlayerAttachedObject(this.id, index);
+    return Player.__inject__.RemovePlayerAttachedObject(this.id, index);
   }
   getAnimationFlags(): number {
     return samp.callNative("GetPlayerAnimationFlags", "i", this.id);
@@ -876,118 +934,118 @@ export class Player {
     return samp.callNative("GetPlayerLastSyncedVehicleID", "i", this.id);
   }
   toggleWidescreen(set: boolean) {
-    return w.TogglePlayerWidescreen(this.id, set);
+    return Player.__inject__.TogglePlayerWidescreen(this.id, set);
   }
   isWidescreenToggled(): boolean {
-    return w.IsPlayerWidescreenToggled(this.id);
+    return Player.__inject__.IsPlayerWidescreenToggled(this.id);
   }
   getSpawnInfo() {
-    return w.GetSpawnInfo(this.id);
+    return Player.__inject__.GetSpawnInfo(this.id);
   }
   getSkillLevel(skill: WeaponSkillsEnum): number {
-    return w.GetPlayerSkillLevel(this.id, skill);
+    return Player.__inject__.GetPlayerSkillLevel(this.id, skill);
   }
   isCheckpointActive(): boolean {
-    return w.IsPlayerCheckpointActive(this.id);
+    return Player.__inject__.IsPlayerCheckpointActive(this.id);
   }
   getCheckpoint() {
-    return w.GetPlayerCheckpoint(this.id);
+    return Player.__inject__.GetPlayerCheckpoint(this.id);
   }
   isRaceCheckpointActive(): boolean {
-    return w.IsPlayerRaceCheckpointActive(this.id);
+    return Player.__inject__.IsPlayerRaceCheckpointActive(this.id);
   }
   getRaceCheckpoint() {
-    return w.GetPlayerRaceCheckpoint(this.id);
+    return Player.__inject__.GetPlayerRaceCheckpoint(this.id);
   }
   getWorldBounds() {
-    return w.GetPlayerWorldBounds(this.id);
+    return Player.__inject__.GetPlayerWorldBounds(this.id);
   }
   isInModShop(): boolean {
-    return w.IsPlayerInModShop(this.id);
+    return Player.__inject__.IsPlayerInModShop(this.id);
   }
   getSirenState(): number {
-    return w.GetPlayerSirenState(this.id);
+    return Player.__inject__.GetPlayerSirenState(this.id);
   }
   getLandingGearState(): number {
-    return w.GetPlayerLandingGearState(this.id);
+    return Player.__inject__.GetPlayerLandingGearState(this.id);
   }
   getHydraReactorAngle(): number {
-    return w.GetPlayerHydraReactorAngle(this.id);
+    return Player.__inject__.GetPlayerHydraReactorAngle(this.id);
   }
   getTrainSpeed(): number {
-    return w.GetPlayerTrainSpeed(this.id);
+    return Player.__inject__.GetPlayerTrainSpeed(this.id);
   }
   getZAim(): number {
-    return w.GetPlayerZAim(this.id);
+    return Player.__inject__.GetPlayerZAim(this.id);
   }
   getSurfingOffsets() {
-    return w.GetPlayerSurfingOffsets(this.id);
+    return Player.__inject__.GetPlayerSurfingOffsets(this.id);
   }
   getRotationQuat() {
-    return w.GetPlayerRotationQuat(this.id);
+    return Player.__inject__.GetPlayerRotationQuat(this.id);
   }
   getDialogID(): number {
-    return w.GetPlayerDialogID(this.id);
+    return Player.__inject__.GetPlayerDialogID(this.id);
   }
   getSpectateID(): number {
-    return w.GetPlayerSpectateID(this.id);
+    return Player.__inject__.GetPlayerSpectateID(this.id);
   }
   getSpectateType(): SpectateModesEnum {
-    return w.GetPlayerSpectateType(this.id);
+    return Player.__inject__.GetPlayerSpectateType(this.id);
   }
   getRawIp(): string {
-    return w.GetPlayerRawIp(this.id);
+    return Player.__inject__.GetPlayerRawIp(this.id);
   }
   setGravity(gravity: number) {
-    return w.SetPlayerGravity(this.id, gravity);
+    return Player.__inject__.SetPlayerGravity(this.id, gravity);
   }
   getGravity(): number {
-    return w.GetPlayerGravity(this.id);
+    return Player.__inject__.GetPlayerGravity(this.id);
   }
   setAdmin(admin: boolean) {
-    return w.SetPlayerAdmin(this.id, admin);
+    return Player.__inject__.SetPlayerAdmin(this.id, admin);
   }
   isSpawned(): boolean {
-    return w.IsPlayerSpawned(this.id);
+    return Player.__inject__.IsPlayerSpawned(this.id);
   }
   isControllable(): boolean {
-    return w.IsPlayerControllable(this.id);
+    return Player.__inject__.IsPlayerControllable(this.id);
   }
   isCameraTargetEnabled(): boolean {
-    return w.IsPlayerCameraTargetEnabled(this.id);
+    return Player.__inject__.IsPlayerCameraTargetEnabled(this.id);
   }
   toggleGhostMode(toggle: boolean) {
-    return w.TogglePlayerGhostMode(this.id, toggle);
+    return Player.__inject__.TogglePlayerGhostMode(this.id, toggle);
   }
   getGhostMode(): boolean {
-    return w.GetPlayerGhostMode(this.id);
+    return Player.__inject__.GetPlayerGhostMode(this.id);
   }
   getBuildingsRemoved(): number {
-    return w.GetPlayerBuildingsRemoved(this.id);
+    return Player.__inject__.GetPlayerBuildingsRemoved(this.id);
   }
   getAttachedObject(index: number) {
-    return w.GetPlayerAttachedObject(this.id, index);
+    return Player.__inject__.GetPlayerAttachedObject(this.id, index);
   }
   removeWeapon(weaponId: number) {
-    return w.RemovePlayerWeapon(this.id, weaponId);
+    return Player.__inject__.RemovePlayerWeapon(this.id, weaponId);
   }
   isUsingOfficialClient() {
-    return w.IsPlayerUsingOfficialClient(this.id);
+    return Player.__inject__.IsPlayerUsingOfficialClient(this.id);
   }
   allowWeapons(allow: boolean) {
-    return w.AllowPlayerWeapons(this.id, allow);
+    return Player.__inject__.AllowPlayerWeapons(this.id, allow);
   }
   areWeaponsAllowed() {
-    return w.ArePlayerWeaponsAllowed(this.id);
+    return Player.__inject__.ArePlayerWeaponsAllowed(this.id);
   }
   gpci(charset: string = this.charset) {
-    return w.gpci(this.id, charset);
+    return Player.__inject__.gpci(this.id, charset);
   }
   isCuffed() {
-    return w.IsPlayerCuffed(this.id);
+    return Player.__inject__.IsPlayerCuffed(this.id);
   }
   isInDriveByMode() {
-    return w.IsPlayerInDriveByMode(this.id);
+    return Player.__inject__.IsPlayerInDriveByMode(this.id);
   }
   isAndroid() {
     return this.isConnected() && this[internalPlayerProps].isAndroid;
@@ -996,7 +1054,7 @@ export class Player {
     return this.isConnected() && !this[internalPlayerProps].isAndroid;
   }
   isUsingOmp() {
-    return w.IsPlayerUsingOmp(this.id);
+    return Player.__inject__.IsPlayerUsingOmp(this.id);
   }
   simulateCommand(cmdText: string | number[]) {
     return CmdBus.simulate(this, cmdText);
@@ -1007,4 +1065,181 @@ export class Player {
   static getInstances() {
     return [...playerPool.values()];
   }
+
+  static __inject__ = {
+    SendClientMessage: h.SendClientMessage,
+    SendClientMessageToAll: h.SendClientMessageToAll,
+    SendPlayerMessageToPlayer: h.SendPlayerMessageToPlayer,
+    SendPlayerMessageToAll: h.SendPlayerMessageToAll,
+    BanEx: h.BanEx,
+    GetPlayerName: h.GetPlayerName,
+    SetPlayerName: h.SetPlayerName,
+    SetPlayerChatBubble: h.SetPlayerChatBubble,
+
+    IsPlayerNPC: w.IsPlayerNPC,
+    GetPlayerDrunkLevel: w.GetPlayerDrunkLevel,
+    SetPlayerDrunkLevel: w.SetPlayerDrunkLevel,
+    AllowPlayerTeleport: w.AllowPlayerTeleport,
+    IsPlayerTeleportAllowed: w.IsPlayerTeleportAllowed,
+    EnablePlayerCameraTarget: w.EnablePlayerCameraTarget,
+    EnableStuntBonusForPlayer: w.EnableStuntBonusForPlayer,
+    GetPlayerInterior: w.GetPlayerInterior,
+    SetPlayerInterior: w.SetPlayerInterior,
+    ShowPlayerNameTagForPlayer: w.ShowPlayerNameTagForPlayer,
+    SetPlayerColor: w.SetPlayerColor,
+    GetPlayerColor: w.GetPlayerColor,
+    SetPlayerMapIcon: w.SetPlayerMapIcon,
+    RemovePlayerMapIcon: w.RemovePlayerMapIcon,
+    SetPlayerMarkerForPlayer: w.SetPlayerMarkerForPlayer,
+    GetPlayerMarkerForPlayer: w.GetPlayerMarkerForPlayer,
+    ResetPlayerMoney: w.ResetPlayerMoney,
+    GetPlayerMoney: w.GetPlayerMoney,
+    GivePlayerMoney: w.GivePlayerMoney,
+    ResetPlayerWeapons: w.ResetPlayerWeapons,
+    SpawnPlayer: w.SpawnPlayer,
+    SetPlayerHealth: w.SetPlayerHealth,
+    GetPlayerHealth: w.GetPlayerHealth,
+    TogglePlayerClock: w.TogglePlayerClock,
+    TogglePlayerControllable: w.TogglePlayerControllable,
+    TogglePlayerSpectating: w.TogglePlayerSpectating,
+    PlayerSpectatePlayer: w.PlayerSpectatePlayer,
+    PlayerSpectateVehicle: w.PlayerSpectateVehicle,
+    ForceClassSelection: w.ForceClassSelection,
+    Kick: w.Kick,
+    Ban: w.Ban,
+    IsPlayerAdmin: w.IsPlayerAdmin,
+    IsPlayerInRangeOfPoint: w.IsPlayerInRangeOfPoint,
+    IsPlayerStreamedIn: w.IsPlayerStreamedIn,
+    SetPlayerSkin: w.SetPlayerSkin,
+    GetPlayerSkin: w.GetPlayerSkin,
+    IsPlayerInAnyVehicle: w.IsPlayerInAnyVehicle,
+    GetPlayerSpecialAction: w.GetPlayerSpecialAction,
+    SetPlayerSpecialAction: w.SetPlayerSpecialAction,
+    SetPlayerScore: w.SetPlayerScore,
+    GetPlayerScore: w.GetPlayerScore,
+    GetPlayerPing: w.GetPlayerPing,
+    SetPlayerPos: w.SetPlayerPos,
+    GetPlayerPos: w.GetPlayerPos,
+    GetPlayerState: w.GetPlayerState,
+    GetPlayerVersion: w.GetPlayerVersion,
+    SetPlayerVirtualWorld: w.SetPlayerVirtualWorld,
+    GetPlayerVirtualWorld: w.GetPlayerVirtualWorld,
+    RemovePlayerFromVehicle: w.RemovePlayerFromVehicle,
+    SetPlayerWantedLevel: w.SetPlayerWantedLevel,
+    GetPlayerWantedLevel: w.GetPlayerWantedLevel,
+    SetPlayerFacingAngle: w.SetPlayerFacingAngle,
+    GetPlayerFacingAngle: w.GetPlayerFacingAngle,
+    SetPlayerWeather: w.SetPlayerWeather,
+    GetPlayerWeather: w.GetPlayerWeather,
+    SetPlayerTime: w.SetPlayerTime,
+    GetPlayerTime: w.GetPlayerTime,
+    RemoveBuildingForPlayer: w.RemoveBuildingForPlayer,
+    SetPlayerTeam: w.SetPlayerTeam,
+    GetPlayerTeam: w.GetPlayerTeam,
+    SetPlayerSkillLevel: w.SetPlayerSkillLevel,
+    SetPlayerVelocity: w.SetPlayerVelocity,
+    GetPlayerVelocity: w.GetPlayerVelocity,
+    GetPlayerKeys: w.GetPlayerKeys,
+    GetPlayerIp: w.GetPlayerIp,
+    GetPlayerFightingStyle: w.GetPlayerFightingStyle,
+    SetPlayerFightingStyle: w.SetPlayerFightingStyle,
+    SetPlayerArmour: w.SetPlayerArmour,
+    GetPlayerArmour: w.GetPlayerArmour,
+    SetCameraBehindPlayer: w.SetCameraBehindPlayer,
+    SetPlayerCameraPos: w.SetPlayerCameraPos,
+    SetPlayerCameraLookAt: w.SetPlayerCameraLookAt,
+    GetPlayerCameraAspectRatio: w.GetPlayerCameraAspectRatio,
+    GetPlayerCameraFrontVector: w.GetPlayerCameraFrontVector,
+    GetPlayerCameraMode: w.GetPlayerCameraMode,
+    GetPlayerCameraPos: w.GetPlayerCameraPos,
+    GetPlayerCameraTargetPlayer: w.GetPlayerCameraTargetPlayer,
+    GetPlayerCameraTargetVehicle: w.GetPlayerCameraTargetVehicle,
+    GetPlayerCameraZoom: w.GetPlayerCameraZoom,
+    PlayAudioStreamForPlayer: w.PlayAudioStreamForPlayer,
+    StopAudioStreamForPlayer: w.StopAudioStreamForPlayer,
+    PlayerPlaySound: w.PlayerPlaySound,
+    GetMaxPlayers: w.GetMaxPlayers,
+    PlayCrimeReportForPlayer: w.PlayCrimeReportForPlayer,
+    InterpolateCameraPos: w.InterpolateCameraPos,
+    InterpolateCameraLookAt: w.InterpolateCameraLookAt,
+    CreateExplosionForPlayer: w.CreateExplosionForPlayer,
+    IsPlayerConnected: w.IsPlayerConnected,
+    DisableRemoteVehicleCollisions: w.DisableRemoteVehicleCollisions,
+    GetPlayerVehicleID: w.GetPlayerVehicleID,
+    GetPlayerVehicleSeat: w.GetPlayerVehicleSeat,
+    GetPlayerSurfingVehicleID: w.GetPlayerSurfingVehicleID,
+    ApplyAnimation: w.ApplyAnimation,
+    ClearAnimations: w.ClearAnimations,
+    GetPlayerAnimationIndex: w.GetPlayerAnimationIndex,
+    GetAnimationName: w.GetAnimationName,
+    SetPlayerShopName: w.SetPlayerShopName,
+    SetPlayerPosFindZ: w.SetPlayerPosFindZ,
+    SetPlayerWorldBounds: w.SetPlayerWorldBounds,
+    ClearPlayerWorldBounds: w.ClearPlayerWorldBounds,
+    GetPlayerDistanceFromPoint: w.GetPlayerDistanceFromPoint,
+    GetPlayerCustomSkin: w.GetPlayerCustomSkin,
+    GetPlayerTargetPlayer: w.GetPlayerTargetPlayer,
+    GetPlayerLastShotVectors: w.GetPlayerLastShotVectors,
+    GetPlayerWeapon: w.GetPlayerWeapon,
+    GetPlayerWeaponData: w.GetPlayerWeaponData,
+    GetPlayerWeaponState: w.GetPlayerWeaponState,
+    GivePlayerWeapon: w.GivePlayerWeapon,
+    SetPlayerAmmo: w.SetPlayerAmmo,
+    GetPlayerAmmo: w.GetPlayerAmmo,
+    SetPlayerArmedWeapon: w.SetPlayerArmedWeapon,
+    SendDeathMessage: w.SendDeathMessage,
+    SendDeathMessageToPlayer: w.SendDeathMessageToPlayer,
+    SetSpawnInfo: w.SetSpawnInfo,
+    RedirectDownload: w.RedirectDownload,
+    SendClientCheck: w.SendClientCheck,
+    SelectTextDraw: w.SelectTextDraw,
+    CancelSelectTextDraw: w.CancelSelectTextDraw,
+    BeginObjectSelecting: w.BeginObjectSelecting,
+    EndObjectEditing: w.EndObjectEditing,
+    GetPlayerSurfingObjectID: w.GetPlayerSurfingObjectID,
+    GetPlayerSurfingPlayerObjectID: w.GetPlayerSurfingPlayerObjectID,
+    IsPlayerAttachedObjectSlotUsed: w.IsPlayerAttachedObjectSlotUsed,
+    EditAttachedObject: w.EditAttachedObject,
+    SetPlayerAttachedObject: w.SetPlayerAttachedObject,
+    RemovePlayerAttachedObject: w.RemovePlayerAttachedObject,
+    TogglePlayerWidescreen: w.TogglePlayerWidescreen,
+    IsPlayerWidescreenToggled: w.IsPlayerWidescreenToggled,
+    GetSpawnInfo: w.GetSpawnInfo,
+    GetPlayerSkillLevel: w.GetPlayerSkillLevel,
+    IsPlayerCheckpointActive: w.IsPlayerCheckpointActive,
+    GetPlayerCheckpoint: w.GetPlayerCheckpoint,
+    IsPlayerRaceCheckpointActive: w.IsPlayerRaceCheckpointActive,
+    GetPlayerRaceCheckpoint: w.GetPlayerRaceCheckpoint,
+    GetPlayerWorldBounds: w.GetPlayerWorldBounds,
+    IsPlayerInModShop: w.IsPlayerInModShop,
+    GetPlayerSirenState: w.GetPlayerSirenState,
+    GetPlayerLandingGearState: w.GetPlayerLandingGearState,
+    GetPlayerHydraReactorAngle: w.GetPlayerHydraReactorAngle,
+    GetPlayerTrainSpeed: w.GetPlayerTrainSpeed,
+    GetPlayerZAim: w.GetPlayerZAim,
+    GetPlayerSurfingOffsets: w.GetPlayerSurfingOffsets,
+    GetPlayerRotationQuat: w.GetPlayerRotationQuat,
+    GetPlayerDialogID: w.GetPlayerDialogID,
+    GetPlayerSpectateID: w.GetPlayerSpectateID,
+    GetPlayerSpectateType: w.GetPlayerSpectateType,
+    GetPlayerRawIp: w.GetPlayerRawIp,
+    SetPlayerGravity: w.SetPlayerGravity,
+    GetPlayerGravity: w.GetPlayerGravity,
+    SetPlayerAdmin: w.SetPlayerAdmin,
+    IsPlayerSpawned: w.IsPlayerSpawned,
+    IsPlayerControllable: w.IsPlayerControllable,
+    IsPlayerCameraTargetEnabled: w.IsPlayerCameraTargetEnabled,
+    TogglePlayerGhostMode: w.TogglePlayerGhostMode,
+    GetPlayerGhostMode: w.GetPlayerGhostMode,
+    GetPlayerBuildingsRemoved: w.GetPlayerBuildingsRemoved,
+    GetPlayerAttachedObject: w.GetPlayerAttachedObject,
+    RemovePlayerWeapon: w.RemovePlayerWeapon,
+    IsPlayerUsingOfficialClient: w.IsPlayerUsingOfficialClient,
+    AllowPlayerWeapons: w.AllowPlayerWeapons,
+    ArePlayerWeaponsAllowed: w.ArePlayerWeaponsAllowed,
+    gpci: w.gpci,
+    IsPlayerCuffed: w.IsPlayerCuffed,
+    IsPlayerInDriveByMode: w.IsPlayerInDriveByMode,
+    IsPlayerUsingOmp: w.IsPlayerUsingOmp,
+  };
 }

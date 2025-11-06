@@ -13,6 +13,7 @@ export * from "./network";
 
 export * from "./player";
 export * from "./actor";
+export * from "./npc";
 
 export * from "./vehicle";
 export * from "./checkpoint";
