@@ -90,7 +90,7 @@ If you are unsure how to start a project, please refer to the [Quick Start](./qu
 
 ## Why Development
 
-For programming beginners or front-end developers, using a procedural language like Pawn (which resembles C) for game scripting presents a significant learning curve. Compared to modern object-oriented languages like JavaScript, Pawn's foundational APIs are more cumbersome—elementary operations such as string concatenation or array manipulation require manual implementation, increasing development complexity.
+For programming beginners, using a procedural language like Pawn (which resembles C) for game scripting presents a significant learning curve. Compared to modern object-oriented languages like JavaScript, Pawn's foundational APIs are more cumbersome—elementary operations such as string concatenation or array manipulation require manual implementation, increasing development complexity.
 
 Furthermore, the Pawn language ecosystem exhibits notable limitations:
 

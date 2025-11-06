@@ -90,7 +90,7 @@ Si no está seguro de cómo iniciar un proyecto, consulte el [Inicio rápido](./
 
 ## ¿Por qué desarrollar?
 
-Para principiantes en programación o desarrolladores front-end, utilizar un lenguaje procedural como Pawn (similar a C) para crear scripts de juego supone una curva de aprendizaje considerable. En comparación con lenguajes modernos orientados a objetos como JavaScript, las API básicas de Pawn son más engorrosas: operaciones fundamentales como la concatenación de cadenas o la manipulación de arrays requieren implementación manual, lo que incrementa la complejidad del desarrollo.
+Para principiantes en programación, utilizar un lenguaje procedural como Pawn (similar a C) para crear scripts de juego supone una curva de aprendizaje considerable. En comparación con lenguajes modernos orientados a objetos como JavaScript, las API básicas de Pawn son más engorrosas: operaciones fundamentales como la concatenación de cadenas o la manipulación de arrays requieren implementación manual, lo que incrementa la complejidad del desarrollo.
 
 Además, el ecosistema del lenguaje Pawn presenta limitaciones importantes:
 
