@@ -56,7 +56,7 @@
       "login": "drylian",
       "name": "Drylian",
       "avatar_url": "https://avatars.githubusercontent.com/u/109999325?v=4",
-      "profile": "https://alternight.com.br/",
+      "profile": "https://github.com/drylian",
       "contributions": ["example"]
     },
     {
@@ -70,4 +70,3 @@
   "linkToUsage": false,
   "commitConvention": "angular"
 }
-
