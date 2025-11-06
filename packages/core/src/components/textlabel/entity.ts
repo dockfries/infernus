@@ -19,6 +19,7 @@ export class TextLabel {
   private sourceInfo: ITextLabel | null = null;
   private _id: number = InvalidEnum._3DTEXT_ID;
   private _player: Player | null = null;
+
   get id(): number {
     return this._id;
   }

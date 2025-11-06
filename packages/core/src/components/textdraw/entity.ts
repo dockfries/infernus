@@ -8,17 +8,40 @@ import { textDrawPool, playerTextDrawPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 
 export class TextDraw {
-  private sourceInfo: ITextDraw;
-
+  private sourceInfo: ITextDraw | null = null;
+  private _player: Player | null = null;
   private _id: number = InvalidEnum.TEXT_DRAW;
+
   get id() {
     return this._id;
   }
 
-  constructor(textDraw: ITextDraw) {
-    this.sourceInfo = textDraw;
+  constructor(textDrawOrId: ITextDraw | number, player?: Player) {
+    if (typeof textDrawOrId === "number") {
+      if (player) {
+        this._player = player;
+      }
+
+      const textDraw = TextDraw.getInstance(textDrawOrId, player);
+      if (textDraw) return textDraw;
+
+      this._id = textDrawOrId;
+      if (this.isGlobal()) {
+        textDrawPool.set(this._id, this);
+      } else if (player) {
+        if (!playerTextDrawPool.has(player)) {
+          playerTextDrawPool.set(player, new Map());
+        }
+        playerTextDrawPool.get(this.getPlayer()!)!.set(this.id, this);
+      }
+    } else {
+      this.sourceInfo = textDrawOrId;
+      this._player = null;
+    }
   }
   create(): this {
+    if (!this.sourceInfo)
+      throw new Error("[TextDraw]: Unable to create with only id");
     if (this.id !== InvalidEnum.TEXT_DRAW)
       throw new Error("[TextDraw]: Unable to create again");
 
@@ -63,7 +86,7 @@ export class TextDraw {
   destroy(): this {
     if (this.id === InvalidEnum.TEXT_DRAW)
       TextDraw.beforeCreateWarn("destroy textdraw");
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (!player) {
       if (!INTERNAL_FLAGS.skip) {
         TextDraw.__inject__.destroy(this.id);
@@ -85,12 +108,13 @@ export class TextDraw {
     this._id = InvalidEnum.TEXT_DRAW;
     return this;
   }
+
   setFont(style: 0 | 1 | 2 | 3 | TextDrawFontsEnum) {
     if (this.id === InvalidEnum.TEXT_DRAW) {
       TextDraw.beforeCreateWarn("set font");
       return this;
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player) TextDraw.__inject__.setFontPlayer(player.id, this.id, style);
     else TextDraw.__inject__.setFont(this.id, style);
     return this;
@@ -100,7 +124,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("set color");
       return this;
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player) TextDraw.__inject__.setColorPlayer(player.id, this.id, color);
     else TextDraw.__inject__.setColor(this.id, color);
     return this;
@@ -110,7 +134,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("set box color");
       return this;
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player)
       TextDraw.__inject__.setBoxColorPlayer(player.id, this.id, color);
     else TextDraw.__inject__.setBoxColor(this.id, color);
@@ -121,7 +145,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("set background color");
       return this;
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player)
       TextDraw.__inject__.setBackgroundColorPlayer(player.id, this.id, color);
     else TextDraw.__inject__.setBackgroundColor(this.id, color);
@@ -132,7 +156,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("set alignment");
       return this;
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player)
       TextDraw.__inject__.setAlignmentPlayer(player.id, this.id, alignment);
     else TextDraw.__inject__.setAlignment(this.id, alignment);
@@ -143,7 +167,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("set letter size");
       return this;
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player)
       TextDraw.__inject__.setLetterSizePlayer(player.id, this.id, x, y);
     else TextDraw.__inject__.setLetterSize(this.id, x, y);
@@ -157,7 +181,7 @@ export class TextDraw {
     if (size < 0) {
       throw new Error("[TextDraw]: Invalid outline value");
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player) TextDraw.__inject__.setOutlinePlayer(player.id, this.id, size);
     else TextDraw.__inject__.setOutline(this.id, size);
     return this;
@@ -168,7 +192,7 @@ export class TextDraw {
       return this;
     }
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player)
       TextDraw.__inject__.setPreviewModelPlayer(player.id, this.id, modelIndex);
     else TextDraw.__inject__.setPreviewModel(this.id, modelIndex);
@@ -180,7 +204,7 @@ export class TextDraw {
       return this;
     }
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player)
       TextDraw.__inject__.setPreviewRotPlayer(
         player.id,
@@ -199,7 +223,7 @@ export class TextDraw {
       return this;
     }
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player)
       TextDraw.__inject__.setPreviewVehicleColorsPlayer(
         player.id,
@@ -215,7 +239,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("set Proportional");
       return this;
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player)
       TextDraw.__inject__.setProportionalPlayer(player.id, this.id, set);
     else TextDraw.__inject__.setProportional(this.id, set);
@@ -226,7 +250,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("set Selectable");
       return this;
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player)
       TextDraw.__inject__.setSelectablePlayer(player.id, this.id, set);
     else TextDraw.__inject__.setSelectable(this.id, set);
@@ -240,7 +264,7 @@ export class TextDraw {
     if (size < 0) {
       throw new Error("[TextDraw]: Invalid shadow value");
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player) TextDraw.__inject__.setShadowPlayer(player.id, this.id, size);
     else TextDraw.__inject__.setShadow(this.id, size);
     return this;
@@ -253,10 +277,11 @@ export class TextDraw {
     if (text.length === 0 || text.length > 1024) {
       throw new Error("[TextDraw]: Invalid text length");
     }
-    const { player: _player, charset = "ISO-8859-1" } = this.sourceInfo;
+    const charset = this.sourceInfo?.charset || "ISO-8859-1";
     const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
 
     // not-global
+    const _player = this.getPlayer();
     if (_player) {
       TextDraw.__inject__.setStringPlayer(_player.id, this.id, _text);
       // global with player
@@ -273,7 +298,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("set TextSize");
       return this;
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player) TextDraw.__inject__.setTextSizePlayer(player.id, this.id, x, y);
     else TextDraw.__inject__.setTextSize(this.id, x, y);
     return this;
@@ -283,7 +308,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("set TextSize");
       return this;
     }
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (player) TextDraw.__inject__.useBoxPlayer(player.id, this.id, use);
     else TextDraw.__inject__.useBox(this.id, use);
     return this;
@@ -297,7 +322,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("show");
       return this;
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) TextDraw.__inject__.showPlayer(p.id, this.id);
     else {
       if (player) TextDraw.__inject__.showForPlayer(player.id, this.id);
@@ -312,7 +337,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("hide");
       return this;
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) TextDraw.__inject__.hidePlayer(p.id, this.id);
     else {
       if (player) TextDraw.__inject__.hideForPlayer(player.id, this.id);
@@ -327,7 +352,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("show");
       return this;
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (!p) {
       TextDraw.__inject__.showForAll(this.id);
       return this;
@@ -341,7 +366,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("hideAll");
       return this;
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (!p) {
       TextDraw.__inject__.hideForAll(this.id);
       return this;
@@ -352,22 +377,24 @@ export class TextDraw {
   }
   isValid(): boolean {
     if (INTERNAL_FLAGS.skip && this.id !== InvalidEnum.TEXT_DRAW) return true;
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.isValidPlayer(p.id, this.id);
     return TextDraw.__inject__.isValid(this.id);
   }
   isVisibleForPlayer(player?: Player): boolean {
     if (this.id === InvalidEnum.TEXT_DRAW) return false;
 
-    const { player: p } = this.sourceInfo;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.isVisiblePlayer(p.id, this.id);
 
     if (!player) return false;
     return TextDraw.__inject__.isVisibleForPlayer(player.id, this.id);
   }
   getString(): string {
-    if (this.id === InvalidEnum.TEXT_DRAW) return this.sourceInfo.text;
-    const p = this.sourceInfo.player;
+    if (this.id === InvalidEnum.TEXT_DRAW) {
+      TextDraw.beforeCreateWarn("getString");
+    }
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getStringPlayer(p.id, this.id).str;
     return TextDraw.__inject__.getString(this.id).str;
   }
@@ -376,7 +403,7 @@ export class TextDraw {
       TextDraw.beforeCreateWarn("set position");
       return this;
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) TextDraw.__inject__.setPosPlayer(p.id, this.id, fX, fY);
     else TextDraw.__inject__.setPos(this.id, fX, fY);
     return this;
@@ -384,109 +411,109 @@ export class TextDraw {
   getLetterSize() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get letter size");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getLetterSizePlayer(p.id, this.id);
     return TextDraw.__inject__.getLetterSize(this.id);
   }
   getTextSize() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get text size");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getTextSizePlayer(p.id, this.id);
     return TextDraw.__inject__.getTextSize(this.id);
   }
   getPos() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get position");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getPosPlayer(p.id, this.id);
     return TextDraw.__inject__.getPos(this.id);
   }
   getColor() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get color");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getColorPlayer(p.id, this.id);
     return TextDraw.__inject__.getColor(this.id);
   }
   getBoxColor() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get box color");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getBoxColorPlayer(p.id, this.id);
     return TextDraw.__inject__.getBoxColor(this.id);
   }
   getBackgroundColor() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get bg color");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getBackgroundColorPlayer(p.id, this.id);
     return TextDraw.__inject__.getBackgroundColor(this.id);
   }
   getShadow() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get shadow");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getShadowPlayer(p.id, this.id);
     return TextDraw.__inject__.getShadow(this.id);
   }
   getOutline() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get outline");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getOutlinePlayer(p.id, this.id);
     return TextDraw.__inject__.getOutline(this.id);
   }
   getFont() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get font");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getFontPlayer(p.id, this.id);
     return TextDraw.__inject__.getFont(this.id);
   }
   isBox() {
     if (this.id === InvalidEnum.TEXT_DRAW) return false;
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.isBoxPlayer(p.id, this.id);
     return TextDraw.__inject__.isBox(this.id);
   }
   isProportional() {
     if (this.id === InvalidEnum.TEXT_DRAW) return false;
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.isProportionalPlayer(p.id, this.id);
     return TextDraw.__inject__.isProportional(this.id);
   }
   isSelectable() {
     if (this.id === InvalidEnum.TEXT_DRAW) return false;
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.isSelectablePlayer(p.id, this.id);
     return TextDraw.__inject__.isSelectable(this.id);
   }
   getAlignment() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get alignment");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getAlignmentPlayer(p.id, this.id);
     return TextDraw.__inject__.getAlignment(this.id);
   }
   getPreviewModel() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get preview model");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getPreviewModelPlayer(p.id, this.id);
     return TextDraw.__inject__.getPreviewModel(this.id);
   }
   getPreviewRot() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get preview rotation");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getPreviewRotPlayer(p.id, this.id);
     return TextDraw.__inject__.getPreviewRot(this.id);
   }
   getPreviewVehColors() {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get preview vel colors");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p)
       return TextDraw.__inject__.getPreviewVehicleColorsPlayer(p.id, this.id);
     return TextDraw.__inject__.getPreviewVehicleColors(this.id);
@@ -500,6 +527,7 @@ export class TextDraw {
   }
 
   getPlayer() {
+    if (this._player) return this._player;
     if (this.sourceInfo && this.sourceInfo.player) {
       return this.sourceInfo.player;
     }

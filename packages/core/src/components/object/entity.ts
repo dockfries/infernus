@@ -33,6 +33,11 @@ export class ObjectMp {
       this._id = objectOrId;
       if (this.isGlobal()) {
         objectMpPool.set(this._id, this);
+      } else if (player) {
+        if (!playerObjectPool.has(player)) {
+          playerObjectPool.set(player, new Map());
+        }
+        playerObjectPool.get(this.getPlayer()!)!.set(this.id, this);
       }
     } else {
       this.sourceInfo = objectOrId;

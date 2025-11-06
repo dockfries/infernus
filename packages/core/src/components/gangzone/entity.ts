@@ -8,18 +8,42 @@ import { INTERNAL_FLAGS } from "core/utils/flags";
 import { gangZonePool, playerGangZonePool } from "core/utils/pools";
 
 export class GangZone {
-  readonly sourceInfo: IGangZone;
-
+  readonly sourceInfo: IGangZone | null = null;
+  private _player: Player | null = null;
   private _id: number = InvalidEnum.GANG_ZONE;
+
   get id() {
     return this._id;
   }
 
-  constructor(gangZone: IGangZone) {
-    this.sourceInfo = gangZone;
+  constructor(gangZoneOrId: IGangZone | number, player?: Player) {
+    if (typeof gangZoneOrId === "number") {
+      if (player) {
+        this._player = player;
+      }
+
+      const gangZone = GangZone.getInstance(gangZoneOrId, player);
+      if (gangZone) return gangZone;
+
+      this._id = gangZoneOrId;
+      if (this.isGlobal()) {
+        gangZonePool.set(this._id, this);
+      } else if (player) {
+        if (!playerGangZonePool.has(player)) {
+          playerGangZonePool.set(player, new Map());
+        }
+        playerGangZonePool.get(this.getPlayer()!)!.set(this.id, this);
+      }
+    } else {
+      this.sourceInfo = gangZoneOrId;
+      this._player = null;
+    }
   }
 
   create() {
+    if (!this.sourceInfo) {
+      throw new Error("[GangZone]: Unable to create with only id");
+    }
     if (this.id !== InvalidEnum.GANG_ZONE)
       throw new Error("[GangZone]: Unable to create again");
 
@@ -54,7 +78,8 @@ export class GangZone {
       // PlayerGangZones automatically destroyed when player disconnect
       const off = PlayerEvent.onDisconnect(({ player, next }) => {
         next();
-        if (player === this.sourceInfo.player) {
+        const _player = this.getPlayer();
+        if (_player && player === _player) {
           if (this.isValid()) {
             this.destroy();
           }
@@ -72,9 +97,9 @@ export class GangZone {
 
   destroy() {
     if (this.id === InvalidEnum.GANG_ZONE)
-      throw new Error("[GangZone]: Unable to destroy gangzone before create");
+      throw new Error("[GangZone]: Unable to destroy before create");
 
-    const { player } = this.sourceInfo;
+    const player = this.getPlayer();
     if (!player) {
       if (!INTERNAL_FLAGS.skip) {
         GangZone.__inject__.destroy(this.id);
@@ -97,11 +122,33 @@ export class GangZone {
     this._id = InvalidEnum.GANG_ZONE;
   }
 
+  isGlobal() {
+    const player = this.sourceInfo ? this.sourceInfo.player : this._player;
+    return !player;
+  }
+
+  isPlayer() {
+    return !this.isGlobal();
+  }
+
+  getPlayer() {
+    if (this._player) return this._player;
+    if (this.sourceInfo && this.sourceInfo.player) {
+      return this.sourceInfo.player;
+    }
+    return null;
+  }
+
+  getPlayerId() {
+    const player = this.getPlayer();
+    return player ? player.id : InvalidEnum.PLAYER_ID;
+  }
+
   showForAll(color: string | number) {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new Error("[GangZone]: Unable to show gangzone before create");
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (!p) {
       GangZone.__inject__.showForAll(this.id, color);
       return this;
@@ -115,7 +162,7 @@ export class GangZone {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new Error("[GangZone]: Unable to show gangzone before create");
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) GangZone.__inject__.showPlayer(p.id, this.id, rgba(color));
     else {
       if (player) GangZone.__inject__.showForPlayer(player.id, this.id, color);
@@ -130,7 +177,7 @@ export class GangZone {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new Error("[GangZone]: Unable to hide gangzone before create");
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (!p) {
       GangZone.__inject__.hideForAll(this.id);
       return this;
@@ -144,7 +191,7 @@ export class GangZone {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new Error("[GangZone]: Unable to hide gangzone before create");
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) GangZone.__inject__.hidePlayer(p.id, this.id);
     else {
       if (player) GangZone.__inject__.hideForPlayer(player.id, this.id);
@@ -159,7 +206,7 @@ export class GangZone {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new Error("[GangZone]: Unable to flash gangzone before create");
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (!p) {
       GangZone.__inject__.flashForAll(this.id, flashColor);
       return this;
@@ -173,7 +220,7 @@ export class GangZone {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new Error("[GangZone]: Unable to flash gangzone before create");
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) GangZone.__inject__.flashPlayer(p.id, this.id, rgba(flashColor));
     else {
       if (player)
@@ -191,7 +238,7 @@ export class GangZone {
         "[GangZone]: Unable to stop flash gangzone before create",
       );
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (!p) {
       GangZone.__inject__.stopFlashForAll(this.id);
       return this;
@@ -207,7 +254,7 @@ export class GangZone {
         "[GangZone]: Unable to stop flash gangzone before create",
       );
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) GangZone.__inject__.stopFlashPlayer(p.id, this.id);
     else {
       if (player) GangZone.__inject__.stopFlashForPlayer(player.id, this.id);
@@ -221,21 +268,21 @@ export class GangZone {
   isValid(): boolean {
     if (INTERNAL_FLAGS.skip && this.id !== InvalidEnum.GANG_ZONE) return true;
     if (this.id === InvalidEnum.GANG_ZONE) return false;
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return GangZone.isValidPlayer(p.id, this.id);
     return GangZone.isValidGlobal(this.id);
   }
 
   isPlayerIn(player: Player): boolean {
     if (this.id === InvalidEnum.GANG_ZONE) return false;
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return GangZone.__inject__.isPlayerInPlayer(p.id, this.id);
     return GangZone.__inject__.isPlayerIn(player.id, this.id);
   }
 
   isVisibleForPlayer(player: Player): boolean {
     if (this.id === InvalidEnum.GANG_ZONE) return false;
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return GangZone.__inject__.isVisiblePlayer(p.id, this.id);
     return GangZone.__inject__.isVisibleForPlayer(player.id, this.id);
   }
@@ -243,7 +290,7 @@ export class GangZone {
   getColorForPlayer(player: Player): number {
     if (this.id === InvalidEnum.GANG_ZONE)
       throw new Error("[GangZone]: Unable to get color before create");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return GangZone.__inject__.getColorPlayer(p.id, this.id);
     return GangZone.__inject__.getColorForPlayer(player.id, this.id);
   }
@@ -251,14 +298,14 @@ export class GangZone {
   getFlashColorForPlayer(player: Player): number {
     if (this.id === InvalidEnum.GANG_ZONE)
       throw new Error("[GangZone]: Unable to get flash color before create");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return GangZone.__inject__.getFlashColorPlayer(p.id, this.id);
     return GangZone.__inject__.getFlashColorForPlayer(player.id, this.id);
   }
 
   isFlashingForPlayer(player: Player): boolean {
     if (this.id === InvalidEnum.GANG_ZONE) return false;
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return GangZone.__inject__.isFlashingPlayer(p.id, this.id);
     return GangZone.__inject__.isFlashingForPlayer(player.id, this.id);
   }
@@ -266,7 +313,7 @@ export class GangZone {
   getPos(): IGangZonePos {
     if (this.id === InvalidEnum.GANG_ZONE)
       throw new Error("[GangZone]: Unable to get position before create");
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) return GangZone.__inject__.getPosPlayer(p.id, this.id);
     return GangZone.__inject__.getPos(this.id);
   }
@@ -275,7 +322,7 @@ export class GangZone {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new Error("[GangZone]: Unable to use check before create");
     }
-    const p = this.sourceInfo.player;
+    const p = this.getPlayer();
     if (p) GangZone.__inject__.useCheckPlayer(p.id, this.id, toggle);
     else GangZone.__inject__.useCheck(this.id, toggle);
     return this;
