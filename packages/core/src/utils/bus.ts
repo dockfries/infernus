@@ -56,6 +56,13 @@ function executeMiddlewares<T extends object>(
 
   let index = startIndex;
 
+  const executeAfterEach = () => {
+    if (afterEach) {
+      if (!promises.length) afterEach(enhanced);
+      else Promise.allSettled(promises).then(() => afterEach(enhanced));
+    }
+  };
+
   const next = (value?: Partial<T>) => {
     index++;
     if (index < middlewares.length) {
@@ -73,19 +80,22 @@ function executeMiddlewares<T extends object>(
 
         return ret;
       } catch (err) {
-        const msg = `executing event [name:${name},index:${index}] error:\n${err}`;
+        const msg = `executing event [name:${name},index:${index}]`;
         if (throwOnError) {
-          throw { error: err, message: msg };
+          throw new Error(msg);
         }
         console.log(msg);
+        if (err instanceof Error) {
+          console.log(err);
+        } else {
+          console.log(JSON.stringify(err));
+        }
+        executeAfterEach();
       }
       return defaultValue;
     }
 
-    if (afterEach) {
-      if (!promises.length) afterEach(enhanced);
-      else Promise.allSettled(promises).then(() => afterEach(enhanced));
-    }
+    executeAfterEach();
 
     return defaultValue;
   };
