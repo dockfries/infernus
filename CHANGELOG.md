@@ -1,3 +1,12 @@
+## <small>0.13.2 (2025-11-06)</small>
+
+* fix(build): update build configuration and export types ([207b40f](https://github.com/dockfries/infernus/commit/207b40f))
+* feat(fs): npc should use create method ([f1cca06](https://github.com/dockfries/infernus/commit/f1cca06))
+* chore(release): nex-ac v0.2.2 ([7f75cc3](https://github.com/dockfries/infernus/commit/7f75cc3))
+* chore(release): weapon-config v0.2.1 ([eae8e71](https://github.com/dockfries/infernus/commit/eae8e71))
+
+
+
 ## <small>0.13.1 (2025-11-06)</small>
 
 * refactor(core): entity create fail message, maybe other reason fail, not maximum ([8ff6f5e](https://github.com/dockfries/infernus/commit/8ff6f5e))
