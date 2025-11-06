@@ -111,13 +111,13 @@ export const GlNpcs: IGlNpcsFS = {
     );
 
     npcNames.slice(0, 6).forEach((name) => {
-      new Npc(name).spawn();
+      new Npc(name).create().spawn();
     });
 
     // Testing
     if (options && options.test) {
       npcNames.slice(6).forEach((name) => {
-        new Npc(name).spawn();
+        new Npc(name).create().spawn();
       });
     }
 
