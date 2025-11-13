@@ -1,9 +1,21 @@
 import { ObjectMp } from "./entity";
 import { GameMode } from "core/components/gamemode";
 import { defineEvent } from "core/utils/bus";
-import { Player } from "core/components/player/entity";
 import { objectMpPool, playerObjectPool } from "core/utils/pools";
 import { EditResponseTypesEnum, SelectObjectTypesEnum } from "core/enums";
+import { Player, PlayerEvent } from "../player";
+
+PlayerEvent.onDisconnect(({ player, next }) => {
+  if (playerObjectPool.has(player)) {
+    ObjectMp.getInstances(player).forEach((o) => {
+      if (o.isValid()) {
+        o.destroy();
+      }
+    });
+    playerObjectPool.delete(player);
+  }
+  return next();
+});
 
 GameMode.onExit(({ next }) => {
   ObjectMp.getInstances().forEach((o) => o.destroy());

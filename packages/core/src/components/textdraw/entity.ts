@@ -1,8 +1,8 @@
 import type { TextDrawAlignEnum } from "core/enums";
-import { InvalidEnum, LimitsEnum, TextDrawFontsEnum } from "core/enums";
 import type { ITextDraw } from "core/interfaces";
+import type { Player } from "../player";
+import { InvalidEnum, LimitsEnum, TextDrawFontsEnum } from "core/enums";
 import * as w from "core/wrapper/native";
-import { PlayerEvent, type Player } from "../player";
 import { I18n } from "../../utils/i18n";
 import { textDrawPool, playerTextDrawPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
@@ -63,18 +63,6 @@ export class TextDraw {
         TextDraw.getInstances(player).length === LimitsEnum.MAX_TEXT_DRAWS
       )
         throw new Error("[TextDraw]: Unable to create player textdraw");
-
-      // Player-textdraws are automatically destroyed when a player disconnects.
-      const off = PlayerEvent.onDisconnect(({ player: p, next }) => {
-        const ret = next();
-        if (p === player) {
-          if (this.isValid()) {
-            this.destroy();
-          }
-          off();
-        }
-        return ret;
-      });
       if (!playerTextDrawPool.has(player)) {
         playerTextDrawPool.set(player, new Map());
       }

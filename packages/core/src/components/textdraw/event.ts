@@ -1,9 +1,21 @@
 import { InvalidEnum } from "core/enums";
-import { Player } from "../player/entity";
 import { TextDraw } from "./entity";
 import { GameMode } from "../gamemode";
 import { defineEvent } from "../../utils/bus";
 import { textDrawPool, playerTextDrawPool } from "core/utils/pools";
+import { Player, PlayerEvent } from "../player";
+
+PlayerEvent.onDisconnect(({ player, next }) => {
+  if (playerTextDrawPool.has(player)) {
+    TextDraw.getInstances(player).forEach((t) => {
+      if (t.isValid()) {
+        t.destroy();
+      }
+    });
+    playerTextDrawPool.delete(player);
+  }
+  return next();
+});
 
 GameMode.onExit(({ next }) => {
   TextDraw.getInstances().forEach((t) => t.destroy());

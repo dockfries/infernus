@@ -1,8 +1,20 @@
 import { gangZonePool, playerGangZonePool } from "core/utils/pools";
 import { defineEvent } from "../../utils/bus";
 import { GameMode } from "../gamemode";
-import { Player } from "../player";
+import { Player, PlayerEvent } from "../player";
 import { GangZone } from "./entity";
+
+PlayerEvent.onDisconnect(({ player, next }) => {
+  if (playerGangZonePool.has(player)) {
+    GangZone.getInstances(player).forEach((g) => {
+      if (g.isValid()) {
+        g.destroy();
+      }
+    });
+    playerGangZonePool.delete(player);
+  }
+  return next();
+});
 
 GameMode.onExit(({ next }) => {
   GangZone.getInstances().forEach((g) => g.destroy());
