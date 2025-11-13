@@ -209,11 +209,17 @@ export const GetServerTickRate = (): number => {
 };
 
 export const GetAnimationName = (index: number) => {
-  return samp.callNative("GetAnimationName", "iSiSi", index, 32, 32) as [
-    string,
-    string,
-    number,
-  ];
+  const [animLib, animName] = samp.callNative(
+    "GetAnimationName",
+    "iSiSi",
+    index,
+    32,
+    32,
+  ) as [string, string, number];
+  return {
+    animLib,
+    animName,
+  };
 };
 
 export const EnableStuntBonusForAll = (enable: boolean): boolean => {

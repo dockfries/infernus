@@ -233,4 +233,5 @@ export class GameMode {
   static getWeather = w.GetWeather;
   static getServerRuleFlag = w.GetServerRuleFlags;
   static setServerRuleFlags = w.SetServerRuleFlags;
+  static getAnimationName = w.GetAnimationName;
 }

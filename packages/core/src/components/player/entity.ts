@@ -30,6 +30,7 @@ import { VectorSize } from "core/wrapper/native";
 import { internalPlayerProps, playerPool, vehiclePool } from "core/utils/pools";
 import { CmdBus } from "./command";
 import { ObjectMp } from "../object/entity";
+import { GameMode } from "../gamemode";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
@@ -633,9 +634,8 @@ export class Player {
   getAnimationIndex(): number {
     return Player.__inject__.getAnimationIndex(this.id);
   }
-  getAnimationName(index: number = this.getAnimationIndex()) {
-    const [animLib, animName] = Player.__inject__.getAnimationName(index);
-    return { index, animLib, animName };
+  getAnimationName() {
+    return GameMode.getAnimationName(this.getAnimationIndex());
   }
   setShopName(shopName: string) {
     return Player.__inject__.setShopName(this.id, shopName);
@@ -1136,7 +1136,6 @@ export class Player {
     applyAnimation: w.ApplyAnimation,
     clearAnimations: w.ClearAnimations,
     getAnimationIndex: w.GetPlayerAnimationIndex,
-    getAnimationName: w.GetAnimationName,
     setShopName: w.SetPlayerShopName,
     setPosFindZ: w.SetPlayerPosFindZ,
     setWorldBounds: w.SetPlayerWorldBounds,
