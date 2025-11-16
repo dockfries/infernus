@@ -417,14 +417,20 @@ export class ObjectMp {
     );
   }
 
-  edit(player: Player): boolean {
+  edit(player?: Player): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Unable to edit before create");
-    player.endObjectEditing();
+
     if (this.isGlobal()) {
+      if (!player) {
+        throw new Error("[ObjectMp]: Cannot edit without player");
+      }
+      player.endObjectEditing();
       return ObjectMp.__inject__.beginEditing(player.id, this.id);
     }
-    return ObjectMp.__inject__.beginEditingPlayer(player.id, this.id);
+    const _player = this.getPlayer()!;
+    _player.endObjectEditing();
+    return ObjectMp.__inject__.beginEditingPlayer(_player.id, this.id);
   }
 
   isMaterialUsed(materialIndex: number): boolean {
