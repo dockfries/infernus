@@ -4,20 +4,20 @@ import { defineConfig, type DefaultTheme } from "vitepress";
 const require = createRequire(import.meta.url);
 const pkg = require("../../package.json");
 
-export const zh_CN = defineConfig({
-  lang: "zh-CN",
+export const zh_Hans = defineConfig({
+  lang: "zh-Hans",
   description: "用于编写Open Multiplayer脚本的Node.js库",
   themeConfig: {
     nav: nav(),
 
     sidebar: [
-      { base: "/zh-CN/", text: "开始", items: sidebarGuide() },
+      { base: "/zh-Hans/", text: "开始", items: sidebarGuide() },
       {
-        base: "/zh-CN/essentials/",
+        base: "/zh-Hans/essentials/",
         text: "基础",
         items: sidebarEssentials(),
       },
-      { base: "/zh-CN/plugins/", text: "插件", items: sidebarPlugins() },
+      { base: "/zh-Hans/plugins/", text: "插件", items: sidebarPlugins() },
     ],
 
     editLink: {
@@ -39,8 +39,8 @@ export const zh_CN = defineConfig({
 
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: "首页", link: "/zh-CN/" },
-    { text: "Open Multiplayer", link: "https://open.mp/zh-CN" },
+    { text: "首页", link: "/zh-Hans/" },
+    { text: "Open Multiplayer", link: "https://open.mp/zh-Hans" },
     {
       text: "插件",
       items: [
@@ -114,7 +114,7 @@ function sidebarPlugins(): DefaultTheme.SidebarItem[] {
 }
 
 export const search = {
-  "zh-CN": {
+  "zh-Hans": {
     translations: {
       button: {
         buttonText: "搜索文档",

@@ -7,7 +7,7 @@ hero:
   actions:
     - theme: brand
       text: 起步
-      link: /zh-CN/introduction
+      link: /zh-Hans/introduction
 
 features:
   - title: 🥳面向未来
