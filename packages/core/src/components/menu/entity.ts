@@ -23,6 +23,10 @@ export class Menu {
 
   constructor(menuOrId: IMenu | number) {
     if (typeof menuOrId === "number") {
+      if (menuOrId === InvalidEnum.MENU) {
+        throw new Error("[Menu]: Invalid id");
+      }
+
       this._id = menuOrId;
       const pickup = Menu.getInstance(this._id);
       if (pickup) return pickup;
@@ -195,9 +199,7 @@ export class Menu {
   }
 
   static getInstanceByPlayer(player: Player) {
-    return this.getInstances().find(
-      (item) => item.id === w.GetPlayerMenu(player.id),
-    );
+    return this.getInstance(w.GetPlayerMenu(player.id));
   }
 
   static __inject__ = {

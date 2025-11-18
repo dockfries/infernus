@@ -18,6 +18,13 @@ export class TextDraw {
 
   constructor(textDrawOrId: ITextDraw | number, player?: Player) {
     if (typeof textDrawOrId === "number") {
+      if (
+        textDrawOrId === InvalidEnum.TEXT_DRAW ||
+        textDrawOrId === InvalidEnum.PLAYER_TEXT_DRAW
+      ) {
+        throw new Error("[TextDraw]: Invalid id");
+      }
+
       if (player) {
         this._player = player;
       }

@@ -16,6 +16,10 @@ export class Actor {
 
   constructor(actorOrId: IActor | number) {
     if (typeof actorOrId === "number") {
+      if (actorOrId === InvalidEnum.ACTOR_ID) {
+        throw new Error("[Actor]: Invalid id");
+      }
+
       const actor = Actor.getInstance(actorOrId);
       if (actor) return actor;
 

@@ -26,6 +26,10 @@ export class TextLabel {
 
   constructor(textLabelOrId: ITextLabel | number, player?: Player) {
     if (typeof textLabelOrId === "number") {
+      if (textLabelOrId === InvalidEnum.PLAYER_3DTEXT_ID) {
+        throw new Error("[TextLabel]: Invalid id");
+      }
+
       if (player) {
         this._player = player;
       }

@@ -30,6 +30,10 @@ export class Dynamic3DTextLabel {
 
   constructor(textLabelOrId: IDynamic3DTextLabel | number) {
     if (typeof textLabelOrId === "number") {
+      if (textLabelOrId === StreamerMiscellaneous.INVALID_ID) {
+        throw new Error("[Streamer3DTextLabel]: Invalid id");
+      }
+
       const obj = Dynamic3DTextLabel.getInstance(textLabelOrId);
       if (obj) {
         return obj;

@@ -24,6 +24,10 @@ export class DynamicMapIcon {
   }
   constructor(mapIconOrId: IDynamicMapIcon | null) {
     if (typeof mapIconOrId === "number") {
+      if (mapIconOrId === StreamerMiscellaneous.INVALID_ID) {
+        throw new Error("[StreamerMapIcon]: Invalid id");
+      }
+
       const obj = DynamicMapIcon.getInstance(mapIconOrId);
       if (obj) {
         return obj;

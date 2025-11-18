@@ -25,6 +25,10 @@ export class DynamicCheckpoint {
   }
   constructor(checkPointOrId: IDynamicCheckPoint | number) {
     if (typeof checkPointOrId === "number") {
+      if (checkPointOrId === StreamerMiscellaneous.INVALID_ID) {
+        throw new Error("[StreamerCheckpoint]: Invalid id");
+      }
+
       const obj = DynamicCheckpoint.getInstance(checkPointOrId);
       if (obj) {
         return obj;

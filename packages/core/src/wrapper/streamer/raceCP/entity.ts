@@ -26,6 +26,10 @@ export class DynamicRaceCP {
   }
   constructor(checkPointOrId: IDynamicRaceCp | number) {
     if (typeof checkPointOrId === "number") {
+      if (checkPointOrId === StreamerMiscellaneous.INVALID_ID) {
+        throw new Error("[StreamerRaceCP]: Invalid id");
+      }
+
       const obj = DynamicRaceCP.getInstance(checkPointOrId);
       if (obj) {
         return obj;

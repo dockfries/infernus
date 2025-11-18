@@ -18,6 +18,10 @@ export class GangZone {
 
   constructor(gangZoneOrId: IGangZone | number, player?: Player) {
     if (typeof gangZoneOrId === "number") {
+      if (gangZoneOrId === InvalidEnum.GANG_ZONE) {
+        throw new Error("[GangZone]: Invalid id");
+      }
+
       if (player) {
         this._player = player;
       }

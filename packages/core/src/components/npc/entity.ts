@@ -35,6 +35,10 @@ export class Npc {
       this._name = nameOrId;
     }
     if (typeof nameOrId === "number") {
+      if (nameOrId === InvalidEnum.NPC_ID) {
+        throw new Error("[Npc]: Invalid id");
+      }
+
       this._id = nameOrId;
       const npc = Npc.getInstance(this._id);
       if (npc) return npc;

@@ -20,6 +20,10 @@ export class DynamicArea {
   }
   constructor(areaOrId: TDynamicArea | number) {
     if (typeof areaOrId === "number") {
+      if (areaOrId === s.StreamerMiscellaneous.INVALID_ID) {
+        throw new Error("[StreamerArea]: Invalid id");
+      }
+
       const obj = DynamicArea.getInstance(areaOrId);
       if (obj) {
         return obj;

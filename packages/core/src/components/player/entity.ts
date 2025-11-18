@@ -24,10 +24,19 @@ import type { IClientResRaw, IInnerPlayerProps } from "../../interfaces";
 import { isValidAnimateName } from "../../utils/animate";
 import * as h from "../../utils/helper";
 
-import type { Vehicle } from "../vehicle/entity";
+import { Vehicle } from "../vehicle/entity";
+import type { Actor } from "../actor/entity";
+
 import { defineEvent } from "../../utils/bus";
 import { VectorSize } from "core/wrapper/native";
-import { internalPlayerProps, playerPool, vehiclePool } from "core/utils/pools";
+import {
+  actorPool,
+  internalPlayerProps,
+  objectMpPool,
+  playerObjectPool,
+  playerPool,
+  vehiclePool,
+} from "core/utils/pools";
 import { CmdBus } from "./command";
 import { ObjectMp } from "../object/entity";
 import { GameMode } from "../gamemode";
@@ -463,11 +472,23 @@ export class Player {
   }
   getCameraTargetPlayer(): Player | undefined {
     const target = Player.__inject__.getCameraTargetPlayer(this.id);
-    return Player.getInstances().find((p) => p.id === target);
+    return Player.getInstance(target);
   }
   getCameraTargetVehicle(): Vehicle | undefined {
     const target = Player.__inject__.getCameraTargetVehicle(this.id);
-    return [...vehiclePool.values()].find((v) => v.id === target);
+    return vehiclePool.get(target);
+  }
+  getCameraTargetActor(): Actor | undefined {
+    const target = Player.__inject__.getCameraTargetActor(this.id);
+    return actorPool.get(target);
+  }
+  getCameraTargetObject(): ObjectMp | undefined {
+    const target = Player.__inject__.getCameraTargetObject(this.id);
+    return objectMpPool.get(target);
+  }
+  getCameraTargetPlayerObject(): ObjectMp | undefined {
+    const target = Player.__inject__.getCameraTargetPlayerObject(this.id);
+    return playerObjectPool.get(this)?.get(target);
   }
   getCameraZoom(): number {
     return Player.__inject__.getCameraZoom(this.id);
@@ -588,16 +609,15 @@ export class Player {
   }
   getVehicle() {
     if (!this.isInAnyVehicle()) return;
-    const vehId: number = Player.__inject__.getVehicleID(this.id);
-    return [...vehiclePool.values()].find((v) => v.id === vehId);
+    const vehId = Player.__inject__.getVehicleID(this.id);
+    return Vehicle.getInstance(vehId);
   }
   getVehicleSeat(): number {
     return Player.__inject__.getVehicleSeat(this.id);
   }
   getSurfingVehicle() {
     const vehId = Player.__inject__.getSurfingVehicleID(this.id);
-    if (vehId === InvalidEnum.VEHICLE_ID) return;
-    return [...vehiclePool.values()].find((v) => v.id === vehId);
+    return Vehicle.getInstance(vehId);
   }
   applyAnimation(
     animLib: string,
@@ -673,8 +693,7 @@ export class Player {
   }
   getTargetPlayer(): Player | undefined {
     const pid = Player.__inject__.getTargetPlayer(this.id);
-    if (pid === InvalidEnum.PLAYER_ID) return;
-    return Player.getInstances().find((p) => p.id === pid);
+    return Player.getInstance(pid);
   }
   getLastShotVectors() {
     return Player.__inject__.getLastShotVectors(this.id);
@@ -1119,6 +1138,9 @@ export class Player {
     getCameraPos: w.GetPlayerCameraPos,
     getCameraTargetPlayer: w.GetPlayerCameraTargetPlayer,
     getCameraTargetVehicle: w.GetPlayerCameraTargetVehicle,
+    getCameraTargetActor: w.GetPlayerCameraTargetActor,
+    getCameraTargetObject: w.GetPlayerCameraTargetObject,
+    getCameraTargetPlayerObject: w.GetPlayerCameraTargetPlayerObject,
     getCameraZoom: w.GetPlayerCameraZoom,
     playAudioStream: w.PlayAudioStreamForPlayer,
     stopAudioStream: w.StopAudioStreamForPlayer,

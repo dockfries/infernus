@@ -4,7 +4,7 @@ import { INTERNAL_FLAGS } from "core/utils/flags";
 import { objectMpPool, playerObjectPool } from "core/utils/pools";
 import { rgba } from "core/utils/color";
 import * as o from "core/wrapper/native";
-import type { Player } from "../player/entity";
+import { Player } from "../player/entity";
 import { Vehicle } from "../vehicle/entity";
 import {
   GetObjectMaterialText,
@@ -23,6 +23,10 @@ export class ObjectMp {
 
   constructor(objectOrId: IObjectMp | number, player?: Player) {
     if (typeof objectOrId === "number") {
+      if (objectOrId === InvalidEnum.OBJECT_ID) {
+        throw new Error("[ObjectMp]: Invalid id");
+      }
+
       if (player) {
         this._player = player;
       }
@@ -554,20 +558,6 @@ export class ObjectMp {
     );
   }
 
-  static getPlayerCameraTarget(player: Player, isGlobal = true) {
-    if (isGlobal) {
-      const id = ObjectMp.__inject__.getCameraTarget(player.id);
-      if (id === InvalidEnum.OBJECT_ID) return;
-      return objectMpPool.get(id);
-    }
-    const id = ObjectMp.__inject__.getCameraTargetPlayer(player.id);
-    if (id === InvalidEnum.OBJECT_ID) return;
-    return ObjectMp.getPlayersInstances()
-      .map(([, o]) => o)
-      .flat()
-      .find((o) => o.id === id);
-  }
-
   setNoCameraCollision(): boolean {
     if (this.id === InvalidEnum.OBJECT_ID) return false;
     if (this.isGlobal()) {
@@ -713,8 +703,6 @@ export class ObjectMp {
     getTargetPlayer: o.GetPlayerObjectTarget,
     isValid: o.IsValidObject,
     isValidPlayer: o.IsValidPlayerObject,
-    getCameraTarget: o.GetPlayerCameraTargetObject,
-    getCameraTargetPlayer: o.GetPlayerCameraTargetPlayerObject,
     getModel: o.GetObjectModel,
     getModelPlayer: o.GetPlayerObjectModel,
     getPos: o.GetObjectPos,

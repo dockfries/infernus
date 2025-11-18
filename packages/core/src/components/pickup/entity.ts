@@ -16,6 +16,10 @@ export class Pickup {
 
   constructor(pickupOrId: IPickup | number) {
     if (typeof pickupOrId === "number") {
+      if (pickupOrId === InvalidEnum.PICKUP_ID) {
+        throw new Error("[Pickup]: Invalid id");
+      }
+
       this._id = pickupOrId;
       const pickup = Pickup.getInstance(this._id);
       if (pickup) return pickup;

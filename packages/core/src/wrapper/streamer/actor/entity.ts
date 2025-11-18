@@ -14,6 +14,10 @@ export class DynamicActor {
   }
   constructor(actorOrId: IDynamicActor | number) {
     if (typeof actorOrId === "number") {
+      if (actorOrId === s.StreamerMiscellaneous.INVALID_ID) {
+        throw new Error("[StreamerActor]: Invalid id");
+      }
+
       const obj = DynamicActor.getInstance(actorOrId);
       if (obj) {
         return obj;

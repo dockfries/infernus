@@ -13,6 +13,10 @@ export class DynamicPickup {
   }
   constructor(pickupOrId: IDynamicPickup | null) {
     if (typeof pickupOrId === "number") {
+      if (pickupOrId === s.StreamerMiscellaneous.INVALID_ID) {
+        throw new Error("[StreamerPickup]: Invalid id");
+      }
+
       const obj = DynamicPickup.getInstance(pickupOrId);
       if (obj) {
         return obj;

@@ -29,6 +29,10 @@ export class Vehicle {
 
   constructor(vehOrId: IVehicle | number, isStatic = false) {
     if (typeof vehOrId === "number") {
+      if (vehOrId === InvalidEnum.VEHICLE_ID) {
+        throw new Error("[Vehicle]: Invalid id");
+      }
+
       const obj = Vehicle.getInstance(vehOrId);
       if (obj) {
         return obj;
