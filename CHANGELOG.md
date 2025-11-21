@@ -1,3 +1,14 @@
+## <small>0.13.3 (2025-11-21)</small>
+
+* fix(core): getAnimationName ([fde73fa](https://github.com/dockfries/infernus/commit/fde73fa))
+* fix(core): getPlayerCameraTarget, some getMethods, id constructor check invalid ([9ce3532](https://github.com/dockfries/infernus/commit/9ce3532))
+* fix(core): objectMp edit player params ([6d23ea9](https://github.com/dockfries/infernus/commit/6d23ea9))
+* docs(zh-Hans): rename zh-CN to zh-Hans ([64a5a5c](https://github.com/dockfries/infernus/commit/64a5a5c))
+* feat(core): some origin playerPool need destroy onDisconnect ([de3a6fe](https://github.com/dockfries/infernus/commit/de3a6fe))
+* chore(release): filterscript v0.13.2 ([87eaf1b](https://github.com/dockfries/infernus/commit/87eaf1b))
+
+
+
 ## <small>0.13.2 (2025-11-06)</small>
 
 * fix(build): update build configuration and export types ([207b40f](https://github.com/dockfries/infernus/commit/207b40f))

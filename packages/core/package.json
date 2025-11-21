@@ -1,6 +1,6 @@
 {
   "name": "@infernus/core",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "description": "Node.js library for Scripting Open Multiplayer",
   "keywords": [
     "omp",
