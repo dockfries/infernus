@@ -1,9 +1,5 @@
 # Features
 
-## Streamer
-
-The `Object`, `GangZone`, `3dText` and other `api` of native functions are replaced with `Streamer`, which means you must use the `Streamer` plugin. The original function is developed and implemented by yourself, but it is strongly not recommended and may cause unknown problems.
-
 ## Automatically destroy instance
 
 When the GameMode exits, all the `Streamer/vehicle/textdraw/menus...` instances will be automatically destroyed, which means you no longer need to write a large number of destroy functions repeatedly.
