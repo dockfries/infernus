@@ -1,6 +1,6 @@
 # @infernus/qrcode
 
-[![npm](https://img.shields.io/npm/v/@infernus/qrcode)](https://www.npmjs.com/package/@infernus/qrcode) ![npm](https://img.shields.io/npm/dy/@infernus/qrcode) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/qrcode)
+[![npm](https://img.shields.io/npm/v/@infernus/qrcode)](https://www.npmjs.com/package/@infernus/qrcode) ![npm](https://img.shields.io/npm/dw/@infernus/qrcode) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/qrcode)
 
 Generate simple qrcode objects for infernus.
 

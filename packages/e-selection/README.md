@@ -1,6 +1,6 @@
 # @infernus/e-selection
 
-[![npm](https://img.shields.io/npm/v/@infernus/e-selection)](https://www.npmjs.com/package/@infernus/e-selection) ![npm](https://img.shields.io/npm/dy/@infernus/e-selection) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/e-selection)
+[![npm](https://img.shields.io/npm/v/@infernus/e-selection)](https://www.npmjs.com/package/@infernus/e-selection) ![npm](https://img.shields.io/npm/dw/@infernus/e-selection) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/e-selection)
 
 A wrapper of the popular [SA-MP eSelection library](https://github.com/TommyB123/eSelection) for samp-node.
 

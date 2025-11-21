@@ -1,6 +1,6 @@
 # @infernus/weapon-config
 
-[![npm](https://img.shields.io/npm/v/@infernus/weapon-config)](https://www.npmjs.com/package/@infernus/weapon-config) ![npm](https://img.shields.io/npm/dy/@infernus/weapon-config) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/weapon-config)
+[![npm](https://img.shields.io/npm/v/@infernus/weapon-config)](https://www.npmjs.com/package/@infernus/weapon-config) ![npm](https://img.shields.io/npm/dw/@infernus/weapon-config) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/weapon-config)
 
 A wrapper of the popular [SA-MP weapon-config library](https://github.com/oscar-broman/samp-weapon-config) for samp-node.
 

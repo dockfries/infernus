@@ -1,6 +1,6 @@
 # @infernus/query
 
-[![npm](https://img.shields.io/npm/v/@infernus/query)](https://www.npmjs.com/package/@infernus/query) ![npm](https://img.shields.io/npm/dy/@infernus/query) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/query)
+[![npm](https://img.shields.io/npm/v/@infernus/query)](https://www.npmjs.com/package/@infernus/query) ![npm](https://img.shields.io/npm/dw/@infernus/query) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/query)
 
 ## Getting started
 
