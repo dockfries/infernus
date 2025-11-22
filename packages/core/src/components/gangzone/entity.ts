@@ -1,6 +1,6 @@
 import * as g from "core/wrapper/native";
 import { InvalidEnum, LimitsEnum } from "../../enums";
-import { Player, PlayerEvent } from "../player";
+import { Player } from "../player";
 import { rgba } from "../../utils/color";
 import type { IGangZone } from "core/interfaces";
 import type { IGangZonePos } from "core/wrapper/native/interfaces";
@@ -78,18 +78,6 @@ export class GangZone {
         GangZone.getInstances(player).length === LimitsEnum.MAX_GANG_ZONES
       )
         throw new Error("[GangZone]: Unable to create playerGangZone");
-
-      // PlayerGangZones automatically destroyed when player disconnect
-      const off = PlayerEvent.onDisconnect(({ player, next }) => {
-        next();
-        const _player = this.getPlayer();
-        if (_player && player === _player) {
-          if (this.isValid()) {
-            this.destroy();
-          }
-          off();
-        }
-      });
       if (!playerGangZonePool.has(player)) {
         playerGangZonePool.set(player, new Map());
       }
