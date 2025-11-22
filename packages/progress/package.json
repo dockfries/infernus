@@ -1,0 +1,45 @@
+{
+  "name": "@infernus/progress",
+  "version": "0.0.1",
+  "description": "A wrapper of the popular SA-MP TextDraw progress2 library for samp-node.",
+  "keywords": [
+    "samp",
+    "sa:mp",
+    "sa-mp",
+    "omp",
+    "open.mp",
+    "pawn",
+    "wrapper",
+    "progress2"
+  ],
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/progress#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/infernus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/infernus.git"
+  },
+  "license": "MIT",
+  "author": "dockfries",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.mjs",
+      "types": "./dist/bundle.d.ts"
+    }
+  },
+  "main": "dist/bundle.js",
+  "module": "dist/bundle.mjs",
+  "types": "dist/bundle.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {},
+  "devDependencies": {
+    "@infernus/core": "workspace:^"
+  },
+  "peerDependencies": {
+    "@infernus/core": "workspace:^"
+  }
+}

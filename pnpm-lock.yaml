@@ -253,6 +253,12 @@ importers:
         specifier: workspace:^
         version: link:../raknet
 
+  packages/progress:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+
   packages/qrcode:
     dependencies:
       qrcode-generator:
