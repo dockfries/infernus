@@ -19,9 +19,9 @@
   ],
   "scripts": {},
   "dependencies": {
-    "@inquirer/prompts": "^7.9.0",
-    "@octokit/core": "^7.0.5",
-    "axios": "^1.12.2",
+    "@inquirer/prompts": "^8.0.1",
+    "@octokit/core": "^7.0.6",
+    "axios": "^1.13.2",
     "chalk": "^5.6.2",
     "cli-progress": "^3.12.0",
     "decompress": "^4.2.1",
@@ -39,6 +39,6 @@
     "@types/fs-extra": "^11.0.4",
     "@types/semver": "^7.7.1",
     "@types/update-notifier": "^6.0.8",
-    "@types/yargs": "^17.0.33"
+    "@types/yargs": "^17.0.35"
   }
 }
