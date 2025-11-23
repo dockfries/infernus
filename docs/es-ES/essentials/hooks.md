@@ -46,7 +46,7 @@ setPlayerHook(
 
 ## Inyectables
 
-> Algunas clases de entidad proporcionan métodos estáticos con prefijo `__inject` para inyección.
+> Algunas clases de entidad proporcionan métodos estáticos `__inject__` para inyección.
 
 Debido a la naturaleza especial de algunas clases de entidad encapsuladas, no puedes usar `defineHooks` directamente.
 
@@ -57,7 +57,7 @@ Estas funciones nativas se activan cuando se llama a `create` o `destroy` intern
 ```ts
 import { Vehicle, type LimitsEnum } from "@infernus/core";
 
-export const orig_CreateVehicle = Vehicle.__inject_CreateVehicle;
+export const orig_CreateVehicle = Vehicle.__inject__.create;
 
 export function my_CreateVehicle(
   ...args: Parameters<typeof orig_CreateVehicle>
@@ -71,5 +71,5 @@ export function my_CreateVehicle(
   return id;
 }
 
-Vehicle.__inject_CreateVehicle = my_CreateVehicle;
+Vehicle.__inject__.create = my_CreateVehicle;
 ```

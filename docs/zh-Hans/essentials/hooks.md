@@ -46,7 +46,7 @@ setPlayerHook(
 
 ## 可注入的
 
-> 一些实体类提供了以`__inject`开头的静态方法以供注入。
+> 一些实体类提供了`__inject__`静态方法以供注入。
 
 由于一些实体类封装的特殊性，您不能直接使用`defineHooks`。
 
@@ -57,7 +57,7 @@ setPlayerHook(
 ```ts
 import { Vehicle, type LimitsEnum } from "@infernus/core";
 
-export const orig_CreateVehicle = Vehicle.__inject_CreateVehicle;
+export const orig_CreateVehicle = Vehicle.__inject__.create;
 
 export function my_CreateVehicle(
   ...args: Parameters<typeof orig_CreateVehicle>
@@ -71,5 +71,5 @@ export function my_CreateVehicle(
   return id;
 }
 
-Vehicle.__inject_CreateVehicle = my_CreateVehicle;
+Vehicle.__inject__.create = my_CreateVehicle;
 ```

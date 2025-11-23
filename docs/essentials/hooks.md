@@ -46,7 +46,7 @@ setPlayerHook(
 
 ## Injectable
 
-> Some entity classes provide static methods prefixed with `__inject` for injection.
+> Some entity classes provide static methods `__inject__` for injection.
 
 Due to the special nature of some encapsulated entity classes, you cannot directly use `defineHooks`.
 
@@ -57,7 +57,7 @@ These native functions are triggered when `create` or `destroy` is called intern
 ```ts
 import { Vehicle, type LimitsEnum } from "@infernus/core";
 
-export const orig_CreateVehicle = Vehicle.__inject_CreateVehicle;
+export const orig_CreateVehicle = Vehicle.__inject__.create;
 
 export function my_CreateVehicle(
   ...args: Parameters<typeof orig_CreateVehicle>
@@ -71,5 +71,5 @@ export function my_CreateVehicle(
   return id;
 }
 
-Vehicle.__inject_CreateVehicle = my_CreateVehicle;
+Vehicle.__inject__.create = my_CreateVehicle;
 ```
