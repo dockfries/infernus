@@ -2,4 +2,4 @@ if (!samp.defined) {
   samp.defined = {};
 }
 
-samp.defined._progress2_included = true;
+samp.defined._progress_included = true;

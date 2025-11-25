@@ -5,9 +5,9 @@ export interface IProgressBar {
   player: Player;
   x: number;
   y: number;
-  width?: number;
-  height?: number;
-  color?: number | string;
+  width: number;
+  height: number;
+  color: number | string;
   max?: number;
   direction?: ProgressBarDirectionEnum;
   min?: number;

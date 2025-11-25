@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@infernus/progress)](https://www.npmjs.com/package/@infernus/progress) ![npm](https://img.shields.io/npm/dw/@infernus/progress) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/progress)
 
-A wrapper of the popular [SA-MP TextDraw progress2 library](https://github.com/Southclaws/progress2) for samp-node.
+A progress bar based on `LD_SPAC:white` for precise control for samp-node.
 
 ## Getting started
 
@@ -17,7 +17,7 @@ import { GameMode, PlayerEvent } from "@infernus/core";
 import { ProgressBar, ProgressBarDirectionEnum } from "@infernus/progress";
 
 const gBar: ProgressBar[] = [];
-const gBarValue: number[] = [2.0, 5.0, 7.0, 3.344];
+const gBarValue: number[] = [5.0, 5.0, 5.0, 5.0];
 const gInc: number[] = [1.0, 1.0, 1.0, 1.0];
 
 let timer: NodeJS.Timeout | null = null;
@@ -27,108 +27,116 @@ PlayerEvent.onConnect(({ player, next }) => {
 
   if (player.id !== 0) return next();
 
+  const centerX = 320.0;
+  const centerY = 240.0;
+  const barLength = 60.0;
+  const barThickness = 6.0;
+  const centerGap = 10.0;
+  const halfThickness = barThickness / 2;
+  const halfGap = centerGap / 2;
+
   gBar[0] = new ProgressBar({
     player,
-    x: 310.0,
-    y: 200.0,
-    width: 50.0,
-    height: 10.0,
+    x: centerX - barLength - halfGap,
+    y: centerY - halfThickness,
+    width: barLength,
+    height: barThickness,
     color: 0x11acffff,
-    max: 10.0,
+    max: barLength,
+    min: 0,
     direction: ProgressBarDirectionEnum.left,
-    value: 0.0001,
-    show: true,
-  }).create();
-  gBar[1] = new ProgressBar({
-    player,
-    x: 320.0,
-    y: 200.0,
-    width: 10.0,
-    height: 50.0,
-    color: 0xcfcf11ff,
-    max: 10.0,
-    direction: ProgressBarDirectionEnum.up,
-    value: 5.0,
-    show: true,
-  }).create();
-  gBar[2] = new ProgressBar({
-    player,
-    x: 320.0,
-    y: 215.0,
-    width: 10.0,
-    height: 50.0,
-    color: 0xac11ffff,
-    max: 10.0,
-    direction: ProgressBarDirectionEnum.down,
-    value: 0.0001,
-    show: true,
-  }).create();
-  gBar[3] = new ProgressBar({
-    player,
-    x: 320.0,
-    y: 200.0,
-    width: 50.0,
-    height: 10.0,
-    color: 0xcfcaf1ff,
-    max: 10.0,
-    direction: ProgressBarDirectionEnum.right,
-    value: 5.0,
+    value: barLength / 2,
     show: true,
   }).create();
 
-  if (timer) {
-    clearInterval(timer);
-  }
+  gBar[1] = new ProgressBar({
+    player,
+    x: centerX - halfThickness,
+    y: centerY - barLength - halfGap,
+    width: barThickness,
+    height: barLength,
+    color: 0xcfcf11ff,
+    max: barLength,
+    min: 0,
+    direction: ProgressBarDirectionEnum.down,
+    value: barLength / 2,
+    show: true,
+  }).create();
+
+  gBar[2] = new ProgressBar({
+    player,
+    x: centerX - halfThickness,
+    y: centerY + halfGap,
+    width: barThickness,
+    height: barLength,
+    color: 0xac11ffff,
+    max: barLength,
+    min: 0,
+    direction: ProgressBarDirectionEnum.up,
+    value: barLength / 2,
+    show: true,
+  }).create();
+
+  gBar[3] = new ProgressBar({
+    player,
+    x: centerX + halfGap,
+    y: centerY - halfThickness,
+    width: barLength,
+    height: barThickness,
+    color: 0xcfcaf1ff,
+    max: barLength,
+    min: 0,
+    direction: ProgressBarDirectionEnum.right,
+    value: barLength / 2,
+    show: true,
+  }).create();
+
+  if (timer) clearInterval(timer);
   timer = setInterval(updateBar, 100);
 
   return next();
 });
 
 GameMode.onExit(({ next }) => {
-  if (timer) {
-    clearInterval(timer);
-    timer = null;
-  }
+  if (timer) clearInterval(timer);
+  timer = null;
   return next();
 });
 
 PlayerEvent.onDisconnect(({ player, next }) => {
   if (player.id !== 0) return next();
-  if (timer) {
-    clearInterval(timer);
-    timer = null;
-  }
+  if (timer) clearInterval(timer);
+  timer = null;
   gBar.length = 0;
   return next();
 });
 
 function updateBar() {
   for (let i = 0; i < 4; i++) {
-    if (gBarValue[i] >= gBar[i].getMaxValue()) {
-      gInc[i] = -1.0;
-    }
+    const max = gBar[i].getMaxValue();
+    const min = gBar[i].getMinValue();
 
-    if (gBarValue[i] <= 0.0) {
-      gInc[i] = 1.0;
-    }
+    if (gBarValue[i] >= max) gInc[i] = -1.0;
+    if (gBarValue[i] <= min) gInc[i] = 1.0;
 
-    gBar[i].setValue(gBarValue[i]);
     gBarValue[i] += gInc[i];
+    gBar[i].setValue(gBarValue[i]);
   }
 }
 
 PlayerEvent.onCommandText("showbar", ({ next }) => {
-  gBar[0].show();
+  gBar.forEach((bar) => bar.show());
   return next();
 });
 
 PlayerEvent.onCommandText("hidebar", ({ next }) => {
-  gBar[0].hide();
+  gBar.forEach((bar) => bar.hide());
   return next();
 });
 
 PlayerEvent.onCommandText("delbar", ({ next }) => {
-  gBar[0].destroy();
+  gBar.forEach((bar) => bar.destroy());
+  gBar.length = 0;
   return next();
 });
 

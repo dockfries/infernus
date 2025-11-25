@@ -1,7 +1,7 @@
 {
   "name": "@infernus/progress",
   "version": "0.0.1",
-  "description": "A wrapper of the popular SA-MP TextDraw progress2 library for samp-node.",
+  "description": "A progress bar based on `LD_SPAC:white` for precise control for samp-node.",
   "keywords": [
     "samp",
     "sa:mp",
@@ -9,8 +9,7 @@
     "omp",
     "open.mp",
     "pawn",
-    "wrapper",
-    "progress2"
+    "progress"
   ],
   "homepage": "https://github.com/dockfries/infernus/tree/main/packages/progress#readme",
   "bugs": {

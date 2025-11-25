@@ -1,8 +1,6 @@
 export enum ProgressBarDirectionEnum {
-  right,
   left,
-  horizontal,
+  right,
   up,
   down,
-  vertical,
 }
