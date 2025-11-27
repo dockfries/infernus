@@ -1007,6 +1007,18 @@ export class Npc {
       return Player.getInstance(playerId)!;
     return null;
   }
+  getPosMovingTo() {
+    if (this.id === InvalidEnum.NPC_ID) {
+      throw new Error("[Npc]: Unable to getPosMovingTo before create");
+    }
+    return Npc.__inject__.getPosMovingTo(this._id);
+  }
+  getCustomSkin() {
+    if (this.id === InvalidEnum.NPC_ID) {
+      throw new Error("[Npc]: Unable to getCustomSkin before create");
+    }
+    return Npc.__inject__.getCustomSkin(this._id);
+  }
   static startRecordingPlayerData(
     player: Player,
     recordType: RecordTypesEnum,
@@ -1158,6 +1170,8 @@ export class Npc {
     getVelocity: w.NPC_GetVelocity,
     getPlayerAimingAt: w.NPC_GetPlayerAimingAt,
     getPlayerMovingTo: w.NPC_GetPlayerMovingTo,
+    getPosMovingTo: w.NPC_GetPosMovingTo,
+    getCustomSkin: w.NPC_GetCustomSkin,
 
     startRecordingPlayerData: w.StartRecordingPlayerData,
     stopRecordingPlayerData: w.StopRecordingPlayerData,

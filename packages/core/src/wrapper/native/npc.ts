@@ -905,3 +905,16 @@ export const NPC_GetPlayerAimingAt = (id: number) => {
 export const NPC_GetPlayerMovingTo = (id: number) => {
   return samp.callNative("NPC_GetPlayerMovingTo", "i", id) as number;
 };
+
+export const NPC_GetPosMovingTo = (id: number) => {
+  const [x, y, z, ret]: number[] = samp.callNative(
+    "NPC_GetPosMovingTo",
+    "iFFF",
+    id,
+  );
+  return { x, y, z, ret: !!ret };
+};
+
+export const NPC_GetCustomSkin = (id: number) => {
+  return samp.callNative("NPC_GetCustomSkin", "i", id) as number;
+};
