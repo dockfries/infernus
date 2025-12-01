@@ -1,3 +1,17 @@
+## <small>0.13.4 (2025-12-01)</small>
+
+* feat(core): npc getPosMovingTo, getCustomSkin ([5f75d40](https://github.com/dockfries/infernus/commit/5f75d40))
+* feat(progress): init ([7094299](https://github.com/dockfries/infernus/commit/7094299))
+* chore(readme): use week statics npm download ([e7f4c39](https://github.com/dockfries/infernus/commit/e7f4c39))
+* chore(release): progress v0.0.1 ([012f428](https://github.com/dockfries/infernus/commit/012f428))
+* chore(root): update deps ([ca87511](https://github.com/dockfries/infernus/commit/ca87511))
+* refactor(progress): use `LD_SPAC:white` control ([b0f381c](https://github.com/dockfries/infernus/commit/b0f381c))
+* docs(features): remove force streamer ([30a2994](https://github.com/dockfries/infernus/commit/30a2994))
+* docs(hooks): update ([dacdffa](https://github.com/dockfries/infernus/commit/dacdffa))
+* fix(core): remove unused player gangzone destroy ([938569a](https://github.com/dockfries/infernus/commit/938569a))
+
+
+
 ## <small>0.13.3 (2025-11-21)</small>
 
 * fix(core): getAnimationName ([fde73fa](https://github.com/dockfries/infernus/commit/fde73fa))
