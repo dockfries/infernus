@@ -36,9 +36,9 @@ export class DynamicArea {
   }
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerArea]: Unable to create again");
+      throw new Error("[StreamerArea]: Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerArea]: Unable to create with only id");
+      throw new Error("[StreamerArea]: Cannot create with only id");
     let { worldId, interiorId, playerId, priority } = this.sourceInfo;
     priority ??= 0;
     const { type, extended } = this.sourceInfo;
@@ -97,7 +97,7 @@ export class DynamicArea {
         const { points, minZ, maxZ } = this.sourceInfo;
         if (points.length % 2 !== 0)
           throw new Error(
-            "[StreamerArea]: Unable to create polygon extended with asymmetrical points",
+            "[StreamerArea]: Cannot create polygon extended with asymmetrical points",
           );
         this._id = DynamicArea.__inject__.createPolygonEx(
           points,
@@ -199,7 +199,7 @@ export class DynamicArea {
         const { points, minZ, maxZ } = this.sourceInfo;
         if (points.length % 2 !== 0)
           throw new Error(
-            "[StreamerArea]: Unable to create polygon with asymmetrical points",
+            "[StreamerArea]: Cannot create polygon with asymmetrical points",
           );
         this._id = DynamicArea.__inject__.createPolygon(
           points,
@@ -247,9 +247,7 @@ export class DynamicArea {
   }
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new Error(
-        "[StreamerArea]: Unable to destroy the area before create",
-      );
+      throw new Error("[StreamerArea]: Cannot destroy the area before create");
     if (!INTERNAL_FLAGS.skip) {
       DynamicArea.__inject__.destroy(this.id);
     }
@@ -264,7 +262,7 @@ export class DynamicArea {
   }
   getType(): StreamerAreaTypes {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerArea]: Unable to get type before create");
+      throw new Error("[StreamerArea]: Cannot get type before create");
     return DynamicArea.__inject__.getType(this.id);
   }
   getPolygonPoints() {
@@ -273,7 +271,7 @@ export class DynamicArea {
   getPolygonNumberPoints(): number {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new Error(
-        "[StreamerArea]: Unable to getPolygonNumberPoints number before create",
+        "[StreamerArea]: Cannot getPolygonNumberPoints number before create",
       );
     if (this.type !== "polygon")
       throw new Error(
@@ -374,7 +372,7 @@ export class DynamicArea {
       obj.id === s.StreamerMiscellaneous.INVALID_ID
     )
       throw new Error(
-        "[StreamerArea]: Unable to toggle attach to object before create",
+        "[StreamerArea]: Cannot toggle attach to object before create",
       );
     return DynamicArea.__inject__.attachToObject(
       this.id,
@@ -397,7 +395,7 @@ export class DynamicArea {
       player.id === InvalidEnum.PLAYER_ID
     )
       throw new Error(
-        "[StreamerArea]: Unable to toggle attach to player before create",
+        "[StreamerArea]: Cannot toggle attach to player before create",
       );
     return DynamicArea.__inject__.attachToPlayer(
       this.id,
@@ -418,7 +416,7 @@ export class DynamicArea {
       vehicle.id === InvalidEnum.VEHICLE_ID
     )
       throw new Error(
-        "[StreamerArea]: Unable to toggle attach to vehicle before create",
+        "[StreamerArea]: Cannot toggle attach to vehicle before create",
       );
     return DynamicArea.__inject__.attachToVehicle(
       this.id,
@@ -431,7 +429,7 @@ export class DynamicArea {
   toggleSpectateMode(toggle: boolean): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error(
-        "[StreamerArea]: Unable to toggle spectate mode before create",
+        "[StreamerArea]: Cannot toggle spectate mode before create",
       );
     return DynamicArea.__inject__.toggleSpectateMode(this.id, toggle);
   }
@@ -441,9 +439,7 @@ export class DynamicArea {
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerArea]: Unable to toggle callbacks before create",
-      );
+      throw new Error("[StreamerArea]: Cannot toggle callbacks before create");
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.AREA,
       this.id,

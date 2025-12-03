@@ -46,10 +46,10 @@ export class GangZone {
 
   create() {
     if (!this.sourceInfo) {
-      throw new Error("[GangZone]: Unable to create with only id");
+      throw new Error("[GangZone]: Cannot create with only id");
     }
     if (this.id !== InvalidEnum.GANG_ZONE)
-      throw new Error("[GangZone]: Unable to create again");
+      throw new Error("[GangZone]: Cannot create again");
 
     const { player } = this.sourceInfo;
     if (!player) {
@@ -60,7 +60,7 @@ export class GangZone {
         this.id === InvalidEnum.GANG_ZONE ||
         GangZone.getInstances().length === LimitsEnum.MAX_GANG_ZONES
       )
-        throw new Error("[GangZone]: Unable to create gangZone");
+        throw new Error("[GangZone]: Cannot create gangZone");
 
       gangZonePool.set(this.id, this);
     } else {
@@ -77,7 +77,7 @@ export class GangZone {
         this.id === InvalidEnum.GANG_ZONE ||
         GangZone.getInstances(player).length === LimitsEnum.MAX_GANG_ZONES
       )
-        throw new Error("[GangZone]: Unable to create playerGangZone");
+        throw new Error("[GangZone]: Cannot create playerGangZone");
       if (!playerGangZonePool.has(player)) {
         playerGangZonePool.set(player, new Map());
       }
@@ -89,7 +89,7 @@ export class GangZone {
 
   destroy() {
     if (this.id === InvalidEnum.GANG_ZONE)
-      throw new Error("[GangZone]: Unable to destroy before create");
+      throw new Error("[GangZone]: Cannot destroy before create");
 
     const player = this.getPlayer();
     if (!player) {
@@ -138,7 +138,7 @@ export class GangZone {
 
   showForAll(color: string | number) {
     if (this.id === InvalidEnum.GANG_ZONE) {
-      throw new Error("[GangZone]: Unable to show gangzone before create");
+      throw new Error("[GangZone]: Cannot show gangzone before create");
     }
     const p = this.getPlayer();
     if (!p) {
@@ -152,7 +152,7 @@ export class GangZone {
 
   showForPlayer(color: string | number, player?: Player) {
     if (this.id === InvalidEnum.GANG_ZONE) {
-      throw new Error("[GangZone]: Unable to show gangzone before create");
+      throw new Error("[GangZone]: Cannot show gangzone before create");
     }
     const p = this.getPlayer();
     if (p) GangZone.__inject__.showPlayer(p.id, this.id, rgba(color));
@@ -167,7 +167,7 @@ export class GangZone {
 
   hideForAll() {
     if (this.id === InvalidEnum.GANG_ZONE) {
-      throw new Error("[GangZone]: Unable to hide gangzone before create");
+      throw new Error("[GangZone]: Cannot hide gangzone before create");
     }
     const p = this.getPlayer();
     if (!p) {
@@ -181,7 +181,7 @@ export class GangZone {
 
   hideForPlayer(player?: Player) {
     if (this.id === InvalidEnum.GANG_ZONE) {
-      throw new Error("[GangZone]: Unable to hide gangzone before create");
+      throw new Error("[GangZone]: Cannot hide gangzone before create");
     }
     const p = this.getPlayer();
     if (p) GangZone.__inject__.hidePlayer(p.id, this.id);
@@ -196,7 +196,7 @@ export class GangZone {
 
   flashForAll(flashColor: string | number) {
     if (this.id === InvalidEnum.GANG_ZONE) {
-      throw new Error("[GangZone]: Unable to flash gangzone before create");
+      throw new Error("[GangZone]: Cannot flash gangzone before create");
     }
     const p = this.getPlayer();
     if (!p) {
@@ -210,7 +210,7 @@ export class GangZone {
 
   flashForPlayer(player: Player, flashColor: string | number) {
     if (this.id === InvalidEnum.GANG_ZONE) {
-      throw new Error("[GangZone]: Unable to flash gangzone before create");
+      throw new Error("[GangZone]: Cannot flash gangzone before create");
     }
     const p = this.getPlayer();
     if (p) GangZone.__inject__.flashPlayer(p.id, this.id, rgba(flashColor));
@@ -226,9 +226,7 @@ export class GangZone {
 
   stopFlashForAll() {
     if (this.id === InvalidEnum.GANG_ZONE) {
-      throw new Error(
-        "[GangZone]: Unable to stop flash gangzone before create",
-      );
+      throw new Error("[GangZone]: Cannot stop flash gangzone before create");
     }
     const p = this.getPlayer();
     if (!p) {
@@ -242,9 +240,7 @@ export class GangZone {
 
   stopFlashForPlayer(player: Player) {
     if (this.id === InvalidEnum.GANG_ZONE) {
-      throw new Error(
-        "[GangZone]: Unable to stop flash gangzone before create",
-      );
+      throw new Error("[GangZone]: Cannot stop flash gangzone before create");
     }
     const p = this.getPlayer();
     if (p) GangZone.__inject__.stopFlashPlayer(p.id, this.id);
@@ -281,7 +277,7 @@ export class GangZone {
 
   getColorForPlayer(player: Player): number {
     if (this.id === InvalidEnum.GANG_ZONE)
-      throw new Error("[GangZone]: Unable to get color before create");
+      throw new Error("[GangZone]: Cannot get color before create");
     const p = this.getPlayer();
     if (p) return GangZone.__inject__.getColorPlayer(p.id, this.id);
     return GangZone.__inject__.getColorForPlayer(player.id, this.id);
@@ -289,7 +285,7 @@ export class GangZone {
 
   getFlashColorForPlayer(player: Player): number {
     if (this.id === InvalidEnum.GANG_ZONE)
-      throw new Error("[GangZone]: Unable to get flash color before create");
+      throw new Error("[GangZone]: Cannot get flash color before create");
     const p = this.getPlayer();
     if (p) return GangZone.__inject__.getFlashColorPlayer(p.id, this.id);
     return GangZone.__inject__.getFlashColorForPlayer(player.id, this.id);
@@ -304,7 +300,7 @@ export class GangZone {
 
   getPos(): IGangZonePos {
     if (this.id === InvalidEnum.GANG_ZONE)
-      throw new Error("[GangZone]: Unable to get position before create");
+      throw new Error("[GangZone]: Cannot get position before create");
     const p = this.getPlayer();
     if (p) return GangZone.__inject__.getPosPlayer(p.id, this.id);
     return GangZone.__inject__.getPos(this.id);
@@ -312,7 +308,7 @@ export class GangZone {
 
   useCheck(toggle: boolean) {
     if (this.id === InvalidEnum.GANG_ZONE) {
-      throw new Error("[GangZone]: Unable to use check before create");
+      throw new Error("[GangZone]: Cannot use check before create");
     }
     const p = this.getPlayer();
     if (p) GangZone.__inject__.useCheckPlayer(p.id, this.id, toggle);

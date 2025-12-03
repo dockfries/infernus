@@ -49,9 +49,9 @@ export class Vehicle {
   }
   create(ignoreRange = false): void {
     if (this.id !== InvalidEnum.VEHICLE_ID)
-      throw new Error("[Vehicle]: Unable to create again");
+      throw new Error("[Vehicle]: Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[Vehicle]: Unable to create with only id");
+      throw new Error("[Vehicle]: Cannot create with only id");
     const { modelId, x, y, z, zAngle, color, respawnDelay, addSiren } =
       this.sourceInfo;
     if (!ignoreRange && !isValidVehModelId(modelId)) return;
@@ -96,13 +96,13 @@ export class Vehicle {
       this._id === InvalidEnum.VEHICLE_ID ||
       Vehicle.createdCount === LimitsEnum.MAX_VEHICLES
     )
-      throw new Error("[Vehicle]: Unable to create vehicle");
+      throw new Error("[Vehicle]: Cannot create vehicle");
     Vehicle.createdCount++;
     vehiclePool.set(this._id, this);
   }
   destroy(): void {
     if (this.id === InvalidEnum.VEHICLE_ID && !INTERNAL_FLAGS.skip) {
-      throw new Error("[Vehicle]: Unable to destroy the vehicle before create");
+      throw new Error("[Vehicle]: Cannot destroy the vehicle before create");
     }
     if (!INTERNAL_FLAGS.skip) {
       Vehicle.__inject__.destroy(this._id);

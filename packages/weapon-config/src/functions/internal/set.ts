@@ -166,9 +166,7 @@ export function updateHealthBar(
         );
 
         if (healthBarForeground.get(player.id)!.id === InvalidEnum.TEXT_DRAW) {
-          console.log(
-            "(wc) WARN: Unable to create player healthbar foreground",
-          );
+          console.log("(wc) WARN: Cannot create player healthbar foreground");
         } else {
           internalPlayerTextDraw.get(player.id)[
             healthBarForeground.get(player.id)!.id

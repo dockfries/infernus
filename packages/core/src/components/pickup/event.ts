@@ -1,16 +1,33 @@
-import { pickupPool } from "core/utils/pools";
+import { pickupPool, playerPickupPool } from "core/utils/pools";
 import { GameMode } from "../gamemode";
 import { Pickup } from "./entity";
 import { defineEvent } from "../../utils/bus";
-import { Player } from "../player";
+import { Player, PlayerEvent } from "../player";
 
-GameMode.onExit(({ next }) => {
-  Pickup.getInstances().forEach((p) => p.destroy());
-  pickupPool.clear();
+PlayerEvent.onDisconnect(({ player, next }) => {
+  if (playerPickupPool.has(player)) {
+    Pickup.getInstances(player).forEach((p) => {
+      if (p.isValid()) {
+        p.destroy();
+      }
+    });
+    playerPickupPool.delete(player);
+  }
   return next();
 });
 
-const [onPlayerPickUp] = defineEvent({
+GameMode.onExit(({ next }) => {
+  Pickup.getInstances().forEach((p) => p.destroy());
+  Pickup.getPlayersInstances()
+    .map(([, p]) => p)
+    .flat()
+    .forEach((p) => p.destroy());
+  pickupPool.clear();
+  playerPickupPool.clear();
+  return next();
+});
+
+const [onPlayerPickUpGlobal] = defineEvent({
   name: "OnPlayerPickUpPickup",
   identifier: "ii",
   beforeEach(playerId: number, pickupId: number) {
@@ -21,7 +38,7 @@ const [onPlayerPickUp] = defineEvent({
   },
 });
 
-const [onStreamIn] = defineEvent({
+const [onStreamInGlobal] = defineEvent({
   name: "OnPickupStreamIn",
   identifier: "ii",
   beforeEach(playerId: number, pickupId: number) {
@@ -32,7 +49,7 @@ const [onStreamIn] = defineEvent({
   },
 });
 
-const [onStreamOut] = defineEvent({
+const [onStreamOutGlobal] = defineEvent({
   name: "OnPickupStreamOut",
   identifier: "ii",
   beforeEach(playerId: number, pickupId: number) {
@@ -43,8 +60,47 @@ const [onStreamOut] = defineEvent({
   },
 });
 
+const [onPlayerPickupPlayer] = defineEvent({
+  name: "OnPlayerPickUpPlayerPickup",
+  identifier: "ii",
+  beforeEach(playerId: number, pickupId: number) {
+    const player = Player.getInstance(playerId)!;
+    return {
+      player,
+      pickup: Pickup.getInstance(pickupId, player)!,
+    };
+  },
+});
+
+const [onStreamInPlayer] = defineEvent({
+  name: "OnPlayerPickupStreamIn",
+  identifier: "ii",
+  beforeEach(playerId: number, pickupId: number) {
+    const player = Player.getInstance(playerId)!;
+    return {
+      player,
+      pickup: Pickup.getInstance(pickupId, player)!,
+    };
+  },
+});
+
+const [onStreamOutPlayer] = defineEvent({
+  name: "OnPlayerPickupStreamOut",
+  identifier: "ii",
+  beforeEach(playerId: number, pickupId: number) {
+    const player = Player.getInstance(playerId)!;
+    return {
+      player,
+      pickup: Pickup.getInstance(pickupId, player)!,
+    };
+  },
+});
+
 export const PickUpEvent = Object.freeze({
-  onPlayerPickUp,
-  onStreamIn,
-  onStreamOut,
+  onPlayerPickUpGlobal,
+  onStreamInGlobal,
+  onStreamOutGlobal,
+  onPlayerPickupPlayer,
+  onStreamInPlayer,
+  onStreamOutPlayer,
 });

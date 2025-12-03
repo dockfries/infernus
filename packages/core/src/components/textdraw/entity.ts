@@ -48,9 +48,9 @@ export class TextDraw {
   }
   create(): this {
     if (!this.sourceInfo)
-      throw new Error("[TextDraw]: Unable to create with only id");
+      throw new Error("[TextDraw]: Cannot create with only id");
     if (this.id !== InvalidEnum.TEXT_DRAW)
-      throw new Error("[TextDraw]: Unable to create again");
+      throw new Error("[TextDraw]: Cannot create again");
 
     const { x, y, text, player, charset = "ISO-8859-1" } = this.sourceInfo;
     const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
@@ -61,7 +61,7 @@ export class TextDraw {
         this.id === InvalidEnum.TEXT_DRAW ||
         TextDraw.getInstances().length === LimitsEnum.MAX_TEXT_DRAWS
       )
-        throw new Error("[TextDraw]: Unable to create textdraw");
+        throw new Error("[TextDraw]: Cannot create textdraw");
       textDrawPool.set(this.id, this);
     } else {
       this._id = TextDraw.__inject__.createPlayer(player.id, x, y, _text);
@@ -69,7 +69,7 @@ export class TextDraw {
         this.id === InvalidEnum.TEXT_DRAW ||
         TextDraw.getInstances(player).length === LimitsEnum.MAX_TEXT_DRAWS
       )
-        throw new Error("[TextDraw]: Unable to create player textdraw");
+        throw new Error("[TextDraw]: Cannot create player textdraw");
       if (!playerTextDrawPool.has(player)) {
         playerTextDrawPool.set(player, new Map());
       }
@@ -309,7 +309,7 @@ export class TextDraw {
     return this;
   }
   private static beforeCreateWarn(msg: string): void {
-    throw new Error(`[TextDraw]: Unable to ${msg} before create`);
+    throw new Error(`[TextDraw]: Cannot ${msg} before create`);
   }
   // player's textdraw should be shown / hidden only for whom it is created.
   show(player?: Player) {

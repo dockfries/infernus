@@ -40,9 +40,9 @@ export class DynamicMapIcon {
   }
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerMapIcon]: Unable to create again");
+      throw new Error("[StreamerMapIcon]: Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerMapIcon]: Unable to create with only id");
+      throw new Error("[StreamerMapIcon]: Cannot create with only id");
     let {
       style,
       streamDistance,
@@ -118,7 +118,7 @@ export class DynamicMapIcon {
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new Error(
-        "[StreamerMapIcon]: Unable to destroy the map icon before create",
+        "[StreamerMapIcon]: Cannot destroy the map icon before create",
       );
     if (!INTERNAL_FLAGS.skip) {
       DynamicMapIcon.__inject__.destroy(this.id);
@@ -135,7 +135,7 @@ export class DynamicMapIcon {
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
-        "[StreamerMapIcon]: Unable to toggle callbacks before create",
+        "[StreamerMapIcon]: Cannot toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       StreamerItemTypes.MAP_ICON,

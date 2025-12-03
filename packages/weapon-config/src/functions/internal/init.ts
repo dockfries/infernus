@@ -74,7 +74,7 @@ export function scriptInit() {
   }).create();
 
   if (innerGameModeConfig.healthBarBorder.id === InvalidEnum.TEXT_DRAW) {
-    console.log("(wc) WARN: Unable to create healthBar border textDraw");
+    console.log("(wc) WARN: Cannot create healthBar border textDraw");
   } else {
     internalTextDraw.set(innerGameModeConfig.healthBarBorder.id, true);
     orig_TextDrawTextSize(innerGameModeConfig.healthBarBorder.id, 61.7, 8.4);
@@ -91,7 +91,7 @@ export function scriptInit() {
     text: "LD_SPAC:white",
   }).create();
   if (innerGameModeConfig.healthBarBackground.id === InvalidEnum.TEXT_DRAW) {
-    console.log("(wc) WARN: Unable to create healthBar background textDraw");
+    console.log("(wc) WARN: Cannot create healthBar background textDraw");
   } else {
     internalTextDraw.set(innerGameModeConfig.healthBarBackground.id, true);
     orig_TextDrawTextSize(

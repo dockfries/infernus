@@ -71,7 +71,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
     const td = new TextDraw({ player, x: 200.0, y: 365.0, text: "_" }).create();
 
     if (td.id === InvalidEnum.TEXT_DRAW) {
-      console.log("(wc) WARN: Unable to create damage feed textDraw");
+      console.log("(wc) WARN: Cannot create damage feed textDraw");
     } else {
       internalPlayerTextDraw.get(player.id)[td.id] = true;
       orig_PlayerTextDrawLetterSize(player.id, td.id, 0.2, 0.9);
@@ -94,7 +94,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
     const td = new TextDraw({ player, x: 440.0, y: 365.0, text: "_" }).create();
 
     if (td.id === InvalidEnum.TEXT_DRAW) {
-      console.log("(wc) WARN: Unable to create damage feed textDraw");
+      console.log("(wc) WARN: Cannot create damage feed textDraw");
     } else {
       internalPlayerTextDraw.get(player.id)[td.id] = true;
 

@@ -49,5 +49,6 @@ export const objectMpPool = new Map<number, ObjectMp>();
 export const playerObjectPool = new Map<Player, Map<number, ObjectMp>>();
 export const actorPool = new Map<number, Actor>();
 export const pickupPool = new Map<number, Pickup>();
+export const playerPickupPool = new Map<Player, Map<number, Pickup>>();
 export const textLabelPool = new Map<number, TextLabel>();
 export const playerTextLabelPool = new Map<Player, Map<number, TextLabel>>();

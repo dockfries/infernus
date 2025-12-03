@@ -29,9 +29,9 @@ export class DynamicPickup {
   }
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerPickup]: Unable to create again");
+      throw new Error("[StreamerPickup]: Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerPickup]: Unable to create with only id");
+      throw new Error("[StreamerPickup]: Cannot create with only id");
     let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
       this.sourceInfo;
     const { type, modelId, x, y, z, extended } = this.sourceInfo;
@@ -94,9 +94,7 @@ export class DynamicPickup {
   }
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new Error(
-        "[StreamerPickup]: Unable to destroy pickup before create",
-      );
+      throw new Error("[StreamerPickup]: Cannot destroy pickup before create");
     if (!INTERNAL_FLAGS.skip) DynamicPickup.__inject__.destroy(this.id);
     dynamicPickupPool.delete(this.id);
     this._id = s.StreamerMiscellaneous.INVALID_ID;
@@ -110,7 +108,7 @@ export class DynamicPickup {
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error(
-        "[StreamerPickup]: Unable to toggle callbacks before create",
+        "[StreamerPickup]: Cannot toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.PICKUP,

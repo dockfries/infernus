@@ -42,9 +42,9 @@ export class DynamicRaceCP {
   }
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerRaceCP]: Unable to create again");
+      throw new Error("[StreamerRaceCP]: Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerRaceCP]: Unable to create with only id");
+      throw new Error("[StreamerRaceCP]: Cannot create with only id");
     let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
       this.sourceInfo;
     const { type, size, x, y, z, nextX, nextY, nextZ, extended } =
@@ -117,7 +117,7 @@ export class DynamicRaceCP {
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new Error(
-        "[StreamerRaceCP]: Unable to destroy the checkpoint before create",
+        "[StreamerRaceCP]: Cannot destroy the checkpoint before create",
       );
     if (!INTERNAL_FLAGS.skip) {
       DynamicRaceCP.__inject__.destroy(this.id);
@@ -133,9 +133,7 @@ export class DynamicRaceCP {
   }
   togglePlayer(player: Player, toggle: boolean): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerRaceCP]: Unable to toggle player before create",
-      );
+      throw new Error("[StreamerRaceCP]: Cannot toggle player before create");
     DynamicRaceCP.__inject__.togglePlayer(player.id, this.id, toggle);
     return this;
   }
@@ -154,7 +152,7 @@ export class DynamicRaceCP {
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
-        "[StreamerRaceCP]: Unable to toggle callbacks before create",
+        "[StreamerRaceCP]: Cannot toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       StreamerItemTypes.RACE_CP,

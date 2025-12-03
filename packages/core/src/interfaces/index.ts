@@ -217,6 +217,7 @@ export interface IActor {
 }
 
 export interface IPickup {
+  player?: Player;
   model: number;
   type: number;
   x: number;

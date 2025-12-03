@@ -51,9 +51,9 @@ export class ObjectMp {
 
   create(): this {
     if (!this.sourceInfo)
-      throw new Error("[ObjectMp]: Unable to create with only id");
+      throw new Error("[ObjectMp]: Cannot create with only id");
     if (this.id !== InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Unable to create again");
+      throw new Error("[ObjectMp]: Cannot create again");
 
     const {
       modelId,
@@ -82,7 +82,7 @@ export class ObjectMp {
         this.id === InvalidEnum.OBJECT_ID ||
         ObjectMp.getInstances().length === LimitsEnum.MAX_OBJECTS
       )
-        throw new Error("[ObjectMp]: Unable to create object");
+        throw new Error("[ObjectMp]: Cannot create object");
 
       objectMpPool.set(this._id, this);
       return this;
@@ -108,7 +108,7 @@ export class ObjectMp {
       this.id === InvalidEnum.OBJECT_ID ||
       ObjectMp.getInstances(player).length === LimitsEnum.MAX_OBJECTS
     )
-      throw new Error("[ObjectMp]: Unable to create player object");
+      throw new Error("[ObjectMp]: Cannot create player object");
 
     if (!playerObjectPool.has(player)) {
       playerObjectPool.set(player, new Map());
@@ -119,7 +119,7 @@ export class ObjectMp {
 
   destroy(): this {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Unable to destroy before create");
+      throw new Error("[ObjectMp]: Cannot destroy before create");
 
     if (this.isGlobal()) {
       if (!INTERNAL_FLAGS.skip) {
@@ -423,7 +423,7 @@ export class ObjectMp {
 
   edit(player?: Player): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Unable to edit before create");
+      throw new Error("[ObjectMp]: Cannot edit before create");
 
     if (this.isGlobal()) {
       if (!player) {
@@ -451,7 +451,7 @@ export class ObjectMp {
 
   getMaterial(materialIndex: number) {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Unable to get material before create");
+      throw new Error("[ObjectMp]: Cannot get material before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getMaterial(this.id, materialIndex);
     }
@@ -470,7 +470,7 @@ export class ObjectMp {
     materialColor: string | number = "#000",
   ): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Unable to set material before create");
+      throw new Error("[ObjectMp]: Cannot set material before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.setMaterial(
         this.id,
@@ -494,7 +494,7 @@ export class ObjectMp {
 
   getMaterialText(materialIndex: number) {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Unable to get material text before create");
+      throw new Error("[ObjectMp]: Cannot get material text before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getMaterialText(
         this.id,
@@ -523,7 +523,7 @@ export class ObjectMp {
     textAlignment = 0,
   ): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Unable to set material text before create");
+      throw new Error("[ObjectMp]: Cannot set material text before create");
     if (this.sourceInfo) {
       this.sourceInfo.charset = charset;
     }

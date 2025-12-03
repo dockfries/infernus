@@ -38,7 +38,7 @@ export class Menu {
 
   create(): this {
     if (!this.sourceInfo) {
-      throw new Error("[Menu]: Unable to create with only id");
+      throw new Error("[Menu]: Cannot create with only id");
     }
     if (this._id !== InvalidEnum.MENU) {
       throw new Error("[Menu]: Cannot be created twice");
@@ -65,7 +65,7 @@ export class Menu {
       this.id === InvalidEnum.MENU ||
       Menu.getInstances().length === LimitsEnum.MAX_MENUS
     ) {
-      throw new Error("[Menu]: Unable to create menu");
+      throw new Error("[Menu]: Cannot create menu");
     }
     menuPool.set(this._id, this);
     return this;

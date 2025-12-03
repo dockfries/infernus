@@ -15,16 +15,13 @@ export const pkgNames = fs.readdirSync(pkgDir).filter((dirPath) => {
   );
 });
 
-function onceSIGINTKill(subProc: ReturnType<typeof execa>) {
-  const fn = async (signal: NodeJS.Signals) => {
+function onceSIGKill(subProc: ReturnType<typeof execa>) {
+  const fn = (signal: NodeJS.Signals) => {
     subProc.kill(signal);
-    await subProc;
     process.exit(subProc.exitCode);
   };
   process.once("SIGINT", fn);
-  return () => {
-    process.off("SIGINT", fn);
-  };
+  process.once("SIGTERM", fn);
 }
 
 export async function build(pkgName: string) {
@@ -46,9 +43,12 @@ export async function build(pkgName: string) {
     stdio: "inherit",
   });
 
-  const cancelFn = onceSIGINTKill(subProc);
+  onceSIGKill(subProc);
 
-  await subProc;
-
-  cancelFn();
+  try {
+    await subProc;
+  } finally {
+    process.removeAllListeners("SIGINT");
+    process.removeAllListeners("SIGTERM");
+  }
 }

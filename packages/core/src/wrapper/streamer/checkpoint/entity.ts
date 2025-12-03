@@ -41,9 +41,9 @@ export class DynamicCheckpoint {
   }
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerCheckpoint]: Unable to create again");
+      throw new Error("[StreamerCheckpoint]: Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerCheckpoint]: Unable to create with only id");
+      throw new Error("[StreamerCheckpoint]: Cannot create with only id");
     let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
       this.sourceInfo;
     const { size, x, y, z, extended } = this.sourceInfo;
@@ -106,7 +106,7 @@ export class DynamicCheckpoint {
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new Error(
-        "[StreamerCheckpoint]: Unable to destroy the checkpoint before create",
+        "[StreamerCheckpoint]: Cannot destroy the checkpoint before create",
       );
     if (!INTERNAL_FLAGS.skip) {
       DynamicCheckpoint.__inject__.destroy(this.id);
@@ -123,7 +123,7 @@ export class DynamicCheckpoint {
   togglePlayer(player: Player, toggle: boolean): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
-        "[StreamerCheckpoint]: Unable to toggle the player before create",
+        "[StreamerCheckpoint]: Cannot toggle the player before create",
       );
     DynamicCheckpoint.__inject__.togglePlayer(player.id, this.id, toggle);
     return this;
@@ -135,7 +135,7 @@ export class DynamicCheckpoint {
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new Error(
-        "[StreamerCheckpoint]: Unable to toggle callbacks before create",
+        "[StreamerCheckpoint]: Cannot toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(StreamerItemTypes.CP, this.id, toggle);
   }

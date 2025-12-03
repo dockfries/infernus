@@ -8,7 +8,7 @@ DynamicPickupEvent.onPlayerPickUp(({ player, next }) => {
   return next();
 });
 
-PickUpEvent.onPlayerPickUp(({ player, next }) => {
+PickUpEvent.onPlayerPickUpGlobal(({ player, next }) => {
   if (!wc_IsPlayerSpawned(player)) {
     return 0;
   }

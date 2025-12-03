@@ -134,7 +134,7 @@ export class Dialog {
       }
 
       if (this._id === -1) {
-        reject("[Dialog]: Unable to create dialog");
+        reject("[Dialog]: Cannot create dialog");
         return;
       }
 

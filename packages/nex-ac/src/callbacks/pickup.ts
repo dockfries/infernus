@@ -98,7 +98,7 @@ DynamicPickupEvent.onPlayerPickUp(({ pickup, player, next }) => {
   return next();
 });
 
-PickUpEvent.onPlayerPickUp(({ pickup, player, next }) => {
+PickUpEvent.onPlayerPickUpGlobal(({ pickup, player, next }) => {
   if (
     ACInfo.get(player.id).acKicked > 0 ||
     !(pickup.id >= 0 && pickup.id < LimitsEnum.MAX_PICKUPS)

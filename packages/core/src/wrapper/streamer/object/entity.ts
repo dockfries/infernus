@@ -35,9 +35,9 @@ export class DynamicObject {
 
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Unable to create again");
+      throw new Error("[StreamerObject]: Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerObject]: Unable to create with only id");
+      throw new Error("[StreamerObject]: Cannot create with only id");
     let {
       streamDistance,
       drawDistance: drawDistance,
@@ -113,9 +113,7 @@ export class DynamicObject {
 
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new Error(
-        "[StreamerObject]: Unable to destroy object before create",
-      );
+      throw new Error("[StreamerObject]: Cannot destroy object before create");
     if (!INTERNAL_FLAGS.skip) {
       DynamicObject.__inject__.destroy(this.id);
     }
@@ -297,7 +295,7 @@ export class DynamicObject {
 
   edit(player: Player): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Unable to edit before create");
+      throw new Error("[StreamerObject]: Cannot edit before create");
     player.endObjectEditing();
     return DynamicObject.__inject__.edit(player.id, this.id);
   }
@@ -315,7 +313,7 @@ export class DynamicObject {
 
   getMaterial(materialIndex: number) {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Unable to get material before create");
+      throw new Error("[StreamerObject]: Cannot get material before create");
     return DynamicObject.__inject__.getMaterial(this.id, materialIndex);
   }
 
@@ -327,7 +325,7 @@ export class DynamicObject {
     materialColor: string | number = "#000",
   ): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Unable to set material before create");
+      throw new Error("[StreamerObject]: Cannot set material before create");
     return DynamicObject.__inject__.setMaterial(
       this.id,
       materialIndex,
@@ -352,7 +350,7 @@ export class DynamicObject {
   getMaterialText(materialIndex: number) {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error(
-        "[StreamerObject]: Unable to get material text before create",
+        "[StreamerObject]: Cannot get material text before create",
       );
     return DynamicObject.__inject__.getMaterialText(
       this.id,
@@ -375,7 +373,7 @@ export class DynamicObject {
   ): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error(
-        "[StreamerObject]: Unable to set material text before create",
+        "[StreamerObject]: Cannot set material text before create",
       );
     if (this.sourceInfo) {
       this.sourceInfo.charset = charset;
@@ -403,7 +401,7 @@ export class DynamicObject {
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new Error(
-        "[StreamerObject]: Unable to toggle callbacks before create",
+        "[StreamerObject]: Cannot toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.OBJECT,
