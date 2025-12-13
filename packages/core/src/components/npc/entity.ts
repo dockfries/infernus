@@ -1021,6 +1021,18 @@ export class Npc {
     }
     return Npc.__inject__.getCustomSkin(this._id);
   }
+  setAngleToPos(x: number, y: number, z: number) {
+    if (this.id === InvalidEnum.NPC_ID) {
+      throw new Error("[Npc]: Cannot setAngleToPos before create");
+    }
+    return Npc.__inject__.setAngleToPos(this._id, x, y, z);
+  }
+  setAngleToPlayer(player: Player) {
+    if (this.id === InvalidEnum.NPC_ID) {
+      throw new Error("[Npc]: Cannot setAngleToPlayer before create");
+    }
+    return Npc.__inject__.setAngleToPlayer(this._id, player.id);
+  }
   static startRecordingPlayerData(
     player: Player,
     recordType: RecordTypesEnum,
@@ -1174,6 +1186,8 @@ export class Npc {
     getPlayerMovingTo: w.NPC_GetPlayerMovingTo,
     getPosMovingTo: w.NPC_GetPosMovingTo,
     getCustomSkin: w.NPC_GetCustomSkin,
+    setAngleToPos: w.NPC_SetAngleToPos,
+    setAngleToPlayer: w.NPC_SetAngleToPlayer,
 
     startRecordingPlayerData: w.StartRecordingPlayerData,
     stopRecordingPlayerData: w.StopRecordingPlayerData,

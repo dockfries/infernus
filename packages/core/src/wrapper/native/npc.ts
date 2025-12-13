@@ -918,3 +918,16 @@ export const NPC_GetPosMovingTo = (id: number) => {
 export const NPC_GetCustomSkin = (id: number) => {
   return samp.callNative("NPC_GetCustomSkin", "i", id) as number;
 };
+
+export const NPC_SetAngleToPos = (
+  id: number,
+  x: number,
+  y: number,
+  z: number,
+) => {
+  return !!samp.callNative("NPC_SetAngleToPos", "ifff", id, x, y, z);
+};
+
+export const NPC_SetAngleToPlayer = (id: number, playerId: number) => {
+  return !!samp.callNative("NPC_SetAngleToPlayer", "ii", id, playerId);
+};
