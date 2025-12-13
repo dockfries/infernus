@@ -154,7 +154,7 @@ export class Npc {
     targetPosX: number,
     targetPosY: number,
     targetPosZ: number,
-    moveType: number,
+    moveType = NPCMoveTypeEnum.AUTO,
     moveSpeed: number = NPCMoveSpeedEnum.AUTO,
   ) {
     if (this.id === InvalidEnum.NPC_ID) {
@@ -171,7 +171,7 @@ export class Npc {
   }
   moveToPlayer(
     player: Player,
-    moveType: number,
+    moveType = NPCMoveTypeEnum.AUTO,
     moveSpeed: number = NPCMoveSpeedEnum.AUTO,
   ) {
     if (this.id === InvalidEnum.NPC_ID) {
@@ -575,7 +575,11 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getWeaponActualClipSize(this._id, weapon);
   }
-  enterVehicle(vehicle: Vehicle, seatId: number, moveType: number) {
+  enterVehicle(
+    vehicle: Vehicle,
+    seatId: number,
+    moveType = NPCMoveTypeEnum.AUTO,
+  ) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new Error("[Npc]: Cannot enterVehicle before create");
     }
@@ -802,7 +806,7 @@ export class Npc {
   }
   playNode(
     node: NpcNode,
-    moveType = NPCMoveTypeEnum.JOG,
+    moveType = NPCMoveTypeEnum.AUTO,
     speed: number = NPCMoveSpeedEnum.AUTO,
     radius = 0.0,
     setAngle = true,

@@ -73,7 +73,7 @@ export class NpcPath {
     ) as number;
   }
   move(
-    moveType = NPCMoveTypeEnum.JOG,
+    moveType = NPCMoveTypeEnum.AUTO,
     moveSpeed: number = NPCMoveSpeedEnum.AUTO,
     reversed = false,
   ) {
