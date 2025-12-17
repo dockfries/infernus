@@ -1,3 +1,11 @@
+## 0.14.0 (2025-12-17)
+
+* feat(core): add npc angle to pos natives ([9d9e103](https://github.com/dockfries/infernus/commit/9d9e103))
+* feat(core): moveType to auto by default ([ce75809](https://github.com/dockfries/infernus/commit/ce75809))
+* feat(core, nex-ac, weapon-config)!: pickup add per player, change some throw message ([86a011c](https://github.com/dockfries/infernus/commit/86a011c))
+
+
+
 ## <small>0.13.4 (2025-12-01)</small>
 
 * feat(core): npc getPosMovingTo, getCustomSkin ([5f75d40](https://github.com/dockfries/infernus/commit/5f75d40))
