@@ -11,6 +11,8 @@ import {
   WeaponEnum,
   WeaponSkillsEnum,
   WeaponStatesEnum,
+  LandingGearStateEnum,
+  SpecialActionsEnum,
 } from "core/enums";
 import { Player } from "../player";
 import { Vehicle } from "../vehicle";
@@ -337,7 +339,7 @@ export class Npc {
     }
     return Npc.__inject__.getWeaponSkillLevel(this._id, skill);
   }
-  meleeAttack(time: number, secondaryAttack: boolean) {
+  meleeAttack(time: number = -1, secondaryAttack: boolean = false) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new Error("[Npc]: Cannot meleeAttack before create");
     }
@@ -366,7 +368,7 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return FightingStylesEnum.NORMAL;
     return Npc.__inject__.getFightingStyle(this._id);
   }
-  enableReloading(enable: boolean) {
+  enableReloading(enable: boolean = true) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new Error("[Npc]: Cannot enableReloading before create");
     }
@@ -381,7 +383,7 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isReloading(this._id);
   }
-  enableInfiniteAmmo(enable: boolean) {
+  enableInfiniteAmmo(enable: boolean = true) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new Error("[Npc]: Cannot enableInfiniteAmmo before create");
     }
@@ -420,10 +422,10 @@ export class Npc {
     endPointX: number,
     endPointY: number,
     endPointZ: number,
-    offsetX: number,
-    offsetY: number,
-    offsetZ: number,
-    isHit: boolean,
+    offsetX: number = 0.0,
+    offsetY: number = 0.0,
+    offsetZ: number = 0.0,
+    isHit: boolean = true,
     checkInBetweenFlags = NPCEntityCheckEnum.ALL,
   ) {
     if (this.id === InvalidEnum.NPC_ID) {
@@ -453,12 +455,12 @@ export class Npc {
     pointX: number,
     pointY: number,
     pointZ: number,
-    shoot: boolean,
-    shootDelay: number,
-    updateAngle: boolean,
-    offsetFromX: number,
-    offsetFromY: number,
-    offsetFromZ: number,
+    shoot: boolean = false,
+    shootDelay: number = -1,
+    updateAngle: boolean = true,
+    offsetFromX: number = 0.0,
+    offsetFromY: number = 0.0,
+    offsetFromZ: number = 0.0,
     checkInBetweenFlags = NPCEntityCheckEnum.ALL,
   ) {
     if (this.id === InvalidEnum.NPC_ID) {
@@ -481,15 +483,15 @@ export class Npc {
   }
   aimAtPlayer(
     player: Player,
-    shoot: boolean,
-    shootDelay: number,
-    updateAngle: boolean,
-    offsetX: number,
-    offsetY: number,
-    offsetZ: number,
-    offsetFromX: number,
-    offsetFromY: number,
-    offsetFromZ: number,
+    shoot: boolean = false,
+    shootDelay: number = -1,
+    updateAngle: boolean = true,
+    offsetX: number = 0.0,
+    offsetY: number = 0.0,
+    offsetZ: number = 0.0,
+    offsetFromX: number = 0.0,
+    offsetFromY: number = 0.0,
+    offsetFromZ: number = 0.0,
     checkInBetweenFlags = NPCEntityCheckEnum.ALL,
   ) {
     if (this.id === InvalidEnum.NPC_ID) {
@@ -665,14 +667,13 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getVehicleHydraThrusters(this._id);
   }
-  setVehicleGearState(gearState: number) {
+  setVehicleGearState(gearState: LandingGearStateEnum) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new Error("[Npc]: Cannot setVehicleGearState before create");
     }
     return Npc.__inject__.setVehicleGearState(this._id, gearState);
   }
   getVehicleGearState() {
-    if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getVehicleGearState(this._id);
   }
   setVehicleTrainSpeed(speed: number) {
@@ -724,25 +725,24 @@ export class Npc {
     }
     return Npc.__inject__.clearAnimations(this._id);
   }
-  setSpecialAction(action: number) {
+  setSpecialAction(action: SpecialActionsEnum) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new Error("[Npc]: Cannot setSpecialAction before create");
     }
     return Npc.__inject__.setSpecialAction(this._id, action);
   }
   getSpecialAction() {
-    if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getSpecialAction(this._id);
   }
   startPlayback(
     recordName: string,
-    autoUnload: boolean,
-    startX: number,
-    startY: number,
-    startZ: number,
-    rotX: number,
-    rotY: number,
-    rotZ: number,
+    autoUnload: boolean = false,
+    startX: number = 0.0,
+    startY: number = 0.0,
+    startZ: number = 0.0,
+    rotX: number = 0.0,
+    rotY: number = 0.0,
+    rotZ: number = 0.0,
   ) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new Error("[Npc]: Cannot startPlayback before create");
@@ -761,13 +761,13 @@ export class Npc {
   }
   startPlaybackEx(
     record: NpcRecord,
-    autoUnload: boolean,
-    startX: number,
-    startY: number,
-    startZ: number,
-    rotX: number,
-    rotY: number,
-    rotZ: number,
+    autoUnload: boolean = false,
+    startX: number = 0.0,
+    startY: number = 0.0,
+    startZ: number = 0.0,
+    rotX: number = 0.0,
+    rotY: number = 0.0,
+    rotZ: number = 0.0,
   ) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new Error("[Npc]: Cannot startPlaybackEx before create");
@@ -790,7 +790,7 @@ export class Npc {
     }
     return Npc.__inject__.stopPlayback(this._id);
   }
-  pausePlayback(paused: boolean) {
+  pausePlayback(paused: boolean = true) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new Error("[Npc]: Cannot pausePlayback before create");
     }
@@ -861,7 +861,7 @@ export class Npc {
     }
     return Npc.__inject__.updateNodePoint(this._id, pointId);
   }
-  setInvulnerable(toggle: boolean) {
+  setInvulnerable(toggle: boolean = true) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new Error("[Npc]: Cannot setInvulnerable before create");
     }

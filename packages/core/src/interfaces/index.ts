@@ -191,8 +191,8 @@ export interface IFilterScript {
   [propName: string | number | symbol]: any;
 }
 
-export interface ICommonRetVal {
-  ret: number;
+export interface ICommonRetVal<T = boolean> {
+  ret: T;
 }
 
 export interface IObjectMp {

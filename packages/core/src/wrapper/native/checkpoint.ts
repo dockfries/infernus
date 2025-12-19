@@ -70,7 +70,7 @@ export const GetPlayerCheckpoint = (
 ): ICheckPoint & ICommonRetVal => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0, fSize = 0.0, ret]: number[] =
     samp.callNative("GetPlayerCheckpoint", "iFFFF", playerId);
-  return { fX, fY, fZ, fSize, ret };
+  return { fX, fY, fZ, fSize, ret: !!ret };
 };
 
 export const IsPlayerRaceCheckpointActive = (playerId: number): boolean => {
@@ -94,5 +94,5 @@ export const GetPlayerRaceCheckpoint = (
     "iFFFFFFF",
     playerId,
   );
-  return { fX, fY, fZ, fNextX, fNextY, fNextZ, fSize, ret };
+  return { fX, fY, fZ, fNextX, fNextY, fNextZ, fSize, ret: !!ret };
 };

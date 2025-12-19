@@ -60,7 +60,7 @@ export const DestroyDynamicObject = (objectId: number): number => {
 };
 
 export const IsValidDynamicObject = (objectId: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicObject", "i", objectId));
+  return !!samp.callNative("IsValidDynamicObject", "i", objectId);
 };
 
 export const GetDynamicObjectPos = (objectId: number) => {
@@ -128,7 +128,7 @@ export const StopDynamicObject = (objectId: number): number => {
 };
 
 export const IsDynamicObjectMoving = (objectId: number): boolean => {
-  return Boolean(samp.callNative("IsDynamicObjectMoving", "i", objectId));
+  return !!samp.callNative("IsDynamicObjectMoving", "i", objectId);
 };
 
 export const AttachCameraToDynamicObject = (
@@ -228,13 +228,11 @@ export const IsDynamicObjectMaterialUsed = (
   objectId: number,
   materialIndex: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative(
-      "IsDynamicObjectMaterialUsed",
-      "ii",
-      objectId,
-      materialIndex,
-    ),
+  return !!samp.callNative(
+    "IsDynamicObjectMaterialUsed",
+    "ii",
+    objectId,
+    materialIndex,
   );
 };
 
@@ -274,13 +272,11 @@ export const IsDynamicObjectMaterialTextUsed = (
   objectId: number,
   materialIndex: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative(
-      "IsDynamicObjectMaterialTextUsed",
-      "ii",
-      objectId,
-      materialIndex,
-    ),
+  return !!samp.callNative(
+    "IsDynamicObjectMaterialTextUsed",
+    "ii",
+    objectId,
+    materialIndex,
   );
 };
 
@@ -329,9 +325,9 @@ export const GetPlayerCameraTargetDynObject = (playerId: number): number => {
 };
 
 export const SetDynamicObjectNoCameraCol = (objectId: number) => {
-  return Boolean(samp.callNative("SetDynamicObjectNoCameraCol", "i", objectId));
+  return !!samp.callNative("SetDynamicObjectNoCameraCol", "i", objectId);
 };
 
 export const GetDynamicObjectNoCameraCol = (objectId: number) => {
-  return Boolean(samp.callNative("GetDynamicObjectNoCameraCol", "i", objectId));
+  return !!samp.callNative("GetDynamicObjectNoCameraCol", "i", objectId);
 };

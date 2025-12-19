@@ -172,7 +172,7 @@ export function createVehCommands() {
       const [jobId] = subcommand;
       const vid = player.getVehicle();
       if (jobId && vid) {
-        vid.changePaintjob(+jobId as 0 | 1 | 2);
+        vid.changePaintjob(+jobId);
       }
       return next();
     },

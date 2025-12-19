@@ -63,17 +63,17 @@ export class GameMode {
     }
   }
 
-  static setWeather(weather: number): number {
+  static setWeather(weather: number) {
     if (weather < 0 || weather > 255) {
       throw new Error("[GameMode]: The valid weather value is only 0 to 255");
     }
-    return w.SetWeather(weather);
+    w.SetWeather(weather);
   }
-  static setWorldTime(hour: number): number {
+  static setWorldTime(hour: number) {
     if (hour < 0 || hour > 23) {
       throw new Error("[GameMode]: The valid hour value is only 0 to 23");
     }
-    return w.SetWorldTime(hour);
+    w.SetWorldTime(hour);
   }
   static getWorldTime = w.GetWorldTime;
   static setTeamCount = w.SetTeamCount;
@@ -86,7 +86,7 @@ export class GameMode {
     z: number,
     type: number,
     radius: number,
-  ): number {
+  ): boolean {
     if (type < 0 || type > 13) {
       throw new Error(
         "[GameMode]: The valid explosion type value is only 0 to 13",
@@ -98,6 +98,8 @@ export class GameMode {
   static blockIpAddress = w.BlockIpAddress;
   static unBlockIpAddress = w.UnBlockIpAddress;
   static getServerTickRate = w.GetServerTickRate;
+  static addCharModel = w.AddCharModel;
+  static getCustomModelPath = w.GetCustomModelPath;
   static addSimpleModel(
     virtualWorld: number,
     baseId: number,

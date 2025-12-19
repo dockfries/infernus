@@ -14,7 +14,7 @@ export const GetActorSpawnInfo = (
 ): IActorSpawn & ICommonRetVal => {
   const [skinId = 0, fX = 0, fY = 0, fZ = 0, fAngle = 0, ret]: number[] =
     samp.callNative("GetActorSpawnInfo", "iIFFFF", actorId);
-  return { skinId, fX, fY, fZ, fAngle, ret };
+  return { skinId, fX, fY, fZ, fAngle, ret: !!ret };
 };
 
 export const GetActorAnimation = (
@@ -32,7 +32,17 @@ export const GetActorAnimation = (
     ret,
   ]: [string, string, number, number, number, number, number, number, number] =
     samp.callNative("GetActorAnimation", "iSiSiFIIIII", actorId, 32, 32);
-  return { animLib, animName, fDelta, loop, lockX, lockY, freeze, time, ret };
+  return {
+    animLib,
+    animName,
+    fDelta,
+    loop,
+    lockX,
+    lockY,
+    freeze,
+    time,
+    ret: !!ret,
+  };
 };
 
 export const CreateActor = (

@@ -28,7 +28,7 @@ export class NpcPath {
     }
     return ret;
   }
-  addPoint(x: number, y: number, z: number, stopRange: number) {
+  addPoint(x: number, y: number, z: number, stopRange: number = 0.2) {
     return !!samp.callNative(
       "NPC_AddPointToPath",
       "iffff",
@@ -54,13 +54,13 @@ export class NpcPath {
     return samp.callNative("NPC_GetPathPointCount", "i", this._id) as number;
   }
   getPoint(pointIndex: number) {
-    const [x, y, z, stopRange, ret]: number[] = samp.callNative(
+    const [x, y, z, stopRange = 0.2, ret]: number[] = samp.callNative(
       "NPC_GetPathPoint",
       "ii",
       this._id,
       pointIndex,
     );
-    return { x, y, z, stopRange, ret };
+    return { x, y, z, stopRange, ret: !!ret };
   }
   isValid() {
     return NpcPath.isValid(this._id);

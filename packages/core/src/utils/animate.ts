@@ -2486,7 +2486,7 @@ export const animateLib = new Map<string, Array<IAnimateInfo>>([
 ]);
 
 export const isValidAnimateLib = (lib: string) => {
-  // return Boolean(samp.callNative('IsValidAnimationLibrary', 's', lib))
+  // return !!samp.callNative('IsValidAnimationLibrary', 's', lib)
 
   const animLib = animateLib.get(lib.toUpperCase());
   if (typeof animLib === "undefined") return false;

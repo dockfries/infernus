@@ -2,16 +2,14 @@ import type { IAttachedData, IObjectPos } from "../interfaces/Object";
 import { ICommonRetVal } from "core/interfaces";
 
 export const IsValid3DTextLabel = (id: number): boolean => {
-  return Boolean(samp.callNative("IsValid3DTextLabel", "i", id));
+  return !!samp.callNative("IsValid3DTextLabel", "i", id);
 };
 
 export const Is3DTextLabelStreamedIn = (
   playerId: number,
   id: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("Is3DTextLabelStreamedIn", "ii", playerId, id),
-  );
+  return !!samp.callNative("Is3DTextLabelStreamedIn", "ii", playerId, id);
 };
 
 export const Get3DTextLabelColor = (id: number): number => {
@@ -24,7 +22,7 @@ export const Get3DTextLabelPos = (id: number): IObjectPos & ICommonRetVal => {
     "iFFF",
     id,
   );
-  return { fX, fY, fZ, ret };
+  return { fX, fY, fZ, ret: !!ret };
 };
 
 export const Set3DTextLabelDrawDistance = (
@@ -39,7 +37,7 @@ export const Get3DTextLabelDrawDistance = (id: number): number => {
 };
 
 export const Get3DTextLabelLOS = (id: number): boolean => {
-  return Boolean(samp.callNative("Get3DTextLabelLOS", "i", id));
+  return !!samp.callNative("Get3DTextLabelLOS", "i", id);
 };
 
 export const Set3DTextLabelLOS = (id: number, status: boolean): boolean => {
@@ -57,14 +55,16 @@ export const Get3DTextLabelVirtualWorld = (id: number): number => {
   return samp.callNative("Get3DTextLabelVirtualWorld", "i", id);
 };
 
-export const Get3DTextLabelAttachedData = (id: number): IAttachedData => {
-  const [attachedPlayerId = 0, attachedVehicleId = 0]: number[] =
+export const Get3DTextLabelAttachedData = (
+  id: number,
+): IAttachedData & ICommonRetVal => {
+  const [attachedPlayerId = 0, attachedVehicleId = 0, ret]: number[] =
     samp.callNative("Get3DTextLabelAttachedData", "i", id);
-  return { attachedPlayerId, attachedVehicleId };
+  return { attachedPlayerId, attachedVehicleId, ret: !!ret };
 };
 
-export const Delete3DTextLabel = (id: number): number => {
-  return samp.callNative("Delete3DTextLabel", "i", id);
+export const Delete3DTextLabel = (id: number): boolean => {
+  return !!samp.callNative("Delete3DTextLabel", "i", id);
 };
 
 export const Attach3DTextLabelToPlayer = (

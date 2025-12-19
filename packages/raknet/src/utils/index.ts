@@ -40,7 +40,7 @@ export const patchRakNetRead = (
   switch (type) {
     case PacketRpcValueType.Bool:
     case PacketRpcValueType.CBool: {
-      return Boolean(samp.callPublic("RakNetReadInt", "i", bs));
+      return !!samp.callPublic("RakNetReadInt", "i", bs);
     }
 
     case PacketRpcValueType.Float: {
@@ -138,90 +138,75 @@ export const patchRakNetWrite = (
     case PacketRpcValueType.Bool:
     case PacketRpcValueType.CBool: {
       if (Array.isArray(value)) return false;
-      return Boolean(samp.callPublic("RakNetWriteInt", "ii", bs, +value));
+      return !!samp.callPublic("RakNetWriteInt", "ii", bs, +value);
     }
 
     case PacketRpcValueType.Float: {
       if (typeof value !== "number") return false;
-      return Boolean(samp.callPublicFloat("RakNetWriteFloat", "if", bs, value));
+      return !!samp.callPublicFloat("RakNetWriteFloat", "if", bs, value);
     }
     case PacketRpcValueType.CFloat: {
       if (typeof value !== "number") return false;
-      return Boolean(
-        samp.callPublicFloat("RakNetWriteCompressedFloat", "if", bs, value),
+      return !!samp.callPublicFloat(
+        "RakNetWriteCompressedFloat",
+        "if",
+        bs,
+        value,
       );
     }
 
     case PacketRpcValueType.Bits: {
       if (typeof value !== "number") return false;
-      return Boolean(
-        samp.callPublic("RakNetWriteBits", "iii", bs, value, length),
-      );
+      return !!samp.callPublic("RakNetWriteBits", "iii", bs, value, length);
     }
 
     case PacketRpcValueType.Float3: {
       if (!Array.isArray(value) || value.length !== 3) return false;
-      return Boolean(
-        samp.callPublicFloat("RakNetWriteFloat3", "iv", bs, value),
-      );
+      return !!samp.callPublicFloat("RakNetWriteFloat3", "iv", bs, value);
     }
     case PacketRpcValueType.Float4: {
       if (!Array.isArray(value) || value.length !== 4) return false;
-      return Boolean(
-        samp.callPublicFloat("RakNetWriteFloat4", "iv", bs, value),
-      );
+      return !!samp.callPublicFloat("RakNetWriteFloat4", "iv", bs, value);
     }
     case PacketRpcValueType.Vector: {
       if (!Array.isArray(value) || value.length !== 3) return false;
-      return Boolean(
-        samp.callPublicFloat("RakNetWriteVector", "iv", bs, value),
-      );
+      return !!samp.callPublicFloat("RakNetWriteVector", "iv", bs, value);
     }
     case PacketRpcValueType.NormQuat: {
       if (!Array.isArray(value) || value.length !== 4) return false;
-      return Boolean(
-        samp.callPublicFloat("RakNetWriteNormQuat", "iv", bs, value),
-      );
+      return !!samp.callPublicFloat("RakNetWriteNormQuat", "iv", bs, value);
     }
     case PacketRpcValueType.String8: {
       if (!Array.isArray(value)) return false;
-      return Boolean(
-        samp.callPublicFloat("RakNetWriteString8", "ia", bs, value),
-      );
+      return !!samp.callPublicFloat("RakNetWriteString8", "ia", bs, value);
     }
     case PacketRpcValueType.String32: {
       if (!Array.isArray(value)) return false;
-      return Boolean(
-        samp.callPublicFloat("RakNetWriteString32", "ia", bs, value),
-      );
+      return !!samp.callPublicFloat("RakNetWriteString32", "ia", bs, value);
     }
     case PacketRpcValueType.String: {
       if (!Array.isArray(value)) return false;
-      return Boolean(
-        samp.callPublicFloat(
-          "RakNetWriteString",
-          "iai",
-          bs,
-          value,
-          length || value.length,
-        ),
+      return !!samp.callPublicFloat(
+        "RakNetWriteString",
+        "iai",
+        bs,
+        value,
+        length || value.length,
       );
     }
     case PacketRpcValueType.CString: {
       if (!Array.isArray(value)) return false;
-      return Boolean(
-        samp.callPublicFloat(
-          "RakNetWriteCompressedString",
-          "iai",
-          bs,
-          value,
-          length || value.length,
-        ),
+      return !!samp.callPublicFloat(
+        "RakNetWriteCompressedString",
+        "iai",
+        bs,
+        value,
+        length || value.length,
       );
     }
     default: {
       if (typeof value !== "number") return false;
-      return Boolean(samp.callPublic("RakNetWriteInt", "iii", bs, type, value));
+      return !!samp.callPublic("RakNetWriteInt", "iii", bs, type, value);
     }
   }
 };

@@ -31,7 +31,7 @@ export function isValidObject(index: number) {
 }
 
 export function setObjectPos(index: number, x: number, y: number, z: number) {
-  return Boolean(samp.callNative("CA_SetObjectPos", "ifff", index, x, y, z));
+  return !!samp.callNative("CA_SetObjectPos", "ifff", index, x, y, z);
 }
 
 export function setObjectRot(
@@ -40,13 +40,11 @@ export function setObjectRot(
   ry: number,
   rz: number,
 ) {
-  return Boolean(samp.callNative("CA_SetObjectRot", "ifff", index, rx, ry, rz));
+  return !!samp.callNative("CA_SetObjectRot", "ifff", index, rx, ry, rz);
 }
 
 export function setObjectExtraID(index: number, type: number, data: number) {
-  return Boolean(
-    samp.callNative("CA_SetObjectExtraID", "iii", index, type, data),
-  );
+  return !!samp.callNative("CA_SetObjectExtraID", "iii", index, type, data);
 }
 
 export function getObjectExtraID(index: number, type: number) {

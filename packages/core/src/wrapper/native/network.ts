@@ -46,7 +46,7 @@ export const NetStats_GetIpPort = (playerId: number) => {
 };
 
 export const IsPlayerAdmin = (playerId: number): boolean => {
-  return Boolean(samp.callNative("IsPlayerAdmin", "i", playerId));
+  return !!samp.callNative("IsPlayerAdmin", "i", playerId);
 };
 
 export const SetPlayerAdmin = (playerId: number, admin: boolean): boolean => {
@@ -68,7 +68,7 @@ export const GetPlayerNetworkStats = (playerId: number) => {
     playerId,
     1024,
   ) as [string, number];
-  return { stats, ret };
+  return { stats, ret: !!ret };
 };
 
 export const GetNetworkStats = () => {
@@ -77,15 +77,15 @@ export const GetNetworkStats = () => {
     "Si",
     1024,
   );
-  return { stats, ret };
+  return { stats, ret: !!ret };
 };
 
-export const BlockIpAddress = (ipAddress: string, timeMs: number): number => {
-  return samp.callNative("BlockIpAddress", "si", ipAddress, timeMs);
+export const BlockIpAddress = (ipAddress: string, timeMs: number): boolean => {
+  return !!samp.callNative("BlockIpAddress", "si", ipAddress, timeMs);
 };
 
-export const UnBlockIpAddress = (ipAddress: string): number => {
-  return samp.callNative("UnBlockIpAddress", "s", ipAddress);
+export const UnBlockIpAddress = (ipAddress: string): boolean => {
+  return !!samp.callNative("UnBlockIpAddress", "s", ipAddress);
 };
 
 export const gpci = (playerId: number, charset: string) => {
@@ -107,8 +107,8 @@ export const SendClientCheck = (
   memAddr: number,
   memOffset: number,
   byteCount: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "SendClientCheck",
     "iiiii",
     playerId,
@@ -119,12 +119,12 @@ export const SendClientCheck = (
   );
 };
 
-export const ClearBanList = (): void => {
-  samp.callNative("ClearBanList", "");
+export const ClearBanList = (): boolean => {
+  return !!samp.callNative("ClearBanList", "");
 };
 
 export const IsBanned = (ipAddress: string): boolean => {
-  return Boolean(samp.callNative("IsBanned", "s", ipAddress));
+  return !!samp.callNative("IsBanned", "s", ipAddress);
 };
 
 export const GetPlayerRawIp = (playerId: number): string => {

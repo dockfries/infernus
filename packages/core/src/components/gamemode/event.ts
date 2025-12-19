@@ -46,7 +46,7 @@ export const [onRconLoginAttempt] = defineEvent({
     return {
       ip: I18n.decodeFromBuf(ip),
       password: I18n.decodeFromBuf(password),
-      success: Boolean(success),
+      success: !!success,
       ipBuffer: ip,
       passwordBuffer: password,
     };

@@ -162,9 +162,9 @@ export const wc_GetPlayerState = setPlayerHook("getState", function () {
 
 export const wc_GetPlayerHealth = setPlayerHook("getHealth", function () {
   if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
-    return { health: 0.0, ret: 0 };
+    return { health: 0.0, ret: false };
   }
-  return { health: playerHealth.get(this.id), ret: 1 };
+  return { health: playerHealth.get(this.id), ret: true };
 });
 
 export function wcc_setPlayerHealth(
@@ -208,9 +208,9 @@ export const wc_SetPlayerHealth = setPlayerHook(
 
 export const wc_GetPlayerArmour = setPlayerHook("getArmour", function () {
   if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
-    return { armour: 0.0, ret: 0 };
+    return { armour: 0.0, ret: false };
   }
-  return { armour: playerArmour.get(this.id), ret: 1 };
+  return { armour: playerArmour.get(this.id), ret: true };
 });
 
 export const wc_SetPlayerArmour = setPlayerHook(
@@ -280,7 +280,7 @@ export const wc_SendDeathMessage = setPlayerHook(
       }
     }
     orig_playerMethods.sendDeathMessage.call(this, killer, weapon);
-    return 1;
+    return true;
   },
 );
 
@@ -599,9 +599,9 @@ export function wc_DestroyVehicle(vehicleId: number) {
       clearTimeout(vehicleRespawnTimer.get(vehicleId)!);
       vehicleRespawnTimer.set(vehicleId, null);
     }
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 Vehicle.__inject__.destroy = wc_DestroyVehicle;
@@ -738,7 +738,7 @@ export function wc_TextDrawDestroy(text: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawDestroy(text);
 }
 
@@ -750,7 +750,7 @@ export function wc_TextDrawLetterSize(text: number, x: number, y: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawLetterSize(text, x, y);
 }
 
@@ -762,7 +762,7 @@ export function wc_TextDrawTextSize(text: number, x: number, y: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawTextSize(text, x, y);
 }
 
@@ -777,7 +777,7 @@ export function wc_TextDrawAlignment(
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawAlignment(text, alignment);
 }
 
@@ -801,7 +801,7 @@ export function wc_TextDrawUseBox(text: number, use: boolean) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawUseBox(text, use);
 }
 
@@ -825,7 +825,7 @@ export function wc_TextDrawSetShadow(text: number, size: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawSetShadow(text, size);
 }
 
@@ -837,7 +837,7 @@ export function wc_TextDrawSetOutline(text: number, size: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawSetOutline(text, size);
 }
 
@@ -864,7 +864,7 @@ export function wc_TextDrawFont(text: number, font: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawFont(text, font);
 }
 
@@ -876,7 +876,7 @@ export function wc_TextDrawSetProportional(text: number, set: boolean) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawSetProportional(text, set);
 }
 
@@ -888,7 +888,7 @@ export function wc_TextDrawSetSelectable(text: number, set: boolean) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawSetSelectable(text, set);
 }
 
@@ -900,7 +900,7 @@ export function wc_TextDrawShowForPlayer(playerId: number, text: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawShowForPlayer(playerId, text);
 }
 
@@ -912,7 +912,7 @@ export function wc_TextDrawHideForPlayer(playerId: number, text: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawHideForPlayer(playerId, text);
 }
 
@@ -924,7 +924,7 @@ export function wc_TextDrawShowForAll(text: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawShowForAll(text);
 }
 
@@ -936,7 +936,7 @@ export function wc_TextDrawHideForAll(text: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawHideForAll(text);
 }
 
@@ -948,7 +948,7 @@ export function wc_TextDrawSetString(text: number, string: number[]) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawSetString(text, string);
 }
 
@@ -960,7 +960,7 @@ export function wc_TextDrawSetPreviewModel(text: number, modelIndex: number) {
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawSetPreviewModel(text, modelIndex);
 }
 
@@ -978,7 +978,7 @@ export function wc_TextDrawSetPreviewRot(
     text >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(text)
   )
-    return 0;
+    return false;
   return orig_TextDrawSetPreviewRot(text, fRotX, fRotY, fRotZ, fZoom);
 }
 
@@ -1018,13 +1018,13 @@ export function wc_CreatePlayerTextDraw(
 TextDraw.__inject__.createPlayer = wc_CreatePlayerTextDraw;
 
 export function wc_PlayerTextDrawDestroy(playerId: number, text: number) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawDestroy(playerId, text);
 }
 
@@ -1036,13 +1036,13 @@ export function wc_PlayerTextDrawLetterSize(
   x: number,
   y: number,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawLetterSize(playerId, text, x, y);
 }
 
@@ -1054,13 +1054,13 @@ export function wc_PlayerTextDrawTextSize(
   x: number,
   y: number,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawTextSize(playerId, text, x, y);
 }
 
@@ -1071,13 +1071,13 @@ export function wc_PlayerTextDrawAlignment(
   text: number,
   alignment: TextDrawAlignEnum,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawAlignment(playerId, text, alignment);
 }
 
@@ -1105,13 +1105,13 @@ export function wc_PlayerTextDrawUseBox(
   text: number,
   use: boolean,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawUseBox(playerId, text, use);
 }
 
@@ -1139,13 +1139,13 @@ export function wc_PlayerTextDrawSetShadow(
   text: number,
   size: number,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawSetShadow(playerId, text, size);
 }
 
@@ -1156,13 +1156,13 @@ export function wc_PlayerTextDrawSetOutline(
   text: number,
   size: number,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawSetOutline(playerId, text, size);
 }
 
@@ -1190,13 +1190,13 @@ export function wc_PlayerTextDrawFont(
   text: number,
   font: number,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawFont(playerId, text, font);
 }
 
@@ -1207,13 +1207,13 @@ export function wc_PlayerTextDrawSetProportional(
   text: number,
   set: boolean,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawSetProportional(playerId, text, set);
 }
 
@@ -1224,39 +1224,39 @@ export function wc_PlayerTextDrawSetSelectable(
   text: number,
   set: boolean,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawSetSelectable(playerId, text, set);
 }
 
 TextDraw.__inject__.setSelectablePlayer = wc_PlayerTextDrawSetSelectable;
 
 export function wc_PlayerTextDrawShow(playerId: number, text: number) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawShow(playerId, text);
 }
 
 TextDraw.__inject__.showPlayer = wc_PlayerTextDrawShow;
 
 export function wc_PlayerTextDrawHide(playerId: number, text: number) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawHide(playerId, text);
 }
 
@@ -1267,13 +1267,13 @@ export function wc_PlayerTextDrawSetString(
   text: number,
   string: number[],
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawSetString(playerId, text, string);
 }
 
@@ -1284,13 +1284,13 @@ export function wc_PlayerTextDrawSetPreviewMode(
   text: number,
   modelIndex: number,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawSetPreviewModel(playerId, text, modelIndex);
 }
 
@@ -1304,13 +1304,13 @@ export function wc_PlayerTextDrawSetPreviewRot(
   fRotZ: number,
   fZoom: number,
 ) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
     text >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[text]
   )
-    return 0;
+    return false;
   return orig_PlayerTextDrawSetPreviewRot(
     playerId,
     text,
@@ -1399,7 +1399,7 @@ export function wc_TextDrawGetString(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return { str: "", ret: 0 }; // false
+    return { str: "", ret: false };
   return orig_TextDrawGetString(textId);
 }
 
@@ -1423,7 +1423,7 @@ export function wc_TextDrawGetLetterSize(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return { fX: 0, fY: 0, ret: 0 }; // false;
+    return { fX: 0, fY: 0, ret: false };
   return orig_TextDrawGetLetterSize(textId);
 }
 
@@ -1435,7 +1435,7 @@ export function wc_TextDrawGetTextSize(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return { fX: 0, fY: 0, ret: 0 }; // false
+    return { fX: 0, fY: 0, ret: false };
   return orig_TextDrawGetTextSize(textId);
 }
 
@@ -1447,7 +1447,7 @@ export function wc_TextDrawGetPos(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return { fX: 0, fY: 0, ret: 0 }; // false
+    return { fX: 0, fY: 0, ret: false };
   return orig_TextDrawGetPos(textId);
 }
 
@@ -1459,7 +1459,7 @@ export function wc_TextDrawGetColor(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return 0; // false
+    return 0;
   return orig_TextDrawGetColor(textId);
 }
 
@@ -1471,7 +1471,7 @@ export function wc_TextDrawGetBoxColor(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return 0; // false
+    return 0;
   return orig_TextDrawGetBoxColor(textId);
 }
 
@@ -1483,7 +1483,7 @@ export function wc_TextDrawGetBackgroundColor(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return 0; // false
+    return 0;
   return orig_TextDrawGetBackgroundColor(textId);
 }
 
@@ -1495,7 +1495,7 @@ export function wc_TextDrawGetShadow(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return 0; // false
+    return 0;
   return orig_TextDrawGetShadow(textId);
 }
 
@@ -1507,7 +1507,7 @@ export function wc_TextDrawGetOutline(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return 0; // false
+    return 0;
   return orig_TextDrawGetOutline(textId);
 }
 
@@ -1579,7 +1579,7 @@ export function wc_TextDrawGetPreviewModel(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return 0; // false
+    return 0;
   return orig_TextDrawGetPreviewModel(textId);
 }
 
@@ -1596,8 +1596,8 @@ export function wc_TextDrawGetPreviewRot(textId: number) {
       fRotY: 0,
       fRotZ: 0,
       fZoom: 0,
-      ret: 0,
-    }; // false
+      ret: false,
+    };
   return orig_TextDrawGetPreviewRot(textId);
 }
 
@@ -1648,13 +1648,13 @@ TextDraw.__inject__.isVisiblePlayer = wc_IsPlayerTextDrawVisible;
 
 export function wc_PlayerTextDrawGetString(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
-    return { str: "", ret: 0 }; // false
+    return { str: "", ret: false };
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return { str: "", ret: 0 }; // false
+    return { str: "", ret: false };
   return orig_PlayerTextDrawGetString(playerId, textId);
 }
 
@@ -1683,13 +1683,13 @@ export function wc_PlayerTextDrawGetLetterSize(
   textId: number,
 ) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
-    return { fX: 0, fY: 0, ret: 0 }; // false
+    return { fX: 0, fY: 0, ret: false };
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return { fX: 0, fY: 0, ret: 0 }; // false
+    return { fX: 0, fY: 0, ret: false };
   return orig_PlayerTextDrawGetLetterSize(playerId, textId);
 }
 
@@ -1697,13 +1697,13 @@ TextDraw.__inject__.getLetterSizePlayer = wc_PlayerTextDrawGetLetterSize;
 
 export function wc_PlayerTextDrawGetTextSize(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
-    return { fX: 0, fY: 0, ret: 0 }; // false
+    return { fX: 0, fY: 0, ret: false };
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return { fX: 0, fY: 0, ret: 0 }; // false
+    return { fX: 0, fY: 0, ret: false };
   return orig_PlayerTextDrawGetTextSize(playerId, textId);
 }
 
@@ -1711,13 +1711,13 @@ TextDraw.__inject__.getTextSizePlayer = wc_PlayerTextDrawGetTextSize;
 
 export function wc_PlayerTextDrawGetPos(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
-    return { fX: 0, fY: 0, ret: 0 }; // false
+    return { fX: 0, fY: 0, ret: false };
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return { fX: 0, fY: 0, ret: 0 }; // false
+    return { fX: 0, fY: 0, ret: false };
   return orig_PlayerTextDrawGetPos(playerId, textId);
 }
 
@@ -1730,7 +1730,7 @@ export function wc_PlayerTextDrawGetColor(playerId: number, textId: number) {
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return 0; // false
+    return 0;
   return orig_PlayerTextDrawGetColor(playerId, textId);
 }
 
@@ -1743,20 +1743,20 @@ export function wc_PlayerTextDrawGetBoxColor(playerId: number, textId: number) {
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return 0; // false
+    return 0;
   return orig_PlayerTextDrawGetBoxColor(playerId, textId);
 }
 
 TextDraw.__inject__.getBoxColorPlayer = wc_PlayerTextDrawGetBoxColor;
 
 export function wc_PlayerTextDrawGetShadow(playerId: number, textId: number) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0; // false
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return 0; // false
+    return 0;
   return orig_PlayerTextDrawGetShadow(playerId, textId);
 }
 
@@ -1769,7 +1769,7 @@ export function wc_PlayerTextDrawGetOutline(playerId: number, textId: number) {
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return 0; // false
+    return 0;
   return orig_PlayerTextDrawGetOutline(playerId, textId);
 }
 
@@ -1859,7 +1859,7 @@ export function wc_PlayerTextDrawGetPreviewModel(
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return 0; // false
+    return 0;
   return orig_PlayerTextDrawGetPreviewModel(playerId, textId);
 }
 
@@ -1875,7 +1875,8 @@ export function wc_PlayerTextDrawGetPreviewRot(
       fRotY: 0,
       fRotZ: 0,
       fZoom: 0,
-    }; // false
+      ret: false,
+    };
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
@@ -1886,7 +1887,8 @@ export function wc_PlayerTextDrawGetPreviewRot(
       fRotY: 0,
       fRotZ: 0,
       fZoom: 0,
-    }; // false
+      ret: false,
+    };
   return orig_PlayerTextDrawGetPreviewRot(playerId, textId);
 }
 
@@ -1898,7 +1900,7 @@ export function wc_TextDrawGetPreviewVehCol(textId: number) {
     textId >= LimitsEnum.MAX_TEXT_DRAWS ||
     internalTextDraw.get(textId)
   )
-    return { color1: 0, color2: 0, ret: 0 }; // false
+    return { color1: 0, color2: 0, ret: false };
   return orig_TextDrawGetPreviewVehCol(textId);
 }
 
@@ -1914,7 +1916,7 @@ export function wc_PlayerTextDrawGetBackgroundColor(
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return 0; // false
+    return 0;
   return orig_PlayerTextDrawGetBackgroundCol(playerId, textId);
 }
 
@@ -1926,13 +1928,13 @@ export function wc_PlayerTextDrawGetPreviewVehC(
   textId: number,
 ) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
-    return { color1: 0, color2: 0, ret: 0 }; // false
+    return { color1: 0, color2: 0, ret: false };
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
     internalPlayerTextDraw.get(playerId)[textId]
   )
-    return { color1: 0, color2: 0, ret: 0 }; // false
+    return { color1: 0, color2: 0, ret: false };
   return orig_PlayerTextDrawGetPreviewVehCol(playerId, textId);
 }
 

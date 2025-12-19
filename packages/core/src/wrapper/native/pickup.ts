@@ -18,7 +18,7 @@ export const GetPickupPos = (pickupId: number): IObjectPos & ICommonRetVal => {
     "iFFF",
     pickupId,
   );
-  return { fX, fY, fZ, ret };
+  return { fX, fY, fZ, ret: !!ret };
 };
 
 export const GetPickupModel = (pickupId: number): number => {

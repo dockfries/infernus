@@ -5,9 +5,7 @@ export const IsValidPlayer3DTextLabel = (
   playerId: number,
   id: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsValidPlayer3DTextLabel", "ii", playerId, id),
-  );
+  return !!samp.callNative("IsValidPlayer3DTextLabel", "ii", playerId, id);
 };
 
 export const GetPlayer3DTextLabelColor = (
@@ -23,7 +21,7 @@ export const GetPlayer3DTextLabelPos = (
 ): IObjectPos & ICommonRetVal => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
     samp.callNative("GetPlayer3DTextLabelPos", "iiFFF", playerId, id);
-  return { fX, fY, fZ, ret };
+  return { fX, fY, fZ, ret: !!ret };
 };
 
 export const SetPlayer3DTextLabelDrawDistance = (
@@ -56,9 +54,7 @@ export const GetPlayer3DTextLabelLOS = (
   playerId: number,
   id: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("GetPlayer3DTextLabelLOS", "ii", playerId, id),
-  );
+  return !!samp.callNative("GetPlayer3DTextLabelLOS", "ii", playerId, id);
 };
 
 export const SetPlayer3DTextLabelLOS = (
@@ -104,15 +100,15 @@ export const SetPlayer3DTextLabelVirtualWorld = (
 export const GetPlayer3DTextLabelAttachedData = (
   playerId: number,
   id: number,
-): IAttachedData => {
-  const [attachedPlayerId = 0, attachedVehicleId = 0]: number[] =
+): IAttachedData & ICommonRetVal => {
+  const [attachedPlayerId = 0, attachedVehicleId = 0, ret]: number[] =
     samp.callNative("GetPlayer3DTextLabelAttachedData", "ii", playerId, id);
-  return { attachedPlayerId, attachedVehicleId };
+  return { attachedPlayerId, attachedVehicleId, ret: !!ret };
 };
 
 export const DeletePlayer3DTextLabel = (
   playerId: number,
   id: number,
-): number => {
-  return samp.callNative("DeletePlayer3DTextLabel", "ii", playerId, id);
+): boolean => {
+  return !!samp.callNative("DeletePlayer3DTextLabel", "ii", playerId, id);
 };

@@ -39,15 +39,18 @@ export const DestroyDynamicActor = (actorId: number): number => {
 };
 
 export const IsValidDynamicActor = (actorId: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicActor", "i", actorId));
+  return !!samp.callNative("IsValidDynamicActor", "i", actorId);
 };
 
 export const IsDynamicActorStreamedIn = (
   actorId: number,
   forPlayerId: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsDynamicActorStreamedIn", "ii", actorId, forPlayerId),
+  return !!samp.callNative(
+    "IsDynamicActorStreamedIn",
+    "ii",
+    actorId,
+    forPlayerId,
   );
 };
 
@@ -155,7 +158,7 @@ export const SetDynamicActorInvulnerable = (
 };
 
 export const IsDynamicActorInvulnerable = (actorId: number): boolean => {
-  return Boolean(samp.callNative("IsDynamicActorInvulnerable", "i", actorId));
+  return !!samp.callNative("IsDynamicActorInvulnerable", "i", actorId);
 };
 
 export const GetPlayerTargetDynamicActor = (playerId: number): number => {

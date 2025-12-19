@@ -54,7 +54,7 @@ export const DestroyDynamic3DTextLabel = (id: number): number => {
 };
 
 export const IsValidDynamic3DTextLabel = (id: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamic3DTextLabel", "i", id));
+  return !!samp.callNative("IsValidDynamic3DTextLabel", "i", id);
 };
 
 export const GetDynamic3DTextLabelText = (id: number) => {

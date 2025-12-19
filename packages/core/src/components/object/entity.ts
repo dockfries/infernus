@@ -247,7 +247,7 @@ export class ObjectMp {
     rx: number,
     ry: number,
     rz: number,
-  ): number {
+  ): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Cannot start moving before create");
     if (speed < 0) {
@@ -274,7 +274,7 @@ export class ObjectMp {
     );
   }
 
-  stop(): number {
+  stop(): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new Error("[ObjectMp]: Cannot stop moving before create");
     if (this.isGlobal()) {

@@ -28,7 +28,7 @@ export const Streamer_ToggleChunkStream = (toggle = false): number => {
 };
 
 export const Streamer_IsToggleChunkStream = (): boolean => {
-  return Boolean(samp.callNative("Streamer_IsToggleChunkStream", ""));
+  return !!samp.callNative("Streamer_IsToggleChunkStream", "");
 };
 
 export const Streamer_GetChunkTickRate = (
@@ -179,9 +179,7 @@ export const Streamer_IsToggleItemStatic = (
   type: StreamerItemTypes,
   id: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("Streamer_IsToggleItemStatic", "ii", type, id),
-  );
+  return !!samp.callNative("Streamer_IsToggleItemStatic", "ii", type, id);
 };
 
 export const Streamer_ToggleItemInvAreas = (
@@ -202,9 +200,7 @@ export const Streamer_IsToggleItemInvAreas = (
   type: StreamerItemTypes,
   id: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("Streamer_IsToggleItemInvAreas", "ii", type, id),
-  );
+  return !!samp.callNative("Streamer_IsToggleItemInvAreas", "ii", type, id);
 };
 
 export const Streamer_ToggleItemCallbacks = (
@@ -225,9 +221,7 @@ export const Streamer_IsToggleItemCallbacks = (
   type: StreamerItemTypes,
   id: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("Streamer_IsToggleItemCallbacks", "ii", type, id),
-  );
+  return !!samp.callNative("Streamer_IsToggleItemCallbacks", "ii", type, id);
 };
 
 export const Streamer_ToggleErrorCallback = (toggle: boolean): number => {
@@ -235,7 +229,7 @@ export const Streamer_ToggleErrorCallback = (toggle: boolean): number => {
 };
 
 export const Streamer_IsToggleErrorCallback = (): boolean => {
-  return Boolean(samp.callNative("Streamer_IsToggleErrorCallback", ""));
+  return !!samp.callNative("Streamer_IsToggleErrorCallback", "");
 };
 
 export const Streamer_AmxUnloadDestroyItems = (toggle: boolean): number => {

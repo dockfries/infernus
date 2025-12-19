@@ -8,6 +8,7 @@ import type {
   WeaponStatesEnum,
   BoneIdsEnum,
   ForceSyncEnum,
+  LandingGearStateEnum,
 } from "../../enums";
 
 import {
@@ -137,7 +138,7 @@ export class Player {
     playerPool.set(id, this);
   }
 
-  sendClientMessage(color: string | number, msg: string): number {
+  sendClientMessage(color: string | number, msg: string) {
     return Player.__inject__.sendClientMessage(this, color, msg);
   }
 
@@ -145,11 +146,11 @@ export class Player {
     Player.__inject__.sendClientMessageToAll(Player.getInstances(), color, msg);
   }
 
-  sendMessageToPlayer(player: Player, message: string): number {
+  sendMessageToPlayer(player: Player, message: string) {
     return Player.__inject__.sendMessageToPlayer(player, this.id, message);
   }
 
-  sendMessageToAll(message: string): number {
+  sendMessageToAll(message: string): boolean {
     return Player.__inject__.sendMessageToAll(
       Player.getInstances(),
       this.id,
@@ -288,12 +289,7 @@ export class Player {
   isStreamedIn(forPlayer: Player) {
     return Player.__inject__.isStreamedIn(this.id, forPlayer.id);
   }
-  setSkin(skinId: number, ignoreRange = false) {
-    if (!ignoreRange && (skinId < 0 || skinId > 311 || skinId === 74))
-      return false;
-    if (this.getHealth().health <= 0) return false;
-    if (this.isInAnyVehicle()) return false;
-    if (this.getSpecialAction() === SpecialActionsEnum.DUCK) return false;
+  setSkin(skinId: number) {
     return Player.__inject__.setSkin(this.id, skinId);
   }
   getSkin(): number {
@@ -360,21 +356,12 @@ export class Player {
     return Player.__inject__.getFacingAngle(this.id);
   }
   setWeather(weather: number) {
-    if (weather < 0 || weather > 255) {
-      throw new Error("[Player]: The valid weather value is only 0 to 255");
-    }
     return Player.__inject__.setWeather(this.id, weather);
   }
   getWeather(): number {
     return Player.__inject__.getWeather(this.id);
   }
   setTime(hour: number, minute: number) {
-    if (hour < 0 || hour > 23) {
-      throw new Error("[Player]: The valid hour value is only 0 to 23");
-    }
-    if (minute < 0 || minute > 59) {
-      throw new Error("[Player]: The valid minute value is only 0 to 59");
-    }
     return Player.__inject__.setTime(this.id, hour, minute);
   }
   getTime() {
@@ -947,10 +934,10 @@ export class Player {
   isInModShop(): boolean {
     return Player.__inject__.isInModShop(this.id);
   }
-  getSirenState(): number {
+  getSirenState(): boolean {
     return Player.__inject__.getSirenState(this.id);
   }
-  getLandingGearState(): number {
+  getLandingGearState(): LandingGearStateEnum {
     return Player.__inject__.getLandingGearState(this.id);
   }
   getHydraReactorAngle(): number {
@@ -1043,6 +1030,10 @@ export class Player {
   simulateCommand(cmdText: string | number[]) {
     return CmdBus.simulate(this, cmdText);
   }
+  hasClockEnabled() {
+    return Player.__inject__.hasClockEnabled(this.id);
+  }
+
   static getInstance(id: number) {
     return playerPool.get(id);
   }
@@ -1227,5 +1218,6 @@ export class Player {
     isCuffed: w.IsPlayerCuffed,
     isInDriveByMode: w.IsPlayerInDriveByMode,
     isUsingOmp: w.IsPlayerUsingOmp,
+    hasClockEnabled: w.PlayerHasClockEnabled,
   };
 }

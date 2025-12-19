@@ -827,15 +827,13 @@ export function ac_SetVehicleVelocity(
 
 export function ac_LinkVehicleToInterior(vehicle: Vehicle, interiorId: number) {
   if (!(interiorId >= 0 && interiorId <= 255)) interiorId %= 256;
-  if (!orig_vehicleMethods.linkToInterior.call(vehicle, interiorId)) return 0;
+  if (!orig_vehicleMethods.linkToInterior.call(vehicle, interiorId))
+    return false;
   ACVehInfo.get(vehicle.id).acInt = interiorId;
-  return 1;
+  return true;
 }
 
-export function ac_ChangeVehiclePaintjob(
-  vehicle: Vehicle,
-  paintjobId: 0 | 2 | 1,
-) {
+export function ac_ChangeVehiclePaintjob(vehicle: Vehicle, paintjobId: number) {
   ACVehInfo.get(vehicle.id).acPaintJob = paintjobId;
   return orig_vehicleMethods.changePaintjob.call(vehicle, paintjobId);
 }
@@ -846,7 +844,7 @@ export function ac_SetVehicleHealth(
   repair = false,
 ) {
   if (repair) {
-    if (!orig_vehicleMethods.repair.call(vehicle)) return 0;
+    if (!orig_vehicleMethods.repair.call(vehicle)) return false;
     ACVehInfo.get(vehicle.id).acPanels =
       ACVehInfo.get(vehicle.id).acDoors =
       ACVehInfo.get(vehicle.id).acLights =
@@ -854,7 +852,7 @@ export function ac_SetVehicleHealth(
         0;
   } else {
     if (health < 0.0) health = 0.0;
-    if (!orig_vehicleMethods.setHealth.call(vehicle, health)) return 0;
+    if (!orig_vehicleMethods.setHealth.call(vehicle, health)) return false;
   }
   const ac_driver = ACVehInfo.get(vehicle.id).acDriver;
   if (
@@ -867,7 +865,7 @@ export function ac_SetVehicleHealth(
     ACInfo.get(ac_driver).acSetVehHealth = health;
     ACInfo.get(ac_driver).acGtc[3] = Date.now() + 2850;
   } else ACVehInfo.get(vehicle.id).acHealth = health;
-  return 1;
+  return true;
 }
 
 export function ac_UpdateVehicleDamageStatus(
@@ -882,7 +880,7 @@ export function ac_UpdateVehicleDamageStatus(
   ACVehInfo.get(vehicle.id).acDoors = doors;
   ACVehInfo.get(vehicle.id).acLights = lights;
   ACVehInfo.get(vehicle.id).acTires = tires;
-  return 1;
+  return true;
 }
 
 export function ac_SetVehicleParamsEx(
@@ -907,18 +905,18 @@ export function ac_SetVehicleParamsEx(
       objective,
     )
   )
-    return 0;
+    return false;
   Player.getInstances().forEach((ac_i) => {
     ACVehInfo.get(vehicle.id).acLocked[ac_i.id] = doors;
   });
-  return 1;
+  return true;
 }
 
 export function ac_SetVehicleParamsForPlayer(
   vehicle: Vehicle,
   player: Player,
-  objective: boolean,
-  doorsLocked: boolean,
+  objective: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+  doorsLocked: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
 ) {
   if (
     !orig_vehicleMethods.setParamsForPlayer.call(
@@ -928,9 +926,9 @@ export function ac_SetVehicleParamsForPlayer(
       doorsLocked,
     )
   )
-    return 0;
+    return false;
   ACVehInfo.get(vehicle.id).acLocked![player.id] = doorsLocked;
-  return 1;
+  return true;
 }
 
 export function ac_SetVehicleToRespawn(vehicle: Vehicle) {
@@ -1798,7 +1796,7 @@ export const acc_SetVehicleAngularVelocity = setVehicleHook(
 export const acc_LinkVehicleToInterior = setVehicleHook(
   "linkToInterior",
   function (...args) {
-    if (orig_vehicleMethods.getModel.call(this) <= 0) return 1;
+    if (orig_vehicleMethods.getModel.call(this) <= 0) return true;
     return ac_LinkVehicleToInterior(this, ...args);
   },
 );
@@ -1806,7 +1804,7 @@ export const acc_LinkVehicleToInterior = setVehicleHook(
 export const acc_ChangeVehiclePaintjob = setVehicleHook(
   "changePaintjob",
   function (paintjobId) {
-    if (!(this.id >= 1 && this.id < LimitsEnum.MAX_VEHICLES)) return 1;
+    if (!(this.id >= 1 && this.id < LimitsEnum.MAX_VEHICLES)) return true;
     return ac_ChangeVehiclePaintjob(this, paintjobId);
   },
 );
@@ -1846,7 +1844,7 @@ export const acc_SetVehicleParamsForPlayer = setVehicleHook(
 export const acc_SetVehicleToRespawn = setVehicleHook(
   "setRespawn",
   function () {
-    if (!(this.id >= 1 && this.id < LimitsEnum.MAX_VEHICLES)) return 0;
+    if (!(this.id >= 1 && this.id < LimitsEnum.MAX_VEHICLES)) return false;
     return ac_SetVehicleToRespawn(this);
   },
 );

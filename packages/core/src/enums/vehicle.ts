@@ -1,6 +1,6 @@
 export enum CarModTypeEnum {
   UNKNOWN = -1,
-  NONE = -1,
+  NONE = UNKNOWN,
   SPOILER,
   HOOD,
   ROOF,
@@ -18,11 +18,13 @@ export enum CarModTypeEnum {
   FRONT_BULLBAR,
   REAR_BULLBAR,
 }
+
 export enum VehicleParamsEnum {
   UNSET = -1,
   OFF,
   ON,
 }
+
 export enum VehicleModelInfoEnum {
   SIZE = 1,
   FRONTSEAT,
@@ -33,4 +35,9 @@ export enum VehicleModelInfoEnum {
   WHEELSMID,
   FRONT_BUMPER_Z,
   REAR_BUMPER_Z,
+}
+
+export enum LandingGearStateEnum {
+  DOWN,
+  UP,
 }

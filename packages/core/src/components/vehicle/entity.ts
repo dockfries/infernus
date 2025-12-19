@@ -1,16 +1,12 @@
-import type {
+import {
   CarModTypeEnum,
+  LandingGearStateEnum,
   VehicleModelInfoEnum,
   VehicleParamsEnum,
 } from "core/enums";
 import { InvalidEnum, LimitsEnum } from "core/enums";
 import type { IVehicle } from "core/interfaces";
 import type { Player } from "../player/entity";
-import {
-  isValidPaintJob,
-  isValidVehComponent,
-  isValidVehModelId,
-} from "core/utils/vehicle";
 import { rgba } from "core/utils/color";
 import * as v from "core/wrapper/native";
 import { VectorSize } from "core/wrapper/native";
@@ -47,14 +43,13 @@ export class Vehicle {
       this.isStatic = isStatic;
     }
   }
-  create(ignoreRange = false): void {
+  create(): void {
     if (this.id !== InvalidEnum.VEHICLE_ID)
       throw new Error("[Vehicle]: Cannot create again");
     if (!this.sourceInfo)
       throw new Error("[Vehicle]: Cannot create with only id");
     const { modelId, x, y, z, zAngle, color, respawnDelay, addSiren } =
       this.sourceInfo;
-    if (!ignoreRange && !isValidVehModelId(modelId)) return;
     if (this.isStatic) {
       if (typeof respawnDelay === "undefined") {
         this._id = Vehicle.__inject__.addStatic(
@@ -114,40 +109,32 @@ export class Vehicle {
       Vehicle.createdCount = 0;
     }
   }
-  addComponent(componentId: number): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    if (!isValidVehComponent(this.getModel(), componentId)) {
-      throw new Error(
-        `[Vehicle]: Invalid component id ${componentId} attempted to attach to the vehicle ${this}`,
-      );
-    }
+  addComponent(componentId: number) {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.addComponent(this.id, componentId);
   }
-  removeComponent(componentId: number): number {
-    if (this.getComponentInSlot(Vehicle.getComponentType(componentId)) === 0) {
-      throw new Error(
-        `[Vehicle]: component id ${componentId} does not exist on this vehicle`,
-      );
-    }
+  removeComponent(componentId: number) {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.removeComponent(this.id, componentId);
   }
   getComponentInSlot(slot: CarModTypeEnum) {
+    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
     return Vehicle.__inject__.getComponentInSlot(this.id, slot);
   }
-  linkToInterior(interiorId: number): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  linkToInterior(interiorId: number) {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.linkToInterior(this.id, interiorId);
   }
-  setVirtualWorld(worldId: number): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  setVirtualWorld(worldId: number): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setVirtualWorld(this.id, worldId);
   }
   getVirtualWorld(): number {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
     return Vehicle.__inject__.getVirtualWorld(this.id);
   }
-  repair(): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  repair() {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.repair(this.id);
   }
   setPos(x: number, y: number, z: number): boolean {
@@ -160,8 +147,8 @@ export class Vehicle {
   getHealth() {
     return Vehicle.__inject__.getHealth(this.id);
   }
-  setHealth(health: number): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  setHealth(health: number): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setHealth(this.id, health);
   }
   isPlayerIn(player: Player): boolean {
@@ -181,12 +168,12 @@ export class Vehicle {
   getZAngle() {
     return Vehicle.__inject__.getZAngle(this.id);
   }
-  setZAngle(zAngle: number): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  setZAngle(zAngle: number): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setZAngle(this.id, zAngle);
   }
-  setNumberPlate(numberplate: string): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  setNumberPlate(numberplate: string): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     if (numberplate.length < 1 || numberplate.length > 32) {
       throw new Error(
         "[Vehicle]: The length of the number plate ranges up to 32 characters",
@@ -199,8 +186,8 @@ export class Vehicle {
     }
     return Vehicle.__inject__.setNumberPlate(this.id, numberplate);
   }
-  changeColors(color1: string | number, color2: string | number): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  changeColors(color1: string | number, color2: string | number): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.changeColors(this.id, color1, color2);
   }
   setVelocity(X: number, Y: number, Z: number) {
@@ -254,8 +241,8 @@ export class Vehicle {
   getRotationQuat() {
     return Vehicle.__inject__.getRotationQuat(this.id);
   }
-  setRespawn(): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  setRespawn(): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setRespawn(this.id);
   }
   isStreamedIn(forPlayer: Player): boolean {
@@ -263,12 +250,12 @@ export class Vehicle {
     return Vehicle.__inject__.isStreamedIn(this.id, forPlayer.id);
   }
   setParamsCarDoors(
-    driver: boolean,
-    passenger: boolean,
-    backLeft: boolean,
-    backRight: boolean,
-  ): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+    driver: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+    passenger: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+    backLeft: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+    backRight: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+  ): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setParamsCarDoors(
       this.id,
       driver,
@@ -278,10 +265,10 @@ export class Vehicle {
     );
   }
   setParamsCarWindows(
-    driver: boolean,
-    passenger: boolean,
-    backLeft: boolean,
-    backRight: boolean,
+    driver: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+    passenger: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+    backLeft: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+    backRight: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
   ) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
     return Vehicle.__inject__.setParamsCarWindows(
@@ -306,8 +293,8 @@ export class Vehicle {
     bonnet: boolean | VehicleParamsEnum,
     boot: boolean | VehicleParamsEnum,
     objective: boolean | VehicleParamsEnum,
-  ): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  ): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setParamsEx(
       this.id,
       engine,
@@ -322,15 +309,16 @@ export class Vehicle {
   getParamsEx() {
     if (this.id === InvalidEnum.VEHICLE_ID)
       return {
-        engine: -1,
-        lights: -1,
-        alarm: -1,
-        doors: -1,
-        bonnet: -1,
-        boot: -1,
-        objective: -1,
+        engine: VehicleParamsEnum.UNSET,
+        lights: VehicleParamsEnum.UNSET,
+        alarm: VehicleParamsEnum.UNSET,
+        doors: VehicleParamsEnum.UNSET,
+        bonnet: VehicleParamsEnum.UNSET,
+        boot: VehicleParamsEnum.UNSET,
+        objective: VehicleParamsEnum.UNSET,
+        ret: false,
       };
-    const [engine, lights, alarm, doors, bonnet, boot, objective] =
+    const [engine, lights, alarm, doors, bonnet, boot, objective, ret] =
       Vehicle.__inject__.getParamsEx(this.id);
     return {
       engine,
@@ -340,6 +328,7 @@ export class Vehicle {
       bonnet,
       boot,
       objective,
+      ret: !!ret,
     };
   }
   toggleEngine(value: boolean | VehicleParamsEnum) {
@@ -431,16 +420,16 @@ export class Vehicle {
     const { engine, lights, alarm, doors, bonnet, boot } = this.getParamsEx();
     return this.setParamsEx(engine, lights, alarm, doors, bonnet, boot, value);
   }
-  getParamsSirenState(): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return -2;
+  getParamsSirenState(): VehicleParamsEnum {
+    if (this.id === InvalidEnum.VEHICLE_ID) return VehicleParamsEnum.UNSET;
     return Vehicle.__inject__.getParamsSirenState(this.id);
   }
   setParamsForPlayer(
     player: Player,
-    objective: boolean,
-    doorsLocked: boolean,
-  ): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+    objective: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+    doorsLocked: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+  ): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setParamsForPlayer(
       this.id,
       player.id,
@@ -452,15 +441,12 @@ export class Vehicle {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.isTrailerAttached(this.id);
   }
-  changePaintjob(paintjobId: 0 | 1 | 2): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    if (!isValidPaintJob(this.getModel(), paintjobId)) return 0;
-    this.changeColors("#fff", "#fff");
-    Vehicle.__inject__.changePaintjob(this.id, paintjobId);
-    return 1;
+  changePaintjob(paintjobId: number): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
+    return Vehicle.__inject__.changePaintjob(this.id, paintjobId);
   }
-  attachTrailer(trailer: Vehicle): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  attachTrailer(trailer: Vehicle): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.attachTrailer(trailer.id, this.id);
   }
   detachTrailer() {
@@ -484,12 +470,12 @@ export class Vehicle {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
     return Vehicle.__inject__.getHydraReactorAngle(this.id);
   }
-  getLandingGearState(): number {
+  getLandingGearState(): LandingGearStateEnum {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
     return Vehicle.__inject__.getLandingGearState(this.id);
   }
-  getSirenState(): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  getSirenState(): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.getSirenState(this.id);
   }
   getDriver() {
@@ -501,12 +487,12 @@ export class Vehicle {
   isSirenEnabled(): boolean {
     return Vehicle.__inject__.isSirenEnabled(this.id);
   }
-  toggleSirenEnabled(enabled: boolean): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  toggleSirenEnabled(enabled: boolean): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.toggleSirenEnabled(this.id, enabled);
   }
-  setParamsSirenState(enabled: boolean): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  setParamsSirenState(enabled: boolean | VehicleParamsEnum): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setParamsSirenState(this.id, enabled);
   }
   isDead(): boolean {
@@ -553,8 +539,8 @@ export class Vehicle {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
     return Vehicle.__inject__.getRespawnDelay(this.id);
   }
-  setRespawnDelay(delay: number): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
+  setRespawnDelay(delay: number): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setRespawnDelay(this.id, delay);
   }
   getNumberPlate() {
@@ -581,10 +567,8 @@ export class Vehicle {
     color2: string | number,
     respawnTime = -2,
     interior = -2,
-    ignoreRange = false,
-  ): number {
-    if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    if (!ignoreRange && !isValidVehModelId(modelId)) return 0;
+  ): boolean {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setSpawnInfo(
       this.id,
       modelId,
@@ -625,6 +609,13 @@ export class Vehicle {
   countOccupants() {
     return Vehicle.__inject__.countOccupants(this.getModel());
   }
+  canHaveComponent(componentId: number) {
+    if (this.id === InvalidEnum.VEHICLE_ID) return false;
+    return Vehicle.__inject__.canHaveComponent(this.getModel(), componentId);
+  }
+  getSeats() {
+    return Vehicle.__inject__.getSeats(this.getModel());
+  }
   static getMaxPassengers(modelId: number) {
     return Vehicle.__inject__.getMaxPassengers(modelId);
   }
@@ -645,6 +636,12 @@ export class Vehicle {
   }
   static getModelCount(modelId: number) {
     return Vehicle.__inject__.getModelCount(modelId);
+  }
+  static canHaveComponent(modelId: number, componentId: number) {
+    return Vehicle.__inject__.canHaveComponent(modelId, componentId);
+  }
+  static getSeats(modelId: number) {
+    return Vehicle.__inject__.getSeats(modelId);
   }
 
   static getInstance(id: number) {
@@ -740,5 +737,7 @@ export class Vehicle {
     isValid: v.IsValidVehicle,
     getModelsUsed: v.GetVehicleModelsUsed,
     getModelCount: v.GetVehicleModelCount,
+    canHaveComponent: v.VehicleCanHaveComponent,
+    getSeats: v.GetVehicleSeats,
   };
 }

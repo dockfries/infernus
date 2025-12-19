@@ -35,5 +35,5 @@ export const DestroyDynamicPickup = (pickupId: number): boolean => {
 };
 
 export const IsValidDynamicPickup = (pickupId: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicPickup", "i", pickupId));
+  return !!samp.callNative("IsValidDynamicPickup", "i", pickupId);
 };

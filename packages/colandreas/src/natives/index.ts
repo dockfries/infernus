@@ -1,7 +1,7 @@
 import { MAX_MULTICAST_SIZE } from "../definitions";
 
 export function init() {
-  return Boolean(samp.callNative("CA_Init", ""));
+  return !!samp.callNative("CA_Init", "");
 }
 
 export function removeBuilding(
@@ -11,8 +11,14 @@ export function removeBuilding(
   z: number,
   radius: number,
 ) {
-  return Boolean(
-    samp.callNative("CA_RemoveBuilding", "iffff", modelId, x, y, z, radius),
+  return !!samp.callNative(
+    "CA_RemoveBuilding",
+    "iffff",
+    modelId,
+    x,
+    y,
+    z,
+    radius,
   );
 }
 
@@ -23,8 +29,14 @@ export function restoreBuilding(
   z: number,
   radius: number,
 ) {
-  return Boolean(
-    samp.callNative("CA_RestoreBuilding", "iffff", modelId, x, y, z, radius),
+  return !!samp.callNative(
+    "CA_RestoreBuilding",
+    "iffff",
+    modelId,
+    x,
+    y,
+    z,
+    radius,
   );
 }
 
@@ -216,8 +228,16 @@ export function contactTest(
   ry: number,
   rz: number,
 ) {
-  return Boolean(
-    samp.callNative("CA_ContactTest", "iffffff", modelId, x, y, z, rx, ry, rz),
+  return !!samp.callNative(
+    "CA_ContactTest",
+    "iffffff",
+    modelId,
+    x,
+    y,
+    z,
+    rx,
+    ry,
+    rz,
   );
 }
 

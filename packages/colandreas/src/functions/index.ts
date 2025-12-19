@@ -49,7 +49,7 @@ function isOnSurface(instance: Player | Vehicle, tolerance: number) {
   if (!ret.ret) return false;
   const { x, y, z } = ret;
 
-  return Boolean(rayCastLine(x, y, z, x, y, z - tolerance));
+  return !!rayCastLine(x, y, z, x, y, z - tolerance);
 }
 
 export function isPlayerOnSurface(player: Player, tolerance = 1.5) {
@@ -250,7 +250,7 @@ function isBlocked(instance: Player | Vehicle, dist: number, height: number) {
 
   const endX = x + dist * Math.sin(degreesToRadians(-a.angle));
   const endY = y + dist * Math.cos(degreesToRadians(-a.angle));
-  return Boolean(rayCastLine(x, y, z, endX, endY, z));
+  return !!rayCastLine(x, y, z, endX, endY, z);
 }
 
 export function isPlayerBlocked(player: Player, dist = 1.5, height = 0.5) {

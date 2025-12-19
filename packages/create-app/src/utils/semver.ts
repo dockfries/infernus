@@ -4,7 +4,7 @@ export function minSatisfying(versions: string[], range: string) {
   if (range === "*") {
     const allVersion = versions
       .map((version) => [version, semver.coerce(version)])
-      .filter((s) => Boolean(s[1])) as [string, SemVer][];
+      .filter((s) => !!s[1]) as [string, SemVer][];
     const descVersions = semver.rsort(allVersion.map((s) => s[1]));
     if (!descVersions.length) return null;
     const minSatisfying = allVersion.find(

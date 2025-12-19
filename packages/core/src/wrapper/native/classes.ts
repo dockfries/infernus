@@ -44,7 +44,7 @@ export const GetPlayerClass = (
     weapon2Ammo,
     weapon3,
     weapon3Ammo,
-    ret,
+    ret: !!ret,
   };
 };
 
@@ -64,24 +64,22 @@ export const EditPlayerClass = (
   weapon3: number,
   weapon3Ammo: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative(
-      "EditPlayerClass",
-      "iiiffffiiiiii",
-      classId,
-      teamId,
-      modelId,
-      spawnX,
-      spawnY,
-      spawnZ,
-      zAngle,
-      weapon1,
-      weapon1Ammo,
-      weapon2,
-      weapon2Ammo,
-      weapon3,
-      weapon3Ammo,
-    ),
+  return !!samp.callNative(
+    "EditPlayerClass",
+    "iiiffffiiiiii",
+    classId,
+    teamId,
+    modelId,
+    spawnX,
+    spawnY,
+    spawnZ,
+    zAngle,
+    weapon1,
+    weapon1Ammo,
+    weapon2,
+    weapon2Ammo,
+    weapon3,
+    weapon3Ammo,
   );
 };
 
@@ -220,6 +218,6 @@ export const GetSpawnInfo = (
     weapon2Ammo,
     weapon3,
     weapon3Ammo,
-    ret,
+    ret: !!ret,
   };
 };

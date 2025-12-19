@@ -12,7 +12,7 @@ export const Streamer_ToggleIdleUpdate = (
 };
 
 export const Streamer_IsToggleIdleUpdate = (playerId: number): boolean => {
-  return Boolean(samp.callNative("Streamer_IsToggleIdleUpdate", "i", playerId));
+  return !!samp.callNative("Streamer_IsToggleIdleUpdate", "i", playerId);
 };
 
 export const Streamer_ToggleCameraUpdate = (
@@ -23,9 +23,7 @@ export const Streamer_ToggleCameraUpdate = (
 };
 
 export const Streamer_IsToggleCameraUpdate = (playerId: number): boolean => {
-  return Boolean(
-    samp.callNative("Streamer_IsToggleCameraUpdate", "i", playerId),
-  );
+  return !!samp.callNative("Streamer_IsToggleCameraUpdate", "i", playerId);
 };
 
 export const Streamer_ToggleItemUpdate = (
@@ -46,9 +44,7 @@ export const Streamer_IsToggleItemUpdate = (
   playerId: number,
   type: StreamerItemTypes,
 ): boolean => {
-  return Boolean(
-    samp.callNative("Streamer_IsToggleItemUpdate", "ii", playerId, type),
-  );
+  return !!samp.callNative("Streamer_IsToggleItemUpdate", "ii", playerId, type);
 };
 
 export const Streamer_GetLastUpdateTime = () => {

@@ -152,7 +152,7 @@ export const DestroyDynamicArea = (areaId: number): number => {
 };
 
 export const IsValidDynamicArea = (areaId: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicArea", "i", areaId));
+  return !!samp.callNative("IsValidDynamicArea", "i", areaId);
 };
 
 export const GetDynamicAreaType = (areaId: number): number => {
@@ -178,8 +178,12 @@ export const IsPlayerInDynamicArea = (
   areaId: number,
   recheck = false,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsPlayerInDynamicArea", "iii", playerId, areaId, recheck),
+  return !!samp.callNative(
+    "IsPlayerInDynamicArea",
+    "iii",
+    playerId,
+    areaId,
+    recheck,
   );
 };
 
@@ -187,22 +191,18 @@ export const IsPlayerInAnyDynamicArea = (
   playerId: number,
   recheck = false,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsPlayerInAnyDynamicArea", "ii", playerId, recheck),
-  );
+  return !!samp.callNative("IsPlayerInAnyDynamicArea", "ii", playerId, recheck);
 };
 
 export const IsAnyPlayerInDynamicArea = (
   areaId: number,
   recheck = false,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsAnyPlayerInDynamicArea", "ii", areaId, recheck),
-  );
+  return !!samp.callNative("IsAnyPlayerInDynamicArea", "ii", areaId, recheck);
 };
 
 export const IsAnyPlayerInAnyDynamicArea = (recheck = false): boolean => {
-  return Boolean(samp.callNative("IsAnyPlayerInAnyDynamicArea", "i", recheck));
+  return !!samp.callNative("IsAnyPlayerInAnyDynamicArea", "i", recheck);
 };
 
 export const GetPlayerDynamicAreas = (playerId: number) => {
@@ -229,9 +229,7 @@ export const IsPointInDynamicArea = (
   y: number,
   z: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsPointInDynamicArea", "ifff", areaId, x, y, z),
-  );
+  return !!samp.callNative("IsPointInDynamicArea", "ifff", areaId, x, y, z);
 };
 
 export const IsPointInAnyDynamicArea = (
@@ -239,7 +237,7 @@ export const IsPointInAnyDynamicArea = (
   y: number,
   z: number,
 ): boolean => {
-  return Boolean(samp.callNative("IsPointInAnyDynamicArea", "fff", x, y, z));
+  return !!samp.callNative("IsPointInAnyDynamicArea", "fff", x, y, z);
 };
 
 export const IsLineInDynamicArea = (
@@ -251,18 +249,16 @@ export const IsLineInDynamicArea = (
   y2: number,
   z2: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative(
-      "IsLineInDynamicArea",
-      "iffffff",
-      areaId,
-      x1,
-      y1,
-      z1,
-      x2,
-      y2,
-      z2,
-    ),
+  return !!samp.callNative(
+    "IsLineInDynamicArea",
+    "iffffff",
+    areaId,
+    x1,
+    y1,
+    z1,
+    x2,
+    y2,
+    z2,
   );
 };
 
@@ -274,8 +270,15 @@ export const IsLineInAnyDynamicArea = (
   y2: number,
   z2: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsLineInAnyDynamicArea", "ffffff", x1, y1, z1, x2, y2, z2),
+  return !!samp.callNative(
+    "IsLineInAnyDynamicArea",
+    "ffffff",
+    x1,
+    y1,
+    z1,
+    x2,
+    y2,
+    z2,
   );
 };
 
@@ -407,5 +410,5 @@ export const ToggleDynAreaSpectateMode = (
 };
 
 export const IsToggleDynAreaSpectateMode = (areaId: number): boolean => {
-  return Boolean(samp.callNative("IsToggleDynAreaSpectateMode", "i", areaId));
+  return !!samp.callNative("IsToggleDynAreaSpectateMode", "i", areaId);
 };

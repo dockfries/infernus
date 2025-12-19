@@ -33,7 +33,7 @@ export const DestroyDynamicCP = (checkpointId: number): number => {
 };
 
 export const IsValidDynamicCP = (checkpointId: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicCP", "i", checkpointId));
+  return !!samp.callNative("IsValidDynamicCP", "i", checkpointId);
 };
 
 export const TogglePlayerDynamicCP = (
@@ -61,9 +61,7 @@ export const IsPlayerInDynamicCP = (
   playerId: number,
   checkpointId: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointId),
-  );
+  return !!samp.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointId);
 };
 
 export const GetPlayerVisibleDynamicCP = (playerId: number): number => {

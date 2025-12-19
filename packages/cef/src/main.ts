@@ -63,8 +63,10 @@ export class Cef {
   }
 
   destroy() {
-    const res = Boolean(
-      patchCefNatives(CefNatives.DestroyBrowser, this.playerId, this.browserId),
+    const res = !!patchCefNatives(
+      CefNatives.DestroyBrowser,
+      this.playerId,
+      this.browserId,
     );
     if (res) {
       Cef.instances.delete(this.playerId + "_" + this.browserId);
@@ -73,15 +75,21 @@ export class Cef {
   }
 
   show() {
-    const res = Boolean(
-      patchCefNatives(CefNatives.HideBrowser, this.playerId, this.browserId, 0),
+    const res = !!patchCefNatives(
+      CefNatives.HideBrowser,
+      this.playerId,
+      this.browserId,
+      0,
     );
     return res;
   }
 
   hide() {
-    const res = Boolean(
-      patchCefNatives(CefNatives.HideBrowser, this.playerId, this.browserId, 1),
+    const res = !!patchCefNatives(
+      CefNatives.HideBrowser,
+      this.playerId,
+      this.browserId,
+      1,
     );
     return res;
   }
@@ -93,7 +101,7 @@ export class Cef {
       this.browserId,
       object instanceof DynamicObject ? object.id : object,
     );
-    return Boolean(res);
+    return !!res;
   }
 
   removeFromObject(object: DynamicObject | number) {
@@ -103,7 +111,7 @@ export class Cef {
       this.browserId,
       object instanceof DynamicObject ? object.id : object,
     );
-    return Boolean(res);
+    return !!res;
   }
 
   toggleDevTools(enabled: boolean) {
@@ -113,7 +121,7 @@ export class Cef {
       this.browserId,
       +enabled,
     );
-    return Boolean(res);
+    return !!res;
   }
 
   setAudioSettings(
@@ -128,7 +136,7 @@ export class Cef {
       maxDistance.toFixed(2),
       referenceDistance.toFixed(2),
     );
-    return Boolean(res);
+    return !!res;
   }
 
   focusBrowser(focused: boolean) {
@@ -138,7 +146,7 @@ export class Cef {
       this.browserId,
       +focused,
     );
-    return Boolean(res);
+    return !!res;
   }
 
   alwaysListenKeys(listen: boolean) {
@@ -148,7 +156,7 @@ export class Cef {
       this.browserId,
       +listen,
     );
-    return Boolean(res);
+    return !!res;
   }
 
   loadUrl(url: string) {
@@ -159,7 +167,7 @@ export class Cef {
       this.browserId,
       url,
     );
-    return Boolean(res);
+    return !!res;
   }
 
   static playerHasPlugin(player: Player | number) {
@@ -167,7 +175,7 @@ export class Cef {
       CefNatives.PlayerHasPlugin,
       player instanceof Player ? player.id : player,
     );
-    return Boolean(res);
+    return !!res;
   }
 
   static emitEvent(
@@ -202,12 +210,12 @@ export class Cef {
       argsWithType,
       argsWithType.length / 2,
     );
-    return Boolean(res);
+    return !!res;
   }
 
   static subscribe(event: string, callbackName: string) {
     const res = samp.callPublic("PatchCefSubscribe", "ss", event, callbackName);
-    return Boolean(res);
+    return !!res;
   }
 
   static getInstance(player: Player | number, browserId: number) {
@@ -225,7 +233,7 @@ const [onInitialize] = defineEvent({
   beforeEach(playerId: number, success: number) {
     return {
       player: Player.getInstance(playerId),
-      success: Boolean(success),
+      success: !!success,
     };
   },
 });

@@ -45,5 +45,5 @@ export const DestroyDynamicMapIcon = (iconId: number): number => {
 };
 
 export const IsValidDynamicMapIcon = (iconId: number): boolean => {
-  return Boolean(samp.callNative("IsValidDynamicMapIcon", "i", iconId));
+  return !!samp.callNative("IsValidDynamicMapIcon", "i", iconId);
 };

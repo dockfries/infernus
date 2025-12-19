@@ -6,13 +6,13 @@ export class MapAndreas {
   }
 
   static init(mode: MapAndreasMode, name: string) {
-    return Boolean(samp.callNative("MapAndreas_Init", "isi", mode, name));
+    return !!samp.callNative("MapAndreas_Init", "isi", mode, name);
   }
   static unload() {
-    return Boolean(samp.callNative("MapAndreas_Unload", ""));
+    return !!samp.callNative("MapAndreas_Unload", "");
   }
   static saveCurrentHMap(name: string) {
-    return Boolean(samp.callNative("MapAndreas_SaveCurrentHMap", "s", name));
+    return !!samp.callNative("MapAndreas_SaveCurrentHMap", "s", name);
   }
   static findZFor2DCoord(x: number, y: number) {
     const [z, ret]: [number, number] = samp.callNative(
@@ -33,7 +33,7 @@ export class MapAndreas {
     return { z, ret };
   }
   static setZFor2DCoord(x: number, y: number, z: number) {
-    return Boolean(samp.callNative("setZFor2DCoord", "iii", x, y, z));
+    return !!samp.callNative("setZFor2DCoord", "iii", x, y, z);
   }
 }
 

@@ -26,7 +26,7 @@ export const GetObjectMovingTargetPos = (
 ): IObjectPos & ICommonRetVal => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
     samp.callNative("GetObjectMovingTargetPos", "iFFF", objectId);
-  return { fX, fY, fZ, ret };
+  return { fX, fY, fZ, ret: !!ret };
 };
 
 export const GetObjectTarget = (
@@ -34,7 +34,7 @@ export const GetObjectTarget = (
 ): IObjectPos & ICommonRetVal => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
     samp.callNative("GetObjectTarget", "iFFF", objectId);
-  return { fX, fY, fZ, ret };
+  return { fX, fY, fZ, ret: !!ret };
 };
 
 export const GetObjectMovingTargetRot = (
@@ -42,19 +42,24 @@ export const GetObjectMovingTargetRot = (
 ): IObjectPos & ICommonRetVal => {
   const [fX = 0.0, fY = 0.0, fZ = 0.0, ret]: [number, number, number, number] =
     samp.callNative("GetObjectMovingTargetRot", "iFFF", objectId);
-  return { fX, fY, fZ, ret };
+  return { fX, fY, fZ, ret: !!ret };
 };
 
-export const GetObjectAttachedData = (objectId: number): IAttachedData => {
+export const GetObjectAttachedData = (
+  objectId: number,
+): IAttachedData & ICommonRetVal => {
   const [
     attachedVehicleId = 0,
     attachedObjectId = 0,
     attachedPlayerId = 0,
+    ret,
   ]: number[] = samp.callNative("GetObjectAttachedData", "i", objectId);
-  return { attachedVehicleId, attachedObjectId, attachedPlayerId };
+  return { attachedVehicleId, attachedObjectId, attachedPlayerId, ret: !!ret };
 };
 
-export const GetObjectAttachedOffset = (objectId: number): IObjectRotPos => {
+export const GetObjectAttachedOffset = (
+  objectId: number,
+): IObjectRotPos & ICommonRetVal => {
   const [
     fX = 0.0,
     fY = 0.0,
@@ -62,12 +67,13 @@ export const GetObjectAttachedOffset = (objectId: number): IObjectRotPos => {
     fRotX = 0.0,
     fRotY = 0.0,
     fRotZ = 0.0,
+    ret,
   ]: number[] = samp.callNative("GetObjectAttachedOffset", "i", objectId);
-  return { fX, fY, fZ, fRotX, fRotY, fRotZ };
+  return { fX, fY, fZ, fRotX, fRotY, fRotZ, ret: !!ret };
 };
 
-export const GetObjectSyncRotation = (objectId: number): number => {
-  return samp.callNative("GetObjectSyncRotation", "i", objectId);
+export const GetObjectSyncRotation = (objectId: number): boolean => {
+  return !!samp.callNative("GetObjectSyncRotation", "i", objectId);
 };
 
 // Return values: 1 = material, 2 = material tex
@@ -75,8 +81,11 @@ export const IsObjectMaterialSlotUsed = (
   objectId: number,
   materialIndex: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsObjectMaterialSlotUsed", "ii", objectId, materialIndex),
+  return !!samp.callNative(
+    "IsObjectMaterialSlotUsed",
+    "ii",
+    objectId,
+    materialIndex,
   );
 };
 
@@ -98,11 +107,11 @@ export const GetObjectMaterial = (
     64,
     64,
   );
-  return { modelId, txdName, textureName, materialColor, ret };
+  return { modelId, txdName, textureName, materialColor, ret: !!ret };
 };
 
 export const HasObjectCameraCollision = (objectId: number): boolean => {
-  return Boolean(samp.callNative("HasObjectCameraCollision", "i", objectId));
+  return !!samp.callNative("HasObjectCameraCollision", "i", objectId);
 };
 
 export const CreateObject = (
@@ -232,7 +241,7 @@ export const AttachObjectToPlayer = (
 };
 
 export const EditAttachedObject = (playerId: number, index: number) => {
-  return Boolean(samp.callNative("EditAttachedObject", "ii", playerId, index));
+  return !!samp.callNative("EditAttachedObject", "ii", playerId, index);
 };
 
 export const SetObjectPos = (
@@ -250,7 +259,7 @@ export const GetObjectPos = (objectId: number) => {
     "iFFF",
     objectId,
   );
-  return { x, y, z, ret };
+  return { x, y, z, ret: !!ret };
 };
 
 export const SetObjectRot = (
@@ -268,7 +277,7 @@ export const GetObjectRot = (objectId: number) => {
     "iFFF",
     objectId,
   );
-  return { x, y, z, ret };
+  return { x, y, z, ret: !!ret };
 };
 
 export const GetObjectModel = (objectId: number): number => {
@@ -276,19 +285,19 @@ export const GetObjectModel = (objectId: number): number => {
 };
 
 export const SetObjectNoCameraCollision = (objectId: number): boolean => {
-  return Boolean(samp.callNative("SetObjectNoCameraCol", "i", objectId));
+  return !!samp.callNative("SetObjectNoCameraCol", "i", objectId);
 };
 
 export const IsObjectNoCameraCol = (objectId: number): boolean => {
-  return Boolean(samp.callNative("IsObjectNoCameraCol", "i", objectId));
+  return !!samp.callNative("IsObjectNoCameraCol", "i", objectId);
 };
 
 export const IsValidObject = (objectId: number): boolean => {
-  return Boolean(samp.callNative("IsValidObject", "i", objectId));
+  return !!samp.callNative("IsValidObject", "i", objectId);
 };
 
-export const DestroyObject = (objectId: number): number => {
-  return samp.callNative("DestroyObject", "i", objectId);
+export const DestroyObject = (objectId: number): boolean => {
+  return !!samp.callNative("DestroyObject", "i", objectId);
 };
 
 export const MoveObject = (
@@ -300,8 +309,8 @@ export const MoveObject = (
   rotX: number,
   rotY: number,
   rotZ: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "MoveObject",
     "ifffffff",
     objectId,
@@ -315,29 +324,27 @@ export const MoveObject = (
   );
 };
 
-export const StopObject = (objectId: number): number => {
-  return samp.callNative("StopObject", "i", objectId);
+export const StopObject = (objectId: number): boolean => {
+  return !!samp.callNative("StopObject", "i", objectId);
 };
 
 export const IsObjectMoving = (objectId: number): boolean => {
-  return Boolean(samp.callNative("IsObjectMoving", "i", objectId));
+  return !!samp.callNative("IsObjectMoving", "i", objectId);
 };
 
 export const BeginObjectEditing = (
   playerId: number,
   objectId: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("BeginObjectEditing", "ii", playerId, objectId),
-  );
+  return !!samp.callNative("BeginObjectEditing", "ii", playerId, objectId);
 };
 
 export const BeginObjectSelecting = (playerId: number): boolean => {
-  return Boolean(samp.callNative("BeginObjectSelecting", "i", playerId));
+  return !!samp.callNative("BeginObjectSelecting", "i", playerId);
 };
 
 export const EndObjectEditing = (playerId: number): boolean => {
-  return Boolean(samp.callNative("EndObjectEditing", "i", playerId));
+  return !!samp.callNative("EndObjectEditing", "i", playerId);
 };
 
 export const SetObjectMaterial = (
@@ -361,7 +368,23 @@ export const SetObjectMaterial = (
 };
 
 export const SetObjectsDefaultCameraCollision = (disable: boolean): boolean => {
-  return Boolean(samp.callNative("SetObjectsDefaultCameraCol", "i", disable));
+  return !!samp.callNative("SetObjectsDefaultCameraCol", "i", disable);
+};
+
+export const AddCharModel = (
+  baseId: number,
+  newid: number,
+  dff: string,
+  textureLibrary: string,
+) => {
+  return !!samp.callNative(
+    "AddCharModel",
+    "iiss",
+    baseId,
+    newid,
+    dff,
+    textureLibrary,
+  );
 };
 
 export const AddSimpleModel = (
@@ -406,6 +429,21 @@ export const AddSimpleModelTimed = (
 
 export const RedirectDownload = (playerId: number, url: string): boolean => {
   return !!samp.callNative("RedirectDownload", "is", playerId, url);
+};
+
+export const GetCustomModelPath = (modelId: number) => {
+  const [dffPath, txdPath, ret]: [number, number, number] = samp.callNative(
+    "GetCustomModelPath",
+    "iSiSi",
+    modelId,
+    255,
+    255,
+  );
+  return {
+    dffPath,
+    txdPath,
+    ret: !!ret,
+  };
 };
 
 export const FindModelFileNameFromCRC = (crc: number) => {
@@ -467,7 +505,7 @@ export const GetPlayerAttachedObject = (
     fScaleZ,
     materialColor1,
     materialColor2,
-    ret,
+    ret: !!ret,
   };
 };
 
@@ -520,13 +558,16 @@ export const IsPlayerAttachedObjectSlotUsed = (
   playerId: number,
   index: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsPlayerAttachedObjectSlotUsed", "ii", playerId, index),
+  return !!samp.callNative(
+    "IsPlayerAttachedObjectSlotUsed",
+    "ii",
+    playerId,
+    index,
   );
 };
 
 export const IsValidCustomModel = (modelId: number): boolean => {
-  return Boolean(samp.callNative("IsValidCustomModel", "i", modelId));
+  return !!samp.callNative("IsValidCustomModel", "i", modelId);
 };
 
 export const GetCustomModePath = (modelId: number) => {

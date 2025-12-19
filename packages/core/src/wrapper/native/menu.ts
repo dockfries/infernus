@@ -1,9 +1,9 @@
 export const IsMenuDisabled = (menuId: number): boolean => {
-  return Boolean(samp.callNative("IsMenuDisabled", "i", menuId));
+  return !!samp.callNative("IsMenuDisabled", "i", menuId);
 };
 
 export const IsMenuRowDisabled = (menuId: number, row: number): boolean => {
-  return Boolean(samp.callNative("IsMenuRowDisabled", "ii", menuId, row));
+  return !!samp.callNative("IsMenuRowDisabled", "ii", menuId, row);
 };
 
 export const GetMenuColumns = (menuId: number): number => {
@@ -20,37 +20,43 @@ export const GetMenuPos = (menuId: number) => {
     "iFF",
     menuId,
   );
-  return { fX, fY, ret };
+  return { fX, fY, ret: !!ret };
 };
 
 export const GetMenuColumnWidth = (menuId: number) => {
   const [fColumn1 = 0.0, fColumn2 = 0.0, ret]: [number, number, number] =
     samp.callNative("GetMenuColumnWidth", "iFF", menuId);
-  return { fColumn1, fColumn2, ret };
+  return { fColumn1, fColumn2, ret: !!ret };
 };
 
-export const DestroyMenu = (menuId: number): number => {
-  return samp.callNative("DestroyMenu", "i", menuId);
+export const DestroyMenu = (menuId: number): boolean => {
+  return !!samp.callNative("DestroyMenu", "i", menuId);
 };
 
-export const ShowMenuForPlayer = (menuId: number, playerId: number): number => {
-  return samp.callNative("ShowMenuForPlayer", "ii", menuId, playerId);
+export const ShowMenuForPlayer = (
+  menuId: number,
+  playerId: number,
+): boolean => {
+  return !!samp.callNative("ShowMenuForPlayer", "ii", menuId, playerId);
 };
 
-export const HideMenuForPlayer = (menuId: number, playerId: number): number => {
-  return samp.callNative("HideMenuForPlayer", "ii", menuId, playerId);
+export const HideMenuForPlayer = (
+  menuId: number,
+  playerId: number,
+): boolean => {
+  return !!samp.callNative("HideMenuForPlayer", "ii", menuId, playerId);
 };
 
 export const IsValidMenu = (menuId: number): boolean => {
-  return Boolean(samp.callNative("IsValidMenu", "i", menuId));
+  return !!samp.callNative("IsValidMenu", "i", menuId);
 };
 
-export const DisableMenu = (menuId: number): number => {
-  return samp.callNative("DisableMenu", "i", menuId);
+export const DisableMenu = (menuId: number): boolean => {
+  return !!samp.callNative("DisableMenu", "i", menuId);
 };
 
-export const DisableMenuRow = (menuId: number, row: number): number => {
-  return samp.callNative("DisableMenuRow", "ii", menuId, row);
+export const DisableMenuRow = (menuId: number, row: number): boolean => {
+  return !!samp.callNative("DisableMenuRow", "ii", menuId, row);
 };
 
 export const GetPlayerMenu = (playerId: number): number => {

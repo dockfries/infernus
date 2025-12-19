@@ -456,10 +456,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
 
       if (!isVehicleBike(vehicle)) {
         const { keys } = orig_playerMethods.getKeys.call(editable.issuer);
-
-        valid = Boolean(
-          keys & KeysEnum.LOOK_RIGHT || keys & KeysEnum.LOOK_LEFT,
-        );
+        valid = !!(keys & KeysEnum.LOOK_RIGHT || keys & KeysEnum.LOOK_LEFT);
       }
     } else {
       valid = false;

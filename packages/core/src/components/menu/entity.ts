@@ -128,13 +128,13 @@ export class Menu {
     return Menu.isValid(this.id);
   }
 
-  showForPlayer(player: Player): number {
+  showForPlayer(player: Player): boolean {
     if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot show menu before create");
     return Menu.__inject__.showForPlayer(this.id, player.id);
   }
 
-  hideForPlayer(player: Player): number {
+  hideForPlayer(player: Player): boolean {
     if (this._id === InvalidEnum.MENU)
       throw new Error("[Menu]: Cannot hide menu before create");
     return Menu.__inject__.hideForPlayer(this.id, player.id);

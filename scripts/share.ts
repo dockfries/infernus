@@ -27,6 +27,10 @@ function onceSIGKill(subProc: ReturnType<typeof execa>) {
 export async function build(pkgName: string) {
   const pkgPath = path.resolve(pkgDir, pkgName);
 
+  if (!fs.existsSync(pkgPath)) {
+    throw new Error(`Package ${pkgName} not found`);
+  }
+
   const pkgRollupConfig = path.resolve(pkgPath, "rollup.config.js");
 
   const useSelfConfig = fs.existsSync(pkgRollupConfig);

@@ -48,9 +48,7 @@ export const Streamer_IsToggleItem = (
   type: StreamerItemTypes,
   id: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("Streamer_IsToggleItem", "iii", playerId, type, id),
-  );
+  return !!samp.callNative("Streamer_IsToggleItem", "iii", playerId, type, id);
 };
 
 export const Streamer_ToggleAllItems = (
@@ -103,9 +101,7 @@ export const Streamer_IsItemVisible = (
   type: StreamerItemTypes,
   id: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("Streamer_IsItemVisible", "iii", playerId, type, id),
-  );
+  return !!samp.callNative("Streamer_IsItemVisible", "iii", playerId, type, id);
 };
 
 export const Streamer_DestroyAllVisibleItems = (

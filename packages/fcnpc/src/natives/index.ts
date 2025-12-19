@@ -10,6 +10,7 @@ import type {
   WeaponSkillsEnum,
   WeaponStatesEnum,
 } from "@infernus/core";
+import { LandingGearStateEnum } from "@infernus/core";
 import {
   EntityCheck,
   EntityMode,
@@ -876,7 +877,7 @@ export class FCNPC {
   getVehicleHydraThrusters(): number {
     return samp.callNative("FCNPC_GetVehicleHydraThrusters", "i", this.id);
   }
-  setVehicleGearState(gearState: number): number {
+  setVehicleGearState(gearState: LandingGearStateEnum): number {
     return samp.callNative(
       "FCNPC_SetVehicleGearState",
       "ii",
@@ -884,7 +885,7 @@ export class FCNPC {
       gearState,
     );
   }
-  getVehicleGearState(): number {
+  getVehicleGearState(): LandingGearStateEnum {
     return samp.callNative("FCNPC_GetVehicleGearState", "i", this.id);
   }
   setVehicleTrainSpeed(speed: number): number {

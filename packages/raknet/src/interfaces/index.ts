@@ -1,4 +1,5 @@
 import type { BulletHitTypesEnum, WeaponEnum } from "@infernus/core";
+import { LandingGearStateEnum } from "@infernus/core";
 import type { Vector3, Vector4 } from "raknet/types";
 
 export interface IOnFootSync {
@@ -33,7 +34,7 @@ export interface IInCarSync {
   additionalKey: number;
   weaponId: WeaponEnum;
   sirenState: number;
-  landingGearState: number;
+  landingGearState: LandingGearStateEnum;
   trailerId: number;
   trainSpeed: number;
 }

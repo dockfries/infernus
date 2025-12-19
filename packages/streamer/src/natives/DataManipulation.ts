@@ -95,8 +95,13 @@ export const Streamer_IsInArrayData = (
   data: StreamerArrayData,
   value: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("Streamer_IsInArrayData", "iiii", type, id, data, value),
+  return !!samp.callNative(
+    "Streamer_IsInArrayData",
+    "iiii",
+    type,
+    id,
+    data,
+    value,
   );
 };
 

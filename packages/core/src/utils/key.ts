@@ -9,7 +9,7 @@ export function isPressed(newKeys: KeysEnum, oldKeys: KeysEnum, key: KeysEnum) {
 }
 
 export function isPressing(keys: KeysEnum, key: KeysEnum) {
-  return Boolean(keys & key);
+  return !!(keys & key);
 }
 
 export function isReleased(

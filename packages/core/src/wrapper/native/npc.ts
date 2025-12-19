@@ -1,9 +1,12 @@
-import type {
+import {
   WeaponEnum,
   WeaponSkillsEnum,
   FightingStylesEnum,
   WeaponStatesEnum,
   BulletHitTypesEnum,
+  NPCEntityCheckEnum,
+  LandingGearStateEnum,
+  SpecialActionsEnum,
 } from "core/enums";
 
 export const NPC_Create = (name: string) => {
@@ -11,7 +14,7 @@ export const NPC_Create = (name: string) => {
 };
 
 export const NPC_Destroy = (id: number) => {
-  return samp.callNative("NPC_Destroy", "i", id) as number;
+  return !!samp.callNative("NPC_Destroy", "i", id);
 };
 
 export const NPC_IsValid = (id: number) => {
@@ -19,19 +22,19 @@ export const NPC_IsValid = (id: number) => {
 };
 
 export const NPC_Spawn = (id: number) => {
-  return samp.callNative("NPC_Spawn", "i", id) as number;
+  return !!samp.callNative("NPC_Spawn", "i", id);
 };
 
 export const NPC_Respawn = (id: number) => {
-  return samp.callNative("NPC_Respawn", "i", id) as number;
+  return !!samp.callNative("NPC_Respawn", "i", id);
 };
 
 export const NPC_SetPos = (id: number, x: number, y: number, z: number) => {
-  return samp.callNative("NPC_SetPos", "ifff", id, x, y, z) as number;
+  return !!samp.callNative("NPC_SetPos", "ifff", id, x, y, z);
 };
 
 export const NPC_SetRot = (id: number, rX: number, rY: number, rZ: number) => {
-  return samp.callNative("NPC_SetRot", "ifff", id, rX, rY, rZ) as number;
+  return !!samp.callNative("NPC_SetRot", "ifff", id, rX, rY, rZ);
 };
 
 export const NPC_GetRot = (id: number) => {
@@ -40,11 +43,11 @@ export const NPC_GetRot = (id: number) => {
     "iFFF",
     id,
   );
-  return { rX, rY, rZ, ret };
+  return { rX, rY, rZ, ret: !!ret };
 };
 
 export const NPC_SetFacingAngle = (id: number, angle: number) => {
-  return samp.callNative("NPC_SetFacingAngle", "if", id, angle) as number;
+  return !!samp.callNative("NPC_SetFacingAngle", "if", id, angle);
 };
 
 export const NPC_GetFacingAngle = (id: number) => {
@@ -53,16 +56,11 @@ export const NPC_GetFacingAngle = (id: number) => {
     "iF",
     id,
   );
-  return { angle, ret };
+  return { angle, ret: !!ret };
 };
 
 export const NPC_SetVirtualWorld = (id: number, virtualWorld: number) => {
-  return samp.callNative(
-    "NPC_SetVirtualWorld",
-    "ii",
-    id,
-    virtualWorld,
-  ) as number;
+  return !!samp.callNative("NPC_SetVirtualWorld", "ii", id, virtualWorld);
 };
 
 export const NPC_GetVirtualWorld = (id: number) => {
@@ -106,7 +104,7 @@ export const NPC_MoveToPlayer = (
 };
 
 export const NPC_StopMove = (id: number) => {
-  return samp.callNative("NPC_StopMove", "i", id) as number;
+  return !!samp.callNative("NPC_StopMove", "i", id);
 };
 
 export const NPC_IsMoving = (id: number) => {
@@ -118,7 +116,7 @@ export const NPC_IsMovingToPlayer = (id: number, playerId: number) => {
 };
 
 export const NPC_SetSkin = (id: number, model: number) => {
-  return samp.callNative("NPC_SetSkin", "ii", id, model) as number;
+  return !!samp.callNative("NPC_SetSkin", "ii", id, model);
 };
 
 export const NPC_GetSkin = (id: number) => {
@@ -134,7 +132,7 @@ export const NPC_IsAnyStreamedIn = (id: number) => {
 };
 
 export const NPC_SetInterior = (id: number, interior: number) => {
-  return samp.callNative("NPC_SetInterior", "ii", id, interior) as number;
+  return !!samp.callNative("NPC_SetInterior", "ii", id, interior);
 };
 
 export const NPC_GetInterior = (id: number) => {
@@ -142,7 +140,7 @@ export const NPC_GetInterior = (id: number) => {
 };
 
 export const NPC_SetHealth = (id: number, health: number) => {
-  return samp.callNative("NPC_SetHealth", "if", id, health) as number;
+  return !!samp.callNative("NPC_SetHealth", "if", id, health);
 };
 
 export const NPC_GetHealth = (id: number) => {
@@ -150,7 +148,7 @@ export const NPC_GetHealth = (id: number) => {
 };
 
 export const NPC_SetArmour = (id: number, armour: number) => {
-  return samp.callNative("NPC_SetArmour", "if", id, armour) as number;
+  return !!samp.callNative("NPC_SetArmour", "if", id, armour);
 };
 
 export const NPC_GetArmour = (id: number) => {
@@ -173,7 +171,7 @@ export const NPC_ApplyAnimation = (
   time: number,
   sync: number,
 ) => {
-  return samp.callNative(
+  return !!samp.callNative(
     "NPC_ApplyAnimation",
     "issfiiiiii",
     id,
@@ -186,11 +184,11 @@ export const NPC_ApplyAnimation = (
     freeze,
     time,
     sync,
-  ) as number;
+  );
 };
 
 export const NPC_SetWeapon = (id: number, weapon: WeaponEnum) => {
-  return samp.callNative("NPC_SetWeapon", "ii", id, weapon) as number;
+  return !!samp.callNative("NPC_SetWeapon", "ii", id, weapon);
 };
 
 export const NPC_GetWeapon = (id: number) => {
@@ -198,7 +196,7 @@ export const NPC_GetWeapon = (id: number) => {
 };
 
 export const NPC_SetAmmo = (id: number, ammo: number) => {
-  return samp.callNative("NPC_SetAmmo", "ii", id, ammo) as number;
+  return !!samp.callNative("NPC_SetAmmo", "ii", id, ammo);
 };
 
 export const NPC_GetAmmo = (id: number) => {
@@ -211,20 +209,20 @@ export const NPC_SetKeys = (
   leftAndDown: number,
   keys: number,
 ) => {
-  return samp.callNative(
+  return !!samp.callNative(
     "NPC_SetKeys",
     "iiii",
     id,
     upAndDown,
     leftAndDown,
     keys,
-  ) as number;
+  );
 };
 
 export const NPC_GetKeys = (id: number) => {
   const [upAndDown, leftAndDown, keys, ret]: [number, number, number, number] =
     samp.callNative("NPC_GetKeys", "iIII", id);
-  return { upAndDown, leftAndDown, keys, ret };
+  return { upAndDown, leftAndDown, keys, ret: !!ret };
 };
 
 export const NPC_SetWeaponSkillLevel = (
@@ -232,13 +230,7 @@ export const NPC_SetWeaponSkillLevel = (
   skill: WeaponSkillsEnum,
   level: number,
 ) => {
-  return samp.callNative(
-    "NPC_SetWeaponSkillLevel",
-    "iii",
-    id,
-    skill,
-    level,
-  ) as number;
+  return !!samp.callNative("NPC_SetWeaponSkillLevel", "iii", id, skill, level);
 };
 
 export const NPC_GetWeaponSkillLevel = (
@@ -250,20 +242,14 @@ export const NPC_GetWeaponSkillLevel = (
 
 export const NPC_MeleeAttack = (
   id: number,
-  time: number,
-  secondaryAttack: boolean,
+  time: number = -1,
+  secondaryAttack: boolean = false,
 ) => {
-  return samp.callNative(
-    "NPC_MeleeAttack",
-    "iii",
-    id,
-    time,
-    secondaryAttack,
-  ) as number;
+  return !!samp.callNative("NPC_MeleeAttack", "iii", id, time, secondaryAttack);
 };
 
 export const NPC_StopMeleeAttack = (id: number) => {
-  return samp.callNative("NPC_StopMeleeAttack", "i", id) as number;
+  return !!samp.callNative("NPC_StopMeleeAttack", "i", id);
 };
 
 export const NPC_IsMeleeAttacking = (id: number) => {
@@ -271,15 +257,15 @@ export const NPC_IsMeleeAttacking = (id: number) => {
 };
 
 export const NPC_SetFightingStyle = (id: number, style: FightingStylesEnum) => {
-  return samp.callNative("NPC_SetFightingStyle", "ii", id, style) as number;
+  return !!samp.callNative("NPC_SetFightingStyle", "ii", id, style);
 };
 
 export const NPC_GetFightingStyle = (id: number) => {
   return samp.callNative("NPC_GetFightingStyle", "i", id) as FightingStylesEnum;
 };
 
-export const NPC_EnableReloading = (id: number, enable: boolean) => {
-  return samp.callNative("NPC_EnableReloading", "ii", id, enable) as number;
+export const NPC_EnableReloading = (id: number, enable: boolean = true) => {
+  return !!samp.callNative("NPC_EnableReloading", "ii", id, enable);
 };
 
 export const NPC_IsReloadEnabled = (id: number) => {
@@ -290,8 +276,8 @@ export const NPC_IsReloading = (id: number) => {
   return !!samp.callNative("NPC_IsReloading", "i", id);
 };
 
-export const NPC_EnableInfiniteAmmo = (id: number, enable: boolean) => {
-  return samp.callNative("NPC_EnableInfiniteAmmo", "ii", id, enable) as number;
+export const NPC_EnableInfiniteAmmo = (id: number, enable: boolean = true) => {
+  return !!samp.callNative("NPC_EnableInfiniteAmmo", "ii", id, enable);
 };
 
 export const NPC_IsInfiniteAmmoEnabled = (id: number) => {
@@ -310,7 +296,7 @@ export const NPC_GetWeaponState = (id: number) => {
 };
 
 export const NPC_SetAmmoInClip = (id: number, ammo: number) => {
-  return samp.callNative("NPC_SetAmmoInClip", "ii", id, ammo) as number;
+  return !!samp.callNative("NPC_SetAmmoInClip", "ii", id, ammo);
 };
 
 export const NPC_GetAmmoInClip = (id: number) => {
@@ -325,13 +311,13 @@ export const NPC_Shoot = (
   endPointX: number,
   endPointY: number,
   endPointZ: number,
-  offsetX: number,
-  offsetY: number,
-  offsetZ: number,
-  isHit: boolean,
-  checkInBetweenFlags: number,
+  offsetX: number = 0.0,
+  offsetY: number = 0.0,
+  offsetZ: number = 0.0,
+  isHit: boolean = true,
+  checkInBetweenFlags: NPCEntityCheckEnum = NPCEntityCheckEnum.ALL,
 ) => {
-  return samp.callNative(
+  return !!samp.callNative(
     "NPC_Shoot",
     "iiiffffffii",
     id,
@@ -346,7 +332,7 @@ export const NPC_Shoot = (
     offsetZ,
     isHit,
     checkInBetweenFlags,
-  ) as number;
+  );
 };
 
 export const NPC_IsShooting = (id: number) => {
@@ -358,15 +344,15 @@ export const NPC_AimAt = (
   pointX: number,
   pointY: number,
   pointZ: number,
-  shoot: boolean,
-  shootDelay: number,
-  updateAngle: boolean,
-  offsetFromX: number,
-  offsetFromY: number,
-  offsetFromZ: number,
-  checkInBetweenFlags: number,
+  shoot: boolean = false,
+  shootDelay: number = -1,
+  updateAngle: boolean = true,
+  offsetFromX: number = 0.0,
+  offsetFromY: number = 0.0,
+  offsetFromZ: number = 0.0,
+  checkInBetweenFlags: NPCEntityCheckEnum = NPCEntityCheckEnum.ALL,
 ) => {
-  return samp.callNative(
+  return !!samp.callNative(
     "NPC_AimAt",
     "ifffiiifffi",
     id,
@@ -380,24 +366,24 @@ export const NPC_AimAt = (
     offsetFromY,
     offsetFromZ,
     checkInBetweenFlags,
-  ) as number;
+  );
 };
 
 export const NPC_AimAtPlayer = (
   id: number,
   playerId: number,
-  shoot: boolean,
-  shootDelay: number,
-  updateAngle: boolean,
-  offsetX: number,
-  offsetY: number,
-  offsetZ: number,
-  offsetFromX: number,
-  offsetFromY: number,
-  offsetFromZ: number,
-  checkInBetweenFlags: number,
+  shoot: boolean = false,
+  shootDelay: number = -1,
+  updateAngle: boolean = true,
+  offsetX: number = 0.0,
+  offsetY: number = 0.0,
+  offsetZ: number = 0.0,
+  offsetFromX: number = 0.0,
+  offsetFromY: number = 0.0,
+  offsetFromZ: number = 0.0,
+  checkInBetweenFlags: NPCEntityCheckEnum = NPCEntityCheckEnum.ALL,
 ) => {
-  return samp.callNative(
+  return !!samp.callNative(
     "NPC_AimAtPlayer",
     "iiiiiffffffi",
     id,
@@ -412,11 +398,11 @@ export const NPC_AimAtPlayer = (
     offsetFromY,
     offsetFromZ,
     checkInBetweenFlags,
-  ) as number;
+  );
 };
 
 export const NPC_StopAim = (id: number) => {
-  return samp.callNative("NPC_StopAim", "i", id) as number;
+  return !!samp.callNative("NPC_StopAim", "i", id);
 };
 
 export const NPC_IsAiming = (id: number) => {
@@ -432,13 +418,13 @@ export const NPC_SetWeaponAccuracy = (
   weapon: WeaponEnum,
   accuracy: number,
 ) => {
-  return samp.callNative(
+  return !!samp.callNative(
     "NPC_SetWeaponAccuracy",
     "iif",
     id,
     weapon,
     accuracy,
-  ) as number;
+  );
 };
 
 export const NPC_GetWeaponAccuracy = (id: number, weapon: number) => {
@@ -455,13 +441,7 @@ export const NPC_SetWeaponReloadTime = (
   weapon: number,
   time: number,
 ) => {
-  return samp.callNative(
-    "NPC_SetWeaponReloadTime",
-    "iii",
-    id,
-    weapon,
-    time,
-  ) as number;
+  return !!samp.callNative("NPC_SetWeaponReloadTime", "iii", id, weapon, time);
 };
 
 export const NPC_GetWeaponReloadTime = (id: number, weapon: number) => {
@@ -482,13 +462,7 @@ export const NPC_SetWeaponShootTime = (
   weapon: number,
   time: number,
 ) => {
-  return samp.callNative(
-    "NPC_SetWeaponShootTime",
-    "iii",
-    id,
-    weapon,
-    time,
-  ) as number;
+  return !!samp.callNative("NPC_SetWeaponShootTime", "iii", id, weapon, time);
 };
 
 export const NPC_GetWeaponShootTime = (id: number, weapon: number) => {
@@ -500,13 +474,7 @@ export const NPC_SetWeaponClipSize = (
   weapon: number,
   size: number,
 ) => {
-  return samp.callNative(
-    "NPC_SetWeaponClipSize",
-    "iii",
-    id,
-    weapon,
-    size,
-  ) as number;
+  return !!samp.callNative("NPC_SetWeaponClipSize", "iii", id, weapon, size);
 };
 
 export const NPC_GetWeaponClipSize = (id: number, weapon: number) => {
@@ -528,18 +496,18 @@ export const NPC_EnterVehicle = (
   seatId: number,
   moveType: number,
 ) => {
-  return samp.callNative(
+  return !!samp.callNative(
     "NPC_EnterVehicle",
     "iiii",
     id,
     vehicleId,
     seatId,
     moveType,
-  ) as number;
+  );
 };
 
 export const NPC_ExitVehicle = (id: number) => {
-  return samp.callNative("NPC_ExitVehicle", "i", id) as number;
+  return !!samp.callNative("NPC_ExitVehicle", "i", id);
 };
 
 export const NPC_PutInVehicle = (
@@ -547,17 +515,11 @@ export const NPC_PutInVehicle = (
   vehicleId: number,
   seat: number,
 ) => {
-  return samp.callNative(
-    "NPC_PutInVehicle",
-    "iii",
-    id,
-    vehicleId,
-    seat,
-  ) as number;
+  return !!samp.callNative("NPC_PutInVehicle", "iii", id, vehicleId, seat);
 };
 
 export const NPC_RemoveFromVehicle = (id: number) => {
-  return samp.callNative("NPC_RemoveFromVehicle", "i", id) as number;
+  return !!samp.callNative("NPC_RemoveFromVehicle", "i", id);
 };
 
 export const NPC_GetVehicle = (id: number) => {
@@ -581,7 +543,7 @@ export const NPC_IsEnteringVehicle = (id: number) => {
 };
 
 export const NPC_UseVehicleSiren = (id: number, use: boolean) => {
-  return samp.callNative("NPC_UseVehicleSiren", "ii", id, use) as number;
+  return !!samp.callNative("NPC_UseVehicleSiren", "ii", id, use);
 };
 
 export const NPC_IsVehicleSirenUsed = (id: number) => {
@@ -589,7 +551,7 @@ export const NPC_IsVehicleSirenUsed = (id: number) => {
 };
 
 export const NPC_SetVehicleHealth = (id: number, health: number) => {
-  return samp.callNative("NPC_SetVehicleHealth", "if", id, health) as number;
+  return !!samp.callNative("NPC_SetVehicleHealth", "if", id, health);
 };
 
 export const NPC_GetVehicleHealth = (id: number) => {
@@ -597,41 +559,38 @@ export const NPC_GetVehicleHealth = (id: number) => {
 };
 
 export const NPC_SetVehicleHydraThrusters = (id: number, direction: number) => {
-  return samp.callNative(
-    "NPC_SetVehicleHydraThrusters",
-    "ii",
-    id,
-    direction,
-  ) as number;
+  return !!samp.callNative("NPC_SetVehicleHydraThrusters", "ii", id, direction);
 };
 
 export const NPC_GetVehicleHydraThrusters = (id: number) => {
   return samp.callNative("NPC_GetVehicleHydraThrusters", "i", id) as number;
 };
 
-export const NPC_SetVehicleGearState = (id: number, gearState: number) => {
-  return samp.callNative(
-    "NPC_SetVehicleGearState",
-    "ii",
-    id,
-    gearState,
-  ) as number;
+export const NPC_SetVehicleGearState = (
+  id: number,
+  gearState: LandingGearStateEnum,
+) => {
+  return !!samp.callNative("NPC_SetVehicleGearState", "ii", id, gearState);
 };
 
-export const NPC_GetVehicleGearState = (id: number) => {
-  return samp.callNative("NPC_GetVehicleGearState", "i", id) as number;
+export const NPC_GetVehicleGearState = (id: number): LandingGearStateEnum => {
+  return samp.callNative(
+    "NPC_GetVehicleGearState",
+    "i",
+    id,
+  ) as LandingGearStateEnum;
 };
 
 export const NPC_SetVehicleTrainSpeed = (id: number, speed: number) => {
-  return samp.callNative("NPC_SetVehicleTrainSpeed", "if", id, speed) as number;
+  return !!samp.callNative("NPC_SetVehicleTrainSpeed", "if", id, speed);
 };
 
 export const NPC_GetVehicleTrainSpeed = (id: number) => {
   return samp.callNativeFloat("NPC_GetVehicleTrainSpeed", "i", id) as number;
 };
 
-export const NPC_ResetAnimation = (id: number) => {
-  return samp.callNative("NPC_ResetAnimation", "i", id) as number;
+export const NPC_ResetAnimation = (id: number): boolean => {
+  return !!samp.callNative("NPC_ResetAnimation", "i", id);
 };
 
 export const NPC_SetAnimation = (
@@ -643,8 +602,8 @@ export const NPC_SetAnimation = (
   lockY: boolean,
   freeze: boolean,
   time: number,
-) => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "NPC_SetAnimation",
     "iifiiiii",
     id,
@@ -655,7 +614,7 @@ export const NPC_SetAnimation = (
     lockY,
     freeze,
     time,
-  ) as number;
+  );
 };
 
 export const NPC_GetAnimation = (id: number) => {
@@ -669,34 +628,37 @@ export const NPC_GetAnimation = (id: number) => {
     lockY: !!lockY,
     freeze: !!freeze,
     time,
-    ret,
+    ret: !!ret,
   };
 };
 
-export const NPC_ClearAnimations = (id: number) => {
-  return samp.callNative("NPC_ClearAnimations", "i", id) as number;
+export const NPC_ClearAnimations = (id: number): boolean => {
+  return !!samp.callNative("NPC_ClearAnimations", "i", id);
 };
 
-export const NPC_SetSpecialAction = (id: number, action: number) => {
-  return samp.callNative("NPC_SetSpecialAction", "ii", id, action) as number;
+export const NPC_SetSpecialAction = (
+  id: number,
+  action: SpecialActionsEnum,
+): boolean => {
+  return !!samp.callNative("NPC_SetSpecialAction", "ii", id, action);
 };
 
-export const NPC_GetSpecialAction = (id: number) => {
-  return samp.callNative("NPC_GetSpecialAction", "i", id) as number;
+export const NPC_GetSpecialAction = (id: number): SpecialActionsEnum => {
+  return samp.callNative("NPC_GetSpecialAction", "i", id);
 };
 
 export const NPC_StartPlayback = (
   id: number,
   recordName: string,
-  autoUnload: boolean,
-  startX: number,
-  startY: number,
-  startZ: number,
-  rotX: number,
-  rotY: number,
-  rotZ: number,
+  autoUnload: boolean = false,
+  startX: number = 0.0,
+  startY: number = 0.0,
+  startZ: number = 0.0,
+  rotX: number = 0.0,
+  rotY: number = 0.0,
+  rotZ: number = 0.0,
 ) => {
-  return samp.callNative(
+  return !!samp.callNative(
     "NPC_StartPlayback",
     "isiffffff",
     id,
@@ -708,21 +670,21 @@ export const NPC_StartPlayback = (
     rotX,
     rotY,
     rotZ,
-  ) as number;
+  );
 };
 
 export const NPC_StartPlaybackEx = (
   id: number,
   recordId: number,
-  autoUnload: boolean,
-  startX: number,
-  startY: number,
-  startZ: number,
-  rotX: number,
-  rotY: number,
-  rotZ: number,
+  autoUnload: boolean = false,
+  startX: number = 0.0,
+  startY: number = 0.0,
+  startZ: number = 0.0,
+  rotX: number = 0.0,
+  rotY: number = 0.0,
+  rotZ: number = 0.0,
 ) => {
-  return samp.callNative(
+  return !!samp.callNative(
     "NPC_StartPlaybackEx",
     "iiiffffff",
     id,
@@ -734,15 +696,15 @@ export const NPC_StartPlaybackEx = (
     rotX,
     rotY,
     rotZ,
-  ) as number;
+  );
 };
 
 export const NPC_StopPlayback = (id: number) => {
-  return samp.callNative("NPC_StopPlayback", "i", id) as number;
+  return !!samp.callNative("NPC_StopPlayback", "i", id);
 };
 
-export const NPC_PausePlayback = (id: number, paused: boolean) => {
-  return samp.callNative("NPC_PausePlayback", "ii", id, paused) as number;
+export const NPC_PausePlayback = (id: number, paused: boolean = true) => {
+  return !!samp.callNative("NPC_PausePlayback", "ii", id, paused);
 };
 
 export const NPC_IsPlayingPlayback = (id: number) => {
@@ -794,15 +756,15 @@ export const NPC_IsPlayingNode = (id: number) => {
 };
 
 export const NPC_ChangeNode = (id: number, nodeId: number, link: number) => {
-  return samp.callNative("NPC_ChangeNode", "iii", id, nodeId, link) as number;
+  return !!samp.callNative("NPC_ChangeNode", "iii", id, nodeId, link);
 };
 
 export const NPC_UpdateNodePoint = (id: number, pointId: number) => {
   return !!samp.callNative("NPC_UpdateNodePoint", "ii", id, pointId);
 };
 
-export const NPC_SetInvulnerable = (id: number, toggle: boolean) => {
-  return samp.callNative("NPC_SetInvulnerable", "ii", id, toggle) as number;
+export const NPC_SetInvulnerable = (id: number, toggle: boolean = true) => {
+  return !!samp.callNative("NPC_SetInvulnerable", "ii", id, toggle) as boolean;
 };
 
 export const NPC_IsInvulnerable = (id: number) => {
@@ -815,14 +777,7 @@ export const NPC_SetSurfingOffsets = (
   y: number,
   z: number,
 ) => {
-  return samp.callNative(
-    "NPC_SetSurfingOffsets",
-    "ifff",
-    id,
-    x,
-    y,
-    z,
-  ) as number;
+  return !!samp.callNative("NPC_SetSurfingOffsets", "ifff", id, x, y, z);
 };
 
 export const NPC_GetSurfingOffsets = (id: number) => {
@@ -831,16 +786,11 @@ export const NPC_GetSurfingOffsets = (id: number) => {
     "iFFF",
     id,
   );
-  return { x, y, z, ret };
+  return { x, y, z, ret: !!ret };
 };
 
 export const NPC_SetSurfingVehicle = (id: number, vehicleId: number) => {
-  return samp.callNative(
-    "NPC_SetSurfingVehicle",
-    "ii",
-    id,
-    vehicleId,
-  ) as number;
+  return !!samp.callNative("NPC_SetSurfingVehicle", "ii", id, vehicleId);
 };
 
 export const NPC_GetSurfingVehicle = (id: number) => {
@@ -848,7 +798,7 @@ export const NPC_GetSurfingVehicle = (id: number) => {
 };
 
 export const NPC_SetSurfingObject = (id: number, objectId: number) => {
-  return samp.callNative("NPC_SetSurfingObject", "ii", id, objectId) as number;
+  return !!samp.callNative("NPC_SetSurfingObject", "ii", id, objectId);
 };
 
 export const NPC_GetSurfingObject = (id: number) => {
@@ -856,12 +806,7 @@ export const NPC_GetSurfingObject = (id: number) => {
 };
 
 export const NPC_SetSurfingPlayerObject = (id: number, objectId: number) => {
-  return samp.callNative(
-    "NPC_SetSurfingPlayerObject",
-    "ii",
-    id,
-    objectId,
-  ) as number;
+  return !!samp.callNative("NPC_SetSurfingPlayerObject", "ii", id, objectId);
 };
 
 export const NPC_GetSurfingPlayerObject = (id: number) => {
@@ -869,7 +814,7 @@ export const NPC_GetSurfingPlayerObject = (id: number) => {
 };
 
 export const NPC_ResetSurfingData = (id: number) => {
-  return samp.callNative("NPC_ResetSurfingData", "i", id) as number;
+  return !!samp.callNative("NPC_ResetSurfingData", "i", id);
 };
 
 export const NPC_IsSpawned = (id: number) => {

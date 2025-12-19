@@ -19,9 +19,9 @@ export const SendClientMessage = (
   player: Player,
   color: string | number,
   msg: string,
-): number => {
+): boolean => {
   const res = processMsg(msg, player.charset);
-  return samp.callNative(
+  return !!samp.callNative(
     "SendClientMessage",
     `ii${res[0]}`,
     player.id,
@@ -34,18 +34,19 @@ export const SendClientMessageToAll = (
   players: Array<Player>,
   color: string | number,
   msg: string,
-): number => {
-  players.forEach((p) => SendClientMessage(p, color, msg));
-  return 1;
+): boolean => {
+  return players
+    .map((p) => SendClientMessage(p, color, msg))
+    .every((v) => v === true);
 };
 
 export const SendPlayerMessageToPlayer = (
   player: Player,
   senderId: number,
   message: string,
-): number => {
+): boolean => {
   const res = processMsg(message, player.charset);
-  return samp.callNative(
+  return !!samp.callNative(
     "SendPlayerMessageToPlayer",
     `ii${res[0]}`,
     player.id,
@@ -58,11 +59,10 @@ export const SendPlayerMessageToAll = (
   players: Array<Player>,
   senderId: number,
   message: string,
-): number => {
-  players.forEach((p) => {
-    SendPlayerMessageToPlayer(p, senderId, message);
-  });
-  return 1;
+): boolean => {
+  return players
+    .map((p) => SendPlayerMessageToPlayer(p, senderId, message))
+    .every((v) => v === true);
 };
 
 export const ShowPlayerDialog = (
@@ -115,14 +115,14 @@ export const BanEx = (
   playerId: number,
   reason: string,
   charset: string,
-): number => {
+): boolean => {
   const buf = I18n.encodeToBuf(reason, charset);
-  return samp.callNative("BanEx", "ia", playerId, buf);
+  return !!samp.callNative("BanEx", "ia", playerId, buf);
 };
 
-export const SendRconCommand = (command: string, charset = "utf8"): number => {
+export const SendRconCommand = (command: string, charset = "utf8"): boolean => {
   const [flag, processCommand] = processMsg(command, charset);
-  return samp.callNative("SendRconCommand", flag, processCommand);
+  return !!samp.callNative("SendRconCommand", flag, processCommand);
 };
 
 export const CreateDynamic3DTextLabel = (
@@ -434,7 +434,7 @@ export const GetObjectMaterialText = (
     fontColor,
     backColor,
     textAlignment,
-    ret,
+    ret: !!ret,
   };
 };
 
@@ -517,7 +517,7 @@ export const GetPlayerObjectMaterialText = (
     fontColor,
     backColor,
     textAlignment,
-    ret,
+    ret: !!ret,
   };
 };
 
@@ -619,7 +619,7 @@ export const Get3DTextLabelText = (charset: string, id: number) => {
     144,
   );
   const text = I18n.decodeFromBuf(buf, charset);
-  return { text, buf, ret };
+  return { text, buf, ret: !!ret };
 };
 
 export const GetPlayer3DTextLabelText = (
@@ -635,7 +635,7 @@ export const GetPlayer3DTextLabelText = (
     144,
   );
   const text = I18n.decodeFromBuf(buf, charset);
-  return { text, buf, ret };
+  return { text, buf, ret: !!ret };
 };
 
 export const GetMenuColumnHeader = (
@@ -651,7 +651,7 @@ export const GetMenuColumnHeader = (
     31,
   );
   const header = I18n.decodeFromBuf(buf, charset);
-  return { header, buf, ret };
+  return { header, buf, ret: !!ret };
 };
 
 export const GetMenuItem = (
@@ -669,7 +669,7 @@ export const GetMenuItem = (
     31,
   );
   const item = I18n.decodeFromBuf(buf, charset);
-  return { item, buf, ret };
+  return { item, buf, ret: !!ret };
 };
 
 export const CreateMenu = (
@@ -713,8 +713,8 @@ export const SetMenuColumnHeader = (
   column: number,
   columnHeader: string,
   charset: string,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "SetMenuColumnHeader",
     "iia",
     menuId,

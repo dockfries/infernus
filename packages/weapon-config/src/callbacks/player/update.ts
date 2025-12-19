@@ -114,7 +114,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
 
     if (!surfingVehicle || surfingVehicle.id === InvalidEnum.VEHICLE_ID) {
       const obj = orig_playerMethods.getSurfingObject.call(player);
-      surfing = Boolean(obj && obj.id !== InvalidEnum.OBJECT_ID);
+      surfing = !!(obj && obj.id !== InvalidEnum.OBJECT_ID);
     } else {
       surfing = true;
     }

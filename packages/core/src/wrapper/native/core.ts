@@ -5,7 +5,7 @@ import type {
 } from "core/enums";
 
 export const IsValidNickName = (name: string): boolean => {
-  return Boolean(samp.callNative("IsValidNickName", "s", name));
+  return !!samp.callNative("IsValidNickName", "s", name);
 };
 
 export const AllowNickNameCharacter = (byte: number, allow: boolean): void => {
@@ -13,46 +13,46 @@ export const AllowNickNameCharacter = (byte: number, allow: boolean): void => {
 };
 
 export const IsNickNameCharacterAllowed = (byte: number): boolean => {
-  return Boolean(samp.callNative("IsNickNameCharacterAllowed", "i", byte));
+  return !!samp.callNative("IsNickNameCharacterAllowed", "i", byte);
 };
 
 export const AddServerRule = (name: string, value: string): boolean => {
-  return Boolean(samp.callNative("AddServerRule", "ss", name, value));
+  return !!samp.callNative("AddServerRule", "ss", name, value);
 };
 
 export const SetServerRule = (name: string, value: string): boolean => {
-  return Boolean(samp.callNative("SetServerRule", "ss", name, value));
+  return !!samp.callNative("SetServerRule", "ss", name, value);
 };
 
 export const IsValidServerRule = (name: string): boolean => {
-  return Boolean(samp.callNative("IsValidServerRule", "s", name));
+  return !!samp.callNative("IsValidServerRule", "s", name);
 };
 
 export const RemoveServerRule = (name: string): boolean => {
-  return Boolean(samp.callNative("RemoveServerRule", "s", name));
+  return !!samp.callNative("RemoveServerRule", "s", name);
 };
 
-export const AllowAdminTeleport = (allow: boolean) => {
+export const AllowAdminTeleport = (allow: boolean): void => {
   samp.callNative("AllowAdminTeleport", "i", allow);
 };
 
 export const IsAdminTeleportAllowed = (): boolean => {
-  return Boolean(samp.callNative("IsAdminTeleportAllowed", ""));
+  return !!samp.callNative("IsAdminTeleportAllowed", "");
 };
 
-export const AllowInteriorWeapons = (allow: boolean) => {
+export const AllowInteriorWeapons = (allow: boolean): void => {
   samp.callNative("AllowInteriorWeapons", "i", allow);
 };
 
 export const AreInteriorWeaponsAllowed = (): boolean => {
-  return Boolean(samp.callNative("AreInteriorWeaponsAllowed", ""));
+  return !!samp.callNative("AreInteriorWeaponsAllowed", "");
 };
 
-export const AreAllAnimationsEnabled = () => {
-  return Boolean(samp.callNative("AreAllAnimationsEnabled", ""));
+export const AreAllAnimationsEnabled = (): boolean => {
+  return !!samp.callNative("AreAllAnimationsEnabled", "");
 };
 
-export const EnableAllAnimations = (enable: boolean) => {
+export const EnableAllAnimations = (enable: boolean): void => {
   samp.callNative("EnableAllAnimations", "i", enable);
 };
 
@@ -71,7 +71,7 @@ export const GetConsoleVarAsInt = (varname: string): number => {
 };
 
 export const GetConsoleVarAsBool = (varname: string) => {
-  return Boolean(samp.callNative("GetConsoleVarAsBool", "s", varname));
+  return !!samp.callNative("GetConsoleVarAsBool", "s", varname);
 };
 
 export const GetWeather = (): number => {
@@ -83,11 +83,11 @@ export const GetServerRuleFlags = (rule: string): number => {
 };
 
 export const SetServerRuleFlags = (rule: string, flags: number) => {
-  return Boolean(samp.callNative("SetServerRuleFlags", "si", rule, flags));
+  return !!samp.callNative("SetServerRuleFlags", "si", rule, flags);
 };
 
 export const SetModeRestartTime = (seconds: number) => {
-  return Boolean(samp.callNative("SetModeRestartTime", "f", seconds));
+  return !!samp.callNative("SetModeRestartTime", "f", seconds);
 };
 
 export const GetModeRestartTime = (): number => {
@@ -98,20 +98,20 @@ export const GameTextForAll = (
   string: number[],
   time: number,
   style: number,
-): number => {
-  return samp.callNative("GameTextForAll", "aii", string, time, style);
+): boolean => {
+  return !!samp.callNative("GameTextForAll", "aii", string, time, style);
 };
 
-export const HideGameTextForAll = (style: number) => {
-  samp.callNative("HideGameTextForAll", "i", style);
+export const HideGameTextForAll = (style: number): boolean => {
+  return !!samp.callNative("HideGameTextForAll", "i", style);
 };
 
 export const SendDeathMessage = (
   killer: number,
   killee: number,
   weapon: WeaponEnum | DamageDeathReasonEnum,
-): number => {
-  return samp.callNative("SendDeathMessage", "iii", killer, killee, weapon);
+): boolean => {
+  return !!samp.callNative("SendDeathMessage", "iii", killer, killee, weapon);
 };
 
 export const GetMaxPlayers = (): number => {
@@ -122,44 +122,44 @@ export const VectorSize = (x: number, y: number, z: number): number => {
   return Math.sqrt(x * x + y * y + z * z);
 };
 
-export const SetGameModeText = (string: string): number => {
-  return samp.callNative("SetGameModeText", "s", string);
+export const SetGameModeText = (string: string): boolean => {
+  return !!samp.callNative("SetGameModeText", "s", string);
 };
 
-export const ShowNameTags = (show: boolean): number => {
-  return samp.callNative("ShowNameTags", "i", show);
+export const ShowNameTags = (show: boolean): void => {
+  samp.callNative("ShowNameTags", "i", show);
 };
 
-export const ShowPlayerMarkers = (mode: MarkerModesEnum): number => {
-  return samp.callNative("ShowPlayerMarkers", "i", mode);
+export const ShowPlayerMarkers = (mode: MarkerModesEnum): void => {
+  samp.callNative("ShowPlayerMarkers", "i", mode);
 };
 
-export const GameModeExit = (): number => {
-  return samp.callNative("GameModeExit", "");
+export const GameModeExit = (): void => {
+  samp.callNative("GameModeExit", "");
 };
 
-export const SetWorldTime = (hour: number): number => {
-  return samp.callNative("SetWorldTime", "i", hour);
+export const SetWorldTime = (hour: number): void => {
+  samp.callNative("SetWorldTime", "i", hour);
 };
 
 export const GetWorldTime = (): number => {
   return samp.callNative("GetWorldTime", "");
 };
 
-export const EnableVehicleFriendlyFire = (): boolean => {
-  return !!samp.callNative("EnableVehicleFriendlyFire", "");
+export const EnableVehicleFriendlyFire = (): void => {
+  samp.callNative("EnableVehicleFriendlyFire", "");
 };
 
-export const SetWeather = (weatherid: number): number => {
-  return samp.callNative("SetWeather", "i", weatherid);
+export const SetWeather = (weatherId: number): void => {
+  samp.callNative("SetWeather", "i", weatherId);
 };
 
 export const GetGravity = (): number => {
   return samp.callNativeFloat("GetGravity", "");
 };
 
-export const SetGravity = (gravity: number): number => {
-  return samp.callNative("SetGravity", "f", gravity);
+export const SetGravity = (gravity: number): void => {
+  samp.callNative("SetGravity", "f", gravity);
 };
 
 export const CreateExplosion = (
@@ -168,36 +168,36 @@ export const CreateExplosion = (
   z: number,
   type: number,
   radius: number,
-): number => {
-  return samp.callNative("CreateExplosion", "fffif", x, y, z, type, radius);
+): boolean => {
+  return !!samp.callNative("CreateExplosion", "fffif", x, y, z, type, radius);
 };
 
-export const EnableZoneNames = (enable: boolean): number => {
-  return samp.callNative("EnableZoneNames", "i", enable);
+export const EnableZoneNames = (enable: boolean): void => {
+  samp.callNative("EnableZoneNames", "i", enable);
 };
 
-export const UsePlayerPedAnims = (): boolean => {
-  return !!samp.callNative("UsePlayerPedAnims", "");
+export const UsePlayerPedAnims = (): void => {
+  samp.callNative("UsePlayerPedAnims", "");
 };
 
-export const DisableInteriorEnterExits = (): boolean => {
-  return !!samp.callNative("DisableInteriorEnterExits", "");
+export const DisableInteriorEnterExits = (): void => {
+  samp.callNative("DisableInteriorEnterExits", "");
 };
 
-export const SetNameTagDrawDistance = (distance: number): number => {
-  return samp.callNative("SetNameTagDrawDistance", "f", distance);
+export const SetNameTagDrawDistance = (distance: number): void => {
+  samp.callNative("SetNameTagDrawDistance", "f", distance);
 };
 
-export const DisableNameTagLOS = (): number => {
-  return samp.callNative("DisableNameTagLOS", "");
+export const DisableNameTagLOS = (): void => {
+  samp.callNative("DisableNameTagLOS", "");
 };
 
-export const LimitGlobalChatRadius = (chatRadius: number): number => {
-  return samp.callNative("LimitGlobalChatRadius", "f", chatRadius);
+export const LimitGlobalChatRadius = (chatRadius: number): boolean => {
+  return !!samp.callNative("LimitGlobalChatRadius", "f", chatRadius);
 };
 
-export const LimitPlayerMarkerRadius = (markerRadius: number): number => {
-  return samp.callNative("LimitPlayerMarkerRadius", "f", markerRadius);
+export const LimitPlayerMarkerRadius = (markerRadius: number): boolean => {
+  return !!samp.callNative("LimitPlayerMarkerRadius", "f", markerRadius);
 };
 
 export const ConnectNPC = (name: string, script: string): number => {
@@ -209,7 +209,7 @@ export const GetServerTickRate = (): number => {
 };
 
 export const GetAnimationName = (index: number) => {
-  const [animLib, animName] = samp.callNative(
+  const [animLib, animName, ret] = samp.callNative(
     "GetAnimationName",
     "iSiSi",
     index,
@@ -219,11 +219,12 @@ export const GetAnimationName = (index: number) => {
   return {
     animLib,
     animName,
+    ret: !!ret,
   };
 };
 
-export const EnableStuntBonusForAll = (enable: boolean): boolean => {
-  return !!samp.callNative("EnableStuntBonusForAll", "i", enable);
+export const EnableStuntBonusForAll = (enable: boolean): void => {
+  samp.callNative("EnableStuntBonusForAll", "i", enable);
 };
 
 export const ToggleChatTextReplacement = (toggle: boolean): void => {
@@ -231,7 +232,7 @@ export const ToggleChatTextReplacement = (toggle: boolean): void => {
 };
 
 export const ChatTextReplacementToggled = (): boolean => {
-  return Boolean(samp.callNative("ChatTextReplacementToggled", ""));
+  return !!samp.callNative("ChatTextReplacementToggled", "");
 };
 
 export const GetWeaponSlot = (weaponId: number): number => {
@@ -243,5 +244,5 @@ export const GetWeaponName = (weaponId: number) => {
     string,
     number,
   ];
-  return { name, ret };
+  return { name, ret: !!ret };
 };

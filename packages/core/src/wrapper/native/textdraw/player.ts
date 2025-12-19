@@ -7,16 +7,17 @@ export const IsValidPlayerTextDraw = (
   playerId: number,
   textDrawId: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsValidPlayerTextDraw", "ii", playerId, textDrawId),
-  );
+  return !!samp.callNative("IsValidPlayerTextDraw", "ii", playerId, textDrawId);
 };
 export const IsPlayerTextDrawVisible = (
   playerId: number,
   textDrawId: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("IsPlayerTextDrawVisible", "ii", playerId, textDrawId),
+  return !!samp.callNative(
+    "IsPlayerTextDrawVisible",
+    "ii",
+    playerId,
+    textDrawId,
   );
 };
 export const PlayerTextDrawGetString = (
@@ -30,7 +31,7 @@ export const PlayerTextDrawGetString = (
     textDrawId,
     1024,
   ) as [string, number];
-  return { str, ret };
+  return { str, ret: !!ret };
 };
 
 export const PlayerTextDrawSetPos = (
@@ -38,8 +39,15 @@ export const PlayerTextDrawSetPos = (
   textDrawId: number,
   fX: number,
   fY: number,
-): void => {
-  samp.callNative("PlayerTextDrawSetPos", "iiff", playerId, textDrawId, fX, fY);
+): boolean => {
+  return !!samp.callNative(
+    "PlayerTextDrawSetPos",
+    "iiff",
+    playerId,
+    textDrawId,
+    fX,
+    fY,
+  );
 };
 
 export const PlayerTextDrawGetLetterSize = (
@@ -52,7 +60,7 @@ export const PlayerTextDrawGetLetterSize = (
     playerId,
     textDrawId,
   );
-  return { fX, fY, ret };
+  return { fX, fY, ret: !!ret };
 };
 
 export const PlayerTextDrawGetTextSize = (
@@ -65,7 +73,7 @@ export const PlayerTextDrawGetTextSize = (
     playerId,
     textDrawId,
   );
-  return { fX, fY, ret };
+  return { fX, fY, ret: !!ret };
 };
 
 export const PlayerTextDrawGetPos = (
@@ -78,7 +86,7 @@ export const PlayerTextDrawGetPos = (
     playerId,
     textDrawId,
   );
-  return { fX, fY, ret };
+  return { fX, fY, ret: !!ret };
 };
 
 export const PlayerTextDrawGetColor = (
@@ -142,17 +150,18 @@ export const PlayerTextDrawIsBox = (
   playerId: number,
   textDrawId: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("PlayerTextDrawIsBox", "ii", playerId, textDrawId),
-  );
+  return !!samp.callNative("PlayerTextDrawIsBox", "ii", playerId, textDrawId);
 };
 
 export const PlayerTextDrawIsProportional = (
   playerId: number,
   textDrawId: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("PlayerTextDrawIsProportional", "ii", playerId, textDrawId),
+  return !!samp.callNative(
+    "PlayerTextDrawIsProportional",
+    "ii",
+    playerId,
+    textDrawId,
   );
 };
 
@@ -160,8 +169,11 @@ export const PlayerTextDrawIsSelectable = (
   playerId: number,
   textDrawId: number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("PlayerTextDrawIsSelectable", "ii", playerId, textDrawId),
+  return !!samp.callNative(
+    "PlayerTextDrawIsSelectable",
+    "ii",
+    playerId,
+    textDrawId,
   );
 };
 
@@ -192,15 +204,15 @@ export const PlayerTextDrawGetPreviewModel = (
 export const PlayerTextDrawGetPreviewRot = (
   playerId: number,
   textDrawId: number,
-): ITextDrawRot => {
-  const [fRotX = 0.0, fRotY = 0.0, fRotZ = 0.0, fZoom = 0.0]: number[] =
+): ITextDrawRot & ICommonRetVal => {
+  const [fRotX = 0.0, fRotY = 0.0, fRotZ = 0.0, fZoom = 0.0, ret]: number[] =
     samp.callNative(
       "PlayerTextDrawGetPreviewRot",
       "iiFFFF",
       playerId,
       textDrawId,
     );
-  return { fRotX, fRotY, fRotZ, fZoom };
+  return { fRotX, fRotY, fRotZ, fZoom, ret: !!ret };
 };
 
 export const PlayerTextDrawGetPreviewVehicleColors = (
@@ -213,7 +225,7 @@ export const PlayerTextDrawGetPreviewVehicleColors = (
     playerId,
     textDrawId,
   );
-  return { color1, color2, ret };
+  return { color1, color2, ret: !!ret };
 };
 
 export const CreatePlayerTextDraw = (
@@ -225,8 +237,11 @@ export const CreatePlayerTextDraw = (
   return samp.callNative("CreatePlayerTextDraw", "iffa", playerId, x, y, text);
 };
 
-export const PlayerTextDrawDestroy = (playerId: number, text: number): void => {
-  samp.callNative("PlayerTextDrawDestroy", "ii", playerId, text);
+export const PlayerTextDrawDestroy = (
+  playerId: number,
+  text: number,
+): boolean => {
+  return !!samp.callNative("PlayerTextDrawDestroy", "ii", playerId, text);
 };
 
 export const PlayerTextDrawLetterSize = (
@@ -234,8 +249,8 @@ export const PlayerTextDrawLetterSize = (
   text: number,
   x: number,
   y: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "PlayerTextDrawLetterSize",
     "iiff",
     playerId,
@@ -250,8 +265,8 @@ export const PlayerTextDrawTextSize = (
   text: number,
   x: number,
   y: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "PlayerTextDrawTextSize",
     "iiff",
     playerId,
@@ -265,8 +280,8 @@ export const PlayerTextDrawAlignment = (
   playerId: number,
   text: number,
   alignment: TextDrawAlignEnum,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "PlayerTextDrawAlignment",
     "iii",
     playerId,
@@ -280,8 +295,12 @@ export const PlayerTextDrawColor = (
   text: number,
   color: string | number,
 ): boolean => {
-  return Boolean(
-    samp.callNative("PlayerTextDrawColor", "iii", playerId, text, rgba(color)),
+  return !!samp.callNative(
+    "PlayerTextDrawColor",
+    "iii",
+    playerId,
+    text,
+    rgba(color),
   );
 };
 
@@ -289,8 +308,8 @@ export const PlayerTextDrawUseBox = (
   playerId: number,
   text: number,
   use: boolean,
-): number => {
-  return samp.callNative("PlayerTextDrawUseBox", "iii", playerId, text, use);
+): boolean => {
+  return !!samp.callNative("PlayerTextDrawUseBox", "iii", playerId, text, use);
 };
 
 export const PlayerTextDrawBoxColor = (
@@ -298,14 +317,12 @@ export const PlayerTextDrawBoxColor = (
   text: number,
   color: string | number,
 ): boolean => {
-  return Boolean(
-    samp.callNative(
-      "PlayerTextDrawBoxColor",
-      "iii",
-      playerId,
-      text,
-      rgba(color),
-    ),
+  return !!samp.callNative(
+    "PlayerTextDrawBoxColor",
+    "iii",
+    playerId,
+    text,
+    rgba(color),
   );
 };
 
@@ -313,8 +330,8 @@ export const PlayerTextDrawSetShadow = (
   playerId: number,
   text: number,
   size: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "PlayerTextDrawSetShadow",
     "iii",
     playerId,
@@ -327,8 +344,8 @@ export const PlayerTextDrawSetOutline = (
   playerId: number,
   text: number,
   size: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "PlayerTextDrawSetOutline",
     "iii",
     playerId,
@@ -342,14 +359,12 @@ export const PlayerTextDrawBackgroundColor = (
   text: number,
   color: string | number,
 ): boolean => {
-  return Boolean(
-    samp.callNative(
-      "PlayerTextDrawBackgroundColor",
-      "iii",
-      playerId,
-      text,
-      rgba(color),
-    ),
+  return !!samp.callNative(
+    "PlayerTextDrawBackgroundColor",
+    "iii",
+    playerId,
+    text,
+    rgba(color),
   );
 };
 
@@ -357,16 +372,16 @@ export const PlayerTextDrawFont = (
   playerId: number,
   text: number,
   font: number,
-): number => {
-  return samp.callNative("PlayerTextDrawFont", "iii", playerId, text, font);
+): boolean => {
+  return !!samp.callNative("PlayerTextDrawFont", "iii", playerId, text, font);
 };
 
 export const PlayerTextDrawSetProportional = (
   playerId: number,
   text: number,
   set: boolean,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "PlayerTextDrawSetProportional",
     "iii",
     playerId,
@@ -379,8 +394,8 @@ export const PlayerTextDrawSetSelectable = (
   playerId: number,
   text: number,
   set: boolean,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "PlayerTextDrawSetSelectable",
     "iii",
     playerId,
@@ -389,20 +404,20 @@ export const PlayerTextDrawSetSelectable = (
   );
 };
 
-export const PlayerTextDrawShow = (playerId: number, text: number): number => {
-  return samp.callNative("PlayerTextDrawShow", "ii", playerId, text);
+export const PlayerTextDrawShow = (playerId: number, text: number): boolean => {
+  return !!samp.callNative("PlayerTextDrawShow", "ii", playerId, text);
 };
 
-export const PlayerTextDrawHide = (playerId: number, text: number): number => {
-  return samp.callNative("PlayerTextDrawHide", "ii", playerId, text);
+export const PlayerTextDrawHide = (playerId: number, text: number): boolean => {
+  return !!samp.callNative("PlayerTextDrawHide", "ii", playerId, text);
 };
 
 export const PlayerTextDrawSetString = (
   playerId: number,
   text: number,
   string: number[],
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "PlayerTextDrawSetString",
     "iia",
     playerId,
@@ -415,8 +430,8 @@ export const PlayerTextDrawSetPreviewModel = (
   playerId: number,
   text: number,
   modelIndex: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "PlayerTextDrawSetPreviewModel",
     "iii",
     playerId,
@@ -432,8 +447,8 @@ export const PlayerTextDrawSetPreviewRot = (
   fRotY: number,
   fRotZ: number,
   fZoom: number,
-): number => {
-  return samp.callNative(
+): boolean => {
+  return !!samp.callNative(
     "PlayerTextDrawSetPreviewRot",
     "iiffff",
     playerId,
@@ -451,14 +466,12 @@ export const PlayerTextDrawSetPreviewVehicleColors = (
   color1: string | number,
   color2: string | number,
 ): boolean => {
-  return Boolean(
-    samp.callNative(
-      "PlayerTextDrawSetPreviewVehCol",
-      "iiii",
-      playerId,
-      text,
-      color1,
-      color2,
-    ),
+  return !!samp.callNative(
+    "PlayerTextDrawSetPreviewVehCol",
+    "iiii",
+    playerId,
+    text,
+    color1,
+    color2,
   );
 };
