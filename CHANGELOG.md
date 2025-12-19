@@ -1,3 +1,14 @@
+## <small>0.14.1 (2025-12-19)</small>
+
+* chore(build): await subProc exit ([5bf4f67](https://github.com/dockfries/infernus/commit/5bf4f67))
+* chore(release): filterscript v0.14.0 ([e438e4c](https://github.com/dockfries/infernus/commit/e438e4c))
+* chore(release): nex-ac v0.3.0 ([6e6041b](https://github.com/dockfries/infernus/commit/6e6041b))
+* chore(release): raknet v0.13.0 ([d8063e1](https://github.com/dockfries/infernus/commit/d8063e1))
+* chore(release): weapon-config v0.3.0 ([6cd38a6](https://github.com/dockfries/infernus/commit/6cd38a6))
+* feat(core): a couple of native types, missing natives, default params ([0d810d0](https://github.com/dockfries/infernus/commit/0d810d0))
+
+
+
 ## 0.14.0 (2025-12-17)
 
 * feat(core): add npc angle to pos natives ([9d9e103](https://github.com/dockfries/infernus/commit/9d9e103))
