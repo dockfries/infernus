@@ -50,8 +50,11 @@ export async function build(pkgName: string) {
   onceSIGKill(subProc);
 
   try {
-    await subProc;
+    await new Promise((resolve) => {
+      subProc.once("exit", resolve);
+    });
   } finally {
+    subProc.removeAllListeners("exit");
     process.removeAllListeners("SIGINT");
     process.removeAllListeners("SIGTERM");
   }
