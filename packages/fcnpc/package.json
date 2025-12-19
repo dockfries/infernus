@@ -1,6 +1,6 @@
 {
   "name": "@infernus/fcnpc",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A wrapper of the popular SA-MP FCNPC plugin for samp-node.",
   "keywords": [
     "samp",
