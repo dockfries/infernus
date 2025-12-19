@@ -1,6 +1,6 @@
 {
   "name": "@infernus/qrcode",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Generate simple qrcode objects for infernus.",
   "keywords": [
     "samp",
