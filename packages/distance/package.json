@@ -1,6 +1,6 @@
 {
   "name": "@infernus/distance",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A wrapper of the popular SA-MP distance library for samp-node.",
   "keywords": [
     "samp",
