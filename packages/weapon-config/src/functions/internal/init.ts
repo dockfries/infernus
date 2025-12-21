@@ -67,15 +67,12 @@ export function scriptInit() {
     classSpawnInfo.get(i).skin = -1;
   }
 
-  innerGameModeConfig.healthBarBorder = new TextDraw({
-    x: 546.0,
-    y: 66.7,
-    text: "LD_SPAC:white",
-  }).create();
-
-  if (innerGameModeConfig.healthBarBorder.id === InvalidEnum.TEXT_DRAW) {
-    console.log("(wc) WARN: Cannot create healthBar border textDraw");
-  } else {
+  try {
+    innerGameModeConfig.healthBarBorder = new TextDraw({
+      x: 546.0,
+      y: 66.7,
+      text: "LD_SPAC:white",
+    }).create();
     internalTextDraw.set(innerGameModeConfig.healthBarBorder.id, true);
     orig_TextDrawTextSize(innerGameModeConfig.healthBarBorder.id, 61.7, 8.4);
     orig_TextDrawColor(innerGameModeConfig.healthBarBorder.id, 255);
@@ -83,16 +80,18 @@ export function scriptInit() {
       innerGameModeConfig.healthBarBorder.id,
       TextDrawFontsEnum.SPRITE_DRAW,
     );
+  } catch (err) {
+    console.log("(wc) WARN: Cannot create healthBar border textDraw");
+    console.log(err);
   }
 
-  innerGameModeConfig.healthBarBackground = new TextDraw({
-    x: 548.0,
-    y: 68.0,
-    text: "LD_SPAC:white",
-  }).create();
-  if (innerGameModeConfig.healthBarBackground.id === InvalidEnum.TEXT_DRAW) {
-    console.log("(wc) WARN: Cannot create healthBar background textDraw");
-  } else {
+  try {
+    innerGameModeConfig.healthBarBackground = new TextDraw({
+      x: 548.0,
+      y: 68.0,
+      text: "LD_SPAC:white",
+    }).create();
+
     internalTextDraw.set(innerGameModeConfig.healthBarBackground.id, true);
     orig_TextDrawTextSize(
       innerGameModeConfig.healthBarBackground.id,
@@ -107,6 +106,9 @@ export function scriptInit() {
       innerGameModeConfig.healthBarBackground.id,
       TextDrawFontsEnum.SPRITE_DRAW,
     );
+  } catch (err) {
+    console.log("(wc) WARN: Cannot create healthBar background textDraw");
+    console.log(err);
   }
 
   if (

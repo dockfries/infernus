@@ -68,11 +68,13 @@ export function damageFeedUpdate(player: Player, modified = false) {
     !damageFeedGiven.get(player.id) ||
     damageFeedGiven.get(player.id)!.id === InvalidEnum.TEXT_DRAW
   ) {
-    const td = new TextDraw({ player, x: 200.0, y: 365.0, text: "_" }).create();
-
-    if (td.id === InvalidEnum.TEXT_DRAW) {
-      console.log("(wc) WARN: Cannot create damage feed textDraw");
-    } else {
+    try {
+      const td = new TextDraw({
+        player,
+        x: 200.0,
+        y: 365.0,
+        text: "_",
+      }).create();
       internalPlayerTextDraw.get(player.id)[td.id] = true;
       orig_PlayerTextDrawLetterSize(player.id, td.id, 0.2, 0.9);
       orig_PlayerTextDrawColor(
@@ -84,6 +86,9 @@ export function damageFeedUpdate(player: Player, modified = false) {
       orig_PlayerTextDrawSetOutline(player.id, td.id, 1);
       orig_PlayerTextDrawBackgroundColor(player.id, td.id, 0x0000001a);
       damageFeedGiven.set(player.id, td);
+    } catch (err) {
+      console.log("(wc) WARN: Cannot create damage feed textDraw");
+      console.log(err);
     }
   }
 
@@ -91,11 +96,13 @@ export function damageFeedUpdate(player: Player, modified = false) {
     !damageFeedTaken.get(player.id) ||
     damageFeedTaken.get(player.id)!.id === InvalidEnum.TEXT_DRAW
   ) {
-    const td = new TextDraw({ player, x: 440.0, y: 365.0, text: "_" }).create();
-
-    if (td.id === InvalidEnum.TEXT_DRAW) {
-      console.log("(wc) WARN: Cannot create damage feed textDraw");
-    } else {
+    try {
+      const td = new TextDraw({
+        player,
+        x: 440.0,
+        y: 365.0,
+        text: "_",
+      }).create();
       internalPlayerTextDraw.get(player.id)[td.id] = true;
 
       orig_PlayerTextDrawLetterSize(player.id, td.id, 0.2, 0.9);
@@ -109,6 +116,9 @@ export function damageFeedUpdate(player: Player, modified = false) {
       orig_PlayerTextDrawBackgroundColor(player.id, td.id, 0x0000001a);
 
       damageFeedTaken.set(player.id, td);
+    } catch (err) {
+      console.log("(wc) WARN: Cannot create damage feed textDraw");
+      console.log(err);
     }
   }
 
