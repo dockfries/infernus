@@ -1,7 +1,7 @@
 import { DynamicPickup } from "./entity";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/utils/bus";
-import { StreamerItemTypes } from "core/enums";
+import { InvalidEnum, StreamerItemTypes } from "core/enums";
 import { GameMode } from "core/components/gamemode";
 import { Player } from "core/components/player/entity";
 import { dynamicPickupPool } from "core/utils/pools";
@@ -15,7 +15,7 @@ GameMode.onExit(({ next }) => {
 const [onStreamIn, triggerStreamIn] = defineEvent({
   name: "OnDynamicPickupStreamIn",
   isNative: false,
-  beforeEach(player: Player, instance: DynamicPickup) {
+  beforeEach(player: InvalidEnum.PLAYER_ID, instance: DynamicPickup) {
     return { player, instance };
   },
 });
@@ -23,21 +23,27 @@ const [onStreamIn, triggerStreamIn] = defineEvent({
 const [onStreamOut, triggerStreamOut] = defineEvent({
   name: "OnDynamicPickupStreamOut",
   isNative: false,
-  beforeEach(player: Player, instance: DynamicPickup) {
+  beforeEach(player: InvalidEnum.PLAYER_ID, instance: DynamicPickup) {
     return { player, instance };
   },
 });
 
-onItemStreamIn(({ type, id, forPlayer, next }) => {
+onItemStreamIn(({ type, id, next }) => {
   if (type === StreamerItemTypes.PICKUP) {
-    return triggerStreamIn(forPlayer, DynamicPickup.getInstance(id)!);
+    return triggerStreamIn(
+      InvalidEnum.PLAYER_ID,
+      DynamicPickup.getInstance(id)!,
+    );
   }
   return next();
 });
 
-onItemStreamOut(({ type, id, forPlayer, next }) => {
+onItemStreamOut(({ type, id, next }) => {
   if (type === StreamerItemTypes.PICKUP) {
-    return triggerStreamOut(forPlayer, DynamicPickup.getInstance(id)!);
+    return triggerStreamOut(
+      InvalidEnum.PLAYER_ID,
+      DynamicPickup.getInstance(id)!,
+    );
   }
   return next();
 });
