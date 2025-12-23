@@ -16,7 +16,7 @@ export function setupTextDraw(
   color: number,
   player: Player,
 ): TextDraw {
-  if (!td) {
+  if (!td || !td.isValid()) {
     td = new TextDraw({
       x: layout.x,
       y: layout.y,

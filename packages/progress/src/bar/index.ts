@@ -1,13 +1,18 @@
-import { GameMode, rgba, TextDraw } from "@infernus/core";
+import { GameMode, Player, rgba, TextDraw } from "@infernus/core";
 import { ProgressBarDirectionEnum } from "../enums";
 import { IProgressBar } from "../interfaces";
 import { darkenColor, setupTextDraw } from "../utils";
 
-const progressBars: ProgressBar[] = [];
+const internalBarKey = Symbol("progress_bar_internal");
+const hookedDelTextDraws = new Set<TextDraw>();
+const playerProgressBars = new Map<number, Set<ProgressBar>>();
 
 GameMode.onExit(({ next }) => {
-  progressBars.forEach((bar) => bar.destroy());
-  progressBars.length = 0;
+  playerProgressBars.forEach((bars) => {
+    bars.forEach((bar) => bar.destroy());
+  });
+  playerProgressBars.clear();
+  hookedDelTextDraws.clear();
   return next();
 });
 
@@ -48,16 +53,42 @@ export class ProgressBar {
         `attempt to create player progress bar for invalid player ${player.id}`,
       );
     }
+    let ppb = playerProgressBars.get(player.id);
+    if (!ppb) {
+      playerProgressBars.set(player.id, new Set<ProgressBar>());
+      ppb = playerProgressBars.get(player.id)!;
+    }
+    if (ppb.has(this)) {
+      throw new Error(`cannot create progressBar again`);
+    }
+    ppb.add(this);
     this.render();
     return this;
   }
 
   destroy() {
-    [this._back, this._fill, this._main].forEach((td) => {
-      if (td && td.isValid()) td.destroy();
-    });
-    this._back = this._fill = this._main = null;
+    if (this._back && this._back.isValid()) {
+      this._back.destroy();
+    }
+    // [this._back, this._fill, this._main].forEach((td) => {
+    //   if (td && td.isValid()) td.destroy();
+    // });
+    this[internalBarKey].destroy();
   }
+
+  [internalBarKey] = {
+    destroy: () => {
+      this._back = this._fill = this._main = null;
+      const { player } = this.sourceInfo;
+      const ppb = playerProgressBars.get(player.id);
+      if (ppb && ppb.has(this)) {
+        ppb.delete(this);
+        if (!ppb.size) {
+          playerProgressBars.delete(player.id);
+        }
+      }
+    },
+  };
 
   getPos() {
     return { x: this.sourceInfo.x, y: this.sourceInfo.y };
@@ -213,6 +244,12 @@ export class ProgressBar {
     return true;
   }
 
+  getUsedTextDrawIds() {
+    return [this._back, this._fill, this._main]
+      .filter((v) => v && v.isValid())
+      .map((td) => td!.id);
+  }
+
   private getProgressRatio(): number {
     const { min, max, value } = this.sourceInfo;
     const range = max - min;
@@ -310,3 +347,38 @@ export class ProgressBar {
     }
   }
 }
+
+const orig_TextDrawDestroyPlayer = TextDraw.__inject__.destroyPlayer;
+
+TextDraw.__inject__.destroyPlayer = function (playerId: number, text: number) {
+  const playerInst = Player.getInstance(playerId);
+  if (!playerInst) return orig_TextDrawDestroyPlayer(playerId, text);
+
+  const hookDelTextDraw = TextDraw.getInstance(text, playerInst);
+  if (hookDelTextDraw && hookedDelTextDraws.has(hookDelTextDraw)) {
+    hookedDelTextDraws.delete(hookDelTextDraw);
+    return orig_TextDrawDestroyPlayer(playerId, text);
+  }
+
+  const ppb = playerProgressBars.get(playerId);
+  if (!ppb) return orig_TextDrawDestroyPlayer(playerId, text);
+
+  const bar = [...ppb.values()].find((bar) =>
+    bar.getUsedTextDrawIds().includes(text),
+  );
+  if (!bar) return orig_TextDrawDestroyPlayer(playerId, text);
+
+  const groupIds = bar.getUsedTextDrawIds();
+  const ret = groupIds
+    .map((id) => {
+      const tdInst = TextDraw.getInstance(id, playerInst);
+      if (tdInst) {
+        hookedDelTextDraws.add(tdInst);
+        return tdInst.destroy();
+      }
+      return orig_TextDrawDestroyPlayer(playerId, id);
+    })
+    .every(Boolean);
+  bar[internalBarKey].destroy();
+  return ret;
+};
