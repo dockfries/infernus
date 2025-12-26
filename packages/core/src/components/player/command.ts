@@ -205,7 +205,7 @@ onCommandText(({ player, buffer, cmdText, next }) => {
   const stopExecute = triggerOnCommandTextRaw(player, buffer, cmdText);
   if (stopExecute) return stopExecute;
 
-  const matchedCommand = cmdText.match(commandPattern)!;
+  const matchedCommand = cmdText.match(commandPattern) || [];
 
   const maybes = generateCombinations(matchedCommand);
 
