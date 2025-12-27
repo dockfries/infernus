@@ -21,6 +21,6 @@ export enum KeysEnum {
   CTRL_BACK = 262144,
   KEY_UP = -128,
   KEY_DOWN = HANDBRAKE,
-  KEY_LEFT = -128,
+  KEY_LEFT = KEY_UP,
   KEY_RIGHT = HANDBRAKE,
 }
