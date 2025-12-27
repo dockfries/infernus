@@ -129,15 +129,15 @@ async function initStarter(projectName: string, isRakNet = false) {
 
   fs.remove(starterPath);
   fs.remove(resolve(appGeneratePath, ".git"));
-  fs.remove(resolve(appGeneratePath, ".husky"));
+  // fs.remove(resolve(appGeneratePath, ".husky"));
 }
 
 function changePkgName(projectName: string) {
   const pkgFilePath = resolve(appGeneratePath, "package.json");
   const pkg = fs.readJsonSync(pkgFilePath);
   pkg.name = projectName;
-  delete pkg.scripts.prepare;
-  delete pkg.husky;
+  // delete pkg.scripts.prepare;
+  // delete pkg.husky;
   fs.writeJson(pkgFilePath, pkg, { spaces: 2 });
 }
 
