@@ -3,6 +3,7 @@ import decompress from "decompress";
 import fs from "fs-extra";
 import fg from "fast-glob";
 import { select } from "@inquirer/prompts";
+import semver from "semver";
 import {
   readLocalConfig,
   readLockFile,
@@ -127,6 +128,9 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
     if (!validRange(version)) throw new Error(`invalid deps version: ${name}`);
 
+    const isAnyVer = version === "*";
+    const coerceVersion = isAnyVer ? version : semver.coerce(version)!.version;
+
     const isComponent =
       args.component === true || !!lockFile.dependencies?.[name]?.component;
     const pluginFolderPath = getPlugOrCompPath(isComponent);
@@ -136,19 +140,28 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     let localCacheFolder = null;
     let localCacheVersion = null;
 
-    const depAllVersionPath = path.resolve(GLOBAL_DEPS_PATH, name);
-    const isExistDepAllVersion = fs.existsSync(depAllVersionPath);
-    if (isExistDepAllVersion) {
-      const files = await fs.readdir(depAllVersionPath);
+    const depAnyVersionPath = path.resolve(GLOBAL_DEPS_PATH, name);
+    const isExistDepAnyVersion = fs.existsSync(depAnyVersionPath);
+
+    let isForceRedownload = !isExistDepAnyVersion || isAnyVer;
+
+    if (isExistDepAnyVersion) {
+      const files = await fs.readdir(depAnyVersionPath);
       const satisfyVersion = minSatisfying(files, version);
       if (satisfyVersion) {
-        const satisfyPath = path.resolve(depAllVersionPath, satisfyVersion);
-        if (isUpdate) {
+        const satisfyPath = path.resolve(depAnyVersionPath, satisfyVersion);
+        const isEqualCached =
+          isAnyVer || semver.eq(coerceVersion, satisfyVersion);
+        isForceRedownload = isEqualCached;
+
+        if (isForceRedownload && isUpdate) {
           await fs.remove(satisfyPath);
         } else {
           localCacheFolder = satisfyPath;
           localCacheVersion = satisfyVersion;
         }
+      } else {
+        isForceRedownload = true;
       }
     }
 
@@ -160,7 +173,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
       if (!matchedRelease)
         throw new Error(`not found satisfactory deps: ${name}`);
 
-      if (isUpdate) {
+      if (isForceRedownload && isUpdate) {
         const cacheFolder = path.resolve(
           GLOBAL_DEPS_PATH,
           name,
