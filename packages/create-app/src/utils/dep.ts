@@ -3,6 +3,7 @@ import decompress from "decompress";
 import fs from "fs-extra";
 import fg from "fast-glob";
 import { select } from "@inquirer/prompts";
+import semver from "semver";
 import {
   readLocalConfig,
   readLockFile,
@@ -127,8 +128,16 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
     if (!validRange(version)) throw new Error(`invalid deps version: ${name}`);
 
-    const isComponent =
-      args.component === true || !!lockFile.dependencies?.[name]?.component;
+    const previousDepInfo = lockFile.dependencies?.[name];
+    const previousComp = !!previousDepInfo?.component;
+    const previousVersion = previousDepInfo?.version;
+
+    const isAnyVer = version === "*";
+    const coerceVersion = isAnyVer
+      ? version
+      : semver.coerce(previousVersion)?.version;
+
+    const isComponent = !!args.component || previousComp;
     const pluginFolderPath = getPlugOrCompPath(isComponent);
 
     const [owner, repo] = name.split("/");
@@ -136,19 +145,31 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     let localCacheFolder = null;
     let localCacheVersion = null;
 
-    const depAllVersionPath = path.resolve(GLOBAL_DEPS_PATH, name);
-    const isExistDepAllVersion = fs.existsSync(depAllVersionPath);
-    if (isExistDepAllVersion) {
-      const files = await fs.readdir(depAllVersionPath);
+    const depAnyVersionPath = path.resolve(GLOBAL_DEPS_PATH, name);
+    const isExistDepAnyVersion = fs.existsSync(depAnyVersionPath);
+
+    let isForceRedownload = !isExistDepAnyVersion || isAnyVer;
+
+    if (isExistDepAnyVersion) {
+      const files = await fs.readdir(depAnyVersionPath);
       const satisfyVersion = minSatisfying(files, version);
       if (satisfyVersion) {
-        const satisfyPath = path.resolve(depAllVersionPath, satisfyVersion);
-        if (isUpdate) {
+        const satisfyPath = path.resolve(depAnyVersionPath, satisfyVersion);
+        const isEqualCached =
+          isAnyVer ||
+          (coerceVersion
+            ? semver.eq(coerceVersion, semver.coerce(satisfyVersion)!.version)
+            : false);
+        isForceRedownload = isEqualCached;
+
+        if (isForceRedownload && isUpdate) {
           await fs.remove(satisfyPath);
         } else {
           localCacheFolder = satisfyPath;
           localCacheVersion = satisfyVersion;
         }
+      } else {
+        isForceRedownload = true;
       }
     }
 
@@ -158,9 +179,9 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     if (!localCacheFolder) {
       matchedRelease = await getRepoRelease(owner, repo, version);
       if (!matchedRelease)
-        throw new Error(`not found satisfactory deps: ${name}`);
+        throw new Error(`not found satisfactory deps: ${dep}`);
 
-      if (isUpdate) {
+      if (isForceRedownload && isUpdate) {
         const cacheFolder = path.resolve(
           GLOBAL_DEPS_PATH,
           name,
@@ -414,7 +435,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
   await Promise.all([writeOmpConfig(ompConfig), writeLockFile(lockFile)]);
   const end = Date.now();
   const diff = getTimeDiff(start, end);
-  console.log(`Done in ${diff}s`);
+  console.log(`installDeps Done in ${diff}s`);
 }
 
 export async function addDeps(args: AddDepsOptions, isUpdate = false) {
@@ -653,7 +674,7 @@ export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
 
   const end = Date.now();
   const diff = getTimeDiff(start, end);
-  console.log(`Done in ${diff}s`);
+  console.log(`removeDeps Done in ${diff}s`);
 }
 
 function cleanInvalidLockDeps(config: LocalConfig, lockFile: LockFileContent) {

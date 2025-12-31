@@ -1,27 +1,29 @@
 import semver, { type SemVer } from "semver";
 
 export function minSatisfying(versions: string[], range: string) {
+  const allVersion = versions
+    .map((version) => [version, semver.coerce(version)])
+    .filter((s) => !!s[1]) as [string, SemVer][];
+  if (!allVersion.length) return null;
+
+  const descVersions = semver.rsort(allVersion.map((s) => s[1]));
+  if (!descVersions.length) return null;
+
   if (range === "*") {
-    const allVersion = versions
-      .map((version) => [version, semver.coerce(version)])
-      .filter((s) => !!s[1]) as [string, SemVer][];
-    const descVersions = semver.rsort(allVersion.map((s) => s[1]));
-    if (!descVersions.length) return null;
-    const minSatisfying = allVersion.find(
+    const maxVersion = allVersion.find(
       (s) => s[1].version === descVersions[0].version,
     );
-    return minSatisfying ? minSatisfying[0] : null;
+    return maxVersion ? maxVersion[0] : null;
   }
 
-  const satisfy = semver.minSatisfying(versions, range);
-  if (satisfy) return satisfy;
   const coerceRange = semver.coerce(range);
   if (!coerceRange) return null;
-  return versions.find((version) => {
-    const coerceVersion = semver.coerce(version);
-    if (!coerceVersion) return;
-    return semver.minSatisfying([coerceVersion], coerceRange.version);
-  });
+
+  const satisfy = semver.minSatisfying(descVersions, range);
+  if (satisfy) {
+    return allVersion.find((s) => s[1].version === satisfy.version)?.[0];
+  }
+  return null;
 }
 
 export function validRange(range: string) {

@@ -31,12 +31,10 @@ export async function getOctokit() {
 
   const auth = await getGithubToken();
 
-  if (auth) {
+  if (!auth) {
     console.log(
-      "github token found, will improve API rate limit to some extent",
+      "github_token(optional, usually not needed): API rate limits may apply without it.",
     );
-  } else {
-    console.log("github token not found, API rate limit may be encountered");
   }
 
   const options: OctokitOptions = {
