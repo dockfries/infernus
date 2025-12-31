@@ -1,6 +1,6 @@
 {
   "name": "@infernus/create-app",
-  "version": "0.2.16",
+  "version": "0.2.17",
   "description": "Command line interface for rapid infernus development",
   "keywords": [
     "omp",
