@@ -1,3 +1,35 @@
+## <small>0.14.2 (2025-12-31)</small>
+
+* chore(core): eslint ([e70e834](https://github.com/dockfries/infernus/commit/e70e834))
+* chore(create-app): maybe keep husky? ([80b9fd8](https://github.com/dockfries/infernus/commit/80b9fd8))
+* chore(release): cef v0.1.1 ([3b8ba5a](https://github.com/dockfries/infernus/commit/3b8ba5a))
+* chore(release): colandreas v0.1.1 ([65eeea4](https://github.com/dockfries/infernus/commit/65eeea4))
+* chore(release): create-app v0.2.17 ([1edfd80](https://github.com/dockfries/infernus/commit/1edfd80))
+* chore(release): distance v0.1.1 ([bc0d8f1](https://github.com/dockfries/infernus/commit/bc0d8f1))
+* chore(release): drift-detection v0.1.1 ([54e236a](https://github.com/dockfries/infernus/commit/54e236a))
+* chore(release): e-selection v0.0.2 ([6db4239](https://github.com/dockfries/infernus/commit/6db4239))
+* chore(release): fcnpc v0.1.1 ([4027009](https://github.com/dockfries/infernus/commit/4027009))
+* chore(release): filterscript v0.14.1 ([e3dbcf6](https://github.com/dockfries/infernus/commit/e3dbcf6))
+* chore(release): gps v0.0.2 ([d0a94ff](https://github.com/dockfries/infernus/commit/d0a94ff))
+* chore(release): map-loader v0.1.1 ([5adb814](https://github.com/dockfries/infernus/commit/5adb814))
+* chore(release): mapandreas v0.3.1 ([3fb2dc7](https://github.com/dockfries/infernus/commit/3fb2dc7))
+* chore(release): nex-ac v0.3.1 ([7a45c45](https://github.com/dockfries/infernus/commit/7a45c45))
+* chore(release): progress v0.0.2 ([7758b38](https://github.com/dockfries/infernus/commit/7758b38))
+* chore(release): progress v0.0.3 ([c1e4e2f](https://github.com/dockfries/infernus/commit/c1e4e2f))
+* chore(release): qrcode v0.0.4 ([703597e](https://github.com/dockfries/infernus/commit/703597e))
+* chore(release): raknet v0.13.1 ([7fd31b8](https://github.com/dockfries/infernus/commit/7fd31b8))
+* chore(release): rec v0.0.3 ([df576a6](https://github.com/dockfries/infernus/commit/df576a6))
+* chore(release): samp-voice v0.0.3 ([19ebed7](https://github.com/dockfries/infernus/commit/19ebed7))
+* chore(release): weapon-config v0.3.1 ([1f834fe](https://github.com/dockfries/infernus/commit/1f834fe))
+* chore(release): weapon-config v0.3.2 ([f94d4cf](https://github.com/dockfries/infernus/commit/f94d4cf))
+* feat(create-app): only update cache when dep version equal ([d6f6e07](https://github.com/dockfries/infernus/commit/d6f6e07))
+* feat(progress): maybe we can hook destroy textdraw ([9d726ac](https://github.com/dockfries/infernus/commit/9d726ac))
+* fix(core): match cmdText maybe null ([89bf9c3](https://github.com/dockfries/infernus/commit/89bf9c3))
+* fix(core): streamer pickup streamInOut player type ([48f176e](https://github.com/dockfries/infernus/commit/48f176e))
+* fix(weapon-config): use try catch for new TextDraw ([ee563a2](https://github.com/dockfries/infernus/commit/ee563a2))
+
+
+
 ## <small>0.14.1 (2025-12-19)</small>
 
 * chore(build): await subProc exit ([5bf4f67](https://github.com/dockfries/infernus/commit/5bf4f67))
