@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execa } from "execa";
+import { typeCheck } from "./type-check";
 
 export const rootPkgJsonPath = path.resolve(process.cwd(), "package.json");
 
@@ -31,18 +32,20 @@ export async function build(pkgName: string) {
     throw new Error(`Package ${pkgName} not found`);
   }
 
-  const pkgRollupConfig = path.resolve(pkgPath, "rollup.config.js");
+  typeCheck(pkgName);
 
-  const useSelfConfig = fs.existsSync(pkgRollupConfig);
+  const pkgRolldownConfig = path.resolve(pkgPath, "rolldown.config.js");
+
+  const useSelfConfig = fs.existsSync(pkgRolldownConfig);
 
   const args = [
     "-c",
-    useSelfConfig ? pkgRollupConfig : "",
+    "rolldown.config.js",
     "--environment",
     `TARGET:${pkgName}`,
   ].filter(Boolean);
 
-  const subProc = execa("rollup", args, {
+  const subProc = execa("rolldown", args, {
     cwd: useSelfConfig ? pkgPath : process.cwd(),
     stdio: "inherit",
   });
