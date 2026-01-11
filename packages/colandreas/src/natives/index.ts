@@ -1,4 +1,4 @@
-import { MAX_MULTICAST_SIZE } from "../definitions";
+import { MAX_MULTICAST_SIZE } from "../defines";
 
 export function init() {
   return !!samp.callNative("CA_Init", "");

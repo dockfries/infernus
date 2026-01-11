@@ -9,7 +9,7 @@ import {
   setObjectPos,
   setObjectRot,
 } from "./natives/inner";
-import { MAX_CA_OBJECTS } from "./definitions";
+import { MAX_CA_OBJECTS } from "./defines";
 
 const CA_Objects: CA_Object[] = [];
 

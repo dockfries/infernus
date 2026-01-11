@@ -1,5 +1,5 @@
-import "./definitions";
-export * from "./definitions";
+import "./defines";
+export * from "./defines";
 export * from "./natives";
 export * from "./functions";
 export * from "./obj";
