@@ -1033,6 +1033,9 @@ export class Player {
   hasClockEnabled() {
     return Player.__inject__.hasClockEnabled(this.id);
   }
+  isLeavingSpectatorMode() {
+    return Player.__inject__.isLeavingSpectatorMode(this.id);
+  }
 
   static getInstance(id: number) {
     return playerPool.get(id);
@@ -1219,5 +1222,6 @@ export class Player {
     isInDriveByMode: w.IsPlayerInDriveByMode,
     isUsingOmp: w.IsPlayerUsingOmp,
     hasClockEnabled: w.PlayerHasClockEnabled,
+    isLeavingSpectatorMode: w.IsPlayerLeavingSpectatorMode,
   };
 }

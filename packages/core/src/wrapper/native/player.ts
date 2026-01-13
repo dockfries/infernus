@@ -1130,3 +1130,7 @@ export const IsPlayerUsingOmp = (playerId: number): boolean => {
 export const PlayerHasClockEnabled = (playerId: number): boolean => {
   return !!samp.callNative("PlayerHasClockEnabled", "i", playerId);
 };
+
+export const IsPlayerLeavingSpectatorMode = (playerId: number): boolean => {
+  return !!samp.callNative("IsPlayerLeavingSpectatorMode", "i", playerId);
+};

@@ -1033,6 +1033,18 @@ export class Npc {
     }
     return Npc.__inject__.setAngleToPlayer(this._id, player.id);
   }
+  setVehiclePos(x: number, y: number, z: number, immediateUpdate: boolean) {
+    if (this.id === InvalidEnum.NPC_ID) {
+      throw new Error("[Npc]: Cannot setVehiclePosition before create");
+    }
+    return Npc.__inject__.setVehiclePos(this._id, x, y, z, immediateUpdate);
+  }
+  setVehicleRot(x: number, y: number, z: number, immediateUpdate: boolean) {
+    if (this.id === InvalidEnum.NPC_ID) {
+      throw new Error("[Npc]: Cannot setVehicleRotation before create");
+    }
+    return Npc.__inject__.setVehicleRot(this._id, x, y, z, immediateUpdate);
+  }
   static startRecordingPlayerData(
     player: Player,
     recordType: RecordTypesEnum,
@@ -1188,6 +1200,8 @@ export class Npc {
     getCustomSkin: w.NPC_GetCustomSkin,
     setAngleToPos: w.NPC_SetAngleToPos,
     setAngleToPlayer: w.NPC_SetAngleToPlayer,
+    setVehiclePos: w.NPC_SetVehiclePos,
+    setVehicleRot: w.NPC_SetVehicleRot,
 
     startRecordingPlayerData: w.StartRecordingPlayerData,
     stopRecordingPlayerData: w.StopRecordingPlayerData,

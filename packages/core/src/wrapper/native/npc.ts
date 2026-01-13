@@ -876,3 +876,39 @@ export const NPC_SetAngleToPos = (
 export const NPC_SetAngleToPlayer = (id: number, playerId: number) => {
   return !!samp.callNative("NPC_SetAngleToPlayer", "ii", id, playerId);
 };
+
+export const NPC_SetVehiclePos = (
+  id: number,
+  x: number,
+  y: number,
+  z: number,
+  immediateUpdate: boolean,
+) => {
+  return !!samp.callNative(
+    "NPC_SetVehiclePos",
+    "ifffi",
+    id,
+    x,
+    y,
+    z,
+    immediateUpdate,
+  );
+};
+
+export const NPC_SetVehicleRot = (
+  id: number,
+  x: number,
+  y: number,
+  z: number,
+  immediateUpdate: boolean,
+) => {
+  return !!samp.callNative(
+    "NPC_SetVehicleRot",
+    "ifffi",
+    id,
+    x,
+    y,
+    z,
+    immediateUpdate,
+  );
+};
