@@ -21,6 +21,10 @@ Object.keys({
 }).forEach((key) => externalSet.add(new RegExp(`^${key}(/.*)?$`)));
 
 const commonConfig = {
+  tsconfig: "./tsconfig.json",
+  transform: {
+    target: "node22",
+  },
   platform: "node",
   external: [...externalSet],
   resolve: {
@@ -37,9 +41,6 @@ export default defineConfig([
   {
     ...commonConfig,
     input: inputPath,
-    transform: {
-      target: "node22",
-    },
     output: [
       {
         cleanDir: true,

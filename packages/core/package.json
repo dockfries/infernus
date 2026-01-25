@@ -31,10 +31,10 @@
     "dist"
   ],
   "dependencies": {
-    "iconv-lite": "^0.6.3"
+    "iconv-lite": "^0.7.2"
   },
   "devDependencies": {
-    "es-toolkit": "^1.42.0",
+    "es-toolkit": "^1.44.0",
     "fastest-levenshtein": "^1.0.16"
   }
 }

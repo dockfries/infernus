@@ -37,7 +37,7 @@
   "scripts": {},
   "dependencies": {
     "@dockfries/chardetng": "^0.0.1",
-    "iconv-lite": "^0.7.0",
+    "iconv-lite": "^0.7.2",
     "jschardet": "^3.1.4"
   }
 }

@@ -1,5 +1,5 @@
 import util from "node:util";
-import iconv from "iconv-lite";
+import * as iconv from "iconv-lite";
 import { snakeCase, merge, omit, mapKeys } from "es-toolkit";
 import { get } from "es-toolkit/compat";
 import { TLocales } from "core/types";

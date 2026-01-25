@@ -1,5 +1,5 @@
 import jschardet from "jschardet";
-import iconv from "iconv-lite";
+import * as iconv from "iconv-lite";
 
 export async function detectAndDecode(buffer: Buffer) {
   let chardetEncoding: string;
