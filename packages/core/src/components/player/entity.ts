@@ -916,18 +916,6 @@ export class Player {
   getSkillLevel(skill: WeaponSkillsEnum): number {
     return Player.__inject__.getSkillLevel(this.id, skill);
   }
-  isCheckpointActive(): boolean {
-    return Player.__inject__.isCheckpointActive(this.id);
-  }
-  getCheckpoint() {
-    return Player.__inject__.getCheckpoint(this.id);
-  }
-  isRaceCheckpointActive(): boolean {
-    return Player.__inject__.isRaceCheckpointActive(this.id);
-  }
-  getRaceCheckpoint() {
-    return Player.__inject__.getRaceCheckpoint(this.id);
-  }
   getWorldBounds() {
     return Player.__inject__.getWorldBounds(this.id);
   }
@@ -1033,9 +1021,9 @@ export class Player {
   hasClockEnabled() {
     return Player.__inject__.hasClockEnabled(this.id);
   }
-  isLeavingSpectatorMode() {
-    return Player.__inject__.isLeavingSpectatorMode(this.id);
-  }
+  // isLeavingSpectatorMode() {
+  //   return Player.__inject__.isLeavingSpectatorMode(this.id);
+  // }
 
   static getInstance(id: number) {
     return playerPool.get(id);
@@ -1186,10 +1174,6 @@ export class Player {
     isWidescreenToggled: w.IsPlayerWidescreenToggled,
     getSpawnInfo: w.GetSpawnInfo,
     getSkillLevel: w.GetPlayerSkillLevel,
-    isCheckpointActive: w.IsPlayerCheckpointActive,
-    getCheckpoint: w.GetPlayerCheckpoint,
-    isRaceCheckpointActive: w.IsPlayerRaceCheckpointActive,
-    getRaceCheckpoint: w.GetPlayerRaceCheckpoint,
     getWorldBounds: w.GetPlayerWorldBounds,
     isInModShop: w.IsPlayerInModShop,
     getSirenState: w.GetPlayerSirenState,
@@ -1222,6 +1206,6 @@ export class Player {
     isInDriveByMode: w.IsPlayerInDriveByMode,
     isUsingOmp: w.IsPlayerUsingOmp,
     hasClockEnabled: w.PlayerHasClockEnabled,
-    isLeavingSpectatorMode: w.IsPlayerLeavingSpectatorMode,
+    // isLeavingSpectatorMode: w.IsPlayerLeavingSpectatorMode,
   };
 }
