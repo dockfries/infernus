@@ -1,6 +1,6 @@
 # @infernus/fcnpc
 
-[![npm](https://img.shields.io/npm/v/@infernus/fcnpc)](https://www.npmjs.com/package/@infernus/fcnpc) ![npm](https://img.shields.io/npm/dw/@infernus/fcnpc) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/fcnpc)
+[![npm](https://img.shields.io/npm/v/@infernus/fcnpc)](https://www.npmx.dev/package/@infernus/fcnpc) ![npm](https://img.shields.io/npm/dw/@infernus/fcnpc) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/fcnpc)
 
 A wrapper of the popular [SA-MP FCNPC plugin](https://github.com/ziggi/FCNPC) for samp-node.
 

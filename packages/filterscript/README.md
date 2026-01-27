@@ -1,6 +1,6 @@
 # @infernus/fs
 
-[![npm](https://img.shields.io/npm/v/@infernus/fs)](https://www.npmjs.com/package/@infernus/fs) ![npm](https://img.shields.io/npm/dw/@infernus/fs) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/fs)
+[![npm](https://img.shields.io/npm/v/@infernus/fs)](https://www.npmx.dev/package/@infernus/fs) ![npm](https://img.shields.io/npm/dw/@infernus/fs) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/fs)
 
 A collection of all built-in filterscripts, implemented with [@infernus/core](https://github.com/dockfries/infernus).
 

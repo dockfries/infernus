@@ -1,6 +1,6 @@
 # @infernus/distance
 
-[![npm](https://img.shields.io/npm/v/@infernus/distance)](https://www.npmjs.com/package/@infernus/distance) ![npm](https://img.shields.io/npm/dw/@infernus/distance) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/distance)
+[![npm](https://img.shields.io/npm/v/@infernus/distance)](https://www.npmx.dev/package/@infernus/distance) ![npm](https://img.shields.io/npm/dw/@infernus/distance) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/distance)
 
 A wrapper of the popular [SA-MP distance library](https://github.com/Y-Less/samp-distance) for samp-node.
 

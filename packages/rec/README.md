@@ -1,6 +1,6 @@
 # @infernus/rec
 
-[![npm](https://img.shields.io/npm/v/@infernus/rec)](https://www.npmjs.com/package/@infernus/rec) ![npm](https://img.shields.io/npm/dw/@infernus/rec) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/rec)
+[![npm](https://img.shields.io/npm/v/@infernus/rec)](https://www.npmx.dev/package/@infernus/rec) ![npm](https://img.shields.io/npm/dw/@infernus/rec) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/rec)
 
 ## Getting started
 

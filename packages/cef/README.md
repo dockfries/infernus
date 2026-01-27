@@ -1,6 +1,6 @@
 # @infernus/cef
 
-[![npm](https://img.shields.io/npm/v/@infernus/cef)](https://www.npmjs.com/package/@infernus/cef) ![npm](https://img.shields.io/npm/dw/@infernus/cef) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/cef)
+[![npm](https://img.shields.io/npm/v/@infernus/cef)](https://www.npmx.dev/package/@infernus/cef) ![npm](https://img.shields.io/npm/dw/@infernus/cef) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/cef)
 
 A wrapper of the popular [samp-cef plugin](https://github.com/Pycckue-Bnepeg/samp-cef) for samp-node.
 

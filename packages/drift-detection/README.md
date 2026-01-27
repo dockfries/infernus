@@ -1,6 +1,6 @@
 # @infernus/drift-detection
 
-[![npm](https://img.shields.io/npm/v/@infernus/drift-detection)](https://www.npmjs.com/package/@infernus/drift-detection) ![npm](https://img.shields.io/npm/dw/@infernus/drift-detection) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/drift-detection)
+[![npm](https://img.shields.io/npm/v/@infernus/drift-detection)](https://www.npmx.dev/package/@infernus/drift-detection) ![npm](https://img.shields.io/npm/dw/@infernus/drift-detection) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/drift-detection)
 
 A wrapper of the popular [SA-MP driftDetection library](https://github.com/karimoldacc/drift-detection) for samp-node.
 

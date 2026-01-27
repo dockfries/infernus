@@ -1,6 +1,6 @@
 # @infernus/progress
 
-[![npm](https://img.shields.io/npm/v/@infernus/progress)](https://www.npmjs.com/package/@infernus/progress) ![npm](https://img.shields.io/npm/dw/@infernus/progress) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/progress)
+[![npm](https://img.shields.io/npm/v/@infernus/progress)](https://www.npmx.dev/package/@infernus/progress) ![npm](https://img.shields.io/npm/dw/@infernus/progress) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/progress)
 
 A progress bar based on `LD_SPAC:white` for precise control for samp-node.
 

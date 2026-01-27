@@ -1,6 +1,6 @@
 # @infernus/nex-ac
 
-[![npm](https://img.shields.io/npm/v/@infernus/nex-ac)](https://www.npmjs.com/package/@infernus/nex-ac) ![npm](https://img.shields.io/npm/dw/@infernus/nex-ac) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/nex-ac)
+[![npm](https://img.shields.io/npm/v/@infernus/nex-ac)](https://www.npmx.dev/package/@infernus/nex-ac) ![npm](https://img.shields.io/npm/dw/@infernus/nex-ac) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/nex-ac)
 
 A wrapper of the popular [SA-MP nex-ac library](https://github.com/NexiusTailer/Nex-AC/) for samp-node.
 

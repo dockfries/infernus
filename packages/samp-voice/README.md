@@ -1,6 +1,6 @@
 # @infernus/samp-voice
 
-[![npm](https://img.shields.io/npm/v/@infernus/samp-voice)](https://www.npmjs.com/package/@infernus/samp-voice) ![npm](https://img.shields.io/npm/dw/@infernus/samp-voice) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/samp-voice)
+[![npm](https://img.shields.io/npm/v/@infernus/samp-voice)](https://www.npmx.dev/package/@infernus/samp-voice) ![npm](https://img.shields.io/npm/dw/@infernus/samp-voice) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/samp-voice)
 
 A wrapper of the popular [SA-MP voice library](https://github.com/AmyrAhmady/sampvoice) for samp-node.
 
