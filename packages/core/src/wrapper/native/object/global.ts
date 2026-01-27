@@ -581,3 +581,15 @@ export const GetCustomModePath = (modelId: number) => {
   );
   return { dffPath, txdPath, ret };
 };
+
+export const GetPlayerAnimationFlags = (playerId: number): number => {
+  return samp.callNative("GetPlayerAnimationFlags", "i", playerId);
+};
+
+export const GetPlayerLastSyncedTrailerID = (playerId: number): number => {
+  return samp.callNative("GetPlayerLastSyncedTrailerID", "i", playerId);
+};
+
+export const GetPlayerLastSyncedVehicleID = (playerId: number): number => {
+  return samp.callNative("GetPlayerLastSyncedVehicleID", "i", playerId);
+};

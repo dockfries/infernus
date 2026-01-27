@@ -896,13 +896,13 @@ export class Player {
     return Player.__inject__.removeAttachedObject(this.id, index);
   }
   getAnimationFlags(): number {
-    return samp.callNative("GetPlayerAnimationFlags", "i", this.id);
+    return Player.__inject__.getAnimationFlags(this.id);
   }
   getLastSyncedTrailerID(): number {
-    return samp.callNative("GetPlayerLastSyncedTrailerID", "i", this.id);
+    return Player.__inject__.getLastSyncedTrailerID(this.id);
   }
   getLastSyncedVehicleID(): number {
-    return samp.callNative("GetPlayerLastSyncedVehicleID", "i", this.id);
+    return Player.__inject__.getLastSyncedVehicleID(this.id);
   }
   toggleWidescreen(set: boolean) {
     return Player.__inject__.toggleWidescreen(this.id, set);
@@ -1206,6 +1206,9 @@ export class Player {
     isInDriveByMode: w.IsPlayerInDriveByMode,
     isUsingOmp: w.IsPlayerUsingOmp,
     hasClockEnabled: w.PlayerHasClockEnabled,
+    getAnimationFlags: w.GetPlayerAnimationFlags,
+    getLastSyncedTrailerID: w.GetPlayerLastSyncedTrailerID,
+    getLastSyncedVehicleID: w.GetPlayerLastSyncedVehicleID,
     // isLeavingSpectatorMode: w.IsPlayerLeavingSpectatorMode,
   };
 }
