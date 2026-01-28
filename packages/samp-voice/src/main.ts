@@ -6,3 +6,4 @@ export * from "./enums";
 export { SampVoiceEvent } from "./callbacks";
 
 export * from "./natives";
+export * from "./exceptions";

@@ -1,5 +1,6 @@
 import { REQUEST_HEADER_LEN } from "../constants";
 import { RequestPacket } from "../enums";
+import { QueryException } from "../exceptions";
 import {
   Client,
   ClientDetail,
@@ -23,7 +24,7 @@ export function makePacket<T extends RequestPacket>(
   options: Options<T>,
 ): Buffer {
   if (!isValidIPv4(options.address)) {
-    throw new Error("Invalid ip address");
+    throw new QueryException("Invalid ip address");
   }
 
   const packet = Buffer.alloc(REQUEST_HEADER_LEN);

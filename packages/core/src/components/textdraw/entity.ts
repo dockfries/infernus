@@ -6,6 +6,7 @@ import * as w from "core/wrapper/native";
 import { I18n } from "../../utils/i18n";
 import { textDrawPool, playerTextDrawPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
+import { TextDrawException } from "core/exceptions";
 
 export class TextDraw {
   private sourceInfo: ITextDraw | null = null;
@@ -22,7 +23,7 @@ export class TextDraw {
         textDrawOrId === InvalidEnum.TEXT_DRAW ||
         textDrawOrId === InvalidEnum.PLAYER_TEXT_DRAW
       ) {
-        throw new Error("[TextDraw]: Invalid id");
+        throw new TextDrawException("Invalid id");
       }
 
       if (player) {
@@ -48,9 +49,9 @@ export class TextDraw {
   }
   create(): this {
     if (!this.sourceInfo)
-      throw new Error("[TextDraw]: Cannot create with only id");
+      throw new TextDrawException("Cannot create with only id");
     if (this.id !== InvalidEnum.TEXT_DRAW)
-      throw new Error("[TextDraw]: Cannot create again");
+      throw new TextDrawException("Cannot create again");
 
     const { x, y, text, player, charset = "ISO-8859-1" } = this.sourceInfo;
     const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
@@ -61,7 +62,7 @@ export class TextDraw {
         this.id === InvalidEnum.TEXT_DRAW ||
         TextDraw.getInstances().length === LimitsEnum.MAX_TEXT_DRAWS
       )
-        throw new Error("[TextDraw]: Cannot create textdraw");
+        throw new TextDrawException("Cannot create textdraw");
       textDrawPool.set(this.id, this);
     } else {
       this._id = TextDraw.__inject__.createPlayer(player.id, x, y, _text);
@@ -69,7 +70,7 @@ export class TextDraw {
         this.id === InvalidEnum.TEXT_DRAW ||
         TextDraw.getInstances(player).length === LimitsEnum.MAX_TEXT_DRAWS
       )
-        throw new Error("[TextDraw]: Cannot create player textdraw");
+        throw new TextDrawException("Cannot create player textdraw");
       if (!playerTextDrawPool.has(player)) {
         playerTextDrawPool.set(player, new Map());
       }
@@ -174,7 +175,7 @@ export class TextDraw {
       return this;
     }
     if (size < 0) {
-      throw new Error("[TextDraw]: Invalid outline value");
+      throw new TextDrawException("Invalid outline value");
     }
     const player = this.getPlayer();
     if (player) TextDraw.__inject__.setOutlinePlayer(player.id, this.id, size);
@@ -257,7 +258,7 @@ export class TextDraw {
       return this;
     }
     if (size < 0) {
-      throw new Error("[TextDraw]: Invalid shadow value");
+      throw new TextDrawException("Invalid shadow value");
     }
     const player = this.getPlayer();
     if (player) TextDraw.__inject__.setShadowPlayer(player.id, this.id, size);
@@ -270,7 +271,7 @@ export class TextDraw {
       return this;
     }
     if (text.length === 0 || text.length > 1024) {
-      throw new Error("[TextDraw]: Invalid text length");
+      throw new TextDrawException("Invalid text length");
     }
     const charset = this.sourceInfo?.charset || "ISO-8859-1";
     const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
@@ -309,7 +310,7 @@ export class TextDraw {
     return this;
   }
   private static beforeCreateWarn(msg: string): void {
-    throw new Error(`[TextDraw]: Cannot ${msg} before create`);
+    throw new TextDrawException(`Cannot ${msg} before create`);
   }
   // player's textdraw should be shown / hidden only for whom it is created.
   show(player?: Player) {
@@ -322,7 +323,7 @@ export class TextDraw {
     else {
       if (player) TextDraw.__inject__.showForPlayer(player.id, this.id);
       else {
-        throw new Error("[TextDraw]: invalid player for show");
+        throw new TextDrawException("invalid player for show");
       }
     }
     return this;
@@ -337,7 +338,7 @@ export class TextDraw {
     else {
       if (player) TextDraw.__inject__.hideForPlayer(player.id, this.id);
       else {
-        throw new Error("[TextDraw]: invalid player for hide");
+        throw new TextDrawException("invalid player for hide");
       }
     }
     return this;
@@ -352,8 +353,8 @@ export class TextDraw {
       TextDraw.__inject__.showForAll(this.id);
       return this;
     }
-    throw new Error(
-      "[TextDraw]: player's textdraw should not be show for all.",
+    throw new TextDrawException(
+      "player's textdraw should not be show for all.",
     );
   }
   hideAll() {
@@ -366,8 +367,8 @@ export class TextDraw {
       TextDraw.__inject__.hideForAll(this.id);
       return this;
     }
-    throw new Error(
-      "[TextDraw]: player's textdraw should not be hide for all.",
+    throw new TextDrawException(
+      "player's textdraw should not be hide for all.",
     );
   }
   isValid(): boolean {

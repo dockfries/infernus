@@ -1,3 +1,4 @@
+import { HookException } from "core/exceptions";
 import { THookedMethods, TMethodKeys } from "core/types";
 
 export function defineHooks<T extends new (...args: any[]) => any>(target: T) {
@@ -22,7 +23,7 @@ export function defineHooks<T extends new (...args: any[]) => any>(target: T) {
     ) => ReturnType<InstanceType<T>[K]>,
   ) {
     if (hooked.has(methodName)) {
-      throw new Error(
+      throw new HookException(
         `Method '${String(methodName)}' of class '${target.name}' ` +
           `has already been hooked. Each method can only be hooked once per defineHooks call. `,
       );
@@ -30,7 +31,7 @@ export function defineHooks<T extends new (...args: any[]) => any>(target: T) {
 
     const original = Reflect.get(prototype, methodName);
     if (typeof original !== "function")
-      throw new Error(`Invalid method: ${String(methodName)}`);
+      throw new HookException(`Invalid method: ${String(methodName)}`);
 
     Reflect.set(prototype, methodName, interceptor);
     hooked.add(methodName);

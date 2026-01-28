@@ -2,6 +2,7 @@ import { GameMode, Player, rgba, TextDraw } from "@infernus/core";
 import { ProgressBarDirectionEnum } from "../enums";
 import { IProgressBar } from "../interfaces";
 import { darkenColor, setupTextDraw } from "../utils";
+import { ProgressBarException } from "../exceptions";
 
 const internalBarKey = Symbol("progress_bar_internal");
 const hookedDelTextDraws = new Set<TextDraw>();
@@ -49,7 +50,7 @@ export class ProgressBar {
   create() {
     const { player } = this.sourceInfo;
     if (!player.isConnected()) {
-      throw new Error(
+      throw new ProgressBarException(
         `attempt to create player progress bar for invalid player ${player.id}`,
       );
     }
@@ -59,7 +60,7 @@ export class ProgressBar {
       ppb = playerProgressBars.get(player.id)!;
     }
     if (ppb.has(this)) {
-      throw new Error(`cannot create progressBar again`);
+      throw new ProgressBarException(`cannot create progressBar again`);
     }
     ppb.add(this);
     this.render();

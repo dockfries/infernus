@@ -1,8 +1,9 @@
 import util from "node:util";
-import * as iconv from "iconv-lite";
+import iconv from "iconv-lite";
 import { snakeCase, merge, omit, mapKeys } from "es-toolkit";
 import { get } from "es-toolkit/compat";
 import { TLocales } from "core/types";
+import { I18nException } from "core/exceptions";
 
 const { encode, decode, encodingExists } = iconv;
 
@@ -37,7 +38,7 @@ export class I18n {
     // "server.welcome" => zh_cn["server"]["welcome"];
     const dotVal = get(incomingLocale, key, defaultLocale);
     if (typeof dotVal === "undefined") {
-      throw new Error(`[i18n]: cannot find ${locale}["${key}"]`);
+      throw new I18nException(`[i18n]: cannot find ${locale}["${key}"]`);
     }
     if (typeof dotVal !== "string") return JSON.stringify(dotVal);
     let strDotVal = dotVal;
@@ -50,7 +51,7 @@ export class I18n {
   // determine if the incoming character encoding type is valid
   static isValidate(charset: string): void {
     if (!encodingExists(charset)) {
-      throw new Error(`[i18n]: unknown charset ${charset}`);
+      throw new I18nException(`[i18n]: unknown charset ${charset}`);
     }
   }
 

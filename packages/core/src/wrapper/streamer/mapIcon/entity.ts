@@ -15,6 +15,7 @@ import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
 import { Player } from "core/components";
 import { dynamicMapIconPool } from "core/utils/pools";
+import { DynamicMapIconException } from "core/exceptions";
 
 export class DynamicMapIcon {
   private sourceInfo: IDynamicMapIcon | null = null;
@@ -25,7 +26,7 @@ export class DynamicMapIcon {
   constructor(mapIconOrId: IDynamicMapIcon | null) {
     if (typeof mapIconOrId === "number") {
       if (mapIconOrId === StreamerMiscellaneous.INVALID_ID) {
-        throw new Error("[StreamerMapIcon]: Invalid id");
+        throw new DynamicMapIconException("Invalid id");
       }
 
       const obj = DynamicMapIcon.getInstance(mapIconOrId);
@@ -40,9 +41,9 @@ export class DynamicMapIcon {
   }
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerMapIcon]: Cannot create again");
+      throw new DynamicMapIconException("Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerMapIcon]: Cannot create with only id");
+      throw new DynamicMapIconException("Cannot create with only id");
     let {
       style,
       streamDistance,
@@ -55,7 +56,7 @@ export class DynamicMapIcon {
     const { x, y, z, type, color: color, extended } = this.sourceInfo;
 
     if (type < 0 || type > 63)
-      throw new Error("[StreamerMapIcon]: Invalid map icon type");
+      throw new DynamicMapIconException("Invalid map icon type");
 
     style ??= MapIconStyles.LOCAL;
     streamDistance ??= StreamerDistances.MAP_ICON_SD;
@@ -117,8 +118,8 @@ export class DynamicMapIcon {
   }
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new Error(
-        "[StreamerMapIcon]: Cannot destroy the map icon before create",
+      throw new DynamicMapIconException(
+        "Cannot destroy the map icon before create",
       );
     if (!INTERNAL_FLAGS.skip) {
       DynamicMapIcon.__inject__.destroy(this.id);
@@ -134,8 +135,8 @@ export class DynamicMapIcon {
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerMapIcon]: Cannot toggle callbacks before create",
+      throw new DynamicMapIconException(
+        "Cannot toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       StreamerItemTypes.MAP_ICON,

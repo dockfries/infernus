@@ -1,5 +1,6 @@
 import qrcode from "qrcode-generator";
 import { DynamicObject, type IDynamicCommon } from "@infernus/core";
+import { QRException } from "./exceptions";
 
 export interface IQRMaterial {
   charset: string;
@@ -82,7 +83,7 @@ export function generateQRText(
   typeNumber: TypeNumber = 0,
   errorCorrectionLevel: ErrorCorrectionLevel = "L",
 ): string {
-  if (!text.trim()) throw new Error("Text cannot be empty");
+  if (!text.trim()) throw new QRException("Text cannot be empty");
 
   const qr = qrcode(typeNumber, errorCorrectionLevel);
   qr.addData(text);
@@ -170,3 +171,5 @@ export function setObjectQRMaterial(
   );
   return obj;
 }
+
+export * from "./exceptions";

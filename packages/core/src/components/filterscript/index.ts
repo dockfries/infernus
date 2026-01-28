@@ -1,3 +1,4 @@
+import { GameModeException } from "core/exceptions";
 import type { IFilterScript } from "../../interfaces";
 import { onExit, onInit } from "../gamemode/event";
 
@@ -28,7 +29,7 @@ export const loadUseScript = async (scriptName: string) => {
       }
     });
   } catch (err) {
-    throw new Error(`[GameMode]: script ${scriptName} load fail\nerr:${err}`);
+    throw new GameModeException(`script ${scriptName} load fail\nerr:${err}`);
   }
 };
 
@@ -59,7 +60,7 @@ export const unloadUseScript = async (scriptName: string) => {
       }
     });
   } catch (err) {
-    throw new Error(`[GameMode]: script ${scriptName} unload fail\n${err}`);
+    throw new GameModeException(`script ${scriptName} unload fail\n${err}`);
   }
 };
 
@@ -96,8 +97,8 @@ export const useFilterScript = function (
     preInstallScripts.some((fs) => fs.name === script.name) ||
     installedScripts.some((fs) => fs.name === script.name)
   ) {
-    throw new Error(
-      `[GameMode]: script ${script.name} has already been applied`,
+    throw new GameModeException(
+      `script ${script.name} has already been applied`,
     );
   }
   script.load = script.load.bind(script, ...options);

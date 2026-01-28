@@ -19,6 +19,7 @@ import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
 import { Player, Vehicle } from "core/components";
 import { dynamic3DTextLabelPool } from "core/utils/pools";
+import { DynamicTextLabelException } from "core/exceptions";
 
 export class Dynamic3DTextLabel {
   private sourceInfo: IDynamic3DTextLabel | null = null;
@@ -31,7 +32,7 @@ export class Dynamic3DTextLabel {
   constructor(textLabelOrId: IDynamic3DTextLabel | number) {
     if (typeof textLabelOrId === "number") {
       if (textLabelOrId === StreamerMiscellaneous.INVALID_ID) {
-        throw new Error("[Streamer3DTextLabel]: Invalid id");
+        throw new DynamicTextLabelException("Invalid id");
       }
 
       const obj = Dynamic3DTextLabel.getInstance(textLabelOrId);
@@ -46,9 +47,9 @@ export class Dynamic3DTextLabel {
   }
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[Streamer3DTextLabel]: Cannot create again");
+      throw new DynamicTextLabelException("Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[Streamer3DTextLabel]: Cannot create with only id");
+      throw new DynamicTextLabelException("Cannot create with only id");
     let {
       attachedPlayer,
       attachedVehicle,
@@ -131,7 +132,7 @@ export class Dynamic3DTextLabel {
   }
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new Error("[Streamer3DTextLabel]: Cannot destroy before create");
+      throw new DynamicTextLabelException("Cannot destroy before create");
     if (!INTERNAL_FLAGS.skip) {
       Dynamic3DTextLabel.__inject__.destroy(this.id);
     }
@@ -146,7 +147,7 @@ export class Dynamic3DTextLabel {
   }
   getColor(): string | number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[Streamer3DTextLabel]: Cannot get color before create");
+      throw new DynamicTextLabelException("Cannot get color before create");
     if (!this.sourceInfo) {
       return Streamer.getIntData(
         StreamerItemTypes.TEXT_3D_LABEL,
@@ -158,9 +159,7 @@ export class Dynamic3DTextLabel {
   }
   getCharset(): void | string {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[Streamer3DTextLabel]: Cannot get charset before create",
-      );
+      throw new DynamicTextLabelException("Cannot get charset before create");
     return this.sourceInfo?.charset;
   }
   getText() {
@@ -171,9 +170,7 @@ export class Dynamic3DTextLabel {
   }
   updateText(color: string | number, text: string, charset?: string): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[Streamer3DTextLabel]: Cannot update text before create",
-      );
+      throw new DynamicTextLabelException("Cannot update text before create");
     let _charset = "";
     if (this.sourceInfo) {
       _charset = charset || this.sourceInfo.charset || "utf8";
@@ -188,8 +185,8 @@ export class Dynamic3DTextLabel {
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[Streamer3DTextLabel]: Cannot toggle callbacks before create",
+      throw new DynamicTextLabelException(
+        "Cannot toggle callbacks before create",
       );
     return Streamer.toggleItemCallbacks(
       StreamerItemTypes.TEXT_3D_LABEL,
@@ -238,8 +235,8 @@ export class Dynamic3DTextLabel {
     offsetZ: number,
   ): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[Streamer3DTextLabel]: Cannot attachToPlayer before created",
+      throw new DynamicTextLabelException(
+        "Cannot attachToPlayer before created",
       );
     const playerId = typeof player === "number" ? player : player.id;
     const ret = Streamer.setIntData(
@@ -263,8 +260,8 @@ export class Dynamic3DTextLabel {
     offsetZ: number,
   ): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[Streamer3DTextLabel]: Cannot attachToVehicle before created",
+      throw new DynamicTextLabelException(
+        "Cannot attachToVehicle before created",
       );
     const vehicleId = typeof vehicle === "number" ? vehicle : vehicle.id;
     const ret = Streamer.setIntData(

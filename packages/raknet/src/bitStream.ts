@@ -16,6 +16,7 @@ import { PR_MAX_WEAPON_SLOTS } from "./defines";
 import type { IRconCommand, IStatsUpdate, IWeaponsUpdate } from "./interfaces";
 import type { Vehicle, Player } from "@infernus/core";
 import { InvalidEnum } from "@infernus/core";
+import { RakNetException } from "./exceptions";
 
 export class BitStream {
   public readonly id: BitStreamRaw;
@@ -481,7 +482,7 @@ export class BitStream {
     ) as number[];
 
     if (!Array.isArray(commandArray)) {
-      throw new Error("Failed to read RCON command: expected array");
+      throw new RakNetException("Failed to read RCON command: expected array");
     }
 
     data.command = commandArray;

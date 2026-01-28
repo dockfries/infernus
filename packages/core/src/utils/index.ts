@@ -10,3 +10,4 @@ export {
   type defineEventOptions,
 } from "./bus";
 export * from "./i18n";
+export * from "./disconnect";

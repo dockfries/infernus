@@ -1,4 +1,5 @@
 import { SV_NULL } from "../constants";
+import { SampVoiceException } from "../exceptions";
 import { effectPools } from "./pool";
 import { SampVoiceStream } from "./stream";
 
@@ -11,7 +12,7 @@ export abstract class SampVoiceEffect {
 
   constructor(ptr: number) {
     if (typeof ptr !== "number") {
-      throw new Error(`Invalid effect pointer: ${ptr}`);
+      throw new SampVoiceException(`Invalid effect pointer: ${ptr}`);
     }
     if (effectPools.has(ptr)) {
       return effectPools.get(ptr)!;

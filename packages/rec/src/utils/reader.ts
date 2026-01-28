@@ -1,6 +1,7 @@
-import fs from "fs/promises";
+import fs from "node:fs/promises";
 import { CppField } from "../types";
 import { DataBlock } from "./dataBlock";
+import { RecException } from "../exceptions";
 
 export class BinaryReader {
   private buffer: DataView;
@@ -40,7 +41,7 @@ export class BinaryReader {
           value = this.buffer.getInt32(this.position, true);
           break;
         default:
-          throw new Error("Unsupported integer size");
+          throw new RecException("Unsupported integer size");
       }
       this.position += size;
       this.bitOffset = 0;

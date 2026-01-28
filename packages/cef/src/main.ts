@@ -2,6 +2,7 @@ import { DynamicObject, Player, defineEvent } from "@infernus/core";
 import { CefDefault, CefNatives, CefValueType } from "./enums";
 import type { CefOptions, CefExtOptions } from "./interfaces";
 import { patchCefNatives } from "./utils";
+import { CefException } from "./exceptions";
 
 export * from "./enums";
 
@@ -31,7 +32,7 @@ export class Cef {
         randId = Math.floor(Math.random() * Cef.MAX_BROWSER_ID) + 1;
       }
       if (randId === -1) {
-        throw new Error("samp-cef: Too many CEF browsers");
+        throw new CefException("Too many CEF browsers");
       }
       this.browserId = randId;
       Cef.instances.set(this.playerId + "_" + randId, this);
@@ -189,17 +190,17 @@ export class Cef {
         if (typeof arg === "string") return [CefValueType.String, arg];
         if (typeof arg === "number") {
           if (Number.isNaN(arg)) {
-            throw new Error("samp-cef: NaN is not allowed");
+            throw new CefException("NaN is not allowed");
           }
           if (Number.isInteger(arg)) return [CefValueType.Integer, arg];
           if (arg % 1 !== 0) return [CefValueType.Float, arg];
         }
-        throw new Error("samp-cef: Unsupported type");
+        throw new CefException("Unsupported type");
       })
       .flat();
 
     if (argsWithType.length / 2 > 5) {
-      throw new Error("samp-cef: maximum of five parameters can be sent back");
+      throw new CefException("maximum of five parameters can be sent back");
     }
 
     const res = samp.callPublic(
@@ -255,3 +256,5 @@ export const CefEvent = {
   onInitialize,
   onBrowserCreated,
 };
+
+export * from "./exceptions";

@@ -1,3 +1,5 @@
+import { CoreException } from "core/exceptions";
+
 export type CallbackRet = boolean | number | void;
 
 export type PromisifyCallbackRet = CallbackRet | Promise<CallbackRet>;
@@ -82,7 +84,7 @@ function executeMiddlewares<T extends object>(
       } catch (err) {
         const msg = `executing event [name:${name},index:${index}]`;
         if (throwOnError) {
-          throw new Error(msg);
+          throw new CoreException(msg);
         }
         console.log(msg);
         if (err instanceof Error) {
@@ -110,7 +112,7 @@ export function defineEvent<T extends object>(options: defineEventOptions<T>) {
 
   if (isDefined) {
     const msg = `event [name:${name}] error: already defined.`;
-    throw new Error(msg);
+    throw new CoreException(msg);
   }
 
   function trigger(...argsOrOptions: any[]) {

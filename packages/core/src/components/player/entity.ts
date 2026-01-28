@@ -41,6 +41,7 @@ import {
 import { CmdBus } from "./command";
 import { ObjectMp } from "../object/entity";
 import { GameMode } from "../gamemode";
+import { ClientCheckException, PlayerException } from "core/exceptions";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
@@ -129,7 +130,7 @@ export class Player {
 
   constructor(public readonly id: number) {
     if (id < 0 || id >= LimitsEnum.MAX_PLAYERS) {
-      throw new Error(
+      throw new PlayerException(
         `Invalid player ID: ${id} (valid range: 0-${LimitsEnum.MAX_PLAYERS - 1})`,
       );
     }
@@ -172,7 +173,7 @@ export class Player {
   }
   setDrunkLevel(level: number) {
     if (level < 0 || level > 50000) {
-      throw new Error("[Player]: player's drunk level ranges from 0 to 50000");
+      throw new PlayerException("player's drunk level ranges from 0 to 50000");
     }
     return Player.__inject__.setDrunkLevel(this.id, level);
   }
@@ -342,7 +343,7 @@ export class Player {
   }
   setWantedLevel(level: number) {
     if (level < 0 || level > 6) {
-      throw new Error("[Player]: player's wanted level ranges from 0 to 6");
+      throw new PlayerException("player's wanted level ranges from 0 to 6");
     }
     return Player.__inject__.setWantedLevel(this.id, level);
   }
@@ -392,7 +393,7 @@ export class Player {
   }
   setSkillLevel(skill: WeaponSkillsEnum, level: number) {
     if (level < 0 || level > 999) {
-      throw new Error("[Player]: The valid skill level is only 0 to 999");
+      throw new PlayerException("The valid skill level is only 0 to 999");
     }
     return Player.__inject__.setSkillLevel(this.id, skill, level);
   }
@@ -523,7 +524,7 @@ export class Player {
   }
   playCrimeReport(suspect: Player, crimeId: number) {
     if (crimeId < 3 || crimeId > 22) {
-      throw new Error("[Player]: Available crime ids range from 3 to 22");
+      throw new PlayerException("Available crime ids range from 3 to 22");
     }
     return Player.__inject__.playCrimeReport(this.id, suspect.id, crimeId);
   }
@@ -579,8 +580,8 @@ export class Player {
     radius: number,
   ) {
     if (type < 0 || type > 13) {
-      throw new Error(
-        "[Player]: The valid explosion type value is only 0 to 13",
+      throw new PlayerException(
+        "The valid explosion type value is only 0 to 13",
       );
     }
     return Player.__inject__.createExplosion(this.id, x, y, z, type, radius);
@@ -618,8 +619,8 @@ export class Player {
     forceSync: boolean | ForceSyncEnum = false,
   ) {
     if (!isValidAnimateName(animLib, animName)) {
-      throw new Error(
-        `[Player]: Invalid anim library or name ${animLib} ${animName}`,
+      throw new PlayerException(
+        `Invalid anim library or name ${animLib} ${animName}`,
       );
     }
     return Player.__inject__.applyAnimation(
@@ -782,20 +783,21 @@ export class Player {
   ) {
     const validTypes = [2, 5, 69, 70, 71, 72];
     if (!validTypes.includes(type)) {
-      throw new Error(
-        `[Player]: sendClientCheck valid types are ${validTypes.toString()}`,
+      throw new PlayerException(
+        `sendClientCheck valid types are ${validTypes.toString()}`,
       );
     }
 
     return new Promise<IClientResRaw>((resolve, reject) => {
       if (this.isPaused) {
         return reject(
-          "[Player]: An attempt to check player client response, but player paused game",
+          new ClientCheckException(
+            "An attempt to check player client response, but player paused game",
+          ),
         );
       }
 
-      const timeoutMsg =
-        "[Player]: An attempt to check player client response timed out";
+      const timeoutMsg = "An attempt to check player client response timed out";
 
       const ping = this.getPing();
       const shouldResTime = (ping >= 200 ? 0 : ping) + 200;
@@ -816,7 +818,7 @@ export class Player {
 
       timer = setTimeout(() => {
         off();
-        reject(timeoutMsg);
+        reject(new ClientCheckException(timeoutMsg));
       }, shouldResTime);
 
       Player.__inject__.sendClientCheck(

@@ -4,6 +4,7 @@ import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
 import { Player } from "core/components";
 import { dynamicPickupPool } from "core/utils/pools";
+import { DynamicPickupException } from "core/exceptions";
 
 export class DynamicPickup {
   private sourceInfo: IDynamicPickup | null = null;
@@ -14,7 +15,7 @@ export class DynamicPickup {
   constructor(pickupOrId: IDynamicPickup | null) {
     if (typeof pickupOrId === "number") {
       if (pickupOrId === s.StreamerMiscellaneous.INVALID_ID) {
-        throw new Error("[StreamerPickup]: Invalid id");
+        throw new DynamicPickupException("Invalid id");
       }
 
       const obj = DynamicPickup.getInstance(pickupOrId);
@@ -29,14 +30,14 @@ export class DynamicPickup {
   }
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerPickup]: Cannot create again");
+      throw new DynamicPickupException("Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerPickup]: Cannot create with only id");
+      throw new DynamicPickupException("Cannot create with only id");
     let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
       this.sourceInfo;
     const { type, modelId, x, y, z, extended } = this.sourceInfo;
 
-    if (type < 0) throw new Error("[StreamerPickup]: Invalid pickup type");
+    if (type < 0) throw new DynamicPickupException("Invalid pickup type");
 
     streamDistance ??= s.StreamerDistances.PICKUP_SD;
     priority ??= 0;
@@ -94,7 +95,7 @@ export class DynamicPickup {
   }
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new Error("[StreamerPickup]: Cannot destroy pickup before create");
+      throw new DynamicPickupException("Cannot destroy pickup before create");
     if (!INTERNAL_FLAGS.skip) DynamicPickup.__inject__.destroy(this.id);
     dynamicPickupPool.delete(this.id);
     this._id = s.StreamerMiscellaneous.INVALID_ID;
@@ -107,9 +108,7 @@ export class DynamicPickup {
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerPickup]: Cannot toggle callbacks before create",
-      );
+      throw new DynamicPickupException("Cannot toggle callbacks before create");
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.PICKUP,
       this.id,

@@ -12,6 +12,7 @@ import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
 import { dynamicObjectPool } from "core/utils/pools";
+import { DynamicObjectException } from "core/exceptions";
 
 export class DynamicObject {
   private sourceInfo: IDynamicObject | null = null;
@@ -35,9 +36,9 @@ export class DynamicObject {
 
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Cannot create again");
+      throw new DynamicObjectException("Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerObject]: Cannot create with only id");
+      throw new DynamicObjectException("Cannot create with only id");
     let {
       streamDistance,
       drawDistance: drawDistance,
@@ -113,7 +114,7 @@ export class DynamicObject {
 
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new Error("[StreamerObject]: Cannot destroy object before create");
+      throw new DynamicObjectException("Cannot destroy object before create");
     if (!INTERNAL_FLAGS.skip) {
       DynamicObject.__inject__.destroy(this.id);
     }
@@ -141,25 +142,25 @@ export class DynamicObject {
 
   getPos() {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Cannot get position before create");
+      throw new DynamicObjectException("Cannot get position before create");
     return DynamicObject.__inject__.getPos(this.id);
   }
 
   setPos(x: number, y: number, z: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Cannot set position before create");
+      throw new DynamicObjectException("Cannot set position before create");
     return DynamicObject.__inject__.setPos(this.id, x, y, z);
   }
 
   getRot() {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Cannot get rotation before create");
+      throw new DynamicObjectException("Cannot get rotation before create");
     return DynamicObject.__inject__.getRot(this.id);
   }
 
   setRot(rx: number, ry: number, rz: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Cannot set rotation before create");
+      throw new DynamicObjectException("Cannot set rotation before create");
     return DynamicObject.__inject__.setRot(this.id, rx, ry, rz);
   }
 
@@ -173,13 +174,13 @@ export class DynamicObject {
     rz = -1000,
   ): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Cannot start moving before create");
+      throw new DynamicObjectException("Cannot start moving before create");
     if (speed < 0) {
-      throw new Error("[StreamerObject]: speed must not be less than 0");
+      throw new DynamicObjectException("speed must not be less than 0");
     }
     if (speed > 120 * 1000)
-      throw new Error(
-        "[StreamerObject]: speed more than 120 seconds, warn if it's not intentional",
+      throw new DynamicObjectException(
+        "speed more than 120 seconds, warn if it's not intentional",
       );
     if (this.isMoving()) this.stop();
     return DynamicObject.__inject__.move(this.id, x, y, z, speed, rx, ry, rz);
@@ -187,7 +188,7 @@ export class DynamicObject {
 
   stop(): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Cannot stop moving before create");
+      throw new DynamicObjectException("Cannot stop moving before create");
     return DynamicObject.__inject__.stop(this.id);
   }
 
@@ -201,8 +202,8 @@ export class DynamicObject {
       this.id === s.StreamerMiscellaneous.INVALID_ID ||
       player.id === InvalidEnum.PLAYER_ID
     )
-      throw new Error(
-        "[StreamerObject]: Cannot attachCamera before both are created",
+      throw new DynamicObjectException(
+        "Cannot attachCamera before both are created",
       );
     return DynamicObject.__inject__.attachCamera(player.id, this.id);
   }
@@ -221,8 +222,8 @@ export class DynamicObject {
       this.id === s.StreamerMiscellaneous.INVALID_ID ||
       attachTo.id === s.StreamerMiscellaneous.INVALID_ID
     )
-      throw new Error(
-        "[StreamerObject]: Cannot attachToObject before both are created",
+      throw new DynamicObjectException(
+        "Cannot attachToObject before both are created",
       );
     return DynamicObject.__inject__.attachToObject(
       this.id,
@@ -250,8 +251,8 @@ export class DynamicObject {
       this.id === s.StreamerMiscellaneous.INVALID_ID ||
       player.id === InvalidEnum.PLAYER_ID
     )
-      throw new Error(
-        "[StreamerObject]: Cannot attachToPlayer before both are created",
+      throw new DynamicObjectException(
+        "Cannot attachToPlayer before both are created",
       );
     return DynamicObject.__inject__.attachToPlayer(
       this.id,
@@ -278,8 +279,8 @@ export class DynamicObject {
       this.id === s.StreamerMiscellaneous.INVALID_ID ||
       vehicle.id === InvalidEnum.VEHICLE_ID
     )
-      throw new Error(
-        "[StreamerObject]: Cannot attachToVehicle before both are created",
+      throw new DynamicObjectException(
+        "Cannot attachToVehicle before both are created",
       );
     return DynamicObject.__inject__.attachToVehicle(
       this.id,
@@ -295,7 +296,7 @@ export class DynamicObject {
 
   edit(player: Player): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Cannot edit before create");
+      throw new DynamicObjectException("Cannot edit before create");
     player.endObjectEditing();
     return DynamicObject.__inject__.edit(player.id, this.id);
   }
@@ -313,7 +314,7 @@ export class DynamicObject {
 
   getMaterial(materialIndex: number) {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Cannot get material before create");
+      throw new DynamicObjectException("Cannot get material before create");
     return DynamicObject.__inject__.getMaterial(this.id, materialIndex);
   }
 
@@ -325,7 +326,7 @@ export class DynamicObject {
     materialColor: string | number = "#000",
   ): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerObject]: Cannot set material before create");
+      throw new DynamicObjectException("Cannot set material before create");
     return DynamicObject.__inject__.setMaterial(
       this.id,
       materialIndex,
@@ -349,8 +350,8 @@ export class DynamicObject {
 
   getMaterialText(materialIndex: number) {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerObject]: Cannot get material text before create",
+      throw new DynamicObjectException(
+        "Cannot get material text before create",
       );
     return DynamicObject.__inject__.getMaterialText(
       this.id,
@@ -372,8 +373,8 @@ export class DynamicObject {
     textAlignment = 0,
   ): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerObject]: Cannot set material text before create",
+      throw new DynamicObjectException(
+        "Cannot set material text before create",
       );
     if (this.sourceInfo) {
       this.sourceInfo.charset = charset;
@@ -400,9 +401,7 @@ export class DynamicObject {
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerObject]: Cannot toggle callbacks before create",
-      );
+      throw new DynamicObjectException("Cannot toggle callbacks before create");
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.OBJECT,
       this.id,

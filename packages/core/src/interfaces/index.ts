@@ -5,6 +5,7 @@ import type { DialogStylesEnum } from "../enums";
 import type { TDynamicAreaTypes, TStreamerExtendable } from "../types";
 import type { Player } from "../components/player/entity";
 import type { Vehicle } from "../components/vehicle/entity";
+import { DialogException } from "core/exceptions";
 
 export interface IDialog {
   style?: DialogStylesEnum;
@@ -61,7 +62,7 @@ export interface ITextDraw {
 export interface IDialogFuncQueue {
   showId: number;
   resolve: (value: IDialogResCommon | PromiseLike<IDialogResCommon>) => void;
-  reject: (reason: string) => void;
+  reject: (reason: DialogException) => void;
 }
 
 export interface IDynamic {

@@ -5,6 +5,7 @@ import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
 import { dynamicActorPool } from "core/utils/pools";
+import { DynamicActorException } from "core/exceptions";
 
 export class DynamicActor {
   private sourceInfo: IDynamicActor | null = null;
@@ -15,7 +16,7 @@ export class DynamicActor {
   constructor(actorOrId: IDynamicActor | number) {
     if (typeof actorOrId === "number") {
       if (actorOrId === s.StreamerMiscellaneous.INVALID_ID) {
-        throw new Error("[StreamerActor]: Invalid id");
+        throw new DynamicActorException("Invalid id");
       }
 
       const obj = DynamicActor.getInstance(actorOrId);
@@ -30,9 +31,9 @@ export class DynamicActor {
   }
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerActor]: Cannot create again");
+      throw new DynamicActorException("Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerActor]: Cannot create with only id");
+      throw new DynamicActorException("Cannot create with only id");
     let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
       this.sourceInfo;
     const { modelId, x, y, z, r, invulnerable, health, extended } =
@@ -98,7 +99,7 @@ export class DynamicActor {
   }
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new Error("[StreamerActor]: Cannot destroy to actor before create");
+      throw new DynamicActorException("Cannot destroy to actor before create");
     if (!INTERNAL_FLAGS.skip) {
       DynamicActor.__inject__.destroy(this.id);
     }
@@ -117,16 +118,12 @@ export class DynamicActor {
   }
   getVirtualWorld(): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerActor]: Cannot get virtual world before create",
-      );
+      throw new DynamicActorException("Cannot get virtual world before create");
     return DynamicActor.__inject__.getVirtualWorld(this.id);
   }
   setVirtualWorld(vWorld: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerActor]: Cannot set virtual world before create",
-      );
+      throw new DynamicActorException("Cannot set virtual world before create");
     return DynamicActor.__inject__.setVirtualWorld(this.id, vWorld);
   }
   applyAnimation(
@@ -140,10 +137,10 @@ export class DynamicActor {
     time = 0,
   ): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerActor]: Cannot apply animation before create");
+      throw new DynamicActorException("Cannot apply animation before create");
     if (!isValidAnimateName(animLib, animName)) {
-      throw new Error(
-        `[StreamerActor]: Invalid anim library or name ${animLib} ${animName}`,
+      throw new DynamicActorException(
+        `Invalid anim library or name ${animLib} ${animName}`,
       );
     }
     return DynamicActor.__inject__.applyAnimation(
@@ -160,7 +157,7 @@ export class DynamicActor {
   }
   clearAnimations(): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerActor]: Cannot clear animation before create");
+      throw new DynamicActorException("Cannot clear animation before create");
     return DynamicActor.__inject__.clearAnimations(this.id);
   }
   getFacingAngle() {
@@ -168,17 +165,17 @@ export class DynamicActor {
   }
   setFacingAngle(ang: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerActor]: Cannot set facing angle before create");
+      throw new DynamicActorException("Cannot set facing angle before create");
     return DynamicActor.__inject__.setFacingAngle(this.id, ang);
   }
   getPos() {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerActor]: Cannot get pos before create");
+      throw new DynamicActorException("Cannot get pos before create");
     return DynamicActor.__inject__.getPos(this.id);
   }
   setPos(x: number, y: number, z: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerActor]: Cannot set pos before create");
+      throw new DynamicActorException("Cannot set pos before create");
     return DynamicActor.__inject__.setPos(this.id, x, y, z);
   }
   getHealth() {
@@ -186,7 +183,7 @@ export class DynamicActor {
   }
   setHealth(health: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerActor]: Cannot set health before create");
+      throw new DynamicActorException("Cannot set health before create");
     return DynamicActor.__inject__.setHealth(this.id, health);
   }
   isInvulnerable(): boolean {
@@ -195,7 +192,7 @@ export class DynamicActor {
   }
   setInvulnerable(invulnerable = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerActor]: Cannot set invulnerable before create");
+      throw new DynamicActorException("Cannot set invulnerable before create");
     return DynamicActor.__inject__.setInvulnerable(this.id, invulnerable);
   }
   getPlayerTarget(player: Player) {
@@ -208,12 +205,12 @@ export class DynamicActor {
   }
   getAnimation() {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerActor]: Cannot get animation before create");
+      throw new DynamicActorException("Cannot get animation before create");
     return DynamicActor.__inject__.getAnimation(this.id);
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerActor]: Cannot toggle callbacks before create");
+      throw new DynamicActorException("Cannot toggle callbacks before create");
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.ACTOR,
       this.id,

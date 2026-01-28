@@ -2,6 +2,7 @@ import type { Player } from "@infernus/core";
 import { SV_NULL } from "../constants";
 import { streamPools } from "./pool";
 import { SvParameterEnum } from "../enums";
+import { SampVoiceException } from "../exceptions";
 
 export abstract class SampVoiceStream {
   private _ptr: number = SV_NULL;
@@ -17,7 +18,7 @@ export abstract class SampVoiceStream {
 
   constructor(ptr: number, type: string) {
     if (typeof ptr !== "number") {
-      throw new Error(`Invalid stream pointer: ${ptr}`);
+      throw new SampVoiceException(`Invalid stream pointer: ${ptr}`);
     }
     if (streamPools.has(ptr)) {
       return streamPools.get(ptr)!;

@@ -12,6 +12,7 @@ import {
   GetPlayerObjectMaterialText,
   SetPlayerObjectMaterialText,
 } from "core/utils/helper";
+import { ObjectMpException } from "core/exceptions";
 
 export class ObjectMp {
   private sourceInfo: IObjectMp | null = null;
@@ -24,7 +25,7 @@ export class ObjectMp {
   constructor(objectOrId: IObjectMp | number, player?: Player) {
     if (typeof objectOrId === "number") {
       if (objectOrId === InvalidEnum.OBJECT_ID) {
-        throw new Error("[ObjectMp]: Invalid id");
+        throw new ObjectMpException("Invalid id");
       }
 
       if (player) {
@@ -51,9 +52,9 @@ export class ObjectMp {
 
   create(): this {
     if (!this.sourceInfo)
-      throw new Error("[ObjectMp]: Cannot create with only id");
+      throw new ObjectMpException("Cannot create with only id");
     if (this.id !== InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot create again");
+      throw new ObjectMpException("Cannot create again");
 
     const {
       modelId,
@@ -82,7 +83,7 @@ export class ObjectMp {
         this.id === InvalidEnum.OBJECT_ID ||
         ObjectMp.getInstances().length === LimitsEnum.MAX_OBJECTS
       )
-        throw new Error("[ObjectMp]: Cannot create object");
+        throw new ObjectMpException("Cannot create object");
 
       objectMpPool.set(this._id, this);
       return this;
@@ -108,7 +109,7 @@ export class ObjectMp {
       this.id === InvalidEnum.OBJECT_ID ||
       ObjectMp.getInstances(player).length === LimitsEnum.MAX_OBJECTS
     )
-      throw new Error("[ObjectMp]: Cannot create player object");
+      throw new ObjectMpException("Cannot create player object");
 
     if (!playerObjectPool.has(player)) {
       playerObjectPool.set(player, new Map());
@@ -119,7 +120,7 @@ export class ObjectMp {
 
   destroy(): this {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot destroy before create");
+      throw new ObjectMpException("Cannot destroy before create");
 
     if (this.isGlobal()) {
       if (!INTERNAL_FLAGS.skip) {
@@ -193,7 +194,7 @@ export class ObjectMp {
 
   getPos() {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot get position before create");
+      throw new ObjectMpException("Cannot get position before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getPos(this.id);
     }
@@ -202,7 +203,7 @@ export class ObjectMp {
 
   setPos(x: number, y: number, z: number): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot set position before create");
+      throw new ObjectMpException("Cannot set position before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.setPos(this.id, x, y, z);
     }
@@ -217,7 +218,7 @@ export class ObjectMp {
 
   getRot() {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot get rotation before create");
+      throw new ObjectMpException("Cannot get rotation before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getRot(this.id);
     }
@@ -226,7 +227,7 @@ export class ObjectMp {
 
   setRot(rx: number, ry: number, rz: number): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot set rotation before create");
+      throw new ObjectMpException("Cannot set rotation before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.setRot(this.id, rx, ry, rz);
     }
@@ -249,13 +250,13 @@ export class ObjectMp {
     rz: number,
   ): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot start moving before create");
+      throw new ObjectMpException("Cannot start moving before create");
     if (speed < 0) {
-      throw new Error("[ObjectMp]: speed must not be less than 0");
+      throw new ObjectMpException("speed must not be less than 0");
     }
     if (speed > 120 * 1000)
-      throw new Error(
-        "[ObjectMp]: speed more than 120 seconds, warn if it's not intentional",
+      throw new ObjectMpException(
+        "speed more than 120 seconds, warn if it's not intentional",
       );
     if (this.isMoving()) this.stop();
     if (this.isGlobal()) {
@@ -276,7 +277,7 @@ export class ObjectMp {
 
   stop(): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot stop moving before create");
+      throw new ObjectMpException("Cannot stop moving before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.stop(this.id);
     }
@@ -295,7 +296,7 @@ export class ObjectMp {
     if (this.id === InvalidEnum.OBJECT_ID) return false;
     if (this.isGlobal()) {
       if (!player) {
-        throw new Error("[ObjectMp]: Cannot attachCamera without player");
+        throw new ObjectMpException("Cannot attachCamera without player");
       }
       return ObjectMp.__inject__.attachCamera(player.id, this.id);
     }
@@ -316,8 +317,8 @@ export class ObjectMp {
       this.id === InvalidEnum.OBJECT_ID ||
       attachTo.id === InvalidEnum.OBJECT_ID
     )
-      throw new Error(
-        "[ObjectMp]: Cannot attachToObject before both are created",
+      throw new ObjectMpException(
+        "Cannot attachToObject before both are created",
       );
 
     if (this.isGlobal() && attachTo.isGlobal()) {
@@ -346,8 +347,8 @@ export class ObjectMp {
         syncRotation,
       );
     }
-    throw new Error(
-      "[ObjectMp]: Cannot attachToObject with global and player object",
+    throw new ObjectMpException(
+      "Cannot attachToObject with global and player object",
     );
   }
 
@@ -423,11 +424,11 @@ export class ObjectMp {
 
   edit(player?: Player): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot edit before create");
+      throw new ObjectMpException("Cannot edit before create");
 
     if (this.isGlobal()) {
       if (!player) {
-        throw new Error("[ObjectMp]: Cannot edit without player");
+        throw new ObjectMpException("Cannot edit without player");
       }
       player.endObjectEditing();
       return ObjectMp.__inject__.beginEditing(player.id, this.id);
@@ -451,7 +452,7 @@ export class ObjectMp {
 
   getMaterial(materialIndex: number) {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot get material before create");
+      throw new ObjectMpException("Cannot get material before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getMaterial(this.id, materialIndex);
     }
@@ -470,7 +471,7 @@ export class ObjectMp {
     materialColor: string | number = "#000",
   ): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot set material before create");
+      throw new ObjectMpException("Cannot set material before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.setMaterial(
         this.id,
@@ -494,7 +495,7 @@ export class ObjectMp {
 
   getMaterialText(materialIndex: number) {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot get material text before create");
+      throw new ObjectMpException("Cannot get material text before create");
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getMaterialText(
         this.id,
@@ -523,7 +524,7 @@ export class ObjectMp {
     textAlignment = 0,
   ): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
-      throw new Error("[ObjectMp]: Cannot set material text before create");
+      throw new ObjectMpException("Cannot set material text before create");
     if (this.sourceInfo) {
       this.sourceInfo.charset = charset;
     }

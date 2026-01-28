@@ -7,3 +7,4 @@ export * from "./syncs";
 export * from "./interfaces";
 export * from "./types";
 export * from "./bitStream";
+export * from "./exceptions";

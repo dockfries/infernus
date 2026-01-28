@@ -17,6 +17,7 @@ import {
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
 import { dynamicRaceCPPool } from "core/utils/pools";
+import { DynamicRaceCpException } from "core/exceptions";
 
 export class DynamicRaceCP {
   private sourceInfo: IDynamicRaceCp | null = null;
@@ -27,7 +28,7 @@ export class DynamicRaceCP {
   constructor(checkPointOrId: IDynamicRaceCp | number) {
     if (typeof checkPointOrId === "number") {
       if (checkPointOrId === StreamerMiscellaneous.INVALID_ID) {
-        throw new Error("[StreamerRaceCP]: Invalid id");
+        throw new DynamicRaceCpException("Invalid id");
       }
 
       const obj = DynamicRaceCP.getInstance(checkPointOrId);
@@ -42,17 +43,17 @@ export class DynamicRaceCP {
   }
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerRaceCP]: Cannot create again");
+      throw new DynamicRaceCpException("Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerRaceCP]: Cannot create with only id");
+      throw new DynamicRaceCpException("Cannot create with only id");
     let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
       this.sourceInfo;
     const { type, size, x, y, z, nextX, nextY, nextZ, extended } =
       this.sourceInfo;
 
-    if (type < 0 || type > 8) throw new Error("[StreamerRaceCP]: Invalid type");
+    if (type < 0 || type > 8) throw new DynamicRaceCpException("Invalid type");
 
-    if (size < 0) throw new Error("[StreamerRaceCP]: Invalid size");
+    if (size < 0) throw new DynamicRaceCpException("Invalid size");
 
     streamDistance ??= StreamerDistances.RACE_CP_SD;
     priority ??= 0;
@@ -116,8 +117,8 @@ export class DynamicRaceCP {
   }
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new Error(
-        "[StreamerRaceCP]: Cannot destroy the checkpoint before create",
+      throw new DynamicRaceCpException(
+        "Cannot destroy the checkpoint before create",
       );
     if (!INTERNAL_FLAGS.skip) {
       DynamicRaceCP.__inject__.destroy(this.id);
@@ -133,7 +134,7 @@ export class DynamicRaceCP {
   }
   togglePlayer(player: Player, toggle: boolean): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerRaceCP]: Cannot toggle player before create");
+      throw new DynamicRaceCpException("Cannot toggle player before create");
     DynamicRaceCP.__inject__.togglePlayer(player.id, this.id, toggle);
     return this;
   }
@@ -151,9 +152,7 @@ export class DynamicRaceCP {
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerRaceCP]: Cannot toggle callbacks before create",
-      );
+      throw new DynamicRaceCpException("Cannot toggle callbacks before create");
     return Streamer.toggleItemCallbacks(
       StreamerItemTypes.RACE_CP,
       this.id,

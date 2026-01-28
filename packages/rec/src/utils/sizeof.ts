@@ -1,3 +1,4 @@
+import { RecException } from "../exceptions";
 import { CppField } from "../types";
 
 export function sizeof(field: CppField): number {
@@ -22,7 +23,7 @@ export function sizeof(field: CppField): number {
     case "struct": {
       const size = field.value!.reduce((acc, curr) => acc + sizeof(curr), 0);
       if (size === 0) {
-        throw new Error(`Invalid struct: ${field.field}`);
+        throw new RecException(`Invalid struct: ${field.field}`);
       }
       return size;
     }
@@ -32,7 +33,7 @@ export function sizeof(field: CppField): number {
         .value!.slice(1)
         .every((curr) => sizeof(curr) === size);
       if (!isValid) {
-        throw new Error(`Invalid union: ${field.field}`);
+        throw new RecException(`Invalid union: ${field.field}`);
       }
       return size;
     }

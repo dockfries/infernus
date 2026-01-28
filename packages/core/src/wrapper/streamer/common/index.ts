@@ -2,10 +2,13 @@ import { Player } from "core/components/player";
 import type { StreamerItemTypes } from "@infernus/streamer";
 import * as s from "@infernus/streamer";
 import { onPluginError } from "../callbacks";
+import { StreamerException } from "core/exceptions";
 
 export class Streamer {
   private constructor() {
-    throw new Error("This is a static class and cannot be instantiated.");
+    throw new StreamerException(
+      "This is a static class and cannot be instantiated.",
+    );
   }
   static getTickRate = s.Streamer_GetTickRate;
   static setTickRate = s.Streamer_SetTickRate;

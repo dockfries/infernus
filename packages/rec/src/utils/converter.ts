@@ -1,4 +1,5 @@
 import { RecordTypesEnum } from "../enums";
+import { RecException } from "../exceptions";
 import {
   HeaderDataBlock,
   OnFootDataBlock,
@@ -41,7 +42,7 @@ export async function recToJson(filePath: string) {
   }
 
   if (corrupt) {
-    throw new Error("File data format error");
+    throw new RecException("File data format error");
   }
 
   let hydra = true;
@@ -79,7 +80,7 @@ export function jsonToRec(filePath: string, data: any[]) {
       RecordTypesEnum.DRIVER,
     ].includes(header.type)
   ) {
-    throw new Error("File data format error");
+    throw new RecException("File data format error");
   }
 
   const writer = new BinaryWriter();

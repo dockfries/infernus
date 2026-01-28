@@ -1,6 +1,7 @@
-import fs from "fs/promises";
+import fs from "node:fs/promises";
 import { CppField } from "../types";
 import { DataBlock } from "./dataBlock";
+import { RecException } from "../exceptions";
 
 export class BinaryWriter {
   private buffer = Buffer.alloc(0);
@@ -55,7 +56,7 @@ export class BinaryWriter {
           this.buffer.writeInt32LE(value, this.position);
           break;
         default:
-          throw new Error("Unsupported integer size");
+          throw new RecException("Unsupported integer size");
       }
       this.position += size;
       this.bitOffset = 0;
@@ -135,7 +136,9 @@ export class BinaryWriter {
             }
           }
           if (!foundField) {
-            throw new Error(`No valid field found in union: ${field.field}`);
+            throw new RecException(
+              `No valid field found in union: ${field.field}`,
+            );
           }
           break;
         }

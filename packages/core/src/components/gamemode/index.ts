@@ -22,10 +22,13 @@ import { I18n } from "../../utils/i18n";
 import { SendRconCommand } from "core/utils/helper";
 import { CmdBus } from "../player/command";
 import { LimitsEnum } from "core/enums";
+import { GameModeException } from "core/exceptions";
 
 export class GameMode {
   private constructor() {
-    throw new Error("This is a static class and cannot be instantiated.");
+    throw new GameModeException(
+      "This is a static class and cannot be instantiated.",
+    );
   }
 
   static onInit = onInit;
@@ -65,13 +68,13 @@ export class GameMode {
 
   static setWeather(weather: number) {
     if (weather < 0 || weather > 255) {
-      throw new Error("[GameMode]: The valid weather value is only 0 to 255");
+      throw new GameModeException("The valid weather value is only 0 to 255");
     }
     w.SetWeather(weather);
   }
   static setWorldTime(hour: number) {
     if (hour < 0 || hour > 23) {
-      throw new Error("[GameMode]: The valid hour value is only 0 to 23");
+      throw new GameModeException("The valid hour value is only 0 to 23");
     }
     w.SetWorldTime(hour);
   }
@@ -88,8 +91,8 @@ export class GameMode {
     radius: number,
   ): boolean {
     if (type < 0 || type > 13) {
-      throw new Error(
-        "[GameMode]: The valid explosion type value is only 0 to 13",
+      throw new GameModeException(
+        "The valid explosion type value is only 0 to 13",
       );
     }
     return w.CreateExplosion(x, y, z, type, radius);
@@ -154,28 +157,28 @@ export class GameMode {
     timeOff?: number,
   ): boolean {
     if (virtualWorld < -1) {
-      throw new Error("[GameMode]: AddSimpleModel - Error virtual world");
+      throw new GameModeException("AddSimpleModel - Error virtual world");
     }
     if (baseId < 0) {
-      throw new Error("[GameMode]: AddSimpleModel - Error baseId");
+      throw new GameModeException("AddSimpleModel - Error baseId");
     }
     if (
       newId > LimitsEnum.MAX_CUSTOM_OBJECT_ID ||
       newId < LimitsEnum.MIN_CUSTOM_OBJECT_ID
     ) {
-      throw new Error("[GameMode]: AddSimpleModel - Error newId range");
+      throw new GameModeException("AddSimpleModel - Error newId range");
     }
     if (dffName.trim().length === 0) {
-      throw new Error("[GameMode]: AddSimpleModel - Empty dffName");
+      throw new GameModeException("AddSimpleModel - Empty dffName");
     }
     if (txdName.trim().length === 0) {
-      throw new Error("[GameMode]: AddSimpleModel - Empty txdName");
+      throw new GameModeException("AddSimpleModel - Empty txdName");
     }
     if (timeOn !== undefined && (timeOn < 0 || timeOn > 23)) {
-      throw new Error("[GameMode]: AddSimpleModel - Error time on range");
+      throw new GameModeException("AddSimpleModel - Error time on range");
     }
     if (timeOff !== undefined && (timeOff < 0 || timeOff > 23)) {
-      throw new Error("[GameMode]: AddSimpleModel - Error time off range");
+      throw new GameModeException("AddSimpleModel - Error time off range");
     }
     return true;
   }

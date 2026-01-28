@@ -4,6 +4,7 @@ import * as p from "core/wrapper/native";
 import { Player } from "../player";
 import { INTERNAL_FLAGS } from "core/utils/flags";
 import { pickupPool, playerPickupPool } from "core/utils/pools";
+import { PickupException } from "core/exceptions";
 
 export class Pickup {
   private sourceInfo: IPickup | null = null;
@@ -17,7 +18,7 @@ export class Pickup {
   constructor(pickupOrId: IPickup | number, player?: Player) {
     if (typeof pickupOrId === "number") {
       if (pickupOrId === InvalidEnum.PICKUP_ID) {
-        throw new Error("[Pickup]: Invalid id");
+        throw new PickupException("Invalid id");
       }
 
       if (player) {
@@ -44,16 +45,16 @@ export class Pickup {
 
   create() {
     if (!this.sourceInfo) {
-      throw new Error("[Pickup]: Cannot create with only id");
+      throw new PickupException("Cannot create with only id");
     }
     if (this.id !== InvalidEnum.PICKUP_ID) {
-      throw new Error("[Pickup]: Cannot be created twice");
+      throw new PickupException("Cannot be created twice");
     }
     const { model, type, virtualWorld, x, y, z, isStatic } = this.sourceInfo;
     const player = this.getPlayer();
     if (isStatic) {
       if (player) {
-        throw new Error("[Pickup]: Cannot create static pickup for player");
+        throw new PickupException("Cannot create static pickup for player");
       }
       Pickup.__inject__.addStatic(model, type, x, y, z, virtualWorld);
     } else {
@@ -63,7 +64,7 @@ export class Pickup {
           Pickup.getInstances().length === LimitsEnum.MAX_PICKUPS ||
           this._id === InvalidEnum.PICKUP_ID
         ) {
-          throw new Error("[Pickup]: Cannot create pickup");
+          throw new PickupException("Cannot create pickup");
         }
         pickupPool.set(this.id, this);
       } else {
@@ -81,7 +82,7 @@ export class Pickup {
             Pickup.getInstances(player).length === LimitsEnum.MAX_PICKUPS) ||
           this._id === InvalidEnum.PICKUP_ID
         ) {
-          throw new Error("[Pickup]: Cannot create player pickup");
+          throw new PickupException("Cannot create player pickup");
         }
         if (!playerPickupPool.has(player)) {
           playerPickupPool.set(player, new Map());
@@ -94,11 +95,11 @@ export class Pickup {
 
   destroy(): void {
     if (this.sourceInfo && this.sourceInfo.isStatic) {
-      throw new Error("[Pickup]: Cannot destroy static pickup");
+      throw new PickupException("Cannot destroy static pickup");
     }
 
     if (this.id === InvalidEnum.PICKUP_ID) {
-      throw new Error("[Pickup]: Cannot destroy before create");
+      throw new PickupException("Cannot destroy before create");
     }
 
     const player = this.getPlayer();
@@ -227,7 +228,7 @@ export class Pickup {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
     const p = this.getPlayer();
     if (p) {
-      throw new Error("[Pickup]: Cannot show for player pickup");
+      throw new PickupException("Cannot show for player pickup");
     }
     return Pickup.__inject__.showForPlayer(player.id, this.id);
   }
@@ -236,7 +237,7 @@ export class Pickup {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
     const p = this.getPlayer();
     if (p) {
-      throw new Error("[Pickup]: Cannot hide for player pickup");
+      throw new PickupException("Cannot hide for player pickup");
     }
     return Pickup.__inject__.hideForPlayer(player.id, this.id);
   }
@@ -245,7 +246,7 @@ export class Pickup {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
     const p = this.isPlayer();
     if (p) {
-      throw new Error("[Pickup]: Cannot isHiddenForPlayer for player pickup");
+      throw new PickupException("Cannot isHiddenForPlayer for player pickup");
     }
     return Pickup.__inject__.isHiddenForPlayer(player.id, this.id);
   }

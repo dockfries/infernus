@@ -8,6 +8,7 @@ import type { DynamicObject } from "../object";
 import { Streamer } from "../common";
 import { INTERNAL_FLAGS } from "../../../utils/flags";
 import { dynamicAreasPool } from "core/utils/pools";
+import { DynamicAreaException } from "core/exceptions";
 
 export class DynamicArea {
   private sourceInfo: TDynamicArea | null = null;
@@ -21,7 +22,7 @@ export class DynamicArea {
   constructor(areaOrId: TDynamicArea | number) {
     if (typeof areaOrId === "number") {
       if (areaOrId === s.StreamerMiscellaneous.INVALID_ID) {
-        throw new Error("[StreamerArea]: Invalid id");
+        throw new DynamicAreaException("Invalid id");
       }
 
       const obj = DynamicArea.getInstance(areaOrId);
@@ -36,9 +37,9 @@ export class DynamicArea {
   }
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerArea]: Cannot create again");
+      throw new DynamicAreaException("Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[StreamerArea]: Cannot create with only id");
+      throw new DynamicAreaException("Cannot create with only id");
     let { worldId, interiorId, playerId, priority } = this.sourceInfo;
     priority ??= 0;
     const { type, extended } = this.sourceInfo;
@@ -54,7 +55,7 @@ export class DynamicArea {
       if (type === "circle") {
         const { x, y, size } = this.sourceInfo;
         if (size < 0)
-          throw new Error("[StreamerArea]: Invalid circle extend size");
+          throw new DynamicAreaException("Invalid circle extend size");
         this._id = DynamicArea.__inject__.createCircleEx(
           x,
           y,
@@ -81,7 +82,7 @@ export class DynamicArea {
       } else if (type === "cylinder") {
         const { x, y, minZ: minZ, maxZ: maxZ, size } = this.sourceInfo;
         if (size < 0)
-          throw new Error("[StreamerArea]: Invalid cylinder extend size");
+          throw new DynamicAreaException("Invalid cylinder extend size");
         this._id = DynamicArea.__inject__.createCylinderEx(
           x,
           y,
@@ -96,8 +97,8 @@ export class DynamicArea {
       } else if (type === "polygon") {
         const { points, minZ, maxZ } = this.sourceInfo;
         if (points.length % 2 !== 0)
-          throw new Error(
-            "[StreamerArea]: Cannot create polygon extended with asymmetrical points",
+          throw new DynamicAreaException(
+            "Cannot create polygon extended with asymmetrical points",
           );
         this._id = DynamicArea.__inject__.createPolygonEx(
           points,
@@ -128,7 +129,7 @@ export class DynamicArea {
       } else {
         const { x, y, z, size } = this.sourceInfo;
         if (size < 0)
-          throw new Error("[StreamerArea]: Invalid sphere extended size");
+          throw new DynamicAreaException("Invalid sphere extended size");
         this._id = DynamicArea.__inject__.createSphereEx(
           x,
           y,
@@ -150,7 +151,7 @@ export class DynamicArea {
 
       if (type === "circle") {
         const { x, y, size } = this.sourceInfo;
-        if (size < 0) throw new Error("[StreamerArea]: Invalid circle size");
+        if (size < 0) throw new DynamicAreaException("Invalid circle size");
         this._id = DynamicArea.__inject__.createCircle(
           x,
           y,
@@ -183,7 +184,7 @@ export class DynamicArea {
         );
       } else if (type === "cylinder") {
         const { x, y, minZ: minZ, maxZ: maxZ, size } = this.sourceInfo;
-        if (size < 0) throw new Error("[StreamerArea]: Invalid cylinder size");
+        if (size < 0) throw new DynamicAreaException("Invalid cylinder size");
         this._id = DynamicArea.__inject__.createCylinder(
           x,
           y,
@@ -198,8 +199,8 @@ export class DynamicArea {
       } else if (type === "polygon") {
         const { points, minZ, maxZ } = this.sourceInfo;
         if (points.length % 2 !== 0)
-          throw new Error(
-            "[StreamerArea]: Cannot create polygon with asymmetrical points",
+          throw new DynamicAreaException(
+            "Cannot create polygon with asymmetrical points",
           );
         this._id = DynamicArea.__inject__.createPolygon(
           points,
@@ -229,7 +230,7 @@ export class DynamicArea {
         );
       } else {
         const { x, y, z, size } = this.sourceInfo;
-        if (size < 0) throw new Error("[StreamerArea]: Invalid sphere size");
+        if (size < 0) throw new DynamicAreaException("Invalid sphere size");
         this._id = DynamicArea.__inject__.createSphere(
           x,
           y,
@@ -247,7 +248,7 @@ export class DynamicArea {
   }
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new Error("[StreamerArea]: Cannot destroy the area before create");
+      throw new DynamicAreaException("Cannot destroy the area before create");
     if (!INTERNAL_FLAGS.skip) {
       DynamicArea.__inject__.destroy(this.id);
     }
@@ -262,7 +263,7 @@ export class DynamicArea {
   }
   getType(): StreamerAreaTypes {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerArea]: Cannot get type before create");
+      throw new DynamicAreaException("Cannot get type before create");
     return DynamicArea.__inject__.getType(this.id);
   }
   getPolygonPoints() {
@@ -270,12 +271,12 @@ export class DynamicArea {
   }
   getPolygonNumberPoints(): number {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerArea]: Cannot getPolygonNumberPoints number before create",
+      throw new DynamicAreaException(
+        "Cannot getPolygonNumberPoints number before create",
       );
     if (this.type !== "polygon")
-      throw new Error(
-        "[StreamerArea]: getPolygonNumberPoints invalid area type",
+      throw new DynamicAreaException(
+        "getPolygonNumberPoints invalid area type",
       );
     return DynamicArea.__inject__.getPolygonNumberPoints(this.id);
   }
@@ -371,8 +372,8 @@ export class DynamicArea {
       this.id === s.StreamerMiscellaneous.INVALID_ID ||
       obj.id === s.StreamerMiscellaneous.INVALID_ID
     )
-      throw new Error(
-        "[StreamerArea]: Cannot toggle attach to object before create",
+      throw new DynamicAreaException(
+        "Cannot toggle attach to object before create",
       );
     return DynamicArea.__inject__.attachToObject(
       this.id,
@@ -394,8 +395,8 @@ export class DynamicArea {
       this.id === s.StreamerMiscellaneous.INVALID_ID ||
       player.id === InvalidEnum.PLAYER_ID
     )
-      throw new Error(
-        "[StreamerArea]: Cannot toggle attach to player before create",
+      throw new DynamicAreaException(
+        "Cannot toggle attach to player before create",
       );
     return DynamicArea.__inject__.attachToPlayer(
       this.id,
@@ -415,8 +416,8 @@ export class DynamicArea {
       this.id === s.StreamerMiscellaneous.INVALID_ID ||
       vehicle.id === InvalidEnum.VEHICLE_ID
     )
-      throw new Error(
-        "[StreamerArea]: Cannot toggle attach to vehicle before create",
+      throw new DynamicAreaException(
+        "Cannot toggle attach to vehicle before create",
       );
     return DynamicArea.__inject__.attachToVehicle(
       this.id,
@@ -428,8 +429,8 @@ export class DynamicArea {
   }
   toggleSpectateMode(toggle: boolean): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error(
-        "[StreamerArea]: Cannot toggle spectate mode before create",
+      throw new DynamicAreaException(
+        "Cannot toggle spectate mode before create",
       );
     return DynamicArea.__inject__.toggleSpectateMode(this.id, toggle);
   }
@@ -439,7 +440,7 @@ export class DynamicArea {
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new Error("[StreamerArea]: Cannot toggle callbacks before create");
+      throw new DynamicAreaException("Cannot toggle callbacks before create");
     return Streamer.toggleItemCallbacks(
       s.StreamerItemTypes.AREA,
       this.id,

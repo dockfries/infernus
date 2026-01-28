@@ -14,6 +14,7 @@ import {
   Update3DTextLabelText,
   UpdatePlayer3DTextLabelText,
 } from "core/utils/helper";
+import { TextLabelException } from "core/exceptions";
 
 export class TextLabel {
   private sourceInfo: ITextLabel | null = null;
@@ -27,7 +28,7 @@ export class TextLabel {
   constructor(textLabelOrId: ITextLabel | number, player?: Player) {
     if (typeof textLabelOrId === "number") {
       if (textLabelOrId === InvalidEnum.PLAYER_3DTEXT_ID) {
-        throw new Error("[TextLabel]: Invalid id");
+        throw new TextLabelException("Invalid id");
       }
 
       if (player) {
@@ -54,9 +55,9 @@ export class TextLabel {
 
   create(): this {
     if (!this.sourceInfo)
-      throw new Error("[TextLabel]: Cannot create with only id");
+      throw new TextLabelException("Cannot create with only id");
     if (this.id !== InvalidEnum._3DTEXT_ID)
-      throw new Error("[TextLabel]: Cannot create again");
+      throw new TextLabelException("Cannot create again");
 
     const {
       charset = "utf8",
@@ -89,7 +90,7 @@ export class TextLabel {
         this.id === InvalidEnum._3DTEXT_ID ||
         TextLabel.getInstances().length === LimitsEnum.MAX_3DTEXT_GLOBAL
       )
-        throw new Error("[TextLabel]: Cannot create textLabel");
+        throw new TextLabelException("Cannot create textLabel");
 
       textLabelPool.set(this._id, this);
       return this;
@@ -121,7 +122,7 @@ export class TextLabel {
       this.id === InvalidEnum._3DTEXT_ID ||
       TextLabel.getInstances(player).length === LimitsEnum.MAX_3DTEXT_PLAYER
     )
-      throw new Error("[TextLabel]: Cannot create playerTextLabel");
+      throw new TextLabelException("Cannot create playerTextLabel");
 
     if (!playerTextLabelPool.has(player)) {
       playerTextLabelPool.set(player, new Map());
@@ -132,8 +133,8 @@ export class TextLabel {
 
   destroy(): this {
     if (this.id === InvalidEnum._3DTEXT_ID)
-      throw new Error(
-        "[TextLabel]: Cannot destroy the textLabel before create",
+      throw new TextLabelException(
+        "Cannot destroy the textLabel before create",
       );
 
     if (this.isGlobal()) {
@@ -204,8 +205,8 @@ export class TextLabel {
   ): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (!this.isGlobal()) {
-      throw new Error(
-        "[TextLabel]: Cannot attach to player, textLabel is not global",
+      throw new TextLabelException(
+        "Cannot attach to player, textLabel is not global",
       );
     }
     return TextLabel.__inject__.attachToPlayer(
@@ -225,8 +226,8 @@ export class TextLabel {
   ): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (!this.isGlobal()) {
-      throw new Error(
-        "[TextLabel]: Cannot attach to vehicle, textLabel is not global",
+      throw new TextLabelException(
+        "Cannot attach to vehicle, textLabel is not global",
       );
     }
     return TextLabel.__inject__.attachToVehicle(
@@ -259,8 +260,8 @@ export class TextLabel {
   isStreamedIn(player: Player): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (!this.isGlobal()) {
-      throw new Error(
-        "[TextLabel]: Cannot check stream in, textLabel is not global",
+      throw new TextLabelException(
+        "Cannot check stream in, textLabel is not global",
       );
     }
     return TextLabel.__inject__.isStreamedIn(this.id, player.id);

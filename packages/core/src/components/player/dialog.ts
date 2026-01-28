@@ -9,6 +9,7 @@ import { I18n } from "../../utils/i18n";
 import { Player } from "./entity";
 import { defineEvent } from "../../utils/bus";
 import { ShowPlayerDialog } from "core/utils/helper";
+import { DialogException } from "core/exceptions";
 
 export const [onDialogResponse] = defineEvent({
   name: "OnDialogResponseI18n",
@@ -112,7 +113,9 @@ export class Dialog {
     if (!task) return false;
     if (reject) {
       task.reject(
-        "[Dialog]: player timeout does not respond or second request show dialog",
+        new DialogException(
+          "player timeout does not respond or second request show dialog",
+        ),
       );
     }
     Dialog.waitingQueue.delete(player);
@@ -134,7 +137,7 @@ export class Dialog {
       }
 
       if (this._id === -1) {
-        reject("[Dialog]: Cannot create dialog");
+        reject(new DialogException("Cannot create dialog"));
         return;
       }
 

@@ -1,8 +1,11 @@
 import type { MapAndreasMode } from "./enum";
+import { MapAndreasException } from "./exceptions";
 
 export class MapAndreas {
   private constructor() {
-    throw new Error("This is a static class and cannot be instantiated.");
+    throw new MapAndreasException(
+      "This is a static class and cannot be instantiated.",
+    );
   }
 
   static init(mode: MapAndreasMode, name: string) {
@@ -38,3 +41,4 @@ export class MapAndreas {
 }
 
 export * from "./enum";
+export * from "./exceptions";

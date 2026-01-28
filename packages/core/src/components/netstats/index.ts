@@ -1,10 +1,13 @@
 import type { ConnectionStatusEnum } from "core/enums";
 import * as w from "core/wrapper/native";
 import type { Player } from "../player";
+import { NetStatsException } from "core/exceptions";
 
 export class NetStats {
   private constructor() {
-    throw new Error("This is a static class and cannot be instantiated.");
+    throw new NetStatsException(
+      "This is a static class and cannot be instantiated.",
+    );
   }
   static getNetworkStats() {
     return NetStats.__inject__.getNetworkStats();

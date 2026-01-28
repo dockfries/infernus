@@ -7,6 +7,7 @@ import { ResponseTypeMap } from "./types";
 export * from "./enums";
 export * from "./interfaces";
 export * from "./types";
+export * from "./exceptions";
 
 export function sendQuery<T extends RequestPacket>(options: Options<T>) {
   return new Promise<ResponseTypeMap[T] | null>((resolve, reject) => {

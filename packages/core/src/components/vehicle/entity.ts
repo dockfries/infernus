@@ -12,6 +12,7 @@ import * as v from "core/wrapper/native";
 import { VectorSize } from "core/wrapper/native";
 import { vehiclePool, playerPool } from "core/utils/pools";
 import { INTERNAL_FLAGS } from "core/utils/flags";
+import { VehicleException } from "core/exceptions";
 
 export class Vehicle {
   private sourceInfo: IVehicle | null = null;
@@ -26,7 +27,7 @@ export class Vehicle {
   constructor(vehOrId: IVehicle | number, isStatic = false) {
     if (typeof vehOrId === "number") {
       if (vehOrId === InvalidEnum.VEHICLE_ID) {
-        throw new Error("[Vehicle]: Invalid id");
+        throw new VehicleException("Invalid id");
       }
 
       const obj = Vehicle.getInstance(vehOrId);
@@ -45,9 +46,9 @@ export class Vehicle {
   }
   create(): void {
     if (this.id !== InvalidEnum.VEHICLE_ID)
-      throw new Error("[Vehicle]: Cannot create again");
+      throw new VehicleException("Cannot create again");
     if (!this.sourceInfo)
-      throw new Error("[Vehicle]: Cannot create with only id");
+      throw new VehicleException("Cannot create with only id");
     const { modelId, x, y, z, zAngle, color, respawnDelay, addSiren } =
       this.sourceInfo;
     if (this.isStatic) {
@@ -91,13 +92,13 @@ export class Vehicle {
       this._id === InvalidEnum.VEHICLE_ID ||
       Vehicle.createdCount === LimitsEnum.MAX_VEHICLES
     )
-      throw new Error("[Vehicle]: Cannot create vehicle");
+      throw new VehicleException("Cannot create vehicle");
     Vehicle.createdCount++;
     vehiclePool.set(this._id, this);
   }
   destroy(): void {
     if (this.id === InvalidEnum.VEHICLE_ID && !INTERNAL_FLAGS.skip) {
-      throw new Error("[Vehicle]: Cannot destroy the vehicle before create");
+      throw new VehicleException("Cannot destroy the vehicle before create");
     }
     if (!INTERNAL_FLAGS.skip) {
       Vehicle.__inject__.destroy(this._id);
@@ -159,8 +160,8 @@ export class Vehicle {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
     if (seatId < 0) return 0;
     if (seatId > 4) {
-      throw new Error(
-        "[Vehicle]: If the seat is invalid or is taken, will cause a crash when they EXIT the vehicle.",
+      throw new VehicleException(
+        "If the seat is invalid or is taken, will cause a crash when they EXIT the vehicle.",
       );
     }
     return Vehicle.__inject__.putPlayerIn(player.id, this.id, seatId);
@@ -175,13 +176,13 @@ export class Vehicle {
   setNumberPlate(numberplate: string): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
     if (numberplate.length < 1 || numberplate.length > 32) {
-      throw new Error(
-        "[Vehicle]: The length of the number plate ranges up to 32 characters",
+      throw new VehicleException(
+        "The length of the number plate ranges up to 32 characters",
       );
     }
     if (!/^[a-zA-Z0-9]+$/.test(numberplate)) {
-      throw new Error(
-        "[Vehicle]: number plates only allow letters and numbers",
+      throw new VehicleException(
+        "number plates only allow letters and numbers",
       );
     }
     return Vehicle.__inject__.setNumberPlate(this.id, numberplate);
