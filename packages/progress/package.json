@@ -1,6 +1,6 @@
 {
   "name": "@infernus/progress",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A progress bar based on `LD_SPAC:white` for precise control for samp-node.",
   "keywords": [
     "samp",
