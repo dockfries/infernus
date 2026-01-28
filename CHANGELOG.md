@@ -1,3 +1,31 @@
+## <small>0.14.3 (2026-01-28)</small>
+
+* chore(readme): use npmx.dev ([c0af8d8](https://github.com/dockfries/infernus/commit/c0af8d8))
+* chore(release): cef v0.1.2 ([0ec1719](https://github.com/dockfries/infernus/commit/0ec1719))
+* chore(release): colandreas v0.1.2 ([c954747](https://github.com/dockfries/infernus/commit/c954747))
+* chore(release): distance v0.1.2 ([35096fa](https://github.com/dockfries/infernus/commit/35096fa))
+* chore(release): drift-detection v0.1.2 ([3c5c740](https://github.com/dockfries/infernus/commit/3c5c740))
+* chore(release): gps v0.0.3 ([ab87cfb](https://github.com/dockfries/infernus/commit/ab87cfb))
+* chore(release): mapandreas v0.3.2 ([f419fd2](https://github.com/dockfries/infernus/commit/f419fd2))
+* chore(release): progress v0.0.4 ([f679fb1](https://github.com/dockfries/infernus/commit/f679fb1))
+* chore(release): qrcode v0.0.5 ([a51bbbd](https://github.com/dockfries/infernus/commit/a51bbbd))
+* chore(release): query v0.1.2 ([95afb02](https://github.com/dockfries/infernus/commit/95afb02))
+* chore(release): raknet v0.13.2 ([f242110](https://github.com/dockfries/infernus/commit/f242110))
+* chore(release): rec v0.0.4 ([ff3f4e7](https://github.com/dockfries/infernus/commit/ff3f4e7))
+* chore(release): samp-voice v0.0.4 ([33b6c9f](https://github.com/dockfries/infernus/commit/33b6c9f))
+* chore(release): weapon-config v0.3.3 ([a9a234f](https://github.com/dockfries/infernus/commit/a9a234f))
+* chore(root): update deps ([bb30173](https://github.com/dockfries/infernus/commit/bb30173))
+* revert(query): iconv ([a2c1735](https://github.com/dockfries/infernus/commit/a2c1735))
+* refactor(packages): error exception ([071d66f](https://github.com/dockfries/infernus/commit/071d66f))
+* fix(build): rolldown dts no export failed to emit declaration file ([d10d2df](https://github.com/dockfries/infernus/commit/d10d2df))
+* fix(core): inject for three getMethods ([a6a63dd](https://github.com/dockfries/infernus/commit/a6a63dd))
+* feat(core)!: revert player entity checkPoint, isLeavingSpectatorMode ([d8cabf1](https://github.com/dockfries/infernus/commit/d8cabf1))
+* feat(core): add npc, player natives ([f7cf6ac](https://github.com/dockfries/infernus/commit/f7cf6ac))
+* feat(weapon-config): update takeDamage 347 ([28337a2](https://github.com/dockfries/infernus/commit/28337a2))
+* build(root): use rolldown ([ed3b1b9](https://github.com/dockfries/infernus/commit/ed3b1b9))
+
+
+
 ## <small>0.14.2 (2025-12-31)</small>
 
 * chore(core): eslint ([e70e834](https://github.com/dockfries/infernus/commit/e70e834))
