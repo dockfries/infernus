@@ -24,6 +24,7 @@ export type CommandErrorTypes =
 
 export interface CommandErrorRet {
   code: number;
+  type: CommandErrorTypes;
   msg: string;
   error?: any;
 }
@@ -47,21 +48,25 @@ const noStrictCmdMap = new Map<
 const commandPattern = /[^/\s]+/gi;
 
 export const CommandErrors: Record<CommandErrorTypes, CommandErrorRet> = {
-  NOT_EXIST: { code: 1, msg: "command does not exist" },
+  NOT_EXIST: { code: 1, type: "NOT_EXIST", msg: "command does not exist" },
   REJECTED: {
     code: 2,
+    type: "REJECTED",
     msg: "An event registered through onCommandText returned false",
   },
   PERFORMED: {
     code: 3,
+    type: "PERFORMED",
     msg: "An event registered through onCommandPerformed returned false",
   },
   RECEIVED_THROW: {
     code: 4,
+    type: "RECEIVED_THROW",
     msg: "An event registered through onCommandReceived throw an error",
   },
   RECEIVED_REJECTED: {
     code: 5,
+    type: "RECEIVED_REJECTED",
     msg: "An event registered through onCommandReceived returned false",
   },
 };
@@ -254,7 +259,8 @@ onCommandText(({ player, buffer, cmdText, next }) => {
         ...triggerParams,
       );
   } catch (err) {
-    const spreadErr = typeof err === "object" ? err : { error: err };
+    const isErrorOrObj = err instanceof Error || typeof err !== "object";
+    const spreadErr = isErrorOrObj ? { error: err } : err;
     return triggerOnError(
       player,
       {

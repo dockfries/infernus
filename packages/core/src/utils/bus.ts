@@ -82,12 +82,16 @@ function executeMiddlewares<T extends object>(
 
         return ret;
       } catch (err) {
+        const isError = err instanceof Error;
         const msg = `executing event [name:${name},index:${index}]`;
         if (throwOnError) {
-          throw new CoreException(msg);
+          if (isError) {
+            throw err;
+          }
+          throw new CoreException(msg + "\n" + JSON.stringify(err));
         }
         console.log(msg);
-        if (err instanceof Error) {
+        if (isError) {
           console.log(err);
         } else {
           console.log(JSON.stringify(err));
