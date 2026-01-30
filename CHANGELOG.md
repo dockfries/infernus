@@ -1,3 +1,10 @@
+## <small>0.14.4 (2026-01-30)</small>
+
+* fix(core): spreadErr CommandErrors.RECEIVED_THROW ([e32a9e5](https://github.com/dockfries/infernus/commit/e32a9e5))
+* fix(core): types in .d.ts ([055a2ea](https://github.com/dockfries/infernus/commit/055a2ea))
+
+
+
 ## <small>0.14.3 (2026-01-28)</small>
 
 * chore(readme): use npmx.dev ([c0af8d8](https://github.com/dockfries/infernus/commit/c0af8d8))
