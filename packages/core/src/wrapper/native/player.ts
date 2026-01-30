@@ -908,12 +908,12 @@ export const SetPlayerMarkerForPlayer = (
   );
 };
 
-export function GetPlayerMarkerForPlayer(
+export const GetPlayerMarkerForPlayer = (
   playerId: number,
   targetId: number,
-): number {
+): number => {
   return samp.callNative("GetPlayerMarkerForPlayer", "ii", playerId, targetId);
-}
+};
 
 export const ShowPlayerNameTagForPlayer = (
   playerId: number,

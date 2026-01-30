@@ -228,7 +228,7 @@ export class Player {
     return Player.__inject__.removeMapIcon(this.id, iconId);
   }
   setMarker(showPlayer: Player, color: string | number) {
-    Player.__inject__.setMarker(this.id, showPlayer.id, color);
+    return Player.__inject__.setMarker(this.id, showPlayer.id, color);
   }
   getMarker(targetPlayer: Player) {
     return Player.__inject__.getMarker(this.id, targetPlayer.id);
