@@ -32,3 +32,4 @@ export * from "./object/global";
 export * from "./object/player";
 
 export * from "./pickup";
+export * from "./customModels";

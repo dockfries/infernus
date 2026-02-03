@@ -122,6 +122,26 @@ export const GetPlayerBuildingsRemoved = (playerId: number): number => {
   return samp.callNative("GetPlayerBuildingsRemoved", "i", playerId);
 };
 
+export const IsBuildingRemovedForPlayer = (
+  playerId: number,
+  model: number,
+  x: number,
+  y: number,
+  z: number,
+  radius: number,
+): boolean => {
+  return !!samp.callNative(
+    "IsBuildingRemovedForPlayer",
+    "iiffff",
+    playerId,
+    model,
+    x,
+    y,
+    z,
+    radius,
+  );
+};
+
 export const RemovePlayerWeapon = (
   playerId: number,
   weaponId: number,
@@ -778,10 +798,6 @@ export const EnableStuntBonusForPlayer = (
   enable: boolean,
 ): boolean => {
   return !!samp.callNative("EnableStuntBonusForPlayer", "ii", playerId, enable);
-};
-
-export const GetPlayerCustomSkin = (playerId: number): number => {
-  return samp.callNative("GetPlayerCustomSkin", "i", playerId);
 };
 
 export const CreateExplosionForPlayer = (

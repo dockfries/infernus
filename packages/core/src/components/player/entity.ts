@@ -1026,6 +1026,18 @@ export class Player {
   // isLeavingSpectatorMode() {
   //   return Player.__inject__.isLeavingSpectatorMode(this.id);
   // }
+  startDownload() {
+    return Player.__inject__.startDownload(this.id);
+  }
+  isBuildingRemoved(
+    model: number,
+    x: number,
+    y: number,
+    z: number,
+    radius: number,
+  ) {
+    return Player.__inject__.isBuildingRemoved(this.id, model, x, y, z, radius);
+  }
 
   static getInstance(id: number) {
     return playerPool.get(id);
@@ -1212,5 +1224,7 @@ export class Player {
     getLastSyncedTrailerID: w.GetPlayerLastSyncedTrailerID,
     getLastSyncedVehicleID: w.GetPlayerLastSyncedVehicleID,
     // isLeavingSpectatorMode: w.IsPlayerLeavingSpectatorMode,
+    startDownload: w.StartDownloadForPlayer,
+    isBuildingRemoved: w.IsBuildingRemovedForPlayer,
   };
 }
