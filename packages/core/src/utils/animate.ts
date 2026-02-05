@@ -2485,23 +2485,24 @@ export const animateLib = new Map<string, Array<IAnimateInfo>>([
   ],
 ]);
 
-export const isValidAnimateLib = (lib: string) => {
+export function isValidAnimateLib(lib: string) {
   // return !!samp.callNative('IsValidAnimationLibrary', 's', lib)
-
   const animLib = animateLib.get(lib.toUpperCase());
   if (typeof animLib === "undefined") return false;
-  return animLib;
-};
+  return true;
+}
 
-export const isValidAnimateName = (lib: string, name: string) => {
-  const animLib = isValidAnimateLib(lib);
-  if (!animLib) return;
+export function isValidAnimateName(lib: string, name: string) {
+  const _lib = lib.toUpperCase();
+  const animLib = animateLib.get(_lib);
+  if (!animLib) return false;
   if (name === "null") return true;
   return animLib.some((anim) => anim.n === name);
-};
+}
 
-export const getAnimateDurationByLibName = (lib: string, name: string) => {
-  const animLib = isValidAnimateLib(lib);
-  if (!animLib) return;
+export function getAnimateDurationByLibName(lib: string, name: string) {
+  const _lib = lib.toUpperCase();
+  const animLib = animateLib.get(_lib);
+  if (!animLib) return null;
   return animLib.find((anim) => anim.n === name)?.d;
-};
+}

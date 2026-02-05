@@ -1,6 +1,6 @@
 // Reference to Peter Szombati's samp-node-lib
 
-export const rgba = (value: string | number): number => {
+export function rgba(value: string | number): number {
   if (typeof value === "number") return value;
   if (typeof +value === "number" && !isNaN(+value)) return +value;
   if (value.charAt(0) === "#") {
@@ -40,4 +40,4 @@ export const rgba = (value: string | number): number => {
     }
   });
   return n;
-};
+}
