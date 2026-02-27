@@ -16,7 +16,7 @@ import {
   damageFeedPlayer,
   playerMaxHealth,
   playerMaxArmour,
-  beingResynced,
+  beingReSynced,
 } from "../../struct";
 import { inflictDamage } from "../internal/damage";
 import { damageFeedUpdate } from "../internal/damageFeed";
@@ -245,7 +245,7 @@ export function damagePlayer(
 
 export function resyncPlayer(player: Player) {
   saveSyncData(player);
-  beingResynced.set(player.id, true);
+  beingReSynced.set(player.id, true);
   spawnPlayerInPlace(player);
 }
 

@@ -20,7 +20,7 @@ import {
   vendingUseTimer,
   lastShot,
   cBugFroze,
-  beingResynced,
+  beingReSynced,
   lastDeathTick,
   lastShotIdx,
   lastShotTicks,
@@ -109,7 +109,7 @@ PlayerEvent.onWeaponShot(
       }
     }
 
-    if (beingResynced.get(player.id)) {
+    if (beingReSynced.get(player.id)) {
       addRejectedHit(
         player,
         damagedId,

@@ -3,7 +3,7 @@ import { innerGameModeConfig } from "../../config";
 import { WC_WeaponEnum } from "../../enums";
 import {
   isDying,
-  beingResynced,
+  beingReSynced,
   inClassSelection,
   forceClassSelection,
   lastUpdateTick,
@@ -39,7 +39,7 @@ export function isMeleeWeapon(weaponId: number) {
 }
 
 export function wc_IsPlayerSpawned(player: Player) {
-  if (isDying.get(player.id) || beingResynced.get(player.id)) {
+  if (isDying.get(player.id) || beingReSynced.get(player.id)) {
     return false;
   }
 

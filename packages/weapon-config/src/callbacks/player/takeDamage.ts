@@ -1,6 +1,5 @@
 import {
   InvalidEnum,
-  Player,
   PlayerEvent,
   PlayerStateEnum,
   useTrigger,
@@ -11,7 +10,7 @@ import {
   playerHealth,
   playerArmour,
   isDying,
-  beingResynced,
+  beingReSynced,
   knifeTimeout,
   damageDoneHealth,
   damageDoneArmour,
@@ -26,11 +25,7 @@ import {
 import { orig_playerMethods } from "../../hooks/origin";
 import { debugMessage, debugMessageRed } from "../../utils/debug";
 import { IEditableOnPlayerDamage, triggerOnPlayerDamage } from "../custom";
-import {
-  s_ValidDamageTaken,
-  s_WeaponDamage,
-  s_WeaponRange,
-} from "../../constants";
+import { s_ValidDamageTaken, s_WeaponRange } from "../../constants";
 import { internalPlayerDeath } from "./spawn";
 import {
   addRejectedHit,
@@ -60,17 +55,6 @@ import { resyncPlayer } from "../../functions/public/set";
 PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
   if (orig_playerMethods.isNpc.call(player)) {
     return 0;
-  }
-
-  if (damage instanceof Player && orig_playerMethods.isNpc.call(damage)) {
-    inflictDamage(
-      player,
-      s_WeaponDamage[weapon],
-      damage,
-      weapon as unknown as WC_WeaponEnum,
-      bodyPart,
-      !isBulletWeapon(weapon),
-    );
   }
 
   updateHealthBar(player, true);
@@ -261,7 +245,10 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
       } else {
         return 0;
       }
-    } else {
+    } else if (
+      damage === InvalidEnum.PLAYER_ID ||
+      !orig_playerMethods.isNpc.call(damage)
+    ) {
       return 0;
     }
   }
@@ -283,7 +270,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
       return 0;
     }
 
-    if (beingResynced.get(damage.id)) {
+    if (beingReSynced.get(damage.id)) {
       return 0;
     }
 

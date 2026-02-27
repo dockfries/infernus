@@ -28,6 +28,7 @@ import { debugMessage } from "../../utils/debug";
 import { inflictDamage } from "../../functions/internal/damage";
 import { wc_DeathSkipEnd } from "../../functions/internal/death";
 import { wc_SpawnForStreamedIn } from "../../functions/internal/set";
+import { getPlayerActualSkin } from "../../functions/internal/get";
 
 PlayerEvent.onUpdate(({ player, next }) => {
   if (tempDataWritten.get(player.id)) {
@@ -56,7 +57,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
         orig_playerMethods.setSpawnInfo.call(
           player,
           playerTeam.get(player.id),
-          orig_playerMethods.getSkin.call(player),
+          getPlayerActualSkin(player),
           x,
           y,
           z,

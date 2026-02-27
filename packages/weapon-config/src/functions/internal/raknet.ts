@@ -11,6 +11,7 @@ import {
   syncDataFrozen,
 } from "../../struct";
 import { wc_IsPlayerPaused } from "../public/is";
+import { getPlayerActualSkin } from "./get";
 
 export function sendLastSyncPacket(
   player: Player,
@@ -73,7 +74,7 @@ export function saveSyncData(player: Player) {
   syncData.get(player.id).posA =
     orig_playerMethods.getFacingAngle.call(player).angle;
 
-  syncData.get(player.id).skin = orig_playerMethods.getSkin.call(player);
+  syncData.get(player.id).skin = getPlayerActualSkin(player);
   syncData.get(player.id).team = orig_playerMethods.getTeam.call(player);
 
   syncData.get(player.id).weapon = orig_playerMethods.getWeapon.call(player);

@@ -10,7 +10,7 @@ import {
   playerArmour,
   playerTeam,
   isDying,
-  beingResynced,
+  beingReSynced,
   lastUpdateTick,
   lastStopTick,
   trueDeath,
@@ -60,6 +60,7 @@ import {
   onPlayerDamageDone,
   onPlayerDeathFinished,
 } from "../../functions/internal/event";
+import { getPlayerActualSkin } from "../../functions/internal/get";
 
 PlayerEvent.onSpawn(({ player, next }) => {
   trueDeath.set(player.id, false);
@@ -81,8 +82,8 @@ PlayerEvent.onSpawn(({ player, next }) => {
   lastUpdateTick.set(player.id, tick);
   lastStopTick.set(player.id, tick);
 
-  if (beingResynced.get(player.id)) {
-    beingResynced.set(player.id, false);
+  if (beingReSynced.get(player.id)) {
+    beingReSynced.set(player.id, false);
 
     updateHealthBar(player);
 
@@ -158,8 +159,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
     }
   } else {
     playerFallbackSpawnInfo.get(player.id).team = playerTeam.get(player.id);
-    playerFallbackSpawnInfo.get(player.id).skin =
-      orig_playerMethods.getSkin.call(player);
+    playerFallbackSpawnInfo.get(player.id).skin = getPlayerActualSkin(player);
     const { x, y, z } = orig_playerMethods.getPos.call(player)!;
     playerFallbackSpawnInfo.get(player.id).posX = x;
     playerFallbackSpawnInfo.get(player.id).posY = y;
@@ -266,7 +266,7 @@ export const internalPlayerDeath: Parameters<
     deathTimer.set(player.id, null);
   }
 
-  if (beingResynced.get(player.id) || forceClassSelection.get(player.id)) {
+  if (beingReSynced.get(player.id) || forceClassSelection.get(player.id)) {
     return 1;
   }
 
@@ -447,11 +447,13 @@ export const internalPlayerDeath: Parameters<
         0,
       );
 
+      const skin = getPlayerActualSkin(editable.player);
+
       orig_playerMethods.forceClassSelection.call(editable.player);
       orig_playerMethods.setSpawnInfo.call(
         editable.player,
         playerTeam.get(editable.player.id),
-        orig_playerMethods.getSkin.call(editable.player),
+        skin,
         x,
         y,
         z,
@@ -468,7 +470,7 @@ export const internalPlayerDeath: Parameters<
       orig_playerMethods.setSpawnInfo.call(
         editable.player,
         playerTeam.get(editable.player.id),
-        orig_playerMethods.getSkin.call(editable.player),
+        skin,
         x,
         y,
         z,

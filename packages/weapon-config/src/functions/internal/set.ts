@@ -20,7 +20,7 @@ import {
 } from "../../hooks/origin";
 import {
   spawnForStreamedIn,
-  beingResynced,
+  beingReSynced,
   forceClassSelection,
   playerHealth,
   playerMaxHealth,
@@ -45,6 +45,7 @@ import { clearAnimationsForPlayer } from "./anim";
 // import { getRotationQuaternion } from "./get";
 import { sendLastSyncPacket, updateSyncData } from "./raknet";
 import { wc_IsPlayerPaused } from "../public/is";
+import { getPlayerActualSkin } from "./get";
 
 export function wc_SpawnForStreamedIn(player: Player) {
   if (!orig_playerMethods.isConnected.call(player)) {
@@ -97,7 +98,7 @@ export function updateHealthBar(
   force = false,
   forceSync = false,
 ) {
-  if (beingResynced.get(player.id) || forceClassSelection.get(player.id)) {
+  if (beingReSynced.get(player.id) || forceClassSelection.get(player.id)) {
     return;
   }
 
@@ -298,7 +299,7 @@ export function spawnPlayerInPlace(player: Player) {
   orig_playerMethods.setSpawnInfo.call(
     player,
     playerTeam.get(player.id),
-    orig_playerMethods.getSkin.call(player),
+    getPlayerActualSkin(player),
     x,
     y,
     z,

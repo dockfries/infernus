@@ -5,7 +5,7 @@ import {
   deathTimer,
   deathSkip,
   forceClassSelection,
-  beingResynced,
+  beingReSynced,
   trueDeath,
   isDying,
   restorePlayerTeleport,
@@ -38,7 +38,7 @@ PlayerEvent.onRequestClass(({ player, classId, next }) => {
     forceClassSelection.set(player.id, false);
   }
 
-  if (beingResynced.get(player.id)) {
+  if (beingReSynced.get(player.id)) {
     trueDeath.set(player.id, false);
 
     spawnPlayerInPlace(player);

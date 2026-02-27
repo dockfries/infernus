@@ -24,7 +24,7 @@ export class RejectedHit {
   name: string = "";
 }
 
-export class ResyncData {
+export class ReSyncData {
   health: number = 0;
   armour: number = 0;
   skin: number = 0;
@@ -210,13 +210,13 @@ export const spawnInfoModified = new SafetyMap<number, boolean>(() => false);
 export const deathSkip = new SafetyMap<number, number>(() => 0);
 export const deathSkipTick = new SafetyMap<number, number>(() => 0);
 
-export const beingResynced = new SafetyMap<number, boolean>(() => false);
+export const beingReSynced = new SafetyMap<number, boolean>(() => false);
 export const spawnForStreamedIn = new SafetyMap<number, boolean>(() => false);
 export const knifeTimeout = new SafetyMap<number, NodeJS.Timeout | null>(
   () => null,
 );
-export const syncData = new SafetyMap<number, ResyncData>(
-  () => new ResyncData(),
+export const syncData = new SafetyMap<number, ReSyncData>(
+  () => new ReSyncData(),
 );
 
 export const vehicleAlive = new SafetyMap<number, boolean>(() => false);

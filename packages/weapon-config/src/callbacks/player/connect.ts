@@ -13,7 +13,7 @@ import {
   hitsIssued,
   playerTeam,
   isDying,
-  beingResynced,
+  beingReSynced,
   spawnForStreamedIn,
   world,
   lastAnim,
@@ -93,7 +93,7 @@ PlayerEvent.onConnect(({ player, next }) => {
   hitsIssued.set(player.id, 0);
   playerTeam.set(player.id, InvalidEnum.NO_TEAM);
   isDying.set(player.id, false);
-  beingResynced.set(player.id, false);
+  beingReSynced.set(player.id, false);
   spawnForStreamedIn.set(player.id, false);
   world.set(player.id, 0);
   lastAnim.set(player.id, -1);
