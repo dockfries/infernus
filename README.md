@@ -46,7 +46,7 @@ Contributions of any kind are welcome!
 ## Credits
 
 - [openmultiplayer](https://github.com/openmultiplayer/open.mp)
-- [samp-node](https://github.com/AmyrAhmady/samp-node)
+- [samp-node](https://github.com/dockfries/samp-node)
 - [samp-node-lib](https://github.com/peterszombati/samp-node-lib)
 - [@sa-mp/node](https://github.com/samp-dev/node)
 
