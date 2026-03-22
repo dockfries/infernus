@@ -18,7 +18,7 @@
 
 | /          | Infernus + samp-node                                                            | omp-node                    |
 | ---------- | ------------------------------------------------------------------------------- | --------------------------- |
-| 运行环境   | Windows/Linux: Node.js 22.20.0                                                  | Windows/Linux: Node.js 18+  |
+| 运行环境   | Windows/Linux: Node.js 22.22.1                                                  | Windows/Linux: Node.js 18+  |
 | 模块规范   | CommonJS/ESModule                                                               | ESModule                    |
 | 架构支持   | 仅x86                                                                           | x86/x64                     |
 | 底层实现   | 通过sampgdk→fakeamx→原生调用                                                    | 直接调用omp-gdk/omp-sdk     |
@@ -56,7 +56,7 @@
 
 1. **Node版本匹配**
    - 请确保你的Node主版本号与samp-node依赖的版本一致
-   - 例如samp-node依赖22.20.0，则只能使用22.x版本
+   - 例如samp-node依赖22.22.1，则只能使用22.x版本
    - 不兼容的版本如18.x、20.x、24.x等将无法正常工作
 
 2. 如果项目已经创建：

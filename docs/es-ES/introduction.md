@@ -18,7 +18,7 @@ El nombre `Infernus` proviene del vehículo con el ID `411` en el juego (concret
 
 | /              | Infernus + samp-node                                                                         | omp-node                     |
 | -------------- | -------------------------------------------------------------------------------------------- | ---------------------------- |
-| Runtime        | Windows/Linux: Node.js 22.20.0                                                               | Windows/Linux: Node.js 18+   |
+| Runtime        | Windows/Linux: Node.js 22.22.1                                                               | Windows/Linux: Node.js 18+   |
 | Module System  | CommonJS/ESModule                                                                            | ESModule                     |
 | Architecture   | x86 only                                                                                     | x86/x64                      |
 | Implementation | Via sampgdk→fakeamx→native calls                                                             | Direct omp-gdk/omp-sdk calls |
@@ -56,7 +56,7 @@ Antes de usar este proyecto, ten en cuenta los siguientes requisitos de versión
 
 1. **Coincidencia de Versión de Node**
    - Asegúrate de que la versión principal de Node coincida con la versión requerida por samp-node
-   - Por ejemplo, si samp-node depende de 22.20.0, solo se pueden usar versiones 22.x
+   - Por ejemplo, si samp-node depende de 22.22.1, solo se pueden usar versiones 22.x
    - Versiones incompatibles como 18.x, 20.x, 24.x, etc. no funcionarán correctamente
 
 2. Si el proyecto ya ha sido creado:
