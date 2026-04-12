@@ -40,16 +40,20 @@ const commonConfig = {
 export default defineConfig([
   {
     ...commonConfig,
-    input: inputPath,
+    input: {
+      bundle: inputPath,
+    },
     output: [
       {
+        dir: outputPath,
         cleanDir: true,
-        file: path.resolve(outputPath + "/bundle.mjs"),
+        entryFileNames: "[name].mjs",
         format: "es",
         minify: true,
       },
       {
-        file: path.resolve(outputPath + "/bundle.js"),
+        dir: outputPath,
+        entryFileNames: "[name].js",
         format: "cjs",
         minify: true,
       },
