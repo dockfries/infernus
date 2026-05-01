@@ -1,5 +1,5 @@
 import path from "node:path";
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import fs from "fs-extra";
 import cliProgress from "cli-progress";
 import chalk from "chalk";
@@ -63,7 +63,7 @@ export async function downloadFile(
     await fs.remove(filePath + ".tmp");
   }
 
-  let response;
+  let response: AxiosResponse;
   try {
     response = await request({
       url,
@@ -84,6 +84,7 @@ export async function downloadFile(
     if (retryCount >= MAX_RETRY_ATTEMPTS) {
       throw new Error(
         `Download failed after ${MAX_RETRY_ATTEMPTS} attempts: ${err.message}`,
+        { cause: err },
       );
     }
 
@@ -108,7 +109,8 @@ export async function downloadFile(
     });
   }
 
-  bar.start(response.headers["content-length"], 0);
+  const contentLen = (response.headers["content-length"] as number) || 0;
+  bar.start(contentLen, 0);
 
   return new Promise<string>((resolve, reject) => {
     const ws = fs.createWriteStream(filePath + ".tmp");
@@ -222,7 +224,7 @@ export async function getRepoRelease(
       const versions = releases.map((release: any) => release.tag_name);
 
       if (!versions.length) {
-        hasNext = false;
+        // hasNext = false;
         break;
       }
 

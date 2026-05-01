@@ -34,7 +34,7 @@
     "iconv-lite": "^0.7.2"
   },
   "devDependencies": {
-    "es-toolkit": "^1.45.1",
+    "es-toolkit": "^1.46.1",
     "fastest-levenshtein": "^1.0.16"
   }
 }

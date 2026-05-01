@@ -309,7 +309,7 @@ export const GetVehicleZAngle = (vehicleId: number) => {
 export const GetVehicleRotation = (vehicleId: number) => {
   const [x, y, z, ret]: [number, number, number, number, number] =
     samp.callNative("GetVehicleRotation", "iFFF", vehicleId);
-  return { x, y, z, ret };
+  return { x, y, z, ret: !!ret };
 };
 
 export const GetVehicleRotationQuat = (vehicleId: number) => {

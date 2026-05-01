@@ -47,7 +47,7 @@ export function returnUser(idOrName: string) {
   let result = RETURN_USER_FAILURE;
 
   const _idOrName = idOrName.trim(); // Strip out leading spaces
-  if (!_idOrName) return RETURN_USER_FAILURE; // No passed text
+  if (!_idOrName) return result; // No passed text
 
   result = +_idOrName;
 
