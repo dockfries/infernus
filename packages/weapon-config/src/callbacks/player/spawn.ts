@@ -191,8 +191,8 @@ PlayerEvent.onSpawn(({ player, next }) => {
     orig_playerMethods.setTeam.call(player, playerTeam.get(player.id));
   }
 
-  let animLib = "",
-    animName = "";
+  let animLib: string;
+  let animName: string;
 
   if (deathSkip.get(player.id) === 2) {
     const { weapons: w } = orig_playerMethods.getWeaponData.call(player, 0);
@@ -432,7 +432,7 @@ export const internalPlayerDeath: Parameters<
       orig_playerMethods.setPos.call(editable.player, x, y, z);
       saveSyncData(editable.player);
 
-      let r = 0;
+      let r: number;
 
       if (vehicle) {
         r = orig_vehicleMethods.getZAngle.call(vehicle).angle;

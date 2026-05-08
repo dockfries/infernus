@@ -340,7 +340,6 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
   }
 
   const bullets = 0;
-  let err = 0;
 
   const editable: IProcessDamageArgs = {
     player: damage,
@@ -351,7 +350,8 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
     bullets,
   };
 
-  if ((err = processDamage(editable))) {
+  const err = processDamage(editable);
+  if (err !== InvalidDamageEnum.NO_ERROR) {
     if (err === InvalidDamageEnum.INVALID_DAMAGE) {
       addRejectedHit(
         editable.issuer,

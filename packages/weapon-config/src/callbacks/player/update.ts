@@ -87,14 +87,12 @@ PlayerEvent.onUpdate(({ player, next }) => {
           1,
         );
       }
-    } else {
-      if (orig_playerMethods.getAnimationIndex.call(player) !== 1189) {
-        deathSkip.set(player.id, 0);
+    } else if (orig_playerMethods.getAnimationIndex.call(player) !== 1189) {
+      deathSkip.set(player.id, 0);
 
-        wc_DeathSkipEnd(player);
+      wc_DeathSkipEnd(player);
 
-        debugMessage(player, "Death skip end");
-      }
+      debugMessage(player, "Death skip end");
     }
   }
 
@@ -111,7 +109,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
     const { z } = orig_playerMethods.getPos.call(player)!;
 
     const surfingVehicle = orig_playerMethods.getSurfingVehicle.call(player);
-    let surfing = false;
+    let surfing: boolean;
 
     if (!surfingVehicle || surfingVehicle.id === InvalidEnum.VEHICLE_ID) {
       const obj = orig_playerMethods.getSurfingObject.call(player);

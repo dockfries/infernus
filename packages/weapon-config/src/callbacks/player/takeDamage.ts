@@ -141,8 +141,8 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
         return 0;
       }
 
-      weapon = WeaponEnum.KNIFE;
-      amount = 0.0;
+      editable.weaponId = WeaponEnum.KNIFE;
+      editable.amount = 0.0;
 
       damageDoneHealth.set(
         editable.player.id,
@@ -158,8 +158,8 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
         playerHealth.get(editable.player.id) +
           playerArmour.get(editable.player.id),
         editable.issuerId,
-        weapon,
-        bodyPart,
+        editable.weaponId,
+        editable.bodyPart,
       );
 
       const animLib = "KNIFE";
@@ -175,7 +175,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
       useTrigger("OnPlayerDeath")!(
         withTriggerOptions({
           skipToNext: internalPlayerDeath,
-          args: [editable.player.id, editable.issuerId, weapon],
+          args: [editable.player.id, editable.issuerId, editable.weaponId],
         }),
       );
 
@@ -311,7 +311,6 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
   }
 
   const bullets = 0.0;
-  let err = 0;
 
   const editable: IProcessDamageArgs = {
     player,
@@ -322,7 +321,8 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
     bullets,
   };
 
-  if ((err = processDamage(editable))) {
+  const err = processDamage(editable);
+  if (err !== InvalidDamageEnum.NO_ERROR) {
     if (err === InvalidDamageEnum.INVALID_DAMAGE) {
       addRejectedHit(
         editable.issuer,

@@ -45,20 +45,16 @@ export function averageShootRate(player: Player, shots: number) {
 
   multiple_weapons = false;
 
-  for (
-    let i = shots - 2, prev = 0, prev_weapon = 0, prev_idx = 0, this_idx = 0;
-    i >= 0;
-    i--
-  ) {
-    prev_idx = (idx - i - 1) % lastShotTicks.get(player.id).length;
+  for (let i = shots - 2; i >= 0; i--) {
+    let prev_idx = (idx - i - 1) % lastShotTicks.get(player.id).length;
 
     if (prev_idx < 0) {
       prev_idx += lastShotTicks.get(player.id).length;
     }
 
-    prev = lastShotTicks.get(player.id)[prev_idx];
-    prev_weapon = lastShotWeapons.get(player.id)[prev_idx];
-    this_idx = (idx - i) % lastShotTicks.get(player.id).length;
+    const prev = lastShotTicks.get(player.id)[prev_idx];
+    const prev_weapon = lastShotWeapons.get(player.id)[prev_idx];
+    let this_idx = (idx - i) % lastShotTicks.get(player.id).length;
 
     if (this_idx < 0) {
       this_idx += lastShotTicks.get(player.id).length;
@@ -88,20 +84,16 @@ export function averageHitRate(player: Player, hits: number) {
 
   multiple_weapons = false;
 
-  for (
-    let i = hits - 2, prev = 0, prev_weapon = 0, prev_idx = 0, this_idx = 0;
-    i >= 0;
-    i--
-  ) {
-    prev_idx = (idx - i - 1) % lastHitTicks.get(player.id).length;
+  for (let i = hits - 2; i >= 0; i--) {
+    let prev_idx = (idx - i - 1) % lastHitTicks.get(player.id).length;
 
     if (prev_idx < 0) {
       prev_idx += lastHitTicks.get(player.id).length;
     }
 
-    prev = lastHitTicks.get(player.id)[prev_idx];
-    prev_weapon = lastHitWeapons.get(player.id)[prev_idx];
-    this_idx = (idx - i) % lastHitTicks.get(player.id).length;
+    const prev = lastHitTicks.get(player.id)[prev_idx];
+    const prev_weapon = lastHitWeapons.get(player.id)[prev_idx];
+    let this_idx = (idx - i) % lastHitTicks.get(player.id).length;
 
     if (this_idx < 0) {
       this_idx += lastHitTicks.get(player.id).length;

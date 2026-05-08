@@ -67,8 +67,8 @@ export function wc_CbugPunishment(player: Player, weapon: number) {
 }
 
 PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
-  let animLib = "",
-    animName = "";
+  let animLib: string;
+  let animName: string;
 
   if (
     !cBugAllowed.get(player.id) &&

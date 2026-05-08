@@ -126,11 +126,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
   if (tick === 0) tick = 1;
   let lowest_tick = tick + 1;
 
-  for (
-    let i = 0, j = 0;
-    i < damageFeedHitsGiven.get(player.id).length - 1;
-    i++
-  ) {
+  for (let i = 0; i < damageFeedHitsGiven.get(player.id).length - 1; i++) {
     if (!damageFeedHitsGiven.get(player.id)[i]?.tick) {
       break;
     }
@@ -141,7 +137,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
     ) {
       modified = true;
 
-      for (j = i; j < damageFeedHitsGiven.get(player.id).length - 1; j++) {
+      for (let j = i; j < damageFeedHitsGiven.get(player.id).length - 1; j++) {
         if (!damageFeedHitsGiven.get(player.id)[j]) {
           damageFeedHitsGiven.get(player.id)[j] = new DamageFeedHit();
         }
@@ -156,11 +152,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
     }
   }
 
-  for (
-    let i = 0, j = 0;
-    i < damageFeedHitsTaken.get(player.id).length - 1;
-    i++
-  ) {
+  for (let i = 0; i < damageFeedHitsTaken.get(player.id).length - 1; i++) {
     if (!damageFeedHitsTaken.get(player.id)[i]?.tick) {
       break;
     }
@@ -171,7 +163,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
     ) {
       modified = true;
 
-      for (j = i; j < damageFeedHitsTaken.get(player.id).length - 1; j++) {
+      for (let j = i; j < damageFeedHitsTaken.get(player.id).length - 1; j++) {
         if (!damageFeedHitsTaken.get(player.id)[j]) {
           damageFeedHitsTaken.get(player.id)[j] = new DamageFeedHit();
         }
@@ -232,14 +224,12 @@ export function damageFeedUpdate(player: Player, modified = false) {
 export function damageFeedUpdateText(player: Player) {
   let buf = "";
 
-  for (
-    let i = 0, weapon = "";
-    i < damageFeedHitsGiven.get(player.id).length - 1;
-    i++
-  ) {
+  for (let i = 0; i < damageFeedHitsGiven.get(player.id).length - 1; i++) {
     if (!damageFeedHitsGiven.get(player.id)[i]?.tick) {
       break;
     }
+
+    let weapon: string;
 
     if (damageFeedHitsGiven.get(player.id)[i]!.weapon === -1) {
       weapon = "Multiple";
@@ -280,14 +270,12 @@ export function damageFeedUpdateText(player: Player) {
 
   buf = "";
 
-  for (
-    let i = 0, weapon = "";
-    i < damageFeedHitsTaken.get(player.id).length - 1;
-    i++
-  ) {
+  for (let i = 0; i < damageFeedHitsTaken.get(player.id).length - 1; i++) {
     if (!damageFeedHitsTaken.get(player.id)[i]?.tick) {
       break;
     }
+
+    let weapon: string;
 
     if (damageFeedHitsTaken.get(player.id)[i]!.weapon === -1) {
       weapon = "Multiple";

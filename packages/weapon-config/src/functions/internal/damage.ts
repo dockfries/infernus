@@ -204,6 +204,17 @@ export function processDamage(editable: IProcessDamageArgs) {
     editable.weaponId = WC_WeaponEnum.CARPARK;
   }
 
+  if (
+    !isBulletWeapon(editable.weaponId) &&
+    !(
+      editable.weaponId >= WC_WeaponEnum.VEHICLE_M4 &&
+      editable.weaponId <= WC_WeaponEnum.VEHICLE_MINIGUN
+    ) &&
+    editable.bodyPart !== 3
+  ) {
+    return InvalidDamageEnum.INVALID_DAMAGE;
+  }
+
   if (isHighRateWeapon(editable.weaponId)) {
     if (editable.weaponId === WC_WeaponEnum.REASON_DROWN) {
       if (editable.amount > 10.0) editable.amount = 10.0;
@@ -244,18 +255,16 @@ export function processDamage(editable: IProcessDamageArgs) {
           );
           return InvalidDamageEnum.INVALID_DISTANCE;
         }
-      } else {
-        if (dist > s_WeaponRange[editable.weaponId] + 2.0) {
-          addRejectedHit(
-            editable.issuer,
-            editable.player,
-            RejectedReasonEnum.HIT_TOO_FAR_FROM_ORIGIN,
-            editable.weaponId,
-            dist,
-            s_WeaponRange[editable.weaponId],
-          );
-          return InvalidDamageEnum.INVALID_DISTANCE;
-        }
+      } else if (dist > s_WeaponRange[editable.weaponId] + 2.0) {
+        addRejectedHit(
+          editable.issuer,
+          editable.player,
+          RejectedReasonEnum.HIT_TOO_FAR_FROM_ORIGIN,
+          editable.weaponId,
+          dist,
+          s_WeaponRange[editable.weaponId],
+        );
+        return InvalidDamageEnum.INVALID_DISTANCE;
       }
     }
 
@@ -780,7 +789,7 @@ export function inflictDamage(
     editable.bodyPart,
   );
   let animLib = "PED",
-    animName = "";
+    animName: string;
 
   if (playerHealth.get(editable.player.id) <= 0.0005) {
     const vehicle = orig_playerMethods.getVehicle.call(editable.player);

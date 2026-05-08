@@ -31,7 +31,6 @@ import { damageFeedAddHitGiven, damageFeedAddHitTaken } from "./damageFeed";
 
 export function onRejectedHit(player: Player, hit: RejectedHit) {
   if (innerWeaponConfig.DEBUG) {
-    let output = "";
     const reason = hit.reason;
     const i1 = hit.info1;
     const i2 = hit.info2;
@@ -40,7 +39,7 @@ export function onRejectedHit(player: Player, hit: RejectedHit) {
 
     const name = wc_GetWeaponName(weapon);
 
-    output = `(${name} -> ${hit.name}) ${g_HitRejectReasons(reason + "", [i1, i2, i3])}`;
+    const output = `(${name} -> ${hit.name}) ${g_HitRejectReasons(reason + "", [i1, i2, i3])}`;
 
     debugMessageRed(player, `Rejected hit: ${output}`);
   }
