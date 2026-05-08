@@ -203,8 +203,8 @@ PlayerEvent.onDisconnect(({ player, reason, next }) => {
 
 PlayerEvent.onSpawn(({ player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
-  let ac_i = 0,
-    ac_ur = false;
+  let ac_i: number;
+  let ac_ur = false;
   if (
     !innerACConfig.AC_USE_NPC ||
     (innerACConfig.AC_USE_NPC && !player.isNpc())

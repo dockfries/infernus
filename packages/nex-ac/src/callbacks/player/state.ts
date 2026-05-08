@@ -91,11 +91,10 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
           ACInfo.get(player.id).acACAllow[2] &&
           newState === PlayerStateEnum.ONFOOT
         ) {
-          let ac_dist = 0;
           const pos = player.getPos();
           const { x: ac_x, y: ac_y } = pos;
           let ac_z = pos.z;
-          ac_dist = player.getDistanceFromPoint(
+          let ac_dist = player.getDistanceFromPoint(
             ACInfo.get(player.id).acSetPosX,
             ACInfo.get(player.id).acSetPosY,
             ACInfo.get(player.id).acTpToZ
@@ -149,9 +148,8 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
           ACInfo.get(player.id).acACAllow[2] &&
           newState === PlayerStateEnum.ONFOOT
         ) {
-          let ac_dist = 0;
           const { x: ac_x, y: ac_y, z: ac_z } = player.getPos();
-          ac_dist = player.getDistanceFromPoint(
+          let ac_dist = player.getDistanceFromPoint(
             ACInfo.get(player.id).acSetPosX,
             ACInfo.get(player.id).acSetPosY,
             ACInfo.get(player.id).acTpToZ

@@ -49,8 +49,8 @@ function processActionText(
   message: string,
   actionType: number,
 ) {
-  let actionText = "";
-  let actionBubble = "";
+  let actionText: string;
+  let actionBubble: string;
   const playerName = player.getName().name;
 
   if (actionType === gl_message.ACTION_DO) {

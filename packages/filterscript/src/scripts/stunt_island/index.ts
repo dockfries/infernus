@@ -238,7 +238,7 @@ export const StuntIsland: IStuntIsLandFS = {
           const playerName = player.getName().name;
 
           // Create variable
-          let strTempString = "";
+          let strTempString: string;
 
           // Check if the players total lap time is faster than the current fastest lap time
           if (totalLapTime < fastestLapTime) {

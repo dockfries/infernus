@@ -174,7 +174,7 @@ const [onCommandText, triggerOnCommandText] = defineEvent({
   beforeEach(id: number, bufferOrText: number[] | string) {
     const player = playerPool.get(id)!;
     let buffer = bufferOrText;
-    let cmdText = "";
+    let cmdText: string;
     if (typeof bufferOrText === "string") {
       cmdText = bufferOrText;
       buffer = I18n.encodeToBuf(cmdText, "utf-8");

@@ -189,9 +189,7 @@ export function ac_KickWithCode(
       ac_sInfo[2]++;
     }
   }
-  if (innerACConfig.NO_SUSPICION_LOGS) {
-    code2 = 0;
-  } else {
+  if (!innerACConfig.NO_SUSPICION_LOGS) {
     const ac_strTmp = code2 !== 0 ? ` (${code2})` : "";
     if (type)
       console.log(

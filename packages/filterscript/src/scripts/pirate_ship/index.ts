@@ -246,7 +246,6 @@ export const PirateShip: IPirateShipFS = {
     gMainShipObject!.destroy();
     gMainShipObject = null;
 
-    x = 0;
     while (x !== 4) {
       gShipSkullAttachment![x].destroy();
       x++;

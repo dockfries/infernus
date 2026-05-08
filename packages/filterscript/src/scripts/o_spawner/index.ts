@@ -287,15 +287,15 @@ function destroySelectionMenu(player: Player) {
 function spawnObjectInFrontOfPlayer(player: Player, model: number) {
   const { x, y, z } = player.getPos();
 
-  let facing = player.getFacingAngle().angle;
+  const facing = player.getFacingAngle().angle;
 
   const distance = 5.0;
 
   const _x = x + distance * Math.sin(degreesToRadians(-facing));
   const _y = y + distance * Math.cos(degreesToRadians(-facing));
 
-  facing += 90.0;
-  if (facing > 360.0) facing -= 360.0;
+  // facing += 90.0;
+  // if (facing > 360.0) facing -= 360.0;
 
   const obj = new DynamicObject({
     modelId: model,

@@ -103,8 +103,8 @@ export const GlRealTime: IGlRealTimeFS = {
 
     const onSpawn = PlayerEvent.onSpawn(({ player, next }) => {
       txtTimeDisplay!.show(player);
-      let hour = 0,
-        minute = 0;
+      let hour: number;
+      let minute: number;
       // Update time
       if (!worldTimeOverride) {
         const date = new Date();

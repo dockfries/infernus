@@ -685,7 +685,6 @@ export function createObjectCommands() {
       0,
       MaterialTextAlign.CENTER,
     );
-    x += 3.0;
 
     // test_tex_objects[0].edit(player);
     return next();

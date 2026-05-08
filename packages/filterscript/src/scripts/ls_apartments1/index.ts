@@ -718,7 +718,7 @@ export const LSApartments1: ILSApartments1FS = {
                 ).forPlayer(player);
 
                 // Create variable for formatted message
-                let strTempString = "";
+                let strTempString: string;
 
                 // Check if the elevator is moving
                 if (elevatorState === constants.ELEVATOR_STATE_MOVING) {

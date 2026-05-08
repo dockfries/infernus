@@ -205,10 +205,10 @@ PlayerEvent.onWeaponShot(
       }
     } else ACInfo.get(player.id).acCheatCount[11] = 0;
 
-    let ac_i = 0,
-      ac_t = 0,
-      ac_ur = false,
-      ac_ur2 = false;
+    let ac_i = 0;
+    let ac_t: number;
+    let ac_ur = false;
+    let ac_ur2 = false;
     switch (hitType) {
       case BulletHitTypesEnum.PLAYER: {
         if (

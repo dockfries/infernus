@@ -25,9 +25,6 @@ export const Attachments: IFilterScript = {
     const offCommand = PlayerEvent.onCommandText(
       "attachments",
       async ({ player, next }) => {
-        let attachmentIndexSel = 0;
-        let attachmentModelSel = 0;
-
         let slotUsedInfo = "";
         for (let x = 0; x < LimitsEnum.MAX_PLAYER_ATTACHED_OBJECTS; x++) {
           if (player.isAttachedObjectSlotUsed(x))
@@ -44,7 +41,7 @@ export const Attachments: IFilterScript = {
 
         if (!INDEX_SELECTION.response) return next();
 
-        attachmentIndexSel = INDEX_SELECTION.listItem;
+        const attachmentIndexSel = INDEX_SELECTION.listItem;
 
         if (player.isAttachedObjectSlotUsed(attachmentIndexSel)) {
           const EDIT_REPLACE = await new Dialog({
@@ -77,7 +74,8 @@ export const Attachments: IFilterScript = {
 
         if (!MODEL_SELECTION.response) return next();
 
-        attachmentModelSel = attachmentObjects[MODEL_SELECTION.listItem][0];
+        const attachmentModelSel =
+          attachmentObjects[MODEL_SELECTION.listItem][0];
 
         const boneNames = attachmentBones.join("\n");
 

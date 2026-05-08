@@ -48,8 +48,8 @@ PlayerEvent.onUpdate(({ player, next }) => {
     (innerACConfig.AC_USE_NPC && !player.isNpc())
   ) {
     const ac_gpp = player.getPing();
-    let ac_w = 0;
-    let ac_sa = 0;
+    let ac_w: number;
+    let ac_sa: number;
     if (
       !ACInfo.get(player.id).acSpec &&
       (ac_sa = player.getState()) !== PlayerStateEnum.SPECTATING &&

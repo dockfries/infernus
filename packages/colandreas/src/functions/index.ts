@@ -26,8 +26,8 @@ export function rayCastExplode(
   }
 
   let LAT: number, LON: number, x: number, y: number, z: number;
-  for (let lat = -180.0, lon = -90.0; lat < 180.0; lat += intensity * 0.75) {
-    for (lon = -90.0; lon < 90.0; lon += intensity) {
+  for (let lat = -180.0; lat < 180.0; lat += intensity * 0.75) {
+    for (let lon = -90.0; lon < 90.0; lon += intensity) {
       LAT = (lat * Math.PI) / 180.0;
       LON = (lon * Math.PI) / 180.0;
       x = -radius * Math.cos(LAT) * Math.cos(LON);
@@ -124,18 +124,17 @@ function isInWater(instance: Player | Vehicle) {
   if (collisions <= 0) return false;
 
   let depth = FLOAT_INFINITY;
-  let instanceDepth = FLOAT_INFINITY;
 
-  for (let i = 0, j = 0; i < collisions; i++) {
+  for (let i = 0; i < collisions; i++) {
     if (modelIds[i] !== WATER_OBJECT) continue;
 
-    for (j = 0; j < collisions; j++) {
+    for (let j = 0; j < collisions; j++) {
       if (retZ[j] < depth) depth = retZ[j];
     }
 
     depth = retZ[i] - depth;
     if (depth < 0.001 && depth > -0.001) depth = 100.0;
-    instanceDepth = retZ[i] - z;
+    const instanceDepth = retZ[i] - z;
 
     if (instanceDepth < -2.0) return false;
 
@@ -318,12 +317,9 @@ export function getRoomCenter(x: number, y: number, z: number) {
     yDelta_b = pt3y - pt2y,
     xDelta_b = pt3x - pt2x;
 
-  let m_x = 0,
-    m_y = 0;
-
   if (Math.abs(xDelta_a) <= 0.000000001 && Math.abs(yDelta_b) <= 0.000000001) {
-    m_x = 0.5 * (pt2x + pt3x);
-    m_y = 0.5 * (pt1y + pt2y);
+    const m_x = 0.5 * (pt2x + pt3x);
+    const m_y = 0.5 * (pt1y + pt2y);
     const size = GameMode.vectorSize(m_x - pt1x, m_y - pt1y, 0.0);
     return { size, m_x, m_y };
   }
@@ -333,12 +329,13 @@ export function getRoomCenter(x: number, y: number, z: number) {
 
   if (Math.abs(aSlope - bSlope) <= 0.000000001) return -1.0;
 
-  m_x =
+  const m_x =
     (aSlope * bSlope * (pt1y - pt3y) +
       bSlope * (pt1x + pt2x) -
       aSlope * (pt2x + pt3x)) /
     (2.0 * (bSlope - aSlope));
-  m_y = (-1.0 * (m_x - (pt1x + pt2x) / 2.0)) / aSlope + (pt1y + pt2y) / 2.0;
+  const m_y =
+    (-1.0 * (m_x - (pt1x + pt2x) / 2.0)) / aSlope + (pt1y + pt2y) / 2.0;
 
   const size = GameMode.vectorSize(m_x - pt1x, m_y - pt1y, 0.0);
 

@@ -383,21 +383,20 @@ export function getClosestDynObjectToPlayer(
   }
   let distance = Number.POSITIVE_INFINITY;
   let closestId = -1;
-  let distance2 = 0;
   for (let i = Streamer.getUpperBound(StreamerItemTypes.OBJECT); i >= 1; --i) {
     {
-      if (
-        DynamicObject.isValid(i) &&
-        (distance2 = Streamer.getDistanceToItem(
+      if (DynamicObject.isValid(i)) {
+        const distance2 = Streamer.getDistanceToItem(
           x,
           y,
           z,
           StreamerItemTypes.OBJECT,
           i,
-        ).distance) < distance
-      ) {
-        distance = distance2;
-        closestId = i;
+        ).distance;
+        if (distance2 < distance) {
+          distance = distance2;
+          closestId = i;
+        }
       }
     }
   }
@@ -491,21 +490,20 @@ export function getClosestDynObjectToVehicle(
   }
   let distance = Number.POSITIVE_INFINITY;
   let closestId = -1;
-  let distance2 = 0;
   for (let i = Streamer.getUpperBound(StreamerItemTypes.OBJECT); i >= 1; --i) {
     {
-      if (
-        DynamicObject.isValid(i) &&
-        (distance2 = Streamer.getDistanceToItem(
+      if (DynamicObject.isValid(i)) {
+        const distance2 = Streamer.getDistanceToItem(
           x,
           y,
           z,
           StreamerItemTypes.OBJECT,
           i,
-        ).distance) < distance
-      ) {
-        distance = distance2;
-        closestId = i;
+        ).distance;
+        if (distance2 < distance) {
+          distance = distance2;
+          closestId = i;
+        }
       }
     }
   }
@@ -808,21 +806,20 @@ export function getClosestDynObjectToActor(actor: Actor): DynamicObject | null {
   }
   let distance = Number.POSITIVE_INFINITY;
   let closestId = -1;
-  let distance2 = 0;
   for (let i = Streamer.getUpperBound(StreamerItemTypes.OBJECT); i >= 1; --i) {
     {
-      if (
-        DynamicObject.isValid(i) &&
-        (distance2 = Streamer.getDistanceToItem(
+      if (DynamicObject.isValid(i)) {
+        const distance2 = Streamer.getDistanceToItem(
           x,
           y,
           z,
           StreamerItemTypes.OBJECT,
           i,
-        ).distance) < distance
-      ) {
-        distance = distance2;
-        closestId = i;
+        ).distance;
+        if (distance2 < distance) {
+          distance = distance2;
+          closestId = i;
+        }
       }
     }
   }
@@ -1144,21 +1141,20 @@ export function getClosestDynObjectToDynActor(
   }
   let distance = Number.POSITIVE_INFINITY;
   let closestId = -1;
-  let distance2 = 0;
   for (let i = Streamer.getUpperBound(StreamerItemTypes.OBJECT); i >= 1; --i) {
     {
-      if (
-        DynamicObject.isValid(i) &&
-        (distance2 = Streamer.getDistanceToItem(
+      if (DynamicObject.isValid(i)) {
+        const distance2 = Streamer.getDistanceToItem(
           x,
           y,
           z,
           StreamerItemTypes.OBJECT,
           i,
-        ).distance) < distance
-      ) {
-        distance = distance2;
-        closestId = i;
+        ).distance;
+        if (distance2 < distance) {
+          distance = distance2;
+          closestId = i;
+        }
       }
     }
   }

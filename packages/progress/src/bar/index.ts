@@ -277,8 +277,8 @@ export class ProgressBar {
 
     let progressX = fillX;
     let progressY = fillY;
-    let progressWidth = 0;
-    let progressHeight = 0;
+    let progressWidth: number;
+    let progressHeight: number;
 
     const isVertical =
       direction === ProgressBarDirectionEnum.up ||

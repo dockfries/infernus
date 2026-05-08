@@ -94,7 +94,7 @@ export async function parseResponse(
 
       info.languageBuffer = response.subarray(reader, reader + languageLen);
       info.language = (await detectAndDecode(info.languageBuffer))[0];
-      reader += languageLen;
+      // reader += languageLen;
       return info;
     }
     case RequestPacket.RULES: {

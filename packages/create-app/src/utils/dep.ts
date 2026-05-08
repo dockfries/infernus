@@ -174,7 +174,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     }
 
     let matchedRelease: any = null;
-    let pawnJson: null | PawnJson = null;
+    let pawnJson: null | PawnJson;
 
     if (!localCacheFolder) {
       matchedRelease = await getRepoRelease(owner, repo, version);

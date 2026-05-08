@@ -346,7 +346,6 @@ export function ac_Timer(player: Player) {
             ACInfo.get(player.id).acACAllow[3] &&
             ACInfo.get(player.id).acSet[8] === -1
           ) {
-            let ac_time = 0;
             let ac_maxDist = 140.0;
             const ac_dist = player.getDistanceFromPoint(
               ACInfo.get(player.id).acLastPosX,
@@ -358,11 +357,9 @@ export function ac_Timer(player: Player) {
               ACInfo.get(player.id).acSetPosY,
               ACInfo.get(player.id).acPosZ,
             );
-            if (
-              (ac_time =
-                (ac_gtc - ACInfo.get(player.id).acTimerTick) / 1000.0) > 1.0
-            )
-              ac_maxDist *= ac_time;
+            const ac_time =
+              (ac_gtc - ACInfo.get(player.id).acTimerTick) / 1000.0;
+            if (ac_time > 1.0) ac_maxDist *= ac_time;
             if (
               ac_dist >= ac_maxDist &&
               (ACInfo.get(player.id).acSet[7] === -1 ||
@@ -434,8 +431,7 @@ export function ac_Timer(player: Player) {
             !player.getSurfingObject() &&
             !player.getSurfingPlayerObject()
           ) {
-            let ac_time = 0,
-              ac_maxDist = 80.0;
+            let ac_maxDist = 80.0;
             const ac_dist = player.getDistanceFromPoint(
               ACInfo.get(player.id).acLastPosX,
               ACInfo.get(player.id).acLastPosY,
@@ -446,11 +442,9 @@ export function ac_Timer(player: Player) {
               ACInfo.get(player.id).acSetPosY,
               ACInfo.get(player.id).acPosZ,
             );
-            if (
-              (ac_time =
-                (ac_gtc - ACInfo.get(player.id).acTimerTick) / 1000.0) > 1.0
-            )
-              ac_maxDist *= ac_time;
+            const ac_time =
+              (ac_gtc - ACInfo.get(player.id).acTimerTick) / 1000.0;
+            if (ac_time > 1.0) ac_maxDist *= ac_time;
             if (
               ac_dist >= ac_maxDist &&
               (ACInfo.get(player.id).acSet[7] === -1 ||

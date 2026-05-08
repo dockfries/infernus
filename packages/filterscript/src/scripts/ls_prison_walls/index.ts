@@ -130,10 +130,9 @@ export const LSPrisonWalls: IFilterScript = {
     console.log("  |--  LS Prison Walls Gates objects created");
 
     // Create variable
-    let text = "";
 
     // Create 3D Text Label at the prisons eastern gates
-    text = `{CCCCCC}[{${constants.GateNames[0]}]\n{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to open or close the gates`;
+    let text = `{CCCCCC}[{${constants.GateNames[0]}]\n{CCCCCC}Press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}' to open or close the gates`;
     labelGates[0] = new Dynamic3DTextLabel({
       text,
       color: 0xccccccaa,

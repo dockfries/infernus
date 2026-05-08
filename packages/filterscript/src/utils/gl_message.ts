@@ -124,7 +124,7 @@ export function talkMessage(
         // receiving player is within the specified distance
         // get normalized distance to create a fade.
         const fNormDistance = 1.0 - fPlayerToPlayerDist / distance;
-        let colorScale = 0;
+        let colorScale: number;
         if (fNormDistance > 0.75) colorScale = 220;
         else colorScale = Math.round(96.0 + 128.0 * fNormDistance);
         const colorValue =

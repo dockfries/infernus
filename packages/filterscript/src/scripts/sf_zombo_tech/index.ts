@@ -645,7 +645,7 @@ export const SFZomboTech: ISFZomboTechFS = {
               pos.x > constants.X_ELEVATOR_POS - 3.8
             ) {
               // Create variable
-              let i = 0;
+              let i: number;
 
               // Check for ground floor
               if (

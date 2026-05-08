@@ -137,15 +137,13 @@ export const FerrisWheel: IFilterScript = {
       timer = null;
     }
 
-    let x = 0;
-
     gFerrisWheel?.destroy();
     gFerrisWheel = null;
 
     gFerrisBase?.destroy();
     gFerrisBase = null;
 
-    x = 0;
+    let x = 0;
     while (x !== NUM_FERRIS_CAGES) {
       gFerrisCages[x].destroy();
       x++;
