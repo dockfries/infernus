@@ -57,6 +57,7 @@ export class CA_Object {
 
   static destroyAll() {
     CA_Objects.forEach((o) => o.objectInstance?.isValid() && o.destroy());
+    CA_Objects.length = 0;
   }
 
   setPos(x: number, y: number, z: number) {
