@@ -1,21 +1,32 @@
-export enum CefNatives {
-  DestroyBrowser,
-  HideBrowser,
-  AppendToObject,
-  RemoveFromObject,
-  PlayerHasPlugin,
-  ToggleDevTools,
-  FocusBrowser,
-  AlwaysListenKeys,
+export enum CefInitReasonEnum {
+  OK,
+  TIMEOUT,
+  VERSION_MISMATCH,
+  IP_MISMATCH,
+  HANDSHAKE_FAILED,
+  UNKNOWN,
 }
 
-export enum CefDefault {
-  MaxDist = 50.0,
-  RefDist = 15.0,
+export enum CefCreateStatusEnum {
+  SUCCESS,
+  ERROR_GENERIC,
+  ERROR_ID_ALREADY_IN_USE,
 }
 
-export enum CefValueType {
-  String,
-  Integer,
-  Float,
+export enum CefAudioModeEnum {
+  WORLD,
+  UI,
+}
+
+export enum CefHudComponentEnum {
+  ALL,
+  AMMO,
+  ARMOUR,
+  BREATH,
+  CROSSHAIR,
+  HEALTH,
+  MONEY,
+  RADAR,
+  WANTED_STARS,
+  WEAPON,
 }

@@ -1,7 +1,7 @@
 {
   "name": "@infernus/cef",
   "version": "0.1.2",
-  "description": "A wrapper of the popular samp-cef plugin for samp-node.",
+  "description": "A wrapper of the popular omp-cef component for samp-node.",
   "keywords": [
     "omp",
     "samp"
