@@ -17,8 +17,5 @@ import { GameMode } from "@infernus/core";
 import { A51Base, AdminSpec, AntiFlood, Base, MaxIps } from "@infernus/fs";
 
 GameMode.use(A51Base, { debug: true });
-GameMode.use(Base)
-  .use(AdminSpec)
-  .use(AntiFlood)
-  .use(MaxIps, { maxConnections: 1 });
+GameMode.use(Base).use(AdminSpec).use(AntiFlood).use(MaxIps, { maxConnections: 1 });
 ```

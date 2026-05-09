@@ -1,10 +1,4 @@
-import {
-  defineEvent,
-  Player,
-  PlayerEvent,
-  GameMode,
-  PlayerStateEnum,
-} from "@infernus/core";
+import { defineEvent, Player, PlayerEvent, GameMode, PlayerStateEnum } from "@infernus/core";
 import { DriftEndReasonEnum, DriftOptionsEnum, DriftStateEnum } from "../enums";
 import { internalVar, isModelACar } from "../utils";
 import { DRIFT_PROCESS_INTERVAL, MAX_DRIFT_ANGLE } from "../constants";
@@ -28,12 +22,7 @@ export const [onPlayerUpdate, triggerPlayerUpdate] = defineEvent({
 export const [onPlayerEnd, triggerPlayerEnd] = defineEvent({
   name: "triggerPlayerEnd",
   isNative: false,
-  beforeEach(
-    player: Player,
-    reason: DriftEndReasonEnum,
-    distance: number,
-    time: number,
-  ) {
+  beforeEach(player: Player, reason: DriftEndReasonEnum, distance: number, time: number) {
     return { player, reason, distance, time };
   },
 });
@@ -92,8 +81,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
           }
           case DriftStateEnum.DRIFTING: {
             if (
-              internalVar.g_DriftFlags &
-                DriftOptionsEnum.DAMAGE_CHECK_ENABLED &&
+              internalVar.g_DriftFlags & DriftOptionsEnum.DAMAGE_CHECK_ENABLED &&
               driftPlayer.playerFlags & DriftOptionsEnum.DAMAGE_CHECK_ENABLED
             ) {
               const vehicleHealth = vehicle.getHealth().health;
@@ -163,10 +151,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
 PlayerEvent.onStateChange(({ player, oldState, next }) => {
   const driftPlayer = internalVar.g_DriftPlayers.get(player);
 
-  if (
-    driftPlayer.driftState === DriftStateEnum.DRIFTING &&
-    oldState === PlayerStateEnum.DRIVER
-  ) {
+  if (driftPlayer.driftState === DriftStateEnum.DRIFTING && oldState === PlayerStateEnum.DRIVER) {
     driftPlayer.driftState = DriftStateEnum.NONE;
     driftPlayer.timeoutTicks = 0;
 

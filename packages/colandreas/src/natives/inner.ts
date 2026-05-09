@@ -34,12 +34,7 @@ export function setObjectPos(index: number, x: number, y: number, z: number) {
   return !!samp.callNative("CA_SetObjectPos", "ifff", index, x, y, z);
 }
 
-export function setObjectRot(
-  index: number,
-  rx: number,
-  ry: number,
-  rz: number,
-) {
+export function setObjectRot(index: number, rx: number, ry: number, rz: number) {
   return !!samp.callNative("CA_SetObjectRot", "ifff", index, rx, ry, rz);
 }
 

@@ -51,33 +51,13 @@ export class ObjectMp {
   }
 
   create(): this {
-    if (!this.sourceInfo)
-      throw new ObjectMpException("Cannot create with only id");
-    if (this.id !== InvalidEnum.OBJECT_ID)
-      throw new ObjectMpException("Cannot create again");
+    if (!this.sourceInfo) throw new ObjectMpException("Cannot create with only id");
+    if (this.id !== InvalidEnum.OBJECT_ID) throw new ObjectMpException("Cannot create again");
 
-    const {
-      modelId,
-      x,
-      y,
-      z,
-      rx,
-      ry,
-      rz,
-      drawDistance = 0.0,
-    } = this.sourceInfo;
+    const { modelId, x, y, z, rx, ry, rz, drawDistance = 0.0 } = this.sourceInfo;
 
     if (this.isGlobal()) {
-      this._id = ObjectMp.__inject__.create(
-        modelId,
-        x,
-        y,
-        z,
-        rx,
-        ry,
-        rz,
-        drawDistance,
-      );
+      this._id = ObjectMp.__inject__.create(modelId, x, y, z, rx, ry, rz, drawDistance);
 
       if (
         this.id === InvalidEnum.OBJECT_ID ||
@@ -207,13 +187,7 @@ export class ObjectMp {
     if (this.isGlobal()) {
       return ObjectMp.__inject__.setPos(this.id, x, y, z);
     }
-    return ObjectMp.__inject__.setPosPlayer(
-      this.getPlayerId(),
-      this.id,
-      x,
-      y,
-      z,
-    );
+    return ObjectMp.__inject__.setPosPlayer(this.getPlayerId(), this.id, x, y, z);
   }
 
   getRot() {
@@ -231,13 +205,7 @@ export class ObjectMp {
     if (this.isGlobal()) {
       return ObjectMp.__inject__.setRot(this.id, rx, ry, rz);
     }
-    return ObjectMp.__inject__.setRotPlayer(
-      this.getPlayerId(),
-      this.id,
-      rx,
-      ry,
-      rz,
-    );
+    return ObjectMp.__inject__.setRotPlayer(this.getPlayerId(), this.id, rx, ry, rz);
   }
 
   move(
@@ -255,24 +223,12 @@ export class ObjectMp {
       throw new ObjectMpException("speed must not be less than 0");
     }
     if (speed > 120 * 1000)
-      throw new ObjectMpException(
-        "speed more than 120 seconds, warn if it's not intentional",
-      );
+      throw new ObjectMpException("speed more than 120 seconds, warn if it's not intentional");
     if (this.isMoving()) this.stop();
     if (this.isGlobal()) {
       return ObjectMp.__inject__.move(this.id, x, y, z, speed, rx, ry, rz);
     }
-    return ObjectMp.__inject__.movePlayer(
-      this.getPlayerId(),
-      this.id,
-      x,
-      y,
-      z,
-      speed,
-      rx,
-      ry,
-      rz,
-    );
+    return ObjectMp.__inject__.movePlayer(this.getPlayerId(), this.id, x, y, z, speed, rx, ry, rz);
   }
 
   stop(): boolean {
@@ -313,13 +269,8 @@ export class ObjectMp {
     rz: number,
     syncRotation = true,
   ): boolean {
-    if (
-      this.id === InvalidEnum.OBJECT_ID ||
-      attachTo.id === InvalidEnum.OBJECT_ID
-    )
-      throw new ObjectMpException(
-        "Cannot attachToObject before both are created",
-      );
+    if (this.id === InvalidEnum.OBJECT_ID || attachTo.id === InvalidEnum.OBJECT_ID)
+      throw new ObjectMpException("Cannot attachToObject before both are created");
 
     if (this.isGlobal() && attachTo.isGlobal()) {
       return ObjectMp.__inject__.attachToObject(
@@ -347,9 +298,7 @@ export class ObjectMp {
         syncRotation,
       );
     }
-    throw new ObjectMpException(
-      "Cannot attachToObject with global and player object",
-    );
+    throw new ObjectMpException("Cannot attachToObject with global and player object");
   }
 
   attachToPlayer(
@@ -423,8 +372,7 @@ export class ObjectMp {
   }
 
   edit(player?: Player): boolean {
-    if (this.id === InvalidEnum.OBJECT_ID)
-      throw new ObjectMpException("Cannot edit before create");
+    if (this.id === InvalidEnum.OBJECT_ID) throw new ObjectMpException("Cannot edit before create");
 
     if (this.isGlobal()) {
       if (!player) {
@@ -443,11 +391,7 @@ export class ObjectMp {
     if (this.isGlobal()) {
       return ObjectMp.__inject__.isMaterialSlotUsed(this.id, materialIndex);
     }
-    return ObjectMp.__inject__.isMaterialSlotUsedPlayer(
-      this.getPlayerId(),
-      this.id,
-      materialIndex,
-    );
+    return ObjectMp.__inject__.isMaterialSlotUsedPlayer(this.getPlayerId(), this.id, materialIndex);
   }
 
   getMaterial(materialIndex: number) {
@@ -456,11 +400,7 @@ export class ObjectMp {
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getMaterial(this.id, materialIndex);
     }
-    return ObjectMp.__inject__.getMaterialPlayer(
-      this.getPlayerId(),
-      this.id,
-      materialIndex,
-    );
+    return ObjectMp.__inject__.getMaterialPlayer(this.getPlayerId(), this.id, materialIndex);
   }
 
   setMaterial(
@@ -564,10 +504,7 @@ export class ObjectMp {
     if (this.isGlobal()) {
       return ObjectMp.__inject__.setNoCameraCollision(this.id);
     }
-    return ObjectMp.__inject__.setNoCameraCollisionPlayer(
-      this.getPlayerId(),
-      this.id,
-    );
+    return ObjectMp.__inject__.setNoCameraCollisionPlayer(this.getPlayerId(), this.id);
   }
 
   isNoCameraCol(): boolean {
@@ -587,10 +524,7 @@ export class ObjectMp {
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getDrawDistance(this.id);
     }
-    return ObjectMp.__inject__.getDrawDistancePlayer(
-      this.getPlayerId(),
-      this.id,
-    );
+    return ObjectMp.__inject__.getDrawDistancePlayer(this.getPlayerId(), this.id);
   }
 
   setMoveSpeed(speed: number): boolean {
@@ -598,11 +532,7 @@ export class ObjectMp {
     if (this.isGlobal()) {
       return ObjectMp.__inject__.setMoveSpeed(this.id, speed);
     }
-    return ObjectMp.__inject__.setMoveSpeedPlayer(
-      this.getPlayerId(),
-      this.id,
-      speed,
-    );
+    return ObjectMp.__inject__.setMoveSpeedPlayer(this.getPlayerId(), this.id, speed);
   }
 
   getMoveSpeed() {
@@ -617,30 +547,21 @@ export class ObjectMp {
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getMovingTargetPos(this.id);
     }
-    return ObjectMp.__inject__.getMovingTargetPosPlayer(
-      this.getPlayerId(),
-      this.id,
-    );
+    return ObjectMp.__inject__.getMovingTargetPosPlayer(this.getPlayerId(), this.id);
   }
 
   getSyncRotation() {
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getSyncRotation(this.id);
     }
-    return ObjectMp.__inject__.getSyncRotationPlayer(
-      this.getPlayerId(),
-      this.id,
-    );
+    return ObjectMp.__inject__.getSyncRotationPlayer(this.getPlayerId(), this.id);
   }
 
   getAttachedOffset() {
     if (this.isGlobal()) {
       return ObjectMp.__inject__.getAttachedOffset(this.id);
     }
-    return ObjectMp.__inject__.getAttachedOffsetPlayer(
-      this.getPlayerId(),
-      this.id,
-    );
+    return ObjectMp.__inject__.getAttachedOffsetPlayer(this.getPlayerId(), this.id);
   }
 
   getTarget() {

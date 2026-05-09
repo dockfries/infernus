@@ -162,18 +162,8 @@ function elevator_OpenDoors() {
   // Opens the elevator's doors.
 
   const { y, z } = obj_ElevatorDoors[0].getPos();
-  obj_ElevatorDoors[0].move(
-    constants.X_DOOR_L_OPENED,
-    y,
-    z,
-    constants.DOORS_SPEED,
-  );
-  obj_ElevatorDoors[1].move(
-    constants.X_DOOR_R_OPENED,
-    y,
-    z,
-    constants.DOORS_SPEED,
-  );
+  obj_ElevatorDoors[0].move(constants.X_DOOR_L_OPENED, y, z, constants.DOORS_SPEED);
+  obj_ElevatorDoors[1].move(constants.X_DOOR_R_OPENED, y, z, constants.DOORS_SPEED);
 
   return true;
 }
@@ -185,18 +175,8 @@ function elevator_CloseDoors() {
 
   const { y, z } = obj_ElevatorDoors[0].getPos();
 
-  obj_ElevatorDoors[0].move(
-    constants.X_DOOR_CLOSED,
-    y,
-    z,
-    constants.DOORS_SPEED,
-  );
-  obj_ElevatorDoors[1].move(
-    constants.X_DOOR_CLOSED,
-    y,
-    z,
-    constants.DOORS_SPEED,
-  );
+  obj_ElevatorDoors[0].move(constants.X_DOOR_CLOSED, y, z, constants.DOORS_SPEED);
+  obj_ElevatorDoors[1].move(constants.X_DOOR_CLOSED, y, z, constants.DOORS_SPEED);
 
   return true;
 }
@@ -261,12 +241,7 @@ function elevator_MoveToFloor(floorId: number) {
   elevatorFloor = floorId;
 
   // Move the elevator slowly, to give time to clients to sync the object surfing. Then, boost it up:
-  obj_Elevator!.move(
-    1786.6781,
-    -1303.459472,
-    getElevatorZCoordForFloor(floorId),
-    0.25,
-  );
+  obj_Elevator!.move(1786.6781, -1303.459472, getElevatorZCoordForFloor(floorId), 0.25);
   obj_ElevatorDoors[0].move(
     constants.X_DOOR_CLOSED,
     -1303.459472,
@@ -328,8 +303,7 @@ function elevator_TurnToIdle() {
 function removeFirstQueueFloor() {
   // Removes the data in ElevatorQueue[0], and reorders the queue accordingly.
 
-  for (let i = 0; i < elevatorQueue.length - 1; i++)
-    elevatorQueue[i] = elevatorQueue[i + 1];
+  for (let i = 0; i < elevatorQueue.length - 1; i++) elevatorQueue[i] = elevatorQueue[i + 1];
 
   elevatorQueue[elevatorQueue.length - 1] = constants.INVALID_FLOOR;
 
@@ -396,11 +370,7 @@ function didPlayerRequestElevator(player: Player) {
 }
 
 function getElevatorZCoordForFloor(floorId: number) {
-  return (
-    constants.GROUND_Z_COORD +
-    constants.FloorZOffsets[floorId] +
-    constants.ELEVATOR_OFFSET
-  ); // A small offset for the elevator object itself.
+  return constants.GROUND_Z_COORD + constants.FloorZOffsets[floorId] + constants.ELEVATOR_OFFSET; // A small offset for the elevator object itself.
 }
 
 function getDoorsZCoordForFloor(floorId: number) {
@@ -412,11 +382,7 @@ function getDoorsZCoordForFloor(floorId: number) {
 function callElevator(player: Player, floorId: number) {
   // Calls the elevator (also used with the elevator dialog).
 
-  if (
-    floorRequestedBy[floorId] !== InvalidEnum.PLAYER_ID ||
-    isFloorInQueue(floorId)
-  )
-    return false;
+  if (floorRequestedBy[floorId] !== InvalidEnum.PLAYER_ID || isFloorInQueue(floorId)) return false;
 
   floorRequestedBy[floorId] = player;
   addFloorToQueue(floorId);
@@ -439,17 +405,10 @@ async function showElevatorDialog(player: Player) {
     button2: "Cancel",
   }).show(player);
 
-  if (
-    floorRequestedBy[listItem] !== InvalidEnum.PLAYER_ID ||
-    isFloorInQueue(listItem)
-  )
-    new GameText("~r~The floor is already in the queue", 3500, 4).forPlayer(
-      player,
-    );
+  if (floorRequestedBy[listItem] !== InvalidEnum.PLAYER_ID || isFloorInQueue(listItem))
+    new GameText("~r~The floor is already in the queue", 3500, 4).forPlayer(player);
   else if (didPlayerRequestElevator(player))
-    new GameText("~r~You already requested the elevator", 3500, 4).forPlayer(
-      player,
-    );
+    new GameText("~r~You already requested the elevator", 3500, 4).forPlayer(player);
   else callElevator(player, listItem);
 
   return true;
@@ -500,56 +459,41 @@ export const LSElevator: IFilterScript = {
         }
 
         elevatorState = constants.ELEVATOR_STATE_WAITING;
-        elevatorTurnTimer = setTimeout(
-          elevator_TurnToIdle,
-          constants.ELEVATOR_WAIT_TIME,
-        );
+        elevatorTurnTimer = setTimeout(elevator_TurnToIdle, constants.ELEVATOR_WAIT_TIME);
       }
 
       return next();
     });
 
-    const onKeyStateChange = PlayerEvent.onKeyStateChange(
-      ({ player, newKeys, next }) => {
-        if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
-          const pos = player.getPos();
-          if (
-            pos.y < -1301.4 &&
-            pos.y > -1303.2417 &&
-            pos.x < 1786.2131 &&
-            pos.x > 1784.1555
-          ) {
-            // He is using the elevator button
-            showElevatorDialog(player);
-            // Is he in a floor button?
-          } else {
-            if (
-              pos.y > -1301.4 &&
-              pos.y < -1299.1447 &&
-              pos.x < 1785.6147 &&
-              pos.x > 1781.9902
-            ) {
-              // He is most likely using it, check floor:
-              let i = 20;
-              while (pos.z < getDoorsZCoordForFloor(i) + 3.5 && i > 0) {
-                i--;
-              }
+    const onKeyStateChange = PlayerEvent.onKeyStateChange(({ player, newKeys, next }) => {
+      if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
+        const pos = player.getPos();
+        if (pos.y < -1301.4 && pos.y > -1303.2417 && pos.x < 1786.2131 && pos.x > 1784.1555) {
+          // He is using the elevator button
+          showElevatorDialog(player);
+          // Is he in a floor button?
+        } else {
+          if (pos.y > -1301.4 && pos.y < -1299.1447 && pos.x < 1785.6147 && pos.x > 1781.9902) {
+            // He is most likely using it, check floor:
+            let i = 20;
+            while (pos.z < getDoorsZCoordForFloor(i) + 3.5 && i > 0) {
+              i--;
+            }
 
-              if (i === 0 && pos.z < getDoorsZCoordForFloor(0) + 2.0) {
-                i = -1;
-              }
+            if (i === 0 && pos.z < getDoorsZCoordForFloor(0) + 2.0) {
+              i = -1;
+            }
 
-              if (i <= 19) {
-                callElevator(player, i + 1);
-                new GameText("~r~Elevator called", 3500, 4).forPlayer(player);
-              }
+            if (i <= 19) {
+              callElevator(player, i + 1);
+              new GameText("~r~Elevator called", 3500, 4).forPlayer(player);
             }
           }
         }
+      }
 
-        return next();
-      },
-    );
+      return next();
+    });
 
     resetElevatorQueue();
     elevator_Initialize();

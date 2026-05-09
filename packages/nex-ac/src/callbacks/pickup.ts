@@ -18,14 +18,9 @@ DynamicPickupEvent.onPlayerPickUp(({ pickup, player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return 0;
   let ac_i = Date.now();
   if (ACInfo.get(player.id).acACAllow[49]) {
-    if (ac_i - ACInfo.get(player.id).acCall[8] < ac_Mtfc[8][0])
-      ac_FloodDetect(player, 8);
-    else if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-      ac_FloodDetect(player, 27);
-    else
-      ACInfo.get(player.id).acFloodCount[8] = ACInfo.get(
-        player.id,
-      ).acFloodCount[27] = 0;
+    if (ac_i - ACInfo.get(player.id).acCall[8] < ac_Mtfc[8][0]) ac_FloodDetect(player, 8);
+    else if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+    else ACInfo.get(player.id).acFloodCount[8] = ACInfo.get(player.id).acFloodCount[27] = 0;
   }
   if (ACInfo.get(player.id).acACAllow[6]) {
     const { distance: ac_dist } = Streamer.getDistanceToItem(
@@ -59,24 +54,18 @@ DynamicPickupEvent.onPlayerPickUp(({ pickup, player, next }) => {
   ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[8] = ac_i;
   if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
     switch (
-      (ac_i = Streamer.getIntData(
-        StreamerItemTypes.PICKUP,
-        pickup.id,
-        E_STREAMER.EXTRA_ID,
-      ))
+      (ac_i = Streamer.getIntData(StreamerItemTypes.PICKUP, pickup.id, E_STREAMER.EXTRA_ID))
     ) {
       case 1: {
         ACInfo.get(player.id).acSpecAct = SpecialActionsEnum.USEJETPACK;
         break;
       }
       case 2: {
-        if (ACInfo.get(player.id).acHealth < 100)
-          ACInfo.get(player.id).acHealth = 100;
+        if (ACInfo.get(player.id).acHealth < 100) ACInfo.get(player.id).acHealth = 100;
         break;
       }
       case 3: {
-        if (ACInfo.get(player.id).acArmour < 100)
-          ACInfo.get(player.id).acArmour = 100;
+        if (ACInfo.get(player.id).acArmour < 100) ACInfo.get(player.id).acArmour = 100;
         break;
       }
       default: {
@@ -85,8 +74,7 @@ DynamicPickupEvent.onPlayerPickUp(({ pickup, player, next }) => {
           const ac_s = ac_wSlot[ac_i];
           if (
             ACInfo.get(player.id).acWeapon[ac_s] === ac_i ||
-            (ac_IsAmmoSharingInSlot(ac_s) &&
-              ACInfo.get(player.id).acWeapon[ac_s] > 0)
+            (ac_IsAmmoSharingInSlot(ac_s) && ACInfo.get(player.id).acWeapon[ac_s] > 0)
           )
             ACInfo.get(player.id).acAmmo[ac_s] += ac_pAmmo[ac_i];
         }
@@ -99,28 +87,16 @@ DynamicPickupEvent.onPlayerPickUp(({ pickup, player, next }) => {
 });
 
 PickUpEvent.onPlayerPickUpGlobal(({ pickup, player, next }) => {
-  if (
-    ACInfo.get(player.id).acKicked > 0 ||
-    !(pickup.id >= 0 && pickup.id < LimitsEnum.MAX_PICKUPS)
-  )
+  if (ACInfo.get(player.id).acKicked > 0 || !(pickup.id >= 0 && pickup.id < LimitsEnum.MAX_PICKUPS))
     return false;
 
-  const streamerId = Streamer.getItemStreamerID(
-    player,
-    StreamerItemTypes.PICKUP,
-    pickup.id,
-  );
+  const streamerId = Streamer.getItemStreamerID(player, StreamerItemTypes.PICKUP, pickup.id);
   if (!DynamicPickup.isValid(streamerId)) {
     const ac_i = Date.now();
     if (ACInfo.get(player.id).acACAllow[49]) {
-      if (ac_i - ACInfo.get(player.id).acCall[8] < ac_Mtfc[8][0])
-        ac_FloodDetect(player, 8);
-      else if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-        ac_FloodDetect(player, 27);
-      else
-        ACInfo.get(player.id).acFloodCount[8] = ACInfo.get(
-          player.id,
-        ).acFloodCount[27] = 0;
+      if (ac_i - ACInfo.get(player.id).acCall[8] < ac_Mtfc[8][0]) ac_FloodDetect(player, 8);
+      else if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+      else ACInfo.get(player.id).acFloodCount[8] = ACInfo.get(player.id).acFloodCount[27] = 0;
     }
     if (ACInfo.get(player.id).acACAllow[6]) {
       const ac_dist = ac_GetVectorDist(
@@ -134,8 +110,7 @@ PickUpEvent.onPlayerPickUpGlobal(({ pickup, player, next }) => {
           ACInfo.get(player.id).acSetPosY - ACPickInfo.get(player.id).acPosY,
           (ACInfo.get(player.id).acTpToZ
             ? ACPickInfo.get(player.id).acPosZ
-            : ACInfo.get(player.id).acSetPosZ) -
-            ACPickInfo.get(player.id).acPosZ,
+            : ACInfo.get(player.id).acSetPosZ) - ACPickInfo.get(player.id).acPosZ,
         );
         if (ACInfo.get(player.id).acSet[7] === -1 || ac_dist_set >= 15.0) {
           if (innerACConfig.DEBUG) {
@@ -156,13 +131,11 @@ PickUpEvent.onPlayerPickUpGlobal(({ pickup, player, next }) => {
           break;
         }
         case 2: {
-          if (ACInfo.get(player.id).acHealth < 100)
-            ACInfo.get(player.id).acHealth = 100;
+          if (ACInfo.get(player.id).acHealth < 100) ACInfo.get(player.id).acHealth = 100;
           break;
         }
         case 3: {
-          if (ACInfo.get(player.id).acArmour < 100)
-            ACInfo.get(player.id).acArmour = 100;
+          if (ACInfo.get(player.id).acArmour < 100) ACInfo.get(player.id).acArmour = 100;
           break;
         }
         case 4: {
@@ -170,8 +143,7 @@ PickUpEvent.onPlayerPickUpGlobal(({ pickup, player, next }) => {
           const ac_s = ac_wSlot[ac_i];
           if (
             ACInfo.get(player.id).acWeapon[ac_s] === ac_i ||
-            (ac_IsAmmoSharingInSlot(ac_s) &&
-              ACInfo.get(player.id).acWeapon[ac_s] > 0)
+            (ac_IsAmmoSharingInSlot(ac_s) && ACInfo.get(player.id).acWeapon[ac_s] > 0)
           )
             ACInfo.get(player.id).acAmmo[ac_s] += ac_pAmmo[ac_i];
           break;

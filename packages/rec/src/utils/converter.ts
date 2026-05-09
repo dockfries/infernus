@@ -1,10 +1,6 @@
 import { RecordTypesEnum } from "../enums";
 import { RecException } from "../exceptions";
-import {
-  HeaderDataBlock,
-  OnFootDataBlock,
-  VehicleDataBlock,
-} from "./dataBlock";
+import { HeaderDataBlock, OnFootDataBlock, VehicleDataBlock } from "./dataBlock";
 import { BinaryReader } from "./reader";
 import { BinaryWriter } from "./writer";
 
@@ -74,11 +70,7 @@ export function jsonToRec(filePath: string, data: any[]) {
 
   if (
     !header.version ||
-    ![
-      RecordTypesEnum.NONE,
-      RecordTypesEnum.ONFOOT,
-      RecordTypesEnum.DRIVER,
-    ].includes(header.type)
+    ![RecordTypesEnum.NONE, RecordTypesEnum.ONFOOT, RecordTypesEnum.DRIVER].includes(header.type)
   ) {
     throw new RecException("File data format error");
   }

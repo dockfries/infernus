@@ -4,12 +4,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { Player, IFilterScript } from "@infernus/core";
-import {
-  DynamicPickup,
-  Dynamic3DTextLabel,
-  PlayerEvent,
-  DynamicPickupEvent,
-} from "@infernus/core";
+import { DynamicPickup, Dynamic3DTextLabel, PlayerEvent, DynamicPickupEvent } from "@infernus/core";
 import type { E_INTERIORS, E_PROPERTIES } from "./interfaces";
 import {
   MAX_INTERIORS,
@@ -128,10 +123,7 @@ function readInteriorInfo(fileName: string) {
         // console.log(`Could Not Read Interiors file ( ${fileName} )`);
         return reject(err);
       }
-      const lines = data
-        .replaceAll("\r\n", "\n")
-        .replaceAll(" ;", "")
-        .split("\n");
+      const lines = data.replaceAll("\r\n", "\n").replaceAll(" ;", "").split("\n");
       for (let i = 0; i < lines.length; i++) {
         const lineStr = lines[i];
         if (!lineStr) continue;
@@ -223,21 +215,9 @@ function addProperty(
   if (interiorId) {
     const tmp = `${propIcons[pType][0]}, ${entX}, ${entY}, ${entZ}, ${entA}, ${uniqIntId}, ${pType} ; //${comment}\n`;
     console.log("PropDB - %s", tmp);
-    const fullPath = path.resolve(
-      process.cwd(),
-      "scriptfiles",
-      propFile[pType],
-    );
+    const fullPath = path.resolve(process.cwd(), "scriptfiles", propFile[pType]);
     fs.writeFile(fullPath, tmp, { flag: "a" }, () => {});
-    return createProperty(
-      uniqIntId,
-      propIcons[pType][0],
-      entX,
-      entY,
-      entZ,
-      entA,
-      pType,
-    );
+    return createProperty(uniqIntId, propIcons[pType][0], entX, entY, entZ, entA, pType);
   }
   return -1;
 }
@@ -336,17 +316,9 @@ function createProperty(
   return pickup.id;
 }
 
-function propertyCommand(
-  player: Player,
-  cmd: string,
-  subcommand: string[],
-  pType: number,
-) {
+function propertyCommand(player: Player, cmd: string, subcommand: string[], pType: number) {
   if (player.getInterior() !== 0 || player.getVirtualWorld() !== 0) {
-    player.sendClientMessage(
-      0x550000ff,
-      "You can only create properties in Interior 0 and VW 0",
-    );
+    player.sendClientMessage(0x550000ff, "You can only create properties in Interior 0 and VW 0");
     return 1;
   }
 
@@ -383,10 +355,7 @@ function propertyCommand(
     const tmp = `Property Type ( ${pType} ) Added Successfully: UniqId: ${id} Interior: ${interior.inIntID} IntName: ${interior.inName}`;
     player.sendClientMessage(0xcc7700, tmp);
   } else {
-    player.sendClientMessage(
-      0x00ff55,
-      "Error: Something went wrong/Property Limit Reached",
-    );
+    player.sendClientMessage(0x00ff55, "Error: Something went wrong/Property Limit Reached");
   }
   return 1;
 }
@@ -433,64 +402,56 @@ export const GlProperty: IFilterScript = {
   load() {
     loadProperties();
 
-    const onInteriorChange = PlayerEvent.onInteriorChange(
-      ({ player, newInteriorId, next }) => {
-        if (newInteriorId === 0) {
-          player.setVirtualWorld(0);
-        }
-        return next();
-      },
-    );
+    const onInteriorChange = PlayerEvent.onInteriorChange(({ player, newInteriorId, next }) => {
+      if (newInteriorId === 0) {
+        player.setVirtualWorld(0);
+      }
+      return next();
+    });
 
     const onSpawn = PlayerEvent.onSpawn(({ player, next }) => {
       gLastPropertyEnterNotification.delete(player);
       return next();
     });
 
-    const onPlayerPickUp = DynamicPickupEvent.onPlayerPickUp(
-      ({ player, pickup, next }) => {
-        // console.log(`DEBUG: Player ${player.id} pickedup Pickup %d Prop Id ${pickup.id}`);
-        lastPickup.set(player, pickup);
-        const prop = properties.get(pickup);
-        if (!prop) return next();
-        if (prop.eType > 0) {
-          if (gLastPropertyEnterNotification.get(player) !== pickup) {
-            gLastPropertyEnterNotification.set(player, pickup);
-            switch (prop.eType) {
-              case TYPE_HOUSE: {
-                const pmsg = "* House: type /enter to enter";
-                player.sendClientMessage(0xff55bbff, pmsg);
-                return next();
-              }
+    const onPlayerPickUp = DynamicPickupEvent.onPlayerPickUp(({ player, pickup, next }) => {
+      // console.log(`DEBUG: Player ${player.id} pickedup Pickup %d Prop Id ${pickup.id}`);
+      lastPickup.set(player, pickup);
+      const prop = properties.get(pickup);
+      if (!prop) return next();
+      if (prop.eType > 0) {
+        if (gLastPropertyEnterNotification.get(player) !== pickup) {
+          gLastPropertyEnterNotification.set(player, pickup);
+          switch (prop.eType) {
+            case TYPE_HOUSE: {
+              const pmsg = "* House: type /enter to enter";
+              player.sendClientMessage(0xff55bbff, pmsg);
+              return next();
+            }
 
-              case TYPE_BUSINESS: {
-                const pmsg = "* Business: type /enter to enter";
-                player.sendClientMessage(0xff55bbff, pmsg);
-                return next();
-              }
+            case TYPE_BUSINESS: {
+              const pmsg = "* Business: type /enter to enter";
+              player.sendClientMessage(0xff55bbff, pmsg);
+              return next();
+            }
 
-              case TYPE_BANK: {
-                const pmsg = "* Bank: type /enter to enter";
-                player.sendClientMessage(0xff55bbff, pmsg);
-                return next();
-              }
+            case TYPE_BANK: {
+              const pmsg = "* Bank: type /enter to enter";
+              player.sendClientMessage(0xff55bbff, pmsg);
+              return next();
+            }
 
-              case TYPE_COP: {
-                const pmsg = "* Police Station: type /enter to enter";
-                player.sendClientMessage(0xff55bbff, pmsg);
-                return next();
-              }
+            case TYPE_COP: {
+              const pmsg = "* Police Station: type /enter to enter";
+              player.sendClientMessage(0xff55bbff, pmsg);
+              return next();
             }
           }
-        } else
-          player.sendClientMessage(
-            0xff9900ff,
-            "This property doesn't exist :S",
-          );
+        }
+      } else player.sendClientMessage(0xff9900ff, "This property doesn't exist :S");
 
-        return next();
-      },
-    );
+      return next();
+    });
 
     // function commands.
     const enter = PlayerEvent.onCommandText("enter", ({ player, next }) => {
@@ -520,10 +481,7 @@ export const GlProperty: IFilterScript = {
         // make sure they're near the exit before allowing them to exit.
         const { x: inExitX, y: inExitY, z: inExitZ } = getPropertyExit(pickup)!;
         if (!player.isInRangeOfPoint(4.5, inExitX, inExitY, inExitZ)) {
-          player.sendClientMessage(
-            0xddaa55ff,
-            "* You must be near the property exit to /exit",
-          );
+          player.sendClientMessage(0xddaa55ff, "* You must be near the property exit to /exit");
           return next();
         }
 
@@ -539,85 +497,67 @@ export const GlProperty: IFilterScript = {
     // The rest of the commands here are for
     // property creation which is admin only.
 
-    const chouse = PlayerEvent.onCommandText(
-      "chouse",
-      ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return false;
-        // creates a house type property
-        propertyCommand(player, "chouse", subcommand, TYPE_HOUSE);
+    const chouse = PlayerEvent.onCommandText("chouse", ({ player, subcommand, next }) => {
+      if (!player.isAdmin()) return false;
+      // creates a house type property
+      propertyCommand(player, "chouse", subcommand, TYPE_HOUSE);
+      return next();
+    });
+
+    const cbus = PlayerEvent.onCommandText("cbus", ({ player, subcommand, next }) => {
+      if (!player.isAdmin()) return false;
+      // creates a business type property
+      propertyCommand(player, "cbus", subcommand, TYPE_BUSINESS);
+      return next();
+    });
+
+    const ccop = PlayerEvent.onCommandText("ccop", ({ player, subcommand, next }) => {
+      if (!player.isAdmin()) return false;
+      // creates a police station property
+      propertyCommand(player, "ccop", subcommand, TYPE_COP);
+      return next();
+    });
+
+    const cbank = PlayerEvent.onCommandText("cbank", ({ player, subcommand, next }) => {
+      if (!player.isAdmin()) return false;
+      // creates a bank type property
+      propertyCommand(player, "cbank", subcommand, TYPE_BANK);
+      return next();
+    });
+
+    const view = PlayerEvent.onCommandText("view", ({ player, subcommand, next }) => {
+      if (!player.isAdmin()) return false;
+      //Basically lets you view an interior from the interiors.txt file by id
+      if (!subcommand[0]) {
+        player.sendClientMessage(0xff00cc, `Usage: view [uniqInteriorId]`);
         return next();
-      },
-    );
-
-    const cbus = PlayerEvent.onCommandText(
-      "cbus",
-      ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return false;
-        // creates a business type property
-        propertyCommand(player, "cbus", subcommand, TYPE_BUSINESS);
+      }
+      if (Number.isNaN(+subcommand[0])) {
+        player.sendClientMessage(0x550000, "Uniq Interior Id must be a number");
         return next();
-      },
-    );
+      }
 
-    const ccop = PlayerEvent.onCommandText(
-      "ccop",
-      ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return false;
-        // creates a police station property
-        propertyCommand(player, "ccop", subcommand, TYPE_COP);
+      const uniqId = +subcommand[0];
+
+      if (uniqId > MAX_INTERIORS || uniqId < 0) {
+        player.sendClientMessage(0xffffcc, "Invalid Uniq Interior Id");
         return next();
-      },
-    );
-
-    const cbank = PlayerEvent.onCommandText(
-      "cbank",
-      ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return false;
-        // creates a bank type property
-        propertyCommand(player, "cbank", subcommand, TYPE_BANK);
-        return next();
-      },
-    );
-
-    const view = PlayerEvent.onCommandText(
-      "view",
-      ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return false;
-        //Basically lets you view an interior from the interiors.txt file by id
-        if (!subcommand[0]) {
-          player.sendClientMessage(0xff00cc, `Usage: view [uniqInteriorId]`);
-          return next();
-        }
-        if (Number.isNaN(+subcommand[0])) {
-          player.sendClientMessage(
-            0x550000,
-            "Uniq Interior Id must be a number",
-          );
-          return next();
-        }
-
-        const uniqId = +subcommand[0];
-
-        if (uniqId > MAX_INTERIORS || uniqId < 0) {
-          player.sendClientMessage(0xffffcc, "Invalid Uniq Interior Id");
-          return next();
-        }
-        if (player.getInterior() === 0) {
-          const pos = player.getPos();
-          plPos.set(player, [pos.x, pos.y, pos.z]);
-          plInt.set(player, 0);
-        }
-        const { x, y, z, a } = getInteriorExit(uniqId)!;
-        player.setInterior(getInteriorIntID(uniqId)!);
-        player.setPos(x, y, z);
-        player.setFacingAngle(a);
-        const string =
-          `UniqId: ${uniqId} InteriorId: ${getInteriorIntID(uniqId)}` +
-          ` Name: ${getInteriorName(uniqId)} | Use /return to go to last position`;
-        player.sendClientMessage(0x556600ff, string);
-        return next();
-      },
-    );
+      }
+      if (player.getInterior() === 0) {
+        const pos = player.getPos();
+        plPos.set(player, [pos.x, pos.y, pos.z]);
+        plInt.set(player, 0);
+      }
+      const { x, y, z, a } = getInteriorExit(uniqId)!;
+      player.setInterior(getInteriorIntID(uniqId)!);
+      player.setPos(x, y, z);
+      player.setFacingAngle(a);
+      const string =
+        `UniqId: ${uniqId} InteriorId: ${getInteriorIntID(uniqId)}` +
+        ` Name: ${getInteriorName(uniqId)} | Use /return to go to last position`;
+      player.sendClientMessage(0x556600ff, string);
+      return next();
+    });
 
     const retCmd = PlayerEvent.onCommandText("return", ({ player, next }) => {
       if (!player.isAdmin()) return false;

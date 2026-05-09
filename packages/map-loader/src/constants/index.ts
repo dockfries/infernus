@@ -1,7 +1,4 @@
-import {
-  ObjectMaterialTextSizeEnum,
-  ObjectMaterialAlignmentEnum,
-} from "@infernus/core";
+import { ObjectMaterialTextSizeEnum, ObjectMaterialAlignmentEnum } from "@infernus/core";
 import { InternalMapConfig } from "../interfaces";
 
 export const INTERNAL_MAP: InternalMapConfig = {

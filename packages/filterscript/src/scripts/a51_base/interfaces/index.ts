@@ -1,9 +1,4 @@
-import type {
-  DynamicObject,
-  IFilterScript,
-  Player,
-  TCommonCallback,
-} from "@infernus/core";
+import type { DynamicObject, IFilterScript, Player, TCommonCallback } from "@infernus/core";
 import type { GateStatusEnum } from "../enums/gate";
 import type { ICommonOptions } from "filterscript/interfaces";
 
@@ -37,11 +32,7 @@ export interface IA51BaseFSOptions extends ICommonOptions {
   command?: string | Array<string>;
   onCommandReceived?: (id: Player, command: string) => TCommonCallback;
   beforeMoveGate?: (player: Player) => boolean;
-  onGateMoving?: (
-    player: Player,
-    direction: keyof IGateList,
-    status: GateStatusEnum,
-  ) => boolean;
+  onGateMoving?: (player: Player, direction: keyof IGateList, status: GateStatusEnum) => boolean;
   onGateOpen?: (player: Player, direction: keyof IGateList) => boolean;
   onGateClose?: (player: Player, direction: keyof IGateList) => boolean;
   onTeleport?: (player: Player) => unknown;

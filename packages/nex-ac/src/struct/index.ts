@@ -74,10 +74,7 @@ export class ACInfoStruct {
   acNOPCount: number[] = Array.from({ length: 12 }, () => 0);
   acCheatCount: number[] = Array.from({ length: 22 }, () => 0);
   acCall: (typeof ac_Mtfc)[0] = Array.from({ length: ac_Mtfc.length }, () => 0);
-  acFloodCount: (typeof ac_Mtfc)[0] = Array.from(
-    { length: ac_Mtfc.length },
-    () => 0,
-  );
+  acFloodCount: (typeof ac_Mtfc)[0] = Array.from({ length: ac_Mtfc.length }, () => 0);
   acNOPAllow: typeof ac_NOPAllow = [...ac_NOPAllow];
   acACAllow: typeof ac_ACAllow = [...ac_ACAllow];
   acStuntBonus: boolean = false;
@@ -144,23 +141,11 @@ export class ACPickInfoStruct {
   acWeapon: number = 0;
 }
 
-export const ACInfo = new SafetyMap<number, ACInfoStruct>(
-  () => new ACInfoStruct(),
-);
-export const ACVehInfo = new SafetyMap<number, ACVehInfoStruct>(
-  () => new ACVehInfoStruct(),
-);
-export const ACPickInfo = new SafetyMap<number, ACPickInfoStruct>(
-  () => new ACPickInfoStruct(),
-);
-export const ac_ClassPos = new SafetyMap<number, [number, number, number]>(
-  () => [0, 0, 0],
-);
-export const ac_ClassWeapon = new SafetyMap<number, [number, number, number]>(
-  () => [0, 0, 0],
-);
-export const ac_ClassAmmo = new SafetyMap<number, [number, number, number]>(
-  () => [0, 0, 0],
-);
+export const ACInfo = new SafetyMap<number, ACInfoStruct>(() => new ACInfoStruct());
+export const ACVehInfo = new SafetyMap<number, ACVehInfoStruct>(() => new ACVehInfoStruct());
+export const ACPickInfo = new SafetyMap<number, ACPickInfoStruct>(() => new ACPickInfoStruct());
+export const ac_ClassPos = new SafetyMap<number, [number, number, number]>(() => [0, 0, 0]);
+export const ac_ClassWeapon = new SafetyMap<number, [number, number, number]>(() => [0, 0, 0]);
+export const ac_ClassAmmo = new SafetyMap<number, [number, number, number]>(() => [0, 0, 0]);
 
 export const ac_ipTables = new Map<number, number>();

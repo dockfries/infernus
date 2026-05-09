@@ -50,11 +50,7 @@ export async function getOctokit() {
   return octokitInstance;
 }
 
-export async function downloadFile(
-  url: string,
-  filePath: string,
-  retryCount = 0,
-) {
+export async function downloadFile(url: string, filePath: string, retryCount = 0) {
   const bar = new cliProgress.SingleBar({
     format: "[{bar}] {percentage}% | ETA: {eta}s | {value}/{total} Chunks",
   });
@@ -82,10 +78,9 @@ export async function downloadFile(
     if (err.status === 404) throw err;
 
     if (retryCount >= MAX_RETRY_ATTEMPTS) {
-      throw new Error(
-        `Download failed after ${MAX_RETRY_ATTEMPTS} attempts: ${err.message}`,
-        { cause: err },
-      );
+      throw new Error(`Download failed after ${MAX_RETRY_ATTEMPTS} attempts: ${err.message}`, {
+        cause: err,
+      });
     }
 
     return new Promise<string>((resolve) => {
@@ -99,9 +94,7 @@ export async function downloadFile(
           `\ndownloadFile failed, try ${delayTry / 1000} seconds later again (attempt ${retryCount + 1}/${MAX_RETRY_ATTEMPTS})`,
         ),
       );
-      console.log(
-        chalk.yellow.bold(`press ctrl/command + c to stop the process`),
-      );
+      console.log(chalk.yellow.bold(`press ctrl/command + c to stop the process`));
 
       setTimeout(() => {
         downloadFile(url, filePath, retryCount + 1).then(resolve);
@@ -176,11 +169,7 @@ export function getTimeDiff(start: number, end: number) {
   return seconds;
 }
 
-export async function getRepoRelease(
-  owner: string,
-  repo: string,
-  version: string,
-) {
+export async function getRepoRelease(owner: string, repo: string, version: string) {
   const octokit = await getOctokit();
 
   let matchedRelease = null;

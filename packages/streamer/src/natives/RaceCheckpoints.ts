@@ -49,37 +49,15 @@ export const TogglePlayerDynamicRaceCP = (
   checkpointId: number,
   toggle: boolean,
 ): number => {
-  return samp.callNative(
-    "TogglePlayerDynamicRaceCP",
-    "iii",
-    playerId,
-    checkpointId,
-    toggle,
-  );
+  return samp.callNative("TogglePlayerDynamicRaceCP", "iii", playerId, checkpointId, toggle);
 };
 
-export const TogglePlayerAllDynamicRaceCPs = (
-  playerId: number,
-  toggle: boolean,
-): number => {
-  return samp.callNative(
-    "TogglePlayerAllDynamicRaceCPs",
-    "ii",
-    playerId,
-    toggle,
-  );
+export const TogglePlayerAllDynamicRaceCPs = (playerId: number, toggle: boolean): number => {
+  return samp.callNative("TogglePlayerAllDynamicRaceCPs", "ii", playerId, toggle);
 };
 
-export const IsPlayerInDynamicRaceCP = (
-  playerId: number,
-  checkpointId: number,
-): boolean => {
-  return !!samp.callNative(
-    "IsPlayerInDynamicRaceCP",
-    "ii",
-    playerId,
-    checkpointId,
-  );
+export const IsPlayerInDynamicRaceCP = (playerId: number, checkpointId: number): boolean => {
+  return !!samp.callNative("IsPlayerInDynamicRaceCP", "ii", playerId, checkpointId);
 };
 
 export const GetPlayerVisibleDynamicRaceCP = (playerId: number): number => {

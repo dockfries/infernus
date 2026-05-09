@@ -138,10 +138,7 @@ export function antiCheatGetVehicleSpawnZAngle(vehicle: Vehicle) {
 
 export function antiCheatGetPickupPos(pickup: Pickup) {
   const pickupId = pickup.id;
-  if (
-    !(pickupId >= 0 && pickupId < LimitsEnum.MAX_PICKUPS) ||
-    ACPickInfo.get(pickupId).acType <= 0
-  )
+  if (!(pickupId >= 0 && pickupId < LimitsEnum.MAX_PICKUPS) || ACPickInfo.get(pickupId).acType <= 0)
     return {
       x: 0,
       y: 0,

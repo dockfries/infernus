@@ -26,10 +26,7 @@ const vSpawnerPage = new Map<Player, number>();
 const vSpawnerActive = new Set<Player>();
 
 function getNumberOfPages() {
-  if (
-    gTotalItems >= constants.SELECTION_ITEMS &&
-    gTotalItems % constants.SELECTION_ITEMS === 0
-  ) {
+  if (gTotalItems >= constants.SELECTION_ITEMS && gTotalItems % constants.SELECTION_ITEMS === 0) {
     return Math.floor(gTotalItems / constants.SELECTION_ITEMS);
   } else return Math.floor(gTotalItems / constants.SELECTION_ITEMS + 1);
 }
@@ -66,22 +63,13 @@ function createPlayerDialogButton(
     .setLetterSize(0.4, 1.1)
     .setFont(1);
   txtInit.setShadow(0); // no shadow
-  txtInit
-    .setOutline(0)
-    .setColor(0x4a5a6bff)
-    .setSelectable(true)
-    .setAlignment(2);
+  txtInit.setOutline(0).setColor(0x4a5a6bff).setSelectable(true).setAlignment(2);
   txtInit.setTextSize(height, width); // The width and height are reversed for centering.. something the game does <g>
   txtInit.show();
   return txtInit;
 }
 
-function createPlayerHeaderTextDraw(
-  player: Player,
-  x: number,
-  y: number,
-  text: string,
-) {
+function createPlayerHeaderTextDraw(player: Player, x: number, y: number, text: string) {
   const txtInit = new TextDraw({ player, x, y, text });
   txtInit.create();
   txtInit
@@ -110,11 +98,7 @@ function createPlayerBackgroundTextDraw(
   }); // enough space for everyone
   txtBackground.create();
   txtBackground.useBox(true);
-  txtBackground
-    .setBoxColors(0x00000099)
-    .setLetterSize(5.0, 5.0)
-    .setFont(0)
-    .setShadow(0);
+  txtBackground.setBoxColors(0x00000099).setLetterSize(5.0, 5.0).setFont(0).setShadow(0);
   txtBackground
     .setOutline(0)
     .setColor(0x000000ff)
@@ -292,105 +276,90 @@ export const VSpawner: IFilterScript = {
   load() {
     // Even though only Player* textdraws are used in this script,
     // OnPlayerClickTextDraw is still required to handle ESC
-    const onPlayerClickGlobal = TextDrawEvent.onPlayerClickGlobal(
-      ({ player, next, textDraw }) => {
-        if (!vSpawnerActive.has(player)) return next();
+    const onPlayerClickGlobal = TextDrawEvent.onPlayerClickGlobal(({ player, next, textDraw }) => {
+      if (!vSpawnerActive.has(player)) return next();
 
-        // Handle: They cancelled (with ESC)
-        if (textDraw === InvalidEnum.TEXT_DRAW) {
-          destroySelectionMenu(player);
-          vSpawnerActive.delete(player);
-          player.playSound(1085, 0.0, 0.0, 0.0);
-          return next();
-        }
-        return next();
-      },
-    );
-    const onPlayerClickPlayer = TextDrawEvent.onPlayerClickPlayer(
-      ({ player, textDraw, next }) => {
-        if (!vSpawnerActive.has(player)) return next();
-
-        const curPage = vSpawnerPage.get(player) || 0;
-
-        // Handle: next button
-        if (textDraw === gNextButtonTextDraw.get(player)) {
-          if (curPage < getNumberOfPages() - 1) {
-            vSpawnerPage.set(player, curPage + 1);
-            showPlayerModelPreviews(player);
-            updatePageTextDraw(player);
-            player.playSound(1083, 0.0, 0.0, 0.0);
-          } else {
-            player.playSound(1085, 0.0, 0.0, 0.0);
-          }
-          return next();
-        }
-
-        // Handle: previous button
-        if (textDraw === gPrevButtonTextDraw.get(player)) {
-          if (curPage > 0) {
-            vSpawnerPage.set(player, curPage - 1);
-            showPlayerModelPreviews(player);
-            updatePageTextDraw(player);
-            player.playSound(1084, 0.0, 0.0, 0.0);
-          } else {
-            player.playSound(1085, 0.0, 0.0, 0.0);
-          }
-          return next();
-        }
-
-        vSpawnerActive.delete(player);
-
-        const items = gSelectionItems.get(player);
-
-        // Search in the array of textdraws used for the items
-        let x = 0;
-        while (items && x !== constants.SELECTION_ITEMS) {
-          if (textDraw === items[x]) {
-            handlePlayerItemSelection(player, x);
-            player.playSound(1083, 0.0, 0.0, 0.0);
-            destroySelectionMenu(player);
-            player.cancelSelectTextDraw();
-            return next();
-          }
-          x++;
-        }
-
-        return next();
-      },
-    );
-
-    const vSpawner = PlayerEvent.onCommandText(
-      "vspawner",
-      ({ player, next }) => {
-        if (!player.isAdmin()) return false;
-        // If there was a previously created selection menu, destroy it
+      // Handle: They cancelled (with ESC)
+      if (textDraw === InvalidEnum.TEXT_DRAW) {
         destroySelectionMenu(player);
-        vSpawnerActive.add(player);
-        // vSpawnerPage.set(player, 0); // will reset the page back to the first
-        createSelectionMenu(player);
-        player.selectTextDraw(0xaccbf1ff);
+        vSpawnerActive.delete(player);
+        player.playSound(1085, 0.0, 0.0, 0.0);
         return next();
-      },
-    );
+      }
+      return next();
+    });
+    const onPlayerClickPlayer = TextDrawEvent.onPlayerClickPlayer(({ player, textDraw, next }) => {
+      if (!vSpawnerActive.has(player)) return next();
+
+      const curPage = vSpawnerPage.get(player) || 0;
+
+      // Handle: next button
+      if (textDraw === gNextButtonTextDraw.get(player)) {
+        if (curPage < getNumberOfPages() - 1) {
+          vSpawnerPage.set(player, curPage + 1);
+          showPlayerModelPreviews(player);
+          updatePageTextDraw(player);
+          player.playSound(1083, 0.0, 0.0, 0.0);
+        } else {
+          player.playSound(1085, 0.0, 0.0, 0.0);
+        }
+        return next();
+      }
+
+      // Handle: previous button
+      if (textDraw === gPrevButtonTextDraw.get(player)) {
+        if (curPage > 0) {
+          vSpawnerPage.set(player, curPage - 1);
+          showPlayerModelPreviews(player);
+          updatePageTextDraw(player);
+          player.playSound(1084, 0.0, 0.0, 0.0);
+        } else {
+          player.playSound(1085, 0.0, 0.0, 0.0);
+        }
+        return next();
+      }
+
+      vSpawnerActive.delete(player);
+
+      const items = gSelectionItems.get(player);
+
+      // Search in the array of textdraws used for the items
+      let x = 0;
+      while (items && x !== constants.SELECTION_ITEMS) {
+        if (textDraw === items[x]) {
+          handlePlayerItemSelection(player, x);
+          player.playSound(1083, 0.0, 0.0, 0.0);
+          destroySelectionMenu(player);
+          player.cancelSelectTextDraw();
+          return next();
+        }
+        x++;
+      }
+
+      return next();
+    });
+
+    const vSpawner = PlayerEvent.onCommandText("vspawner", ({ player, next }) => {
+      if (!player.isAdmin()) return false;
+      // If there was a previously created selection menu, destroy it
+      destroySelectionMenu(player);
+      vSpawnerActive.add(player);
+      // vSpawnerPage.set(player, 0); // will reset the page back to the first
+      createSelectionMenu(player);
+      player.selectTextDraw(0xaccbf1ff);
+      return next();
+    });
 
     console.log("\n--Admin Vehicle Spawner Loaded\n");
 
     return [onPlayerClickGlobal, onPlayerClickPlayer, vSpawner];
   },
   unload() {
-    [...gCurrentPageTextDraw.values()].forEach(
-      (t) => t.isValid() && t.destroy(),
-    );
+    [...gCurrentPageTextDraw.values()].forEach((t) => t.isValid() && t.destroy());
     [...gHeaderTextDraw.values()].forEach((t) => t.isValid() && t.destroy());
-    [...gBackgroundTextDraw.values()].forEach(
-      (t) => t.isValid() && t.destroy(),
-    );
-    [...gNextButtonTextDraw.values()].forEach(
-      (t) => t.isValid() && t.destroy(),
-    );
-    [...gSelectionItems.values()]
-      .flat()
-      .forEach((t) => t.isValid() && t.destroy());
+    [...gBackgroundTextDraw.values()].forEach((t) => t.isValid() && t.destroy());
+    [...gNextButtonTextDraw.values()].forEach((t) => t.isValid() && t.destroy());
+    [...gSelectionItems.values()].flat().forEach((t) => t.isValid() && t.destroy());
 
     gCurrentPageTextDraw.clear();
     gHeaderTextDraw.clear();

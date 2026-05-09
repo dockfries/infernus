@@ -31,11 +31,7 @@ import {
   ac_NearVendingMachine,
 } from "../../functions";
 import { innerGameModeConfig, innerACConfig } from "../../config";
-import {
-  ac_KickWithCode,
-  triggerCheatWarning,
-  triggerNOPWarning,
-} from "../trigger";
+import { ac_KickWithCode, triggerCheatWarning, triggerNOPWarning } from "../trigger";
 import { ac_AmmuNationInfo, ac_pAmmo, ac_wSlot } from "../../constants";
 import { orig_playerMethods } from "../../hooks/origin";
 import { $t } from "../../lang";
@@ -43,10 +39,7 @@ import { $t } from "../../lang";
 PlayerEvent.onUpdate(({ player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
   const ac_gtc = Date.now();
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     const ac_gpp = player.getPing();
     let ac_w: number;
     let ac_sa: number;
@@ -59,18 +52,14 @@ PlayerEvent.onUpdate(({ player, next }) => {
       const ac_a = player.getAmmo();
       let ac_tmp = 0;
       let ac_i = 0;
-      if (
-        innerACConfig.AC_USE_AMMUNATIONS ||
-        innerACConfig.AC_USE_TUNING_GARAGES
-      ) {
+      if (innerACConfig.AC_USE_AMMUNATIONS || innerACConfig.AC_USE_TUNING_GARAGES) {
         ac_i = orig_playerMethods.getMoney.call(player);
       }
       if (innerACConfig.AC_USE_AMMUNATIONS) {
         if (ACInfo.get(player.id).acSet[10] !== -1) {
           if (
             ac_i < ACInfo.get(player.id).acMoney &&
-            ACInfo.get(player.id).acMoney - ac_i >=
-              ACInfo.get(player.id).acSet[10]
+            ACInfo.get(player.id).acMoney - ac_i >= ACInfo.get(player.id).acSet[10]
           )
             ACInfo.get(player.id).acSet[10] = -1;
         }
@@ -79,8 +68,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
         if (ACInfo.get(player.id).acSet[11] !== -1) {
           if (
             ac_i < ACInfo.get(player.id).acMoney &&
-            ACInfo.get(player.id).acMoney - ac_i >=
-              ACInfo.get(player.id).acSet[11]
+            ACInfo.get(player.id).acMoney - ac_i >= ACInfo.get(player.id).acSet[11]
           )
             ACInfo.get(player.id).acSet[11] = -1;
         }
@@ -95,24 +83,13 @@ PlayerEvent.onUpdate(({ player, next }) => {
             ACInfo.get(player.id).acSetWeapon[ac_s] = -1;
             ACInfo.get(player.id).acWeapon[ac_s] = ac_w;
           } else if (
-            !(
-              ac_sa >= PlayerStateEnum.DRIVER &&
-              ac_sa <= PlayerStateEnum.PASSENGER
-            ) &&
+            !(ac_sa >= PlayerStateEnum.DRIVER && ac_sa <= PlayerStateEnum.PASSENGER) &&
             ac_gtc - ACInfo.get(player.id).acGtcSetWeapon[ac_s] > ac_gpp
           ) {
-            if (
-              ACInfo.get(player.id).acACAllow[52] &&
-              ACInfo.get(player.id).acNOPAllow[0]
-            ) {
-              if (
-                ++ACInfo.get(player.id).acNOPCount[0] >
-                innerACConfig.AC_MAX_NOP_WARNINGS
-              ) {
+            if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[0]) {
+              if (++ACInfo.get(player.id).acNOPCount[0] > innerACConfig.AC_MAX_NOP_WARNINGS) {
                 if (innerACConfig.DEBUG) {
-                  console.log(
-                    $t("DEBUG_CODE_5", [player.id, "GivePlayerWeapon"]),
-                  );
+                  console.log($t("DEBUG_CODE_5", [player.id, "GivePlayerWeapon"]));
                   console.log(
                     `[Nex-AC DEBUG] AC weapon: ${ACInfo.get(player.id).acSetWeapon[ac_s]}, weaponId: ${ac_w}`,
                   );
@@ -121,16 +98,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 if (ACInfo.get(player.id).acKicked > 0) return false;
                 ACInfo.get(player.id).acSetWeapon[ac_s] = -1;
               } else {
-                triggerNOPWarning(
-                  player,
-                  0,
-                  ACInfo.get(player.id).acNOPCount[0],
-                );
+                triggerNOPWarning(player, 0, ACInfo.get(player.id).acNOPCount[0]);
               }
-            } else if (
-              ++ACInfo.get(player.id).acNOPCount[0] >
-              innerACConfig.AC_MAX_NOP_WARNINGS
-            ) {
+            } else if (++ACInfo.get(player.id).acNOPCount[0] > innerACConfig.AC_MAX_NOP_WARNINGS) {
               ACInfo.get(player.id).acSetWeapon[ac_s] = -1;
             }
           }
@@ -139,20 +109,14 @@ PlayerEvent.onUpdate(({ player, next }) => {
           if (ACInfo.get(player.id).acGiveAmmo[ac_s] === ac_a) {
             ACInfo.get(player.id).acGiveAmmo[ac_s] = -65535;
             ACInfo.get(player.id).acAmmo[ac_s] = ac_a;
-          } else if (
-            ac_gtc - ACInfo.get(player.id).acGtcGiveAmmo[ac_s] >
-            ac_gpp
-          ) {
+          } else if (ac_gtc - ACInfo.get(player.id).acGtcGiveAmmo[ac_s] > ac_gpp) {
             if (
               ACInfo.get(player.id).acACAllow[52] &&
               ACInfo.get(player.id).acNOPAllow[1] &&
               (ACInfo.get(player.id).acGiveAmmo[ac_s] < ac_a ||
                 (0 > ac_a && 0 <= ACInfo.get(player.id).acGiveAmmo[ac_s]))
             ) {
-              if (
-                ++ACInfo.get(player.id).acNOPCount[1] >
-                innerACConfig.AC_MAX_NOP_WARNINGS
-              ) {
+              if (++ACInfo.get(player.id).acNOPCount[1] > innerACConfig.AC_MAX_NOP_WARNINGS) {
                 if (innerACConfig.DEBUG) {
                   console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerAmmo"]));
                   console.log(
@@ -163,16 +127,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 if (ACInfo.get(player.id).acKicked > 0) return false;
                 ACInfo.get(player.id).acGiveAmmo[ac_s] = -65535;
               } else {
-                triggerNOPWarning(
-                  player,
-                  1,
-                  ACInfo.get(player.id).acNOPCount[1],
-                );
+                triggerNOPWarning(player, 1, ACInfo.get(player.id).acNOPCount[1]);
               }
-            } else if (
-              ++ACInfo.get(player.id).acNOPCount[1] >
-              innerACConfig.AC_MAX_NOP_WARNINGS
-            ) {
+            } else if (++ACInfo.get(player.id).acNOPCount[1] > innerACConfig.AC_MAX_NOP_WARNINGS) {
               if (
                 ACInfo.get(player.id).acGiveAmmo[ac_s] > ac_a &&
                 !(0 > ac_a && 0 <= ACInfo.get(player.id).acGiveAmmo[ac_s])
@@ -196,8 +153,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               if (
                 (ACInfo.get(player.id).acLastPickup >= 0 &&
                   ACInfo.get(player.id).acLastPickup < LimitsEnum.MAX_PICKUPS &&
-                  ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acWeapon ==
-                    ac_w &&
+                  ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acWeapon == ac_w &&
                   ac_a <=
                     (ac_IsAmmoSharingInSlot(ac_s)
                       ? ACInfo.get(player.id).acAmmo[ac_s] + ac_pAmmo[ac_w]
@@ -232,17 +188,11 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 ) {
                   ACInfo.get(player.id).acCheatCount[20] = 0;
                   if (ACInfo.get(player.id).acSet[10] !== -1)
-                    ACInfo.get(player.id).acSet[10] +=
-                      ac_AmmuNationInfo[ac_w - 22][0];
-                  else
-                    ACInfo.get(player.id).acSet[10] =
-                      ac_AmmuNationInfo[ac_w - 22][0];
+                    ACInfo.get(player.id).acSet[10] += ac_AmmuNationInfo[ac_w - 22][0];
+                  else ACInfo.get(player.id).acSet[10] = ac_AmmuNationInfo[ac_w - 22][0];
                   if (ac_s !== 2)
-                    ACInfo.get(player.id).acAmmo[ac_s] +=
-                      ac_AmmuNationInfo[ac_w - 22][1];
-                  else
-                    ACInfo.get(player.id).acAmmo[ac_s] =
-                      ac_AmmuNationInfo[ac_w - 22][1];
+                    ACInfo.get(player.id).acAmmo[ac_s] += ac_AmmuNationInfo[ac_w - 22][1];
+                  else ACInfo.get(player.id).acAmmo[ac_s] = ac_AmmuNationInfo[ac_w - 22][1];
                   ACInfo.get(player.id).acWeapon[ac_s] = ac_w;
                   ACInfo.get(player.id).acGtc[17] = ac_gtc + 2650;
                 } else {
@@ -254,8 +204,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                       (ACInfo.get(player.id).acVeh > 0 ||
                         ac_gtc - ACInfo.get(player.id).acGtc[15] <= ac_gpp))
                   ) {
-                    if (ac_w === WeaponEnum.PARACHUTE)
-                      ACInfo.get(player.id).acParachute = 0;
+                    if (ac_w === WeaponEnum.PARACHUTE) ACInfo.get(player.id).acParachute = 0;
                     ACInfo.get(player.id).acWeapon[ac_s] = ac_w;
                     ACInfo.get(player.id).acAmmo[ac_s] = ac_a;
                   } else if (
@@ -278,10 +227,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
           }
         } else if (
           ACInfo.get(player.id).acAmmo[ac_s] !== ac_a &&
-          !(
-            ac_sa >= PlayerStateEnum.DRIVER &&
-            ac_sa <= PlayerStateEnum.PASSENGER
-          ) &&
+          !(ac_sa >= PlayerStateEnum.DRIVER && ac_sa <= PlayerStateEnum.PASSENGER) &&
           ac_s >= 7 &&
           ac_s <= 9 &&
           ac_w !== WeaponEnum.MINIGUN &&
@@ -309,11 +255,8 @@ PlayerEvent.onUpdate(({ player, next }) => {
       if (ACInfo.get(player.id).acSet[1] !== -1) {
         if (ACInfo.get(player.id).acSet[1] > 255) {
           ac_health +=
-            ACInfo.get(player.id).acSet[1] -
-            (ACInfo.get(player.id).acSet[1] % 256) -
-            256;
-          if (ACInfo.get(player.id).acSet[1] - ac_health > 255)
-            ac_health += 256;
+            ACInfo.get(player.id).acSet[1] - (ACInfo.get(player.id).acSet[1] % 256) - 256;
+          if (ACInfo.get(player.id).acSet[1] - ac_health > 255) ac_health += 256;
         }
         if (ACInfo.get(player.id).acSet[1] === ac_health) {
           ACInfo.get(player.id).acSet[1] = -1;
@@ -325,10 +268,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
             ACInfo.get(player.id).acNOPAllow[3] &&
             ACInfo.get(player.id).acSet[1] < ac_health
           ) {
-            if (
-              ++ACInfo.get(player.id).acNOPCount[3] >
-              innerACConfig.AC_MAX_NOP_WARNINGS
-            ) {
+            if (++ACInfo.get(player.id).acNOPCount[3] > innerACConfig.AC_MAX_NOP_WARNINGS) {
               if (innerACConfig.DEBUG) {
                 console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerHealth"]));
                 console.log(
@@ -339,16 +279,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
               if (ACInfo.get(player.id).acKicked > 0) return false;
               ACInfo.get(player.id).acSet[1] = -1;
             } else {
-              triggerNOPWarning(
-                player.id,
-                3,
-                ACInfo.get(player.id).acNOPCount[3],
-              );
+              triggerNOPWarning(player.id, 3, ACInfo.get(player.id).acNOPCount[3]);
             }
-          } else if (
-            ++ACInfo.get(player.id).acNOPCount[3] >
-            innerACConfig.AC_MAX_NOP_WARNINGS
-          ) {
+          } else if (++ACInfo.get(player.id).acNOPCount[3] > innerACConfig.AC_MAX_NOP_WARNINGS) {
             if (ACInfo.get(player.id).acSet[1] > ac_health) {
               ACInfo.get(player.id).acCheatCount[9] = 0;
               ACInfo.get(player.id).acDmgRes = false;
@@ -359,16 +292,10 @@ PlayerEvent.onUpdate(({ player, next }) => {
       } else {
         if (ACInfo.get(player.id).acHealth > 255) {
           ac_health +=
-            ACInfo.get(player.id).acHealth -
-            (ACInfo.get(player.id).acHealth % 256) -
-            256;
-          if (ACInfo.get(player.id).acHealth - ac_health > 255)
-            ac_health += 256;
+            ACInfo.get(player.id).acHealth - (ACInfo.get(player.id).acHealth % 256) - 256;
+          if (ACInfo.get(player.id).acHealth - ac_health > 255) ac_health += 256;
         }
-        if (
-          ACInfo.get(player.id).acACAllow[12] &&
-          ac_health > ACInfo.get(player.id).acHealth
-        ) {
+        if (ACInfo.get(player.id).acACAllow[12] && ac_health > ACInfo.get(player.id).acHealth) {
           if (
             !innerACConfig.AC_USE_RESTAURANTS ||
             (innerACConfig.AC_USE_RESTAURANTS &&
@@ -396,11 +323,8 @@ PlayerEvent.onUpdate(({ player, next }) => {
       if (ACInfo.get(player.id).acSet[2] !== -1) {
         if (ACInfo.get(player.id).acSet[2] > 255) {
           ac_armour +=
-            ACInfo.get(player.id).acSet[2] -
-            (ACInfo.get(player.id).acSet[2] % 256) -
-            256;
-          if (ACInfo.get(player.id).acSet[2] - ac_armour > 255)
-            ac_armour += 256;
+            ACInfo.get(player.id).acSet[2] - (ACInfo.get(player.id).acSet[2] % 256) - 256;
+          if (ACInfo.get(player.id).acSet[2] - ac_armour > 255) ac_armour += 256;
         }
         if (ACInfo.get(player.id).acSet[2] === ac_armour) {
           ACInfo.get(player.id).acSet[2] = -1;
@@ -412,10 +336,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
             ACInfo.get(player.id).acNOPAllow[5] &&
             ACInfo.get(player.id).acSet[2] < ac_armour
           ) {
-            if (
-              ++ACInfo.get(player.id).acNOPCount[5] >
-              innerACConfig.AC_MAX_NOP_WARNINGS
-            ) {
+            if (++ACInfo.get(player.id).acNOPCount[5] > innerACConfig.AC_MAX_NOP_WARNINGS) {
               if (innerACConfig.DEBUG) {
                 console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerArmour"]));
                 console.log(
@@ -426,16 +347,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
               if (ACInfo.get(player.id).acKicked > 0) return false;
               ACInfo.get(player.id).acSet[2] = -1;
             } else {
-              triggerNOPWarning(
-                player.id,
-                5,
-                ACInfo.get(player.id).acNOPCount[5],
-              );
+              triggerNOPWarning(player.id, 5, ACInfo.get(player.id).acNOPCount[5]);
             }
-          } else if (
-            ++ACInfo.get(player.id).acNOPCount[5] >
-            innerACConfig.AC_MAX_NOP_WARNINGS
-          ) {
+          } else if (++ACInfo.get(player.id).acNOPCount[5] > innerACConfig.AC_MAX_NOP_WARNINGS) {
             if (ACInfo.get(player.id).acSet[2] > ac_armour) {
               ACInfo.get(player.id).acCheatCount[9] = 0;
               ACInfo.get(player.id).acDmgRes = false;
@@ -446,16 +360,10 @@ PlayerEvent.onUpdate(({ player, next }) => {
       } else {
         if (ACInfo.get(player.id).acArmour > 255) {
           ac_armour +=
-            ACInfo.get(player.id).acArmour -
-            (ACInfo.get(player.id).acArmour % 256) -
-            256;
-          if (ACInfo.get(player.id).acArmour - ac_armour > 255)
-            ac_armour += 256;
+            ACInfo.get(player.id).acArmour - (ACInfo.get(player.id).acArmour % 256) - 256;
+          if (ACInfo.get(player.id).acArmour - ac_armour > 255) ac_armour += 256;
         }
-        if (
-          ACInfo.get(player.id).acACAllow[13] &&
-          ac_armour > ACInfo.get(player.id).acArmour
-        ) {
+        if (ACInfo.get(player.id).acACAllow[13] && ac_armour > ACInfo.get(player.id).acArmour) {
           if (
             !innerACConfig.AC_USE_AMMUNATIONS ||
             (innerACConfig.AC_USE_AMMUNATIONS &&
@@ -463,8 +371,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               ac_InAmmuNation(player, ACInfo.get(player.id).acInt))
           ) {
             ACInfo.get(player.id).acCheatCount[20] = 0;
-            if (ACInfo.get(player.id).acSet[10] !== -1)
-              ACInfo.get(player.id).acSet[10] += 200;
+            if (ACInfo.get(player.id).acSet[10] !== -1) ACInfo.get(player.id).acSet[10] += 200;
             else ACInfo.get(player.id).acSet[10] = 200;
             ACInfo.get(player.id).acGtc[17] = ac_gtc + 2650;
           } else {
@@ -485,8 +392,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
         ac_health < ACInfo.get(player.id).acHealth ||
         ac_armour < ACInfo.get(player.id).acArmour
       ) {
-        ACInfo.get(player.id).acDmgRes = ACInfo.get(player.id).acVehDmgRes =
-          false;
+        ACInfo.get(player.id).acDmgRes = ACInfo.get(player.id).acVehDmgRes = false;
         ACInfo.get(player.id).acCheatCount[9] = 0;
       } else if (
         ACInfo.get(player.id).acACAllow[19] &&
@@ -495,12 +401,8 @@ PlayerEvent.onUpdate(({ player, next }) => {
         ACInfo.get(player.id).acSet[2] === -1 &&
         ac_gtc - ACInfo.get(player.id).acGtc[13] > ac_gpp
       ) {
-        ACInfo.get(player.id).acDmgRes = ACInfo.get(player.id).acVehDmgRes =
-          false;
-        if (
-          ++ACInfo.get(player.id).acCheatCount[9] >
-          innerACConfig.AC_MAX_GODMODE_WARNINGS
-        ) {
+        ACInfo.get(player.id).acDmgRes = ACInfo.get(player.id).acVehDmgRes = false;
+        if (++ACInfo.get(player.id).acCheatCount[9] > innerACConfig.AC_MAX_GODMODE_WARNINGS) {
           if (innerACConfig.DEBUG) {
             console.log(
               `[Nex-AC DEBUG] AC health: ${ACInfo.get(player.id).acHealth}, health: ${ac_health}, AC armour: ${ACInfo.get(player.id).acArmour}, armour: ${ac_armour}`,
@@ -510,47 +412,25 @@ PlayerEvent.onUpdate(({ player, next }) => {
           if (ACInfo.get(player.id).acKicked > 0) return false;
           ACInfo.get(player.id).acCheatCount[9] = 0;
         } else {
-          triggerCheatWarning(
-            player,
-            "",
-            0,
-            19,
-            0,
-            ACInfo.get(player.id).acCheatCount[9],
-          );
+          triggerCheatWarning(player, "", 0, 19, 0, ACInfo.get(player.id).acCheatCount[9]);
         }
       }
       if (
         ACInfo.get(player.id).acSet[5] !== -1 &&
         ac_gtc - ACInfo.get(player.id).acGtc[11] > ac_gpp
       ) {
-        if (
-          ACInfo.get(player.id).acACAllow[52] &&
-          ACInfo.get(player.id).acNOPAllow[8]
-        ) {
-          if (
-            ++ACInfo.get(player.id).acNOPCount[8] >
-            innerACConfig.AC_MAX_NOP_WARNINGS
-          ) {
+        if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[8]) {
+          if (++ACInfo.get(player.id).acNOPCount[8] > innerACConfig.AC_MAX_NOP_WARNINGS) {
             if (innerACConfig.DEBUG) {
-              console.log(
-                $t("DEBUG_CODE_5", [player.id, "TogglePlayerSpectating"]),
-              );
+              console.log($t("DEBUG_CODE_5", [player.id, "TogglePlayerSpectating"]));
             }
             ac_KickWithCode(player, "", 0, 52, 6);
             if (ACInfo.get(player.id).acKicked > 0) return false;
             ACInfo.get(player.id).acSet[5] = -1;
           } else {
-            triggerNOPWarning(
-              player.id,
-              8,
-              ACInfo.get(player.id).acNOPCount[8],
-            );
+            triggerNOPWarning(player.id, 8, ACInfo.get(player.id).acNOPCount[8]);
           }
-        } else if (
-          ++ACInfo.get(player.id).acNOPCount[8] >
-          innerACConfig.AC_MAX_NOP_WARNINGS
-        )
+        } else if (++ACInfo.get(player.id).acNOPCount[8] > innerACConfig.AC_MAX_NOP_WARNINGS)
           ACInfo.get(player.id).acSet[5] = -1;
       }
       ac_s = player.getVehicleSeat();
@@ -562,8 +442,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
         if (
           ACInfo.get(player.id).acSet[8] === ac_vehId &&
           ac_sa !== PlayerStateEnum.ONFOOT &&
-          (ACInfo.get(player.id).acSet[4] === ac_s ||
-            ACInfo.get(player.id).acSet[4] === -1)
+          (ACInfo.get(player.id).acSet[4] === ac_s || ACInfo.get(player.id).acSet[4] === -1)
         ) {
           if (
             ACInfo.get(player.id).acACAllow[4] &&
@@ -599,10 +478,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
             const ac_t_veh = Vehicle.getInstance(ac_t);
             ac_t = ac_t_veh ? ac_t_veh.getModel() : 0;
             if (ac_t <= 0) ac_t = ACInfo.get(player.id).acLastModel;
-            if (
-              ac_IsValidVehicleModel(ac_t) &&
-              (ac_IsAnAircraft(ac_t) || ac_IsAnAircraftRC(ac_t))
-            )
+            if (ac_IsValidVehicleModel(ac_t) && (ac_IsAnAircraft(ac_t) || ac_IsAnAircraftRC(ac_t)))
               ACInfo.get(player.id).acParachute = 2;
           }
           if (ac_sa === PlayerStateEnum.DRIVER) {
@@ -610,21 +486,16 @@ PlayerEvent.onUpdate(({ player, next }) => {
             ACVehInfo.get(ac_vehId).acZAngle = ac_veh!.getZAngle().angle;
             ACInfo.get(player.id).acGtc[8] = ac_gtc + 1650;
             ACInfo.get(player.id).acSetVehHealth = -1.0;
-            ACInfo.get(player.id).acPosX = ACInfo.get(player.id).acLastPosX =
-              ac_pX;
-            ACInfo.get(player.id).acPosY = ACInfo.get(player.id).acLastPosY =
-              ac_pY;
+            ACInfo.get(player.id).acPosX = ACInfo.get(player.id).acLastPosX = ac_pX;
+            ACInfo.get(player.id).acPosY = ACInfo.get(player.id).acLastPosY = ac_pY;
             ACInfo.get(player.id).acPosZ = ac_pZ;
           }
           ac_put = true;
           ACInfo.get(player.id).acPutPosX = ac_pX;
           ACInfo.get(player.id).acPutPosY = ac_pY;
           ACInfo.get(player.id).acPutPosZ = ac_pZ;
-          ACInfo.get(player.id).acEnterVeh = ACInfo.get(
-            player.id,
-          ).acCheatCount[10] = 0;
-          ACInfo.get(player.id).acVehDmgRes = ACInfo.get(player.id).acEnterRes =
-            false;
+          ACInfo.get(player.id).acEnterVeh = ACInfo.get(player.id).acCheatCount[10] = 0;
+          ACInfo.get(player.id).acVehDmgRes = ACInfo.get(player.id).acEnterRes = false;
           ACInfo.get(player.id).acEnterSeat =
             ACInfo.get(player.id).acSet[9] =
             ACInfo.get(player.id).acSet[8] =
@@ -632,9 +503,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               -1;
           ACInfo.get(player.id).acSeat = ac_s;
         } else if (ac_gtc - ACInfo.get(player.id).acGtc[1] > ac_gpp) {
-          const ac_set8_veh = Vehicle.getInstance(
-            ACInfo.get(player.id).acSet[8],
-          );
+          const ac_set8_veh = Vehicle.getInstance(ACInfo.get(player.id).acSet[8]);
           if (
             ACInfo.get(player.id).acACAllow[52] &&
             ACInfo.get(player.id).acNOPAllow[7] &&
@@ -643,14 +512,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
             ACVehInfo.get(ACInfo.get(player.id).acSet[8]).acHealth !== 0.0 &&
             (ac_set8_veh ? ac_set8_veh.isStreamedIn(player) : false)
           ) {
-            if (
-              ++ACInfo.get(player.id).acNOPCount[7] >
-              innerACConfig.AC_MAX_NOP_WARNINGS
-            ) {
+            if (++ACInfo.get(player.id).acNOPCount[7] > innerACConfig.AC_MAX_NOP_WARNINGS) {
               if (innerACConfig.DEBUG) {
-                console.log(
-                  $t("DEBUG_CODE_5", [player.id, "PutPlayerInVehicle"]),
-                );
+                console.log($t("DEBUG_CODE_5", [player.id, "PutPlayerInVehicle"]));
                 console.log(
                   `[Nex-AC DEBUG] AC veh: ${ACInfo.get(player.id).acSet[8]}, veh: ${ac_vehId}, AC seat: ${ACInfo.get(player.id).acSet[4]}, seatId: ${ac_s}`,
                 );
@@ -661,10 +525,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
             } else {
               triggerNOPWarning(player, 7, ACInfo.get(player.id).acNOPCount[7]);
             }
-          } else if (
-            ++ACInfo.get(player.id).acNOPCount[7] >
-            innerACConfig.AC_MAX_NOP_WARNINGS
-          )
+          } else if (++ACInfo.get(player.id).acNOPCount[7] > innerACConfig.AC_MAX_NOP_WARNINGS)
             ACInfo.get(player.id).acSet[8] = -1;
         }
       }
@@ -674,34 +535,23 @@ PlayerEvent.onUpdate(({ player, next }) => {
           ac_dist_set = player.getDistanceFromPoint(
             ACInfo.get(player.id).acSetPosX,
             ACInfo.get(player.id).acSetPosY,
-            ACInfo.get(player.id).acTpToZ
-              ? ac_pZ
-              : ACInfo.get(player.id).acSetPosZ,
+            ACInfo.get(player.id).acTpToZ ? ac_pZ : ACInfo.get(player.id).acSetPosZ,
           );
           if (
             ac_dist_set < 15.0 &&
-            (ACInfo.get(player.id).acSet[7] === 3 ||
-              ac_sa === PlayerStateEnum.ONFOOT)
+            (ACInfo.get(player.id).acSet[7] === 3 || ac_sa === PlayerStateEnum.ONFOOT)
           ) {
             ACInfo.get(player.id).acSet[7] = -1;
             ACInfo.get(player.id).acCheatCount[1] =
               ACInfo.get(player.id).acCheatCount[2] =
               ACInfo.get(player.id).acGtc[10] =
                 0;
-            ACInfo.get(player.id).acPosX = ACInfo.get(player.id).acLastPosX =
-              ac_pX;
-            ACInfo.get(player.id).acPosY = ACInfo.get(player.id).acLastPosY =
-              ac_pY;
+            ACInfo.get(player.id).acPosX = ACInfo.get(player.id).acLastPosX = ac_pX;
+            ACInfo.get(player.id).acPosY = ACInfo.get(player.id).acLastPosY = ac_pY;
             ACInfo.get(player.id).acPosZ = ac_pZ;
           } else if (ac_gtc - ACInfo.get(player.id).acGtc[10] > ac_gpp) {
-            if (
-              ACInfo.get(player.id).acACAllow[52] &&
-              ACInfo.get(player.id).acNOPAllow[10]
-            ) {
-              if (
-                ++ACInfo.get(player.id).acNOPCount[10] >
-                innerACConfig.AC_MAX_NOP_WARNINGS
-              ) {
+            if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[10]) {
+              if (++ACInfo.get(player.id).acNOPCount[10] > innerACConfig.AC_MAX_NOP_WARNINGS) {
                 if (innerACConfig.DEBUG) {
                   console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerPos"]));
                   console.log(
@@ -712,16 +562,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 if (ACInfo.get(player.id).acKicked > 0) return false;
                 ACInfo.get(player.id).acSet[7] = -1;
               } else {
-                triggerNOPWarning(
-                  player,
-                  10,
-                  ACInfo.get(player.id).acNOPCount[10],
-                );
+                triggerNOPWarning(player, 10, ACInfo.get(player.id).acNOPCount[10]);
               }
-            } else if (
-              ++ACInfo.get(player.id).acNOPCount[10] >
-              innerACConfig.AC_MAX_NOP_WARNINGS
-            ) {
+            } else if (++ACInfo.get(player.id).acNOPCount[10] > innerACConfig.AC_MAX_NOP_WARNINGS) {
               ACInfo.get(player.id).acSet[7] = -1;
             }
           }
@@ -762,19 +605,12 @@ PlayerEvent.onUpdate(({ player, next }) => {
             ACInfo.get(player.id).acSet[9] !== -1 &&
             ac_gtc - ACInfo.get(player.id).acGtc[7] > ac_gpp
           ) {
-            if (
-              ACInfo.get(player.id).acACAllow[52] &&
-              ACInfo.get(player.id).acNOPAllow[11]
-            ) {
+            if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[11]) {
               if (ac_vsp > 25) ACInfo.get(player.id).acGtc[7] = ac_gtc + 2650;
               else {
                 if (innerACConfig.DEBUG) {
-                  console.log(
-                    $t("DEBUG_CODE_5", [player.id, "RemovePlayerFromVehicle"]),
-                  );
-                  console.log(
-                    `[Nex-AC DEBUG] Veh model: ${ac_i}, veh: ${ac_vehId}`,
-                  );
+                  console.log($t("DEBUG_CODE_5", [player.id, "RemovePlayerFromVehicle"]));
+                  console.log(`[Nex-AC DEBUG] Veh model: ${ac_i}, veh: ${ac_vehId}`);
                 }
                 ac_KickWithCode(player, "", 0, 52, 8);
                 if (ACInfo.get(player.id).acKicked > 0) return false;
@@ -811,14 +647,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   ACInfo.get(player.id).acNOPAllow[4] &&
                   ACInfo.get(player.id).acSetVehHealth < ac_vHealth
                 ) {
-                  if (
-                    ++ACInfo.get(player.id).acNOPCount[4] >
-                    innerACConfig.AC_MAX_NOP_WARNINGS
-                  ) {
+                  if (++ACInfo.get(player.id).acNOPCount[4] > innerACConfig.AC_MAX_NOP_WARNINGS) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
-                        $t("DEBUG_CODE_5", [player.id, "SetVehicleHealth"]),
-                      );
+                      console.log($t("DEBUG_CODE_5", [player.id, "SetVehicleHealth"]));
                       console.log(
                         `[Nex-AC DEBUG] AC veh health: ${ACInfo.get(player.id).acSetVehHealth}, veh health: ${ac_vHealth}, veh: ${ac_vehId}`,
                       );
@@ -827,15 +658,10 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     if (ACInfo.get(player.id).acKicked > 0) return false;
                     ACInfo.get(player.id).acSetVehHealth = -1.0;
                   } else {
-                    triggerNOPWarning(
-                      player.id,
-                      4,
-                      ACInfo.get(player.id).acNOPCount[4],
-                    );
+                    triggerNOPWarning(player.id, 4, ACInfo.get(player.id).acNOPCount[4]);
                   }
                 } else if (
-                  ++ACInfo.get(player.id).acNOPCount[4] >
-                  innerACConfig.AC_MAX_NOP_WARNINGS
+                  ++ACInfo.get(player.id).acNOPCount[4] > innerACConfig.AC_MAX_NOP_WARNINGS
                 ) {
                   if (ACInfo.get(player.id).acSetVehHealth > ac_vHealth) {
                     ACInfo.get(player.id).acCheatCount[10] = 0;
@@ -854,12 +680,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               if (
                 !innerACConfig.AC_USE_PAYNSPRAY ||
                 (innerACConfig.AC_USE_PAYNSPRAY &&
-                  !ac_InPayNSpray(
-                    ACInfo.get(player.id).acInt,
-                    ac_pX,
-                    ac_pY,
-                    ac_pZ,
-                  ))
+                  !ac_InPayNSpray(ACInfo.get(player.id).acInt, ac_pX, ac_pY, ac_pZ))
               ) {
                 if (innerACConfig.DEBUG) {
                   console.log(
@@ -877,18 +698,14 @@ PlayerEvent.onUpdate(({ player, next }) => {
             }
             if (ACInfo.get(player.id).acVehDmgRes) {
               if (ac_vHealth < ACVehInfo.get(ac_vehId).acHealth) {
-                ACInfo.get(player.id).acDmgRes = ACInfo.get(
-                  player.id,
-                ).acVehDmgRes = false;
+                ACInfo.get(player.id).acDmgRes = ACInfo.get(player.id).acVehDmgRes = false;
                 ACInfo.get(player.id).acCheatCount[10] = 0;
               } else if (
                 ACInfo.get(player.id).acACAllow[20] &&
                 ACInfo.get(player.id).acSetVehHealth === -1.0 &&
                 ac_gtc - ACInfo.get(player.id).acGtc[14] > ac_gpp
               ) {
-                ACInfo.get(player.id).acDmgRes = ACInfo.get(
-                  player.id,
-                ).acVehDmgRes = false;
+                ACInfo.get(player.id).acDmgRes = ACInfo.get(player.id).acVehDmgRes = false;
                 if (
                   ++ACInfo.get(player.id).acCheatCount[10] >
                   innerACConfig.AC_MAX_GODMODE_VEH_WARNINGS
@@ -902,25 +719,16 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   if (ACInfo.get(player.id).acKicked > 0) return false;
                   ACInfo.get(player.id).acCheatCount[10] = 0;
                 } else {
-                  triggerCheatWarning(
-                    player,
-                    "",
-                    0,
-                    20,
-                    0,
-                    ACInfo.get(player.id).acCheatCount[10],
-                  );
+                  triggerCheatWarning(player, "", 0, 20, 0, ACInfo.get(player.id).acCheatCount[10]);
                 }
               }
             }
             if (ac_dist > 0.8) {
               if (
                 ac_dist >= 80.0 &&
-                ac_dist - ACVehInfo.get(ac_vehId).acPosDiff >
-                  (ac_dist / 2.6) * 1.8 &&
+                ac_dist - ACVehInfo.get(ac_vehId).acPosDiff > (ac_dist / 2.6) * 1.8 &&
                 ac_dist_set >= 80.0 &&
-                ac_dist_set - ACVehInfo.get(ac_vehId).acPosDiff >
-                  (ac_dist_set / 2.6) * 1.8
+                ac_dist_set - ACVehInfo.get(ac_vehId).acPosDiff > (ac_dist_set / 2.6) * 1.8
               ) {
                 if (
                   ACInfo.get(player.id).acACAllow[3] &&
@@ -945,10 +753,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 }
                 ACInfo.get(player.id).acLastPosX = ac_pX;
                 ACInfo.get(player.id).acLastPosY = ac_pY;
-              } else if (
-                ac_vsp < 12 &&
-                ac_gtc - ACInfo.get(player.id).acSetPosTick > ac_gpp
-              ) {
+              } else if (ac_vsp < 12 && ac_gtc - ACInfo.get(player.id).acSetPosTick > ac_gpp) {
                 if (ac_dist >= 40.0 && ac_dist_set >= 40.0) {
                   if (ACInfo.get(player.id).acACAllow[3]) {
                     if (innerACConfig.DEBUG) {
@@ -961,8 +766,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   }
                 } else if (ACInfo.get(player.id).acACAllow[1]) {
                   if (
-                    ++ACInfo.get(player.id).acCheatCount[2] >
-                    innerACConfig.AC_MAX_AIR_VEH_WARNINGS
+                    ++ACInfo.get(player.id).acCheatCount[2] > innerACConfig.AC_MAX_AIR_VEH_WARNINGS
                   ) {
                     if (innerACConfig.DEBUG) {
                       console.log(
@@ -973,14 +777,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     if (ACInfo.get(player.id).acKicked > 0) return false;
                     ACInfo.get(player.id).acCheatCount[2] = 0;
                   } else {
-                    triggerCheatWarning(
-                      player,
-                      "",
-                      0,
-                      1,
-                      1,
-                      ACInfo.get(player.id).acCheatCount[2],
-                    );
+                    triggerCheatWarning(player, "", 0, 1, 1, ACInfo.get(player.id).acCheatCount[2]);
                   }
                 }
               }
@@ -1003,8 +800,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   ACVehInfo.get(ac_vehId).acHealth <= ac_vHealth &&
                   !(
                     ac_IsValidVehicleModel(ac_i) &&
-                    ((ac_spDiff < 65 &&
-                      (ac_i === 432 || ac_IsATrainLoco(ac_i))) ||
+                    ((ac_spDiff < 65 && (ac_i === 432 || ac_IsATrainLoco(ac_i))) ||
                       (ac_spDiff < 45 &&
                         ac_IsABmx(ac_i) &&
                         Math.abs(ac_vX) <= 0.76 &&
@@ -1048,9 +844,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 ACInfo.get(player.id).acACAllow[25] &&
                 ac_vsp > 15 &&
                 Math.abs(ac_spDiff) < 25 &&
-                Math.round(
-                  Math.abs(ac_zAngle - ACVehInfo.get(ac_vehId).acZAngle),
-                ) === 180 &&
+                Math.round(Math.abs(ac_zAngle - ACVehInfo.get(ac_vehId).acZAngle)) === 180 &&
                 ac_vX < 0.0 !== ACVehInfo.get(ac_vehId).acVelX < 0.0 &&
                 ac_vY < 0.0 !== ACVehInfo.get(ac_vehId).acVelY < 0.0 &&
                 ac_vZ < 0.0 !== ACVehInfo.get(ac_vehId).acVelZ < 0.0
@@ -1081,10 +875,8 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 if (
                   (ac_vZ >= 0.1 &&
                     ac_vZ > ACVehInfo.get(ac_vehId).acVelZ &&
-                    Math.abs(ACInfo.get(player.id).acPosX - ac_pX) <
-                      ac_tmp / 2.0 &&
-                    Math.abs(ACInfo.get(player.id).acPosY - ac_pY) <
-                      ac_tmp / 2.0) ||
+                    Math.abs(ACInfo.get(player.id).acPosX - ac_pX) < ac_tmp / 2.0 &&
+                    Math.abs(ACInfo.get(player.id).acPosY - ac_pY) < ac_tmp / 2.0) ||
                   (ac_vZ >= 0.0 && ac_tmp <= -1.0) ||
                   (ac_vZ <= 0.0 && ac_tmp >= 1.0)
                 ) {
@@ -1103,14 +895,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     if (ACInfo.get(player.id).acKicked > 0) return false;
                     ACInfo.get(player.id).acCheatCount[3] = 0;
                   } else {
-                    triggerCheatWarning(
-                      player,
-                      "",
-                      0,
-                      8,
-                      1,
-                      ACInfo.get(player.id).acCheatCount[3],
-                    );
+                    triggerCheatWarning(player, "", 0, 8, 1, ACInfo.get(player.id).acCheatCount[3]);
                   }
                 }
               }
@@ -1149,13 +934,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
           ac_sa = player.getAnimationIndex();
           if (ACInfo.get(player.id).acAnim === ac_sa) {
             if (ACInfo.get(player.id).acACAllow[7]) {
-              if (
-                (ac_sa >= 156 && ac_sa <= 162) ||
-                (ac_sa >= 1055 && ac_sa <= 1059)
-              ) {
+              if ((ac_sa >= 156 && ac_sa <= 162) || (ac_sa >= 1055 && ac_sa <= 1059)) {
                 if (
-                  ++ACInfo.get(player.id).acCheatCount[13] >
-                  innerACConfig.AC_MAX_FLYHACK_WARNINGS
+                  ++ACInfo.get(player.id).acCheatCount[13] > innerACConfig.AC_MAX_FLYHACK_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
                     console.log(
@@ -1166,14 +947,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   if (ACInfo.get(player.id).acKicked > 0) return false;
                   ACInfo.get(player.id).acCheatCount[13] = 0;
                 } else {
-                  triggerCheatWarning(
-                    player,
-                    "",
-                    0,
-                    7,
-                    2,
-                    ACInfo.get(player.id).acCheatCount[13],
-                  );
+                  triggerCheatWarning(player, "", 0, 7, 2, ACInfo.get(player.id).acCheatCount[13]);
                 }
               } else if (
                 ac_sa >= 1538 &&
@@ -1182,8 +956,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 ACInfo.get(player.id).acSpeed < ac_s
               ) {
                 if (
-                  ++ACInfo.get(player.id).acCheatCount[13] >
-                  innerACConfig.AC_MAX_FLYHACK_WARNINGS
+                  ++ACInfo.get(player.id).acCheatCount[13] > innerACConfig.AC_MAX_FLYHACK_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
                     console.log(
@@ -1194,25 +967,13 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   if (ACInfo.get(player.id).acKicked > 0) return false;
                   ACInfo.get(player.id).acCheatCount[13] = 0;
                 } else {
-                  triggerCheatWarning(
-                    player,
-                    "",
-                    0,
-                    7,
-                    3,
-                    ACInfo.get(player.id).acCheatCount[13],
-                  );
+                  triggerCheatWarning(player, "", 0, 7, 3, ACInfo.get(player.id).acCheatCount[13]);
                 }
               } else if (ac_gtc - ACInfo.get(player.id).acGtc[9] > ac_gpp) {
                 ac_tmp = ac_GetVectorDist(ac_vX, ac_vY);
-                if (
-                  ac_sa >= 958 &&
-                  ac_sa <= 979 &&
-                  (ac_vZ > 0.1 || ac_tmp > 0.9)
-                ) {
+                if (ac_sa >= 958 && ac_sa <= 979 && (ac_vZ > 0.1 || ac_tmp > 0.9)) {
                   if (
-                    ++ACInfo.get(player.id).acCheatCount[13] >
-                    innerACConfig.AC_MAX_FLYHACK_WARNINGS
+                    ++ACInfo.get(player.id).acCheatCount[13] > innerACConfig.AC_MAX_FLYHACK_WARNINGS
                   ) {
                     if (innerACConfig.DEBUG) {
                       console.log(
@@ -1235,10 +996,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 } else ACInfo.get(player.id).acCheatCount[13] = 0;
               }
             }
-            if (
-              ACInfo.get(player.id).acACAllow[30] &&
-              !innerGameModeConfig.ac_PedAnims
-            ) {
+            if (ACInfo.get(player.id).acACAllow[30] && !innerGameModeConfig.ac_PedAnims) {
               ac_i = player.getSkin();
               if (
                 (ac_sa === 1231 || ac_sa === 1246) &&
@@ -1246,14 +1004,10 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 ac_i !== 0 &&
                 ac_w !== WeaponEnum.PARACHUTE &&
                 ac_specAct != SpecialActionsEnum.USECELLPHONE &&
-                !(
-                  ac_specAct >= SpecialActionsEnum.DRINK_BEER &&
-                  ac_specAct <= 25
-                )
+                !(ac_specAct >= SpecialActionsEnum.DRINK_BEER && ac_specAct <= 25)
               ) {
                 if (
-                  ++ACInfo.get(player.id).acCheatCount[17] >
-                  innerACConfig.AC_MAX_CJ_RUN_WARNINGS
+                  ++ACInfo.get(player.id).acCheatCount[17] > innerACConfig.AC_MAX_CJ_RUN_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
                     console.log(
@@ -1264,14 +1018,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   if (ACInfo.get(player.id).acKicked > 0) return false;
                   ACInfo.get(player.id).acCheatCount[17] = 0;
                 } else {
-                  triggerCheatWarning(
-                    player,
-                    "",
-                    0,
-                    30,
-                    0,
-                    ACInfo.get(player.id).acCheatCount[17],
-                  );
+                  triggerCheatWarning(player, "", 0, 30, 0, ACInfo.get(player.id).acCheatCount[17]);
                 }
               } else ACInfo.get(player.id).acCheatCount[17] = 0;
             }
@@ -1293,14 +1040,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   ac_specAct <= SpecialActionsEnum.EXIT_VEHICLE
                 )
               ) {
-                if (
-                  ++ACInfo.get(player.id).acNOPCount[6] >
-                  innerACConfig.AC_MAX_NOP_WARNINGS
-                ) {
+                if (++ACInfo.get(player.id).acNOPCount[6] > innerACConfig.AC_MAX_NOP_WARNINGS) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
-                      $t("DEBUG_CODE_5", [player.id, "SetPlayerSpecialAction"]),
-                    );
+                    console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerSpecialAction"]));
                     console.log(
                       `[Nex-AC DEBUG] AC spec act: ${ACInfo.get(player.id).acSet[3]}, spec act: ${ac_specAct}`,
                     );
@@ -1309,23 +1051,16 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   if (ACInfo.get(player.id).acKicked > 0) return false;
                   ACInfo.get(player.id).acSet[3] = -1;
                 } else {
-                  triggerNOPWarning(
-                    player,
-                    6,
-                    ACInfo.get(player.id).acNOPCount[6],
-                  );
+                  triggerNOPWarning(player, 6, ACInfo.get(player.id).acNOPCount[6]);
                 }
               } else if (
-                ++ACInfo.get(player.id).acNOPCount[6] >
-                innerACConfig.AC_MAX_NOP_WARNINGS
+                ++ACInfo.get(player.id).acNOPCount[6] > innerACConfig.AC_MAX_NOP_WARNINGS
               ) {
                 ACInfo.get(player.id).acSet[3] = -1;
               }
             }
           } else if (ac_specAct !== ACInfo.get(player.id).acSpecAct) {
-            if (
-              ACInfo.get(player.id).acSpecAct === SpecialActionsEnum.USEJETPACK
-            ) {
+            if (ACInfo.get(player.id).acSpecAct === SpecialActionsEnum.USEJETPACK) {
               ACInfo.get(player.id).acDropJpX = ACInfo.get(player.id).acPosX;
               ACInfo.get(player.id).acDropJpY = ACInfo.get(player.id).acPosY;
             }
@@ -1347,14 +1082,11 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   if (
                     ACInfo.get(player.id).acSpecAct > SpecialActionsEnum.NONE &&
                     !(
-                      ACInfo.get(player.id).acSpecAct >=
-                        SpecialActionsEnum.ENTER_VEHICLE &&
-                      ACInfo.get(player.id).acSpecAct <=
-                        SpecialActionsEnum.EXIT_VEHICLE
+                      ACInfo.get(player.id).acSpecAct >= SpecialActionsEnum.ENTER_VEHICLE &&
+                      ACInfo.get(player.id).acSpecAct <= SpecialActionsEnum.EXIT_VEHICLE
                     ) &&
                     !(
-                      ACInfo.get(player.id).acSpecAct >=
-                        SpecialActionsEnum.DRINK_BEER &&
+                      ACInfo.get(player.id).acSpecAct >= SpecialActionsEnum.DRINK_BEER &&
                       ACInfo.get(player.id).acSpecAct <= 25
                     )
                   ) {
@@ -1383,13 +1115,8 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     }
                     ac_KickWithCode(player, "", 0, 18, 3);
                     if (ACInfo.get(player.id).acKicked > 0) return false;
-                  } else
-                    ACInfo.get(player.id).acNextSpecAct = ACInfo.get(
-                      player.id,
-                    ).acSpecAct;
-                  ACInfo.get(player.id).acDropJpX = ACInfo.get(
-                    player.id,
-                  ).acDropJpY = 25000.0;
+                  } else ACInfo.get(player.id).acNextSpecAct = ACInfo.get(player.id).acSpecAct;
+                  ACInfo.get(player.id).acDropJpX = ACInfo.get(player.id).acDropJpY = 25000.0;
                   break;
                 }
                 case SpecialActionsEnum.ENTER_VEHICLE: {
@@ -1413,10 +1140,8 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     !(
                       ((ac_specAct >= SpecialActionsEnum.DRINK_BEER &&
                         ac_specAct <= 25 &&
-                        ACInfo.get(player.id).acSpecAct ===
-                          SpecialActionsEnum.DUCK) ||
-                        ACInfo.get(player.id).acSpecAct ===
-                          SpecialActionsEnum.ENTER_VEHICLE) &&
+                        ACInfo.get(player.id).acSpecAct === SpecialActionsEnum.DUCK) ||
+                        ACInfo.get(player.id).acSpecAct === SpecialActionsEnum.ENTER_VEHICLE) &&
                       ac_specAct === ACInfo.get(player.id).acLastSpecAct
                     ) &&
                     ((ACInfo.get(player.id).acVeh === 0 &&
@@ -1437,9 +1162,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 }
               }
             }
-            ACInfo.get(player.id).acLastSpecAct = ACInfo.get(
-              player.id,
-            ).acSpecAct;
+            ACInfo.get(player.id).acLastSpecAct = ACInfo.get(player.id).acSpecAct;
           }
           const ac_a1 = player.getSurfingVehicle();
           if (
@@ -1492,31 +1215,16 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     ac_KickWithCode(player, "", 0, 2, 3);
                     if (ACInfo.get(player.id).acKicked > 0) return false;
                   }
-                } else if (
-                  ACInfo.get(player.id).acACAllow[0] &&
-                  (ac_s >= 3.0 || ac_dist >= 3.0)
-                ) {
-                  if (
-                    ++ACInfo.get(player.id).acCheatCount[1] >
-                    innerACConfig.AC_MAX_AIR_WARNINGS
-                  ) {
+                } else if (ACInfo.get(player.id).acACAllow[0] && (ac_s >= 3.0 || ac_dist >= 3.0)) {
+                  if (++ACInfo.get(player.id).acCheatCount[1] > innerACConfig.AC_MAX_AIR_WARNINGS) {
                     if (innerACConfig.DEBUG)
-                      console.log(
-                        `[Nex-AC DEBUG] Speed: ${ac_s}, dist: ${ac_dist}`,
-                      );
+                      console.log(`[Nex-AC DEBUG] Speed: ${ac_s}, dist: ${ac_dist}`);
                   }
                   ac_KickWithCode(player, "", 0, 0);
                   if (ACInfo.get(player.id).acKicked > 0) return false;
                   ACInfo.get(player.id).acCheatCount[1] = 0;
                 } else {
-                  triggerNOPWarning(
-                    player,
-                    "",
-                    0,
-                    0,
-                    0,
-                    ACInfo.get(player.id).acCheatCount[1],
-                  );
+                  triggerNOPWarning(player, "", 0, 0, 0, ACInfo.get(player.id).acCheatCount[1]);
                 }
               }
             }
@@ -1625,7 +1333,6 @@ PlayerEvent.onUpdate(({ player, next }) => {
   }
   ACInfo.get(player.id).acUpdateTick = ac_gtc;
   const ac_ret = next();
-  if (ACInfo.get(player.id).acACAllow[33] && !ACInfo.get(player.id).acUnFrozen)
-    return false;
+  if (ACInfo.get(player.id).acACAllow[33] && !ACInfo.get(player.id).acUnFrozen) return false;
   return ac_ret;
 });

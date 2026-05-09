@@ -18,9 +18,7 @@ export function Field(
 ): PropertyDecorator {
   return function (target: any, propertyKey: string | symbol) {
     const metadataKey = `field:${propertyKey.toString()}`;
-    const value = ["struct", "union"].includes(fieldType)
-      ? structUnionFields!
-      : 0;
+    const value = ["struct", "union"].includes(fieldType) ? structUnionFields! : 0;
 
     const cppField: any = {
       type: fieldType,

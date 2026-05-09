@@ -11,12 +11,7 @@ export class MapLoaderError extends Error {
   }
 }
 
-export function ensureLength(
-  type: string,
-  details: unknown,
-  minLength: number,
-  length: number,
-) {
+export function ensureLength(type: string, details: unknown, minLength: number, length: number) {
   if (length < minLength) {
     throw new MapLoaderError({
       type,

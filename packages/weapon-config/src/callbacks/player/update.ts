@@ -1,9 +1,4 @@
-import {
-  PlayerEvent,
-  PlayerStateEnum,
-  WeaponEnum,
-  InvalidEnum,
-} from "@infernus/core";
+import { PlayerEvent, PlayerStateEnum, WeaponEnum, InvalidEnum } from "@infernus/core";
 import { innerGameModeConfig } from "../../config";
 import { s_WeaponDamage } from "../../constants";
 import { WC_WeaponEnum } from "../../enums";
@@ -140,11 +135,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
       const prev = lastAnim.get(player.id);
       lastAnim.set(player.id, anim);
 
-      if (
-        (prev === 1130 && vz === 0.0) ||
-        (anim >= 1128 && anim <= 1134) ||
-        anim === 1208
-      ) {
+      if ((prev === 1130 && vz === 0.0) || (anim >= 1128 && anim <= 1134) || anim === 1208) {
         let amount = -1.0;
         debugMessage(player, `vz: ${vz} anim: ${anim} prev: ${prev}`);
 
@@ -161,10 +152,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
           }
         }
 
-        if (
-          orig_playerMethods.getWeapon.call(player) === WeaponEnum.PARACHUTE &&
-          anim === 1134
-        ) {
+        if (orig_playerMethods.getWeapon.call(player) === WeaponEnum.PARACHUTE && anim === 1134) {
           amount = -1.0;
         }
 
@@ -174,13 +162,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
             `fall dmg: ${amount.toFixed(5)} (vz: ${vz}, anim: ${anim}, prev:${prev})`,
           );
 
-          inflictDamage(
-            player,
-            amount,
-            InvalidEnum.PLAYER_ID,
-            WC_WeaponEnum.REASON_COLLISION,
-            3,
-          );
+          inflictDamage(player, amount, InvalidEnum.PLAYER_ID, WC_WeaponEnum.REASON_COLLISION, 3);
         }
       }
     }

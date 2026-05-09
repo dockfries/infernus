@@ -24,9 +24,7 @@ GameMode.onExit(({ next }) => {
 });
 
 GameMode.onIncomingConnection(({ next, playerId, ipAddress, port }) => {
-  console.log(
-    `player id:${playerId},ip:${ipAddress},port:${port} try to connect`,
-  );
+  console.log(`player id:${playerId},ip:${ipAddress},port:${port} try to connect`);
   return next();
 });
 ```
@@ -104,10 +102,7 @@ PlayerEvent.onCommandText("async", async ({ player, next }) => {
 PlayerEvent.onCommandText("promise", ({ player, next }) => {
   return new Promise((resolve) => {
     fakePromise().then(() => {
-      player.sendClientMessage(
-        "#fff",
-        "Send a message after a delay of 1 second.",
-      );
+      player.sendClientMessage("#fff", "Send a message after a delay of 1 second.");
       resolve();
       return next();
     });
@@ -165,9 +160,7 @@ This feature is commonly used when you only want to execute once or cancel at so
 ```ts
 // Define an one-time command
 const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
-  console.log(
-    "This command is only executed once, and the next execution will not exist.",
-  );
+  console.log("This command is only executed once, and the next execution will not exist.");
   const ret = next();
   off(); // next function should be executed before the off function
   return ret;
@@ -219,31 +212,26 @@ PlayerEvent.onCommandText("help", ({ player, next }) => {
 
 // Define a second-level command
 PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
-  console.log(
-    `player ${player.getName()} want to get help information related to teleport`,
-  );
+  console.log(`player ${player.getName()} want to get help information related to teleport`);
   return next();
 });
 
 // Define a command that can be triggered by /msg or /message
-PlayerEvent.onCommandText(
-  ["msg", "message"],
-  ({ player, subcommand, next }) => {
-    console.log(
-      `player ${player.getName()} entered this command, and may also have entered a subcommand ${subcommand.toString()}`,
-    );
+PlayerEvent.onCommandText(["msg", "message"], ({ player, subcommand, next }) => {
+  console.log(
+    `player ${player.getName()} entered this command, and may also have entered a subcommand ${subcommand.toString()}`,
+  );
 
-    // It is equivalent to the player entering / message global or / msg global
-    if (subcommand[0] === "global") {
-      // Extra logic
-      return next();
-    } else {
-      next();
-      // Thought to be an invalid command, will trigger the rear guard
-      return false;
-    }
-  },
-);
+  // It is equivalent to the player entering / message global or / msg global
+  if (subcommand[0] === "global") {
+    // Extra logic
+    return next();
+  } else {
+    next();
+    // Thought to be an invalid command, will trigger the rear guard
+    return false;
+  }
+});
 ```
 
 ### Case sensitivity

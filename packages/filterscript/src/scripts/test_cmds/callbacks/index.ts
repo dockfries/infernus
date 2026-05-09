@@ -13,32 +13,26 @@ import {
   // VehicleEvent,
 } from "@infernus/core";
 export function createCallbacks() {
-  const offPlayerClickGlobal = TextDrawEvent.onPlayerClickGlobal(
-    ({ player, textDraw, next }) => {
-      const msg = `(TextDraw) You selected: ${typeof textDraw === "number" ? textDraw : textDraw.id}"`;
-      player.sendClientMessage(0xffffffff, msg);
-      return next();
-    },
-  );
+  const offPlayerClickGlobal = TextDrawEvent.onPlayerClickGlobal(({ player, textDraw, next }) => {
+    const msg = `(TextDraw) You selected: ${typeof textDraw === "number" ? textDraw : textDraw.id}"`;
+    player.sendClientMessage(0xffffffff, msg);
+    return next();
+  });
 
-  const offPlayerClickPlayer = TextDrawEvent.onPlayerClickPlayer(
-    ({ player, textDraw, next }) => {
-      const msg = `(PlayerTextDraw) You selected: ${typeof textDraw === "number" ? textDraw : textDraw.id}"`;
-      player.sendClientMessage(0xffffffff, msg);
-      return next();
-    },
-  );
+  const offPlayerClickPlayer = TextDrawEvent.onPlayerClickPlayer(({ player, textDraw, next }) => {
+    const msg = `(PlayerTextDraw) You selected: ${typeof textDraw === "number" ? textDraw : textDraw.id}"`;
+    player.sendClientMessage(0xffffffff, msg);
+    return next();
+  });
 
   // Example of handling scoreboard click.
 
-  const onClickPlayer = PlayerEvent.onClickPlayer(
-    ({ player, clickedPlayer, next }) => {
-      if (!player.isAdmin()) return next(); // this is an admin only script
-      const message = `You clicked on player ${clickedPlayer.id}`;
-      player.sendClientMessage(0xffffffff, message);
-      return next();
-    },
-  );
+  const onClickPlayer = PlayerEvent.onClickPlayer(({ player, clickedPlayer, next }) => {
+    if (!player.isAdmin()) return next(); // this is an admin only script
+    const message = `You clicked on player ${clickedPlayer.id}`;
+    player.sendClientMessage(0xffffffff, message);
+    return next();
+  });
 
   const onClickMap = PlayerEvent.onClickMap(({ player, fX, fY, fZ, next }) => {
     const message = `You place marker at point: ${fX} ${fY} ${fZ}`;
@@ -90,10 +84,7 @@ export function createCallbacks() {
     ({ object, player, x, y, z, rX, rY, rZ, response, next }) => {
       if (!object.isValid()) return next();
       object.move(x, y, z, 10.0, rX, rY, rZ);
-      if (
-        response === EditResponseTypesEnum.FINAL ||
-        response === EditResponseTypesEnum.CANCEL
-      ) {
+      if (response === EditResponseTypesEnum.FINAL || response === EditResponseTypesEnum.CANCEL) {
         // put them back in selection mode after they click save
         player.beginObjectSelecting();
       }

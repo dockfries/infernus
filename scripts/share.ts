@@ -10,10 +10,7 @@ export const pkgDir = path.resolve(process.cwd(), "./packages");
 const excludePkg = ["types", "shared"];
 
 export const pkgNames = fs.readdirSync(pkgDir).filter((dirPath) => {
-  return (
-    fs.statSync(path.resolve(pkgDir, dirPath)).isDirectory() &&
-    !excludePkg.includes(dirPath)
-  );
+  return fs.statSync(path.resolve(pkgDir, dirPath)).isDirectory() && !excludePkg.includes(dirPath);
 });
 
 function onceSIGKill(subProc: ReturnType<typeof execa>) {
@@ -38,12 +35,7 @@ export async function build(pkgName: string) {
 
   const useSelfConfig = fs.existsSync(pkgRolldownConfig);
 
-  const args = [
-    "-c",
-    "rolldown.config.js",
-    "--environment",
-    `TARGET:${pkgName}`,
-  ].filter(Boolean);
+  const args = ["-c", "rolldown.config.js", "--environment", `TARGET:${pkgName}`].filter(Boolean);
 
   const subProc = execa("rolldown", args, {
     cwd: useSelfConfig ? pkgPath : process.cwd(),

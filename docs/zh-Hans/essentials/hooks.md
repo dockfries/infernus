@@ -15,22 +15,19 @@ export const [orig_playerMethods, setPlayerHook] = defineHooks(Player);
 
 // 第一个参数是可hook的方法名，它会有ts类型提示。
 // 返回值就是您传入的第二个参数
-export const my_setPlayerArmour = setPlayerHook(
-  "setArmour",
-  function (armour: number) {
-    // 此时this指向当前的玩家
-    const flag = true; // 这里假设true
-    if (flag) {
-      console.log("my hook");
-      // 调用原始的设置盔甲，但我们故意减去1，并返回原始调用结果
-      return orig_playerMethods.setArmour.call(this, armour - 1);
-      // 绝对不能直接使用this.setArmour(armour)，这会造成死循环
-      // 在hook函数体内里您只能通过orig_playerMethods来调用所有原始函数。
-    } else {
-      return false;
-    }
-  },
-);
+export const my_setPlayerArmour = setPlayerHook("setArmour", function (armour: number) {
+  // 此时this指向当前的玩家
+  const flag = true; // 这里假设true
+  if (flag) {
+    console.log("my hook");
+    // 调用原始的设置盔甲，但我们故意减去1，并返回原始调用结果
+    return orig_playerMethods.setArmour.call(this, armour - 1);
+    // 绝对不能直接使用this.setArmour(armour)，这会造成死循环
+    // 在hook函数体内里您只能通过orig_playerMethods来调用所有原始函数。
+  } else {
+    return false;
+  }
+});
 
 /*
 setPlayerHook(
@@ -59,9 +56,7 @@ import { Vehicle, type LimitsEnum } from "@infernus/core";
 
 export const orig_CreateVehicle = Vehicle.__inject__.create;
 
-export function my_CreateVehicle(
-  ...args: Parameters<typeof orig_CreateVehicle>
-) {
+export function my_CreateVehicle(...args: Parameters<typeof orig_CreateVehicle>) {
   const id = orig_CreateVehicle(...args);
 
   if (id > 0 && id < LimitsEnum.MAX_VEHICLES) {

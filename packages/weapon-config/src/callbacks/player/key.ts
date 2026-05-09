@@ -33,10 +33,7 @@ import {
 import { innerWeaponConfig, innerGameModeConfig } from "../../config";
 import { sc_VendingMachines } from "../../constants";
 import { VendingMachineIndex } from "../../enums";
-import {
-  IEditableOnPlayerUseVendingMachine,
-  triggerOnPlayerUseVendingMachine,
-} from "../custom";
+import { IEditableOnPlayerUseVendingMachine, triggerOnPlayerUseVendingMachine } from "../custom";
 import { freezeSyncPacket } from "../../functions/internal/raknet";
 // import { setFakeFacingAngle } from "../../functions/internal/set";
 import { wc_VendingMachineUsed } from "../../functions/internal/vendingMachines";
@@ -44,8 +41,7 @@ import { angleBetweenPoints } from "../../utils/math";
 
 PlayerEvent.onClickMap(({ player, next }) => {
   if (
-    (GameMode.isAdminTeleportAllowed() &&
-      orig_playerMethods.isAdmin.call(player)) ||
+    (GameMode.isAdminTeleportAllowed() && orig_playerMethods.isAdmin.call(player)) ||
     wc_IsPlayerTeleportAllowed.call(player)
   ) {
     if (!isDying.get(player.id)) {
@@ -79,11 +75,7 @@ PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
       const tick = Date.now();
       const diff = tick - lastShot.get(player.id).tick;
 
-      if (
-        lastShot.get(player.id).tick &&
-        diff < 1200 &&
-        !cBugFroze.get(player.id)
-      ) {
+      if (lastShot.get(player.id).tick && diff < 1200 && !cBugFroze.get(player.id)) {
         orig_playerMethods.playSound.call(player, 1055, 0.0, 0.0, 0.0);
 
         if (
@@ -197,14 +189,8 @@ PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
 
         const { z } = orig_playerMethods.getPos.call(player)!;
 
-        for (
-          let i = 0, healthGiven = 35.0;
-          i < sc_VendingMachines.length;
-          i++
-        ) {
-          if (
-            Math.abs(z - sc_VendingMachines[i][VendingMachineIndex.posZ]) > 1.5
-          ) {
+        for (let i = 0, healthGiven = 35.0; i < sc_VendingMachines.length; i++) {
+          if (Math.abs(z - sc_VendingMachines[i][VendingMachineIndex.posZ]) > 1.5) {
             continue;
           }
 

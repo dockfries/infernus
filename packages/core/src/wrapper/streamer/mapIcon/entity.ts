@@ -42,21 +42,12 @@ export class DynamicMapIcon {
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
       throw new DynamicMapIconException("Cannot create again");
-    if (!this.sourceInfo)
-      throw new DynamicMapIconException("Cannot create with only id");
-    let {
-      style,
-      streamDistance,
-      worldId,
-      interiorId,
-      playerId,
-      areaId,
-      priority,
-    } = this.sourceInfo;
+    if (!this.sourceInfo) throw new DynamicMapIconException("Cannot create with only id");
+    let { style, streamDistance, worldId, interiorId, playerId, areaId, priority } =
+      this.sourceInfo;
     const { x, y, z, type, color: color, extended } = this.sourceInfo;
 
-    if (type < 0 || type > 63)
-      throw new DynamicMapIconException("Invalid map icon type");
+    if (type < 0 || type > 63) throw new DynamicMapIconException("Invalid map icon type");
 
     style ??= MapIconStyles.LOCAL;
     streamDistance ??= StreamerDistances.MAP_ICON_SD;
@@ -118,9 +109,7 @@ export class DynamicMapIcon {
   }
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new DynamicMapIconException(
-        "Cannot destroy the map icon before create",
-      );
+      throw new DynamicMapIconException("Cannot destroy the map icon before create");
     if (!INTERNAL_FLAGS.skip) {
       DynamicMapIcon.__inject__.destroy(this.id);
     }
@@ -129,20 +118,13 @@ export class DynamicMapIcon {
     return this;
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID)
-      return true;
+    if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID) return true;
     return DynamicMapIcon.isValid(this.id);
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new DynamicMapIconException(
-        "Cannot toggle callbacks before create",
-      );
-    return Streamer.toggleItemCallbacks(
-      StreamerItemTypes.MAP_ICON,
-      this.id,
-      toggle,
-    );
+      throw new DynamicMapIconException("Cannot toggle callbacks before create");
+    return Streamer.toggleItemCallbacks(StreamerItemTypes.MAP_ICON, this.id, toggle);
   }
   isToggleCallbacks(): boolean {
     if (this.id === StreamerMiscellaneous.INVALID_ID) return false;
@@ -150,11 +132,7 @@ export class DynamicMapIcon {
   }
   static isValid = IsValidDynamicMapIcon;
   static togglePlayerUpdate(player: Player, update = true) {
-    return Streamer.toggleItemUpdate(
-      player,
-      StreamerItemTypes.MAP_ICON,
-      update,
-    );
+    return Streamer.toggleItemUpdate(player, StreamerItemTypes.MAP_ICON, update);
   }
   static hideForPlayer(player: Player, z = -50000) {
     Streamer.updateEx(player, 0, 0, z);

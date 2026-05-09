@@ -7,20 +7,11 @@ import {
   Checkpoint,
   RaceCheckpoint,
 } from "@infernus/core";
-import {
-  internalLeaveCP,
-  internalLeaveRaceCP,
-} from "../../callbacks/checkpoint";
-import {
-  IEditableOnPlayerPrepareDeath,
-  triggerOnPlayerPrepareDeath,
-} from "../../callbacks/custom";
+import { internalLeaveCP, internalLeaveRaceCP } from "../../callbacks/checkpoint";
+import { IEditableOnPlayerPrepareDeath, triggerOnPlayerPrepareDeath } from "../../callbacks/custom";
 import { internalPlayerDeath } from "../../callbacks/player/spawn";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
-import {
-  orig_playerMethods,
-  orig_PlayerTextDrawHide,
-} from "../../hooks/origin";
+import { orig_playerMethods, orig_PlayerTextDrawHide } from "../../hooks/origin";
 import {
   syncData,
   delayedDeathTimer,
@@ -52,10 +43,7 @@ export function wc_DeathSkipEnd(player: Player) {
     }
   }
 
-  orig_playerMethods.setArmedWeapon.call(
-    player,
-    syncData.get(player.id).weapon,
-  );
+  orig_playerMethods.setArmedWeapon.call(player, syncData.get(player.id).weapon);
   orig_playerMethods.setSpecialAction.call(player, SpecialActionsEnum.NONE);
 }
 
@@ -72,11 +60,7 @@ export function wc_DelayedDeath(
   useTrigger("OnPlayerDeath")!(
     withTriggerOptions({
       skipToNext: internalPlayerDeath,
-      args: [
-        player.id,
-        typeof issuerId === "number" ? issuerId : issuerId.id,
-        reason,
-      ],
+      args: [player.id, typeof issuerId === "number" ? issuerId : issuerId.id, reason],
     }),
   );
 }
@@ -108,10 +92,7 @@ export function playerDeath(
 
   const action = orig_playerMethods.getSpecialAction.call(player);
 
-  if (
-    action !== SpecialActionsEnum.NONE &&
-    action !== SpecialActionsEnum.DUCK
-  ) {
+  if (action !== SpecialActionsEnum.NONE && action !== SpecialActionsEnum.DUCK) {
     if (action === SpecialActionsEnum.USEJETPACK) {
       orig_playerMethods.clearAnimations.call(player);
     }
@@ -119,11 +100,7 @@ export function playerDeath(
     orig_playerMethods.setSpecialAction.call(player, SpecialActionsEnum.NONE);
 
     if (action === SpecialActionsEnum.USEJETPACK) {
-      const {
-        x: vx,
-        y: vy,
-        z: vz,
-      } = orig_playerMethods.getVelocity.call(player);
+      const { x: vx, y: vy, z: vz } = orig_playerMethods.getVelocity.call(player);
       orig_playerMethods.setVelocity.call(player, vx, vy, vz);
     }
   }
@@ -214,10 +191,7 @@ export function wc_PlayerDeathRespawn(player: Player) {
     orig_playerMethods.setPos.call(player, x, y, z);
   }
 
-  orig_playerMethods.setVirtualWorld.call(
-    player,
-    innerWeaponConfig.DEATH_WORLD,
-  );
+  orig_playerMethods.setVirtualWorld.call(player, innerWeaponConfig.DEATH_WORLD);
   // setFakeFacingAngle(player);
   orig_playerMethods.toggleSpectating.call(player, true);
   orig_playerMethods.toggleSpectating.call(player, false);

@@ -71,13 +71,7 @@ PlayerEvent.onConnect(({ player, next }) => {
   // Create a local stream with an audibility distance of 40.0, an unlimited number of listeners
   // and the name 'Local' (the name 'Local' will be displayed in red in the players' speakerlist)
   else {
-    const stream = new DynamicLocalPlayerStream(
-      40.0,
-      SV_INFINITY,
-      player,
-      0xff0000ff,
-      "Local",
-    );
+    const stream = new DynamicLocalPlayerStream(40.0, SV_INFINITY, player, 0xff0000ff, "Local");
 
     if (stream.ptr === SV_NULL) {
       return next();
@@ -85,10 +79,7 @@ PlayerEvent.onConnect(({ player, next }) => {
 
     local_stream.set(player, stream);
 
-    player.sendClientMessage(
-      -1,
-      "Press Z to talk to global chat and B to talk to local chat.",
-    );
+    player.sendClientMessage(-1, "Press Z to talk to global chat and B to talk to local chat.");
 
     // Attach the player to the global stream as a listener
     if (global_stream) {

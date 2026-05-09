@@ -44,28 +44,10 @@ export class Menu {
     if (this._id !== InvalidEnum.MENU) {
       throw new MenuException("Cannot be created twice");
     }
-    const {
-      title,
-      columns,
-      x,
-      y,
-      colWidth,
-      charset = "ISO-8859-1",
-    } = this.sourceInfo!;
+    const { title, columns, x, y, colWidth, charset = "ISO-8859-1" } = this.sourceInfo!;
     const [col1Width, col2Width] = colWidth;
-    this._id = Menu.__inject__.create(
-      title,
-      columns,
-      x,
-      y,
-      col1Width,
-      col2Width,
-      charset,
-    );
-    if (
-      this.id === InvalidEnum.MENU ||
-      Menu.getInstances().length === LimitsEnum.MAX_MENUS
-    ) {
+    this._id = Menu.__inject__.create(title, columns, x, y, col1Width, col2Width, charset);
+    if (this.id === InvalidEnum.MENU || Menu.getInstances().length === LimitsEnum.MAX_MENUS) {
       throw new MenuException("Cannot create menu");
     }
     menuPool.set(this._id, this);
@@ -73,8 +55,7 @@ export class Menu {
   }
 
   destroy(): this {
-    if (this._id === InvalidEnum.MENU)
-      throw new MenuException("Cannot destroy before create");
+    if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot destroy before create");
     if (!INTERNAL_FLAGS.skip) {
       Menu.__inject__.destroy(this.id);
     }
@@ -84,24 +65,16 @@ export class Menu {
   }
 
   addItem(column: number, title: string): this {
-    if (this._id === InvalidEnum.MENU)
-      throw new MenuException("Cannot addItem before create");
-    if (column !== 0 && column !== 1)
-      throw new MenuException("Wrong number of columns");
-    Menu.__inject__.addItem(
-      this.id,
-      column,
-      title,
-      this.sourceInfo?.charset || "ISO-8859-1",
-    );
+    if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot addItem before create");
+    if (column !== 0 && column !== 1) throw new MenuException("Wrong number of columns");
+    Menu.__inject__.addItem(this.id, column, title, this.sourceInfo?.charset || "ISO-8859-1");
     return this;
   }
 
   setColumnHeader(column: number, header: string): this {
     if (this._id === InvalidEnum.MENU)
       throw new MenuException("Cannot setColumnHeader before create");
-    if (column !== 0 && column !== 1)
-      throw new MenuException("Wrong number of columns");
+    if (column !== 0 && column !== 1) throw new MenuException("Wrong number of columns");
     Menu.__inject__.setColumnHeader(
       this.id,
       column,
@@ -112,15 +85,13 @@ export class Menu {
   }
 
   disable(): this {
-    if (this._id === InvalidEnum.MENU)
-      throw new MenuException("Cannot disable menu before create");
+    if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot disable menu before create");
     Menu.__inject__.disable(this.id);
     return this;
   }
 
   disableRow(row: number) {
-    if (this._id === InvalidEnum.MENU)
-      throw new MenuException("Cannot disable row before create");
+    if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot disable row before create");
     return Menu.__inject__.disableRow(this.id, row);
   }
 
@@ -130,14 +101,12 @@ export class Menu {
   }
 
   showForPlayer(player: Player): boolean {
-    if (this._id === InvalidEnum.MENU)
-      throw new MenuException("Cannot show menu before create");
+    if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot show menu before create");
     return Menu.__inject__.showForPlayer(this.id, player.id);
   }
 
   hideForPlayer(player: Player): boolean {
-    if (this._id === InvalidEnum.MENU)
-      throw new MenuException("Cannot hide menu before create");
+    if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot hide menu before create");
     return Menu.__inject__.hideForPlayer(this.id, player.id);
   }
 
@@ -175,16 +144,10 @@ export class Menu {
   }
 
   getItem(column: number, item: number) {
-    if (this._id === InvalidEnum.MENU)
-      throw new MenuException("Cannot get item before create");
+    if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot get item before create");
     if (item < 0 || item > this.getItems(column) - 1)
       throw new MenuException("invalid getItem range");
-    return Menu.__inject__.getItem(
-      this.id,
-      column,
-      item,
-      this.sourceInfo?.charset || "ISO-8859-1",
-    );
+    return Menu.__inject__.getItem(this.id, column, item, this.sourceInfo?.charset || "ISO-8859-1");
   }
 
   static isValid(menuId: number) {

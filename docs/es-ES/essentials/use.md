@@ -38,17 +38,17 @@ interface IMyScript extends IFilterScript {
 const MyScript: IMyScript = {
   name: "my_script",
   load(...args) {
-    console.log('Mi script cargó.', args);
+    console.log("Mi script cargó.", args);
   },
   unload() {
-    console.log('Mi script se descargó.');
-  }
+    console.log("Mi script se descargó.");
+  },
 };
 
 // Ningún parámetro es pasado al método load
 GameMode.use(MyScript);
 // Pasa parámetros al método load
-GameMode.use(MyScript, 'arg1', 'arg2', 'arg...');
+GameMode.use(MyScript, "arg1", "arg2", "arg...");
 ```
 
 ::: tip
@@ -87,7 +87,7 @@ Además, no debe llamar a `script.load()` o `script.unload()`. Debe usar el [car
 
 ```ts
 const MyScript = {
-  name: 'my_script',
+  name: "my_script",
   load(...args) {
     const off1 = PlayerEvent.onCommandText("foo", ({ player, next }) => {
       return next();
@@ -99,10 +99,8 @@ const MyScript = {
 
     return [off1, off2];
   },
-  unload() {
-
-  }
-}
+  unload() {},
+};
 
 GameMode.use(MyScript);
 ```

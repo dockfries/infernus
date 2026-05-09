@@ -1,17 +1,7 @@
-import {
-  PlayerEvent,
-  Player,
-  InvalidEnum,
-  PlayerStateEnum,
-} from "@infernus/core";
+import { PlayerEvent, Player, InvalidEnum, PlayerStateEnum } from "@infernus/core";
 import { innerWeaponConfig } from "../../config";
 import { orig_playerMethods } from "../../hooks/origin";
-import {
-  spectating,
-  vendingUseTimer,
-  isDying,
-  lastVehicleTick,
-} from "../../struct";
+import { spectating, vendingUseTimer, isDying, lastVehicleTick } from "../../struct";
 import { sendLastSyncPacket } from "../../functions/internal/raknet";
 import { clearAnimationsForPlayer } from "../../functions/internal/anim";
 import { setHealthBarVisible } from "../../functions/internal/set";
@@ -33,24 +23,16 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
 
   if (
     isDying.get(player.id) &&
-    (newState === PlayerStateEnum.DRIVER ||
-      newState === PlayerStateEnum.PASSENGER)
+    (newState === PlayerStateEnum.DRIVER || newState === PlayerStateEnum.PASSENGER)
   ) {
     orig_playerMethods.toggleControllable.call(player, false);
   }
 
-  if (
-    oldState === PlayerStateEnum.DRIVER ||
-    oldState === PlayerStateEnum.PASSENGER
-  ) {
+  if (oldState === PlayerStateEnum.DRIVER || oldState === PlayerStateEnum.PASSENGER) {
     lastVehicleTick.set(player.id, Date.now());
 
     if (newState === PlayerStateEnum.ONFOOT) {
-      const {
-        x: vx,
-        y: vy,
-        z: vz,
-      } = orig_playerMethods.getVelocity.call(player);
+      const { x: vx, y: vy, z: vz } = orig_playerMethods.getVelocity.call(player);
 
       if (vx * vx + vy * vy + vz * vz <= 0.05) {
         Player.getInstances().forEach((i) => {

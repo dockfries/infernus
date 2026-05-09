@@ -1,4 +1,4 @@
-/* 
+/*
   https://github.com/openmultiplayer/omp-stdlib
   new scripting api (natives and callbacks);
   

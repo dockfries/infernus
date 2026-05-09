@@ -5,13 +5,7 @@ import { PawnJson } from "../types";
 import { GLOBAL_DEPS_PATH } from "./config";
 
 export async function getPawnJson(owner: string, repo: string, ref: string) {
-  const localPawnJsonPath = path.resolve(
-    GLOBAL_DEPS_PATH,
-    owner,
-    repo,
-    ref,
-    "pawn.json",
-  );
+  const localPawnJsonPath = path.resolve(GLOBAL_DEPS_PATH, owner, repo, ref, "pawn.json");
 
   try {
     return (await fs.readJson(localPawnJsonPath)) as PawnJson;

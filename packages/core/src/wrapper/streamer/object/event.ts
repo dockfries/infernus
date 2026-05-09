@@ -83,14 +83,7 @@ const [onPlayerEditDynamicObject] = defineEvent({
 const [onPlayerSelectDynamicObject] = defineEvent({
   name: "OnPlayerSelectDynamicObject",
   identifier: "iiifff",
-  beforeEach(
-    pid: number,
-    oid: number,
-    modelId: number,
-    x: number,
-    y: number,
-    z: number,
-  ) {
+  beforeEach(pid: number, oid: number, modelId: number, x: number, y: number, z: number) {
     return {
       player: Player.getInstance(pid)!,
       object: DynamicObject.getInstance(oid)!,
@@ -105,14 +98,7 @@ const [onPlayerSelectDynamicObject] = defineEvent({
 const [onPlayerShootDynamicObject] = defineEvent({
   name: "OnPlayerShootDynamicObject",
   identifier: "iiifff",
-  beforeEach(
-    pid: number,
-    weapon: WeaponEnum,
-    oid: number,
-    x: number,
-    y: number,
-    z: number,
-  ) {
+  beforeEach(pid: number, weapon: WeaponEnum, oid: number, x: number, y: number, z: number) {
     return {
       player: Player.getInstance(pid)!,
       object: DynamicObject.getInstance(oid)!,

@@ -15,19 +15,9 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 };
 
 // Here are some i18n functions used to override the original functions
-export const SendClientMessage = (
-  player: Player,
-  color: string | number,
-  msg: string,
-): boolean => {
+export const SendClientMessage = (player: Player, color: string | number, msg: string): boolean => {
   const res = processMsg(msg, player.charset);
-  return !!samp.callNative(
-    "SendClientMessage",
-    `ii${res[0]}`,
-    player.id,
-    rgba(color),
-    res[1],
-  );
+  return !!samp.callNative("SendClientMessage", `ii${res[0]}`, player.id, rgba(color), res[1]);
 };
 
 export const SendClientMessageToAll = (
@@ -35,9 +25,7 @@ export const SendClientMessageToAll = (
   color: string | number,
   msg: string,
 ): boolean => {
-  return players
-    .map((p) => SendClientMessage(p, color, msg))
-    .every((v) => v === true);
+  return players.map((p) => SendClientMessage(p, color, msg)).every((v) => v === true);
 };
 
 export const SendPlayerMessageToPlayer = (
@@ -46,13 +34,7 @@ export const SendPlayerMessageToPlayer = (
   message: string,
 ): boolean => {
   const res = processMsg(message, player.charset);
-  return !!samp.callNative(
-    "SendPlayerMessageToPlayer",
-    `ii${res[0]}`,
-    player.id,
-    senderId,
-    res[1],
-  );
+  return !!samp.callNative("SendPlayerMessageToPlayer", `ii${res[0]}`, player.id, senderId, res[1]);
 };
 
 export const SendPlayerMessageToAll = (
@@ -65,11 +47,7 @@ export const SendPlayerMessageToAll = (
     .every((v) => v === true);
 };
 
-export const ShowPlayerDialog = (
-  player: Player,
-  id: number,
-  dialog: IDialog,
-): boolean => {
+export const ShowPlayerDialog = (player: Player, id: number, dialog: IDialog): boolean => {
   const { charset } = player;
   const { style, caption, info, button1, button2 } = dialog;
   const [flag, processCaption] = processMsg(caption || "", charset);
@@ -103,19 +81,10 @@ export const GetPlayerName = (player: Player) => {
 };
 
 export const SetPlayerName = (player: Player, name: string): number => {
-  return samp.callNative(
-    "SetPlayerName",
-    "ia",
-    player.id,
-    I18n.encodeToBuf(name, player.charset),
-  );
+  return samp.callNative("SetPlayerName", "ia", player.id, I18n.encodeToBuf(name, player.charset));
 };
 
-export const BanEx = (
-  playerId: number,
-  reason: string,
-  charset: string,
-): boolean => {
+export const BanEx = (playerId: number, reason: string, charset: string): boolean => {
   const buf = I18n.encodeToBuf(reason, charset);
   return !!samp.callNative("BanEx", "ia", playerId, buf);
 };
@@ -274,14 +243,7 @@ export const GetDynamicObjectMaterial = (
     number[],
     number,
     number,
-  ] = samp.callNative(
-    "GetDynamicObjectMaterial",
-    "iiIAAIii",
-    objectId,
-    materialIndex,
-    64,
-    64,
-  );
+  ] = samp.callNative("GetDynamicObjectMaterial", "iiIAAIii", objectId, materialIndex, 64, 64);
   return {
     modelId,
     txdName: I18n.decodeFromBuf(I18n.getValidStr(txdNameBuf), charset),
@@ -296,34 +258,15 @@ export const GetDynamicObjectMaterialText = (
   materialIndex: number,
   charset: string,
 ) => {
-  const [
-    text,
-    materialSize,
-    fontFace,
-    fontSize,
-    bold,
-    fontColor,
-    backColor,
-    textAlignment,
-    ret,
-  ] = samp.callNative(
-    "GetDynamicObjectMaterialText",
-    "iiAIAIIIIIii",
-    objectId,
-    materialIndex,
-    2048,
-    32,
-  ) as [
-    number[],
-    number,
-    number[],
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-  ];
+  const [text, materialSize, fontFace, fontSize, bold, fontColor, backColor, textAlignment, ret] =
+    samp.callNative(
+      "GetDynamicObjectMaterialText",
+      "iiAIAIIIIIii",
+      objectId,
+      materialIndex,
+      2048,
+      32,
+    ) as [number[], number, number[], number, number, number, number, number, number];
   const textStr = I18n.decodeFromBuf(text, charset);
   const fontFaceStr = I18n.decodeFromBuf(fontFace, charset);
   return {
@@ -405,17 +348,7 @@ export const GetObjectMaterialText = (
     backColor = 0,
     textAlignment = 0,
     ret,
-  ]: [
-    number[],
-    number,
-    number[],
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-  ] = samp.callNative(
+  ]: [number[], number, number[], number, number, number, number, number, number] = samp.callNative(
     "GetObjectMaterialText",
     "iiAiIAiIIIII",
     objectId,
@@ -487,17 +420,7 @@ export const GetPlayerObjectMaterialText = (
     backColor = 0,
     textAlignment = 0,
     ret,
-  ]: [
-    number[],
-    number,
-    number[],
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-  ] = samp.callNative(
+  ]: [number[], number, number[], number, number, number, number, number, number] = samp.callNative(
     "GetPlayerObjectMaterialText",
     "iiiAiIAiIIIII",
     playerId,
@@ -584,13 +507,7 @@ export const Update3DTextLabelText = (
   text: string,
 ): boolean => {
   const buf = I18n.encodeToBuf(text, charset);
-  return !!samp.callNative(
-    "Update3DTextLabelText",
-    "iia",
-    id,
-    rgba(color),
-    buf,
-  );
+  return !!samp.callNative("Update3DTextLabelText", "iia", id, rgba(color), buf);
 };
 
 export const UpdatePlayer3DTextLabelText = (
@@ -601,32 +518,16 @@ export const UpdatePlayer3DTextLabelText = (
   text: string,
 ): boolean => {
   const buf = I18n.encodeToBuf(text, charset);
-  return !!samp.callNative(
-    "UpdatePlayer3DTextLabelText",
-    "iiia",
-    playerId,
-    id,
-    rgba(color),
-    buf,
-  );
+  return !!samp.callNative("UpdatePlayer3DTextLabelText", "iiia", playerId, id, rgba(color), buf);
 };
 
 export const Get3DTextLabelText = (charset: string, id: number) => {
-  const [buf, ret]: [number[], number] = samp.callNative(
-    "Get3DTextLabelText",
-    "iAi",
-    id,
-    144,
-  );
+  const [buf, ret]: [number[], number] = samp.callNative("Get3DTextLabelText", "iAi", id, 144);
   const text = I18n.decodeFromBuf(buf, charset);
   return { text, buf, ret: !!ret };
 };
 
-export const GetPlayer3DTextLabelText = (
-  charset: string,
-  playerId: number,
-  id: number,
-) => {
+export const GetPlayer3DTextLabelText = (charset: string, playerId: number, id: number) => {
   const [buf, ret]: [number[], number] = samp.callNative(
     "GetPlayer3DTextLabelText",
     "iiAi",
@@ -638,11 +539,7 @@ export const GetPlayer3DTextLabelText = (
   return { text, buf, ret: !!ret };
 };
 
-export const GetMenuColumnHeader = (
-  menuId: number,
-  column: number,
-  charset: string,
-) => {
+export const GetMenuColumnHeader = (menuId: number, column: number, charset: string) => {
   const [buf, ret]: [number[], number] = samp.callNative(
     "GetMenuColumnHeader",
     "iiAi",
@@ -654,12 +551,7 @@ export const GetMenuColumnHeader = (
   return { header, buf, ret: !!ret };
 };
 
-export const GetMenuItem = (
-  menuId: number,
-  column: number,
-  itemId: number,
-  charset: string,
-) => {
+export const GetMenuItem = (menuId: number, column: number, itemId: number, charset: string) => {
   const [buf, ret]: [number[], number] = samp.callNative(
     "GetMenuItem",
     "iiiAi",
@@ -699,13 +591,7 @@ export const AddMenuItem = (
   menuText: string,
   charset: string,
 ): number => {
-  return samp.callNative(
-    "AddMenuItem",
-    "iia",
-    menuId,
-    column,
-    I18n.encodeToBuf(menuText, charset),
-  );
+  return samp.callNative("AddMenuItem", "iia", menuId, column, I18n.encodeToBuf(menuText, charset));
 };
 
 export const SetMenuColumnHeader = (

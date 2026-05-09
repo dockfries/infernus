@@ -116,11 +116,7 @@ function worldSelect(player: Player) {
     const s = date.getSeconds();
 
     const cString = `// ${D}-${M}-${Y} @ ${h}:${m}:${s}\nSetWeather(${gWorldStatus[1]});\nSetWorldTime(${gWorldStatus[0]});\n`;
-    const fullPath = path.resolve(
-      process.cwd(),
-      "scriptfiles",
-      "TIME-WEATHER.txt",
-    );
+    const fullPath = path.resolve(process.cwd(), "scriptfiles", "TIME-WEATHER.txt");
     fs.writeFile(fullPath, cString, { flag: "a" }, (err) => {
       if (err) {
         console.log('Failed to create the file "TIME-WEATHER.txt".\n');
@@ -142,72 +138,48 @@ function worldSelect(player: Player) {
 export function registerWorldSelect(options?: IFsDebugOptions) {
   if (options?.worldSelect === false) return [];
 
-  const gravity = PlayerEvent.onCommandText(
-    ["g", "gravity"],
-    ({ player, subcommand, next }) => {
-      if (!subcommand[0]) {
-        player.sendClientMessage(
-          COLOR_RED,
-          "[USAGE]: /g GRAVITY or /gravity GRAVITY",
-        );
-        return next();
-      }
-      const gravity = +subcommand[0] || 0;
-      GameMode.setGravity(gravity);
-      player.sendClientMessage(
-        COLOR_GREEN,
-        `[SUCCESS]: World gravity changed to ${gravity}`,
-      );
+  const gravity = PlayerEvent.onCommandText(["g", "gravity"], ({ player, subcommand, next }) => {
+    if (!subcommand[0]) {
+      player.sendClientMessage(COLOR_RED, "[USAGE]: /g GRAVITY or /gravity GRAVITY");
       return next();
-    },
-  );
+    }
+    const gravity = +subcommand[0] || 0;
+    GameMode.setGravity(gravity);
+    player.sendClientMessage(COLOR_GREEN, `[SUCCESS]: World gravity changed to ${gravity}`);
+    return next();
+  });
 
-  const weather = PlayerEvent.onCommandText(
-    ["w", "weather"],
-    ({ player, subcommand, next }) => {
-      if (!subcommand[0]) {
-        player.sendClientMessage(
-          COLOR_RED,
-          "[USAGE]: /w WEATHERID or /weather WEATHERID",
-        );
-        return next();
-      }
-      const idx = +subcommand[0] || 0;
-      if (idx < MIN_WEATHER_ID || idx > MAX_WEATHER_ID) {
-        player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid WEATHERID");
-        return next();
-      }
-      gWorldStatus[1] = idx;
-      GameMode.setWeather(idx);
-      player.sendClientMessage(
-        COLOR_GREEN,
-        `[SUCCESS]: Weather has changed to WEATHERID ${idx}`,
-      );
+  const weather = PlayerEvent.onCommandText(["w", "weather"], ({ player, subcommand, next }) => {
+    if (!subcommand[0]) {
+      player.sendClientMessage(COLOR_RED, "[USAGE]: /w WEATHERID or /weather WEATHERID");
       return next();
-    },
-  );
+    }
+    const idx = +subcommand[0] || 0;
+    if (idx < MIN_WEATHER_ID || idx > MAX_WEATHER_ID) {
+      player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid WEATHERID");
+      return next();
+    }
+    gWorldStatus[1] = idx;
+    GameMode.setWeather(idx);
+    player.sendClientMessage(COLOR_GREEN, `[SUCCESS]: Weather has changed to WEATHERID ${idx}`);
+    return next();
+  });
 
-  const time = PlayerEvent.onCommandText(
-    ["t", "time"],
-    ({ player, subcommand, next }) => {
-      if (!subcommand[0]) {
-        player.sendClientMessage(COLOR_RED, "[USAGE]: /t HOUR or /time HOUR");
-        return next();
-      }
-      const idx = +subcommand[0] || 0;
-      if (idx < MIN_TIME_ID || idx > MAX_TIME_ID) {
-        player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid HOUR");
-        return next();
-      }
-      gWorldStatus[0] = idx;
-      GameMode.setWorldTime(idx);
-      player.sendClientMessage(
-        COLOR_GREEN,
-        `[SUCCESS]: Time has changed to HOUR ${idx}`,
-      );
+  const time = PlayerEvent.onCommandText(["t", "time"], ({ player, subcommand, next }) => {
+    if (!subcommand[0]) {
+      player.sendClientMessage(COLOR_RED, "[USAGE]: /t HOUR or /time HOUR");
       return next();
-    },
-  );
+    }
+    const idx = +subcommand[0] || 0;
+    if (idx < MIN_TIME_ID || idx > MAX_TIME_ID) {
+      player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid HOUR");
+      return next();
+    }
+    gWorldStatus[0] = idx;
+    GameMode.setWorldTime(idx);
+    player.sendClientMessage(COLOR_GREEN, `[SUCCESS]: Time has changed to HOUR ${idx}`);
+    return next();
+  });
 
   const worldSel = PlayerEvent.onCommandText("wsel", ({ player, next }) => {
     const status = gPlayerStatus.get(player);

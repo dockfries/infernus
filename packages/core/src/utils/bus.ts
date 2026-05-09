@@ -20,17 +20,11 @@ export interface ExecMiddlewareOptions {
   skipToNext?: (...args: any[]) => any;
 }
 
-export const eventBus = new Map<
-  string,
-  ((...args: any) => PromisifyCallbackRet)[]
->();
+export const eventBus = new Map<string, ((...args: any) => PromisifyCallbackRet)[]>();
 
 const triggerBus = new Map<string, (...args: any[]) => number>();
 
-function transformReturnValue(
-  value: PromisifyCallbackRet,
-  defaultValue: boolean,
-) {
+function transformReturnValue(value: PromisifyCallbackRet, defaultValue: boolean) {
   if (typeof value === "boolean") return +value;
   if (typeof value === "number" && !isNaN(value)) return value;
   return +defaultValue;
@@ -41,13 +35,7 @@ function executeMiddlewares<T extends object>(
   startIndex: number,
   ...args: any[]
 ) {
-  const {
-    defaultValue = true,
-    name,
-    beforeEach,
-    afterEach,
-    throwOnError = false,
-  } = options;
+  const { defaultValue = true, name, beforeEach, afterEach, throwOnError = false } = options;
 
   const middlewares = eventBus.get(name);
   if (!middlewares || !middlewares.length) return +defaultValue;

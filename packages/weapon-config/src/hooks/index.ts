@@ -139,11 +139,7 @@ import { updateHealthBar } from "../functions/internal/set";
 export * from "./weapon";
 
 export const wc_SpawnPlayer = setPlayerHook("spawn", function () {
-  if (
-    this.id < 0 ||
-    this.id >= LimitsEnum.MAX_PLAYERS ||
-    isDying.get(this.id)
-  ) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS || isDying.get(this.id)) {
     return false;
   }
   if (playerHealth.get(this.id) === 0.0) {
@@ -167,11 +163,7 @@ export const wc_GetPlayerHealth = setPlayerHook("getHealth", function () {
   return { health: playerHealth.get(this.id), ret: true };
 });
 
-export function wcc_setPlayerHealth(
-  player: Player,
-  health: number,
-  armour = -1.0,
-) {
+export function wcc_setPlayerHealth(player: Player, health: number, armour = -1.0) {
   if (player.id < 0 || player.id >= LimitsEnum.MAX_PLAYERS) {
     return false;
   }
@@ -199,12 +191,9 @@ export function wcc_setPlayerHealth(
   return true;
 }
 
-export const wc_SetPlayerHealth = setPlayerHook(
-  "setHealth",
-  function (health: number) {
-    return wcc_setPlayerHealth(this, health);
-  },
-);
+export const wc_SetPlayerHealth = setPlayerHook("setHealth", function (health: number) {
+  return wcc_setPlayerHealth(this, health);
+});
 
 export const wc_GetPlayerArmour = setPlayerHook("getArmour", function () {
   if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
@@ -213,20 +202,17 @@ export const wc_GetPlayerArmour = setPlayerHook("getArmour", function () {
   return { armour: playerArmour.get(this.id), ret: true };
 });
 
-export const wc_SetPlayerArmour = setPlayerHook(
-  "setArmour",
-  function (armour: number) {
-    if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
-      return false;
-    }
-    if (armour > playerMaxArmour.get(this.id)) {
-      armour = playerMaxArmour.get(this.id);
-    }
-    playerArmour.set(this.id, armour);
-    updateHealthBar(this, true);
-    return true;
-  },
-);
+export const wc_SetPlayerArmour = setPlayerHook("setArmour", function (armour: number) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
+    return false;
+  }
+  if (armour > playerMaxArmour.get(this.id)) {
+    armour = playerMaxArmour.get(this.id);
+  }
+  playerArmour.set(this.id, armour);
+  updateHealthBar(this, true);
+  return true;
+});
 
 export const wc_GetPlayerTeam = setPlayerHook("getTeam", function () {
   if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
@@ -238,17 +224,14 @@ export const wc_GetPlayerTeam = setPlayerHook("getTeam", function () {
   return playerTeam.get(this.id);
 });
 
-export const wc_SetPlayerTeam = setPlayerHook(
-  "setTeam",
-  function (team: number) {
-    if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
-      return 0;
-    }
-    playerTeam.set(this.id, team);
-    orig_playerMethods.setTeam.call(this, team);
-    return 1;
-  },
-);
+export const wc_SetPlayerTeam = setPlayerHook("setTeam", function (team: number) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
+    return 0;
+  }
+  playerTeam.set(this.id, team);
+  orig_playerMethods.setTeam.call(this, team);
+  return 1;
+});
 
 export const wc_SendDeathMessage = setPlayerHook(
   "sendDeathMessage",
@@ -284,34 +267,20 @@ export const wc_SendDeathMessage = setPlayerHook(
   },
 );
 
-export const wc_ApplyAnimation = setPlayerHook(
-  "applyAnimation",
-  function (...args) {
-    if (
-      this.id < 0 ||
-      this.id >= LimitsEnum.MAX_PLAYERS ||
-      isDying.get(this.id)
-    ) {
-      return false;
-    }
-    return orig_playerMethods.applyAnimation.call(this, ...args);
-  },
-);
+export const wc_ApplyAnimation = setPlayerHook("applyAnimation", function (...args) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS || isDying.get(this.id)) {
+    return false;
+  }
+  return orig_playerMethods.applyAnimation.call(this, ...args);
+});
 
-export const wc_ClearAnimations = setPlayerHook(
-  "clearAnimations",
-  function (...args) {
-    if (
-      this.id < 0 ||
-      this.id >= LimitsEnum.MAX_PLAYERS ||
-      isDying.get(this.id)
-    ) {
-      return false;
-    }
-    lastStopTick.set(this.id, Date.now());
-    return orig_playerMethods.clearAnimations.call(this, ...args);
-  },
-);
+export const wc_ClearAnimations = setPlayerHook("clearAnimations", function (...args) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS || isDying.get(this.id)) {
+    return false;
+  }
+  lastStopTick.set(this.id, Date.now());
+  return orig_playerMethods.clearAnimations.call(this, ...args);
+});
 
 export const wc_AddPlayerClass = function (
   modelId: number,
@@ -457,128 +426,94 @@ export const wc_SetSpawnInfo = setPlayerHook(
   },
 );
 
-export const wc_TogglePlayerSpectating = setPlayerHook(
-  "toggleSpectating",
-  function (toggle) {
-    if (orig_playerMethods.toggleSpectating.call(this, toggle)) {
-      if (toggle) {
-        if (delayedDeathTimer.get(this.id)) {
-          clearTimeout(delayedDeathTimer.get(this.id)!);
-          delayedDeathTimer.set(this.id, null);
-        }
-
-        if (deathTimer.get(this.id)) {
-          clearTimeout(deathTimer.get(this.id)!);
-          deathTimer.set(this.id, null);
-        }
-
-        if (innerWeaponConfig.CUSTOM_VENDING_MACHINES)
-          if (vendingUseTimer.get(this.id)) {
-            clearTimeout(vendingUseTimer.get(this.id)!);
-            vendingUseTimer.set(this.id, null);
-          }
+export const wc_TogglePlayerSpectating = setPlayerHook("toggleSpectating", function (toggle) {
+  if (orig_playerMethods.toggleSpectating.call(this, toggle)) {
+    if (toggle) {
+      if (delayedDeathTimer.get(this.id)) {
+        clearTimeout(delayedDeathTimer.get(this.id)!);
+        delayedDeathTimer.set(this.id, null);
       }
 
-      isDying.set(this.id, false);
-
-      if (restorePlayerTeleport.get(this.id)) {
-        restorePlayerTeleport.set(this.id, false);
-        orig_playerMethods.allowTeleport.call(this, true);
+      if (deathTimer.get(this.id)) {
+        clearTimeout(deathTimer.get(this.id)!);
+        deathTimer.set(this.id, null);
       }
-      return true;
+
+      if (innerWeaponConfig.CUSTOM_VENDING_MACHINES)
+        if (vendingUseTimer.get(this.id)) {
+          clearTimeout(vendingUseTimer.get(this.id)!);
+          vendingUseTimer.set(this.id, null);
+        }
     }
+
+    isDying.set(this.id, false);
+
+    if (restorePlayerTeleport.get(this.id)) {
+      restorePlayerTeleport.set(this.id, false);
+      orig_playerMethods.allowTeleport.call(this, true);
+    }
+    return true;
+  }
+  return false;
+});
+
+export const wc_TogglePlayerControllable = setPlayerHook("toggleControllable", function (toggle) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS || isDying.get(this.id)) {
     return false;
-  },
-);
-
-export const wc_TogglePlayerControllable = setPlayerHook(
-  "toggleControllable",
-  function (toggle) {
-    if (
-      this.id < 0 ||
-      this.id >= LimitsEnum.MAX_PLAYERS ||
-      isDying.get(this.id)
-    ) {
-      return false;
-    }
-    lastStopTick.set(this.id, Date.now());
-    return orig_playerMethods.toggleControllable.call(this, toggle);
-  },
-);
+  }
+  lastStopTick.set(this.id, Date.now());
+  return orig_playerMethods.toggleControllable.call(this, toggle);
+});
 
 export const wc_SetPlayerPos = setPlayerHook("setPos", function (x, y, z) {
-  if (
-    this.id < 0 ||
-    this.id >= LimitsEnum.MAX_PLAYERS ||
-    isDying.get(this.id)
-  ) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS || isDying.get(this.id)) {
     return false;
   }
   lastStopTick.set(this.id, Date.now());
   return orig_playerMethods.setPos.call(this, x, y, z);
 });
 
-export const wc_SetPlayerPosFindZ = setPlayerHook(
-  "setPosFindZ",
-  function (x, y, z) {
-    if (
-      this.id < 0 ||
-      this.id >= LimitsEnum.MAX_PLAYERS ||
-      isDying.get(this.id)
-    ) {
-      return false;
-    }
+export const wc_SetPlayerPosFindZ = setPlayerHook("setPosFindZ", function (x, y, z) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS || isDying.get(this.id)) {
+    return false;
+  }
+  lastStopTick.set(this.id, Date.now());
+  return orig_playerMethods.setPosFindZ.call(this, x, y, z);
+});
+
+export const wc_SetPlayerVelocity = setPlayerHook("setVelocity", function (x, y, z) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS || isDying.get(this.id)) {
+    return false;
+  }
+
+  if (x === 0.0 && y === 0.0 && z === 0.0) {
     lastStopTick.set(this.id, Date.now());
-    return orig_playerMethods.setPosFindZ.call(this, x, y, z);
-  },
-);
+  }
 
-export const wc_SetPlayerVelocity = setPlayerHook(
-  "setVelocity",
-  function (x, y, z) {
-    if (
-      this.id < 0 ||
-      this.id >= LimitsEnum.MAX_PLAYERS ||
-      isDying.get(this.id)
-    ) {
-      return false;
-    }
+  return orig_playerMethods.setVelocity.call(this, x, y, z);
+});
 
-    if (x === 0.0 && y === 0.0 && z === 0.0) {
-      lastStopTick.set(this.id, Date.now());
-    }
+export const wc_SetPlayerVirtualWorld = setPlayerHook("setVirtualWorld", function (worldId) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
+    return false;
+  }
+  world.set(this.id, worldId);
+  if (isDying.get(this.id)) {
+    return true;
+  }
+  return orig_playerMethods.setVirtualWorld.call(this, worldId);
+});
 
-    return orig_playerMethods.setVelocity.call(this, x, y, z);
-  },
-);
-
-export const wc_SetPlayerVirtualWorld = setPlayerHook(
-  "setVirtualWorld",
-  function (worldId) {
-    if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
-      return false;
-    }
-    world.set(this.id, worldId);
-    if (isDying.get(this.id)) {
-      return true;
-    }
-    return orig_playerMethods.setVirtualWorld.call(this, worldId);
-  },
-);
-
-export const wc_GetPlayerVirtualWorld = setPlayerHook(
-  "getVirtualWorld",
-  function () {
-    if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
-      return 0;
-    }
-    const worldId = orig_playerMethods.getVirtualWorld.call(this);
-    if (worldId === innerWeaponConfig.DEATH_WORLD) {
-      return world.get(this.id);
-    }
-    return worldId;
-  },
-);
+export const wc_GetPlayerVirtualWorld = setPlayerHook("getVirtualWorld", function () {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
+    return 0;
+  }
+  const worldId = orig_playerMethods.getVirtualWorld.call(this);
+  if (worldId === innerWeaponConfig.DEATH_WORLD) {
+    return world.get(this.id);
+  }
+  return worldId;
+});
 
 export const wc_PlayerSpectatePlayer = setPlayerHook(
   "spectatePlayer",
@@ -647,15 +582,7 @@ export function wc_AddStaticVehicle(
   color1: string | number,
   color2: string | number,
 ) {
-  const id = orig_AddStaticVehicle(
-    modelId,
-    spawnX,
-    spawnY,
-    spawnZ,
-    zAngle,
-    color1,
-    color2,
-  );
+  const id = orig_AddStaticVehicle(modelId, spawnX, spawnY, spawnZ, zAngle, color1, color2);
   if (id > 0 && id < LimitsEnum.MAX_VEHICLES) {
     vehicleAlive.set(id, true);
   }
@@ -712,15 +639,12 @@ export function wc_IsPlayerInRaceCheckpoint(player: Player) {
 
 RaceCheckpoint.isPlayerIn = wc_IsPlayerInRaceCheckpoint;
 
-export const wc_SetPlayerSpecialAction = setPlayerHook(
-  "setSpecialAction",
-  function (actionId) {
-    if (!wc_IsPlayerSpawned(this)) {
-      return false;
-    }
-    return orig_playerMethods.setSpecialAction.call(this, actionId);
-  },
-);
+export const wc_SetPlayerSpecialAction = setPlayerHook("setSpecialAction", function (actionId) {
+  if (!wc_IsPlayerSpawned(this)) {
+    return false;
+  }
+  return orig_playerMethods.setSpecialAction.call(this, actionId);
+});
 
 export function wc_TextDrawCreate(x: number, y: number, text: number[]) {
   const td = orig_TextDrawCreate(x, y, text);
@@ -733,234 +657,133 @@ export function wc_TextDrawCreate(x: number, y: number, text: number[]) {
 TextDraw.__inject__.create = wc_TextDrawCreate;
 
 export function wc_TextDrawDestroy(text: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawDestroy(text);
 }
 
 TextDraw.__inject__.destroy = wc_TextDrawDestroy;
 
 export function wc_TextDrawLetterSize(text: number, x: number, y: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawLetterSize(text, x, y);
 }
 
 TextDraw.__inject__.setLetterSize = wc_TextDrawLetterSize;
 
 export function wc_TextDrawTextSize(text: number, x: number, y: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawTextSize(text, x, y);
 }
 
 TextDraw.__inject__.setTextSize = wc_TextDrawTextSize;
 
-export function wc_TextDrawAlignment(
-  text: number,
-  alignment: TextDrawAlignEnum,
-) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+export function wc_TextDrawAlignment(text: number, alignment: TextDrawAlignEnum) {
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawAlignment(text, alignment);
 }
 
 TextDraw.__inject__.setAlignment = wc_TextDrawAlignment;
 
 export function wc_TextDrawColor(text: number, color: string | number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawColor(text, color);
 }
 
 TextDraw.__inject__.setColor = wc_TextDrawColor;
 
 export function wc_TextDrawUseBox(text: number, use: boolean) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawUseBox(text, use);
 }
 
 TextDraw.__inject__.useBox = wc_TextDrawUseBox;
 
 export function wc_TextDrawBoxColor(text: number, color: string | number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawBoxColor(text, color);
 }
 
 TextDraw.__inject__.setBoxColor = wc_TextDrawBoxColor;
 
 export function wc_TextDrawSetShadow(text: number, size: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawSetShadow(text, size);
 }
 
 TextDraw.__inject__.setShadow = wc_TextDrawSetShadow;
 
 export function wc_TextDrawSetOutline(text: number, size: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawSetOutline(text, size);
 }
 
 TextDraw.__inject__.setOutline = wc_TextDrawSetOutline;
 
-export function wc_TextDrawBackgroundColor(
-  text: number,
-  color: string | number,
-) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+export function wc_TextDrawBackgroundColor(text: number, color: string | number) {
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawBackgroundColor(text, color);
 }
 
 TextDraw.__inject__.setBackgroundColor = wc_TextDrawBackgroundColor;
 
 export function wc_TextDrawFont(text: number, font: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawFont(text, font);
 }
 
 TextDraw.__inject__.setFont = wc_TextDrawFont;
 
 export function wc_TextDrawSetProportional(text: number, set: boolean) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawSetProportional(text, set);
 }
 
 TextDraw.__inject__.setProportional = wc_TextDrawSetProportional;
 
 export function wc_TextDrawSetSelectable(text: number, set: boolean) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawSetSelectable(text, set);
 }
 
 TextDraw.__inject__.setSelectable = wc_TextDrawSetSelectable;
 
 export function wc_TextDrawShowForPlayer(playerId: number, text: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawShowForPlayer(playerId, text);
 }
 
 TextDraw.__inject__.showForPlayer = wc_TextDrawShowForPlayer;
 
 export function wc_TextDrawHideForPlayer(playerId: number, text: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawHideForPlayer(playerId, text);
 }
 
 TextDraw.__inject__.hideForPlayer = wc_TextDrawHideForPlayer;
 
 export function wc_TextDrawShowForAll(text: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawShowForAll(text);
 }
 
 TextDraw.__inject__.showForAll = wc_TextDrawShowForAll;
 
 export function wc_TextDrawHideForAll(text: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawHideForAll(text);
 }
 
 TextDraw.__inject__.hideForAll = wc_TextDrawHideForAll;
 
 export function wc_TextDrawSetString(text: number, string: number[]) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawSetString(text, string);
 }
 
 TextDraw.__inject__.setString = wc_TextDrawSetString;
 
 export function wc_TextDrawSetPreviewModel(text: number, modelIndex: number) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawSetPreviewModel(text, modelIndex);
 }
 
@@ -973,12 +796,7 @@ export function wc_TextDrawSetPreviewRot(
   fRotZ: number,
   fZoom?: number,
 ) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawSetPreviewRot(text, fRotX, fRotY, fRotZ, fZoom);
 }
 
@@ -989,25 +807,14 @@ export function wc_TextDrawSetPreviewVehCol(
   color1: string | number,
   color2: string | number,
 ) {
-  if (
-    text < 0 ||
-    text >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(text)
-  )
-    return false;
+  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
   return orig_TextDrawSetPreviewVehCol(text, color1, color2);
 }
 
 TextDraw.__inject__.setPreviewVehicleColors = wc_TextDrawSetPreviewVehCol;
 
-export function wc_CreatePlayerTextDraw(
-  playerId: number,
-  x: number,
-  y: number,
-  text: number[],
-) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
-    return InvalidEnum.TEXT_DRAW;
+export function wc_CreatePlayerTextDraw(playerId: number, x: number, y: number, text: number[]) {
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return InvalidEnum.TEXT_DRAW;
   const td = orig_CreatePlayerTextDraw(playerId, x, y, text);
   if (td !== InvalidEnum.TEXT_DRAW) {
     internalPlayerTextDraw.get(playerId)[td] = false;
@@ -1030,12 +837,7 @@ export function wc_PlayerTextDrawDestroy(playerId: number, text: number) {
 
 TextDraw.__inject__.destroyPlayer = wc_PlayerTextDrawDestroy;
 
-export function wc_PlayerTextDrawLetterSize(
-  playerId: number,
-  text: number,
-  x: number,
-  y: number,
-) {
+export function wc_PlayerTextDrawLetterSize(playerId: number, text: number, x: number, y: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1048,12 +850,7 @@ export function wc_PlayerTextDrawLetterSize(
 
 TextDraw.__inject__.setLetterSizePlayer = wc_PlayerTextDrawLetterSize;
 
-export function wc_PlayerTextDrawTextSize(
-  playerId: number,
-  text: number,
-  x: number,
-  y: number,
-) {
+export function wc_PlayerTextDrawTextSize(playerId: number, text: number, x: number, y: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1083,11 +880,7 @@ export function wc_PlayerTextDrawAlignment(
 
 TextDraw.__inject__.setAlignmentPlayer = wc_PlayerTextDrawAlignment;
 
-export function wc_PlayerTextDrawColor(
-  playerId: number,
-  text: number,
-  color: string | number,
-) {
+export function wc_PlayerTextDrawColor(playerId: number, text: number, color: string | number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1100,11 +893,7 @@ export function wc_PlayerTextDrawColor(
 
 TextDraw.__inject__.setColorPlayer = wc_PlayerTextDrawColor;
 
-export function wc_PlayerTextDrawUseBox(
-  playerId: number,
-  text: number,
-  use: boolean,
-) {
+export function wc_PlayerTextDrawUseBox(playerId: number, text: number, use: boolean) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1117,11 +906,7 @@ export function wc_PlayerTextDrawUseBox(
 
 TextDraw.__inject__.useBoxPlayer = wc_PlayerTextDrawUseBox;
 
-export function wc_PlayerTextDrawBoxColor(
-  playerId: number,
-  text: number,
-  color: string | number,
-) {
+export function wc_PlayerTextDrawBoxColor(playerId: number, text: number, color: string | number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1134,11 +919,7 @@ export function wc_PlayerTextDrawBoxColor(
 
 TextDraw.__inject__.setBoxColorPlayer = wc_PlayerTextDrawBoxColor;
 
-export function wc_PlayerTextDrawSetShadow(
-  playerId: number,
-  text: number,
-  size: number,
-) {
+export function wc_PlayerTextDrawSetShadow(playerId: number, text: number, size: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1151,11 +932,7 @@ export function wc_PlayerTextDrawSetShadow(
 
 TextDraw.__inject__.setShadowPlayer = wc_PlayerTextDrawSetShadow;
 
-export function wc_PlayerTextDrawSetOutline(
-  playerId: number,
-  text: number,
-  size: number,
-) {
+export function wc_PlayerTextDrawSetOutline(playerId: number, text: number, size: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1185,11 +962,7 @@ export function wc_PlayerTextDrawBackgroundColor(
 
 TextDraw.__inject__.setBackgroundColorPlayer = wc_PlayerTextDrawBackgroundColor;
 
-export function wc_PlayerTextDrawFont(
-  playerId: number,
-  text: number,
-  font: number,
-) {
+export function wc_PlayerTextDrawFont(playerId: number, text: number, font: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1202,11 +975,7 @@ export function wc_PlayerTextDrawFont(
 
 TextDraw.__inject__.setFontPlayer = wc_PlayerTextDrawFont;
 
-export function wc_PlayerTextDrawSetProportional(
-  playerId: number,
-  text: number,
-  set: boolean,
-) {
+export function wc_PlayerTextDrawSetProportional(playerId: number, text: number, set: boolean) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1219,11 +988,7 @@ export function wc_PlayerTextDrawSetProportional(
 
 TextDraw.__inject__.setProportionalPlayer = wc_PlayerTextDrawSetProportional;
 
-export function wc_PlayerTextDrawSetSelectable(
-  playerId: number,
-  text: number,
-  set: boolean,
-) {
+export function wc_PlayerTextDrawSetSelectable(playerId: number, text: number, set: boolean) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1262,11 +1027,7 @@ export function wc_PlayerTextDrawHide(playerId: number, text: number) {
 
 TextDraw.__inject__.hidePlayer = wc_PlayerTextDrawHide;
 
-export function wc_PlayerTextDrawSetString(
-  playerId: number,
-  text: number,
-  string: number[],
-) {
+export function wc_PlayerTextDrawSetString(playerId: number, text: number, string: number[]) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     text < 0 ||
@@ -1311,14 +1072,7 @@ export function wc_PlayerTextDrawSetPreviewRot(
     internalPlayerTextDraw.get(playerId)[text]
   )
     return false;
-  return orig_PlayerTextDrawSetPreviewRot(
-    playerId,
-    text,
-    fRotX,
-    fRotY,
-    fRotZ,
-    fZoom,
-  );
+  return orig_PlayerTextDrawSetPreviewRot(playerId, text, fRotX, fRotY, fRotZ, fZoom);
 }
 
 TextDraw.__inject__.setPreviewRotPlayer = wc_PlayerTextDrawSetPreviewRot;
@@ -1339,54 +1093,36 @@ export function wc_PlayerTextDrawSetPreviewVehC(
   return orig_PlayerTextDrawSetPreviewVehCol(playerId, text, color1, color2);
 }
 
-TextDraw.__inject__.setPreviewVehicleColorsPlayer =
-  wc_PlayerTextDrawSetPreviewVehC;
+TextDraw.__inject__.setPreviewVehicleColorsPlayer = wc_PlayerTextDrawSetPreviewVehC;
 
-export const wc_AllowPlayerTeleport = setPlayerHook(
-  "allowTeleport",
-  function (allow) {
-    if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
-      return false;
-    }
-    if (isDying.get(this.id)) {
-      restorePlayerTeleport.set(this.id, allow);
-      return true;
-    }
-    return orig_playerMethods.allowTeleport.call(this, allow);
-  },
-);
+export const wc_AllowPlayerTeleport = setPlayerHook("allowTeleport", function (allow) {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
+    return false;
+  }
+  if (isDying.get(this.id)) {
+    restorePlayerTeleport.set(this.id, allow);
+    return true;
+  }
+  return orig_playerMethods.allowTeleport.call(this, allow);
+});
 
-export const wc_IsPlayerTeleportAllowed = setPlayerHook(
-  "isTeleportAllowed",
-  function () {
-    if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) return false;
-    if (restorePlayerTeleport.get(this.id)) return true;
-    return orig_playerMethods.isTeleportAllowed.call(this);
-  },
-);
+export const wc_IsPlayerTeleportAllowed = setPlayerHook("isTeleportAllowed", function () {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) return false;
+  if (restorePlayerTeleport.get(this.id)) return true;
+  return orig_playerMethods.isTeleportAllowed.call(this);
+});
 
 export function wc_IsValidTextDraw(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return false;
   return orig_IsValidTextDraw(textId);
 }
 
 TextDraw.__inject__.isValid = wc_IsValidTextDraw;
 
-export function wc_IsTextDrawVisibleForPlayer(
-  playerId: number,
-  textId: number,
-) {
+export function wc_IsTextDrawVisibleForPlayer(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return false;
   return orig_IsTextDrawVisibleForPlayer(playerId, textId);
 }
@@ -1394,11 +1130,7 @@ export function wc_IsTextDrawVisibleForPlayer(
 TextDraw.__inject__.isVisibleForPlayer = wc_IsTextDrawVisibleForPlayer;
 
 export function wc_TextDrawGetString(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return { str: "", ret: false };
   return orig_TextDrawGetString(textId);
 }
@@ -1406,11 +1138,7 @@ export function wc_TextDrawGetString(textId: number) {
 TextDraw.__inject__.getString = wc_TextDrawGetString;
 
 export function wc_TextDrawSetPos(textId: number, x: number, y: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return false;
   return orig_TextDrawSetPos(textId, x, y);
 }
@@ -1418,11 +1146,7 @@ export function wc_TextDrawSetPos(textId: number, x: number, y: number) {
 TextDraw.__inject__.setPos = wc_TextDrawSetPos;
 
 export function wc_TextDrawGetLetterSize(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return { fX: 0, fY: 0, ret: false };
   return orig_TextDrawGetLetterSize(textId);
 }
@@ -1430,11 +1154,7 @@ export function wc_TextDrawGetLetterSize(textId: number) {
 TextDraw.__inject__.getLetterSize = wc_TextDrawGetLetterSize;
 
 export function wc_TextDrawGetTextSize(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return { fX: 0, fY: 0, ret: false };
   return orig_TextDrawGetTextSize(textId);
 }
@@ -1442,11 +1162,7 @@ export function wc_TextDrawGetTextSize(textId: number) {
 TextDraw.__inject__.getTextSize = wc_TextDrawGetTextSize;
 
 export function wc_TextDrawGetPos(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return { fX: 0, fY: 0, ret: false };
   return orig_TextDrawGetPos(textId);
 }
@@ -1454,83 +1170,49 @@ export function wc_TextDrawGetPos(textId: number) {
 TextDraw.__inject__.getPos = wc_TextDrawGetPos;
 
 export function wc_TextDrawGetColor(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
-    return 0;
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
   return orig_TextDrawGetColor(textId);
 }
 
 TextDraw.__inject__.getColor = wc_TextDrawGetColor;
 
 export function wc_TextDrawGetBoxColor(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
-    return 0;
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
   return orig_TextDrawGetBoxColor(textId);
 }
 
 TextDraw.__inject__.getBoxColor = wc_TextDrawGetBoxColor;
 
 export function wc_TextDrawGetBackgroundColor(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
-    return 0;
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
   return orig_TextDrawGetBackgroundColor(textId);
 }
 
 TextDraw.__inject__.getBackgroundColor = wc_TextDrawGetBackgroundColor;
 
 export function wc_TextDrawGetShadow(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
-    return 0;
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
   return orig_TextDrawGetShadow(textId);
 }
 
 TextDraw.__inject__.getShadow = wc_TextDrawGetShadow;
 
 export function wc_TextDrawGetOutline(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
-    return 0;
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
   return orig_TextDrawGetOutline(textId);
 }
 
 TextDraw.__inject__.getOutline = wc_TextDrawGetOutline;
 
 export function wc_TextDrawGetFont(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
-    return -1;
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return -1;
   return orig_TextDrawGetFont(textId);
 }
 
 TextDraw.__inject__.getFont = wc_TextDrawGetFont;
 
 export function wc_TextDrawIsBox(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return false;
   return orig_TextDrawIsBox(textId);
 }
@@ -1538,11 +1220,7 @@ export function wc_TextDrawIsBox(textId: number) {
 TextDraw.__inject__.isBox = wc_TextDrawIsBox;
 
 export function wc_TextDrawIsProportional(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return false;
   return orig_TextDrawIsProportional(textId);
 }
@@ -1550,11 +1228,7 @@ export function wc_TextDrawIsProportional(textId: number) {
 TextDraw.__inject__.isProportional = wc_TextDrawIsProportional;
 
 export function wc_TextDrawIsSelectable(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return false;
   return orig_TextDrawIsSelectable(textId);
 }
@@ -1562,35 +1236,21 @@ export function wc_TextDrawIsSelectable(textId: number) {
 TextDraw.__inject__.isSelectable = wc_TextDrawIsSelectable;
 
 export function wc_TextDrawGetAlignment(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
-    return -1;
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return -1;
   return orig_TextDrawGetAlignment(textId);
 }
 
 TextDraw.__inject__.getAlignment = wc_TextDrawGetAlignment;
 
 export function wc_TextDrawGetPreviewModel(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
-    return 0;
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
   return orig_TextDrawGetPreviewModel(textId);
 }
 
 TextDraw.__inject__.getPreviewModel = wc_TextDrawGetPreviewModel;
 
 export function wc_TextDrawGetPreviewRot(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return {
       fRotX: 0,
       fRotY: 0,
@@ -1603,16 +1263,8 @@ export function wc_TextDrawGetPreviewRot(textId: number) {
 
 TextDraw.__inject__.getPreviewRot = wc_TextDrawGetPreviewRot;
 
-export function wc_TextDrawSetStringForPlayer(
-  textId: number,
-  playerId: number,
-  string: number[],
-) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+export function wc_TextDrawSetStringForPlayer(textId: number, playerId: number, string: number[]) {
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return false;
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   return orig_TextDrawSetStringForPlayer(textId, playerId, string);
@@ -1647,8 +1299,7 @@ export function wc_IsPlayerTextDrawVisible(playerId: number, textId: number) {
 TextDraw.__inject__.isVisiblePlayer = wc_IsPlayerTextDrawVisible;
 
 export function wc_PlayerTextDrawGetString(playerId: number, textId: number) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
-    return { str: "", ret: false };
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return { str: "", ret: false };
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
@@ -1660,12 +1311,7 @@ export function wc_PlayerTextDrawGetString(playerId: number, textId: number) {
 
 TextDraw.__inject__.getStringPlayer = wc_PlayerTextDrawGetString;
 
-export function wc_PlayerTextDrawSetPos(
-  playerId: number,
-  textId: number,
-  x: number,
-  y: number,
-) {
+export function wc_PlayerTextDrawSetPos(playerId: number, textId: number, x: number, y: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     textId < 0 ||
@@ -1678,12 +1324,8 @@ export function wc_PlayerTextDrawSetPos(
 
 TextDraw.__inject__.setPosPlayer = wc_PlayerTextDrawSetPos;
 
-export function wc_PlayerTextDrawGetLetterSize(
-  playerId: number,
-  textId: number,
-) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
-    return { fX: 0, fY: 0, ret: false };
+export function wc_PlayerTextDrawGetLetterSize(playerId: number, textId: number) {
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return { fX: 0, fY: 0, ret: false };
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
@@ -1696,8 +1338,7 @@ export function wc_PlayerTextDrawGetLetterSize(
 TextDraw.__inject__.getLetterSizePlayer = wc_PlayerTextDrawGetLetterSize;
 
 export function wc_PlayerTextDrawGetTextSize(playerId: number, textId: number) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
-    return { fX: 0, fY: 0, ret: false };
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return { fX: 0, fY: 0, ret: false };
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
@@ -1710,8 +1351,7 @@ export function wc_PlayerTextDrawGetTextSize(playerId: number, textId: number) {
 TextDraw.__inject__.getTextSizePlayer = wc_PlayerTextDrawGetTextSize;
 
 export function wc_PlayerTextDrawGetPos(playerId: number, textId: number) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
-    return { fX: 0, fY: 0, ret: false };
+  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return { fX: 0, fY: 0, ret: false };
   if (
     textId < 0 ||
     textId >= LimitsEnum.MAX_PLAYER_TEXT_DRAWS ||
@@ -1801,10 +1441,7 @@ export function wc_PlayerTextDrawIsBox(playerId: number, textId: number) {
 
 TextDraw.__inject__.isBoxPlayer = wc_PlayerTextDrawIsBox;
 
-export function wc_PlayerTextDrawIsProportional(
-  playerId: number,
-  textId: number,
-) {
+export function wc_PlayerTextDrawIsProportional(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     textId < 0 ||
@@ -1817,10 +1454,7 @@ export function wc_PlayerTextDrawIsProportional(
 
 TextDraw.__inject__.isProportionalPlayer = wc_PlayerTextDrawIsProportional;
 
-export function wc_PlayerTextDrawIsSelectable(
-  playerId: number,
-  textId: number,
-) {
+export function wc_PlayerTextDrawIsSelectable(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
     textId < 0 ||
@@ -1833,10 +1467,7 @@ export function wc_PlayerTextDrawIsSelectable(
 
 TextDraw.__inject__.isSelectablePlayer = wc_PlayerTextDrawIsSelectable;
 
-export function wc_PlayerTextDrawGetAlignment(
-  playerId: number,
-  textId: number,
-) {
+export function wc_PlayerTextDrawGetAlignment(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return -1;
   if (
     textId < 0 ||
@@ -1849,10 +1480,7 @@ export function wc_PlayerTextDrawGetAlignment(
 
 TextDraw.__inject__.getAlignmentPlayer = wc_PlayerTextDrawGetAlignment;
 
-export function wc_PlayerTextDrawGetPreviewModel(
-  playerId: number,
-  textId: number,
-) {
+export function wc_PlayerTextDrawGetPreviewModel(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
   if (
     textId < 0 ||
@@ -1865,10 +1493,7 @@ export function wc_PlayerTextDrawGetPreviewModel(
 
 TextDraw.__inject__.getPreviewModelPlayer = wc_PlayerTextDrawGetPreviewModel;
 
-export function wc_PlayerTextDrawGetPreviewRot(
-  playerId: number,
-  textId: number,
-) {
+export function wc_PlayerTextDrawGetPreviewRot(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
     return {
       fRotX: 0,
@@ -1895,21 +1520,14 @@ export function wc_PlayerTextDrawGetPreviewRot(
 TextDraw.__inject__.getPreviewRotPlayer = wc_PlayerTextDrawGetPreviewRot;
 
 export function wc_TextDrawGetPreviewVehCol(textId: number) {
-  if (
-    textId < 0 ||
-    textId >= LimitsEnum.MAX_TEXT_DRAWS ||
-    internalTextDraw.get(textId)
-  )
+  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
     return { color1: 0, color2: 0, ret: false };
   return orig_TextDrawGetPreviewVehCol(textId);
 }
 
 TextDraw.__inject__.getPreviewVehicleColors = wc_TextDrawGetPreviewVehCol;
 
-export function wc_PlayerTextDrawGetBackgroundColor(
-  playerId: number,
-  textId: number,
-) {
+export function wc_PlayerTextDrawGetBackgroundColor(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
   if (
     textId < 0 ||
@@ -1920,13 +1538,9 @@ export function wc_PlayerTextDrawGetBackgroundColor(
   return orig_PlayerTextDrawGetBackgroundCol(playerId, textId);
 }
 
-TextDraw.__inject__.getBackgroundColorPlayer =
-  wc_PlayerTextDrawGetBackgroundColor;
+TextDraw.__inject__.getBackgroundColorPlayer = wc_PlayerTextDrawGetBackgroundColor;
 
-export function wc_PlayerTextDrawGetPreviewVehC(
-  playerId: number,
-  textId: number,
-) {
+export function wc_PlayerTextDrawGetPreviewVehC(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS)
     return { color1: 0, color2: 0, ret: false };
   if (
@@ -1938,8 +1552,7 @@ export function wc_PlayerTextDrawGetPreviewVehC(
   return orig_PlayerTextDrawGetPreviewVehCol(playerId, textId);
 }
 
-TextDraw.__inject__.getPreviewVehicleColorsPlayer =
-  wc_PlayerTextDrawGetPreviewVehC;
+TextDraw.__inject__.getPreviewVehicleColorsPlayer = wc_PlayerTextDrawGetPreviewVehC;
 
 export function wc_EditPlayerClass(
   classId: number,

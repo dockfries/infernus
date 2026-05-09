@@ -5,11 +5,7 @@ import ts from "typescript";
 export function typeCheck(packageName?: string) {
   const start = Date.now();
 
-  console.log(
-    packageName
-      ? `Type-checking ${packageName}...`
-      : "Type-checking all packages...",
-  );
+  console.log(packageName ? `Type-checking ${packageName}...` : "Type-checking all packages...");
 
   const sharedDepPkgs = [
     "colandreas",
@@ -37,16 +33,9 @@ export function typeCheck(packageName?: string) {
     configFile.include = Array.from(includePkgs);
   }
 
-  const parsedConfig = ts.parseJsonConfigFileContent(
-    configFile,
-    ts.sys,
-    process.cwd(),
-  );
+  const parsedConfig = ts.parseJsonConfigFileContent(configFile, ts.sys, process.cwd());
 
-  const program = ts.createProgram(
-    parsedConfig.fileNames,
-    parsedConfig.options,
-  );
+  const program = ts.createProgram(parsedConfig.fileNames, parsedConfig.options);
 
   const diagnostics = ts.getPreEmitDiagnostics(program);
 
@@ -60,17 +49,10 @@ export function typeCheck(packageName?: string) {
           diagnostic.file,
           diagnostic.start!,
         );
-        const message = ts.flattenDiagnosticMessageText(
-          diagnostic.messageText,
-          "\n",
-        );
-        console.log(
-          `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`,
-        );
+        const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+        console.log(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
       } else {
-        console.log(
-          ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"),
-        );
+        console.log(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
       }
     });
 

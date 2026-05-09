@@ -12,10 +12,7 @@ export class BinaryWriter {
 
   private ensureCapacity(additionalSize: number): void {
     if (this.position + additionalSize > this.buffer.length) {
-      const newSize = Math.max(
-        this.buffer.length * 2,
-        this.position + additionalSize,
-      );
+      const newSize = Math.max(this.buffer.length * 2, this.position + additionalSize);
       const newBuffer = Buffer.alloc(newSize);
       this.buffer.copy(newBuffer);
       this.buffer = newBuffer;
@@ -23,11 +20,7 @@ export class BinaryWriter {
   }
 
   private writeInt(value: number, size: number, field?: CppField): void {
-    if (
-      field?.bitWidth !== undefined &&
-      field.bitWidth > 0 &&
-      field.bitWidth < 8
-    ) {
+    if (field?.bitWidth !== undefined && field.bitWidth > 0 && field.bitWidth < 8) {
       if (this.position >= this.buffer.length) {
         this.ensureCapacity(1);
       }
@@ -35,8 +28,7 @@ export class BinaryWriter {
       const mask = (1 << field.bitWidth) - 1;
       const shiftedValue = (value & mask) << this.bitOffset;
 
-      this.buffer[this.position] =
-        (byte & ~(mask << this.bitOffset)) | shiftedValue;
+      this.buffer[this.position] = (byte & ~(mask << this.bitOffset)) | shiftedValue;
 
       this.bitOffset += field.bitWidth;
       if (this.bitOffset >= 8) {
@@ -78,10 +70,7 @@ export class BinaryWriter {
   }
 
   private writeField(field: CppField): void {
-    if (
-      Array.isArray(field.value) &&
-      !["struct", "union"].includes(field.type)
-    ) {
+    if (Array.isArray(field.value) && !["struct", "union"].includes(field.type)) {
       field.value.forEach((item) => {
         this.writeSingleField({ ...field, value: item } as CppField);
       });
@@ -91,11 +80,7 @@ export class BinaryWriter {
   }
 
   private writeSingleField(field: CppField): void {
-    if (
-      field.bitWidth !== undefined &&
-      field.bitWidth > 0 &&
-      field.bitWidth < 8
-    ) {
+    if (field.bitWidth !== undefined && field.bitWidth > 0 && field.bitWidth < 8) {
       this.writeInt(field.value as number, 1, field);
     } else {
       switch (field.type) {
@@ -127,8 +112,7 @@ export class BinaryWriter {
             if (
               subField.value !== undefined &&
               subField.value !== null &&
-              (!Array.isArray(subField.value) ||
-                subField.value.every((v) => !!v))
+              (!Array.isArray(subField.value) || subField.value.every((v) => !!v))
             ) {
               this.writeField(subField);
               foundField = true;
@@ -136,9 +120,7 @@ export class BinaryWriter {
             }
           }
           if (!foundField) {
-            throw new RecException(
-              `No valid field found in union: ${field.field}`,
-            );
+            throw new RecException(`No valid field found in union: ${field.field}`);
           }
           break;
         }

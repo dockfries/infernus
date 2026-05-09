@@ -36,40 +36,28 @@ export const [onOutgoingRPC] = defineEvent({
 
 // syntactic sugar callback
 
-export const IPacket = (
-  eventId: number,
-  func: Parameters<typeof onIncomingPacket>[0],
-) => {
+export const IPacket = (eventId: number, func: Parameters<typeof onIncomingPacket>[0]) => {
   return onIncomingPacket((e) => {
     if (e.packetId === eventId) return func(e);
     return e.next();
   });
 };
 
-export const IRPC = (
-  eventId: number,
-  func: Parameters<typeof onIncomingRPC>[0],
-) => {
+export const IRPC = (eventId: number, func: Parameters<typeof onIncomingRPC>[0]) => {
   return onIncomingRPC((e) => {
     if (e.rpcId === eventId) return func(e);
     return e.next();
   });
 };
 
-export const OPacket = (
-  eventId: number,
-  func: Parameters<typeof onOutgoingPacket>[0],
-) => {
+export const OPacket = (eventId: number, func: Parameters<typeof onOutgoingPacket>[0]) => {
   return onOutgoingPacket((e) => {
     if (e.packetId === eventId) return func(e);
     return e.next();
   });
 };
 
-export const ORPC = (
-  eventId: number,
-  func: Parameters<typeof onOutgoingRPC>[0],
-) => {
+export const ORPC = (eventId: number, func: Parameters<typeof onOutgoingRPC>[0]) => {
   return onOutgoingRPC((e) => {
     if (e.rpcId === eventId) return func(e);
     return e.next();

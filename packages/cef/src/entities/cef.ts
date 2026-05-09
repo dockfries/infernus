@@ -2,11 +2,7 @@ import { I18n, InvalidEnum, ObjectMp, Player } from "@infernus/core";
 import { CefBrowserSourceInfo } from "../interfaces";
 import { CefException } from "../exceptions";
 import { INVALID_CEF_ID } from "../constants";
-import {
-  CefAudioModeEnum,
-  CefCreateStatusEnum,
-  CefHudComponentEnum,
-} from "../enums";
+import { CefAudioModeEnum, CefCreateStatusEnum, CefHudComponentEnum } from "../enums";
 import { playerBrowserPool } from "./pool";
 
 const MAX_CEF_ID = 65536;
@@ -80,14 +76,7 @@ export class CefBrowser {
         height,
       ) as CefCreateStatusEnum;
     } else {
-      const {
-        worldX,
-        worldY,
-        worldZ,
-        offsetZ = 0.0,
-        pivotX = 0.0,
-        pivotY = 0.0,
-      } = this.sourceInfo;
+      const { worldX, worldY, worldZ, offsetZ = 0.0, pivotX = 0.0, pivotY = 0.0 } = this.sourceInfo;
       ret = samp.callNative(
         "CEF_CreateWorld2DBrowser",
         "iisffffffff",
@@ -335,11 +324,7 @@ export class CefBrowser {
     samp.callNative("CEF_AddResource", "s", resourceName);
   }
 
-  static toggleHudComponent(
-    player: Player,
-    componentId: CefHudComponentEnum,
-    toggle: boolean,
-  ) {
+  static toggleHudComponent(player: Player, componentId: CefHudComponentEnum, toggle: boolean) {
     return samp.callNative(
       "CEF_ToggleHudComponent",
       "iii",
@@ -350,12 +335,7 @@ export class CefBrowser {
   }
 
   static toggleSpawnScreen(player: Player, toggle: boolean) {
-    return samp.callNative(
-      "CEF_ToggleSpawnScreen",
-      "ii",
-      player.id,
-      toggle,
-    ) as number;
+    return samp.callNative("CEF_ToggleSpawnScreen", "ii", player.id, toggle) as number;
   }
 
   static clearChat(player: Player) {
@@ -363,12 +343,7 @@ export class CefBrowser {
   }
 
   static toggleChatInput(player: Player, toggle: boolean) {
-    return samp.callNative(
-      "CEF_ToggleChatInput",
-      "ii",
-      player.id,
-      toggle,
-    ) as number;
+    return samp.callNative("CEF_ToggleChatInput", "ii", player.id, toggle) as number;
   }
 
   static isChatInputOpen(player: Player) {
@@ -376,22 +351,11 @@ export class CefBrowser {
   }
 
   static enableKey(player: Player, key: number, enabled: boolean) {
-    return samp.callNative(
-      "CEF_EnableKey",
-      "iii",
-      player.id,
-      key,
-      enabled,
-    ) as number;
+    return samp.callNative("CEF_EnableKey", "iii", player.id, key, enabled) as number;
   }
 
   static setKeyCapture(player: Player, enabled: boolean) {
-    return samp.callNative(
-      "CEF_SetKeyCapture",
-      "ii",
-      player.id,
-      enabled,
-    ) as number;
+    return samp.callNative("CEF_SetKeyCapture", "ii", player.id, enabled) as number;
   }
 
   static exitGame(player: Player) {

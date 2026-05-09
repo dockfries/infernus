@@ -163,64 +163,58 @@ function vehicleSelect(player: Player) {
 export function registerVehicleSelect(options?: IFsDebugOptions) {
   if (options?.vehicleSelect === false) return [];
 
-  const vehicle = PlayerEvent.onCommandText(
-    ["v", "vehicle"],
-    ({ player, subcommand, next }) => {
-      const status = gPlayerStatus.get(player);
-      if (status) {
-        player.sendClientMessage(
-          COLOR_RED,
-          `[ERROR]: You are already using "${aSelNames[status - 1]}".`,
-        );
-        return next();
-      }
-      if (!subcommand[0].length)
-        return player.sendClientMessage(
-          COLOR_RED,
-          "[USAGE]: /v MODELID/NAME or /vehicle MODELID/NAME",
-        );
-      //***************
-      // Fix by Mike! *
-      //***************
-      let idx = getVehicleModelIDFromName(subcommand[0]);
-      if (idx === -1) {
-        idx = +subcommand[0] || 0;
-        if (idx < MIN_VEHICLE_ID || idx > MAX_VEHICLE_ID)
-          return player.sendClientMessage(
-            COLOR_RED,
-            "[ERROR]: Invalid MODELID/NAME",
-          );
-      }
-      const { z } = player.getPos();
-      const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
-      const a = player.getFacingAngle().angle;
-      curPlayerVehM.set(player, idx);
-      const veh = new Vehicle({
-        modelId: idx,
-        x,
-        y,
-        z: z + 2.0,
-        zAngle: a + 90.0,
-        color: [-1, -1],
-        respawnDelay: 5000,
-      });
-      veh.create();
-      curPlayerVehI.set(player, veh.id);
-      veh.linkToInterior(player.getInterior());
-
-      curServerVehP.set(veh, {
-        spawn: true,
-        vModel: idx,
-        vInt: player.getInterior(),
-      });
-
+  const vehicle = PlayerEvent.onCommandText(["v", "vehicle"], ({ player, subcommand, next }) => {
+    const status = gPlayerStatus.get(player);
+    if (status) {
       player.sendClientMessage(
-        COLOR_GREEN,
-        `[SUCCESS]: Spawned a "${aVehicleNames[idx - MIN_VEHICLE_ID]}" (MODELID: ${idx}, VEHICLEID: ${veh.id})`,
+        COLOR_RED,
+        `[ERROR]: You are already using "${aSelNames[status - 1]}".`,
       );
       return next();
-    },
-  );
+    }
+    if (!subcommand[0].length)
+      return player.sendClientMessage(
+        COLOR_RED,
+        "[USAGE]: /v MODELID/NAME or /vehicle MODELID/NAME",
+      );
+    //***************
+    // Fix by Mike! *
+    //***************
+    let idx = getVehicleModelIDFromName(subcommand[0]);
+    if (idx === -1) {
+      idx = +subcommand[0] || 0;
+      if (idx < MIN_VEHICLE_ID || idx > MAX_VEHICLE_ID)
+        return player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid MODELID/NAME");
+    }
+    const { z } = player.getPos();
+    const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
+    const a = player.getFacingAngle().angle;
+    curPlayerVehM.set(player, idx);
+    const veh = new Vehicle({
+      modelId: idx,
+      x,
+      y,
+      z: z + 2.0,
+      zAngle: a + 90.0,
+      color: [-1, -1],
+      respawnDelay: 5000,
+    });
+    veh.create();
+    curPlayerVehI.set(player, veh.id);
+    veh.linkToInterior(player.getInterior());
+
+    curServerVehP.set(veh, {
+      spawn: true,
+      vModel: idx,
+      vInt: player.getInterior(),
+    });
+
+    player.sendClientMessage(
+      COLOR_GREEN,
+      `[SUCCESS]: Spawned a "${aVehicleNames[idx - MIN_VEHICLE_ID]}" (MODELID: ${idx}, VEHICLEID: ${veh.id})`,
+    );
+    return next();
+  });
 
   const vehicleSel = PlayerEvent.onCommandText("vsel", ({ player, next }) => {
     // /vsel allows players to select a vehicle using playerkeys.

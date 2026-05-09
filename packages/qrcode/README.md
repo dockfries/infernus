@@ -13,11 +13,7 @@ pnpm add @infernus/core @infernus/qrcode
 ## Example
 
 ```ts
-import {
-  generateQRText,
-  createQRObject,
-  setObjectQRMaterial,
-} from "@infernus/qrcode";
+import { generateQRText, createQRObject, setObjectQRMaterial } from "@infernus/qrcode";
 import { PlayerEvent } from "@infernus/core";
 
 PlayerEvent.onCommandText("qr", ({ player, subcommand, next }) => {

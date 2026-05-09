@@ -8,11 +8,7 @@ export type StreamerArrayData =
   | E_STREAMER.PLAYER_ID
   | E_STREAMER.WORLD_ID;
 
-export const Streamer_GetFloatData = (
-  type: StreamerItemTypes,
-  id: number,
-  data: E_STREAMER,
-) => {
+export const Streamer_GetFloatData = (type: StreamerItemTypes, id: number, data: E_STREAMER) => {
   const [val, ret]: [number, number] = samp.callNative(
     "Streamer_GetFloatData",
     "iiiF",
@@ -29,14 +25,7 @@ export const Streamer_SetFloatData = (
   data: E_STREAMER,
   value: number,
 ): number => {
-  return samp.callNative(
-    "Streamer_SetFloatData",
-    "iiif",
-    type,
-    id,
-    data,
-    value,
-  );
+  return samp.callNative("Streamer_SetFloatData", "iiif", type, id, data, value);
 };
 
 export const Streamer_GetIntData = (
@@ -78,15 +67,7 @@ export const Streamer_SetArrayData = (
   data: StreamerArrayData,
   dest: number[],
 ): number => {
-  return samp.callNative(
-    "Streamer_SetArrayData",
-    "iiiai",
-    type,
-    id,
-    data,
-    dest,
-    dest.length,
-  );
+  return samp.callNative("Streamer_SetArrayData", "iiiai", type, id, data, dest, dest.length);
 };
 
 export const Streamer_IsInArrayData = (
@@ -95,14 +76,7 @@ export const Streamer_IsInArrayData = (
   data: StreamerArrayData,
   value: number,
 ): boolean => {
-  return !!samp.callNative(
-    "Streamer_IsInArrayData",
-    "iiii",
-    type,
-    id,
-    data,
-    value,
-  );
+  return !!samp.callNative("Streamer_IsInArrayData", "iiii", type, id, data, value);
 };
 
 export const Streamer_AppendArrayData = (
@@ -111,14 +85,7 @@ export const Streamer_AppendArrayData = (
   data: StreamerArrayData,
   value: number,
 ): number => {
-  return samp.callNative(
-    "Streamer_AppendArrayData",
-    "iiii",
-    type,
-    id,
-    data,
-    value,
-  );
+  return samp.callNative("Streamer_AppendArrayData", "iiii", type, id, data, value);
 };
 
 export const Streamer_RemoveArrayData = (
@@ -127,14 +94,7 @@ export const Streamer_RemoveArrayData = (
   data: StreamerArrayData,
   value: number,
 ): number => {
-  return samp.callNative(
-    "Streamer_RemoveArrayData",
-    "iiii",
-    type,
-    id,
-    data,
-    value,
-  );
+  return samp.callNative("Streamer_RemoveArrayData", "iiii", type, id, data, value);
 };
 
 export const Streamer_GetArrayDataLength = (

@@ -12,23 +12,16 @@ export class BulletSync extends BitStream implements IPacketListSync {
   @SyncReader
   readSync() {
     const data: Partial<IBulletSync> = {};
-    [
-      data.fromId,
-      data.hitType,
-      data.hitId,
-      data.origin,
-      data.hitPos,
-      data.offsets,
-      data.weaponId,
-    ] = this.bs.readValue(
-      PacketRpcValueType.UInt16,
-      PacketRpcValueType.UInt8,
-      PacketRpcValueType.UInt16,
-      PacketRpcValueType.Float3,
-      PacketRpcValueType.Float3,
-      PacketRpcValueType.Float3,
-      PacketRpcValueType.UInt8,
-    ) as any;
+    [data.fromId, data.hitType, data.hitId, data.origin, data.hitPos, data.offsets, data.weaponId] =
+      this.bs.readValue(
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.UInt8,
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.UInt8,
+      ) as any;
     return data as IBulletSync | null;
   }
 

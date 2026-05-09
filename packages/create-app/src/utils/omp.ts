@@ -43,10 +43,7 @@ export async function addOpenMp(versionOrRelease: any, isRemote: boolean) {
     const downloadOmpPath = globalOmpPath + "." + path.extname(assetByEnv.name);
 
     console.log(`download dep: ${ompRepository} ${version}`);
-    const ompTmpPath = await downloadFile(
-      assetByEnv.browser_download_url,
-      downloadOmpPath,
-    );
+    const ompTmpPath = await downloadFile(assetByEnv.browser_download_url, downloadOmpPath);
     await decompress(ompTmpPath, globalOmpPath, { strip: 1 });
     await fs.remove(ompTmpPath);
   } else {
@@ -58,9 +55,7 @@ export async function addOpenMp(versionOrRelease: any, isRemote: boolean) {
 
 export async function removeOpenMp(globalPath: string) {
   if (!globalPath.includes(GLOBAL_DEPS_PATH)) {
-    throw new Error(
-      "Due to security policy, your path may be redirected to a non-cached path!",
-    );
+    throw new Error("Due to security policy, your path may be redirected to a non-cached path!");
   }
   const files = await fg("**", {
     cwd: globalPath,

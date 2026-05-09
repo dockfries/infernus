@@ -34,7 +34,7 @@ PlayerEvent.onCommandText("registro", async ({ player, next }) => {
   if (password !== againPassword) {
     player.sendClientMessage(
       "#f00",
-      "La contraseña que ha introducido dos veces no es la misma, inténtelo de nuevo."
+      "La contraseña que ha introducido dos veces no es la misma, inténtelo de nuevo.",
     );
   }
 
@@ -53,7 +53,7 @@ PlayerEvent.onCommandText("cerrarDialogo", ({ player, subcommand, next }) => {
   if (!playerId) {
     player.sendClientMessage(
       "#f00",
-      "Introduzca el cuadro de diálogo del jugador que desea cerrar"
+      "Introduzca el cuadro de diálogo del jugador que desea cerrar",
     );
     return next();
   }

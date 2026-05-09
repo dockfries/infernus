@@ -7,5 +7,4 @@ export const badIsPlayerInRangeOfPoint = orig_pMethods.isInRangeOfPoint;
 
 export const [orig_vMethods, setVehicleHook] = defineHooks(Vehicle);
 
-export const badGetVehicleDistanceFromPoint =
-  orig_vMethods.getDistanceFromPoint;
+export const badGetVehicleDistanceFromPoint = orig_vMethods.getDistanceFromPoint;

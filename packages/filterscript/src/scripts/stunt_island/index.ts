@@ -117,248 +117,222 @@ function isSIInfernus(vehicle: Vehicle) {
 export const StuntIsland: IStuntIsLandFS = {
   name: "stunt_island",
   load(options) {
-    const onStateChange = PlayerEvent.onStateChange(
-      ({ player, newState, next }) => {
-        // Check if the let player state is driver or passenger
-        if (
-          newState === PlayerStateEnum.DRIVER ||
-          newState === PlayerStateEnum.PASSENGER
-        ) {
-          // Get the players vehicle ID
-          const player_vehicle = player.getVehicle();
+    const onStateChange = PlayerEvent.onStateChange(({ player, newState, next }) => {
+      // Check if the let player state is driver or passenger
+      if (newState === PlayerStateEnum.DRIVER || newState === PlayerStateEnum.PASSENGER) {
+        // Get the players vehicle ID
+        const player_vehicle = player.getVehicle();
 
-          // Check if the player is driving one of the Infernuses created by this filterScript
-          if (player_vehicle && isSIInfernus(player_vehicle)) {
-            // Disable vehicle collisions and set PVar
-            player.disableRemoteVehicleCollisions(true);
-            siVehicleCols.add(player);
-          }
-        } else {
-          // Check if the PVar is set (player had vehicle collisions disabled)
-          if (siVehicleCols.has(player)) {
-            // Enable vehicle collisions and set PVar
-            player.disableRemoteVehicleCollisions(false);
-            siVehicleCols.delete(player);
-          }
+        // Check if the player is driving one of the Infernuses created by this filterScript
+        if (player_vehicle && isSIInfernus(player_vehicle)) {
+          // Disable vehicle collisions and set PVar
+          player.disableRemoteVehicleCollisions(true);
+          siVehicleCols.add(player);
         }
-
-        return next();
-      },
-    );
-
-    const onKeyStateChange = PlayerEvent.onKeyStateChange(
-      ({ player, newKeys, next }) => {
-        // Check for FIRE key
-        if (newKeys & KeysEnum.FIRE) {
-          // Fire Key is usually the Left Mouse Button
-
-          // Check if player is in any vehicle
-          if (!player.isInAnyVehicle()) return next();
-
-          // Do not allow passengers to use this on people driving
-          if (player.getState() !== PlayerStateEnum.DRIVER) return next();
-
-          // Check if the vehicle model is an Infernus
-          const veh = player.getVehicle();
-          if (veh && veh.getModel() === 411) {
-            // Add 10x NOS
-            veh.addComponent(1010);
-            // Debug
-            // console.log(`-->Added 10x NOS to Vehicle Number ${veh.id} for Player ID ${player.id}`);
-          }
+      } else {
+        // Check if the PVar is set (player had vehicle collisions disabled)
+        if (siVehicleCols.has(player)) {
+          // Enable vehicle collisions and set PVar
+          player.disableRemoteVehicleCollisions(false);
+          siVehicleCols.delete(player);
         }
+      }
 
-        return next();
-      },
-    );
+      return next();
+    });
 
-    const onPlayerEnter = DynamicRaceCPEvent.onPlayerEnter(
-      ({ player, raceCP, next }) => {
-        if (!siRaceCp.has(player)) return next();
-        siRaceCp.get(player)!.destroy();
-        // Get the player pos
-        const { x, y, z } = player.getPos();
+    const onKeyStateChange = PlayerEvent.onKeyStateChange(({ player, newKeys, next }) => {
+      // Check for FIRE key
+      if (newKeys & KeysEnum.FIRE) {
+        // Fire Key is usually the Left Mouse Button
 
-        // Increase current checkpoint
-        siPlayerCP.set(player, (siPlayerCP.get(player) || 0) + 1);
+        // Check if player is in any vehicle
+        if (!player.isInAnyVehicle()) return next();
+
+        // Do not allow passengers to use this on people driving
+        if (player.getState() !== PlayerStateEnum.DRIVER) return next();
+
+        // Check if the vehicle model is an Infernus
+        const veh = player.getVehicle();
+        if (veh && veh.getModel() === 411) {
+          // Add 10x NOS
+          veh.addComponent(1010);
+          // Debug
+          // console.log(`-->Added 10x NOS to Vehicle Number ${veh.id} for Player ID ${player.id}`);
+        }
+      }
+
+      return next();
+    });
+
+    const onPlayerEnter = DynamicRaceCPEvent.onPlayerEnter(({ player, raceCP, next }) => {
+      if (!siRaceCp.has(player)) return next();
+      siRaceCp.get(player)!.destroy();
+      // Get the player pos
+      const { x, y, z } = player.getPos();
+
+      // Increase current checkpoint
+      siPlayerCP.set(player, (siPlayerCP.get(player) || 0) + 1);
+
+      // Debug
+      // console.log(`-->Player ID ${player.id} Current CP is ${siPlayerCP.get(player)} of ${stuntIslandCPs.length}`);
+
+      // Check if the race checkpoint is the start line
+      if (siPlayerCP.get(player) === 1) {
+        // Reset current checkpoint (in case the player drove back to the start CP and did not type /si)
+        siPlayerCP.set(player, 1);
+
+        // Store the players race start time
+        siPlayerStartTime.set(player, Date.now());
 
         // Debug
-        // console.log(`-->Player ID ${player.id} Current CP is ${siPlayerCP.get(player)} of ${stuntIslandCPs.length}`);
+        // console.log(`-->Race start time for Player ${player} is ${siPlayerStartTime.get(player)}`, player);
 
-        // Check if the race checkpoint is the start line
-        if (siPlayerCP.get(player) === 1) {
-          // Reset current checkpoint (in case the player drove back to the start CP and did not type /si)
-          siPlayerCP.set(player, 1);
+        // Send a gametext message to the player
+        new GameText("~n~~n~~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~Race Timer Started!", 3000, 3).forPlayer(
+          player,
+        );
 
-          // Store the players race start time
-          siPlayerStartTime.set(player, Date.now());
+        // Format chat text message for all
+        const playerName = player.getName().name;
+        const strTempString = `* ${playerName} (ID:${player.id}) started their timed lap.`;
+        Player.sendClientMessageToAll(COLOR_MESSAGE_YELLOW, strTempString);
 
-          // Debug
-          // console.log(`-->Race start time for Player ${player} is ${siPlayerStartTime.get(player)}`, player);
+        // Play a sound
+        player.playSound(1139, x, y, z);
 
-          // Send a gametext message to the player
-          new GameText(
-            "~n~~n~~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~Race Timer Started!",
-            3000,
-            3,
-          ).forPlayer(player);
+        // Create next checkpoint
 
-          // Format chat text message for all
-          const playerName = player.getName().name;
-          const strTempString = `* ${playerName} (ID:${player.id}) started their timed lap.`;
-          Player.sendClientMessageToAll(COLOR_MESSAGE_YELLOW, strTempString);
+        const cpIndex = siPlayerCP.get(player) || 0;
 
-          // Play a sound
-          player.playSound(1139, x, y, z);
+        const raceCp = new DynamicRaceCP({
+          playerId: player.id,
+          type: 0,
+          x: stuntIslandCPs[cpIndex][0],
+          y: stuntIslandCPs[cpIndex][0],
+          z: stuntIslandCPs[cpIndex][0],
+          nextX: stuntIslandCPs[cpIndex + 1][0],
+          nextY: stuntIslandCPs[cpIndex + 1][0],
+          nextZ: stuntIslandCPs[cpIndex + 1][0],
+          size: 12.0,
+        });
+        raceCP.create();
+        siRaceCp.set(player, raceCp);
+      }
+      // Check if the race checkpoint is the finish line
+      else if (siPlayerCP.get(player) === stuntIslandCPs.length) {
+        // Get the total lap time
+        const totalLapTime = Date.now() - siPlayerStartTime.get(player)!;
 
-          // Create next checkpoint
+        // Get player name and store
+        const playerName = player.getName().name;
 
-          const cpIndex = siPlayerCP.get(player) || 0;
+        // Create variable
+        let strTempString: string;
 
-          const raceCp = new DynamicRaceCP({
-            playerId: player.id,
-            type: 0,
-            x: stuntIslandCPs[cpIndex][0],
-            y: stuntIslandCPs[cpIndex][0],
-            z: stuntIslandCPs[cpIndex][0],
-            nextX: stuntIslandCPs[cpIndex + 1][0],
-            nextY: stuntIslandCPs[cpIndex + 1][0],
-            nextZ: stuntIslandCPs[cpIndex + 1][0],
-            size: 12.0,
-          });
-          raceCP.create();
-          siRaceCp.set(player, raceCp);
-        }
-        // Check if the race checkpoint is the finish line
-        else if (siPlayerCP.get(player) === stuntIslandCPs.length) {
-          // Get the total lap time
-          const totalLapTime = Date.now() - siPlayerStartTime.get(player)!;
-
-          // Get player name and store
-          const playerName = player.getName().name;
-
-          // Create variable
-          let strTempString: string;
-
-          // Check if the players total lap time is faster than the current fastest lap time
-          if (totalLapTime < fastestLapTime) {
-            // Check if no previous fastest lap record exists
-            if (fastestLapTime === 999) {
-              // Format chat text messages for all
-              strTempString = `** ${playerName} (ID:${player.id}) completed their timed lap in ${totalLapTime} seconds and set a let record.`;
-              Player.sendClientMessageToAll(
-                COLOR_MESSAGE_YELLOW,
-                strTempString,
-              );
-            } else {
-              // Format chat text messages for all
-              strTempString = `** ${playerName} (ID:${player.id}) completed their timed lap in ${totalLapTime} seconds beating the existing record`;
-              Player.sendClientMessageToAll(
-                COLOR_MESSAGE_YELLOW,
-                strTempString,
-              );
-
-              strTempString = `*  of ${fastestLapTime} seconds previously set by ${fastestLapName}.`;
-              Player.sendClientMessageToAll(
-                COLOR_MESSAGE_YELLOW,
-                strTempString,
-              );
-            }
-
-            // Store let fastest lap time
-            fastestLapTime = totalLapTime;
-
-            // Store let fastest lap time name
-            fastestLapName = playerName;
+        // Check if the players total lap time is faster than the current fastest lap time
+        if (totalLapTime < fastestLapTime) {
+          // Check if no previous fastest lap record exists
+          if (fastestLapTime === 999) {
+            // Format chat text messages for all
+            strTempString = `** ${playerName} (ID:${player.id}) completed their timed lap in ${totalLapTime} seconds and set a let record.`;
+            Player.sendClientMessageToAll(COLOR_MESSAGE_YELLOW, strTempString);
           } else {
-            // Format chat text message for all
-            strTempString = `* ${playerName} (ID:${player.id}) completed their timed lap in ${totalLapTime} seconds.`;
+            // Format chat text messages for all
+            strTempString = `** ${playerName} (ID:${player.id}) completed their timed lap in ${totalLapTime} seconds beating the existing record`;
+            Player.sendClientMessageToAll(COLOR_MESSAGE_YELLOW, strTempString);
+
+            strTempString = `*  of ${fastestLapTime} seconds previously set by ${fastestLapName}.`;
             Player.sendClientMessageToAll(COLOR_MESSAGE_YELLOW, strTempString);
           }
 
-          // Send a gametext message to the player
-          new GameText(
-            "~n~~n~~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~Finished!",
-            3000,
-            3,
-          ).forPlayer(player);
+          // Store let fastest lap time
+          fastestLapTime = totalLapTime;
 
-          // Play a sound
-          player.playSound(1139, x, y, z);
-
-          // Set current checkpoint
-          siPlayerCP.set(player, 0);
-
-          const cpIndex = siPlayerCP.get(player)!;
-
-          // Create start checkpoint
-          const raceCp = new DynamicRaceCP({
-            playerId: player.id,
-            type: 1,
-            x: stuntIslandCPs[cpIndex][0],
-            y: stuntIslandCPs[cpIndex][0],
-            z: stuntIslandCPs[cpIndex][0],
-            nextX: stuntIslandCPs[cpIndex + 1][0],
-            nextY: stuntIslandCPs[cpIndex + 1][0],
-            nextZ: stuntIslandCPs[cpIndex + 1][0],
-            size: 12.0,
-          });
-          raceCP.create();
-          siRaceCp.set(player, raceCp);
-        }
-        // Check if the race finish line is next
-        else if (siPlayerCP.get(player) === stuntIslandCPs.length - 1) {
-          // Send a gametext message to the player
-          new GameText(
-            "~n~~n~~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~Finish Line Is Next!",
-            3000,
-            3,
-          ).forPlayer(player);
-
-          // Play a sound
-          player.playSound(1138, x, y, z);
-
-          const cpIndex = siPlayerCP.get(player)!;
-
-          // Create next checkpoint (finish line)
-          const raceCp = new DynamicRaceCP({
-            playerId: player.id,
-            type: 1,
-            x: stuntIslandCPs[cpIndex][0],
-            y: stuntIslandCPs[cpIndex][0],
-            z: stuntIslandCPs[cpIndex][0],
-            nextX: -1,
-            nextY: -1,
-            nextZ: -1,
-            size: 12.0,
-          });
-          raceCP.create();
-          siRaceCp.set(player, raceCp);
+          // Store let fastest lap time name
+          fastestLapName = playerName;
         } else {
-          // Play a sound
-          player.playSound(1138, x, y, z);
-
-          // Create next checkpoint
-          const cpIndex = siPlayerCP.get(player)!;
-
-          const raceCp = new DynamicRaceCP({
-            playerId: player.id,
-            type: 0,
-            x: stuntIslandCPs[cpIndex][0],
-            y: stuntIslandCPs[cpIndex][0],
-            z: stuntIslandCPs[cpIndex][0],
-            nextX: -1,
-            nextY: -1,
-            nextZ: -1,
-            size: 12.0,
-          });
-          raceCP.create();
-          siRaceCp.set(player, raceCp);
+          // Format chat text message for all
+          strTempString = `* ${playerName} (ID:${player.id}) completed their timed lap in ${totalLapTime} seconds.`;
+          Player.sendClientMessageToAll(COLOR_MESSAGE_YELLOW, strTempString);
         }
 
-        return next();
-      },
-    );
+        // Send a gametext message to the player
+        new GameText("~n~~n~~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~Finished!", 3000, 3).forPlayer(player);
+
+        // Play a sound
+        player.playSound(1139, x, y, z);
+
+        // Set current checkpoint
+        siPlayerCP.set(player, 0);
+
+        const cpIndex = siPlayerCP.get(player)!;
+
+        // Create start checkpoint
+        const raceCp = new DynamicRaceCP({
+          playerId: player.id,
+          type: 1,
+          x: stuntIslandCPs[cpIndex][0],
+          y: stuntIslandCPs[cpIndex][0],
+          z: stuntIslandCPs[cpIndex][0],
+          nextX: stuntIslandCPs[cpIndex + 1][0],
+          nextY: stuntIslandCPs[cpIndex + 1][0],
+          nextZ: stuntIslandCPs[cpIndex + 1][0],
+          size: 12.0,
+        });
+        raceCP.create();
+        siRaceCp.set(player, raceCp);
+      }
+      // Check if the race finish line is next
+      else if (siPlayerCP.get(player) === stuntIslandCPs.length - 1) {
+        // Send a gametext message to the player
+        new GameText("~n~~n~~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~Finish Line Is Next!", 3000, 3).forPlayer(
+          player,
+        );
+
+        // Play a sound
+        player.playSound(1138, x, y, z);
+
+        const cpIndex = siPlayerCP.get(player)!;
+
+        // Create next checkpoint (finish line)
+        const raceCp = new DynamicRaceCP({
+          playerId: player.id,
+          type: 1,
+          x: stuntIslandCPs[cpIndex][0],
+          y: stuntIslandCPs[cpIndex][0],
+          z: stuntIslandCPs[cpIndex][0],
+          nextX: -1,
+          nextY: -1,
+          nextZ: -1,
+          size: 12.0,
+        });
+        raceCP.create();
+        siRaceCp.set(player, raceCp);
+      } else {
+        // Play a sound
+        player.playSound(1138, x, y, z);
+
+        // Create next checkpoint
+        const cpIndex = siPlayerCP.get(player)!;
+
+        const raceCp = new DynamicRaceCP({
+          playerId: player.id,
+          type: 0,
+          x: stuntIslandCPs[cpIndex][0],
+          y: stuntIslandCPs[cpIndex][0],
+          z: stuntIslandCPs[cpIndex][0],
+          nextX: -1,
+          nextY: -1,
+          nextZ: -1,
+          size: 12.0,
+        });
+        raceCP.create();
+        siRaceCp.set(player, raceCp);
+      }
+
+      return next();
+    });
 
     const siCmd = PlayerEvent.onCommandText("si", ({ player, next }) => {
       // Set the player interior
@@ -436,10 +410,7 @@ export const StuntIsland: IStuntIsLandFS = {
         siAutoFixDisabled.add(player);
 
         // Display a chat text message to the player
-        player.sendClientMessage(
-          COLOR_MESSAGE_YELLOW,
-          "* You disabled AutoFix for your vehicle.",
-        );
+        player.sendClientMessage(COLOR_MESSAGE_YELLOW, "* You disabled AutoFix for your vehicle.");
 
         // Send a gametext message to the player
         new GameText("~g~~h~AutoFix Disabled!", 3000, 3).forPlayer(player);
@@ -448,10 +419,7 @@ export const StuntIsland: IStuntIsLandFS = {
         siAutoFixDisabled.delete(player);
 
         // Display a chat text message to the player
-        player.sendClientMessage(
-          COLOR_MESSAGE_YELLOW,
-          "* You enabled AutoFix for your vehicle.",
-        );
+        player.sendClientMessage(COLOR_MESSAGE_YELLOW, "* You enabled AutoFix for your vehicle.");
 
         // Send a gametext message to the player
         new GameText("~g~~h~AutoFix Enabled!", 3000, 3).forPlayer(player);
@@ -469,14 +437,7 @@ export const StuntIsland: IStuntIsLandFS = {
       return next();
     });
 
-    const offs = [
-      onStateChange,
-      onKeyStateChange,
-      siCmd,
-      afCmd,
-      onPlayerEnter,
-      onSpawn,
-    ];
+    const offs = [onStateChange, onKeyStateChange, siCmd, afCmd, onPlayerEnter, onSpawn];
 
     if (options && options.enableFlip) {
       const flipCmd = PlayerEvent.onCommandText("flip", ({ player, next }) => {
@@ -501,10 +462,7 @@ export const StuntIsland: IStuntIsLandFS = {
         veh.setZAngle(a);
 
         // Display a chat text message to the player
-        player.sendClientMessage(
-          COLOR_MESSAGE_YELLOW,
-          "* Your vehicle has been flipped.",
-        );
+        player.sendClientMessage(COLOR_MESSAGE_YELLOW, "* Your vehicle has been flipped.");
 
         // Send a gametext message to the player
         new GameText("~g~~h~Vehicle Flipped!", 3000, 3).forPlayer(player);

@@ -1,12 +1,5 @@
 import { WeaponEnum, KeysEnum } from "@infernus/core";
-import {
-  AimSync,
-  InCarSync,
-  IPacket,
-  OnFootSync,
-  ORPC,
-  PassengerSync,
-} from "@infernus/raknet";
+import { AimSync, InCarSync, IPacket, OnFootSync, ORPC, PassengerSync } from "@infernus/raknet";
 import {
   WC_AIM_SYNC,
   WC_PASSENGER_SYNC,
@@ -100,10 +93,7 @@ IPacket(WC_PLAYER_SYNC, ({ playerId, bs, next }) => {
   //   onFootData.quaternion = fakeQuat.get(playerId);
   // }
 
-  if (
-    onFootData.weaponId === WeaponEnum.KNIFE &&
-    !innerGameModeConfig.knifeSync
-  ) {
+  if (onFootData.weaponId === WeaponEnum.KNIFE && !innerGameModeConfig.knifeSync) {
     onFootData.keys &= ~KeysEnum.HANDBRAKE;
   } else if (44 >= onFootData.weaponId && onFootData.weaponId <= 45) {
     onFootData.keys &= ~KeysEnum.FIRE;
@@ -111,10 +101,7 @@ IPacket(WC_PLAYER_SYNC, ({ playerId, bs, next }) => {
     gogglesTick.set(playerId, Date.now());
     gogglesUsed.set(playerId, 1);
   } else if (gogglesUsed.get(playerId)) {
-    if (
-      gogglesUsed.get(playerId) === 2 &&
-      Date.now() - gogglesTick.get(playerId) > 40
-    ) {
+    if (gogglesUsed.get(playerId) === 2 && Date.now() - gogglesTick.get(playerId) > 40) {
       gogglesUsed.set(playerId, 0);
     } else {
       onFootData.keys &= ~KeysEnum.FIRE;

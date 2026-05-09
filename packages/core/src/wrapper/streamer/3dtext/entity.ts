@@ -48,8 +48,7 @@ export class Dynamic3DTextLabel {
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
       throw new DynamicTextLabelException("Cannot create again");
-    if (!this.sourceInfo)
-      throw new DynamicTextLabelException("Cannot create with only id");
+    if (!this.sourceInfo) throw new DynamicTextLabelException("Cannot create with only id");
     let {
       attachedPlayer,
       attachedVehicle,
@@ -61,8 +60,7 @@ export class Dynamic3DTextLabel {
       areaId,
       priority,
     } = this.sourceInfo;
-    const { charset, text, color, drawDistance, x, y, z, extended } =
-      this.sourceInfo;
+    const { charset, text, color, drawDistance, x, y, z, extended } = this.sourceInfo;
 
     attachedPlayer ??= InvalidEnum.PLAYER_ID;
     attachedVehicle ??= InvalidEnum.VEHICLE_ID;
@@ -141,19 +139,14 @@ export class Dynamic3DTextLabel {
     return this;
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID)
-      return true;
+    if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID) return true;
     return Dynamic3DTextLabel.isValid(this.id);
   }
   getColor(): string | number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicTextLabelException("Cannot get color before create");
     if (!this.sourceInfo) {
-      return Streamer.getIntData(
-        StreamerItemTypes.TEXT_3D_LABEL,
-        this._id,
-        E_STREAMER.COLOR,
-      );
+      return Streamer.getIntData(StreamerItemTypes.TEXT_3D_LABEL, this._id, E_STREAMER.COLOR);
     }
     return this.sourceInfo.color;
   }
@@ -163,10 +156,7 @@ export class Dynamic3DTextLabel {
     return this.sourceInfo?.charset;
   }
   getText() {
-    return Dynamic3DTextLabel.__inject__.getText(
-      this.id,
-      this.sourceInfo?.charset || "utf8",
-    );
+    return Dynamic3DTextLabel.__inject__.getText(this.id, this.sourceInfo?.charset || "utf8");
   }
   updateText(color: string | number, text: string, charset?: string): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
@@ -176,30 +166,16 @@ export class Dynamic3DTextLabel {
       _charset = charset || this.sourceInfo.charset || "utf8";
       this.sourceInfo.charset = _charset;
     }
-    return Dynamic3DTextLabel.__inject__.updateText(
-      this.id,
-      rgba(color),
-      text,
-      _charset,
-    );
+    return Dynamic3DTextLabel.__inject__.updateText(this.id, rgba(color), text, _charset);
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new DynamicTextLabelException(
-        "Cannot toggle callbacks before create",
-      );
-    return Streamer.toggleItemCallbacks(
-      StreamerItemTypes.TEXT_3D_LABEL,
-      this.id,
-      toggle,
-    );
+      throw new DynamicTextLabelException("Cannot toggle callbacks before create");
+    return Streamer.toggleItemCallbacks(StreamerItemTypes.TEXT_3D_LABEL, this.id, toggle);
   }
   isToggleCallbacks(): boolean {
     if (this.id === StreamerMiscellaneous.INVALID_ID) return false;
-    return Streamer.isToggleItemCallbacks(
-      StreamerItemTypes.TEXT_3D_LABEL,
-      this.id,
-    );
+    return Streamer.isToggleItemCallbacks(StreamerItemTypes.TEXT_3D_LABEL, this.id);
   }
   setOffsets(offsetX: number, offsetY: number, offsetZ: number) {
     if (this.id === StreamerMiscellaneous.INVALID_ID) return 0;
@@ -235,9 +211,7 @@ export class Dynamic3DTextLabel {
     offsetZ: number,
   ): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new DynamicTextLabelException(
-        "Cannot attachToPlayer before created",
-      );
+      throw new DynamicTextLabelException("Cannot attachToPlayer before created");
     const playerId = typeof player === "number" ? player : player.id;
     const ret = Streamer.setIntData(
       StreamerItemTypes.TEXT_3D_LABEL,
@@ -260,9 +234,7 @@ export class Dynamic3DTextLabel {
     offsetZ: number,
   ): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
-      throw new DynamicTextLabelException(
-        "Cannot attachToVehicle before created",
-      );
+      throw new DynamicTextLabelException("Cannot attachToVehicle before created");
     const vehicleId = typeof vehicle === "number" ? vehicle : vehicle.id;
     const ret = Streamer.setIntData(
       StreamerItemTypes.TEXT_3D_LABEL,
@@ -280,11 +252,7 @@ export class Dynamic3DTextLabel {
   }
   static isValid = IsValidDynamic3DTextLabel;
   static togglePlayerUpdate(player: Player, update = true) {
-    return Streamer.toggleItemUpdate(
-      player,
-      StreamerItemTypes.TEXT_3D_LABEL,
-      update,
-    );
+    return Streamer.toggleItemUpdate(player, StreamerItemTypes.TEXT_3D_LABEL, update);
   }
   static hideForPlayer(player: Player, z = -50000) {
     Streamer.updateEx(player, 0, 0, z);

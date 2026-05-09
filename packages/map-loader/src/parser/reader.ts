@@ -77,8 +77,7 @@ export async function mapReader(options: IMapLoadOptions) {
 
     let removedBuildingIdx = -1;
     if (removedBuilding.length) {
-      removedBuildingIdx =
-        INTERNAL_MAP.removedBuilding.push(removedBuilding) - 1;
+      removedBuildingIdx = INTERNAL_MAP.removedBuilding.push(removedBuilding) - 1;
     }
 
     Player.getInstances().forEach((p) => {
@@ -89,9 +88,7 @@ export async function mapReader(options: IMapLoadOptions) {
       if (samp.defined && samp.defined._colandreas_included) {
         try {
           const require =
-            typeof global.require !== "undefined"
-              ? global.require
-              : createRequire(import.meta.url);
+            typeof global.require !== "undefined" ? global.require : createRequire(import.meta.url);
           const colandreas: typeof import("@infernus/colandreas") = require("@infernus/colandreas");
           removedBuilding.forEach((rmv) => {
             colandreas.removeBuilding(...rmv);

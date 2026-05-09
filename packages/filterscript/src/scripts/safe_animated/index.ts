@@ -114,73 +114,43 @@ export const SafeAnimated: IFilterScript = {
       return next();
     });
 
-    const command2 = PlayerEvent.onCommandText(
-      "opensafe",
-      ({ player, next }) => {
-        // Check if the safe door is already open
-        if (safeDoorStatus === SAFE_DOOR_OPEN) {
-          // Send a gametext message to the player
-          new GameText(
-            "~r~~h~Safe Door~n~~r~~h~Already Open!",
-            3000,
-            3,
-          ).forPlayer(player);
-          return next();
-        }
-
-        // Animate the safe door opening (the small Z offset is required)
-        safeDoorObject!.move(
-          1230.225708,
-          -806.648803,
-          1083.5 + 0.01,
-          0.005,
-          0,
-          0,
-          280,
-        );
-
-        // Set the safe door status
-        safeDoorStatus = SAFE_DOOR_OPEN;
-
+    const command2 = PlayerEvent.onCommandText("opensafe", ({ player, next }) => {
+      // Check if the safe door is already open
+      if (safeDoorStatus === SAFE_DOOR_OPEN) {
         // Send a gametext message to the player
-        new GameText("~b~~h~Safe Door Opened!", 3000, 3).forPlayer(player);
-
+        new GameText("~r~~h~Safe Door~n~~r~~h~Already Open!", 3000, 3).forPlayer(player);
         return next();
-      },
-    );
+      }
 
-    const command3 = PlayerEvent.onCommandText(
-      "closesafe",
-      ({ player, next }) => {
-        // Check if the safe door is already open
-        if (safeDoorStatus === SAFE_DOOR_CLOSED) {
-          // Send a gametext message to the player
-          new GameText(
-            "~r~~h~Safe Door~n~~r~~h~Already Closed!",
-            3000,
-            3,
-          ).forPlayer(player);
-          return next();
-        }
+      // Animate the safe door opening (the small Z offset is required)
+      safeDoorObject!.move(1230.225708, -806.648803, 1083.5 + 0.01, 0.005, 0, 0, 280);
 
-        // Animate the safe door closing (the small Z offset is required)
-        safeDoorObject!.move(
-          1230.225708,
-          -806.648803,
-          1083.5 - 0.01,
-          0.005,
-          0,
-          0,
-          0,
-        );
+      // Set the safe door status
+      safeDoorStatus = SAFE_DOOR_OPEN;
 
-        // Set the safe door status
-        safeDoorStatus = SAFE_DOOR_CLOSED;
+      // Send a gametext message to the player
+      new GameText("~b~~h~Safe Door Opened!", 3000, 3).forPlayer(player);
 
+      return next();
+    });
+
+    const command3 = PlayerEvent.onCommandText("closesafe", ({ player, next }) => {
+      // Check if the safe door is already open
+      if (safeDoorStatus === SAFE_DOOR_CLOSED) {
         // Send a gametext message to the player
-        new GameText("~b~~h~Safe Door Closed!", 3000, 3).forPlayer(player);
-      },
-    );
+        new GameText("~r~~h~Safe Door~n~~r~~h~Already Closed!", 3000, 3).forPlayer(player);
+        return next();
+      }
+
+      // Animate the safe door closing (the small Z offset is required)
+      safeDoorObject!.move(1230.225708, -806.648803, 1083.5 - 0.01, 0.005, 0, 0, 0);
+
+      // Set the safe door status
+      safeDoorStatus = SAFE_DOOR_CLOSED;
+
+      // Send a gametext message to the player
+      new GameText("~b~~h~Safe Door Closed!", 3000, 3).forPlayer(player);
+    });
 
     return [onConnect, command1, command2, command3];
   },

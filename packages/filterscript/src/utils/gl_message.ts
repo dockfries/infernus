@@ -75,11 +75,7 @@ export function localMessage(
   // for every player
   Player.getInstances().forEach((p) => {
     if (p !== player && player.isStreamedIn(p)) {
-      fPlayerToPlayerDist = p.getDistanceFromPoint(
-        fPlayerX,
-        fPlayerY,
-        fPlayerZ,
-      );
+      fPlayerToPlayerDist = p.getDistanceFromPoint(fPlayerX, fPlayerY, fPlayerZ);
       if (fPlayerToPlayerDist < distance) {
         // receiving player is within the specified distance
         player.sendClientMessage(color, message);
@@ -91,12 +87,7 @@ export function localMessage(
 // This will send a local talk message and automatically grey-fade it.
 // This includes the origin player.
 
-export function talkMessage(
-  distance: number,
-  player: Player,
-  prefix: string,
-  message: string,
-) {
+export function talkMessage(distance: number, player: Player, prefix: string, message: string) {
   if (!message) return;
 
   const playerName = player.getName().name;
@@ -115,11 +106,7 @@ export function talkMessage(
   // for every player
   Player.getInstances().forEach((i) => {
     if (i !== player && player.isStreamedIn(i)) {
-      const fPlayerToPlayerDist = i.getDistanceFromPoint(
-        fPlayerX,
-        fPlayerY,
-        fPlayerZ,
-      );
+      const fPlayerToPlayerDist = i.getDistanceFromPoint(fPlayerX, fPlayerY, fPlayerZ);
       if (fPlayerToPlayerDist < distance) {
         // receiving player is within the specified distance
         // get normalized distance to create a fade.
@@ -127,11 +114,7 @@ export function talkMessage(
         let colorScale: number;
         if (fNormDistance > 0.75) colorScale = 220;
         else colorScale = Math.round(96.0 + 128.0 * fNormDistance);
-        const colorValue =
-          0x000000ff |
-          (colorScale << 24) |
-          (colorScale << 16) |
-          (colorScale << 8);
+        const colorValue = 0x000000ff | (colorScale << 24) | (colorScale << 16) | (colorScale << 8);
         i.sendClientMessage(colorValue, msgWithName);
       }
     }

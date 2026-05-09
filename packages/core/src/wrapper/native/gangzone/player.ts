@@ -8,105 +8,50 @@ export const CreatePlayerGangZone = (
   maxX: number,
   maxY: number,
 ): number => {
-  return samp.callNative(
-    "CreatePlayerGangZone",
-    "iffff",
-    playerId,
-    minX,
-    minY,
-    maxX,
-    maxY,
-  );
+  return samp.callNative("CreatePlayerGangZone", "iffff", playerId, minX, minY, maxX, maxY);
 };
 
-export const PlayerGangZoneDestroy = (
-  playerId: number,
-  zoneId: number,
-): boolean => {
+export const PlayerGangZoneDestroy = (playerId: number, zoneId: number): boolean => {
   return !!samp.callNative("PlayerGangZoneDestroy", "ii", playerId, zoneId);
 };
 
-export const PlayerGangZoneShow = (
-  playerId: number,
-  zoneId: number,
-  color: number,
-): boolean => {
-  return !!samp.callNative(
-    "PlayerGangZoneShow",
-    "iii",
-    playerId,
-    zoneId,
-    color,
-  );
+export const PlayerGangZoneShow = (playerId: number, zoneId: number, color: number): boolean => {
+  return !!samp.callNative("PlayerGangZoneShow", "iii", playerId, zoneId, color);
 };
 
-export const PlayerGangZoneHide = (
-  playerId: number,
-  zoneId: number,
-): boolean => {
+export const PlayerGangZoneHide = (playerId: number, zoneId: number): boolean => {
   return !!samp.callNative("PlayerGangZoneHide", "ii", playerId, zoneId);
 };
 
-export const PlayerGangZoneFlash = (
-  playerId: number,
-  zoneId: number,
-  color: number,
-): boolean => {
-  return !!samp.callNative(
-    "PlayerGangZoneFlash",
-    "iii",
-    playerId,
-    zoneId,
-    color,
-  );
+export const PlayerGangZoneFlash = (playerId: number, zoneId: number, color: number): boolean => {
+  return !!samp.callNative("PlayerGangZoneFlash", "iii", playerId, zoneId, color);
 };
 
-export const PlayerGangZoneStopFlash = (
-  playerId: number,
-  zoneId: number,
-): boolean => {
+export const PlayerGangZoneStopFlash = (playerId: number, zoneId: number): boolean => {
   return !!samp.callNative("PlayerGangZoneStopFlash", "ii", playerId, zoneId);
 };
 
-export const IsValidPlayerGangZone = (
-  playerId: number,
-  zoneId: number,
-): boolean => {
+export const IsValidPlayerGangZone = (playerId: number, zoneId: number): boolean => {
   return !!samp.callNative("IsValidPlayerGangZone", "ii", playerId, zoneId);
 };
 
-export const IsPlayerInPlayerGangZone = (
-  playerId: number,
-  zoneId: number,
-): boolean => {
+export const IsPlayerInPlayerGangZone = (playerId: number, zoneId: number): boolean => {
   return !!samp.callNative("IsPlayerInPlayerGangZone", "ii", playerId, zoneId);
 };
 
-export const IsPlayerGangZoneVisible = (
-  playerId: number,
-  zoneId: number,
-): boolean => {
+export const IsPlayerGangZoneVisible = (playerId: number, zoneId: number): boolean => {
   return !!samp.callNative("IsPlayerGangZoneVisible", "ii", playerId, zoneId);
 };
 
-export const PlayerGangZoneGetColor = (
-  playerId: number,
-  zoneId: number,
-): number => {
+export const PlayerGangZoneGetColor = (playerId: number, zoneId: number): number => {
   return samp.callNative("PlayerGangZoneGetColor", "ii", playerId, zoneId);
 };
 
-export const PlayerGangZoneGetFlashColor = (
-  playerId: number,
-  zoneId: number,
-): number => {
+export const PlayerGangZoneGetFlashColor = (playerId: number, zoneId: number): number => {
   return samp.callNative("PlayerGangZoneGetFlashColor", "ii", playerId, zoneId);
 };
 
-export const IsPlayerGangZoneFlashing = (
-  playerId: number,
-  zoneId: number,
-): boolean => {
+export const IsPlayerGangZoneFlashing = (playerId: number, zoneId: number): boolean => {
   return !!samp.callNative("IsPlayerGangZoneFlashing", "ii", playerId, zoneId);
 };
 
@@ -124,16 +69,6 @@ export const PlayerGangZoneGetPos = (
   return { fMinX, fMinY, fMaxX, fMaxY, ret: !!ret };
 };
 
-export const UsePlayerGangZoneCheck = (
-  playerId: number,
-  zoneId: number,
-  use: boolean,
-): boolean => {
-  return !!samp.callNative(
-    "UsePlayerGangZoneCheck",
-    "iii",
-    playerId,
-    zoneId,
-    use,
-  );
+export const UsePlayerGangZoneCheck = (playerId: number, zoneId: number, use: boolean): boolean => {
+  return !!samp.callNative("UsePlayerGangZoneCheck", "iii", playerId, zoneId, use);
 };

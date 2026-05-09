@@ -23,16 +23,7 @@ export class CA_Object {
         this.objectInstance = new DynamicObject(obj).create()!;
       }
 
-      const colId = createObject(
-        obj.modelId,
-        obj.x,
-        obj.y,
-        obj.z,
-        obj.rx,
-        obj.ry,
-        obj.rz,
-        dc,
-      );
+      const colId = createObject(obj.modelId, obj.x, obj.y, obj.z, obj.rx, obj.ry, obj.rz, dc);
 
       if (dc) this.collisionID = colId;
 
@@ -61,12 +52,7 @@ export class CA_Object {
   }
 
   setPos(x: number, y: number, z: number) {
-    if (
-      !this.objectInstance ||
-      this.objectInstance.id === -1 ||
-      this.collisionID === -1
-    )
-      return -1;
+    if (!this.objectInstance || this.objectInstance.id === -1 || this.collisionID === -1) return -1;
 
     this.objectInstance.setPos(x, y, z);
     setObjectPos(this.collisionID, x, y, z);
@@ -74,12 +60,7 @@ export class CA_Object {
   }
 
   setRot(rx: number, ry: number, rz: number) {
-    if (
-      !this.objectInstance ||
-      this.objectInstance.id === -1 ||
-      this.collisionID === -1
-    )
-      return -1;
+    if (!this.objectInstance || this.objectInstance.id === -1 || this.collisionID === -1) return -1;
     this.objectInstance.setRot(rx, ry, rz);
     setObjectRot(this.collisionID, rx, ry, rz);
     return 1;

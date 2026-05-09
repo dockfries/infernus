@@ -19,10 +19,7 @@ export class TextDraw {
 
   constructor(textDrawOrId: ITextDraw | number, player?: Player) {
     if (typeof textDrawOrId === "number") {
-      if (
-        textDrawOrId === InvalidEnum.TEXT_DRAW ||
-        textDrawOrId === InvalidEnum.PLAYER_TEXT_DRAW
-      ) {
+      if (textDrawOrId === InvalidEnum.TEXT_DRAW || textDrawOrId === InvalidEnum.PLAYER_TEXT_DRAW) {
         throw new TextDrawException("Invalid id");
       }
 
@@ -48,10 +45,8 @@ export class TextDraw {
     }
   }
   create(): this {
-    if (!this.sourceInfo)
-      throw new TextDrawException("Cannot create with only id");
-    if (this.id !== InvalidEnum.TEXT_DRAW)
-      throw new TextDrawException("Cannot create again");
+    if (!this.sourceInfo) throw new TextDrawException("Cannot create with only id");
+    if (this.id !== InvalidEnum.TEXT_DRAW) throw new TextDrawException("Cannot create again");
 
     const { x, y, text, player, charset = "ISO-8859-1" } = this.sourceInfo;
     const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
@@ -80,8 +75,7 @@ export class TextDraw {
     return this;
   }
   destroy(): this {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      TextDraw.beforeCreateWarn("destroy textdraw");
+    if (this.id === InvalidEnum.TEXT_DRAW) TextDraw.beforeCreateWarn("destroy textdraw");
     const player = this.getPlayer();
     if (!player) {
       if (!INTERNAL_FLAGS.skip) {
@@ -131,8 +125,7 @@ export class TextDraw {
       return this;
     }
     const player = this.getPlayer();
-    if (player)
-      TextDraw.__inject__.setBoxColorPlayer(player.id, this.id, color);
+    if (player) TextDraw.__inject__.setBoxColorPlayer(player.id, this.id, color);
     else TextDraw.__inject__.setBoxColor(this.id, color);
     return this;
   }
@@ -142,8 +135,7 @@ export class TextDraw {
       return this;
     }
     const player = this.getPlayer();
-    if (player)
-      TextDraw.__inject__.setBackgroundColorPlayer(player.id, this.id, color);
+    if (player) TextDraw.__inject__.setBackgroundColorPlayer(player.id, this.id, color);
     else TextDraw.__inject__.setBackgroundColor(this.id, color);
     return this;
   }
@@ -153,8 +145,7 @@ export class TextDraw {
       return this;
     }
     const player = this.getPlayer();
-    if (player)
-      TextDraw.__inject__.setAlignmentPlayer(player.id, this.id, alignment);
+    if (player) TextDraw.__inject__.setAlignmentPlayer(player.id, this.id, alignment);
     else TextDraw.__inject__.setAlignment(this.id, alignment);
     return this;
   }
@@ -164,8 +155,7 @@ export class TextDraw {
       return this;
     }
     const player = this.getPlayer();
-    if (player)
-      TextDraw.__inject__.setLetterSizePlayer(player.id, this.id, x, y);
+    if (player) TextDraw.__inject__.setLetterSizePlayer(player.id, this.id, x, y);
     else TextDraw.__inject__.setLetterSize(this.id, x, y);
     return this;
   }
@@ -189,8 +179,7 @@ export class TextDraw {
     }
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const player = this.getPlayer();
-    if (player)
-      TextDraw.__inject__.setPreviewModelPlayer(player.id, this.id, modelIndex);
+    if (player) TextDraw.__inject__.setPreviewModelPlayer(player.id, this.id, modelIndex);
     else TextDraw.__inject__.setPreviewModel(this.id, modelIndex);
     return this;
   }
@@ -202,14 +191,7 @@ export class TextDraw {
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const player = this.getPlayer();
     if (player)
-      TextDraw.__inject__.setPreviewRotPlayer(
-        player.id,
-        this.id,
-        fRotX,
-        fRotY,
-        fRotZ,
-        fZoom,
-      );
+      TextDraw.__inject__.setPreviewRotPlayer(player.id, this.id, fRotX, fRotY, fRotZ, fZoom);
     else TextDraw.__inject__.setPreviewRot(this.id, fRotX, fRotY, fRotZ, fZoom);
     return this;
   }
@@ -221,12 +203,7 @@ export class TextDraw {
     this.setFont(TextDrawFontsEnum.MODEL_PREVIEW);
     const player = this.getPlayer();
     if (player)
-      TextDraw.__inject__.setPreviewVehicleColorsPlayer(
-        player.id,
-        this.id,
-        color1,
-        color2,
-      );
+      TextDraw.__inject__.setPreviewVehicleColorsPlayer(player.id, this.id, color1, color2);
     else TextDraw.__inject__.setPreviewVehicleColors(this.id, color1, color2);
     return this;
   }
@@ -236,8 +213,7 @@ export class TextDraw {
       return this;
     }
     const player = this.getPlayer();
-    if (player)
-      TextDraw.__inject__.setProportionalPlayer(player.id, this.id, set);
+    if (player) TextDraw.__inject__.setProportionalPlayer(player.id, this.id, set);
     else TextDraw.__inject__.setProportional(this.id, set);
     return this;
   }
@@ -247,8 +223,7 @@ export class TextDraw {
       return this;
     }
     const player = this.getPlayer();
-    if (player)
-      TextDraw.__inject__.setSelectablePlayer(player.id, this.id, set);
+    if (player) TextDraw.__inject__.setSelectablePlayer(player.id, this.id, set);
     else TextDraw.__inject__.setSelectable(this.id, set);
     return this;
   }
@@ -353,9 +328,7 @@ export class TextDraw {
       TextDraw.__inject__.showForAll(this.id);
       return this;
     }
-    throw new TextDrawException(
-      "player's textdraw should not be show for all.",
-    );
+    throw new TextDrawException("player's textdraw should not be show for all.");
   }
   hideAll() {
     if (this.id === InvalidEnum.TEXT_DRAW) {
@@ -367,9 +340,7 @@ export class TextDraw {
       TextDraw.__inject__.hideForAll(this.id);
       return this;
     }
-    throw new TextDrawException(
-      "player's textdraw should not be hide for all.",
-    );
+    throw new TextDrawException("player's textdraw should not be hide for all.");
   }
   isValid(): boolean {
     if (INTERNAL_FLAGS.skip && this.id !== InvalidEnum.TEXT_DRAW) return true;
@@ -405,64 +376,55 @@ export class TextDraw {
     return this;
   }
   getLetterSize() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get letter size");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get letter size");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getLetterSizePlayer(p.id, this.id);
     return TextDraw.__inject__.getLetterSize(this.id);
   }
   getTextSize() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get text size");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get text size");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getTextSizePlayer(p.id, this.id);
     return TextDraw.__inject__.getTextSize(this.id);
   }
   getPos() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get position");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get position");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getPosPlayer(p.id, this.id);
     return TextDraw.__inject__.getPos(this.id);
   }
   getColor() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get color");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get color");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getColorPlayer(p.id, this.id);
     return TextDraw.__inject__.getColor(this.id);
   }
   getBoxColor() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get box color");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get box color");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getBoxColorPlayer(p.id, this.id);
     return TextDraw.__inject__.getBoxColor(this.id);
   }
   getBackgroundColor() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get bg color");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get bg color");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getBackgroundColorPlayer(p.id, this.id);
     return TextDraw.__inject__.getBackgroundColor(this.id);
   }
   getShadow() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get shadow");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get shadow");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getShadowPlayer(p.id, this.id);
     return TextDraw.__inject__.getShadow(this.id);
   }
   getOutline() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get outline");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get outline");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getOutlinePlayer(p.id, this.id);
     return TextDraw.__inject__.getOutline(this.id);
   }
   getFont() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get font");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get font");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getFontPlayer(p.id, this.id);
     return TextDraw.__inject__.getFont(this.id);
@@ -486,22 +448,19 @@ export class TextDraw {
     return TextDraw.__inject__.isSelectable(this.id);
   }
   getAlignment() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get alignment");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get alignment");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getAlignmentPlayer(p.id, this.id);
     return TextDraw.__inject__.getAlignment(this.id);
   }
   getPreviewModel() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get preview model");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get preview model");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getPreviewModelPlayer(p.id, this.id);
     return TextDraw.__inject__.getPreviewModel(this.id);
   }
   getPreviewRot() {
-    if (this.id === InvalidEnum.TEXT_DRAW)
-      return TextDraw.beforeCreateWarn("get preview rotation");
+    if (this.id === InvalidEnum.TEXT_DRAW) return TextDraw.beforeCreateWarn("get preview rotation");
     const p = this.getPlayer();
     if (p) return TextDraw.__inject__.getPreviewRotPlayer(p.id, this.id);
     return TextDraw.__inject__.getPreviewRot(this.id);
@@ -510,8 +469,7 @@ export class TextDraw {
     if (this.id === InvalidEnum.TEXT_DRAW)
       return TextDraw.beforeCreateWarn("get preview vel colors");
     const p = this.getPlayer();
-    if (p)
-      return TextDraw.__inject__.getPreviewVehicleColorsPlayer(p.id, this.id);
+    if (p) return TextDraw.__inject__.getPreviewVehicleColorsPlayer(p.id, this.id);
     return TextDraw.__inject__.getPreviewVehicleColors(this.id);
   }
   isGlobal() {
@@ -550,11 +508,9 @@ export class TextDraw {
   }
 
   static getPlayersInstances(): [Player, TextDraw[]][] {
-    return Array.from(playerTextDrawPool.entries()).map(
-      ([player, textDraws]) => {
-        return [player, Array.from(textDraws.values())];
-      },
-    );
+    return Array.from(playerTextDrawPool.entries()).map(([player, textDraws]) => {
+      return [player, Array.from(textDraws.values())];
+    });
   }
 
   static __inject__ = {

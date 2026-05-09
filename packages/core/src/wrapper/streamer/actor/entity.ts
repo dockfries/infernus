@@ -32,12 +32,9 @@ export class DynamicActor {
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot create again");
-    if (!this.sourceInfo)
-      throw new DynamicActorException("Cannot create with only id");
-    let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
-      this.sourceInfo;
-    const { modelId, x, y, z, r, invulnerable, health, extended } =
-      this.sourceInfo;
+    if (!this.sourceInfo) throw new DynamicActorException("Cannot create with only id");
+    let { streamDistance, worldId, interiorId, playerId, areaId, priority } = this.sourceInfo;
+    const { modelId, x, y, z, r, invulnerable, health, extended } = this.sourceInfo;
 
     streamDistance ??= s.StreamerDistances.ACTOR_SD;
     priority ??= 0;
@@ -108,8 +105,7 @@ export class DynamicActor {
     return this;
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      return true;
+    if (INTERNAL_FLAGS.skip && this.id !== s.StreamerMiscellaneous.INVALID_ID) return true;
     return DynamicActor.isValid(this.id);
   }
   isStreamedIn(forPlayer: Player): boolean {
@@ -139,9 +135,7 @@ export class DynamicActor {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot apply animation before create");
     if (!isValidAnimateName(animLib, animName)) {
-      throw new DynamicActorException(
-        `Invalid anim library or name ${animLib} ${animName}`,
-      );
+      throw new DynamicActorException(`Invalid anim library or name ${animLib} ${animName}`);
     }
     return DynamicActor.__inject__.applyAnimation(
       this.id,
@@ -211,11 +205,7 @@ export class DynamicActor {
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot toggle callbacks before create");
-    return Streamer.toggleItemCallbacks(
-      s.StreamerItemTypes.ACTOR,
-      this.id,
-      toggle,
-    );
+    return Streamer.toggleItemCallbacks(s.StreamerItemTypes.ACTOR, this.id, toggle);
   }
   isToggleCallbacks(): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;

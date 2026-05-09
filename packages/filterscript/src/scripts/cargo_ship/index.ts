@@ -152,10 +152,7 @@ export const CargoShip: IFilterScript = {
 
     const cmd1 = PlayerEvent.onCommandText("boardship", ({ player, next }) => {
       if (gShipCurrentPoint !== 1) {
-        player.sendClientMessage(
-          0xffff0000,
-          "The ship can't be boarded right now",
-        );
+        player.sendClientMessage(0xffff0000, "The ship can't be boarded right now");
         return 1;
       }
       player.setPos(-1937.7816, 2017.7969, 16.664);

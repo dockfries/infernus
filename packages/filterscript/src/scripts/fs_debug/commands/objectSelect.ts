@@ -27,12 +27,7 @@ import {
   MIN_OBJECT_ID,
 } from "../constants";
 import { SelStatEnum } from "../enums";
-import {
-  IFsDebugOptions,
-  I_OBJECT,
-  I_OBJ_RATE,
-  P_CAMERA_D,
-} from "../interfaces";
+import { IFsDebugOptions, I_OBJECT, I_OBJ_RATE, P_CAMERA_D } from "../interfaces";
 import { getXYInFrontOfPlayer, isValidModel } from "../utils";
 
 function objectSelect(player: Player) {
@@ -73,9 +68,7 @@ function objectSelect(player: Player) {
         });
         obj.create();
         curPlayerObjI.set(player, obj.id);
-        new GameText(`Model ID: ${p_curPlayerObjM.OBJ_MDL}`, 1500, 3).forPlayer(
-          player,
-        );
+        new GameText(`Model ID: ${p_curPlayerObjM.OBJ_MDL}`, 1500, 3).forPlayer(player);
       }
 
       if (upDown === KeysEnum.KEY_DOWN) {
@@ -102,9 +95,7 @@ function objectSelect(player: Player) {
         obj.create();
         curPlayerObjI.set(player, obj.id);
 
-        new GameText(`Model ID: ${p_curPlayerObjM.OBJ_MDL}`, 1500, 3).forPlayer(
-          player,
-        );
+        new GameText(`Model ID: ${p_curPlayerObjM.OBJ_MDL}`, 1500, 3).forPlayer(player);
       }
 
       if (leftRight === KeysEnum.KEY_LEFT) {
@@ -131,9 +122,7 @@ function objectSelect(player: Player) {
         obj.create();
         curPlayerObjI.set(player, obj.id);
 
-        new GameText(`Model ID: ${p_curPlayerObjM.OBJ_MDL}`, 1500, 3).forPlayer(
-          player,
-        );
+        new GameText(`Model ID: ${p_curPlayerObjM.OBJ_MDL}`, 1500, 3).forPlayer(player);
       }
 
       if (leftRight === KeysEnum.KEY_RIGHT) {
@@ -160,9 +149,7 @@ function objectSelect(player: Player) {
         obj.create();
         curPlayerObjI.set(player, obj.id);
 
-        new GameText(`Model ID: ${p_curPlayerObjM.OBJ_MDL}`, 1500, 3).forPlayer(
-          player,
-        );
+        new GameText(`Model ID: ${p_curPlayerObjM.OBJ_MDL}`, 1500, 3).forPlayer(player);
       }
       break;
     }
@@ -204,21 +191,9 @@ function objectSelect(player: Player) {
         p_curPlayerCamD.LOOK_X += p_pObjectRate.OBJ_RATE_MOVE;
       }
 
-      player.setPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
-      obj.setPos(
-        p_curPlayerObjM.OBJ_X,
-        p_curPlayerObjM.OBJ_Y,
-        p_curPlayerObjM.OBJ_Z,
-      );
-      player.setCameraPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
+      player.setPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
+      obj.setPos(p_curPlayerObjM.OBJ_X, p_curPlayerObjM.OBJ_Y, p_curPlayerObjM.OBJ_Z);
+      player.setCameraPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
       player.setCameraLookAt(
         p_curPlayerCamD.LOOK_X,
         p_curPlayerCamD.LOOK_Y,
@@ -254,11 +229,7 @@ function objectSelect(player: Player) {
         p_curPlayerObjM.OBJ_RX += p_pObjectRate.OBJ_RATE_ROT;
       }
 
-      obj.setRot(
-        p_curPlayerObjM.OBJ_RX,
-        p_curPlayerObjM.OBJ_RY,
-        p_curPlayerObjM.OBJ_RZ,
-      );
+      obj.setRot(p_curPlayerObjM.OBJ_RX, p_curPlayerObjM.OBJ_RY, p_curPlayerObjM.OBJ_RZ);
 
       break;
     }
@@ -284,187 +255,158 @@ export function registerObjectSelect(options?: IFsDebugOptions) {
   if (options?.objectSelect === false) return [];
 
   const obj = PlayerEvent.onCommandText("object", ({ player, next }) => {
+    player.sendClientMessage(COLOR_WHITE, "[USAGE]: /object [RRATE/MRATE/CAMERA] [RATE/ID]");
+    return next();
+  });
+
+  const objRate = PlayerEvent.onCommandText("object rrate", ({ player, subcommand, next }) => {
+    const p_pObjectRate = pObjectRate.get(player) || ({} as I_OBJ_RATE);
+    p_pObjectRate.OBJ_RATE_ROT = +subcommand[0] || 0;
+    pObjectRate.set(player, p_pObjectRate);
     player.sendClientMessage(
-      COLOR_WHITE,
-      "[USAGE]: /object [RRATE/MRATE/CAMERA] [RATE/ID]",
+      COLOR_GREEN,
+      `[SUCCESS]: Object rotation rate changed to ${p_pObjectRate.OBJ_RATE_ROT}.`,
     );
     return next();
   });
 
-  const objRate = PlayerEvent.onCommandText(
-    "object rrate",
-    ({ player, subcommand, next }) => {
-      const p_pObjectRate = pObjectRate.get(player) || ({} as I_OBJ_RATE);
-      p_pObjectRate.OBJ_RATE_ROT = +subcommand[0] || 0;
-      pObjectRate.set(player, p_pObjectRate);
-      player.sendClientMessage(
-        COLOR_GREEN,
-        `[SUCCESS]: Object rotation rate changed to ${p_pObjectRate.OBJ_RATE_ROT}.`,
-      );
-      return next();
-    },
-  );
+  const objMoveRate = PlayerEvent.onCommandText("object mrate", ({ player, subcommand, next }) => {
+    const p_pObjectRate = pObjectRate.get(player) || ({} as I_OBJ_RATE);
+    p_pObjectRate.OBJ_RATE_MOVE = +subcommand[0] || 0;
+    pObjectRate.set(player, p_pObjectRate);
+    player.sendClientMessage(
+      COLOR_GREEN,
+      `[SUCCESS]: Object movement rate changed to ${p_pObjectRate.OBJ_RATE_MOVE}.`,
+    );
+    return next();
+  });
 
-  const objMoveRate = PlayerEvent.onCommandText(
-    "object mrate",
-    ({ player, subcommand, next }) => {
-      const p_pObjectRate = pObjectRate.get(player) || ({} as I_OBJ_RATE);
-      p_pObjectRate.OBJ_RATE_MOVE = +subcommand[0] || 0;
-      pObjectRate.set(player, p_pObjectRate);
-      player.sendClientMessage(
-        COLOR_GREEN,
-        `[SUCCESS]: Object movement rate changed to ${p_pObjectRate.OBJ_RATE_MOVE}.`,
-      );
-      return next();
-    },
-  );
-
-  const objMode = PlayerEvent.onCommandText(
-    "object mode",
-    ({ player, subcommand, next }) => {
-      const mode = +subcommand[0] || 0;
-      if (mode >= OBJECT_MODE_SELECTOR || mode <= OBJECT_MODE_ROTATOR) {
-        const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
-        p_curPlayerObjM.OBJ_MOD = mode;
-        curPlayerObjM.set(player, p_curPlayerObjM);
-        switch (mode) {
-          case OBJECT_MODE_SELECTOR:
-            player.sendClientMessage(
-              COLOR_GREEN,
-              "[SUCCESS]: Object mode changed to Object Selection.",
-            );
-            break;
-          case OBJECT_MODE_MOVER:
-            player.sendClientMessage(
-              COLOR_GREEN,
-              "[SUCCESS]: Object mode changed to Object Mover.",
-            );
-            break;
-          case OBJECT_MODE_ROTATOR:
-            player.sendClientMessage(
-              COLOR_GREEN,
-              "[SUCCESS]: Object mode changed to Object Rotator.",
-            );
-            break;
-        }
-        return next();
-      }
-      player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid modeId.");
-      return next();
-    },
-  );
-
-  const objFocus = PlayerEvent.onCommandText(
-    "object focus",
-    ({ player, subcommand, next }) => {
-      const objId = +subcommand[0] || -1;
-      const obj = DynamicObject.getInstance(objId);
-      if (!obj) {
-        player.sendClientMessage(COLOR_RED, "[ERROR]: Enter a valid objectid.");
-        return next();
-      }
-      curPlayerObjI.set(player, objId);
-
+  const objMode = PlayerEvent.onCommandText("object mode", ({ player, subcommand, next }) => {
+    const mode = +subcommand[0] || 0;
+    if (mode >= OBJECT_MODE_SELECTOR || mode <= OBJECT_MODE_ROTATOR) {
       const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
-
-      const { x, y, z } = obj.getPos();
-
-      p_curPlayerObjM.OBJ_X = x;
-      p_curPlayerObjM.OBJ_Y = y;
-      p_curPlayerObjM.OBJ_Z = z;
-
-      const { rx, ry, rz } = obj.getRot();
-
-      p_curPlayerObjM.OBJ_X = rx;
-      p_curPlayerObjM.OBJ_Y = ry;
-      p_curPlayerObjM.OBJ_Z = rz;
-
+      p_curPlayerObjM.OBJ_MOD = mode;
       curPlayerObjM.set(player, p_curPlayerObjM);
+      switch (mode) {
+        case OBJECT_MODE_SELECTOR:
+          player.sendClientMessage(
+            COLOR_GREEN,
+            "[SUCCESS]: Object mode changed to Object Selection.",
+          );
+          break;
+        case OBJECT_MODE_MOVER:
+          player.sendClientMessage(COLOR_GREEN, "[SUCCESS]: Object mode changed to Object Mover.");
+          break;
+        case OBJECT_MODE_ROTATOR:
+          player.sendClientMessage(
+            COLOR_GREEN,
+            "[SUCCESS]: Object mode changed to Object Rotator.",
+          );
+          break;
+      }
+      return next();
+    }
+    player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid modeId.");
+    return next();
+  });
 
+  const objFocus = PlayerEvent.onCommandText("object focus", ({ player, subcommand, next }) => {
+    const objId = +subcommand[0] || -1;
+    const obj = DynamicObject.getInstance(objId);
+    if (!obj) {
+      player.sendClientMessage(COLOR_RED, "[ERROR]: Enter a valid objectid.");
+      return next();
+    }
+    curPlayerObjI.set(player, objId);
+
+    const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
+
+    const { x, y, z } = obj.getPos();
+
+    p_curPlayerObjM.OBJ_X = x;
+    p_curPlayerObjM.OBJ_Y = y;
+    p_curPlayerObjM.OBJ_Z = z;
+
+    const { rx, ry, rz } = obj.getRot();
+
+    p_curPlayerObjM.OBJ_X = rx;
+    p_curPlayerObjM.OBJ_Y = ry;
+    p_curPlayerObjM.OBJ_Z = rz;
+
+    curPlayerObjM.set(player, p_curPlayerObjM);
+
+    const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
+
+    p_curPlayerCamD.POS_X = p_curPlayerObjM.OBJ_X + 5.0;
+    p_curPlayerCamD.POS_Y = p_curPlayerObjM.OBJ_Y - 20.0;
+    p_curPlayerCamD.POS_Z = p_curPlayerObjM.OBJ_Z + 30.0;
+
+    p_curPlayerCamD.LOOK_X = p_curPlayerObjM.OBJ_X;
+    p_curPlayerCamD.LOOK_Y = p_curPlayerObjM.OBJ_Y;
+    p_curPlayerCamD.LOOK_Z = p_curPlayerObjM.OBJ_Z;
+
+    curPlayerCamD.set(player, p_curPlayerCamD);
+
+    if (gPlayerStatus.get(player) === SelStatEnum.OBJECT) {
+      player.setCameraPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
+      player.setCameraLookAt(
+        p_curPlayerObjM.OBJ_X,
+        p_curPlayerObjM.OBJ_Y,
+        p_curPlayerObjM.OBJ_Z,
+        CameraCutStylesEnum.CUT,
+      );
+    }
+    return next();
+  });
+
+  const objCamera = PlayerEvent.onCommandText("object camera", ({ player, subcommand, next }) => {
+    const cameraId = +subcommand[0] || 0;
+    if (cameraId >= 0 && cameraId < 4) {
       const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
-
-      p_curPlayerCamD.POS_X = p_curPlayerObjM.OBJ_X + 5.0;
-      p_curPlayerCamD.POS_Y = p_curPlayerObjM.OBJ_Y - 20.0;
-      p_curPlayerCamD.POS_Z = p_curPlayerObjM.OBJ_Z + 30.0;
-
-      p_curPlayerCamD.LOOK_X = p_curPlayerObjM.OBJ_X;
-      p_curPlayerCamD.LOOK_Y = p_curPlayerObjM.OBJ_Y;
-      p_curPlayerCamD.LOOK_Z = p_curPlayerObjM.OBJ_Z;
-
-      curPlayerCamD.set(player, p_curPlayerCamD);
-
-      if (gPlayerStatus.get(player) === SelStatEnum.OBJECT) {
-        player.setCameraPos(
-          p_curPlayerCamD.POS_X,
-          p_curPlayerCamD.POS_Y,
-          p_curPlayerCamD.POS_Z,
-        );
-        player.setCameraLookAt(
-          p_curPlayerObjM.OBJ_X,
-          p_curPlayerObjM.OBJ_Y,
-          p_curPlayerObjM.OBJ_Z,
-          CameraCutStylesEnum.CUT,
-        );
-      }
-      return next();
-    },
-  );
-
-  const objCamera = PlayerEvent.onCommandText(
-    "object camera",
-    ({ player, subcommand, next }) => {
-      const cameraId = +subcommand[0] || 0;
-      if (cameraId >= 0 && cameraId < 4) {
-        const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
-        const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
-        switch (cameraId) {
-          case 0: {
-            p_curPlayerCamD.POS_X = p_curPlayerObjM.OBJ_X + 7.0;
-            p_curPlayerCamD.POS_Y = p_curPlayerObjM.OBJ_Y - 20.0;
-            p_curPlayerCamD.POS_Z = p_curPlayerObjM.OBJ_Z + 30.0;
-            break;
-          }
-
-          case 1: {
-            p_curPlayerCamD.POS_X = p_curPlayerObjM.OBJ_X + 7.0;
-            p_curPlayerCamD.POS_Y = p_curPlayerObjM.OBJ_Y + 15.0;
-            p_curPlayerCamD.POS_Z = p_curPlayerObjM.OBJ_X + 15.0;
-            break;
-          }
-
-          case 2: {
-            p_curPlayerCamD.POS_X = p_curPlayerObjM.OBJ_X - 20.0;
-            p_curPlayerCamD.POS_Y = p_curPlayerObjM.OBJ_Y + 20.0;
-            p_curPlayerCamD.POS_Z = p_curPlayerObjM.OBJ_X + 20.0;
-            break;
-          }
-
-          case 3: {
-            p_curPlayerCamD.POS_X = p_curPlayerObjM.OBJ_X - 10.0;
-            p_curPlayerCamD.POS_Y = p_curPlayerObjM.OBJ_Y + 25.0;
-            p_curPlayerCamD.POS_Z = p_curPlayerObjM.OBJ_X + 15.0;
-            break;
-          }
+      const p_curPlayerObjM = curPlayerObjM.get(player) || ({} as I_OBJECT);
+      switch (cameraId) {
+        case 0: {
+          p_curPlayerCamD.POS_X = p_curPlayerObjM.OBJ_X + 7.0;
+          p_curPlayerCamD.POS_Y = p_curPlayerObjM.OBJ_Y - 20.0;
+          p_curPlayerCamD.POS_Z = p_curPlayerObjM.OBJ_Z + 30.0;
+          break;
         }
-        curPlayerCamD.set(player, p_curPlayerCamD);
-        player.setCameraPos(
-          p_curPlayerCamD.POS_X,
-          p_curPlayerCamD.POS_Y,
-          p_curPlayerCamD.POS_Z,
-        );
-        player.setCameraLookAt(
-          p_curPlayerObjM.OBJ_X,
-          p_curPlayerObjM.OBJ_Y,
-          p_curPlayerObjM.OBJ_Z,
-          CameraCutStylesEnum.CUT,
-        );
 
-        return next();
+        case 1: {
+          p_curPlayerCamD.POS_X = p_curPlayerObjM.OBJ_X + 7.0;
+          p_curPlayerCamD.POS_Y = p_curPlayerObjM.OBJ_Y + 15.0;
+          p_curPlayerCamD.POS_Z = p_curPlayerObjM.OBJ_X + 15.0;
+          break;
+        }
+
+        case 2: {
+          p_curPlayerCamD.POS_X = p_curPlayerObjM.OBJ_X - 20.0;
+          p_curPlayerCamD.POS_Y = p_curPlayerObjM.OBJ_Y + 20.0;
+          p_curPlayerCamD.POS_Z = p_curPlayerObjM.OBJ_X + 20.0;
+          break;
+        }
+
+        case 3: {
+          p_curPlayerCamD.POS_X = p_curPlayerObjM.OBJ_X - 10.0;
+          p_curPlayerCamD.POS_Y = p_curPlayerObjM.OBJ_Y + 25.0;
+          p_curPlayerCamD.POS_Z = p_curPlayerObjM.OBJ_X + 15.0;
+          break;
+        }
       }
-      player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid object camera id.");
+      curPlayerCamD.set(player, p_curPlayerCamD);
+      player.setCameraPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
+      player.setCameraLookAt(
+        p_curPlayerObjM.OBJ_X,
+        p_curPlayerObjM.OBJ_Y,
+        p_curPlayerObjM.OBJ_Z,
+        CameraCutStylesEnum.CUT,
+      );
+
       return next();
-    },
-  );
+    }
+    player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid object camera id.");
+    return next();
+  });
 
   const objSel = PlayerEvent.onCommandText("osel", ({ player, next }) => {
     const status = gPlayerStatus.get(player);
@@ -489,16 +431,9 @@ export function registerObjectSelect(options?: IFsDebugOptions) {
     p_curPlayerCamD.POS_Z = z;
 
     p_curPlayerCamD.POS_Z += 5.0;
-    player.setCameraPos(
-      p_curPlayerCamD.POS_X,
-      p_curPlayerCamD.POS_Y,
-      p_curPlayerCamD.POS_Z,
-    );
+    player.setCameraPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
 
-    const { x: cloo_x, y: cloo_y } = getXYInFrontOfPlayer(
-      player,
-      OBJECT_DISTANCE,
-    );
+    const { x: cloo_x, y: cloo_y } = getXYInFrontOfPlayer(player, OBJECT_DISTANCE);
 
     p_curPlayerCamD.LOOK_X = cloo_x;
     p_curPlayerCamD.LOOK_Y = cloo_y;

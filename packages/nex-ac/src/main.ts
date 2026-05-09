@@ -1,9 +1,4 @@
-export {
-  onCheatDetected,
-  onCheatWarning,
-  onFloodWarning,
-  onNOPWarning,
-} from "./callbacks";
+export { onCheatDetected, onCheatWarning, onFloodWarning, onNOPWarning } from "./callbacks";
 export { defineNexACConfig } from "./config";
 export {
   antiCheatGetArmour,

@@ -11,12 +11,8 @@ TextDrawEvent.onPlayerClickGlobal(({ player, next }) => {
       ac_FloodDetect(player, 4);
       return true;
     }
-    if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-      ac_FloodDetect(player, 27);
-    else
-      ACInfo.get(player.id).acFloodCount[4] = ACInfo.get(
-        player.id,
-      ).acFloodCount[27] = 0;
+    if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+    else ACInfo.get(player.id).acFloodCount[4] = ACInfo.get(player.id).acFloodCount[27] = 0;
   }
   ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[4] = ac_gtc;
   return next();
@@ -30,12 +26,8 @@ TextDrawEvent.onPlayerClickPlayer(({ player, next }) => {
       ac_FloodDetect(player, 23);
       return true;
     }
-    if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-      ac_FloodDetect(player, 27);
-    else
-      ACInfo.get(player.id).acFloodCount[23] = ACInfo.get(
-        player.id,
-      ).acFloodCount[27] = 0;
+    if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+    else ACInfo.get(player.id).acFloodCount[23] = ACInfo.get(player.id).acFloodCount[27] = 0;
   }
   ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[23] = ac_gtc;
   return next();

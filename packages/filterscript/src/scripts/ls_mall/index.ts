@@ -12,11 +12,7 @@
 
 import type { IFilterScript } from "@infernus/core";
 import { Player, PlayerEvent, DynamicObject } from "@infernus/core";
-import {
-  MALL_OBJECT_DRAW_DIST,
-  createObjects,
-  removeBuildings,
-} from "./constants";
+import { MALL_OBJECT_DRAW_DIST, createObjects, removeBuildings } from "./constants";
 
 let createdObjects: DynamicObject[] = [];
 

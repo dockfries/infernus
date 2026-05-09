@@ -24,9 +24,7 @@ GameMode.onExit(({ next }) => {
 });
 
 GameMode.onIncomingConnection(({ next, playerId, ipAddress, port }) => {
-  console.log(
-    `id del jugador:${playerId},ip:${ipAddress},puerto:${port} intenta conectarse`,
-  );
+  console.log(`id del jugador:${playerId},ip:${ipAddress},puerto:${port} intenta conectarse`);
   return next();
 });
 ```
@@ -96,10 +94,7 @@ const fakePromise = () => {
 // Puede utilizar async directamente, que es también la opción recomendada
 PlayerEvent.onCommandText("async", async ({ player, next }) => {
   await fakePromise();
-  player.sendClientMessage(
-    "#fff",
-    "Enviar un mensaje después de un retraso de 1 segundo.",
-  );
+  player.sendClientMessage("#fff", "Enviar un mensaje después de un retraso de 1 segundo.");
   return next();
 });
 
@@ -107,10 +102,7 @@ PlayerEvent.onCommandText("async", async ({ player, next }) => {
 PlayerEvent.onCommandText("promise", ({ player, next }) => {
   return new Promise((resolve) => {
     fakePromise().then(() => {
-      player.sendClientMessage(
-        "#fff",
-        "Enviar un mensaje después de un retraso de 1 segundo.",
-      );
+      player.sendClientMessage("#fff", "Enviar un mensaje después de un retraso de 1 segundo.");
       resolve();
       return next();
     });
@@ -168,9 +160,7 @@ Esta función se suele utilizar cuando sólo se desea ejecutar una vez o cancela
 ```ts
 // Definir un comando de una sola vez
 const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
-  console.log(
-    "Este comando sólo se ejecuta una vez, y la siguiente ejecución no existirá.",
-  );
+  console.log("Este comando sólo se ejecuta una vez, y la siguiente ejecución no existirá.");
   const ret = next();
   off(); // la siguiente función debe ejecutarse antes que la función off
   return ret;
@@ -229,24 +219,21 @@ PlayerEvent.onCommandText("ayuda teletransporte", ({ player, next }) => {
 });
 
 // Definir un comando que puede ser activado por /msg o /message
-PlayerEvent.onCommandText(
-  ["msg", "mensaje"],
-  ({ player, subcommand, next }) => {
-    console.log(
-      `el jugador ${player.getName()} introdujo este comando, y también puede haber introducido un subcomando ${subcommand.toString()}`,
-    );
+PlayerEvent.onCommandText(["msg", "mensaje"], ({ player, subcommand, next }) => {
+  console.log(
+    `el jugador ${player.getName()} introdujo este comando, y también puede haber introducido un subcomando ${subcommand.toString()}`,
+  );
 
-    // Equivale a que el jugador introduzca /message global o /msg global
-    if (subcommand[0] === "global") {
-      // Lógica adicional que desees incorporar
-      return next();
-    } else {
-      next();
-      // Pensado como un subcomando inválido, activará la retaguardia
-      return false;
-    }
-  },
-);
+  // Equivale a que el jugador introduzca /message global o /msg global
+  if (subcommand[0] === "global") {
+    // Lógica adicional que desees incorporar
+    return next();
+  } else {
+    next();
+    // Pensado como un subcomando inválido, activará la retaguardia
+    return false;
+  }
+});
 ```
 
 ### Sensibilidad a mayúsculas y minúsculas

@@ -3,13 +3,8 @@ import { PacketRpcValueType } from "raknet/enums";
 import type { BitStream } from "raknet/bitStream";
 import type { BitStreamRaw } from "raknet/types";
 
-export const convertToByteString = (
-  value: string | number[],
-  length: number,
-  charset = "utf8",
-) => {
-  const finalValue =
-    typeof value === "string" ? I18n.encodeToBuf(value, charset) : value;
+export const convertToByteString = (value: string | number[], length: number, charset = "utf8") => {
+  const finalValue = typeof value === "string" ? I18n.encodeToBuf(value, charset) : value;
   return finalValue.slice(0, length);
 };
 
@@ -32,11 +27,7 @@ export const patchRakNetNatives = (...args: (number | string | boolean)[]) => {
   return samp.callPublic("RakNetNatives", `a`, args);
 };
 
-export const patchRakNetRead = (
-  bs: BitStreamRaw,
-  type: PacketRpcValueType,
-  length = 0,
-) => {
+export const patchRakNetRead = (bs: BitStreamRaw, type: PacketRpcValueType, length = 0) => {
   switch (type) {
     case PacketRpcValueType.Bool:
     case PacketRpcValueType.CBool: {
@@ -47,11 +38,7 @@ export const patchRakNetRead = (
       return samp.callPublicFloat("RakNetReadFloat", "i", bs) as number;
     }
     case PacketRpcValueType.CFloat: {
-      return samp.callPublicFloat(
-        "RakNetReadCompressedFloat",
-        "i",
-        bs,
-      ) as number;
+      return samp.callPublicFloat("RakNetReadCompressedFloat", "i", bs) as number;
     }
 
     case PacketRpcValueType.Bits: {
@@ -147,12 +134,7 @@ export const patchRakNetWrite = (
     }
     case PacketRpcValueType.CFloat: {
       if (typeof value !== "number") return false;
-      return !!samp.callPublicFloat(
-        "RakNetWriteCompressedFloat",
-        "if",
-        bs,
-        value,
-      );
+      return !!samp.callPublicFloat("RakNetWriteCompressedFloat", "if", bs, value);
     }
 
     case PacketRpcValueType.Bits: {
@@ -186,13 +168,7 @@ export const patchRakNetWrite = (
     }
     case PacketRpcValueType.String: {
       if (!Array.isArray(value)) return false;
-      return !!samp.callPublicFloat(
-        "RakNetWriteString",
-        "iai",
-        bs,
-        value,
-        length || value.length,
-      );
+      return !!samp.callPublicFloat("RakNetWriteString", "iai", bs, value, length || value.length);
     }
     case PacketRpcValueType.CString: {
       if (!Array.isArray(value)) return false;

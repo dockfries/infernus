@@ -38,17 +38,17 @@ interface IMyScript extends IFilterScript {
 const MyScript: IMyScript = {
   name: "my_script",
   load(...args) {
-    console.log('My script loaded.', args);
+    console.log("My script loaded.", args);
   },
   unload() {
-    console.log('My script unloaded.');
-  }
+    console.log("My script unloaded.");
+  },
 };
 
 // No parameters are passed to the load method
 GameMode.use(MyScript);
 // Pass parameters to the load method
-GameMode.use(MyScript, 'arg1', 'arg2', "arg...");
+GameMode.use(MyScript, "arg1", "arg2", "arg...");
 ```
 
 ::: tip
@@ -86,9 +86,8 @@ The reason is simple, if you don't do this, the middleware will not be unloaded 
 In addition, you should not call the `script.load()` or `script.unload()`，You should use the [load command](#load-command) to call.
 
 ```ts
-
 const MyScript = {
-  name: 'my_script',
+  name: "my_script",
   load(...args) {
     const off1 = PlayerEvent.onCommandText("foo", ({ player, next }) => {
       return next();
@@ -100,13 +99,10 @@ const MyScript = {
 
     return [off1, off2];
   },
-  unload() {
-
-  }
-}
+  unload() {},
+};
 
 GameMode.use(MyScript);
-
 ```
 
 ## Rewrite the official filterscript

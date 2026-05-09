@@ -34,23 +34,18 @@ export const MenuTest: IFilterScript = {
   load() {
     initTestMenu();
 
-    const onSelectedRow = MenuEvent.onPlayerSelectedRow(
-      ({ player, row, next }) => {
-        const PlayerMenu = Menu.getInstanceByPlayer(player);
-        if (PlayerMenu === testMenu) {
-          handleTestMenuSelection(player, row);
-        }
-        return next();
-      },
-    );
+    const onSelectedRow = MenuEvent.onPlayerSelectedRow(({ player, row, next }) => {
+      const PlayerMenu = Menu.getInstanceByPlayer(player);
+      if (PlayerMenu === testMenu) {
+        handleTestMenuSelection(player, row);
+      }
+      return next();
+    });
 
-    const menuCommand = PlayerEvent.onCommandText(
-      "menutest",
-      ({ player, next }) => {
-        testMenu?.showForPlayer(player);
-        return next();
-      },
-    );
+    const menuCommand = PlayerEvent.onCommandText("menutest", ({ player, next }) => {
+      testMenu?.showForPlayer(player);
+      return next();
+    });
 
     return [onSelectedRow, menuCommand];
   },

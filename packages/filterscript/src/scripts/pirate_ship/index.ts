@@ -132,29 +132,13 @@ export const PirateShip: IPirateShipFS = {
 
     gShipSkullAttachment[0].create();
 
-    gShipSkullAttachment[0].attachToObject(
-      gMainShipObject,
-      4.11,
-      -5.53,
-      -9.78,
-      0.0,
-      0.0,
-      90.0,
-    );
+    gShipSkullAttachment[0].attachToObject(gMainShipObject, 4.11, -5.53, -9.78, 0.0, 0.0, 90.0);
 
     gShipSkullAttachment[1] = new DynamicObject(gShipSkullAttachmentParams);
 
     gShipSkullAttachment[1].create();
 
-    gShipSkullAttachment[1].attachToObject(
-      gMainShipObject,
-      -4.11,
-      -5.53,
-      -9.78,
-      0.0,
-      0.0,
-      -90.0,
-    );
+    gShipSkullAttachment[1].attachToObject(gMainShipObject, -4.11, -5.53, -9.78, 0.0, 0.0, -90.0);
 
     gShipSkullAttachment[2] = new DynamicObject(gShipSkullAttachmentParams);
 
@@ -197,15 +181,7 @@ export const PirateShip: IPirateShipFS = {
 
     gShipRailsAttachment.create();
 
-    gShipRailsAttachment.attachToObject(
-      gMainShipObject,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-    );
+    gShipRailsAttachment.attachToObject(gMainShipObject, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
     gShipLinesAttachment = new DynamicObject({
       modelId: SHIP_LINES_ATTACH,
@@ -220,15 +196,7 @@ export const PirateShip: IPirateShipFS = {
 
     gShipLinesAttachment.create();
 
-    gShipLinesAttachment.attachToObject(
-      gMainShipObject,
-      -0.5468,
-      -6.1875,
-      -0.4375,
-      0.0,
-      0.0,
-      0.0,
-    );
+    gShipLinesAttachment.attachToObject(gMainShipObject, -0.5468, -6.1875, -0.4375, 0.0, 0.0, 0.0);
 
     if (timer) {
       clearTimeout(timer);

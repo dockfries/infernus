@@ -33,22 +33,20 @@ export function initAt400LS() {
     return next();
   });
 
-  const offStateChange = PlayerEvent.onStateChange(
-    ({ player, newState, next }) => {
-      if (player.isNpc() && player.getName().name === NPC_NAME) {
-        const npc = Npc.getInstance(player.id)!;
-        if (newState === PlayerStateEnum.DRIVER) {
-          nextPlayback(npc);
-        } else {
-          if (npc.isPlayingPlayback()) {
-            npc.stopPlayback();
-          }
-          gPlaybackFileCycle = 0;
+  const offStateChange = PlayerEvent.onStateChange(({ player, newState, next }) => {
+    if (player.isNpc() && player.getName().name === NPC_NAME) {
+      const npc = Npc.getInstance(player.id)!;
+      if (newState === PlayerStateEnum.DRIVER) {
+        nextPlayback(npc);
+      } else {
+        if (npc.isPlayingPlayback()) {
+          npc.stopPlayback();
         }
+        gPlaybackFileCycle = 0;
       }
-      return next();
-    },
-  );
+    }
+    return next();
+  });
 
   return [offPlaybackEnd, offStateChange];
 }

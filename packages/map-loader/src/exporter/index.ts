@@ -1,16 +1,7 @@
 /* eslint-disable prefer-const */
 import fs from "node:fs";
-import {
-  E_STREAMER,
-  Streamer,
-  StreamerItemTypes,
-  DynamicObject,
-} from "@infernus/core";
-import {
-  FONT_SPACE_PLACEHOLDER,
-  NEWLINE_PLACEHOLDER,
-  TXT_SPACE_PLACEHOLDER,
-} from "../constants";
+import { E_STREAMER, Streamer, StreamerItemTypes, DynamicObject } from "@infernus/core";
+import { FONT_SPACE_PLACEHOLDER, NEWLINE_PLACEHOLDER, TXT_SPACE_PLACEHOLDER } from "../constants";
 import { IMapExporterOptions } from "../interfaces";
 import { formatHex, replaceTexture } from "../utils";
 
@@ -29,16 +20,8 @@ export async function mapExporter(options: IMapExporterOptions) {
     for (let i = 1; i <= upperBound; i++) {
       if (!DynamicObject.isValid(i)) continue;
 
-      const model = Streamer.getIntData(
-        StreamerItemTypes.OBJECT,
-        i,
-        E_STREAMER.MODEL_ID,
-      );
-      const world = Streamer.getIntData(
-        StreamerItemTypes.OBJECT,
-        i,
-        E_STREAMER.WORLD_ID,
-      );
+      const model = Streamer.getIntData(StreamerItemTypes.OBJECT, i, E_STREAMER.MODEL_ID);
+      const world = Streamer.getIntData(StreamerItemTypes.OBJECT, i, E_STREAMER.WORLD_ID);
 
       const obj = new DynamicObject(i);
 
@@ -61,8 +44,7 @@ export async function mapExporter(options: IMapExporterOptions) {
 
       for (let idx = 0; idx < 15; idx++) {
         if (obj.isMaterialUsed(idx)) {
-          let { modelId, materialColor, txdName, textureName } =
-            obj.getMaterial(idx);
+          let { modelId, materialColor, txdName, textureName } = obj.getMaterial(idx);
 
           const replaced = replaceTexture(modelId, txdName, textureName);
           modelId = replaced.modelId;
@@ -74,14 +56,7 @@ export async function mapExporter(options: IMapExporterOptions) {
           }
 
           matArr.push(
-            [
-              "mat",
-              idx,
-              modelId,
-              txdName,
-              textureName,
-              formatHex(materialColor, 8),
-            ].join(" "),
+            ["mat", idx, modelId, txdName, textureName, formatHex(materialColor, 8)].join(" "),
           );
         }
       }

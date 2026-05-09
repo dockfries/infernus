@@ -22,10 +22,7 @@ import { inflictDamage } from "../internal/damage";
 import { damageFeedUpdate } from "../internal/damageFeed";
 import { saveSyncData } from "../internal/raknet";
 import { spawnPlayerInPlace } from "../internal/set";
-import {
-  createVendingMachines,
-  destroyVendingMachines,
-} from "../internal/vendingMachines";
+import { createVendingMachines, destroyVendingMachines } from "../internal/vendingMachines";
 import { isBulletWeapon } from "./is";
 
 export function setRespawnTime(ms: number) {
@@ -42,10 +39,7 @@ export function setWeaponDamage(
     return 0;
   }
 
-  if (
-    damage_type === DamageTypeEnum.RANGE ||
-    damage_type === DamageTypeEnum.RANGE_MULTIPLIER
-  ) {
+  if (damage_type === DamageTypeEnum.RANGE || damage_type === DamageTypeEnum.RANGE_MULTIPLIER) {
     if (!isBulletWeapon(weaponId)) {
       return 0;
     }
@@ -69,10 +63,7 @@ export function setWeaponDamage(
     }
 
     return 1;
-  } else if (
-    damage_type === DamageTypeEnum.MULTIPLIER ||
-    damage_type === DamageTypeEnum.STATIC
-  ) {
+  } else if (damage_type === DamageTypeEnum.MULTIPLIER || damage_type === DamageTypeEnum.STATIC) {
     s_DamageType[weaponId] = damage_type;
     damageRangeSteps[weaponId] = 0;
     s_WeaponDamage[weaponId] = amount;
@@ -83,10 +74,7 @@ export function setWeaponDamage(
   return 0;
 }
 
-export function setCustomArmourRules(
-  armour_rules: boolean,
-  torso_rules = false,
-) {
+export function setCustomArmourRules(armour_rules: boolean, torso_rules = false) {
   innerGameModeConfig.damageArmourToggle[0] = armour_rules;
   innerGameModeConfig.damageArmourToggle[1] = torso_rules;
 }
@@ -175,10 +163,7 @@ export function setDamageFeed(toggle: boolean) {
 }
 
 export function setWeaponShootRate(weaponId: WC_WeaponEnum, max_rate: number) {
-  if (
-    weaponId >= WC_WeaponEnum.UNARMED &&
-    weaponId < s_MaxWeaponShootRate.length
-  ) {
+  if (weaponId >= WC_WeaponEnum.UNARMED && weaponId < s_MaxWeaponShootRate.length) {
     s_MaxWeaponShootRate[weaponId] = max_rate;
     return 1;
   }
@@ -213,11 +198,7 @@ export function damagePlayer(
   bodyPart: WC_BodyPartsEnum = WC_BodyPartsEnum.UNKNOWN,
   ignore_armour = false,
 ) {
-  if (
-    player.id < 0 ||
-    player.id > LimitsEnum.MAX_PLAYERS ||
-    !player.isConnected()
-  ) {
+  if (player.id < 0 || player.id > LimitsEnum.MAX_PLAYERS || !player.isConnected()) {
     return 0;
   }
 
@@ -231,9 +212,7 @@ export function damagePlayer(
 
   if (
     issuerId !== InvalidEnum.PLAYER_ID &&
-    (issuerId.id < 0 ||
-      issuerId.id > LimitsEnum.MAX_PLAYERS ||
-      !issuerId.isConnected())
+    (issuerId.id < 0 || issuerId.id > LimitsEnum.MAX_PLAYERS || !issuerId.isConnected())
   ) {
     issuerId = InvalidEnum.PLAYER_ID;
   }

@@ -168,24 +168,21 @@ export const LSPrisonWalls: IFilterScript = {
       removeBuilding(p);
     });
 
-    const onCommandText = PlayerEvent.onCommandText(
-      "lsp",
-      ({ player, next }) => {
-        // Set the interior
-        player.setInterior(0);
+    const onCommandText = PlayerEvent.onCommandText("lsp", ({ player, next }) => {
+      // Set the interior
+      player.setInterior(0);
 
-        // Set player position and facing angle
-        player.setPos(1830.66 + Math.random() * 2, -1538.46, 14.5);
-        player.setFacingAngle(85);
+      // Set player position and facing angle
+      player.setPos(1830.66 + Math.random() * 2, -1538.46, 14.5);
+      player.setFacingAngle(85);
 
-        // Fix camera position after teleporting
-        player.setCameraBehind();
+      // Fix camera position after teleporting
+      player.setCameraBehind();
 
-        // Send a gametext message to the player
-        new GameText("~b~~h~LS Prison!", 3000, 3).forPlayer(player);
-        return next();
-      },
-    );
+      // Send a gametext message to the player
+      new GameText("~b~~h~LS Prison!", 3000, 3).forPlayer(player);
+      return next();
+    });
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
       removeBuilding(player);
@@ -219,203 +216,185 @@ export const LSPrisonWalls: IFilterScript = {
       return next();
     });
 
-    const onKeyStateChange = PlayerEvent.onKeyStateChange(
-      ({ player, newKeys, next }) => {
-        // Check if the player pressed the conversation yes key (normally the Y key)
-        if (newKeys & KeysEnum.YES) {
-          // Check if the player is outside the eastern prison gates
-          if (player.isInRangeOfPoint(10.0, 1823.78, -1537.98, 13.54)) {
-            // Debug
-            //console.logf("-->Player ID %d within 10m of the Eastern Prison Gates", playerid);
+    const onKeyStateChange = PlayerEvent.onKeyStateChange(({ player, newKeys, next }) => {
+      // Check if the player pressed the conversation yes key (normally the Y key)
+      if (newKeys & KeysEnum.YES) {
+        // Check if the player is outside the eastern prison gates
+        if (player.isInRangeOfPoint(10.0, 1823.78, -1537.98, 13.54)) {
+          // Debug
+          //console.logf("-->Player ID %d within 10m of the Eastern Prison Gates", playerid);
 
-            // Check if the eastern gates are not currently opening (ie moving)
-            if (easternGatesStatus === constants.GATES_OPENING) {
-              // Send chat text message and exit here
-              player.sendClientMessage(
-                constants.COLOR_MESSAGE_YELLOW,
-                "* Sorry, you must wait for the eastern gates to fully open first.",
-              );
-              return 1;
-            }
-            // Check if the eastern gates are not currently closing (ie moving)
-            else if (easternGatesStatus === constants.GATES_CLOSING) {
-              // Send chat text message and exit here
-              player.sendClientMessage(
-                constants.COLOR_MESSAGE_YELLOW,
-                "* Sorry, you must wait for the eastern gates to fully close first.",
-              );
-              return 1;
-            }
-
-            // Play gate opening sound
-            playSoundForPlayersInRange(1035, 50.0, 1823.78, -1537.98, 13.54);
-
-            // Check if the eastern gates are currently open or closed
-            if (easternGatesStatus === constants.GATES_CLOSED) {
-              // Send a gametext message to the player
-              new GameText(
-                "~b~~h~Eastern Prison~n~~b~~h~Gates Opening!",
-                3000,
-                3,
-              ).forPlayer(player);
-
-              // Animate the eastern gates opening (the small Z offset is required)
-              lsPrisonGatesObject[0].move(
-                1824.318481,
-                -1534.731201,
-                14.296878 + 0.01,
-                0.002,
-                0,
-                0,
-                258,
-              );
-
-              // Animate the eastern gates opening (the small Z offset is required)
-              lsPrisonGatesObject[1].move(
-                1822.407592,
-                -1540.949951,
-                14.296878 + 0.01,
-                0.002,
-                0,
-                0,
-                253,
-              );
-
-              // Set status flag for eastern gates
-              easternGatesStatus = constants.GATES_OPENING;
-            } else {
-              // Send a gametext message to the player
-              new GameText(
-                "~b~~h~Eastern Prison~n~~b~~h~Gates Closing!",
-                3000,
-                3,
-              ).forPlayer(player);
-
-              // Animate the eastern gates closing (the small Z offset is required)
-              lsPrisonGatesObject[0].move(
-                1824.318481,
-                -1534.731201,
-                14.296878 - 0.01,
-                0.002,
-                0,
-                0,
-                343,
-              );
-
-              // Animate the eastern gates closing (the small Z offset is required)
-              lsPrisonGatesObject[1].move(
-                1822.407592,
-                -1540.949951,
-                14.296878 - 0.01,
-                0.002,
-                0,
-                0,
-                163,
-              );
-
-              // Set status flag for eastern gates
-              easternGatesStatus = constants.GATES_CLOSING;
-            }
+          // Check if the eastern gates are not currently opening (ie moving)
+          if (easternGatesStatus === constants.GATES_OPENING) {
+            // Send chat text message and exit here
+            player.sendClientMessage(
+              constants.COLOR_MESSAGE_YELLOW,
+              "* Sorry, you must wait for the eastern gates to fully open first.",
+            );
+            return 1;
           }
-          // Check if the player is outside the southern prison gates
-          else if (player.isInRangeOfPoint(10.0, 1754.27, -1592.18, 13.54)) {
-            // Debug
-            //console.logf("-->Player ID %d within 10m of the Southern Prison Gates", playerid);
+          // Check if the eastern gates are not currently closing (ie moving)
+          else if (easternGatesStatus === constants.GATES_CLOSING) {
+            // Send chat text message and exit here
+            player.sendClientMessage(
+              constants.COLOR_MESSAGE_YELLOW,
+              "* Sorry, you must wait for the eastern gates to fully close first.",
+            );
+            return 1;
+          }
 
-            // Check if the southern gates are not currently opening (ie moving)
-            if (southernGatesStatus === constants.GATES_OPENING) {
-              // Send chat text message and exit here
-              player.sendClientMessage(
-                constants.COLOR_MESSAGE_YELLOW,
-                "* Sorry, you must wait for the southern gates to fully open first.",
-              );
-              return 1;
-            }
-            // Check if the southern gates are not currently closing (ie moving)
-            else if (southernGatesStatus === constants.GATES_CLOSING) {
-              // Send chat text message and exit here
-              player.sendClientMessage(
-                constants.COLOR_MESSAGE_YELLOW,
-                "* Sorry, you must wait for the southern gates to fully close first.",
-              );
-              return 1;
-            }
+          // Play gate opening sound
+          playSoundForPlayersInRange(1035, 50.0, 1823.78, -1537.98, 13.54);
 
-            // Play gate opening sound
-            playSoundForPlayersInRange(1035, 50.0, 1754.27, -1592.18, 13.54);
+          // Check if the eastern gates are currently open or closed
+          if (easternGatesStatus === constants.GATES_CLOSED) {
+            // Send a gametext message to the player
+            new GameText("~b~~h~Eastern Prison~n~~b~~h~Gates Opening!", 3000, 3).forPlayer(player);
 
-            // Check if the southern gates are currently open or closed
-            if (southernGatesStatus === constants.GATES_CLOSED) {
-              // Send a gametext message to the player
-              new GameText(
-                "~b~~h~Southern Prison~n~~b~~h~Gates Opening!",
-                3000,
-                3,
-              ).forPlayer(player);
+            // Animate the eastern gates opening (the small Z offset is required)
+            lsPrisonGatesObject[0].move(
+              1824.318481,
+              -1534.731201,
+              14.296878 + 0.01,
+              0.002,
+              0,
+              0,
+              258,
+            );
 
-              // Animate the southern gates opening (the small Z offset is required)
-              lsPrisonGatesObject[2].move(
-                1752.00415,
-                -1591.186523,
-                14.267195 + 0.01,
-                0.002,
-                0,
-                0,
-                172,
-              );
+            // Animate the eastern gates opening (the small Z offset is required)
+            lsPrisonGatesObject[1].move(
+              1822.407592,
+              -1540.949951,
+              14.296878 + 0.01,
+              0.002,
+              0,
+              0,
+              253,
+            );
 
-              // Animate the southern gates opening (the small Z offset is required)
-              lsPrisonGatesObject[3].move(
-                1756.914062,
-                -1592.316284,
-                14.267195 + 0.01,
-                0.002,
-                0,
-                0,
-                187,
-              );
+            // Set status flag for eastern gates
+            easternGatesStatus = constants.GATES_OPENING;
+          } else {
+            // Send a gametext message to the player
+            new GameText("~b~~h~Eastern Prison~n~~b~~h~Gates Closing!", 3000, 3).forPlayer(player);
 
-              // Set status flag for southern gates
-              southernGatesStatus = constants.GATES_OPENING;
-            } else {
-              // Send a gametext message to the player
-              new GameText(
-                "~b~~h~Southern Prison~n~~b~~h~Gates Closing!",
-                3000,
-                3,
-              ).forPlayer(player);
+            // Animate the eastern gates closing (the small Z offset is required)
+            lsPrisonGatesObject[0].move(
+              1824.318481,
+              -1534.731201,
+              14.296878 - 0.01,
+              0.002,
+              0,
+              0,
+              343,
+            );
 
-              // Animate the southern gates closing (the small Z offset is required)
-              lsPrisonGatesObject[2].move(
-                1752.00415,
-                -1591.186523,
-                14.267195 - 0.01,
-                0.002,
-                0,
-                0,
-                77,
-              );
+            // Animate the eastern gates closing (the small Z offset is required)
+            lsPrisonGatesObject[1].move(
+              1822.407592,
+              -1540.949951,
+              14.296878 - 0.01,
+              0.002,
+              0,
+              0,
+              163,
+            );
 
-              // Animate the southern gates closing (the small Z offset is required)
-              lsPrisonGatesObject[3].move(
-                1756.914062,
-                -1592.316284,
-                14.267195 - 0.01,
-                0.002,
-                0,
-                0,
-                257,
-              );
-
-              // Set status flag for southern gates
-              southernGatesStatus = constants.GATES_CLOSING;
-            }
+            // Set status flag for eastern gates
+            easternGatesStatus = constants.GATES_CLOSING;
           }
         }
+        // Check if the player is outside the southern prison gates
+        else if (player.isInRangeOfPoint(10.0, 1754.27, -1592.18, 13.54)) {
+          // Debug
+          //console.logf("-->Player ID %d within 10m of the Southern Prison Gates", playerid);
 
-        return next();
-      },
-    );
+          // Check if the southern gates are not currently opening (ie moving)
+          if (southernGatesStatus === constants.GATES_OPENING) {
+            // Send chat text message and exit here
+            player.sendClientMessage(
+              constants.COLOR_MESSAGE_YELLOW,
+              "* Sorry, you must wait for the southern gates to fully open first.",
+            );
+            return 1;
+          }
+          // Check if the southern gates are not currently closing (ie moving)
+          else if (southernGatesStatus === constants.GATES_CLOSING) {
+            // Send chat text message and exit here
+            player.sendClientMessage(
+              constants.COLOR_MESSAGE_YELLOW,
+              "* Sorry, you must wait for the southern gates to fully close first.",
+            );
+            return 1;
+          }
+
+          // Play gate opening sound
+          playSoundForPlayersInRange(1035, 50.0, 1754.27, -1592.18, 13.54);
+
+          // Check if the southern gates are currently open or closed
+          if (southernGatesStatus === constants.GATES_CLOSED) {
+            // Send a gametext message to the player
+            new GameText("~b~~h~Southern Prison~n~~b~~h~Gates Opening!", 3000, 3).forPlayer(player);
+
+            // Animate the southern gates opening (the small Z offset is required)
+            lsPrisonGatesObject[2].move(
+              1752.00415,
+              -1591.186523,
+              14.267195 + 0.01,
+              0.002,
+              0,
+              0,
+              172,
+            );
+
+            // Animate the southern gates opening (the small Z offset is required)
+            lsPrisonGatesObject[3].move(
+              1756.914062,
+              -1592.316284,
+              14.267195 + 0.01,
+              0.002,
+              0,
+              0,
+              187,
+            );
+
+            // Set status flag for southern gates
+            southernGatesStatus = constants.GATES_OPENING;
+          } else {
+            // Send a gametext message to the player
+            new GameText("~b~~h~Southern Prison~n~~b~~h~Gates Closing!", 3000, 3).forPlayer(player);
+
+            // Animate the southern gates closing (the small Z offset is required)
+            lsPrisonGatesObject[2].move(
+              1752.00415,
+              -1591.186523,
+              14.267195 - 0.01,
+              0.002,
+              0,
+              0,
+              77,
+            );
+
+            // Animate the southern gates closing (the small Z offset is required)
+            lsPrisonGatesObject[3].move(
+              1756.914062,
+              -1592.316284,
+              14.267195 - 0.01,
+              0.002,
+              0,
+              0,
+              257,
+            );
+
+            // Set status flag for southern gates
+            southernGatesStatus = constants.GATES_CLOSING;
+          }
+        }
+      }
+
+      return next();
+    });
 
     return [onCommandText, onConnect, onMoved, onKeyStateChange];
   },

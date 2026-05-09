@@ -15,21 +15,19 @@ export function initMatTest2() {
     return next();
   });
 
-  const offStateChange = PlayerEvent.onStateChange(
-    ({ player, newState, next }) => {
-      if (player.isNpc() && player.getName().name === NPC_NAME) {
-        const npc = Npc.getInstance(player.id)!;
-        if (newState === PlayerStateEnum.DRIVER) {
-          nextPlayback(npc);
-        } else {
-          if (npc.isPlayingPlayback()) {
-            npc.stopPlayback();
-          }
+  const offStateChange = PlayerEvent.onStateChange(({ player, newState, next }) => {
+    if (player.isNpc() && player.getName().name === NPC_NAME) {
+      const npc = Npc.getInstance(player.id)!;
+      if (newState === PlayerStateEnum.DRIVER) {
+        nextPlayback(npc);
+      } else {
+        if (npc.isPlayingPlayback()) {
+          npc.stopPlayback();
         }
       }
-      return next();
-    },
-  );
+    }
+    return next();
+  });
 
   return [offPlaybackEnd, offStateChange];
 }

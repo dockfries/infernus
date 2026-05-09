@@ -1,9 +1,5 @@
 import { PacketRpcValueType } from "./enums";
-import {
-  PacketRpcPriority,
-  PacketRpcReliability,
-  RakNetNatives,
-} from "./enums";
+import { PacketRpcPriority, PacketRpcReliability, RakNetNatives } from "./enums";
 import {
   readStringX,
   convertToByteString,
@@ -146,9 +142,7 @@ export class BitStream {
     return ret.length === 1 ? ret[0] : ret;
   }
 
-  writeValue(
-    ...types: [PacketRpcValueType, number | number[] | boolean, number?][]
-  ) {
+  writeValue(...types: [PacketRpcValueType, number | number[] | boolean, number?][]) {
     const ret: boolean[] = [];
     types.forEach((item) => {
       const [type, value, length = 0] = item;
@@ -360,10 +354,7 @@ export class BitStream {
   }
 
   writeString8(value: string | number[]) {
-    return this.writeValue([
-      PacketRpcValueType.String8,
-      convertToByteString(value, 8),
-    ]) as boolean;
+    return this.writeValue([PacketRpcValueType.String8, convertToByteString(value, 8)]) as boolean;
   }
 
   writeString32(value: string | number[]) {
@@ -477,9 +468,7 @@ export class BitStream {
 
   readRconCommand() {
     const data: Partial<IRconCommand> = {};
-    const commandArray = this.readValue(
-      PacketRpcValueType.String32,
-    ) as number[];
+    const commandArray = this.readValue(PacketRpcValueType.String32) as number[];
 
     if (!Array.isArray(commandArray)) {
       throw new RakNetException("Failed to read RCON command: expected array");

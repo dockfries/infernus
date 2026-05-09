@@ -22,36 +22,24 @@ import {
   setVehicleFakeZAngleForPlayer,
 } from "../functions";
 import { innerACConfig } from "../config";
-import {
-  ac_FloodDetect,
-  ac_KickWithCode,
-  triggerCheatWarning,
-} from "./trigger";
+import { ac_FloodDetect, ac_KickWithCode, triggerCheatWarning } from "./trigger";
 import { ac_cPrice, ac_Mtfc } from "../constants";
 
 VehicleEvent.onPlayerEnter(({ player, vehicle, isPassenger, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     const ac_gtc = Date.now();
     if (ACInfo.get(player.id).acACAllow[49]) {
-      if (ac_gtc - ACInfo.get(player.id).acCall[6] < ac_Mtfc[6][0])
-        ac_FloodDetect(player, 6);
+      if (ac_gtc - ACInfo.get(player.id).acCall[6] < ac_Mtfc[6][0]) ac_FloodDetect(player, 6);
       else if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
         ac_FloodDetect(player, 27);
-      else
-        ACInfo.get(player.id).acFloodCount[6] = ACInfo.get(
-          player.id,
-        ).acFloodCount[27] = 0;
+      else ACInfo.get(player.id).acFloodCount[6] = ACInfo.get(player.id).acFloodCount[27] = 0;
     }
     ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[6] = ac_gtc;
     const ac_model = vehicle.getModel();
     if (
       ACInfo.get(player.id).acACAllow[44] &&
-      (ac_model <= 0 ||
-        (!vehicle.isStreamedIn(player) && !ac_IsATrainCarriageEx(ac_model)))
+      (ac_model <= 0 || (!vehicle.isStreamedIn(player) && !ac_IsATrainCarriageEx(ac_model)))
     ) {
       if (innerACConfig.DEBUG) {
         console.log(
@@ -69,10 +57,7 @@ VehicleEvent.onPlayerEnter(({ player, vehicle, isPassenger, next }) => {
       );
       if (
         ac_dist >= 30.0 ||
-        (ac_dist >= 20.0 &&
-          ac_model !== 553 &&
-          ac_model !== 577 &&
-          ac_model !== 592)
+        (ac_dist >= 20.0 && ac_model !== 553 && ac_model !== 577 && ac_model !== 592)
       ) {
         if (innerACConfig.DEBUG) {
           console.log(
@@ -88,23 +73,17 @@ VehicleEvent.onPlayerEnter(({ player, vehicle, isPassenger, next }) => {
           ACVehInfo.get(vehicle.id).acPosY,
           ACVehInfo.get(vehicle.id).acPosZ,
         );
-        setVehicleFakeZAngleForPlayer(
-          player,
-          vehicle,
-          ACVehInfo.get(vehicle.id).acZAngle,
-        );
+        setVehicleFakeZAngleForPlayer(player, vehicle, ACVehInfo.get(vehicle.id).acZAngle);
         player.clearAnimations(true);
       }
     }
     const ac_doors = ACVehInfo.get(vehicle.id).acLocked[player.id];
     if (isPassenger || ac_doors !== VehicleParamsEnum.ON) {
-      if (ac_doors !== VehicleParamsEnum.ON)
-        ACInfo.get(player.id).acEnterSeat = -1;
+      if (ac_doors !== VehicleParamsEnum.ON) ACInfo.get(player.id).acEnterSeat = -1;
       else ACInfo.get(player.id).acEnterSeat = +isPassenger;
       if (ACInfo.get(player.id).acEnterVeh !== vehicle.id) {
         ACInfo.get(player.id).acEnterVeh = vehicle.id;
-        if (ac_model === 570 || ac_IsABoatEx(ac_model))
-          ACInfo.get(player.id).acEnterVehTick = 0;
+        if (ac_model === 570 || ac_IsABoatEx(ac_model)) ACInfo.get(player.id).acEnterVehTick = 0;
         else ACInfo.get(player.id).acEnterVehTick = ac_gtc;
       }
     } else if (
@@ -121,40 +100,26 @@ VehicleEvent.onPlayerEnter(({ player, vehicle, isPassenger, next }) => {
 
 VehicleEvent.onPlayerExit(({ player, vehicle, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     if (ACInfo.get(player.id).acDead) return false;
     let ac_i = Date.now();
     if (ACInfo.get(player.id).acACAllow[49]) {
-      if (ac_i - ACInfo.get(player.id).acCall[7] < ac_Mtfc[7][0])
-        ac_FloodDetect(player, 7);
-      else if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-        ac_FloodDetect(player, 27);
-      else
-        ACInfo.get(player.id).acFloodCount[7] = ACInfo.get(
-          player.id,
-        ).acFloodCount[27] = 0;
+      if (ac_i - ACInfo.get(player.id).acCall[7] < ac_Mtfc[7][0]) ac_FloodDetect(player, 7);
+      else if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+      else ACInfo.get(player.id).acFloodCount[7] = ACInfo.get(player.id).acFloodCount[27] = 0;
     }
     ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[7] = ac_i;
     if (ACInfo.get(player.id).acACAllow[44] && !vehicle.isStreamedIn(player)) {
       if (innerACConfig.DEBUG) {
-        console.log(
-          `[Nex-AC DEBUG] Veh: ${vehicle.id}, veh model: ${vehicle.getModel()}`,
-        );
+        console.log(`[Nex-AC DEBUG] Veh: ${vehicle.id}, veh model: ${vehicle.getModel()}`);
       }
       return ac_KickWithCode(player, "", 0, 44, 5);
     }
     const ac_i_veh = Vehicle.getInstance(ACInfo.get(player.id).acVeh);
     ac_i = ac_i_veh ? ac_i_veh.getModel() : 0;
-    if (
-      ac_IsValidVehicleModel(ac_i) &&
-      (ac_IsAnAircraft(ac_i) || ac_IsAnAircraftRC(ac_i))
-    )
+    if (ac_IsValidVehicleModel(ac_i) && (ac_IsAnAircraft(ac_i) || ac_IsAnAircraftRC(ac_i)))
       ACInfo.get(player.id).acParachute = 1;
-    else if (ACInfo.get(player.id).acParachute !== 2)
-      ACInfo.get(player.id).acParachute = 0;
+    else if (ACInfo.get(player.id).acParachute !== 2) ACInfo.get(player.id).acParachute = 0;
   }
   return next();
 });
@@ -163,18 +128,12 @@ VehicleEvent.onMod(({ player, vehicle, componentId, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
   let ac_i = Date.now();
   if (ACInfo.get(player.id).acACAllow[49]) {
-    if (ac_i - ACInfo.get(player.id).acCall[12] < ac_Mtfc[12][0])
-      return ac_FloodDetect(player, 12);
-    if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-      ac_FloodDetect(player, 27);
-    else
-      ACInfo.get(player.id).acFloodCount[12] = ACInfo.get(
-        player.id,
-      ).acFloodCount[27] = 0;
+    if (ac_i - ACInfo.get(player.id).acCall[12] < ac_Mtfc[12][0]) return ac_FloodDetect(player, 12);
+    if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+    else ACInfo.get(player.id).acFloodCount[12] = ACInfo.get(player.id).acFloodCount[27] = 0;
   }
   if (
-    (!innerACConfig.AC_USE_TUNING_GARAGES &&
-      ACInfo.get(player.id).acACAllow[23]) ||
+    (!innerACConfig.AC_USE_TUNING_GARAGES && ACInfo.get(player.id).acACAllow[23]) ||
     (innerACConfig.AC_USE_TUNING_GARAGES &&
       ACInfo.get(player.id).acACAllow[23] &&
       !ACInfo.get(player.id).acModShop)
@@ -200,8 +159,7 @@ VehicleEvent.onMod(({ player, vehicle, componentId, next }) => {
   }
   if (innerACConfig.AC_USE_TUNING_GARAGES) {
     ac_i = componentId - 1000;
-    if (ACInfo.get(player.id).acSet[11] !== -1)
-      ACInfo.get(player.id).acSet[11] += ac_cPrice[ac_i];
+    if (ACInfo.get(player.id).acSet[11] !== -1) ACInfo.get(player.id).acSet[11] += ac_cPrice[ac_i];
     else ACInfo.get(player.id).acSet[11] = ac_cPrice[ac_i];
     ACInfo.get(player.id).acCheatCount[21] = 0;
   }
@@ -212,14 +170,9 @@ VehicleEvent.onPaintjob(({ player, vehicle, paintjobId, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
   const ac_gtc = Date.now();
   if (ACInfo.get(player.id).acACAllow[49]) {
-    if (ac_gtc - ACInfo.get(player.id).acCall[13] < ac_Mtfc[13][0])
-      ac_FloodDetect(player, 13);
-    else if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-      ac_FloodDetect(player, 27);
-    else
-      ACInfo.get(player.id).acFloodCount[13] = ACInfo.get(
-        player.id,
-      ).acFloodCount[27] = 0;
+    if (ac_gtc - ACInfo.get(player.id).acCall[13] < ac_Mtfc[13][0]) ac_FloodDetect(player, 13);
+    else if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+    else ACInfo.get(player.id).acFloodCount[13] = ACInfo.get(player.id).acFloodCount[27] = 0;
   }
   if (
     ACInfo.get(player.id).acACAllow[43] &&
@@ -233,10 +186,8 @@ VehicleEvent.onPaintjob(({ player, vehicle, paintjobId, next }) => {
     }
     ac_KickWithCode(player, "", 0, 43, 2);
   } else if (ACInfo.get(player.id).acACAllow[23]) {
-    if (!innerACConfig.AC_USE_TUNING_GARAGES)
-      ac_KickWithCode(player, "", 0, 23, 4);
-    else if (!ACInfo.get(player.id).acModShop)
-      ac_KickWithCode(player, "", 0, 23, 4);
+    if (!innerACConfig.AC_USE_TUNING_GARAGES) ac_KickWithCode(player, "", 0, 23, 4);
+    else if (!ACInfo.get(player.id).acModShop) ac_KickWithCode(player, "", 0, 23, 4);
   }
   const vehicleId = vehicle.id;
   if (ACInfo.get(player.id).acKicked > 0) return false;
@@ -252,12 +203,8 @@ VehicleEvent.onRespray(({ player, vehicle, color, next }) => {
   if (ACInfo.get(player.id).acACAllow[49]) {
     if (ac_gtc - ACInfo.get(player.id).acCall[14] < ac_Mtfc[14][0])
       return ac_FloodDetect(player, 14);
-    if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-      ac_FloodDetect(player, 27);
-    else
-      ACInfo.get(player.id).acFloodCount[14] = ACInfo.get(
-        player.id,
-      ).acFloodCount[27] = 0;
+    if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+    else ACInfo.get(player.id).acFloodCount[14] = ACInfo.get(player.id).acFloodCount[27] = 0;
   }
   if (!innerACConfig.AC_USE_TUNING_GARAGES && !innerACConfig.AC_USE_PAYNSPRAY) {
     if (ACInfo.get(player.id).acACAllow[23]) {
@@ -307,8 +254,7 @@ VehicleEvent.onSpawn(({ vehicle, next }) => {
   Player.getInstances().forEach((ac_i) => {
     if (ACInfo.get(ac_i.id).acVeh === vehicleId)
       ACInfo.get(ac_i.id).acSetPosTick = ACInfo.get(ac_i.id).acGtc[10] = ac_gtc;
-    if (ACInfo.get(ac_i.id).acSet[8] === vehicleId)
-      ACInfo.get(ac_i.id).acSet[8] = -1;
+    if (ACInfo.get(ac_i.id).acSet[8] === vehicleId) ACInfo.get(ac_i.id).acSet[8] = -1;
     if (ACInfo.get(ac_i.id).acVeh === vehicleId) {
       ACInfo.get(ac_i.id).acSetPosTick = ACInfo.get(ac_i.id).acGtc[10] = ac_gtc;
     }
@@ -324,17 +270,12 @@ VehicleEvent.onDeath(({ vehicle, killer, next }) => {
   ) {
     const ac_gtc = Date.now();
     if (ACInfo.get(killer.id).acACAllow[49]) {
-      if (ac_gtc - ACInfo.get(killer.id).acCall[15] < ac_Mtfc[15][0])
-        ac_FloodDetect(killer, 15);
+      if (ac_gtc - ACInfo.get(killer.id).acCall[15] < ac_Mtfc[15][0]) ac_FloodDetect(killer, 15);
       else if (ac_gtc - ACInfo.get(killer.id).acCall[27] < ac_Mtfc[27][0])
         ac_FloodDetect(killer, 27);
-      else
-        ACInfo.get(killer.id).acFloodCount[15] = ACInfo.get(
-          killer.id,
-        ).acFloodCount[27] = 0;
+      else ACInfo.get(killer.id).acFloodCount[15] = ACInfo.get(killer.id).acFloodCount[27] = 0;
     }
-    ACInfo.get(killer.id).acCall[27] = ACInfo.get(killer.id).acCall[15] =
-      ac_gtc;
+    ACInfo.get(killer.id).acCall[27] = ACInfo.get(killer.id).acCall[15] = ac_gtc;
   }
   const ac_health = vehicle.getHealth().health;
   const { w: ac_w, x: ac_x, y: ac_y, z: ac_z } = vehicle.getRotationQuat()!;
@@ -359,18 +300,15 @@ VehicleEvent.onDamageStatusUpdate(({ player, vehicle, next }) => {
   ) {
     const ac_gtc = Date.now();
     if (ACInfo.get(player.id).acACAllow[49]) {
-      if (ac_gtc - ACInfo.get(player.id).acCall[24] < ac_Mtfc[24][0])
-        ac_FloodDetect(player, 24);
+      if (ac_gtc - ACInfo.get(player.id).acCall[24] < ac_Mtfc[24][0]) ac_FloodDetect(player, 24);
       else if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
         ac_FloodDetect(player, 27);
       else {
-        if (ACInfo.get(player.id).acFloodCount[24] > 0)
-          ACInfo.get(player.id).acFloodCount[24]--;
+        if (ACInfo.get(player.id).acFloodCount[24] > 0) ACInfo.get(player.id).acFloodCount[24]--;
         ACInfo.get(player.id).acFloodCount[27] = 0;
       }
     }
-    ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[24] =
-      ac_gtc;
+    ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[24] = ac_gtc;
   }
   ACVehInfo.get(vehicleId).acTires = ac_tires;
   ACVehInfo.get(vehicleId).acLights = ac_lights;
@@ -388,40 +326,21 @@ VehicleEvent.onStreamIn(({ vehicle, forPlayer, next }) => {
 
 VehicleEvent.onSirenStateChange(({ player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return true;
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     const ac_gtc = Date.now();
     if (ACInfo.get(player.id).acACAllow[49]) {
-      if (ac_gtc - ACInfo.get(player.id).acCall[25] < ac_Mtfc[25][0])
-        ac_FloodDetect(player, 25);
+      if (ac_gtc - ACInfo.get(player.id).acCall[25] < ac_Mtfc[25][0]) ac_FloodDetect(player, 25);
       else if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
         ac_FloodDetect(player, 27);
-      else
-        ACInfo.get(player.id).acFloodCount[25] = ACInfo.get(
-          player.id,
-        ).acFloodCount[27] = 0;
+      else ACInfo.get(player.id).acFloodCount[25] = ACInfo.get(player.id).acFloodCount[27] = 0;
     }
-    ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[25] =
-      ac_gtc;
+    ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[25] = ac_gtc;
   }
   return next();
 });
 
 VehicleEvent.onUnoccupiedUpdate(
-  ({
-    player,
-    newX,
-    newY,
-    newZ,
-    velX,
-    velY,
-    velZ,
-    vehicle,
-    passengerSeat,
-    next,
-  }) => {
+  ({ player, newX, newY, newZ, velX, velY, velZ, vehicle, passengerSeat, next }) => {
     if (ACInfo.get(player.id).acKicked > 0) return false;
     const vehicleId = vehicle.id;
     if (
@@ -471,11 +390,7 @@ VehicleEvent.onUnoccupiedUpdate(
 
         ACVehInfo.get(vehicleId).acZAngle = vehicle.getZAngle().angle;
 
-        setVehicleFakeZAngleForPlayer(
-          player,
-          vehicle,
-          ACVehInfo.get(vehicleId).acZAngle,
-        );
+        setVehicleFakeZAngleForPlayer(player, vehicle, ACVehInfo.get(vehicleId).acZAngle);
 
         setVehicleFakePosForPlayer(player, vehicle, ac_x, ac_y, ac_z);
         return false;
@@ -490,20 +405,13 @@ VehicleEvent.onUnoccupiedUpdate(
         (((velZ >= ACVehInfo.get(vehicleId).acVelZ || ac_zDiff >= -0.8) &&
           (Math.abs(velX - ACVehInfo.get(vehicleId).acVelX) >= 1.0 ||
             Math.abs(velY - ACVehInfo.get(vehicleId).acVelY) >= 1.0 ||
-            (ac_GetVectorDist(
-              ACVehInfo.get(vehicleId).acVelX,
-              ACVehInfo.get(vehicleId).acVelY,
-            ) >= 0.3 &&
+            (ac_GetVectorDist(ACVehInfo.get(vehicleId).acVelX, ACVehInfo.get(vehicleId).acVelY) >=
+              0.3 &&
               (Math.abs(velX) >= Math.abs(ACVehInfo.get(vehicleId).acVelX) ||
-                Math.abs(velY) >=
-                  Math.abs(ACVehInfo.get(vehicleId).acVelY))))) ||
-          (ac_zDiff >= -5.0 &&
-            (Math.abs(newX - ac_x) >= 8.0 || Math.abs(newY - ac_y) >= 8.0)))
+                Math.abs(velY) >= Math.abs(ACVehInfo.get(vehicleId).acVelY))))) ||
+          (ac_zDiff >= -5.0 && (Math.abs(newX - ac_x) >= 8.0 || Math.abs(newY - ac_y) >= 8.0)))
       ) {
-        if (
-          ++ACInfo.get(player.id).acCheatCount[4] >
-          innerACConfig.AC_MAX_CARSHOT_WARNINGS
-        ) {
+        if (++ACInfo.get(player.id).acCheatCount[4] > innerACConfig.AC_MAX_CARSHOT_WARNINGS) {
           if (innerACConfig.DEBUG) {
             console.log(
               `[Nex-AC DEBUG] Vel x, y, z: ${velX}, ${velY}, ${velZ}, old vel x, y: ${ACVehInfo.get(vehicleId).acVelX}, ${ACVehInfo.get(vehicleId).acVelY}, pos diff x, y, z: ${newX - ac_x}, ${newY - ac_y}, ${ac_zDiff}, veh: ${vehicleId}`,
@@ -513,14 +421,7 @@ VehicleEvent.onUnoccupiedUpdate(
           if (ACInfo.get(player.id).acKicked > 0) return false;
           ACInfo.get(player.id).acCheatCount[4] = 0;
         } else {
-          triggerCheatWarning(
-            player,
-            "",
-            0,
-            31,
-            1,
-            ACInfo.get(player.id).acCheatCount[4],
-          );
+          triggerCheatWarning(player, "", 0, 31, 1, ACInfo.get(player.id).acCheatCount[4]);
         }
       } else if (
         ACInfo.get(player.id).acACAllow[8] &&
@@ -533,10 +434,7 @@ VehicleEvent.onUnoccupiedUpdate(
           (ac_zDiff >= 0.0 && velZ <= -0.3) ||
           (ac_zDiff <= 0.0 && velZ >= 0.3))
       ) {
-        if (
-          ++ACInfo.get(player.id).acCheatCount[3] >
-          innerACConfig.AC_MAX_FLYHACK_VEH_WARNINGS
-        ) {
+        if (++ACInfo.get(player.id).acCheatCount[3] > innerACConfig.AC_MAX_FLYHACK_VEH_WARNINGS) {
           if (innerACConfig.DEBUG) {
             console.log(
               `[Nex-AC DEBUG] Vel z: ${velZ}, old vel z: ${ACVehInfo.get(vehicleId).acVelZ}, pos diff x, y, z: ${ac_x - newX}, ${ac_y - newY}, ${ac_zDiff}, veh: ${vehicleId}`,
@@ -546,24 +444,10 @@ VehicleEvent.onUnoccupiedUpdate(
           if (ACInfo.get(player.id).acKicked > 0) return false;
           ACInfo.get(player.id).acCheatCount[3] = 0;
         } else {
-          triggerCheatWarning(
-            player,
-            "",
-            0,
-            8,
-            2,
-            ACInfo.get(player.id).acCheatCount[3],
-          );
+          triggerCheatWarning(player, "", 0, 8, 2, ACInfo.get(player.id).acCheatCount[3]);
         }
-      } else if (
-        ACInfo.get(player.id).acACAllow[1] &&
-        ac_dist >= 2.6 &&
-        ac_vsp < 63
-      ) {
-        if (
-          ++ACInfo.get(player.id).acCheatCount[2] >
-          innerACConfig.AC_MAX_AIR_VEH_WARNINGS
-        ) {
+      } else if (ACInfo.get(player.id).acACAllow[1] && ac_dist >= 2.6 && ac_vsp < 63) {
+        if (++ACInfo.get(player.id).acCheatCount[2] > innerACConfig.AC_MAX_AIR_VEH_WARNINGS) {
           if (innerACConfig.DEBUG) {
             console.log(
               `[Nex-AC DEBUG] Speed: ${ac_vsp}, dist: ${ac_dist}, old pos diff: ${ACVehInfo.get(vehicleId).acPosDiff}, veh: ${vehicleId}, seat: ${passengerSeat}`,
@@ -573,22 +457,13 @@ VehicleEvent.onUnoccupiedUpdate(
           if (ACInfo.get(player.id).acKicked > 0) return false;
           ACInfo.get(player.id).acCheatCount[2] = 0;
         } else {
-          triggerCheatWarning(
-            player,
-            "",
-            0,
-            1,
-            2,
-            ACInfo.get(player.id).acCheatCount[2],
-          );
+          triggerCheatWarning(player, "", 0, 1, 2, ACInfo.get(player.id).acCheatCount[2]);
         }
       }
     }
     if (
       ACInfo.get(player.id).acACAllow[5] &&
-      (ac_dist >= 25.0 ||
-        (ac_dist >= 15.0 &&
-          ac_gtc - ACInfo.get(player.id).acGtc[15] > ac_gpp)) &&
+      (ac_dist >= 25.0 || (ac_dist >= 15.0 && ac_gtc - ACInfo.get(player.id).acGtc[15] > ac_gpp)) &&
       ac_dist - ACVehInfo.get(vehicleId).acPosDiff > (ac_dist / 3.0) * 1.6 &&
       (ac_z >= -45.0 || ac_GetVectorDist(newX - ac_x, newY - ac_y) >= 180.0)
     ) {
@@ -602,11 +477,7 @@ VehicleEvent.onUnoccupiedUpdate(
 
       ACVehInfo.get(vehicleId).acZAngle = vehicle.getZAngle().angle;
 
-      setVehicleFakeZAngleForPlayer(
-        player,
-        vehicle,
-        ACVehInfo.get(vehicleId).acZAngle,
-      );
+      setVehicleFakeZAngleForPlayer(player, vehicle, ACVehInfo.get(vehicleId).acZAngle);
 
       setVehicleFakePosForPlayer(player, vehicle, ac_x, ac_y, ac_z);
 
@@ -617,10 +488,8 @@ VehicleEvent.onUnoccupiedUpdate(
     if (!ac_a) return ac_a;
 
     ACVehInfo.get(vehicleId).acPosDiff = ac_dist;
-    if (ACInfo.get(player.id).acEnterVeh === vehicleId)
-      ACInfo.get(player.id).acEnterRes = false;
-    ACVehInfo.get(vehicleId).acSpeedDiff =
-      ac_vsp - ACVehInfo.get(vehicleId).acSpeed;
+    if (ACInfo.get(player.id).acEnterVeh === vehicleId) ACInfo.get(player.id).acEnterRes = false;
+    ACVehInfo.get(vehicleId).acSpeedDiff = ac_vsp - ACVehInfo.get(vehicleId).acSpeed;
     ACVehInfo.get(vehicleId).acSpeed = ac_vsp;
     ACVehInfo.get(vehicleId).acPosX = newX;
     ACVehInfo.get(vehicleId).acPosY = newY;
@@ -641,8 +510,7 @@ VehicleEvent.onTrailerUpdate(({ player, vehicle, next }) => {
   const vehicleId = vehicle.id;
   if (ACVehInfo.get(vehicleId).acTrSpeed !== -1) {
     ACVehInfo.get(vehicleId).acPosDiff = ACVehInfo.get(vehicleId).acTrPosDiff;
-    ACVehInfo.get(vehicleId).acSpeedDiff =
-      ACVehInfo.get(vehicleId).acTrSpeedDiff;
+    ACVehInfo.get(vehicleId).acSpeedDiff = ACVehInfo.get(vehicleId).acTrSpeedDiff;
     ACVehInfo.get(vehicleId).acPosX = ACVehInfo.get(vehicleId).acTrPosX;
     ACVehInfo.get(vehicleId).acPosY = ACVehInfo.get(vehicleId).acTrPosY;
     ACVehInfo.get(vehicleId).acPosZ = ACVehInfo.get(vehicleId).acTrPosZ;

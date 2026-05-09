@@ -28,11 +28,7 @@ export const AntiFlood: IFilterScript = {
       }
 
       // Now we handle the admin chat, will be #<message>.
-      if (
-        (text[0] === "#" || text[0] === "@") &&
-        text.length > 1 &&
-        player.isAdmin()
-      ) {
+      if ((text[0] === "#" || text[0] === "@") && text.length > 1 && player.isAdmin()) {
         const szPlayerName = player.getName().name;
 
         const str = `Admin ${szPlayerName}: ${text.slice(1, text.length)}`;
@@ -51,10 +47,7 @@ export const AntiFlood: IFilterScript = {
         if (!chatMsg) return next();
 
         if (chatMsg === text) {
-          player.sendClientMessage(
-            0xff0000ff,
-            "* Please do not repeat yourself.",
-          );
+          player.sendClientMessage(0xff0000ff, "* Please do not repeat yourself.");
           szPlayerChatMsg.set(player, text);
           return false;
         }
@@ -68,10 +61,7 @@ export const AntiFlood: IFilterScript = {
 
     const onCmdReceived = PlayerEvent.onCommandReceived(({ player, next }) => {
       if (isPlayerFlooding(player)) {
-        player.sendClientMessage(
-          0xff0000ff,
-          "* You can only use commands once every two seconds.",
-        );
+        player.sendClientMessage(0xff0000ff, "* You can only use commands once every two seconds.");
         return true;
       }
 

@@ -3,12 +3,7 @@ import { SampVoiceLocalStream } from "../local";
 import { SV_NULL } from "../../constants";
 
 export class StaticLocalVehicleStream extends SampVoiceLocalStream {
-  constructor(
-    distance: number,
-    vehicle: Vehicle,
-    color: number = SV_NULL,
-    name: string,
-  ) {
+  constructor(distance: number, vehicle: Vehicle, color: number = SV_NULL, name: string) {
     const ptr = samp.callNative(
       "SvCreateSLStreamAtVehicle",
       "fiis",
@@ -25,8 +20,6 @@ export class StaticLocalVehicleStream extends SampVoiceLocalStream {
   }
 
   static getInstances() {
-    return super.getInstances(
-      StaticLocalVehicleStream.name,
-    ) as StaticLocalVehicleStream[];
+    return super.getInstances(StaticLocalVehicleStream.name) as StaticLocalVehicleStream[];
   }
 }

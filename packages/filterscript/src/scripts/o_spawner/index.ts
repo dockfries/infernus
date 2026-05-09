@@ -28,10 +28,7 @@ const oSpawnerPage = new Map<Player, number>();
 const oSpawnerActive = new Set<Player>();
 
 function getNumberOfPages() {
-  if (
-    gTotalItems >= constants.SELECTION_ITEMS &&
-    gTotalItems % constants.SELECTION_ITEMS === 0
-  ) {
+  if (gTotalItems >= constants.SELECTION_ITEMS && gTotalItems % constants.SELECTION_ITEMS === 0) {
     return Math.floor(gTotalItems / constants.SELECTION_ITEMS);
   } else return Math.floor(gTotalItems / constants.SELECTION_ITEMS + 1);
 }
@@ -40,12 +37,7 @@ function createCurrentPageTextDraw(player: Player, x: number, y: number) {
   const txtInit = new TextDraw({ player, x, y, text: "0/0" });
   txtInit.create();
   txtInit.useBox(false);
-  txtInit
-    .setLetterSize(0.4, 1.1)
-    .setFont(1)
-    .setShadow(0)
-    .setOutline(1)
-    .setColor(0xaccbf1ff);
+  txtInit.setLetterSize(0.4, 1.1).setFont(1).setShadow(0).setOutline(1).setColor(0xaccbf1ff);
   txtInit.show();
   return txtInit;
 }
@@ -69,22 +61,13 @@ function createPlayerDialogButton(
     .setLetterSize(0.4, 1.1)
     .setFont(1);
   txtInit.setShadow(0); // no shadow
-  txtInit
-    .setOutline(0)
-    .setColor(0x4a5a6bff)
-    .setSelectable(true)
-    .setAlignment(2);
+  txtInit.setOutline(0).setColor(0x4a5a6bff).setSelectable(true).setAlignment(2);
   txtInit.setTextSize(height, width); // The width and height are reversed for centering.. something the game does <g>
   txtInit.show();
   return txtInit;
 }
 
-function createPlayerHeaderTextDraw(
-  player: Player,
-  x: number,
-  y: number,
-  text: string,
-) {
+function createPlayerHeaderTextDraw(player: Player, x: number, y: number, text: string) {
   const txtInit = new TextDraw({ player, x, y, text });
   txtInit.create();
   txtInit
@@ -334,109 +317,94 @@ export const OSpawner: IFilterScript = {
   load() {
     // Even though only Player* textdraws are used in this script,
     // OnPlayerClickTextDraw is still required to handle ESC
-    const onPlayerClickGlobal = TextDrawEvent.onPlayerClickGlobal(
-      ({ player, textDraw, next }) => {
-        if (!oSpawnerActive.has(player)) return next();
+    const onPlayerClickGlobal = TextDrawEvent.onPlayerClickGlobal(({ player, textDraw, next }) => {
+      if (!oSpawnerActive.has(player)) return next();
 
-        // Handle: They cancelled (with ESC)
-        if (textDraw === InvalidEnum.TEXT_DRAW) {
-          destroySelectionMenu(player);
-          oSpawnerActive.delete(player);
-          player.playSound(1085, 0.0, 0.0, 0.0);
-          return next();
-        }
-
-        return next();
-      },
-    );
-
-    const onPlayerClickPlayer = TextDrawEvent.onPlayerClickPlayer(
-      ({ player, textDraw, next }) => {
-        if (!oSpawnerActive.has(player)) return next();
-
-        const curPage = oSpawnerPage.get(player) || 0;
-
-        // Handle: next button
-        if (textDraw === gNextButtonTextDraw.get(player)) {
-          if (curPage < getNumberOfPages() - 1) {
-            oSpawnerPage.set(player, curPage + 1);
-            showPlayerModelPreviews(player);
-            updatePageTextDraw(player);
-            player.playSound(1083, 0.0, 0.0, 0.0);
-          } else {
-            player.playSound(1085, 0.0, 0.0, 0.0);
-          }
-          return next();
-        }
-
-        // Handle: previous button
-        if (textDraw === gPrevButtonTextDraw.get(player)) {
-          if (curPage > 0) {
-            oSpawnerPage.set(player, curPage - 1);
-            showPlayerModelPreviews(player);
-            updatePageTextDraw(player);
-            player.playSound(1084, 0.0, 0.0, 0.0);
-          } else {
-            player.playSound(1085, 0.0, 0.0, 0.0);
-          }
-          return next();
-        }
-
-        oSpawnerActive.delete(player);
-
-        const items = gSelectionItems.get(player);
-
-        // Search in the array of textdraws used for the items
-        let x = 0;
-        while (items && x !== constants.SELECTION_ITEMS) {
-          if (textDraw === items[x]) {
-            destroySelectionMenu(player);
-            player.cancelSelectTextDraw();
-            handlePlayerItemSelection(player, x);
-            player.playSound(1083, 0.0, 0.0, 0.0);
-            return next();
-          }
-          x++;
-        }
-
-        return next();
-      },
-    );
-
-    const oSpawner = PlayerEvent.onCommandText(
-      "ospawner",
-      ({ player, next }) => {
-        if (!player.isAdmin()) return false;
-        // If there was a previously created selection menu, destroy it
+      // Handle: They cancelled (with ESC)
+      if (textDraw === InvalidEnum.TEXT_DRAW) {
         destroySelectionMenu(player);
-
-        oSpawnerActive.add(player);
-        // oSpawnerPage.set(player, 0);
-
-        createSelectionMenu(player);
-        player.selectTextDraw(0xaccbf1ff);
+        oSpawnerActive.delete(player);
+        player.playSound(1085, 0.0, 0.0, 0.0);
         return next();
-      },
-    );
+      }
+
+      return next();
+    });
+
+    const onPlayerClickPlayer = TextDrawEvent.onPlayerClickPlayer(({ player, textDraw, next }) => {
+      if (!oSpawnerActive.has(player)) return next();
+
+      const curPage = oSpawnerPage.get(player) || 0;
+
+      // Handle: next button
+      if (textDraw === gNextButtonTextDraw.get(player)) {
+        if (curPage < getNumberOfPages() - 1) {
+          oSpawnerPage.set(player, curPage + 1);
+          showPlayerModelPreviews(player);
+          updatePageTextDraw(player);
+          player.playSound(1083, 0.0, 0.0, 0.0);
+        } else {
+          player.playSound(1085, 0.0, 0.0, 0.0);
+        }
+        return next();
+      }
+
+      // Handle: previous button
+      if (textDraw === gPrevButtonTextDraw.get(player)) {
+        if (curPage > 0) {
+          oSpawnerPage.set(player, curPage - 1);
+          showPlayerModelPreviews(player);
+          updatePageTextDraw(player);
+          player.playSound(1084, 0.0, 0.0, 0.0);
+        } else {
+          player.playSound(1085, 0.0, 0.0, 0.0);
+        }
+        return next();
+      }
+
+      oSpawnerActive.delete(player);
+
+      const items = gSelectionItems.get(player);
+
+      // Search in the array of textdraws used for the items
+      let x = 0;
+      while (items && x !== constants.SELECTION_ITEMS) {
+        if (textDraw === items[x]) {
+          destroySelectionMenu(player);
+          player.cancelSelectTextDraw();
+          handlePlayerItemSelection(player, x);
+          player.playSound(1083, 0.0, 0.0, 0.0);
+          return next();
+        }
+        x++;
+      }
+
+      return next();
+    });
+
+    const oSpawner = PlayerEvent.onCommandText("ospawner", ({ player, next }) => {
+      if (!player.isAdmin()) return false;
+      // If there was a previously created selection menu, destroy it
+      destroySelectionMenu(player);
+
+      oSpawnerActive.add(player);
+      // oSpawnerPage.set(player, 0);
+
+      createSelectionMenu(player);
+      player.selectTextDraw(0xaccbf1ff);
+      return next();
+    });
 
     console.log("\n--Admin Object Spawner Loaded\n");
 
     return [onPlayerClickGlobal, onPlayerClickPlayer, oSpawner];
   },
   unload() {
-    [...gCurrentPageTextDraw.values()].forEach(
-      (t) => t.isValid() && t.destroy(),
-    );
+    [...gCurrentPageTextDraw.values()].forEach((t) => t.isValid() && t.destroy());
     [...gHeaderTextDraw.values()].forEach((t) => t.isValid() && t.destroy());
-    [...gBackgroundTextDraw.values()].forEach(
-      (t) => t.isValid() && t.destroy(),
-    );
-    [...gNextButtonTextDraw.values()].forEach(
-      (t) => t.isValid() && t.destroy(),
-    );
-    [...gSelectionItems.values()]
-      .flat()
-      .forEach((t) => t.isValid() && t.destroy());
+    [...gBackgroundTextDraw.values()].forEach((t) => t.isValid() && t.destroy());
+    [...gNextButtonTextDraw.values()].forEach((t) => t.isValid() && t.destroy());
+    [...gSelectionItems.values()].flat().forEach((t) => t.isValid() && t.destroy());
 
     gCurrentPageTextDraw.clear();
     gHeaderTextDraw.clear();

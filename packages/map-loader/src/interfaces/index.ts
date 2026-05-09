@@ -1,8 +1,6 @@
 import type { DynamicObject, Player } from "@infernus/core";
 
-export type RemoveBuildingArgs = Array<
-  Parameters<InstanceType<typeof Player>["removeBuilding"]>
->;
+export type RemoveBuildingArgs = Array<Parameters<InstanceType<typeof Player>["removeBuilding"]>>;
 
 export interface IMapLoadOptions {
   source: string | ((done: () => void) => Promise<string[]>);
@@ -19,10 +17,7 @@ export interface IMapLoadOptions {
   overwrite?: boolean;
   charset?: string;
   // if someone wanna use Colandreas maybe useful?
-  onLoaded?: (
-    objects: DynamicObject[],
-    removedBuilding: RemoveBuildingArgs,
-  ) => void;
+  onLoaded?: (objects: DynamicObject[], removedBuilding: RemoveBuildingArgs) => void;
   onUnloaded?: (removedBuilding: RemoveBuildingArgs) => void;
 }
 

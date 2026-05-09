@@ -12,14 +12,7 @@ export class FCNPCMovePath {
     return !!samp.callNative("FCNPC_IsValidMovePath", "i", this.id);
   }
   addPoint(x: number, y: number, z: number): number {
-    return samp.callNative(
-      "FCNPC_AddPointToMovePath",
-      "ifff",
-      this.id,
-      x,
-      y,
-      z,
-    );
+    return samp.callNative("FCNPC_AddPointToMovePath", "ifff", this.id, x, y, z);
   }
   addPoints(points: [number, number, number][]): number[] {
     const results: number[] = [];
@@ -30,20 +23,10 @@ export class FCNPCMovePath {
     return results;
   }
   removePoint(pointId: number) {
-    return !!samp.callNative(
-      "FCNPC_RemovePointFromMovePath",
-      "ii",
-      this.id,
-      pointId,
-    );
+    return !!samp.callNative("FCNPC_RemovePointFromMovePath", "ii", this.id, pointId);
   }
   isValidPoint(pointId: number) {
-    return !!samp.callNative(
-      "FCNPC_IsValidMovePathPoint",
-      "ii",
-      this.id,
-      pointId,
-    );
+    return !!samp.callNative("FCNPC_IsValidMovePathPoint", "ii", this.id, pointId);
   }
   getPoint(pointId: number) {
     const [x, y, z, ret]: [number, number, number, number] = samp.callNative(

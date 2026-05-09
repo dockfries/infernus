@@ -18,8 +18,7 @@ function getNumberOfPlayersOnThisIP(testIp: string) {
 export const MaxIps: IMaxIpsFS = {
   name: "max_ips",
   load(options) {
-    const maxConnections =
-      options && options.maxConnections ? options.maxConnections : 3;
+    const maxConnections = options && options.maxConnections ? options.maxConnections : 3;
 
     const onConnect = PlayerEvent.onConnect(({ player, next }) => {
       const connecting_ip = player.getIp().ip;

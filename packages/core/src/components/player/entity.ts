@@ -152,11 +152,7 @@ export class Player {
   }
 
   sendMessageToAll(message: string): boolean {
-    return Player.__inject__.sendMessageToAll(
-      Player.getInstances(),
-      this.id,
-      message,
-    );
+    return Player.__inject__.sendMessageToAll(Player.getInstances(), this.id, message);
   }
 
   isNpc(): boolean {
@@ -213,16 +209,7 @@ export class Player {
     color: string | number,
     style: number,
   ) {
-    return Player.__inject__.setMapIcon(
-      this.id,
-      iconId,
-      x,
-      y,
-      z,
-      markerType,
-      color,
-      style,
-    );
+    return Player.__inject__.setMapIcon(this.id, iconId, x, y, z, markerType, color, style);
   }
   removeMapIcon(iconId: number) {
     return Player.__inject__.removeMapIcon(this.id, iconId);
@@ -368,21 +355,8 @@ export class Player {
   getTime() {
     return Player.__inject__.getTime(this.id);
   }
-  removeBuilding(
-    modelId: number,
-    fX: number,
-    fY: number,
-    fZ: number,
-    fRadius: number,
-  ) {
-    return Player.__inject__.removeBuilding(
-      this.id,
-      modelId,
-      fX,
-      fY,
-      fZ,
-      fRadius,
-    );
+  removeBuilding(modelId: number, fX: number, fY: number, fZ: number, fRadius: number) {
+    return Player.__inject__.removeBuilding(this.id, modelId, fX, fY, fZ, fRadius);
   }
   setTeam(team: number): void {
     if (team < 0 || team > InvalidEnum.NO_TEAM) return;
@@ -481,43 +455,18 @@ export class Player {
   getCameraZoom(): number {
     return Player.__inject__.getCameraZoom(this.id);
   }
-  playAudioStream(
-    url: string,
-    posX = 0.0,
-    posY = 0.0,
-    posZ = 0.0,
-    distance = 5.0,
-  ) {
+  playAudioStream(url: string, posX = 0.0, posY = 0.0, posZ = 0.0, distance = 5.0) {
     let usePos = false;
     if (posX !== 0.0 || posY !== 0.0 || posZ !== 0.0) {
       usePos = true;
     }
-    return Player.__inject__.playAudioStream(
-      this.id,
-      url,
-      posX,
-      posY,
-      posZ,
-      distance,
-      usePos,
-    );
+    return Player.__inject__.playAudioStream(this.id, url, posX, posY, posZ, distance, usePos);
   }
   stopAudioStream() {
     return Player.__inject__.stopAudioStream(this.id);
   }
-  playSound(
-    soundId: number,
-    relativeX = 0.0,
-    relativeY = 0.0,
-    relativeZ = 0.0,
-  ) {
-    return Player.__inject__.playSound(
-      this.id,
-      soundId,
-      relativeX,
-      relativeY,
-      relativeZ,
-    );
+  playSound(soundId: number, relativeX = 0.0, relativeY = 0.0, relativeZ = 0.0) {
+    return Player.__inject__.playSound(this.id, soundId, relativeX, relativeY, relativeZ);
   }
   static getMaxPlayers(): number {
     return Player.__inject__.getMaxPlayers();
@@ -572,17 +521,9 @@ export class Player {
       cut,
     );
   }
-  createExplosion(
-    x: number,
-    y: number,
-    z: number,
-    type: number,
-    radius: number,
-  ) {
+  createExplosion(x: number, y: number, z: number, type: number, radius: number) {
     if (type < 0 || type > 13) {
-      throw new PlayerException(
-        "The valid explosion type value is only 0 to 13",
-      );
+      throw new PlayerException("The valid explosion type value is only 0 to 13");
     }
     return Player.__inject__.createExplosion(this.id, x, y, z, type, radius);
   }
@@ -619,9 +560,7 @@ export class Player {
     forceSync: boolean | ForceSyncEnum = false,
   ) {
     if (!isValidAnimateName(animLib, animName)) {
-      throw new PlayerException(
-        `Invalid anim library or name ${animLib} ${animName}`,
-      );
+      throw new PlayerException(`Invalid anim library or name ${animLib} ${animName}`);
     }
     return Player.__inject__.applyAnimation(
       this.id,
@@ -664,14 +603,7 @@ export class Player {
     expireTime: number,
     charset = this.charset,
   ) {
-    return Player.__inject__.setChatBubble(
-      this.id,
-      text,
-      color,
-      drawDistance,
-      expireTime,
-      charset,
-    );
+    return Player.__inject__.setChatBubble(this.id, text, color, drawDistance, expireTime, charset);
   }
   getDistanceFromPoint(x: number, y: number, z: number): number {
     return Player.__inject__.getDistanceFromPoint(this.id, x, y, z);
@@ -775,17 +707,10 @@ export class Player {
   redirectDownload(url: string) {
     return Player.__inject__.redirectDownload(this.id, url);
   }
-  sendClientCheck(
-    type: number,
-    memAddr: number,
-    memOffset: number,
-    byteCount: number,
-  ) {
+  sendClientCheck(type: number, memAddr: number, memOffset: number, byteCount: number) {
     const validTypes = [2, 5, 69, 70, 71, 72];
     if (!validTypes.includes(type)) {
-      throw new PlayerException(
-        `sendClientCheck valid types are ${validTypes.toString()}`,
-      );
+      throw new PlayerException(`sendClientCheck valid types are ${validTypes.toString()}`);
     }
 
     return new Promise<IClientResRaw>((resolve, reject) => {
@@ -804,30 +729,22 @@ export class Player {
 
       let timer: NodeJS.Timeout | null = null;
 
-      const off = onCheckResponse(
-        ({ player, actionId, memAddr, data, next }) => {
-          if (player !== this) return next();
-          if (timer) {
-            clearTimeout(timer);
-            timer = null;
-          }
-          resolve({ actionId, memAddr, data });
-          return next();
-        },
-      );
+      const off = onCheckResponse(({ player, actionId, memAddr, data, next }) => {
+        if (player !== this) return next();
+        if (timer) {
+          clearTimeout(timer);
+          timer = null;
+        }
+        resolve({ actionId, memAddr, data });
+        return next();
+      });
 
       timer = setTimeout(() => {
         off();
         reject(new ClientCheckException(timeoutMsg));
       }, shouldResTime);
 
-      Player.__inject__.sendClientCheck(
-        this.id,
-        type,
-        memAddr,
-        memOffset,
-        byteCount,
-      );
+      Player.__inject__.sendClientCheck(this.id, type, memAddr, memOffset, byteCount);
     });
   }
   selectTextDraw(color: string | number): void {
@@ -1029,13 +946,7 @@ export class Player {
   startDownload() {
     return Player.__inject__.startDownload(this.id);
   }
-  isBuildingRemoved(
-    model: number,
-    x: number,
-    y: number,
-    z: number,
-    radius: number,
-  ) {
+  isBuildingRemoved(model: number, x: number, y: number, z: number, radius: number) {
     return Player.__inject__.isBuildingRemoved(this.id, model, x, y, z, radius);
   }
 

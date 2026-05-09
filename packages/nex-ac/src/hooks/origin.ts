@@ -23,11 +23,9 @@ export const orig_DestroyVehicle = Vehicle.__inject__.destroy;
 export const orig_ShowPlayerDialog = Dialog.__inject__.show;
 
 export const orig_EnableStuntBonusForAll = GameMode.enableStuntBonusForAll;
-export const orig_EnableVehicleFriendlyFire =
-  GameMode.enableVehicleFriendlyFire;
+export const orig_EnableVehicleFriendlyFire = GameMode.enableVehicleFriendlyFire;
 export const orig_UsePlayerPedAnims = GameMode.usePlayerPedAnims;
-export const orig_DisableInteriorEnterExits =
-  GameMode.disableInteriorEnterExits;
+export const orig_DisableInteriorEnterExits = GameMode.disableInteriorEnterExits;
 export const orig_AddPlayerClass = GameMode.addPlayerClass;
 export const orig_AddPlayerClassEx = GameMode.addPlayerClassEx;
 

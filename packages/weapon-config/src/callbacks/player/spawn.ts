@@ -1,9 +1,4 @@
-import {
-  InvalidEnum,
-  PlayerEvent,
-  SpecialActionsEnum,
-  WeaponEnum,
-} from "@infernus/core";
+import { InvalidEnum, PlayerEvent, SpecialActionsEnum, WeaponEnum } from "@infernus/core";
 import {
   playerMaxHealth,
   playerHealth,
@@ -46,20 +41,14 @@ import {
 } from "../custom";
 import { damageFeedUpdate } from "../../functions/internal/damageFeed";
 import { hasSameTeam, wasPlayerInVehicle } from "../../functions/internal/is";
-import {
-  freezeSyncPacket,
-  saveSyncData,
-} from "../../functions/internal/raknet";
+import { freezeSyncPacket, saveSyncData } from "../../functions/internal/raknet";
 import {
   updateHealthBar,
   updatePlayerVirtualWorld,
   // setFakeFacingAngle,
   spawnPlayerInPlace,
 } from "../../functions/internal/set";
-import {
-  onPlayerDamageDone,
-  onPlayerDeathFinished,
-} from "../../functions/internal/event";
+import { onPlayerDamageDone, onPlayerDeathFinished } from "../../functions/internal/event";
 import { getPlayerActualSkin } from "../../functions/internal/get";
 
 PlayerEvent.onSpawn(({ player, next }) => {
@@ -93,10 +82,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
       syncData.get(player.id).posY,
       syncData.get(player.id).posZ,
     );
-    orig_playerMethods.setFacingAngle.call(
-      player,
-      syncData.get(player.id).posA,
-    );
+    orig_playerMethods.setFacingAngle.call(player, syncData.get(player.id).posA);
 
     orig_playerMethods.setSkin.call(player, syncData.get(player.id).skin);
     orig_playerMethods.setTeam.call(player, syncData.get(player.id).team);
@@ -111,10 +97,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
       }
     }
 
-    orig_playerMethods.setArmedWeapon.call(
-      player,
-      syncData.get(player.id).weapon,
-    );
+    orig_playerMethods.setArmedWeapon.call(player, syncData.get(player.id).weapon);
 
     return 1;
   }
@@ -248,9 +231,12 @@ PlayerEvent.onSpawn(({ player, next }) => {
   return next();
 });
 
-export const internalPlayerDeath: Parameters<
-  (typeof PlayerEvent)["onDeath"]
->[0] = ({ player, killer, reason, next }) => {
+export const internalPlayerDeath: Parameters<(typeof PlayerEvent)["onDeath"]>[0] = ({
+  player,
+  killer,
+  reason,
+  next,
+}) => {
   trueDeath.set(player.id, true);
   inClassSelection.set(player.id, false);
 
@@ -276,10 +262,7 @@ export const internalPlayerDeath: Parameters<
     return 1;
   }
 
-  if (
-    killer !== InvalidEnum.PLAYER_ID &&
-    !orig_playerMethods.isStreamedIn.call(killer, player)
-  ) {
+  if (killer !== InvalidEnum.PLAYER_ID && !orig_playerMethods.isStreamedIn.call(killer, player)) {
     killer = InvalidEnum.PLAYER_ID;
   }
 
@@ -322,17 +305,12 @@ export const internalPlayerDeath: Parameters<
   };
 
   if (triggerOnPlayerDamage(editable)) {
-    if (
-      editable.weaponId < WC_WeaponEnum.UNARMED ||
-      editable.weaponId > WC_WeaponEnum.UNKNOWN
-    ) {
+    if (editable.weaponId < WC_WeaponEnum.UNARMED || editable.weaponId > WC_WeaponEnum.UNKNOWN) {
       editable.weaponId = WC_WeaponEnum.UNKNOWN;
     }
 
     if (editable.amount === 0.0) {
-      editable.amount =
-        playerHealth.get(editable.player.id) +
-        playerArmour.get(editable.player.id);
+      editable.amount = playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id);
     }
 
     if (
@@ -344,21 +322,14 @@ export const internalPlayerDeath: Parameters<
         editable.amount = playerHealth.get(editable.player.id);
       }
 
-      playerHealth.set(
-        editable.player.id,
-        playerHealth.get(editable.player.id) - editable.amount,
-      );
+      playerHealth.set(editable.player.id, playerHealth.get(editable.player.id) - editable.amount);
     } else {
       if (editable.amount <= 0.0) {
         editable.amount =
-          playerHealth.get(editable.player.id) +
-          playerArmour.get(editable.player.id);
+          playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id);
       }
 
-      playerArmour.set(
-        editable.player.id,
-        playerArmour.get(editable.player.id) - editable.amount,
-      );
+      playerArmour.set(editable.player.id, playerArmour.get(editable.player.id) - editable.amount);
     }
 
     if (playerArmour.get(editable.player.id) < 0.0) {
@@ -366,14 +337,10 @@ export const internalPlayerDeath: Parameters<
         editable.player.id,
         editable.amount + playerArmour.get(editable.player.id),
       );
-      damageDoneHealth.set(
-        editable.player.id,
-        -playerArmour.get(editable.player.id),
-      );
+      damageDoneHealth.set(editable.player.id, -playerArmour.get(editable.player.id));
       playerHealth.set(
         editable.player.id,
-        playerHealth.get(editable.player.id) +
-          playerArmour.get(editable.player.id),
+        playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id),
       );
       playerArmour.set(editable.player.id, 0.0);
     } else {
@@ -385,8 +352,7 @@ export const internalPlayerDeath: Parameters<
       editable.amount += playerHealth.get(editable.player.id);
       damageDoneHealth.set(
         editable.player.id,
-        damageDoneHealth.get(editable.player.id) +
-          playerHealth.get(editable.player.id),
+        damageDoneHealth.get(editable.player.id) + playerHealth.get(editable.player.id),
       );
       playerHealth.set(editable.player.id, 0.0);
     }
@@ -442,10 +408,7 @@ export const internalPlayerDeath: Parameters<
 
       deathSkip.set(editable.player.id, 2);
 
-      const { weapons: w } = orig_playerMethods.getWeaponData.call(
-        editable.player,
-        0,
-      );
+      const { weapons: w } = orig_playerMethods.getWeaponData.call(editable.player, 0);
 
       const skin = getPlayerActualSkin(editable.player);
 

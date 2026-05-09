@@ -135,10 +135,7 @@ const configLineReg = /([0|1]) \/\/([0-9]+)/;
 export async function ac_LoadCfg() {
   try {
     if (fs.existsSync(FULL_AC_CONFIG_FILE())) {
-      const ac_cfgFile = await fsPromise.readFile(
-        FULL_AC_CONFIG_FILE(),
-        "utf-8",
-      );
+      const ac_cfgFile = await fsPromise.readFile(FULL_AC_CONFIG_FILE(), "utf-8");
       ac_cfgFile.split("\n").forEach((ac_string, ac_i) => {
         const matched = ac_string.match(configLineReg);
         if (matched && matched[1]) {
@@ -174,10 +171,7 @@ export async function ac_writeCfg() {
 export async function ac_LoadNOPCfg() {
   try {
     if (fs.existsSync(FULL_AC_NOP_CONFIG_FILE())) {
-      const ac_cfgFile = await fsPromise.readFile(
-        FULL_AC_NOP_CONFIG_FILE(),
-        "utf-8",
-      );
+      const ac_cfgFile = await fsPromise.readFile(FULL_AC_NOP_CONFIG_FILE(), "utf-8");
       ac_cfgFile.split("\n").forEach((ac_string, ac_i) => {
         const matched = ac_string.match(configLineReg);
         if (matched && matched[1]) {

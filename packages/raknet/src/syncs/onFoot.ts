@@ -54,9 +54,7 @@ export class OnFootSync extends BitStream implements IPacketListSync {
         PacketRpcValueType.Bool,
       ) as any;
 
-      const { health, armour } = BitStream.unpackHealthArmour(
-        healthArmour as number,
-      );
+      const { health, armour } = BitStream.unpackHealthArmour(healthArmour as number);
       data.health = health;
       data.armour = armour;
 

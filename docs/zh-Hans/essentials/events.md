@@ -214,24 +214,21 @@ PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
 });
 
 // 定义一个命令，可以由msg或message触发
-PlayerEvent.onCommandText(
-  ["msg", "message"],
-  ({ player, subcommand, next }) => {
-    console.log(
-      `玩家 ${player.getName()}，输入了此命令，并且可能还输入了子命令 ${subcommand.toString()}`,
-    );
+PlayerEvent.onCommandText(["msg", "message"], ({ player, subcommand, next }) => {
+  console.log(
+    `玩家 ${player.getName()}，输入了此命令，并且可能还输入了子命令 ${subcommand.toString()}`,
+  );
 
-    // 相当于玩家输入了/message global或/msg global
-    if (subcommand[0] === "global") {
-      // 额外的逻辑
-      return next();
-    } else {
-      next();
-      // 认为是个无效的命令,将触发后置守卫
-      return false;
-    }
-  },
-);
+  // 相当于玩家输入了/message global或/msg global
+  if (subcommand[0] === "global") {
+    // 额外的逻辑
+    return next();
+  } else {
+    next();
+    // 认为是个无效的命令,将触发后置守卫
+    return false;
+  }
+});
 ```
 
 ### 区分大小写
@@ -383,10 +380,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
 });
 
 onPlayerDanger(({ player, health, next }) => {
-  player.sendClientMessage(
-    "#ff0",
-    `危险! 您生命值仅为${health}, 3秒后系统将自动为您回血`,
-  );
+  player.sendClientMessage("#ff0", `危险! 您生命值仅为${health}, 3秒后系统将自动为您回血`);
   setTimeout(() => {
     player.setHealth(100);
   }, 3000);

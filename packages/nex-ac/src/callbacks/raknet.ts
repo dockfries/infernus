@@ -34,17 +34,14 @@ import { innerACConfig } from "../config";
 import { ac_KickWithCode } from "./trigger";
 
 onIncomingPacket(({ playerId, next }) => {
-  if (ACInfo.get(playerId).acKicked > 0 && ACInfo.get(playerId).acOnline)
-    return false;
+  if (ACInfo.get(playerId).acKicked > 0 && ACInfo.get(playerId).acOnline) return false;
   return next();
 });
 
 onIncomingRPC(({ playerId, rpcId, next }) => {
-  if (ACInfo.get(playerId).acKicked > 0 && ACInfo.get(playerId).acOnline)
-    return false;
+  if (ACInfo.get(playerId).acKicked > 0 && ACInfo.get(playerId).acOnline) return false;
   if (rpcId === 31 || rpcId === 97) return false;
-  if (ACInfo.get(playerId).acKicked > 0 && ACInfo.get(playerId).acOnline)
-    return false;
+  if (ACInfo.get(playerId).acKicked > 0 && ACInfo.get(playerId).acOnline) return false;
   return next();
 });
 
@@ -54,12 +51,8 @@ IPacket(AC_DRIVER_SYNC, ({ playerId, bs, next }) => {
   const syncBs = new InCarSync(bs);
   const ac_cData = syncBs.readSync()!;
   if (
-    !(
-      ac_cData.vehicleId >= 1 && ac_cData.vehicleId < LimitsEnum.MAX_VEHICLES
-    ) ||
-    !Vehicle.getInstance(ac_cData.vehicleId)!.isStreamedIn(
-      Player.getInstance(playerId)!,
-    ) ||
+    !(ac_cData.vehicleId >= 1 && ac_cData.vehicleId < LimitsEnum.MAX_VEHICLES) ||
+    !Vehicle.getInstance(ac_cData.vehicleId)!.isStreamedIn(Player.getInstance(playerId)!) ||
     !ac_IsValidFloat(ac_cData.quaternion[0]) ||
     !ac_IsValidFloat(ac_cData.quaternion[1]) ||
     !ac_IsValidFloat(ac_cData.quaternion[2]) ||
@@ -70,9 +63,7 @@ IPacket(AC_DRIVER_SYNC, ({ playerId, bs, next }) => {
   const trailer = Vehicle.getInstance(ac_cData.trailerId);
   if (
     ac_cData.trailerId !== 0 &&
-    (!trailer ||
-      trailer.getModel() <= 0 ||
-      !trailer.isStreamedIn(Player.getInstance(playerId)!))
+    (!trailer || trailer.getModel() <= 0 || !trailer.isStreamedIn(Player.getInstance(playerId)!))
   ) {
     ac_cData.trailerId = 0;
     syncBs.writeSync(ac_cData);
@@ -90,10 +81,9 @@ IPacket(AC_AIM_SYNC, ({ playerId, bs, next }) => {
   const syncBs = new AimSync(bs);
   const ac_aData = syncBs.readSync()!;
   if (
-    [
-      3, 7, 8, 14, 15, 16, 18, 22, 29, 46, 47, 51, 53, 55, 56, 57, 58, 59, 62,
-      63, 64,
-    ].includes(ac_aData.camMode)
+    [3, 7, 8, 14, 15, 16, 18, 22, 29, 46, 47, 51, 53, 55, 56, 57, 58, 59, 62, 63, 64].includes(
+      ac_aData.camMode,
+    )
   ) {
     if (ACInfo.get(playerId).acLastWeapon === WeaponEnum.BOMB) {
       ac_aData.camMode = 4;
@@ -186,10 +176,7 @@ IPacket(AC_ONFOOT_SYNC, ({ playerId, bs, next }) => {
     !ac_IsValidFloat(ac_fData.surfingOffsets[1]) ||
     !ac_IsValidFloat(ac_fData.surfingOffsets[2])
   ) {
-    ac_fData.surfingOffsets[0] =
-      ac_fData.surfingOffsets[1] =
-      ac_fData.surfingOffsets[2] =
-        0.0;
+    ac_fData.surfingOffsets[0] = ac_fData.surfingOffsets[1] = ac_fData.surfingOffsets[2] = 0.0;
     ac_fData.surfingVehicleId = 0;
     syncBs.writeSync(ac_fData);
   } else if (
@@ -212,10 +199,7 @@ IPacket(AC_ONFOOT_SYNC, ({ playerId, bs, next }) => {
     ac_fData.specialAction = 0;
     syncBs.writeSync(ac_fData);
   }
-  if (
-    ac_fData.weaponId === WeaponEnum.BOMB &&
-    ACInfo.get(playerId).acCamMode !== 4
-  ) {
+  if (ac_fData.weaponId === WeaponEnum.BOMB && ACInfo.get(playerId).acCamMode !== 4) {
     ac_i = ACInfo.get(playerId).acWeapon[0];
     ac_fData.weaponId = ac_i;
     syncBs.writeSync(ac_fData);
@@ -254,17 +238,10 @@ IPacket(AC_UNOCCUPIED_SYNC, ({ playerId, bs, next }) => {
         ac_uData.roll[2] * ac_uData.direction[2],
     ) >= 0.000001 ||
     Math.abs(
-      1.0 -
-        ac_GetVectorDist(
-          ac_uData.direction[0],
-          ac_uData.direction[1],
-          ac_uData.direction[2],
-        ),
+      1.0 - ac_GetVectorDist(ac_uData.direction[0], ac_uData.direction[1], ac_uData.direction[2]),
     ) >= 0.000001 ||
-    Math.abs(
-      1.0 -
-        ac_GetVectorDist(ac_uData.roll[0], ac_uData.roll[1], ac_uData.roll[2]),
-    ) >= 0.000001
+    Math.abs(1.0 - ac_GetVectorDist(ac_uData.roll[0], ac_uData.roll[1], ac_uData.roll[2])) >=
+      0.000001
   )
     return false;
   return next();
@@ -293,18 +270,12 @@ IPacket(AC_TRAILER_SYNC, ({ playerId, bs, next }) => {
     return false;
   if (
     ACInfo.get(playerId).acACAllow[31] &&
-    ((Math.abs(ac_tData.velocity[0] - ACVehInfo.get(trailerId)!.acVelX) >=
-      2.6 &&
-      Math.abs(ac_tData.velocity[0]) >=
-        Math.abs(ACVehInfo.get(trailerId)!.acVelX)) ||
-      (Math.abs(ac_tData.velocity[1] - ACVehInfo.get(trailerId)!.acVelY) >=
-        2.6 &&
-        Math.abs(ac_tData.velocity[1]) >=
-          Math.abs(ACVehInfo.get(trailerId)!.acVelY)) ||
-      (Math.abs(ac_tData.velocity[2] - ACVehInfo.get(trailerId)!.acVelZ) >=
-        2.6 &&
-        Math.abs(ac_tData.velocity[2]) >=
-          Math.abs(ACVehInfo.get(trailerId)!.acVelZ)))
+    ((Math.abs(ac_tData.velocity[0] - ACVehInfo.get(trailerId)!.acVelX) >= 2.6 &&
+      Math.abs(ac_tData.velocity[0]) >= Math.abs(ACVehInfo.get(trailerId)!.acVelX)) ||
+      (Math.abs(ac_tData.velocity[1] - ACVehInfo.get(trailerId)!.acVelY) >= 2.6 &&
+        Math.abs(ac_tData.velocity[1]) >= Math.abs(ACVehInfo.get(trailerId)!.acVelY)) ||
+      (Math.abs(ac_tData.velocity[2] - ACVehInfo.get(trailerId)!.acVelZ) >= 2.6 &&
+        Math.abs(ac_tData.velocity[2]) >= Math.abs(ACVehInfo.get(trailerId)!.acVelZ)))
   ) {
     if (innerACConfig.DEBUG) {
       console.log(
@@ -318,35 +289,21 @@ IPacket(AC_TRAILER_SYNC, ({ playerId, bs, next }) => {
     ac_tData.position[1],
     ac_tData.position[2],
   );
-  let ac_tmp = Vehicle.getInstance(
-    ACInfo.get(playerId).acVeh,
-  )!.getDistanceFromPoint(
+  let ac_tmp = Vehicle.getInstance(ACInfo.get(playerId).acVeh)!.getDistanceFromPoint(
     ac_tData.position[0],
     ac_tData.position[1],
     ac_tData.position[2],
   );
-  if (
-    ACInfo.get(playerId).acACAllow[5] &&
-    (ac_dist >= 80.0 || ac_tmp >= 40.0)
-  ) {
-    const {
-      x: ac_x,
-      y: ac_y,
-      z: ac_z,
-    } = Vehicle.getInstance(trailerId)!.getPos();
+  if (ACInfo.get(playerId).acACAllow[5] && (ac_dist >= 80.0 || ac_tmp >= 40.0)) {
+    const { x: ac_x, y: ac_y, z: ac_z } = Vehicle.getInstance(trailerId)!.getPos();
     if (innerACConfig.DEBUG) {
       console.log(
         `[Nex-AC DEBUG] Dist: ${ac_dist}, truck dist: ${ac_tmp}, old pos z: ${ac_z}, veh: ${trailerId}, playerId: ${playerId}`,
       );
     }
     ac_KickWithCode(Player.getInstance(playerId)!, "", 0, 5, 2);
-    ACVehInfo.get(trailerId)!.acZAngle =
-      Vehicle.getInstance(trailerId)!.getZAngle().angle;
-    if (
-      Vehicle.getInstance(trailerId)!.isStreamedIn(
-        Player.getInstance(playerId)!,
-      )
-    ) {
+    ACVehInfo.get(trailerId)!.acZAngle = Vehicle.getInstance(trailerId)!.getZAngle().angle;
+    if (Vehicle.getInstance(trailerId)!.isStreamedIn(Player.getInstance(playerId)!)) {
       setVehicleFakeZAngleForPlayer(
         Player.getInstance(playerId)!,
         Vehicle.getInstance(trailerId)!,
@@ -383,14 +340,9 @@ IPacket(AC_TRAILER_SYNC, ({ playerId, bs, next }) => {
     }
     syncBs.writeSync(ac_tData);
   }
-  const ac_vsp = ac_GetSpeed(
-    ac_tData.velocity[0],
-    ac_tData.velocity[1],
-    ac_tData.velocity[2],
-  );
+  const ac_vsp = ac_GetSpeed(ac_tData.velocity[0], ac_tData.velocity[1], ac_tData.velocity[2]);
   ACVehInfo.get(trailerId)!.acTrPosDiff = ac_dist;
-  ACVehInfo.get(trailerId)!.acTrSpeedDiff =
-    ac_vsp - ACVehInfo.get(trailerId)!.acSpeed;
+  ACVehInfo.get(trailerId)!.acTrSpeedDiff = ac_vsp - ACVehInfo.get(trailerId)!.acSpeed;
   ACVehInfo.get(trailerId)!.acTrPosX = ac_tData.position[0];
   ACVehInfo.get(trailerId)!.acTrPosY = ac_tData.position[1];
   ACVehInfo.get(trailerId)!.acTrPosZ = ac_tData.position[2];
@@ -434,11 +386,6 @@ const AC_RPC_DamageVehicle = 106;
 IRPC(AC_RPC_DamageVehicle, ({ playerId, bs, next }) => {
   const vehicleId = bs.readValue(PacketRpcValueType.UInt16) as number;
   const veh = Vehicle.getInstance(vehicleId);
-  if (
-    !veh ||
-    veh.getModel() <= 0 ||
-    ACVehInfo.get(vehicleId)!.acDriver !== playerId
-  )
-    return false;
+  if (!veh || veh.getModel() <= 0 || ACVehInfo.get(vehicleId)!.acDriver !== playerId) return false;
   return next();
 });

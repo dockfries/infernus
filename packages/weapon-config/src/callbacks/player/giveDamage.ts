@@ -22,19 +22,11 @@ import {
   lastHitWeapons,
 } from "../../struct";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
-import {
-  InvalidDamageEnum,
-  RejectedReasonEnum,
-  WC_WeaponEnum,
-} from "../../enums";
+import { InvalidDamageEnum, RejectedReasonEnum, WC_WeaponEnum } from "../../enums";
 import { orig_playerMethods } from "../../hooks/origin";
 import { debugMessage, debugMessageRed } from "../../utils/debug";
 import { IEditableOnPlayerDamage, triggerOnPlayerDamage } from "../custom";
-import {
-  s_MaxWeaponShootRate,
-  s_ValidDamageGiven,
-  s_WeaponRange,
-} from "../../constants";
+import { s_MaxWeaponShootRate, s_ValidDamageGiven, s_WeaponRange } from "../../constants";
 import { internalPlayerDeath } from "./spawn";
 import { wc_SecondKnifeAnim } from "../../functions/internal/anim";
 import {
@@ -45,14 +37,8 @@ import {
 } from "../../functions/internal/damage";
 import { playerDeath } from "../../functions/internal/death";
 import { hasSameTeam, isVehicleBike } from "../../functions/internal/is";
-import {
-  wc_SetSpawnForStreamedIn,
-  wc_SpawnForStreamedIn,
-} from "../../functions/internal/set";
-import {
-  onInvalidWeaponDamage,
-  onPlayerDamageDone,
-} from "../../functions/internal/event";
+import { wc_SetSpawnForStreamedIn, wc_SpawnForStreamedIn } from "../../functions/internal/set";
+import { onInvalidWeaponDamage, onPlayerDamageDone } from "../../functions/internal/event";
 import {
   isBulletWeapon,
   isHighRateWeapon,
@@ -118,16 +104,8 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
     weapon >= s_ValidDamageGiven.length ||
     !s_ValidDamageGiven[weapon]
   ) {
-    if (
-      weapon !== WeaponEnum.FLAMETHROWER &&
-      weapon !== WeaponEnum.REASON_VEHICLE
-    ) {
-      addRejectedHit(
-        player,
-        damage,
-        RejectedReasonEnum.HIT_INVALID_WEAPON,
-        weapon,
-      );
+    if (weapon !== WeaponEnum.FLAMETHROWER && weapon !== WeaponEnum.REASON_VEHICLE) {
+      addRejectedHit(player, damage, RejectedReasonEnum.HIT_INVALID_WEAPON, weapon);
     }
 
     return 0;
@@ -138,12 +116,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
 
   if (!wc_IsPlayerSpawned(player) && tick - lastDeathTick.get(player.id) > 80) {
     if (!isBulletWeapon(weapon) || lastShot.get(player.id).valid) {
-      addRejectedHit(
-        player,
-        damage,
-        RejectedReasonEnum.HIT_NOT_SPAWNED,
-        weapon,
-      );
+      addRejectedHit(player, damage, RejectedReasonEnum.HIT_NOT_SPAWNED, weapon);
     }
 
     return 0;
@@ -235,19 +208,12 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
         return 0;
       }
 
-      damageDoneHealth.set(
-        editable.issuerId.id,
-        playerHealth.get(editable.issuerId.id),
-      );
-      damageDoneArmour.set(
-        editable.issuerId.id,
-        playerArmour.get(editable.issuerId.id),
-      );
+      damageDoneHealth.set(editable.issuerId.id, playerHealth.get(editable.issuerId.id));
+      damageDoneArmour.set(editable.issuerId.id, playerArmour.get(editable.issuerId.id));
 
       onPlayerDamageDone(
         editable.player,
-        playerHealth.get(editable.player.id) +
-          playerArmour.get(editable.player.id),
+        playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id),
         editable.issuerId.id,
         editable.weaponId,
         editable.bodyPart,
@@ -270,28 +236,18 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
         }),
       );
 
-      debugMessage(
-        editable.player.id,
-        `being knifed by ${editable.issuerId.id}`,
-      );
+      debugMessage(editable.player.id, `being knifed by ${editable.issuerId.id}`);
       debugMessage(editable.issuerId.id, `knifing ${editable.player.id}`);
 
       let forceSync = 2;
 
-      const facingAngle = orig_playerMethods.getFacingAngle.call(
-        editable.player,
-      );
-      orig_playerMethods.setFacingAngle.call(
-        editable.issuerId,
-        facingAngle.angle,
-      );
+      const facingAngle = orig_playerMethods.getFacingAngle.call(editable.player);
+      orig_playerMethods.setFacingAngle.call(editable.issuerId, facingAngle.angle);
 
       orig_playerMethods.setVelocity.call(editable.player, 0.0, 0.0, 0.0);
       orig_playerMethods.setVelocity.call(editable.issuerId, 0.0, 0.0, 0.0);
 
-      const animIndex = orig_playerMethods.getAnimationIndex.call(
-        editable.issuerId,
-      );
+      const animIndex = orig_playerMethods.getAnimationIndex.call(editable.issuerId);
 
       if (animIndex !== 747) {
         debugMessageRed(
@@ -325,17 +281,10 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
   }
 
   if (
-    (!orig_playerMethods.isStreamedIn.call(player, damage) &&
-      !wc_IsPlayerPaused(damage)) ||
+    (!orig_playerMethods.isStreamedIn.call(player, damage) && !wc_IsPlayerPaused(damage)) ||
     !orig_playerMethods.isStreamedIn.call(damage, player)
   ) {
-    addRejectedHit(
-      player,
-      damage,
-      RejectedReasonEnum.HIT_UNSTREAMED,
-      weapon,
-      damage.id,
-    );
+    addRejectedHit(player, damage, RejectedReasonEnum.HIT_UNSTREAMED, weapon, damage.id);
     return 0;
   }
 
@@ -379,9 +328,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
 
   if (editable.issuer === InvalidEnum.PLAYER_ID) return 0;
 
-  let idx =
-    (lastHitIdx.get(editable.issuer.id) + 1) %
-    lastHitTicks.get(editable.issuer.id).length;
+  let idx = (lastHitIdx.get(editable.issuer.id) + 1) % lastHitTicks.get(editable.issuer.id).length;
 
   if (idx < 0) {
     idx += lastHitTicks.get(editable.issuer.id).length;
@@ -394,8 +341,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
 
   if (innerWeaponConfig.DEBUG) {
     if (hitsIssued.get(editable.issuer.id) > 1) {
-      let prev_tick_idx =
-        (idx - 1) % lastHitTicks.get(editable.issuer.id).length;
+      let prev_tick_idx = (idx - 1) % lastHitTicks.get(editable.issuer.id).length;
 
       if (prev_tick_idx < 0) {
         prev_tick_idx += lastHitTicks.get(editable.issuer.id).length;
@@ -444,12 +390,9 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
 
   let valid = true;
 
-  if (
-    orig_playerMethods.getState.call(editable.issuer) === PlayerStateEnum.DRIVER
-  ) {
+  if (orig_playerMethods.getState.call(editable.issuer) === PlayerStateEnum.DRIVER) {
     if (
-      (editable.weaponId >= WeaponEnum.UZI &&
-        editable.weaponId <= WeaponEnum.MP5) ||
+      (editable.weaponId >= WeaponEnum.UZI && editable.weaponId <= WeaponEnum.MP5) ||
       editable.weaponId === WeaponEnum.TEC9
     ) {
       const vehicle = orig_playerMethods.getVehicle.call(editable.issuer)!;
@@ -461,10 +404,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
     } else {
       valid = false;
     }
-  } else if (
-    isBulletWeapon(editable.weaponId) &&
-    amount !== 2.6400001049041748046875
-  ) {
+  } else if (isBulletWeapon(editable.weaponId) && amount !== 2.6400001049041748046875) {
     if (
       !lastShot.get(editable.issuer.id).valid ||
       (tick - lastShot.get(editable.issuer.id).tick > 1500 &&
@@ -489,8 +429,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
     } else if (lastShot.get(editable.issuer.id).hits > 0) {
       if (
         lastShot.get(editable.issuer.id).hits >= 6 ||
-        (lastShot.get(editable.issuer.id).hits >= 3 &&
-          editable.weaponId !== WeaponEnum.SNIPER)
+        (lastShot.get(editable.issuer.id).hits >= 3 && editable.weaponId !== WeaponEnum.SNIPER)
       ) {
         valid = false;
         addRejectedHit(
@@ -517,21 +456,14 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
       );
 
       if (dist > 20.0) {
-        const suf_veh = orig_playerMethods.getSurfingVehicle.call(
-          editable.player,
-        );
+        const suf_veh = orig_playerMethods.getSurfingVehicle.call(editable.player);
         const in_veh =
           orig_playerMethods.isInAnyVehicle.call(editable.player) ||
           (suf_veh && suf_veh.id !== InvalidEnum.VEHICLE_ID);
 
-        const suf_obj = orig_playerMethods.getSurfingObject.call(
-          editable.player,
-        );
+        const suf_obj = orig_playerMethods.getSurfingObject.call(editable.player);
 
-        if (
-          (!in_veh && (!suf_obj || suf_obj.id === InvalidEnum.OBJECT_ID)) ||
-          dist > 50.0
-        ) {
+        if ((!in_veh && (!suf_obj || suf_obj.id === InvalidEnum.OBJECT_ID)) || dist > 50.0) {
           valid = false;
           addRejectedHit(
             editable.issuer,
@@ -560,13 +492,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
       editable.bodyPart,
     );
   } else {
-    inflictDamage(
-      editable.player,
-      amount,
-      editable.issuer,
-      editable.weaponId,
-      editable.bodyPart,
-    );
+    inflictDamage(editable.player, amount, editable.issuer, editable.weaponId, editable.bodyPart);
   }
 
   return 0;

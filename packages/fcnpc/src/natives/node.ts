@@ -28,12 +28,11 @@ export class FCNPCNode {
     return samp.callNative("FCNPC_GetNodePointCount", "i", this.id);
   }
   getInfo() {
-    const [vehNodes, pedNodes, naviNode, ret]: [
-      number,
-      number,
-      number,
-      number,
-    ] = samp.callNative("FCNPC_GetNodeInfo", "iIII", this.id);
+    const [vehNodes, pedNodes, naviNode, ret]: [number, number, number, number] = samp.callNative(
+      "FCNPC_GetNodeInfo",
+      "iIII",
+      this.id,
+    );
     return { vehNodes, pedNodes, naviNode, ret };
   }
 }

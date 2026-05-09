@@ -27,8 +27,6 @@ export class DynamicLocalPlayerStream extends SampVoiceLocalStream {
   }
 
   static getInstances() {
-    return super.getInstances(
-      DynamicLocalPlayerStream.name,
-    ) as DynamicLocalPlayerStream[];
+    return super.getInstances(DynamicLocalPlayerStream.name) as DynamicLocalPlayerStream[];
   }
 }

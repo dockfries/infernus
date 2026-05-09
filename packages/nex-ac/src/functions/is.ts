@@ -1,11 +1,5 @@
 import { Player, Vehicle } from "@infernus/core";
-import {
-  ac_Casinos,
-  ac_PayNSpray,
-  ac_vMachines,
-  ac_vMods,
-  ac_vType,
-} from "../constants";
+import { ac_Casinos, ac_PayNSpray, ac_vMachines, ac_vMods, ac_vType } from "../constants";
 import { ACInfo } from "../struct";
 import { innerACConfig } from "../config";
 
@@ -23,9 +17,7 @@ export function ac_IsAnAircraft(modelId: number) {
 
 export function ac_IsAnAircraftEx(modelId: number) {
   return (
-    ac_IsValidVehicleModel(modelId) &&
-    ac_vType[modelId - 400] >= 1 &&
-    ac_vType[modelId - 400] <= 2
+    ac_IsValidVehicleModel(modelId) && ac_vType[modelId - 400] >= 1 && ac_vType[modelId - 400] <= 2
   );
 }
 
@@ -43,9 +35,7 @@ export function ac_IsABmxEx(modelId: number) {
 
 export function ac_IsABikeEx(modelId: number) {
   return (
-    ac_IsValidVehicleModel(modelId) &&
-    ac_vType[modelId - 400] >= 4 &&
-    ac_vType[modelId - 400] <= 5
+    ac_IsValidVehicleModel(modelId) && ac_vType[modelId - 400] >= 4 && ac_vType[modelId - 400] <= 5
   );
 }
 
@@ -63,9 +53,7 @@ export function ac_IsATrainCarriageEx(modelId: number) {
 
 export function ac_IsATrainPartEx(modelId: number) {
   return (
-    ac_IsValidVehicleModel(modelId) &&
-    ac_vType[modelId - 400] >= 7 &&
-    ac_vType[modelId - 400] <= 8
+    ac_IsValidVehicleModel(modelId) && ac_vType[modelId - 400] >= 7 && ac_vType[modelId - 400] <= 8
   );
 }
 
@@ -75,9 +63,7 @@ export function ac_IsAnAircraftRC(modelId: number) {
 
 export function ac_IsARemoteControlEx(modelId: number) {
   return (
-    ac_IsValidVehicleModel(modelId) &&
-    ac_vType[modelId - 400] >= 9 &&
-    ac_vType[modelId - 400] <= 10
+    ac_IsValidVehicleModel(modelId) && ac_vType[modelId - 400] >= 9 && ac_vType[modelId - 400] <= 10
   );
 }
 
@@ -90,9 +76,7 @@ export function ac_IsValidDamageReason(weaponId: number) {
 }
 
 export function ac_IsValidWeapon(weaponId: number) {
-  return (
-    (weaponId >= 0 && weaponId <= 18) || (weaponId >= 22 && weaponId <= 46)
-  );
+  return (weaponId >= 0 && weaponId <= 18) || (weaponId >= 22 && weaponId <= 46);
 }
 
 export function ac_IsBulletWeapon(weaponId: number) {
@@ -124,12 +108,7 @@ export function ac_IsValidSkin(skinId: number) {
   return skinId >= 0 && skinId < innerACConfig.AC_MAX_SKINS && skinId !== 74;
 }
 
-export function ac_GetElevationAngle(
-  ac_w: number,
-  ac_x: number,
-  ac_y: number,
-  ac_z: number,
-) {
+export function ac_GetElevationAngle(ac_w: number, ac_x: number, ac_y: number, ac_z: number) {
   return Math.abs(
     (Math.atan2(
       (ac_y * ac_z + ac_w * ac_x) * 2.0,
@@ -140,21 +119,13 @@ export function ac_GetElevationAngle(
   );
 }
 
-export function ac_IsUpsideDown(
-  ac_w: number,
-  ac_x: number,
-  ac_y: number,
-  ac_z: number,
-) {
+export function ac_IsUpsideDown(ac_w: number, ac_x: number, ac_y: number, ac_z: number) {
   return ac_GetElevationAngle(ac_w, ac_x, ac_y, ac_z) > 90.0;
 }
 
 export function ac_IsVehicleSeatOccupied(vehicle: Vehicle, seat: number) {
   return Player.getInstances().some((ac_i) => {
-    return (
-      ACInfo.get(ac_i.id)!.acVeh === vehicle.id &&
-      ACInfo.get(ac_i.id)!.acSeat === seat
-    );
+    return ACInfo.get(ac_i.id)!.acVeh === vehicle.id && ACInfo.get(ac_i.id)!.acSeat === seat;
   });
 }
 
@@ -202,12 +173,7 @@ export function ac_InAmmuNation(player: Player, interiorId: number) {
   return false;
 }
 
-export function ac_InPayNSpray(
-  interiorId: number,
-  ac_x: number,
-  ac_y: number,
-  ac_z: number,
-) {
+export function ac_InPayNSpray(interiorId: number, ac_x: number, ac_y: number, ac_z: number) {
   if (interiorId === 0) {
     for (let ac_i = ac_PayNSpray.length - 1; ac_i >= 0; --ac_i) {
       if (
@@ -256,12 +222,7 @@ export function ac_NearVendingMachine(player: Player, interiorId: number) {
     }
     case 2: {
       if (
-        player.isInRangeOfPoint(
-          1.5,
-          ac_vMachines[52][0],
-          ac_vMachines[52][1],
-          ac_vMachines[52][2],
-        )
+        player.isInRangeOfPoint(1.5, ac_vMachines[52][0], ac_vMachines[52][1], ac_vMachines[52][2])
       )
         return true;
       break;
@@ -288,36 +249,21 @@ export function ac_NearVendingMachine(player: Player, interiorId: number) {
           ac_vMachines[59][1],
           ac_vMachines[59][2],
         ) ||
-        player.isInRangeOfPoint(
-          1.5,
-          ac_vMachines[60][0],
-          ac_vMachines[60][1],
-          ac_vMachines[60][2],
-        )
+        player.isInRangeOfPoint(1.5, ac_vMachines[60][0], ac_vMachines[60][1], ac_vMachines[60][2])
       )
         return true;
       break;
     }
     case 7: {
       if (
-        player.isInRangeOfPoint(
-          1.5,
-          ac_vMachines[61][0],
-          ac_vMachines[61][1],
-          ac_vMachines[61][2],
-        )
+        player.isInRangeOfPoint(1.5, ac_vMachines[61][0], ac_vMachines[61][1], ac_vMachines[61][2])
       )
         return true;
       break;
     }
     case 15: {
       if (
-        player.isInRangeOfPoint(
-          1.5,
-          ac_vMachines[62][0],
-          ac_vMachines[62][1],
-          ac_vMachines[62][2],
-        )
+        player.isInRangeOfPoint(1.5, ac_vMachines[62][0], ac_vMachines[62][1], ac_vMachines[62][2])
       )
         return true;
       break;
@@ -336,12 +282,7 @@ export function ac_NearVendingMachine(player: Player, interiorId: number) {
           ac_vMachines[64][1],
           ac_vMachines[64][2],
         ) ||
-        player.isInRangeOfPoint(
-          1.5,
-          ac_vMachines[65][0],
-          ac_vMachines[65][1],
-          ac_vMachines[65][2],
-        )
+        player.isInRangeOfPoint(1.5, ac_vMachines[65][0], ac_vMachines[65][1], ac_vMachines[65][2])
       )
         return true;
       break;
@@ -368,12 +309,7 @@ export function ac_NearVendingMachine(player: Player, interiorId: number) {
           ac_vMachines[73][1],
           ac_vMachines[73][2],
         ) ||
-        player.isInRangeOfPoint(
-          1.5,
-          ac_vMachines[74][0],
-          ac_vMachines[74][1],
-          ac_vMachines[74][2],
-        )
+        player.isInRangeOfPoint(1.5, ac_vMachines[74][0], ac_vMachines[74][1], ac_vMachines[74][2])
       )
         return true;
       break;
@@ -434,10 +370,7 @@ export function ac_IsCompatible(modelId: number, componentId: number) {
   if (ac_IsValidVehicleModel(modelId)) {
     if (componentId >= 1000 && componentId <= 1191) {
       componentId -= 1000;
-      if (
-        ac_vMods[(modelId - 400) * 6 + (componentId >>> 5)] &
-        (1 << (componentId & 0b00011111))
-      )
+      if (ac_vMods[(modelId - 400) * 6 + (componentId >>> 5)] & (1 << (componentId & 0b00011111)))
         return true;
     } else if (componentId === 1192 || componentId === 1193) {
       if (modelId === 576) return true;

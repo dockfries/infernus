@@ -17,11 +17,7 @@ export class NpcRecord {
   constructor(filePathOrId: string | number) {
     if (typeof filePathOrId === "string") {
       this._filePath = filePathOrId;
-      this._id = samp.callNative(
-        "NPC_LoadRecord",
-        "s",
-        this._filePath,
-      ) as number;
+      this._id = samp.callNative("NPC_LoadRecord", "s", this._filePath) as number;
     } else {
       this._id = filePathOrId;
     }

@@ -27,8 +27,6 @@ export class DynamicLocalVehicleStream extends SampVoiceLocalStream {
   }
 
   static getInstances() {
-    return super.getInstances(
-      DynamicLocalVehicleStream.name,
-    ) as DynamicLocalVehicleStream[];
+    return super.getInstances(DynamicLocalVehicleStream.name) as DynamicLocalVehicleStream[];
   }
 }

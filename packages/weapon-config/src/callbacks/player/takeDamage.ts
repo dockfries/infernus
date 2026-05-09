@@ -17,11 +17,7 @@ import {
   lastDeathTick,
 } from "../../struct";
 import { innerGameModeConfig } from "../../config";
-import {
-  InvalidDamageEnum,
-  RejectedReasonEnum,
-  WC_WeaponEnum,
-} from "../../enums";
+import { InvalidDamageEnum, RejectedReasonEnum, WC_WeaponEnum } from "../../enums";
 import { orig_playerMethods } from "../../hooks/origin";
 import { debugMessage, debugMessageRed } from "../../utils/debug";
 import { IEditableOnPlayerDamage, triggerOnPlayerDamage } from "../custom";
@@ -34,15 +30,9 @@ import {
   inflictDamage,
 } from "../../functions/internal/damage";
 import { playerDeath } from "../../functions/internal/death";
-import {
-  hasSameTeam,
-  isVehicleArmedWithWeapon,
-} from "../../functions/internal/is";
+import { hasSameTeam, isVehicleArmedWithWeapon } from "../../functions/internal/is";
 import { updateHealthBar } from "../../functions/internal/set";
-import {
-  onPlayerDamageDone,
-  onInvalidWeaponDamage,
-} from "../../functions/internal/event";
+import { onPlayerDamageDone, onInvalidWeaponDamage } from "../../functions/internal/event";
 import {
   isBulletWeapon,
   isHighRateWeapon,
@@ -144,19 +134,12 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
       editable.weaponId = WeaponEnum.KNIFE;
       editable.amount = 0.0;
 
-      damageDoneHealth.set(
-        editable.player.id,
-        playerHealth.get(editable.player.id),
-      );
-      damageDoneArmour.set(
-        editable.player.id,
-        playerArmour.get(editable.player.id),
-      );
+      damageDoneHealth.set(editable.player.id, playerHealth.get(editable.player.id));
+      damageDoneArmour.set(editable.player.id, playerArmour.get(editable.player.id));
 
       onPlayerDamageDone(
         editable.player,
-        playerHealth.get(editable.player.id) +
-          playerArmour.get(editable.player.id),
+        playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id),
         editable.issuerId,
         editable.weaponId,
         editable.bodyPart,
@@ -181,10 +164,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
 
       orig_playerMethods.setHealth.call(editable.player, 0x7f7fffff);
 
-      debugMessage(
-        editable.player.id,
-        `being knifed by ${editable.issuerId.id}`,
-      );
+      debugMessage(editable.player.id, `being knifed by ${editable.issuerId.id}`);
       debugMessage(editable.issuerId, `knifing ${editable.player.id}`);
 
       let forceSync = 2;
@@ -195,9 +175,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
       orig_playerMethods.setVelocity.call(editable.player, 0.0, 0.0, 0.0);
       orig_playerMethods.setVelocity.call(editable.issuerId, 0.0, 0.0, 0.0);
 
-      const animIndex = orig_playerMethods.getAnimationIndex.call(
-        editable.issuerId,
-      );
+      const animIndex = orig_playerMethods.getAnimationIndex.call(editable.issuerId);
       if (animIndex !== 747) {
         debugMessageRed(
           editable.issuerId,
@@ -233,10 +211,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
     ) {
       const vehicle = orig_playerMethods.getVehicle.call(damage);
 
-      if (
-        vehicle &&
-        isVehicleArmedWithWeapon(vehicle, weapon as unknown as WC_WeaponEnum)
-      ) {
+      if (vehicle && isVehicleArmedWithWeapon(vehicle, weapon as unknown as WC_WeaponEnum)) {
         if ((weapon as unknown as number) === WC_WeaponEnum.MINIGUN) {
           weapon = WC_WeaponEnum.VEHICLE_MINIGUN as unknown as number;
         } else {
@@ -245,18 +220,12 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
       } else {
         return 0;
       }
-    } else if (
-      damage === InvalidEnum.PLAYER_ID ||
-      !orig_playerMethods.isNpc.call(damage)
-    ) {
+    } else if (damage === InvalidEnum.PLAYER_ID || !orig_playerMethods.isNpc.call(damage)) {
       return 0;
     }
   }
 
-  if (
-    damage !== InvalidEnum.PLAYER_ID &&
-    orig_playerMethods.isConnected.call(damage)
-  ) {
+  if (damage !== InvalidEnum.PLAYER_ID && orig_playerMethods.isConnected.call(damage)) {
     if (hasSameTeam(player, damage.id)) {
       return 0;
     }
@@ -274,37 +243,24 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
       return 0;
     }
 
-    if (
-      weapon === WeaponEnum.REASON_COLLISION ||
-      weapon === WeaponEnum.REASON_DROWN
-    ) {
+    if (weapon === WeaponEnum.REASON_COLLISION || weapon === WeaponEnum.REASON_DROWN) {
       return 0;
     }
 
-    if (
-      weapon === WeaponEnum.REASON_VEHICLE ||
-      (weapon as number) === WC_WeaponEnum.HELIBLADES
-    ) {
+    if (weapon === WeaponEnum.REASON_VEHICLE || (weapon as number) === WC_WeaponEnum.HELIBLADES) {
       if (orig_playerMethods.getState.call(damage) !== PlayerStateEnum.DRIVER) {
         return 0;
       }
     }
 
     if (
-      (!orig_playerMethods.isStreamedIn.call(player, damage) &&
-        !wc_IsPlayerPaused(damage)) ||
+      (!orig_playerMethods.isStreamedIn.call(player, damage) && !wc_IsPlayerPaused(damage)) ||
       !orig_playerMethods.isStreamedIn.call(damage, player)
     ) {
       if (innerGameModeConfig.lagCompMode) {
         damage = InvalidEnum.PLAYER_ID;
       } else {
-        addRejectedHit(
-          player,
-          damage,
-          RejectedReasonEnum.HIT_UNSTREAMED,
-          weapon,
-          damage.id,
-        );
+        addRejectedHit(player, damage, RejectedReasonEnum.HIT_UNSTREAMED, weapon, damage.id);
         return 0;
       }
     }
@@ -350,12 +306,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
 
   if (isBulletWeapon(editable.weaponId)) {
     const { x, y, z } = orig_playerMethods.getPos.call(editable.issuer)!;
-    const dist = orig_playerMethods.getDistanceFromPoint.call(
-      editable.player,
-      x,
-      y,
-      z,
-    );
+    const dist = orig_playerMethods.getDistanceFromPoint.call(editable.player, x, y, z);
 
     if (dist > s_WeaponRange[editable.weaponId] + 2.0) {
       addRejectedHit(

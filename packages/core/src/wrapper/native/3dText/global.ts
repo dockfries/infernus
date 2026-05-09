@@ -5,10 +5,7 @@ export const IsValid3DTextLabel = (id: number): boolean => {
   return !!samp.callNative("IsValid3DTextLabel", "i", id);
 };
 
-export const Is3DTextLabelStreamedIn = (
-  playerId: number,
-  id: number,
-): boolean => {
+export const Is3DTextLabelStreamedIn = (playerId: number, id: number): boolean => {
   return !!samp.callNative("Is3DTextLabelStreamedIn", "ii", playerId, id);
 };
 
@@ -25,10 +22,7 @@ export const Get3DTextLabelPos = (id: number): IObjectPos & ICommonRetVal => {
   return { fX, fY, fZ, ret: !!ret };
 };
 
-export const Set3DTextLabelDrawDistance = (
-  id: number,
-  dist: number,
-): boolean => {
+export const Set3DTextLabelDrawDistance = (id: number, dist: number): boolean => {
   return !!samp.callNative("Set3DTextLabelDrawDistance", "ii", id, dist);
 };
 
@@ -44,10 +38,7 @@ export const Set3DTextLabelLOS = (id: number, status: boolean): boolean => {
   return !!samp.callNative("Set3DTextLabelLOS", "ii", id, status);
 };
 
-export const Set3DTextLabelVirtualWorld = (
-  id: number,
-  worldId: number,
-): boolean => {
+export const Set3DTextLabelVirtualWorld = (id: number, worldId: number): boolean => {
   return !!samp.callNative("Set3DTextLabelVirtualWorld", "ii", id, worldId);
 };
 
@@ -55,11 +46,12 @@ export const Get3DTextLabelVirtualWorld = (id: number): number => {
   return samp.callNative("Get3DTextLabelVirtualWorld", "i", id);
 };
 
-export const Get3DTextLabelAttachedData = (
-  id: number,
-): IAttachedData & ICommonRetVal => {
-  const [attachedPlayerId = 0, attachedVehicleId = 0, ret]: number[] =
-    samp.callNative("Get3DTextLabelAttachedData", "i", id);
+export const Get3DTextLabelAttachedData = (id: number): IAttachedData & ICommonRetVal => {
+  const [attachedPlayerId = 0, attachedVehicleId = 0, ret]: number[] = samp.callNative(
+    "Get3DTextLabelAttachedData",
+    "i",
+    id,
+  );
   return { attachedPlayerId, attachedVehicleId, ret: !!ret };
 };
 

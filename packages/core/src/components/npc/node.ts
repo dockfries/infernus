@@ -63,12 +63,11 @@ export class NpcNode {
     return samp.callNative("NPC_GetNodePointCount", "i", this._id) as number;
   }
   getInfo() {
-    const [vehNodes, pedNodes, naviNode, ret]: [
-      number,
-      number,
-      number,
-      number,
-    ] = samp.callNative("NPC_GetNodeInfo", "iIII", this._id);
+    const [vehNodes, pedNodes, naviNode, ret]: [number, number, number, number] = samp.callNative(
+      "NPC_GetNodeInfo",
+      "iIII",
+      this._id,
+    );
     return {
       vehNodes,
       pedNodes,

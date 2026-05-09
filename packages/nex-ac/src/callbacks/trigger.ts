@@ -1,10 +1,4 @@
-import {
-  defineEvent,
-  GameMode,
-  InvalidEnum,
-  Player,
-  PlayerStateEnum,
-} from "@infernus/core";
+import { defineEvent, GameMode, InvalidEnum, Player, PlayerStateEnum } from "@infernus/core";
 import { innerACConfig } from "../config";
 import { $t } from "../lang";
 import { ac_sInfo, ac_Mtfc } from "../constants";
@@ -12,12 +6,7 @@ import { ACInfo } from "../struct";
 
 let blockDefaultOnCheatDetected = false;
 
-function ac_OnCheatDetected(
-  player: Player,
-  ipAddress: string,
-  type: number,
-  code: number,
-) {
+function ac_OnCheatDetected(player: Player, ipAddress: string, type: number, code: number) {
   if (type) {
     GameMode.blockIpAddress(ipAddress, 0);
   } else {
@@ -63,18 +52,14 @@ const [innerOnCheatDetected, triggerCheatDetected] = defineEvent({
 
 export { triggerCheatDetected };
 
-const offDefault = innerOnCheatDetected(
-  ({ player, ipAddress, type, code, next }) => {
-    if (!blockDefaultOnCheatDetected) {
-      return ac_OnCheatDetected(player, ipAddress, type, code);
-    }
-    return next();
-  },
-);
+const offDefault = innerOnCheatDetected(({ player, ipAddress, type, code, next }) => {
+  if (!blockDefaultOnCheatDetected) {
+    return ac_OnCheatDetected(player, ipAddress, type, code);
+  }
+  return next();
+});
 
-export function onCheatDetected(
-  ...args: Parameters<typeof innerOnCheatDetected>
-) {
+export function onCheatDetected(...args: Parameters<typeof innerOnCheatDetected>) {
   if (!blockDefaultOnCheatDetected) {
     blockDefaultOnCheatDetected = true;
     const ret = innerOnCheatDetected(...args);
@@ -131,12 +116,7 @@ export const [onNOPWarning, triggerNOPWarning] = defineEvent({
 });
 
 export function ac_KickTimer(player: Player) {
-  if (
-    !(
-      1 >= ACInfo.get(player.id).acKicked && ACInfo.get(player.id).acKicked <= 2
-    )
-  )
-    return false;
+  if (!(1 >= ACInfo.get(player.id).acKicked && ACInfo.get(player.id).acKicked <= 2)) return false;
   return player.kick();
 }
 
@@ -191,10 +171,7 @@ export function ac_KickWithCode(
   }
   if (!innerACConfig.NO_SUSPICION_LOGS) {
     const ac_strTmp = code2 !== 0 ? ` (${code2})` : "";
-    if (type)
-      console.log(
-        $t("SUSPICION_2", [ipAddress, (code + "").padStart(3, "0"), ac_strTmp]),
-      );
+    if (type) console.log($t("SUSPICION_2", [ipAddress, (code + "").padStart(3, "0"), ac_strTmp]));
     else
       console.log(
         $t("SUSPICION_1", [
@@ -212,21 +189,12 @@ export function ac_FloodDetect(player: Player, publicId: number) {
   if (ACInfo.get(player.id).acKicked < 1) {
     if (++ACInfo.get(player.id).acFloodCount[publicId] > ac_Mtfc[publicId][1]) {
       if (innerACConfig.DEBUG) {
-        console.log(
-          $t("DEBUG_CODE_1", [player.id, ac_Mtfc[publicId][1], publicId]),
-        );
+        console.log($t("DEBUG_CODE_1", [player.id, ac_Mtfc[publicId][1], publicId]));
       }
 
       ac_KickWithCode(player, "", 0, 49, publicId);
-      ACInfo.get(player.id).acFloodCount[publicId] = ACInfo.get(
-        player.id,
-      )!.acFloodCount[27] = 0;
-    } else
-      triggerFloodWarning(
-        player,
-        publicId,
-        ACInfo.get(player.id).acFloodCount[publicId],
-      );
+      ACInfo.get(player.id).acFloodCount[publicId] = ACInfo.get(player.id)!.acFloodCount[27] = 0;
+    } else triggerFloodWarning(player, publicId, ACInfo.get(player.id).acFloodCount[publicId]);
 
     return false;
   }

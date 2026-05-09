@@ -30,8 +30,6 @@ export class DynamicLocalPointStream extends SampVoiceLocalStream {
   }
 
   static getInstances() {
-    return super.getInstances(
-      DynamicLocalPointStream.name,
-    ) as DynamicLocalPointStream[];
+    return super.getInstances(DynamicLocalPointStream.name) as DynamicLocalPointStream[];
   }
 }

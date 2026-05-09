@@ -24,8 +24,11 @@ export const GetMenuPos = (menuId: number) => {
 };
 
 export const GetMenuColumnWidth = (menuId: number) => {
-  const [fColumn1 = 0.0, fColumn2 = 0.0, ret]: [number, number, number] =
-    samp.callNative("GetMenuColumnWidth", "iFF", menuId);
+  const [fColumn1 = 0.0, fColumn2 = 0.0, ret]: [number, number, number] = samp.callNative(
+    "GetMenuColumnWidth",
+    "iFF",
+    menuId,
+  );
   return { fColumn1, fColumn2, ret: !!ret };
 };
 
@@ -33,17 +36,11 @@ export const DestroyMenu = (menuId: number): boolean => {
   return !!samp.callNative("DestroyMenu", "i", menuId);
 };
 
-export const ShowMenuForPlayer = (
-  menuId: number,
-  playerId: number,
-): boolean => {
+export const ShowMenuForPlayer = (menuId: number, playerId: number): boolean => {
   return !!samp.callNative("ShowMenuForPlayer", "ii", menuId, playerId);
 };
 
-export const HideMenuForPlayer = (
-  menuId: number,
-  playerId: number,
-): boolean => {
+export const HideMenuForPlayer = (menuId: number, playerId: number): boolean => {
   return !!samp.callNative("HideMenuForPlayer", "ii", menuId, playerId);
 };
 

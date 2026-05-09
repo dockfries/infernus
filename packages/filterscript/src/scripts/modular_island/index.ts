@@ -57,11 +57,7 @@ export const ModularIsland: IModularIsLandFS = {
         player.setInterior(0);
 
         // Set player position and facing angle
-        player.setPos(
-          -3343.57 + Math.random() * 2,
-          194.34 + Math.random() * 2,
-          6.2,
-        );
+        player.setPos(-3343.57 + Math.random() * 2, 194.34 + Math.random() * 2, 6.2);
         player.setFacingAngle(315);
 
         // Fix camera position after teleporting

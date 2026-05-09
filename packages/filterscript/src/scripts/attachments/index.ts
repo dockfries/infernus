@@ -10,99 +10,79 @@
 //-------------------------------------------------
 
 import type { IFilterScript } from "@infernus/core";
-import {
-  Dialog,
-  DialogStylesEnum,
-  LimitsEnum,
-  ObjectMpEvent,
-  PlayerEvent,
-} from "@infernus/core";
+import { Dialog, DialogStylesEnum, LimitsEnum, ObjectMpEvent, PlayerEvent } from "@infernus/core";
 import { attachmentBones, attachmentObjects } from "./constants";
 
 export const Attachments: IFilterScript = {
   name: "attachments",
   load() {
-    const offCommand = PlayerEvent.onCommandText(
-      "attachments",
-      async ({ player, next }) => {
-        let slotUsedInfo = "";
-        for (let x = 0; x < LimitsEnum.MAX_PLAYER_ATTACHED_OBJECTS; x++) {
-          if (player.isAttachedObjectSlotUsed(x))
-            slotUsedInfo += `${x} (Used)\n`;
-          else slotUsedInfo += `${x}\n`;
+    const offCommand = PlayerEvent.onCommandText("attachments", async ({ player, next }) => {
+      let slotUsedInfo = "";
+      for (let x = 0; x < LimitsEnum.MAX_PLAYER_ATTACHED_OBJECTS; x++) {
+        if (player.isAttachedObjectSlotUsed(x)) slotUsedInfo += `${x} (Used)\n`;
+        else slotUsedInfo += `${x}\n`;
+      }
+      const INDEX_SELECTION = await new Dialog({
+        style: DialogStylesEnum.LIST,
+        caption: "{FF0000}Attachment Modification - Index Selection",
+        info: slotUsedInfo,
+        button1: "Select",
+        button2: "Cancel",
+      }).show(player);
+
+      if (!INDEX_SELECTION.response) return next();
+
+      const attachmentIndexSel = INDEX_SELECTION.listItem;
+
+      if (player.isAttachedObjectSlotUsed(attachmentIndexSel)) {
+        const EDIT_REPLACE = await new Dialog({
+          style: DialogStylesEnum.MSGBOX,
+          caption: "{FF0000}Attachment Modification",
+          info: "Do you wish to edit the attachment in that slot, or delete it?",
+          button1: "Edit",
+          button2: "Delete",
+        }).show(player);
+
+        if (EDIT_REPLACE.response) {
+          player.editAttachedObject(attachmentIndexSel);
+        } else {
+          player.removeAttachedObject(attachmentIndexSel);
         }
-        const INDEX_SELECTION = await new Dialog({
-          style: DialogStylesEnum.LIST,
-          caption: "{FF0000}Attachment Modification - Index Selection",
-          info: slotUsedInfo,
-          button1: "Select",
-          button2: "Cancel",
-        }).show(player);
-
-        if (!INDEX_SELECTION.response) return next();
-
-        const attachmentIndexSel = INDEX_SELECTION.listItem;
-
-        if (player.isAttachedObjectSlotUsed(attachmentIndexSel)) {
-          const EDIT_REPLACE = await new Dialog({
-            style: DialogStylesEnum.MSGBOX,
-            caption: "{FF0000}Attachment Modification",
-            info: "Do you wish to edit the attachment in that slot, or delete it?",
-            button1: "Edit",
-            button2: "Delete",
-          }).show(player);
-
-          if (EDIT_REPLACE.response) {
-            player.editAttachedObject(attachmentIndexSel);
-          } else {
-            player.removeAttachedObject(attachmentIndexSel);
-          }
-          return next();
-        }
-
-        const attachmentNames = attachmentObjects
-          .map((item) => item[1])
-          .join("\n");
-
-        const MODEL_SELECTION = await new Dialog({
-          style: DialogStylesEnum.LIST,
-          caption: "{FF0000}Attachment Modification - Model Selection",
-          info: attachmentNames,
-          button1: "Select",
-          button2: "Cancel",
-        }).show(player);
-
-        if (!MODEL_SELECTION.response) return next();
-
-        const attachmentModelSel =
-          attachmentObjects[MODEL_SELECTION.listItem][0];
-
-        const boneNames = attachmentBones.join("\n");
-
-        const BONE_SELECTION = await new Dialog({
-          style: DialogStylesEnum.LIST,
-          caption: "{FF0000}Attachment Modification - Bone Selection",
-          info: boneNames,
-          button1: "Select",
-          button2: "Cancel",
-        }).show(player);
-
-        if (!BONE_SELECTION.response) return next();
-
-        player.setAttachedObject(
-          attachmentIndexSel,
-          attachmentModelSel,
-          BONE_SELECTION.listItem + 1,
-        );
-        player.editAttachedObject(attachmentIndexSel);
-        player.sendClientMessage(
-          "#fff",
-          "Hint: Use {FFFF00}~k~~PED_SPRINT~{FFFFFF} to look around.",
-        );
-
         return next();
-      },
-    );
+      }
+
+      const attachmentNames = attachmentObjects.map((item) => item[1]).join("\n");
+
+      const MODEL_SELECTION = await new Dialog({
+        style: DialogStylesEnum.LIST,
+        caption: "{FF0000}Attachment Modification - Model Selection",
+        info: attachmentNames,
+        button1: "Select",
+        button2: "Cancel",
+      }).show(player);
+
+      if (!MODEL_SELECTION.response) return next();
+
+      const attachmentModelSel = attachmentObjects[MODEL_SELECTION.listItem][0];
+
+      const boneNames = attachmentBones.join("\n");
+
+      const BONE_SELECTION = await new Dialog({
+        style: DialogStylesEnum.LIST,
+        caption: "{FF0000}Attachment Modification - Bone Selection",
+        info: boneNames,
+        button1: "Select",
+        button2: "Cancel",
+      }).show(player);
+
+      if (!BONE_SELECTION.response) return next();
+
+      player.setAttachedObject(attachmentIndexSel, attachmentModelSel, BONE_SELECTION.listItem + 1);
+      player.editAttachedObject(attachmentIndexSel);
+      player.sendClientMessage("#fff", "Hint: Use {FFFF00}~k~~PED_SPRINT~{FFFFFF} to look around.");
+
+      return next();
+    });
 
     const offAttached = ObjectMpEvent.onPlayerEditAttached(
       ({
@@ -140,10 +120,7 @@ export const Attachments: IFilterScript = {
           fScaleY,
           fScaleZ,
         );
-        player.sendClientMessage(
-          "#fff",
-          "You finished editing an attached object",
-        );
+        player.sendClientMessage("#fff", "You finished editing an attached object");
         return next();
       },
     );

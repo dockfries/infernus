@@ -9,14 +9,8 @@ import {
   Vehicle,
 } from "@infernus/core";
 import { vectorSize } from "./math";
-import {
-  badGetPlayerDistanceFromPoint,
-  badGetVehicleDistanceFromPoint,
-} from "./hook";
-import {
-  getActorDistanceToPoint3D,
-  getDynActorDistanceToPoint3D,
-} from "./actor";
+import { badGetPlayerDistanceFromPoint, badGetVehicleDistanceFromPoint } from "./hook";
+import { getActorDistanceToPoint3D, getDynActorDistanceToPoint3D } from "./actor";
 import { getObjectDistanceToPoint3D } from "./object";
 
 export function getVehicleDistanceToPlayer(vehicle: Vehicle, player: Player) {
@@ -44,10 +38,7 @@ export function isVehicleInRangeOfPlayer(
   );
 }
 
-export function getClosestVehicleToPlayer(
-  player: Player,
-  ignoreVW = false,
-): Vehicle | null {
+export function getClosestVehicleToPlayer(player: Player, ignoreVW = false): Vehicle | null {
   const { x, y, z, ret } = player.getPos();
   if (!ret) {
     return null;
@@ -57,9 +48,7 @@ export function getClosestVehicleToPlayer(
   let distance2 = 0;
   if (ignoreVW) {
     Vehicle.getInstances().forEach((i) => {
-      if (
-        (distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance
-      ) {
+      if ((distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance) {
         distance = distance2;
         closest = i;
       }
@@ -70,8 +59,7 @@ export function getClosestVehicleToPlayer(
       {
         if (
           vw === i.getVirtualWorld() &&
-          (distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) <
-            distance
+          (distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance
         ) {
           distance = distance2;
           closest = i;
@@ -107,10 +95,7 @@ export function isPlayerInRangeOfVehicle(
   );
 }
 
-export function getClosestPlayerToVehicle(
-  vehicle: Vehicle,
-  ignoreVW = false,
-): Player | null {
+export function getClosestPlayerToVehicle(vehicle: Vehicle, ignoreVW = false): Player | null {
   const { x, y, z, ret } = vehicle.getPos();
   if (!ret) {
     return null;
@@ -120,9 +105,7 @@ export function getClosestPlayerToVehicle(
   let distance2 = 0;
   if (ignoreVW) {
     Player.getInstances().forEach((i) => {
-      if (
-        (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance
-      ) {
+      if ((distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance) {
         distance = distance2;
         closest = i;
       }
@@ -151,11 +134,7 @@ export function getPlayerDistanceToObject(player: Player, object: ObjectMp) {
   return Number.NaN;
 }
 
-export function isPlayerInRangeOfObject(
-  player: Player,
-  object: ObjectMp,
-  range: number,
-) {
+export function isPlayerInRangeOfObject(player: Player, object: ObjectMp, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = player.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = object.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
@@ -170,9 +149,7 @@ export function getClosestPlayerToObject(object: ObjectMp): Player | null {
   let closest: Player | null = null;
   let distance2 = 0;
   Player.getInstances().forEach((i) => {
-    if (
-      (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance
-    ) {
+    if ((distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance) {
       distance = distance2;
       closest = i;
     }
@@ -189,11 +166,7 @@ export function getObjectDistanceToPlayer(object: ObjectMp, player: Player) {
   return Number.NaN;
 }
 
-export function isObjectInRangeOfPlayer(
-  object: ObjectMp,
-  player: Player,
-  range: number,
-) {
+export function isObjectInRangeOfPlayer(object: ObjectMp, player: Player, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = player.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
@@ -208,10 +181,7 @@ export function getClosestObjectToPlayer(player: Player): ObjectMp | null {
   let closest: ObjectMp | null = null;
   let distance2 = 0;
   ObjectMp.getInstances().forEach((i) => {
-    if (
-      i.isValid() &&
-      (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance
-    ) {
+    if (i.isValid() && (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance) {
       distance = distance2;
       closest = i;
     }
@@ -236,10 +206,7 @@ export function getClosestPlayerObjectToPlayer(
         .map(([, o]) => o)
         .flat()
   ).forEach((i) => {
-    if (
-      i.isValid() &&
-      (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance
-    ) {
+    if (i.isValid() && (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance) {
       distance = distance2;
       closest = i;
     }
@@ -256,11 +223,7 @@ export function getObjectDistanceToVehicle(object: ObjectMp, vehicle: Vehicle) {
   return Number.NaN;
 }
 
-export function isObjectInRangeOfVehicle(
-  object: ObjectMp,
-  vehicle: Vehicle,
-  range: number,
-) {
+export function isObjectInRangeOfVehicle(object: ObjectMp, vehicle: Vehicle, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = vehicle.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
@@ -275,10 +238,7 @@ export function getClosestObjectToVehicle(vehicle: Vehicle): ObjectMp | null {
   let closest: ObjectMp | null = null;
   let distance2 = 0;
   ObjectMp.getInstances().forEach((i) => {
-    if (
-      i.isValid() &&
-      (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance
-    ) {
+    if (i.isValid() && (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance) {
       distance = distance2;
       closest = i;
     }
@@ -303,10 +263,7 @@ export function getClosestPlayerObjectToVehicle(
         .map(([, o]) => o)
         .flat()
   ).forEach((i) => {
-    if (
-      i.isValid() &&
-      (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance
-    ) {
+    if (i.isValid() && (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance) {
       distance = distance2;
       closest = i;
     }
@@ -323,11 +280,7 @@ export function getVehicleDistanceToObject(vehicle: Vehicle, object: ObjectMp) {
   return Number.NaN;
 }
 
-export function isVehicleInRangeOfObject(
-  vehicle: Vehicle,
-  object: ObjectMp,
-  range: number,
-) {
+export function isVehicleInRangeOfObject(vehicle: Vehicle, object: ObjectMp, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = vehicle.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = object.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
@@ -342,9 +295,7 @@ export function getClosestVehicleToObject(object: ObjectMp): Vehicle | null {
   let closest: Vehicle | null = null;
   let distance2 = 0;
   Vehicle.getInstances().forEach((i) => {
-    if (
-      (distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance
-    ) {
+    if ((distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance) {
       distance = distance2;
       closest = i;
     }
@@ -352,10 +303,7 @@ export function getClosestVehicleToObject(object: ObjectMp): Vehicle | null {
   return closest;
 }
 
-export function getDynObjectDistanceToPlayer(
-  object: DynamicObject,
-  player: Player,
-) {
+export function getDynObjectDistanceToPlayer(object: DynamicObject, player: Player) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = player.getPos();
   if (ret1 && ret2) {
@@ -364,19 +312,13 @@ export function getDynObjectDistanceToPlayer(
   return Number.NaN;
 }
 
-export function isDynObjectInRangeOfPlayer(
-  object: DynamicObject,
-  player: Player,
-  range: number,
-) {
+export function isDynObjectInRangeOfPlayer(object: DynamicObject, player: Player, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = player.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
 }
 
-export function getClosestDynObjectToPlayer(
-  player: Player,
-): DynamicObject | null {
+export function getClosestDynObjectToPlayer(player: Player): DynamicObject | null {
   const { x, y, z, ret } = player.getPos();
   if (!ret) {
     return null;
@@ -386,13 +328,7 @@ export function getClosestDynObjectToPlayer(
   for (let i = Streamer.getUpperBound(StreamerItemTypes.OBJECT); i >= 1; --i) {
     {
       if (DynamicObject.isValid(i)) {
-        const distance2 = Streamer.getDistanceToItem(
-          x,
-          y,
-          z,
-          StreamerItemTypes.OBJECT,
-          i,
-        ).distance;
+        const distance2 = Streamer.getDistanceToItem(x, y, z, StreamerItemTypes.OBJECT, i).distance;
         if (distance2 < distance) {
           distance = distance2;
           closestId = i;
@@ -404,10 +340,7 @@ export function getClosestDynObjectToPlayer(
   return DynamicObject.getInstance(closestId) || new DynamicObject(closestId);
 }
 
-export function getPlayerDistanceToDynObject(
-  player: Player,
-  object: DynamicObject,
-) {
+export function getPlayerDistanceToDynObject(player: Player, object: DynamicObject) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = player.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = object.getPos();
   if (ret1 && ret2) {
@@ -416,19 +349,13 @@ export function getPlayerDistanceToDynObject(
   return Number.NaN;
 }
 
-export function isPlayerInRangeOfDynObject(
-  player: Player,
-  object: DynamicObject,
-  range: number,
-) {
+export function isPlayerInRangeOfDynObject(player: Player, object: DynamicObject, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = player.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = object.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
 }
 
-export function getClosestPlayerToDynObject(
-  object: DynamicObject,
-): Player | null {
+export function getClosestPlayerToDynObject(object: DynamicObject): Player | null {
   const { x, y, z, ret } = object.getPos();
   if (!ret) {
     return null;
@@ -437,9 +364,7 @@ export function getClosestPlayerToDynObject(
   let closest: Player | null = null;
   let distance2 = 0;
   Player.getInstances().forEach((i) => {
-    if (
-      (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance
-    ) {
+    if ((distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance) {
       distance = distance2;
       closest = i;
     }
@@ -447,10 +372,7 @@ export function getClosestPlayerToDynObject(
   return closest;
 }
 
-export function getDynObjectDistanceToObject(
-  object: DynamicObject,
-  target: DynamicObject,
-) {
+export function getDynObjectDistanceToObject(object: DynamicObject, target: DynamicObject) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = target.getPos();
   if (ret1 && ret2) {
@@ -459,10 +381,7 @@ export function getDynObjectDistanceToObject(
   return Number.NaN;
 }
 
-export function getDynObjectDistanceToVehicle(
-  object: DynamicObject,
-  vehicle: Vehicle,
-) {
+export function getDynObjectDistanceToVehicle(object: DynamicObject, vehicle: Vehicle) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = vehicle.getPos();
   if (ret1 && ret2) {
@@ -481,9 +400,7 @@ export function isDynObjectInRangeOfVehicle(
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
 }
 
-export function getClosestDynObjectToVehicle(
-  vehicle: Vehicle,
-): DynamicObject | null {
+export function getClosestDynObjectToVehicle(vehicle: Vehicle): DynamicObject | null {
   const { x, y, z, ret } = vehicle.getPos();
   if (!ret) {
     return null;
@@ -493,13 +410,7 @@ export function getClosestDynObjectToVehicle(
   for (let i = Streamer.getUpperBound(StreamerItemTypes.OBJECT); i >= 1; --i) {
     {
       if (DynamicObject.isValid(i)) {
-        const distance2 = Streamer.getDistanceToItem(
-          x,
-          y,
-          z,
-          StreamerItemTypes.OBJECT,
-          i,
-        ).distance;
+        const distance2 = Streamer.getDistanceToItem(x, y, z, StreamerItemTypes.OBJECT, i).distance;
         if (distance2 < distance) {
           distance = distance2;
           closestId = i;
@@ -511,10 +422,7 @@ export function getClosestDynObjectToVehicle(
   return DynamicObject.getInstance(closestId) || new DynamicObject(closestId);
 }
 
-export function getVehicleDistanceToDynObject(
-  vehicle: Vehicle,
-  object: DynamicObject,
-) {
+export function getVehicleDistanceToDynObject(vehicle: Vehicle, object: DynamicObject) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = vehicle.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = object.getPos();
   if (ret1 && ret2) {
@@ -533,9 +441,7 @@ export function isVehicleInRangeOfDynObject(
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
 }
 
-export function getClosestVehicleToDynObject(
-  object: DynamicObject,
-): Vehicle | null {
+export function getClosestVehicleToDynObject(object: DynamicObject): Vehicle | null {
   const { x, y, z, ret } = object.getPos();
   if (!ret) {
     return null;
@@ -544,9 +450,7 @@ export function getClosestVehicleToDynObject(
   let closest: Vehicle | null = null;
   let distance2 = 0;
   Vehicle.getInstances().forEach((i) => {
-    if (
-      (distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance
-    ) {
+    if ((distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance) {
       distance = distance2;
       closest = i;
     }
@@ -579,10 +483,7 @@ export function isVehicleInRangeOfActor(
   );
 }
 
-export function getClosestVehicleToActor(
-  actor: Actor,
-  ignoreVW = false,
-): Vehicle | null {
+export function getClosestVehicleToActor(actor: Actor, ignoreVW = false): Vehicle | null {
   const { x, y, z, ret } = actor.getPos();
   if (!ret) {
     return null;
@@ -592,9 +493,7 @@ export function getClosestVehicleToActor(
   let distance2 = 0;
   if (ignoreVW) {
     Vehicle.getInstances().forEach((i) => {
-      if (
-        (distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance
-      ) {
+      if ((distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance) {
         distance = distance2;
         closest = i;
       }
@@ -639,10 +538,7 @@ export function isActorInRangeOfVehicle(
   );
 }
 
-export function getClosestActorToVehicle(
-  vehicle: Vehicle,
-  ignoreVW = false,
-): Actor | null {
+export function getClosestActorToVehicle(vehicle: Vehicle, ignoreVW = false): Actor | null {
   const { x, y, z, ret } = vehicle.getPos();
   if (!ret) {
     return null;
@@ -681,11 +577,7 @@ export function getActorDistanceToObject(actor: Actor, object: ObjectMp) {
   return Number.NaN;
 }
 
-export function isActorInRangeOfObject(
-  actor: Actor,
-  object: ObjectMp,
-  range: number,
-) {
+export function isActorInRangeOfObject(actor: Actor, object: ObjectMp, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = actor.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = object.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
@@ -719,11 +611,7 @@ export function getObjectDistanceToActor(object: ObjectMp, actor: Actor) {
   return Number.NaN;
 }
 
-export function isObjectInRangeOfActor(
-  object: ObjectMp,
-  actor: Actor,
-  range: number,
-) {
+export function isObjectInRangeOfActor(object: ObjectMp, actor: Actor, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = actor.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
@@ -738,10 +626,7 @@ export function getClosestObjectToActor(actor: Actor): ObjectMp | null {
   let closest: ObjectMp | null = null;
   let distance2 = 0;
   ObjectMp.getInstances().forEach((i) => {
-    if (
-      i.isValid() &&
-      (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance
-    ) {
+    if (i.isValid() && (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance) {
       distance = distance2;
       closest = i;
     }
@@ -766,10 +651,7 @@ export function getClosestPlayerObjectToActor(
         .map(([, o]) => o)
         .flat()
   ).forEach((i) => {
-    if (
-      i.isValid() &&
-      (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance
-    ) {
+    if (i.isValid() && (distance2 = getObjectDistanceToPoint3D(i, x, y, z)) < distance) {
       distance = distance2;
       closest = i;
     }
@@ -777,10 +659,7 @@ export function getClosestPlayerObjectToActor(
   return closest;
 }
 
-export function getDynObjectDistanceToActor(
-  object: DynamicObject,
-  actor: Actor,
-) {
+export function getDynObjectDistanceToActor(object: DynamicObject, actor: Actor) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = actor.getPos();
   if (ret1 && ret2) {
@@ -789,11 +668,7 @@ export function getDynObjectDistanceToActor(
   return Number.NaN;
 }
 
-export function isDynObjectInRangeOfActor(
-  object: DynamicObject,
-  actor: Actor,
-  range: number,
-) {
+export function isDynObjectInRangeOfActor(object: DynamicObject, actor: Actor, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = actor.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
@@ -809,13 +684,7 @@ export function getClosestDynObjectToActor(actor: Actor): DynamicObject | null {
   for (let i = Streamer.getUpperBound(StreamerItemTypes.OBJECT); i >= 1; --i) {
     {
       if (DynamicObject.isValid(i)) {
-        const distance2 = Streamer.getDistanceToItem(
-          x,
-          y,
-          z,
-          StreamerItemTypes.OBJECT,
-          i,
-        ).distance;
+        const distance2 = Streamer.getDistanceToItem(x, y, z, StreamerItemTypes.OBJECT, i).distance;
         if (distance2 < distance) {
           distance = distance2;
           closestId = i;
@@ -827,10 +696,7 @@ export function getClosestDynObjectToActor(actor: Actor): DynamicObject | null {
   return DynamicObject.getInstance(closestId) || new DynamicObject(closestId);
 }
 
-export function getActorDistanceToDynObject(
-  actor: Actor,
-  object: DynamicObject,
-) {
+export function getActorDistanceToDynObject(actor: Actor, object: DynamicObject) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = actor.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = object.getPos();
   if (ret1 && ret2) {
@@ -839,19 +705,13 @@ export function getActorDistanceToDynObject(
   return Number.NaN;
 }
 
-export function isActorInRangeOfDynObject(
-  actor: Actor,
-  object: DynamicObject,
-  range: number,
-) {
+export function isActorInRangeOfDynObject(actor: Actor, object: DynamicObject, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = actor.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = object.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
 }
 
-export function getClosestActorToDynObject(
-  object: DynamicObject,
-): Actor | null {
+export function getClosestActorToDynObject(object: DynamicObject): Actor | null {
   const { x, y, z, ret } = object.getPos();
   if (!ret) {
     return null;
@@ -893,10 +753,7 @@ export function isActorInRangeOfPlayer(
   );
 }
 
-export function getClosestActorToPlayer(
-  player: Player,
-  ignoreVW = false,
-): Actor | null {
+export function getClosestActorToPlayer(player: Player, ignoreVW = false): Actor | null {
   const { x, y, z, ret } = player.getPos();
   if (!ret) {
     return null;
@@ -951,10 +808,7 @@ export function isPlayerInRangeOfActor(
   );
 }
 
-export function getClosestPlayerToActor(
-  actor: Actor,
-  ignoreVW = false,
-): Player | null {
+export function getClosestPlayerToActor(actor: Actor, ignoreVW = false): Player | null {
   const { x, y, z, ret } = actor.getPos();
   if (!ret) {
     return null;
@@ -964,9 +818,7 @@ export function getClosestPlayerToActor(
   let distance2 = 0;
   if (ignoreVW) {
     Player.getInstances().forEach((i) => {
-      if (
-        (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance
-      ) {
+      if ((distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance) {
         distance = distance2;
         closest = i;
       }
@@ -986,10 +838,7 @@ export function getClosestPlayerToActor(
   return closest;
 }
 
-export function getVehicleDistanceToDynActor(
-  vehicle: Vehicle,
-  actor: DynamicActor,
-) {
+export function getVehicleDistanceToDynActor(vehicle: Vehicle, actor: DynamicActor) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = vehicle.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = actor.getPos();
   if (ret1 && ret2) {
@@ -1014,10 +863,7 @@ export function isVehicleInRangeOfDynActor(
   );
 }
 
-export function getClosestVehicleToDynActor(
-  actor: DynamicActor,
-  ignoreVW = false,
-): Vehicle | null {
+export function getClosestVehicleToDynActor(actor: DynamicActor, ignoreVW = false): Vehicle | null {
   const { x, y, z, ret } = actor.getPos();
   if (!ret) {
     return null;
@@ -1027,9 +873,7 @@ export function getClosestVehicleToDynActor(
   let distance2 = 0;
   if (ignoreVW) {
     Vehicle.getInstances().forEach((i) => {
-      if (
-        (distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance
-      ) {
+      if ((distance2 = badGetVehicleDistanceFromPoint.call(i, x, y, z)) < distance) {
         distance = distance2;
         closest = i;
       }
@@ -1049,10 +893,7 @@ export function getClosestVehicleToDynActor(
   return closest;
 }
 
-export function getDynActorDistanceToVehicle(
-  actor: DynamicActor,
-  vehicle: Vehicle,
-) {
+export function getDynActorDistanceToVehicle(actor: DynamicActor, vehicle: Vehicle) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = actor.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = vehicle.getPos();
   if (ret1 && ret2) {
@@ -1110,10 +951,7 @@ export function getClosestDynActorToVehicle(
   return closest;
 }
 
-export function getDynObjectDistanceToDynActor(
-  object: DynamicObject,
-  actor: DynamicActor,
-) {
+export function getDynObjectDistanceToDynActor(object: DynamicObject, actor: DynamicActor) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = actor.getPos();
   if (ret1 && ret2) {
@@ -1132,9 +970,7 @@ export function isDynObjectInRangeOfDynActor(
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
 }
 
-export function getClosestDynObjectToDynActor(
-  actor: DynamicActor,
-): DynamicObject | null {
+export function getClosestDynObjectToDynActor(actor: DynamicActor): DynamicObject | null {
   const { x, y, z, ret } = actor.getPos();
   if (!ret) {
     return null;
@@ -1144,13 +980,7 @@ export function getClosestDynObjectToDynActor(
   for (let i = Streamer.getUpperBound(StreamerItemTypes.OBJECT); i >= 1; --i) {
     {
       if (DynamicObject.isValid(i)) {
-        const distance2 = Streamer.getDistanceToItem(
-          x,
-          y,
-          z,
-          StreamerItemTypes.OBJECT,
-          i,
-        ).distance;
+        const distance2 = Streamer.getDistanceToItem(x, y, z, StreamerItemTypes.OBJECT, i).distance;
         if (distance2 < distance) {
           distance = distance2;
           closestId = i;
@@ -1162,10 +992,7 @@ export function getClosestDynObjectToDynActor(
   return DynamicObject.getInstance(closestId) || new DynamicObject(closestId);
 }
 
-export function getDynActorDistanceToDynObject(
-  actor: DynamicActor,
-  object: DynamicObject,
-) {
+export function getDynActorDistanceToDynObject(actor: DynamicActor, object: DynamicObject) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = actor.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = object.getPos();
   if (ret1 && ret2) {
@@ -1184,9 +1011,7 @@ export function isDynActorInRangeOfDynObject(
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
 }
 
-export function getClosestDynActorToDynObject(
-  object: DynamicObject,
-): DynamicActor | null {
+export function getClosestDynActorToDynObject(object: DynamicObject): DynamicActor | null {
   const { x, y, z, ret } = object.getPos();
   if (!ret) {
     return null;
@@ -1203,10 +1028,7 @@ export function getClosestDynActorToDynObject(
   return closest;
 }
 
-export function getDynActorDistanceToPlayer(
-  actor: DynamicActor,
-  player: Player,
-) {
+export function getDynActorDistanceToPlayer(actor: DynamicActor, player: Player) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = actor.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = player.getPos();
   if (ret1 && ret2) {
@@ -1231,10 +1053,7 @@ export function isDynActorInRangeOfPlayer(
   );
 }
 
-export function getClosestDynActorToPlayer(
-  player: Player,
-  ignoreVW = false,
-): DynamicActor | null {
+export function getClosestDynActorToPlayer(player: Player, ignoreVW = false): DynamicActor | null {
   const { x, y, z, ret } = player.getPos();
   if (!ret) {
     return null;
@@ -1264,10 +1083,7 @@ export function getClosestDynActorToPlayer(
   return closest;
 }
 
-export function getPlayerDistanceToDynActor(
-  player: Player,
-  actor: DynamicActor,
-) {
+export function getPlayerDistanceToDynActor(player: Player, actor: DynamicActor) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = player.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = actor.getPos();
   if (ret1 && ret2) {
@@ -1292,10 +1108,7 @@ export function isPlayerInRangeOfDynActor(
   );
 }
 
-export function getClosestPlayerToDynActor(
-  actor: DynamicActor,
-  ignoreVW = false,
-): Player | null {
+export function getClosestPlayerToDynActor(actor: DynamicActor, ignoreVW = false): Player | null {
   const { x, y, z, ret } = actor.getPos();
   if (!ret) {
     return null;
@@ -1305,9 +1118,7 @@ export function getClosestPlayerToDynActor(
   let distance2 = 0;
   if (ignoreVW) {
     Player.getInstances().forEach((i) => {
-      if (
-        (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance
-      ) {
+      if ((distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance) {
         distance = distance2;
         closest = i;
       }

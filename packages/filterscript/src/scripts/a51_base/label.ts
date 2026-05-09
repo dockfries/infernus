@@ -32,21 +32,13 @@ const A51TextLabels = (gate: IGateList, player: Player) => {
   ];
 };
 
-export const loadLabels = (
-  p: Player,
-  options: IA51BaseFSOptions,
-  i18n: I18n,
-) => {
+export const loadLabels = (p: Player, options: IA51BaseFSOptions, i18n: I18n) => {
   labelGates.set(p.id, A51TextLabels(gateInfo, p));
   labelGates.get(p.id)?.forEach((t) => t.create()?.toggleCallbacks());
   log(options, `  |--  ${i18n?.$t("a51.labels.created")}`);
 };
 
-export const unloadLabels = (
-  options: IA51BaseFSOptions,
-  i18n: I18n,
-  p?: Player,
-) => {
+export const unloadLabels = (options: IA51BaseFSOptions, i18n: I18n, p?: Player) => {
   if (p) {
     labelGates.get(p.id)?.forEach((t) => t.isValid() && t.destroy());
     labelGates.delete(p.id);
@@ -58,28 +50,20 @@ export const unloadLabels = (
 };
 
 export const registerLabelEvent = (options: IA51BaseFSOptions, i18n: I18n) => {
-  const onStreamIn = Dynamic3DTextLabelEvent.onStreamIn(
-    ({ instance: label, player, next }) => {
-      if (!i18n) return false;
-      const gateIdx = labelGates.get(player.id)?.findIndex((l) => l === label);
+  const onStreamIn = Dynamic3DTextLabelEvent.onStreamIn(({ instance: label, player, next }) => {
+    if (!i18n) return false;
+    const gateIdx = labelGates.get(player.id)?.findIndex((l) => l === label);
 
-      const gateName =
-        gateIdx === 1
-          ? "a51.objects.gate.name.eastern"
-          : "a51.objects.gate.name.northern";
+    const gateName =
+      gateIdx === 1 ? "a51.objects.gate.name.eastern" : "a51.objects.gate.name.northern";
 
-      label.updateText(
-        label.getColor() || "#fff",
-        i18n?.$t(
-          "a51.labels.tips",
-          [i18n?.$t(gateName, null, player.locale)],
-          player.locale,
-        ) || "",
-        player.charset,
-      );
-      return next();
-    },
-  );
+    label.updateText(
+      label.getColor() || "#fff",
+      i18n?.$t("a51.labels.tips", [i18n?.$t(gateName, null, player.locale)], player.locale) || "",
+      player.charset,
+    );
+    return next();
+  });
 
   log(options, "  |---------------------------------------------------");
 

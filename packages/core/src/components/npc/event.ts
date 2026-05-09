@@ -1,20 +1,10 @@
-import {
-  BodyPartsEnum,
-  InvalidEnum,
-  PlayerStateEnum,
-  WeaponEnum,
-} from "core/enums";
+import { BodyPartsEnum, InvalidEnum, PlayerStateEnum, WeaponEnum } from "core/enums";
 import { defineEvent } from "../../utils/bus";
 import { I18n } from "../../utils/i18n";
 import { Npc } from "./entity";
 import { Player } from "../player";
 import { GameMode } from "../gamemode";
-import {
-  npcNodePool,
-  npcPathPool,
-  npcPool,
-  npcRecordPool,
-} from "core/utils/pools";
+import { npcNodePool, npcPathPool, npcPool, npcRecordPool } from "core/utils/pools";
 import { NpcRecord } from "./record";
 import { NpcNode } from "./node";
 import { NpcPath } from "./path";

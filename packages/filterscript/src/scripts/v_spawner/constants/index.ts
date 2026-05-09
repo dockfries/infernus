@@ -17,6 +17,4 @@ const excludedNumbers = [449, 537, 538, 569, 570];
 const start = 400;
 const end = 611;
 const fullRange = Array.from({ length: end - start + 1 }, (_, i) => start + i);
-export const gItemList = fullRange.filter(
-  (num) => !excludedNumbers.includes(num),
-);
+export const gItemList = fullRange.filter((num) => !excludedNumbers.includes(num));

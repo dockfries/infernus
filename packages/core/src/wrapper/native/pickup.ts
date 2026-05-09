@@ -5,10 +5,7 @@ export const IsValidPickup = (pickupId: number): boolean => {
   return !!samp.callNative("IsValidPickup", "i", pickupId);
 };
 
-export const IsPickupStreamedIn = (
-  playerId: number,
-  pickupId: number,
-): boolean => {
+export const IsPickupStreamedIn = (playerId: number, pickupId: number): boolean => {
   return !!samp.callNative("IsPickupStreamedIn", "ii", playerId, pickupId);
 };
 
@@ -43,52 +40,27 @@ export const SetPickupPos = (
   return !!samp.callNative("SetPickupPos", "ifffi", pickupId, x, y, z, update);
 };
 
-export const SetPickupModel = (
-  pickupId: number,
-  model: number,
-  update = true,
-): boolean => {
+export const SetPickupModel = (pickupId: number, model: number, update = true): boolean => {
   return !!samp.callNative("SetPickupModel", "iii", pickupId, model, update);
 };
 
-export const SetPickupType = (
-  pickupId: number,
-  type: number,
-  update = true,
-): boolean => {
+export const SetPickupType = (pickupId: number, type: number, update = true): boolean => {
   return !!samp.callNative("SetPickupType", "iii", pickupId, type, update);
 };
 
-export const SetPickupVirtualWorld = (
-  pickupId: number,
-  virtualWorld: number,
-): boolean => {
-  return !!samp.callNative(
-    "SetPickupVirtualWorld",
-    "ii",
-    pickupId,
-    virtualWorld,
-  );
+export const SetPickupVirtualWorld = (pickupId: number, virtualWorld: number): boolean => {
+  return !!samp.callNative("SetPickupVirtualWorld", "ii", pickupId, virtualWorld);
 };
 
-export const ShowPickupForPlayer = (
-  playerId: number,
-  pickupId: number,
-): boolean => {
+export const ShowPickupForPlayer = (playerId: number, pickupId: number): boolean => {
   return !!samp.callNative("ShowPickupForPlayer", "ii", playerId, pickupId);
 };
 
-export const HidePickupForPlayer = (
-  playerId: number,
-  pickupId: number,
-): boolean => {
+export const HidePickupForPlayer = (playerId: number, pickupId: number): boolean => {
   return !!samp.callNative("HidePickupForPlayer", "ii", playerId, pickupId);
 };
 
-export const IsPickupHiddenForPlayer = (
-  playerId: number,
-  pickupId: number,
-): boolean => {
+export const IsPickupHiddenForPlayer = (playerId: number, pickupId: number): boolean => {
   return !!samp.callNative("IsPickupHiddenForPlayer", "ii", playerId, pickupId);
 };
 
@@ -100,16 +72,7 @@ export const AddStaticPickup = (
   Z: number,
   virtualWorld: number,
 ): number => {
-  return samp.callNative(
-    "AddStaticPickup",
-    "iifffi",
-    model,
-    type,
-    X,
-    Y,
-    Z,
-    virtualWorld,
-  );
+  return samp.callNative("AddStaticPickup", "iifffi", model, type, X, Y, Z, virtualWorld);
 };
 
 export const CreatePickup = (
@@ -120,16 +83,7 @@ export const CreatePickup = (
   z: number,
   virtualWorld: number,
 ): number => {
-  return samp.callNative(
-    "CreatePickup",
-    "iifffi",
-    model,
-    type,
-    x,
-    y,
-    z,
-    virtualWorld,
-  );
+  return samp.callNative("CreatePickup", "iifffi", model, type, x, y, z, virtualWorld);
 };
 
 export const DestroyPickup = (pickup: number): boolean => {
@@ -166,16 +120,8 @@ export const IsValidPlayerPickup = (playerId: number, pickupId: number) => {
   return !!samp.callNative("IsValidPlayerPickup", "ii", playerId, pickupId);
 };
 
-export const IsPlayerPickupStreamedIn = (
-  playerId: number,
-  pickupId: number,
-) => {
-  return !!samp.callNative(
-    "IsPlayerPickupStreamedIn",
-    "ii",
-    playerId,
-    pickupId,
-  );
+export const IsPlayerPickupStreamedIn = (playerId: number, pickupId: number) => {
+  return !!samp.callNative("IsPlayerPickupStreamedIn", "ii", playerId, pickupId);
 };
 
 export const GetPlayerPickupPos = (playerId: number, pickupId: number) => {
@@ -201,16 +147,7 @@ export const SetPlayerPickupPos = (
   z: number,
   update = true,
 ) => {
-  return !!samp.callNative(
-    "SetPlayerPickupPos",
-    "iifffi",
-    playerId,
-    pickupId,
-    x,
-    y,
-    z,
-    update,
-  );
+  return !!samp.callNative("SetPlayerPickupPos", "iifffi", playerId, pickupId, x, y, z, update);
 };
 
 export const SetPlayerPickupModel = (
@@ -219,14 +156,7 @@ export const SetPlayerPickupModel = (
   model: number,
   update = true,
 ) => {
-  return !!samp.callNative(
-    "SetPlayerPickupModel",
-    "iiii",
-    playerId,
-    pickupId,
-    model,
-    update,
-  );
+  return !!samp.callNative("SetPlayerPickupModel", "iiii", playerId, pickupId, model, update);
 };
 
 export const SetPlayerPickupType = (
@@ -235,14 +165,7 @@ export const SetPlayerPickupType = (
   type: number,
   update = true,
 ) => {
-  return !!samp.callNative(
-    "SetPlayerPickupType",
-    "iiii",
-    playerId,
-    pickupId,
-    type,
-    update,
-  );
+  return !!samp.callNative("SetPlayerPickupType", "iiii", playerId, pickupId, type, update);
 };
 
 export const SetPlayerPickupVirtualWorld = (
@@ -250,41 +173,17 @@ export const SetPlayerPickupVirtualWorld = (
   pickupId: number,
   virtualWorld: number,
 ) => {
-  return !!samp.callNative(
-    "SetPlayerPickupVirtualWorld",
-    "iii",
-    playerId,
-    pickupId,
-    virtualWorld,
-  );
+  return !!samp.callNative("SetPlayerPickupVirtualWorld", "iii", playerId, pickupId, virtualWorld);
 };
 
 export const GetPlayerPickupModel = (playerId: number, pickupId: number) => {
-  return samp.callNative(
-    "GetPlayerPickupModel",
-    "ii",
-    playerId,
-    pickupId,
-  ) as number;
+  return samp.callNative("GetPlayerPickupModel", "ii", playerId, pickupId) as number;
 };
 
 export const GetPlayerPickupType = (playerId: number, pickupId: number) => {
-  return samp.callNative(
-    "GetPlayerPickupType",
-    "ii",
-    playerId,
-    pickupId,
-  ) as number;
+  return samp.callNative("GetPlayerPickupType", "ii", playerId, pickupId) as number;
 };
 
-export const GetPlayerPickupVirtualWorld = (
-  playerId: number,
-  pickupId: number,
-) => {
-  return samp.callNative(
-    "GetPlayerPickupVirtualWorld",
-    "ii",
-    playerId,
-    pickupId,
-  ) as number;
+export const GetPlayerPickupVirtualWorld = (playerId: number, pickupId: number) => {
+  return samp.callNative("GetPlayerPickupVirtualWorld", "ii", playerId, pickupId) as number;
 };

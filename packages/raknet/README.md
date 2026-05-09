@@ -16,13 +16,7 @@ pnpm add @infernus/core @infernus/raknet
 
 ```ts
 import { Player } from "@infernus/core";
-import {
-  BitStream,
-  IPacket,
-  PacketIdList,
-  OnFootSync,
-  BulletSync,
-} from "@infernus/raknet";
+import { BitStream, IPacket, PacketIdList, OnFootSync, BulletSync } from "@infernus/raknet";
 import type { IBulletSync } from "@infernus/raknet";
 
 IPacket(PacketIdList.OnFootSync, ({ playerId, bs, next }) => {

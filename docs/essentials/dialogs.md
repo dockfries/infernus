@@ -34,7 +34,7 @@ PlayerEvent.onCommandText("register", async ({ player, next }) => {
   if (password !== againPassword) {
     player.sendClientMessage(
       "#f00",
-      "The password you entered twice is not the same, please try again!"
+      "The password you entered twice is not the same, please try again!",
     );
   }
 
@@ -51,10 +51,7 @@ PlayerEvent.onCommandText("closeDialog", ({ player, subcommand, next }) => {
   const [playerId] = subcommand;
 
   if (!playerId) {
-    player.sendClientMessage(
-      "#f00",
-      "Please enter the dialog for which player you want to close"
-    );
+    player.sendClientMessage("#f00", "Please enter the dialog for which player you want to close");
     return next();
   }
 

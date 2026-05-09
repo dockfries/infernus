@@ -6,9 +6,7 @@ import { StreamerException } from "core/exceptions";
 
 export class Streamer {
   private constructor() {
-    throw new StreamerException(
-      "This is a static class and cannot be instantiated.",
-    );
+    throw new StreamerException("This is a static class and cannot be instantiated.");
   }
   static getTickRate = s.Streamer_GetTickRate;
   static setTickRate = s.Streamer_SetTickRate;
@@ -20,10 +18,7 @@ export class Streamer {
   }
   static toggleChunkStream = s.Streamer_ToggleChunkStream;
   static isToggleChunkStream = s.Streamer_IsToggleChunkStream;
-  static getChunkTickRate(
-    type: StreamerItemTypes,
-    player: number | Player = -1,
-  ): number {
+  static getChunkTickRate(type: StreamerItemTypes, player: number | Player = -1): number {
     if (player instanceof Player) {
       return s.Streamer_GetChunkTickRate(type, player.id);
     }
@@ -43,10 +38,7 @@ export class Streamer {
   static setChunkSize = s.Streamer_SetChunkSize;
   static getMaxItems = s.Streamer_GetMaxItems;
   static setMaxItems = s.Streamer_SetMaxItems;
-  static getVisibleItems(
-    type: StreamerItemTypes,
-    player: number | Player = -1,
-  ): number {
+  static getVisibleItems(type: StreamerItemTypes, player: number | Player = -1): number {
     if (player instanceof Player) {
       return s.Streamer_GetVisibleItems(type, player.id);
     }
@@ -62,10 +54,7 @@ export class Streamer {
     }
     return s.Streamer_SetVisibleItems(type, items, player);
   }
-  static getRadiusMultiplier(
-    type: StreamerItemTypes,
-    player: number | Player = -1,
-  ) {
+  static getRadiusMultiplier(type: StreamerItemTypes, player: number | Player = -1) {
     if (player instanceof Player) {
       return s.Streamer_GetRadiusMultiplier(type, player.id);
     }
@@ -109,11 +98,7 @@ export class Streamer {
   static isToggleCameraUpdate(player: Player): boolean {
     return s.Streamer_IsToggleCameraUpdate(player.id);
   }
-  static toggleItemUpdate(
-    player: Player,
-    type: StreamerItemTypes,
-    toggle: boolean,
-  ): number {
+  static toggleItemUpdate(player: Player, type: StreamerItemTypes, toggle: boolean): number {
     return s.Streamer_ToggleItemUpdate(player.id, type, toggle);
   }
   static isToggleItemUpdate(player: Player, type: StreamerItemTypes): boolean {
@@ -149,19 +134,10 @@ export class Streamer {
     );
   }
   static getDistanceToItem = s.Streamer_GetDistanceToItem;
-  static toggleItem(
-    player: Player,
-    type: StreamerItemTypes,
-    id: number,
-    toggle: boolean,
-  ): number {
+  static toggleItem(player: Player, type: StreamerItemTypes, id: number, toggle: boolean): number {
     return s.Streamer_ToggleItem(player.id, type, id, toggle);
   }
-  static isToggleItem(
-    player: Player,
-    type: StreamerItemTypes,
-    id: number,
-  ): boolean {
+  static isToggleItem(player: Player, type: StreamerItemTypes, id: number): boolean {
     return s.Streamer_IsToggleItem(player.id, type, id);
   }
   static toggleAllItems(
@@ -172,49 +148,25 @@ export class Streamer {
   ): number {
     return s.Streamer_ToggleAllItems(player.id, type, toggle, exceptions);
   }
-  static getItemInternalID(
-    player: Player,
-    type: StreamerItemTypes,
-    streamerId: number,
-  ): number {
+  static getItemInternalID(player: Player, type: StreamerItemTypes, streamerId: number): number {
     return s.Streamer_GetItemInternalID(player.id, type, streamerId);
   }
-  static getItemStreamerID(
-    player: Player,
-    type: StreamerItemTypes,
-    internalId: number,
-  ): number {
+  static getItemStreamerID(player: Player, type: StreamerItemTypes, internalId: number): number {
     return s.Streamer_GetItemStreamerID(player.id, type, internalId);
   }
-  static isItemVisible(
-    player: Player,
-    type: StreamerItemTypes,
-    id: number,
-  ): boolean {
+  static isItemVisible(player: Player, type: StreamerItemTypes, id: number): boolean {
     return s.Streamer_IsItemVisible(player.id, type, id);
   }
-  static destroyAllVisibleItems(
-    player: Player,
-    type: StreamerItemTypes,
-    serverWide = 1,
-  ): number {
+  static destroyAllVisibleItems(player: Player, type: StreamerItemTypes, serverWide = 1): number {
     return s.Streamer_DestroyAllVisibleItems(player.id, type, serverWide);
   }
-  static countVisibleItems(
-    player: Player,
-    type: StreamerItemTypes,
-    serverWide = 1,
-  ): number {
+  static countVisibleItems(player: Player, type: StreamerItemTypes, serverWide = 1): number {
     return s.Streamer_CountVisibleItems(player.id, type, serverWide);
   }
   static destroyAllItems = s.Streamer_DestroyAllItems;
   static countItems = s.Streamer_CountItems;
   static getNearbyItems = s.Streamer_GetNearbyItems;
-  static getAllVisibleItems(
-    player: Player,
-    type: StreamerItemTypes,
-    maxItems?: number,
-  ) {
+  static getAllVisibleItems(player: Player, type: StreamerItemTypes, maxItems?: number) {
     return s.Streamer_GetAllVisibleItems(player.id, type, maxItems);
   }
   static getItemPos = s.Streamer_GetItemPos;

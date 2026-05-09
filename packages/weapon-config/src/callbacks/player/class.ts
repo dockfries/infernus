@@ -13,10 +13,7 @@ import {
   playerClass,
 } from "../../struct";
 import { debugMessage } from "../../utils/debug";
-import {
-  spawnPlayerInPlace,
-  updatePlayerVirtualWorld,
-} from "../../functions/internal/set";
+import { spawnPlayerInPlace, updatePlayerVirtualWorld } from "../../functions/internal/set";
 import { onPlayerDeathFinished } from "../../functions/internal/event";
 
 PlayerEvent.onRequestClass(({ player, classId, next }) => {
@@ -82,10 +79,7 @@ PlayerEvent.onRequestClass(({ player, classId, next }) => {
 
     forceClassSelection.set(player.id, true);
 
-    orig_playerMethods.setVirtualWorld.call(
-      player,
-      innerWeaponConfig.DEATH_WORLD,
-    );
+    orig_playerMethods.setVirtualWorld.call(player, innerWeaponConfig.DEATH_WORLD);
     spawnPlayerInPlace(player);
     return 0;
   }

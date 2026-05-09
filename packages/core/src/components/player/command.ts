@@ -35,15 +35,9 @@ export interface ICmdOptions {
   run: (ret: CmdBusCallback) => PromisifyCallbackRet;
 }
 
-const strictCmdMap = new Map<
-  string,
-  ReturnType<typeof defineEvent<CmdBusCallback>>
->();
+const strictCmdMap = new Map<string, ReturnType<typeof defineEvent<CmdBusCallback>>>();
 
-const noStrictCmdMap = new Map<
-  string,
-  ReturnType<typeof defineEvent<CmdBusCallback>>
->();
+const noStrictCmdMap = new Map<string, ReturnType<typeof defineEvent<CmdBusCallback>>>();
 
 const commandPattern = /[^/\s]+/gi;
 
@@ -156,10 +150,7 @@ export const [onCommandError, triggerOnError] = defineEvent({
       hasNoStrict,
       subcommand,
       getSuggestion() {
-        const suggestion = closest(cmdText, [
-          ...strictCmdMap.keys(),
-          ...noStrictCmdMap.keys(),
-        ]);
+        const suggestion = closest(cmdText, [...strictCmdMap.keys(), ...noStrictCmdMap.keys()]);
         const _distance = distance(cmdText, suggestion);
         return { suggestion, distance: _distance };
       },
@@ -252,12 +243,7 @@ onCommandText(({ player, buffer, cmdText, next }) => {
 
   try {
     const received = triggerOnReceived(player, ...triggerParams);
-    if (!received)
-      return triggerOnError(
-        player,
-        CommandErrors.RECEIVED_REJECTED,
-        ...triggerParams,
-      );
+    if (!received) return triggerOnError(player, CommandErrors.RECEIVED_REJECTED, ...triggerParams);
   } catch (err) {
     const isErrorOrObj = err instanceof Error || typeof err !== "object";
     const spreadErr = isErrorOrObj ? { error: err } : err;
@@ -278,14 +264,7 @@ onCommandText(({ player, buffer, cmdText, next }) => {
 
     const [, triggerCommand] = definedCommands;
 
-    const middlewaresRet = triggerCommand(
-      player,
-      mainCmd,
-      subcommand,
-      cmdText,
-      buffer,
-      isStrict,
-    );
+    const middlewaresRet = triggerCommand(player, mainCmd, subcommand, cmdText, buffer, isStrict);
 
     if (!middlewaresRet) {
       return triggerOnError(player, CommandErrors.REJECTED, ...triggerParams);
@@ -303,8 +282,7 @@ onCommandText(({ player, buffer, cmdText, next }) => {
     hasNoStrict,
     subcommand,
   );
-  if (!ret)
-    return triggerOnError(player, CommandErrors.PERFORMED, ...triggerParams);
+  if (!ret) return triggerOnError(player, CommandErrors.PERFORMED, ...triggerParams);
 
   next();
   return true;
@@ -325,23 +303,14 @@ export class CmdBus {
   static caseSensitive = false;
   private constructor() {}
 
-  static on(
-    command: ICmdOptions["command"],
-    run: ICmdOptions["run"],
-  ): () => void;
+  static on(command: ICmdOptions["command"], run: ICmdOptions["run"]): () => void;
   static on(options: ICmdOptions): () => void;
-  static on(
-    commandOrOptions: ICmdOptions | ICmdOptions["command"],
-    run?: ICmdOptions["run"],
-  ) {
+  static on(commandOrOptions: ICmdOptions | ICmdOptions["command"], run?: ICmdOptions["run"]) {
     let caseSensitive = CmdBus.caseSensitive;
     let command: ICmdOptions["command"];
     let cb: ICmdOptions["run"];
 
-    if (
-      typeof commandOrOptions === "string" ||
-      commandOrOptions instanceof Array
-    ) {
+    if (typeof commandOrOptions === "string" || commandOrOptions instanceof Array) {
       command = commandOrOptions;
       cb = run!;
     } else {

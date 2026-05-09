@@ -23,12 +23,7 @@ import {
   ACVehInfo,
   ACVehInfoStruct,
 } from "../struct";
-import {
-  ac_writeCfg,
-  ac_writeNOPCfg,
-  innerACConfig,
-  innerGameModeConfig,
-} from "../config";
+import { ac_writeCfg, ac_writeNOPCfg, innerACConfig, innerGameModeConfig } from "../config";
 import {
   orig_AddPlayerClass,
   orig_AddPlayerClassEx,
@@ -217,44 +212,20 @@ export function ac_CreatePickup(
   return true;
 }
 
-export function ac_CreateDynamicPickup(
-  pickupId: number,
-  modelId: number,
-  type: number,
-) {
-  Streamer.setIntData(
-    StreamerItemTypes.PICKUP,
-    pickupId,
-    E_STREAMER.EXTRA_ID,
-    0,
-  );
+export function ac_CreateDynamicPickup(pickupId: number, modelId: number, type: number) {
+  Streamer.setIntData(StreamerItemTypes.PICKUP, pickupId, E_STREAMER.EXTRA_ID, 0);
   if ((type >= 2 && type <= 5) || type === 15 || type === 22) {
     switch (modelId) {
       case 370: {
-        Streamer.setIntData(
-          StreamerItemTypes.PICKUP,
-          pickupId,
-          E_STREAMER.EXTRA_ID,
-          1,
-        );
+        Streamer.setIntData(StreamerItemTypes.PICKUP, pickupId, E_STREAMER.EXTRA_ID, 1);
         break;
       }
       case 1240: {
-        Streamer.setIntData(
-          StreamerItemTypes.PICKUP,
-          pickupId,
-          E_STREAMER.EXTRA_ID,
-          2,
-        );
+        Streamer.setIntData(StreamerItemTypes.PICKUP, pickupId, E_STREAMER.EXTRA_ID, 2);
         break;
       }
       case 1242: {
-        Streamer.setIntData(
-          StreamerItemTypes.PICKUP,
-          pickupId,
-          E_STREAMER.EXTRA_ID,
-          3,
-        );
+        Streamer.setIntData(StreamerItemTypes.PICKUP, pickupId, E_STREAMER.EXTRA_ID, 3);
         break;
       }
       default:
@@ -295,18 +266,14 @@ export const ac_GetPlayerVersion = setPlayerHook("getVersion", function () {
 
 export function ac_DestroyVehicle(vehicleId: number) {
   const ac_model_veh = Vehicle.getInstance(vehicleId);
-  const ac_model = ac_model_veh
-    ? orig_vehicleMethods.getModel.call(ac_model_veh)
-    : 0;
+  const ac_model = ac_model_veh ? orig_vehicleMethods.getModel.call(ac_model_veh) : 0;
   if (ac_model > 0) {
     const ac_gtc = Date.now() + 2650;
     ACVehInfo.get(vehicleId).acSpawned = false;
     Player.getInstances().forEach((ac_i) => {
-      if (ACInfo.get(ac_i.id).acSet[8] === vehicleId)
-        ACInfo.get(ac_i.id).acSet[8] = -1;
+      if (ACInfo.get(ac_i.id).acSet[8] === vehicleId) ACInfo.get(ac_i.id).acSet[8] = -1;
       if (ACInfo.get(ac_i.id).acVeh === vehicleId) {
-        ACInfo.get(ac_i.id).acSetPosTick = ACInfo.get(ac_i.id).acGtc[10] =
-          ac_gtc;
+        ACInfo.get(ac_i.id).acSetPosTick = ACInfo.get(ac_i.id).acGtc[10] = ac_gtc;
         ACInfo.get(ac_i.id).acLastModel = ac_model;
       }
     });
@@ -377,11 +344,7 @@ export function ac_EnableStuntBonusForPlayer(player: Player, enable = true) {
   return true;
 }
 
-export function ac_ShowPlayerDialog(
-  player: Player,
-  dialogId: number,
-  next = false,
-) {
+export function ac_ShowPlayerDialog(player: Player, dialogId: number, next = false) {
   if (dialogId > 65535) dialogId %= 32768;
   if (next) ACInfo.get(player.id).acNextDialog = dialogId;
   else ACInfo.get(player.id).acDialog = dialogId;
@@ -410,14 +373,12 @@ export function ac_TogglePlayerSpectating(player: Player, toggle = false) {
           ACInfo.get(player.id).acSetWeapon[ac_i] = -1;
           ACInfo.get(player.id).acGiveAmmo[ac_i] = -65535;
         }
-        ACInfo.get(player.id).acForceClass = ACInfo.get(player.id).acUnFrozen =
-          true;
+        ACInfo.get(player.id).acForceClass = ACInfo.get(player.id).acUnFrozen = true;
         ACInfo.get(player.id).acSet[6] = 1;
       }
       ACInfo.get(player.id).acSpawnRes++;
       ACInfo.get(player.id).acSpec = false;
-      ACInfo.get(player.id).acSpawnTick = ACInfo.get(player.id).acNOPCount[9] =
-        0;
+      ACInfo.get(player.id).acSpawnTick = ACInfo.get(player.id).acNOPCount[9] = 0;
       ACInfo.get(player.id).acGtc[12] = Date.now() + 2650;
     }
   } else if (toggle) {
@@ -454,8 +415,7 @@ export function ac_SetPlayerHealth(player: Player, health: number) {
   if (health < 0.0) health = 0.0;
   if (!orig_playerMethods.setHealth.call(player, health)) return false;
   ACInfo.get(player.id).acNOPCount[3] = 0;
-  ACInfo.get(player.id).acSet[1] =
-    health < 0 ? Math.ceil(health) : Math.floor(health);
+  ACInfo.get(player.id).acSet[1] = health < 0 ? Math.ceil(health) : Math.floor(health);
   if (ACInfo.get(player.id).acSet[1] < 0) ACInfo.get(player.id).acSet[1] = 0;
   ACInfo.get(player.id).acGtc[2] = Date.now() + 2650;
   return true;
@@ -465,18 +425,13 @@ export function ac_SetPlayerArmour(player: Player, armour: number) {
   if (armour < 0.0) armour = 0.0;
   if (!orig_playerMethods.setArmour.call(player, armour)) return false;
   ACInfo.get(player.id).acNOPCount[5] = 0;
-  ACInfo.get(player.id).acSet[2] =
-    armour < 0 ? Math.ceil(armour) : Math.floor(armour);
+  ACInfo.get(player.id).acSet[2] = armour < 0 ? Math.ceil(armour) : Math.floor(armour);
   if (ACInfo.get(player.id).acSet[2] < 0) ACInfo.get(player.id).acSet[2] = 0;
   ACInfo.get(player.id).acGtc[4] = Date.now() + 2650;
   return true;
 }
 
-export function ac_GivePlayerWeapon(
-  player: Player,
-  weaponId: number,
-  ammo: number,
-) {
+export function ac_GivePlayerWeapon(player: Player, weaponId: number, ammo: number) {
   if (ac_IsValidWeapon(weaponId)) {
     const ac_s = ac_wSlot[weaponId];
     if (ammo < -32768) ammo = -32768;
@@ -501,25 +456,17 @@ export function ac_GivePlayerWeapon(
         }
         ACInfo.get(player.id).acGiveAmmo[ac_s] = ac_tmp;
       } else ACInfo.get(player.id).acGiveAmmo[ac_s] = ammo;
-      ACInfo.get(player.id).acCheatCount[12] = ACInfo.get(
-        player.id,
-      ).acReloadTick = 0;
+      ACInfo.get(player.id).acCheatCount[12] = ACInfo.get(player.id).acReloadTick = 0;
     } else ACInfo.get(player.id).acGiveAmmo[ac_s] = -65535;
-    ACInfo.get(player.id).acNOPCount[0] = ACInfo.get(player.id).acNOPCount[1] =
-      0;
+    ACInfo.get(player.id).acNOPCount[0] = ACInfo.get(player.id).acNOPCount[1] = 0;
     ACInfo.get(player.id).acSetWeapon[ac_s] = weaponId;
-    ACInfo.get(player.id).acGtcSetWeapon[ac_s] = ACInfo.get(
-      player.id,
-    ).acGtcGiveAmmo[ac_s] = Date.now() + 2850;
+    ACInfo.get(player.id).acGtcSetWeapon[ac_s] = ACInfo.get(player.id).acGtcGiveAmmo[ac_s] =
+      Date.now() + 2850;
   }
   return orig_playerMethods.giveWeapon.call(player, weaponId, ammo);
 }
 
-export function ac_SetPlayerAmmo(
-  player: Player,
-  weaponId: number,
-  ammo: number,
-) {
+export function ac_SetPlayerAmmo(player: Player, weaponId: number, ammo: number) {
   if (ac_IsValidWeapon(weaponId)) {
     const ac_s = ac_wSlot[weaponId];
     if (ammo < -32768) ammo = -32768;
@@ -541,8 +488,7 @@ export function ac_SetPlayerAmmo(
 export function ac_ResetPlayerWeapons(player: Player) {
   if (!orig_playerMethods.resetWeapons.call(player)) return false;
   for (let ac_i = 12; ac_i >= 0; --ac_i) {
-    ACInfo.get(player.id).acWeapon[ac_i] = ACInfo.get(player.id).acAmmo[ac_i] =
-      0;
+    ACInfo.get(player.id).acWeapon[ac_i] = ACInfo.get(player.id).acAmmo[ac_i] = 0;
     ACInfo.get(player.id).acSetWeapon[ac_i] = -1;
     ACInfo.get(player.id).acGiveAmmo[ac_i] = -65535;
   }
@@ -575,12 +521,10 @@ export function ac_SetPlayerSpecialAction(player: Player, actionId: number) {
     (actionId >= 24 && actionId <= 25) ||
     ((actionId === SpecialActionsEnum.USECELLPHONE ||
       actionId === 68 ||
-      (actionId >= SpecialActionsEnum.DANCE1 &&
-        actionId <= SpecialActionsEnum.DANCE4)) &&
+      (actionId >= SpecialActionsEnum.DANCE1 && actionId <= SpecialActionsEnum.DANCE4)) &&
       ACInfo.get(player.id).acVeh === 0) ||
     ((actionId === SpecialActionsEnum.HANDSUP ||
-      (actionId >= SpecialActionsEnum.DRINK_BEER &&
-        actionId <= SpecialActionsEnum.DRINK_SPRUNK)) &&
+      (actionId >= SpecialActionsEnum.DRINK_BEER && actionId <= SpecialActionsEnum.DRINK_SPRUNK)) &&
       ACInfo.get(player.id).acSpecAct !== SpecialActionsEnum.ENTER_VEHICLE &&
       ACInfo.get(player.id).acVeh === 0) ||
     (actionId === SpecialActionsEnum.STOPUSECELLPHONE &&
@@ -593,8 +537,7 @@ export function ac_SetPlayerSpecialAction(player: Player, actionId: number) {
     ACInfo.get(player.id).acNOPCount[6] = 0;
     if (
       ((actionId === 68 ||
-        (actionId >= SpecialActionsEnum.HANDSUP &&
-          actionId <= SpecialActionsEnum.USECELLPHONE) ||
+        (actionId >= SpecialActionsEnum.HANDSUP && actionId <= SpecialActionsEnum.USECELLPHONE) ||
         (actionId >= SpecialActionsEnum.DRINK_BEER && actionId <= 25)) &&
         ACInfo.get(player.id).acSpecAct >= SpecialActionsEnum.DANCE1 &&
         ACInfo.get(player.id).acSpecAct <= SpecialActionsEnum.DANCE4) ||
@@ -602,8 +545,7 @@ export function ac_SetPlayerSpecialAction(player: Player, actionId: number) {
         (actionId >= SpecialActionsEnum.DRINK_BEER && actionId <= 25)) &&
         ACInfo.get(player.id).acSpecAct >= SpecialActionsEnum.USEJETPACK &&
         ACInfo.get(player.id).acSpecAct <= SpecialActionsEnum.EXIT_VEHICLE) ||
-      ((actionId === 68 ||
-        (actionId >= SpecialActionsEnum.DRINK_BEER && actionId <= 25)) &&
+      ((actionId === 68 || (actionId >= SpecialActionsEnum.DRINK_BEER && actionId <= 25)) &&
         ACInfo.get(player.id).acSpecAct === SpecialActionsEnum.USECELLPHONE) ||
       (actionId >= SpecialActionsEnum.DRINK_BEER &&
         actionId <= 25 &&
@@ -614,28 +556,22 @@ export function ac_SetPlayerSpecialAction(player: Player, actionId: number) {
         actionId <= 25 &&
         ACInfo.get(player.id).acSpecAct >= SpecialActionsEnum.DRINK_BEER &&
         ACInfo.get(player.id).acSpecAct <= SpecialActionsEnum.DRINK_SPRUNK) ||
-      ((actionId === SpecialActionsEnum.NONE ||
-        (actionId >= 24 && actionId <= 25)) &&
+      ((actionId === SpecialActionsEnum.NONE || (actionId >= 24 && actionId <= 25)) &&
         ACInfo.get(player.id).acVeh > 0) ||
       (actionId === SpecialActionsEnum.USEJETPACK &&
-        ((ACInfo.get(player.id).acAnim >= 1128 &&
-          ACInfo.get(player.id).acAnim <= 1134) ||
-          (ACInfo.get(player.id).acAnim >= 1538 &&
-            ACInfo.get(player.id).acAnim <= 1544))) ||
+        ((ACInfo.get(player.id).acAnim >= 1128 && ACInfo.get(player.id).acAnim <= 1134) ||
+          (ACInfo.get(player.id).acAnim >= 1538 && ACInfo.get(player.id).acAnim <= 1544))) ||
       (actionId === 25 && ACInfo.get(player.id).acSpecAct === 24)
     )
       ACInfo.get(player.id).acNextSpecAct = actionId;
     else {
-      if (actionId === SpecialActionsEnum.STOPUSECELLPHONE)
-        actionId = SpecialActionsEnum.NONE;
+      if (actionId === SpecialActionsEnum.STOPUSECELLPHONE) actionId = SpecialActionsEnum.NONE;
       else if (
         actionId === SpecialActionsEnum.USEJETPACK ||
         actionId === SpecialActionsEnum.HANDSUP ||
         actionId === 68 ||
-        (actionId >= SpecialActionsEnum.DANCE1 &&
-          actionId <= SpecialActionsEnum.DANCE4) ||
-        (actionId >= SpecialActionsEnum.DRINK_BEER &&
-          actionId <= SpecialActionsEnum.DRINK_SPRUNK)
+        (actionId >= SpecialActionsEnum.DANCE1 && actionId <= SpecialActionsEnum.DANCE4) ||
+        (actionId >= SpecialActionsEnum.DRINK_BEER && actionId <= SpecialActionsEnum.DRINK_SPRUNK)
       )
         ACInfo.get(player.id).acNextSpecAct = ACInfo.get(player.id).acSpecAct;
       else ACInfo.get(player.id).acNextSpecAct = -1;
@@ -656,8 +592,7 @@ export function ac_SetPlayerInterior(player: Player, interiorId: number) {
   if (!orig_playerMethods.setInterior.call(player, interiorId)) return false;
   ACInfo.get(player.id).acNOPCount[2] = 0;
   ACInfo.get(player.id).acSet[0] = interiorId;
-  ACInfo.get(player.id).acGtc[16] = ACInfo.get(player.id).acGtc[0] =
-    Date.now() + 2850;
+  ACInfo.get(player.id).acGtc[16] = ACInfo.get(player.id).acGtc[0] = Date.now() + 2850;
   return true;
 }
 
@@ -669,12 +604,10 @@ export function ac_SetPlayerPos(
   mode: number,
 ) {
   if (mode === 2) {
-    if (!orig_playerMethods.setPosFindZ.call(player, ac_x, ac_y, ac_z))
-      return false;
+    if (!orig_playerMethods.setPosFindZ.call(player, ac_x, ac_y, ac_z)) return false;
     ACInfo.get(player.id).acTpToZ = true;
   } else {
-    if (mode === 1 && !orig_playerMethods.setPos.call(player, ac_x, ac_y, ac_z))
-      return false;
+    if (mode === 1 && !orig_playerMethods.setPos.call(player, ac_x, ac_y, ac_z)) return false;
     ACInfo.get(player.id).acTpToZ = false;
   }
   ACInfo.get(player.id).acSet[7] = mode;
@@ -682,32 +615,20 @@ export function ac_SetPlayerPos(
   ACInfo.get(player.id).acSetPosX = ac_x;
   ACInfo.get(player.id).acSetPosY = ac_y;
   ACInfo.get(player.id).acSetPosZ = ac_z;
-  ACInfo.get(player.id).acSetPosTick = ACInfo.get(player.id).acGtc[10] =
-    Date.now() + 3850;
+  ACInfo.get(player.id).acSetPosTick = ACInfo.get(player.id).acGtc[10] = Date.now() + 3850;
   return true;
 }
 
-export function ac_SetPlayerVelocity(
-  player: Player,
-  ac_X: number,
-  ac_Y: number,
-  ac_Z: number,
-) {
-  if (!orig_playerMethods.setVelocity.call(player, ac_X, ac_Y, ac_Z))
-    return false;
+export function ac_SetPlayerVelocity(player: Player, ac_X: number, ac_Y: number, ac_Z: number) {
+  if (!orig_playerMethods.setVelocity.call(player, ac_X, ac_Y, ac_Z)) return false;
   ACInfo.get(player.id).acSpeed = ac_GetSpeed(ac_X, ac_Y, ac_Z);
   ACInfo.get(player.id).acGtc[9] = Date.now() + 1650;
   return true;
 }
 
-export function ac_PutPlayerInVehicle(
-  vehicle: Vehicle,
-  player: Player,
-  seatId: number,
-) {
+export function ac_PutPlayerInVehicle(vehicle: Vehicle, player: Player, seatId: number) {
   const ac_model = vehicle.getModel();
-  if (!orig_playerMethods.isConnected.call(player) || ac_model <= 0)
-    return false;
+  if (!orig_playerMethods.isConnected.call(player) || ac_model <= 0) return false;
   if (
     !(
       ACInfo.get(player.id).acSpecAct >= SpecialActionsEnum.DANCE1 &&
@@ -730,11 +651,7 @@ export function ac_PutPlayerInVehicle(
       ACInfo.get(player.id).acSet[4] = -1;
     else ACInfo.get(player.id).acSet[4] = seatId;
     ACInfo.get(player.id).acGtc[1] = Date.now() + 2650;
-    const {
-      x: acPutPosX,
-      y: acPutPosY,
-      z: acPutPosZ,
-    } = orig_vehicleMethods.getPos.call(vehicle);
+    const { x: acPutPosX, y: acPutPosY, z: acPutPosZ } = orig_vehicleMethods.getPos.call(vehicle);
     ACInfo.get(player.id).acPutPosX = acPutPosX;
     ACInfo.get(player.id).acPutPosY = acPutPosY;
     ACInfo.get(player.id).acPutPosZ = acPutPosZ;
@@ -742,18 +659,14 @@ export function ac_PutPlayerInVehicle(
       orig_vehicleMethods.isStreamedIn.call(vehicle, player) &&
       ACVehInfo.get(vehicle.id).acDriver === InvalidEnum.PLAYER_ID
     ) {
-      ACVehInfo.get(vehicle.id).acZAngle =
-        orig_vehicleMethods.getZAngle.call(vehicle).angle;
+      ACVehInfo.get(vehicle.id).acZAngle = orig_vehicleMethods.getZAngle.call(vehicle).angle;
       orig_vehicleMethods.setPos.call(
         vehicle,
         ACInfo.get(player.id).acPutPosX,
         ACInfo.get(player.id).acPutPosY,
         ACInfo.get(player.id).acPutPosZ,
       );
-      orig_vehicleMethods.setZAngle.call(
-        vehicle,
-        ACVehInfo.get(vehicle.id).acZAngle,
-      );
+      orig_vehicleMethods.setZAngle.call(vehicle, ACVehInfo.get(vehicle.id).acZAngle);
     }
     orig_vehicleMethods.putPlayerIn.call(vehicle, player, seatId);
   }
@@ -771,18 +684,12 @@ export function ac_RemovePlayerFromVehicle(player: Player) {
   return true;
 }
 
-export function ac_SetVehiclePos(
-  vehicle: Vehicle,
-  ac_x: number,
-  ac_y: number,
-  ac_z: number,
-) {
+export function ac_SetVehiclePos(vehicle: Vehicle, ac_x: number, ac_y: number, ac_z: number) {
   if (!orig_vehicleMethods.setPos.call(vehicle, ac_x, ac_y, ac_z)) return false;
   const ac_driver = ACVehInfo.get(vehicle.id).acDriver;
   if (
     ac_driver !== InvalidEnum.PLAYER_ID &&
-    (ACInfo.get(ac_driver).acSet[7] === -1 ||
-      ACInfo.get(ac_driver).acSet[7] === 3) &&
+    (ACInfo.get(ac_driver).acSet[7] === -1 || ACInfo.get(ac_driver).acSet[7] === 3) &&
     ACInfo.get(ac_driver).acSet[8] === -1
   )
     ac_SetPlayerPos(Player.getInstance(ac_driver)!, ac_x, ac_y, ac_z, 3);
@@ -802,15 +709,8 @@ export function ac_SetVehicleVelocity(
   angular = false,
 ) {
   let ac_ret;
-  if (!angular)
-    ac_ret = orig_vehicleMethods.setVelocity.call(vehicle, ac_X, ac_Y, ac_Z);
-  else
-    ac_ret = orig_vehicleMethods.setAngularVelocity.call(
-      vehicle,
-      ac_X,
-      ac_Y,
-      ac_Z,
-    );
+  if (!angular) ac_ret = orig_vehicleMethods.setVelocity.call(vehicle, ac_X, ac_Y, ac_Z);
+  else ac_ret = orig_vehicleMethods.setAngularVelocity.call(vehicle, ac_X, ac_Y, ac_Z);
   if (ac_ret) {
     const ac_driver = ACVehInfo.get(vehicle.id).acDriver;
     if (ac_driver !== InvalidEnum.PLAYER_ID) {
@@ -827,8 +727,7 @@ export function ac_SetVehicleVelocity(
 
 export function ac_LinkVehicleToInterior(vehicle: Vehicle, interiorId: number) {
   if (!(interiorId >= 0 && interiorId <= 255)) interiorId %= 256;
-  if (!orig_vehicleMethods.linkToInterior.call(vehicle, interiorId))
-    return false;
+  if (!orig_vehicleMethods.linkToInterior.call(vehicle, interiorId)) return false;
   ACVehInfo.get(vehicle.id).acInt = interiorId;
   return true;
 }
@@ -838,11 +737,7 @@ export function ac_ChangeVehiclePaintjob(vehicle: Vehicle, paintjobId: number) {
   return orig_vehicleMethods.changePaintjob.call(vehicle, paintjobId);
 }
 
-export function ac_SetVehicleHealth(
-  vehicle: Vehicle,
-  health: number,
-  repair = false,
-) {
+export function ac_SetVehicleHealth(vehicle: Vehicle, health: number, repair = false) {
   if (repair) {
     if (!orig_vehicleMethods.repair.call(vehicle)) return false;
     ACVehInfo.get(vehicle.id).acPanels =
@@ -857,8 +752,7 @@ export function ac_SetVehicleHealth(
   const ac_driver = ACVehInfo.get(vehicle.id).acDriver;
   if (
     ac_driver !== InvalidEnum.PLAYER_ID &&
-    (ACInfo.get(ac_driver).acSet[7] === -1 ||
-      ACInfo.get(ac_driver).acSet[7] === 3) &&
+    (ACInfo.get(ac_driver).acSet[7] === -1 || ACInfo.get(ac_driver).acSet[7] === 3) &&
     ACInfo.get(ac_driver).acSet[8] === -1
   ) {
     ACInfo.get(ac_driver).acNOPCount[4] = 0;
@@ -918,14 +812,7 @@ export function ac_SetVehicleParamsForPlayer(
   objective: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
   doorsLocked: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
 ) {
-  if (
-    !orig_vehicleMethods.setParamsForPlayer.call(
-      vehicle,
-      player,
-      objective,
-      doorsLocked,
-    )
-  )
+  if (!orig_vehicleMethods.setParamsForPlayer.call(vehicle, player, objective, doorsLocked))
     return false;
   ACVehInfo.get(vehicle.id).acLocked![player.id] = doorsLocked;
   return true;
@@ -965,12 +852,7 @@ export function ac_SetVehicleToRespawn(vehicle: Vehicle) {
   return orig_vehicleMethods.setRespawn.call(vehicle);
 }
 
-export function ac_SetPickupPos(
-  pickupId: number,
-  ac_X: number,
-  ac_Y: number,
-  ac_Z: number,
-) {
+export function ac_SetPickupPos(pickupId: number, ac_X: number, ac_Y: number, ac_Z: number) {
   ACPickInfo.get(pickupId).acPosX = ac_X;
   ACPickInfo.get(pickupId).acPosY = ac_Y;
   ACPickInfo.get(pickupId).acPosZ = ac_Z;
@@ -1031,11 +913,9 @@ export function ac_EnableAntiCheat(code: number, enable = true) {
     if (enable) {
       if (!ac_ACAllow[code]) {
         if (!innerACConfig.AC_USE_QUERY) {
-          innerGameModeConfig.ac_QueryEnable =
-            GameMode.getConsoleVarAsBool("enable_query");
+          innerGameModeConfig.ac_QueryEnable = GameMode.getConsoleVarAsBool("enable_query");
         }
-        innerGameModeConfig.ac_RconEnable =
-          GameMode.getConsoleVarAsBool("rcon.enable");
+        innerGameModeConfig.ac_RconEnable = GameMode.getConsoleVarAsBool("rcon.enable");
       }
       if (!innerACConfig.AC_USE_QUERY) {
         GameMode.sendRconCommand("enable_query 0");
@@ -1043,13 +923,9 @@ export function ac_EnableAntiCheat(code: number, enable = true) {
       GameMode.sendRconCommand("rcon.enable 0");
     } else {
       if (!innerACConfig.AC_USE_QUERY) {
-        GameMode.sendRconCommand(
-          `enable_query ${innerGameModeConfig.ac_QueryEnable}`,
-        );
+        GameMode.sendRconCommand(`enable_query ${innerGameModeConfig.ac_QueryEnable}`);
       }
-      GameMode.sendRconCommand(
-        `rcon.enable ${innerGameModeConfig.ac_RconEnable}`,
-      );
+      GameMode.sendRconCommand(`rcon.enable ${innerGameModeConfig.ac_RconEnable}`);
     }
   }
   ac_ACAllow[code] = enable;
@@ -1066,9 +942,7 @@ export function ac_EnableAntiCheat(code: number, enable = true) {
           break;
         }
         case 10: {
-          ACInfo.get(ac_i.id).acCheatCount[18] = ACInfo.get(
-            ac_i.id,
-          ).acCheatCount[14] = 0;
+          ACInfo.get(ac_i.id).acCheatCount[18] = ACInfo.get(ac_i.id).acCheatCount[14] = 0;
           break;
         }
         case 15: {
@@ -1096,15 +970,11 @@ export function ac_EnableAntiCheat(code: number, enable = true) {
           break;
         }
         case 26: {
-          ACInfo.get(ac_i.id).acCheatCount[12] = ACInfo.get(
-            ac_i.id,
-          ).acCheatCount[8] = 0;
+          ACInfo.get(ac_i.id).acCheatCount[12] = ACInfo.get(ac_i.id).acCheatCount[8] = 0;
           break;
         }
         case 29: {
-          ACInfo.get(ac_i.id).acCheatCount[11] = ACInfo.get(
-            ac_i.id,
-          ).acCheatCount[6] = 0;
+          ACInfo.get(ac_i.id).acCheatCount[11] = ACInfo.get(ac_i.id).acCheatCount[6] = 0;
           break;
         }
         case 30: {
@@ -1130,10 +1000,7 @@ export function ac_EnableAntiCheat(code: number, enable = true) {
       ACInfo.get(ac_i.id).acACAllow[code] = ac_ACAllow[code];
     });
   }
-  if (
-    innerACConfig.AC_USE_CONFIG_FILES &&
-    innerACConfig.AUTOSAVE_SETTINGS_IN_CONFIG
-  ) {
+  if (innerACConfig.AC_USE_CONFIG_FILES && innerACConfig.AUTOSAVE_SETTINGS_IN_CONFIG) {
     ac_writeCfg();
   }
   return true;
@@ -1147,20 +1014,13 @@ export function ac_EnableAntiNOP(nopCode: number, enable = true) {
     ACInfo.get(ac_i.id).acNOPAllow[nopCode] = ac_NOPAllow[nopCode];
   });
 
-  if (
-    innerACConfig.AC_USE_CONFIG_FILES &&
-    innerACConfig.AUTOSAVE_SETTINGS_IN_CONFIG
-  ) {
+  if (innerACConfig.AC_USE_CONFIG_FILES && innerACConfig.AUTOSAVE_SETTINGS_IN_CONFIG) {
     ac_writeNOPCfg();
   }
   return true;
 }
 
-export function ac_EnableAntiCheatForPlayer(
-  player: Player,
-  code: number,
-  enable = true,
-) {
+export function ac_EnableAntiCheatForPlayer(player: Player, code: number, enable = true) {
   if (!(code >= 0 && code < ac_ACAllow.length)) return -1;
   ACInfo.get(player.id).acACAllow[code] = enable;
   if (enable) {
@@ -1172,9 +1032,7 @@ export function ac_EnableAntiCheatForPlayer(
         ACInfo.get(player.id).acCheatCount[15] = 0;
         break;
       case 10:
-        ACInfo.get(player.id).acCheatCount[18] = ACInfo.get(
-          player.id,
-        ).acCheatCount[14] = 0;
+        ACInfo.get(player.id).acCheatCount[18] = ACInfo.get(player.id).acCheatCount[14] = 0;
         break;
       case 15: {
         if (innerACConfig.AC_USE_AMMUNATIONS) {
@@ -1197,14 +1055,10 @@ export function ac_EnableAntiCheatForPlayer(
         }
         break;
       case 26:
-        ACInfo.get(player.id).acCheatCount[12] = ACInfo.get(
-          player.id,
-        ).acCheatCount[8] = 0;
+        ACInfo.get(player.id).acCheatCount[12] = ACInfo.get(player.id).acCheatCount[8] = 0;
         break;
       case 29:
-        ACInfo.get(player.id).acCheatCount[11] = ACInfo.get(
-          player.id,
-        ).acCheatCount[6] = 0;
+        ACInfo.get(player.id).acCheatCount[11] = ACInfo.get(player.id).acCheatCount[6] = 0;
         break;
       case 30:
         ACInfo.get(player.id).acCheatCount[17] = 0;
@@ -1223,11 +1077,7 @@ export function ac_EnableAntiCheatForPlayer(
   return true;
 }
 
-export function ac_EnableAntiNOPForPlayer(
-  player: Player,
-  nopCode: number,
-  enable = true,
-) {
+export function ac_EnableAntiNOPForPlayer(player: Player, nopCode: number, enable = true) {
   if (!(nopCode >= 0 && nopCode < ac_NOPAllow.length)) return -1;
   ACInfo.get(player.id).acNOPAllow[nopCode] = enable;
   return true;
@@ -1242,15 +1092,7 @@ export function acc_AddStaticVehicle(
   color1: string | number,
   color2: string | number,
 ) {
-  const ac_vehId = orig_AddStaticVehicle(
-    modelId,
-    spawnX,
-    spawnY,
-    spawnZ,
-    zAngle,
-    color1,
-    color2,
-  );
+  const ac_vehId = orig_AddStaticVehicle(modelId, spawnX, spawnY, spawnZ, zAngle, color1, color2);
   if (ac_vehId !== InvalidEnum.VEHICLE_ID) {
     ac_AddStaticVehicle(ac_vehId, spawnX, spawnY, spawnZ, zAngle);
   }
@@ -1407,12 +1249,9 @@ export function acc_AddPlayerClassEx(
 
 GameMode.addPlayerClassEx = acc_AddPlayerClassEx;
 
-export const acc_SetSpawnInfo = setPlayerHook(
-  "setSpawnInfo",
-  function (...args) {
-    return ac_SetSpawnInfo(this, ...args);
-  },
-);
+export const acc_SetSpawnInfo = setPlayerHook("setSpawnInfo", function (...args) {
+  return ac_SetSpawnInfo(this, ...args);
+});
 
 export function acc_AddStaticPickup(
   model: number,
@@ -1562,20 +1401,13 @@ export function acc_EnableStuntBonusForAll(enable = true) {
 
 GameMode.enableStuntBonusForAll = acc_EnableStuntBonusForAll;
 
-export const acc_EnableStuntBonusForPlayer = setPlayerHook(
-  "enableStuntBonus",
-  function (...args) {
-    {
-      return ac_EnableStuntBonusForPlayer(this, ...args);
-    }
-  },
-);
+export const acc_EnableStuntBonusForPlayer = setPlayerHook("enableStuntBonus", function (...args) {
+  {
+    return ac_EnableStuntBonusForPlayer(this, ...args);
+  }
+});
 
-export function acc_ShowPlayerDialog(
-  player: Player,
-  id: number,
-  dialog: IDialog,
-) {
+export function acc_ShowPlayerDialog(player: Player, id: number, dialog: IDialog) {
   if (orig_ShowPlayerDialog(player, id, dialog)) {
     return ac_ShowPlayerDialog(player, id, false);
   }
@@ -1584,23 +1416,17 @@ export function acc_ShowPlayerDialog(
 
 Dialog.__inject__.show = acc_ShowPlayerDialog;
 
-export const acc_TogglePlayerControllable = setPlayerHook(
-  "toggleControllable",
-  function (...args) {
-    {
-      return ac_TogglePlayerControllable(this, ...args);
-    }
-  },
-);
+export const acc_TogglePlayerControllable = setPlayerHook("toggleControllable", function (...args) {
+  {
+    return ac_TogglePlayerControllable(this, ...args);
+  }
+});
 
-export const acc_TogglePlayerSpectating = setPlayerHook(
-  "toggleSpectating",
-  function (...args) {
-    {
-      return ac_TogglePlayerSpectating(this, ...args);
-    }
-  },
-);
+export const acc_TogglePlayerSpectating = setPlayerHook("toggleSpectating", function (...args) {
+  {
+    return ac_TogglePlayerSpectating(this, ...args);
+  }
+});
 
 export const acc_SpawnPlayer = setPlayerHook("spawn", function () {
   {
@@ -1608,34 +1434,25 @@ export const acc_SpawnPlayer = setPlayerHook("spawn", function () {
   }
 });
 
-export const acc_SetPlayerHealth = setPlayerHook(
-  "setHealth",
-  function (...args) {
-    {
-      return ac_SetPlayerHealth(this, ...args);
-    }
-  },
-);
+export const acc_SetPlayerHealth = setPlayerHook("setHealth", function (...args) {
+  {
+    return ac_SetPlayerHealth(this, ...args);
+  }
+});
 
-export const acc_SetPlayerArmour = setPlayerHook(
-  "setArmour",
-  function (...args) {
-    {
-      if (!(this.id >= 0 && this.id < LimitsEnum.MAX_PLAYERS)) return false;
-      return ac_SetPlayerArmour(this, ...args);
-    }
-  },
-);
+export const acc_SetPlayerArmour = setPlayerHook("setArmour", function (...args) {
+  {
+    if (!(this.id >= 0 && this.id < LimitsEnum.MAX_PLAYERS)) return false;
+    return ac_SetPlayerArmour(this, ...args);
+  }
+});
 
-export const acc_GivePlayerWeapon = setPlayerHook(
-  "giveWeapon",
-  function (...args) {
-    {
-      if (!(this.id >= 0 && this.id < LimitsEnum.MAX_PLAYERS)) return false;
-      return ac_GivePlayerWeapon(this, ...args);
-    }
-  },
-);
+export const acc_GivePlayerWeapon = setPlayerHook("giveWeapon", function (...args) {
+  {
+    if (!(this.id >= 0 && this.id < LimitsEnum.MAX_PLAYERS)) return false;
+    return ac_GivePlayerWeapon(this, ...args);
+  }
+});
 
 export const acc_SetPlayerAmmo = setPlayerHook("setAmmo", function (...args) {
   {
@@ -1644,23 +1461,17 @@ export const acc_SetPlayerAmmo = setPlayerHook("setAmmo", function (...args) {
   }
 });
 
-export const acc_ResetPlayerWeapons = setPlayerHook(
-  "resetWeapons",
-  function (...args) {
-    {
-      return ac_ResetPlayerWeapons(this, ...args);
-    }
-  },
-);
+export const acc_ResetPlayerWeapons = setPlayerHook("resetWeapons", function (...args) {
+  {
+    return ac_ResetPlayerWeapons(this, ...args);
+  }
+});
 
-export const acc_GivePlayerMoney = setPlayerHook(
-  "giveMoney",
-  function (...args) {
-    {
-      return ac_GivePlayerMoney(this, ...args);
-    }
-  },
-);
+export const acc_GivePlayerMoney = setPlayerHook("giveMoney", function (...args) {
+  {
+    return ac_GivePlayerMoney(this, ...args);
+  }
+});
 
 export const acc_ResetPlayerMoney = setPlayerHook("resetMoney", function () {
   {
@@ -1675,50 +1486,35 @@ export const acc_GetPlayerMoney = setPlayerHook("getMoney", function () {
   }
 });
 
-export const acc_SetPlayerSpecialAction = setPlayerHook(
-  "setSpecialAction",
-  function (...args) {
-    return ac_SetPlayerSpecialAction(this, ...args);
-  },
-);
+export const acc_SetPlayerSpecialAction = setPlayerHook("setSpecialAction", function (...args) {
+  return ac_SetPlayerSpecialAction(this, ...args);
+});
 
-export const acc_PlayerSpectatePlayer = setPlayerHook(
-  "spectatePlayer",
-  function (...args) {
-    if (this.id >= 0 && this.id < LimitsEnum.MAX_PLAYERS) {
-      ac_PlayerSpecPlayerOrVehicle(this);
-    }
-    return orig_playerMethods.spectatePlayer.call(this, ...args);
-  },
-);
+export const acc_PlayerSpectatePlayer = setPlayerHook("spectatePlayer", function (...args) {
+  if (this.id >= 0 && this.id < LimitsEnum.MAX_PLAYERS) {
+    ac_PlayerSpecPlayerOrVehicle(this);
+  }
+  return orig_playerMethods.spectatePlayer.call(this, ...args);
+});
 
-export const acc_PlayerSpectateVehicle = setPlayerHook(
-  "spectateVehicle",
-  function (...args) {
-    if (this.id >= 0 && this.id < LimitsEnum.MAX_PLAYERS) {
-      ac_PlayerSpecPlayerOrVehicle(this);
-    }
-    return orig_playerMethods.spectateVehicle.call(this, ...args);
-  },
-);
+export const acc_PlayerSpectateVehicle = setPlayerHook("spectateVehicle", function (...args) {
+  if (this.id >= 0 && this.id < LimitsEnum.MAX_PLAYERS) {
+    ac_PlayerSpecPlayerOrVehicle(this);
+  }
+  return orig_playerMethods.spectateVehicle.call(this, ...args);
+});
 
-export const acc_SetPlayerInterior = setPlayerHook(
-  "setInterior",
-  function (...args) {
-    return ac_SetPlayerInterior(this, ...args);
-  },
-);
+export const acc_SetPlayerInterior = setPlayerHook("setInterior", function (...args) {
+  return ac_SetPlayerInterior(this, ...args);
+});
 
 export const acc_SetPlayerPos = setPlayerHook("setPos", function (x, y, z) {
   return ac_SetPlayerPos(this, x, y, z || 0, 1);
 });
 
-export const acc_SetPlayerPosFindZ = setPlayerHook(
-  "setPosFindZ",
-  function (x, y, z) {
-    return ac_SetPlayerPos(this, x, y, z || 0, 2);
-  },
-);
+export const acc_SetPlayerPosFindZ = setPlayerHook("setPosFindZ", function (x, y, z) {
+  return ac_SetPlayerPos(this, x, y, z || 0, 2);
+});
 
 export function acc_Streamer_UpdateEx(
   player: Player,
@@ -1731,11 +1527,7 @@ export function acc_Streamer_UpdateEx(
   compensatedTime = -1,
   freezePlayer = true,
 ) {
-  if (
-    player.id >= 0 &&
-    player.id < LimitsEnum.MAX_PLAYERS &&
-    compensatedTime >= 0
-  ) {
+  if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS && compensatedTime >= 0) {
     ac_SetPlayerPos(player, x, y, z, 4);
   }
 
@@ -1754,37 +1546,25 @@ export function acc_Streamer_UpdateEx(
 
 Streamer.updateEx = acc_Streamer_UpdateEx;
 
-export const acc_SetPlayerVelocity = setPlayerHook(
-  "setVelocity",
-  function (...args) {
-    return ac_SetPlayerVelocity(this, ...args);
-  },
-);
+export const acc_SetPlayerVelocity = setPlayerHook("setVelocity", function (...args) {
+  return ac_SetPlayerVelocity(this, ...args);
+});
 
-export const acc_PutPlayerInVehicle = setVehicleHook(
-  "putPlayerIn",
-  function (...args) {
-    return ac_PutPlayerInVehicle(this, ...args);
-  },
-);
+export const acc_PutPlayerInVehicle = setVehicleHook("putPlayerIn", function (...args) {
+  return ac_PutPlayerInVehicle(this, ...args);
+});
 
-export const acc_RemovePlayerFromVehicle = setPlayerHook(
-  "removeFromVehicle",
-  function () {
-    return ac_RemovePlayerFromVehicle(this);
-  },
-);
+export const acc_RemovePlayerFromVehicle = setPlayerHook("removeFromVehicle", function () {
+  return ac_RemovePlayerFromVehicle(this);
+});
 
 export const acc_SetVehiclePos = setVehicleHook("setPos", function (...args) {
   return ac_SetVehiclePos(this, ...args);
 });
 
-export const acc_SetVehicleVelocity = setVehicleHook(
-  "setVelocity",
-  function (...args) {
-    return ac_SetVehicleVelocity(this, ...args, false);
-  },
-);
+export const acc_SetVehicleVelocity = setVehicleHook("setVelocity", function (...args) {
+  return ac_SetVehicleVelocity(this, ...args, false);
+});
 
 export const acc_SetVehicleAngularVelocity = setVehicleHook(
   "setAngularVelocity",
@@ -1793,28 +1573,19 @@ export const acc_SetVehicleAngularVelocity = setVehicleHook(
   },
 );
 
-export const acc_LinkVehicleToInterior = setVehicleHook(
-  "linkToInterior",
-  function (...args) {
-    if (orig_vehicleMethods.getModel.call(this) <= 0) return true;
-    return ac_LinkVehicleToInterior(this, ...args);
-  },
-);
+export const acc_LinkVehicleToInterior = setVehicleHook("linkToInterior", function (...args) {
+  if (orig_vehicleMethods.getModel.call(this) <= 0) return true;
+  return ac_LinkVehicleToInterior(this, ...args);
+});
 
-export const acc_ChangeVehiclePaintjob = setVehicleHook(
-  "changePaintjob",
-  function (paintjobId) {
-    if (!(this.id >= 1 && this.id < LimitsEnum.MAX_VEHICLES)) return true;
-    return ac_ChangeVehiclePaintjob(this, paintjobId);
-  },
-);
+export const acc_ChangeVehiclePaintjob = setVehicleHook("changePaintjob", function (paintjobId) {
+  if (!(this.id >= 1 && this.id < LimitsEnum.MAX_VEHICLES)) return true;
+  return ac_ChangeVehiclePaintjob(this, paintjobId);
+});
 
-export const acc_SetVehicleHealth = setVehicleHook(
-  "setHealth",
-  function (health) {
-    return ac_SetVehicleHealth(this, health, false);
-  },
-);
+export const acc_SetVehicleHealth = setVehicleHook("setHealth", function (health) {
+  return ac_SetVehicleHealth(this, health, false);
+});
 
 export const acc_RepairVehicle = setVehicleHook("repair", function () {
   return ac_SetVehicleHealth(this, 1000.0, true);
@@ -1827,12 +1598,9 @@ export const acc_UpdateVehicleDamageStatus = setVehicleHook(
   },
 );
 
-export const acc_SetVehicleParamsEx = setVehicleHook(
-  "setParamsEx",
-  function (...args) {
-    return ac_SetVehicleParamsEx(this, ...args);
-  },
-);
+export const acc_SetVehicleParamsEx = setVehicleHook("setParamsEx", function (...args) {
+  return ac_SetVehicleParamsEx(this, ...args);
+});
 
 export const acc_SetVehicleParamsForPlayer = setVehicleHook(
   "setParamsForPlayer",
@@ -1841,21 +1609,12 @@ export const acc_SetVehicleParamsForPlayer = setVehicleHook(
   },
 );
 
-export const acc_SetVehicleToRespawn = setVehicleHook(
-  "setRespawn",
-  function () {
-    if (!(this.id >= 1 && this.id < LimitsEnum.MAX_VEHICLES)) return false;
-    return ac_SetVehicleToRespawn(this);
-  },
-);
+export const acc_SetVehicleToRespawn = setVehicleHook("setRespawn", function () {
+  if (!(this.id >= 1 && this.id < LimitsEnum.MAX_VEHICLES)) return false;
+  return ac_SetVehicleToRespawn(this);
+});
 
-export function acc_SetPickupPos(
-  pickupId: number,
-  x: number,
-  y: number,
-  z: number,
-  update = true,
-) {
+export function acc_SetPickupPos(pickupId: number, x: number, y: number, z: number, update = true) {
   if (!orig_SetPickupPos(pickupId, x, y, z, update)) return false;
   ac_SetPickupPos(pickupId, x, y, z);
   return true;
@@ -1863,11 +1622,7 @@ export function acc_SetPickupPos(
 
 Pickup.__inject__.setPos = acc_SetPickupPos;
 
-export function acc_SetPickupModel(
-  pickupId: number,
-  model: number,
-  update = true,
-) {
+export function acc_SetPickupModel(pickupId: number, model: number, update = true) {
   if (!orig_SetPickupModel(pickupId, model, update)) return false;
   if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
     ac_SetPickupModelOrType(pickupId, false, model, 0);
@@ -1877,11 +1632,7 @@ export function acc_SetPickupModel(
 
 Pickup.__inject__.setModel = acc_SetPickupModel;
 
-export function acc_SetPickupType(
-  pickupId: number,
-  type: number,
-  update = true,
-) {
+export function acc_SetPickupType(pickupId: number, type: number, update = true) {
   if (!orig_SetPickupType(pickupId, type, update)) return false;
   if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
     ac_SetPickupModelOrType(pickupId, true, 0, type);

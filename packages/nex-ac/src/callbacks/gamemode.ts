@@ -8,12 +8,7 @@ import {
   ACPickInfo,
   ACVehInfo,
 } from "../struct";
-import {
-  innerGameModeConfig,
-  innerACConfig,
-  ac_LoadCfg,
-  ac_LoadNOPCfg,
-} from "../config";
+import { innerGameModeConfig, innerACConfig, ac_LoadCfg, ac_LoadNOPCfg } from "../config";
 import { ac_KickWithCode, triggerCheatWarning } from "./trigger";
 import { ac_ACAllow, ac_sInfo, NEX_AC_VERSION } from "../constants";
 import { $t } from "../lang";
@@ -36,26 +31,20 @@ GameMode.onInit(({ next }) => {
     });
     ac_LoadNOPCfg().then((res) => {
       if (!res) {
-        console.log(
-          $t("CFG_OPENING_ERROR", [innerACConfig.AC_NOP_CONFIG_FILE]),
-        );
+        console.log($t("CFG_OPENING_ERROR", [innerACConfig.AC_NOP_CONFIG_FILE]));
       }
     });
   }
   if (ac_ACAllow[42]) {
     if (!innerACConfig.AC_USE_QUERY) {
-      innerGameModeConfig.ac_QueryEnable =
-        GameMode.getConsoleVarAsBool("enable_query");
+      innerGameModeConfig.ac_QueryEnable = GameMode.getConsoleVarAsBool("enable_query");
       GameMode.sendRconCommand("enable_query 0");
     }
 
-    innerGameModeConfig.ac_RconEnable =
-      GameMode.getConsoleVarAsBool("rcon.enable");
+    innerGameModeConfig.ac_RconEnable = GameMode.getConsoleVarAsBool("rcon.enable");
     GameMode.sendRconCommand("rcon.enable 0");
   }
-  innerGameModeConfig.ac_LagCompMode = !!GameMode.getConsoleVarAsInt(
-    "game.lag_compensation_mode",
-  );
+  innerGameModeConfig.ac_LagCompMode = !!GameMode.getConsoleVarAsInt("game.lag_compensation_mode");
   if (innerACConfig.AC_USE_NPC) {
     const ac_strTmp = GameMode.getConsoleVarAsString("network.bind").consoleVar;
     innerGameModeConfig.ac_BindAddr = ac_IpToInt(ac_strTmp);
@@ -108,14 +97,7 @@ GameMode.onRconLoginAttempt(({ ip, password, success, next }) => {
       ac_ipTables.delete(ac_currentIp);
       ac_KickWithCode(InvalidEnum.PLAYER_ID, ip, 1, 42, code2);
     } else {
-      triggerCheatWarning(
-        InvalidEnum.PLAYER_ID,
-        ip,
-        1,
-        42,
-        code2,
-        updatedAttempts,
-      );
+      triggerCheatWarning(InvalidEnum.PLAYER_ID, ip, 1, 42, code2, updatedAttempts);
     }
   }
   return next();

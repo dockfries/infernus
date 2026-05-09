@@ -87,76 +87,70 @@ export function createTextDrawCommands() {
 
   const txtSpriteTest: TextDraw[] = [];
 
-  const spritetest = PlayerEvent.onCommandText(
-    "spritetest",
-    ({ player, next }) => {
-      txtSpriteTest[0] = new TextDraw({
-        x: 100.0,
-        y: 100.0,
-        text: "ld_grav:timer",
-      }); // Text is txdfile:texture
-      txtSpriteTest[0].create();
-      txtSpriteTest[0].setFont(4); // Font ID 4 is the sprite draw font
-      txtSpriteTest[0].setColor(0xffffffff);
-      txtSpriteTest[0].setTextSize(100.0, 100.0); // Text size is the Width:Height
-      txtSpriteTest[0].show(player);
+  const spritetest = PlayerEvent.onCommandText("spritetest", ({ player, next }) => {
+    txtSpriteTest[0] = new TextDraw({
+      x: 100.0,
+      y: 100.0,
+      text: "ld_grav:timer",
+    }); // Text is txdfile:texture
+    txtSpriteTest[0].create();
+    txtSpriteTest[0].setFont(4); // Font ID 4 is the sprite draw font
+    txtSpriteTest[0].setColor(0xffffffff);
+    txtSpriteTest[0].setTextSize(100.0, 100.0); // Text size is the Width:Height
+    txtSpriteTest[0].show(player);
 
-      txtSpriteTest[1] = new TextDraw({
-        x: 200.0,
-        y: 100.0,
-        text: "ld_grav:bee2",
-      }); // Text is txdfile:texture
-      txtSpriteTest[1].create();
-      txtSpriteTest[1].setFont(4); // Font ID 4 is the sprite draw font
-      txtSpriteTest[1].setColor(0xffffffff);
-      txtSpriteTest[1].setTextSize(100.0, 100.0); // Text size is the Width:Height
-      txtSpriteTest[1].show(player);
+    txtSpriteTest[1] = new TextDraw({
+      x: 200.0,
+      y: 100.0,
+      text: "ld_grav:bee2",
+    }); // Text is txdfile:texture
+    txtSpriteTest[1].create();
+    txtSpriteTest[1].setFont(4); // Font ID 4 is the sprite draw font
+    txtSpriteTest[1].setColor(0xffffffff);
+    txtSpriteTest[1].setTextSize(100.0, 100.0); // Text size is the Width:Height
+    txtSpriteTest[1].show(player);
 
-      txtSpriteTest[2] = new TextDraw({
-        x: 100.0,
-        y: 200.0,
-        text: "ld_slot:r_69",
-      }); // Text is txdfile:texture
-      txtSpriteTest[2].create();
-      txtSpriteTest[2].setFont(4); // Font ID 4 is the sprite draw font
-      txtSpriteTest[2].setColor(0xffffffff);
-      txtSpriteTest[2].setTextSize(100.0, 100.0); // Text size is the Width:Height
-      txtSpriteTest[2].show(player);
+    txtSpriteTest[2] = new TextDraw({
+      x: 100.0,
+      y: 200.0,
+      text: "ld_slot:r_69",
+    }); // Text is txdfile:texture
+    txtSpriteTest[2].create();
+    txtSpriteTest[2].setFont(4); // Font ID 4 is the sprite draw font
+    txtSpriteTest[2].setColor(0xffffffff);
+    txtSpriteTest[2].setTextSize(100.0, 100.0); // Text size is the Width:Height
+    txtSpriteTest[2].show(player);
 
-      txtSpriteTest[3] = new TextDraw({
-        x: 200.0,
-        y: 200.0,
-        text: "ld_slot:cherry",
-      }); // Text is txdfile:texture
-      txtSpriteTest[3].create();
-      txtSpriteTest[3].setFont(4); // Font ID 4 is the sprite draw font
-      txtSpriteTest[3].setColor(0xffffffff);
-      txtSpriteTest[3].setTextSize(100.0, 100.0); // Text size is the Width:Height
-      txtSpriteTest[3].show(player);
+    txtSpriteTest[3] = new TextDraw({
+      x: 200.0,
+      y: 200.0,
+      text: "ld_slot:cherry",
+    }); // Text is txdfile:texture
+    txtSpriteTest[3].create();
+    txtSpriteTest[3].setFont(4); // Font ID 4 is the sprite draw font
+    txtSpriteTest[3].setColor(0xffffffff);
+    txtSpriteTest[3].setTextSize(100.0, 100.0); // Text size is the Width:Height
+    txtSpriteTest[3].show(player);
 
-      txtSpriteTest[4] = new TextDraw({
-        x: 100.0,
-        y: 300.0,
-        text: "ld_card:cd9d",
-      }); // Text is txdfile:texture
-      txtSpriteTest[4].create();
-      txtSpriteTest[4].setFont(4); // Font ID 4 is the sprite draw font
-      txtSpriteTest[4].setColor(0xffffffff);
-      txtSpriteTest[4].setTextSize(100.0, 100.0); // Text size is the Width:Height
-      txtSpriteTest[4].show(player);
+    txtSpriteTest[4] = new TextDraw({
+      x: 100.0,
+      y: 300.0,
+      text: "ld_card:cd9d",
+    }); // Text is txdfile:texture
+    txtSpriteTest[4].create();
+    txtSpriteTest[4].setFont(4); // Font ID 4 is the sprite draw font
+    txtSpriteTest[4].setColor(0xffffffff);
+    txtSpriteTest[4].setTextSize(100.0, 100.0); // Text size is the Width:Height
+    txtSpriteTest[4].show(player);
 
-      return next();
-    },
-  );
+    return next();
+  });
 
-  const delspritetest = PlayerEvent.onCommandText(
-    "delspritetest",
-    ({ next }) => {
-      txtSpriteTest.forEach((t) => t.isValid() && t.destroy());
-      txtSpriteTest.length = 0;
-      return next();
-    },
-  );
+  const delspritetest = PlayerEvent.onCommandText("delspritetest", ({ next }) => {
+    txtSpriteTest.forEach((t) => t.isValid() && t.destroy());
+    txtSpriteTest.length = 0;
+    return next();
+  });
 
   return [longtd, clicktd, canceltd, spritetest, delspritetest];
 }

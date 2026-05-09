@@ -11,25 +11,17 @@ const alhambraSet = new Set<Player>();
 export const IRadio: IFilterScript = {
   name: "i_radio",
   load() {
-    const onStateChange = PlayerEvent.onStateChange(
-      ({ player, newState, oldState, next }) => {
-        // play an internet radio stream when they are in a vehicle
-        if (
-          newState === PlayerStateEnum.DRIVER ||
-          newState === PlayerStateEnum.PASSENGER
-        ) {
-          player.playAudioStream("http://somafm.com/tags.pls");
-        }
-        // stop the internet stream
-        else if (
-          oldState === PlayerStateEnum.DRIVER ||
-          oldState === PlayerStateEnum.PASSENGER
-        ) {
-          player.stopAudioStream();
-        }
-        return next();
-      },
-    );
+    const onStateChange = PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
+      // play an internet radio stream when they are in a vehicle
+      if (newState === PlayerStateEnum.DRIVER || newState === PlayerStateEnum.PASSENGER) {
+        player.playAudioStream("http://somafm.com/tags.pls");
+      }
+      // stop the internet stream
+      else if (oldState === PlayerStateEnum.DRIVER || oldState === PlayerStateEnum.PASSENGER) {
+        player.stopAudioStream();
+      }
+      return next();
+    });
 
     const onUpdate = PlayerEvent.onUpdate(({ player, next }) => {
       if (player.isNpc()) return next();

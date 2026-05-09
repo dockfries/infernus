@@ -17,10 +17,7 @@ import type { IQuat } from "./interfaces/Quat";
 import { rgba } from "core/utils/color";
 import { ICommonRetVal } from "core/interfaces";
 
-export const TogglePlayerWidescreen = (
-  playerId: number,
-  set: boolean,
-): boolean => {
+export const TogglePlayerWidescreen = (playerId: number, set: boolean): boolean => {
   return !!samp.callNative("TogglePlayerWidescreen", "ii", playerId, set);
 };
 
@@ -28,10 +25,7 @@ export const IsPlayerWidescreenToggled = (playerId: number): boolean => {
   return !!samp.callNative("IsPlayerWidescreenToggled", "i", playerId);
 };
 
-export const GetPlayerSkillLevel = (
-  playerId: number,
-  skill: number,
-): number => {
+export const GetPlayerSkillLevel = (playerId: number, skill: number): number => {
   return samp.callNative("GetPlayerSkillLevel", "ii", playerId, skill);
 };
 
@@ -39,11 +33,12 @@ export const GetPlayerWeather = (playerId: number): number => {
   return samp.callNative("GetPlayerWeather", "i", playerId);
 };
 
-export const GetPlayerWorldBounds = (
-  playerId: number,
-): IBounds & ICommonRetVal => {
-  const [xMax = 0.0, xMin = 0.0, yMax = 0.0, yMin = 0.0, ret]: number[] =
-    samp.callNative("GetPlayerWorldBounds", "iFFFF", playerId);
+export const GetPlayerWorldBounds = (playerId: number): IBounds & ICommonRetVal => {
+  const [xMax = 0.0, xMin = 0.0, yMax = 0.0, yMin = 0.0, ret]: number[] = samp.callNative(
+    "GetPlayerWorldBounds",
+    "iFFFF",
+    playerId,
+  );
   return { xMax, xMin, yMax, yMin, ret: !!ret };
 };
 
@@ -51,24 +46,18 @@ export const GetPlayerZAim = (playerId: number): number => {
   return samp.callNativeFloat("GetPlayerZAim", "i", playerId);
 };
 
-export const GetPlayerSurfingOffsets = (
-  playerId: number,
-): IOffsets & ICommonRetVal => {
-  const [fOffsetX = 0.0, fOffsetY = 0.0, fOffsetZ = 0.0, ret]: number[] =
-    samp.callNative("GetPlayerSurfingOffsets", "iFFF", playerId);
+export const GetPlayerSurfingOffsets = (playerId: number): IOffsets & ICommonRetVal => {
+  const [fOffsetX = 0.0, fOffsetY = 0.0, fOffsetZ = 0.0, ret]: number[] = samp.callNative(
+    "GetPlayerSurfingOffsets",
+    "iFFF",
+    playerId,
+  );
   return { fOffsetX, fOffsetY, fOffsetZ, ret: !!ret };
 };
 
-export const GetPlayerRotationQuat = (
-  playerId: number,
-): IQuat & ICommonRetVal => {
-  const [w = 0.0, x = 0.0, y = 0.0, z = 0.0, ret]: [
-    number,
-    number,
-    number,
-    number,
-    number,
-  ] = samp.callNative("GetPlayerRotationQuat", "iFFFF", playerId);
+export const GetPlayerRotationQuat = (playerId: number): IQuat & ICommonRetVal => {
+  const [w = 0.0, x = 0.0, y = 0.0, z = 0.0, ret]: [number, number, number, number, number] =
+    samp.callNative("GetPlayerRotationQuat", "iFFFF", playerId);
   return { w, x, y, z, ret: !!ret };
 };
 
@@ -84,10 +73,7 @@ export const GetPlayerSpectateType = (playerId: number): number => {
   return samp.callNative("GetPlayerSpectateType", "i", playerId);
 };
 
-export const SetPlayerGravity = (
-  playerId: number,
-  gravity: number,
-): boolean => {
+export const SetPlayerGravity = (playerId: number, gravity: number): boolean => {
   return !!samp.callNative("SetPlayerGravity", "if", playerId, gravity);
 };
 
@@ -107,10 +93,7 @@ export const IsPlayerCameraTargetEnabled = (playerId: number): boolean => {
   return !!samp.callNative("IsPlayerCameraTargetEnabled", "i", playerId);
 };
 
-export const TogglePlayerGhostMode = (
-  playerId: number,
-  toggle: boolean,
-): boolean => {
+export const TogglePlayerGhostMode = (playerId: number, toggle: boolean): boolean => {
   return !!samp.callNative("TogglePlayerGhostMode", "ii", playerId, toggle);
 };
 
@@ -142,10 +125,7 @@ export const IsBuildingRemovedForPlayer = (
   );
 };
 
-export const RemovePlayerWeapon = (
-  playerId: number,
-  weaponId: number,
-): boolean => {
+export const RemovePlayerWeapon = (playerId: number, weaponId: number): boolean => {
   return !!samp.callNative("RemovePlayerWeapon", "ii", playerId, weaponId);
 };
 
@@ -157,10 +137,7 @@ export const IsPlayerUsingOfficialClient = (playerId: number): boolean => {
   return !!samp.callNative("IsPlayerUsingOfficialClient", "i", playerId);
 };
 
-export const AllowPlayerTeleport = (
-  playerId: number,
-  allow: boolean,
-): boolean => {
+export const AllowPlayerTeleport = (playerId: number, allow: boolean): boolean => {
   return !!samp.callNative("AllowPlayerTeleport", "ii", playerId, allow);
 };
 
@@ -168,10 +145,7 @@ export const IsPlayerTeleportAllowed = (playerId: number): boolean => {
   return !!samp.callNative("IsPlayerTeleportAllowed", "i", playerId);
 };
 
-export const AllowPlayerWeapons = (
-  playerId: number,
-  allow: boolean,
-): boolean => {
+export const AllowPlayerWeapons = (playerId: number, allow: boolean): boolean => {
   return !!samp.callNative("AllowPlayerWeapons", "i", playerId, allow);
 };
 
@@ -185,14 +159,7 @@ export const GameTextForPlayer = (
   time: number,
   style: number,
 ): boolean => {
-  return !!samp.callNative(
-    "GameTextForPlayer",
-    "iaii",
-    playerId,
-    string,
-    time,
-    style,
-  );
+  return !!samp.callNative("GameTextForPlayer", "iaii", playerId, string, time, style);
 };
 
 export const HasGameText = (playerId: number, style: number): boolean => {
@@ -205,20 +172,10 @@ export const SendDeathMessageToPlayer = (
   killee: number,
   weapon: WeaponEnum | DamageDeathReasonEnum,
 ): boolean => {
-  return !!samp.callNative(
-    "SendDeathMessageToPlayer",
-    "iiii",
-    playerId,
-    killer,
-    killee,
-    weapon,
-  );
+  return !!samp.callNative("SendDeathMessageToPlayer", "iiii", playerId, killer, killee, weapon);
 };
 
-export const HideGameTextForPlayer = (
-  playerId: number,
-  style: number,
-): boolean => {
+export const HideGameTextForPlayer = (playerId: number, style: number): boolean => {
   return !!samp.callNative("HideGameTextForPlayer", "ii", playerId, style);
 };
 
@@ -226,21 +183,11 @@ export const IsPlayerNPC = (playerId: number): boolean => {
   return !!samp.callNative("IsPlayerNPC", "i", playerId);
 };
 
-export const SetPlayerPos = (
-  playerId: number,
-  x: number,
-  y: number,
-  z: number,
-): boolean => {
+export const SetPlayerPos = (playerId: number, x: number, y: number, z: number): boolean => {
   return !!samp.callNative("SetPlayerPos", "ifff", playerId, x, y, z);
 };
 
-export const SetPlayerPosFindZ = (
-  playerId: number,
-  x: number,
-  y: number,
-  z: number,
-): boolean => {
+export const SetPlayerPosFindZ = (playerId: number, x: number, y: number, z: number): boolean => {
   return !!samp.callNative("SetPlayerPosFindZ", "ifff", playerId, x, y, z);
 };
 
@@ -253,19 +200,12 @@ export const GetPlayerPos = (playerId: number) => {
   return { x, y, z, ret: !!ret };
 };
 
-export const SetPlayerFacingAngle = (
-  playerId: number,
-  ang: number,
-): boolean => {
+export const SetPlayerFacingAngle = (playerId: number, ang: number): boolean => {
   return !!samp.callNative("SetPlayerFacingAngle", "if", playerId, ang);
 };
 
 export const GetPlayerFacingAngle = (playerId: number) => {
-  const [angle, ret]: [number, number] = samp.callNative(
-    "GetPlayerFacingAngle",
-    "iF",
-    playerId,
-  );
+  const [angle, ret]: [number, number] = samp.callNative("GetPlayerFacingAngle", "iF", playerId);
   return { angle, ret: !!ret };
 };
 
@@ -276,15 +216,7 @@ export const IsPlayerInRangeOfPoint = (
   y: number,
   z: number,
 ): boolean => {
-  return !!samp.callNative(
-    "IsPlayerInRangeOfPoint",
-    "iffff",
-    playerId,
-    range,
-    x,
-    y,
-    z,
-  );
+  return !!samp.callNative("IsPlayerInRangeOfPoint", "iffff", playerId, range, x, y, z);
 };
 
 export const GetPlayerDistanceFromPoint = (
@@ -293,27 +225,14 @@ export const GetPlayerDistanceFromPoint = (
   y: number,
   z: number,
 ): number => {
-  return samp.callNativeFloat(
-    "GetPlayerDistanceFromPoint",
-    "ifff",
-    playerId,
-    x,
-    y,
-    z,
-  );
+  return samp.callNativeFloat("GetPlayerDistanceFromPoint", "ifff", playerId, x, y, z);
 };
 
-export const IsPlayerStreamedIn = (
-  playerId: number,
-  forPlayerId: number,
-): boolean => {
+export const IsPlayerStreamedIn = (playerId: number, forPlayerId: number): boolean => {
   return !!samp.callNative("IsPlayerStreamedIn", "ii", playerId, forPlayerId);
 };
 
-export const SetPlayerInterior = (
-  playerId: number,
-  interiorId: number,
-): boolean => {
+export const SetPlayerInterior = (playerId: number, interiorId: number): boolean => {
   return !!samp.callNative("SetPlayerInterior", "ii", playerId, interiorId);
 };
 
@@ -326,11 +245,7 @@ export const SetPlayerHealth = (playerId: number, health: number): boolean => {
 };
 
 export const GetPlayerHealth = (playerId: number) => {
-  const [health, ret]: [number, number] = samp.callNative(
-    "GetPlayerHealth",
-    "iF",
-    playerId,
-  );
+  const [health, ret]: [number, number] = samp.callNative("GetPlayerHealth", "iF", playerId);
   return { health, ret: !!ret };
 };
 
@@ -339,19 +254,11 @@ export const SetPlayerArmour = (playerId: number, armour: number): boolean => {
 };
 
 export const GetPlayerArmour = (playerId: number) => {
-  const [armour, ret]: [number, number] = samp.callNative(
-    "GetPlayerArmour",
-    "iF",
-    playerId,
-  );
+  const [armour, ret]: [number, number] = samp.callNative("GetPlayerArmour", "iF", playerId);
   return { armour, ret: !!ret };
 };
 
-export const SetPlayerAmmo = (
-  playerId: number,
-  weaponId: number,
-  ammo: number,
-): boolean => {
+export const SetPlayerAmmo = (playerId: number, weaponId: number, ammo: number): boolean => {
   return !!samp.callNative("SetPlayerAmmo", "iii", playerId, weaponId, ammo);
 };
 
@@ -391,17 +298,11 @@ export const GetPlayerDrunkLevel = (playerId: number): number => {
   return samp.callNative("GetPlayerDrunkLevel", "i", playerId);
 };
 
-export const SetPlayerDrunkLevel = (
-  playerId: number,
-  level: number,
-): boolean => {
+export const SetPlayerDrunkLevel = (playerId: number, level: number): boolean => {
   return !!samp.callNative("SetPlayerDrunkLevel", "ii", playerId, level);
 };
 
-export const SetPlayerColor = (
-  playerId: number,
-  color: string | number,
-): boolean => {
+export const SetPlayerColor = (playerId: number, color: string | number): boolean => {
   return !!samp.callNative("SetPlayerColor", "ii", playerId, rgba(color));
 };
 
@@ -417,11 +318,7 @@ export const GetPlayerSkin = (playerId: number): number => {
   return samp.callNative("GetPlayerSkin", "i", playerId);
 };
 
-export const GivePlayerWeapon = (
-  playerId: number,
-  weaponId: number,
-  ammo: number,
-): boolean => {
+export const GivePlayerWeapon = (playerId: number, weaponId: number, ammo: number): boolean => {
   return !!samp.callNative("GivePlayerWeapon", "iii", playerId, weaponId, ammo);
 };
 
@@ -429,10 +326,7 @@ export const ResetPlayerWeapons = (playerId: number): boolean => {
   return !!samp.callNative("ResetPlayerWeapons", "i", playerId);
 };
 
-export const SetPlayerArmedWeapon = (
-  playerId: number,
-  weaponId: number,
-): boolean => {
+export const SetPlayerArmedWeapon = (playerId: number, weaponId: number): boolean => {
   return !!samp.callNative("SetPlayerArmedWeapon", "ii", playerId, weaponId);
 };
 
@@ -471,16 +365,15 @@ export const GetPlayerWeapon = (playerId: number): number => {
 };
 
 export const GetPlayerKeys = (playerId: number) => {
-  const [keys, upDown, leftRight, ret]: [KeysEnum, KeysEnum, KeysEnum, number] =
-    samp.callNative("GetPlayerKeys", "iIII", playerId);
+  const [keys, upDown, leftRight, ret]: [KeysEnum, KeysEnum, KeysEnum, number] = samp.callNative(
+    "GetPlayerKeys",
+    "iIII",
+    playerId,
+  );
   return { keys, upDown, leftRight, ret: !!ret };
 };
 
-export const SetPlayerTime = (
-  playerId: number,
-  hour: number,
-  minute: number,
-): boolean => {
+export const SetPlayerTime = (playerId: number, hour: number, minute: number): boolean => {
   return !!samp.callNative("SetPlayerTime", "iii", playerId, hour, minute);
 };
 
@@ -493,17 +386,11 @@ export const GetPlayerTime = (playerId: number) => {
   return { hour, minute, ret: !!ret };
 };
 
-export const TogglePlayerClock = (
-  playerId: number,
-  toggle: boolean,
-): boolean => {
+export const TogglePlayerClock = (playerId: number, toggle: boolean): boolean => {
   return !!samp.callNative("TogglePlayerClock", "ii", playerId, toggle);
 };
 
-export const SetPlayerWeather = (
-  playerId: number,
-  weather: number,
-): boolean => {
+export const SetPlayerWeather = (playerId: number, weather: number): boolean => {
   return !!samp.callNative("SetPlayerWeather", "ii", playerId, weather);
 };
 
@@ -511,10 +398,7 @@ export const ForceClassSelection = (playerId: number): boolean => {
   return !!samp.callNative("ForceClassSelection", "i", playerId);
 };
 
-export const SetPlayerWantedLevel = (
-  playerId: number,
-  level: number,
-): boolean => {
+export const SetPlayerWantedLevel = (playerId: number, level: number): boolean => {
   return !!samp.callNative("SetPlayerWantedLevel", "ii", playerId, level);
 };
 
@@ -522,25 +406,15 @@ export const GetPlayerWantedLevel = (playerId: number): number => {
   return samp.callNative("GetPlayerWantedLevel", "i", playerId);
 };
 
-export const SetPlayerFightingStyle = (
-  playerId: number,
-  style: FightingStylesEnum,
-): boolean => {
+export const SetPlayerFightingStyle = (playerId: number, style: FightingStylesEnum): boolean => {
   return !!samp.callNative("SetPlayerFightingStyle", "ii", playerId, style);
 };
 
-export const GetPlayerFightingStyle = (
-  playerId: number,
-): FightingStylesEnum => {
+export const GetPlayerFightingStyle = (playerId: number): FightingStylesEnum => {
   return samp.callNative("GetPlayerFightingStyle", "i", playerId);
 };
 
-export const SetPlayerVelocity = (
-  playerId: number,
-  x: number,
-  y: number,
-  z: number,
-): boolean => {
+export const SetPlayerVelocity = (playerId: number, x: number, y: number, z: number): boolean => {
   return !!samp.callNative("SetPlayerVelocity", "ifff", playerId, x, y, z);
 };
 
@@ -558,13 +432,7 @@ export const PlayCrimeReportForPlayer = (
   suspectId: number,
   crime: number,
 ): boolean => {
-  return !!samp.callNative(
-    "PlayCrimeReportForPlayer",
-    "iii",
-    playerId,
-    suspectId,
-    crime,
-  );
+  return !!samp.callNative("PlayCrimeReportForPlayer", "iii", playerId, suspectId, crime);
 };
 
 export const PlayAudioStreamForPlayer = (
@@ -593,10 +461,7 @@ export const StopAudioStreamForPlayer = (playerId: number): boolean => {
   return !!samp.callNative("StopAudioStreamForPlayer", "i", playerId);
 };
 
-export const SetPlayerShopName = (
-  playerId: number,
-  shopName: string,
-): boolean => {
+export const SetPlayerShopName = (playerId: number, shopName: string): boolean => {
   return !!samp.callNative("SetPlayerShopName", "is", playerId, shopName);
 };
 
@@ -605,13 +470,7 @@ export const SetPlayerSkillLevel = (
   skill: WeaponSkillsEnum,
   level: number,
 ): boolean => {
-  return !!samp.callNative(
-    "SetPlayerSkillLevel",
-    "iii",
-    playerId,
-    skill,
-    level,
-  );
+  return !!samp.callNative("SetPlayerSkillLevel", "iii", playerId, skill, level);
 };
 
 export const GetPlayerSurfingVehicleID = (playerId: number): number => {
@@ -672,13 +531,7 @@ export const PutPlayerInVehicle = (
   vehicleId: number,
   seatId: number,
 ): boolean => {
-  return !!samp.callNative(
-    "PutPlayerInVehicle",
-    "iii",
-    playerId,
-    vehicleId,
-    seatId,
-  );
+  return !!samp.callNative("PutPlayerInVehicle", "iii", playerId, vehicleId, seatId);
 };
 
 export const GetPlayerVehicleID = (playerId: number): number => {
@@ -693,10 +546,7 @@ export const RemovePlayerFromVehicle = (playerId: number): boolean => {
   return !!samp.callNative("RemovePlayerFromVehicle", "i", playerId);
 };
 
-export const TogglePlayerControllable = (
-  playerId: number,
-  toggle: boolean,
-): boolean => {
+export const TogglePlayerControllable = (playerId: number, toggle: boolean): boolean => {
   return !!samp.callNative("TogglePlayerControllable", "ii", playerId, toggle);
 };
 
@@ -707,15 +557,7 @@ export const PlayerPlaySound = (
   y: number,
   z: number,
 ): boolean => {
-  return !!samp.callNative(
-    "PlayerPlaySound",
-    "iifff",
-    playerId,
-    soundId,
-    x,
-    y,
-    z,
-  );
+  return !!samp.callNative("PlayerPlaySound", "iifff", playerId, soundId, x, y, z);
 };
 
 export const ApplyAnimation = (
@@ -746,10 +588,7 @@ export const ApplyAnimation = (
   );
 };
 
-export const ClearAnimations = (
-  playerId: number,
-  forceSync: boolean,
-): boolean => {
+export const ClearAnimations = (playerId: number, forceSync: boolean): boolean => {
   return !!samp.callNative("ClearAnimations", "ii", playerId, forceSync);
 };
 
@@ -757,35 +596,19 @@ export const GetPlayerAnimationIndex = (playerId: number): number => {
   return samp.callNative("GetPlayerAnimationIndex", "i", playerId);
 };
 
-export const GetPlayerSpecialAction = (
-  playerId: number,
-): SpecialActionsEnum => {
+export const GetPlayerSpecialAction = (playerId: number): SpecialActionsEnum => {
   return samp.callNative("GetPlayerSpecialAction", "i", playerId);
 };
 
-export const SetPlayerSpecialAction = (
-  playerId: number,
-  actionId: SpecialActionsEnum,
-): boolean => {
+export const SetPlayerSpecialAction = (playerId: number, actionId: SpecialActionsEnum): boolean => {
   return !!samp.callNative("SetPlayerSpecialAction", "ii", playerId, actionId);
 };
 
-export const DisableRemoteVehicleCollisions = (
-  playerId: number,
-  disable: boolean,
-): boolean => {
-  return !!samp.callNative(
-    "DisableRemoteVehicleCollisions",
-    "ii",
-    playerId,
-    disable,
-  );
+export const DisableRemoteVehicleCollisions = (playerId: number, disable: boolean): boolean => {
+  return !!samp.callNative("DisableRemoteVehicleCollisions", "ii", playerId, disable);
 };
 
-export const SetPlayerVirtualWorld = (
-  playerId: number,
-  worldId: number,
-): boolean => {
+export const SetPlayerVirtualWorld = (playerId: number, worldId: number): boolean => {
   return !!samp.callNative("SetPlayerVirtualWorld", "ii", playerId, worldId);
 };
 
@@ -793,10 +616,7 @@ export const GetPlayerVirtualWorld = (playerId: number): number => {
   return samp.callNative("GetPlayerVirtualWorld", "i", playerId);
 };
 
-export const EnableStuntBonusForPlayer = (
-  playerId: number,
-  enable: boolean,
-): boolean => {
+export const EnableStuntBonusForPlayer = (playerId: number, enable: boolean): boolean => {
   return !!samp.callNative("EnableStuntBonusForPlayer", "ii", playerId, enable);
 };
 
@@ -808,16 +628,7 @@ export const CreateExplosionForPlayer = (
   type: number,
   radius: number,
 ): boolean => {
-  return !!samp.callNative(
-    "CreateExplosionForPlayer",
-    "ifffif",
-    playerId,
-    x,
-    y,
-    z,
-    type,
-    radius,
-  );
+  return !!samp.callNative("CreateExplosionForPlayer", "ifffif", playerId, x, y, z, type, radius);
 };
 
 export const StartRecordingPlayerData = (
@@ -825,23 +636,14 @@ export const StartRecordingPlayerData = (
   recordType: number,
   recordName: string,
 ): boolean => {
-  return !!samp.callNative(
-    "StartRecordingPlayerData",
-    "iis",
-    playerId,
-    recordType,
-    recordName,
-  );
+  return !!samp.callNative("StartRecordingPlayerData", "iis", playerId, recordType, recordName);
 };
 
 export const StopRecordingPlayerData = (playerId: number): boolean => {
   return !!samp.callNative("StopRecordingPlayerData", "i", playerId);
 };
 
-export const TogglePlayerSpectating = (
-  playerId: number,
-  toggle: boolean,
-): boolean => {
+export const TogglePlayerSpectating = (playerId: number, toggle: boolean): boolean => {
   return !!samp.callNative("TogglePlayerSpectating", "ii", playerId, toggle);
 };
 
@@ -850,13 +652,7 @@ export const PlayerSpectatePlayer = (
   targetPlayerId: number,
   mode: SpectateModesEnum,
 ): boolean => {
-  return !!samp.callNative(
-    "PlayerSpectatePlayer",
-    "iii",
-    playerId,
-    targetPlayerId,
-    mode,
-  );
+  return !!samp.callNative("PlayerSpectatePlayer", "iii", playerId, targetPlayerId, mode);
 };
 
 export const PlayerSpectateVehicle = (
@@ -864,23 +660,14 @@ export const PlayerSpectateVehicle = (
   targetVehicleId: number,
   mode: SpectateModesEnum,
 ): boolean => {
-  return !!samp.callNative(
-    "PlayerSpectateVehicle",
-    "iii",
-    playerId,
-    targetVehicleId,
-    mode,
-  );
+  return !!samp.callNative("PlayerSpectateVehicle", "iii", playerId, targetVehicleId, mode);
 };
 
 export const IsPlayerConnected = (playerId: number): boolean => {
   return !!samp.callNative("IsPlayerConnected", "i", playerId);
 };
 
-export const IsPlayerInVehicle = (
-  playerId: number,
-  vehicleId: number,
-): boolean => {
+export const IsPlayerInVehicle = (playerId: number, vehicleId: number): boolean => {
   return !!samp.callNative("IsPlayerInVehicle", "ii", playerId, vehicleId);
 };
 
@@ -895,15 +682,7 @@ export const SetPlayerWorldBounds = (
   yMax: number,
   yMin: number,
 ): boolean => {
-  return !!samp.callNative(
-    "SetPlayerWorldBounds",
-    "iffff",
-    playerId,
-    xMax,
-    xMin,
-    yMax,
-    yMin,
-  );
+  return !!samp.callNative("SetPlayerWorldBounds", "iffff", playerId, xMax, xMin, yMax, yMin);
 };
 
 export const ClearPlayerWorldBounds = (playerId: number) => {
@@ -915,19 +694,10 @@ export const SetPlayerMarkerForPlayer = (
   showPlayerId: number,
   color: string | number,
 ): boolean => {
-  return !!samp.callNative(
-    "SetPlayerMarkerForPlayer",
-    "iii",
-    playerId,
-    showPlayerId,
-    rgba(color),
-  );
+  return !!samp.callNative("SetPlayerMarkerForPlayer", "iii", playerId, showPlayerId, rgba(color));
 };
 
-export const GetPlayerMarkerForPlayer = (
-  playerId: number,
-  targetId: number,
-): number => {
+export const GetPlayerMarkerForPlayer = (playerId: number, targetId: number): number => {
   return samp.callNative("GetPlayerMarkerForPlayer", "ii", playerId, targetId);
 };
 
@@ -936,13 +706,7 @@ export const ShowPlayerNameTagForPlayer = (
   showPlayerId: number,
   show: boolean,
 ): boolean => {
-  return !!samp.callNative(
-    "ShowPlayerNameTagForPlayer",
-    "iii",
-    playerId,
-    showPlayerId,
-    show,
-  );
+  return !!samp.callNative("ShowPlayerNameTagForPlayer", "iii", playerId, showPlayerId, show);
 };
 
 export const SetPlayerMapIcon = (
@@ -969,19 +733,11 @@ export const SetPlayerMapIcon = (
   );
 };
 
-export const RemovePlayerMapIcon = (
-  playerId: number,
-  iconId: number,
-): boolean => {
+export const RemovePlayerMapIcon = (playerId: number, iconId: number): boolean => {
   return !!samp.callNative("RemovePlayerMapIcon", "ii", playerId, iconId);
 };
 
-export const SetPlayerCameraPos = (
-  playerId: number,
-  x: number,
-  y: number,
-  z: number,
-): boolean => {
+export const SetPlayerCameraPos = (playerId: number, x: number, y: number, z: number): boolean => {
   return !!samp.callNative("SetPlayerCameraPos", "ifff", playerId, x, y, z);
 };
 
@@ -992,15 +748,7 @@ export const SetPlayerCameraLookAt = (
   z: number,
   style: CameraCutStylesEnum,
 ): boolean => {
-  return !!samp.callNative(
-    "SetPlayerCameraLookAt",
-    "ifffi",
-    playerId,
-    x,
-    y,
-    z,
-    style,
-  );
+  return !!samp.callNative("SetPlayerCameraLookAt", "ifffi", playerId, x, y, z, style);
 };
 
 export const SetCameraBehindPlayer = (playerId: number): boolean => {
@@ -1029,10 +777,7 @@ export const GetPlayerCameraMode = (playerId: number): CameraModesEnum => {
   return samp.callNative("GetPlayerCameraMode", "i", playerId);
 };
 
-export const EnablePlayerCameraTarget = (
-  playerId: number,
-  enable: boolean,
-): boolean => {
+export const EnablePlayerCameraTarget = (playerId: number, enable: boolean): boolean => {
   return !!samp.callNative("EnablePlayerCameraTarget", "ii", playerId, enable);
 };
 
@@ -1060,23 +805,12 @@ export const GetPlayerCameraZoom = (playerId: number): number => {
   return samp.callNativeFloat("GetPlayerCameraZoom", "i", playerId);
 };
 
-export const AttachCameraToObject = (
-  playerId: number,
-  objectId: number,
-): boolean => {
+export const AttachCameraToObject = (playerId: number, objectId: number): boolean => {
   return !!samp.callNative("AttachCameraToObject", "ii", playerId, objectId);
 };
 
-export const AttachCameraToPlayerObject = (
-  playerId: number,
-  playerObjectId: number,
-): boolean => {
-  return !!samp.callNative(
-    "AttachCameraToPlayerObject",
-    "ii",
-    playerId,
-    playerObjectId,
-  );
+export const AttachCameraToPlayerObject = (playerId: number, playerObjectId: number): boolean => {
+  return !!samp.callNative("AttachCameraToPlayerObject", "ii", playerId, playerObjectId);
 };
 
 export const InterpolateCameraPos = (

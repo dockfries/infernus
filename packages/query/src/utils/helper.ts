@@ -5,9 +5,7 @@ export async function detectAndDecode(buffer: Buffer) {
   let chardetEncoding: string;
   if (global.samp) {
     const chardetResult = jschardet.detect(buffer);
-    chardetEncoding = chardetResult
-      ? chardetResult.encoding.toLowerCase()
-      : "utf-8";
+    chardetEncoding = chardetResult ? chardetResult.encoding.toLowerCase() : "utf-8";
   } else {
     const { detect } = await import("@dockfries/chardetng");
     chardetEncoding = detect(buffer) || "utf-8";

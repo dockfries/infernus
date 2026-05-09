@@ -4,12 +4,7 @@
 */
 
 import { Vehicle } from "@infernus/core";
-import {
-  Player,
-  PlayerEvent,
-  InvalidEnum,
-  PlayerStateEnum,
-} from "@infernus/core";
+import { Player, PlayerEvent, InvalidEnum, PlayerStateEnum } from "@infernus/core";
 import { ColorEnum } from "./enums/color";
 import { ADMIN_SPEC_TYPE } from "./enums/type";
 import type { IAdminSpecFS } from "./interfaces";
@@ -31,33 +26,29 @@ export const AdminSpec: IAdminSpecFS = {
     specCommands.push(options?.command?.off || "specoff");
 
     // WE ONLY DEAL WITH COMMANDS FROM ADMINS IN THIS FILTERSCRIPT
-    const offCommandPerformed = PlayerEvent.onCommandPerformed(
-      ({ player, command, next }) => {
-        if (specCommands.includes(command) && !player.isAdmin()) return false;
-        return next();
-      },
-    );
+    const offCommandPerformed = PlayerEvent.onCommandPerformed(({ player, command, next }) => {
+      if (specCommands.includes(command) && !player.isAdmin()) return false;
+      return next();
+    });
 
     // IF ANYONE IS SPECTATING THIS PLAYER, WE'LL ALSO HAVE
     // TO CHANGE THEIR INTERIOR ID TO MATCH
-    const offInteriorChange = PlayerEvent.onInteriorChange(
-      ({ player, newInteriorId }) => {
-        Player.getInstances().forEach((p) => {
-          const mp = myPlayers.get(p);
-          if (
-            mp &&
-            p.isConnected() &&
-            p.getState() === PlayerStateEnum.SPECTATING &&
-            mp.gSpectateID === p.id &&
-            mp.gSpectateType === ADMIN_SPEC_TYPE.PLAYER &&
-            p !== player
-          ) {
-            p.setInterior(newInteriorId);
-          }
-        });
-        return true;
-      },
-    );
+    const offInteriorChange = PlayerEvent.onInteriorChange(({ player, newInteriorId }) => {
+      Player.getInstances().forEach((p) => {
+        const mp = myPlayers.get(p);
+        if (
+          mp &&
+          p.isConnected() &&
+          p.getState() === PlayerStateEnum.SPECTATING &&
+          mp.gSpectateID === p.id &&
+          mp.gSpectateType === ADMIN_SPEC_TYPE.PLAYER &&
+          p !== player
+        ) {
+          p.setInterior(newInteriorId);
+        }
+      });
+      return true;
+    });
 
     Player.getInstances().forEach((player) => {
       myPlayers.set(player, new AdminSpecPlayer());
@@ -79,19 +70,13 @@ export const AdminSpec: IAdminSpecFS = {
       ({ player, subcommand, next }) => {
         const [specId] = subcommand;
         if (!specId) {
-          player.sendClientMessage(
-            ColorEnum.WHITE,
-            "USAGE: /specplayer [playerId]",
-          );
+          player.sendClientMessage(ColorEnum.WHITE, "USAGE: /specplayer [playerId]");
           return next();
         }
 
         const specPlayer = Player.getInstance(+specId);
         if (!specPlayer || !specPlayer.isConnected()) {
-          player.sendClientMessage(
-            ColorEnum.RED,
-            "specplayer: that player isn't active.",
-          );
+          player.sendClientMessage(ColorEnum.RED, "specplayer: that player isn't active.");
           return next();
         }
 
@@ -112,10 +97,7 @@ export const AdminSpec: IAdminSpecFS = {
       ({ player, subcommand, next }) => {
         const [vehId] = subcommand;
         if (!vehId) {
-          player.sendClientMessage(
-            ColorEnum.WHITE,
-            "USAGE: /specvehicle [vehicleId]",
-          );
+          player.sendClientMessage(ColorEnum.WHITE, "USAGE: /specvehicle [vehicleId]");
           return next();
         }
 
@@ -135,17 +117,14 @@ export const AdminSpec: IAdminSpecFS = {
     );
 
     // STOP SPECTATING
-    const offSpecOff = PlayerEvent.onCommandText(
-      specCommands[2],
-      ({ player, next }) => {
-        player.toggleSpectating(false);
+    const offSpecOff = PlayerEvent.onCommandText(specCommands[2], ({ player, next }) => {
+      player.toggleSpectating(false);
 
-        const mp = myPlayers.get(player)!;
-        mp.gSpectateID = InvalidEnum.PLAYER_ID;
-        mp.gSpectateType = ADMIN_SPEC_TYPE.NONE;
-        return next();
-      },
-    );
+      const mp = myPlayers.get(player)!;
+      mp.gSpectateID = InvalidEnum.PLAYER_ID;
+      mp.gSpectateType = ADMIN_SPEC_TYPE.NONE;
+      return next();
+    });
 
     return [
       offCommandPerformed,

@@ -1,9 +1,4 @@
-import {
-  Player,
-  DynamicObject,
-  PlayerStateEnum,
-  StreamerMiscellaneous,
-} from "@infernus/core";
+import { Player, DynamicObject, PlayerStateEnum, StreamerMiscellaneous } from "@infernus/core";
 import { sc_VendingMachines } from "../../constants";
 import { VendingMachineIndex } from "../../enums";
 import { wc_SetPlayerHealth } from "../../hooks";

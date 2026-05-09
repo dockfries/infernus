@@ -4,40 +4,12 @@ export function init() {
   return !!samp.callNative("CA_Init", "");
 }
 
-export function removeBuilding(
-  modelId: number,
-  x: number,
-  y: number,
-  z: number,
-  radius: number,
-) {
-  return !!samp.callNative(
-    "CA_RemoveBuilding",
-    "iffff",
-    modelId,
-    x,
-    y,
-    z,
-    radius,
-  );
+export function removeBuilding(modelId: number, x: number, y: number, z: number, radius: number) {
+  return !!samp.callNative("CA_RemoveBuilding", "iffff", modelId, x, y, z, radius);
 }
 
-export function restoreBuilding(
-  modelId: number,
-  x: number,
-  y: number,
-  z: number,
-  radius: number,
-) {
-  return !!samp.callNative(
-    "CA_RestoreBuilding",
-    "iffff",
-    modelId,
-    x,
-    y,
-    z,
-    radius,
-  );
+export function restoreBuilding(modelId: number, x: number, y: number, z: number, radius: number) {
+  return !!samp.callNative("CA_RestoreBuilding", "iffff", modelId, x, y, z, radius);
 }
 
 export function rayCastLine(
@@ -228,22 +200,17 @@ export function contactTest(
   ry: number,
   rz: number,
 ) {
-  return !!samp.callNative(
-    "CA_ContactTest",
-    "iffffff",
-    modelId,
-    x,
-    y,
-    z,
+  return !!samp.callNative("CA_ContactTest", "iffffff", modelId, x, y, z, rx, ry, rz);
+}
+
+export function eulerToQuat(rx: number, ry: number, rz: number) {
+  const [x, y, z, w, ret]: [number, number, number, number, number] = samp.callNative(
+    "CA_EulerToQuat",
+    "fffFFFF",
     rx,
     ry,
     rz,
   );
-}
-
-export function eulerToQuat(rx: number, ry: number, rz: number) {
-  const [x, y, z, w, ret]: [number, number, number, number, number] =
-    samp.callNative("CA_EulerToQuat", "fffFFFF", rx, ry, rz);
   return { x, y, z, w, ret };
 }
 
@@ -315,17 +282,16 @@ export function rayCastLineAngleEx(
   endY: number,
   endZ: number,
 ) {
-  const [x, y, z, rx, ry, rz, ocx, ocy, ocz, orx, ory, orz, ret] =
-    samp.callNative(
-      "CA_RayCastLineAngleEx",
-      "ffffffFFFFFFFFFFFF",
-      startX,
-      startY,
-      startZ,
-      endX,
-      endY,
-      endZ,
-    ) as number[];
+  const [x, y, z, rx, ry, rz, ocx, ocy, ocz, orx, ory, orz, ret] = samp.callNative(
+    "CA_RayCastLineAngleEx",
+    "ffffffFFFFFFFFFFFF",
+    startX,
+    startY,
+    startZ,
+    endX,
+    endY,
+    endZ,
+  ) as number[];
 
   if (!ret) return null;
 

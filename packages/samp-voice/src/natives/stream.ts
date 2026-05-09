@@ -30,32 +30,17 @@ export abstract class SampVoiceStream {
 
   attachListener(player: Player) {
     if (this._ptr === SV_NULL) return false;
-    return !!samp.callNative(
-      "SvAttachListenerToStream",
-      "ii",
-      this.ptr,
-      player.id,
-    );
+    return !!samp.callNative("SvAttachListenerToStream", "ii", this.ptr, player.id);
   }
 
   hasListenerIn(player: Player) {
     if (this._ptr === SV_NULL) return false;
-    return !!samp.callNative(
-      "SvHasListenerInStream",
-      "ii",
-      this.ptr,
-      player.id,
-    );
+    return !!samp.callNative("SvHasListenerInStream", "ii", this.ptr, player.id);
   }
 
   detachListener(player: Player) {
     if (this._ptr === SV_NULL) return false;
-    return !!samp.callNative(
-      "SvDetachListenerFromStream",
-      "ii",
-      this.ptr,
-      player.id,
-    );
+    return !!samp.callNative("SvDetachListenerFromStream", "ii", this.ptr, player.id);
   }
 
   detachAllListeners() {
@@ -65,12 +50,7 @@ export abstract class SampVoiceStream {
 
   attachSpeaker(player: Player) {
     if (this._ptr === SV_NULL) return false;
-    return !!samp.callNative(
-      "SvAttachSpeakerToStream",
-      "ii",
-      this.ptr,
-      player.id,
-    );
+    return !!samp.callNative("SvAttachSpeakerToStream", "ii", this.ptr, player.id);
   }
 
   hasSpeakerIn(player: Player) {
@@ -80,12 +60,7 @@ export abstract class SampVoiceStream {
 
   detachSpeaker(player: Player) {
     if (this._ptr === SV_NULL) return false;
-    return !!samp.callNative(
-      "SvDetachSpeakerFromStream",
-      "ii",
-      this.ptr,
-      player.id,
-    );
+    return !!samp.callNative("SvDetachSpeakerFromStream", "ii", this.ptr, player.id);
   }
 
   detachAllSpeakers() {
@@ -110,12 +85,7 @@ export abstract class SampVoiceStream {
 
   parameterGet(parameter: SvParameterEnum) {
     if (this._ptr === SV_NULL) return 0.0;
-    return samp.callNativeFloat(
-      "SvStreamParameterGet",
-      "ii",
-      this.ptr,
-      parameter,
-    ) as number;
+    return samp.callNativeFloat("SvStreamParameterGet", "ii", this.ptr, parameter) as number;
   }
 
   parameterSlideFromTo(
@@ -138,26 +108,12 @@ export abstract class SampVoiceStream {
 
   parameterSlideTo(parameter: SvParameterEnum, endValue: number, time: number) {
     if (this._ptr === SV_NULL) return;
-    samp.callNative(
-      "SvStreamParameterSlideTo",
-      "iifi",
-      this.ptr,
-      parameter,
-      endValue,
-      time,
-    );
+    samp.callNative("SvStreamParameterSlideTo", "iifi", this.ptr, parameter, endValue, time);
   }
 
   parameterSlide(parameter: SvParameterEnum, deltaValue: number, time: number) {
     if (this._ptr === SV_NULL) return;
-    samp.callNative(
-      "SvStreamParameterSlide",
-      "iifi",
-      this.ptr,
-      parameter,
-      deltaValue,
-      time,
-    );
+    samp.callNative("SvStreamParameterSlide", "iifi", this.ptr, parameter, deltaValue, time);
   }
 
   delete() {

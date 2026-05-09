@@ -3,12 +3,7 @@ import type { ICommonOptions } from "filterscript/interfaces";
 import { log, playSoundForPlayersInRange } from "filterscript/utils/gl_common";
 import type { I18n } from "@infernus/core";
 import { Player } from "@infernus/core";
-import {
-  GameText,
-  DynamicObject,
-  DynamicObjectEvent,
-  KeysEnum,
-} from "@infernus/core";
+import { GameText, DynamicObject, DynamicObjectEvent, KeysEnum } from "@infernus/core";
 import { ColorEnum } from "./enums/color";
 import type { IA51BaseFSOptions, IGateList } from "./interfaces";
 
@@ -188,14 +183,7 @@ export const moveGate = (
   const door = whichPlayerDoor(player, i18n);
   if (!door) return;
 
-  const {
-    name,
-    direction,
-    status,
-    labelPos: position,
-    openPos,
-    closePos,
-  } = door;
+  const { name, direction, status, labelPos: position, openPos, closePos } = door;
 
   const { onGateMoving } = options;
 
@@ -206,8 +194,7 @@ export const moveGate = (
     }
     player.sendClientMessage(
       ColorEnum.MESSAGE_YELLOW,
-      i18n?.$t("a51.objects.gate.status.waiting.open", [name], player.locale) ||
-        "",
+      i18n?.$t("a51.objects.gate.status.waiting.open", [name], player.locale) || "",
     );
     return;
   }
@@ -219,36 +206,16 @@ export const moveGate = (
     }
     player.sendClientMessage(
       ColorEnum.MESSAGE_YELLOW,
-      i18n?.$t(
-        "a51.objects.gate.status.waiting.close",
-        [name],
-        player.locale,
-      ) || "",
+      i18n?.$t("a51.objects.gate.status.waiting.close", [name], player.locale) || "",
     );
     return;
   }
 
   playSoundForPlayersInRange(1035, 50.0, position.x, position.y, position.z);
 
-  const {
-    x: ox,
-    y: oy,
-    z: oz,
-    speed: ospeed,
-    rx: orx,
-    ry: ory,
-    rz: orz,
-  } = openPos;
+  const { x: ox, y: oy, z: oz, speed: ospeed, rx: orx, ry: ory, rz: orz } = openPos;
 
-  const {
-    x: cx,
-    y: cy,
-    z: cz,
-    speed: cspeed,
-    rx: crx,
-    ry: cry,
-    rz: crz,
-  } = closePos;
+  const { x: cx, y: cy, z: cz, speed: cspeed, rx: crx, ry: cry, rz: crz } = closePos;
 
   if (status === GateStatusEnum.CLOSED) {
     let openRes;
@@ -256,8 +223,7 @@ export const moveGate = (
       openRes = onGateOpen(player, direction);
     } else {
       const gt = new GameText(
-        i18n?.$t("a51.objects.gate.status.opening", [name], player.locale) ||
-          "",
+        i18n?.$t("a51.objects.gate.status.opening", [name], player.locale) || "",
         3000,
         3,
       );
@@ -293,9 +259,7 @@ const whichPlayerDoor = (player: Player, i18n: I18n) => {
   else if (player.isInRangeOfPoint(10.0, nx, ny, nz)) direction = "north";
   if (!direction) return;
   const name = i18n?.$t(
-    direction === "east"
-      ? "a51.objects.gate.name.eastern"
-      : "a51.objects.gate.name.northern",
+    direction === "east" ? "a51.objects.gate.name.eastern" : "a51.objects.gate.name.northern",
     null,
     player.locale,
   );
@@ -322,16 +286,12 @@ export const loadObjects = (options: ICommonOptions, i18n: I18n) => {
     const { north, east } = gateInfo;
     if (object === north.instance) {
       gateInfo.north.status =
-        north.status === GateStatusEnum.CLOSING
-          ? GateStatusEnum.CLOSED
-          : GateStatusEnum.OPEN;
+        north.status === GateStatusEnum.CLOSING ? GateStatusEnum.CLOSED : GateStatusEnum.OPEN;
       return next();
     }
     if (object === east.instance) {
       gateInfo.east.status =
-        east.status === GateStatusEnum.CLOSING
-          ? GateStatusEnum.CLOSED
-          : GateStatusEnum.OPEN;
+        east.status === GateStatusEnum.CLOSING ? GateStatusEnum.CLOSED : GateStatusEnum.OPEN;
       return next();
     }
     return next();
@@ -382,10 +342,7 @@ export const unloadObjects = (options: ICommonOptions, i18n: I18n) => {
 
   A51Buildings?.forEach((o, i) => {
     if (destroyValidObject(o)) {
-      log(
-        options,
-        `  |--  ${i18n?.$t("a51.objects.destroyed.building", [i + 1])}`,
-      );
+      log(options, `  |--  ${i18n?.$t("a51.objects.destroyed.building", [i + 1])}`);
     }
   });
 };

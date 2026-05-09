@@ -89,7 +89,7 @@ PlayerEvent.onCommandText("reloadMyScript", ({ next }) => {
 import { PlayerEvent } from "@infernus/core";
 
 const MyScript = {
-  name: 'my_script',
+  name: "my_script",
   load(...args) {
     const off1 = PlayerEvent.onCommandText("foo", ({ player, next }) => {
       return next();
@@ -101,10 +101,8 @@ const MyScript = {
 
     return [off1, off2];
   },
-  unload() {
-
-  }
-}
+  unload() {},
+};
 
 GameMode.use(MyScript);
 ```

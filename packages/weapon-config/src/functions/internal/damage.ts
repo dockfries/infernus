@@ -8,24 +8,11 @@ import {
   FightingStylesEnum,
   SpecialActionsEnum,
 } from "@infernus/core";
-import {
-  IEditableOnPlayerDamage,
-  triggerOnPlayerDamage,
-} from "../../callbacks/custom";
+import { IEditableOnPlayerDamage, triggerOnPlayerDamage } from "../../callbacks/custom";
 import { internalPlayerDeath } from "../../callbacks/player/spawn";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
-import {
-  s_WeaponDamage,
-  s_WeaponRange,
-  s_DamageType,
-  s_DamageArmour,
-} from "../../constants";
-import {
-  InvalidDamageEnum,
-  WC_WeaponEnum,
-  RejectedReasonEnum,
-  DamageTypeEnum,
-} from "../../enums";
+import { s_WeaponDamage, s_WeaponRange, s_DamageType, s_DamageArmour } from "../../constants";
+import { InvalidDamageEnum, WC_WeaponEnum, RejectedReasonEnum, DamageTypeEnum } from "../../enums";
 import { orig_playerMethods, orig_vehicleMethods } from "../../hooks/origin";
 import {
   rejectedHitIdx,
@@ -46,19 +33,10 @@ import {
 } from "../../struct";
 import { debugMessage, debugMessageAll } from "../../utils/debug";
 import { floatFraction } from "../../utils/math";
-import {
-  isMeleeWeapon,
-  isHighRateWeapon,
-  isBulletWeapon,
-  wc_IsPlayerSpawned,
-} from "../public/is";
+import { isMeleeWeapon, isHighRateWeapon, isBulletWeapon, wc_IsPlayerSpawned } from "../public/is";
 import { playerDeath, wc_DelayedDeath } from "./death";
 import { onRejectedHit, onPlayerDamageDone } from "./event";
-import {
-  isVehicleArmedWithWeapon,
-  isVehicleBike,
-  isPlayerBehindPlayer,
-} from "./is";
+import { isVehicleArmedWithWeapon, isVehicleBike, isPlayerBehindPlayer } from "./is";
 import { updateHealthBar, makePlayerFacePlayer } from "./set";
 
 export function addRejectedHit(
@@ -70,17 +48,10 @@ export function addRejectedHit(
   i2 = 0,
   i3 = 0,
 ) {
-  if (
-    typeof player !== "number" &&
-    player.id >= 0 &&
-    player.id < LimitsEnum.MAX_PLAYERS
-  ) {
+  if (typeof player !== "number" && player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
     let idx = rejectedHitIdx.get(player.id);
 
-    if (
-      rejectedHits.get(player.id)[idx] &&
-      rejectedHits.get(player.id)[idx]!.time
-    ) {
+    if (rejectedHits.get(player.id)[idx] && rejectedHits.get(player.id)[idx]!.time) {
       idx += 1;
 
       if (idx >= rejectedHits.get(player.id).length) {
@@ -109,21 +80,13 @@ export function addRejectedHit(
     rejectedHits.get(player.id)[idx]!.info2 = i2;
     rejectedHits.get(player.id)[idx]!.info3 = i3;
 
-    if (
-      typeof damaged !== "number" &&
-      damaged.id >= 0 &&
-      damaged.id < LimitsEnum.MAX_PLAYERS
-    ) {
-      rejectedHits.get(player.id)[idx]!.name =
-        orig_playerMethods.getName.call(damaged).name;
+    if (typeof damaged !== "number" && damaged.id >= 0 && damaged.id < LimitsEnum.MAX_PLAYERS) {
+      rejectedHits.get(player.id)[idx]!.name = orig_playerMethods.getName.call(damaged).name;
     } else {
       rejectedHits.get(player.id)[idx]!.name = "#\0";
     }
 
-    onRejectedHit(
-      player,
-      rejectedHits.get(typeof player === "number" ? player : player.id)[idx]!,
-    );
+    onRejectedHit(player, rejectedHits.get(typeof player === "number" ? player : player.id)[idx]!);
   }
 }
 
@@ -197,10 +160,7 @@ export function processDamage(editable: IProcessDamageArgs) {
     }
   }
 
-  if (
-    editable.weaponId === WC_WeaponEnum.HELIBLADES &&
-    editable.amount !== 330.0
-  ) {
+  if (editable.weaponId === WC_WeaponEnum.HELIBLADES && editable.amount !== 330.0) {
     editable.weaponId = WC_WeaponEnum.CARPARK;
   }
 
@@ -229,20 +189,14 @@ export function processDamage(editable: IProcessDamageArgs) {
     if (
       editable.weaponId === WC_WeaponEnum.SPRAYCAN ||
       editable.weaponId === WC_WeaponEnum.FIREEXTINGUISHER ||
-      (editable.weaponId === WC_WeaponEnum.CARPARK &&
-        editable.issuer !== InvalidEnum.PLAYER_ID)
+      (editable.weaponId === WC_WeaponEnum.CARPARK && editable.issuer !== InvalidEnum.PLAYER_ID)
     ) {
       if (editable.issuer === InvalidEnum.PLAYER_ID) {
         return InvalidDamageEnum.NO_ISSUER;
       }
 
       const { x, y, z } = orig_playerMethods.getPos.call(editable.issuer)!;
-      const dist = orig_playerMethods.getDistanceFromPoint.call(
-        editable.player,
-        x,
-        y,
-        z,
-      );
+      const dist = orig_playerMethods.getDistanceFromPoint.call(editable.player, x, y, z);
 
       if (editable.weaponId === WC_WeaponEnum.CARPARK) {
         if (dist > 15.0) {
@@ -290,44 +244,29 @@ export function processDamage(editable: IProcessDamageArgs) {
     editable.amount /= 82.5;
 
     if (editable.issuer !== InvalidEnum.PLAYER_ID) {
-      if (
-        orig_playerMethods.getState.call(editable.issuer) ===
-        PlayerStateEnum.DRIVER
-      ) {
+      if (orig_playerMethods.getState.call(editable.issuer) === PlayerStateEnum.DRIVER) {
         const vehicle = orig_playerMethods.getVehicle.call(editable.issuer);
 
-        if (
-          vehicle &&
-          isVehicleArmedWithWeapon(vehicle, WC_WeaponEnum.ROCKETLAUNCHER)
-        ) {
+        if (vehicle && isVehicleArmedWithWeapon(vehicle, WC_WeaponEnum.ROCKETLAUNCHER)) {
           editable.weaponId = WC_WeaponEnum.VEHICLE_ROCKETLAUNCHER;
         }
       } else if (lastExplosive.get(editable.issuer.id)) {
         editable.weaponId = lastExplosive.get(editable.issuer.id);
       }
-    } else if (
-      orig_playerMethods.getState.call(editable.player) ===
-      PlayerStateEnum.DRIVER
-    ) {
+    } else if (orig_playerMethods.getState.call(editable.player) === PlayerStateEnum.DRIVER) {
       const vehicle = orig_playerMethods.getVehicle.call(editable.player);
 
-      if (
-        vehicle &&
-        isVehicleArmedWithWeapon(vehicle, WC_WeaponEnum.ROCKETLAUNCHER)
-      ) {
+      if (vehicle && isVehicleArmedWithWeapon(vehicle, WC_WeaponEnum.ROCKETLAUNCHER)) {
         editable.weaponId = WC_WeaponEnum.VEHICLE_ROCKETLAUNCHER;
       }
     }
   }
 
   if (
-    (editable.weaponId >= WC_WeaponEnum.COLT45 &&
-      editable.weaponId <= WC_WeaponEnum.SNIPER) ||
-    [
-      WC_WeaponEnum.MINIGUN,
-      WC_WeaponEnum.SPRAYCAN,
-      WC_WeaponEnum.FIREEXTINGUISHER,
-    ].includes(editable.weaponId)
+    (editable.weaponId >= WC_WeaponEnum.COLT45 && editable.weaponId <= WC_WeaponEnum.SNIPER) ||
+    [WC_WeaponEnum.MINIGUN, WC_WeaponEnum.SPRAYCAN, WC_WeaponEnum.FIREEXTINGUISHER].includes(
+      editable.weaponId,
+    )
   ) {
     if (editable.amount === 2.6400001049041748046875) {
       editable.bodyPart = editable.weaponId;
@@ -401,8 +340,7 @@ export function processDamage(editable: IProcessDamageArgs) {
 
         if (
           editable.issuer !== InvalidEnum.PLAYER_ID &&
-          orig_playerMethods.getFightingStyle.call(editable.issuer) !==
-            FightingStylesEnum.KNEEHEAD
+          orig_playerMethods.getFightingStyle.call(editable.issuer) !== FightingStylesEnum.KNEEHEAD
         ) {
           return InvalidDamageEnum.INVALID_DAMAGE;
         }
@@ -419,12 +357,7 @@ export function processDamage(editable: IProcessDamageArgs) {
 
   if (melee) {
     const { x, y, z } = orig_playerMethods.getPos.call(editable.issuer)!;
-    const dist = orig_playerMethods.getDistanceFromPoint.call(
-      editable.player,
-      x,
-      y,
-      z,
-    );
+    const dist = orig_playerMethods.getDistanceFromPoint.call(editable.player, x, y, z);
 
     if (
       editable.weaponId >= WC_WeaponEnum.UNARMED &&
@@ -574,39 +507,23 @@ export function processDamage(editable: IProcessDamageArgs) {
           if (innerGameModeConfig.lagCompMode) {
             length = lastShot.get(editable.issuer.id).length;
           } else {
-            const { x, y, z } = orig_playerMethods.getPos.call(
-              editable.issuer,
-            )!;
-            length = orig_playerMethods.getDistanceFromPoint.call(
-              editable.player,
-              x,
-              y,
-              z,
-            );
+            const { x, y, z } = orig_playerMethods.getPos.call(editable.issuer)!;
+            length = orig_playerMethods.getDistanceFromPoint.call(editable.player, x, y, z);
           }
         }
 
         for (let i = damageRangeSteps[editable.weaponId] - 1; i >= 0; i--) {
-          if (
-            i === 0 ||
-            length >= (damageRangeRanges.get(editable.weaponId)[i] || 0)
-          ) {
-            if (
-              s_DamageType[editable.weaponId] ===
-              DamageTypeEnum.RANGE_MULTIPLIER
-            ) {
+          if (i === 0 || length >= (damageRangeRanges.get(editable.weaponId)[i] || 0)) {
+            if (s_DamageType[editable.weaponId] === DamageTypeEnum.RANGE_MULTIPLIER) {
               if ((damageRangeValues.get(editable.weaponId)[i] || 0) !== 1.0) {
-                editable.amount *=
-                  damageRangeValues.get(editable.weaponId)[i] || 0;
+                editable.amount *= damageRangeValues.get(editable.weaponId)[i] || 0;
               }
             } else {
               if (editable.bullets) {
                 editable.amount =
-                  (damageRangeValues.get(editable.weaponId)[i] || 0) *
-                  editable.bullets;
+                  (damageRangeValues.get(editable.weaponId)[i] || 0) * editable.bullets;
               } else {
-                editable.amount =
-                  damageRangeValues.get(editable.weaponId)[i] || 0;
+                editable.amount = damageRangeValues.get(editable.weaponId)[i] || 0;
               }
             }
 
@@ -643,10 +560,7 @@ export function inflictDamage(
   if (!triggerOnPlayerDamage(editable)) {
     updateHealthBar(editable.player, true);
 
-    if (
-      editable.weaponId < WC_WeaponEnum.UNARMED ||
-      editable.weaponId > WC_WeaponEnum.UNKNOWN
-    ) {
+    if (editable.weaponId < WC_WeaponEnum.UNARMED || editable.weaponId > WC_WeaponEnum.UNKNOWN) {
       editable.weaponId = WC_WeaponEnum.UNKNOWN;
     }
 
@@ -654,21 +568,11 @@ export function inflictDamage(
       let length = 0.0;
 
       if (editable.issuerId !== InvalidEnum.PLAYER_ID) {
-        if (
-          innerGameModeConfig.lagCompMode &&
-          isBulletWeapon(editable.weaponId)
-        ) {
+        if (innerGameModeConfig.lagCompMode && isBulletWeapon(editable.weaponId)) {
           length = lastShot.get(editable.issuerId.id).length;
         } else {
-          const { x, y, z } = orig_playerMethods.getPos.call(
-            editable.issuerId,
-          )!;
-          length = orig_playerMethods.getDistanceFromPoint.call(
-            editable.player,
-            x,
-            y,
-            z,
-          );
+          const { x, y, z } = orig_playerMethods.getPos.call(editable.issuerId)!;
+          length = orig_playerMethods.getDistanceFromPoint.call(editable.player, x, y, z);
         }
       }
 
@@ -682,10 +586,7 @@ export function inflictDamage(
     return;
   }
 
-  if (
-    editable.weaponId < WC_WeaponEnum.UNARMED ||
-    editable.weaponId > WC_WeaponEnum.UNKNOWN
-  ) {
+  if (editable.weaponId < WC_WeaponEnum.UNARMED || editable.weaponId > WC_WeaponEnum.UNKNOWN) {
     editable.weaponId = WC_WeaponEnum.UNKNOWN;
   }
 
@@ -693,19 +594,11 @@ export function inflictDamage(
     let length = 0.0;
 
     if (editable.issuerId !== InvalidEnum.PLAYER_ID) {
-      if (
-        innerGameModeConfig.lagCompMode &&
-        isBulletWeapon(editable.weaponId)
-      ) {
+      if (innerGameModeConfig.lagCompMode && isBulletWeapon(editable.weaponId)) {
         length = lastShot.get(editable.issuerId.id).length;
       } else {
         const { x, y, z } = orig_playerMethods.getPos.call(editable.issuerId)!;
-        length = orig_playerMethods.getDistanceFromPoint.call(
-          editable.player,
-          x,
-          y,
-          z,
-        );
+        length = orig_playerMethods.getDistanceFromPoint.call(editable.player, x, y, z);
       }
     }
 
@@ -731,24 +624,16 @@ export function inflictDamage(
           !s_DamageArmour[editable.weaponId][1])))
   ) {
     if (editable.amount <= 0.0) {
-      editable.amount =
-        playerHealth.get(editable.player.id) +
-        playerArmour.get(editable.player.id);
+      editable.amount = playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id);
     }
 
-    playerArmour.set(
-      editable.player.id,
-      playerArmour.get(editable.player.id) - editable.amount,
-    );
+    playerArmour.set(editable.player.id, playerArmour.get(editable.player.id) - editable.amount);
   } else {
     if (editable.amount <= 0.0) {
       editable.amount = playerHealth.get(editable.player.id);
     }
 
-    playerHealth.set(
-      editable.player.id,
-      playerHealth.get(editable.player.id) - editable.amount,
-    );
+    playerHealth.set(editable.player.id, playerHealth.get(editable.player.id) - editable.amount);
   }
 
   if (playerArmour.get(editable.player.id) < 0.0) {
@@ -756,14 +641,10 @@ export function inflictDamage(
       editable.player.id,
       editable.amount + playerArmour.get(editable.player.id),
     );
-    damageDoneHealth.set(
-      editable.player.id,
-      -playerArmour.get(editable.player.id),
-    );
+    damageDoneHealth.set(editable.player.id, -playerArmour.get(editable.player.id));
     playerHealth.set(
       editable.player.id,
-      playerHealth.get(editable.player.id) +
-        playerArmour.get(editable.player.id),
+      playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id),
     );
     playerArmour.set(editable.player.id, 0);
   } else {
@@ -775,8 +656,7 @@ export function inflictDamage(
     editable.amount += playerHealth.get(editable.player.id);
     damageDoneHealth.set(
       editable.player.id,
-      damageDoneHealth.get(editable.player.id) +
-        playerHealth.get(editable.player.id),
+      damageDoneHealth.get(editable.player.id) + playerHealth.get(editable.player.id),
     );
     playerHealth.set(editable.player.id, 0.0);
   }
@@ -798,11 +678,7 @@ export function inflictDamage(
       orig_playerMethods.toggleControllable.call(editable.player, false);
 
       if (isVehicleBike(vehicle)) {
-        const {
-          x: vx,
-          y: vy,
-          z: vz,
-        } = orig_vehicleMethods.getVelocity.call(vehicle);
+        const { x: vx, y: vy, z: vz } = orig_vehicleMethods.getVelocity.call(vehicle);
 
         if (vx * vx + vy * vy + vz * vz >= 0.4) {
           animName = "BIKE_fallR";
@@ -821,16 +697,12 @@ export function inflictDamage(
         }
       }
     } else if (
-      orig_playerMethods.getSpecialAction.call(editable.player) ===
-      SpecialActionsEnum.USEJETPACK
+      orig_playerMethods.getSpecialAction.call(editable.player) === SpecialActionsEnum.USEJETPACK
     ) {
       animName = "KO_skid_back";
       playerDeath(editable.player, animLib, animName, false);
     } else {
-      if (
-        Date.now() / 1000 - lastVehicleEnterTime.get(editable.player.id) <
-        10
-      ) {
+      if (Date.now() / 1000 - lastVehicleEnterTime.get(editable.player.id) < 10) {
         orig_playerMethods.toggleControllable.call(editable.player, false);
       }
 
@@ -886,8 +758,7 @@ export function inflictDamage(
         playerDeath(editable.player, animLib, animName);
       } else if (
         editable.weaponId === WC_WeaponEnum.CARPARK ||
-        (isMeleeWeapon(editable.weaponId) &&
-          editable.weaponId !== WC_WeaponEnum.CHAINSAW)
+        (isMeleeWeapon(editable.weaponId) && editable.weaponId !== WC_WeaponEnum.CHAINSAW)
       ) {
         animName = "KO_skid_front";
         playerDeath(editable.player, animLib, animName);
@@ -904,18 +775,13 @@ export function inflictDamage(
       }
     }
 
-    if (
-      cBugAllowed.get(editable.player.id) ||
-      !innerGameModeConfig.cBugDeathDelay
-    ) {
+    if (cBugAllowed.get(editable.player.id) || !innerGameModeConfig.cBugDeathDelay) {
       useTrigger("OnPlayerDeath")!(
         withTriggerOptions({
           skipToNext: internalPlayerDeath,
           args: [
             editable.player.id,
-            typeof editable.issuerId === "number"
-              ? editable.issuerId
-              : editable.issuerId.id,
+            typeof editable.issuerId === "number" ? editable.issuerId : editable.issuerId.id,
             editable.weaponId,
           ],
         }),
@@ -928,11 +794,7 @@ export function inflictDamage(
       delayedDeathTimer.set(
         editable.player.id,
         setTimeout(() => {
-          wc_DelayedDeath(
-            editable.player,
-            editable.issuerId,
-            editable.weaponId,
-          );
+          wc_DelayedDeath(editable.player, editable.issuerId, editable.weaponId);
         }, 1200),
       );
     }

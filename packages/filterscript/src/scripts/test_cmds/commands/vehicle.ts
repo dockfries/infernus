@@ -11,58 +11,43 @@ import {
 import { spawnVehicleInFrontOfPlayer } from "filterscript/utils/gl_common";
 
 export function createVehCommands() {
-  const player2v = PlayerEvent.onCommandText(
-    "player2v",
-    ({ subcommand, next }) => {
-      const [vId, pId] = subcommand;
-      const veh = Vehicle.getInstance(+vId);
-      const putPlayer = Player.getInstance(+pId);
-      if (!veh || !putPlayer) return next();
-      veh.putPlayerIn(putPlayer, 0);
-      return next();
-    },
-  );
+  const player2v = PlayerEvent.onCommandText("player2v", ({ subcommand, next }) => {
+    const [vId, pId] = subcommand;
+    const veh = Vehicle.getInstance(+vId);
+    const putPlayer = Player.getInstance(+pId);
+    if (!veh || !putPlayer) return next();
+    veh.putPlayerIn(putPlayer, 0);
+    return next();
+  });
 
   const vc = PlayerEvent.onCommandText("vc", ({ player, subcommand, next }) => {
     const [vModelId] = subcommand;
     if (!vModelId) return next();
-    const created_vehicle_id = spawnVehicleInFrontOfPlayer(
-      player,
-      +vModelId,
-      -1,
-      -1,
-    );
+    const created_vehicle_id = spawnVehicleInFrontOfPlayer(player, +vModelId, -1, -1);
     const msg = `Created vehicle: ${created_vehicle_id}`;
     player.sendClientMessage(0xaaaaaaaa, msg);
     return next();
   });
 
-  const dvehicle = PlayerEvent.onCommandText(
-    "dvehicle",
-    ({ player, subcommand, next }) => {
-      const [vehId] = subcommand;
-      const veh = Vehicle.getInstance(+vehId);
-      if (!veh) return;
-      veh.destroy();
-      const msg = `Destroyed vehicle: ${vehId}`;
-      player.sendClientMessage(0xaaaaaaaa, msg);
-      return next();
-    },
-  );
+  const dvehicle = PlayerEvent.onCommandText("dvehicle", ({ player, subcommand, next }) => {
+    const [vehId] = subcommand;
+    const veh = Vehicle.getInstance(+vehId);
+    if (!veh) return;
+    veh.destroy();
+    const msg = `Destroyed vehicle: ${vehId}`;
+    player.sendClientMessage(0xaaaaaaaa, msg);
+    return next();
+  });
 
-  const repairmycar = PlayerEvent.onCommandText(
-    "repairmycar",
-    ({ player, next }) => {
-      const veh = player.getVehicle();
-      if (veh) veh.repair();
-      return next();
-    },
-  );
+  const repairmycar = PlayerEvent.onCommandText("repairmycar", ({ player, next }) => {
+    const veh = player.getVehicle();
+    if (veh) veh.repair();
+    return next();
+  });
 
   const bv = PlayerEvent.onCommandText("bv", ({ player, subcommand, next }) => {
     const [vehicleId] = subcommand;
-    if (!vehicleId)
-      return player.sendClientMessage(0xffffffff, "DO: /bv [vehicleid]");
+    if (!vehicleId) return player.sendClientMessage(0xffffffff, "DO: /bv [vehicleid]");
     fs.writeFile(
       path.resolve("scriptfiles", "badvehicles.txt"),
       vehicleId + "\n",
@@ -166,98 +151,73 @@ export function createVehCommands() {
     return next();
   });
 
-  const paintjob = PlayerEvent.onCommandText(
-    "paintjob",
-    ({ player, subcommand, next }) => {
-      const [jobId] = subcommand;
-      const vid = player.getVehicle();
-      if (jobId && vid) {
-        vid.changePaintjob(+jobId);
-      }
-      return next();
-    },
-  );
+  const paintjob = PlayerEvent.onCommandText("paintjob", ({ player, subcommand, next }) => {
+    const [jobId] = subcommand;
+    const vid = player.getVehicle();
+    if (jobId && vid) {
+      vid.changePaintjob(+jobId);
+    }
+    return next();
+  });
 
-  const startengine = PlayerEvent.onCommandText(
-    "startengine",
-    ({ player, next }) => {
-      const vid = player.getVehicle();
-      if (vid) {
-        const { lights, alarm, doors, bonnet, boot, objective } =
-          vid.getParamsEx()!;
-        vid.setParamsEx(true, lights, alarm, doors, bonnet, boot, objective);
-      }
-      return next();
-    },
-  );
+  const startengine = PlayerEvent.onCommandText("startengine", ({ player, next }) => {
+    const vid = player.getVehicle();
+    if (vid) {
+      const { lights, alarm, doors, bonnet, boot, objective } = vid.getParamsEx()!;
+      vid.setParamsEx(true, lights, alarm, doors, bonnet, boot, objective);
+    }
+    return next();
+  });
 
-  const stopengine = PlayerEvent.onCommandText(
-    "stopengine",
-    ({ player, next }) => {
-      const vid = player.getVehicle();
-      if (vid) {
-        const { lights, alarm, doors, bonnet, boot, objective } =
-          vid.getParamsEx()!;
-        vid.setParamsEx(false, lights, alarm, doors, bonnet, boot, objective);
-      }
-      return next();
-    },
-  );
+  const stopengine = PlayerEvent.onCommandText("stopengine", ({ player, next }) => {
+    const vid = player.getVehicle();
+    if (vid) {
+      const { lights, alarm, doors, bonnet, boot, objective } = vid.getParamsEx()!;
+      vid.setParamsEx(false, lights, alarm, doors, bonnet, boot, objective);
+    }
+    return next();
+  });
 
   const openboot = PlayerEvent.onCommandText("openboot", ({ player, next }) => {
     const vid = player.getVehicle();
     if (vid) {
-      const { engine, lights, alarm, doors, bonnet, objective } =
-        vid.getParamsEx()!;
+      const { engine, lights, alarm, doors, bonnet, objective } = vid.getParamsEx()!;
       vid.setParamsEx(engine, lights, alarm, doors, bonnet, true, objective);
     }
     return next();
   });
 
-  const closeboot = PlayerEvent.onCommandText(
-    "closeboot",
-    ({ player, next }) => {
-      const vid = player.getVehicle();
-      if (vid) {
-        const { engine, lights, alarm, doors, bonnet, objective } =
-          vid.getParamsEx()!;
-        vid.setParamsEx(engine, lights, alarm, doors, bonnet, false, objective);
-      }
-      return next();
-    },
-  );
+  const closeboot = PlayerEvent.onCommandText("closeboot", ({ player, next }) => {
+    const vid = player.getVehicle();
+    if (vid) {
+      const { engine, lights, alarm, doors, bonnet, objective } = vid.getParamsEx()!;
+      vid.setParamsEx(engine, lights, alarm, doors, bonnet, false, objective);
+    }
+    return next();
+  });
 
-  const openbonnet = PlayerEvent.onCommandText(
-    "openbonnet",
-    ({ player, next }) => {
-      const vid = player.getVehicle();
-      if (vid) {
-        const { engine, lights, alarm, doors, boot, objective } =
-          vid.getParamsEx()!;
-        vid.setParamsEx(engine, lights, alarm, doors, true, boot, objective);
-      }
-      return next();
-    },
-  );
+  const openbonnet = PlayerEvent.onCommandText("openbonnet", ({ player, next }) => {
+    const vid = player.getVehicle();
+    if (vid) {
+      const { engine, lights, alarm, doors, boot, objective } = vid.getParamsEx()!;
+      vid.setParamsEx(engine, lights, alarm, doors, true, boot, objective);
+    }
+    return next();
+  });
 
-  const closebonnet = PlayerEvent.onCommandText(
-    "closebonnet",
-    ({ player, next }) => {
-      const vid = player.getVehicle();
-      if (vid) {
-        const { engine, lights, alarm, doors, boot, objective } =
-          vid.getParamsEx()!;
-        vid.setParamsEx(engine, lights, alarm, doors, false, boot, objective);
-      }
-      return next();
-    },
-  );
+  const closebonnet = PlayerEvent.onCommandText("closebonnet", ({ player, next }) => {
+    const vid = player.getVehicle();
+    if (vid) {
+      const { engine, lights, alarm, doors, boot, objective } = vid.getParamsEx()!;
+      vid.setParamsEx(engine, lights, alarm, doors, false, boot, objective);
+    }
+    return next();
+  });
 
   const alarmon = PlayerEvent.onCommandText("alarmon", ({ player, next }) => {
     const vid = player.getVehicle();
     if (vid) {
-      const { engine, lights, doors, boot, bonnet, objective } =
-        vid.getParamsEx()!;
+      const { engine, lights, doors, boot, bonnet, objective } = vid.getParamsEx()!;
       vid.setParamsEx(engine, lights, true, doors, bonnet, boot, objective);
     }
     return next();
@@ -266,8 +226,7 @@ export function createVehCommands() {
   const alarmoff = PlayerEvent.onCommandText("alarmoff", ({ player, next }) => {
     const vid = player.getVehicle();
     if (vid) {
-      const { engine, lights, doors, boot, bonnet, objective } =
-        vid.getParamsEx()!;
+      const { engine, lights, doors, boot, bonnet, objective } = vid.getParamsEx()!;
       vid.setParamsEx(engine, lights, true, doors, bonnet, boot, objective);
     }
     return next();
@@ -276,64 +235,50 @@ export function createVehCommands() {
   const lightson = PlayerEvent.onCommandText("lightson", ({ player, next }) => {
     const vid = player.getVehicle();
     if (vid) {
-      const { engine, alarm, doors, boot, bonnet, objective } =
-        vid.getParamsEx()!;
+      const { engine, alarm, doors, boot, bonnet, objective } = vid.getParamsEx()!;
       vid.setParamsEx(engine, true, alarm, doors, bonnet, boot, objective);
     }
     return next();
   });
 
-  const lightsoff = PlayerEvent.onCommandText(
-    "lightsoff",
-    ({ player, next }) => {
-      const vid = player.getVehicle();
-      if (vid) {
-        const { engine, alarm, doors, boot, bonnet, objective } =
-          vid.getParamsEx()!;
-        vid.setParamsEx(engine, false, alarm, doors, bonnet, boot, objective);
-      }
-      return next();
-    },
-  );
+  const lightsoff = PlayerEvent.onCommandText("lightsoff", ({ player, next }) => {
+    const vid = player.getVehicle();
+    if (vid) {
+      const { engine, alarm, doors, boot, bonnet, objective } = vid.getParamsEx()!;
+      vid.setParamsEx(engine, false, alarm, doors, bonnet, boot, objective);
+    }
+    return next();
+  });
 
-  const atrailer = PlayerEvent.onCommandText(
-    "atrailer",
-    ({ player, subcommand, next }) => {
-      const veh = player.getVehicle();
-      if (!veh) return next();
-      const [trailerId] = subcommand;
-      const trailer = Vehicle.getInstance(+trailerId);
-      if (!trailer) return next();
-      veh.attachTrailer(trailer);
-      return next();
-    },
-  );
+  const atrailer = PlayerEvent.onCommandText("atrailer", ({ player, subcommand, next }) => {
+    const veh = player.getVehicle();
+    if (!veh) return next();
+    const [trailerId] = subcommand;
+    const trailer = Vehicle.getInstance(+trailerId);
+    if (!trailer) return next();
+    veh.attachTrailer(trailer);
+    return next();
+  });
 
-  const dtrailer = PlayerEvent.onCommandText(
-    ["dtrailer", "detachtrailer"],
-    ({ player, next }) => {
-      const veh = player.getVehicle();
-      if (!veh) return next();
+  const dtrailer = PlayerEvent.onCommandText(["dtrailer", "detachtrailer"], ({ player, next }) => {
+    const veh = player.getVehicle();
+    if (!veh) return next();
 
-      const trailer = veh.getTrailer();
-      if (trailer) {
-        veh.detachTrailer();
-      }
-      return next();
-    },
-  );
+    const trailer = veh.getTrailer();
+    if (trailer) {
+      veh.detachTrailer();
+    }
+    return next();
+  });
 
-  const respawn_veh = PlayerEvent.onCommandText(
-    "respawn_veh",
-    ({ subcommand, next }) => {
-      const [vehId] = subcommand;
-      const veh = Vehicle.getInstance(+vehId);
-      if (veh) {
-        veh.setRespawn();
-      }
-      return next();
-    },
-  );
+  const respawn_veh = PlayerEvent.onCommandText("respawn_veh", ({ subcommand, next }) => {
+    const [vehId] = subcommand;
+    const veh = Vehicle.getInstance(+vehId);
+    if (veh) {
+      veh.setRespawn();
+    }
+    return next();
+  });
 
   const timed_vd = PlayerEvent.onCommandText("timed_vd", ({ player, next }) => {
     setTimeout(() => {
@@ -345,112 +290,82 @@ export function createVehCommands() {
     return next();
   });
 
-  const vmodelsize = PlayerEvent.onCommandText(
-    "vmodelsize",
-    ({ player, next }) => {
-      const pos = player.getPos();
-      if (!pos.ret) return next();
-      const veh = player.getVehicle();
-      if (!veh) {
-        player.sendClientMessage(
-          0xffffffff,
-          "/vmodelsize : Be in a vehicle to use this command.",
-        );
-        return next();
-      }
-      const vehModel = veh.getModel();
-      const { x, y, z } = veh.getModelInfo(VehicleModelInfoEnum.SIZE);
-      const _x = x.toFixed(4);
-      const _y = y.toFixed(4);
-      const _z = z.toFixed(4);
-      player.sendClientMessage(
-        0xffffffff,
-        `Vehicle(${vehModel}) Size: ${_x}, ${_y}, ${_z}`,
-      );
+  const vmodelsize = PlayerEvent.onCommandText("vmodelsize", ({ player, next }) => {
+    const pos = player.getPos();
+    if (!pos.ret) return next();
+    const veh = player.getVehicle();
+    if (!veh) {
+      player.sendClientMessage(0xffffffff, "/vmodelsize : Be in a vehicle to use this command.");
       return next();
-    },
-  );
+    }
+    const vehModel = veh.getModel();
+    const { x, y, z } = veh.getModelInfo(VehicleModelInfoEnum.SIZE);
+    const _x = x.toFixed(4);
+    const _y = y.toFixed(4);
+    const _z = z.toFixed(4);
+    player.sendClientMessage(0xffffffff, `Vehicle(${vehModel}) Size: ${_x}, ${_y}, ${_z}`);
+    return next();
+  });
 
-  const sirenstate = PlayerEvent.onCommandText(
-    "sirenstate",
-    ({ player, next }) => {
-      const veh = player.getVehicle();
-      if (veh && veh.getParamsSirenState() === VehicleParamsEnum.ON) {
-        player.sendClientMessage(0xffffffff, "Siren is ON");
-      } else {
-        player.sendClientMessage(0xffffffff, "Siren is OFF");
-      }
-      return next();
-    },
-  );
+  const sirenstate = PlayerEvent.onCommandText("sirenstate", ({ player, next }) => {
+    const veh = player.getVehicle();
+    if (veh && veh.getParamsSirenState() === VehicleParamsEnum.ON) {
+      player.sendClientMessage(0xffffffff, "Siren is ON");
+    } else {
+      player.sendClientMessage(0xffffffff, "Siren is OFF");
+    }
+    return next();
+  });
 
-  const opencardoors = PlayerEvent.onCommandText(
-    "opencardoors",
-    ({ player, next }) => {
-      const veh = player.getVehicle();
-      if (veh) {
-        veh.setParamsCarDoors(true, true, true, true);
-      }
-      // const targetVeh = player.getCameraTargetVehicle();
-      // if (targetVeh) {
-      //   targetVeh.setParamsCarDoors(true, true, true, true);
-      // }
-      return next();
-    },
-  );
+  const opencardoors = PlayerEvent.onCommandText("opencardoors", ({ player, next }) => {
+    const veh = player.getVehicle();
+    if (veh) {
+      veh.setParamsCarDoors(true, true, true, true);
+    }
+    // const targetVeh = player.getCameraTargetVehicle();
+    // if (targetVeh) {
+    //   targetVeh.setParamsCarDoors(true, true, true, true);
+    // }
+    return next();
+  });
 
-  const closecardoors = PlayerEvent.onCommandText(
-    "closecardoors",
-    ({ player, next }) => {
-      const veh = player.getVehicle();
-      if (veh) {
-        veh.setParamsCarDoors(false, false, false, false);
-      }
-      // const targetVeh = player.getCameraTargetVehicle();
-      // if (targetVeh) {
-      //   targetVeh.setParamsCarDoors(false, false, false, false);
-      // }
-      return next();
-    },
-  );
+  const closecardoors = PlayerEvent.onCommandText("closecardoors", ({ player, next }) => {
+    const veh = player.getVehicle();
+    if (veh) {
+      veh.setParamsCarDoors(false, false, false, false);
+    }
+    // const targetVeh = player.getCameraTargetVehicle();
+    // if (targetVeh) {
+    //   targetVeh.setParamsCarDoors(false, false, false, false);
+    // }
+    return next();
+  });
 
-  const opencarwindows = PlayerEvent.onCommandText(
-    "opencarwindows",
-    ({ player, next }) => {
-      const veh = player.getVehicle();
-      if (veh) {
-        veh.setParamsCarWindows(true, true, true, true);
-      }
-      return next();
-    },
-  );
+  const opencarwindows = PlayerEvent.onCommandText("opencarwindows", ({ player, next }) => {
+    const veh = player.getVehicle();
+    if (veh) {
+      veh.setParamsCarWindows(true, true, true, true);
+    }
+    return next();
+  });
 
-  const closecarwindows = PlayerEvent.onCommandText(
-    "closecarwindows",
-    ({ player, next }) => {
-      const veh = player.getVehicle();
-      if (veh) {
-        veh.setParamsCarWindows(false, false, false, false);
-      }
-      return next();
-    },
-  );
+  const closecarwindows = PlayerEvent.onCommandText("closecarwindows", ({ player, next }) => {
+    const veh = player.getVehicle();
+    if (veh) {
+      veh.setParamsCarWindows(false, false, false, false);
+    }
+    return next();
+  });
 
-  const disablevcol = PlayerEvent.onCommandText(
-    "disablevcol",
-    ({ player, next }) => {
-      player.disableRemoteVehicleCollisions(true);
-      return next();
-    },
-  );
+  const disablevcol = PlayerEvent.onCommandText("disablevcol", ({ player, next }) => {
+    player.disableRemoteVehicleCollisions(true);
+    return next();
+  });
 
-  const enablevcol = PlayerEvent.onCommandText(
-    "enablevcol",
-    ({ player, next }) => {
-      player.disableRemoteVehicleCollisions(false);
-      return next();
-    },
-  );
+  const enablevcol = PlayerEvent.onCommandText("enablevcol", ({ player, next }) => {
+    player.disableRemoteVehicleCollisions(false);
+    return next();
+  });
 
   return [
     player2v,

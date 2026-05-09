@@ -74,54 +74,51 @@ export const [onRejectedHit, triggerOnRejectedHit] = defineEvent({
   },
 });
 
-export const [onPlayerDeathFinished, triggerOnPlayerDeathFinished] =
-  defineEvent({
-    name: "OnPlayerDeathFinished",
-    isNative: false,
-    beforeEach(player: Player) {
-      return {
-        player,
-      };
-    },
-  });
+export const [onPlayerDeathFinished, triggerOnPlayerDeathFinished] = defineEvent({
+  name: "OnPlayerDeathFinished",
+  isNative: false,
+  beforeEach(player: Player) {
+    return {
+      player,
+    };
+  },
+});
 
 export interface IEditableOnPlayerUseVendingMachine {
   healthGiven: number;
 }
 
-export const [onPlayerUseVendingMachine, triggerOnPlayerUseVendingMachine] =
-  defineEvent({
-    name: "OnPlayerUseVendingMachine",
-    isNative: false,
-    beforeEach(player, editable: IEditableOnPlayerUseVendingMachine) {
-      return {
-        player,
-        editable,
-      };
-    },
-  });
+export const [onPlayerUseVendingMachine, triggerOnPlayerUseVendingMachine] = defineEvent({
+  name: "OnPlayerUseVendingMachine",
+  isNative: false,
+  beforeEach(player, editable: IEditableOnPlayerUseVendingMachine) {
+    return {
+      player,
+      editable,
+    };
+  },
+});
 
-export const [onInvalidWeaponDamage, triggerOnInvalidWeaponDamage] =
-  defineEvent({
-    name: "OnInvalidWeaponDamage",
-    isNative: false,
-    beforeEach(
-      player: Player | InvalidEnum.PLAYER_ID,
-      damaged: Player,
-      amount: number,
-      weapon: number,
-      bodyPart: number,
-      error: InvalidDamageEnum,
-      given: boolean,
-    ) {
-      return {
-        player,
-        damaged,
-        amount,
-        weapon,
-        bodyPart,
-        error,
-        given,
-      };
-    },
-  });
+export const [onInvalidWeaponDamage, triggerOnInvalidWeaponDamage] = defineEvent({
+  name: "OnInvalidWeaponDamage",
+  isNative: false,
+  beforeEach(
+    player: Player | InvalidEnum.PLAYER_ID,
+    damaged: Player,
+    amount: number,
+    weapon: number,
+    bodyPart: number,
+    error: InvalidDamageEnum,
+    given: boolean,
+  ) {
+    return {
+      player,
+      damaged,
+      amount,
+      weapon,
+      bodyPart,
+      error,
+      given,
+    };
+  },
+});

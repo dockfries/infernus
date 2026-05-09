@@ -1,10 +1,5 @@
 import type { StreamerItemTypes } from "../definitions/ItemTypes";
-import {
-  SERVER_WIDE,
-  DEFAULT_MAX_ITEMS,
-  DEFAULT_RANGE,
-  DEFAULT_WORLD_ID,
-} from "../constants";
+import { SERVER_WIDE, DEFAULT_MAX_ITEMS, DEFAULT_RANGE, DEFAULT_WORLD_ID } from "../constants";
 
 export const Streamer_GetDistanceToItem = (
   x: number,
@@ -33,14 +28,7 @@ export const Streamer_ToggleItem = (
   id: number,
   toggle: boolean,
 ): number => {
-  return samp.callNative(
-    "Streamer_ToggleItem",
-    "iiii",
-    playerId,
-    type,
-    id,
-    toggle,
-  );
+  return samp.callNative("Streamer_ToggleItem", "iiii", playerId, type, id, toggle);
 };
 
 export const Streamer_IsToggleItem = (
@@ -73,13 +61,7 @@ export const Streamer_GetItemInternalID = (
   type: StreamerItemTypes,
   streamerId: number,
 ): number => {
-  return samp.callNative(
-    "Streamer_GetItemInternalID",
-    "iii",
-    playerId,
-    type,
-    streamerId,
-  );
+  return samp.callNative("Streamer_GetItemInternalID", "iii", playerId, type, streamerId);
 };
 
 export const Streamer_GetItemStreamerID = (
@@ -87,13 +69,7 @@ export const Streamer_GetItemStreamerID = (
   type: StreamerItemTypes,
   internalId: number,
 ): number => {
-  return samp.callNative(
-    "Streamer_GetItemStreamerID",
-    "iii",
-    playerId,
-    type,
-    internalId,
-  );
+  return samp.callNative("Streamer_GetItemStreamerID", "iii", playerId, type, internalId);
 };
 
 export const Streamer_IsItemVisible = (
@@ -109,13 +85,7 @@ export const Streamer_DestroyAllVisibleItems = (
   type: StreamerItemTypes,
   serverWide = SERVER_WIDE,
 ): number => {
-  return samp.callNative(
-    "Streamer_DestroyAllVisibleItems",
-    "iii",
-    playerId,
-    type,
-    serverWide,
-  );
+  return samp.callNative("Streamer_DestroyAllVisibleItems", "iii", playerId, type, serverWide);
 };
 
 export const Streamer_CountVisibleItems = (
@@ -123,13 +93,7 @@ export const Streamer_CountVisibleItems = (
   type: StreamerItemTypes,
   serverWide = SERVER_WIDE,
 ): number => {
-  return samp.callNative(
-    "Streamer_CountVisibleItems",
-    "iii",
-    playerId,
-    type,
-    serverWide,
-  );
+  return samp.callNative("Streamer_CountVisibleItems", "iii", playerId, type, serverWide);
 };
 
 export const Streamer_DestroyAllItems = (
@@ -139,10 +103,7 @@ export const Streamer_DestroyAllItems = (
   return samp.callNative("Streamer_DestroyAllItems", "ii", type, serverWide);
 };
 
-export const Streamer_CountItems = (
-  type: StreamerItemTypes,
-  serverWide = SERVER_WIDE,
-): number => {
+export const Streamer_CountItems = (type: StreamerItemTypes, serverWide = SERVER_WIDE): number => {
   return samp.callNative("Streamer_CountItems", "ii", type, serverWide);
 };
 
@@ -201,15 +162,7 @@ export const Streamer_SetItemPos = (
   y: number,
   z: number,
 ) => {
-  return samp.callNative(
-    "Streamer_SetItemPos",
-    "iifff",
-    type,
-    id,
-    x,
-    y,
-    z,
-  ) as number;
+  return samp.callNative("Streamer_SetItemPos", "iifff", type, id, x, y, z) as number;
 };
 
 export const Streamer_GetItemOffset = (type: StreamerItemTypes, id: number) => {
@@ -229,13 +182,5 @@ export const Streamer_SetItemOffset = (
   y: number,
   z: number,
 ) => {
-  return samp.callNative(
-    "Streamer_SetItemOffset",
-    "iifff",
-    type,
-    id,
-    x,
-    y,
-    z,
-  ) as number;
+  return samp.callNative("Streamer_SetItemOffset", "iifff", type, id, x, y, z) as number;
 };

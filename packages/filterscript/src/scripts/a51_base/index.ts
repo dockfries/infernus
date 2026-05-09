@@ -37,29 +37,20 @@ function registerEvent(_options: IA51BaseFSOptions) {
     unloadLabels(_options, i18n!, player);
     return next();
   });
-  const offOnKeyStateChange = PlayerEvent.onKeyStateChange(
-    ({ player, newKeys, next }) => {
-      moveGate(player, newKeys, _options, i18n!);
+  const offOnKeyStateChange = PlayerEvent.onKeyStateChange(({ player, newKeys, next }) => {
+    moveGate(player, newKeys, _options, i18n!);
+    return next();
+  });
+
+  const offOnCommandReceived = PlayerEvent.onCommandReceived(({ player, command, next }) => {
+    if (_options.onCommandReceived) {
+      const ret = _options.onCommandReceived(player, command);
+      if (!ret) return ret;
       return next();
-    },
-  );
+    }
+  });
 
-  const offOnCommandReceived = PlayerEvent.onCommandReceived(
-    ({ player, command, next }) => {
-      if (_options.onCommandReceived) {
-        const ret = _options.onCommandReceived(player, command);
-        if (!ret) return ret;
-        return next();
-      }
-    },
-  );
-
-  return [
-    offOnConnect,
-    offOnDisconnect,
-    offOnKeyStateChange,
-    offOnCommandReceived,
-  ];
+  return [offOnConnect, offOnDisconnect, offOnKeyStateChange, offOnCommandReceived];
 }
 
 function registerCommand(options: IA51BaseFSOptions) {

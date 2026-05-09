@@ -31,16 +31,7 @@ function onePlayAnim(
   freeze: boolean,
   time = 0,
 ) {
-  player.applyAnimation(
-    animLib,
-    animName,
-    speed,
-    looping,
-    lockX,
-    lockY,
-    freeze,
-    time,
-  );
+  player.applyAnimation(animLib, animName, speed, looping, lockX, lockY, freeze, time);
 }
 
 function loopingAnim(
@@ -55,30 +46,13 @@ function loopingAnim(
   time = 0,
 ) {
   gPlayerUsingLoopingAnim.add(player);
-  player.applyAnimation(
-    animLib,
-    animName,
-    speed,
-    looping,
-    lockX,
-    lockY,
-    freeze,
-    time,
-  );
+  player.applyAnimation(animLib, animName, speed, looping, lockX, lockY, freeze, time);
   txtAnimHelper!.show(player);
 }
 
 function stopLoopingAnim(player: Player) {
   gPlayerUsingLoopingAnim.delete(player);
-  player.applyAnimation(
-    "CARRY",
-    "crry_prtial",
-    4.0,
-    false,
-    false,
-    false,
-    false,
-  );
+  player.applyAnimation("CARRY", "crry_prtial", 4.0, false, false, false, false);
   if (!player.isControllable()) {
     player.toggleControllable(true);
   }
@@ -107,18 +81,16 @@ export const GlActions: IGlActionsFS = {
     txtAnimHelper.setColor(0xffffffff);
     txtAnimHelper.setAlignment(3); // align right
 
-    const onKeyStateChange = PlayerEvent.onKeyStateChange(
-      ({ player, newKeys, oldKeys, next }) => {
-        if (!gPlayerUsingLoopingAnim.has(player)) return next();
+    const onKeyStateChange = PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
+      if (!gPlayerUsingLoopingAnim.has(player)) return next();
 
-        if (isKeyJustDown(KeysEnum.SPRINT, newKeys, oldKeys)) {
-          stopLoopingAnim(player);
-          txtAnimHelper!.hide(player);
-        }
+      if (isKeyJustDown(KeysEnum.SPRINT, newKeys, oldKeys)) {
+        stopLoopingAnim(player);
+        txtAnimHelper!.hide(player);
+      }
 
-        return next();
-      },
-    );
+      return next();
+    });
 
     const onDeath = PlayerEvent.onDeath(({ player, next }) => {
       // if they die whilst performing a looping anim, we should reset the state
@@ -145,59 +117,47 @@ export const GlActions: IGlActionsFS = {
       return next();
     });
 
-    const animlist = PlayerEvent.onCommandText(
-      "animlist",
-      ({ player, next }) => {
-        player.sendClientMessage(0xafafafaa, "Available Animations:");
-        player.sendClientMessage(
-          0xafafafaa,
-          "/handsup /drunk /bomb /getarrested /laugh /lookout /robman",
-        );
-        player.sendClientMessage(
-          0xafafafaa,
-          "/crossarms /lay /hide /vomit /eat /wave /taichi",
-        );
-        player.sendClientMessage(
-          0xafafafaa,
-          "/deal /crack /smokem /smokef /groundsit /chat /dance /f**ku",
-        );
-        return next();
-      },
-    );
+    const animlist = PlayerEvent.onCommandText("animlist", ({ player, next }) => {
+      player.sendClientMessage(0xafafafaa, "Available Animations:");
+      player.sendClientMessage(
+        0xafafafaa,
+        "/handsup /drunk /bomb /getarrested /laugh /lookout /robman",
+      );
+      player.sendClientMessage(0xafafafaa, "/crossarms /lay /hide /vomit /eat /wave /taichi");
+      player.sendClientMessage(
+        0xafafafaa,
+        "/deal /crack /smokem /smokef /groundsit /chat /dance /f**ku",
+      );
+      return next();
+    });
 
-    const amcuffed = PlayerEvent.onCommandText(
-      "amcuffed",
-      ({ player, next }) => {
-        // note: the cuffs have not been scaled for all player models
-        player.setAttachedObject(
-          8,
-          19418,
-          6,
-          -0.031999,
-          0.024,
-          -0.024,
-          -7.9,
-          -32.000011,
-          -72.299987,
-          1.115998,
-          1.322,
-          1.406,
-        );
-        player.setSpecialAction(SpecialActionsEnum.CUFFED);
-        return next();
-      },
-    );
+    const amcuffed = PlayerEvent.onCommandText("amcuffed", ({ player, next }) => {
+      // note: the cuffs have not been scaled for all player models
+      player.setAttachedObject(
+        8,
+        19418,
+        6,
+        -0.031999,
+        0.024,
+        -0.024,
+        -7.9,
+        -32.000011,
+        -72.299987,
+        1.115998,
+        1.322,
+        1.406,
+      );
+      player.setSpecialAction(SpecialActionsEnum.CUFFED);
+      return next();
+    });
 
-    const uncuffme = PlayerEvent.onCommandText(
-      "uncuffme",
-      ({ player, next }) => {
-        if (player.isAttachedObjectSlotUsed(8)) {
-          player.removeAttachedObject(8);
-        }
-        player.setSpecialAction(SpecialActionsEnum.NONE);
-        return next();
-      },
-    );
+    const uncuffme = PlayerEvent.onCommandText("uncuffme", ({ player, next }) => {
+      if (player.isAttachedObjectSlotUsed(8)) {
+        player.removeAttachedObject(8);
+      }
+      player.setSpecialAction(SpecialActionsEnum.NONE);
+      return next();
+    });
 
     PlayerEvent.onCommandReceived(({ player, command, next }) => {
       if (onFootList.findIndex((o) => o === command) > -1) {
@@ -236,100 +196,38 @@ export const GlActions: IGlActionsFS = {
     // Place a Bomb
     const bomb = PlayerEvent.onCommandText("bomb", ({ player, next }) => {
       player.clearAnimations();
-      onePlayAnim(
-        player,
-        "BOMBER",
-        "BOM_Plant",
-        4.0,
-        false,
-        false,
-        false,
-        false,
-      ); // Place Bomb
+      onePlayAnim(player, "BOMBER", "BOM_Plant", 4.0, false, false, false, false); // Place Bomb
       return next();
     });
 
     // Police Arrest
-    const getarrested = PlayerEvent.onCommandText(
-      "getarrested",
-      ({ player, next }) => {
-        loopingAnim(
-          player,
-          "ped",
-          "ARRESTgun",
-          4.0,
-          false,
-          true,
-          true,
-          true,
-          -1,
-        ); // Gun Arrest
-        return next();
-      },
-    );
+    const getarrested = PlayerEvent.onCommandText("getarrested", ({ player, next }) => {
+      loopingAnim(player, "ped", "ARRESTgun", 4.0, false, true, true, true, -1); // Gun Arrest
+      return next();
+    });
 
     // Laugh
     const laugh = PlayerEvent.onCommandText("laugh", ({ player, next }) => {
-      onePlayAnim(
-        player,
-        "RAPPING",
-        "Laugh_01",
-        4.0,
-        false,
-        false,
-        false,
-        false,
-      ); // Laugh
+      onePlayAnim(player, "RAPPING", "Laugh_01", 4.0, false, false, false, false); // Laugh
       return next();
     });
 
     // Rob Lookout
     const lookout = PlayerEvent.onCommandText("lookout", ({ player, next }) => {
-      onePlayAnim(
-        player,
-        "SHOP",
-        "ROB_Shifty",
-        4.0,
-        false,
-        false,
-        false,
-        false,
-      ); // Rob Lookout
+      onePlayAnim(player, "SHOP", "ROB_Shifty", 4.0, false, false, false, false); // Rob Lookout
       return next();
     });
 
     // Rob Threat
     const robman = PlayerEvent.onCommandText("robman", ({ player, next }) => {
-      loopingAnim(
-        player,
-        "SHOP",
-        "ROB_Loop_Threat",
-        4.0,
-        true,
-        false,
-        false,
-        false,
-      ); // Rob
+      loopingAnim(player, "SHOP", "ROB_Loop_Threat", 4.0, true, false, false, false); // Rob
       return next();
     });
     // Arms crossed
-    const crossarms = PlayerEvent.onCommandText(
-      "crossarms",
-      ({ player, next }) => {
-        loopingAnim(
-          player,
-          "COP_AMBIENT",
-          "Coplook_loop",
-          4.0,
-          false,
-          true,
-          true,
-          true,
-          -1,
-        ); // Arms crossed
-        return next();
-      },
-    );
+    const crossarms = PlayerEvent.onCommandText("crossarms", ({ player, next }) => {
+      loopingAnim(player, "COP_AMBIENT", "Coplook_loop", 4.0, false, true, true, true, -1); // Arms crossed
+      return next();
+    });
     // Lay Down
     const lay = PlayerEvent.onCommandText("lay", ({ player, next }) => {
       loopingAnim(player, "BEACH", "bather", 4.0, true, false, false, false); // Lay down
@@ -342,72 +240,27 @@ export const GlActions: IGlActionsFS = {
     });
     // Vomit
     const vomit = PlayerEvent.onCommandText("vomit", ({ player, next }) => {
-      onePlayAnim(
-        player,
-        "FOOD",
-        "EAT_Vomit_P",
-        3.0,
-        false,
-        false,
-        false,
-        false,
-      ); // Vomit BAH!
+      onePlayAnim(player, "FOOD", "EAT_Vomit_P", 3.0, false, false, false, false); // Vomit BAH!
       return next();
     });
     // Eat Burger
     const eat = PlayerEvent.onCommandText("eat", ({ player, next }) => {
-      onePlayAnim(
-        player,
-        "FOOD",
-        "EAT_Burger",
-        3.0,
-        false,
-        false,
-        false,
-        false,
-      ); // Eat Burger
+      onePlayAnim(player, "FOOD", "EAT_Burger", 3.0, false, false, false, false); // Eat Burger
       return next();
     });
     // Wave
     const wave = PlayerEvent.onCommandText("wave", ({ player, next }) => {
-      loopingAnim(
-        player,
-        "ON_LOOKERS",
-        "wave_loop",
-        4.0,
-        true,
-        false,
-        false,
-        false,
-      ); // Wave
+      loopingAnim(player, "ON_LOOKERS", "wave_loop", 4.0, true, false, false, false); // Wave
       return next();
     });
     // Slap Ass
     const slapass = PlayerEvent.onCommandText("slapass", ({ player, next }) => {
-      onePlayAnim(
-        player,
-        "SWEET",
-        "sweet_ass_slap",
-        4.0,
-        false,
-        false,
-        false,
-        false,
-      ); // Ass Slapping
+      onePlayAnim(player, "SWEET", "sweet_ass_slap", 4.0, false, false, false, false); // Ass Slapping
       return next();
     });
     // Dealer
     const deal = PlayerEvent.onCommandText("deal", ({ player, next }) => {
-      onePlayAnim(
-        player,
-        "DEALER",
-        "DEALER_DEAL",
-        4.0,
-        false,
-        false,
-        false,
-        false,
-      ); // Deal Drugs
+      onePlayAnim(player, "DEALER", "DEALER_DEAL", 4.0, false, false, false, false); // Deal Drugs
       return next();
     });
     // Crack Dieing
@@ -417,49 +270,19 @@ export const GlActions: IGlActionsFS = {
     });
     // Male Smoking
     const smokem = PlayerEvent.onCommandText("smokem", ({ player, next }) => {
-      loopingAnim(
-        player,
-        "SMOKING",
-        "M_smklean_loop",
-        4.0,
-        true,
-        false,
-        false,
-        false,
-      ); // Smoke
+      loopingAnim(player, "SMOKING", "M_smklean_loop", 4.0, true, false, false, false); // Smoke
       return next();
     });
     // Female Smoking
     const smokef = PlayerEvent.onCommandText("smokef", ({ player, next }) => {
-      loopingAnim(
-        player,
-        "SMOKING",
-        "F_smklean_loop",
-        4.0,
-        true,
-        false,
-        false,
-        false,
-      ); // Female Smoking
+      loopingAnim(player, "SMOKING", "F_smklean_loop", 4.0, true, false, false, false); // Female Smoking
       return next();
     });
     // Sit
-    const groundsit = PlayerEvent.onCommandText(
-      "groundsit",
-      ({ player, next }) => {
-        loopingAnim(
-          player,
-          "BEACH",
-          "ParkSit_M_loop",
-          4.0,
-          true,
-          false,
-          false,
-          false,
-        ); // Sit
-        return next();
-      },
-    );
+    const groundsit = PlayerEvent.onCommandText("groundsit", ({ player, next }) => {
+      loopingAnim(player, "BEACH", "ParkSit_M_loop", 4.0, true, false, false, false); // Sit
+      return next();
+    });
     // Idle Chat
     const chat = PlayerEvent.onCommandText("chat", ({ player, next }) => {
       onePlayAnim(player, "PED", "IDLE_CHAT", 4.0, false, false, false, false);
@@ -472,179 +295,88 @@ export const GlActions: IGlActionsFS = {
     });
     // TaiChi
     const taichi = PlayerEvent.onCommandText("taichi", ({ player, next }) => {
-      loopingAnim(
-        player,
-        "PARK",
-        "Tai_Chi_Loop",
-        4.0,
-        true,
-        false,
-        false,
-        false,
-      );
+      loopingAnim(player, "PARK", "Tai_Chi_Loop", 4.0, true, false, false, false);
       return next();
     });
 
     // ChairSit
-    const chairsit = PlayerEvent.onCommandText(
-      "chairsit",
-      ({ player, next }) => {
-        loopingAnim(
-          player,
-          "BAR",
-          "dnk_stndF_loop",
-          4.0,
-          true,
-          false,
-          false,
-          false,
-        );
-        return next();
-      },
-    );
+    const chairsit = PlayerEvent.onCommandText("chairsit", ({ player, next }) => {
+      loopingAnim(player, "BAR", "dnk_stndF_loop", 4.0, true, false, false, false);
+      return next();
+    });
 
     // Collapse
-    const collapse = PlayerEvent.onCommandText(
-      "collapse",
-      ({ player, next }) => {
-        loopingAnim(
-          player,
-          "PED",
-          "FALL_COLLAPSE",
-          4.0,
-          true,
-          false,
-          false,
-          false,
-        );
-        return next();
-      },
-    );
+    const collapse = PlayerEvent.onCommandText("collapse", ({ player, next }) => {
+      loopingAnim(player, "PED", "FALL_COLLAPSE", 4.0, true, false, false, false);
+      return next();
+    });
 
     // fall
-    const fallover = PlayerEvent.onCommandText(
-      "fallover",
-      ({ player, next }) => {
-        loopingAnim(player, "PED", "FALL_FALL", 4.0, true, false, false, false);
-        return next();
-      },
-    );
+    const fallover = PlayerEvent.onCommandText("fallover", ({ player, next }) => {
+      loopingAnim(player, "PED", "FALL_FALL", 4.0, true, false, false, false);
+      return next();
+    });
 
     // ko
     const ko1 = PlayerEvent.onCommandText("ko1", ({ player, next }) => {
-      loopingAnim(
-        player,
-        "PED",
-        "KO_SHOT_STOM",
-        200.0,
-        false,
-        true,
-        true,
-        true,
-        -1,
-      );
+      loopingAnim(player, "PED", "KO_SHOT_STOM", 200.0, false, true, true, true, -1);
       return next();
     });
 
     // ko
     const ko2 = PlayerEvent.onCommandText("ko2", ({ player, next }) => {
-      loopingAnim(
-        player,
-        "PED",
-        "KO_SHOT_FACE",
-        4.0,
-        false,
-        true,
-        true,
-        true,
-        -1,
-      );
+      loopingAnim(player, "PED", "KO_SHOT_FACE", 4.0, false, true, true, true, -1);
       return next();
     });
 
-    const floorhit = PlayerEvent.onCommandText(
-      "floorhit",
-      ({ player, next }) => {
-        player.applyAnimation(
-          "PED",
-          "FLOOR_hit_f",
-          4.1,
-          false,
-          false,
-          false,
-          true,
-        );
-        return next();
-      },
-    );
+    const floorhit = PlayerEvent.onCommandText("floorhit", ({ player, next }) => {
+      player.applyAnimation("PED", "FLOOR_hit_f", 4.1, false, false, false, true);
+      return next();
+    });
 
     // Would allow people to troll... but would be cool as a script controlled function
     // Bed Sleep R
     let inbedright: ReturnType<typeof PlayerEvent.onCommandText> | null = null,
       inbedleft: ReturnType<typeof PlayerEvent.onCommandText> | null = null;
     if (options && options.useBedAnim) {
-      inbedright = PlayerEvent.onCommandText(
-        "inbedright",
-        ({ player, next }) => {
-          loopingAnim(
-            player,
-            "INT_HOUSE",
-            "BED_Loop_R",
-            4.0,
-            false,
-            true,
-            true,
-            true,
-          );
-          return next();
-        },
-      );
+      inbedright = PlayerEvent.onCommandText("inbedright", ({ player, next }) => {
+        loopingAnim(player, "INT_HOUSE", "BED_Loop_R", 4.0, false, true, true, true);
+        return next();
+      });
 
       // Bed Sleep L
       inbedleft = PlayerEvent.onCommandText("inbedleft", ({ player, next }) => {
-        loopingAnim(
-          player,
-          "INT_HOUSE",
-          "BED_Loop_L",
-          4.0,
-          true,
-          false,
-          false,
-          false,
-        );
+        loopingAnim(player, "INT_HOUSE", "BED_Loop_L", 4.0, true, false, false, false);
         return next();
       });
     }
 
     // START DANCING
-    const dance = PlayerEvent.onCommandText(
-      "dance",
-      ({ player, subcommand, next }) => {
-        // Get the dance style param
-        const tmp = subcommand[0];
-        if (!tmp || tmp.length > 2) {
-          player.sendClientMessage(0xff0000ff, "USAGE: /dance [style 1-4]");
-          return next();
-        }
-
-        const danceStyle = +tmp;
-        if (danceStyle < 1 || danceStyle > 4) {
-          player.sendClientMessage(0xff0000ff, "USAGE: /dance [style 1-4]");
-          return next();
-        }
-
-        if (danceStyle === 1) {
-          player.setSpecialAction(SpecialActionsEnum.DANCE1);
-        } else if (danceStyle === 2) {
-          player.setSpecialAction(SpecialActionsEnum.DANCE2);
-        } else if (danceStyle === 3) {
-          player.setSpecialAction(SpecialActionsEnum.DANCE3);
-        } else if (danceStyle === 4) {
-          player.setSpecialAction(SpecialActionsEnum.DANCE4);
-        }
+    const dance = PlayerEvent.onCommandText("dance", ({ player, subcommand, next }) => {
+      // Get the dance style param
+      const tmp = subcommand[0];
+      if (!tmp || tmp.length > 2) {
+        player.sendClientMessage(0xff0000ff, "USAGE: /dance [style 1-4]");
         return next();
-      },
-    );
+      }
+
+      const danceStyle = +tmp;
+      if (danceStyle < 1 || danceStyle > 4) {
+        player.sendClientMessage(0xff0000ff, "USAGE: /dance [style 1-4]");
+        return next();
+      }
+
+      if (danceStyle === 1) {
+        player.setSpecialAction(SpecialActionsEnum.DANCE1);
+      } else if (danceStyle === 2) {
+        player.setSpecialAction(SpecialActionsEnum.DANCE2);
+      } else if (danceStyle === 3) {
+        player.setSpecialAction(SpecialActionsEnum.DANCE3);
+      } else if (danceStyle === 4) {
+        player.setSpecialAction(SpecialActionsEnum.DANCE4);
+      }
+      return next();
+    });
 
     const offs = [
       onKeyStateChange,

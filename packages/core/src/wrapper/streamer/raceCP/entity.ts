@@ -44,12 +44,9 @@ export class DynamicRaceCP {
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
       throw new DynamicRaceCpException("Cannot create again");
-    if (!this.sourceInfo)
-      throw new DynamicRaceCpException("Cannot create with only id");
-    let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
-      this.sourceInfo;
-    const { type, size, x, y, z, nextX, nextY, nextZ, extended } =
-      this.sourceInfo;
+    if (!this.sourceInfo) throw new DynamicRaceCpException("Cannot create with only id");
+    let { streamDistance, worldId, interiorId, playerId, areaId, priority } = this.sourceInfo;
+    const { type, size, x, y, z, nextX, nextY, nextZ, extended } = this.sourceInfo;
 
     if (type < 0 || type > 8) throw new DynamicRaceCpException("Invalid type");
 
@@ -117,9 +114,7 @@ export class DynamicRaceCP {
   }
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
-      throw new DynamicRaceCpException(
-        "Cannot destroy the checkpoint before create",
-      );
+      throw new DynamicRaceCpException("Cannot destroy the checkpoint before create");
     if (!INTERNAL_FLAGS.skip) {
       DynamicRaceCP.__inject__.destroy(this.id);
     }
@@ -128,8 +123,7 @@ export class DynamicRaceCP {
     return this;
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID)
-      return true;
+    if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID) return true;
     return DynamicRaceCP.isValid(this.id);
   }
   togglePlayer(player: Player, toggle: boolean): this {
@@ -146,18 +140,12 @@ export class DynamicRaceCP {
     return DynamicRaceCP.__inject__.isPlayerIn(player.id, this.id);
   }
   static getPlayerVisible(player: Player) {
-    return dynamicRaceCPPool.get(
-      DynamicRaceCP.__inject__.getPlayerVisible(player.id),
-    );
+    return dynamicRaceCPPool.get(DynamicRaceCP.__inject__.getPlayerVisible(player.id));
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicRaceCpException("Cannot toggle callbacks before create");
-    return Streamer.toggleItemCallbacks(
-      StreamerItemTypes.RACE_CP,
-      this.id,
-      toggle,
-    );
+    return Streamer.toggleItemCallbacks(StreamerItemTypes.RACE_CP, this.id, toggle);
   }
   isToggleCallbacks(): boolean {
     if (this.id === StreamerMiscellaneous.INVALID_ID) return false;

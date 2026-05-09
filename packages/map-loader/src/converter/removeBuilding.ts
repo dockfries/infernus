@@ -2,9 +2,7 @@ import { paramsSplit } from "../utils";
 import { ensureLength } from "../utils/error";
 
 export function removeBuildingConverter(line: string) {
-  const params = paramsSplit(
-    line.replace(/^.*RemoveBuildingForPlayer\(|\);\s*\/?\*?\w*.*$/g, ""),
-  );
+  const params = paramsSplit(line.replace(/^.*RemoveBuildingForPlayer\(|\);\s*\/?\*?\w*.*$/g, ""));
 
   ensureLength("removeBuildingConverter", params, 6, params.length);
 

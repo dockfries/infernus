@@ -4,14 +4,7 @@ export const AddCharModel = (
   dff: string,
   textureLibrary: string,
 ) => {
-  return !!samp.callNative(
-    "AddCharModel",
-    "iiss",
-    baseId,
-    newid,
-    dff,
-    textureLibrary,
-  );
+  return !!samp.callNative("AddCharModel", "iiss", baseId, newid, dff, textureLibrary);
 };
 
 export const AddSimpleModel = (
@@ -74,22 +67,18 @@ export const GetCustomModelPath = (modelId: number) => {
 };
 
 export const FindModelFileNameFromCRC = (crc: number) => {
-  const [name, ret] = samp.callNative(
-    "FindModelFileNameFromCRC",
-    "iSi",
-    crc,
-    255,
-  ) as [string, number];
+  const [name, ret] = samp.callNative("FindModelFileNameFromCRC", "iSi", crc, 255) as [
+    string,
+    number,
+  ];
   return { name, ret };
 };
 
 export const FindTextureFileNameFromCRC = (crc: number) => {
-  const [name, ret] = samp.callNative(
-    "FindTextureFileNameFromCRC",
-    "iSi",
-    crc,
-    255,
-  ) as [string, number];
+  const [name, ret] = samp.callNative("FindTextureFileNameFromCRC", "iSi", crc, 255) as [
+    string,
+    number,
+  ];
   return { name, ret };
 };
 

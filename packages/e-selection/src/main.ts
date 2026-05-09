@@ -99,8 +99,7 @@ export class ModelSelectionMenu {
         playerMenus.delete(this.player);
       }
 
-      if (modelSelectionTask.has(this.player))
-        modelSelectionTask.delete(this.player);
+      if (modelSelectionTask.has(this.player)) modelSelectionTask.delete(this.player);
 
       if (!cancelSel) {
         this.player.cancelSelectTextDraw();
@@ -137,8 +136,7 @@ export class ModelSelectionMenu {
 
     this[internalPropsKey].currentPage = 1;
     this[internalPropsKey].pageCount = Math.ceil(
-      this[internalPropsKey].models.length /
-        this[internalPropsKey].maxItemPerPage,
+      this[internalPropsKey].models.length / this[internalPropsKey].maxItemPerPage,
     );
     this[internalPropsKey].coolDownTick = Date.now();
     this[internalPropsKey].itemsTd = [];
@@ -411,12 +409,7 @@ export class ModelSelectionMenu {
     const tdText = this.itemsTextTd[index];
 
     td.setPreviewModel(model.modelId);
-    td.setPreviewRot(
-      model.rotX || 0,
-      model.rotY || 0,
-      model.rotZ || 0,
-      model.zoom,
-    );
+    td.setPreviewRot(model.rotX || 0, model.rotY || 0, model.rotZ || 0, model.zoom);
 
     if (model.vehColor) {
       td.setPreviewVehColors(model.vehColor[0], model.vehColor[1]);
@@ -471,62 +464,56 @@ TextDrawEvent.onPlayerClickGlobal(({ player, textDraw, next }) => {
   return next();
 });
 
-TextDrawEvent.onPlayerClickPlayer(
-  ({ player, textDraw, defaultValue, next }) => {
-    if (!playerMenus.has(player)) return next();
+TextDrawEvent.onPlayerClickPlayer(({ player, textDraw, defaultValue, next }) => {
+  if (!playerMenus.has(player)) return next();
 
-    const modelSelection = playerMenus.get(player)!;
+  const modelSelection = playerMenus.get(player)!;
 
-    if (
-      Date.now() - modelSelection[internalPropsKey].coolDownTick <=
-      modelSelection[internalPropsKey].coolDownMs
-    )
-      return next();
-
-    modelSelection[internalPropsKey].coolDownTick =
-      Date.now() + modelSelection[internalPropsKey].coolDownMs;
-
-    const task = modelSelectionTask.get(player)!;
-
-    if (textDraw === InvalidEnum.TEXT_DRAW) {
-      task.resolve(null);
-      return next();
-    }
-
-    if (textDraw === modelSelection[internalPropsKey].closeButton) {
-      task.resolve(null);
-      return defaultValue;
-    }
-
-    if (textDraw === modelSelection[internalPropsKey].rightArrow) {
-      if (
-        modelSelection[internalPropsKey].currentPage ===
-        modelSelection[internalPropsKey].pageCount
-      )
-        return defaultValue;
-      modelSelection.setPage(modelSelection[internalPropsKey].currentPage + 1);
-      return defaultValue;
-    }
-
-    if (textDraw === modelSelection[internalPropsKey].leftArrow) {
-      if (modelSelection[internalPropsKey].currentPage <= 1)
-        return defaultValue;
-      modelSelection.setPage(modelSelection[internalPropsKey].currentPage - 1);
-      return defaultValue;
-    }
-
-    let index = 0;
-    for (const item of modelSelection[internalPropsKey].itemsTd) {
-      if (item === textDraw) {
-        const start =
-          modelSelection[internalPropsKey].maxItemPerPage *
-          (modelSelection[internalPropsKey].currentPage - 1);
-        task.resolve(modelSelection[internalPropsKey].models[start + index]);
-        return defaultValue;
-      }
-      index++;
-    }
-
+  if (
+    Date.now() - modelSelection[internalPropsKey].coolDownTick <=
+    modelSelection[internalPropsKey].coolDownMs
+  )
     return next();
-  },
-);
+
+  modelSelection[internalPropsKey].coolDownTick =
+    Date.now() + modelSelection[internalPropsKey].coolDownMs;
+
+  const task = modelSelectionTask.get(player)!;
+
+  if (textDraw === InvalidEnum.TEXT_DRAW) {
+    task.resolve(null);
+    return next();
+  }
+
+  if (textDraw === modelSelection[internalPropsKey].closeButton) {
+    task.resolve(null);
+    return defaultValue;
+  }
+
+  if (textDraw === modelSelection[internalPropsKey].rightArrow) {
+    if (modelSelection[internalPropsKey].currentPage === modelSelection[internalPropsKey].pageCount)
+      return defaultValue;
+    modelSelection.setPage(modelSelection[internalPropsKey].currentPage + 1);
+    return defaultValue;
+  }
+
+  if (textDraw === modelSelection[internalPropsKey].leftArrow) {
+    if (modelSelection[internalPropsKey].currentPage <= 1) return defaultValue;
+    modelSelection.setPage(modelSelection[internalPropsKey].currentPage - 1);
+    return defaultValue;
+  }
+
+  let index = 0;
+  for (const item of modelSelection[internalPropsKey].itemsTd) {
+    if (item === textDraw) {
+      const start =
+        modelSelection[internalPropsKey].maxItemPerPage *
+        (modelSelection[internalPropsKey].currentPage - 1);
+      task.resolve(modelSelection[internalPropsKey].models[start + index]);
+      return defaultValue;
+    }
+    index++;
+  }
+
+  return next();
+});

@@ -14,12 +14,7 @@ pnpm add @infernus/core @infernus/map-loader
 
 ```ts
 import { GameMode } from "@infernus/core";
-import {
-  getMapCount,
-  getMapInfoFromID,
-  loadMap,
-  mapConverter,
-} from "@infernus/map-loader";
+import { getMapCount, getMapInfoFromID, loadMap, mapConverter } from "@infernus/map-loader";
 import path from "node:path";
 
 GameMode.onInit(async ({ next }) => {

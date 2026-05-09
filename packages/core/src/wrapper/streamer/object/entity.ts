@@ -37,8 +37,7 @@ export class DynamicObject {
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot create again");
-    if (!this.sourceInfo)
-      throw new DynamicObjectException("Cannot create with only id");
+    if (!this.sourceInfo) throw new DynamicObjectException("Cannot create with only id");
     let {
       streamDistance,
       drawDistance: drawDistance,
@@ -124,18 +123,13 @@ export class DynamicObject {
   }
 
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      return true;
+    if (INTERNAL_FLAGS.skip && this.id !== s.StreamerMiscellaneous.INVALID_ID) return true;
     return DynamicObject.isValid(this.id);
   }
 
   getModel() {
     if (!this.sourceInfo) {
-      return Streamer.getIntData(
-        s.StreamerItemTypes.OBJECT,
-        this._id,
-        s.E_STREAMER.MODEL_ID,
-      );
+      return Streamer.getIntData(s.StreamerItemTypes.OBJECT, this._id, s.E_STREAMER.MODEL_ID);
     }
     return this.sourceInfo.modelId;
   }
@@ -164,24 +158,14 @@ export class DynamicObject {
     return DynamicObject.__inject__.setRot(this.id, rx, ry, rz);
   }
 
-  move(
-    x: number,
-    y: number,
-    z: number,
-    speed: number,
-    rx = -1000,
-    ry = -1000,
-    rz = -1000,
-  ): number {
+  move(x: number, y: number, z: number, speed: number, rx = -1000, ry = -1000, rz = -1000): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot start moving before create");
     if (speed < 0) {
       throw new DynamicObjectException("speed must not be less than 0");
     }
     if (speed > 120 * 1000)
-      throw new DynamicObjectException(
-        "speed more than 120 seconds, warn if it's not intentional",
-      );
+      throw new DynamicObjectException("speed more than 120 seconds, warn if it's not intentional");
     if (this.isMoving()) this.stop();
     return DynamicObject.__inject__.move(this.id, x, y, z, speed, rx, ry, rz);
   }
@@ -198,13 +182,8 @@ export class DynamicObject {
   }
 
   attachCamera(player: Player): number {
-    if (
-      this.id === s.StreamerMiscellaneous.INVALID_ID ||
-      player.id === InvalidEnum.PLAYER_ID
-    )
-      throw new DynamicObjectException(
-        "Cannot attachCamera before both are created",
-      );
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID || player.id === InvalidEnum.PLAYER_ID)
+      throw new DynamicObjectException("Cannot attachCamera before both are created");
     return DynamicObject.__inject__.attachCamera(player.id, this.id);
   }
 
@@ -222,9 +201,7 @@ export class DynamicObject {
       this.id === s.StreamerMiscellaneous.INVALID_ID ||
       attachTo.id === s.StreamerMiscellaneous.INVALID_ID
     )
-      throw new DynamicObjectException(
-        "Cannot attachToObject before both are created",
-      );
+      throw new DynamicObjectException("Cannot attachToObject before both are created");
     return DynamicObject.__inject__.attachToObject(
       this.id,
       attachTo.id,
@@ -247,13 +224,8 @@ export class DynamicObject {
     ry: number,
     rz: number,
   ): number {
-    if (
-      this.id === s.StreamerMiscellaneous.INVALID_ID ||
-      player.id === InvalidEnum.PLAYER_ID
-    )
-      throw new DynamicObjectException(
-        "Cannot attachToPlayer before both are created",
-      );
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID || player.id === InvalidEnum.PLAYER_ID)
+      throw new DynamicObjectException("Cannot attachToPlayer before both are created");
     return DynamicObject.__inject__.attachToPlayer(
       this.id,
       player.id,
@@ -275,13 +247,8 @@ export class DynamicObject {
     ry: number,
     rz: number,
   ): number {
-    if (
-      this.id === s.StreamerMiscellaneous.INVALID_ID ||
-      vehicle.id === InvalidEnum.VEHICLE_ID
-    )
-      throw new DynamicObjectException(
-        "Cannot attachToVehicle before both are created",
-      );
+    if (this.id === s.StreamerMiscellaneous.INVALID_ID || vehicle.id === InvalidEnum.VEHICLE_ID)
+      throw new DynamicObjectException("Cannot attachToVehicle before both are created");
     return DynamicObject.__inject__.attachToVehicle(
       this.id,
       vehicle.id,
@@ -350,9 +317,7 @@ export class DynamicObject {
 
   getMaterialText(materialIndex: number) {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new DynamicObjectException(
-        "Cannot get material text before create",
-      );
+      throw new DynamicObjectException("Cannot get material text before create");
     return DynamicObject.__inject__.getMaterialText(
       this.id,
       materialIndex,
@@ -373,9 +338,7 @@ export class DynamicObject {
     textAlignment = 0,
   ): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
-      throw new DynamicObjectException(
-        "Cannot set material text before create",
-      );
+      throw new DynamicObjectException("Cannot set material text before create");
     if (this.sourceInfo) {
       this.sourceInfo.charset = charset;
     }
@@ -402,11 +365,7 @@ export class DynamicObject {
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot toggle callbacks before create");
-    return Streamer.toggleItemCallbacks(
-      s.StreamerItemTypes.OBJECT,
-      this.id,
-      toggle,
-    );
+    return Streamer.toggleItemCallbacks(s.StreamerItemTypes.OBJECT, this.id, toggle);
   }
   isToggleCallbacks(): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
@@ -420,11 +379,7 @@ export class DynamicObject {
   }
   static isValid = s.IsValidDynamicObject;
   static togglePlayerUpdate(player: Player, update = true) {
-    return Streamer.toggleItemUpdate(
-      player,
-      s.StreamerItemTypes.OBJECT,
-      update,
-    );
+    return Streamer.toggleItemUpdate(player, s.StreamerItemTypes.OBJECT, update);
   }
   static hideForPlayer(player: Player, z = -50000) {
     Streamer.updateEx(player, 0, 0, z);

@@ -11,11 +11,7 @@ import {
 } from "@infernus/core";
 import { ACInfo, ACPickInfo, ACVehInfo } from "../struct";
 import { innerACConfig, innerGameModeConfig } from "../config";
-import {
-  ac_KickWithCode,
-  triggerCheatWarning,
-  triggerNOPWarning,
-} from "../callbacks/trigger";
+import { ac_KickWithCode, triggerCheatWarning, triggerNOPWarning } from "../callbacks/trigger";
 import { ac_AmmuNationInfo, ac_pAmmo, ac_wSlot } from "../constants";
 import {
   ac_InAmmuNation,
@@ -37,8 +33,7 @@ export function ac_Timer(player: Player) {
 
   if (
     ACInfo.get(player.id).acACAllow[51] &&
-    (ac_gpp = NetStats.getMessagesRecvPerSecond(player)) >
-      innerACConfig.AC_MAX_MSGS_REC_DIFF
+    (ac_gpp = NetStats.getMessagesRecvPerSecond(player)) > innerACConfig.AC_MAX_MSGS_REC_DIFF
   ) {
     if (innerACConfig.DEBUG) {
       console.log(
@@ -51,29 +46,16 @@ export function ac_Timer(player: Player) {
   ac_gpp = player.getPing();
   if (ACInfo.get(player.id).acACAllow[38]) {
     if (ac_gpp > innerACConfig.AC_MAX_PING) {
-      if (
-        ++ACInfo.get(player.id).acCheatCount[0] >
-        innerACConfig.AC_MAX_PING_WARNINGS
-      ) {
+      if (++ACInfo.get(player.id).acCheatCount[0] > innerACConfig.AC_MAX_PING_WARNINGS) {
         if (innerACConfig.DEBUG) {
-          console.log(
-            `[Nex-AC debug] Max ping: ${innerACConfig.AC_MAX_PING}, ping: ${ac_gpp}`,
-          );
+          console.log(`[Nex-AC debug] Max ping: ${innerACConfig.AC_MAX_PING}, ping: ${ac_gpp}`);
         }
         ac_KickWithCode(player, "", 0, 38);
         ACInfo.get(player.id).acCheatCount[0] = 0;
       } else {
-        triggerCheatWarning(
-          player,
-          "",
-          0,
-          38,
-          0,
-          ACInfo.get(player.id).acCheatCount[0],
-        );
+        triggerCheatWarning(player, "", 0, 38, 0, ACInfo.get(player.id).acCheatCount[0]);
       }
-    } else if (ACInfo.get(player.id).acCheatCount[0] > 0)
-      ACInfo.get(player.id).acCheatCount[0]--;
+    } else if (ACInfo.get(player.id).acCheatCount[0] > 0) ACInfo.get(player.id).acCheatCount[0]--;
   }
   const ac_gtc = Date.now();
   if (!ACInfo.get(player.id).acDead) {
@@ -112,22 +94,13 @@ export function ac_Timer(player: Player) {
               ) {
                 ACInfo.get(player.id).acSetWeapon[ac_i] = -1;
                 ACInfo.get(player.id).acWeapon[ac_i] = ac_w;
-              } else if (
-                ac_gtc - ACInfo.get(player.id).acGtcSetWeapon[ac_i] >
-                ac_gpp
-              ) {
-                if (
-                  ACInfo.get(player.id).acACAllow[52] &&
-                  ACInfo.get(player.id).acNOPAllow[0]
-                ) {
+              } else if (ac_gtc - ACInfo.get(player.id).acGtcSetWeapon[ac_i] > ac_gpp) {
+                if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[0]) {
                   if (
-                    ++ACInfo.get(player.id).acNOPCount[0] >
-                    innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+                    ++ACInfo.get(player.id).acNOPCount[0] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
-                        $t("DEBUG_CODE_5", [player.id, "GivePlayerWeapon"]),
-                      );
+                      console.log($t("DEBUG_CODE_5", [player.id, "GivePlayerWeapon"]));
                       console.log(
                         `[Nex-AC debug] AC weapon: ${ACInfo.get(player.id).acSetWeapon[ac_i]}, weaponId: ${ac_w}`,
                       );
@@ -136,15 +109,10 @@ export function ac_Timer(player: Player) {
 
                     ACInfo.get(player.id).acSetWeapon[ac_i] = -1;
                   } else {
-                    triggerNOPWarning(
-                      player,
-                      0,
-                      ACInfo.get(player.id).acNOPCount[0],
-                    );
+                    triggerNOPWarning(player, 0, ACInfo.get(player.id).acNOPCount[0]);
                   }
                 } else if (
-                  ++ACInfo.get(player.id).acNOPCount[0] >
-                  innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+                  ++ACInfo.get(player.id).acNOPCount[0] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                 )
                   ACInfo.get(player.id).acSetWeapon[ac_i] = -1;
               }
@@ -153,25 +121,19 @@ export function ac_Timer(player: Player) {
                 if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
                   if (
                     (ACInfo.get(player.id).acLastPickup >= 0 &&
-                      ACInfo.get(player.id).acLastPickup >=
-                        LimitsEnum.MAX_PICKUPS &&
-                      ACPickInfo.get(ACInfo.get(player.id).acLastPickup)
-                        .acWeapon === ac_w &&
+                      ACInfo.get(player.id).acLastPickup >= LimitsEnum.MAX_PICKUPS &&
+                      ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acWeapon === ac_w &&
                       ac_a <=
                         (ac_IsAmmoSharingInSlot(ac_i)
                           ? ACInfo.get(player.id).acAmmo[ac_i] + ac_pAmmo[ac_w]
                           : ac_pAmmo[ac_w]) &&
                       player.isInRangeOfPoint(
                         15.0,
-                        ACPickInfo.get(ACInfo.get(player.id).acLastPickup)
-                          .acPosX,
-                        ACPickInfo.get(ACInfo.get(player.id).acLastPickup)
-                          .acPosY,
-                        ACPickInfo.get(ACInfo.get(player.id).acLastPickup)
-                          .acPosZ,
+                        ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acPosX,
+                        ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acPosY,
+                        ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acPosZ,
                       )) ||
-                    (ACInfo.get(player.id).acLastPickup >
-                      LimitsEnum.MAX_PICKUPS &&
+                    (ACInfo.get(player.id).acLastPickup > LimitsEnum.MAX_PICKUPS &&
                       ac_t === ac_w &&
                       ac_a <=
                         (ac_IsAmmoSharingInSlot(ac_i)
@@ -190,8 +152,7 @@ export function ac_Timer(player: Player) {
                         (ACInfo.get(player.id).acVeh > 0 ||
                           ac_gtc - ACInfo.get(player.id).acGtc[15] <= ac_gpp))
                     ) {
-                      if (ac_w === WeaponEnum.PARACHUTE)
-                        ACInfo.get(player.id).acParachute = 0;
+                      if (ac_w === WeaponEnum.PARACHUTE) ACInfo.get(player.id).acParachute = 0;
                       ACInfo.get(player.id).acWeapon[ac_i] = ac_w;
                       ACInfo.get(player.id).acAmmo[ac_i] = ac_a;
                     } else if (
@@ -216,25 +177,19 @@ export function ac_Timer(player: Player) {
                 if (ACInfo.get(player.id).acGiveAmmo[ac_i] === ac_a) {
                   ACInfo.get(player.id).acGiveAmmo[ac_i] = -65535;
                   ACInfo.get(player.id).acAmmo[ac_i] = ac_a;
-                } else if (
-                  ac_gtc - ACInfo.get(player.id).acGtcGiveAmmo[ac_i] >
-                  ac_gpp
-                ) {
+                } else if (ac_gtc - ACInfo.get(player.id).acGtcGiveAmmo[ac_i] > ac_gpp) {
                   if (
                     ACInfo.get(player.id).acACAllow[52] &&
                     ACInfo.get(player.id).acNOPAllow[1] &&
                     (ACInfo.get(player.id).acGiveAmmo[ac_i] < ac_a ||
-                      (0 > ac_a &&
-                        ac_a <= ACInfo.get(player.id).acGiveAmmo[ac_i]))
+                      (0 > ac_a && ac_a <= ACInfo.get(player.id).acGiveAmmo[ac_i]))
                   ) {
                     if (
                       ++ACInfo.get(player.id).acNOPCount[1] >
                       innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                     ) {
                       if (innerACConfig.DEBUG) {
-                        console.log(
-                          $t("DEBUG_CODE_5", [player.id, "SetPlayerAmmo"]),
-                        );
+                        console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerAmmo"]));
                         console.log(
                           `[Nex-AC debug] AC ammo: ${ACInfo.get(player.id).acGiveAmmo[ac_i]}, ammo: ${ac_a}, weaponId: ${ac_w}`,
                         );
@@ -243,22 +198,14 @@ export function ac_Timer(player: Player) {
 
                       ACInfo.get(player.id).acGiveAmmo[ac_i] = -65535;
                     } else {
-                      triggerNOPWarning(
-                        player,
-                        1,
-                        ACInfo.get(player.id).acNOPCount[1],
-                      );
+                      triggerNOPWarning(player, 1, ACInfo.get(player.id).acNOPCount[1]);
                     }
                   } else if (
-                    ++ACInfo.get(player.id).acNOPCount[1] >
-                    innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+                    ++ACInfo.get(player.id).acNOPCount[1] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                   ) {
                     if (
                       ACInfo.get(player.id).acGiveAmmo[ac_i] > ac_a &&
-                      !(
-                        0 > ac_a &&
-                        ac_a <= ACInfo.get(player.id).acGiveAmmo[ac_i]
-                      )
+                      !(0 > ac_a && ac_a <= ACInfo.get(player.id).acGiveAmmo[ac_i])
                     )
                       ACInfo.get(player.id).acAmmo[ac_i] = ac_a;
                     ACInfo.get(player.id).acGiveAmmo[ac_i] = -65535;
@@ -281,8 +228,7 @@ export function ac_Timer(player: Player) {
                   }
                   ac_KickWithCode(player, "", 0, 16, 2);
 
-                  if (ACInfo.get(player.id).acKicked < 1)
-                    ACInfo.get(player.id).acAmmo[ac_i] = ac_a;
+                  if (ACInfo.get(player.id).acKicked < 1) ACInfo.get(player.id).acAmmo[ac_i] = ac_a;
                 }
               }
             }
@@ -303,12 +249,10 @@ export function ac_Timer(player: Player) {
                 ) {
                   if (ACInfo.get(player.id).acSet[10] !== -1)
                     ACInfo.get(player.id).acSet[10] +=
-                      ac_AmmuNationInfo[ac_w - 22][0] *
-                      (ac_m / ac_AmmuNationInfo[ac_w - 22][1]);
+                      ac_AmmuNationInfo[ac_w - 22][0] * (ac_m / ac_AmmuNationInfo[ac_w - 22][1]);
                   else
                     ACInfo.get(player.id).acSet[10] =
-                      ac_AmmuNationInfo[ac_w - 22][0] *
-                      (ac_m / ac_AmmuNationInfo[ac_w - 22][1]);
+                      ac_AmmuNationInfo[ac_w - 22][0] * (ac_m / ac_AmmuNationInfo[ac_w - 22][1]);
                   ACInfo.get(player.id).acAmmo[ac_i] += ac_m;
                   ACInfo.get(player.id).acGtc[17] = ac_gtc + 2650;
                   ACInfo.get(player.id).acCheatCount[20] = 0;
@@ -337,15 +281,9 @@ export function ac_Timer(player: Player) {
         ac_s = player.getState();
         if (ac_s === PlayerStateEnum.DRIVER) {
           ac_t = ACInfo.get(player.id).acVeh;
-          if (
-            ACInfo.get(player.id).acACAllow[35] &&
-            player.getCameraMode() === 55
-          )
+          if (ACInfo.get(player.id).acACAllow[35] && player.getCameraMode() === 55)
             ac_KickWithCode(player, "", 0, 35);
-          if (
-            ACInfo.get(player.id).acACAllow[3] &&
-            ACInfo.get(player.id).acSet[8] === -1
-          ) {
+          if (ACInfo.get(player.id).acACAllow[3] && ACInfo.get(player.id).acSet[8] === -1) {
             let ac_maxDist = 140.0;
             const ac_dist = player.getDistanceFromPoint(
               ACInfo.get(player.id).acLastPosX,
@@ -357,13 +295,11 @@ export function ac_Timer(player: Player) {
               ACInfo.get(player.id).acSetPosY,
               ACInfo.get(player.id).acPosZ,
             );
-            const ac_time =
-              (ac_gtc - ACInfo.get(player.id).acTimerTick) / 1000.0;
+            const ac_time = (ac_gtc - ACInfo.get(player.id).acTimerTick) / 1000.0;
             if (ac_time > 1.0) ac_maxDist *= ac_time;
             if (
               ac_dist >= ac_maxDist &&
-              (ACInfo.get(player.id).acSet[7] === -1 ||
-                ac_dist_set >= ac_maxDist)
+              (ACInfo.get(player.id).acSet[7] === -1 || ac_dist_set >= ac_maxDist)
             ) {
               if (innerACConfig.DEBUG) {
                 console.log(
@@ -375,29 +311,23 @@ export function ac_Timer(player: Player) {
           }
           ACInfo.get(player.id).acLastPosX = ACInfo.get(player.id).acPosX;
           ACInfo.get(player.id).acLastPosY = ACInfo.get(player.id).acPosY;
-          ac_s = ac_GetSpeed(
-            ACVehInfo.get(ac_t).acVelX,
-            ACVehInfo.get(ac_t).acVelY,
-          );
+          ac_s = ac_GetSpeed(ACVehInfo.get(ac_t).acVelX, ACVehInfo.get(ac_t).acVelY);
           if (
             ACInfo.get(player.id).acACAllow[10] &&
             ac_gtc - ACInfo.get(player.id).acGtc[8] > ac_gpp
           ) {
             const ac_m_veh = Vehicle.getInstance(ac_t);
             ac_m = ac_m_veh ? ac_m_veh.getModel() : 0;
-            const ac_time =
-              (ac_gtc - ACInfo.get(player.id).acTimerTick) / 1100.0;
+            const ac_time = (ac_gtc - ACInfo.get(player.id).acTimerTick) / 1100.0;
             if (
               ac_s - ACVehInfo.get(ac_t).acLastSpeed >=
                 (ac_time > 1.0 ? Math.round(80.0 * ac_time) : 80) &&
-              (!ac_IsValidVehicleModel(ac_m) ||
-                (!ac_IsATrainLoco(ac_m) && !ac_IsAnAirplane(ac_m)))
+              (!ac_IsValidVehicleModel(ac_m) || (!ac_IsATrainLoco(ac_m) && !ac_IsAnAirplane(ac_m)))
             ) {
               ACInfo.get(player.id).acCheatCount[18] +=
                 1 * innerACConfig.AC_SPEEDHACK_VEH_RESET_DELAY;
               if (
-                ACInfo.get(player.id).acCheatCount[18] >
-                innerACConfig.AC_MAX_SPEEDHACK_VEH_WARNINGS
+                ACInfo.get(player.id).acCheatCount[18] > innerACConfig.AC_MAX_SPEEDHACK_VEH_WARNINGS
               ) {
                 if (innerACConfig.DEBUG) {
                   console.log(
@@ -442,13 +372,11 @@ export function ac_Timer(player: Player) {
               ACInfo.get(player.id).acSetPosY,
               ACInfo.get(player.id).acPosZ,
             );
-            const ac_time =
-              (ac_gtc - ACInfo.get(player.id).acTimerTick) / 1000.0;
+            const ac_time = (ac_gtc - ACInfo.get(player.id).acTimerTick) / 1000.0;
             if (ac_time > 1.0) ac_maxDist *= ac_time;
             if (
               ac_dist >= ac_maxDist &&
-              (ACInfo.get(player.id).acSet[7] === -1 ||
-                ac_dist_set >= ac_maxDist)
+              (ACInfo.get(player.id).acSet[7] === -1 || ac_dist_set >= ac_maxDist)
             ) {
               if (innerACConfig.DEBUG) {
                 console.log(
@@ -466,15 +394,13 @@ export function ac_Timer(player: Player) {
           if (ACInfo.get(player.id).acSet[10] !== -1) {
             if (
               ac_t < ACInfo.get(player.id).acMoney &&
-              ACInfo.get(player.id).acMoney - ac_t >=
-                ACInfo.get(player.id).acSet[10]
+              ACInfo.get(player.id).acMoney - ac_t >= ACInfo.get(player.id).acSet[10]
             )
               ACInfo.get(player.id).acSet[10] = -1;
             else if (ac_gtc - ACInfo.get(player.id).acGtc[17] > ac_gpp) {
               if (ACInfo.get(player.id).acACAllow[15]) {
                 if (
-                  ++ACInfo.get(player.id).acCheatCount[20] >
-                  innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+                  ++ACInfo.get(player.id).acCheatCount[20] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
                     console.log(
@@ -485,18 +411,10 @@ export function ac_Timer(player: Player) {
 
                   ACInfo.get(player.id).acSet[10] = -1;
                 } else {
-                  triggerCheatWarning(
-                    player,
-                    "",
-                    0,
-                    15,
-                    3,
-                    ACInfo.get(player.id).acCheatCount[20],
-                  );
+                  triggerCheatWarning(player, "", 0, 15, 3, ACInfo.get(player.id).acCheatCount[20]);
                 }
               } else if (
-                ++ACInfo.get(player.id).acCheatCount[20] >
-                innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+                ++ACInfo.get(player.id).acCheatCount[20] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
               )
                 ACInfo.get(player.id).acSet[10] = -1;
             }
@@ -506,15 +424,13 @@ export function ac_Timer(player: Player) {
           if (ACInfo.get(player.id).acSet[11] !== -1) {
             if (
               ac_t < ACInfo.get(player.id).acMoney &&
-              ACInfo.get(player.id).acMoney - ac_t >=
-                ACInfo.get(player.id).acSet[11]
+              ACInfo.get(player.id).acMoney - ac_t >= ACInfo.get(player.id).acSet[11]
             )
               ACInfo.get(player.id).acSet[11] = -1;
             else if (ac_gtc - ACInfo.get(player.id).acGtc[18] > ac_gpp) {
               if (ACInfo.get(player.id).acACAllow[23]) {
                 if (
-                  ++ACInfo.get(player.id).acCheatCount[21] >
-                  innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+                  ++ACInfo.get(player.id).acCheatCount[21] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
                     console.log(
@@ -525,18 +441,10 @@ export function ac_Timer(player: Player) {
 
                   ACInfo.get(player.id).acSet[11] = -1;
                 } else {
-                  triggerCheatWarning(
-                    player,
-                    "",
-                    0,
-                    23,
-                    3,
-                    ACInfo.get(player.id).acCheatCount[21],
-                  );
+                  triggerCheatWarning(player, "", 0, 23, 3, ACInfo.get(player.id).acCheatCount[21]);
                 }
               } else if (
-                ++ACInfo.get(player.id).acCheatCount[21] >
-                innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+                ++ACInfo.get(player.id).acCheatCount[21] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
               )
                 ACInfo.get(player.id).acSet[11] = -1;
             }
@@ -546,19 +454,11 @@ export function ac_Timer(player: Player) {
           ACInfo.get(player.id).acSet[6] !== -1 &&
           ac_gtc - ACInfo.get(player.id).acGtc[12] > ac_gpp
         ) {
-          if (
-            ACInfo.get(player.id).acACAllow[52] &&
-            ACInfo.get(player.id).acNOPAllow[9]
-          ) {
-            if (
-              ++ACInfo.get(player.id).acNOPCount[9] >
-              innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
-            ) {
+          if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[9]) {
+            if (++ACInfo.get(player.id).acNOPCount[9] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS) {
               if (innerACConfig.DEBUG) {
                 console.log($t("DEBUG_CODE_5", [player.id, "SpawnPlayer"]));
-                console.log(
-                  `[Nex-AC debug] acSet[6]: ${ACInfo.get(player.id).acSet[6]}`,
-                );
+                console.log(`[Nex-AC debug] acSet[6]: ${ACInfo.get(player.id).acSet[6]}`);
               }
               ac_KickWithCode(player, "", 0, 52, 7);
 
@@ -567,8 +467,7 @@ export function ac_Timer(player: Player) {
               triggerNOPWarning(player, 9, ACInfo.get(player.id).acNOPCount[9]);
             }
           } else if (
-            ++ACInfo.get(player.id).acNOPCount[9] >
-            innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+            ++ACInfo.get(player.id).acNOPCount[9] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
           )
             ACInfo.get(player.id).acSet[6] = -1;
         }
@@ -581,14 +480,9 @@ export function ac_Timer(player: Player) {
             ACInfo.get(player.id).acNOPAllow[2] &&
             ACInfo.get(player.id).acInt !== ACInfo.get(player.id).acSet[0]
           ) {
-            if (
-              ++ACInfo.get(player.id).acNOPCount[2] >
-              innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
-            ) {
+            if (++ACInfo.get(player.id).acNOPCount[2] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS) {
               if (innerACConfig.DEBUG) {
-                console.log(
-                  $t("DEBUG_CODE_5", [player.id, "SetPlayerInterior"]),
-                );
+                console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerInterior"]));
                 console.log(
                   `[Nex-AC debug] AC interior: ${ACInfo.get(player.id).acSet[0]}, interiorId: ${ACInfo.get(player.id).acInt}`,
                 );
@@ -600,13 +494,11 @@ export function ac_Timer(player: Player) {
               triggerNOPWarning(player, 2, ACInfo.get(player.id).acNOPCount[2]);
             }
           } else if (
-            ++ACInfo.get(player.id).acNOPCount[2] >
-            innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+            ++ACInfo.get(player.id).acNOPCount[2] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
           )
             ACInfo.get(player.id).acSet[0] = -1;
         }
-        if (ACInfo.get(player.id).acNOPCount[11] > 0)
-          ACInfo.get(player.id).acNOPCount[11]--;
+        if (ACInfo.get(player.id).acNOPCount[11] > 0) ACInfo.get(player.id).acNOPCount[11]--;
         else {
           if (
             ACInfo.get(player.id).acACAllow[14] &&
@@ -617,8 +509,7 @@ export function ac_Timer(player: Player) {
           ) {
             if (
               !innerACConfig.AC_USE_CASINOS ||
-              (innerACConfig.AC_USE_CASINOS &&
-                !ac_InCasino(player, ACInfo.get(player.id).acInt))
+              (innerACConfig.AC_USE_CASINOS && !ac_InCasino(player, ACInfo.get(player.id).acInt))
             ) {
               if (innerACConfig.DEBUG) {
                 console.log(
@@ -639,25 +530,16 @@ export function ac_Timer(player: Player) {
       }
     } else {
       ac_gpp = ac_gtc - ACInfo.get(player.id).acTimerTick;
-      if (ACInfo.get(player.id).acSet[3] !== -1)
-        ACInfo.get(player.id).acGtc[5] += ac_gpp;
-      if (ACInfo.get(player.id).acSet[7] !== -1)
-        ACInfo.get(player.id).acGtc[10] += ac_gpp;
-      if (ACInfo.get(player.id).acSet[9] !== -1)
-        ACInfo.get(player.id).acGtc[7] += ac_gpp;
-      if (ACInfo.get(player.id).acSetVehHealth !== -1.0)
-        ACInfo.get(player.id).acGtc[3] += ac_gpp;
-      if (ac_gtc - ACInfo.get(player.id).acGtc[9] < 1000)
-        ACInfo.get(player.id).acGtc[9] += ac_gpp;
-      if (ac_gtc - ACInfo.get(player.id).acGtc[8] < 1000)
-        ACInfo.get(player.id).acGtc[8] += ac_gpp;
-      if (ac_gtc - ACInfo.get(player.id).acGtc[6] < 1000)
-        ACInfo.get(player.id).acGtc[6] += ac_gpp;
+      if (ACInfo.get(player.id).acSet[3] !== -1) ACInfo.get(player.id).acGtc[5] += ac_gpp;
+      if (ACInfo.get(player.id).acSet[7] !== -1) ACInfo.get(player.id).acGtc[10] += ac_gpp;
+      if (ACInfo.get(player.id).acSet[9] !== -1) ACInfo.get(player.id).acGtc[7] += ac_gpp;
+      if (ACInfo.get(player.id).acSetVehHealth !== -1.0) ACInfo.get(player.id).acGtc[3] += ac_gpp;
+      if (ac_gtc - ACInfo.get(player.id).acGtc[9] < 1000) ACInfo.get(player.id).acGtc[9] += ac_gpp;
+      if (ac_gtc - ACInfo.get(player.id).acGtc[8] < 1000) ACInfo.get(player.id).acGtc[8] += ac_gpp;
+      if (ac_gtc - ACInfo.get(player.id).acGtc[6] < 1000) ACInfo.get(player.id).acGtc[6] += ac_gpp;
     }
-    if (ACInfo.get(player.id).acCheatCount[14] > 0)
-      ACInfo.get(player.id).acCheatCount[14]--;
-    if (ACInfo.get(player.id).acCheatCount[18] > 0)
-      ACInfo.get(player.id).acCheatCount[18]--;
+    if (ACInfo.get(player.id).acCheatCount[14] > 0) ACInfo.get(player.id).acCheatCount[14]--;
+    if (ACInfo.get(player.id).acCheatCount[18] > 0) ACInfo.get(player.id).acCheatCount[18]--;
     ACInfo.get(player.id).acCheatCount[1] =
       ACInfo.get(player.id).acCheatCount[2] =
       ACInfo.get(player.id).acCheatCount[3] =

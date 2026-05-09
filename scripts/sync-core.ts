@@ -10,11 +10,7 @@ function syncCoreVersionToRoot() {
   const rootPkgJson = JSON.parse(fs.readFileSync(rootPkgJsonPath, "utf-8"));
 
   rootPkgJson.version = bumpedVersion;
-  fs.writeFileSync(
-    rootPkgJsonPath,
-    JSON.stringify(rootPkgJson, null, 2),
-    "utf-8",
-  );
+  fs.writeFileSync(rootPkgJsonPath, JSON.stringify(rootPkgJson, null, 2), "utf-8");
 }
 
 syncCoreVersionToRoot();

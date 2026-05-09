@@ -2,17 +2,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ObjectMaterialAlignmentEnum } from "@infernus/core";
 import { ensureLength } from "../utils/error";
-import {
-  FONT_SPACE_PLACEHOLDER,
-  MAT_SIZE_VALUE,
-  NEWLINE_PLACEHOLDER,
-} from "../constants";
+import { FONT_SPACE_PLACEHOLDER, MAT_SIZE_VALUE, NEWLINE_PLACEHOLDER } from "../constants";
 import { paramsSplit } from "../utils";
 
-export function materialTextConverter(
-  funcMatch: RegExpMatchArray,
-  line: string,
-) {
+export function materialTextConverter(funcMatch: RegExpMatchArray, line: string) {
   let funcName = "SetObjectMaterialText";
 
   if (funcMatch[1]) {
@@ -20,10 +13,7 @@ export function materialTextConverter(
   }
 
   const params = paramsSplit(
-    line.replace(
-      /^.*Set(Dynamic)?ObjectMaterialText\(|\);\s*\/?\*?\w*.*$/g,
-      "",
-    ),
+    line.replace(/^.*Set(Dynamic)?ObjectMaterialText\(|\);\s*\/?\*?\w*.*$/g, ""),
   );
 
   ensureLength("materialTextConverter", params, 9, params.length);
@@ -51,15 +41,13 @@ export function materialTextConverter(
   let _materialSize = +materialSize;
 
   if (materialSize in MAT_SIZE_VALUE) {
-    _materialSize =
-      MAT_SIZE_VALUE[materialSize as unknown as keyof typeof MAT_SIZE_VALUE];
+    _materialSize = MAT_SIZE_VALUE[materialSize as unknown as keyof typeof MAT_SIZE_VALUE];
   }
 
   let _textAlignment = +textAlignment;
 
   if (textAlignment in MAT_SIZE_VALUE) {
-    _textAlignment =
-      MAT_SIZE_VALUE[textAlignment as unknown as keyof typeof MAT_SIZE_VALUE];
+    _textAlignment = MAT_SIZE_VALUE[textAlignment as unknown as keyof typeof MAT_SIZE_VALUE];
   }
 
   return {

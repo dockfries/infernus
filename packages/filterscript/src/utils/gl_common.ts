@@ -3,21 +3,12 @@ import type { KeysEnum } from "@infernus/core";
 import { Player, Vehicle, VehicleModelInfoEnum } from "@infernus/core";
 import { degreesToRadians } from "shared/utils/convert";
 
-export const isKeyJustDown = (
-  key: KeysEnum,
-  newKeys: KeysEnum,
-  oldKeys: KeysEnum,
-) => {
+export const isKeyJustDown = (key: KeysEnum, newKeys: KeysEnum, oldKeys: KeysEnum) => {
   if (newKeys & key && !(oldKeys & key)) return true;
   return false;
 };
 
-export const playSoundForAll = (
-  soundId: number,
-  x: number,
-  y: number,
-  z: number,
-) => {
+export const playSoundForAll = (soundId: number, x: number, y: number, z: number) => {
   Player.getInstances().forEach((p) => {
     if (p.isConnected()) p.playSound(soundId, x, y, z);
   });
@@ -31,8 +22,7 @@ export const playSoundForPlayersInRange = (
   z: number,
 ) => {
   Player.getInstances().forEach((p) => {
-    if (p.isConnected() && p.isInRangeOfPoint(range, x, y, z))
-      p.playSound(soundId, x, y, z);
+    if (p.isConnected() && p.isInRangeOfPoint(range, x, y, z)) p.playSound(soundId, x, y, z);
   });
 };
 
@@ -58,9 +48,7 @@ export function returnUser(idOrName: string) {
     return result;
   }
   // name
-  const count = Player.getInstances().filter(
-    (p) => p.getName().name === idOrName,
-  );
+  const count = Player.getInstances().filter((p) => p.getName().name === idOrName);
   if (!count.length) return RETURN_USER_FAILURE;
   if (count.length > 1) return RETURN_USER_MULTIPLE;
   return count[0].id;
@@ -76,10 +64,7 @@ export function spawnVehicleInFrontOfPlayer(
 
   let facing = player.getFacingAngle().angle;
 
-  const { x: size_x, z: size_z } = Vehicle.getModelInfo(
-    vehicleModel,
-    VehicleModelInfoEnum.SIZE,
-  );
+  const { x: size_x, z: size_z } = Vehicle.getModelInfo(vehicleModel, VehicleModelInfoEnum.SIZE);
 
   const distance = size_x + 0.5;
 

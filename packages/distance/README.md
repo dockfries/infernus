@@ -23,19 +23,13 @@ import {
 PlayerEvent.onCommandText("pay", ({ player, subcommand, next }) => {
   const [playerId2, amount] = subcommand;
   if (!playerId2 || !amount) {
-    return player.sendClientMessage(
-      -1,
-      "USAGE: /pay <Player name/ID> <Amount>",
-    );
+    return player.sendClientMessage(-1, "USAGE: /pay <Player name/ID> <Amount>");
   }
 
   const player2 = Player.getInstance(+playerId2);
 
   if (!player2 || !isPlayerInRangeOfPlayer(player, player2, 5.0)) {
-    return player.sendClientMessage(
-      0xff0000ff,
-      "The specified player is not near you!",
-    );
+    return player.sendClientMessage(0xff0000ff, "The specified player is not near you!");
   }
 
   player.giveMoney(-amount);
@@ -47,10 +41,7 @@ PlayerEvent.onCommandText("fixtires", ({ player, next }) => {
   const vehicle = getClosestVehicleToPlayer(player);
 
   if (!vehicle || !isPlayerInRangeOfVehicle(player, vehicle, 10.0)) {
-    return player.sendClientMessage(
-      0xff0000ff,
-      "You are not near any vehicle!",
-    );
+    return player.sendClientMessage(0xff0000ff, "You are not near any vehicle!");
   }
 
   const { panels, doors, lights } = vehicle.getDamageStatus();

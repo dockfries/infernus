@@ -67,16 +67,6 @@ export const GetDynamic3DTextLabelText = (id: number) => {
   return { text, ret };
 };
 
-export const UpdateDynamic3DTextLabelText = (
-  id: number,
-  color: number,
-  text: string,
-): number => {
-  return samp.callNative(
-    "UpdateDynamic3DTextLabelText",
-    "iis",
-    id,
-    color,
-    text,
-  );
+export const UpdateDynamic3DTextLabelText = (id: number, color: number, text: string): number => {
+  return samp.callNative("UpdateDynamic3DTextLabelText", "iis", id, color, text);
 };

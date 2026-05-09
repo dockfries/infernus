@@ -17,9 +17,9 @@ import { type Player, PlayerEvent } from "@infernus/core";
 import { type IModelData, ModelSelectionMenu } from "@infernus/e-selection";
 
 PlayerEvent.onSpawn(({ player, next }) => {
-  showSkinModelMenu(player)
-  return next()
-})
+  showSkinModelMenu(player);
+  return next();
+});
 
 async function showSkinModelMenu(player: Player) {
   // create a list to populate with models.
@@ -27,28 +27,29 @@ async function showSkinModelMenu(player: Player) {
   const skins: IModelData[] = [
     { modelId: 0 },
     { modelId: 1 },
-    { modelId: 29, modelText: 'Cool people only' },
+    { modelId: 29, modelText: "Cool people only" },
     { modelId: 60 },
-  ].concat(Array.from({ length: 15 }).map((_, id): IModelData => {
-    return { modelId: id, rotX: Math.random() * 5 }
-  }))
+  ].concat(
+    Array.from({ length: 15 }).map((_, id): IModelData => {
+      return { modelId: id, rotX: Math.random() * 5 };
+    }),
+  );
 
   try {
     // use await_arr and set the response array to the model selection menu result
     const skin = await new ModelSelectionMenu({
       player,
       models: skins,
-      headerText: 'Skins',
-    }).show()
+      headerText: "Skins",
+    }).show();
 
     // make sure the player actually clicked on a model and not the close button
     if (skin) {
       // assign the player the skin of their choosing
-      player.setSkin(skin.modelId)
+      player.setSkin(skin.modelId);
     }
-  }
-  catch (err) {
-    player.sendClientMessage(-1, JSON.stringify(err))
+  } catch (err) {
+    player.sendClientMessage(-1, JSON.stringify(err));
   }
 }
 ```

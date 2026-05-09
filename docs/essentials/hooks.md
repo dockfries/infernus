@@ -15,22 +15,19 @@ export const [orig_playerMethods, setPlayerHook] = defineHooks(Player);
 
 // The first parameter is the name of the hookable method, which will have TS type hints.
 // The return value is the second parameter you passed in.
-export const my_setPlayerArmour = setPlayerHook(
-  "setArmour",
-  function (armour: number) {
-    // Here, `this` refers to the current player
-    const flag = true; // Assume true for this example
-    if (flag) {
-      console.log("my hook");
-      // Call the original setArmour method, but we intentionally subtract 1 and return the original call result
-      return orig_playerMethods.setArmour.call(this, armour - 1);
-      // Never directly use this.setArmour(armour), as it will cause an infinite loop
-      // Inside the hook function body, you can only call all original functions via orig_playerMethods.
-    } else {
-      return false;
-    }
-  },
-);
+export const my_setPlayerArmour = setPlayerHook("setArmour", function (armour: number) {
+  // Here, `this` refers to the current player
+  const flag = true; // Assume true for this example
+  if (flag) {
+    console.log("my hook");
+    // Call the original setArmour method, but we intentionally subtract 1 and return the original call result
+    return orig_playerMethods.setArmour.call(this, armour - 1);
+    // Never directly use this.setArmour(armour), as it will cause an infinite loop
+    // Inside the hook function body, you can only call all original functions via orig_playerMethods.
+  } else {
+    return false;
+  }
+});
 
 /*
 setPlayerHook(
@@ -59,9 +56,7 @@ import { Vehicle, type LimitsEnum } from "@infernus/core";
 
 export const orig_CreateVehicle = Vehicle.__inject__.create;
 
-export function my_CreateVehicle(
-  ...args: Parameters<typeof orig_CreateVehicle>
-) {
+export function my_CreateVehicle(...args: Parameters<typeof orig_CreateVehicle>) {
   const id = orig_CreateVehicle(...args);
 
   if (id > 0 && id < LimitsEnum.MAX_VEHICLES) {

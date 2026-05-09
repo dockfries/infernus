@@ -217,18 +217,8 @@ function elevator_OpenDoors() {
   // Opens the elevator's doors.
 
   const { y, z } = obj_ElevatorDoors[0].getPos();
-  obj_ElevatorDoors[0].move(
-    constants.X_DOOR_L_OPENED,
-    y,
-    z,
-    constants.DOORS_SPEED,
-  );
-  obj_ElevatorDoors[1].move(
-    constants.X_DOOR_R_OPENED,
-    y,
-    z,
-    constants.DOORS_SPEED,
-  );
+  obj_ElevatorDoors[0].move(constants.X_DOOR_L_OPENED, y, z, constants.DOORS_SPEED);
+  obj_ElevatorDoors[1].move(constants.X_DOOR_R_OPENED, y, z, constants.DOORS_SPEED);
 
   return true;
 }
@@ -239,18 +229,8 @@ function elevator_CloseDoors() {
   if (elevatorState === constants.ELEVATOR_STATE_MOVING) return false;
 
   const { y, z } = obj_ElevatorDoors[0].getPos();
-  obj_ElevatorDoors[0].move(
-    constants.X_DOOR_CLOSED,
-    y,
-    z,
-    constants.DOORS_SPEED,
-  );
-  obj_ElevatorDoors[1].move(
-    constants.X_DOOR_CLOSED,
-    y,
-    z,
-    constants.DOORS_SPEED,
-  );
+  obj_ElevatorDoors[0].move(constants.X_DOOR_CLOSED, y, z, constants.DOORS_SPEED);
+  obj_ElevatorDoors[1].move(constants.X_DOOR_CLOSED, y, z, constants.DOORS_SPEED);
 
   return true;
 }
@@ -385,8 +365,7 @@ function elevator_TurnToIdle() {
 function removeFirstQueueFloor() {
   // Removes the data in ElevatorQueue[0], and reorders the queue accordingly.
 
-  for (let i = 0; i < elevatorQueue.length - 1; i++)
-    elevatorQueue[i] = elevatorQueue[i + 1];
+  for (let i = 0; i < elevatorQueue.length - 1; i++) elevatorQueue[i] = elevatorQueue[i + 1];
 
   elevatorQueue[elevatorQueue.length - 1] = constants.INVALID_FLOOR;
 
@@ -472,17 +451,10 @@ async function showElevatorDialog(player: Player) {
 
     if (!response) return false;
 
-    if (
-      floorRequestedBy[listItem] !== InvalidEnum.PLAYER_ID ||
-      isFloorInQueue(listItem)
-    )
-      new GameText("~r~The floor is already in the queue", 3500, 4).forPlayer(
-        player,
-      );
+    if (floorRequestedBy[listItem] !== InvalidEnum.PLAYER_ID || isFloorInQueue(listItem))
+      new GameText("~r~The floor is already in the queue", 3500, 4).forPlayer(player);
     else if (didPlayerRequestElevator(player))
-      new GameText("~r~You already requested the elevator", 3500, 4).forPlayer(
-        player,
-      );
+      new GameText("~r~You already requested the elevator", 3500, 4).forPlayer(player);
     else callElevator(player, listItem);
 
     return true;
@@ -492,11 +464,7 @@ async function showElevatorDialog(player: Player) {
 function callElevator(player: Player, floorId: number) {
   // Calls the elevator (also used with the elevator dialog).
 
-  if (
-    floorRequestedBy[floorId] !== InvalidEnum.PLAYER_ID ||
-    isFloorInQueue(floorId)
-  )
-    return false;
+  if (floorRequestedBy[floorId] !== InvalidEnum.PLAYER_ID || isFloorInQueue(floorId)) return false;
 
   floorRequestedBy[floorId] = player;
   addFloorToQueue(floorId);
@@ -612,104 +580,86 @@ export const SFZomboTech: ISFZomboTechFS = {
         }
 
         elevatorState = constants.ELEVATOR_STATE_WAITING;
-        elevatorTurnTimer = setTimeout(
-          elevator_TurnToIdle,
-          constants.ELEVATOR_WAIT_TIME,
-        );
+        elevatorTurnTimer = setTimeout(elevator_TurnToIdle, constants.ELEVATOR_WAIT_TIME);
       }
 
       return next();
     });
 
-    const onKeyStateChange = PlayerEvent.onKeyStateChange(
-      ({ player, newKeys, next }) => {
-        if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
-          const pos = player.getPos();
+    const onKeyStateChange = PlayerEvent.onKeyStateChange(({ player, newKeys, next }) => {
+      if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
+        const pos = player.getPos();
 
-          // console.log(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
+        // console.log(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
 
+        if (
+          pos.y < constants.Y_ELEVATOR_POS + 1.8 &&
+          pos.y > constants.Y_ELEVATOR_POS - 1.8 &&
+          pos.x < constants.X_ELEVATOR_POS + 1.8 &&
+          pos.x > constants.X_ELEVATOR_POS - 1.8
+        )
+          // He is using the elevator button
+          showElevatorDialog(player);
+        // Is the player using a floor button?
+        else {
           if (
-            pos.y < constants.Y_ELEVATOR_POS + 1.8 &&
-            pos.y > constants.Y_ELEVATOR_POS - 1.8 &&
-            pos.x < constants.X_ELEVATOR_POS + 1.8 &&
-            pos.x > constants.X_ELEVATOR_POS - 1.8
-          )
-            // He is using the elevator button
-            showElevatorDialog(player);
-          // Is the player using a floor button?
-          else {
-            if (
-              pos.y > constants.Y_ELEVATOR_POS + 1.81 &&
-              pos.y < constants.Y_ELEVATOR_POS + 3.8 &&
-              pos.x < constants.X_ELEVATOR_POS - 1.81 &&
-              pos.x > constants.X_ELEVATOR_POS - 3.8
-            ) {
-              // Create variable
-              let i: number;
+            pos.y > constants.Y_ELEVATOR_POS + 1.81 &&
+            pos.y < constants.Y_ELEVATOR_POS + 3.8 &&
+            pos.x < constants.X_ELEVATOR_POS - 1.81 &&
+            pos.x > constants.X_ELEVATOR_POS - 3.8
+          ) {
+            // Create variable
+            let i: number;
 
-              // Check for ground floor
-              if (
-                pos.z > constants.GROUND_Z_COORD - 2 &&
-                pos.z < constants.GROUND_Z_COORD + 2
-              ) {
-                i = 0;
-              } else i = 1;
+            // Check for ground floor
+            if (pos.z > constants.GROUND_Z_COORD - 2 && pos.z < constants.GROUND_Z_COORD + 2) {
+              i = 0;
+            } else i = 1;
 
-              //console.logf("Floor = %d | State = %d | i = %d", ElevatorFloor, ElevatorState, i);
+            //console.logf("Floor = %d | State = %d | i = %d", ElevatorFloor, ElevatorState, i);
 
-              // Check if the elevator is not moving and already on the requested floor
-              if (
-                elevatorState !== constants.ELEVATOR_STATE_MOVING &&
-                elevatorFloor === i
-              ) {
-                // Display a gametext message and exit here
-                new GameText(
-                  "~n~~n~~n~~n~~n~~r~ZomboTech Elevator~n~~r~Is Already On~n~~r~This Floor!",
-                  3000,
-                  5,
-                ).forPlayer(player);
-                return true;
-              }
-
-              //console.logf("Call Elevator to Floor %i", i);
-
-              callElevator(player, i);
-              new GameText("~r~Elevator called", 3500, 4).forPlayer(player);
+            // Check if the elevator is not moving and already on the requested floor
+            if (elevatorState !== constants.ELEVATOR_STATE_MOVING && elevatorFloor === i) {
+              // Display a gametext message and exit here
+              new GameText(
+                "~n~~n~~n~~n~~n~~r~ZomboTech Elevator~n~~r~Is Already On~n~~r~This Floor!",
+                3000,
+                5,
+              ).forPlayer(player);
+              return true;
             }
+
+            //console.logf("Call Elevator to Floor %i", i);
+
+            callElevator(player, i);
+            new GameText("~r~Elevator called", 3500, 4).forPlayer(player);
           }
         }
+      }
 
-        return next();
-      },
-    );
+      return next();
+    });
 
     const offs: (() => any)[] = [onConnect, onMoved, onKeyStateChange];
 
     if (options && options.enableCommand) {
-      const onCommandText = PlayerEvent.onCommandText(
-        "zl",
-        ({ player, next }) => {
-          // Set the interior
-          player.setInterior(0);
+      const onCommandText = PlayerEvent.onCommandText("zl", ({ player, next }) => {
+        // Set the interior
+        player.setInterior(0);
 
-          // Set player position and facing angle
-          player.setPos(
-            -1957.11 + Math.random() * 2,
-            644.36 + Math.random() * 2,
-            47.6,
-          );
-          player.setFacingAngle(215);
+        // Set player position and facing angle
+        player.setPos(-1957.11 + Math.random() * 2, 644.36 + Math.random() * 2, 47.6);
+        player.setFacingAngle(215);
 
-          // Fix camera position after teleporting
-          player.setCameraBehind();
+        // Fix camera position after teleporting
+        player.setCameraBehind();
 
-          // Send a gametext message to the player
-          new GameText("~b~~h~ZomboTech Lab!", 3000, 3).forPlayer(player);
+        // Send a gametext message to the player
+        new GameText("~b~~h~ZomboTech Lab!", 3000, 3).forPlayer(player);
 
-          // Exit here
-          return next();
-        },
-      );
+        // Exit here
+        return next();
+      });
       offs.push(onCommandText);
     }
 

@@ -43,11 +43,7 @@ export class GpsPath {
   }
 
   getSize(): number {
-    const [size, ret]: number[] = samp.callNative(
-      "GetPathSize",
-      "iI",
-      this.pathId,
-    );
+    const [size, ret]: number[] = samp.callNative("GetPathSize", "iI", this.pathId);
     if (ret !== GpsError.None) {
       throw new GpsException(ret);
     }
@@ -55,11 +51,7 @@ export class GpsPath {
   }
 
   getLength(): number {
-    const [length, ret]: number[] = samp.callNative(
-      "GetPathLength",
-      "iF",
-      this.pathId,
-    );
+    const [length, ret]: number[] = samp.callNative("GetPathLength", "iF", this.pathId);
     if (ret !== GpsError.None) {
       throw new GpsException(ret);
     }
@@ -67,12 +59,7 @@ export class GpsPath {
   }
 
   getNode(index: number): MapNode {
-    const [nodeId, ret]: number[] = samp.callNative(
-      "GetPathNode",
-      "iiI",
-      this.pathId,
-      index,
-    );
+    const [nodeId, ret]: number[] = samp.callNative("GetPathNode", "iiI", this.pathId, index);
     if (ret !== GpsError.None) {
       throw new GpsException(ret);
     }
@@ -93,12 +80,7 @@ export class GpsPath {
   }
 
   static findSync(node: MapNode, target: MapNode): GpsPath {
-    const [pathId, ret]: number[] = samp.callNative(
-      "FindPath",
-      "iiI",
-      node.nodeId,
-      target.nodeId,
-    );
+    const [pathId, ret]: number[] = samp.callNative("FindPath", "iiI", node.nodeId, target.nodeId);
     if (ret !== GpsError.None) {
       throw new GpsException(ret);
     }
@@ -109,13 +91,7 @@ export class GpsPath {
   static find(node: MapNode, target: MapNode): Promise<GpsPath> {
     return new Promise<GpsPath>((resolve, reject) => {
       const taskId = randomTaskId();
-      const ret = samp.callPublic(
-        "FindPathAsync",
-        "iii",
-        node.nodeId,
-        target.nodeId,
-        taskId,
-      );
+      const ret = samp.callPublic("FindPathAsync", "iii", node.nodeId, target.nodeId, taskId);
 
       if (ret !== GpsError.None) {
         return reject(new GpsException(ret));

@@ -26,8 +26,6 @@ export class DynamicLocalObjectStream extends SampVoiceLocalStream {
   }
 
   static getInstances() {
-    return super.getInstances(
-      DynamicLocalObjectStream.name,
-    ) as DynamicLocalObjectStream[];
+    return super.getInstances(DynamicLocalObjectStream.name) as DynamicLocalObjectStream[];
   }
 }

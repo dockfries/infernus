@@ -382,8 +382,7 @@ function elevator_TurnToIdle() {
 function removeFirstQueueFloor() {
   // Removes the data in ElevatorQueue[0], and reorders the queue accordingly.
 
-  for (let i = 0; i < elevatorQueue.length - 1; i++)
-    elevatorQueue[i] = elevatorQueue[i + 1];
+  for (let i = 0; i < elevatorQueue.length - 1; i++) elevatorQueue[i] = elevatorQueue[i + 1];
 
   elevatorQueue[elevatorQueue.length - 1] = constants.INVALID_FLOOR;
 
@@ -469,17 +468,10 @@ async function showElevatorDialog(player: Player) {
 
   if (!response) return false;
 
-  if (
-    floorRequestedBy[listItem] !== InvalidEnum.PLAYER_ID ||
-    isFloorInQueue(listItem)
-  )
-    new GameText("~r~The floor is already in the queue", 3500, 4).forPlayer(
-      player,
-    );
+  if (floorRequestedBy[listItem] !== InvalidEnum.PLAYER_ID || isFloorInQueue(listItem))
+    new GameText("~r~The floor is already in the queue", 3500, 4).forPlayer(player);
   else if (didPlayerRequestElevator(player))
-    new GameText("~r~You already requested the elevator", 3500, 4).forPlayer(
-      player,
-    );
+    new GameText("~r~You already requested the elevator", 3500, 4).forPlayer(player);
   else callElevator(player, listItem);
 
   return true;
@@ -488,11 +480,7 @@ async function showElevatorDialog(player: Player) {
 function callElevator(player: Player, floorId: number) {
   // Calls the elevator (also used with the elevator dialog).
 
-  if (
-    floorRequestedBy[floorId] !== InvalidEnum.PLAYER_ID ||
-    isFloorInQueue(floorId)
-  )
-    return false;
+  if (floorRequestedBy[floorId] !== InvalidEnum.PLAYER_ID || isFloorInQueue(floorId)) return false;
 
   floorRequestedBy[floorId] = player;
   addFloorToQueue(floorId);
@@ -596,125 +584,117 @@ export const LSBeachSide: ILSBeachSideFS = {
         }
 
         elevatorState = constants.ELEVATOR_STATE_WAITING;
-        elevatorTurnTimer = setTimeout(
-          elevator_TurnToIdle,
-          constants.ELEVATOR_WAIT_TIME,
-        );
+        elevatorTurnTimer = setTimeout(elevator_TurnToIdle, constants.ELEVATOR_WAIT_TIME);
       }
 
       return next();
     });
 
-    const onKeyStateChange = PlayerEvent.onKeyStateChange(
-      ({ player, newKeys, next }) => {
-        // Check if the player is not in a vehicle and pressed the conversation yes key (Y by default)
-        if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
-          // Create variables and get the players current position
+    const onKeyStateChange = PlayerEvent.onKeyStateChange(({ player, newKeys, next }) => {
+      // Check if the player is not in a vehicle and pressed the conversation yes key (Y by default)
+      if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
+        // Create variables and get the players current position
 
-          const pos = player.getPos();
-          // For debug
-          // console.log(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
+        const pos = player.getPos();
+        // For debug
+        // console.log(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
 
-          // Check if the player is using the button inside the elevator
+        // Check if the player is using the button inside the elevator
+        if (
+          pos.y > constants.Y_ELEVATOR_POS - 1.8 &&
+          pos.y < constants.Y_ELEVATOR_POS + 1.8 &&
+          pos.x < constants.X_ELEVATOR_POS + 1.8 &&
+          pos.x > constants.X_ELEVATOR_POS - 1.8
+        ) {
+          // The player is using the button inside the elevator
+
+          // Show the elevator dialog to the player
+          showElevatorDialog(player);
+        } else {
+          // Check if the player is using the button on one of the floors
           if (
-            pos.y > constants.Y_ELEVATOR_POS - 1.8 &&
-            pos.y < constants.Y_ELEVATOR_POS + 1.8 &&
-            pos.x < constants.X_ELEVATOR_POS + 1.8 &&
-            pos.x > constants.X_ELEVATOR_POS - 1.8
+            pos.y < constants.Y_ELEVATOR_POS - 1.81 &&
+            pos.y > constants.Y_ELEVATOR_POS - 3.8 &&
+            pos.x > constants.X_ELEVATOR_POS + 1.21 &&
+            pos.x < constants.X_ELEVATOR_POS + 3.8
           ) {
-            // The player is using the button inside the elevator
+            // The player is most likely using an elevator floor button... check which floor
 
-            // Show the elevator dialog to the player
-            showElevatorDialog(player);
-          } else {
-            // Check if the player is using the button on one of the floors
-            if (
-              pos.y < constants.Y_ELEVATOR_POS - 1.81 &&
-              pos.y > constants.Y_ELEVATOR_POS - 3.8 &&
-              pos.x > constants.X_ELEVATOR_POS + 1.21 &&
-              pos.x < constants.X_ELEVATOR_POS + 3.8
-            ) {
-              // The player is most likely using an elevator floor button... check which floor
+            // Create variable with the number of floors to check (total floors minus 1)
+            let i = 13;
 
-              // Create variable with the number of floors to check (total floors minus 1)
-              let i = 13;
+            // Loop
+            while (pos.z < getDoorsZCoordForFloor(i) + 3.5 && i > 0) i--;
 
-              // Loop
-              while (pos.z < getDoorsZCoordForFloor(i) + 3.5 && i > 0) i--;
+            if (i === 0 && pos.z < getDoorsZCoordForFloor(0) + 2.0) i = -1;
 
-              if (i === 0 && pos.z < getDoorsZCoordForFloor(0) + 2.0) i = -1;
+            if (i <= 12) {
+              // Check if the elevator is not moving (idle or waiting)
+              if (elevatorState !== constants.ELEVATOR_STATE_MOVING) {
+                // Check if the elevator is already on the floor it was called from
+                if (elevatorFloor === i + 1) {
+                  // Display gametext message to the player
+                  new GameText(
+                    "~n~~n~~n~~n~~n~~n~~n~~y~~h~LS BeachSide Elevator Is~n~~y~~h~Already On This Floor...~n~~w~Walk Inside It~n~~w~And Press '~k~~CONVERSATION_YES~'",
+                    3500,
+                    3,
+                  ).forPlayer(player);
 
-              if (i <= 12) {
-                // Check if the elevator is not moving (idle or waiting)
-                if (elevatorState !== constants.ELEVATOR_STATE_MOVING) {
-                  // Check if the elevator is already on the floor it was called from
-                  if (elevatorFloor === i + 1) {
-                    // Display gametext message to the player
-                    new GameText(
-                      "~n~~n~~n~~n~~n~~n~~n~~y~~h~LS BeachSide Elevator Is~n~~y~~h~Already On This Floor...~n~~w~Walk Inside It~n~~w~And Press '~k~~CONVERSATION_YES~'",
-                      3500,
-                      3,
-                    ).forPlayer(player);
+                  // Display chat text message to the player
+                  player.sendClientMessage(
+                    constants.COLOR_MESSAGE_YELLOW,
+                    "* The LS BeachSide elevator is already on this floor... walk inside it and press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}'",
+                  );
 
-                    // Display chat text message to the player
-                    player.sendClientMessage(
-                      constants.COLOR_MESSAGE_YELLOW,
-                      "* The LS BeachSide elevator is already on this floor... walk inside it and press '{FFFFFF}~k~~CONVERSATION_YES~{CCCCCC}'",
-                    );
-
-                    return next();
-                  }
+                  return next();
                 }
+              }
 
-                // Call function to call the elevator to the floor
-                callElevator(player, i + 1);
+              // Call function to call the elevator to the floor
+              callElevator(player, i + 1);
 
-                // Display gametext message to the player
-                new GameText(
-                  "~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~LS BeachSide Elevator~n~~g~~h~Has Been Called...~n~~w~Please Wait",
-                  3000,
-                  3,
-                ).forPlayer(player);
+              // Display gametext message to the player
+              new GameText(
+                "~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~LS BeachSide Elevator~n~~g~~h~Has Been Called...~n~~w~Please Wait",
+                3000,
+                3,
+              ).forPlayer(player);
 
-                // Create variable for formatted message
-                let strTempString: string;
+              // Create variable for formatted message
+              let strTempString: string;
 
-                // Check if the elevator is moving
-                if (elevatorState === constants.ELEVATOR_STATE_MOVING) {
+              // Check if the elevator is moving
+              if (elevatorState === constants.ELEVATOR_STATE_MOVING) {
+                // Format chat text message
+                strTempString =
+                  "* The LS BeachSide elevator has been called... it is currently moving towards the " +
+                  `${constants.FloorNames[elevatorFloor]}.`;
+              } else {
+                // Check if the floor is the car park
+                if (elevatorFloor === 0) {
                   // Format chat text message
                   strTempString =
-                    "* The LS BeachSide elevator has been called... it is currently moving towards the " +
+                    "* The LS BeachSide elevator has been called... it is currently at the " +
                     `${constants.FloorNames[elevatorFloor]}.`;
                 } else {
-                  // Check if the floor is the car park
-                  if (elevatorFloor === 0) {
-                    // Format chat text message
-                    strTempString =
-                      "* The LS BeachSide elevator has been called... it is currently at the " +
-                      `${constants.FloorNames[elevatorFloor]}.`;
-                  } else {
-                    // Format chat text message
-                    strTempString =
-                      "* The LS BeachSide elevator has been called... it is currently on the " +
-                      `${constants.FloorNames[elevatorFloor]}.`;
-                  }
+                  // Format chat text message
+                  strTempString =
+                    "* The LS BeachSide elevator has been called... it is currently on the " +
+                    `${constants.FloorNames[elevatorFloor]}.`;
                 }
-
-                // Display formatted chat text message to the player
-                player.sendClientMessage(
-                  constants.COLOR_MESSAGE_YELLOW,
-                  strTempString,
-                );
-
-                return next();
               }
+
+              // Display formatted chat text message to the player
+              player.sendClientMessage(constants.COLOR_MESSAGE_YELLOW, strTempString);
+
+              return next();
             }
           }
         }
+      }
 
-        return next();
-      },
-    );
+      return next();
+    });
 
     const offs: (() => any)[] = [onConnect, onMoved, onKeyStateChange];
 
@@ -723,29 +703,22 @@ export const LSBeachSide: ILSBeachSideFS = {
     // outside the LS BeachSide building.
 
     if (options && options.enableCommand) {
-      const onCommandText = PlayerEvent.onCommandText(
-        "lsb",
-        ({ player, next }) => {
-          // Check command text
-          // Set the interior
-          player.setInterior(0);
+      const onCommandText = PlayerEvent.onCommandText("lsb", ({ player, next }) => {
+        // Check command text
+        // Set the interior
+        player.setInterior(0);
 
-          // Set player position and facing angle
-          player.setPos(
-            289.81 + Math.random() * 2,
-            -1630.65 + Math.random() * 2,
-            34.32,
-          );
-          player.setFacingAngle(10);
+        // Set player position and facing angle
+        player.setPos(289.81 + Math.random() * 2, -1630.65 + Math.random() * 2, 34.32);
+        player.setFacingAngle(10);
 
-          // Fix camera position after teleporting
-          player.setCameraBehind();
+        // Fix camera position after teleporting
+        player.setCameraBehind();
 
-          // Send a gametext message to the player
-          new GameText("~b~~h~LS BeachSide!", 3000, 3).forPlayer(player);
-          return next();
-        },
-      );
+        // Send a gametext message to the player
+        new GameText("~b~~h~LS BeachSide!", 3000, 3).forPlayer(player);
+        return next();
+      });
       offs.push(onCommandText);
     }
 

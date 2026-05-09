@@ -2,11 +2,7 @@ import { RecException } from "../exceptions";
 import { CppField } from "../types";
 
 export function sizeof(field: CppField): number {
-  if (
-    field.bitWidth !== undefined &&
-    field.bitWidth > 0 &&
-    field.bitWidth < 8
-  ) {
+  if (field.bitWidth !== undefined && field.bitWidth > 0 && field.bitWidth < 8) {
     return 1;
   }
   const length = Array.isArray(field.value) ? field.value.length : 1;
@@ -29,9 +25,7 @@ export function sizeof(field: CppField): number {
     }
     case "union": {
       const size = sizeof(field.value![0]);
-      const isValid = field
-        .value!.slice(1)
-        .every((curr) => sizeof(curr) === size);
+      const isValid = field.value!.slice(1).every((curr) => sizeof(curr) === size);
       if (!isValid) {
         throw new RecException(`Invalid union: ${field.field}`);
       }

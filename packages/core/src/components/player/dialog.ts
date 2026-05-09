@@ -1,9 +1,5 @@
 import { DialogStylesEnum } from "../../enums";
-import type {
-  IDialog,
-  IDialogFuncQueue,
-  IDialogResCommon,
-} from "../../interfaces";
+import type { IDialog, IDialogFuncQueue, IDialogResCommon } from "../../interfaces";
 import { HidePlayerDialog } from "core/wrapper/native";
 import { I18n } from "../../utils/i18n";
 import { Player } from "./entity";
@@ -15,13 +11,7 @@ export const [onDialogResponse] = defineEvent({
   name: "OnDialogResponseI18n",
   identifier: "iiiiai",
   defaultValue: false,
-  beforeEach(
-    id: number,
-    dialogId: number,
-    response: number,
-    listItem: number,
-    buffer: number[],
-  ) {
+  beforeEach(id: number, dialogId: number, response: number, listItem: number, buffer: number[]) {
     const player = Player.getInstance(id)!;
     const inputText = I18n.decodeFromBuf(buffer, player.charset);
     return {
@@ -35,15 +25,13 @@ export const [onDialogResponse] = defineEvent({
   },
 });
 
-onDialogResponse(
-  ({ next, player, dialogId, response, listItem, buffer, inputText }) => {
-    const callback = Dialog.waitingQueue.get(player);
-    if (!callback) return next();
-    if (callback.showId !== dialogId) return next();
-    callback.resolve({ response, listItem, buffer, inputText });
-    return next();
-  },
-);
+onDialogResponse(({ next, player, dialogId, response, listItem, buffer, inputText }) => {
+  const callback = Dialog.waitingQueue.get(player);
+  if (!callback) return next();
+  if (callback.showId !== dialogId) return next();
+  callback.resolve({ response, listItem, buffer, inputText });
+  return next();
+});
 
 /**
  * You don't need to care about the dialog id.
@@ -113,9 +101,7 @@ export class Dialog {
     if (!task) return false;
     if (reject) {
       task.reject(
-        new DialogException(
-          "player timeout does not respond or second request show dialog",
-        ),
+        new DialogException("player timeout does not respond or second request show dialog"),
       );
     }
     Dialog.waitingQueue.delete(player);

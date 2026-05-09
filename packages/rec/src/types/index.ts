@@ -19,5 +19,4 @@ export type CppTypeValueMap = {
   union: CppField<"struct" | "union">[];
 };
 
-export type CppObject<OmittedKeys extends keyof CppTypeValueMap = never> =
-  CppField<OmittedKeys>[];
+export type CppObject<OmittedKeys extends keyof CppTypeValueMap = never> = CppField<OmittedKeys>[];

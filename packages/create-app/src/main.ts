@@ -19,24 +19,14 @@ import { execa } from "execa";
 
 import { downloadGitRepo } from "./utils/api";
 
-import {
-  addDeps,
-  cleanAllGlobalDeps,
-  cleanGlobalDeps,
-  removeDeps,
-} from "./utils/dep";
+import { addDeps, cleanAllGlobalDeps, cleanGlobalDeps, removeDeps } from "./utils/dep";
 import type {
   AddDepsOptions,
   CleanCacheOptions,
   RemoveDepsOptions,
   SetGetConfigOptions,
 } from "./types";
-import {
-  readGlobalConfig,
-  readOmpConfig,
-  writeGlobalConfig,
-  writeOmpConfig,
-} from "./utils/config";
+import { readGlobalConfig, readOmpConfig, writeGlobalConfig, writeOmpConfig } from "./utils/config";
 
 const cli = yargs(hideBin(process.argv));
 
@@ -74,11 +64,7 @@ async function successInstalled(projectName: string) {
       stdio: "inherit" as const,
     };
 
-    let subProc = execa(
-      "pnpm",
-      ["dlx", "@infernus/create-app@latest", "install"],
-      options,
-    );
+    let subProc = execa("pnpm", ["dlx", "@infernus/create-app@latest", "install"], options);
 
     const onceFn = onceSIGINTKill(subProc);
 
@@ -106,8 +92,7 @@ async function initStarter(projectName: string, isRakNet = false) {
   const isCreatedProject = fs.existsSync(appGeneratePath);
   if (isCreatedProject) {
     const files = await fs.readdir(appGeneratePath);
-    if (files.length)
-      throw new Error(`The project directory ${projectName} already exists`);
+    if (files.length) throw new Error(`The project directory ${projectName} already exists`);
   }
 
   if (isMac) {
@@ -168,11 +153,7 @@ async function createApp(args: ArgumentsCamelCase<{ appName?: string }>) {
       default: "my-app",
       validate(input) {
         if (!/^[^\\/?*":<>|\r\n]+$/.test(input)) {
-          console.log(
-            chalk.red.bold(
-              "\nThe project name cannot contain special characters",
-            ),
-          );
+          console.log(chalk.red.bold("\nThe project name cannot contain special characters"));
           return false;
         }
         return true;
@@ -195,16 +176,12 @@ async function createApp(args: ArgumentsCamelCase<{ appName?: string }>) {
       }
       if (!/^\w+$/.test(input)) {
         console.log(
-          chalk.red.bold(
-            "\nPlease enter a password consisting of case, digits, and underscores.",
-          ),
+          chalk.red.bold("\nPlease enter a password consisting of case, digits, and underscores."),
         );
         return false;
       }
       if (input.trim() === "changeme") {
-        console.log(
-          chalk.red.bold("\nThe default rcon password cannot be used."),
-        );
+        console.log(chalk.red.bold("\nThe default rcon password cannot be used."));
         return false;
       }
       return true;

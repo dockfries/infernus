@@ -43,11 +43,9 @@ const [onPlayerSelect] = defineEvent({
   ) {
     const player = Player.getInstance(playerId)!;
     const isPlayerObject =
-      type !== SelectObjectTypesEnum.UNKNOWN &&
-      type === SelectObjectTypesEnum.PLAYER_OBJECT;
+      type !== SelectObjectTypesEnum.UNKNOWN && type === SelectObjectTypesEnum.PLAYER_OBJECT;
     const isGlobal =
-      type !== SelectObjectTypesEnum.UNKNOWN &&
-      type === SelectObjectTypesEnum.GLOBAL_OBJECT;
+      type !== SelectObjectTypesEnum.UNKNOWN && type === SelectObjectTypesEnum.GLOBAL_OBJECT;
     return {
       player,
       type,

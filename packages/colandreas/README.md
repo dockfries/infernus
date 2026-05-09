@@ -23,11 +23,7 @@ GameMode.onInit(({ next }) => {
 
 PlayerEvent.onCommandText("water", ({ player, next }) => {
   const info = isPlayerInWater(player);
-  if (info)
-    player.sendClientMessage(
-      "#f00",
-      `you are in water, ${JSON.stringify(info)}`
-    );
+  if (info) player.sendClientMessage("#f00", `you are in water, ${JSON.stringify(info)}`);
   else {
     player.sendClientMessage("#0f0", "you are not in water");
   }

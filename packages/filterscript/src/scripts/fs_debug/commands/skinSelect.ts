@@ -1,10 +1,4 @@
-import {
-  PlayerEvent,
-  CameraCutStylesEnum,
-  GameText,
-  KeysEnum,
-  Player,
-} from "@infernus/core";
+import { PlayerEvent, CameraCutStylesEnum, GameText, KeysEnum, Player } from "@infernus/core";
 import {
   gPlayerStatus,
   COLOR_RED,
@@ -69,10 +63,7 @@ function skinSelect(player: Player) {
   if (keys & KeysEnum.ACTION) {
     player.setCameraBehind();
     player.toggleControllable(true);
-    player.sendClientMessage(
-      COLOR_GREEN,
-      `[SUCCESS]: You have changed to SKINID ${curSkin}`,
-    );
+    player.sendClientMessage(COLOR_GREEN, `[SUCCESS]: You have changed to SKINID ${curSkin}`);
 
     gPlayerStatus.delete(player);
     const timer = gPlayerTimers.get(player);
@@ -115,28 +106,22 @@ export function registerSkinSelect(options?: IFsDebugOptions) {
     return next();
   });
 
-  const skin = PlayerEvent.onCommandText(
-    ["s", "skin"],
-    ({ player, subcommand, next }) => {
-      // /s SKINID allows players to directly select a skin using it's ID.
-      if (!subcommand[0]) {
-        player.sendClientMessage(COLOR_RED, "[USAGE]: /s SKINID");
-        return next();
-      }
-      const idx = +subcommand[0] || 0;
-      if (isInvalidSkin(idx) || idx < MIN_SKIN_ID || idx > MAX_SKIN_ID) {
-        player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid SKINID");
-        return next();
-      }
-      player.setSkin(idx);
-      curPlayerSkin.set(player, idx);
-      player.sendClientMessage(
-        COLOR_GREEN,
-        `[SUCCESS]: Changed skin to SKINID ${idx}`,
-      );
+  const skin = PlayerEvent.onCommandText(["s", "skin"], ({ player, subcommand, next }) => {
+    // /s SKINID allows players to directly select a skin using it's ID.
+    if (!subcommand[0]) {
+      player.sendClientMessage(COLOR_RED, "[USAGE]: /s SKINID");
       return next();
-    },
-  );
+    }
+    const idx = +subcommand[0] || 0;
+    if (isInvalidSkin(idx) || idx < MIN_SKIN_ID || idx > MAX_SKIN_ID) {
+      player.sendClientMessage(COLOR_RED, "[ERROR]: Invalid SKINID");
+      return next();
+    }
+    player.setSkin(idx);
+    curPlayerSkin.set(player, idx);
+    player.sendClientMessage(COLOR_GREEN, `[SUCCESS]: Changed skin to SKINID ${idx}`);
+    return next();
+  });
 
   return [skinSel, skin];
 }

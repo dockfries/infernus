@@ -29,23 +29,10 @@ export class NpcPath {
     return ret;
   }
   addPoint(x: number, y: number, z: number, stopRange: number = 0.2) {
-    return !!samp.callNative(
-      "NPC_AddPointToPath",
-      "iffff",
-      this._id,
-      x,
-      y,
-      z,
-      stopRange,
-    );
+    return !!samp.callNative("NPC_AddPointToPath", "iffff", this._id, x, y, z, stopRange);
   }
   removePoint(pointIndex: number) {
-    return !!samp.callNative(
-      "NPC_RemovePointFromPath",
-      "ii",
-      this._id,
-      pointIndex,
-    );
+    return !!samp.callNative("NPC_RemovePointFromPath", "ii", this._id, pointIndex);
   }
   clear() {
     return !!samp.callNative("NPC_ClearPath", "i", this._id);
@@ -66,11 +53,7 @@ export class NpcPath {
     return NpcPath.isValid(this._id);
   }
   getCurrentPointIndex() {
-    return samp.callNative(
-      "NPC_GetCurrentPathPointIndex",
-      "i",
-      this._id,
-    ) as number;
+    return samp.callNative("NPC_GetCurrentPathPointIndex", "i", this._id) as number;
   }
   move(
     moveType = NPCMoveTypeEnum.AUTO,

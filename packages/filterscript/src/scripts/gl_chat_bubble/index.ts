@@ -25,15 +25,12 @@ export const GlChatBubble: IFilterScript = {
       return false; // can't do normal chat with this loaded
     });
 
-    const meCommand = PlayerEvent.onCommandText(
-      "me",
-      ({ player, subcommand, next }) => {
-        const actionText = `* ${subcommand.join(" ")}`;
-        player.setChatBubble(actionText, ACTION_COLOR, 30.0, 10000);
-        player.sendClientMessage(ACTION_COLOR, actionText);
-        return next();
-      },
-    );
+    const meCommand = PlayerEvent.onCommandText("me", ({ player, subcommand, next }) => {
+      const actionText = `* ${subcommand.join(" ")}`;
+      player.setChatBubble(actionText, ACTION_COLOR, 30.0, 10000);
+      player.sendClientMessage(ACTION_COLOR, actionText);
+      return next();
+    });
 
     console.log("\n--Speech bubble example loaded.\n");
     return [onText, meCommand];

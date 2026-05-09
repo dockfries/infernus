@@ -29,11 +29,7 @@ export class GpsConnection {
   }
 
   getSource(): MapNode {
-    const [nodeId, ret]: number[] = samp.callNative(
-      "GetConnectionSource",
-      "iI",
-      this.connectionId,
-    );
+    const [nodeId, ret]: number[] = samp.callNative("GetConnectionSource", "iI", this.connectionId);
     if (ret !== GpsError.None) {
       throw new GpsException(ret);
     }
@@ -41,11 +37,7 @@ export class GpsConnection {
   }
 
   getTarget(): MapNode {
-    const [nodeId, ret]: number[] = samp.callNative(
-      "GetConnectionTarget",
-      "iI",
-      this.connectionId,
-    );
+    const [nodeId, ret]: number[] = samp.callNative("GetConnectionTarget", "iI", this.connectionId);
     if (ret !== GpsError.None) {
       throw new GpsException(ret);
     }

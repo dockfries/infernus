@@ -13,8 +13,7 @@ GameMode.onExit(({ next }) => {
 });
 
 export async function loadMap(options: IMapLoadOptions) {
-  const { objects, removedBuilding, removedBuildingIdx } =
-    await mapReader(options);
+  const { objects, removedBuilding, removedBuildingIdx } = await mapReader(options);
 
   const id = uniqId();
 
@@ -49,9 +48,7 @@ export function unloadMap(mapId: number) {
   });
 
   const removedBuilding =
-    map._rmvBuildingIdx > -1
-      ? INTERNAL_MAP.removedBuilding[map._rmvBuildingIdx]
-      : [];
+    map._rmvBuildingIdx > -1 ? INTERNAL_MAP.removedBuilding[map._rmvBuildingIdx] : [];
 
   if (map._rmvBuildingIdx > -1) {
     INTERNAL_MAP.removedBuilding.splice(map._rmvBuildingIdx, 1);
@@ -62,9 +59,7 @@ export function unloadMap(mapId: number) {
   if (samp.defined && samp.defined._colandreas_included) {
     try {
       const require =
-        typeof global.require !== "undefined"
-          ? global.require
-          : createRequire(import.meta.url);
+        typeof global.require !== "undefined" ? global.require : createRequire(import.meta.url);
       const colandreas: typeof import("@infernus/colandreas") = require("@infernus/colandreas");
       removedBuilding.forEach((rmv) => {
         colandreas.restoreBuilding(...rmv);

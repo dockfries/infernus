@@ -1,13 +1,7 @@
 import { REQUEST_HEADER_LEN } from "../constants";
 import { RequestPacket } from "../enums";
 import { QueryException } from "../exceptions";
-import {
-  Client,
-  ClientDetail,
-  Options,
-  ServerInfo,
-  ServerRule,
-} from "../interfaces";
+import { Client, ClientDetail, Options, ServerInfo, ServerRule } from "../interfaces";
 import { detectAndDecode } from "./helper";
 
 function isValidIPv4(ip: string): boolean {
@@ -20,9 +14,7 @@ function isValidIPv4(ip: string): boolean {
   });
 }
 
-export function makePacket<T extends RequestPacket>(
-  options: Options<T>,
-): Buffer {
+export function makePacket<T extends RequestPacket>(options: Options<T>): Buffer {
   if (!isValidIPv4(options.address)) {
     throw new QueryException("Invalid ip address");
   }
@@ -114,10 +106,7 @@ export async function parseResponse(
         const ruleValueLen = response.readUInt8(reader);
         reader += 1;
 
-        const ruleValueBuffer = response.subarray(
-          reader,
-          reader + ruleValueLen,
-        );
+        const ruleValueBuffer = response.subarray(reader, reader + ruleValueLen);
         const ruleValue = (await detectAndDecode(ruleValueBuffer))[0];
         reader += ruleValueLen;
 

@@ -7,47 +7,42 @@
     "build-all": "tsx scripts/build-all.ts",
     "release": "tsx scripts/release.ts",
     "contributors": "all-contributors generate & git add README.md",
-    "lint-staged": "lint-staged",
     "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s",
     "prepare": "husky",
     "preinstall": "npx only-allow pnpm -y",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt"
   },
   "lint-staged": {
-    "*.{ts,js}": [
-      "eslint --fix"
-    ],
-    "*.{ts,js,json,yml}": [
-      "prettier --write"
-    ]
+    "*.{ts,js}": "pnpm run lint",
+    "*.{ts,js,json,yml}": "pnpm run format"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.5.3",
     "@commitlint/config-conventional": "^20.5.3",
-    "@eslint/js": "^10.0.1",
     "@infernus/streamer": "workspace:^",
     "@infernus/types": "workspace:^",
     "@inquirer/prompts": "^8.4.2",
     "@types/node": "^25.6.2",
-    "@typescript-eslint/eslint-plugin": "^8.59.2",
-    "@typescript-eslint/parser": "^8.59.2",
     "all-contributors-cli": "^6.26.1",
     "bumpp": "^11.1.0",
     "conventional-changelog-cli": "^5.0.0",
-    "eslint": "^10.3.0",
     "execa": "^9.6.1",
     "globals": "^17.6.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.2",
-    "prettier": "^3.8.3",
+    "oxfmt": "^0.48.0",
+    "oxlint": "^1.63.0",
+    "oxlint-tsgolint": "^0.22.1",
     "rolldown": "^1.0.0",
     "rolldown-plugin-dts": "^0.25.0",
     "tslib": "^2.8.1",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.2",
     "vitepress": "^2.0.0-alpha.17"
   }
 }

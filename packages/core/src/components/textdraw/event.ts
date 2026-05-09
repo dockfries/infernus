@@ -35,8 +35,7 @@ const [onPlayerClickGlobal] = defineEvent({
   beforeEach(pid: number, tid: number) {
     return {
       player: Player.getInstance(pid)!,
-      textDraw:
-        tid === InvalidEnum.TEXT_DRAW ? tid : TextDraw.getInstance(tid)!,
+      textDraw: tid === InvalidEnum.TEXT_DRAW ? tid : TextDraw.getInstance(tid)!,
     };
   },
 });
@@ -48,10 +47,7 @@ const [onPlayerClickPlayer] = defineEvent({
     const player = Player.getInstance(pid)!;
     return {
       player,
-      textDraw:
-        tid === InvalidEnum.TEXT_DRAW
-          ? tid
-          : TextDraw.getInstance(tid, player)!,
+      textDraw: tid === InvalidEnum.TEXT_DRAW ? tid : TextDraw.getInstance(tid, player)!,
     };
   },
 });

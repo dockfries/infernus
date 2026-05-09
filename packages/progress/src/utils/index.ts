@@ -27,8 +27,5 @@ export function setupTextDraw(
       .setFont(4)
       .setColor(color);
   }
-  return td
-    .setPos(layout.x, layout.y)
-    .setColor(color)
-    .setTextSize(layout.width, layout.height);
+  return td.setPos(layout.x, layout.y).setColor(color).setTextSize(layout.width, layout.height);
 }

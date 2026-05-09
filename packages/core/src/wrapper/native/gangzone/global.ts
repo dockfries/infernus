@@ -6,61 +6,32 @@ export const IsValidGangZone = (zoneId: number): boolean => {
   return !!samp.callNative("IsValidGangZone", "i", zoneId);
 };
 
-export const IsPlayerInGangZone = (
-  playerId: number,
-  zoneId: number,
-): boolean => {
+export const IsPlayerInGangZone = (playerId: number, zoneId: number): boolean => {
   return !!samp.callNative("IsPlayerInGangZone", "ii", playerId, zoneId);
 };
 
-export const IsGangZoneVisibleForPlayer = (
-  playerId: number,
-  zoneId: number,
-): boolean => {
-  return !!samp.callNative(
-    "IsGangZoneVisibleForPlayer",
-    "ii",
-    playerId,
-    zoneId,
-  );
+export const IsGangZoneVisibleForPlayer = (playerId: number, zoneId: number): boolean => {
+  return !!samp.callNative("IsGangZoneVisibleForPlayer", "ii", playerId, zoneId);
 };
 
-export const GangZoneGetColorForPlayer = (
-  playerId: number,
-  zoneId: number,
-): number => {
+export const GangZoneGetColorForPlayer = (playerId: number, zoneId: number): number => {
   return samp.callNative("GangZoneGetColorForPlayer", "ii", playerId, zoneId);
 };
 
-export const GangZoneGetFlashColorForPlayer = (
-  playerId: number,
-  zoneId: number,
-): number => {
-  return samp.callNative(
-    "GangZoneGetFlashColorForPlayer",
-    "ii",
-    playerId,
-    zoneId,
-  );
+export const GangZoneGetFlashColorForPlayer = (playerId: number, zoneId: number): number => {
+  return samp.callNative("GangZoneGetFlashColorForPlayer", "ii", playerId, zoneId);
 };
 
-export const IsGangZoneFlashingForPlayer = (
-  playerId: number,
-  zoneId: number,
-): boolean => {
-  return !!samp.callNative(
-    "IsGangZoneFlashingForPlayer",
-    "ii",
-    playerId,
-    zoneId,
-  );
+export const IsGangZoneFlashingForPlayer = (playerId: number, zoneId: number): boolean => {
+  return !!samp.callNative("IsGangZoneFlashingForPlayer", "ii", playerId, zoneId);
 };
 
-export const GangZoneGetPos = (
-  zoneId: number,
-): IGangZonePos & ICommonRetVal => {
-  const [fMinX = 0.0, fMinY = 0.0, fMaxX = 0.0, fMaxY = 0.0, ret]: number[] =
-    samp.callNative("GangZoneGetPos", "iFFFF", zoneId);
+export const GangZoneGetPos = (zoneId: number): IGangZonePos & ICommonRetVal => {
+  const [fMinX = 0.0, fMinY = 0.0, fMaxX = 0.0, fMaxY = 0.0, ret]: number[] = samp.callNative(
+    "GangZoneGetPos",
+    "iFFFF",
+    zoneId,
+  );
   return { fMinX, fMinY, fMaxX, fMaxY, ret: !!ret };
 };
 
@@ -68,12 +39,7 @@ export const UseGangZoneCheck = (zoneId: number, toggle: boolean): boolean => {
   return !!samp.callNative("UseGangZoneCheck", "ii", zoneId, toggle);
 };
 
-export const GangZoneCreate = (
-  minX: number,
-  minY: number,
-  maxX: number,
-  maxY: number,
-): number => {
+export const GangZoneCreate = (minX: number, minY: number, maxX: number, maxY: number): number => {
   return samp.callNative("GangZoneCreate", "ffff", minX, minY, maxX, maxY);
 };
 
@@ -86,26 +52,14 @@ export const GangZoneShowForPlayer = (
   zone: number,
   color: string | number,
 ): boolean => {
-  return !!samp.callNative(
-    "GangZoneShowForPlayer",
-    "iii",
-    playerId,
-    zone,
-    rgba(color),
-  );
+  return !!samp.callNative("GangZoneShowForPlayer", "iii", playerId, zone, rgba(color));
 };
 
-export const GangZoneShowForAll = (
-  zone: number,
-  color: string | number,
-): boolean => {
+export const GangZoneShowForAll = (zone: number, color: string | number): boolean => {
   return !!samp.callNative("GangZoneShowForAll", "ii", zone, rgba(color));
 };
 
-export const GangZoneHideForPlayer = (
-  playerId: number,
-  zone: number,
-): boolean => {
+export const GangZoneHideForPlayer = (playerId: number, zone: number): boolean => {
   return !!samp.callNative("GangZoneHideForPlayer", "ii", playerId, zone);
 };
 
@@ -118,26 +72,14 @@ export const GangZoneFlashForPlayer = (
   zone: number,
   flashColor: string | number,
 ): boolean => {
-  return !!samp.callNative(
-    "GangZoneFlashForPlayer",
-    "iii",
-    playerId,
-    zone,
-    rgba(flashColor),
-  );
+  return !!samp.callNative("GangZoneFlashForPlayer", "iii", playerId, zone, rgba(flashColor));
 };
 
-export const GangZoneFlashForAll = (
-  zone: number,
-  flashColor: string | number,
-): boolean => {
+export const GangZoneFlashForAll = (zone: number, flashColor: string | number): boolean => {
   return !!samp.callNative("GangZoneFlashForAll", "ii", zone, rgba(flashColor));
 };
 
-export const GangZoneStopFlashForPlayer = (
-  playerId: number,
-  zone: number,
-): boolean => {
+export const GangZoneStopFlashForPlayer = (playerId: number, zone: number): boolean => {
   return !!samp.callNative("GangZoneStopFlashForPlayer", "ii", playerId, zone);
 };
 

@@ -43,13 +43,7 @@ function createMHObjects() {
     });
     o.create();
     if (materialIndex !== undefined) {
-      o.setMaterial(
-        materialIndex,
-        materialModelId!,
-        txdName!,
-        textureName!,
-        materialColor!,
-      );
+      o.setMaterial(materialIndex, materialModelId!, txdName!, textureName!, materialColor!);
     }
     return o;
   });
@@ -78,22 +72,14 @@ export const ModularHouses: IFilterScript = {
         // In a Vehicle
         // Set vehicle position and facing angle
         const vehicle = player.getVehicle()!;
-        vehicle.setPos(
-          -3305.72 + Math.random() * 2,
-          1602.27 + Math.random() * 2,
-          6.2,
-        );
+        vehicle.setPos(-3305.72 + Math.random() * 2, 1602.27 + Math.random() * 2, 6.2);
         vehicle.setZAngle(233);
         // Link vehicle to interior
         vehicle.linkToInterior(0);
       } else {
         // On Foot
         // Set player position and facing angle
-        player.setPos(
-          -3305.72 + Math.random() * 2,
-          1602.27 + Math.random() * 2,
-          6.2,
-        );
+        player.setPos(-3305.72 + Math.random() * 2, 1602.27 + Math.random() * 2, 6.2);
         player.setFacingAngle(233);
       }
       // Fix camera position after teleporting

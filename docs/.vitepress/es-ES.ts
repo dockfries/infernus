@@ -6,8 +6,7 @@ const pkg = require("../../package.json");
 
 export const es_ES = defineConfig({
   lang: "es-ES",
-  description:
-    "Librería de Node.js para la creación de scripts en Open Multiplayer",
+  description: "Librería de Node.js para la creación de scripts en Open Multiplayer",
   themeConfig: {
     nav: nav(),
 

@@ -49,8 +49,7 @@ export class GangZone {
     if (!this.sourceInfo) {
       throw new GangZoneException("Cannot create with only id");
     }
-    if (this.id !== InvalidEnum.GANG_ZONE)
-      throw new GangZoneException("Cannot create again");
+    if (this.id !== InvalidEnum.GANG_ZONE) throw new GangZoneException("Cannot create again");
 
     const { player } = this.sourceInfo;
     if (!player) {
@@ -66,13 +65,7 @@ export class GangZone {
       gangZonePool.set(this.id, this);
     } else {
       const { minX, minY, maxX, maxY } = this.sourceInfo;
-      this._id = GangZone.__inject__.createPlayer(
-        player.id,
-        minX,
-        minY,
-        maxX,
-        maxY,
-      );
+      this._id = GangZone.__inject__.createPlayer(player.id, minX, minY, maxX, maxY);
 
       if (
         this.id === InvalidEnum.GANG_ZONE ||
@@ -146,9 +139,7 @@ export class GangZone {
       GangZone.__inject__.showForAll(this.id, color);
       return this;
     }
-    throw new GangZoneException(
-      "player's gangzone should not be show for all.",
-    );
+    throw new GangZoneException("player's gangzone should not be show for all.");
   }
 
   showForPlayer(color: string | number, player?: Player) {
@@ -175,9 +166,7 @@ export class GangZone {
       GangZone.__inject__.hideForAll(this.id);
       return this;
     }
-    throw new GangZoneException(
-      "player's gangzone should not be hide for all.",
-    );
+    throw new GangZoneException("player's gangzone should not be hide for all.");
   }
 
   hideForPlayer(player?: Player) {
@@ -204,9 +193,7 @@ export class GangZone {
       GangZone.__inject__.flashForAll(this.id, flashColor);
       return this;
     }
-    throw new GangZoneException(
-      "player's gangzone should not be flash for all.",
-    );
+    throw new GangZoneException("player's gangzone should not be flash for all.");
   }
 
   flashForPlayer(player: Player, flashColor: string | number) {
@@ -216,8 +203,7 @@ export class GangZone {
     const p = this.getPlayer();
     if (p) GangZone.__inject__.flashPlayer(p.id, this.id, rgba(flashColor));
     else {
-      if (player)
-        GangZone.__inject__.flashForPlayer(player.id, this.id, flashColor);
+      if (player) GangZone.__inject__.flashForPlayer(player.id, this.id, flashColor);
       else {
         throw new GangZoneException("invalid player for flash");
       }
@@ -234,9 +220,7 @@ export class GangZone {
       GangZone.__inject__.stopFlashForAll(this.id);
       return this;
     }
-    throw new GangZoneException(
-      "player's gangzone should not be stop flash for all.",
-    );
+    throw new GangZoneException("player's gangzone should not be stop flash for all.");
   }
 
   stopFlashForPlayer(player: Player) {
@@ -339,11 +323,9 @@ export class GangZone {
   }
 
   static getPlayersInstances(): [Player, GangZone[]][] {
-    return Array.from(playerGangZonePool.entries()).map(
-      ([player, gangZones]) => {
-        return [player, Array.from(gangZones.values())];
-      },
-    );
+    return Array.from(playerGangZonePool.entries()).map(([player, gangZones]) => {
+      return [player, Array.from(gangZones.values())];
+    });
   }
 
   static __inject__ = {

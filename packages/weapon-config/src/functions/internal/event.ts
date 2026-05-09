@@ -21,11 +21,7 @@ import {
   damageDoneArmour,
   spectating,
 } from "../../struct";
-import {
-  debugMessageRed,
-  debugMessageRedAll,
-  debugMessageAll,
-} from "../../utils/debug";
+import { debugMessageRed, debugMessageRedAll, debugMessageAll } from "../../utils/debug";
 import { isHighRateWeapon } from "../public/is";
 import { damageFeedAddHitGiven, damageFeedAddHitTaken } from "./damageFeed";
 
@@ -81,15 +77,7 @@ export function onInvalidWeaponDamage(
     `OnInvalidWeaponDamage(${typeof player === "number" ? player : player.id}, ${damaged.id}, ${amount}, ${weapon}, ${bodyPart}, ${error}, ${given}})`,
   );
 
-  triggerOnInvalidWeaponDamage(
-    player,
-    damaged,
-    amount,
-    weapon,
-    bodyPart,
-    error,
-    given,
-  );
+  triggerOnInvalidWeaponDamage(player, damaged, amount, weapon, bodyPart, error, given);
 }
 
 export function onPlayerDamageDone(
@@ -114,8 +102,7 @@ export function onPlayerDamageDone(
   }
 
   previousHits.get(player.id)[idx].tick = Date.now();
-  previousHits.get(player.id)[idx].issuer =
-    typeof issuer === "number" ? issuer : issuer.id;
+  previousHits.get(player.id)[idx].issuer = typeof issuer === "number" ? issuer : issuer.id;
   previousHits.get(player.id)[idx].weapon = weapon;
   previousHits.get(player.id)[idx].amount = amount;
   previousHits.get(player.id)[idx].bodyPart = bodyPart;
@@ -138,21 +125,12 @@ export function onPlayerDamageDone(
 
       Player.getInstances().forEach((i) => {
         if (spectating.get(i.id) === player.id && i !== player) {
-          orig_playerMethods.playSound.call(
-            i,
-            innerGameModeConfig.damageTakenSound,
-            0.0,
-            0.0,
-            0.0,
-          );
+          orig_playerMethods.playSound.call(i, innerGameModeConfig.damageTakenSound, 0.0, 0.0, 0.0);
         }
       });
     }
 
-    if (
-      innerGameModeConfig.damageGivenSound &&
-      issuer !== InvalidEnum.PLAYER_ID
-    ) {
+    if (innerGameModeConfig.damageGivenSound && issuer !== InvalidEnum.PLAYER_ID) {
       orig_playerMethods.playSound.call(
         issuer,
         innerGameModeConfig.damageGivenSound,
@@ -163,13 +141,7 @@ export function onPlayerDamageDone(
 
       Player.getInstances().forEach((i) => {
         if (spectating.get(i.id) === issuer.id && i !== issuer) {
-          orig_playerMethods.playSound.call(
-            i,
-            innerGameModeConfig.damageGivenSound,
-            0.0,
-            0.0,
-            0.0,
-          );
+          orig_playerMethods.playSound.call(i, innerGameModeConfig.damageGivenSound, 0.0, 0.0, 0.0);
         }
       });
     }

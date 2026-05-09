@@ -45,23 +45,12 @@ export class Vehicle {
     }
   }
   create(): void {
-    if (this.id !== InvalidEnum.VEHICLE_ID)
-      throw new VehicleException("Cannot create again");
-    if (!this.sourceInfo)
-      throw new VehicleException("Cannot create with only id");
-    const { modelId, x, y, z, zAngle, color, respawnDelay, addSiren } =
-      this.sourceInfo;
+    if (this.id !== InvalidEnum.VEHICLE_ID) throw new VehicleException("Cannot create again");
+    if (!this.sourceInfo) throw new VehicleException("Cannot create with only id");
+    const { modelId, x, y, z, zAngle, color, respawnDelay, addSiren } = this.sourceInfo;
     if (this.isStatic) {
       if (typeof respawnDelay === "undefined") {
-        this._id = Vehicle.__inject__.addStatic(
-          modelId,
-          x,
-          y,
-          z,
-          zAngle,
-          color[0],
-          color[1],
-        );
+        this._id = Vehicle.__inject__.addStatic(modelId, x, y, z, zAngle, color[0], color[1]);
         return;
       }
       this._id = Vehicle.__inject__.addStaticEx(
@@ -88,10 +77,7 @@ export class Vehicle {
         addSiren || false,
       );
     }
-    if (
-      this._id === InvalidEnum.VEHICLE_ID ||
-      Vehicle.createdCount === LimitsEnum.MAX_VEHICLES
-    )
+    if (this._id === InvalidEnum.VEHICLE_ID || Vehicle.createdCount === LimitsEnum.MAX_VEHICLES)
       throw new VehicleException("Cannot create vehicle");
     Vehicle.createdCount++;
     vehiclePool.set(this._id, this);
@@ -176,14 +162,10 @@ export class Vehicle {
   setNumberPlate(numberplate: string): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
     if (numberplate.length < 1 || numberplate.length > 32) {
-      throw new VehicleException(
-        "The length of the number plate ranges up to 32 characters",
-      );
+      throw new VehicleException("The length of the number plate ranges up to 32 characters");
     }
     if (!/^[a-zA-Z0-9]+$/.test(numberplate)) {
-      throw new VehicleException(
-        "number plates only allow letters and numbers",
-      );
+      throw new VehicleException("number plates only allow letters and numbers");
     }
     return Vehicle.__inject__.setNumberPlate(this.id, numberplate);
   }
@@ -210,19 +192,8 @@ export class Vehicle {
   getDamageStatus() {
     return Vehicle.__inject__.getDamageStatus(this.id);
   }
-  updateDamageStatus(
-    panels: number,
-    doors: number,
-    lights: number,
-    tires: number,
-  ) {
-    return Vehicle.__inject__.updateDamageStatus(
-      this.id,
-      panels,
-      doors,
-      lights,
-      tires,
-    );
+  updateDamageStatus(panels: number, doors: number, lights: number, tires: number) {
+    return Vehicle.__inject__.updateDamageStatus(this.id, panels, doors, lights, tires);
   }
   getDistanceFromPoint(X: number, Y: number, Z: number): number {
     return Vehicle.__inject__.getDistanceFromPoint(this.id, X, Y, Z);
@@ -257,13 +228,7 @@ export class Vehicle {
     backRight: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
   ): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__.setParamsCarDoors(
-      this.id,
-      driver,
-      passenger,
-      backLeft,
-      backRight,
-    );
+    return Vehicle.__inject__.setParamsCarDoors(this.id, driver, passenger, backLeft, backRight);
   }
   setParamsCarWindows(
     driver: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
@@ -272,13 +237,7 @@ export class Vehicle {
     backRight: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
   ) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    return Vehicle.__inject__.setParamsCarWindows(
-      this.id,
-      driver,
-      passenger,
-      backLeft,
-      backRight,
-    );
+    return Vehicle.__inject__.setParamsCarWindows(this.id, driver, passenger, backLeft, backRight);
   }
   getParamsCarDoors() {
     return Vehicle.__inject__.getParamsCarDoors(this.id);
@@ -334,87 +293,33 @@ export class Vehicle {
   }
   toggleEngine(value: boolean | VehicleParamsEnum) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    const { lights, alarm, doors, bonnet, boot, objective } =
-      this.getParamsEx();
-    return this.setParamsEx(
-      value,
-      lights,
-      alarm,
-      doors,
-      bonnet,
-      boot,
-      objective,
-    );
+    const { lights, alarm, doors, bonnet, boot, objective } = this.getParamsEx();
+    return this.setParamsEx(value, lights, alarm, doors, bonnet, boot, objective);
   }
   toggleLights(value: boolean | VehicleParamsEnum) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    const { engine, alarm, doors, bonnet, boot, objective } =
-      this.getParamsEx();
-    return this.setParamsEx(
-      engine,
-      value,
-      alarm,
-      doors,
-      bonnet,
-      boot,
-      objective,
-    );
+    const { engine, alarm, doors, bonnet, boot, objective } = this.getParamsEx();
+    return this.setParamsEx(engine, value, alarm, doors, bonnet, boot, objective);
   }
   toggleAlarm(value: boolean | VehicleParamsEnum) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    const { engine, lights, doors, bonnet, boot, objective } =
-      this.getParamsEx();
-    return this.setParamsEx(
-      engine,
-      lights,
-      value,
-      doors,
-      bonnet,
-      boot,
-      objective,
-    );
+    const { engine, lights, doors, bonnet, boot, objective } = this.getParamsEx();
+    return this.setParamsEx(engine, lights, value, doors, bonnet, boot, objective);
   }
   toggleDoors(value: boolean | VehicleParamsEnum) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    const { engine, lights, alarm, bonnet, boot, objective } =
-      this.getParamsEx();
-    return this.setParamsEx(
-      engine,
-      lights,
-      alarm,
-      value,
-      bonnet,
-      boot,
-      objective,
-    );
+    const { engine, lights, alarm, bonnet, boot, objective } = this.getParamsEx();
+    return this.setParamsEx(engine, lights, alarm, value, bonnet, boot, objective);
   }
   toggleBonnet(value: boolean | VehicleParamsEnum) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    const { engine, lights, alarm, doors, boot, objective } =
-      this.getParamsEx();
-    return this.setParamsEx(
-      engine,
-      lights,
-      alarm,
-      doors,
-      value,
-      boot,
-      objective,
-    );
+    const { engine, lights, alarm, doors, boot, objective } = this.getParamsEx();
+    return this.setParamsEx(engine, lights, alarm, doors, value, boot, objective);
   }
   toggleBoot(value: boolean | VehicleParamsEnum) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
-    const { engine, lights, alarm, doors, bonnet, objective } =
-      this.getParamsEx();
-    return this.setParamsEx(
-      engine,
-      lights,
-      alarm,
-      doors,
-      bonnet,
-      value,
-      objective,
-    );
+    const { engine, lights, alarm, doors, bonnet, objective } = this.getParamsEx();
+    return this.setParamsEx(engine, lights, alarm, doors, bonnet, value, objective);
   }
   toggleObjective(value: boolean | VehicleParamsEnum) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
@@ -431,12 +336,7 @@ export class Vehicle {
     doorsLocked: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
   ): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
-    return Vehicle.__inject__.setParamsForPlayer(
-      this.id,
-      player.id,
-      objective,
-      doorsLocked,
-    );
+    return Vehicle.__inject__.setParamsForPlayer(this.id, player.id, objective, doorsLocked);
   }
   isTrailerAttached(): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;

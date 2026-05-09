@@ -2,11 +2,7 @@ import { Vehicle } from "@infernus/core";
 import { vectorSize } from "./math";
 import { badGetVehicleDistanceFromPoint, setVehicleHook } from "./hook";
 
-export function getVehicleDistanceToPoint2D(
-  vehicle: Vehicle,
-  x: number,
-  y: number,
-) {
+export function getVehicleDistanceToPoint2D(vehicle: Vehicle, x: number, y: number) {
   const { x: x2, y: y2, ret } = vehicle.getPos();
   if (ret) {
     return vectorSize(x - x2, y - y2, 0);
@@ -14,22 +10,12 @@ export function getVehicleDistanceToPoint2D(
   return Number.NaN;
 }
 
-export function isVehicleInRangeOfPoint2D(
-  vehicle: Vehicle,
-  range: number,
-  x: number,
-  y: number,
-) {
+export function isVehicleInRangeOfPoint2D(vehicle: Vehicle, range: number, x: number, y: number) {
   const { x: x2, y: y2, ret } = vehicle.getPos();
   return !!(ret && vectorSize(x - x2, y - y2, 0) <= range);
 }
 
-export function getVehicleDistanceToPoint3D(
-  vehicle: Vehicle,
-  x: number,
-  y: number,
-  z: number,
-) {
+export function getVehicleDistanceToPoint3D(vehicle: Vehicle, x: number, y: number, z: number) {
   const { x: x2, y: y2, z: z2, ret } = vehicle.getPos();
   if (ret) {
     return vectorSize(x - x2, y - y2, z - z2);
@@ -73,10 +59,7 @@ export function isVehicleInRangeOfVehicle(
   );
 }
 
-export function getClosestVehicleToVehicle(
-  vehicle: Vehicle,
-  ignoreVW = false,
-): Vehicle | null {
+export function getClosestVehicleToVehicle(vehicle: Vehicle, ignoreVW = false): Vehicle | null {
   const { x, y, z, ret } = vehicle.getPos();
   if (!ret) {
     return null;
@@ -110,11 +93,7 @@ export function getClosestVehicleToVehicle(
   return closest;
 }
 
-export function getVehicleDistanceToPoint(
-  vehicle: Vehicle,
-  x: number,
-  y: number,
-): number;
+export function getVehicleDistanceToPoint(vehicle: Vehicle, x: number, y: number): number;
 export function getVehicleDistanceToPoint(
   vehicle: Vehicle,
   x: number,

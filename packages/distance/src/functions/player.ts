@@ -2,11 +2,7 @@ import { Player } from "@infernus/core";
 import { vectorSize } from "./math";
 import { badGetPlayerDistanceFromPoint, setPlayerHook } from "./hook";
 
-export function getPlayerDistanceToPoint2D(
-  player: Player,
-  x: number,
-  y: number,
-) {
+export function getPlayerDistanceToPoint2D(player: Player, x: number, y: number) {
   const { x: x2, y: y2, ret } = player.getPos();
   if (ret) {
     return vectorSize(x - x2, y - y2, 0);
@@ -14,22 +10,12 @@ export function getPlayerDistanceToPoint2D(
   return Number.NaN;
 }
 
-export function isPlayerInRangeOfPoint2D(
-  player: Player,
-  range: number,
-  x: number,
-  y: number,
-) {
+export function isPlayerInRangeOfPoint2D(player: Player, range: number, x: number, y: number) {
   const { x: x2, y: y2, ret } = player.getPos();
   return !!(ret && vectorSize(x - x2, y - y2, 0) <= range);
 }
 
-export function getPlayerDistanceToPoint3D(
-  player: Player,
-  x: number,
-  y: number,
-  z: number,
-) {
+export function getPlayerDistanceToPoint3D(player: Player, x: number, y: number, z: number) {
   const { x: x2, y: y2, z: z2, ret } = player.getPos();
   if (ret) {
     return vectorSize(x - x2, y - y2, z - z2);
@@ -92,8 +78,7 @@ export function getClosestPlayerToPlayer(
       Player.getInstances().forEach((i) => {
         if (
           i !== player &&
-          (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) <
-            distance
+          (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance
         ) {
           distance = distance2;
           closest = i;
@@ -105,8 +90,7 @@ export function getClosestPlayerToPlayer(
         if (
           i !== player &&
           vw === i.getVirtualWorld() &&
-          (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) <
-            distance
+          (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance
         ) {
           distance = distance2;
           closest = i;
@@ -120,8 +104,7 @@ export function getClosestPlayerToPlayer(
         if (
           i !== player &&
           interior === i.getInterior() &&
-          (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) <
-            distance
+          (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance
         ) {
           distance = distance2;
           closest = i;
@@ -135,8 +118,7 @@ export function getClosestPlayerToPlayer(
           i !== player &&
           vw === i.getVirtualWorld() &&
           interior === i.getInterior() &&
-          (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) <
-            distance
+          (distance2 = badGetPlayerDistanceFromPoint.call(i, x, y, z)) < distance
         ) {
           distance = distance2;
           closest = i;
@@ -147,17 +129,8 @@ export function getClosestPlayerToPlayer(
   return closest;
 }
 
-export function getPlayerDistanceToPoint(
-  player: Player,
-  x: number,
-  y: number,
-): number;
-export function getPlayerDistanceToPoint(
-  player: Player,
-  x: number,
-  y: number,
-  z: number,
-): number;
+export function getPlayerDistanceToPoint(player: Player, x: number, y: number): number;
+export function getPlayerDistanceToPoint(player: Player, x: number, y: number, z: number): number;
 export function getPlayerDistanceToPoint(
   player: Player,
   ...args: [number, number] | [number, number, number]

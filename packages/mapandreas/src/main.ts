@@ -3,9 +3,7 @@ import { MapAndreasException } from "./exceptions";
 
 export class MapAndreas {
   private constructor() {
-    throw new MapAndreasException(
-      "This is a static class and cannot be instantiated.",
-    );
+    throw new MapAndreasException("This is a static class and cannot be instantiated.");
   }
 
   static init(mode: MapAndreasMode, name: string) {
@@ -18,21 +16,11 @@ export class MapAndreas {
     return !!samp.callNative("MapAndreas_SaveCurrentHMap", "s", name);
   }
   static findZFor2DCoord(x: number, y: number) {
-    const [z, ret]: [number, number] = samp.callNative(
-      "MapAndreas_FindZ_For2DCoord",
-      "ffF",
-      x,
-      y,
-    );
+    const [z, ret]: [number, number] = samp.callNative("MapAndreas_FindZ_For2DCoord", "ffF", x, y);
     return { z, ret };
   }
   static findAverageZ(x: number, y: number) {
-    const [z, ret]: [number, number] = samp.callNative(
-      "MapAndreas_FindAverageZ",
-      "ffF",
-      x,
-      y,
-    );
+    const [z, ret]: [number, number] = samp.callNative("MapAndreas_FindAverageZ", "ffF", x, y);
     return { z, ret };
   }
   static setZFor2DCoord(x: number, y: number, z: number) {

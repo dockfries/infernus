@@ -15,22 +15,19 @@ export const [orig_playerMethods, setPlayerHook] = defineHooks(Player);
 
 // El primer parámetro es el nombre del método hookeable, que tendrá sugerencias de tipo TS.
 // El valor de retorno es el segundo parámetro que pasaste.
-export const my_setPlayerArmour = setPlayerHook(
-  "setArmour",
-  function (armour: number) {
-    // Aquí, `this` se refiere al jugador actual
-    const flag = true; // Asume verdadero para este ejemplo
-    if (flag) {
-      console.log("my hook");
-      // Llama al método setArmour original, pero restamos 1 intencionalmente y devolvemos el resultado original
-      return orig_playerMethods.setArmour.call(this, armour - 1);
-      // Nunca uses directamente this.setArmour(armour), ya que causará un bucle infinito
-      // Dentro del cuerpo de la función hook, solo puedes llamar a las funciones originales a través de orig_playerMethods.
-    } else {
-      return false;
-    }
-  },
-);
+export const my_setPlayerArmour = setPlayerHook("setArmour", function (armour: number) {
+  // Aquí, `this` se refiere al jugador actual
+  const flag = true; // Asume verdadero para este ejemplo
+  if (flag) {
+    console.log("my hook");
+    // Llama al método setArmour original, pero restamos 1 intencionalmente y devolvemos el resultado original
+    return orig_playerMethods.setArmour.call(this, armour - 1);
+    // Nunca uses directamente this.setArmour(armour), ya que causará un bucle infinito
+    // Dentro del cuerpo de la función hook, solo puedes llamar a las funciones originales a través de orig_playerMethods.
+  } else {
+    return false;
+  }
+});
 
 /*
 setPlayerHook(
@@ -59,9 +56,7 @@ import { Vehicle, type LimitsEnum } from "@infernus/core";
 
 export const orig_CreateVehicle = Vehicle.__inject__.create;
 
-export function my_CreateVehicle(
-  ...args: Parameters<typeof orig_CreateVehicle>
-) {
+export function my_CreateVehicle(...args: Parameters<typeof orig_CreateVehicle>) {
   const id = orig_CreateVehicle(...args);
 
   if (id > 0 && id < LimitsEnum.MAX_VEHICLES) {

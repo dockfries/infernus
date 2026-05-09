@@ -4,13 +4,7 @@ import type {
   WeaponEnum,
   WeaponStatesEnum,
 } from "@infernus/core";
-import {
-  defineEvent,
-  GameMode,
-  InvalidEnum,
-  Player,
-  Vehicle,
-} from "@infernus/core";
+import { defineEvent, GameMode, InvalidEnum, Player, Vehicle } from "@infernus/core";
 import { FCNPCInstances } from "../pools";
 
 GameMode.onExit(({ next }) => {

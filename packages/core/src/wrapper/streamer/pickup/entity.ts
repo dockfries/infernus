@@ -31,10 +31,8 @@ export class DynamicPickup {
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicPickupException("Cannot create again");
-    if (!this.sourceInfo)
-      throw new DynamicPickupException("Cannot create with only id");
-    let { streamDistance, worldId, interiorId, playerId, areaId, priority } =
-      this.sourceInfo;
+    if (!this.sourceInfo) throw new DynamicPickupException("Cannot create with only id");
+    let { streamDistance, worldId, interiorId, playerId, areaId, priority } = this.sourceInfo;
     const { type, modelId, x, y, z, extended } = this.sourceInfo;
 
     if (type < 0) throw new DynamicPickupException("Invalid pickup type");
@@ -102,18 +100,13 @@ export class DynamicPickup {
     return this;
   }
   isValid(): boolean {
-    if (INTERNAL_FLAGS.skip && this.id !== s.StreamerMiscellaneous.INVALID_ID)
-      return true;
+    if (INTERNAL_FLAGS.skip && this.id !== s.StreamerMiscellaneous.INVALID_ID) return true;
     return DynamicPickup.isValid(this.id);
   }
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicPickupException("Cannot toggle callbacks before create");
-    return Streamer.toggleItemCallbacks(
-      s.StreamerItemTypes.PICKUP,
-      this.id,
-      toggle,
-    );
+    return Streamer.toggleItemCallbacks(s.StreamerItemTypes.PICKUP, this.id, toggle);
   }
   isToggleCallbacks(): boolean {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
@@ -121,11 +114,7 @@ export class DynamicPickup {
   }
   static isValid = s.IsValidDynamicPickup;
   static togglePlayerUpdate(player: Player, update = true) {
-    return Streamer.toggleItemUpdate(
-      player,
-      s.StreamerItemTypes.PICKUP,
-      update,
-    );
+    return Streamer.toggleItemUpdate(player, s.StreamerItemTypes.PICKUP, update);
   }
   static hideForPlayer(player: Player, z = -50000) {
     Streamer.updateEx(player, 0, 0, z);

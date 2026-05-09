@@ -41,12 +41,7 @@ async function updateWaze(player: Player, x: number, y: number, z: number) {
   const wazeGPS_Position = wazeGPS_.position;
 
   if (
-    player.isInRangeOfPoint(
-      30.0,
-      wazeGPS_Position[0],
-      wazeGPS_Position[1],
-      wazeGPS_Position[2],
-    )
+    player.isInRangeOfPoint(30.0, wazeGPS_Position[0], wazeGPS_Position[1], wazeGPS_Position[2])
   ) {
     return stopWazeGPS(player);
   }
@@ -97,8 +92,7 @@ function onPlayerWazeRouters(path: GpsPath, player: Player) {
     const index = path.getNodeIndex(node);
     const { x: X, y: Y } = node.getPos();
 
-    if (i === index)
-      if (!createWazePointer(player, x, y, X, Y, wazeGPS_.color)) break;
+    if (i === index) if (!createWazePointer(player, x, y, X, Y, wazeGPS_.color)) break;
 
     x = X + 0.5;
     y = Y + 0.5;

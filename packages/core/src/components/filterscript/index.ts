@@ -89,17 +89,12 @@ onExit(async ({ next }) => {
   return next();
 });
 
-export const useFilterScript = function (
-  script: IFilterScript,
-  ...options: Array<any>
-): void {
+export const useFilterScript = function (script: IFilterScript, ...options: Array<any>): void {
   if (
     preInstallScripts.some((fs) => fs.name === script.name) ||
     installedScripts.some((fs) => fs.name === script.name)
   ) {
-    throw new GameModeException(
-      `script ${script.name} has already been applied`,
-    );
+    throw new GameModeException(`script ${script.name} has already been applied`);
   }
   script.load = script.load.bind(script, ...options);
   preInstallScripts.push(script);

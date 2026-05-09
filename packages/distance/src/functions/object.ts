@@ -1,16 +1,7 @@
-import {
-  DynamicObject,
-  ObjectMp,
-  Streamer,
-  StreamerItemTypes,
-} from "@infernus/core";
+import { DynamicObject, ObjectMp, Streamer, StreamerItemTypes } from "@infernus/core";
 import { vectorSize } from "./math";
 
-export function getObjectDistanceToPoint2D(
-  object: ObjectMp,
-  x: number,
-  y: number,
-) {
+export function getObjectDistanceToPoint2D(object: ObjectMp, x: number, y: number) {
   const { x: x2, y: y2, ret } = object.getPos();
   if (ret) {
     return vectorSize(x - x2, y - y2, 0);
@@ -18,22 +9,12 @@ export function getObjectDistanceToPoint2D(
   return Number.NaN;
 }
 
-export function isObjectInRangeOfPoint2D(
-  object: ObjectMp,
-  range: number,
-  x: number,
-  y: number,
-) {
+export function isObjectInRangeOfPoint2D(object: ObjectMp, range: number, x: number, y: number) {
   const { x: x2, y: y2, ret } = object.getPos();
   return !!(ret && vectorSize(x - x2, y - y2, 0) <= range);
 }
 
-export function getObjectDistanceToPoint3D(
-  object: ObjectMp,
-  x: number,
-  y: number,
-  z: number,
-) {
+export function getObjectDistanceToPoint3D(object: ObjectMp, x: number, y: number, z: number) {
   const { x: x2, y: y2, z: z2, ret } = object.getPos();
   if (ret) {
     return vectorSize(x - x2, y - y2, z - z2);
@@ -61,11 +42,7 @@ export function getObjectDistanceToObject(object: ObjectMp, target: ObjectMp) {
   return Number.NaN;
 }
 
-export function isObjectInRangeOfObject(
-  object: ObjectMp,
-  target: ObjectMp,
-  range: number,
-) {
+export function isObjectInRangeOfObject(object: ObjectMp, target: ObjectMp, range: number) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = target.getPos();
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
@@ -92,9 +69,7 @@ export function getClosestObjectToObject(object: ObjectMp): ObjectMp | null {
     if (!obj.isValid()) return;
     if (
       (isGlobal && obj.id !== object.id) ||
-      (!isGlobal &&
-        obj.getPlayer() === object.getPlayer() &&
-        obj.id !== object.id) ||
+      (!isGlobal && obj.getPlayer() === object.getPlayer() && obj.id !== object.id) ||
       obj.getPlayer() !== object.getPlayer()
     ) {
       distance2 = getObjectDistanceToPoint3D(object, x, y, z);
@@ -108,9 +83,7 @@ export function getClosestObjectToObject(object: ObjectMp): ObjectMp | null {
   return closest;
 }
 
-export function getClosestObjectToPlayerObject(
-  object: ObjectMp,
-): ObjectMp | null {
+export function getClosestObjectToPlayerObject(object: ObjectMp): ObjectMp | null {
   if (object.isGlobal()) return null;
   const { x, y, z, ret } = object.getPos();
   if (!ret) {
@@ -131,9 +104,7 @@ export function getClosestObjectToPlayerObject(
   return closest;
 }
 
-export function getClosestPlayerObjectToObject(
-  object: ObjectMp,
-): ObjectMp | null {
+export function getClosestPlayerObjectToObject(object: ObjectMp): ObjectMp | null {
   if (!object.isGlobal()) return null;
   const { x, y, z, ret } = object.getPos();
   if (!ret) {
@@ -157,17 +128,8 @@ export function getClosestPlayerObjectToObject(
   return closest;
 }
 
-export function getObjectDistanceToPoint(
-  object: ObjectMp,
-  x: number,
-  y: number,
-): number;
-export function getObjectDistanceToPoint(
-  object: ObjectMp,
-  x: number,
-  y: number,
-  z: number,
-): number;
+export function getObjectDistanceToPoint(object: ObjectMp, x: number, y: number): number;
+export function getObjectDistanceToPoint(object: ObjectMp, x: number, y: number, z: number): number;
 export function getObjectDistanceToPoint(
   object: ObjectMp,
   ...args: [number, number] | [number, number, number]
@@ -204,11 +166,7 @@ export function isObjectInRangeOfPoint(
   }
 }
 
-export function getDynObjectDistanceToPoint2D(
-  object: DynamicObject,
-  x: number,
-  y: number,
-) {
+export function getDynObjectDistanceToPoint2D(object: DynamicObject, x: number, y: number) {
   const { x: x2, y: y2, ret } = object.getPos();
   if (ret) {
     return vectorSize(x - x2, y - y2, 0);
@@ -250,10 +208,7 @@ export function isDynObjectInRangeOfPoint3D(
   return !!(ret && vectorSize(x - x2, y - y2, z - z2) <= range);
 }
 
-export function getDynObjectDistanceToDynObject(
-  object: DynamicObject,
-  target: DynamicObject,
-) {
+export function getDynObjectDistanceToDynObject(object: DynamicObject, target: DynamicObject) {
   const { x: x1, y: y1, z: z1, ret: ret1 } = object.getPos();
   const { x: x2, y: y2, z: z2, ret: ret2 } = target.getPos();
   if (ret1 && ret2) {
@@ -272,9 +227,7 @@ export function isDynObjectInRangeOfDynObject(
   return !!(ret1 && ret2 && vectorSize(x1 - x2, y1 - y2, z1 - z2) <= range);
 }
 
-export function getClosestDynObjectToDynObject(
-  object: DynamicObject,
-): DynamicObject | null {
+export function getClosestDynObjectToDynObject(object: DynamicObject): DynamicObject | null {
   const { x, y, z, ret } = object.getPos();
   if (!ret) {
     return null;
@@ -283,13 +236,7 @@ export function getClosestDynObjectToDynObject(
   let closestId = -1;
   for (let i = Streamer.getUpperBound(StreamerItemTypes.OBJECT); i >= 1; --i) {
     if (i !== object.id && DynamicObject.isValid(i)) {
-      const distance2 = Streamer.getDistanceToItem(
-        x,
-        y,
-        z,
-        StreamerItemTypes.OBJECT,
-        i,
-      ).distance;
+      const distance2 = Streamer.getDistanceToItem(x, y, z, StreamerItemTypes.OBJECT, i).distance;
       if (distance2 < distance) {
         distance = distance2;
         closestId = i;
@@ -300,11 +247,7 @@ export function getClosestDynObjectToDynObject(
   return DynamicObject.getInstance(closestId) || new DynamicObject(closestId);
 }
 
-export function getDynObjectDistanceToPoint(
-  object: DynamicObject,
-  x: number,
-  y: number,
-): number;
+export function getDynObjectDistanceToPoint(object: DynamicObject, x: number, y: number): number;
 export function getDynObjectDistanceToPoint(
   object: DynamicObject,
   x: number,

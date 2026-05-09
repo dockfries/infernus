@@ -4,13 +4,7 @@
 //
 //-------------------------------------------------
 
-import {
-  Vehicle,
-  GameMode,
-  Npc,
-  PlayerEvent,
-  PlayerStateEnum,
-} from "@infernus/core";
+import { Vehicle, GameMode, Npc, PlayerEvent, PlayerStateEnum } from "@infernus/core";
 import { npcNames, spawnInfo, vehCreateInfo } from "./constants";
 import type { IGlNpcsFS } from "./interfaces";
 import { initNpcModes } from "./npcmodes";
@@ -38,8 +32,7 @@ export const GlNpcs: IGlNpcsFS = {
 
     const offConnect = PlayerEvent.onConnect(({ player, next }) => {
       if (!player.isNpc()) return next();
-      const ip_addr_npc =
-        GameMode.getConsoleVarAsString("network.bind").consoleVar;
+      const ip_addr_npc = GameMode.getConsoleVarAsString("network.bind").consoleVar;
       let ip_addr_server = player.getIp().ip;
 
       if (!ip_addr_server) {
@@ -48,10 +41,7 @@ export const GlNpcs: IGlNpcsFS = {
 
       if (ip_addr_npc === ip_addr_server) {
         // this bot is remote connecting
-        console.log(
-          "NPC: Got a remote NPC connecting from %s and I'm kicking it.",
-          ip_addr_npc,
-        );
+        console.log("NPC: Got a remote NPC connecting from %s and I'm kicking it.", ip_addr_npc);
         player.kick();
         return false;
       }
@@ -66,49 +56,33 @@ export const GlNpcs: IGlNpcsFS = {
       const playerName = player.getName().name;
 
       if (playerName in spawnInfo) {
-        const [team, skin, x, y, z, rotation] =
-          spawnInfo[playerName as keyof typeof spawnInfo];
-        player.setSpawnInfo(
-          team,
-          skin,
-          x,
-          y,
-          z,
-          rotation,
-          -1,
-          -1,
-          -1,
-          -1,
-          -1,
-          -1,
-        );
+        const [team, skin, x, y, z, rotation] = spawnInfo[playerName as keyof typeof spawnInfo];
+        player.setSpawnInfo(team, skin, x, y, z, rotation, -1, -1, -1, -1, -1, -1);
       }
 
       return next();
     });
 
-    const offStateChange = PlayerEvent.onStateChange(
-      ({ player, newState, next }) => {
-        if (!player.isNpc()) return next();
+    const offStateChange = PlayerEvent.onStateChange(({ player, newState, next }) => {
+      if (!player.isNpc()) return next();
 
-        if (newState !== PlayerStateEnum.ONFOOT) return next();
+      if (newState !== PlayerStateEnum.ONFOOT) return next();
 
-        const playerName = player.getName().name;
+      const playerName = player.getName().name;
 
-        if (playerName in vehCreatedInfo) {
-          player.setColor(0xffffffff);
+      if (playerName in vehCreatedInfo) {
+        player.setColor(0xffffffff);
 
-          const veh = vehCreatedInfo[playerName];
-          Npc.getInstance(player.id)!.putInVehicle(veh, 0);
+        const veh = vehCreatedInfo[playerName];
+        Npc.getInstance(player.id)!.putInVehicle(veh, 0);
 
-          if (playerName === "DriverTest2") {
-            setVehicleTireStatus(veh!, 0xff);
-          }
+        if (playerName === "DriverTest2") {
+          setVehicleTireStatus(veh!, 0xff);
         }
+      }
 
-        return next();
-      },
-    );
+      return next();
+    });
 
     npcNames.slice(0, 6).forEach((name) => {
       new Npc(name).create().spawn();

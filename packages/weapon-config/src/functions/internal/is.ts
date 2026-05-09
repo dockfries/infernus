@@ -25,21 +25,15 @@ export function hasSameTeam(player: Player, otherId: number) {
 }
 
 export function isVehicleBike(vehicle: Vehicle) {
-  return [
-    448, 461, 462, 463, 468, 471, 481, 509, 510, 521, 522, 523, 581, 586,
-  ].includes(orig_vehicleMethods.getModel.call(vehicle));
+  return [448, 461, 462, 463, 468, 471, 481, 509, 510, 521, 522, 523, 581, 586].includes(
+    orig_vehicleMethods.getModel.call(vehicle),
+  );
 }
 
-export function isVehicleArmedWithWeapon(
-  vehicle: Vehicle,
-  weaponId: WC_WeaponEnum,
-) {
+export function isVehicleArmedWithWeapon(vehicle: Vehicle, weaponId: WC_WeaponEnum) {
   switch (orig_vehicleMethods.getModel.call(vehicle)) {
     case 425: {
-      return (
-        weaponId === WC_WeaponEnum.MINIGUN ||
-        weaponId === WC_WeaponEnum.ROCKETLAUNCHER
-      );
+      return weaponId === WC_WeaponEnum.MINIGUN || weaponId === WC_WeaponEnum.ROCKETLAUNCHER;
     }
 
     case 447:

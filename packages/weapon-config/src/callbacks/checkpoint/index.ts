@@ -9,9 +9,10 @@ CheckPointEvent.onPlayerEnter(({ player, next }) => {
   return next();
 });
 
-export const internalLeaveCP: Parameters<
-  (typeof CheckPointEvent)["onPlayerLeave"]
->[0] = ({ player, next }) => {
+export const internalLeaveCP: Parameters<(typeof CheckPointEvent)["onPlayerLeave"]>[0] = ({
+  player,
+  next,
+}) => {
   if (isDying.get(player.id)) {
     return 0;
   }
@@ -27,9 +28,10 @@ RaceCpEvent.onPlayerEnter(({ player, next }) => {
   return next();
 });
 
-export const internalLeaveRaceCP: Parameters<
-  (typeof RaceCpEvent)["onPlayerLeave"]
->[0] = ({ player, next }) => {
+export const internalLeaveRaceCP: Parameters<(typeof RaceCpEvent)["onPlayerLeave"]>[0] = ({
+  player,
+  next,
+}) => {
   if (isDying.get(player.id)) {
     return 0;
   }

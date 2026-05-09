@@ -39,10 +39,7 @@ export class ProgressBar {
     if (requiredBar.min > requiredBar.max) {
       [requiredBar.min, requiredBar.max] = [requiredBar.max, requiredBar.min];
     }
-    requiredBar.value = Math.max(
-      requiredBar.min,
-      Math.min(requiredBar.max, requiredBar.value),
-    );
+    requiredBar.value = Math.max(requiredBar.min, Math.min(requiredBar.max, requiredBar.value));
 
     this.sourceInfo = requiredBar;
   }
@@ -175,10 +172,7 @@ export class ProgressBar {
 
   setValue(value: number) {
     if (!this.isValid()) return false;
-    this.sourceInfo.value = Math.max(
-      this.sourceInfo.min,
-      Math.min(this.sourceInfo.max, value),
-    );
+    this.sourceInfo.value = Math.max(this.sourceInfo.min, Math.min(this.sourceInfo.max, value));
     this.render();
     return true;
   }
@@ -218,9 +212,7 @@ export class ProgressBar {
   }
 
   isValid() {
-    return [this._back, this._fill, this._main].every(
-      (td) => td && td.isValid(),
-    );
+    return [this._back, this._fill, this._main].every((td) => td && td.isValid());
   }
 
   show() {
@@ -246,9 +238,7 @@ export class ProgressBar {
   }
 
   getUsedTextDrawIds() {
-    return [this._back, this._fill, this._main]
-      .filter((v) => v && v.isValid())
-      .map((td) => td!.id);
+    return [this._back, this._fill, this._main].filter((v) => v && v.isValid()).map((td) => td!.id);
   }
 
   private getProgressRatio(): number {
@@ -258,8 +248,7 @@ export class ProgressBar {
   }
 
   private computeLayout() {
-    const { x, y, width, height, paddingX, paddingY, direction } =
-      this.sourceInfo;
+    const { x, y, width, height, paddingX, paddingY, direction } = this.sourceInfo;
     const progress = this.getProgressRatio();
 
     const totalWidth = width + paddingX * 2;
@@ -281,8 +270,7 @@ export class ProgressBar {
     let progressHeight: number;
 
     const isVertical =
-      direction === ProgressBarDirectionEnum.up ||
-      direction === ProgressBarDirectionEnum.down;
+      direction === ProgressBarDirectionEnum.up || direction === ProgressBarDirectionEnum.down;
 
     if (isVertical) {
       progressHeight = Math.max(0, height * progress);
@@ -328,12 +316,7 @@ export class ProgressBar {
 
       this._back = setupTextDraw(this._back, layout.back, backColor, player);
       this._fill = setupTextDraw(this._fill, layout.fill, fillColor, player);
-      this._main = setupTextDraw(
-        this._main,
-        layout.progress,
-        baseColor,
-        player,
-      );
+      this._main = setupTextDraw(this._main, layout.progress, baseColor, player);
 
       if (this.sourceInfo.show) {
         this.show();
@@ -364,9 +347,7 @@ TextDraw.__inject__.destroyPlayer = function (playerId: number, text: number) {
   const ppb = playerProgressBars.get(playerId);
   if (!ppb) return orig_TextDrawDestroyPlayer(playerId, text);
 
-  const bar = [...ppb.values()].find((bar) =>
-    bar.getUsedTextDrawIds().includes(text),
-  );
+  const bar = [...ppb.values()].find((bar) => bar.getUsedTextDrawIds().includes(text));
   if (!bar) return orig_TextDrawDestroyPlayer(playerId, text);
 
   const groupIds = bar.getUsedTextDrawIds();

@@ -1,14 +1,12 @@
 export default {
   SUSPICION_1: "[Nex-AC] Срабатывание на %s ID. Код причины: %s%s",
   SUSPICION_2: "[Nex-AC] Срабатывание на IP %s. Код причины: %s%s",
-  VERSION_WARNING:
-    "[Nex-AC] Данная версия античита не подходит для версии сервера",
+  VERSION_WARNING: "[Nex-AC] Данная версия античита не подходит для версии сервера",
   CFG_OPENING_ERROR: "[Nex-AC] Ошибка создания/открытия %s!",
   DEBUG_CODE_1: "[Nex-AC debug] ID %s превысил %s попыток флуда. Public ID: %s",
   DEBUG_CODE_2: "[Nex-AC debug] Неверная версия у %s ID. Версия: %s",
   DEBUG_CODE_3: "[Nex-AC debug] ID %s превысил %s подключений с 1 IP-адреса",
-  DEBUG_CODE_4:
-    "[Nex-AC debug] Неудачный вход в RCON с IP %s используя пароль %s",
+  DEBUG_CODE_4: "[Nex-AC debug] Неудачный вход в RCON с IP %s используя пароль %s",
   DEBUG_CODE_5: "[Nex-AC debug] ID %s использовал NOP %s",
   KICK_MSG: "Вы были кикнуты по подозрению в использовании чит-программ (#%s)",
   MAX_CONNECTS_MSG: "Вы превысили максимальное число подключений с 1 IP-адреса",

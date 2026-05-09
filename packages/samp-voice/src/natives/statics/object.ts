@@ -2,12 +2,7 @@ import { SampVoiceLocalStream } from "../local";
 import { SV_NULL } from "../../constants";
 
 export class StaticLocalObjectStream extends SampVoiceLocalStream {
-  constructor(
-    distance: number,
-    objectId: number,
-    color: number = SV_NULL,
-    name: string,
-  ) {
+  constructor(distance: number, objectId: number, color: number = SV_NULL, name: string) {
     const ptr = samp.callNative(
       "SvCreateSLStreamAtObject",
       "fiis",
@@ -24,8 +19,6 @@ export class StaticLocalObjectStream extends SampVoiceLocalStream {
   }
 
   static getInstances() {
-    return super.getInstances(
-      StaticLocalObjectStream.name,
-    ) as StaticLocalObjectStream[];
+    return super.getInstances(StaticLocalObjectStream.name) as StaticLocalObjectStream[];
   }
 }

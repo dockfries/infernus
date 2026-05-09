@@ -68,18 +68,9 @@ export class Pickup {
         }
         pickupPool.set(this.id, this);
       } else {
-        this._id = Pickup.__inject__.createPlayer(
-          player.id,
-          model,
-          type,
-          x,
-          y,
-          z,
-          virtualWorld,
-        );
+        this._id = Pickup.__inject__.createPlayer(player.id, model, type, x, y, z, virtualWorld);
         if (
-          (player &&
-            Pickup.getInstances(player).length === LimitsEnum.MAX_PICKUPS) ||
+          (player && Pickup.getInstances(player).length === LimitsEnum.MAX_PICKUPS) ||
           this._id === InvalidEnum.PICKUP_ID
         ) {
           throw new PickupException("Cannot create player pickup");
@@ -192,16 +183,14 @@ export class Pickup {
   setPos(x: number, y: number, z: number, update: boolean): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
     const p = this.getPlayer();
-    if (p)
-      return Pickup.__inject__.setPosPlayer(p.id, this.id, x, y, z, update);
+    if (p) return Pickup.__inject__.setPosPlayer(p.id, this.id, x, y, z, update);
     return Pickup.__inject__.setPos(this.id, x, y, z, update);
   }
 
   setModel(model: number, update = true): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
     const p = this.getPlayer();
-    if (p)
-      return Pickup.__inject__.setModelPlayer(p.id, this.id, model, update);
+    if (p) return Pickup.__inject__.setModelPlayer(p.id, this.id, model, update);
     return Pickup.__inject__.setModel(this.id, model, update);
   }
 
@@ -215,12 +204,7 @@ export class Pickup {
   setVirtualWorld(virtualWorld: number): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
     const p = this.getPlayer();
-    if (p)
-      return Pickup.__inject__.setVirtualWorldPlayer(
-        p.id,
-        this.id,
-        virtualWorld,
-      );
+    if (p) return Pickup.__inject__.setVirtualWorldPlayer(p.id, this.id, virtualWorld);
     return Pickup.__inject__.setVirtualWorld(this.id, virtualWorld);
   }
 

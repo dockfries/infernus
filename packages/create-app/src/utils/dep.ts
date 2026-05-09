@@ -15,12 +15,7 @@ import {
   INF_CONFIG_NAME,
 } from "./config.js";
 import { downloadFile, getRepoRelease, getTimeDiff } from "./api.js";
-import type {
-  AddDepsOptions,
-  LocalConfig,
-  LockFileContent,
-  PawnJson,
-} from "../types/index.js";
+import type { AddDepsOptions, LocalConfig, LockFileContent, PawnJson } from "../types/index.js";
 import { minSatisfying, validRange } from "./semver.js";
 import { addOpenMp, removeOpenMp } from "./omp.js";
 import { getPawnJson, getIncludePath, getPlugOrCompPath } from "./pawn.js";
@@ -133,9 +128,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     const previousVersion = previousDepInfo?.version;
 
     const isAnyVer = version === "*";
-    const coerceVersion = isAnyVer
-      ? version
-      : semver.coerce(previousVersion)?.version;
+    const coerceVersion = isAnyVer ? version : semver.coerce(previousVersion)?.version;
 
     const isComponent = !!args.component || previousComp;
     const pluginFolderPath = getPlugOrCompPath(isComponent);
@@ -178,15 +171,10 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
     if (!localCacheFolder) {
       matchedRelease = await getRepoRelease(owner, repo, version);
-      if (!matchedRelease)
-        throw new Error(`not found satisfactory deps: ${dep}`);
+      if (!matchedRelease) throw new Error(`not found satisfactory deps: ${dep}`);
 
       if (isForceRedownload && isUpdate) {
-        const cacheFolder = path.resolve(
-          GLOBAL_DEPS_PATH,
-          name,
-          matchedRelease.tag_name,
-        );
+        const cacheFolder = path.resolve(GLOBAL_DEPS_PATH, name, matchedRelease.tag_name);
         if (fs.existsSync(cacheFolder)) {
           await fs.remove(cacheFolder);
         }
@@ -196,9 +184,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
         dependencies = {
           ...dependencies,
           [name]: {
-            version: localCacheVersion
-              ? localCacheVersion
-              : matchedRelease.tag_name,
+            version: localCacheVersion ? localCacheVersion : matchedRelease.tag_name,
           },
         };
         await addOpenMp(matchedRelease, true);
@@ -212,9 +198,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
         dependencies = {
           ...dependencies,
           [name]: {
-            version: localCacheVersion
-              ? localCacheVersion
-              : matchedRelease.tag_name,
+            version: localCacheVersion ? localCacheVersion : matchedRelease.tag_name,
           },
         };
         await addOpenMp(localCacheVersion!, false);
@@ -240,13 +224,9 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
       return resource.platform === "linux";
     });
 
-    const archiveResources = platformResources.filter(
-      (resource) => resource.archive,
-    );
+    const archiveResources = platformResources.filter((resource) => resource.archive);
 
-    const notArchiveResources = platformResources.filter(
-      (resource) => !resource.archive,
-    );
+    const notArchiveResources = platformResources.filter((resource) => !resource.archive);
 
     const localIncPath = await getIncludePath();
     await fs.ensureDir(localIncPath);
@@ -292,9 +272,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
           });
           archiveResource = archiveResources[selectAsset];
         }
-        console.log(
-          `download dep: ${archiveAsset.name} ${matchedRelease.tag_name}`,
-        );
+        console.log(`download dep: ${archiveAsset.name} ${matchedRelease.tag_name}`);
         const assetPath = await downloadFile(
           archiveAsset.browser_download_url,
           path.resolve(depVersionPath, archiveAsset.name),
@@ -314,10 +292,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
         for (const plugin of pluginPaths) {
           const pluginFileName = path.basename(plugin);
-          const pluginFileNameNoExt = path.basename(
-            pluginFileName,
-            path.extname(pluginFileName),
-          );
+          const pluginFileNameNoExt = path.basename(pluginFileName, path.extname(pluginFileName));
           await fs.copy(plugin, path.resolve(pluginFolderPath, pluginFileName));
           if (!isComponent) legacyPluginsSet.add(pluginFileNameNoExt);
         }
@@ -333,10 +308,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
             cwd: depVersionPath,
           });
           for (const includeFolder of includeFiles) {
-            await fs.copy(
-              includeFolder,
-              path.resolve(localIncPath, path.basename(includeFolder)),
-            );
+            await fs.copy(includeFolder, path.resolve(localIncPath, path.basename(includeFolder)));
           }
         } else {
           const includeFiles = await fg.glob("*.inc", {
@@ -344,10 +316,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
             cwd: depVersionPath,
           });
           for (const includeFolder of includeFiles) {
-            await fs.copy(
-              includeFolder,
-              path.resolve(localIncPath, path.basename(includeFolder)),
-            );
+            await fs.copy(includeFolder, path.resolve(localIncPath, path.basename(includeFolder)));
           }
         }
       }
@@ -359,10 +328,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
             cwd: depVersionPath,
           });
           if (!files[0]) continue;
-          const to = path.resolve(
-            process.cwd(),
-            archiveResource.files[globPattern],
-          );
+          const to = path.resolve(process.cwd(), archiveResource.files[globPattern]);
           await fs.copy(files[0], to);
         }
       }
@@ -473,8 +439,7 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
         if (isUpdate && version === "*" && config.dependencies![depName]) {
           version = config.dependencies![depName];
         }
-        if (!validRange(version))
-          throw new Error(`invalid deps version: ${dep}`);
+        if (!validRange(version)) throw new Error(`invalid deps version: ${dep}`);
         acc[depName] = version;
         return acc;
       },
@@ -495,11 +460,9 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
     if (isInstallAll) {
       waitRemoveDeps = Object.keys(config.dependencies);
     } else {
-      waitRemoveDeps = Object.keys(config.dependencies).filter(
-        (installedDep) => {
-          return installedDep in reduceDeps;
-        },
-      );
+      waitRemoveDeps = Object.keys(config.dependencies).filter((installedDep) => {
+        return installedDep in reduceDeps;
+      });
     }
 
     await removeDeps(
@@ -557,11 +520,7 @@ export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
       const version = lockFile.dependencies[depName].version;
       if (!version) continue;
 
-      const globalVersionPath = path.resolve(
-        GLOBAL_DEPS_PATH,
-        depName,
-        version,
-      );
+      const globalVersionPath = path.resolve(GLOBAL_DEPS_PATH, depName, version);
 
       if (depName === ompRepository) {
         await removeOpenMp(globalVersionPath);
@@ -655,22 +614,16 @@ export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
   }
 
   if (hasLegacyPlugins) {
-    const legacyPlugins = (ompConfig.pawn.legacy_plugins as string[]).filter(
-      (plugin) => {
-        return !waitRemovePlugins.has(plugin);
-      },
-    );
+    const legacyPlugins = (ompConfig.pawn.legacy_plugins as string[]).filter((plugin) => {
+      return !waitRemovePlugins.has(plugin);
+    });
     movePluginToLast(legacyPlugins, "samp-node");
     ompConfig.pawn.legacy_plugins = legacyPlugins;
   }
 
   cleanInvalidLockDeps(config, lockFile);
 
-  await Promise.all([
-    writeOmpConfig(ompConfig),
-    writeLocalConfig(config),
-    writeLockFile(lockFile),
-  ]);
+  await Promise.all([writeOmpConfig(ompConfig), writeLocalConfig(config), writeLockFile(lockFile)]);
 
   const end = Date.now();
   const diff = getTimeDiff(start, end);

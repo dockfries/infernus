@@ -10,9 +10,7 @@ export function minSatisfying(versions: string[], range: string) {
   if (!descVersions.length) return null;
 
   if (range === "*") {
-    const maxVersion = allVersion.find(
-      (s) => s[1].version === descVersions[0].version,
-    );
+    const maxVersion = allVersion.find((s) => s[1].version === descVersions[0].version);
     return maxVersion ? maxVersion[0] : null;
   }
 

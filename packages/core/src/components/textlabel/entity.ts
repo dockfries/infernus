@@ -54,10 +54,8 @@ export class TextLabel {
   }
 
   create(): this {
-    if (!this.sourceInfo)
-      throw new TextLabelException("Cannot create with only id");
-    if (this.id !== InvalidEnum._3DTEXT_ID)
-      throw new TextLabelException("Cannot create again");
+    if (!this.sourceInfo) throw new TextLabelException("Cannot create with only id");
+    if (this.id !== InvalidEnum._3DTEXT_ID) throw new TextLabelException("Cannot create again");
 
     const {
       charset = "utf8",
@@ -110,12 +108,8 @@ export class TextLabel {
       y,
       z,
       drawDistance,
-      typeof attachedPlayer === "undefined"
-        ? InvalidEnum.PLAYER_ID
-        : attachedPlayer.id,
-      typeof attachedVehicle === "undefined"
-        ? InvalidEnum.VEHICLE_ID
-        : attachedVehicle.id,
+      typeof attachedPlayer === "undefined" ? InvalidEnum.PLAYER_ID : attachedPlayer.id,
+      typeof attachedVehicle === "undefined" ? InvalidEnum.VEHICLE_ID : attachedVehicle.id,
       testLOS,
     );
     if (
@@ -133,9 +127,7 @@ export class TextLabel {
 
   destroy(): this {
     if (this.id === InvalidEnum._3DTEXT_ID)
-      throw new TextLabelException(
-        "Cannot destroy the textLabel before create",
-      );
+      throw new TextLabelException("Cannot destroy the textLabel before create");
 
     if (this.isGlobal()) {
       if (!INTERNAL_FLAGS.skip) {
@@ -197,72 +189,34 @@ export class TextLabel {
     return TextLabel.isValid(this.id, this.getPlayerId());
   }
 
-  attachToPlayer(
-    player: Player,
-    offsetX: number,
-    offsetY: number,
-    offsetZ: number,
-  ): boolean {
+  attachToPlayer(player: Player, offsetX: number, offsetY: number, offsetZ: number): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (!this.isGlobal()) {
-      throw new TextLabelException(
-        "Cannot attach to player, textLabel is not global",
-      );
+      throw new TextLabelException("Cannot attach to player, textLabel is not global");
     }
-    return TextLabel.__inject__.attachToPlayer(
-      this.id,
-      player.id,
-      offsetX,
-      offsetY,
-      offsetZ,
-    );
+    return TextLabel.__inject__.attachToPlayer(this.id, player.id, offsetX, offsetY, offsetZ);
   }
 
-  attachToVehicle(
-    vehicle: Vehicle,
-    offsetX: number,
-    offsetY: number,
-    offsetZ: number,
-  ): boolean {
+  attachToVehicle(vehicle: Vehicle, offsetX: number, offsetY: number, offsetZ: number): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (!this.isGlobal()) {
-      throw new TextLabelException(
-        "Cannot attach to vehicle, textLabel is not global",
-      );
+      throw new TextLabelException("Cannot attach to vehicle, textLabel is not global");
     }
-    return TextLabel.__inject__.attachToVehicle(
-      this.id,
-      vehicle.id,
-      offsetX,
-      offsetY,
-      offsetZ,
-    );
+    return TextLabel.__inject__.attachToVehicle(this.id, vehicle.id, offsetX, offsetY, offsetZ);
   }
 
-  updateText(
-    color: number | string,
-    text: string,
-    charset: string = "utf8",
-  ): boolean {
+  updateText(color: number | string, text: string, charset: string = "utf8"): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (this.isGlobal()) {
       return TextLabel.__inject__.updateText(charset, this.id, color, text);
     }
-    return TextLabel.__inject__.updatePlayerText(
-      charset,
-      this.getPlayerId(),
-      this.id,
-      color,
-      text,
-    );
+    return TextLabel.__inject__.updatePlayerText(charset, this.getPlayerId(), this.id, color, text);
   }
 
   isStreamedIn(player: Player): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (!this.isGlobal()) {
-      throw new TextLabelException(
-        "Cannot check stream in, textLabel is not global",
-      );
+      throw new TextLabelException("Cannot check stream in, textLabel is not global");
     }
     return TextLabel.__inject__.isStreamedIn(this.id, player.id);
   }
@@ -271,11 +225,7 @@ export class TextLabel {
     if (this.isGlobal()) {
       return TextLabel.__inject__.getText(charset, this.id);
     }
-    return TextLabel.__inject__.getPlayerText(
-      charset,
-      this.getPlayerId(),
-      this.id,
-    );
+    return TextLabel.__inject__.getPlayerText(charset, this.getPlayerId(), this.id);
   }
 
   getColor(): number {
@@ -297,21 +247,14 @@ export class TextLabel {
     if (this.isGlobal()) {
       return TextLabel.__inject__.setDrawDistance(this.id, distance);
     }
-    return TextLabel.__inject__.setPlayerDrawDistance(
-      this.getPlayerId(),
-      this.id,
-      distance,
-    );
+    return TextLabel.__inject__.setPlayerDrawDistance(this.getPlayerId(), this.id, distance);
   }
 
   getDrawDistance(): number {
     if (this.isGlobal()) {
       return TextLabel.__inject__.getDrawDistance(this.id);
     }
-    return TextLabel.__inject__.getPlayerDrawDistance(
-      this.getPlayerId(),
-      this.id,
-    );
+    return TextLabel.__inject__.getPlayerDrawDistance(this.getPlayerId(), this.id);
   }
 
   getLOS(): boolean {
@@ -327,11 +270,7 @@ export class TextLabel {
     if (this.isGlobal()) {
       return TextLabel.__inject__.setLOS(this.id, status);
     }
-    return TextLabel.__inject__.setPlayerLOS(
-      this.getPlayerId(),
-      this.id,
-      status,
-    );
+    return TextLabel.__inject__.setPlayerLOS(this.getPlayerId(), this.id, status);
   }
 
   getVirtualWorld(): number {
@@ -339,10 +278,7 @@ export class TextLabel {
     if (this.isGlobal()) {
       return TextLabel.__inject__.getVirtualWorld(this.id);
     }
-    return TextLabel.__inject__.getPlayerVirtualWorld(
-      this.getPlayerId(),
-      this.id,
-    );
+    return TextLabel.__inject__.getPlayerVirtualWorld(this.getPlayerId(), this.id);
   }
 
   setVirtualWorld(world: number): boolean {
@@ -350,21 +286,14 @@ export class TextLabel {
     if (this.isGlobal()) {
       return TextLabel.__inject__.setVirtualWorld(this.id, world);
     }
-    return TextLabel.__inject__.setPlayerVirtualWorld(
-      this.getPlayerId(),
-      this.id,
-      world,
-    );
+    return TextLabel.__inject__.setPlayerVirtualWorld(this.getPlayerId(), this.id, world);
   }
 
   getAttachedData() {
     if (this.isGlobal()) {
       return TextLabel.__inject__.getAttachedData(this.id);
     }
-    return TextLabel.__inject__.getPlayerAttachedData(
-      this.getPlayerId(),
-      this.id,
-    );
+    return TextLabel.__inject__.getPlayerAttachedData(this.getPlayerId(), this.id);
   }
 
   static isValid(textLabelId: number, playerId?: number) {
@@ -389,11 +318,9 @@ export class TextLabel {
   }
 
   static getPlayersInstances(): [Player, TextLabel[]][] {
-    return Array.from(playerTextLabelPool.entries()).map(
-      ([player, textLabels]) => {
-        return [player, Array.from(textLabels.values())];
-      },
-    );
+    return Array.from(playerTextLabelPool.entries()).map(([player, textLabels]) => {
+      return [player, Array.from(textLabels.values())];
+    });
   }
 
   static __inject__ = {

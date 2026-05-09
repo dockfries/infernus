@@ -8,15 +8,7 @@ export const SetPlayerCheckpoint = (
   z: number,
   radius: number,
 ): boolean => {
-  return !!samp.callNative(
-    "SetPlayerCheckpoint",
-    "iffff",
-    playerId,
-    x,
-    y,
-    z,
-    radius,
-  );
+  return !!samp.callNative("SetPlayerCheckpoint", "iffff", playerId, x, y, z, radius);
 };
 
 export const DisablePlayerCheckpoint = (playerId: number): boolean => {
@@ -65,11 +57,12 @@ export const IsPlayerCheckpointActive = (playerId: number): boolean => {
   return !!samp.callNative("IsPlayerCheckpointActive", "i", playerId);
 };
 
-export const GetPlayerCheckpoint = (
-  playerId: number,
-): ICheckPoint & ICommonRetVal => {
-  const [fX = 0.0, fY = 0.0, fZ = 0.0, fSize = 0.0, ret]: number[] =
-    samp.callNative("GetPlayerCheckpoint", "iFFFF", playerId);
+export const GetPlayerCheckpoint = (playerId: number): ICheckPoint & ICommonRetVal => {
+  const [fX = 0.0, fY = 0.0, fZ = 0.0, fSize = 0.0, ret]: number[] = samp.callNative(
+    "GetPlayerCheckpoint",
+    "iFFFF",
+    playerId,
+  );
   return { fX, fY, fZ, fSize, ret: !!ret };
 };
 
@@ -77,9 +70,7 @@ export const IsPlayerRaceCheckpointActive = (playerId: number): boolean => {
   return !!samp.callNative("IsPlayerRaceCheckpointActive", "i", playerId);
 };
 
-export const GetPlayerRaceCheckpoint = (
-  playerId: number,
-): IRaceCheckPoint & ICommonRetVal => {
+export const GetPlayerRaceCheckpoint = (playerId: number): IRaceCheckPoint & ICommonRetVal => {
   const [
     fX = 0.0,
     fY = 0.0,
@@ -89,10 +80,6 @@ export const GetPlayerRaceCheckpoint = (
     fNextZ = 0.0,
     fSize = 0.0,
     ret,
-  ]: number[] = samp.callNative(
-    "GetPlayerRaceCheckpoint",
-    "iFFFFFFF",
-    playerId,
-  );
+  ]: number[] = samp.callNative("GetPlayerRaceCheckpoint", "iFFFFFFF", playerId);
   return { fX, fY, fZ, fNextX, fNextY, fNextZ, fSize, ret: !!ret };
 };

@@ -1,10 +1,4 @@
-import {
-  onInit,
-  onExit,
-  onIncomingConnection,
-  onRconCommand,
-  onRconLoginAttempt,
-} from "./event";
+import { onInit, onExit, onIncomingConnection, onRconCommand, onRconLoginAttempt } from "./event";
 
 import type { IFilterScript } from "../../interfaces";
 
@@ -26,9 +20,7 @@ import { GameModeException } from "core/exceptions";
 
 export class GameMode {
   private constructor() {
-    throw new GameModeException(
-      "This is a static class and cannot be instantiated.",
-    );
+    throw new GameModeException("This is a static class and cannot be instantiated.");
   }
 
   static onInit = onInit;
@@ -37,10 +29,7 @@ export class GameMode {
   static onRconCommand = onRconCommand;
   static onRconLoginAttempt = onRconLoginAttempt;
 
-  static use<T extends IFilterScript>(
-    plugin: T,
-    ...options: Parameters<T["load"]>
-  ) {
+  static use<T extends IFilterScript>(plugin: T, ...options: Parameters<T["load"]>) {
     useFilterScript(plugin, ...options);
     return this;
   }
@@ -61,8 +50,7 @@ export class GameMode {
      * i.e., a decimal integer up to 255.
      */
     for (let i = 0; i <= 255; i++) {
-      if (!this.isNickNameCharacterAllowed(i))
-        this.allowNickNameCharacter(i, true);
+      if (!this.isNickNameCharacterAllowed(i)) this.allowNickNameCharacter(i, true);
     }
   }
 
@@ -83,17 +71,9 @@ export class GameMode {
   static sendRconCommand = SendRconCommand;
   static addPlayerClass = w.AddPlayerClass;
   static addPlayerClassEx = w.AddPlayerClassEx;
-  static createExplosion(
-    x: number,
-    y: number,
-    z: number,
-    type: number,
-    radius: number,
-  ): boolean {
+  static createExplosion(x: number, y: number, z: number, type: number, radius: number): boolean {
     if (type < 0 || type > 13) {
-      throw new GameModeException(
-        "The valid explosion type value is only 0 to 13",
-      );
+      throw new GameModeException("The valid explosion type value is only 0 to 13");
     }
     return w.CreateExplosion(x, y, z, type, radius);
   }
@@ -124,26 +104,8 @@ export class GameMode {
     timeOn: number,
     timeOff: number,
   ): boolean {
-    if (
-      this.checkSimpleModel(
-        virtualWorld,
-        baseId,
-        newId,
-        dffName,
-        txdName,
-        timeOn,
-        timeOff,
-      )
-    ) {
-      return w.AddSimpleModelTimed(
-        virtualWorld,
-        baseId,
-        newId,
-        dffName,
-        txdName,
-        timeOn,
-        timeOff,
-      );
+    if (this.checkSimpleModel(virtualWorld, baseId, newId, dffName, txdName, timeOn, timeOff)) {
+      return w.AddSimpleModelTimed(virtualWorld, baseId, newId, dffName, txdName, timeOn, timeOff);
     }
     return false;
   }
@@ -162,10 +124,7 @@ export class GameMode {
     if (baseId < 0) {
       throw new GameModeException("AddSimpleModel - Error baseId");
     }
-    if (
-      newId > LimitsEnum.MAX_CUSTOM_OBJECT_ID ||
-      newId < LimitsEnum.MIN_CUSTOM_OBJECT_ID
-    ) {
+    if (newId > LimitsEnum.MAX_CUSTOM_OBJECT_ID || newId < LimitsEnum.MIN_CUSTOM_OBJECT_ID) {
       throw new GameModeException("AddSimpleModel - Error newId range");
     }
     if (dffName.trim().length === 0) {

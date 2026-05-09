@@ -1,10 +1,7 @@
 import { InvalidEnum, Player } from "@infernus/core";
 import { innerWeaponConfig } from "../config";
 
-export function debugMessage(
-  player: Player | InvalidEnum.PLAYER_ID,
-  msg: string,
-) {
+export function debugMessage(player: Player | InvalidEnum.PLAYER_ID, msg: string) {
   const clientMsg = `(wc) ${msg}`;
   const logMsg = `(wc:${typeof player === "number" ? player : player.id}) ${msg}`;
 

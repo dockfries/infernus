@@ -72,12 +72,7 @@ export const GetDynamicObjectPos = (objectId: number) => {
   return { x, y, z, ret };
 };
 
-export const SetDynamicObjectPos = (
-  objectId: number,
-  x: number,
-  y: number,
-  z: number,
-): number => {
+export const SetDynamicObjectPos = (objectId: number, x: number, y: number, z: number): number => {
   return samp.callNative("SetDynamicObjectPos", "ifff", objectId, x, y, z);
 };
 
@@ -109,18 +104,7 @@ export const MoveDynamicObject = (
   ry = DEFAULT_ROTATION_Y,
   rz = DEFAULT_ROTATION_Z,
 ): number => {
-  return samp.callNative(
-    "MoveDynamicObject",
-    "ifffffff",
-    objectId,
-    x,
-    y,
-    z,
-    speed,
-    rx,
-    ry,
-    rz,
-  );
+  return samp.callNative("MoveDynamicObject", "ifffffff", objectId, x, y, z, speed, rx, ry, rz);
 };
 
 export const StopDynamicObject = (objectId: number): number => {
@@ -131,16 +115,8 @@ export const IsDynamicObjectMoving = (objectId: number): boolean => {
   return !!samp.callNative("IsDynamicObjectMoving", "i", objectId);
 };
 
-export const AttachCameraToDynamicObject = (
-  playerId: number,
-  objectId: number,
-): number => {
-  return samp.callNative(
-    "AttachCameraToDynamicObject",
-    "ii",
-    playerId,
-    objectId,
-  );
+export const AttachCameraToDynamicObject = (playerId: number, objectId: number): number => {
+  return samp.callNative("AttachCameraToDynamicObject", "ii", playerId, objectId);
 };
 
 export const AttachDynamicObjectToObject = (
@@ -217,35 +193,16 @@ export const AttachDynamicObjectToVehicle = (
   );
 };
 
-export const EditDynamicObject = (
-  playerId: number,
-  objectId: number,
-): number => {
+export const EditDynamicObject = (playerId: number, objectId: number): number => {
   return samp.callNative("EditDynamicObject", "ii", playerId, objectId);
 };
 
-export const IsDynamicObjectMaterialUsed = (
-  objectId: number,
-  materialIndex: number,
-): boolean => {
-  return !!samp.callNative(
-    "IsDynamicObjectMaterialUsed",
-    "ii",
-    objectId,
-    materialIndex,
-  );
+export const IsDynamicObjectMaterialUsed = (objectId: number, materialIndex: number): boolean => {
+  return !!samp.callNative("IsDynamicObjectMaterialUsed", "ii", objectId, materialIndex);
 };
 
-export const RemoveDynamicObjectMaterial = (
-  objectId: number,
-  materialIndex: number,
-): number => {
-  return samp.callNative(
-    "RemoveDynamicObjectMaterial",
-    "ii",
-    objectId,
-    materialIndex,
-  );
+export const RemoveDynamicObjectMaterial = (objectId: number, materialIndex: number): number => {
+  return samp.callNative("RemoveDynamicObjectMaterial", "ii", objectId, materialIndex);
 };
 
 export const SetDynamicObjectMaterial = (
@@ -272,24 +229,14 @@ export const IsDynamicObjectMaterialTextUsed = (
   objectId: number,
   materialIndex: number,
 ): boolean => {
-  return !!samp.callNative(
-    "IsDynamicObjectMaterialTextUsed",
-    "ii",
-    objectId,
-    materialIndex,
-  );
+  return !!samp.callNative("IsDynamicObjectMaterialTextUsed", "ii", objectId, materialIndex);
 };
 
 export const RemoveDynamicObjectMaterialText = (
   objectId: number,
   materialIndex: number,
 ): number => {
-  return samp.callNative(
-    "RemoveDynamicObjectMaterialText",
-    "ii",
-    objectId,
-    materialIndex,
-  );
+  return samp.callNative("RemoveDynamicObjectMaterialText", "ii", objectId, materialIndex);
 };
 
 export const SetDynamicObjectMaterialText = (

@@ -11,14 +11,7 @@ import type {
   WeaponStatesEnum,
 } from "@infernus/core";
 import { LandingGearStateEnum } from "@infernus/core";
-import {
-  EntityCheck,
-  EntityMode,
-  MoveMode,
-  MovePathFinding,
-  MoveSpeed,
-  MoveType,
-} from "../enums";
+import { EntityCheck, EntityMode, MoveMode, MovePathFinding, MoveSpeed, MoveType } from "../enums";
 import { FCNPCInstances } from "../pools";
 import { INVALID_RECORD_ID } from "../constants";
 import type { FCNPCNode } from "./node";
@@ -70,12 +63,7 @@ export class FCNPC {
   }
 
   isStreamedIn(forPlayer: Player) {
-    const ret = samp.callNative(
-      "FCNPC_IsStreamedIn",
-      "ii",
-      this.id,
-      forPlayer.id,
-    );
+    const ret = samp.callNative("FCNPC_IsStreamedIn", "ii", this.id, forPlayer.id);
     return !!ret;
   }
 
@@ -121,42 +109,21 @@ export class FCNPC {
     return samp.callNative("FCNPC_SetQuaternion", "iffff", this.id, w, x, y, z);
   }
   giveQuaternion(w: number, x: number, y: number, z: number): number {
-    return samp.callNative(
-      "FCNPC_GiveQuaternion",
-      "iffff",
-      this.id,
-      w,
-      x,
-      y,
-      z,
-    );
+    return samp.callNative("FCNPC_GiveQuaternion", "iffff", this.id, w, x, y, z);
   }
   getQuaternion() {
-    const [w, x, y, z, ret]: [number, number, number, number, number] =
-      samp.callNative("FCNPC_GetQuaternion", "iFFFF", this.id);
+    const [w, x, y, z, ret]: [number, number, number, number, number] = samp.callNative(
+      "FCNPC_GetQuaternion",
+      "iFFFF",
+      this.id,
+    );
     return { w, x, y, z, ret };
   }
   setVelocity(x: number, y: number, z: number, updatePos = false): number {
-    return samp.callNative(
-      "FCNPC_SetVelocity",
-      "ifffi",
-      this.id,
-      x,
-      y,
-      z,
-      updatePos,
-    );
+    return samp.callNative("FCNPC_SetVelocity", "ifffi", this.id, x, y, z, updatePos);
   }
   giveVelocity(x: number, y: number, z: number, updatePos = false): number {
-    return samp.callNative(
-      "FCNPC_GiveVelocity",
-      "ifffi",
-      this.id,
-      x,
-      y,
-      z,
-      updatePos,
-    );
+    return samp.callNative("FCNPC_GiveVelocity", "ifffi", this.id, x, y, z, updatePos);
   }
   getVelocity() {
     const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
@@ -243,22 +210,10 @@ export class FCNPC {
     return samp.callNative("FCNPC_GetAmmoInClip", "i", this.id);
   }
   setWeaponSkillLevel(skill: WeaponSkillsEnum, level: number): number {
-    return samp.callNative(
-      "FCNPC_SetWeaponSkillLevel",
-      "iii",
-      this.id,
-      skill,
-      level,
-    );
+    return samp.callNative("FCNPC_SetWeaponSkillLevel", "iii", this.id, skill, level);
   }
   giveWeaponSkillLevel(skill: WeaponSkillsEnum, level: number): number {
-    return samp.callNative(
-      "FCNPC_GiveWeaponSkillLevel",
-      "iii",
-      this.id,
-      skill,
-      level,
-    );
+    return samp.callNative("FCNPC_GiveWeaponSkillLevel", "iii", this.id, skill, level);
   }
   getWeaponSkillLevel(skill: WeaponSkillsEnum): number {
     return samp.callNative("FCNPC_GetWeaponSkillLevel", "ii", this.id, skill);
@@ -270,78 +225,34 @@ export class FCNPC {
     return samp.callNative("FCNPC_GetWeaponState", "i", this.id);
   }
   setWeaponReloadTime(weaponId: WeaponEnum, time: number): number {
-    return samp.callNative(
-      "FCNPC_SetWeaponReloadTime",
-      "iii",
-      this.id,
-      weaponId,
-      time,
-    );
+    return samp.callNative("FCNPC_SetWeaponReloadTime", "iii", this.id, weaponId, time);
   }
   getWeaponReloadTime(weaponId: WeaponEnum): number {
-    return samp.callNative(
-      "FCNPC_GetWeaponReloadTime",
-      "ii",
-      this.id,
-      weaponId,
-    );
+    return samp.callNative("FCNPC_GetWeaponReloadTime", "ii", this.id, weaponId);
   }
   getWeaponActualReloadTime(weaponId: WeaponEnum): number {
-    return samp.callNative(
-      "FCNPC_GetWeaponActualReloadTime",
-      "ii",
-      this.id,
-      weaponId,
-    );
+    return samp.callNative("FCNPC_GetWeaponActualReloadTime", "ii", this.id, weaponId);
   }
   setWeaponShootTime(weaponId: WeaponEnum, time: number): number {
-    return samp.callNative(
-      "FCNPC_SetWeaponShootTime",
-      "iii",
-      this.id,
-      weaponId,
-      time,
-    );
+    return samp.callNative("FCNPC_SetWeaponShootTime", "iii", this.id, weaponId, time);
   }
   getWeaponShootTime(weaponId: WeaponEnum): number {
     return samp.callNative("FCNPC_GetWeaponShootTime", "ii", this.id, weaponId);
   }
   setWeaponClipSize(weaponId: WeaponEnum, size: number): number {
-    return samp.callNative(
-      "FCNPC_SetWeaponClipSize",
-      "iii",
-      this.id,
-      weaponId,
-      size,
-    );
+    return samp.callNative("FCNPC_SetWeaponClipSize", "iii", this.id, weaponId, size);
   }
   getWeaponClipSize(weaponId: WeaponEnum): number {
     return samp.callNative("FCNPC_GetWeaponClipSize", "ii", this.id, weaponId);
   }
   getWeaponActualClipSize(weaponId: WeaponEnum): number {
-    return samp.callNative(
-      "FCNPC_GetWeaponActualClipSize",
-      "ii",
-      this.id,
-      weaponId,
-    );
+    return samp.callNative("FCNPC_GetWeaponActualClipSize", "ii", this.id, weaponId);
   }
   setWeaponAccuracy(weaponId: WeaponEnum, accuracy: number): number {
-    return samp.callNative(
-      "FCNPC_SetWeaponAccuracy",
-      "iif",
-      this.id,
-      weaponId,
-      accuracy,
-    );
+    return samp.callNative("FCNPC_SetWeaponAccuracy", "iif", this.id, weaponId, accuracy);
   }
   getWeaponAccuracy(weaponId: WeaponEnum): number {
-    return samp.callNativeFloat(
-      "FCNPC_GetWeaponAccuracy",
-      "ii",
-      this.id,
-      weaponId,
-    );
+    return samp.callNativeFloat("FCNPC_GetWeaponAccuracy", "ii", this.id, weaponId);
   }
   setWeaponInfo(
     weaponId: WeaponEnum,
@@ -363,13 +274,8 @@ export class FCNPC {
   }
   getWeaponInfo(weaponId: WeaponEnum) {
     // eslint-disable-next-line prefer-const
-    let [reloadTime, shootTime, clipSize, accuracy, ret]: [
-      number,
-      number,
-      number,
-      number,
-      number,
-    ] = samp.callNative("FCNPC_GetWeaponInfo", "iiIIIF", this.id, weaponId);
+    let [reloadTime, shootTime, clipSize, accuracy, ret]: [number, number, number, number, number] =
+      samp.callNative("FCNPC_GetWeaponInfo", "iiIIIF", this.id, weaponId);
     if (ret === 0) {
       reloadTime = -1;
       shootTime = -1;
@@ -397,13 +303,8 @@ export class FCNPC {
   }
   static getWeaponDefaultInfo(weaponId: WeaponEnum) {
     // eslint-disable-next-line prefer-const
-    let [reloadTime, shootTime, clipSize, accuracy, ret]: [
-      number,
-      number,
-      number,
-      number,
-      number,
-    ] = samp.callNative("FCNPC_GetWeaponDefaultInfo", "iIIIF", weaponId);
+    let [reloadTime, shootTime, clipSize, accuracy, ret]: [number, number, number, number, number] =
+      samp.callNative("FCNPC_GetWeaponDefaultInfo", "iIIIF", weaponId);
 
     if (ret === 0) {
       reloadTime = -1;
@@ -413,27 +314,12 @@ export class FCNPC {
     }
     return { reloadTime, shootTime, clipSize, accuracy, ret };
   }
-  setKeys(
-    upDownAnalog: number,
-    leftRightAnalog: number,
-    keys: KeysEnum,
-  ): number {
-    return samp.callNative(
-      "FCNPC_SetKeys",
-      "iiii",
-      this.id,
-      upDownAnalog,
-      leftRightAnalog,
-      keys,
-    );
+  setKeys(upDownAnalog: number, leftRightAnalog: number, keys: KeysEnum): number {
+    return samp.callNative("FCNPC_SetKeys", "iiii", this.id, upDownAnalog, leftRightAnalog, keys);
   }
   getKeys() {
-    const [upDownAnalog, leftRightAnalog, keys, ret]: [
-      number,
-      number,
-      number,
-      number,
-    ] = samp.callNative("FCNPC_GetKeys", "iIII", this.id);
+    const [upDownAnalog, leftRightAnalog, keys, ret]: [number, number, number, number] =
+      samp.callNative("FCNPC_GetKeys", "iIII", this.id);
     return { upDownAnalog, leftRightAnalog, keys, ret };
   }
   setSpecialAction(action: SpecialActionsEnum): number {
@@ -618,12 +504,7 @@ export class FCNPC {
     return !!samp.callNative("FCNPC_IsMoving", "i", this.id);
   }
   isMovingAtPlayer(player: Player): boolean {
-    return !!samp.callNative(
-      "FCNPC_IsMovingAtPlayer",
-      "ii",
-      this.id,
-      player.id,
-    );
+    return !!samp.callNative("FCNPC_IsMovingAtPlayer", "ii", this.id, player.id);
   }
   getDestination() {
     const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
@@ -702,13 +583,7 @@ export class FCNPC {
     return samp.callNative("FCNPC_StopAim", "i", this.id);
   }
   meleeAttack(delay = -1, fightingStyle = false): number {
-    return samp.callNative(
-      "FCNPC_MeleeAttack",
-      "iii",
-      this.id,
-      delay,
-      fightingStyle,
-    );
+    return samp.callNative("FCNPC_MeleeAttack", "iii", this.id, delay, fightingStyle);
   }
   stopAttack(): number {
     return samp.callNative("FCNPC_StopAttack", "i", this.id);
@@ -720,12 +595,7 @@ export class FCNPC {
     return !!samp.callNative("FCNPC_IsAiming", "i", this.id);
   }
   isAimingAtPlayer(player: Player): boolean {
-    return !!samp.callNative(
-      "FCNPC_IsAimingAtPlayer",
-      "ii",
-      this.id,
-      player.id,
-    );
+    return !!samp.callNative("FCNPC_IsAimingAtPlayer", "ii", this.id, player.id);
   }
   getAimingPlayer(): number {
     return samp.callNative("FCNPC_GetAimingPlayer", "i", this.id);
@@ -819,31 +689,14 @@ export class FCNPC {
       pointZ,
     };
   }
-  enterVehicle(
-    vehicle: Vehicle,
-    seatId: number,
-    type: MoveType = MoveType.WALK,
-  ): number {
-    return samp.callNative(
-      "FCNPC_EnterVehicle",
-      "iiii",
-      this.id,
-      vehicle.id,
-      seatId,
-      type,
-    );
+  enterVehicle(vehicle: Vehicle, seatId: number, type: MoveType = MoveType.WALK): number {
+    return samp.callNative("FCNPC_EnterVehicle", "iiii", this.id, vehicle.id, seatId, type);
   }
   exitVehicle(): number {
     return samp.callNative("FCNPC_ExitVehicle", "i", this.id);
   }
   putInVehicle(vehicle: Vehicle, seatId: number): number {
-    return samp.callNative(
-      "FCNPC_PutInVehicle",
-      "iii",
-      this.id,
-      vehicle.id,
-      seatId,
-    );
+    return samp.callNative("FCNPC_PutInVehicle", "iii", this.id, vehicle.id, seatId);
   }
   removeFromVehicle(): number {
     return samp.callNative("FCNPC_RemoveFromVehicle", "i", this.id);
@@ -867,23 +720,13 @@ export class FCNPC {
     return samp.callNativeFloat("FCNPC_GetVehicleHealth", "i", this.id);
   }
   setVehicleHydraThrusters(direction: number): number {
-    return samp.callNative(
-      "FCNPC_SetVehicleHydraThrusters",
-      "ii",
-      this.id,
-      direction,
-    );
+    return samp.callNative("FCNPC_SetVehicleHydraThrusters", "ii", this.id, direction);
   }
   getVehicleHydraThrusters(): number {
     return samp.callNative("FCNPC_GetVehicleHydraThrusters", "i", this.id);
   }
   setVehicleGearState(gearState: LandingGearStateEnum): number {
-    return samp.callNative(
-      "FCNPC_SetVehicleGearState",
-      "ii",
-      this.id,
-      gearState,
-    );
+    return samp.callNative("FCNPC_SetVehicleGearState", "ii", this.id, gearState);
   }
   getVehicleGearState(): LandingGearStateEnum {
     return samp.callNative("FCNPC_GetVehicleGearState", "i", this.id);
@@ -898,14 +741,7 @@ export class FCNPC {
     return samp.callNative("FCNPC_SetSurfingOffsets", "ifff", this.id, x, y, z);
   }
   giveSurfingOffsets(x: number, y: number, z: number): number {
-    return samp.callNative(
-      "FCNPC_GiveSurfingOffsets",
-      "ifff",
-      this.id,
-      x,
-      y,
-      z,
-    );
+    return samp.callNative("FCNPC_GiveSurfingOffsets", "ifff", this.id, x, y, z);
   }
   getSurfingOffsets() {
     const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
@@ -916,12 +752,7 @@ export class FCNPC {
     return { x, y, z, ret };
   }
   setSurfingVehicle(vehicle: Vehicle): number {
-    return samp.callNative(
-      "FCNPC_SetSurfingVehicle",
-      "ii",
-      this.id,
-      vehicle.id,
-    );
+    return samp.callNative("FCNPC_SetSurfingVehicle", "ii", this.id, vehicle.id);
   }
   getSurfingVehicle(): number {
     return samp.callNative("FCNPC_GetSurfingVehicle", "i", this.id);
@@ -934,23 +765,13 @@ export class FCNPC {
     return samp.callNative("FCNPC_GetSurfingObject", "i", this.id);
   }
   setSurfingPlayerObject(objectId: number): number {
-    return samp.callNative(
-      "FCNPC_SetSurfingPlayerObject",
-      "ii",
-      this.id,
-      objectId,
-    );
+    return samp.callNative("FCNPC_SetSurfingPlayerObject", "ii", this.id, objectId);
   }
   getSurfingPlayerObject(): number {
     return samp.callNative("FCNPC_GetSurfingPlayerObject", "i", this.id);
   }
   setSurfingDynamicObject(object: DynamicObject): number {
-    return samp.callNative(
-      "FCNPC_SetSurfingDynamicObject",
-      "ii",
-      this.id,
-      object.id,
-    );
+    return samp.callNative("FCNPC_SetSurfingDynamicObject", "ii", this.id, object.id);
   }
   getSurfingDynamicObject(): number {
     return samp.callNative("FCNPC_GetSurfingDynamicObject", "i", this.id);
@@ -1097,28 +918,14 @@ export class FCNPC {
   }
 
   showInTabListForPlayer(forPlayer: Player) {
-    return !!samp.callNative(
-      "FCNPC_ShowInTabListForPlayer",
-      "ii",
-      this.id,
-      forPlayer.id,
-    );
+    return !!samp.callNative("FCNPC_ShowInTabListForPlayer", "ii", this.id, forPlayer.id);
   }
   hideInTabListForPlayer(forPlayer: Player) {
-    return !!samp.callNative(
-      "FCNPC_HideInTabListForPlayer",
-      "ii",
-      this.id,
-      forPlayer.id,
-    );
+    return !!samp.callNative("FCNPC_HideInTabListForPlayer", "ii", this.id, forPlayer.id);
   }
 
   static getPluginVersion() {
-    const [version, ret]: [string, number] = samp.callNative(
-      "FCNPC_GetPluginVersion",
-      "Si",
-      16,
-    );
+    const [version, ret]: [string, number] = samp.callNative("FCNPC_GetPluginVersion", "Si", 16);
     return { version, ret };
   }
   static setUpdateRate(rate: number): number {
@@ -1145,11 +952,7 @@ export class FCNPC {
     return samp.callNative("FCNPC_UseMovePathfinding", "ii", pathFinding, use);
   }
   static isMovePathFindingUsed(pathFinding: MovePathFinding) {
-    const ret = samp.callNative(
-      "FCNPC_IsMovePathfindingUsed",
-      "i",
-      pathFinding,
-    );
+    const ret = samp.callNative("FCNPC_IsMovePathfindingUsed", "i", pathFinding);
     return !!ret;
   }
   static useCrashLog(use = true): number {

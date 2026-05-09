@@ -16,54 +16,47 @@ export function sendQuery<T extends RequestPacket>(options: Options<T>) {
 
     const sendTime = Date.now();
     let receiveTime = 0;
-    client.send(
-      packet,
-      0,
-      packet.length,
-      options.port,
-      options.address,
-      (err) => {
-        if (err) return reject(err);
+    client.send(packet, 0, packet.length, options.port, options.address, (err) => {
+      if (err) return reject(err);
 
-        let responseBuffer: Buffer | null = null;
-        let interval: NodeJS.Timeout | null = setTimeout(
-          () => client.close(),
-          options.timeout || 1 * 1000,
-        );
+      let responseBuffer: Buffer | null = null;
+      let interval: NodeJS.Timeout | null = setTimeout(
+        () => client.close(),
+        options.timeout || 1 * 1000,
+      );
 
-        function clearReqTimer() {
-          if (interval) {
-            clearTimeout(interval);
-            interval = null;
-          }
+      function clearReqTimer() {
+        if (interval) {
+          clearTimeout(interval);
+          interval = null;
+        }
+      }
+
+      client.once("message", (msg) => {
+        receiveTime = Date.now();
+        responseBuffer = msg;
+        client.close();
+        clearReqTimer();
+      });
+
+      client.once("close", () => {
+        clearReqTimer();
+
+        if (!responseBuffer) {
+          return resolve(null);
         }
 
-        client.once("message", (msg) => {
-          receiveTime = Date.now();
-          responseBuffer = msg;
-          client.close();
-          clearReqTimer();
-        });
+        parseResponse(responseBuffer, options.opcode, receiveTime - sendTime)
+          .then((result) => {
+            resolve(result as ResponseTypeMap[T]);
+          })
+          .catch(reject);
+      });
 
-        client.once("close", () => {
-          clearReqTimer();
-
-          if (!responseBuffer) {
-            return resolve(null);
-          }
-
-          parseResponse(responseBuffer, options.opcode, receiveTime - sendTime)
-            .then((result) => {
-              resolve(result as ResponseTypeMap[T]);
-            })
-            .catch(reject);
-        });
-
-        client.once("error", (err) => {
-          clearReqTimer();
-          reject(err);
-        });
-      },
-    );
+      client.once("error", (err) => {
+        clearReqTimer();
+        reject(err);
+      });
+    });
   });
 }

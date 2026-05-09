@@ -1,8 +1,4 @@
-import type {
-  WeaponEnum,
-  DamageDeathReasonEnum,
-  MarkerModesEnum,
-} from "core/enums";
+import type { WeaponEnum, DamageDeathReasonEnum, MarkerModesEnum } from "core/enums";
 
 export const IsValidNickName = (name: string): boolean => {
   return !!samp.callNative("IsValidNickName", "s", name);
@@ -94,11 +90,7 @@ export const GetModeRestartTime = (): number => {
   return samp.callNativeFloat("GetModeRestartTime", "");
 };
 
-export const GameTextForAll = (
-  string: number[],
-  time: number,
-  style: number,
-): boolean => {
+export const GameTextForAll = (string: number[], time: number, style: number): boolean => {
   return !!samp.callNative("GameTextForAll", "aii", string, time, style);
 };
 
@@ -209,13 +201,11 @@ export const GetServerTickRate = (): number => {
 };
 
 export const GetAnimationName = (index: number) => {
-  const [animLib, animName, ret] = samp.callNative(
-    "GetAnimationName",
-    "iSiSi",
-    index,
-    32,
-    32,
-  ) as [string, string, number];
+  const [animLib, animName, ret] = samp.callNative("GetAnimationName", "iSiSi", index, 32, 32) as [
+    string,
+    string,
+    number,
+  ];
   return {
     animLib,
     animName,
@@ -240,9 +230,6 @@ export const GetWeaponSlot = (weaponId: number): number => {
 };
 
 export const GetWeaponName = (weaponId: number) => {
-  const [name, ret] = samp.callNative("GetWeaponName", "iSi", weaponId, 32) as [
-    string,
-    number,
-  ];
+  const [name, ret] = samp.callNative("GetWeaponName", "iSi", weaponId, 32) as [string, number];
   return { name, ret: !!ret };
 };

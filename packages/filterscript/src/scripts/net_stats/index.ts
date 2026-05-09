@@ -4,13 +4,7 @@
 
 import type { IFilterScript } from "@infernus/core";
 import { Player } from "@infernus/core";
-import {
-  InvalidEnum,
-  NetStats,
-  Dialog,
-  DialogStylesEnum,
-  PlayerEvent,
-} from "@infernus/core";
+import { InvalidEnum, NetStats, Dialog, DialogStylesEnum, PlayerEvent } from "@infernus/core";
 
 let gNetStatsPlayer: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID;
 let gNetStatsDisplay: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID;
@@ -67,19 +61,16 @@ async function netStatsDisplay2() {
 export const NetStatsFs: IFilterScript = {
   name: "net_stats",
   load() {
-    const netstatCmd = PlayerEvent.onCommandText(
-      ["netstats", "pnetstats"],
-      ({ player, next }) => {
-        if (!player.isAdmin()) return false;
+    const netstatCmd = PlayerEvent.onCommandText(["netstats", "pnetstats"], ({ player, next }) => {
+      if (!player.isAdmin()) return false;
 
-        if (gNetStatsTimer) clearInterval(gNetStatsTimer);
+      if (gNetStatsTimer) clearInterval(gNetStatsTimer);
 
-        gNetStatsPlayer = player;
-        netStatsDisplay();
-        gNetStatsTimer = setInterval(netStatsDisplay, 3000); // this will refresh the display every 3 seconds
-        return next();
-      },
-    );
+      gNetStatsPlayer = player;
+      netStatsDisplay();
+      gNetStatsTimer = setInterval(netStatsDisplay, 3000); // this will refresh the display every 3 seconds
+      return next();
+    });
 
     const netstatCmd2 = PlayerEvent.onCommandText(
       ["netstats2", "pnetstats2"],
@@ -87,8 +78,7 @@ export const NetStatsFs: IFilterScript = {
         if (!player.isAdmin()) return false;
 
         const [gNetStatsDisplayId] = subcommand;
-        if (!gNetStatsDisplayId || !Player.isConnected(+gNetStatsDisplayId))
-          return next();
+        if (!gNetStatsDisplayId || !Player.isConnected(+gNetStatsDisplayId)) return next();
 
         gNetStatsDisplay = Player.getInstance(+gNetStatsDisplayId)!;
 

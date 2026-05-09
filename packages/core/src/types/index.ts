@@ -43,10 +43,7 @@ export type TDynamicAreaTypes =
 
 export type TCommonCallback = number | boolean | Promise<number | boolean>;
 
-export type {
-  StreamerArrayData,
-  StreamerItemTypeTuple,
-} from "@infernus/streamer";
+export type { StreamerArrayData, StreamerItemTypeTuple } from "@infernus/streamer";
 
 export type TMethodKeys<T> = keyof {
   [K in keyof T as T[K] extends (...args: any[]) => any ? K : never]: any;

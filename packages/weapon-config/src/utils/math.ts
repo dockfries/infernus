@@ -6,11 +6,6 @@ export function wc_CalculateBar(width: number, max: number, value: number) {
   return (width / max) * value;
 }
 
-export function angleBetweenPoints(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-) {
+export function angleBetweenPoints(x1: number, y1: number, x2: number, y2: number) {
   return -(90.0 - (Math.atan2(y1 - y2, x1 - x2) * 180) / Math.PI);
 }

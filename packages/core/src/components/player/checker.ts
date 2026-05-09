@@ -156,12 +156,7 @@ onUpdate(({ player, next }) => {
     const now = Date.now();
     if (player.isPaused) {
       player[internalPlayerProps].isPaused = false;
-      triggerOnResume(
-        player,
-        player.lastUpdateTick,
-        now,
-        now - player.lastUpdateTick,
-      );
+      triggerOnResume(player, player.lastUpdateTick, now, now - player.lastUpdateTick);
     }
     player[internalPlayerProps].lastUpdateTick = now;
     fpsHeartbeat(player);

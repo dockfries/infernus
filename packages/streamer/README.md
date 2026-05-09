@@ -21,15 +21,7 @@ import { CreateDynamicObject, GetDynamicObjectPos } from "@infernus/streamer";
 
 // In a callback event, such as OnGameModeInit
 samp.on("OnGameModeInit", () => {
-  const exampleObj = CreateDynamicObject(
-    2587,
-    2001.195679,
-    1547.113892,
-    14.2834,
-    0.0,
-    0.0,
-    96.0
-  );
+  const exampleObj = CreateDynamicObject(2587, 2001.195679, 1547.113892, 14.2834, 0.0, 0.0, 96.0);
   const { x, y, z } = GetDynamicObjectPos(exampleObj);
   console.log(x, y, z);
 });

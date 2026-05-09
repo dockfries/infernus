@@ -28,8 +28,6 @@ export class StaticLocalPointStream extends SampVoiceLocalStream {
   }
 
   static getInstances() {
-    return super.getInstances(
-      StaticLocalPointStream.name,
-    ) as StaticLocalPointStream[];
+    return super.getInstances(StaticLocalPointStream.name) as StaticLocalPointStream[];
   }
 }

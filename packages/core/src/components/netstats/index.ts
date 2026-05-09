@@ -5,9 +5,7 @@ import { NetStatsException } from "core/exceptions";
 
 export class NetStats {
   private constructor() {
-    throw new NetStatsException(
-      "This is a static class and cannot be instantiated.",
-    );
+    throw new NetStatsException("This is a static class and cannot be instantiated.");
   }
   static getNetworkStats() {
     return NetStats.__inject__.getNetworkStats();

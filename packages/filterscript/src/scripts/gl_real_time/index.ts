@@ -5,18 +5,8 @@
 //
 //  (c) 2009-2014 SA-MP Team
 
-import {
-  GameMode,
-  Player,
-  PlayerEvent,
-  PlayerStateEnum,
-  TextDraw,
-} from "@infernus/core";
-import {
-  fine_weather_ids,
-  foggy_weather_ids,
-  wet_weather_ids,
-} from "./constants";
+import { GameMode, Player, PlayerEvent, PlayerStateEnum, TextDraw } from "@infernus/core";
+import { fine_weather_ids, foggy_weather_ids, wet_weather_ids } from "./constants";
 import type { IGlRealTimeFS } from "./interfaces";
 
 // Used to override the time in this script
@@ -34,17 +24,10 @@ let update_weather = false;
 function updateWorldWeather() {
   const next_weather_prob = Math.floor(Math.random() * 100);
   if (next_weather_prob < 70)
-    GameMode.setWeather(
-      fine_weather_ids[Math.floor(Math.random() * fine_weather_ids.length)],
-    );
+    GameMode.setWeather(fine_weather_ids[Math.floor(Math.random() * fine_weather_ids.length)]);
   else if (next_weather_prob < 95)
-    GameMode.setWeather(
-      foggy_weather_ids[Math.floor(Math.random() * foggy_weather_ids.length)],
-    );
-  else
-    GameMode.setWeather(
-      wet_weather_ids[Math.floor(Math.random() * wet_weather_ids.length)],
-    );
+    GameMode.setWeather(foggy_weather_ids[Math.floor(Math.random() * foggy_weather_ids.length)]);
+  else GameMode.setWeather(wet_weather_ids[Math.floor(Math.random() * wet_weather_ids.length)]);
 }
 
 function updateTimeAndWeather() {
@@ -132,29 +115,23 @@ export const GlRealTime: IGlRealTimeFS = {
       return next();
     });
 
-    const setHour = PlayerEvent.onCommandText(
-      "setHour",
-      ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return false; // this is an admin only script
+    const setHour = PlayerEvent.onCommandText("setHour", ({ player, subcommand, next }) => {
+      if (!player.isAdmin()) return false; // this is an admin only script
 
-        worldTimeOverride = true;
-        worldTimeOverrideHour = +subcommand[0] || 0;
-        updateTimeAndWeather();
-        return next();
-      },
-    );
+      worldTimeOverride = true;
+      worldTimeOverrideHour = +subcommand[0] || 0;
+      updateTimeAndWeather();
+      return next();
+    });
 
-    const setMinute = PlayerEvent.onCommandText(
-      "setMinute",
-      ({ player, subcommand, next }) => {
-        if (!player.isAdmin()) return false; // this is an admin only script
+    const setMinute = PlayerEvent.onCommandText("setMinute", ({ player, subcommand, next }) => {
+      if (!player.isAdmin()) return false; // this is an admin only script
 
-        worldTimeOverride = true;
-        worldTimeOverrideMin = +subcommand[0] || 0;
-        updateTimeAndWeather();
-        return next();
-      },
-    );
+      worldTimeOverride = true;
+      worldTimeOverrideMin = +subcommand[0] || 0;
+      updateTimeAndWeather();
+      return next();
+    });
     return [onSpawn, onDeath, onConnect, setHour, setMinute];
   },
   unload() {

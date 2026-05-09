@@ -30,20 +30,14 @@ const [onStreamOut, triggerStreamOut] = defineEvent({
 
 onItemStreamIn(({ type, id, next }) => {
   if (type === StreamerItemTypes.PICKUP) {
-    return triggerStreamIn(
-      InvalidEnum.PLAYER_ID,
-      DynamicPickup.getInstance(id)!,
-    );
+    return triggerStreamIn(InvalidEnum.PLAYER_ID, DynamicPickup.getInstance(id)!);
   }
   return next();
 });
 
 onItemStreamOut(({ type, id, next }) => {
   if (type === StreamerItemTypes.PICKUP) {
-    return triggerStreamOut(
-      InvalidEnum.PLAYER_ID,
-      DynamicPickup.getInstance(id)!,
-    );
+    return triggerStreamOut(InvalidEnum.PLAYER_ID, DynamicPickup.getInstance(id)!);
   }
   return next();
 });

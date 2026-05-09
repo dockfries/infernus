@@ -6,13 +6,7 @@ export class MapNode {
   constructor(public nodeId = INVALID_MAP_NODE_ID) {}
 
   create(x: number, y: number, z: number): this {
-    const [nodeId]: number[] = samp.callNative(
-      "CreateMapNode",
-      "fffI",
-      x,
-      y,
-      z,
-    );
+    const [nodeId]: number[] = samp.callNative("CreateMapNode", "fffI", x, y, z);
     this.nodeId = nodeId;
     return this;
   }
@@ -43,11 +37,7 @@ export class MapNode {
   }
 
   getConnectionCount(): number {
-    const [count, ret]: number[] = samp.callNative(
-      "GetMapNodeConnectionCount",
-      "iI",
-      this.nodeId,
-    );
+    const [count, ret]: number[] = samp.callNative("GetMapNodeConnectionCount", "iI", this.nodeId);
     if (ret !== GpsError.None) {
       throw new GpsException(ret);
     }

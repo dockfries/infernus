@@ -12,19 +12,14 @@ export class TrailerSync extends BitStream implements IPacketListSync {
   @SyncReader
   readSync() {
     const data: Partial<ITrailerSync> = {};
-    [
-      data.trailerId,
-      data.position,
-      data.quaternion,
-      data.velocity,
-      data.angularVelocity,
-    ] = this.bs.readValue(
-      PacketRpcValueType.UInt16,
-      PacketRpcValueType.Float3,
-      PacketRpcValueType.Float4,
-      PacketRpcValueType.Float3,
-      PacketRpcValueType.Float3,
-    ) as any;
+    [data.trailerId, data.position, data.quaternion, data.velocity, data.angularVelocity] =
+      this.bs.readValue(
+        PacketRpcValueType.UInt16,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.Float4,
+        PacketRpcValueType.Float3,
+        PacketRpcValueType.Float3,
+      ) as any;
     return data as ITrailerSync | null;
   }
 

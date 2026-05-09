@@ -33,14 +33,11 @@ PlayerEvent.onConnect(({ player, next }) => {
   if (innerACConfig.AC_USE_NPC) {
     if (player.isNpc()) {
       if (ac_ACAllow[36]) {
-        const ac_rslt =
-          ACInfo.get(player.id).acIpInt === innerGameModeConfig.ac_BindAddr;
+        const ac_rslt = ACInfo.get(player.id).acIpInt === innerGameModeConfig.ac_BindAddr;
 
         if (ACInfo.get(player.id).acIp !== "127.0.0.1" && !ac_rslt) {
           if (innerACConfig.DEBUG) {
-            console.log(
-              `[Nex-AC DEBUG] NPC's IP: '${ACInfo.get(player.id).acIp}'`,
-            );
+            console.log(`[Nex-AC DEBUG] NPC's IP: '${ACInfo.get(player.id).acIp}'`);
           }
           ac_KickWithCode(player, "", 0, 36);
         }
@@ -69,18 +66,12 @@ PlayerEvent.onConnect(({ player, next }) => {
   if (ac_ACAllow[40]) {
     for (const ac_j of Player.getInstances()) {
       if (ac_j === player) continue;
-      if (!ac_j.isConnected() || (innerACConfig.AC_USE_NPC && ac_j.isNpc()))
-        continue;
+      if (!ac_j.isConnected() || (innerACConfig.AC_USE_NPC && ac_j.isNpc())) continue;
       if (ACInfo.get(player.id).acIpInt === ACInfo.get(ac_j.id).acIpInt) {
         ac_i--;
         if (ac_i < 1) {
           if (innerACConfig.DEBUG) {
-            console.log(
-              $t("DEBUG_CODE_3", [
-                player.id,
-                innerACConfig.AC_MAX_CONNECTS_FROM_IP,
-              ]),
-            );
+            console.log($t("DEBUG_CODE_3", [player.id, innerACConfig.AC_MAX_CONNECTS_FROM_IP]));
           }
           ac_KickWithCode(player, "", 0, 40);
           break;
@@ -118,8 +109,7 @@ PlayerEvent.onConnect(({ player, next }) => {
     ACInfo.get(player.id).acSetWeapon[ac_i] = -1;
     ACInfo.get(player.id).acGiveAmmo[ac_i] = -65535;
   }
-  for (ac_i = ac_Mtfc.length - 1; ac_i >= 0; --ac_i)
-    ACInfo.get(player.id).acFloodCount[ac_i] = 0;
+  for (ac_i = ac_Mtfc.length - 1; ac_i >= 0; --ac_i) ACInfo.get(player.id).acFloodCount[ac_i] = 0;
   ACInfo.get(player.id).acNOPAllow = [...ac_NOPAllow];
   ACInfo.get(player.id).acACAllow = [...ac_ACAllow];
   if (ACInfo.get(player.id).acKicked < 1) {
@@ -133,18 +123,12 @@ PlayerEvent.onConnect(({ player, next }) => {
 });
 
 PlayerEvent.onDisconnect(({ player, reason, next }) => {
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     if (ACInfo.get(player.id).acTimerID) {
       clearInterval(ACInfo.get(player.id).acTimerID!);
       ACInfo.get(player.id).acTimerID = null;
     }
-    if (
-      ACInfo.get(player.id).acACAllow[37] &&
-      innerACConfig.AC_MAX_CONNECTS_FROM_IP < 2
-    ) {
+    if (ACInfo.get(player.id).acACAllow[37] && innerACConfig.AC_MAX_CONNECTS_FROM_IP < 2) {
       if (reason === 0) {
         const ac_tmp = GameMode.getConsoleVarAsInt("network.player_timeout");
         GameMode.blockIpAddress(
@@ -205,15 +189,11 @@ PlayerEvent.onSpawn(({ player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
   let ac_i: number;
   let ac_ur = false;
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     const ac_gtc = Date.now();
     if (
       ACInfo.get(player.id).acSpec &&
-      (ACInfo.get(player.id).acSet[6] <= 1 ||
-        ACInfo.get(player.id).acSet[6] === 4)
+      (ACInfo.get(player.id).acSet[6] <= 1 || ACInfo.get(player.id).acSet[6] === 4)
     ) {
       ACInfo.get(player.id).acSet[3] =
         ACInfo.get(player.id).acSet[7] =
@@ -223,8 +203,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
     } else {
       if (
         ACInfo.get(player.id).acACAllow[27] &&
-        (ACInfo.get(player.id).acSpawnRes < 1 ||
-          ac_gtc - ACInfo.get(player.id).acSpawnTick < 1000)
+        (ACInfo.get(player.id).acSpawnRes < 1 || ac_gtc - ACInfo.get(player.id).acSpawnTick < 1000)
       ) {
         if (innerACConfig.DEBUG) {
           console.log(
@@ -235,30 +214,15 @@ PlayerEvent.onSpawn(({ player, next }) => {
 
         ACInfo.get(player.id).acSpawnRes = 1;
       }
-      if (ACInfo.get(player.id).acSpawnRes > 0)
-        ACInfo.get(player.id).acSpawnRes--;
-      if (
-        ACInfo.get(player.id).acSet[6] !== 2 &&
-        ACInfo.get(player.id).acSet[6] !== 5
-      )
+      if (ACInfo.get(player.id).acSpawnRes > 0) ACInfo.get(player.id).acSpawnRes--;
+      if (ACInfo.get(player.id).acSet[6] !== 2 && ACInfo.get(player.id).acSet[6] !== 5)
         ACInfo.get(player.id).acSpec = false;
-      if (
-        !(
-          ACInfo.get(player.id).acSet[6] >= 1 &&
-          ACInfo.get(player.id).acSet[6] <= 2
-        )
-      ) {
-        for (ac_i = 11; ac_i >= 0; --ac_i)
-          ACInfo.get(player.id).acSet[ac_i] = -1;
+      if (!(ACInfo.get(player.id).acSet[6] >= 1 && ACInfo.get(player.id).acSet[6] <= 2)) {
+        for (ac_i = 11; ac_i >= 0; --ac_i) ACInfo.get(player.id).acSet[ac_i] = -1;
         ac_ur = true;
       }
     }
-    if (
-      !(
-        ACInfo.get(player.id).acSet[6] >= 1 &&
-        ACInfo.get(player.id).acSet[6] <= 2
-      )
-    ) {
+    if (!(ACInfo.get(player.id).acSet[6] >= 1 && ACInfo.get(player.id).acSet[6] <= 2)) {
       for (ac_i = 12; ac_i >= 0; --ac_i) {
         ACInfo.get(player.id).acSetWeapon[ac_i] = -1;
         ACInfo.get(player.id).acGiveAmmo[ac_i] = -65535;
@@ -267,9 +231,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
       ACInfo.get(player.id).acUnFrozen = true;
     }
     for (ac_i = 12; ac_i >= 0; --ac_i) {
-      ACInfo.get(player.id).acWeapon[ac_i] = ACInfo.get(player.id).acAmmo[
-        ac_i
-      ] = 0;
+      ACInfo.get(player.id).acWeapon[ac_i] = ACInfo.get(player.id).acAmmo[ac_i] = 0;
     }
     ACInfo.get(player.id).acModShop =
       ACInfo.get(player.id).acForceClass =
@@ -306,23 +268,17 @@ PlayerEvent.onSpawn(({ player, next }) => {
     ACInfo.get(player.id).acSetPosTick = ac_gtc + 2650;
     if (ac_IsValidWeapon(ACInfo.get(player.id).acSpawnWeapon1)) {
       ac_i = ac_wSlot[ACInfo.get(player.id).acSpawnWeapon1];
-      ACInfo.get(player.id).acWeapon[ac_i] = ACInfo.get(
-        player.id,
-      ).acSpawnWeapon1;
+      ACInfo.get(player.id).acWeapon[ac_i] = ACInfo.get(player.id).acSpawnWeapon1;
       ACInfo.get(player.id).acAmmo[ac_i] = ACInfo.get(player.id).acSpawnAmmo1;
     }
     if (ac_IsValidWeapon(ACInfo.get(player.id).acSpawnWeapon2)) {
       ac_i = ac_wSlot[ACInfo.get(player.id).acSpawnWeapon2];
-      ACInfo.get(player.id).acWeapon[ac_i] = ACInfo.get(
-        player.id,
-      ).acSpawnWeapon2;
+      ACInfo.get(player.id).acWeapon[ac_i] = ACInfo.get(player.id).acSpawnWeapon2;
       ACInfo.get(player.id).acAmmo[ac_i] = ACInfo.get(player.id).acSpawnAmmo2;
     }
     if (ac_IsValidWeapon(ACInfo.get(player.id).acSpawnWeapon3)) {
       ac_i = ac_wSlot[ACInfo.get(player.id).acSpawnWeapon3];
-      ACInfo.get(player.id).acWeapon[ac_i] = ACInfo.get(
-        player.id,
-      ).acSpawnWeapon3;
+      ACInfo.get(player.id).acWeapon[ac_i] = ACInfo.get(player.id).acSpawnWeapon3;
       ACInfo.get(player.id).acAmmo[ac_i] = ACInfo.get(player.id).acSpawnAmmo3;
     }
   }
@@ -338,10 +294,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
 
 PlayerEvent.onDeath(({ player, killer, reason, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     if (
       ACInfo.get(player.id).acACAllow[28] &&
       (ACInfo.get(player.id).acDead ||
@@ -358,17 +311,12 @@ PlayerEvent.onDeath(({ player, killer, reason, next }) => {
     }
     ACInfo.get(player.id).acDead = true;
     ACInfo.get(player.id).acDeathRes = false;
-    if (
-      ACInfo.get(player.id).acSpawnRes < 1 &&
-      ACInfo.get(player.id).acSet[1] <= 0
-    )
+    if (ACInfo.get(player.id).acSpawnRes < 1 && ACInfo.get(player.id).acSet[1] <= 0)
       ACInfo.get(player.id).acSpawnTick = Date.now();
     if (!ACInfo.get(player.id).acSpec) ACInfo.get(player.id).acSpawnRes = 1;
     else {
       if (innerACConfig.DEBUG) {
-        console.log(
-          `[Nex-AC DEBUG] Spawn res: ${ACInfo.get(player.id).acSpawnRes}`,
-        );
+        console.log(`[Nex-AC DEBUG] Spawn res: ${ACInfo.get(player.id).acSpawnRes}`);
       }
       ac_KickWithCode(player, "", 0, 48, 4);
     }
@@ -378,23 +326,14 @@ PlayerEvent.onDeath(({ player, killer, reason, next }) => {
 
 PlayerEvent.onKeyStateChange(({ player, newKeys, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     let ac_i = player.getWeapon();
-    if (
-      newKeys & KeysEnum.CROUCH &&
-      ((ac_i >= 24 && ac_i <= 25) || (ac_i >= 33 && ac_i <= 34))
-    )
+    if (newKeys & KeysEnum.CROUCH && ((ac_i >= 24 && ac_i <= 25) || (ac_i >= 33 && ac_i <= 34)))
       ACInfo.get(player.id).acCheatCount[12] = 0;
     if (newKeys & KeysEnum.SECONDARY_ATTACK) {
       const ac_i_veh = Vehicle.getInstance(ACInfo.get(player.id).acVeh);
       ac_i = ac_i_veh ? ac_i_veh.getModel() : 0;
-      if (
-        ac_IsValidVehicleModel(ac_i) &&
-        (ac_IsAnAircraft(ac_i) || ac_IsAnAircraftRC(ac_i))
-      )
+      if (ac_IsValidVehicleModel(ac_i) && (ac_IsAnAircraft(ac_i) || ac_IsAnAircraftRC(ac_i)))
         ACInfo.get(player.id).acParachute = 1;
       if (
         ACInfo.get(player.id).acSpecAct === SpecialActionsEnum.USEJETPACK &&
@@ -410,22 +349,15 @@ PlayerEvent.onKeyStateChange(({ player, newKeys, next }) => {
 
 PlayerEvent.onCommandTextRaw(({ player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return true;
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     const ac_gtc = Date.now();
     if (ACInfo.get(player.id).acACAllow[49]) {
       if (ac_gtc - ACInfo.get(player.id).acCall[5] < ac_Mtfc[5][0]) {
         ac_FloodDetect(player, 5);
         return true;
       }
-      if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-        ac_FloodDetect(player, 27);
-      else
-        ACInfo.get(player.id).acFloodCount[5] = ACInfo.get(
-          player.id,
-        ).acFloodCount[27] = 0;
+      if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+      else ACInfo.get(player.id).acFloodCount[5] = ACInfo.get(player.id).acFloodCount[27] = 0;
     }
     ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[5] = ac_gtc;
   }
@@ -434,26 +366,16 @@ PlayerEvent.onCommandTextRaw(({ player, next }) => {
 
 PlayerEvent.onRequestClass(({ player, classId, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     const ac_i = Date.now();
     if (ACInfo.get(player.id).acACAllow[49]) {
-      if (ac_i - ACInfo.get(player.id).acCall[9] < ac_Mtfc[9][0])
-        ac_FloodDetect(player, 9);
-      else if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-        ac_FloodDetect(player, 27);
-      else
-        ACInfo.get(player.id).acFloodCount[9] = ACInfo.get(
-          player.id,
-        ).acFloodCount[27] = 0;
+      if (ac_i - ACInfo.get(player.id).acCall[9] < ac_Mtfc[9][0]) ac_FloodDetect(player, 9);
+      else if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+      else ACInfo.get(player.id).acFloodCount[9] = ACInfo.get(player.id).acFloodCount[27] = 0;
     }
     ACInfo.get(player.id).acClassRes = true;
     ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[9] = ac_i;
-    const classInfo = GameMode.getPlayerClass(
-      classId,
-    ) as unknown as IPlayerClass;
+    const classInfo = GameMode.getPlayerClass(classId) as unknown as IPlayerClass;
     ACInfo.get(player.id).acSpawnPosX = classInfo.spawnX;
     ACInfo.get(player.id).acSpawnPosY = classInfo.spawnY;
     ACInfo.get(player.id).acSpawnPosZ = classInfo.spawnZ;
@@ -469,23 +391,15 @@ PlayerEvent.onRequestClass(({ player, classId, next }) => {
 
 PlayerEvent.onText(({ player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     const ac_gtc = Date.now();
     if (ACInfo.get(player.id).acACAllow[49]) {
       if (ac_gtc - ACInfo.get(player.id).acCall[16] < ac_Mtfc[16][0])
         return ac_FloodDetect(player, 16);
-      if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
-        ac_FloodDetect(player, 27);
-      else
-        ACInfo.get(player.id).acFloodCount[16] = ACInfo.get(
-          player.id,
-        ).acFloodCount[27] = 0;
+      if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
+      else ACInfo.get(player.id).acFloodCount[16] = ACInfo.get(player.id).acFloodCount[27] = 0;
     }
-    ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[16] =
-      ac_gtc;
+    ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[16] = ac_gtc;
   }
   return next();
 });
@@ -495,23 +409,15 @@ PlayerEvent.onRequestSpawn(({ player, next }) => {
 
   const ac_gtc = Date.now();
 
-  if (
-    !innerACConfig.AC_USE_NPC ||
-    (innerACConfig.AC_USE_NPC && !player.isNpc())
-  ) {
+  if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     if (ACInfo.get(player.id).acACAllow[49]) {
-      if (ac_gtc - ACInfo.get(player.id).acCall[19] < ac_Mtfc[19][0])
-        ac_FloodDetect(player, 19);
+      if (ac_gtc - ACInfo.get(player.id).acCall[19] < ac_Mtfc[19][0]) ac_FloodDetect(player, 19);
       else if (ac_gtc - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0])
         ac_FloodDetect(player, 27);
-      else
-        ACInfo.get(player.id).acFloodCount[19] = ACInfo.get(
-          player.id,
-        ).acFloodCount[27] = 0;
+      else ACInfo.get(player.id).acFloodCount[19] = ACInfo.get(player.id).acFloodCount[27] = 0;
     }
     if (!ACInfo.get(player.id).acClassRes) {
-      ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[19] =
-        ac_gtc;
+      ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[19] = ac_gtc;
       return false;
     }
   }

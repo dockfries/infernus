@@ -32,10 +32,7 @@ PlayerEvent.onCommandText("stopgps", ({ player, next }) => {
 });
 
 WazeEvent.onPlayerRouteFinish(({ player, finishedRoute, next }) => {
-  player.sendClientMessage(
-    -1,
-    "Route finished!" + finishedRoute.tickPosition.toString(),
-  );
+  player.sendClientMessage(-1, "Route finished!" + finishedRoute.tickPosition.toString());
   return next();
 });
 ```

@@ -8,14 +8,8 @@ export const GetAvailableClasses = (): number => {
 
 // when getting a class through AddPlayerClass(without ex), teamId may be 255.
 // bug: zAngle The value of does not look accurate? not sure of the cause of the problem
-export const GetPlayerClass = (
-  classId: number,
-): IPlayerClass & ICommonRetVal => {
-  const res: number[] = samp.callNative(
-    "GetPlayerClass",
-    "iIIFFFFIIIIII",
-    classId,
-  );
+export const GetPlayerClass = (classId: number): IPlayerClass & ICommonRetVal => {
+  const res: number[] = samp.callNative("GetPlayerClass", "iIIFFFFIIIIII", classId);
   const [
     teamId,
     modelId = 0,
@@ -187,9 +181,7 @@ export const SpawnPlayer = (playerId: number): boolean => {
   return !!samp.callNative("SpawnPlayer", "i", playerId);
 };
 
-export const GetSpawnInfo = (
-  playerId: number,
-): IPlayerClass & ICommonRetVal => {
+export const GetSpawnInfo = (playerId: number): IPlayerClass & ICommonRetVal => {
   const [
     teamId,
     modelId = 0,

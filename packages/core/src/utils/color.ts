@@ -22,9 +22,7 @@ export function rgba(value: string | number): number {
     }
     return 255;
   }
-  const values: number[] = (value.match(/([0-9])+/g) || []).map((v) =>
-    parseInt(v, 10),
-  );
+  const values: number[] = (value.match(/([0-9])+/g) || []).map((v) => parseInt(v, 10));
   if (values.length !== 4 && values.length !== 3) {
     return 255;
   }

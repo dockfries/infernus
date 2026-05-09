@@ -19,10 +19,7 @@ export const SyncReader: MethodDecorator = (
 ) => {
   const originalMethod = descriptor.value;
 
-  descriptor.value = function (
-    this: { bs: BitStream; _packetId: number },
-    ...args: unknown[]
-  ) {
+  descriptor.value = function (this: { bs: BitStream; _packetId: number }, ...args: unknown[]) {
     const bs: BitStream = this.bs;
 
     bs.resetReadPointer();
@@ -41,10 +38,7 @@ export const SyncWriter: MethodDecorator = (
 ) => {
   const originalMethod = descriptor.value;
 
-  descriptor.value = function (
-    this: { bs: BitStream; _packetId: number },
-    ...args: unknown[]
-  ) {
+  descriptor.value = function (this: { bs: BitStream; _packetId: number }, ...args: unknown[]) {
     const bs: BitStream = this.bs;
 
     bs.resetWritePointer();

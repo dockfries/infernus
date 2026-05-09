@@ -124,17 +124,7 @@ export function createQRObject(
   object: IQRObject,
   material: Partial<IQRMaterial> = {},
 ): DynamicObject {
-  const {
-    modelId = 19371,
-    x,
-    y,
-    z,
-    rx = 0,
-    ry = 0,
-    rz = 0,
-    drawDistance,
-    playerId,
-  } = object;
+  const { modelId = 19371, x, y, z, rx = 0, ry = 0, rz = 0, drawDistance, playerId } = object;
 
   const obj = new DynamicObject({
     modelId,

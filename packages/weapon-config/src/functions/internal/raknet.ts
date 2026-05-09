@@ -13,11 +13,7 @@ import {
 import { wc_IsPlayerPaused } from "../public/is";
 import { getPlayerActualSkin } from "./get";
 
-export function sendLastSyncPacket(
-  player: Player,
-  toPlayer: Player,
-  animation = 0,
-) {
+export function sendLastSyncPacket(player: Player, toPlayer: Player, animation = 0) {
   if (
     !orig_playerMethods.isConnected.call(player) ||
     !orig_playerMethods.isConnected.call(toPlayer)
@@ -27,10 +23,7 @@ export function sendLastSyncPacket(
 
   const bs = new BitStream();
 
-  bs.writeValue(
-    [PacketRpcValueType.UInt8, WC_PLAYER_SYNC],
-    [PacketRpcValueType.UInt16, player.id],
-  );
+  bs.writeValue([PacketRpcValueType.UInt8, WC_PLAYER_SYNC], [PacketRpcValueType.UInt16, player.id]);
 
   // if (s_FakeQuat.get(player.id)[0] === s_FakeQuat.get(player.id)[0]) {
   // lastSyncData.get(player.id).quaternion = [...fakeQuat.get(player.id)];
@@ -62,17 +55,14 @@ export function sendLastSyncPacket(
 }
 
 export function saveSyncData(player: Player) {
-  syncData.get(player.id).health =
-    orig_playerMethods.getHealth.call(player).health;
-  syncData.get(player.id).armour =
-    orig_playerMethods.getArmour.call(player).armour;
+  syncData.get(player.id).health = orig_playerMethods.getHealth.call(player).health;
+  syncData.get(player.id).armour = orig_playerMethods.getArmour.call(player).armour;
 
   const { x, y, z } = orig_playerMethods.getPos.call(player)!;
   syncData.get(player.id).posX = x;
   syncData.get(player.id).posY = y;
   syncData.get(player.id).posZ = z;
-  syncData.get(player.id).posA =
-    orig_playerMethods.getFacingAngle.call(player).angle;
+  syncData.get(player.id).posA = orig_playerMethods.getFacingAngle.call(player).angle;
 
   syncData.get(player.id).skin = getPlayerActualSkin(player);
   syncData.get(player.id).team = orig_playerMethods.getTeam.call(player);

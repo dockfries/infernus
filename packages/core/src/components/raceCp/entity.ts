@@ -19,17 +19,7 @@ export class RaceCheckpoint {
     nextZ: number,
     radius: number,
   ) {
-    return RaceCheckpoint.__inject__.set(
-      player.id,
-      type,
-      x,
-      y,
-      z,
-      nextX,
-      nextY,
-      nextZ,
-      radius,
-    );
+    return RaceCheckpoint.__inject__.set(player.id, type, x, y, z, nextX, nextY, nextZ, radius);
   }
 
   static disable(player: Player) {

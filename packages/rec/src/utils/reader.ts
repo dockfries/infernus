@@ -15,11 +15,7 @@ export class BinaryReader {
   private readInt(size: number, field: CppField): number {
     let value: number;
 
-    if (
-      field.bitWidth !== undefined &&
-      field.bitWidth > 0 &&
-      field.bitWidth < 8
-    ) {
+    if (field.bitWidth !== undefined && field.bitWidth > 0 && field.bitWidth < 8) {
       const byte = this.buffer.getUint8(this.position);
       const mask = (1 << field.bitWidth) - 1;
       value = (byte >> this.bitOffset) & mask;
@@ -65,21 +61,14 @@ export class BinaryReader {
   }
 
   private readField(field: CppField): any {
-    if (
-      Array.isArray(field.value) &&
-      !["struct", "union"].includes(field.type)
-    ) {
+    if (Array.isArray(field.value) && !["struct", "union"].includes(field.type)) {
       return field.value.map(() => this.readSingleField(field));
     }
     return this.readSingleField(field);
   }
 
   private readSingleField(field: CppField): any {
-    if (
-      field.bitWidth !== undefined &&
-      field.bitWidth > 0 &&
-      field.bitWidth < 8
-    ) {
+    if (field.bitWidth !== undefined && field.bitWidth > 0 && field.bitWidth < 8) {
       return this.readInt(1, field);
     }
 

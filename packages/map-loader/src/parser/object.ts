@@ -55,15 +55,9 @@ export function objParser(line: string[], options: IMapLoadOptions) {
     rz,
     worldId: overwrite ? defaultWorldId : (worldId ?? defaultWorldId),
     areaId: overwrite ? defaultAreaId : (areaId ?? defaultAreaId),
-    interiorId: overwrite
-      ? defaultInteriorId
-      : (interiorId ?? defaultInteriorId),
-    streamDistance: overwrite
-      ? defaultStreamDistance
-      : (streamDistance ?? defaultStreamDistance),
-    drawDistance: overwrite
-      ? defaultDrawDistance
-      : (drawDistance ?? defaultDrawDistance),
+    interiorId: overwrite ? defaultInteriorId : (interiorId ?? defaultInteriorId),
+    streamDistance: overwrite ? defaultStreamDistance : (streamDistance ?? defaultStreamDistance),
+    drawDistance: overwrite ? defaultDrawDistance : (drawDistance ?? defaultDrawDistance),
     playerId: overwritePlayerId,
     priority: overwrite ? defaultPriority : (priority ?? defaultPriority),
   }).create();

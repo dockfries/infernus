@@ -163,14 +163,7 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot move before create");
     }
-    return Npc.__inject__.move(
-      this._id,
-      targetPosX,
-      targetPosY,
-      targetPosZ,
-      moveType,
-      moveSpeed,
-    );
+    return Npc.__inject__.move(this._id, targetPosX, targetPosY, targetPosZ, moveType, moveSpeed);
   }
   moveToPlayer(
     player: Player,
@@ -180,12 +173,7 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot moveToPlayer before create");
     }
-    return Npc.__inject__.moveToPlayer(
-      this._id,
-      player.id,
-      moveType,
-      moveSpeed,
-    );
+    return Npc.__inject__.moveToPlayer(this._id, player.id, moveType, moveSpeed);
   }
   stopMove() {
     if (this.id === InvalidEnum.NPC_ID) {
@@ -578,11 +566,7 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getWeaponActualClipSize(this._id, weapon);
   }
-  enterVehicle(
-    vehicle: Vehicle,
-    seatId: number,
-    moveType = NPCMoveTypeEnum.AUTO,
-  ) {
+  enterVehicle(vehicle: Vehicle, seatId: number, moveType = NPCMoveTypeEnum.AUTO) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot enterVehicle before create");
     }
@@ -815,14 +799,7 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot playNode before create");
     }
-    return Npc.__inject__.playNode(
-      this._id,
-      node.id,
-      moveType,
-      speed,
-      radius,
-      setAngle,
-    );
+    return Npc.__inject__.playNode(this._id, node.id, moveType, speed, radius, setAngle);
   }
   stopPlayingNode() {
     if (this.id === InvalidEnum.NPC_ID) {
@@ -924,10 +901,7 @@ export class Npc {
     return this._setSurfingPlayerObject(objectMp.id);
   }
   getSurfingPlayerObject() {
-    return ObjectMp.getInstance(
-      this.getSurfingPlayerObjectId(),
-      this.getPlayer(),
-    );
+    return ObjectMp.getInstance(this.getSurfingPlayerObjectId(), this.getPlayer());
   }
   private _setSurfingPlayerObject(objectId: number) {
     if (this.id === InvalidEnum.NPC_ID) {
@@ -949,11 +923,7 @@ export class Npc {
   }
   setSurfingDynamicObject(object: DynamicObject) {
     return this._setSurfingPlayerObject(
-      Streamer.getItemInternalID(
-        new Player(this._id),
-        StreamerItemTypes.OBJECT,
-        object.id,
-      ),
+      Streamer.getItemInternalID(new Player(this._id), StreamerItemTypes.OBJECT, object.id),
     );
   }
   getSurfingDynamicObject() {
@@ -974,11 +944,7 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot kill before create");
     }
-    return Npc.__inject__.kill(
-      this._id,
-      typeof killer === "number" ? killer : killer.id,
-      reason,
-    );
+    return Npc.__inject__.kill(this._id, typeof killer === "number" ? killer : killer.id, reason);
   }
   setVelocity(x: number, y: number, z: number) {
     if (this.id === InvalidEnum.NPC_ID) {
@@ -997,8 +963,7 @@ export class Npc {
       throw new NpcException("Cannot getPlayerAimingAt before create");
     }
     const playerId = Npc.__inject__.getPlayerAimingAt(this._id);
-    if (playerId !== InvalidEnum.PLAYER_ID)
-      return Player.getInstance(playerId)!;
+    if (playerId !== InvalidEnum.PLAYER_ID) return Player.getInstance(playerId)!;
     return null;
   }
   getPlayerMovingTo() {
@@ -1006,8 +971,7 @@ export class Npc {
       throw new NpcException("Cannot getPlayerMovingTo before create");
     }
     const playerId = Npc.__inject__.getPlayerMovingTo(this._id);
-    if (playerId !== InvalidEnum.PLAYER_ID)
-      return Player.getInstance(playerId)!;
+    if (playerId !== InvalidEnum.PLAYER_ID) return Player.getInstance(playerId)!;
     return null;
   }
   getPosMovingTo() {
@@ -1051,14 +1015,12 @@ export class Npc {
     recordType: RecordTypesEnum,
     recordName: string,
   ): void {
-    if (player.isRecording)
-      throw new NpcException("It should be stopped before recording");
+    if (player.isRecording) throw new NpcException("It should be stopped before recording");
     Npc.__inject__.startRecordingPlayerData(player.id, recordType, recordName);
     player[internalPlayerProps].isRecording = true;
   }
   static stopRecordingPlayerData(player: Player): void {
-    if (!player.isRecording)
-      throw new NpcException("It should be started before stop");
+    if (!player.isRecording) throw new NpcException("It should be started before stop");
     Npc.__inject__.stopRecordingPlayerData(player.id);
     player[internalPlayerProps].isRecording = false;
   }

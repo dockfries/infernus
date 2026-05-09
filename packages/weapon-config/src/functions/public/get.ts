@@ -33,10 +33,7 @@ import { isBulletWeapon } from "./is";
 export function averageShootRate(player: Player, shots: number) {
   let multiple_weapons = false;
 
-  if (
-    player.id === InvalidEnum.PLAYER_ID ||
-    shotsFired.get(player.id) < shots
-  ) {
+  if (player.id === InvalidEnum.PLAYER_ID || shotsFired.get(player.id) < shots) {
     return { multiple_weapons, ret: -1 };
   }
 
@@ -140,9 +137,7 @@ export function getWeaponDamage(weaponId: number) {
   return s_WeaponDamage[weaponId];
 }
 
-export function getCbugAllowed(
-  player: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID,
-) {
+export function getCbugAllowed(player: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID) {
   if (player === InvalidEnum.PLAYER_ID) {
     return innerGameModeConfig.cBugGlobal;
   }
@@ -151,10 +146,7 @@ export function getCbugAllowed(
 }
 
 export function getWeaponShootRate(weaponId: number) {
-  if (
-    weaponId >= WC_WeaponEnum.UNARMED &&
-    weaponId < s_MaxWeaponShootRate.length
-  ) {
+  if (weaponId >= WC_WeaponEnum.UNARMED && weaponId < s_MaxWeaponShootRate.length) {
     return s_MaxWeaponShootRate[weaponId];
   }
   return 0;
@@ -200,17 +192,13 @@ export function getRejectedHit(player: Player, idx: number) {
     return { ret: 0, output: "" };
   }
 
-  let real_idx =
-    (rejectedHitIdx.get(player.id) - idx) % innerWeaponConfig.MAX_REJECTED_HITS;
+  let real_idx = (rejectedHitIdx.get(player.id) - idx) % innerWeaponConfig.MAX_REJECTED_HITS;
 
   if (real_idx < 0) {
     real_idx += innerWeaponConfig.MAX_REJECTED_HITS;
   }
 
-  if (
-    !rejectedHits.get(player.id)[real_idx] ||
-    !rejectedHits.get(player.id)[real_idx]!.time
-  ) {
+  if (!rejectedHits.get(player.id)[real_idx] || !rejectedHits.get(player.id)[real_idx]!.time) {
     return { ret: 0, output: "" };
   }
 

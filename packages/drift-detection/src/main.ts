@@ -33,16 +33,14 @@ export const Drift = {
   },
   enableDetection(player: Player | -1 = -1) {
     if (player !== -1 && player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
-      internalVar.g_DriftPlayers.get(player).playerFlags |=
-        DriftOptionsEnum.DRIFT_CHECK_ENABLED;
+      internalVar.g_DriftPlayers.get(player).playerFlags |= DriftOptionsEnum.DRIFT_CHECK_ENABLED;
     } else {
       internalVar.g_DriftFlags |= DriftOptionsEnum.DRIFT_CHECK_ENABLED;
     }
   },
   disableDetection(player: Player | -1 = -1) {
     if (player !== -1 && player.id > 0 && player.id < LimitsEnum.MAX_PLAYERS) {
-      internalVar.g_DriftPlayers.get(player).playerFlags &=
-        ~DriftOptionsEnum.DRIFT_CHECK_ENABLED;
+      internalVar.g_DriftPlayers.get(player).playerFlags &= ~DriftOptionsEnum.DRIFT_CHECK_ENABLED;
     } else {
       internalVar.g_DriftFlags &= ~DriftOptionsEnum.DRIFT_CHECK_ENABLED;
     }
@@ -50,24 +48,21 @@ export const Drift = {
   isDetectionEnabled(player: Player | -1 = -1) {
     if (player !== -1 && player.id > 0 && player.id < LimitsEnum.MAX_PLAYERS) {
       return !!(
-        internalVar.g_DriftPlayers.get(player).playerFlags &
-        DriftOptionsEnum.DRIFT_CHECK_ENABLED
+        internalVar.g_DriftPlayers.get(player).playerFlags & DriftOptionsEnum.DRIFT_CHECK_ENABLED
       );
     }
     return !!(internalVar.g_DriftFlags & DriftOptionsEnum.DRIFT_CHECK_ENABLED);
   },
   enableDamageCheck(player: Player | -1 = -1) {
     if (player !== -1 && player.id > 0 && player.id < LimitsEnum.MAX_PLAYERS) {
-      internalVar.g_DriftPlayers.get(player).playerFlags |=
-        DriftOptionsEnum.DAMAGE_CHECK_ENABLED;
+      internalVar.g_DriftPlayers.get(player).playerFlags |= DriftOptionsEnum.DAMAGE_CHECK_ENABLED;
     } else {
       internalVar.g_DriftFlags |= DriftOptionsEnum.DAMAGE_CHECK_ENABLED;
     }
   },
   disableDamageCheck(player: Player | -1 = -1) {
     if (player !== -1 && player.id > 0 && player.id < LimitsEnum.MAX_PLAYERS) {
-      internalVar.g_DriftPlayers.get(player).playerFlags &=
-        ~DriftOptionsEnum.DAMAGE_CHECK_ENABLED;
+      internalVar.g_DriftPlayers.get(player).playerFlags &= ~DriftOptionsEnum.DAMAGE_CHECK_ENABLED;
     } else {
       internalVar.g_DriftFlags &= ~DriftOptionsEnum.DAMAGE_CHECK_ENABLED;
     }
@@ -75,16 +70,14 @@ export const Drift = {
   isDamageCheckEnabled(player: Player | -1 = -1) {
     if (player !== -1 && player.id > 0 && player.id < LimitsEnum.MAX_PLAYERS) {
       return !!(
-        internalVar.g_DriftPlayers.get(player).playerFlags &
-        DriftOptionsEnum.DAMAGE_CHECK_ENABLED
+        internalVar.g_DriftPlayers.get(player).playerFlags & DriftOptionsEnum.DAMAGE_CHECK_ENABLED
       );
     }
     return !!(internalVar.g_DriftFlags & DriftOptionsEnum.DAMAGE_CHECK_ENABLED);
   },
   isPlayerDrifting(player: Player) {
     return (
-      internalVar.g_DriftPlayers.has(player) &&
-      !!internalVar.g_DriftPlayers.get(player).driftState
+      internalVar.g_DriftPlayers.has(player) && !!internalVar.g_DriftPlayers.get(player).driftState
     );
   },
 };

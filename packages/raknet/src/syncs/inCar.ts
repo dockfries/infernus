@@ -108,10 +108,7 @@ export class InCarSync extends BitStream implements IPacketListSync {
   @SyncWriter
   writeSync(data: IInCarSync, outgoing = false) {
     if (outgoing) {
-      const healthArmour = BitStream.packHealthArmour(
-        data.playerHealth,
-        data.armour,
-      );
+      const healthArmour = BitStream.packHealthArmour(data.playerHealth, data.armour);
 
       this.bs.writeValue(
         [PacketRpcValueType.UInt16, data.vehicleId],

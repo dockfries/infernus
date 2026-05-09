@@ -1,11 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import {
-  PlayerEvent,
-  CameraCutStylesEnum,
-  KeysEnum,
-  Player,
-} from "@infernus/core";
+import { PlayerEvent, CameraCutStylesEnum, KeysEnum, Player } from "@infernus/core";
 import {
   COLOR_GREEN,
   COLOR_RED,
@@ -26,9 +21,7 @@ function cameraSelect(player: Player) {
 
   const { keys, upDown, leftRight } = player.getKeys();
 
-  console.log(
-    `Player (${player.id}) keys = ${keys}, upDown = ${upDown}, leftRight = ${leftRight}`,
-  );
+  console.log(`Player (${player.id}) keys = ${keys}, upDown = ${upDown}, leftRight = ${leftRight}`);
 
   const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
 
@@ -36,16 +29,8 @@ function cameraSelect(player: Player) {
     if (leftRight === KeysEnum.KEY_RIGHT) {
       p_curPlayerCamD.POS_X += p_curPlayerCamD.RATE;
       p_curPlayerCamD.LOOK_X += p_curPlayerCamD.RATE;
-      player.setPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
-      player.setCameraPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
+      player.setPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
+      player.setCameraPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
       player.setCameraLookAt(
         p_curPlayerCamD.LOOK_X,
         p_curPlayerCamD.LOOK_Y,
@@ -57,16 +42,8 @@ function cameraSelect(player: Player) {
     if (leftRight === KeysEnum.KEY_LEFT) {
       p_curPlayerCamD.POS_X -= p_curPlayerCamD.RATE;
       p_curPlayerCamD.LOOK_X -= p_curPlayerCamD.RATE;
-      player.setPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
-      player.setCameraPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
+      player.setPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
+      player.setCameraPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
       player.setCameraLookAt(
         p_curPlayerCamD.LOOK_X,
         p_curPlayerCamD.LOOK_Y,
@@ -78,16 +55,8 @@ function cameraSelect(player: Player) {
     if (upDown === KeysEnum.KEY_UP) {
       p_curPlayerCamD.POS_Z += p_curPlayerCamD.RATE;
       p_curPlayerCamD.LOOK_Z += p_curPlayerCamD.RATE;
-      player.setPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
-      player.setCameraPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
+      player.setPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
+      player.setCameraPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
       player.setCameraLookAt(
         p_curPlayerCamD.LOOK_X,
         p_curPlayerCamD.LOOK_Y,
@@ -99,16 +68,8 @@ function cameraSelect(player: Player) {
     if (upDown === KeysEnum.KEY_DOWN) {
       p_curPlayerCamD.POS_Z -= p_curPlayerCamD.RATE;
       p_curPlayerCamD.LOOK_Z -= p_curPlayerCamD.RATE;
-      player.setPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
-      player.setCameraPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
+      player.setPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
+      player.setCameraPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
       player.setCameraLookAt(
         p_curPlayerCamD.LOOK_X,
         p_curPlayerCamD.LOOK_Y,
@@ -120,16 +81,8 @@ function cameraSelect(player: Player) {
     if (keys & KeysEnum.ANALOG_RIGHT) {
       p_curPlayerCamD.POS_Y += p_curPlayerCamD.RATE;
       p_curPlayerCamD.LOOK_Y += p_curPlayerCamD.RATE;
-      player.setPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
-      player.setCameraPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
+      player.setPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
+      player.setCameraPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
       player.setCameraLookAt(
         p_curPlayerCamD.LOOK_X,
         p_curPlayerCamD.LOOK_Y,
@@ -141,16 +94,8 @@ function cameraSelect(player: Player) {
     if (keys & KeysEnum.ANALOG_LEFT) {
       p_curPlayerCamD.POS_Y -= p_curPlayerCamD.RATE;
       p_curPlayerCamD.LOOK_Y -= p_curPlayerCamD.RATE;
-      player.setPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
-      player.setCameraPos(
-        p_curPlayerCamD.POS_X,
-        p_curPlayerCamD.POS_Y,
-        p_curPlayerCamD.POS_Z,
-      );
+      player.setPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
+      player.setCameraPos(p_curPlayerCamD.POS_X, p_curPlayerCamD.POS_Y, p_curPlayerCamD.POS_Z);
       player.setCameraLookAt(
         p_curPlayerCamD.LOOK_X,
         p_curPlayerCamD.LOOK_Y,
@@ -206,10 +151,7 @@ function cameraSelect(player: Player) {
         console.log(err);
       } else {
         console.log("\n" + cString + "\n");
-        player.sendClientMessage(
-          COLOR_GREEN,
-          "Current camera data saved to 'CAMERA.txt'",
-        );
+        player.sendClientMessage(COLOR_GREEN, "Current camera data saved to 'CAMERA.txt'");
       }
     });
 
@@ -226,40 +168,28 @@ export function registerCameraSelect(options?: IFsDebugOptions) {
   if (options?.cameraSelect === false) return [];
 
   const camera = PlayerEvent.onCommandText("camera", ({ player, next }) => {
-    player.sendClientMessage(
-      COLOR_RED,
-      "[USAGE]: /camera [RATE/MODE] [RATE/MODEID]",
-    );
+    player.sendClientMessage(COLOR_RED, "[USAGE]: /camera [RATE/MODE] [RATE/MODEID]");
     return next();
   });
 
-  const cameraRate = PlayerEvent.onCommandText(
-    "camera rate",
-    ({ player, subcommand, next }) => {
-      const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
-      p_curPlayerCamD.RATE = +subcommand[0] || 0;
-      curPlayerCamD.set(player, p_curPlayerCamD);
-      return next();
-    },
-  );
+  const cameraRate = PlayerEvent.onCommandText("camera rate", ({ player, subcommand, next }) => {
+    const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
+    p_curPlayerCamD.RATE = +subcommand[0] || 0;
+    curPlayerCamD.set(player, p_curPlayerCamD);
+    return next();
+  });
 
-  const cameraMode = PlayerEvent.onCommandText(
-    "camera mode",
-    ({ player, subcommand, next }) => {
-      const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
-      p_curPlayerCamD.MODE = +subcommand[0] || 0;
-      curPlayerCamD.set(player, p_curPlayerCamD);
-      return next();
-    },
-  );
+  const cameraMode = PlayerEvent.onCommandText("camera mode", ({ player, subcommand, next }) => {
+    const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
+    p_curPlayerCamD.MODE = +subcommand[0] || 0;
+    curPlayerCamD.set(player, p_curPlayerCamD);
+    return next();
+  });
 
   const cameraSel = PlayerEvent.onCommandText("csel", ({ player, next }) => {
     const status = gPlayerStatus.get(player);
     if (status) {
-      player.sendClientMessage(
-        COLOR_RED,
-        `[ERROR]: You are already using "${aSelNames[status]}".`,
-      );
+      player.sendClientMessage(COLOR_RED, `[ERROR]: You are already using "${aSelNames[status]}".`);
       return next();
     }
     gPlayerStatus.set(player, SelStatEnum.CAMERA);

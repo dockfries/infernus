@@ -52,9 +52,7 @@ import {
 } from "./vendingMachines";
 
 export function scriptInit() {
-  innerGameModeConfig.lagCompMode = !!GameMode.getConsoleVarAsInt(
-    "game.lag_compensation_mode",
-  );
+  innerGameModeConfig.lagCompMode = !!GameMode.getConsoleVarAsInt("game.lag_compensation_mode");
 
   if (innerGameModeConfig.lagCompMode) {
     setKnifeSync(false);
@@ -76,10 +74,7 @@ export function scriptInit() {
     internalTextDraw.set(innerGameModeConfig.healthBarBorder.id, true);
     orig_TextDrawTextSize(innerGameModeConfig.healthBarBorder.id, 61.7, 8.4);
     orig_TextDrawColor(innerGameModeConfig.healthBarBorder.id, 255);
-    orig_TextDrawFont(
-      innerGameModeConfig.healthBarBorder.id,
-      TextDrawFontsEnum.SPRITE_DRAW,
-    );
+    orig_TextDrawFont(innerGameModeConfig.healthBarBorder.id, TextDrawFontsEnum.SPRITE_DRAW);
   } catch (err) {
     console.log("(wc) WARN: Cannot create healthBar border textDraw");
     console.log(err);
@@ -93,28 +88,18 @@ export function scriptInit() {
     }).create();
 
     internalTextDraw.set(innerGameModeConfig.healthBarBackground.id, true);
-    orig_TextDrawTextSize(
-      innerGameModeConfig.healthBarBackground.id,
-      57.8,
-      4.7,
-    );
+    orig_TextDrawTextSize(innerGameModeConfig.healthBarBackground.id, 57.8, 4.7);
     orig_TextDrawColor(
       innerGameModeConfig.healthBarBackground.id,
       innerWeaponConfig.HEALTH_BAR_BG_COLOR,
     );
-    orig_TextDrawFont(
-      innerGameModeConfig.healthBarBackground.id,
-      TextDrawFontsEnum.SPRITE_DRAW,
-    );
+    orig_TextDrawFont(innerGameModeConfig.healthBarBackground.id, TextDrawFontsEnum.SPRITE_DRAW);
   } catch (err) {
     console.log("(wc) WARN: Cannot create healthBar background textDraw");
     console.log(err);
   }
 
-  if (
-    innerWeaponConfig.CUSTOM_VENDING_MACHINES &&
-    innerGameModeConfig.customVendingMachines
-  ) {
+  if (innerWeaponConfig.CUSTOM_VENDING_MACHINES && innerGameModeConfig.customVendingMachines) {
     createVendingMachines();
   }
 
@@ -150,14 +135,8 @@ export function scriptInit() {
 
     const state = orig_playerMethods.getState.call(player);
     if (state >= PlayerStateEnum.ONFOOT && state <= PlayerStateEnum.PASSENGER) {
-      playerHealth.set(
-        player.id,
-        orig_playerMethods.getHealth.call(player).health,
-      );
-      playerArmour.set(
-        player.id,
-        orig_playerMethods.getArmour.call(player).armour,
-      );
+      playerHealth.set(player.id, orig_playerMethods.getHealth.call(player).health);
+      playerArmour.set(player.id, orig_playerMethods.getArmour.call(player).armour);
 
       if (playerHealth.get(player.id) === 0.0) {
         playerHealth.set(player.id, playerMaxHealth.get(player.id));
@@ -224,9 +203,7 @@ export function scriptExit() {
       healthBarForeground.has(player.id) &&
       healthBarForeground.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
     ) {
-      internalPlayerTextDraw.get(player.id)[
-        healthBarForeground.get(player.id)!.id
-      ] = false;
+      internalPlayerTextDraw.get(player.id)[healthBarForeground.get(player.id)!.id] = false;
       healthBarForeground.get(player.id)!.destroy();
       healthBarForeground.set(player.id, null);
     }
@@ -235,9 +212,7 @@ export function scriptExit() {
       damageFeedGiven.has(player.id) &&
       damageFeedGiven.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
     ) {
-      internalPlayerTextDraw.get(player.id)[
-        damageFeedGiven.get(player.id)!.id
-      ] = false;
+      internalPlayerTextDraw.get(player.id)[damageFeedGiven.get(player.id)!.id] = false;
       damageFeedGiven.get(player.id)!.destroy();
       damageFeedGiven.set(player.id, null);
     }
@@ -246,9 +221,7 @@ export function scriptExit() {
       damageFeedTaken.has(player.id) &&
       damageFeedTaken.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
     ) {
-      internalPlayerTextDraw.get(player.id)[
-        damageFeedTaken.get(player.id)!.id
-      ] = false;
+      internalPlayerTextDraw.get(player.id)[damageFeedTaken.get(player.id)!.id] = false;
       damageFeedTaken.get(player.id)!.destroy();
       damageFeedTaken.set(player.id, null);
     }

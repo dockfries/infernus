@@ -23,11 +23,7 @@ export function uniqId() {
   return id;
 }
 
-export function replaceTexture(
-  modelId: number | string,
-  textureLib: string,
-  textureName: string,
-) {
+export function replaceTexture(modelId: number | string, textureLib: string, textureName: string) {
   if (
     modelId === "16644" &&
     textureLib === "a51_detailstuff" &&

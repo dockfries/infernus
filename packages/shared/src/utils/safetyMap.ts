@@ -26,10 +26,7 @@ export class SafetyMap<K, V> {
     return this.map.delete(key);
   }
 
-  forEach(
-    callbackfn: (value: V, key: K, map: Map<K, V>) => void,
-    thisArg?: any,
-  ): void {
+  forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
     this.map.forEach(callbackfn, thisArg);
   }
 

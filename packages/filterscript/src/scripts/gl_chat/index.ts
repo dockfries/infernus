@@ -19,24 +19,14 @@ function processChatText(player: Player, text: string) {
   // Handle shouting prefix (!)
   if (text[0] === "!" && text.length > 1) {
     if (text[1] === " ") useIndex++;
-    gl_message.talkMessage(
-      gl_message.SHOUT_DISTANCE,
-      player,
-      "*shouts*",
-      text[useIndex],
-    );
+    gl_message.talkMessage(gl_message.SHOUT_DISTANCE, player, "*shouts*", text[useIndex]);
     return;
   }
 
   // Handle quiet prefix (#)
   if (text[0] === "#" && text.length > 1) {
     if (text[1] === " ") useIndex++;
-    gl_message.talkMessage(
-      gl_message.LOW_DISTANCE,
-      player,
-      "*quietly*",
-      text[useIndex],
-    );
+    gl_message.talkMessage(gl_message.LOW_DISTANCE, player, "*quietly*", text[useIndex]);
     return;
   }
 
@@ -44,11 +34,7 @@ function processChatText(player: Player, text: string) {
   gl_message.talkMessage(gl_message.TALK_DISTANCE, player, "", text);
 }
 
-function processActionText(
-  player: Player,
-  message: string,
-  actionType: number,
-) {
+function processActionText(player: Player, message: string, actionType: number) {
   let actionText: string;
   let actionBubble: string;
   const playerName = player.getName().name;
@@ -61,12 +47,7 @@ function processActionText(
     actionBubble = `* ${message}`;
   }
 
-  gl_message.localMessage(
-    gl_message.ACTION_DISTANCE,
-    player,
-    gl_message.ACTION_COLOR,
-    actionText,
-  );
+  gl_message.localMessage(gl_message.ACTION_DISTANCE, player, gl_message.ACTION_COLOR, actionText);
   player.setChatBubble(
     actionBubble,
     gl_message.ACTION_COLOR,
@@ -79,10 +60,7 @@ let gOOCDisabled = false;
 
 function globalOOCMessage(player: Player, message: string) {
   if (gOOCDisabled) {
-    gl_message.cmdErrorMessage(
-      player,
-      "The OOC channel is not enabled right now",
-    );
+    gl_message.cmdErrorMessage(player, "The OOC channel is not enabled right now");
     return;
   }
 
@@ -113,10 +91,7 @@ function toggleOOC(player: Player) {
       );
     }
   } else {
-    gl_message.cmdErrorMessage(
-      player,
-      "Your admin level isn't high enough to change this",
-    );
+    gl_message.cmdErrorMessage(player, "Your admin level isn't high enough to change this");
   }
 }
 
@@ -160,113 +135,82 @@ export const GlChat: IFilterScript = {
   name: "gl_chat",
   load() {
     // Action commands
-    const me = PlayerEvent.onCommandText(
-      "me",
-      ({ player, subcommand, next }) => {
-        const message = subcommand[0];
-        if (!message) {
-          gl_message.cmdUsageMessage(player, "/me [action]");
-          return next();
-        }
-        processActionText(player, message, gl_message.ACTION_ME);
+    const me = PlayerEvent.onCommandText("me", ({ player, subcommand, next }) => {
+      const message = subcommand[0];
+      if (!message) {
+        gl_message.cmdUsageMessage(player, "/me [action]");
         return next();
-      },
-    );
+      }
+      processActionText(player, message, gl_message.ACTION_ME);
+      return next();
+    });
 
-    const doCmd = PlayerEvent.onCommandText(
-      "do",
-      ({ player, subcommand, next }) => {
-        const message = subcommand[0];
-        if (!message) {
-          gl_message.cmdUsageMessage(player, "/do [action]");
-          return next();
-        }
-        processActionText(player, message, gl_message.ACTION_DO);
+    const doCmd = PlayerEvent.onCommandText("do", ({ player, subcommand, next }) => {
+      const message = subcommand[0];
+      if (!message) {
+        gl_message.cmdUsageMessage(player, "/do [action]");
         return next();
-      },
-    );
+      }
+      processActionText(player, message, gl_message.ACTION_DO);
+      return next();
+    });
 
     // Talk commands
 
     // /low
-    const low = PlayerEvent.onCommandText(
-      ["l", "low"],
-      ({ player, subcommand, next }) => {
-        const message = subcommand[0];
-        if (!message) {
-          gl_message.cmdUsageMessage(player, "(/l)ow [text]");
-          return next();
-        }
-        gl_message.talkMessage(
-          gl_message.LOW_DISTANCE,
-          player,
-          "*quietly*",
-          message,
-        );
+    const low = PlayerEvent.onCommandText(["l", "low"], ({ player, subcommand, next }) => {
+      const message = subcommand[0];
+      if (!message) {
+        gl_message.cmdUsageMessage(player, "(/l)ow [text]");
         return next();
-      },
-    );
+      }
+      gl_message.talkMessage(gl_message.LOW_DISTANCE, player, "*quietly*", message);
+      return next();
+    });
 
     // /shout
-    const shout = PlayerEvent.onCommandText(
-      ["s", "shout"],
-      ({ player, subcommand, next }) => {
-        const message = subcommand[0];
-        if (!message) {
-          gl_message.cmdUsageMessage(player, "(/s)hout [text]");
-          return next();
-        }
-        gl_message.talkMessage(
-          gl_message.SHOUT_DISTANCE,
-          player,
-          "*shouts*",
-          message,
-        );
+    const shout = PlayerEvent.onCommandText(["s", "shout"], ({ player, subcommand, next }) => {
+      const message = subcommand[0];
+      if (!message) {
+        gl_message.cmdUsageMessage(player, "(/s)hout [text]");
         return next();
-      },
-    );
+      }
+      gl_message.talkMessage(gl_message.SHOUT_DISTANCE, player, "*shouts*", message);
+      return next();
+    });
 
     // /b (local ooc)
-    const bCmd = PlayerEvent.onCommandText(
-      "b",
-      ({ player, subcommand, next }) => {
-        const message = subcommand[0];
-        if (!message) {
-          gl_message.cmdUsageMessage(player, "/b [text]");
-          return next();
-        }
-        processLocalOOC(player, message);
+    const bCmd = PlayerEvent.onCommandText("b", ({ player, subcommand, next }) => {
+      const message = subcommand[0];
+      if (!message) {
+        gl_message.cmdUsageMessage(player, "/b [text]");
         return next();
-      },
-    );
+      }
+      processLocalOOC(player, message);
+      return next();
+    });
 
     // /megaphone
-    const mCmd = PlayerEvent.onCommandText(
-      ["m", "megaphone"],
-      ({ player, subcommand, next }) => {
-        const message = subcommand[0];
-        if (!message) {
-          gl_message.cmdUsageMessage(player, "(/m)egaphone [text]");
-          return next();
-        }
-        processMegaphone(player, message);
+    const mCmd = PlayerEvent.onCommandText(["m", "megaphone"], ({ player, subcommand, next }) => {
+      const message = subcommand[0];
+      if (!message) {
+        gl_message.cmdUsageMessage(player, "(/m)egaphone [text]");
         return next();
-      },
-    );
+      }
+      processMegaphone(player, message);
+      return next();
+    });
 
     // Global OOC /o and /ooc
-    const ooc = PlayerEvent.onCommandText(
-      ["o", "ooc"],
-      ({ player, subcommand, next }) => {
-        const message = subcommand[0];
-        if (!message) {
-          gl_message.cmdUsageMessage(player, "(/o)oc [text]");
-          return next();
-        }
-        globalOOCMessage(player, message);
+    const ooc = PlayerEvent.onCommandText(["o", "ooc"], ({ player, subcommand, next }) => {
+      const message = subcommand[0];
+      if (!message) {
+        gl_message.cmdUsageMessage(player, "(/o)oc [text]");
         return next();
-      },
-    );
+      }
+      globalOOCMessage(player, message);
+      return next();
+    });
 
     // Toggle the OOC channel /togooc
     const togooc = PlayerEvent.onCommandText("togooc", ({ player, next }) => {
@@ -275,58 +219,43 @@ export const GlChat: IFilterScript = {
     });
 
     // /whisper /pm
-    const pm = PlayerEvent.onCommandText(
-      ["w", "wisper", "pm"],
-      ({ player, subcommand, next }) => {
-        const tmp = subcommand[0];
+    const pm = PlayerEvent.onCommandText(["w", "wisper", "pm"], ({ player, subcommand, next }) => {
+      const tmp = subcommand[0];
 
-        if (!tmp) {
-          gl_message.cmdUsageMessage(
-            player,
-            "(/w)isper [playerId/PartOfName] [whisper text]",
-          );
-          return next();
-        }
-
-        const toPlayerId = returnUser(tmp);
-
-        if (toPlayerId === RETURN_USER_MULTIPLE) {
-          gl_message.cmdErrorMessage(
-            player,
-            "Multiple matches found for [name]. Please narrow the search.",
-          );
-          return next();
-        }
-
-        if (
-          toPlayerId === RETURN_USER_FAILURE ||
-          !Player.isConnected(toPlayerId)
-        ) {
-          gl_message.cmdErrorMessage(
-            player,
-            "That player isn't connected right now.",
-          );
-          return next();
-        }
-
-        const message = subcommand[1];
-
-        if (!message) {
-          gl_message.cmdUsageMessage(
-            player,
-            "(/w)isper [playerId/PartOfName] [whisper text]",
-          );
-          return next();
-        }
-
-        const toPlayer = Player.getInstance(toPlayerId);
-        if (toPlayer) {
-          processWhisper(player, toPlayer, message);
-        }
-
+      if (!tmp) {
+        gl_message.cmdUsageMessage(player, "(/w)isper [playerId/PartOfName] [whisper text]");
         return next();
-      },
-    );
+      }
+
+      const toPlayerId = returnUser(tmp);
+
+      if (toPlayerId === RETURN_USER_MULTIPLE) {
+        gl_message.cmdErrorMessage(
+          player,
+          "Multiple matches found for [name]. Please narrow the search.",
+        );
+        return next();
+      }
+
+      if (toPlayerId === RETURN_USER_FAILURE || !Player.isConnected(toPlayerId)) {
+        gl_message.cmdErrorMessage(player, "That player isn't connected right now.");
+        return next();
+      }
+
+      const message = subcommand[1];
+
+      if (!message) {
+        gl_message.cmdUsageMessage(player, "(/w)isper [playerId/PartOfName] [whisper text]");
+        return next();
+      }
+
+      const toPlayer = Player.getInstance(toPlayerId);
+      if (toPlayer) {
+        processWhisper(player, toPlayer, message);
+      }
+
+      return next();
+    });
 
     const onText = PlayerEvent.onText(({ player, text, next }) => {
       processChatText(player, text);

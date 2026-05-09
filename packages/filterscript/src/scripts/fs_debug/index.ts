@@ -40,9 +40,7 @@ export const FsDebug: IFsDebug = {
   load(options) {
     console.log("\n  *********************\n  * SA:MP DEBUG 0.2   *");
     console.log("  * By Simon Campbell *\n  *********************");
-    console.log(
-      `  * Version: ${DEBUG_VERSION}      *\n  *********************`,
-    );
+    console.log(`  * Version: ${DEBUG_VERSION}      *\n  *********************`);
     console.log("  * -- LOADED         *\n  *********************\n");
 
     function initData(player: Player) {
@@ -75,42 +73,40 @@ export const FsDebug: IFsDebug = {
       initData(player);
     });
 
-    const onCommandReceived = PlayerEvent.onCommandReceived(
-      ({ player, command, next }) => {
-        const injectCommands = [
-          "s",
-          "ssel",
-          "skin",
-          "v",
-          "vsel",
-          "vehicle",
-          "w",
-          "t",
-          "g",
-          "wsel",
-          "time",
-          "weather",
-          "gravity",
-          "w2",
-          "goto",
-          "bring",
-          "warpto",
-          "weapon",
-          "setloc",
-          "csel",
-          "camera",
-          "osel",
-          "object",
-          "debug",
-        ];
-        const mainCmd = command.split(" ")[0];
-        if (mainCmd && injectCommands.includes(mainCmd)) {
-          if (options?.adminsOnly && !player.isAdmin()) return false;
-          return next();
-        }
+    const onCommandReceived = PlayerEvent.onCommandReceived(({ player, command, next }) => {
+      const injectCommands = [
+        "s",
+        "ssel",
+        "skin",
+        "v",
+        "vsel",
+        "vehicle",
+        "w",
+        "t",
+        "g",
+        "wsel",
+        "time",
+        "weather",
+        "gravity",
+        "w2",
+        "goto",
+        "bring",
+        "warpto",
+        "weapon",
+        "setloc",
+        "csel",
+        "camera",
+        "osel",
+        "object",
+        "debug",
+      ];
+      const mainCmd = command.split(" ")[0];
+      if (mainCmd && injectCommands.includes(mainCmd)) {
+        if (options?.adminsOnly && !player.isAdmin()) return false;
         return next();
-      },
-    );
+      }
+      return next();
+    });
 
     const onDisconnect = PlayerEvent.onDisconnect(({ player, next }) => {
       const timer = gPlayerTimers.get(player);
@@ -158,15 +154,13 @@ export const FsDebug: IFsDebug = {
       return next();
     });
 
-    const onClickMap = PlayerEvent.onClickMap(
-      ({ player, fX, fY, fZ, next }) => {
-        if (options?.adminsOnly && !player.isAdmin()) {
-          return next();
-        }
-        player.setPosFindZ(fX, fY, fZ);
+    const onClickMap = PlayerEvent.onClickMap(({ player, fX, fY, fZ, next }) => {
+      if (options?.adminsOnly && !player.isAdmin()) {
         return next();
-      },
-    );
+      }
+      player.setPosFindZ(fX, fY, fZ);
+      return next();
+    });
 
     const offCameSelect = registerCameraSelect(options);
     const offWorldSelect = registerWorldSelect(options);

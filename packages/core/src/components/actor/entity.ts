@@ -31,8 +31,7 @@ export class Actor {
   }
 
   create() {
-    if (this._id !== InvalidEnum.ACTOR_ID)
-      throw new ActorException("Cannot be created twice");
+    if (this._id !== InvalidEnum.ACTOR_ID) throw new ActorException("Cannot be created twice");
     const { skin, x, y, z, rotation } = this.sourceInfo!;
     this._id = Actor.__inject__.create(skin, x, y, z, rotation);
     if (
@@ -46,8 +45,7 @@ export class Actor {
   }
 
   destroy() {
-    if (this._id === InvalidEnum.ACTOR_ID)
-      throw new ActorException("Cannot before create");
+    if (this._id === InvalidEnum.ACTOR_ID) throw new ActorException("Cannot before create");
     if (!INTERNAL_FLAGS.skip) {
       Actor.__inject__.destroy(this._id);
     }

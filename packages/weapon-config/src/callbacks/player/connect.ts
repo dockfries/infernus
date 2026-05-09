@@ -138,9 +138,7 @@ PlayerEvent.onConnect(({ player, next }) => {
     healthBarForeground.get(player.id) &&
     healthBarForeground.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
   ) {
-    internalPlayerTextDraw.get(player.id)[
-      healthBarForeground.get(player.id)!.id
-    ] = false;
+    internalPlayerTextDraw.get(player.id)[healthBarForeground.get(player.id)!.id] = false;
     healthBarForeground.set(player.id, null);
   }
 
@@ -148,8 +146,7 @@ PlayerEvent.onConnect(({ player, next }) => {
     damageFeedGiven.get(player.id) &&
     damageFeedGiven.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
   ) {
-    internalPlayerTextDraw.get(player.id)[damageFeedGiven.get(player.id)!.id] =
-      false;
+    internalPlayerTextDraw.get(player.id)[damageFeedGiven.get(player.id)!.id] = false;
     damageFeedGiven.set(player.id, null);
   }
 
@@ -157,8 +154,7 @@ PlayerEvent.onConnect(({ player, next }) => {
     damageFeedTaken.get(player.id) &&
     damageFeedTaken.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
   ) {
-    internalPlayerTextDraw.get(player.id)[damageFeedTaken.get(player.id)!.id] =
-      false;
+    internalPlayerTextDraw.get(player.id)[damageFeedTaken.get(player.id)!.id] = false;
     damageFeedTaken.set(player.id, null);
   }
 
@@ -224,9 +220,7 @@ PlayerEvent.onDisconnect(({ player, next }) => {
     healthBarForeground.get(player.id) &&
     healthBarForeground.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
   ) {
-    internalPlayerTextDraw.get(player.id)[
-      healthBarForeground.get(player.id)!.id
-    ] = false;
+    internalPlayerTextDraw.get(player.id)[healthBarForeground.get(player.id)!.id] = false;
     healthBarForeground.get(player.id)!.destroy();
     healthBarForeground.set(player.id, null);
   }
@@ -235,8 +229,7 @@ PlayerEvent.onDisconnect(({ player, next }) => {
     damageFeedGiven.get(player.id) &&
     damageFeedGiven.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
   ) {
-    internalPlayerTextDraw.get(player.id)[damageFeedGiven.get(player.id)!.id] =
-      false;
+    internalPlayerTextDraw.get(player.id)[damageFeedGiven.get(player.id)!.id] = false;
     damageFeedGiven.get(player.id)!.destroy();
     damageFeedGiven.set(player.id, null);
   }
@@ -245,8 +238,7 @@ PlayerEvent.onDisconnect(({ player, next }) => {
     damageFeedTaken.get(player.id) &&
     damageFeedTaken.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
   ) {
-    internalPlayerTextDraw.get(player.id)[damageFeedTaken.get(player.id)!.id] =
-      false;
+    internalPlayerTextDraw.get(player.id)[damageFeedTaken.get(player.id)!.id] = false;
     damageFeedTaken.get(player.id)!.destroy();
     damageFeedTaken.set(player.id, null);
   }

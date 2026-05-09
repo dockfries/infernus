@@ -65,11 +65,7 @@ function moveCamera(player: Player) {
   const speed = MOVE_SPEED * clip.accelMul;
 
   // Calculate the cameras next position based on their current position and the direction their camera is facing
-  const { x, y, z } = getNextCameraPosition(
-    clip.mode,
-    [cpX, cpY, cpZ],
-    [fvX, fvY, fvZ],
-  );
+  const { x, y, z } = getNextCameraPosition(clip.mode, [cpX, cpY, cpZ], [fvX, fvY, fvZ]);
   clip.flyObject?.move(x, y, z, speed);
 
   // Store the last time the camera was moved as now
@@ -206,25 +202,22 @@ export const FlyMode: IFilterScript = {
       return next();
     });
 
-    const flyCommand = PlayerEvent.onCommandText(
-      "flymode",
-      ({ player, next }) => {
-        // Place the player in and out of edit mode
-        const clip = noClipData.get(player);
+    const flyCommand = PlayerEvent.onCommandText("flymode", ({ player, next }) => {
+      // Place the player in and out of edit mode
+      const clip = noClipData.get(player);
 
-        if (!clip) {
-          resetPlayerClip(player);
-          flyMode(player);
-          return next();
-        }
-        if (clip.cameraMode === CameraMode.NONE) {
-          flyMode(player);
-        } else {
-          cancelFlyMode(player);
-        }
+      if (!clip) {
+        resetPlayerClip(player);
+        flyMode(player);
         return next();
-      },
-    );
+      }
+      if (clip.cameraMode === CameraMode.NONE) {
+        flyMode(player);
+      } else {
+        cancelFlyMode(player);
+      }
+      return next();
+    });
 
     const onUpdate = PlayerEvent.onUpdate(({ player, next }) => {
       const clip = noClipData.get(player);
@@ -240,11 +233,7 @@ export const FlyMode: IFilterScript = {
 
         // Is the players current key state different than their last keystate?
         if (clip.udOld !== ud || clip.lrOld !== lr) {
-          if (
-            (clip.udOld || clip.lrOld) &&
-            ud === KeysEnum.NONE &&
-            lr === KeysEnum.NONE
-          ) {
+          if ((clip.udOld || clip.lrOld) && ud === KeysEnum.NONE && lr === KeysEnum.NONE) {
             // All keys have been released, stop the object the camera is attached to and reset the acceleration multiplier
             clip.flyObject!.stop();
             clip.mode = 0;
@@ -272,11 +261,7 @@ export const FlyMode: IFilterScript = {
   unload() {
     // If any players are still in edit mode, boot them out before the filterScript unloads
     Player.getInstances().forEach((p) => {
-      if (
-        !noClipData.has(p) ||
-        noClipData.get(p)!.cameraMode === CameraMode.FLY
-      )
-        return;
+      if (!noClipData.has(p) || noClipData.get(p)!.cameraMode === CameraMode.FLY) return;
       cancelFlyMode(p);
     });
     noClipData.clear();

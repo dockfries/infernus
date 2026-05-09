@@ -41,26 +41,14 @@ export const TogglePlayerDynamicCP = (
   checkpointId: number,
   toggle: boolean,
 ): number => {
-  return samp.callNative(
-    "TogglePlayerDynamicCP",
-    "iii",
-    playerId,
-    checkpointId,
-    toggle,
-  );
+  return samp.callNative("TogglePlayerDynamicCP", "iii", playerId, checkpointId, toggle);
 };
 
-export const TogglePlayerAllDynamicCPs = (
-  playerId: number,
-  toggle: boolean,
-): number => {
+export const TogglePlayerAllDynamicCPs = (playerId: number, toggle: boolean): number => {
   return samp.callNative("TogglePlayerAllDynamicCPs", "ii", playerId, toggle);
 };
 
-export const IsPlayerInDynamicCP = (
-  playerId: number,
-  checkpointId: number,
-): boolean => {
+export const IsPlayerInDynamicCP = (playerId: number, checkpointId: number): boolean => {
   return !!samp.callNative("IsPlayerInDynamicCP", "ii", playerId, checkpointId);
 };
 
