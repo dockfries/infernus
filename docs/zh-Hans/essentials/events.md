@@ -176,7 +176,7 @@ import { Player, PlayerEvent } from "@infernus/core";
 PlayerEvent.onConnect(({ player, next }) => {
   const players = Player.getInstances(); // 获取所有玩家实例数组
   players.forEach((p) => {
-    p.sendClientMessage("#fff", `玩家${player.getName()}连接了游戏`);
+    p.sendClientMessage("#fff", `玩家${player.getName().name}连接了游戏`);
   });
 
   const player = Player.getInstance(0); // 获取玩家id为0的玩家实例
@@ -203,20 +203,20 @@ import { Player, PlayerEvent } from "@infernus/core";
 
 // 定义一个一级命令
 PlayerEvent.onCommandText("help", ({ player, next }) => {
-  console.log(`玩家 ${player.getName()}，您好`);
+  console.log(`玩家 ${player.getName().name}，您好`);
   return next();
 });
 
 // 定义一个二级命令
 PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
-  console.log(`玩家 ${player.getName()}想得到传送相关的帮助信息`);
+  console.log(`玩家 ${player.getName().name}想得到传送相关的帮助信息`);
   return next();
 });
 
 // 定义一个命令，可以由msg或message触发
 PlayerEvent.onCommandText(["msg", "message"], ({ player, subcommand, next }) => {
   console.log(
-    `玩家 ${player.getName()}，输入了此命令，并且可能还输入了子命令 ${subcommand.toString()}`,
+    `玩家 ${player.getName().name}，输入了此命令，并且可能还输入了子命令 ${subcommand.toString()}`,
   );
 
   // 相当于玩家输入了/message global或/msg global

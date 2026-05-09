@@ -13,7 +13,7 @@ Esto significa que debes usar la librería `JavaScript`, y que ya no necesitas n
 
 ## Obtener cadena de texto
 
-Para la mayoría de las búsquedas de cadenas, ya no es necesario definir un arreglo de longitud fija como hacen los desarrolladores nativos. Las funciones más utilizadas se han tratado internamente en `Infernus`. El principio es que se define un array de cadenas con una longitud máxima, y entonces el array se itera automáticamente hasta el punto donde el primer byte es `0` para interceptar la cadena, como `GetPlayerName`, que es `player.getName()`.
+Para la mayoría de las búsquedas de cadenas, ya no es necesario definir un arreglo de longitud fija como hacen los desarrolladores nativos. Las funciones más utilizadas se han tratado internamente en `Infernus`. El principio es que se define un array de cadenas con una longitud máxima, y entonces el array se itera automáticamente hasta el punto donde el primer byte es `0` para interceptar la cadena, como `GetPlayerName`, que es `player.getName().name`.
 
 El método de intercepción proviene de las [funciones prácticas](./i18n.md#practical-functions) en internacionalización. Si te encuentras con algunos escenarios similares, no tienes que repetir la rueda.
 

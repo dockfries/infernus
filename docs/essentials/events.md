@@ -179,7 +179,7 @@ import { Player, PlayerEvent } from "@infernus/core";
 PlayerEvent.onConnect(({ player, next }) => {
   const players = Player.getInstances(); // Get an array of all player instances
   players.forEach((p) => {
-    p.sendClientMessage("#fff", `player ${player.getName()} connected`);
+    p.sendClientMessage("#fff", `player ${player.getName().name} connected`);
   });
 
   const player = Player.getInstance(0); // Get the instance of a player whose id is 0
@@ -206,20 +206,20 @@ import { Player, PlayerEvent } from "@infernus/core";
 
 // Define a first-level command
 PlayerEvent.onCommandText("help", ({ player, next }) => {
-  console.log(`player ${player.getName()}, hello`);
+  console.log(`player ${player.getName().name}, hello`);
   return next();
 });
 
 // Define a second-level command
 PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
-  console.log(`player ${player.getName()} want to get help information related to teleport`);
+  console.log(`player ${player.getName().name} want to get help information related to teleport`);
   return next();
 });
 
 // Define a command that can be triggered by /msg or /message
 PlayerEvent.onCommandText(["msg", "message"], ({ player, subcommand, next }) => {
   console.log(
-    `player ${player.getName()} entered this command, and may also have entered a subcommand ${subcommand.toString()}`,
+    `player ${player.getName().name} entered this command, and may also have entered a subcommand ${subcommand.toString()}`,
   );
 
   // It is equivalent to the player entering / message global or / msg global

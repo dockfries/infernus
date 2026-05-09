@@ -13,7 +13,7 @@ This means that you should use the `JavaScript` library, and you no longer need 
 
 ## Get string
 
-For most string fetches, you no longer need to define a fixed-length array as native developers do. The commonly used functions have been dealt with internally in `Infernus`. The principle is that an array of strings with maximum length is defined, and then the array is automatically iterated to the point where the first byte is `0` to intercept the string, such as `GetPlayerName`, that is `player.getName()`.
+For most string fetches, you no longer need to define a fixed-length array as native developers do. The commonly used functions have been dealt with internally in `Infernus`. The principle is that an array of strings with maximum length is defined, and then the array is automatically iterated to the point where the first byte is `0` to intercept the string, such as `GetPlayerName`, that is `player.getName().name`.
 
 The method of interception comes from the [practical functions](./i18n.md#practical-functions) in internationalization. If you encounter some similar scenarios, you do not have to repeat the wheel.
 

@@ -179,7 +179,7 @@ import { Player, PlayerEvent } from "@infernus/core";
 PlayerEvent.onConnect(({ player, next }) => {
   const players = Player.getInstances(); // Obtener un arreglo de todas las instancias de jugador
   players.forEach((p) => {
-    p.sendClientMessage("#fff", `jugador ${player.getName()} conectado`);
+    p.sendClientMessage("#fff", `jugador ${player.getName().name} conectado`);
   });
 
   const player = Player.getInstance(0); // Obtener la instancia de un jugador cuyo id es 0
@@ -206,14 +206,14 @@ import { Player, PlayerEvent } from "@infernus/core";
 
 // Definir un comando de primer nivel
 PlayerEvent.onCommandText("ayuda", ({ player, next }) => {
-  console.log(`jugador ${player.getName()}, hola`);
+  console.log(`jugador ${player.getName().name}, hola`);
   return next();
 });
 
 // Definir un comando de segundo nivel
 PlayerEvent.onCommandText("ayuda teletransporte", ({ player, next }) => {
   console.log(
-    `jugador ${player.getName()} desea obtener información de ayuda relacionada con la teletransportación`,
+    `jugador ${player.getName().name} desea obtener información de ayuda relacionada con la teletransportación`,
   );
   return next();
 });
@@ -221,7 +221,7 @@ PlayerEvent.onCommandText("ayuda teletransporte", ({ player, next }) => {
 // Definir un comando que puede ser activado por /msg o /message
 PlayerEvent.onCommandText(["msg", "mensaje"], ({ player, subcommand, next }) => {
   console.log(
-    `el jugador ${player.getName()} introdujo este comando, y también puede haber introducido un subcomando ${subcommand.toString()}`,
+    `el jugador ${player.getName().name} introdujo este comando, y también puede haber introducido un subcomando ${subcommand.toString()}`,
   );
 
   // Equivale a que el jugador introduzca /message global o /msg global
