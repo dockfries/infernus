@@ -21,7 +21,7 @@ import {
 import { inflictDamage } from "../internal/damage";
 import { damageFeedUpdate } from "../internal/damageFeed";
 import { saveSyncData } from "../internal/raknet";
-import { spawnPlayerInPlace } from "../internal/set";
+import { spawnPlayerInPlace, updateHealthBar } from "../internal/set";
 import { createVendingMachines, destroyVendingMachines } from "../internal/vendingMachines";
 import { isBulletWeapon } from "./is";
 
@@ -181,12 +181,14 @@ export function setWeaponMaxRange(weaponId: WC_WeaponEnum, range: number) {
 export function setPlayerMaxHealth(player: Player, value: number) {
   if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
     playerMaxHealth.set(player.id, value);
+    updateHealthBar(player, true);
   }
 }
 
 export function setPlayerMaxArmour(player: Player, value: number) {
   if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
     playerMaxArmour.set(player.id, value);
+    updateHealthBar(player, true);
   }
 }
 
