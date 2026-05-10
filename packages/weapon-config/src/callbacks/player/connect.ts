@@ -71,10 +71,7 @@ import { WC_WeaponEnum } from "../../enums";
 import { orig_playerMethods } from "../..//hooks/origin";
 import { damageFeedUpdate } from "../../functions/internal/damageFeed";
 import { freezeSyncPacket } from "../../functions/internal/raknet";
-import {
-  // setFakeFacingAngle,
-  setHealthBarVisible,
-} from "../../functions/internal/set";
+import { setFakeFacingAngle, setHealthBarVisible } from "../../functions/internal/set";
 import { removeDefaultVendingMachines } from "../../functions/internal/vendingMachines";
 
 PlayerEvent.onConnect(({ player, next }) => {
@@ -176,7 +173,7 @@ PlayerEvent.onConnect(({ player, next }) => {
 
   orig_playerMethods.setTeam.call(player, playerTeam.get(player.id));
   freezeSyncPacket(player, false);
-  // setFakeFacingAngle(player);
+  setFakeFacingAngle(player);
   damageFeedUpdate(player);
 
   if (innerWeaponConfig.CUSTOM_VENDING_MACHINES) {

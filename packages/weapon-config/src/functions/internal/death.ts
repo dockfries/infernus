@@ -26,7 +26,7 @@ import {
 } from "../../struct";
 import { onPlayerDeathFinished } from "./event";
 import { freezeSyncPacket } from "./raknet";
-import { updateHealthBar } from "./set";
+import { updateHealthBar, setFakeFacingAngle } from "./set";
 
 export function wc_DeathSkipEnd(player: Player) {
   orig_playerMethods.toggleControllable.call(player, true);
@@ -177,7 +177,7 @@ export function wc_PlayerDeathRespawn(player: Player) {
 
   if (!onPlayerDeathFinished(player, true)) {
     updateHealthBar(player);
-    // setFakeFacingAngle(player);
+    setFakeFacingAngle(player);
     freezeSyncPacket(player, false);
 
     return;
@@ -192,7 +192,7 @@ export function wc_PlayerDeathRespawn(player: Player) {
   }
 
   orig_playerMethods.setVirtualWorld.call(player, innerWeaponConfig.DEATH_WORLD);
-  // setFakeFacingAngle(player);
+  setFakeFacingAngle(player);
   orig_playerMethods.toggleSpectating.call(player, true);
   orig_playerMethods.toggleSpectating.call(player, false);
 }

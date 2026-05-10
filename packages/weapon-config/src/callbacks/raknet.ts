@@ -11,7 +11,7 @@ import {
   blockAdminTeleport,
   fakeArmour,
   fakeHealth,
-  // fakeQuat,
+  fakeQuat,
   gogglesTick,
   gogglesUsed,
   lastSyncData,
@@ -89,9 +89,9 @@ IPacket(WC_PLAYER_SYNC, ({ playerId, bs, next }) => {
     onFootData.armour = fakeArmour.get(playerId);
   }
 
-  // if (fakeQuat.get(playerId)[0] === fakeQuat.get(playerId)[0]) {
-  //   onFootData.quaternion = fakeQuat.get(playerId);
-  // }
+  if (!isNaN(fakeQuat.get(playerId)[0])) {
+    onFootData.quaternion = fakeQuat.get(playerId);
+  }
 
   if (onFootData.weaponId === WeaponEnum.KNIFE && !innerGameModeConfig.knifeSync) {
     onFootData.keys &= ~KeysEnum.HANDBRAKE;

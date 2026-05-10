@@ -45,7 +45,7 @@ import { freezeSyncPacket, saveSyncData } from "../../functions/internal/raknet"
 import {
   updateHealthBar,
   updatePlayerVirtualWorld,
-  // setFakeFacingAngle,
+  setFakeFacingAngle,
   spawnPlayerInPlace,
 } from "../../functions/internal/set";
 import { onPlayerDamageDone, onPlayerDeathFinished } from "../../functions/internal/event";
@@ -167,7 +167,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
   updatePlayerVirtualWorld(player);
   updateHealthBar(player, true);
   freezeSyncPacket(player, false);
-  // setFakeFacingAngle(player);
+  setFakeFacingAngle(player);
   damageFeedUpdate(player);
 
   if (orig_playerMethods.getTeam.call(player) !== playerTeam.get(player.id)) {
