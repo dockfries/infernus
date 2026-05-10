@@ -160,18 +160,24 @@ export class CefBrowser {
     return ret;
   }
 
+  // on("eventName", raw: string) => {
+  //   const decodeData = new TextDecoder(JSON.parse(raw)).decode();
+  //   const jsonData = JSON.parse(decodeData);
+  //   ...
+  // }
   emitEvent(eventName: string, data: any) {
     this.throwIfInvalid();
 
-    const buf = I18n.encodeToBuf(JSON.stringify(data), "utf8");
+    const buf = I18n.encodeToBuf(JSON.stringify(data), "utf8").slice(0, -1);
+    const str = JSON.stringify(buf);
 
     return samp.callPublic(
       "patchCefEmitEvent",
-      "iisa",
+      "iiss",
       this.sourceInfo.player.id,
       this.browserId,
       eventName,
-      buf,
+      str,
     ) as number;
   }
 

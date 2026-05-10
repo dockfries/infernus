@@ -121,16 +121,24 @@ const [onChatInputState] = defineEvent({
   },
 });
 
+// const rawData = {example: "test"};
+// const stringifyData = JSON.stringify(rawData);
+// const buf = new TextEncoder().encode(stringifyData);
+// const payload = JSON.stringify(buf);
+// emit("sampnode:cef," payload);
 const [onRecv] = defineEvent({
   name: "OnSampNodeCefRecv",
-  identifier: "iiai",
-  isNative: false,
-  beforeEach(playerId: number, browserId: number, buffer: number[]) {
+  identifier: "iis",
+  beforeEach(playerId: number, browserId: number, raw: string) {
     const player = Player.getInstance(playerId)!;
+    const buffer = JSON.parse(raw);
+    const data = I18n.decodeFromBuf(buffer);
     return {
       player,
       browser: CefBrowser.getInstance(browserId, player)!,
-      data: I18n.decodeFromBuf(buffer),
+      raw,
+      data,
+      buffer,
     };
   },
 });
