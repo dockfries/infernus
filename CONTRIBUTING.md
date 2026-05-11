@@ -13,5 +13,5 @@ Thanks for lending a hand 👋
 
 ### Coding conventions
 
-- We use ESLint to lint and Prettier to format the codebase. Before you commit, all files will be formatted automatically.
+- We use [oxc](https://oxc.rs/) to lint and format the codebase. Before you commit, all files will be formatted automatically.
 - We use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). Please use a prefix. If your PR has multiple commits and some of them don't follow the Conventional Commits rule, we'll do a squash merge.
