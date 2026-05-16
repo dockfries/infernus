@@ -55,39 +55,38 @@ export class CA_Object {
   }
 
   setPos(x: number, y: number, z: number) {
-    if (!this.isValid() || !this.objectInstance?.isValid()) return INVALID_CA_ID;
+    if (this.isValid() <= 0 || !this.objectInstance?.isValid()) return false;
     this.objectInstance.setPos(x, y, z);
     return setObjectPos(this.collisionID, x, y, z);
   }
 
   setRot(rx: number, ry: number, rz: number) {
-    if (!this.isValid() || !this.objectInstance?.isValid()) return INVALID_CA_ID;
+    if (this.isValid() <= 0 || !this.objectInstance?.isValid()) return false;
     this.objectInstance.setRot(rx, ry, rz);
     return setObjectRot(this.collisionID, rx, ry, rz);
   }
 
   setExtraID(type: number, data: number) {
-    if (!this.isValid()) return INVALID_CA_ID;
+    if (this.isValid() <= 0) return false;
     return setObjectExtraID(this.collisionID, type, data);
   }
 
   getExtraID(type: number) {
-    if (!this.isValid()) return INVALID_CA_ID;
+    if (this.isValid() <= 0) return INVALID_CA_ID;
     return getObjectExtraID(this.collisionID, type);
   }
 
   isValid() {
-    if (this.collisionID <= INVALID_CA_ID) return false;
     return isValidObject(this.collisionID);
   }
 
   getCollisionID() {
-    if (!isValidObject(this.collisionID)) return -2;
+    if (this.isValid() <= 0) return -2;
     return this.collisionID;
   }
 
   getObjectId() {
-    if (!isValidObject(this.collisionID)) return -2;
+    if (this.isValid() <= 0) return -2;
     return this.objectInstance?.id || StreamerMiscellaneous.INVALID_ID;
   }
 }
