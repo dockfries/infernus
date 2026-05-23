@@ -1,6 +1,6 @@
 # Infernus
 
-[![npm](https://img.shields.io/npm/v/@infernus/core)](https://www.npmx.dev/package/@infernus/core) ![npm](https://img.shields.io/npm/dw/@infernus/core) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/core)
+[![npm](https://img.shields.io/npm/v/@infernus/core)](https://www.npmx.dev/package/@infernus/core) ![npm](https://img.shields.io/npm/dw/@infernus/core) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/core) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/dockfries/infernus)
 
 [📚 **Documentation**](https://dockfries.github.io/infernus/)
 
