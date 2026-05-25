@@ -73,6 +73,14 @@ jsonToRec(filePath, data);  // → Promise<void> — write JSON to .rec file
 enum RecordTypesEnum { NONE = 0, DRIVER = 1, ONFOOT = 2 }
 ```
 
+## Exception
+
+`RecException` is thrown on invalid recording file parsing or conversion errors.
+
+```typescript
+import { RecException } from "@infernus/rec";
+```
+
 ## Types
 
 ```typescript

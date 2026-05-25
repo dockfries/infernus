@@ -46,6 +46,14 @@ enum RequestPacket {
 }
 ```
 
+## Exception
+
+`QueryException` is thrown on network errors, timeout, or invalid response data during server queries.
+
+```typescript
+import { QueryException } from "@infernus/query";
+```
+
 ## Types
 
 ```typescript

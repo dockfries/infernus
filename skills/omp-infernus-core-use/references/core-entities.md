@@ -1,5 +1,7 @@
 # @infernus/core — Entity API Reference
 
+> **Exception classes**: Each entity has a corresponding `*Exception` (e.g. `PlayerException`, `VehicleException`) thrown on invalid ID, unpooled access, or operation failure. See sections below for specifics.
+
 > **All API calls in this reference must be placed inside event callbacks** (`GameMode.onInit`, `PlayerEvent.onConnect`, `onCommandText`, etc.). They will silently fail at module/global context — samp-node is not ready until `OnGameModeInit`.
 
 ## Player

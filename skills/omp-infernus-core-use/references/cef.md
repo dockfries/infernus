@@ -73,6 +73,14 @@ enum CefAudioModeEnum { WORLD, UI }
 enum CefHudComponentEnum { ALL, AMMO, ARMOUR, BREATH, CROSSHAIR, HEALTH, MONEY, RADAR, WANTED_STARS, WEAPON }
 ```
 
+## Exception
+
+`CefException` is thrown on browser creation failure, invalid resource operations, or native errors.
+
+```typescript
+import { CefException } from "@infernus/cef";
+```
+
 ## Types
 
 ```typescript

@@ -354,6 +354,48 @@ const circle = DynamicArea.createCircle({ x: 0, y: 0, z: 0, size: 50 });
 Streamer.setTickRate(50);
 ```
 
+## Exception Classes
+
+`@infernus/core` throws typed exceptions on invalid operations. Each entity and system has its own:
+
+| Exception | Thrown when |
+|-----------|-------------|
+| `CoreException` | General core errors |
+| `PlayerException` | Invalid player ID / unpooled access |
+| `VehicleException` | Invalid vehicle ID / unpooled access |
+| `ActorException` | Invalid actor ID |
+| `NpcException` | Invalid NPC ID |
+| `ObjectMpException` | Invalid object ID |
+| `PickupException` | Invalid pickup ID |
+| `GangZoneException` | Invalid gang zone ID |
+| `TextDrawException` | Invalid textdraw ID |
+| `TextLabelException` | Invalid textlabel ID |
+| `MenuException` | Invalid menu ID |
+| `DialogException` | Dialog operation error |
+| `NetStatsException` | NetStats lookup error |
+| `GameModeException` | GameMode operation error |
+| `HookException` | Hook interception error |
+| `I18nException` | i18n lookup or encoding error |
+| `DisconnectException` | Operation on disconnected player |
+| `ClientCheckException` | Client check error |
+| `StreamerException` | Streamer base error |
+| `Dynamic*Exception` | Per-entity streamer errors |
+| `FilterScriptException` | FilterScript lifecycle error |
+
+```typescript
+import { ActorException } from "@infernus/core";
+
+const actor = new Actor({ skin: 0, x: 0, y: 0, z: 0, rotation: 0 });
+// actor.create();  // forgot to create
+try {
+    actor.getPos();  // throws ActorException: "Cannot getPos before create"
+} catch (e) {
+    if (e instanceof ActorException) {
+        // handle
+    }
+}
+```
+
 ## Companion Packages
 
 | Package | Wraps | Description |

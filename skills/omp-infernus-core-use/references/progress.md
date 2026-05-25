@@ -43,3 +43,11 @@ bar.show();                bar.hide();
 bar.getUsedTextDrawIds();  // → number[]
 bar.destroy();
 ```
+
+## Exception
+
+`ProgressBarException` is thrown on invalid configuration (out-of-range values, invalid direction) or destroyed bar access.
+
+```typescript
+import { ProgressBarException } from "@infernus/progress";
+```

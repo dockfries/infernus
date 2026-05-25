@@ -74,6 +74,14 @@ WazeEvent.onPlayerRouteFinish(({ player, finishedRoute, next }) => { return next
 WazeEvent.onPlayerRouteUpdate(({ player, currentRoute, next }) => { return next(); });
 ```
 
+## Exception
+
+`GpsException` is thrown on invalid node/path/connection operations, including failed lookups.
+
+```typescript
+import { GpsException } from "@infernus/gps";
+```
+
 ## Constants & Enums
 
 ```typescript

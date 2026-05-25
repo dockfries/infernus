@@ -23,18 +23,34 @@ getPointDistanceToPoint3D(x1, y1, z1, x2, y2, z2);
 
 ## @infernus/mapandreas
 
-Wraps [MapAndreas plugin](https://github.com/Pottus/MapAndreas). Height map queries.
+Pure TypeScript heightmap query, no native plugin required. Reads `.and` files like the original MapAndreas plugin.
 
 ```typescript
-import { MapAndreas, MapAndreasMode } from "@infernus/mapandreas";
+import { MapAndreas, MapAndreasMode, MapAndreasError } from "@infernus/mapandreas";
 
 GameMode.onInit(({ next }) => {
-    MapAndreas.init(MapAndreasMode.FULL, "SA_Full.and");
+    MapAndreas.init(MapAndreasMode.Full, "SA_Full.and");
     return next();
 });
-MapAndreas.findZFor2DCoord(x, y);      // → { z, ret }
-MapAndreas.findAverageZ(x, y);         // → { z, ret }
+MapAndreas.findZFor2DCoord(x, y);      // → { z, ret: MapAndreasError }
+MapAndreas.findAverageZ(x, y);         // → { z, ret: MapAndreasError }
+MapAndreas.setZFor2DCoord(x, y, z);    // → boolean
+MapAndreas.saveCurrentHMap(name);      // → Promise<boolean>
 MapAndreas.unload();
+```
+
+`MapAndreasException` is thrown on initialization failure (missing/invalid file), uninitialized access, or unknown mode.
+
+```typescript
+import { MapAndreasException } from "@infernus/mapandreas";
+```
+
+## @infernus/map-loader
+
+`MapLoaderException` is thrown on invalid map ID operations, parse errors, or conversion failures.
+
+```typescript
+import { MapLoaderException } from "@infernus/map-loader";
 ```
 
 ## @infernus/fs

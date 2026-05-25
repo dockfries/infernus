@@ -35,6 +35,14 @@ const obj = createQRObject(qrText, {
 setObjectQRMaterial(existingObj, qrText, material);
 ```
 
+## Exception
+
+`QRException` is thrown on invalid QR generation parameters or material application failures.
+
+```typescript
+import { QRException } from "@infernus/qrcode";
+```
+
 ## Types
 
 ```typescript

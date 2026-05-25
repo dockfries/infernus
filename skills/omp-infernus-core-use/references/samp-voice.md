@@ -94,6 +94,14 @@ reverb.detachStream(stream);
 reverb.delete();
 ```
 
+## Exception
+
+`SampVoiceException` is thrown on stream creation failure, invalid player/key operations, or initialization errors.
+
+```typescript
+import { SampVoiceException } from "@infernus/samp-voice";
+```
+
 ## Constants & Enums
 
 ```typescript

@@ -204,6 +204,14 @@ PR_BITS_TO_BYTES(bits);    // Math.ceil(bits / 8)
 PR_BYTES_TO_BITS(bytes);   // bytes * 8
 ```
 
+## Exception
+
+`RakNetException` is thrown on BitStream operation errors, invalid native handles, or packet interception failures.
+
+```typescript
+import { RakNetException } from "@infernus/raknet";
+```
+
 ## Types
 
 ```typescript

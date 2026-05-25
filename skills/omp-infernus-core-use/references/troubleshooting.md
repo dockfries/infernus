@@ -74,6 +74,26 @@ try {
 }
 ```
 
+## Exception Classes
+
+Each `@infernus/*` package provides a custom `*Exception` class (extends `Error`) for runtime errors. Check the package's reference page for the specific exception name and thrown conditions.
+
+```typescript
+import { CoreException } from "@infernus/core";
+import { RakNetException } from "@infernus/raknet";
+
+try {
+    // game API calls
+} catch (e) {
+    if (e instanceof CoreException) {
+        // handle core-specific error
+    }
+    if (e instanceof RakNetException) {
+        // handle raknet-specific error
+    }
+}
+```
+
 ## Memory leak / events firing multiple times
 
 **Cause:** Event listeners registered in a filterscript `load()` function were not returned as cleanup functions.
