@@ -530,10 +530,12 @@ export class Player {
     return Player.__inject__.createExplosion(this.id, x, y, z, type, radius);
   }
   static isConnected(id: number): boolean {
+    const player = Player.getInstance(id);
+    if (player && player[internalPlayerProps].disconnected) return false;
     return Player.__inject__.isConnected(id);
   }
   isConnected(): boolean {
-    return !this[internalPlayerProps].disconnected && Player.isConnected(this.id);
+    return !this[internalPlayerProps].disconnected && Player.__inject__.isConnected(this.id);
   }
   disableRemoteVehicleCollisions(disable: boolean) {
     return Player.__inject__.disableRemoteVehicleCollisions(this.id, disable);

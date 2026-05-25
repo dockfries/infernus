@@ -125,7 +125,7 @@ onDisconnect(({ player, next }) => {
 });
 
 function fpsHeartbeat(player: Player) {
-  if (!Player.isConnected(player.id)) return;
+  if (!player.isConnected()) return;
 
   const now = Date.now();
 
