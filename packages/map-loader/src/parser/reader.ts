@@ -7,7 +7,7 @@ import { materialTextParser } from "./materialText";
 import { materialParser } from "./material";
 import { removeBuildingParser } from "./removeBuilding";
 import { processLineByLine } from "../utils";
-import { MapLoaderError } from "../utils/error";
+import { MapLoaderException } from "../utils/error";
 
 export async function mapReader(options: IMapLoadOptions) {
   let currentLine = 0;
@@ -29,14 +29,14 @@ export async function mapReader(options: IMapLoadOptions) {
       removedBuilding.push(removeBuildingParser(line));
     } else if (operator === "mat") {
       if (!materialTarget) {
-        throw new MapLoaderError({
+        throw new MapLoaderException({
           msg: `parseLine: no object target, cannot material`,
         });
       }
       materialParser(materialTarget, line);
     } else if (operator === "txt") {
       if (!materialTarget) {
-        throw new MapLoaderError({
+        throw new MapLoaderException({
           msg: `parseLine: no object target, cannot materialText`,
         });
       }
@@ -113,9 +113,9 @@ export async function mapReader(options: IMapLoadOptions) {
     objects.length = 0;
     removedBuilding.length = 0;
 
-    if (err instanceof MapLoaderError) {
+    if (err instanceof MapLoaderException) {
       err.context.msg = `lineNo: ${currentLine} ${err.context.msg}`;
-      throw new MapLoaderError(err.context);
+      throw new MapLoaderException(err.context);
     }
 
     throw err;

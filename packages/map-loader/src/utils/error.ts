@@ -1,4 +1,4 @@
-export class MapLoaderError extends Error {
+export class MapLoaderException extends Error {
   constructor(
     public readonly context: {
       type?: string;
@@ -13,7 +13,7 @@ export class MapLoaderError extends Error {
 
 export function ensureLength(type: string, details: unknown, minLength: number, length: number) {
   if (length < minLength) {
-    throw new MapLoaderError({
+    throw new MapLoaderException({
       type,
       msg: `Expected ${minLength} elements, got ${length}`,
       details: JSON.stringify(details),

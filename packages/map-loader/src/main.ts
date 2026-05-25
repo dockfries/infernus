@@ -5,7 +5,7 @@ import { mapReader } from "./parser/reader";
 import { INTERNAL_MAP, INVALID_MAP_ID } from "./constants";
 import type { IMapLoadOptions } from "./interfaces";
 import { uniqId } from "./utils";
-import { MapLoaderError } from "./utils/error";
+import { MapLoaderException } from "./utils/error";
 
 GameMode.onExit(({ next }) => {
   INTERNAL_MAP.loadedMaps.clear();
@@ -34,7 +34,7 @@ export async function loadMap(options: IMapLoadOptions) {
 
 export function unloadMap(mapId: number) {
   if (!INTERNAL_MAP.loadedMaps.has(mapId)) {
-    throw new MapLoaderError({ msg: `invalid mapId ${mapId}` });
+    throw new MapLoaderException({ msg: `invalid mapId ${mapId}` });
   }
 
   const map = INTERNAL_MAP.loadedMaps.get(mapId)!;
@@ -78,7 +78,7 @@ export function unloadMap(mapId: number) {
 export async function reloadMap(mapId: number) {
   const mapInfo = INTERNAL_MAP.loadedMaps.get(mapId);
   if (!mapInfo) {
-    throw new MapLoaderError({ msg: `invalid mapId ${mapId}` });
+    throw new MapLoaderException({ msg: `invalid mapId ${mapId}` });
   }
   unloadMap(mapId);
   return loadMap(mapInfo.options);
@@ -109,4 +109,5 @@ export function getMapInfoFromID(id: number) {
 export { mapConverter } from "./converter";
 export { mapExporter } from "./exporter";
 export { INVALID_MAP_ID };
+export { MapLoaderException } from "./utils/error";
 export * from "./interfaces";

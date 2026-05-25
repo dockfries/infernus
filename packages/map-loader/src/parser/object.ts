@@ -1,6 +1,6 @@
 import { DynamicObject } from "@infernus/core";
 import { IMapLoadOptions } from "../interfaces";
-import { ensureLength, MapLoaderError } from "../utils/error";
+import { ensureLength, MapLoaderException } from "../utils/error";
 
 export function objParser(line: string[], options: IMapLoadOptions) {
   ensureLength("objParser", line, 8, line.length);
@@ -8,7 +8,7 @@ export function objParser(line: string[], options: IMapLoadOptions) {
   const objInfo = line.map((item) => {
     const num = Number(item);
     if (Number.isNaN(num)) {
-      throw new MapLoaderError({ msg: `invalid value ${item}` });
+      throw new MapLoaderException({ msg: `invalid value ${item}` });
     }
     return num;
   });

@@ -5,7 +5,7 @@ import { materialConverter } from "./material";
 import { materialTextConverter } from "./materialText";
 import { removeBuildingConverter } from "./removeBuilding";
 import { IMapConverterOptions } from "../interfaces";
-import { MapLoaderError } from "../utils/error";
+import { MapLoaderException } from "../utils/error";
 import assert from "node:assert";
 
 export async function mapConverter(options: IMapConverterOptions) {
@@ -102,7 +102,7 @@ export async function mapConverter(options: IMapConverterOptions) {
       }
 
       if (convertedArr.some((val) => Number.isNaN(val) || val === "NaN")) {
-        throw new MapLoaderError({
+        throw new MapLoaderException({
           msg: `Invalid Value Converted: NaN`,
           details: line,
         });
@@ -115,9 +115,9 @@ export async function mapConverter(options: IMapConverterOptions) {
       }
     }
   } catch (err) {
-    if (err instanceof MapLoaderError) {
+    if (err instanceof MapLoaderException) {
       err.context.msg = `lineNo: ${currentLine} ${err.context.msg}`;
-      throw new MapLoaderError(err.context);
+      throw new MapLoaderException(err.context);
     }
 
     throw err;
