@@ -112,7 +112,7 @@ export function createLabelCommands() {
     const [attachPlayerId] = subcommand;
     if (!attachPlayerId) return next();
 
-    if (Player.getInstance(+attachPlayerId)) {
+    if (!Player.getInstance(+attachPlayerId)) {
       return next();
     }
 

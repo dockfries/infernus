@@ -369,7 +369,7 @@ export class ModelSelectionMenu {
         this.setModelBox(i, this[internalPropsKey].models[i]);
       }
 
-      const page = `1/${this[internalPropsKey].pageCount}}`;
+      const page = `1/${this[internalPropsKey].pageCount}`;
       this.pageNumber.setString(page).show();
       this.headerTd.show();
 

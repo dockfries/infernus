@@ -19,11 +19,11 @@ export function isBulletWeapon(weaponId: number) {
 
 export function isHighRateWeapon(weaponId: number) {
   switch (weaponId) {
-    case (WC_WeaponEnum.FLAMETHROWER,
-    WC_WeaponEnum.SPRAYCAN,
-    WC_WeaponEnum.FIREEXTINGUISHER,
-    WC_WeaponEnum.CARPARK,
-    WC_WeaponEnum.REASON_DROWN): {
+    case WC_WeaponEnum.FLAMETHROWER:
+    case WC_WeaponEnum.SPRAYCAN:
+    case WC_WeaponEnum.FIREEXTINGUISHER:
+    case WC_WeaponEnum.CARPARK:
+    case WC_WeaponEnum.REASON_DROWN: {
       return true;
     }
   }

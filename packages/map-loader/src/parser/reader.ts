@@ -85,7 +85,7 @@ export async function mapReader(options: IMapLoadOptions) {
         p.removeBuilding(...rmv);
       });
 
-      if (samp.defined && samp.defined._colandreas_included) {
+      if (typeof samp !== "undefined" && samp.defined && samp.defined._colandreas_included) {
         try {
           const require =
             typeof global.require !== "undefined" ? global.require : createRequire(import.meta.url);

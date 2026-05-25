@@ -58,17 +58,13 @@ async function updateWaze(player: Player, x: number, y: number, z: number) {
 
   const start = MapNode.getClosestToPoint(pos.x, pos.y, pos.z);
   const target = MapNode.getClosestToPoint(x, y, z);
-  return GpsPath.find(start, target)
-    .then((path) => {
-      const oldRoutes = wazeGPS_.routes.slice();
-      wazeGPS_.routes = [];
-      onPlayerWazeRouters(path, player);
-      destroyWazeRoutesGPS(player, oldRoutes);
-      return true;
-    })
-    .catch((err) => {
-      throw err;
-    });
+  return GpsPath.find(start, target).then((path) => {
+    const oldRoutes = wazeGPS_.routes.slice();
+    wazeGPS_.routes = [];
+    onPlayerWazeRouters(path, player);
+    destroyWazeRoutesGPS(player, oldRoutes);
+    return true;
+  });
 }
 
 function onPlayerWazeRouters(path: GpsPath, player: Player) {

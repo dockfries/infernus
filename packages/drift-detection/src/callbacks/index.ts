@@ -20,7 +20,7 @@ export const [onPlayerUpdate, triggerPlayerUpdate] = defineEvent({
 });
 
 export const [onPlayerEnd, triggerPlayerEnd] = defineEvent({
-  name: "triggerPlayerEnd",
+  name: "OnPlayerDriftEnd",
   isNative: false,
   beforeEach(player: Player, reason: DriftEndReasonEnum, distance: number, time: number) {
     return { player, reason, distance, time };

@@ -82,7 +82,7 @@ let elevatorTurnTimer: NodeJS.Timeout | null = null;
 // the Zombotech Lab elevator.
 
 function removeBuilding(p: Player) {
-  if (!p.isNpc()) return;
+  if (p.isNpc()) return;
   // Remove default GTASA SF ZomboTech map object and LOD for the player
   // (so any player currently ingame does not have to rejoin for them
   //  to be removed when this filterScript is loaded)

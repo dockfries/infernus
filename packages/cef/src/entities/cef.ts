@@ -106,22 +106,22 @@ export class CefBrowser {
     playerBrowserPool.get(player)!.set(this.browserId, this);
   }
 
-  setPos() {
+  setPos(x: number, y: number, z: number) {
     this.throwIfInvalid();
 
     if (this.sourceInfo.type !== "2dWorld") {
       throw new CefException("setPos can only be used with World2DBrowser");
     }
 
-    const { player, worldX, worldY, worldZ } = this.sourceInfo;
+    const { player } = this.sourceInfo;
     return samp.callNative(
       "CEF_SetWorld2DBrowserPos",
       "iifff",
       player.id,
       this.browserId,
-      worldX,
-      worldY,
-      worldZ,
+      x,
+      y,
+      z,
     ) as number;
   }
 

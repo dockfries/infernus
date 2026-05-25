@@ -7,7 +7,7 @@ export class MapAndreas {
   }
 
   static init(mode: MapAndreasMode, name: string) {
-    return !!samp.callNative("MapAndreas_Init", "isi", mode, name);
+    return !!samp.callNative("MapAndreas_Init", "isi", mode, name, name.length);
   }
   static unload() {
     return !!samp.callNative("MapAndreas_Unload", "");
@@ -24,7 +24,7 @@ export class MapAndreas {
     return { z, ret };
   }
   static setZFor2DCoord(x: number, y: number, z: number) {
-    return !!samp.callNative("setZFor2DCoord", "iii", x, y, z);
+    return !!samp.callNative("MapAndreas_SetZ_For2DCoord", "fff", x, y, z);
   }
 }
 

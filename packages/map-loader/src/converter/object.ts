@@ -69,7 +69,7 @@ export function objConverter(funcMatch: RegExpMatchArray, line: string) {
     let _streamerDistance = +streamerDistance;
 
     if (!streamerDistance || streamerDistance === "STREAMER_OBJECT_SD") {
-      _streamerDistance = StreamerDistances.OBJECT_DD;
+      _streamerDistance = StreamerDistances.OBJECT_SD;
     }
 
     return {
@@ -119,7 +119,7 @@ export function objConverter(funcMatch: RegExpMatchArray, line: string) {
     let _streamerDistance = +streamerDistance;
 
     if (!streamerDistance || streamerDistance === "STREAMER_OBJECT_SD") {
-      _streamerDistance = StreamerDistances.OBJECT_DD;
+      _streamerDistance = StreamerDistances.OBJECT_SD;
     }
 
     return {

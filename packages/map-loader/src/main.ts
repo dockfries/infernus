@@ -56,7 +56,7 @@ export function unloadMap(mapId: number) {
 
   INTERNAL_MAP.loadedMaps.delete(mapId);
 
-  if (samp.defined && samp.defined._colandreas_included) {
+  if (typeof samp !== "undefined" && samp.defined && samp.defined._colandreas_included) {
     try {
       const require =
         typeof global.require !== "undefined" ? global.require : createRequire(import.meta.url);
@@ -75,17 +75,19 @@ export function unloadMap(mapId: number) {
 
   return mapId;
 }
-export function reloadMap(mapId: number) {
+export async function reloadMap(mapId: number) {
   const mapInfo = INTERNAL_MAP.loadedMaps.get(mapId);
   if (!mapInfo) {
     throw new MapLoaderError({ msg: `invalid mapId ${mapId}` });
   }
-  loadMap(mapInfo.options);
+  unloadMap(mapId);
+  return loadMap(mapInfo.options);
 }
-export function reloadMaps() {
-  INTERNAL_MAP.loadedMaps.keys().forEach((mapId) => {
-    reloadMap(mapId);
-  });
+export async function reloadMaps() {
+  const ids = [...INTERNAL_MAP.loadedMaps.keys()];
+  for (const mapId of ids) {
+    await reloadMap(mapId);
+  }
 }
 
 export function getMapCount() {

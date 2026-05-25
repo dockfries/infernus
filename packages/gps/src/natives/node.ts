@@ -99,15 +99,15 @@ export class MapNode {
     return angle;
   }
 
-  getHighest(): number {
+  static getHighest(): number {
     const nodeId: number = samp.callNative("GetHighestMapNodeID", "");
     return nodeId;
   }
 
-  getRandom(): MapNode {
-    const [nodeId, ret]: number[] = samp.callNative("GetRandomMapNode", "I");
-    if (ret !== GpsError.None) {
-      throw new GpsException(ret);
+  static getRandom(): MapNode {
+    const nodeId: number = samp.callNative("GetRandomMapNode", "I");
+    if (nodeId === INVALID_MAP_NODE_ID) {
+      throw new GpsException(GpsError.InvalidNode);
     }
     return new MapNode(nodeId);
   }
@@ -133,7 +133,10 @@ export class MapNode {
   }
 
   static saveMapNodesToFile(fileName: string) {
-    const ret = samp.callNative("SaveMapNodesToFile", "s", fileName);
-    return !!ret;
+    const ret: number = samp.callNative("SaveMapNodesToFile", "s", fileName);
+    if (ret !== GpsError.None) {
+      throw new GpsException(ret);
+    }
+    return true;
   }
 }

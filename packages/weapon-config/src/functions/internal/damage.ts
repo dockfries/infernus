@@ -143,13 +143,13 @@ export function processDamage(editable: IProcessDamageArgs) {
 
     case 9.90000057220458984375: {
       switch (editable.weaponId) {
-        case (WC_WeaponEnum.REASON_VEHICLE,
-        WC_WeaponEnum.VEHICLE_M4,
-        WC_WeaponEnum.AK47,
-        WC_WeaponEnum.M4,
-        WC_WeaponEnum.SHOTGUN,
-        WC_WeaponEnum.SAWEDOFF,
-        WC_WeaponEnum.SHOTGSPA): {
+        case WC_WeaponEnum.REASON_VEHICLE:
+        case WC_WeaponEnum.VEHICLE_M4:
+        case WC_WeaponEnum.AK47:
+        case WC_WeaponEnum.M4:
+        case WC_WeaponEnum.SHOTGUN:
+        case WC_WeaponEnum.SAWEDOFF:
+        case WC_WeaponEnum.SHOTGSPA: {
           break;
         }
 
@@ -307,10 +307,10 @@ export function processDamage(editable: IProcessDamageArgs) {
       case 6.6000003814697265625: {
         if (!melee) {
           switch (editable.weaponId) {
-            case (WC_WeaponEnum.UZI,
-            WC_WeaponEnum.TEC9,
-            WC_WeaponEnum.SHOTGUN,
-            WC_WeaponEnum.SAWEDOFF): {
+            case WC_WeaponEnum.UZI:
+            case WC_WeaponEnum.TEC9:
+            case WC_WeaponEnum.SHOTGUN:
+            case WC_WeaponEnum.SAWEDOFF: {
               break;
             }
 
@@ -387,7 +387,8 @@ export function processDamage(editable: IProcessDamageArgs) {
       break;
     }
 
-    case (WC_WeaponEnum.SHOTGUN, WC_WeaponEnum.SAWEDOFF): {
+    case WC_WeaponEnum.SHOTGUN:
+    case WC_WeaponEnum.SAWEDOFF: {
       editable.bullets = editable.amount / 3.30000019073486328125;
 
       if (15.0 - editable.bullets < -0.05) {

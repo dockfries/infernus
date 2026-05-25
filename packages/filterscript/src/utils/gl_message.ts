@@ -78,7 +78,7 @@ export function localMessage(
       fPlayerToPlayerDist = p.getDistanceFromPoint(fPlayerX, fPlayerY, fPlayerZ);
       if (fPlayerToPlayerDist < distance) {
         // receiving player is within the specified distance
-        player.sendClientMessage(color, message);
+        p.sendClientMessage(color, message);
       }
     }
   });

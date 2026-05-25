@@ -40,7 +40,7 @@ export const AdminSpec: IAdminSpecFS = {
           mp &&
           p.isConnected() &&
           p.getState() === PlayerStateEnum.SPECTATING &&
-          mp.gSpectateID === p.id &&
+          mp.gSpectateID === player.id &&
           mp.gSpectateType === ADMIN_SPEC_TYPE.PLAYER &&
           p !== player
         ) {

@@ -185,7 +185,7 @@ function objectSelect(player: Player) {
         p_curPlayerCamD.LOOK_Y -= p_pObjectRate.OBJ_RATE_MOVE;
       }
 
-      if (keys & KeysEnum.ANALOG_LEFT) {
+      if (keys & KeysEnum.ANALOG_RIGHT) {
         p_curPlayerObjM.OBJ_X += p_pObjectRate.OBJ_RATE_MOVE;
         p_curPlayerCamD.POS_X += p_pObjectRate.OBJ_RATE_MOVE;
         p_curPlayerCamD.LOOK_X += p_pObjectRate.OBJ_RATE_MOVE;
@@ -225,7 +225,7 @@ function objectSelect(player: Player) {
         p_curPlayerObjM.OBJ_RY -= p_pObjectRate.OBJ_RATE_ROT;
       }
 
-      if (keys & KeysEnum.ANALOG_LEFT) {
+      if (keys & KeysEnum.ANALOG_RIGHT) {
         p_curPlayerObjM.OBJ_RX += p_pObjectRate.OBJ_RATE_ROT;
       }
 

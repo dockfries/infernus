@@ -39,14 +39,14 @@ export const Drift = {
     }
   },
   disableDetection(player: Player | -1 = -1) {
-    if (player !== -1 && player.id > 0 && player.id < LimitsEnum.MAX_PLAYERS) {
+    if (player !== -1 && player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
       internalVar.g_DriftPlayers.get(player).playerFlags &= ~DriftOptionsEnum.DRIFT_CHECK_ENABLED;
     } else {
       internalVar.g_DriftFlags &= ~DriftOptionsEnum.DRIFT_CHECK_ENABLED;
     }
   },
   isDetectionEnabled(player: Player | -1 = -1) {
-    if (player !== -1 && player.id > 0 && player.id < LimitsEnum.MAX_PLAYERS) {
+    if (player !== -1 && player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
       return !!(
         internalVar.g_DriftPlayers.get(player).playerFlags & DriftOptionsEnum.DRIFT_CHECK_ENABLED
       );
@@ -54,21 +54,21 @@ export const Drift = {
     return !!(internalVar.g_DriftFlags & DriftOptionsEnum.DRIFT_CHECK_ENABLED);
   },
   enableDamageCheck(player: Player | -1 = -1) {
-    if (player !== -1 && player.id > 0 && player.id < LimitsEnum.MAX_PLAYERS) {
+    if (player !== -1 && player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
       internalVar.g_DriftPlayers.get(player).playerFlags |= DriftOptionsEnum.DAMAGE_CHECK_ENABLED;
     } else {
       internalVar.g_DriftFlags |= DriftOptionsEnum.DAMAGE_CHECK_ENABLED;
     }
   },
   disableDamageCheck(player: Player | -1 = -1) {
-    if (player !== -1 && player.id > 0 && player.id < LimitsEnum.MAX_PLAYERS) {
+    if (player !== -1 && player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
       internalVar.g_DriftPlayers.get(player).playerFlags &= ~DriftOptionsEnum.DAMAGE_CHECK_ENABLED;
     } else {
       internalVar.g_DriftFlags &= ~DriftOptionsEnum.DAMAGE_CHECK_ENABLED;
     }
   },
   isDamageCheckEnabled(player: Player | -1 = -1) {
-    if (player !== -1 && player.id > 0 && player.id < LimitsEnum.MAX_PLAYERS) {
+    if (player !== -1 && player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
       return !!(
         internalVar.g_DriftPlayers.get(player).playerFlags & DriftOptionsEnum.DAMAGE_CHECK_ENABLED
       );

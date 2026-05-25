@@ -227,7 +227,7 @@ export function createVehCommands() {
     const vid = player.getVehicle();
     if (vid) {
       const { engine, lights, doors, boot, bonnet, objective } = vid.getParamsEx()!;
-      vid.setParamsEx(engine, lights, true, doors, bonnet, boot, objective);
+      vid.setParamsEx(engine, lights, false, doors, bonnet, boot, objective);
     }
     return next();
   });

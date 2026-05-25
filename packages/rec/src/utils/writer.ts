@@ -112,7 +112,8 @@ export class BinaryWriter {
             if (
               subField.value !== undefined &&
               subField.value !== null &&
-              (!Array.isArray(subField.value) || subField.value.every((v) => !!v))
+              (!Array.isArray(subField.value) ||
+                subField.value.every((v) => v !== undefined && v !== null))
             ) {
               this.writeField(subField);
               foundField = true;

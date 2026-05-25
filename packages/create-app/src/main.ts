@@ -57,7 +57,7 @@ async function successInstalled(projectName: string) {
   });
 
   if (install) {
-    if (!appGeneratePath) throw new Error("appGeneratePath not undefined");
+    if (!appGeneratePath) throw new Error("appGeneratePath is empty");
 
     const options = {
       cwd: appGeneratePath,
@@ -112,26 +112,25 @@ async function initStarter(projectName: string, isRakNet = false) {
 
   await decompress(starterPath, appGeneratePath, { strip: 1 });
 
-  fs.remove(starterPath);
-  fs.remove(resolve(appGeneratePath, ".git"));
-  // fs.remove(resolve(appGeneratePath, ".husky"));
+  await fs.remove(starterPath);
+  await fs.remove(resolve(appGeneratePath, ".git"));
 }
 
-function changePkgName(projectName: string) {
+async function changePkgName(projectName: string) {
   const pkgFilePath = resolve(appGeneratePath, "package.json");
   const pkg = fs.readJsonSync(pkgFilePath);
   pkg.name = projectName;
-  // delete pkg.scripts.prepare;
-  // delete pkg.husky;
-  fs.writeJson(pkgFilePath, pkg, { spaces: 2 });
+  await fs.writeJson(pkgFilePath, pkg, { spaces: 2 });
 }
 
 async function changeConfigJson(password: string, isRakNet: boolean) {
   const configJson = (await readOmpConfig()) || {};
 
+  configJson.rcon = configJson.rcon || {};
   configJson.rcon.password = password;
 
   if (isRakNet) {
+    configJson.pawn = configJson.pawn || {};
     configJson.pawn.main_scripts = ["polyfill_raknet 1"];
   }
 
@@ -198,7 +197,7 @@ async function createApp(args: ArgumentsCamelCase<{ appName?: string }>) {
 
   changePkgName(appName);
 
-  changeConfigJson(password, isRakNet);
+  await changeConfigJson(password, isRakNet);
 
   await successInstalled(appName);
 }

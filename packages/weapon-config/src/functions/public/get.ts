@@ -224,7 +224,7 @@ export function getRejectedHit(player: Player, idx: number) {
     case RejectedReasonEnum.HIT_OUT_OF_RANGE:
     case RejectedReasonEnum.SHOOTING_RATE_TOO_FAST_MULTIPLE:
     case RejectedReasonEnum.HIT_RATE_TOO_FAST_MULTIPLE: {
-      g_HitRejectReasons(reason + "", [i1, i2]);
+      output = g_HitRejectReasons(reason + "", [i1, i2]);
       break;
     }
     case RejectedReasonEnum.HIT_MULTIPLE_PLAYERS:
@@ -235,11 +235,11 @@ export function getRejectedHit(player: Player, idx: number) {
     case RejectedReasonEnum.HIT_INVALID_DAMAGE:
     case RejectedReasonEnum.HIT_INVALID_VEHICLE:
     case RejectedReasonEnum.HIT_DISCONNECTED: {
-      g_HitRejectReasons(reason + "", [i1]);
+      output = g_HitRejectReasons(reason + "", [i1]);
       break;
     }
     default: {
-      g_HitRejectReasons(reason + "");
+      output = g_HitRejectReasons(reason + "");
     }
   }
 

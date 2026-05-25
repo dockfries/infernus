@@ -88,7 +88,7 @@ export function jsonToRec(filePath: string, data: any[]) {
     return writer.writeFile(filePath);
   }
 
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 1; i < data.length; i++) {
     if (hdb.type === RecordTypesEnum.ONFOOT) {
       const odb: any = new OnFootDataBlock();
       Object.keys(odb).forEach((key) => {
