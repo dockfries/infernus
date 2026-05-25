@@ -45,7 +45,7 @@ To install: `#include` the `.inc` file in your gamemode's `.pwn`, compile to `.a
 | `@infernus/colandreas` | public | [ColAndreas](https://github.com/Pottus/ColAndreas) | rayCastLine, CA_Object |
 | `@infernus/cef` | public | [omp-cef](https://github.com/aurora-mp/omp-cef) | CefBrowser |
 | `@infernus/samp-voice` | public | [samp-voice](https://github.com/CocaColaBear/samp-voice) | SampVoice, stream classes |
-| `@infernus/nex-ac` | public | [nex-ac](https://github.com/nex-om/nex-ac) | Anti-cheat events |
+| `@infernus/nex-ac` | public | [nex-ac](https://github.com/NexiusTailer/nex-ac) | Anti-cheat events |
 | `@infernus/gps` | public | [samp-gps-plugin](https://github.com/AmyrAhmady/samp-gps-plugin) | MapNode, WazeEvent |
 | `@infernus/mapandreas` | public | [MapAndreas](https://github.com/Pottus/MapAndreas) | MapAndreas.findZFor2DCoord |
 

@@ -2,7 +2,7 @@
 
 > All API calls must be inside event callbacks (`GameMode.onInit`, etc.). Module-level calls silently fail.
 
-Wraps [nex-ac](https://github.com/nex-om/nex-ac) anti-cheat plugin.
+Wraps [nex-ac](https://github.com/NexiusTailer/nex-ac) anti-cheat plugin.
 
 ```bash
 pnpm add @infernus/core @infernus/nex-ac

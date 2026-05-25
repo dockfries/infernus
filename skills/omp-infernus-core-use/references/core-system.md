@@ -335,6 +335,6 @@ Streamer.setTickRate(50);
 | `@infernus/gps` | [samp-gps-plugin](https://github.com/AmyrAhmady/samp-gps-plugin) | GPS navigation |
 | `@infernus/mapandreas` | [MapAndreas](https://github.com/Pottus/MapAndreas) | Height map |
 | `@infernus/map-loader` | — | .map file loader |
-| `@infernus/nex-ac` | [nex-ac](https://github.com/nex-om/nex-ac) | Anti-cheat |
+| `@infernus/nex-ac` | [nex-ac](https://github.com/NexiusTailer/nex-ac) | Anti-cheat |
 | `@infernus/weapon-config` | — | Weapon damage config |
 | `@infernus/create-app` | — | CLI scaffolding (`npx infernus`) |
