@@ -78,11 +78,11 @@ function executeMiddlewares<T extends object>(
           }
           throw new CoreException(msg + "\n" + JSON.stringify(err));
         }
-        console.log(msg);
+        samp.logprint(msg);
         if (isError) {
-          console.log(err);
+          samp.logprint(err.message);
         } else {
-          console.log(JSON.stringify(err));
+          samp.logprint(JSON.stringify(err));
         }
         executeAfterEach();
       }

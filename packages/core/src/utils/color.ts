@@ -4,38 +4,39 @@ export function rgba(value: string | number): number {
   if (typeof value === "number") return value;
   if (typeof +value === "number" && !isNaN(+value)) return +value;
   if (value.charAt(0) === "#") {
-    if (value.length === 4) {
+    const hex = value.slice(1);
+    if (!/^[0-9a-fA-F]{3}$|^[0-9a-fA-F]{6}$|^[0-9a-fA-F]{8}$/.test(hex)) return 255;
+    if (hex.length === 3) {
       return parseInt(
-        value.charAt(1) +
-          value.charAt(1) +
-          value.charAt(2) +
-          value.charAt(2) +
-          value.charAt(3) +
-          value.charAt(3) +
+        hex.charAt(0) +
+          hex.charAt(0) +
+          hex.charAt(1) +
+          hex.charAt(1) +
+          hex.charAt(2) +
+          hex.charAt(2) +
           "FF",
         16,
       );
-    } else if (value.length === 7) {
-      return parseInt(value.slice(1, value.length) + "FF", 16);
-    } else if (value.length === 9) {
-      return parseInt(value.slice(1, value.length), 16);
     }
-    return 255;
+    if (hex.length === 6) return parseInt(hex + "FF", 16);
+    return parseInt(hex, 16);
   }
-  const values: number[] = (value.match(/([0-9])+/g) || []).map((v) => parseInt(v, 10));
+  const values: number[] = (value.match(/(-?[0-9]+(?:\.[0-9]+)?)/g) || []).map((v) =>
+    parseFloat(v),
+  );
   if (values.length !== 4 && values.length !== 3) {
     return 255;
   }
+  const clamp = (v: number) => Math.min(255, Math.max(0, v));
   if (values.length === 3) {
     values.push(255);
   } else {
-    values[3] = values[3] < 1 ? Math.floor(values[3] * 255) : 255;
+    values[3] =
+      values[3] >= 0 && values[3] <= 1 ? Math.floor(values[3] * 255) : clamp(Math.floor(values[3]));
   }
   let n = 0;
   values.reverse().forEach((n2, i) => {
-    if (n2 !== 0) {
-      n += Math.pow(16, i * 2) * n2;
-    }
+    n += Math.pow(16, i * 2) * clamp(Math.floor(n2));
   });
-  return n;
+  return Math.floor(n);
 }
