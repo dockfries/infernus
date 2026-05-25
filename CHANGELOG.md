@@ -1,3 +1,41 @@
+## [0.14.5](https://github.com/dockfries/infernus/compare/v0.14.4...v0.14.5) (2026-05-25)
+
+### ⚠ BREAKING CHANGES
+
+* **gps,map-loader:** MapLoaderError renamed to MapLoaderException.
+* **mapandreas:** init is now async and throws on failure instead of
+returning a boolean. unload is now synchronous and returns void.
+NoBuffer mode is treated as Full, Medium as Minimal.
+* **cef:** untested emit, on
+* **cef:** untested, but used if available for cef next
+
+### Features
+
+* **cef:** untested emit, on ([157e577](https://github.com/dockfries/infernus/commit/157e577888a2120f94c33c838d93d460251f2445))
+* **cef:** untested, but used if available for cef next ([60bd6df](https://github.com/dockfries/infernus/commit/60bd6dffbeedc944977575cf621bdc676101e13d))
+* **core:** manage model download ([3ce496d](https://github.com/dockfries/infernus/commit/3ce496d02f0c5e55dbccb60a3478c9a1d6706993))
+* **mapandreas:** rewrite as pure TypeScript, remove native plugin dependency ([dbf8ce4](https://github.com/dockfries/infernus/commit/dbf8ce4fca89805e5d895e535589f835efde19d1))
+* **skills:** add omp-infernus-core-use skill (untested) ([cdb18e8](https://github.com/dockfries/infernus/commit/cdb18e82c3902d34aed240ea5d96719103cf2eed))
+* **weapon-config:** additional bodyPart check ([53186e2](https://github.com/dockfries/infernus/commit/53186e24de00221ce379b94c0e0046cc88ecafe6))
+
+### Bug Fixes
+
+* **colandreas:** clear CA_Objects length ([e2a8f61](https://github.com/dockfries/infernus/commit/e2a8f614d5977a0b098ae7b27aeaa483825976e8))
+* **core:** add disconnected flag to Player, remove stopWhenDisconnect ([353cc88](https://github.com/dockfries/infernus/commit/353cc882bc65b67309d0042d8b30d409b134276b))
+* **core:** clamp color channels, fix hex validation, use samp.logprint ([59bf775](https://github.com/dockfries/infernus/commit/59bf77571270cbbcbb986d88b9511e113c56c7c6))
+* **core:** dialog showingIds leak and filterscript race condition ([b088828](https://github.com/dockfries/infernus/commit/b08882834a245369806ff4153fea7f282f48581e))
+* **core:** guard static isConnected against stale pool entries ([4ed6abc](https://github.com/dockfries/infernus/commit/4ed6abc190c3baef697ac8007b8a11c30177d95a))
+* **gps,map-loader:** export Exception classes from public API ([8e77328](https://github.com/dockfries/infernus/commit/8e77328abc6ae907b649a55a680e66b96eae27f2))
+* **multiple:** correct various bugs across multiple packages ([544ea4d](https://github.com/dockfries/infernus/commit/544ea4d8697a95fdff5a589f8ab61ff3ad551024))
+* **nex-ac:** sync with original nex-ac.inc v1.9.68 ([046d5c4](https://github.com/dockfries/infernus/commit/046d5c463828e5b8e4faf99ce48c0fb522ad69cc))
+* **skills:** correct nex-ac upstream URL ([6fc6866](https://github.com/dockfries/infernus/commit/6fc68660f2390218ff49d3aab5f03200c01d938b))
+* **weapon-config:** custom DL skins, damage from NPCs ([134b492](https://github.com/dockfries/infernus/commit/134b49242bdc21ac5cb9b0697af807574950db67))
+* **weapon-config:** update Health Bar when setting max health/armor ([f3427b3](https://github.com/dockfries/infernus/commit/f3427b359d2c808528b0c3fd8bc06f1c57637dfa))
+
+### Reverts
+
+* **core:** manage model download ([7d0bbf9](https://github.com/dockfries/infernus/commit/7d0bbf99b8e4060fc70ddbaec0f9e9ece53f6c10))
+* **weapon-config:** wtf s_FakeQuat == s_FakeQuat and angle != angle? ([c6f1d3a](https://github.com/dockfries/infernus/commit/c6f1d3ac0cea843e9eeb9f7f842d17615a9ba7d7))
 ## <small>0.14.4 (2026-01-30)</small>
 
 - fix(core): spreadErr CommandErrors.RECEIVED_THROW ([e32a9e5](https://github.com/dockfries/infernus/commit/e32a9e5))
