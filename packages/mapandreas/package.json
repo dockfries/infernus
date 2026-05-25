@@ -1,6 +1,6 @@
 {
   "name": "@infernus/mapandreas",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "A pure TypeScript heightmap query implementation for SA-MP / open.mp, no native plugin required.",
   "keywords": [
     "samp",
