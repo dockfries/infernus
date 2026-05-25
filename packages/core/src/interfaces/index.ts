@@ -236,6 +236,7 @@ export interface IInnerPlayerProps {
   lastUpdateFpsTick: number;
   isPaused: boolean;
   isRecording: boolean;
+  disconnected: boolean;
 }
 
 export interface ITextLabel {

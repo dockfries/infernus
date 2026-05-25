@@ -2,7 +2,6 @@ export * from "./actor";
 export * from "./clientCheck";
 export * from "./core";
 export * from "./dialog";
-export * from "./disconnect";
 export * from "./gameMode";
 export * from "./gangZone";
 export * from "./hook";

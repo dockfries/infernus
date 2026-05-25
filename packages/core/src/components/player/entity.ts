@@ -82,6 +82,7 @@ export class Player {
     lastUpdateFpsTick: 0,
     isPaused: false,
     isRecording: false,
+    disconnected: false,
   };
 
   get lastDrunkLevel() {
@@ -135,7 +136,8 @@ export class Player {
       );
     }
     const player = Player.getInstance(id);
-    if (player) return player;
+    if (player && !player[internalPlayerProps].disconnected) return player;
+    if (player) playerPool.delete(id);
     playerPool.set(id, this);
   }
 
@@ -531,7 +533,7 @@ export class Player {
     return Player.__inject__.isConnected(id);
   }
   isConnected(): boolean {
-    return Player.isConnected(this.id);
+    return !this[internalPlayerProps].disconnected && Player.isConnected(this.id);
   }
   disableRemoteVehicleCollisions(disable: boolean) {
     return Player.__inject__.disableRemoteVehicleCollisions(this.id, disable);

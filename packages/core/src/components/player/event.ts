@@ -10,7 +10,7 @@ import type {
 } from "../../enums";
 import { InvalidEnum } from "../../enums";
 import { Dialog } from "./dialog";
-import { playerPool } from "core/utils/pools";
+import { internalPlayerProps, playerPool } from "core/utils/pools";
 
 export const [onConnect] = defineEvent({
   name: "OnPlayerConnect",
@@ -28,10 +28,11 @@ export const [onDisconnect] = defineEvent({
   identifier: "ii",
   beforeEach(id: number, reason: number) {
     const player = playerPool.get(id)!;
+    player[internalPlayerProps].disconnected = true;
+    Dialog.close(player);
     return { player, reason };
   },
   afterEach({ player }) {
-    Dialog.close(player);
     playerPool.delete(player.id);
   },
 });
