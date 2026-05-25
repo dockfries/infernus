@@ -1,7 +1,7 @@
 {
   "name": "@infernus/mapandreas",
   "version": "0.3.2",
-  "description": "A wrapper of the popular SA-MP MapAndreas plugin for samp-node.",
+  "description": "A pure TypeScript heightmap query implementation for SA-MP / open.mp, no native plugin required.",
   "keywords": [
     "samp",
     "sa:mp",
@@ -10,7 +10,8 @@
     "open.mp",
     "pawn",
     "wrapper",
-    "mapandreas"
+    "mapandreas",
+    "heightmap"
   ],
   "homepage": "https://github.com/dockfries/infernus/tree/main/packages/mapandreas#readme",
   "bugs": {

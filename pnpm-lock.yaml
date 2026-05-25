@@ -206,7 +206,11 @@ importers:
         specifier: workspace:^
         version: link:../core
 
-  packages/mapandreas: {}
+  packages/mapandreas:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
 
   packages/nex-ac:
     devDependencies:

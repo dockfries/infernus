@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@infernus/mapandreas)](https://www.npmx.dev/package/@infernus/mapandreas) ![npm](https://img.shields.io/npm/dw/@infernus/mapandreas) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/mapandreas)
 
-A wrapper of the popular [SA-MP MapAndreas plugin](https://github.com/philip1337/samp-plugin-mapandreas) for samp-node.
+A pure TypeScript heightmap query implementation for SA-MP / open.mp. No native plugin required.
 
 ## Getting started
 
@@ -10,20 +10,25 @@ A wrapper of the popular [SA-MP MapAndreas plugin](https://github.com/philip1337
 pnpm add @infernus/core @infernus/mapandreas
 ```
 
+Place a `.hmap` file (e.g. `SAFull.hmap`) in your server's `scriptfiles/` directory.
+
 ## Example
 
 ```ts
 import { GameMode } from "@infernus/core";
 import { MapAndreas, MapAndreasMode } from "@infernus/mapandreas";
 
-GameMode.onInit(({ next }) => {
-  MapAndreas.init(MapAndreasMode.Full, "scriptfiles/SAFull.hmap");
+GameMode.onInit(async ({ next }) => {
+  await MapAndreas.init(MapAndreasMode.Full, "scriptfiles/SAFull.hmap");
 
-  let pos = MapAndreas.findAverageZ(20.001, 25.006);
+  const { z } = MapAndreas.findAverageZ(20.001, 25.006);
+  console.log(`Ground height: ${z}`);
 
-  if (pos) {
-    // Found position - position saved in 'pos'
-  }
+  return next();
+});
+
+GameMode.onExit(({ next }) => {
+  MapAndreas.unload();
   return next();
 });
 ```
