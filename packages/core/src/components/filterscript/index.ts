@@ -5,15 +5,24 @@ import { onExit, onInit } from "../gamemode/event";
 const preInstallScripts: Array<IFilterScript> = [];
 const installedScripts: Array<IFilterScript> = [];
 const registeredEvents = new Map<string, Array<() => void>>();
+const loadingScripts = new Set<string>();
 export const loadUseScript = async (scriptName: string) => {
+  if (loadingScripts.has(scriptName)) {
+    throw new GameModeException(`script ${scriptName} is already being loaded`);
+  }
   try {
     return await new Promise<void>((resolve, reject) => {
+      loadingScripts.add(scriptName);
       const fsIdx = preInstallScripts.findIndex((fs) => fs.name === scriptName);
-      if (fsIdx === -1) return;
+      if (fsIdx === -1) {
+        loadingScripts.delete(scriptName);
+        return;
+      }
 
       const scripts = preInstallScripts[fsIdx];
 
       function load(events: Array<() => void>) {
+        loadingScripts.delete(scriptName);
         if (events.length) registeredEvents.set(scriptName, events);
         preInstallScripts.splice(fsIdx, 1);
         installedScripts.push(scripts);
@@ -23,21 +32,32 @@ export const loadUseScript = async (scriptName: string) => {
       const ret = scripts.load();
 
       if (ret instanceof Promise) {
-        ret.then(load).catch(reject);
+        ret.then(load).catch((e) => {
+          loadingScripts.delete(scriptName);
+          reject(e);
+        });
       } else {
         load(ret);
       }
     });
   } catch (err) {
+    loadingScripts.delete(scriptName);
     throw new GameModeException(`script ${scriptName} load fail\nerr:${err}`);
   }
 };
 
 export const unloadUseScript = async (scriptName: string) => {
+  if (loadingScripts.has(scriptName)) {
+    throw new GameModeException(`script ${scriptName} is already being unloaded`);
+  }
   try {
     return await new Promise<void>((resolve, reject) => {
+      loadingScripts.add(scriptName);
       const fsIdx = installedScripts.findIndex((fs) => fs.name === scriptName);
-      if (fsIdx === -1) return;
+      if (fsIdx === -1) {
+        loadingScripts.delete(scriptName);
+        return;
+      }
 
       const scripts = installedScripts[fsIdx];
       const offs = registeredEvents.get(scriptName);
@@ -47,6 +67,7 @@ export const unloadUseScript = async (scriptName: string) => {
       }
 
       function unload() {
+        loadingScripts.delete(scriptName);
         installedScripts.splice(fsIdx, 1);
         preInstallScripts.push(scripts);
         setTimeout(resolve);
@@ -54,12 +75,16 @@ export const unloadUseScript = async (scriptName: string) => {
 
       const ret = scripts.unload();
       if (ret instanceof Promise) {
-        ret.then(unload).catch(reject);
+        ret.then(unload).catch((e) => {
+          loadingScripts.delete(scriptName);
+          reject(e);
+        });
       } else {
         unload();
       }
     });
   } catch (err) {
+    loadingScripts.delete(scriptName);
     throw new GameModeException(`script ${scriptName} unload fail\n${err}`);
   }
 };

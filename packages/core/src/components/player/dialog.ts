@@ -39,7 +39,7 @@ onDialogResponse(({ next, player, dialogId, response, listItem, buffer, inputTex
  */
 export class Dialog {
   private _id = -1;
-  private static showingIds: number[] = [];
+  private static showingIds = new Map<Player, number>();
   private static maxDialogId = 32767;
   private dialog: IDialog;
   static waitingQueue = new WeakMap<Player, IDialogFuncQueue>();
@@ -105,8 +105,7 @@ export class Dialog {
       );
     }
     Dialog.waitingQueue.delete(player);
-    const index = Dialog.showingIds.indexOf(task.showId);
-    if (index > -1) Dialog.showingIds.splice(index, 1);
+    Dialog.showingIds.delete(player);
     return true;
   }
 
@@ -114,8 +113,10 @@ export class Dialog {
     return new Promise<IDialogResCommon>((resolve, reject) => {
       Dialog.close(player);
 
-      while (this._id === -1 || Dialog.showingIds.includes(this._id)) {
-        if (Dialog.showingIds.length >= Dialog.maxDialogId) {
+      const usedIds = new Set(Dialog.showingIds.values());
+
+      while (this._id === -1 || usedIds.has(this._id)) {
+        if (usedIds.size >= Dialog.maxDialogId) {
           this._id = -1;
           break;
         }
@@ -127,7 +128,7 @@ export class Dialog {
         return;
       }
 
-      Dialog.showingIds.push(this._id);
+      Dialog.showingIds.set(player, this._id);
       Dialog.waitingQueue.set(player, { resolve, reject, showId: this._id });
 
       Dialog.__inject__.show(player, this._id, this.dialog);

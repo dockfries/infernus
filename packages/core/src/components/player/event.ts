@@ -31,6 +31,7 @@ export const [onDisconnect] = defineEvent({
     return { player, reason };
   },
   afterEach({ player }) {
+    Dialog.close(player);
     playerPool.delete(player.id);
   },
 });
