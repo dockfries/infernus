@@ -2,7 +2,11 @@ import type { BulletHitTypesEnum, WeaponEnum } from "@infernus/core";
 import { LandingGearStateEnum } from "@infernus/core";
 import type { Vector3, Vector4 } from "raknet/types";
 
-export interface IOnFootSync {
+export interface ICommonSyncWrite {
+  playerId?: number;
+}
+
+export interface IOnFootSync extends ICommonSyncWrite {
   lrKey: number;
   udKey: number;
   keys: number;
@@ -20,7 +24,7 @@ export interface IOnFootSync {
   animationFlags: number;
 }
 
-export interface IInCarSync {
+export interface IInCarSync extends ICommonSyncWrite {
   vehicleId: number;
   lrKey: number;
   udKey: number;
@@ -39,7 +43,7 @@ export interface IInCarSync {
   trainSpeed: number;
 }
 
-export interface ITrailerSync {
+export interface ITrailerSync extends ICommonSyncWrite {
   trailerId: number;
   position: Vector3<number>;
   quaternion: Vector4<number>;
@@ -47,7 +51,7 @@ export interface ITrailerSync {
   angularVelocity: Vector3<number>;
 }
 
-export interface IPassengerSync {
+export interface IPassengerSync extends ICommonSyncWrite {
   vehicleId: number;
   driveBy: number;
   seatId: number;
@@ -61,7 +65,7 @@ export interface IPassengerSync {
   position: Vector3<number>;
 }
 
-export interface IUnoccupiedSync {
+export interface IUnoccupiedSync extends ICommonSyncWrite {
   vehicleId: number;
   seatId: number;
   roll: Vector3<number>;
@@ -72,7 +76,7 @@ export interface IUnoccupiedSync {
   vehicleHealth: number;
 }
 
-export interface IAimSync {
+export interface IAimSync extends ICommonSyncWrite {
   camMode: number;
   camFrontVec: Vector3<number>;
   camPos: Vector3<number>;
@@ -82,8 +86,7 @@ export interface IAimSync {
   aspectRatio: number;
 }
 
-export interface IBulletSync {
-  fromId: number;
+export interface IBulletSync extends ICommonSyncWrite {
   hitType: BulletHitTypesEnum;
   hitId: number;
   origin: Vector3<number>;

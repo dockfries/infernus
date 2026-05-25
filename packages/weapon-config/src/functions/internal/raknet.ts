@@ -1,6 +1,5 @@
 import { Player, SpecialActionsEnum, PlayerStateEnum } from "@infernus/core";
-import { BitStream, PacketRpcValueType, OnFootSync } from "@infernus/raknet";
-import { WC_PLAYER_SYNC } from "../../constants";
+import { BitStream, OnFootSync } from "@infernus/raknet";
 import { orig_playerMethods } from "../../hooks/origin";
 import {
   lastSyncData,
@@ -20,10 +19,6 @@ export function sendLastSyncPacket(player: Player, toPlayer: Player, animation =
   ) {
     return 0;
   }
-
-  const bs = new BitStream();
-
-  bs.writeValue([PacketRpcValueType.UInt8, WC_PLAYER_SYNC], [PacketRpcValueType.UInt16, player.id]);
 
   if (!isNaN(fakeQuat.get(player.id)[0])) {
     lastSyncData.get(player.id).quaternion = [...fakeQuat.get(player.id)];
@@ -46,8 +41,14 @@ export function sendLastSyncPacket(player: Player, toPlayer: Player, animation =
     lastSyncData.get(player.id).animationFlags = (animation >> 16) & 0xffff;
   }
 
-  const ofs = new OnFootSync(bs);
-  ofs.writeSync(lastSyncData.get(player.id), true);
+  const ofs = new OnFootSync(new BitStream());
+  ofs.writeSync(
+    {
+      playerId: player.id,
+      ...lastSyncData.get(player.id),
+    },
+    true,
+  );
   ofs.sendPacket(toPlayer); // PR_RELIABLE_SEQUENCED
   ofs.delete();
 

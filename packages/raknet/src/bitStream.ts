@@ -75,7 +75,8 @@ export class BitStream {
   }
 
   newCopy() {
-    return new BitStream(patchRakNetNatives(RakNetNatives.NewCopy, this.id));
+    const newId = patchRakNetNatives(RakNetNatives.NewCopy, this.id);
+    return this.isIncoming() ? new IncomingBitStream(newId) : new BitStream(newId);
   }
 
   delete() {
@@ -573,4 +574,10 @@ export class BitStream {
       this.sendRPC(p.id, rpcId, priority, reliability, orderingChannel);
     });
   }
+
+  isIncoming() {
+    return this instanceof IncomingBitStream;
+  }
 }
+
+export class IncomingBitStream extends BitStream {}

@@ -1,6 +1,7 @@
 import { BitStream } from "raknet/bitStream";
 import { SyncId, SyncReader, SyncWriter } from "raknet/decorators";
 import { PacketIdList, PacketRpcValueType } from "raknet/enums";
+import { RakNetException } from "raknet/exceptions";
 import type { IInCarSync, IPacketListSync } from "raknet/interfaces";
 
 @SyncId(PacketIdList.DriverSync)
@@ -16,10 +17,13 @@ export class InCarSync extends BitStream implements IPacketListSync {
       trailerId: 0,
     };
 
-    if (outgoing) {
+    const _outgoing = outgoing || !this.bs.isIncoming();
+
+    if (_outgoing) {
       let healthArmour;
 
       [
+        data.playerId,
         data.vehicleId,
         data.lrKey,
         data.udKey,
@@ -33,6 +37,7 @@ export class InCarSync extends BitStream implements IPacketListSync {
         data.sirenState,
         data.landingGearState,
       ] = this.bs.readValue(
+        PacketRpcValueType.UInt16,
         PacketRpcValueType.UInt16,
         PacketRpcValueType.UInt16,
         PacketRpcValueType.UInt16,
@@ -107,10 +112,17 @@ export class InCarSync extends BitStream implements IPacketListSync {
 
   @SyncWriter
   writeSync(data: IInCarSync, outgoing = false) {
-    if (outgoing) {
+    const _outgoing = outgoing || !this.bs.isIncoming();
+
+    if (_outgoing) {
+      if (typeof data.playerId === "undefined") {
+        throw new RakNetException("playerId is required for outgoing InCarSync");
+      }
+
       const healthArmour = BitStream.packHealthArmour(data.playerHealth, data.armour);
 
       this.bs.writeValue(
+        [PacketRpcValueType.UInt16, data.playerId],
         [PacketRpcValueType.UInt16, data.vehicleId],
         [PacketRpcValueType.UInt16, data.lrKey],
         [PacketRpcValueType.UInt16, data.udKey],

@@ -28,6 +28,60 @@ bs.getNumberOfBitsUsed();   bs.getNumberOfBytesUsed();
 bs.getNumberOfUnreadBits(); bs.getNumberOfBitsAllocated();
 ```
 
+### BitStream context — Incoming vs Outgoing
+
+There are two BitStream types that determine whether `playerId` is included in sync data:
+
+| Type | isIncoming() | Callbacks | playerId |
+|------|-------------|-----------|----------|
+| `IncomingBitStream` | `true` | `IPacket`, `IRPC`, `onIncomingPacket`, `onIncomingRPC` | Not in stream |
+| `BitStream` | `false` | `OPacket`, `ORPC`, `onOutgoingPacket`, `onOutgoingRPC`, `new BitStream()` | Required |
+
+Sync classes use `this.bs.isIncoming()` to automatically decide whether to read/write `playerId`.
+
+#### Context A — Incoming (callback)
+
+The `bs` from incoming callbacks is an `IncomingBitStream`. `playerId` is **not** part of the sync data — it comes from the callback parameter.
+
+```typescript
+// ✅ Correct
+IPacket(PacketIdList.AimSync, ({ playerId, bs, next }) => {
+  const aim = new AimSync(bs);
+  const data = aim.readSync();     // no playerId in stream
+  data.camZoom = 2;
+  aim.writeSync(data);              // no playerId written back
+  return next();
+});
+```
+
+#### Context B — Outgoing / new
+
+`new BitStream()` creates an outgoing context. `playerId` is **required** as the first field.
+
+```typescript
+// ✅ Correct
+const bs = new BitStream();
+const aim = new AimSync(bs);
+aim.writeSync({ playerId: from.id, ...data });
+aim.sendPacket(to);
+aim.delete();
+```
+
+#### ❌ Pitfalls
+
+```typescript
+// WRONG: wrapping callback's bs with new BitStream()
+IPacket(PacketIdList.AimSync, ({ playerId, bs, next }) => {
+  const aim = new AimSync(new BitStream());  // outgoing context, expects playerId
+  aim.writeSync(data);                        // throws!
+  return next();
+});
+
+// WRONG: forgetting playerId in outgoing context
+const aim = new AimSync(new BitStream());
+aim.writeSync(data);      // throws: playerId is required
+```
+
 ### Streaming helpers
 
 ```typescript

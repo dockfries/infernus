@@ -1,12 +1,12 @@
 import { defineEvent } from "@infernus/core";
-import { BitStream } from "raknet/bitStream";
+import { IncomingBitStream, BitStream } from "raknet/bitStream";
 import type { BitStreamRaw } from "raknet/types";
 
 export const [onIncomingPacket] = defineEvent({
   name: "OnIncomingPacket",
   identifier: "iii",
   beforeEach(playerId: number, packetId: number, bs: BitStreamRaw) {
-    return { playerId, packetId, bs: new BitStream(bs) };
+    return { playerId, packetId, bs: new IncomingBitStream(bs) };
   },
 });
 
@@ -14,7 +14,7 @@ export const [onIncomingRPC] = defineEvent({
   name: "OnIncomingRPC",
   identifier: "iii",
   beforeEach(playerId: number, rpcId: number, bs: BitStreamRaw) {
-    return { playerId, rpcId, bs: new BitStream(bs) };
+    return { playerId, rpcId, bs: new IncomingBitStream(bs) };
   },
 });
 

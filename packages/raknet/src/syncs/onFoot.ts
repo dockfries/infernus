@@ -1,6 +1,7 @@
 import { BitStream } from "raknet/bitStream";
 import { SyncId, SyncReader, SyncWriter } from "raknet/decorators";
 import { PacketIdList, PacketRpcValueType } from "raknet/enums";
+import { RakNetException } from "raknet/exceptions";
 import type { IOnFootSync, IPacketListSync } from "raknet/interfaces";
 
 @SyncId(PacketIdList.OnFootSync)
@@ -11,6 +12,8 @@ export class OnFootSync extends BitStream implements IPacketListSync {
 
   @SyncReader
   readSync(outgoing = false) {
+    const _outgoing = outgoing || !this.bs.isIncoming();
+
     const data: Partial<IOnFootSync> = {
       lrKey: 0,
       udKey: 0,
@@ -19,7 +22,9 @@ export class OnFootSync extends BitStream implements IPacketListSync {
       animationFlags: 0,
     };
 
-    if (outgoing) {
+    if (_outgoing) {
+      data.playerId = this.bs.readValue(PacketRpcValueType.UInt16) as number;
+
       const hasLeftRight = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasLeftRight) {
@@ -113,10 +118,14 @@ export class OnFootSync extends BitStream implements IPacketListSync {
 
   @SyncWriter
   writeSync(data: IOnFootSync, outgoing = false) {
-    this.bs.resetWritePointer();
-    this.bs.writeBits(PacketIdList.OnFootSync, 8);
+    const _outgoing = outgoing || !this.bs.isIncoming();
 
-    if (outgoing) {
+    if (_outgoing) {
+      if (typeof data.playerId === "undefined") {
+        throw new RakNetException("playerId is required for outgoing OnFootSync");
+      }
+      this.bs.writeValue([PacketRpcValueType.UInt16, data.playerId]);
+
       if (data.lrKey) {
         this.bs.writeValue(
           [PacketRpcValueType.Bool, true],
