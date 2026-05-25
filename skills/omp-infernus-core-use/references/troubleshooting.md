@@ -94,6 +94,23 @@ try {
 }
 ```
 
+Some exceptions are expected in normal operation (e.g. `ClientCheckException` on timeout, `DialogException` when the player closes a dialog or disconnects before responding). A common pattern is to suppress known benign exceptions at the process level:
+
+```typescript
+import {
+    ClientCheckException,
+    DialogException,
+} from "@infernus/core";
+
+process.on("uncaughtException", (err) => {
+    const ignoreExceptions = [ClientCheckException, DialogException];
+    if (ignoreExceptions.some((e) => err instanceof e)) {
+        return;
+    }
+    console.error(err);
+});
+```
+
 ## Memory leak / events firing multiple times
 
 **Cause:** Event listeners registered in a filterscript `load()` function were not returned as cleanup functions.
