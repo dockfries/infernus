@@ -116,7 +116,7 @@ export const [onNOPWarning, triggerNOPWarning] = defineEvent({
 });
 
 export function ac_KickTimer(player: Player) {
-  if (!(1 >= ACInfo.get(player.id).acKicked && ACInfo.get(player.id).acKicked <= 2)) return false;
+  if (!(ACInfo.get(player.id).acKicked >= 1 && ACInfo.get(player.id).acKicked <= 2)) return false;
   return player.kick();
 }
 

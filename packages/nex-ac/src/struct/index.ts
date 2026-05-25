@@ -73,8 +73,8 @@ export class ACInfoStruct {
   acGtcGiveAmmo: number[] = Array.from({ length: 13 }, () => 0);
   acNOPCount: number[] = Array.from({ length: 12 }, () => 0);
   acCheatCount: number[] = Array.from({ length: 22 }, () => 0);
-  acCall: (typeof ac_Mtfc)[0] = Array.from({ length: ac_Mtfc.length }, () => 0);
-  acFloodCount: (typeof ac_Mtfc)[0] = Array.from({ length: ac_Mtfc.length }, () => 0);
+  acCall: number[] = Array.from({ length: ac_Mtfc.length }, () => 0);
+  acFloodCount: number[] = Array.from({ length: ac_Mtfc.length }, () => 0);
   acNOPAllow: typeof ac_NOPAllow = [...ac_NOPAllow];
   acACAllow: typeof ac_ACAllow = [...ac_ACAllow];
   acStuntBonus: boolean = false;
