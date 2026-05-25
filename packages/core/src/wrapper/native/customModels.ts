@@ -90,10 +90,10 @@ export const GetPlayerCustomSkin = (playerId: number): number => {
   return samp.callNative("GetPlayerCustomSkin", "i", playerId);
 };
 
-export const SetModelDownloadAtConnect = (toggle: boolean): boolean => {
-  return !!samp.callNative("SetModelDownloadAtConnect", "i", toggle);
-};
+// export const SetModelDownloadAtConnect = (toggle: boolean): boolean => {
+//   return !!samp.callNative("SetModelDownloadAtConnect", "i", toggle);
+// };
 
-export const StartDownloadForPlayer = (playerId: number): boolean => {
-  return !!samp.callNative("StartDownloadForPlayer", "i", playerId);
-};
+// export const StartDownloadForPlayer = (playerId: number): boolean => {
+//   return !!samp.callNative("StartDownloadForPlayer", "i", playerId);
+// };

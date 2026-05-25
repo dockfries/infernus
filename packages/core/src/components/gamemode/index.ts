@@ -198,5 +198,5 @@ export class GameMode {
   static getServerRuleFlag = w.GetServerRuleFlags;
   static setServerRuleFlags = w.SetServerRuleFlags;
   static getAnimationName = w.GetAnimationName;
-  static setModelDownloadAtConnect = w.SetModelDownloadAtConnect;
+  // static setModelDownloadAtConnect = w.SetModelDownloadAtConnect;
 }

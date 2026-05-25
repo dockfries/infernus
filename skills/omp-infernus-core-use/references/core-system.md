@@ -186,7 +186,6 @@ GameMode.enableVehicleFriendlyFire(bool);
 GameMode.enableAllAnimations(bool);  GameMode.areAllAnimationsEnabled();
 GameMode.toggleChatTextReplacement(bool);
 GameMode.setObjectsDefaultCameraCollision(bool);
-GameMode.setModelDownloadAtConnect(bool);
 
 // Custom models & server rules
 GameMode.addServerRule(name, value); GameMode.setServerRule(name, value);
