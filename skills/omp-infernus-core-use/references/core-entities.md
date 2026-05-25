@@ -84,7 +84,7 @@ player.lastFps; player.isPaused;   player.isRecording;
 // Static
 Player.getInstance(id);       Player.getInstances();
 Player.isConnected(id);       Player.getMaxPlayers();
-Player.sendClientMessageToAll(color, msg);  // static, not instance
+Player.sendClientMessageToAll(color, msg);
 ```
 
 ## Vehicle
@@ -134,6 +134,17 @@ VehicleEvent.onPlayerEnter(({ player, vehicle, isPassenger, next }) => { return 
 VehicleEvent.onPlayerExit(({ player, vehicle, next }) => { return next(); });
 VehicleEvent.onTrailerUpdate(({ player, vehicle, next }) => { return next(); });
 VehicleEvent.onUnoccupiedUpdate(({ vehicle, player, passengerSeat, newX, newY, newZ, velX, velY, velZ, next }) => { return next(); });
+
+// Static utilities
+Vehicle.getInstance(id);         Vehicle.getInstances();
+Vehicle.isValid(vehicleId);
+Vehicle.getModelInfo(modelId, VehicleModelInfoEnum);
+Vehicle.getMaxPassengers(modelId); Vehicle.getSeats(modelId);
+Vehicle.getRandomColorPair(modelId);
+Vehicle.getModelCount(modelId);  Vehicle.getModelsUsed();
+Vehicle.canHaveComponent(modelId, componentId);
+Vehicle.colorIndexToColor(index, alpha?);
+Vehicle.getComponentType(component);
 ```
 
 ## Actor vs NPC — Not the Same
@@ -163,6 +174,10 @@ actor.destroy();
 ActorEvent.onPlayerGiveDamage(({ actor, player, amount, weapon, bodyPart, next }) => { return next(); });
 ActorEvent.onStreamIn(({ actor, player, next }) => { return next(); });
 ActorEvent.onStreamOut(({ actor, player, next }) => { return next(); });
+
+// Static
+Actor.getInstance(id);    Actor.getInstances();
+Actor.isValid(id);
 ```
 
 ## NPC
@@ -185,6 +200,12 @@ NpcEvent.onCreate(({ npc, next }) => { return next(); });
 NpcEvent.onSpawn(({ npc, next }) => { return next(); });
 NpcEvent.onDeath(({ npc, reason, next }) => { return next(); });
 // 20+ events for movement, combat, playback
+
+// Static
+Npc.getInstance(id);     Npc.getInstances();
+Npc.isValid(id);
+Npc.startRecordingPlayerData(player, recordType, recordName);
+Npc.stopRecordingPlayerData(player);
 ```
 
 ## Object (ObjectMp)
@@ -218,6 +239,11 @@ ObjectMpEvent.onPlayerEdit(({ player, object, retType, pos, rot, next }) => { re
 ObjectMpEvent.onPlayerSelect(({ player, object, modelId, pos, next }) => { return next(); });
 ObjectMpEvent.onGlobalMoved(({ object, next }) => { return next(); });
 ObjectMpEvent.onPlayerMoved(({ object, player, next }) => { return next(); });
+
+// Static
+ObjectMp.getInstance(objectId, player?); ObjectMp.getInstances(player?);
+ObjectMp.isValid(objectId, playerId?);
+ObjectMp.getPlayersInstances();  // [Player, ObjectMp[]][]
 ```
 
 ## Pickup
@@ -243,6 +269,11 @@ Pickup.getInstances(player?);
 
 PickUpEvent.onPlayerPickUpGlobal(({ player, pickup, next }) => { return next(); });
 PickUpEvent.onPlayerPickupPlayer(({ player, pickup, next }) => { return next(); });
+
+// Static
+Pickup.getInstance(pickupId, player?);  Pickup.getInstances(player?);
+Pickup.isValidGlobal(zoneId);           Pickup.isValidPlayer(playerId, zoneId);
+Pickup.getPlayersInstances();  // [Player, Pickup[]][]
 ```
 
 ## GangZone
@@ -274,6 +305,11 @@ GangZoneEvent.onPlayerClickGlobal(({ player, gangzone, next }) => { return next(
 GangZoneEvent.onPlayerEnterPlayer(({ player, gangzone, next }) => { return next(); });
 GangZoneEvent.onPlayerLeavePlayer(({ player, gangzone, next }) => { return next(); });
 GangZoneEvent.onPlayerClickPlayer(({ player, gangzone, next }) => { return next(); });
+
+// Static
+GangZone.getInstance(gangZoneId, player?);  GangZone.getInstances(player?);
+GangZone.isValidGlobal(zoneId);             GangZone.isValidPlayer(playerId, zoneId);
+GangZone.getPlayersInstances();  // [Player, GangZone[]][]
 ```
 
 ## TextDraw
@@ -306,6 +342,10 @@ TextDraw.getInstances(player?);
 
 TextDrawEvent.onPlayerClickGlobal(({ player, textdraw, next }) => { return next(); });
 TextDrawEvent.onPlayerClickPlayer(({ player, textdraw, next }) => { return next(); });
+
+// Static
+TextDraw.getInstance(textDrawId, player?);  TextDraw.getInstances(player?);
+TextDraw.getPlayersInstances();  // [Player, TextDraw[]][]
 ```
 
 ## TextLabel (3D Text)
@@ -332,6 +372,10 @@ tl.destroy();
 // getInstance(textLabelId, player?) — lookup by numeric ID
 TextLabel.getInstance(textLabelId, player?);
 TextLabel.getInstances(player?);
+
+// Static
+TextLabel.isValid(textLabelId, playerId?);
+TextLabel.getPlayersInstances();  // [Player, TextLabel[]][]
 ```
 
 ## Checkpoint & RaceCheckpoint
@@ -368,6 +412,11 @@ menu.destroy();
 
 MenuEvent.onPlayerSelectedRow(({ player, menu, row, next }) => { return next(); });
 MenuEvent.onPlayerExited(({ player, menu, next }) => { return next(); });
+
+// Static
+Menu.getInstance(id);     Menu.getInstances();
+Menu.isValid(menuId);
+Menu.getInstanceByPlayer(player);
 ```
 
 ## GameText

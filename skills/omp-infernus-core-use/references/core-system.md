@@ -165,6 +165,42 @@ GameMode.getGravity();          GameMode.getServerTickRate();
 GameMode.getWeaponName(id);     GameMode.getWeaponSlot(id);
 GameMode.vectorSize(x, y, z);   GameMode.isValidNickName(name);
 GameMode.enableCmdCaseSensitive();   GameMode.disableCmdCaseSensitive();
+GameMode.isCmdCaseSensitive();
+
+// Extra config
+GameMode.addPlayerClassEx(skin, team, x, y, z, angle, w1, a1, w2, a2, w3, a3);
+GameMode.setTeamCount(count);
+GameMode.blockIpAddress(ip, ms);     GameMode.unBlockIpAddress(ip);
+GameMode.addCharModel(baseId, newId, dff, txd);
+GameMode.addSimpleModel(vw, baseId, newId, dff, txd);
+GameMode.addSimpleModelTimed(vw, baseId, newId, dff, txd, timeOn, timeOff);
+GameMode.isValidCustomModel(id);
+GameMode.getAvailableClasses();      GameMode.getPlayerClass(classId);
+GameMode.editPlayerClass(classId, ...);
+GameMode.limitPlayerMarkerRadius(r);
+GameMode.disableNameTagLOS();
+GameMode.allowAdminTeleport(bool);   GameMode.isAdminTeleportAllowed();
+GameMode.allowInteriorWeapons(bool); GameMode.areInteriorWeaponsAllowed();
+GameMode.enableZoneNames(bool);
+GameMode.enableVehicleFriendlyFire(bool);
+GameMode.enableAllAnimations(bool);  GameMode.areAllAnimationsEnabled();
+GameMode.toggleChatTextReplacement(bool);
+GameMode.setObjectsDefaultCameraCollision(bool);
+GameMode.setModelDownloadAtConnect(bool);
+
+// Custom models & server rules
+GameMode.addServerRule(name, value); GameMode.setServerRule(name, value);
+GameMode.isValidServerRule(name);    GameMode.removeServerRule(name);
+GameMode.getConsoleVarAsString(name, charset?);
+GameMode.getConsoleVarAsInt(name);   GameMode.getConsoleVarAsBool(name);
+
+// Validation
+GameMode.clearBanList();             GameMode.isBanned(ip);
+GameMode.getAnimationName(index);    GameMode.findModelFileNameFromCRC(crc);
+GameMode.findTextureFileNameFromCRC(crc);
+
+// Loaded script management
+GameMode.isUseScriptLoaded(name);
 ```
 
 ## Dialog (Promise-based)

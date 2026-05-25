@@ -10,6 +10,15 @@ Node.js library for scripting [Open Multiplayer](https://open.mp).
 
 Highly recommended to get started with the [infernus-starter](https://github.com/dockfries/infernus-starter) template.
 
+## Skill
+
+```bash
+# Install project-local
+pnpx skills add dockfries/infernus --skill='*'
+# Or install globally
+pnpx skills add dockfries/infernus --skill='*' -g
+```
+
 ## Contributors ✨
 
 Thanks go to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
