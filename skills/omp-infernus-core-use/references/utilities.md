@@ -23,20 +23,24 @@ getPointDistanceToPoint3D(x1, y1, z1, x2, y2, z2);
 
 ## @infernus/mapandreas
 
-Pure TypeScript heightmap query, no native plugin required. Reads `.and` files like the original MapAndreas plugin.
+Pure TypeScript heightmap query, no native plugin required. Reads raw binary heightmap files (Uint16Array grid, no header).
 
 ```typescript
 import { MapAndreas, MapAndreasMode, MapAndreasError } from "@infernus/mapandreas";
 
 GameMode.onInit(({ next }) => {
-    MapAndreas.init(MapAndreasMode.Full, "SA_Full.and");
-    return next();
+  await MapAndreas.init(MapAndreasMode.Full, "scriptfiles/SAFull.hmap");
+  MapAndreas.findZFor2DCoord(x, y); // → { z, ret: MapAndreasError }
+  MapAndreas.findAverageZ(x, y); // → { z, ret: MapAndreasError }
+  MapAndreas.setZFor2DCoord(x, y, z); // → boolean
+  MapAndreas.saveCurrentHMap(name); // → Promise<boolean>
+  return next();
 });
-MapAndreas.findZFor2DCoord(x, y);      // → { z, ret: MapAndreasError }
-MapAndreas.findAverageZ(x, y);         // → { z, ret: MapAndreasError }
-MapAndreas.setZFor2DCoord(x, y, z);    // → boolean
-MapAndreas.saveCurrentHMap(name);      // → Promise<boolean>
-MapAndreas.unload();
+
+GameMode.onExit(({ next }) => {
+  MapAndreas.unload();
+  return next();
+});
 ```
 
 `MapAndreasException` is thrown on initialization failure (missing/invalid file), uninitialized access, or unknown mode.
@@ -75,12 +79,12 @@ cd my-server && pnpm install && pnpm dev
 
 Full command reference:
 
-| Command | Description |
-|---------|-------------|
-| `create <name>` | Scaffold a new project from [infernus-starter](https://github.com/dockfries/infernus-starter) |
-| `add <package>` | Add a dependency (e.g. `npx infernus add @infernus/raknet`) |
-| `install` | Install all project dependencies |
-| `remove <package>` | Remove a dependency |
-| `update` | Update all `@infernus/*` packages to latest |
-| `cache clean` | Clear the download cache |
-| `config` | View or edit CLI configuration (GitHub token, etc.) |
+| Command            | Description                                                                                   |
+| ------------------ | --------------------------------------------------------------------------------------------- |
+| `create <name>`    | Scaffold a new project from [infernus-starter](https://github.com/dockfries/infernus-starter) |
+| `add <package>`    | Add a dependency (e.g. `npx infernus add @infernus/raknet`)                                   |
+| `install`          | Install all project dependencies                                                              |
+| `remove <package>` | Remove a dependency                                                                           |
+| `update`           | Update all `@infernus/*` packages to latest                                                   |
+| `cache clean`      | Clear the download cache                                                                      |
+| `config`           | View or edit CLI configuration (GitHub token, etc.)                                           |

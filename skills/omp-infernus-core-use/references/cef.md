@@ -25,14 +25,11 @@ browser.create();
 
 // Methods
 browser.setVisible(visible);              // show/hide
-browser.setPos();                         // reposition
-browser.loadUrl(url);
-browser.setResolution(width, height);
+browser.setPos(x, y, z);                  // 2dWorld only — reposition
 browser.reloadBrowser(ignoreCache?);
 browser.focusBrowser(focused);
 browser.enableDevTools(enabled);
 browser.emitEvent(eventName, data);       // emit JS event in browser
-browser.sendEvent(data);                  // simplified emit
 browser.attachToObject(objectMp);
 browser.detachFromObject(objectMp);
 browser.setMuted(mute);
@@ -41,27 +38,40 @@ browser.setAudioSettings(maxDist, refDist);
 browser.getId();                          // → number
 browser.getType();                        // → "2dPlayer" | "3dWorld" | "2dWorld"
 browser.getUrl();                         // → string
-browser.getTextureName();                 // → string
-browser.isFocused();                      // → boolean
-browser.isMuted();                        // → boolean
+browser.getWidth();                       // → number
+browser.getHeight();                      // → number
+browser.getPlayer();                      // → Player
+browser.isValid();                        // → boolean
 browser.destroy();
 
-// Static resource management
+// Static
+CefBrowser.isValid(player, browserId);
+CefBrowser.hasPlugin(player);             // check if player has CEF plugin
 CefBrowser.addResource(resourceName);
-CefBrowser.removeResource(resourceName);
+CefBrowser.getInstance(browserId, player);
+CefBrowser.getInstances();                // → [Player, Map<number, CefBrowser>][]
+CefBrowser.getPlayerInstances(player);    // → CefBrowser[]
+CefBrowser.toggleHudComponent(player, componentId, toggle);
+CefBrowser.toggleSpawnScreen(player, toggle);
+CefBrowser.clearChat(player);
+CefBrowser.toggleChatInput(player, toggle);
+CefBrowser.isChatInputOpen(player);       // → boolean
+CefBrowser.enableKey(player, key, enabled);
+CefBrowser.setKeyCapture(player, enabled);
+CefBrowser.exitGame(player);
 ```
 
 ## CefEvent
 
 ```typescript
-CefEvent.onCreate(({ browser, player, next }) => { return next(); });
-CefEvent.onDestroy(({ browser, player, next }) => { return next(); });
-CefEvent.onUrlChange(({ browser, player, url, next }) => { return next(); });
-CefEvent.onReceivedEvent(({ browser, player, data, next }) => { return next(); });
-CefEvent.onLoadBegin(({ browser, player, next }) => { return next(); });
-CefEvent.onLoadEnd(({ browser, player, next }) => { return next(); });
-CefEvent.onLoadError(({ browser, player, errorCode, errorMsg, url, next }) => { return next(); });
-CefEvent.onCursorChange(({ browser, player, cursorType, next }) => { return next(); });
+CefEvent.onInitialize(({ player, success, reason, message, next }) => { return next(); });
+CefEvent.onDownloadStart(({ player, next }) => { return next(); });
+CefEvent.onDownloadFinish(({ player, next }) => { return next(); });
+CefEvent.onReady(({ player, next }) => { return next(); });
+CefEvent.onBrowserCreated(({ player, browser, success, code, reason, next }) => { return next(); });
+CefEvent.onPressKey(({ player, key, scanCode, modifiers, down, repeat, next }) => { return next(); });
+CefEvent.onChatInputState(({ player, open, next }) => { return next(); });
+CefEvent.onRecv(({ player, browser, raw, data, buffer, next }) => { return next(); });
 ```
 
 ## Enums
@@ -85,7 +95,9 @@ import { CefException } from "@infernus/cef";
 
 ```typescript
 type CefBrowserSourceInfo = CefBrowserOptions | CefWorldBrowserOptions | CefWorld2DBrowserOptions;
-interface CefBrowserOptions { type: "2dPlayer"; player: Player; url: string; width?: number; height?: number; focused: boolean; controlsChat?: boolean; }
-interface CefWorldBrowserOptions { type: "3dWorld"; player: Player; url: string; width?: number; height?: number; textureName: string; }
-interface CefWorld2DBrowserOptions { type: "2dWorld"; player: Player; url: string; width?: number; height?: number; worldX: number; worldY: number; worldZ: number; offsetZ?: number; pivotX?: number; pivotY?: number; }
+
+interface CefCommonOptions { player: Player; url: string; width?: number; height?: number; }
+interface CefBrowserOptions extends CefCommonOptions { type: "2dPlayer"; focused: boolean; controlsChat?: boolean; }
+interface CefWorldBrowserOptions extends CefCommonOptions { type: "3dWorld"; textureName: string; }
+interface CefWorld2DBrowserOptions extends CefCommonOptions { type: "2dWorld"; worldX: number; worldY: number; worldZ: number; offsetZ?: number; pivotX?: number; pivotY?: number; }
 ```

@@ -375,11 +375,9 @@ Streamer.setTickRate(50);
 | `GameModeException` | GameMode operation error |
 | `HookException` | Hook interception error |
 | `I18nException` | i18n lookup or encoding error |
-| `DisconnectException` | Operation on disconnected player |
 | `ClientCheckException` | Client check error |
 | `StreamerException` | Streamer base error |
 | `Dynamic*Exception` | Per-entity streamer errors |
-| `FilterScriptException` | FilterScript lifecycle error |
 
 ```typescript
 import { ActorException } from "@infernus/core";

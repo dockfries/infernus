@@ -100,3 +100,18 @@ If they ask about **ecosystem context** (polyfills, versions, omp-node), read `r
 - **Events use a middleware pipeline** — call `next()` to continue, return `true`/`false` to override native default.
 - **Colors accept multiple formats**: `"#fff"`, `"#ff0000"`, `-1` (ARGB), `"(255,0,0,255)"` (rgba).
 - **Reference [open.mp docs](https://open.mp/docs)** for native parameter ranges and behavior.
+- **Async + player disconnection:** In async functions that involve a `Player`, check `player.isConnected()` after **every `await`** if you need to continue operating on that player. If the awaited promise rejects on disconnect (e.g. `dialog.show()` throws `DialogException`), use try/catch:
+
+```typescript
+async function handle(player: Player) {
+  try {
+    const result = await dialog.show(player);
+  } catch (e) {
+    if (e instanceof DialogException) return;  // disconnected / closed
+    throw e;
+  }
+  await someAsyncTask();
+  if (!player.isConnected()) return;           // must check after await
+  player.sendClientMessage("#0f0", "still here");
+}
+```

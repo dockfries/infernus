@@ -30,12 +30,22 @@ PlayerEvent.onInteriorChange(({ player, newInteriorId, oldInteriorId, next }) =>
 PlayerEvent.onEnterExitModShop(({ player, enterExit, interior, next }) => { return next(); });
 PlayerEvent.onPause(({ player, next }) => { return next(); });
 PlayerEvent.onResume(({ player, next }) => { return next(); });
+PlayerEvent.onUpdate(({ player, next }) => { return next(); });
+PlayerEvent.onRequestDownload(({ player, type, crc, next }) => { return next(); });
+PlayerEvent.onFinishedDownloading(({ player, virtualWorld, next }) => { return next(); });
+PlayerEvent.onCheckResponse(({ player, actionId, memAddr, data, next }) => { return next(); });
+PlayerEvent.onDialogResponse(({ player, dialogId, response, listItem, inputText, next }) => { return next(); });
+PlayerEvent.onLocaleChange(({ player, newLocale, oldLocale, next }) => { return next(); });
+PlayerEvent.onCharsetChange(({ player, newCharset, oldCharset, next }) => { return next(); });
+PlayerEvent.onFpsUpdate(({ player, fps, next }) => { return next(); });
+PlayerEvent.onAndroidCheck(({ player, isAndroid, next }) => { return next(); });
+PlayerEvent.onCommandTextRaw(({ player, command, next }) => { return next(); });
 
 // Methods
 player.sendClientMessage("#fff", "text");
 player.setHealth(100);          player.getHealth();
 player.setArmour(50);           player.getArmour();
-player.setPos(x, y, z);         player.getPos();       // { x, y, z }
+player.setPos(x, y, z);         player.getPos();       // { x, y, z, ret }
 player.setSkin(id);             player.getSkin();
 player.setInterior(id);         player.getInterior();
 player.setVirtualWorld(id);     player.getVirtualWorld();
@@ -67,10 +77,12 @@ player.setTime(h, m);           player.getTime();      // { hour, minute }
 player.setWantedLevel(0-6);     player.getWantedLevel();
 player.playSound(id, x, y, z);
 player.playAudioStream(url, x, y, z, dist);  player.stopAudioStream();
-player.getIp();                 player.getNetworkStats();
+player.getIp();
 player.getCameraPos();          player.getCameraFrontVector();  player.getCameraMode();
+player.getCameraAspectRatio();  player.getCameraZoom();
 player.getCameraTargetPlayer(); player.getCameraTargetVehicle();
 player.getCameraTargetActor();  player.getCameraTargetObject();
+player.getCameraTargetPlayerObject();
 player.getKeys();               player.getSpeed(magic = 180.0);
 player.toggleClock(b);          player.toggleControllable(b);
 player.enableCameraTarget(b);   player.setMapIcon(id, x, y, z, type, color, style);
@@ -78,6 +90,8 @@ player.removeMapIcon(id);       player.setMarker(tp, color);
 player.setSkillLevel(skill, level);
 player.createExplosion(x, y, z, type, radius);
 player.playCrimeReport(suspect, crimeId);  // 3-22
+player.sendMessageToPlayer(player, msg);   player.sendMessageToAll(msg);
+player.isNpc();                 player.getDrunkLevel();
 
 // Properties
 player.id;     player.charset;     player.locale;
@@ -87,6 +101,9 @@ player.lastFps; player.isPaused;   player.isRecording;
 Player.getInstance(id);       Player.getInstances();
 Player.isConnected(id);       Player.getMaxPlayers();
 Player.sendClientMessageToAll(color, msg);
+
+// NetStats (static class, not Player method)
+NetStats.getPlayerNetworkStats(player);
 ```
 
 ## Vehicle
@@ -136,6 +153,8 @@ VehicleEvent.onPlayerEnter(({ player, vehicle, isPassenger, next }) => { return 
 VehicleEvent.onPlayerExit(({ player, vehicle, next }) => { return next(); });
 VehicleEvent.onTrailerUpdate(({ player, vehicle, next }) => { return next(); });
 VehicleEvent.onUnoccupiedUpdate(({ vehicle, player, passengerSeat, newX, newY, newZ, velX, velY, velZ, next }) => { return next(); });
+VehicleEvent.onStreamIn(({ vehicle, forPlayer, next }) => { return next(); });
+VehicleEvent.onStreamOut(({ vehicle, forPlayer, next }) => { return next(); });
 
 // Static utilities
 Vehicle.getInstance(id);         Vehicle.getInstances();

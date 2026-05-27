@@ -50,7 +50,11 @@ obj.setMaterial(slot, modelId, txd, texture, color);
 obj.setMaterialText(text, slot, size, fontFace, fontSize, bold, fontColor, backColor, align);
 obj.destroy();
 
-const circle = DynamicArea.createCircle({ x: 0, y: 0, z: 0, size: 50, worldId: -1, interiorId: -1, playerId: -1 });
+// DynamicArea — use new + .create() with a type config, NOT static factories
+const circle = new DynamicArea({ type: "circle", x: 0, y: 0, size: 50, worldId: -1, interiorId: -1, playerId: -1 });
+circle.create();
+// Available types: "circle", "sphere", "cylinder", "cuboid", "rectangle", "polygon"
+// Set extended: true in config for array-based world/interior/playerId support
 circle.destroy();
 
 DynamicAreaEvent.onPlayerEnter(({ area, player, next }) => { return next(); });
