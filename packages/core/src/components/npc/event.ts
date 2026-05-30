@@ -77,7 +77,9 @@ const [onDestroy] = defineEvent({
     };
   },
   afterEach({ npc }) {
-    npcPool.delete(npc.id);
+    if (npcPool.get(npc.id) === npc) {
+      npcPool.delete(npc.id);
+    }
   },
 });
 

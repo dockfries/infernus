@@ -33,7 +33,9 @@ export const [onDisconnect] = defineEvent({
     return { player, reason };
   },
   afterEach({ player }) {
-    playerPool.delete(player.id);
+    if (playerPool.get(player.id) === player) {
+      playerPool.delete(player.id);
+    }
   },
 });
 
