@@ -1,16 +1,16 @@
 # Infernus 是什么
 
-`Infernus` 的名字来源于游戏中 `id` 为 `411` 的载具(特指 `sa` 中)。
+`Infernus` 的名字来源于《圣安地列斯》中 ID 为 `411` 的载具。
 
-`Infernus` 是一个基于 `samp-node` 打造的库，用于在 `JavaScript` 层调用游戏的 `sdk`。
+`Infernus` 是基于 `samp-node` 打造的库，用于在 JavaScript 层调用游戏的 SDK。
 
 > [!WARNING]
-> Infernus项目已进入维护阶段并将逐步归档，后续生态建设将由omp-node社区主导推进，诚邀感兴趣的开发者共同参与。
+> Infernus 项目已进入维护阶段并将逐步归档，后续生态建设将由 omp-node 社区主导推进，诚邀感兴趣的开发者共同参与。
 
 ## 🚧 施工中
 
-- [omp-node](https://github.com/omp-node) 目前正在积极开发中，**未来它会取代`Infernus`。**
-- 如果您想尝鲜`omp-node`，或更喜欢原生语法而没有过多封装，请关注 [@open.mp/node](https://github.com/omp-node/core)。
+- [omp-node](https://github.com/omp-node) 正在积极开发中，未来将取代 `Infernus`。
+- 如果您想尝鲜 `omp-node`，或偏好原生语法而不喜欢过多封装，请关注 [@open.mp/node](https://github.com/omp-node/core)。
 
 ### 差异
 
@@ -18,94 +18,104 @@
 
 | /          | Infernus + samp-node                                                            | omp-node                    |
 | ---------- | ------------------------------------------------------------------------------- | --------------------------- |
-| 运行环境   | Windows/Linux: Node.js 22.22.1                                                  | Windows/Linux: Node.js 18+  |
+| 运行环境   | Windows/Linux: Node.js 22.22.3                                                  | Windows/Linux: Node.js 18+  |
 | 模块规范   | CommonJS/ESModule                                                               | ESModule                    |
-| 架构支持   | 仅x86                                                                           | x86/x64                     |
-| 底层实现   | 通过sampgdk→fakeamx→原生调用                                                    | 直接调用omp-gdk/omp-sdk     |
+| 架构支持   | x86（稳定）/ x64（实验性，未经测试）                                            | x86/x64                     |
+| 底层实现   | 通过 sampgdk → fakeamx → 原生调用                                               | 直接调用 omp-gdk/omp-sdk    |
 | 执行效率   | 低                                                                              | 高                          |
-| 兼容性策略 | 通过兼容层polyfill支持三方插件                                                  | 插件需适配sdk并使用特定版本 |
-| 设计理念   | 1. 提倡完全使用Infernus重构，避免Pawn代码开发<br>2. 强制采用Steamer替代原生接口 | 详见官方文档                |
+| 兼容性策略 | 通过 polyfill 兼容层支持三方插件                                                | 插件需适配 SDK 并使用特定版本 |
+| 设计理念   | 1. 提倡完全使用 Infernus 重构，避免 Pawn 代码<br>2. 强制采用 Steamer 替代原生接口 | 详见官方文档                |
 
 ## 缺陷
 
 ::: danger
-是的，一切的开始前您需要了解缺陷。
+是的，一切开始前需要了解这些缺陷。
 
-一些缺陷极大影响了开发体验，**建议您以实验性的心态**尝试使用 `samp-node` 生态开发。
+一些缺陷极大影响了开发体验，**建议以实验性的心态**尝试使用 `samp-node` 生态开发。
 
-**总的来说目前生态并不稳定，这是多方面因素导致的。**
+**总的来说，目前生态并不稳定，这是多方面因素导致的。**
 :::
 
 ### 生态系统
 
 ::: info
-[点击查看已实现的生态包](https://github.com/dockfries/infernus/tree/main/packages)，不保证和原型库执行结果相同，且一定存在BUG。
+[点击查看已实现的生态包](https://github.com/dockfries/infernus/tree/main/packages)。不保证与原型库执行结果相同，且可能存在 Bug。
 :::
 
-原有的以 `pawn` 开发的库，如果您的项目必须依赖这些，那么目前而言会出现两种情况：无人开发或是不兼容。
+原有的以 Pawn 开发的库，如果您的项目必须依赖它们，目前会出现两种情况：无人维护或不兼容。
 
-由于 `samp-node` 的插件开发是基于 `samp` 而不是基于 `omp`，所以对于 `omp` 而言，一些插件生态基本无法兼容，比如无法访问到一些插件的 `native` 函数，比如 `raknet`。
+由于 `samp-node` 的插件开发基于 `samp` 而非 `omp`，部分插件生态基本无法兼容，例如无法访问某些插件的 native 函数（如 `raknet`）。
 
-这极大程度上的限制了基于 `node` 的 `samp` 插件生态库开发，这一点需要社区共同努力推进。
+这极大限制了基于 Node.js 的 samp 插件生态发展，需要社区共同努力推进。
 
-### 32位和Bindings支持
+### 32 位与 Bindings 支持
 
-很遗憾，本项目是基于32位的嵌入式`node.js`，对于`bindings`的支持是不稳定的，你可能会遇到报错等情况。
+很遗憾，本项目基于 32 位嵌入式 Node.js，对 `bindings` 的支持不稳定，您可能会遇到报错等情况。
 
 在使用本项目前，请注意以下版本要求：
 
-1. **Node版本匹配**
-   - 请确保你的Node主版本号与samp-node依赖的版本一致
-   - 例如samp-node依赖22.22.1，则只能使用22.x版本
-   - 不兼容的版本如18.x、20.x、24.x等将无法正常工作
+1. **Node 版本匹配**
+   - 请确保您的 Node 主版本号与 samp-node 依赖的版本一致。
+   - 例如 samp-node 依赖 22.22.3，则只能使用 22.x 版本。
+   - 不兼容的版本如 18.x、20.x、24.x 等将无法正常工作。
 
-2. 如果项目已经创建：
-   - 先检查Node版本是否符合要求
-   - 删除node_modules文件夹
-   - 重新运行`pnpm install`
+2. 如果项目已创建：
+   - 先检查 Node 版本是否符合要求。
+   - 删除 `node_modules` 文件夹。
+   - 重新运行 `pnpm install`。
 
-> 环境支持说明：目前better-sqlite3模块已在Windows平台测试通过
+> 环境支持说明：`better-sqlite3` 模块已在 Windows 平台测试通过。
 
-也许在未来64位的`omp-node`上迎刃而解。
+也许未来 64 位的 `omp-node` 上能迎刃而解。
 
-32位的`node`环境内存受限，建议另外再建立一个数据库操作的 `node` 项目，运行在宿主机的64位`node`上，比如用 `nestjs` 搭建 `api`，专门用来 `crud`，游戏服务端采用 `http` 请求来访问，或者您可以尝试用一些更高级的 `rpc` 或者 `socket` 来实现通信。
+> [!TIP]
+> `samp-node` 现已提供 64 位构建，仅供实验性使用。需要搭配 64 位的 OMP 服务端以及对应的 64 位插件（如 [streamer](https://github.com/dockfries/samp-streamer-plugin/releases/tag/v2.9.6)、[gps](https://github.com/dockfries/samp-gps-plugin/releases/tag/v1.4.1)、[raknet](https://github.com/dockfries/Pawn.RakNet/releases/tag/1.6.1-omp-rc1)）使用。
+>
+> 请注意，`@infernus/create-app` 目前暂不支持下载这些 64 位依赖。
+>
+> 使用 64 位的 raknet 插件时，可能需要手动重新编译 polyfill 以匹配 Pawn.RakNet 的版本，避免版本不匹配的警告。
 
-好处是服务端只处理游戏逻辑，数据库逻辑交给另外的项目，顺手您还可以再开发一个后台管理系统，这样后台和服务端采用的是同一套 `api`。
+32 位 Node 环境内存受限，建议另外建立一个数据库操作的 Node 项目，运行在宿主机的 64 位 Node 上。例如用 NestJS 搭建 API 专门用于 CRUD，游戏服务端通过 HTTP 请求访问，或尝试更高级的 RPC 或 Socket 方式通信。
+
+这样服务端只处理游戏逻辑，数据库逻辑交给独立项目，您还可以顺手开发一个后台管理系统，与服务端共用同一套 API。
 
 ## 组成
 
-通常来说您只需要关注第一层，即应用开发层。
+通常您只需关注第一层，即应用开发层。
 
-`Infernus` 主要做的就是第二层和第三层的工作，依赖于 `samp-node` 和 `omp` 游戏服务器。
+`Infernus` 主要负责第二和第三层的工作，依赖于 `samp-node` 和 `omp` 游戏服务器。
 
-如果您不知道怎样开始建立一个项目，请参考 [快速上手](./quick-start)。
+如果您不知道如何开始，请参考[快速上手](./quick-start)。
 
-| /   | 层               | 介绍                            |
+| /   | 层               | 说明                            |
 | --- | ---------------- | ------------------------------- |
-| 1   | 应用开发层       | 游戏模式，比如自由或角色扮演    |
+| 1   | 应用开发层       | 游戏模式，如自由或角色扮演      |
 | 2   | 类包装层         | 通过类来调用函数式包装          |
 | 3   | 函数式包装层     | 例如 `samp/omp/streamer` 的包装 |
-| 4   | `Samp Node`      | `SDK` 通往底层的桥梁            |
+| 4   | `Samp Node`      | SDK 通往底层的桥梁              |
 | 5   | `Omp` 游戏服务器 | 底层                            |
 
 ## 为何开发
 
-对于编程初学者而言，使用类似C语言的面向过程式语言（如Pawn）开发游戏脚本存在显著的学习门槛。相较于现代面向对象语言（如JavaScript），Pawn在基础API设计上更为繁琐——例如字符串拼接、数组操作等底层功能需手动实现，增加了开发复杂度。
+对于编程初学者而言，使用类似 C 的面向过程语言（Pawn）开发游戏脚本存在显著的学习门槛。相比现代面向对象语言（如 JavaScript），Pawn 的基础 API 更为繁琐——字符串拼接、数组操作等基本功能需手动实现，增加了开发复杂度。
 
-此外，Pawn语言生态存在以下局限性：
+此外，Pawn 语言生态存在以下局限：
 
-1.  **异步支持薄弱**：原生缺乏类似JavaScript中`Promise/Async`的异步编程范式；
-2.  **国际化障碍**：由于Pawn编译器（SA-MP）诞生较早，其字符编码方案依赖操作系统本地化设置：
-    - 西欧系统默认采用`ISO-8859-1`编码；
-    - 中文系统依赖`GBK`编码；
-    - 与通用`UTF-8`标准不兼容。
+1. **异步支持薄弱**：原生缺乏 JavaScript 中 `Promise`/`async` 等现代异步范式。
+2. **国际化障碍**：SA-MP 的 Pawn 编译器诞生较早，字符编码依赖操作系统本地化设置：
+   - 西欧系统默认采用 `ISO-8859-1`。
+   - 中文系统依赖 `GBK`。
+   - 与通用的 UTF-8 标准不兼容。
 
-这种编码强依赖性可能导致不可预见的兼容性问题，例如将`GBK`数据直接存入`UTF-8`数据库时，若无转译处理则会出现乱码。
+这种编码的强依赖性可能导致不可预见的兼容性问题，例如将 GBK 数据直接存入 UTF-8 数据库，未经转译就会出现乱码。
 
-而基于JavaScript的开发方案则能充分利用Node.js生态优势：
+而基于 JavaScript 的开发方案则能充分利用 Node.js 生态的优势：
 
-- **工具链丰富**：日期处理（Day.js）、数据库驱动（MySQL/Redis/MongoDB）等成熟库；
-- **异步标准化**：原生支持`Promise/Async`异步控制；
-- **编码统一性**：全栈采用`UTF-8`编码，规避国际化兼容问题。
+- **工具链丰富**：日期处理（Day.js）、数据库驱动（MySQL、Redis、MongoDB）等成熟库应有尽有。
+- **异步标准化**：原生支持 `Promise`/`async` 异步控制。
+- **编码统一**：全栈使用 UTF-8，彻底规避国际化兼容问题。
 
-通过迁移至JavaScript技术栈，开发者可显著降低学习成本，同时获得更健壮的国际化支持与现代工具链赋能。
+通过迁移至 JavaScript 技术栈，开发者可显著降低学习成本，同时获得更健壮的国际化支持与现代工具链赋能。
+
+> [!TIP]
+> `skills/omp-infernus-core-use/` 目录下提供了一个用于 `@infernus/*` 的 **AI 智能体技能**，可帮助 AI 编码助手在生成代码时理解框架的 API 和约定。请注意，该技能是**实验性的且未经测试**，请自行评估使用。

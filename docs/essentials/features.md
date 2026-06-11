@@ -1,39 +1,38 @@
 # Features
 
-## Automatically destroy instance
+## Automatic Instance Destruction
 
-When the GameMode exits, all the `Streamer/vehicle/textdraw/menus...` instances will be automatically destroyed, which means you no longer need to write a large number of destroy functions repeatedly.
+When the GameMode exits, all `Streamer/vehicle/textdraw/menus...` instances are automatically destroyed — no more repetitive cleanup code.
 
-However, assuming that your instance needs to be destroyed when player disconnects, you still need to destroy it manually.
+However, if an instance needs to be destroyed when a player disconnects, you still need to handle that manually.
 
-## Discard
+## Discarded
 
-Discard functions that can be implemented by `JavaScript` built-in functions or third-party libraries, such as `floatabs`, `strcmp`, `sqlite db`, `setTimer` and so on.
-This means that you should use the `JavaScript` library, and you no longer need or should use native development plugins, such as `mysql`, timerfix`, etc.
+Functions that can be implemented with built-in JavaScript features or third-party libraries (e.g., `floatabs`, `strcmp`, `sqlite db`, `setTimer`) have been discarded. This means you should use JavaScript libraries instead of native plugins like `mysql` or `timerfix`.
 
-## Get string
+## String Retrieval
 
-For most string fetches, you no longer need to define a fixed-length array as native developers do. The commonly used functions have been dealt with internally in `Infernus`. The principle is that an array of strings with maximum length is defined, and then the array is automatically iterated to the point where the first byte is `0` to intercept the string, such as `GetPlayerName`, that is `player.getName().name`.
+For most string operations, you no longer need to define fixed-length arrays as in native development. Common functions are handled internally by `Infernus`. The principle is straightforward: a maximum-length buffer is allocated, then iterated until the first `0` byte is found, marking the end of the string — for example, `GetPlayerName` becomes `player.getName().name`.
 
-The method of interception comes from the [practical functions](./i18n.md#practical-functions) in internationalization. If you encounter some similar scenarios, you do not have to repeat the wheel.
+This approach comes from the [practical functions](./i18n.md#practical-functions) in the internationalization module. If you encounter similar scenarios, there's no need to reinvent the wheel.
 
-## Color conversion
+## Color Conversion
 
-`Infernus` underlying color conversion uses the [Peter Szombati's samp-node-lib](https://github.com/peterszombati/samp-node-lib) source code,used to use more semantic colors when you call certain functions during development, such as `#fff`,`#ffffff`,`(r, g, b)`, `(r, g, b, a)`.
+`Infernus`'s underlying color conversion is based on [Peter Szombati's samp-node-lib](https://github.com/peterszombati/samp-node-lib), allowing you to use more semantic color values like `#fff`, `#ffffff`, `(r, g, b)`, or `(r, g, b, a)` when calling certain functions.
 
-If it is not as expected in some scenes, it is rendered black or white, such as textdraw, after using color values, you can try a different format. For example, change the original `#fff` to`(255,255,255,255)`, or still use the native developed digital format.
+If a color doesn't render as expected in certain contexts (e.g., textdraws appear black or white), try a different format — switch `#fff` to `(255, 255, 255, 255)`, or fall back to the native numeric format.
 
-## Player attribute
+## Player Attributes
 
-- `getFps()`：To obtain the player's current frame rate, you can only get `1` updates every `1` second, and it may be `0`.
-- `lastUpdateTick`：The timestamp of the player's last update.
-- `lastUpdateFpsTick`：The last updated `fps` timestamp of the player.
-- `lastDrunkLevel`：The last time the player updated the drunkenness level.
+- `getFps()`: Returns the player's current frame rate (limited to one update per second; may return `0`).
+- `lastUpdateTick`: Timestamp of the player's last update.
+- `lastUpdateFpsTick`: Timestamp of the player's last FPS update.
+- `lastDrunkLevel`: The player's last reported drunk level.
 
-## Pause event
+## Pause Events
 
-Built-in callback events for players to pause `onPause` and resume `onResume`. It is not necessarily suitable for `sa definitive edition` or Android version, and it is determined by timer and `onUpdate` with error amount.
+Built-in callbacks for player pause (`onPause`) and resume (`onResume`). These may not work reliably with the SA Definitive Edition or Android version, as they rely on timers and `onUpdate` with a margin of error.
 
 :::tip
-The callback may also be mistakenly triggered when the player's network is not good.
+The callback may also be inadvertently triggered when the player's network connection is poor.
 :::

@@ -1,9 +1,9 @@
 # Use
 
-**`GameMode.use` Is a method to simulate `filterscript`, which is used for logical reuse into GameMode.**
+**`GameMode.use` simulates a `filterscript` for reusing logic across GameModes.**
 
 ::: tip
-Because it is a simulation rather than a real `filterscript`, you cannot operate these scripts through commands such as `rcon loadfs/unloadfs`.
+Since this is a simulation rather than a real `filterscript`, you cannot manage these scripts through commands like `rcon loadfs/unloadfs`.
 :::
 
 ## Type
@@ -19,9 +19,9 @@ interface IFilterScript {
 type Use = (plugin: IFilterScript, ...options: Array<any>) => GameMode;
 ```
 
-## Define script
+## Defining a Script
 
-You can write some logical reuse scripts yourself and share them with others through `node package` or other ways.
+You can write reusable logic scripts and share them via `node package` or other means.
 
 ```ts
 import { GameMode } from "@infernus/core";
@@ -45,18 +45,18 @@ const MyScript: IMyScript = {
   },
 };
 
-// No parameters are passed to the load method
+// No arguments passed to load
 GameMode.use(MyScript);
-// Pass parameters to the load method
+// With arguments passed to load
 GameMode.use(MyScript, "arg1", "arg2", "arg...");
 ```
 
 ::: tip
-Registered scripts are automatically loaded after the GameMode init.
-The loaded script is automatically unloaded when the GameMode exit.
+Registered scripts are automatically loaded after GameMode initialization.
+Loaded scripts are automatically unloaded when the GameMode exits.
 :::
 
-## Load command
+## Load Commands
 
 - `GameMode.loadUseScript(name: string)`: Load a registered script
 - `GameMode.unloadUseScript(name: string)`: Unload a registered script
@@ -73,19 +73,21 @@ PlayerEvent.onCommandText("reloadMyScript", ({ next }) => {
 });
 ```
 
-## Notice
+## Important Notes
 
 ::: warning
-You should not register the `GameMode.onInit` event in the `load` function, because the function is executed in its event when it is loaded through `GameMode.use`.
+You should not register `GameMode.onInit` inside the `load` function, since `load` is already executed within that event.
 
-If you use middleware functions in the `load` function, you should return an array of canceled middleware functions at the end, otherwise there will be a memory leak phenomenon! For other global variables, such as timers, you should reset them in the `unload` function!
+If you use middleware functions inside `load`, make sure to return an array of their cancel functions at the end — otherwise memory will leak! Similarly, global variables like timers should be reset in the `unload` function.
 
-The reason is simple, if you don't do this, the middleware will not be unloaded when the GameMode is restarted or manually executed the script command restart, and every time the script is loaded, a new middle function is added, which will cause memory leak!
+The reason is simple: without this, middleware won't be cleaned up when the GameMode restarts or when you manually reload the script. Each reload adds new middleware, causing a memory leak!
 :::
 
-In addition, you should not call the `script.load()` or `script.unload()`，You should use the [load command](#load-command) to call.
+Additionally, you should not call `script.load()` or `script.unload()` directly — use the [load commands](#load-commands) instead.
 
 ```ts
+import { PlayerEvent } from "@infernus/core";
+
 const MyScript = {
   name: "my_script",
   load(...args) {
@@ -105,11 +107,11 @@ const MyScript = {
 GameMode.use(MyScript);
 ```
 
-## Rewrite the official filterscript
+## Rewriting Official Filterscripts
 
-`Infernus` has tried to rewrite the official filterscript. You can try it by installing [@infernus/fs](https://github.com/dockfries/infernus/tree/main/packages/filterscript).
+`Infernus` has reimplemented the official filterscripts. You can try them by installing [@infernus/fs](https://github.com/dockfries/infernus/tree/main/packages/filterscript).
 
-If you are interested, you can refer to these cases to familiarize you with the syntax faster. You can also download the source code and modify it to better apply it in your GameMode.
+If you're interested, these examples can help you get familiar with the syntax more quickly. You can also download the source code and modify it to better suit your GameMode.
 
 ```sh
 pnpm install @infernus/fs
@@ -122,4 +124,4 @@ import { A51Base } from "@infernus/fs";
 GameMode.use(A51Base, { debug: true });
 ```
 
-Then you enter `/a51` in the game to teleport to the base.
+Then enter `/a51` in-game to teleport to the base.

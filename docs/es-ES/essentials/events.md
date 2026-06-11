@@ -1,14 +1,14 @@
 # Eventos
 
-El evento de `Infernus` es parecido al evento nativo. Deberías ir a [Open Multiplayer](https://open.mp) para consultar la documentación relevante del desarrollo nativo.
+Los eventos de `Infernus` se asemejan mucho a sus equivalentes nativos. Consulte la documentación de [Open Multiplayer](https://open.mp) para obtener detalles sobre los eventos nativos.
 
 ## Ejemplo
 
-Toma `OnGameModeInit` como ejemplo, en `Infernus`, es `GameMode.onInit(callback)`.
+Tome `OnGameModeInit` — en `Infernus` es `GameMode.onInit(callback)`.
 
-La mayoría de las otras clases de eventos terminan con `Event`, como `PlayerEvent`.
+La mayoría de las demás clases de eventos terminan en `Event`, como `PlayerEvent`.
 
-Con el prompt de tipo de `TypeScript`, definitivamente lo entenderá.
+Con las sugerencias de tipo de TypeScript, lo entenderá rápidamente.
 
 ```ts
 import { GameMode } from "@infernus/core";
@@ -19,26 +19,25 @@ GameMode.onInit(({ next }) => {
 });
 
 GameMode.onExit(({ next }) => {
-  console.log("Se cerró el modo de juego");
+  console.log("El modo de juego finalizó");
   return next();
 });
 
 GameMode.onIncomingConnection(({ next, playerId, ipAddress, port }) => {
-  console.log(`id del jugador:${playerId},ip:${ipAddress},puerto:${port} intenta conectarse`);
+  console.log(`jugador ID: ${playerId}, IP: ${ipAddress}, puerto: ${port} intenta conectarse`);
   return next();
 });
 ```
 
-## Comportamiento por defecto
+## Comportamiento predeterminado
 
 ::: tip
-**El comportamiento por defecto se refiere al comportamiento subyacente del servidor de juego que se activa cuando no devolvemos o devolvemos un valor.**
+**El comportamiento predeterminado se refiere a la acción subyacente del servidor que se activa cuando no devolvemos un valor, o devolvemos un valor específico.**
 
-No todos los comportamientos por defecto devuelven `true`, pero también puede ser `false`, dependiendo de cómo estén definidas las funciones subyacentes del servidor de juego.
-
+No todos los comportamientos predeterminados devuelven `true` — algunos pueden devolver `false`, dependiendo de cómo estén definidas las funciones subyacentes.
 :::
 
-Tomemos como ejemplo el evento de entrada de texto del jugador, si devolvemos `true` o `1`, significa que el evento de entrada de texto subyacente del servidor del juego continúa ejecutándose. **En este punto verás un mensaje por defecto en la caja de chat.**
+Tome el evento de entrada de texto del jugador: devolver `true` o `1` hace que el evento de entrada de texto subyacente continúe ejecutándose. **Verá un mensaje predeterminado en el cuadro de chat.**
 
 ```ts
 import { PlayerEvent } from "@infernus/core";
@@ -50,24 +49,24 @@ PlayerEvent.onText(({ player, next }) => {
 
 ## Middleware
 
-Habrás notado que hay un parámetro `next` en la función callback de casi todos los eventos, que es similar a muchos frameworks, como `express`, que se utiliza para ejecutar la siguiente función en el middleware.
+Puede haber notado el parámetro `next` en casi todas las retrollamadas de eventos. Al igual que en frameworks como `Express`, ejecuta la siguiente función en la cadena de middleware.
 
-**Con el patrón middleware, puedes dividir tus eventos más fácilmente en lugar de escribir todos los eventos en la misma función.**
+**Con el patrón middleware, puede dividir sus eventos en funciones separadas en lugar de acumular todo en una sola.**
 
 :::warning
-No olvides llamar a `next()` a menos que sepas muy bien que la siguiente función no debe ejecutarse.
+No olvide llamar a `next()` a menos que esté seguro de que la siguiente función no debe ejecutarse.
 :::
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
 
 PlayerEvent.onConnect(({ player, next }) => {
-  console.log("jugador 1 conectado");
-  // return next(); Supongamos que olvidas llamarlo
+  console.log("jugador conectado 1");
+  // return next(); // Supongamos que olvida llamarlo
 });
 
 PlayerEvent.onConnect(({ player, next }) => {
-  console.log("jugador 2 conectado");
+  console.log("jugador conectado 2");
   // Este middleware no se ejecutará
   return next();
 });
@@ -75,14 +74,14 @@ PlayerEvent.onConnect(({ player, next }) => {
 
 ### Soporte asíncrono
 
-Tomemos como ejemplo los eventos de jugador. La clase de evento del jugador es `PlayerEvent`.
+Tomando como ejemplo los eventos de jugador — la clase de evento es `PlayerEvent`.
 
-Puedes usar `async` directamente o devolver una función `Promise` en el callback.
+Puede usar `async`/`await` o devolver una `Promise` en la retrollamada.
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
 
-// Para demostrar el falso async
+// Una función async falsa para demostración
 const fakePromise = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -91,18 +90,18 @@ const fakePromise = () => {
   });
 };
 
-// Puede utilizar async directamente, que es también la opción recomendada
+// Usar async/await es el enfoque recomendado
 PlayerEvent.onCommandText("async", async ({ player, next }) => {
   await fakePromise();
-  player.sendClientMessage("#fff", "Enviar un mensaje después de un retraso de 1 segundo.");
+  player.sendClientMessage("#fff", "Mensaje enviado después de 1 segundo de retraso.");
   return next();
 });
 
-// Promise is OK, but it is not recommended
+// Promise también funciona, pero no se recomienda
 PlayerEvent.onCommandText("promise", ({ player, next }) => {
   return new Promise((resolve) => {
     fakePromise().then(() => {
-      player.sendClientMessage("#fff", "Enviar un mensaje después de un retraso de 1 segundo.");
+      player.sendClientMessage("#fff", "Mensaje enviado después de 1 segundo de retraso.");
       resolve();
       return next();
     });
@@ -110,14 +109,14 @@ PlayerEvent.onCommandText("promise", ({ player, next }) => {
 });
 ```
 
-### Retorno asíncrono
+### Valor de retorno asíncrono
 
 :::warning
-Debido a la lógica subyacente, **el valor de retorno de la función asíncrona que definas no tiene sentido!**
+Debido a detalles de implementación subyacentes, **¡el valor de retorno de las funciones asíncronas no tiene sentido!**
 
-Aunque el tipo `TypeScript` requiere que devuelvas un valor, en realidad no se utiliza.
+Aunque TypeScript requiere que devuelva un valor, este no se utiliza realmente.
 
-**Si siempre devuelves el valor de retorno del siguiente middleware como valor de retorno, el valor de retorno siempre devuelve el valor por defecto subyacente cuando se encuentra una función async.**
+**Si siempre pasa el valor de retorno de `next()`, se devolverá el valor subyacente predeterminado cuando se encuentre una función async.**
 :::
 
 ```ts
@@ -132,72 +131,69 @@ PlayerEvent.onText(({ player, next }) => {
 });
 
 PlayerEvent.onText(async ({ player, next }) => {
-  // porque es asíncrono,
-  // el valor de retorno específico depende del valor de retorno por defecto de
-  // el evento definido por el defineEvento subyacente del código fuente.
-  //
-  // no depende de lo que devuelva la función asíncrona.
-  // onText por defecto es true, y la capa subyacente se convertirá a int, es decir, 1
-  const ret = next(); // la función después de ejecutarse
-  return ret; // convertir false en int = 0
+  // Como es async, el valor de retorno depende del valor predeterminado
+  // definido por defineEvent, no de lo que devuelva la función async.
+  // onText por defecto es true, que se convierte en int 1.
+  const ret = next(); // ejecutar la siguiente función
+  return ret; // false se convierte en int 0
 });
 
-// El valor de retorno síncrono definido después de la función asíncrona tampoco tiene sentido,
-// y se ha devuelto el valor por defecto cuando se encuentra una función asíncrona
+// Los valores de retorno síncronos después de una función async también se ignoran;
+// el valor predeterminado ya se devolvió al encontrar la función async.
 PlayerEvent.onText(({ player, next }) => {
   return false;
 });
 ```
 
-### Cancelar
+### Cancelación
 
 ::: tip
-Todas las funciones de middleware para eventos definidas por [defineEvent](#custom-event) pueden ser canceladas, y la mayoría de los callbacks existentes se definen a través de él.
+Todas las funciones de middleware para eventos definidos por [defineEvent](#evento-personalizado) pueden cancelarse. La mayoría de las retrollamadas existentes se definen a través de él.
 :::
 
-Esta función se suele utilizar cuando sólo se desea ejecutar una vez o cancelar en algún momento.
+Esto es útil cuando desea ejecutar un manejador solo una vez, o cancelarlo en un punto específico.
 
 ```ts
 // Definir un comando de una sola vez
 const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
-  console.log("Este comando sólo se ejecuta una vez, y la siguiente ejecución no existirá.");
+  console.log("Este comando solo se ejecuta una vez; las invocaciones posteriores no lo activarán.");
   const ret = next();
-  off(); // la siguiente función debe ejecutarse antes que la función off
+  off(); // llame a off() después de next()
   return ret;
 });
 ```
 
-## Obtener instancia
+## Obtención de instancias
 
-Normalmente, puede que necesites obtener todas las instancias orientadas a objetos encapsuladas por `Infernus`, como instancias de jugadores, según `id`.
+A menudo necesitará recuperar instancias orientadas a objetos encapsuladas por `Infernus` (por ejemplo, instancias de jugadores) por su `id`.
 
-Puedes obtener ejemplos de las siguientes formas, así como otros ejemplos como vehículos.
+Así es como se obtienen instancias — los vehículos y otras entidades funcionan de manera similar.
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
 
 PlayerEvent.onConnect(({ player, next }) => {
-  const players = Player.getInstances(); // Obtener un arreglo de todas las instancias de jugador
+  const players = Player.getInstances(); // arreglo de todas las instancias de jugador
   players.forEach((p) => {
     p.sendClientMessage("#fff", `jugador ${player.getName().name} conectado`);
   });
 
-  const player = Player.getInstance(0); // Obtener la instancia de un jugador cuyo id es 0
+  const player = Player.getInstance(0); // jugador con id 0
   console.log(player);
 
   return next();
 });
 ```
 
-## Comandos de jugadores
+## Comandos de jugador
 
-En este caso se ha utilizado el evento de comando del jugador, que tiene una gran mejora en la sintaxis comparado con la anterior escritura nativa `pawn`, simplifica la sentencia de muchas funciones como `strcmp`, y puede extraer la lógica del comando con el modo middleware. Si has utilizado el desarrollo nativo, sabrás de lo que estoy hablando.
+El evento de comando de jugador se ha utilizado en ejemplos anteriores. Ofrece una mejora sintáctica significativa sobre el Pawn nativo — elimina las engorrosas cadenas de `strcmp` y permite extraer la lógica de comandos mediante el patrón middleware. Si ha usado desarrollo nativo, sabrá de lo que hablo.
 
-**Los eventos del comando player soportan la definición de múltiples cadenas a la vez, o puedes definir subcomandos fácilmente.**
+**Los eventos de comando de jugador permiten definir múltiples cadenas a la vez y facilitan los subcomandos.**
 
-El comando de un jugador también soporta la indefinición, y el valor de retorno de `onCommandText` es la función de cancelación.
+Los comandos de jugador también admiten cancelación — el valor de retorno de `onCommandText` es la función de cancelación.
 
-El comando del jugador también proporciona guardia delantera, guardia trasera y guardia equivocada, que se refiere a la idea de `zcmd` en la biblioteca `pawn`.
+Además, los comandos de jugador proporcionan guardia frontal, guardia trasera y guardia de error, inspirados en la librería `zcmd` de Pawn.
 
 ### Ejemplo
 
@@ -206,102 +202,98 @@ import { Player, PlayerEvent } from "@infernus/core";
 
 // Definir un comando de primer nivel
 PlayerEvent.onCommandText("ayuda", ({ player, next }) => {
-  console.log(`jugador ${player.getName().name}, hola`);
+  console.log(`Hola, jugador ${player.getName().name}`);
   return next();
 });
 
-// Definir un comando de segundo nivel
+// Definir un subcomando
 PlayerEvent.onCommandText("ayuda teletransporte", ({ player, next }) => {
-  console.log(
-    `jugador ${player.getName().name} desea obtener información de ayuda relacionada con la teletransportación`,
-  );
+  console.log(`el jugador ${player.getName().name} desea ayuda con teletransporte`);
   return next();
 });
 
-// Definir un comando que puede ser activado por /msg o /message
+// Definir un comando que puede activarse con /msg o /mensaje
 PlayerEvent.onCommandText(["msg", "mensaje"], ({ player, subcommand, next }) => {
   console.log(
-    `el jugador ${player.getName().name} introdujo este comando, y también puede haber introducido un subcomando ${subcommand.toString()}`,
+    `el jugador ${player.getName().name} usó este comando, subcomando: ${subcommand.toString()}`,
   );
 
-  // Equivale a que el jugador introduzca /message global o /msg global
+  // Equivale a /mensaje global o /msg global
   if (subcommand[0] === "global") {
-    // Lógica adicional que desees incorporar
     return next();
   } else {
     next();
-    // Pensado como un subcomando inválido, activará la retaguardia
-    return false;
+    return false; // se trata como inválido, activando la guardia trasera
   }
 });
 ```
 
 ### Sensibilidad a mayúsculas y minúsculas
 
-Por defecto, el registro de comandos **no diferencia** entre mayúsculas y minúsculas.
+Por defecto, el registro de comandos **no distingue** entre mayúsculas y minúsculas.
 
-Puedes habilitar, deshabilitar y obtener el estado actual a través de métodos en la instancia de `GameMode`.
+Puede alternar esto mediante métodos en la instancia de `GameMode`.
 
 ```ts
 import { GameMode } from "@infernus/core";
 
 console.log(GameMode.isCmdCaseSensitive());
 
-GameMode.enableCmdCaseSensitive(); // Habilitar sensibilidad a mayúsculas y minúsculas para comandos
-GameMode.disableCmdCaseSensitive(); // Deshabilitar sensibilidad a mayúsculas y minúsculas para comandos
+GameMode.enableCmdCaseSensitive(); // Activar sensibilidad
+GameMode.disableCmdCaseSensitive(); // Desactivar sensibilidad
 ```
 
 :::warning
-Ten en cuenta que habilitar y deshabilitar comandos típicamente **no se puede realizar** en eventos de devolución de llamada como `GameMode.OnInit`. Esto se debe a que el registro de comandos a través de PlayerEvent.onCommandText ocurre antes.
+Tenga en cuenta que cambiar la sensibilidad normalmente **no puede** hacerse dentro de retrollamadas como `GameMode.onInit`, porque los comandos se registran mediante `PlayerEvent.onCommandText` antes de que esas retrollamadas se disparen.
 
-Si cambias la configuración global de habilitar/deshabilitar y luego importas otros paquetes, también afectará la sensibilidad a mayúsculas y minúsculas de los comandos registrados globalmente en otros paquetes como `@infernus/fs`.
+Si cambia la configuración global y luego importa otros paquetes, también afectará la sensibilidad de los comandos en esos paquetes (por ejemplo, `@infernus/fs`).
 
-Cuando defines múltiples comandos con el mismo nombre e incluyen sensibilidad a mayúsculas y minúsculas, **el middleware sensible a mayúsculas y minúsculas se refiere como coincidencia estricta, y tiene prioridad sobre la ejecución insensible a mayúsculas y minúsculas.**
+Cuando hay múltiples comandos con el mismo nombre pero diferente configuración de sensibilidad, **los middlewares que distinguen mayúsculas y minúsculas se consideran coincidencias estrictas y tienen prioridad sobre los que no.**
 :::
 
-Puedes habilitar o deshabilitar de manera flexible para controlar si los comandos registrados posteriormente son sensibles a mayúsculas y minúsculas.
+Puede activar o desactivar la sensibilidad para los comandos registrados posteriormente.
 
 ```ts
 import { GameMode, PlayerEvent } from "@infernus/core";
 
 GameMode.disableCmdCaseSensitive();
 
-// Los comandos registrados en este punto no son sensibles a mayúsculas y minúsculas,
-// permitiendo a los jugadores usar comandos como help, HeLP, etc.
+// Los comandos registrados ahora no distinguen mayúsculas/minúsculas.
+// Los jugadores pueden usar help, HeLP, etc.
 PlayerEvent.onCommandText("help", ({ player, next }) => {
-  player.sendClientMessage(-1, "comando help (no sensible a mayúsculas y minúsculas)");
+  player.sendClientMessage(-1, "comando help (no sensible)");
   return next();
 });
 
 GameMode.enableCmdCaseSensitive();
 
-// Los comandos registrados en este punto son sensibles a mayúsculas y minúsculas,
-// requiriendo que los jugadores usen únicamente Help.
+// Los comandos registrados ahora distinguen mayúsculas/minúsculas.
+// Los jugadores deben usar Help exactamente.
 PlayerEvent.onCommandText("Help", ({ player, next }) => {
-  player.sendClientMessage(-1, "comando help (sensible a mayúsculas y minúsculas)");
+  player.sendClientMessage(-1, "comando help (sensible)");
   return next();
 });
 ```
 
-### Sensibilidad parcial a mayúsculas y minúsculas
+### Sensibilidad parcial
 
-Puedes pasar una opción para especificar si el comando que se está registrando es sensible a mayúsculas y minúsculas, independientemente de la configuración global de sensibilidad.
+Puede pasar una opción para especificar si un comando concreto distingue mayúsculas y minúsculas, independientemente de la configuración global.
 
 ```ts
 PlayerEvent.onCommandText({
-  caseSensitive: false, // Especifica si el comando es sensible a mayúsculas y minúsculas
-  command: "foo", // Tu comando
+  caseSensitive: false, // anulación para este comando
+  command: "foo",
   run({ player, subcommand, next }) {
     return next();
   },
 });
 ```
 
-### Antes de guardia
+### Guardia frontal
 
-La guardia `onCommandReceived` se ejecuta antes que `onCommandText`, y puedes añadir alguna lógica adicional.
+La guardia frontal `onCommandReceived` se ejecuta antes de `onCommandText`, permitiéndole agregar lógica adicional.
 
-Si devuelve `false`, lo considerará como una denegación activa y entrará en la guardia de error.
+Devolver `false` se considera un rechazo activo y entra en la guardia de error.
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
@@ -311,11 +303,11 @@ PlayerEvent.onCommandReceived(({ player, command, next }) => {
 });
 ```
 
-### Después de la guardia
+### Guardia trasera
 
-Después de la guardia `onCommandPerformed` se ejecuta después de `onCommandText`. Puedes añadir alguna lógica adicional.
+La guardia trasera `onCommandPerformed` se ejecuta después de `onCommandText`. Puede agregar lógica adicional aquí.
 
-Si devuelve `false`, lo considerará como una denegación activa y entrará en la guardia de error.
+Devolver `false` se considera un rechazo activo y entra en la guardia de error.
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
@@ -325,29 +317,29 @@ PlayerEvent.onCommandPerformed(({ player, command, next }) => {
 });
 ```
 
-### Protección contra errores
+### Guardia de error
 
-La guardia de error `onCommandError` se ejecuta cuando la guardia antes/después `return false` o cuando el jugador introduce un comando indefinido, se puede añadir alguna lógica adicional, normalmente sólo se define una globalmente.
+La guardia de error `onCommandError` se activa cuando la guardia frontal/trasera devuelve `false`, o cuando un jugador introduce un comando no definido. Puede agregar lógica de manejo aquí; normalmente solo se define una guardia de error global.
 
-Si se devuelve `false`, se ejecutará el comportamiento por defecto, es decir, el comportamiento por defecto del evento nativo `OnPlayerCommandText`.
+Devolver `false` ejecuta el comportamiento predeterminado del evento nativo `OnPlayerCommandText`.
 
 ```ts
 PlayerEvent.onCommandError(({ player, command, error, next }) => {
   player.sendClientMessage(
     "#f00",
-    `player ${player.id} command ${command} with error ${error.code}, ${error.msg}`,
+    `jugador ${player.id} comando ${command} error ${error.code}: ${error.msg}`,
   );
 
-  next(); // Si existen otros middleware onCommandError, ejecute
-  return true; // Devolver true indica que el error ha sido gestionado y el evento por defecto ya no se dispara
+  next(); // continuar con otros middlewares onCommandError si los hay
+  return true; // indica que el error se ha manejado; no disparar el evento predeterminado
 });
 ```
 
 ## Evento personalizado
 
-Puedes definir un evento middleware tú mismo a través de `defineEvent`, que normalmente se utiliza para extender algunos nuevos callbacks.
+Puede definir eventos middleware personalizados mediante `defineEvent`, normalmente para extender las retrollamadas disponibles.
 
-Por ejemplo, puedes activar el nuevo evento que definiste en `onUpdate` de acuerdo a ciertas condiciones, y luego puedes usar el nuevo evento middleware que definiste en algunos lugares.
+Por ejemplo, puede disparar su evento personalizado en `onUpdate` basándose en ciertas condiciones, y luego usar el middleware correspondiente en otro lugar.
 
 ```ts
 import type { Player } from "@infernus/core";
@@ -356,18 +348,17 @@ import { defineEvent, PlayerEvent } from "@infernus/core";
 const healthDangerSet = new Set<Player>();
 
 const [onPlayerDanger, trigger] = defineEvent({
-  // Sólo se enumeran las piezas más utilizadas
-  isNative: false, // No es un evento nativo, es decir, nuestro evento personalizado.
-  // Si es true, significa el evento nativo en pwn o el evento nativo del plugin.
-  name: "OnPlayerDanger", // Por favor, plantee un nombre de evento único, que no entre en conflicto con el existente, normalmente en este formato
-  defaultValue: true, // Define el valor de retorno por defecto del middleware como true
-  // Si su evento personalizado tiene parámetros de devolución de llamada, asegúrese de escribir beforeEach para mejorar el aviso de tipo ts
-  // BeforeEach se ejecuta antes de que se ejecute todo el middleware para mejorar los parámetros
+  // Solo se enumeran las opciones comunes
+  isNative: false, // no es un evento nativo — es personalizado
+  name: "OnPlayerDanger", // debe ser único; siga esta convención de nomenclatura
+  defaultValue: true, // valor de retorno predeterminado del middleware
+  // Si su evento personalizado tiene parámetros de retrollamada, use beforeEach para mejores sugerencias de tipo TS.
+  // beforeEach se ejecuta antes de todos los middlewares para aumentar los parámetros.
   beforeEach(player: Player, health: number) {
     // Debe devolver un objeto
     return { player, health };
   },
-  // AfterEach se utiliza para ejecutar después de que todos los middleware se ejecutan (esperando a que todos los async terminen)
+  // afterEach se ejecuta después de que todos los middlewares completen (incluyendo los async)
   afterEach({ player, health }) {},
 });
 
@@ -390,7 +381,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
 onPlayerDanger(({ player, health, next }) => {
   player.sendClientMessage(
     "#ff0",
-    `¡PELIGRO! Su salud es sólo ${health}, y el sistema devolverá automáticamente la sangre para usted después de 3 segundos.`,
+    `¡PELIGRO! Su salud es solo ${health}. Se auto-curará en 3 segundos.`,
   );
   setTimeout(() => {
     player.setHealth(100);

@@ -1,142 +1,141 @@
 # Cómo empezar
 
-## Crear aplicación
+## Crear una aplicación
 
-En esta sección, describiremos cómo construir la aplicación `Infernus` localmente.
+En esta sección describiremos cómo construir la aplicación `Infernus` localmente.
 
-Se recomienda encarecidamente utilizar la plantilla [infernus-starter](https://github.com/dockfries/infernus-starter) para crear un ejemplo de plantilla muy simple basado en `TypeScript`.
+Recomendamos encarecidamente usar la plantilla [infernus-starter](https://github.com/dockfries/infernus-starter) para crear un proyecto TypeScript simple.
 
-Necesitas tener una base para el desarrollo nativo de `pawn` y `node`.
+Necesita tener conocimientos básicos de desarrollo nativo en `Pawn` y Node.js.
 
 ### CLI
 
-El proyecto utiliza `pnpm` para gestionar las dependencias, por lo que es necesario instalar [pnpm](https://pnpm.io/).
+El proyecto utiliza `pnpm` para gestionar las dependencias, así que primero debe instalar [pnpm](https://pnpm.io/).
 
-Puede crear fácilmente un proyecto siguiendo las instrucciones de la línea de comandos.
+Puede crear un proyecto fácilmente siguiendo las instrucciones de la línea de comandos.
 
 ```sh
 pnpm dlx @infernus/create-app@latest create
 ```
 
 ::: tip
-Debido a que el CLI llama internamente al `github HTTP API`, si tu entorno de red es pobre, puede que no seas capaz de crear la aplicación con éxito. En este caso, puedes consultar el [Manual](#manual).
+Dado que el CLI llama internamente a la API HTTP de GitHub, si su conexión de red es deficiente, es posible que no pueda crear la aplicación correctamente. En ese caso, consulte la sección [Manual](#manual).
 
-[Pulse aquí para conocer sobre los límites de tarifa de la API (API Rate-limit)](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-primary-rate-limits)
+[Más información sobre los límites de tasa de la API](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-primary-rate-limits)
 :::
 
-`@infernus/create-app` es una herramienta similar a `sampctl` que gestiona las dependencias de paquetes analizando las reglas de `pawn.json`. Puede utilizarlo para simplemente administrar dependencias de base de plugins o `open.mp`.
+`@infernus/create-app` es una herramienta similar a `sampctl` que gestiona las dependencias de paquetes analizando las reglas de `pawn.json`. Puede usarla para administrar cómodamente dependencias de plugins o de `open.mp`.
 
 #### Caché
 
 :::warning
-Generalmente, la caché generada por `pnpm dlx` es demasiado persistente. Se recomienda eliminar manualmente la caché de `dlx` periódicamente. De lo contrario, incluso si especifica `@latest`, podría ejecutar versiones desactualizadas.
+La caché generada por `pnpm dlx` puede ser demasiado persistente. Se recomienda eliminar manualmente la caché de `dlx` periódicamente; de lo contrario, incluso especificando `@latest` podría ejecutar una versión desactualizada.
 :::
 
 - Windows: `C:\Users\%USERNAME%\AppData\Local\pnpm-cache\dlx`
 - Linux: `~/.cache/pnpm/dlx`
 
-[Haga clic para ver el directorio de caché](https://pnpm.io/settings#cachedir)
+[Ver directorio de caché](https://pnpm.io/settings#cachedir)
 
 #### Ejemplo
 
 ```sh
-# Instalar la herramienta CLI globalmente
+# Instalar la CLI globalmente
 pnpm add @infernus/create-app -g
-# Si está instalado globalmente
+# Actualizar si ya está instalada globalmente
 pnpm update @infernus/create-app -g
 
 # Crear un proyecto
-infernus create <nombre de la aplicación>
+infernus create <nombreApp>
 
-# Instalar una o más dependencias,
-# todas las dependencias de las operaciones pueden ir seguidas de un número de versión,
-# es similar a la sintaxis de los paquetes npm.
+# Instalar una o más dependencias.
+# Todas las operaciones pueden especificar un número de versión, similar a la sintaxis de npm.
 infernus add openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
-# Instalar una componente dependencia
+# Instalar una dependencia de componente
 infernus add katursis/Pawn.RakNet@^1.6.0-omp --component
-# Instalar dependencias en modo producción (no copia archivos inc)
+# Modo producción (no copia archivos inc)
 infernus add samp-incognito/samp-streamer-plugin@^2.9.6 -p
 
-# Instalar todas las dependencias existentes, similar a sampctl ensure
+# Instalar todas las dependencias existentes (similar a sampctl ensure)
 infernus install
 
-# Instalar todas las dependencias existentes en modo de producción (sin copiar archivos inc).
+# Modo producción (sin copiar archivos inc)
 infernus install -p
 
-# Desinstalar una o varias dependencias
+# Desinstalar una o más dependencias
 infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin
 infernus remove katursis/Pawn.RakNet
 
-# Actualizar una dependencia (actualizar la caché global y aplicarla al directorio actual)
+# Actualizar una dependencia (actualiza la caché global y el directorio actual)
 infernus update openmultiplayer/open.mp
 
-# Actualizar una dependencia a una versión específica
+# Actualizar a una versión específica
 infernus update openmultiplayer/open.mp@^1.2.0.2670
 
-# Borrar la versión menos coincidente de una única dependencia global
+# Limpiar la versión de menor coincidencia de una dependencia global
 infernus cache clean samp-incognito/samp-streamer-plugin@^2.9.6
-# Borrar todas las versiones de una única dependencia global
+# Limpiar todas las versiones de una dependencia global
 infernus cache clean samp-incognito/samp-streamer-plugin
-# Borrar todas las dependencias de la caché global
+# Limpiar toda la caché global
 infernus cache clean -a
 
-# Establezca un token de GitHub para resolver problemas de límite de velocidad de la API (a petición).
-# Nota: la variable de entorno gh_token tendrá prioridad sobre la configuración global.
-infernus config gh_token <tu_github_token>
+# Configurar un token de GitHub para evitar límites de tasa (bajo demanda)
+# Nota: la variable de entorno gh_token tiene prioridad sobre la configuración global
+infernus config gh_token <tu_token_github>
 
-# Mostrar información de configuración global
+# Mostrar la configuración global
 infernus config -l
 
-# Borrar una configuración global
+# Eliminar una configuración global
 infernus config gh_token
 ```
 
 #### Características
 
-1. Sólo se encarga de la gestión de dependencias de plugins más básica, y no gestiona la librería `include` pura.
-2. Los paquetes instalados se almacenan en caché en `~/infernus/dependencies`, y las instalaciones posteriores de la misma versión se copian directamente en lugar de descargarse.
-3. El archivo de configuración se encuentra en `~/infernus/config.json`, y actualmente sólo tiene un elemento de configuración `gh_token` para resolver el límite de frecuencia de la `github api`.
+1. Solo gestiona dependencias básicas de plugins; no administra librerías `include` puras.
+2. Los paquetes instalados se almacenan en caché en `~/infernus/dependencies`; las instalaciones posteriores de la misma versión copian desde la caché en lugar de descargar de nuevo.
+3. La configuración se encuentra en `~/infernus/config.json` y actualmente solo contiene un campo `gh_token` para evitar los límites de tasa de la API de GitHub.
 
 ### Manual
 
 ```sh
-# Clonar el repositorio a través del protocolo https.
+# Clonar mediante HTTPS
 git clone https://github.com/dockfries/infernus-starter.git
-# o utilizar el protocolo ssh.
+# o mediante SSH
 git clone git@github.com:dockfries/infernus-starter.git
 
-# si necesita raknet, clonar la rama raknet
-# Clonar el repositorio a través del protocolo https.
+# Si necesita raknet, clone la rama raknet
 # git clone https://github.com/dockfries/infernus-starter.git -b raknet
-# o utilizar el protocolo ssh.
+# o mediante SSH
 # git clone git@github.com:dockfries/infernus-starter.git -b raknet
-# también puede descargar el repositorio directamente desde la página de GitHub.
 
-# Ingresa al directorio raíz del proyecto.
+# También puede descargar el repositorio directamente desde GitHub.
+
+# Entre al directorio raíz del proyecto
 cd infernus-starter
 
-# Modifique la contraseña rcon en config.json.
-vim config.json # no es necesario utilizar vim, cualquier editor es bueno.
+# Modifique la contraseña de rcon en config.json
+vim config.json # no es necesario usar vim; cualquier editor vale
 
 # "rcon": {
-#   "password": "changeme" # cambie changeme por su propia contraseña.
-#}
+#   "password": "changeme" # cambie changeme por su propia contraseña
+# }
 ```
 
 :::warning
-**El repositorio ha eliminado los archivos necesarios**, para asegurarse de que siempre utiliza las dependencias de la última versión y reducir el tamaño de los archivos del repositorio, lo que significa que debe completar los archivos manualmente
+**El repositorio ha eliminado los archivos necesarios** para garantizar que siempre use las versiones más recientes de las dependencias y reducir el tamaño del repositorio. Esto significa que deberá completar los archivos manualmente.
 :::
 
-La `so/dll` depende del entorno en el que quieras ejecutar el servidor, y necesitas seleccionar la versión correspondiente para descargar según el entorno. En `linux` sólo se necesita `so`, y en `windows` sólo se necesita `dll`.
+Los archivos `so/dll` dependen del entorno donde ejecutará el servidor; elija la versión adecuada según su caso. En Linux solo necesita `so`; en Windows solo `dll`.
 
-1. Descarga [omp game server](https://github.com/openmultiplayer/open.mp/releases), y posteriormente extrae las carpetas `omp-server[.exe]` y `components` al directorio raíz del proyecto.
+1. Descargue el [servidor de juego OMP](https://github.com/openmultiplayer/open.mp/releases) y extraiga `omp-server[.exe]` y la carpeta `components` en la raíz del proyecto.
 
-2. Descarga [samp-node plugin](https://github.com/dockfries/samp-node/releases), y posteriormente extrae el `libnode.so/dll` en el directorio raíz del proyecto, y `plugins` en la carpeta `plugins` (si el directorio raíz no tiene una carpeta `plugins`, deberás crearla manualmente).
+2. Descargue el [plugin samp-node](https://github.com/dockfries/samp-node/releases), extraiga `libnode.so/dll` en la raíz del proyecto y `samp-node.so/dll` en la carpeta `plugins` (créela si no existe).
 
-3. Descarga [streamer plugin](https://github.com/samp-incognito/samp-streamer-plugin/releases), y después pon `streamer.so/dll` en la carpeta `plugins`.
+3. Descargue el [plugin streamer](https://github.com/samp-incognito/samp-streamer-plugin/releases) y coloque `streamer.so/dll` en la carpeta `plugins`.
 
-4. **(Si necesitas usar raknet)** descarga [raknet plugin](https://github.com/katursis/Pawn.RakNet/releases), y después pon todos los archivos excepto el sufijo `.inc` en la carpeta `components`.
-   1. sustituye `gamemodes/polyfill_raknet.amx` por `gamemodes/polyfill.amx`, **o** modifica la sección `pawn.main_scripts` del archivo raíz `config.json`.
+4. **(Si necesita usar raknet)** descargue el [plugin raknet](https://github.com/katursis/Pawn.RakNet/releases) y coloque todos los archivos excepto los `.inc` en la carpeta `components`.
+   1. Reemplace `gamemodes/polyfill_raknet.amx` por `gamemodes/polyfill.amx`, **o** modifique la sección `pawn.main_scripts` en `config.json`.
 
 ```json
   "pawn": {
@@ -147,19 +146,19 @@ La `so/dll` depende del entorno en el que quieras ejecutar el servidor, y necesi
 ### Instalar dependencias y desarrollo
 
 ```sh
-# instalación de las dependencias
+# Instalar dependencias
 pnpm install
 
-# ejecutar comandos en modo de desarrollo (iniciar la compilación, escuchar los cambios y reiniciar automáticamente)
+# Modo desarrollo (compilar, observar cambios y reiniciar automáticamente)
 pnpm dev
 ```
 
-### Compilación y ejecutación
+### Compilación y ejecución
 
 ```sh
-# compilación para el entorno de producción
+# Compilar para producción
 pnpm build
 
-# ejecutar el servidor
+# Ejecutar el servidor
 pnpm serve
 ```

@@ -1,16 +1,16 @@
 # Diálogos
 
-El diálogo es una función de uso común en el proceso de desarrollo. `Infernus` proporciona soporte orientado a objetos y **async**, para que puedas usarlo de forma más elegante.
+Los diálogos son un componente común en el desarrollo de SA:MP. `Infernus` proporciona una API orientada a objetos con **soporte asíncrono** para una experiencia más elegante.
 
-Al mismo tiempo, en términos generales, ya no es necesario seguir el `id` del diálogo de la forma tradicional, y el código se generará aleatoriamente.
+Ya no necesita gestionar manualmente los ID de los diálogos — se generan automáticamente.
 
-El tradicional evento de callback `PlayerEvent.OnDialogResponse` puede seguir siendo utilizado, pero no es recomendable.
+La retrollamada tradicional `PlayerEvent.OnDialogResponse` sigue disponible, pero no se recomienda.
 
 ## Ejemplo
 
-Con el ejemplo, puede utilizar diálogos de forma elegante y continua para almacenar la lógica relevante en el mismo segmento de código, en lugar de tan complejo como el desarrollo nativo en el pasado.
+Con este enfoque, puede manejar diálogos de forma elegante y mantener la lógica relacionada en un solo lugar, a diferencia de la complejidad del desarrollo nativo tradicional.
 
-### Comprobación de registro
+### Verificación de registro
 
 ```ts
 import { PlayerEvent, Dialog, DialogStylesEnum } from "@infernus/core";
@@ -19,22 +19,22 @@ PlayerEvent.onCommandText("registro", async ({ player, next }) => {
   const dialog = new Dialog({
     style: DialogStylesEnum.PASSWORD,
     caption: "Registro",
-    info: "Por favor, ingresa la contraseña",
+    info: "Por favor, ingrese su contraseña",
     button1: "ok",
   });
 
   const { inputText: password } = await dialog.show(player);
 
-  // Puede reutilizar una instancia de diálogo existente, modificar su información y volver a utilizarla más adelante.
-  // Hay muchos setter además de info.
-  dialog.info = "Por favor, ingresa la contraseña nuevamente";
+  // Las instancias de diálogo existentes se pueden reutilizar — solo modifique sus propiedades.
+  // Hay otros setters además de info.
+  dialog.info = "Por favor, ingrese su contraseña nuevamente";
 
   const { inputText: againPassword } = await dialog.show(player);
 
   if (password !== againPassword) {
     player.sendClientMessage(
       "#f00",
-      "La contraseña que ha introducido dos veces no es la misma, inténtelo de nuevo.",
+      "Las contraseñas ingresadas no coinciden. ¡Inténtelo de nuevo!",
     );
   }
 
@@ -42,7 +42,7 @@ PlayerEvent.onCommandText("registro", async ({ player, next }) => {
 });
 ```
 
-### Cerrar diálogo
+### Cerrar un diálogo
 
 ```ts
 import { PlayerEvent, Player, Dialog } from "@infernus/core";
@@ -51,22 +51,18 @@ PlayerEvent.onCommandText("cerrarDialogo", ({ player, subcommand, next }) => {
   const [playerId] = subcommand;
 
   if (!playerId) {
-    player.sendClientMessage(
-      "#f00",
-      "Introduzca el cuadro de diálogo del jugador que desea cerrar",
-    );
+    player.sendClientMessage("#f00", "Especifique qué diálogo de jugador desea cerrar.");
     return next();
   }
 
-  // Los comandos introducidos por el jugador son todos cadenas, por lo que es necesario convertir el tipo a un tipo numérico.
+  // La entrada del jugador siempre es texto — conviértalo a número.
   const closePlayer = Player.getInstance(+playerId);
 
   if (!closePlayer) {
-    player.sendClientMessage("#f00", "El jugador no está conectado.");
+    player.sendClientMessage("#f00", "Ese jugador no está conectado.");
   } else {
-    // Método estático de diálogo
-    Dialog.close(closePlayer);
-    player.sendClientMessage("#ff0", "Has cerrado el diálogo del jugador.");
+    Dialog.close(closePlayer); // método estático
+    player.sendClientMessage("#ff0", "Ha cerrado el diálogo de ese jugador.");
   }
 
   return next();

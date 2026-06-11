@@ -1,30 +1,30 @@
 # 事件
 
-`Infernus` 的事件贴近原生的事件，您应当前往 [Open Multiplayer](https://open.mp) 来参考原生开发的相关文档。
+`Infernus` 的事件与原生事件贴近，建议前往 [Open Multiplayer](https://open.mp) 查阅原生开发的相关文档。
 
 ## 基础示例
 
-以`OnGameModeInit`为例，在`Infernus`中即为`GameMode.onInit(callback)`。
+以 `OnGameModeInit` 为例，在 `Infernus` 中即为 `GameMode.onInit(callback)`。
 
-其他事件类大多以 `Event` 结尾，例如 `PlayerEvent` 。
+其他事件类大多以 `Event` 结尾，例如 `PlayerEvent`。
 
-配合 `TypeScript` 的类型提示，您一定能理解。
+配合 TypeScript 的类型提示，您一定能快速上手。
 
 ```ts
 import { GameMode } from "@infernus/core";
 
 GameMode.onInit(({ next }) => {
-  console.log("游戏模式初始化了");
+  console.log("游戏模式已初始化");
   return next();
 });
 
 GameMode.onExit(({ next }) => {
-  console.log("游戏模式退出了");
+  console.log("游戏模式已退出");
   return next();
 });
 
 GameMode.onIncomingConnection(({ next, playerId, ipAddress, port }) => {
-  console.log(`玩家id:${playerId},ip:${ipAddress},端口:${port}尝试连入服务器`);
+  console.log(`玩家 ID：${playerId}，IP：${ipAddress}，端口：${port} 尝试连接`);
   return next();
 });
 ```
@@ -32,13 +32,12 @@ GameMode.onIncomingConnection(({ next, playerId, ipAddress, port }) => {
 ## 默认行为
 
 ::: tip
-**默认行为指的是当我们不返回或返回某个值时，会触发的游戏服务器底层的行为。**
+**默认行为是指当我们不返回值或返回某个值时，所触发的游戏服务器底层行为。**
 
-不是所有的默认行为的返回值都是 `true`，它也可能是 `false` ，具体取决于游戏服务器底层的函数是怎样定义的。
-
+并非所有默认行为的返回值都是 `true`，也可能是 `false`，具体取决于游戏服务器底层函数的定义。
 :::
 
-以玩家输入文本事件为例，如果我们返回 `true` 或 `1`，意味着让游戏服务器底层的文本输入事件继续执行。**此时您在聊天框中将看到一个默认的消息格式输出。**
+以玩家输入文本事件为例：返回 `true` 或 `1` 表示让游戏服务器底层的文本输入事件继续执行，**此时聊天框将输出默认格式的消息。**
 
 ```ts
 import { PlayerEvent } from "@infernus/core";
@@ -50,39 +49,39 @@ PlayerEvent.onText(({ player, next }) => {
 
 ## 中间件模式
 
-您可能注意到几乎所有事件的回调函数中都有一个`next`参数，它类似于很多框架，比如 `express`，它用于执行中间件中的下一个函数。
+您可能注意到几乎所有事件的回调函数中都有一个 `next` 参数，类似于 Express 等框架，用于执行中间件链中的下一个函数。
 
-**有了中间件模式，您可以更方便的拆分您的事件，而不是把所有事件都写在同一个函数中。**
+**借助中间件模式，您可以更方便地拆分事件逻辑，而不是把所有代码塞进同一个函数。**
 
 :::warning
-您千万不要忘记调用 `next()` ，除非您很清楚的知道不应当执行下一个函数。
+除非您确定下一个函数不应执行，否则请不要忘记调用 `next()`。
 :::
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
 
 PlayerEvent.onConnect(({ player, next }) => {
-  console.log("玩家连入1");
-  // return next(); 假设您忘记了调用
+  console.log("玩家连入 1");
+  // return next(); 假设忘记调用
 });
 
 PlayerEvent.onConnect(({ player, next }) => {
-  console.log("玩家连入2");
-  // 这个中间件并不会被执行
+  console.log("玩家连入 2");
+  // 此中间件不会被执行
   return next();
 });
 ```
 
 ### 异步支持
 
-以玩家事件为例，玩家的事件类为`PlayerEvent`。
+以玩家事件为例，玩家的事件类为 `PlayerEvent`。
 
-您可以在回调中使用 `async` 语法糖或是返回一个 `Promise` 函数。
+您可以在回调中使用 `async/await` 或返回 `Promise`。
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
 
-// 为了演示用的虚假异步
+// 用于演示的虚假异步
 const fakePromise = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -91,18 +90,18 @@ const fakePromise = () => {
   });
 };
 
-// 您可以采用async语法糖，这也是推荐的语法
+// 推荐使用 async/await 语法
 PlayerEvent.onCommandText("async", async ({ player, next }) => {
   await fakePromise();
-  player.sendClientMessage("#fff", "延迟了1秒后发送消息。");
+  player.sendClientMessage("#fff", "延迟 1 秒后发送消息。");
   return next();
 });
 
-// promise也可以，但是不推荐
+// Promise 也可行，但不推荐
 PlayerEvent.onCommandText("promise", ({ player, next }) => {
   return new Promise((resolve) => {
     fakePromise().then(() => {
-      player.sendClientMessage("#fff", "延迟了1秒后发送消息。");
+      player.sendClientMessage("#fff", "延迟 1 秒后发送消息。");
       resolve();
       return next();
     });
@@ -113,11 +112,11 @@ PlayerEvent.onCommandText("promise", ({ player, next }) => {
 ### 异步返回值
 
 :::warning
-由于底层逻辑，**您定义的异步函数的返回值是无意义的**！
+由于底层逻辑限制，**异步函数的返回值是没有意义的！**
 
-虽然 `TypeScript` 类型要求您必须返回一个值，但是实际上不会被使用。
+虽然 TypeScript 类型要求返回一个值，但实际上并不会被使用。
 
-**如果您始终返回下一个的中间件的返回值作为返回值，那么当遇到异步函数时，返回值始终返回的是底层的默认值。**
+**如果您始终将 `next()` 的返回值作为自身返回值，那么遇到异步函数时，实际返回的将是底层的默认值。**
 :::
 
 ```ts
@@ -132,14 +131,15 @@ PlayerEvent.onText(({ player, next }) => {
 });
 
 PlayerEvent.onText(async ({ player, next }) => {
-  // 由于是异步，具体的返回值取决于源码底层defineEvent定义的事件的默认返回值
-  // 而不取决于异步函数返回了什么
-  // onText默认为true,底层会转换为int，也就是1
-  const ret = next(); // 执行之后的函数
-  return ret; // false转换为int = 0
+  // 因为是异步，具体返回值取决于 defineEvent 定义的默认值，
+  // 而非异步函数实际返回的内容。
+  // onText 默认为 true，底层会转换为 int 1。
+  const ret = next(); // 执行后续函数
+  return ret; // false 转换为 int 0
 });
 
-// 在异步函数之后定义的同步返回值也没有意义，当遇到异步函数时已经返回了默认值
+// 异步函数之后定义的同步返回值同样无效，
+// 遇到异步函数时已返回了默认值。
 PlayerEvent.onText(({ player, next }) => {
   return false;
 });
@@ -148,27 +148,26 @@ PlayerEvent.onText(({ player, next }) => {
 ### 取消
 
 ::: tip
-所有通过 [defineEvent](#自定义事件) 定义的事件的中间件函数都可以被取消，现有的绝大部分回调都是通过它定义的。
+所有通过 [defineEvent](#自定义事件) 定义的事件的中间件函数均可取消，现有绝大部分回调都是通过它定义的。
 :::
 
-这个特性对于只想执行一次或在某个时刻取消时很常用。
+此功能在只想执行一次或在某个时刻取消时非常实用。
 
 ```ts
-import { PlayerEvent } from "@infernus/core";
 // 定义一个一次性命令
 const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
-  console.log("这个命令只执行一次，下一次执行就不存在了");
+  console.log("此命令只执行一次，之后再执行将无效。");
   const ret = next();
-  off(); // next 函数应当在off函数之前执行
+  off(); // 务必在 next 之后调用 off
   return ret;
 });
 ```
 
 ## 获取实例
 
-通常您可能需要获取所有或根据 `id` 来获取 `Infernus` 封装的面向对象的实例，例如玩家实例。
+通常您需要根据 ID 获取 `Infernus` 封装的面向对象实例，例如玩家实例。
 
-您可以通过以下方法获得实例，载具等其他实例也类似。
+以下方式可获取实例，载具等其他实例类似。
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
@@ -176,10 +175,10 @@ import { Player, PlayerEvent } from "@infernus/core";
 PlayerEvent.onConnect(({ player, next }) => {
   const players = Player.getInstances(); // 获取所有玩家实例数组
   players.forEach((p) => {
-    p.sendClientMessage("#fff", `玩家${player.getName().name}连接了游戏`);
+    p.sendClientMessage("#fff", `玩家 ${player.getName().name} 已连接`);
   });
 
-  const player = Player.getInstance(0); // 获取玩家id为0的玩家实例
+  const player = Player.getInstance(0); // 获取 ID 为 0 的玩家实例
   console.log(player);
 
   return next();
@@ -188,54 +187,52 @@ PlayerEvent.onConnect(({ player, next }) => {
 
 ## 玩家命令
 
-上述案例中已经使用了玩家命令事件，它相较于过去的 `pawn` 原生写法有了极大的语法上的提升，简化了很多 `strcmp` 等函数判断，并且配合中间件模式可以抽离命令逻辑，如果您使用过原生开发的话您会知道我在说什么。
+上述示例中已使用了玩家命令事件，它在语法上相较于原生 Pawn 有了极大提升，简化了 `strcmp` 等繁琐判断，并可通过中间件模式抽离命令逻辑。如果您有过原生开发经验，一定能体会其中的便利。
 
-**玩家命令事件支持一次性定义多个字符串，也可以方便定义子命令。**
+**玩家命令事件支持一次性定义多个字符串，也可以方便地定义子命令。**
 
 玩家命令还支持取消定义，`onCommandText` 的返回值即为取消函数。
 
-玩家命令还提供了前置守卫，后置守卫和错误守卫，这参考了`pawn` 库中的 `zcmd` 的思想。
+玩家命令还提供了前置守卫、后置守卫和错误守卫，参考了 Pawn 库中 `zcmd` 的设计思想。
 
-### 基础示例
+### 示例
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
 
-// 定义一个一级命令
+// 定义一级命令
 PlayerEvent.onCommandText("help", ({ player, next }) => {
   console.log(`玩家 ${player.getName().name}，您好`);
   return next();
 });
 
-// 定义一个二级命令
+// 定义二级命令
 PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
-  console.log(`玩家 ${player.getName().name}想得到传送相关的帮助信息`);
+  console.log(`玩家 ${player.getName().name} 想获取传送相关的帮助`);
   return next();
 });
 
-// 定义一个命令，可以由msg或message触发
+// 定义可由 /msg 或 /message 触发的命令
 PlayerEvent.onCommandText(["msg", "message"], ({ player, subcommand, next }) => {
   console.log(
-    `玩家 ${player.getName().name}，输入了此命令，并且可能还输入了子命令 ${subcommand.toString()}`,
+    `玩家 ${player.getName().name} 输入了此命令，子命令：${subcommand.toString()}`,
   );
 
-  // 相当于玩家输入了/message global或/msg global
+  // 相当于玩家输入了 /message global 或 /msg global
   if (subcommand[0] === "global") {
-    // 额外的逻辑
     return next();
   } else {
     next();
-    // 认为是个无效的命令,将触发后置守卫
-    return false;
+    return false; // 视为无效命令，将触发后置守卫
   }
 });
 ```
 
 ### 区分大小写
 
-默认情况下，命令注册时**不区分**大小写。
+默认情况下，命令注册**不区分**大小写。
 
-您可以通过 `GameMode` 实例下的方法来启用、禁用、获取当前状态。
+您可以通过 `GameMode` 实例下的方法来启用、禁用或查询当前状态。
 
 ```ts
 import { GameMode } from "@infernus/core";
@@ -247,43 +244,43 @@ GameMode.disableCmdCaseSensitive(); // 禁用命令区分大小写
 ```
 
 :::warning
-注意，启用和禁用命令通常**不能**放在`GameMode.OnInit`等回调事件。因为通过`PlayerEvent.onCommandText`注册命令的时机早于它。
+注意，启用/禁用命令通常**不能**放在 `GameMode.onInit` 等回调中，因为通过 `PlayerEvent.onCommandText` 注册命令的时机更早。
 
-假设您变更全局启用/禁用后，再导入其他包时，也会影响其他包全局命令的大小写，比如`@infernus/fs`。
+如果更改全局设置后导入其他包，也会影响这些包中全局命令的大小写设置，例如 `@infernus/fs`。
 
-当您定义多个同名命令，并且包含区分和不区分时，**区分大小写的中间件**被称为严格匹配，它**优先于不区分的执行**。
+当定义多个同名命令且分别设置了是否区分大小写时，**区分大小写的中间件被视为严格匹配，优先于不区分的执行。**
 :::
 
-您可以灵活的启用或禁用，控制后续注册的命令是否区分大小写。
+您可以灵活地启用或禁用，以控制后续注册的命令是否区分大小写。
 
 ```ts
 import { GameMode, PlayerEvent } from "@infernus/core";
 
 GameMode.disableCmdCaseSensitive();
 
-// 此时注册的命令不区分大小写，之后玩家可以通过help,HeLP等命令调用
+// 此时注册的命令不区分大小写，玩家可通过 help、HeLP 等方式调用
 PlayerEvent.onCommandText("help", ({ player, next }) => {
-  player.sendClientMessage(-1, "help command (not case sensitive)");
+  player.sendClientMessage(-1, "help 命令（不区分大小写）");
   return next();
 });
 
 GameMode.enableCmdCaseSensitive();
 
-// 此时注册的命令区分大小写，之后玩家只能通过Help调用
+// 此时注册的命令区分大小写，玩家只能通过 Help 调用
 PlayerEvent.onCommandText("Help", ({ player, next }) => {
-  player.sendClientMessage(-1, "help command (case sensitive)");
+  player.sendClientMessage(-1, "help 命令（区分大小写）");
   return next();
 });
 ```
 
 ### 局部区分大小写
 
-您可以传递一个配置项，指定本次注册的命令是否区分大小写，它不受全局区分大小写的影响。
+您可以传递配置项，指定当前注册的命令是否区分大小写，不受全局设置影响。
 
 ```ts
 PlayerEvent.onCommandText({
-  caseSensitive: false, // 指定命令是否区分大小写
-  command: "foo", // 您的命令
+  caseSensitive: false, // 指定该命令是否区分大小写
+  command: "foo",
   run({ player, subcommand, next }) {
     return next();
   },
@@ -292,9 +289,9 @@ PlayerEvent.onCommandText({
 
 ### 前置守卫
 
-前置守卫 `onCommandReceived` 在 `onCommandText` 之前执行，您可以额外加一些逻辑。
+前置守卫 `onCommandReceived` 在 `onCommandText` 之前执行，可添加额外逻辑。
 
-返回 `false` 将认为这是主动拒绝，进入到错误守卫中。
+返回 `false` 视为主动拒绝，将进入错误守卫。
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
@@ -306,9 +303,9 @@ PlayerEvent.onCommandReceived(({ player, command, next }) => {
 
 ### 后置守卫
 
-后置守卫 `onCommandPerformed` 在 `onCommandText` 之后执行，您可以额外加一些逻辑。
+后置守卫 `onCommandPerformed` 在 `onCommandText` 之后执行，可添加额外逻辑。
 
-返回 `false` 将认为这是主动拒绝，进入到错误守卫中。
+返回 `false` 视为主动拒绝，将进入错误守卫。
 
 ```ts
 import { Player, PlayerEvent } from "@infernus/core";
@@ -320,27 +317,27 @@ PlayerEvent.onCommandPerformed(({ player, command, next }) => {
 
 ### 错误守卫
 
-错误守卫 `onCommandError` 在前置/后置守卫`return false`或玩家输入了一个没有定义的命令时执行，您可以额外加一些逻辑，通常全局只定义一个。
+错误守卫 `onCommandError` 在前置/后置守卫返回 `false` 或玩家输入了未定义的命令时触发。可添加处理逻辑，通常全局只定义一个。
 
-如果返回 `false` 则将执行默认行为，即原生事件 `OnPlayerCommandText` 的默认行为。
+返回 `false` 将执行原生事件 `OnPlayerCommandText` 的默认行为。
 
 ```ts
 PlayerEvent.onCommandError(({ player, command, error, next }) => {
   player.sendClientMessage(
     "#f00",
-    `玩家${player.id}输入了${command},出现错误${error.code}, ${error.msg}`,
+    `玩家 ${player.id} 输入了 ${command}，错误 ${error.code}：${error.msg}`,
   );
 
-  next(); // 如果后续还有onCommandError，则执行
-  return true; // 返回true表示已经处理了错误，不再触发默认事件
+  next(); // 如有其他 onCommandError 中间件，继续执行
+  return true; // 表示已处理错误，不再触发默认事件
 });
 ```
 
 ## 自定义事件
 
-您可以通过 `defineEvent` 来自己定义一个中间件事件，它通常用于扩展一些新的回调。
+您可以通过 `defineEvent` 自定义中间件事件，通常用于扩展新的回调。
 
-比如您可以在 `onUpdate` 中根据某些条件来触发您定义的新事件，然后您在某些地方可以使用您定义的新事件中间件。
+例如，您可以在 `onUpdate` 中根据某些条件触发自定义事件，然后在其他位置使用对应的中间件。
 
 ```ts
 import type { Player } from "@infernus/core";
@@ -349,17 +346,17 @@ import { defineEvent, PlayerEvent } from "@infernus/core";
 const healthDangerSet = new Set<Player>();
 
 const [onPlayerDanger, trigger] = defineEvent({
-  // 只列了常用部分
-  isNative: false, // 不是原生事件，即我们的自定义事件，如果为true则意味着在pwn中的native事件或是插件的native事件
-  name: "OnPlayerDanger", // name请起一个唯一的，不要与现有的事件名冲突，通常为这种格式
-  defaultValue: true, // 定义中间件默认返回值为true
-  // 如果您的自定义事件会有回调参数，请一定要写beforeEach来增强ts类型提示
-  // beforeEach会在所有该中间件执行前执行，用于增强参数
+  // 仅列出常用选项
+  isNative: false, // 非原生事件，即自定义事件
+  name: "OnPlayerDanger", // 请使用唯一名称，避免与现有事件冲突
+  defaultValue: true, // 中间件默认返回值
+  // 如果自定义事件有回调参数，务必编写 beforeEach 以增强 TS 类型提示
+  // beforeEach 在所有中间件执行前运行，用于增强参数
   beforeEach(player: Player, health: number) {
-    // 要求您一定要返回一个对象
+    // 必须返回一个对象
     return { player, health };
   },
-  // afterEach用于在所有中间件执行后执行(会等待所有异步的也执行完毕)
+  // afterEach 在所有中间件（含异步）执行完毕后运行
   afterEach({ player, health }) {},
 });
 
@@ -380,7 +377,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
 });
 
 onPlayerDanger(({ player, health, next }) => {
-  player.sendClientMessage("#ff0", `危险! 您生命值仅为${health}, 3秒后系统将自动为您回血`);
+  player.sendClientMessage("#ff0", `危险！您的生命值仅剩 ${health}，3 秒后将自动回血`);
   setTimeout(() => {
     player.setHealth(100);
   }, 3000);

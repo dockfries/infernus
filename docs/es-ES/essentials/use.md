@@ -1,9 +1,9 @@
 # Uso
 
-**`GameMode.use` es un método para simular `filterscript`, que se utiliza para la reutilización lógica en GameMode.**
+**`GameMode.use` simula un `filterscript` para reutilizar lógica entre GameModes.**
 
 ::: tip
-Debido a que se trata de una simulación y no de un `filterscript` real, no puede operar estos scripts a través de comandos como `rcon loadfs/unloadfs`.
+Dado que se trata de una simulación y no de un `filterscript` real, no puede administrar estos scripts mediante comandos como `rcon loadfs/unloadfs`.
 :::
 
 ## Tipo
@@ -11,7 +11,7 @@ Debido a que se trata de una simulación y no de un `filterscript` real, no pued
 ```ts
 interface IFilterScript {
   name: string;
-  load: (...args: Array<any>) => any;
+  load: (...args: Array<any>) => Array<() => void> | Promise<Array<() => void>>;
   unload: () => any;
   [propName: string | number | symbol]: any;
 }
@@ -19,9 +19,9 @@ interface IFilterScript {
 type Use = (plugin: IFilterScript, ...options: Array<any>) => GameMode;
 ```
 
-## Definir script
+## Definir un script
 
-Puedes escribir tú mismo algunos scripts de reutilización lógica y compartirlos con otros a través de `node package` u otras formas.
+Puede escribir scripts de lógica reutilizable y compartirlos mediante `node package` u otros medios.
 
 ```ts
 import { GameMode } from "@infernus/core";
@@ -38,29 +38,29 @@ interface IMyScript extends IFilterScript {
 const MyScript: IMyScript = {
   name: "my_script",
   load(...args) {
-    console.log("Mi script cargó.", args);
+    console.log("Mi script cargado.", args);
   },
   unload() {
-    console.log("Mi script se descargó.");
+    console.log("Mi script descargado.");
   },
 };
 
-// Ningún parámetro es pasado al método load
+// Sin argumentos para load
 GameMode.use(MyScript);
-// Pasa parámetros al método load
+// Con argumentos para load
 GameMode.use(MyScript, "arg1", "arg2", "arg...");
 ```
 
 ::: tip
-Los scripts registrados se cargan automáticamente después del inicio del GameMode.
-El script cargado se descarga automáticamente al salir del GameMode.
+Los scripts registrados se cargan automáticamente tras la inicialización del GameMode.
+Los scripts cargados se descargan automáticamente al salir del GameMode.
 :::
 
-## Cargar un comando
+## Comandos de carga
 
 - `GameMode.loadUseScript(name: string)`: Cargar un script registrado
-- `GameMode.unloadUseScript(nombre: cadena)`: Descargar un script registrado
-- `GameMode.reloadUseScript(nombre: cadena)`: Recargar un script registrado
+- `GameMode.unloadUseScript(name: string)`: Descargar un script registrado
+- `GameMode.reloadUseScript(name: string)`: Recargar un script registrado
 
 ### Ejemplo
 
@@ -73,19 +73,21 @@ PlayerEvent.onCommandText("reloadMyScript", ({ next }) => {
 });
 ```
 
-## Noticia
+## Notas importantes
 
 ::: warning
-No deberías de registrar el evento `GameMode.onInit` en la función `load`, ya que se ejecuta en su evento cuando es cargada a través de `GameMode.use`.
+No debe registrar `GameMode.onInit` dentro de la función `load`, ya que `load` se ejecuta precisamente dentro de ese evento.
 
-Si usas funciones de middleware en la función `load`, deberías retornar un arreglo de funciones de middleware canceladas la final, ¡de otra forma habría un fenómeno de fuga de memoria! Para otras variables globales, como los timers, ¡deberías reiniciarlas en la función `unload`!
+Si usa funciones de middleware dentro de `load`, asegúrese de devolver un arreglo con sus funciones de cancelación al final — ¡de lo contrario habrá fugas de memoria! Del mismo modo, las variables globales como los temporizadores deben reiniciarse en la función `unload`.
 
-La razón es simple, si no haces eso, el middleware no va a ser descargado cuando la GameMode es reiniciada o se ejecuta de forma manual el script del comando para reiniciar, y cada vez que el script es cargado, una nueva función intermedia es agregada, ¡lo que provocará una fuga de memoria!  
-:::
+La razón es simple: sin esto, el middleware no se limpiará al reiniciar el GameMode o al recargar el script manualmente. Cada recarga añade nuevo middleware, provocando una fuga de memoria.
+::：
 
-Además, no debe llamar a `script.load()` o `script.unload()`. Debe usar el [cargar comando](#load-command) para llamar.
+Además, no debe llamar a `script.load()` o `script.unload()` directamente — use los [comandos de carga](#comandos-de-carga).
 
 ```ts
+import { PlayerEvent } from "@infernus/core";
+
 const MyScript = {
   name: "my_script",
   load(...args) {
@@ -105,11 +107,11 @@ const MyScript = {
 GameMode.use(MyScript);
 ```
 
-## Reescribe el oficial filterscript
+## Reescritura de filterscripts oficiales
 
-`Infernus` ha intentado reescribir el filtro oficial. Puedes probarlo instalando [@infernus/fs](https://github.com/dockfries/infernus/tree/main/packages/filterscript).
+`Infernus` ha reimplementado los filterscripts oficiales. Puede probarlos instalando [@infernus/fs](https://github.com/dockfries/infernus/tree/main/packages/filterscript).
 
-Si está interesado, puede referirse a estos casos para familiarizarse con la sintaxis más rápido. También puedes descargar el código fuente y modificarlo para aplicarlo mejor en tu GameMode.
+Si le interesa, estos ejemplos le ayudarán a familiarizarse con la sintaxis más rápidamente. También puede descargar el código fuente y modificarlo para adaptarlo mejor a su GameMode.
 
 ```sh
 pnpm install @infernus/fs
@@ -122,4 +124,4 @@ import { A51Base } from "@infernus/fs";
 GameMode.use(A51Base, { debug: true });
 ```
 
-Luego ingresas `/a51` en el juego para teletransportarte a la base.
+Luego ingrese `/a51` en el juego para teletransportarse a la base.

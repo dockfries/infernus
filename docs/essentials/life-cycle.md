@@ -1,18 +1,18 @@
 # Lifecycle
 
-Lifecycle allows you to know when `samp-node` scripts are executed.
+The lifecycle diagram shows when `samp-node` scripts are executed.
 
 ![Lifecycle](/images/life-cycle.png)
 
-You only need to note that **all the `api` calls related to the game should be placed in the `on` callback event**, just like in native development, otherwise the calls to `samp.caller` will not work when they are not ready.
+The key takeaway is that **all game-related API calls should be placed inside `on` callback events**, just like in native development. Calls to `samp.caller` will fail if the runtime isn't ready yet.
 
 ```ts
 import { GameMode } from "@infernus/core";
 
-// Don't do this. This is invalid code.
+// Don't do this — it won't work.
 GameMode.setWeather(10);
 
-// To do this.
+// Do this instead.
 GameMode.onInit(({ next }) => {
   GameMode.setWeather(10);
   return next();

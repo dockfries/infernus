@@ -1,18 +1,18 @@
 # Ciclo de vida
 
-El ciclo de vida permite saber cuándo se ejecutan los scripts `samp-node`.
+El ciclo de vida muestra cuándo se ejecutan los scripts de `samp-node`.
 
 ![Ciclo de vida](/images/life-cycle-es-es.png)
 
-Sólo tienes que tener en cuenta que **todas las llamadas `api` relacionadas con el juego deben ser colocadas en el evento callback `on`**, al igual que en el desarrollo nativo, de lo contrario las llamadas a `samp.caller` no funcionarán cuando no estén listas.
+El punto clave es que **todas las llamadas a la API relacionadas con el juego deben colocarse dentro de las retrollamadas `on`**, como en el desarrollo nativo. Las llamadas a `samp.caller` fallarán si el entorno de ejecución aún no está listo.
 
 ```ts
 import { GameMode } from "@infernus/core";
 
-// No hagas esto. Este código no es válido.
+// No haga esto — no funcionará.
 GameMode.setWeather(10);
 
-// Para hacer eso, intenta esto.
+// Hágalo así.
 GameMode.onInit(({ next }) => {
   GameMode.setWeather(10);
   return next();

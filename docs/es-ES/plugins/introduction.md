@@ -1,28 +1,28 @@
 # Complementos
 
-## Trabajo necesario
+## Requisitos previos
 
 ::: warning
-Debes colocar `samp-node` después de otros plugins en `pawn.legacy_plugins` para asegurarte de que otros plugins se cargan primero.
+Debe colocar `samp-node` después de otros complementos en `pawn.legacy_plugins` para asegurarse de que los demás se carguen primero.
 :::
 
-Si necesita utilizar plugins heredados, debe colocar el archivo `dll/so` del plugin en la carpeta `plugins`, configurarlo en el archivo `config.json` bajo `pawn.legacy_plugins`, e incluir los archivos `.inc` de estos plugins a través de `pawno/qawno`. A continuación, modifica `pawn.main_scripts` para que apunte al archivo `.amx` que has compilado.
+Para usar complementos heredados, coloque sus archivos `dll/so` en la carpeta `plugins`, configúrelos en `pawn.legacy_plugins` dentro de `config.json`, incluya sus archivos `.inc` mediante `pawno/qawno` y establezca `pawn.main_scripts` para que apunte al archivo `.amx` compilado.
 
-Debido a las diversas combinaciones posibles de plugins, `infernus-starter` sólo incluye versiones comunes sin `raknet` y versiones con `raknet`.
+Dadas las numerosas combinaciones posibles de complementos, `infernus-starter` solo proporciona dos variantes: sin `raknet` y con `raknet`.
 
-Si no puede utilizar los plugins correctamente, normalmente recibirá mensajes de error similares a los siguientes durante el arranque del servidor, y algunos plugins pueden tener problemas de ejecución:
+Si los complementos no están configurados correctamente, durante el inicio del servidor verá errores similares a los siguientes (o pueden aparecer problemas en tiempo de ejecución):
 
 ```
 [Error] Function not registered: CA_DestroyObject
 [Error] File or function is not found
 ```
 
-## Desarrollo de envolturas
+## Desarrollo de envoltorios
 
-Para la implementación de wrappers, por favor consulta el código relevante de `infernus` y la `wiki` de `samp-node`.
+Para la implementación de envoltorios, consulte el código fuente de `infernus` y la wiki de `samp-node`.
 
-Debido a la implementación subyacente de plugins o `samp-node` o `sampgdk` o `omp`, es posible que no puedas llamar directamente a funciones `nativas` de `plugins/omp components` usando `samp-node`, o registrar directamente funciones de callback.
+Debido a la implementación subyacente de los complementos, `samp-node`, `sampgdk` u `omp`, es posible que no pueda llamar directamente a las funciones nativas de los complementos o componentes mediante `samp-node`, ni registrar retrollamadas directamente.
 
-Por ejemplo, `raknet` no se puede llamar directamente, por lo que `infernus` tomó un desvío e implementó la llamada a través de un `polyfill`.
+Por ejemplo, `raknet` no se puede llamar directamente, por lo que `infernus` da un rodeo implementando las llamadas a través de un `polyfill`.
 
-Si te encuentras con problemas similares al desarrollar envoltorios, puede que tengas que referirte a la implementación `polyfill` para `raknet` para solucionar el problema, a menos que algún día en el futuro `samp-node` y otros ecosistemas sean totalmente compatibles con `omp`.
+Si encuentra problemas similares al desarrollar envoltorios, puede ser necesario seguir el enfoque de `polyfill` usado para `raknet` como solución alternativa — a menos que `samp-node` y los ecosistemas relacionados logren compatibilidad total con `omp` en el futuro.

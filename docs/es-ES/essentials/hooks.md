@@ -1,29 +1,29 @@
 # Hooks
 
-Con `defineHooks` puedes definir algunos `hooks`, lo que hace que las llamadas posteriores a esa función pasen por tu función definida.
+Con `defineHooks` puede interceptar todas las llamadas posteriores a una función dada con su propia implementación.
 
-**​​El alcance está limitado a tu código `ts` y no tiene efecto en otros plugins o en `pawn` nativo.​**
+**El alcance se limita a su código TypeScript — no afecta a otros complementos ni al Pawn nativo.**
 
-## Ejemplo Básico
+## Ejemplo básico
 
 ```ts
 import { defineHooks, Player } from "@infernus/core";
 
-// Desestructura para obtener todos los métodos originales y el método para establecer hooks.
+// Desestructurar para obtener todos los métodos originales y la función setHook.
 export const [orig_playerMethods, setPlayerHook] = defineHooks(Player);
-// Esto demuestra el hooking de la clase Player. La mayoría de las clases de entidad pueden pasarse, como Vehicle, TextDraw...
+// Este ejemplo intercepta la clase Player. La mayoría de las clases de entidad (Vehicle, TextDraw, etc.) funcionan de manera similar.
 
-// El primer parámetro es el nombre del método hookeable, que tendrá sugerencias de tipo TS.
-// El valor de retorno es el segundo parámetro que pasaste.
+// El primer parámetro es el nombre del método a interceptar, con sugerencias de tipo TS.
+// El valor de retorno es su función hook (el segundo parámetro).
 export const my_setPlayerArmour = setPlayerHook("setArmour", function (armour: number) {
-  // Aquí, `this` se refiere al jugador actual
-  const flag = true; // Asume verdadero para este ejemplo
+  // Dentro del hook, `this` se refiere a la instancia actual del jugador.
+  const flag = true; // asumimos verdadero para este ejemplo
   if (flag) {
     console.log("my hook");
-    // Llama al método setArmour original, pero restamos 1 intencionalmente y devolvemos el resultado original
+    // Llamar al setArmour original — restamos 1 y devolvemos el resultado original.
     return orig_playerMethods.setArmour.call(this, armour - 1);
-    // Nunca uses directamente this.setArmour(armour), ya que causará un bucle infinito
-    // Dentro del cuerpo de la función hook, solo puedes llamar a las funciones originales a través de orig_playerMethods.
+    // Nunca llame a this.setArmour(armour) directamente — causaría un bucle infinito.
+    // Dentro del cuerpo del hook, use siempre orig_playerMethods para las llamadas originales.
   } else {
     return false;
   }
@@ -33,9 +33,9 @@ export const my_setPlayerArmour = setPlayerHook("setArmour", function (armour: n
 setPlayerHook(
   "setArmour",
   function (armour: number) {
-    // Solo puedes hookear un método una vez dentro del mismo grupo defineHooks
-    // Nunca hookees el mismo método nuevamente.
-    // Si necesitas hookear varias veces, usa la función defineHooks múltiples veces y divide archivos o define nombres de variables diferentes.
+    // Solo puede interceptar un método una vez dentro del mismo grupo defineHooks.
+    // Si necesita interceptar un método varias veces, llame a defineHooks por separado
+    // en diferentes archivos o con diferentes nombres de variable.
   },
 );
 */
@@ -43,13 +43,13 @@ setPlayerHook(
 
 ## Inyectables
 
-> Algunas clases de entidad proporcionan métodos estáticos `__inject__` para inyección.
+> Algunas clases de entidad proporcionan un método estático `__inject__` para inyección.
 
-Debido a la naturaleza especial de algunas clases de entidad encapsuladas, no puedes usar `defineHooks` directamente.
+Debido a la naturaleza especial de algunas clases de entidad encapsuladas, no puede usar `defineHooks` directamente.
 
-Por ejemplo, `AddStaticVehicle(ex), CreateVehicle, DestroyVehicle` en la clase `Vehicle`.
+Por ejemplo, `Vehicle` tiene `AddStaticVehicle(ex)`, `CreateVehicle` y `DestroyVehicle`.
 
-Estas funciones nativas se activan cuando se llama a `create` o `destroy` internamente en `Vehicle`.
+Estas funciones nativas se activan internamente cuando `Vehicle` crea o destruye una instancia.
 
 ```ts
 import { Vehicle, type LimitsEnum } from "@infernus/core";

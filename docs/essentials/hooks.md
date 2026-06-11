@@ -1,29 +1,29 @@
 # Hooks
 
-With `defineHooks` you can define some `hooks`, which ensures that subsequent calls to that function will pass through your defined function.
+`defineHooks` allows you to intercept all subsequent calls to a given function with your own implementation.
 
-**The scope is limited to your `ts` code and does not take effect in other plugins or native `pawn`.**
+**The scope is limited to your TypeScript code — it does not affect other plugins or native Pawn.**
 
 ## Basic Example
 
 ```ts
 import { defineHooks, Player } from "@infernus/core";
 
-// Destructure to get all original methods and the method to set hooks.
+// Destructure to get all original methods and the setHook function.
 export const [orig_playerMethods, setPlayerHook] = defineHooks(Player);
-// This demonstrates hooking the Player class. Most entity classes can be passed in, such as Vehicle, TextDraw...
+// This example hooks the Player class. Most entity classes (Vehicle, TextDraw, etc.) work similarly.
 
-// The first parameter is the name of the hookable method, which will have TS type hints.
-// The return value is the second parameter you passed in.
+// The first parameter is the method name to hook, with full TS type hints.
+// The return value is your hook function (the second parameter).
 export const my_setPlayerArmour = setPlayerHook("setArmour", function (armour: number) {
-  // Here, `this` refers to the current player
-  const flag = true; // Assume true for this example
+  // Inside the hook, `this` refers to the current player instance.
+  const flag = true; // assume true for this example
   if (flag) {
     console.log("my hook");
-    // Call the original setArmour method, but we intentionally subtract 1 and return the original call result
+    // Call the original setArmour — we subtract 1 and return the original result.
     return orig_playerMethods.setArmour.call(this, armour - 1);
-    // Never directly use this.setArmour(armour), as it will cause an infinite loop
-    // Inside the hook function body, you can only call all original functions via orig_playerMethods.
+    // Never call this.setArmour(armour) directly — this will cause an infinite loop.
+    // Inside the hook body, always use orig_playerMethods for all original calls.
   } else {
     return false;
   }
@@ -33,9 +33,9 @@ export const my_setPlayerArmour = setPlayerHook("setArmour", function (armour: n
 setPlayerHook(
   "setArmour",
   function (armour: number) {
-    // You can only hook a method once within the same defineHooks group
-    // Never hook the same method again.
-    // If you need to hook multiple times, use the defineHooks function multiple times and split files or define different variable names.
+    // You can only hook a method once within the same defineHooks group.
+    // If you need to hook a method multiple times, call defineHooks separately
+    // in different files or with different variable names.
   },
 );
 */
@@ -43,13 +43,13 @@ setPlayerHook(
 
 ## Injectable
 
-> Some entity classes provide static methods `__inject__` for injection.
+> Some entity classes provide a static `__inject__` method for injection.
 
-Due to the special nature of some encapsulated entity classes, you cannot directly use `defineHooks`.
+Due to the special nature of some encapsulated entity classes, you cannot use `defineHooks` directly.
 
-For example, `AddStaticVehicle(ex), CreateVehicle, DestroyVehicle` on the `Vehicle` class.
+For example, `Vehicle` has `AddStaticVehicle(ex)`, `CreateVehicle`, and `DestroyVehicle`.
 
-These native functions are triggered when `create` or `destroy` is called internally in `Vehicle`.
+These native functions are triggered internally when `Vehicle` creates or destroys an instance.
 
 ```ts
 import { Vehicle, type LimitsEnum } from "@infernus/core";

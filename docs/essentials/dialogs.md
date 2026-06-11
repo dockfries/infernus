@@ -1,16 +1,16 @@
 # Dialogs
 
-Dialog is a commonly used function in the development process. `Infernus` provides object-oriented and **async support**, so that you can use it more elegantly.
+Dialogs are a common UI component in SA:MP development. `Infernus` provides an object-oriented API with **async support** for a more elegant experience.
 
-At the same time, generally speaking, you no longer need to follow the `id` of the dialog in the traditional way, and the code will be generated randomly.
+You no longer need to manually manage dialog IDs — they are generated automatically.
 
-The traditional `PlayerEvent.OnDialogResponse` callback event can still be used, but it is not recommended.
+The traditional `PlayerEvent.OnDialogResponse` callback is still available, but not recommended.
 
 ## Example
 
-With the example, you can use dialogs gracefully and continuously to store the relevant logic in the same code segment, rather than as complex as native development in the past.
+With this approach, you can handle dialogs gracefully and keep related logic in one place, unlike the complexity of traditional native development.
 
-### Register check
+### Registration Check
 
 ```ts
 import { PlayerEvent, Dialog, DialogStylesEnum } from "@infernus/core";
@@ -25,8 +25,8 @@ PlayerEvent.onCommandText("register", async ({ player, next }) => {
 
   const { inputText: password } = await dialog.show(player);
 
-  // You can reuse an existing dialog instance, modify its information, and then use it again later.
-  // There are many setter besides info.
+  // Existing dialog instances can be reused — just modify their properties.
+  // There are other setters besides info.
   dialog.info = "Please enter your password again";
 
   const { inputText: againPassword } = await dialog.show(player);
@@ -34,7 +34,7 @@ PlayerEvent.onCommandText("register", async ({ player, next }) => {
   if (password !== againPassword) {
     player.sendClientMessage(
       "#f00",
-      "The password you entered twice is not the same, please try again!",
+      "The passwords you entered do not match. Please try again!",
     );
   }
 
@@ -42,7 +42,7 @@ PlayerEvent.onCommandText("register", async ({ player, next }) => {
 });
 ```
 
-### Close dialog
+### Closing a Dialog
 
 ```ts
 import { PlayerEvent, Player, Dialog } from "@infernus/core";
@@ -51,19 +51,18 @@ PlayerEvent.onCommandText("closeDialog", ({ player, subcommand, next }) => {
   const [playerId] = subcommand;
 
   if (!playerId) {
-    player.sendClientMessage("#f00", "Please enter the dialog for which player you want to close");
+    player.sendClientMessage("#f00", "Please specify which player's dialog to close.");
     return next();
   }
 
-  // The commands entered by the player are all strings, so you need to convert the type to a numeric type.
+  // Player input is always a string — parse it to a number.
   const closePlayer = Player.getInstance(+playerId);
 
   if (!closePlayer) {
-    player.sendClientMessage("#f00", "The player is not online.");
+    player.sendClientMessage("#f00", "That player is not online.");
   } else {
-    // Dialog static method
-    Dialog.close(closePlayer);
-    player.sendClientMessage("#ff0", "You closed the player's dialog.");
+    Dialog.close(closePlayer); // static method
+    player.sendClientMessage("#ff0", "You closed that player's dialog.");
   }
 
   return next();
