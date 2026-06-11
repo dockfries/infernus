@@ -74,6 +74,8 @@ This issue may be resolved in the future with 64-bit `omp-node`.
 > Note that `@infernus/create-app` does not support downloading these 64-bit dependencies at this time.
 >
 > When using the 64-bit raknet plugin, you may need to manually recompile the polyfill to match the Pawn.RakNet version and avoid version mismatch warnings.
+>
+> When migrating from a 32-bit template to 64-bit (or vice versa), remove `arch=ia32` and `target_arch=ia32` from `.npmrc` (or add them when switching back). Note that in pnpm >= 11, `.npmrc` handling has been streamlined and these properties may no longer take effect — refer to the pnpm upgrade migration guide for details.
 
 The 32-bit Node environment has memory limitations. Consider setting up a separate Node project for database operations on your host machine's 64-bit Node. For example, use `NestJS` to build an API specifically for CRUD operations. The game server can then access it via HTTP requests, or you can try more advanced methods like RPC or sockets.
 

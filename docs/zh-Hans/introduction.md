@@ -74,6 +74,8 @@
 > 请注意，`@infernus/create-app` 目前暂不支持下载这些 64 位依赖。
 >
 > 使用 64 位的 raknet 插件时，可能需要手动重新编译 polyfill 以匹配 Pawn.RakNet 的版本，避免版本不匹配的警告。
+>
+> 从 32 位模板迁移到 64 位（或反之）时，需移除 `.npmrc` 中的 `arch=ia32` 和 `target_arch=ia32`（切回时则添加）。注意，在 pnpm >= 11 中，`.npmrc` 的作用方式已被精简，这两项属性可能不再生效，具体请查阅 pnpm 升级迁移文档。
 
 32 位 Node 环境内存受限，建议另外建立一个数据库操作的 Node 项目，运行在宿主机的 64 位 Node 上。例如用 NestJS 搭建 API 专门用于 CRUD，游戏服务端通过 HTTP 请求访问，或尝试更高级的 RPC 或 Socket 方式通信。
 

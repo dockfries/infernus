@@ -74,6 +74,8 @@ Este problema podría resolverse en el futuro con `omp-node` de 64 bits.
 > Tenga en cuenta que `@infernus/create-app` no admite la descarga de estas dependencias de 64 bits en este momento.
 >
 > Al usar el plugin raknet de 64 bits, es posible que deba recompilar manualmente el polyfill para que coincida con la versión de Pawn.RakNet y evitar advertencias de incompatibilidad de versiones.
+>
+> Al migrar de una plantilla de 32 bits a 64 bits (o viceversa), elimine `arch=ia32` y `target_arch=ia32` del `.npmrc` (o agréguelos al volver). Tenga en cuenta que en pnpm >= 11, el manejo de `.npmrc` se ha simplificado y estas propiedades pueden no tener efecto — consulte la guía de migración de pnpm para más detalles.
 
 El entorno de Node de 32 bits tiene limitaciones de memoria. Considere configurar un proyecto separado de Node para operaciones de base de datos en el Node de 64 bits de su máquina anfitriona. Por ejemplo, use NestJS para construir una API específicamente para operaciones CRUD. El servidor de juego puede acceder a ella mediante peticiones HTTP, o puede probar métodos más avanzados como RPC o sockets.
 
