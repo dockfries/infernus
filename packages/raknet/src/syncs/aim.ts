@@ -3,6 +3,7 @@ import { SyncId, SyncReader, SyncWriter } from "raknet/decorators";
 import { PacketIdList, PacketRpcValueType } from "raknet/enums";
 import { RakNetException } from "raknet/exceptions";
 import type { IAimSync, IPacketListSync } from "raknet/interfaces";
+import { WriteTuple } from "raknet/types";
 
 @SyncId(PacketIdList.AimSync)
 export class AimSync extends BitStream implements IPacketListSync {
@@ -24,14 +25,14 @@ export class AimSync extends BitStream implements IPacketListSync {
         data.camZoom,
         data.aspectRatio,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float,
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float],
         [PacketRpcValueType.Bits, 2],
         [PacketRpcValueType.Bits, 6],
-        PacketRpcValueType.UInt8,
-      ) as any;
+        [PacketRpcValueType.UInt8],
+      );
     } else {
       [
         data.playerId,
@@ -43,15 +44,15 @@ export class AimSync extends BitStream implements IPacketListSync {
         data.camZoom,
         data.aspectRatio,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float,
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float],
         [PacketRpcValueType.Bits, 2],
         [PacketRpcValueType.Bits, 6],
-        PacketRpcValueType.UInt8,
-      ) as any;
+        [PacketRpcValueType.UInt8],
+      );
     }
 
     return data as IAimSync | null;
@@ -59,7 +60,7 @@ export class AimSync extends BitStream implements IPacketListSync {
 
   @SyncWriter
   writeSync(data: IAimSync) {
-    const value = [
+    const value: WriteTuple[] = [
       [PacketRpcValueType.UInt8, data.camMode],
       [PacketRpcValueType.Float3, data.camFrontVec],
       [PacketRpcValueType.Float3, data.camPos],
@@ -67,7 +68,7 @@ export class AimSync extends BitStream implements IPacketListSync {
       [PacketRpcValueType.Bits, data.weaponState, 2],
       [PacketRpcValueType.Bits, data.camZoom, 6],
       [PacketRpcValueType.UInt8, data.aspectRatio],
-    ] as any;
+    ];
     if (!this.bs.isIncoming()) {
       if (typeof data.playerId === "undefined") {
         throw new RakNetException("playerId is required for outgoing AimSync");

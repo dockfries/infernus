@@ -4,7 +4,18 @@
 
 A wrapper of the popular [open.mp raknet plugin](https://github.com/katursis/Pawn.RakNet) for samp-node.
 
-**You must use an existing [polyfill](https://github.com/dockfries/infernus-starter/blob/main/gamemodes/polyfill/raknet.inc) or compile the corresponding GameMode based on it before you can use it.**
+## Polyfill-free edition (v0.14.0+)
+
+Starting from `v0.14.0`, the `#include <polyfill/raknet>` directive is **no longer required**.
+
+> Note: The `polyfill_raknet.pwn` gamemode must be recompiled. You **must** use our latest forked version of Pawn.RakNet:
+> [dockfries/Pawn.RakNet](https://github.com/dockfries/Pawn.RakNet/releases)
+>
+> Additionally, download the latest samp-node build and overwrite your existing one:
+> [dockfries/samp-node](https://github.com/dockfries/samp-node/releases)
+
+> **⚠️ The polyfill-free edition is experimental** — bugs may be present.
+> If you rely on the polyfill-based approach, please stay on `@infernus/raknet@0.13.x` with the original Pawn.RakNet.
 
 ## Getting started
 

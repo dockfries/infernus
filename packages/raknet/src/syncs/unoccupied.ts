@@ -3,6 +3,7 @@ import { SyncId, SyncReader, SyncWriter } from "raknet/decorators";
 import { PacketIdList, PacketRpcValueType } from "raknet/enums";
 import { RakNetException } from "raknet/exceptions";
 import type { IPacketListSync, IUnoccupiedSync } from "raknet/interfaces";
+import { WriteTuple } from "raknet/types";
 
 @SyncId(PacketIdList.UnoccupiedSync)
 export class UnoccupiedSync extends BitStream implements IPacketListSync {
@@ -25,15 +26,15 @@ export class UnoccupiedSync extends BitStream implements IPacketListSync {
         data.angularVelocity,
         data.vehicleHealth,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float,
-      ) as any;
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float],
+      );
     } else {
       [
         data.playerId,
@@ -46,16 +47,16 @@ export class UnoccupiedSync extends BitStream implements IPacketListSync {
         data.angularVelocity,
         data.vehicleHealth,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float,
-      ) as any;
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float],
+      );
     }
 
     return data as IUnoccupiedSync | null;
@@ -63,7 +64,7 @@ export class UnoccupiedSync extends BitStream implements IPacketListSync {
 
   @SyncWriter
   writeSync(data: IUnoccupiedSync) {
-    const value = [
+    const value: WriteTuple[] = [
       [PacketRpcValueType.UInt16, data.vehicleId],
       [PacketRpcValueType.UInt8, data.seatId],
       [PacketRpcValueType.Float3, data.roll],
@@ -72,7 +73,7 @@ export class UnoccupiedSync extends BitStream implements IPacketListSync {
       [PacketRpcValueType.Float3, data.velocity],
       [PacketRpcValueType.Float3, data.angularVelocity],
       [PacketRpcValueType.Float, data.vehicleHealth],
-    ] as any;
+    ];
     if (!this.bs.isIncoming()) {
       if (typeof data.playerId === "undefined") {
         throw new RakNetException("playerId is required for outgoing UnoccupiedSync");

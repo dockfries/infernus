@@ -23,7 +23,7 @@ export const SyncReader: MethodDecorator = (
     const bs: BitStream = this.bs;
 
     bs.resetReadPointer();
-    const packetId = bs.readBits(8);
+    const [packetId] = bs.readBits(8);
 
     if (packetId !== this._packetId) return null;
 

@@ -2,7 +2,6 @@ import { BitStream } from "raknet/bitStream";
 import { SyncId, SyncReader, SyncWriter } from "raknet/decorators";
 import { PacketIdList, PacketRpcValueType } from "raknet/enums";
 import type { IMarkersSync, IPacketListSync } from "raknet/interfaces";
-import type { Vector3 } from "raknet/types";
 import { LimitsEnum } from "@infernus/core";
 
 @SyncId(PacketIdList.MarkersSync)
@@ -21,7 +20,7 @@ export class MarkersSync extends BitStream implements IPacketListSync {
     data.playerIsParticipant = [];
     data.playerIsActive = [];
 
-    const numberOfPlayers = this.bs.readInt32() as number;
+    const [numberOfPlayers] = this.bs.readInt32();
 
     if (numberOfPlayers < 0 || numberOfPlayers > LimitsEnum.MAX_PLAYERS) {
       return null;
@@ -30,7 +29,7 @@ export class MarkersSync extends BitStream implements IPacketListSync {
     data.numberOfPlayers = numberOfPlayers;
 
     for (let i = 0; i < numberOfPlayers; i++) {
-      const playerId = this.bs.readUint16() as number;
+      const [playerId] = this.bs.readUint16();
 
       if (playerId >= LimitsEnum.MAX_PLAYERS) {
         return null;
@@ -38,16 +37,16 @@ export class MarkersSync extends BitStream implements IPacketListSync {
 
       data.playerIsParticipant[playerId] = true;
 
-      const isActive = this.bs.readCompressedBool();
+      const [isActive] = this.bs.readCompressedBool();
 
       if (isActive) {
         data.playerIsActive[playerId] = true;
 
         const [x, y, z] = this.bs.readValue(
-          PacketRpcValueType.Int16,
-          PacketRpcValueType.Int16,
-          PacketRpcValueType.Int16,
-        ) as Vector3<number>;
+          [PacketRpcValueType.Int16],
+          [PacketRpcValueType.Int16],
+          [PacketRpcValueType.Int16],
+        );
 
         data.playerPositionX[playerId] = x;
         data.playerPositionY[playerId] = y;
@@ -59,7 +58,7 @@ export class MarkersSync extends BitStream implements IPacketListSync {
 
   @SyncWriter
   writeSync(data: IMarkersSync) {
-    this.bs.writeInt32(data.numberOfPlayers);
+    this.bs.writeValue(PacketRpcValueType.Int32, data.numberOfPlayers);
 
     for (let i = 0; i < LimitsEnum.MAX_PLAYERS; i++) {
       if (!data.playerIsParticipant[i]) {

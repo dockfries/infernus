@@ -20,7 +20,7 @@ export class InCarSync extends BitStream implements IPacketListSync {
     const _outgoing = outgoing || !this.bs.isIncoming();
 
     if (_outgoing) {
-      let healthArmour;
+      let healthArmour: number;
 
       [
         data.playerId,
@@ -37,20 +37,20 @@ export class InCarSync extends BitStream implements IPacketListSync {
         data.sirenState,
         data.landingGearState,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.NormQuat,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Vector,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.Bool,
-        PacketRpcValueType.Bool,
-      ) as any;
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.NormQuat],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Vector],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.Bool],
+        [PacketRpcValueType.Bool],
+      );
 
       data.vehicleHealth = data.vehicleHealth ? +data.vehicleHealth : 0;
 
@@ -59,16 +59,16 @@ export class InCarSync extends BitStream implements IPacketListSync {
       data.playerHealth = health;
       data.armour = armour;
 
-      const hasTrainSpeed = this.bs.readValue(PacketRpcValueType.Bool);
+      const [hasTrainSpeed] = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasTrainSpeed) {
-        data.trainSpeed = this.bs.readValue(PacketRpcValueType.Float) as number;
+        [data.trainSpeed] = this.bs.readValue(PacketRpcValueType.Float);
       }
 
-      const hasTrailer = this.bs.readValue(PacketRpcValueType.Bool);
+      const [hasTrailer] = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasTrailer) {
-        data.trailerId = this.bs.readValue(PacketRpcValueType.UInt16) as number;
+        [data.trailerId] = this.bs.readValue(PacketRpcValueType.UInt16);
       }
     } else {
       [
@@ -89,23 +89,23 @@ export class InCarSync extends BitStream implements IPacketListSync {
         data.trailerId,
         data.trainSpeed,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.Float4,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt8,
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.Float4],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt8],
         [PacketRpcValueType.Bits, 2],
         [PacketRpcValueType.Bits, 6],
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.Float,
-      ) as any;
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.Float],
+      );
     }
     return data as IInCarSync | null;
   }
@@ -168,8 +168,8 @@ export class InCarSync extends BitStream implements IPacketListSync {
         [PacketRpcValueType.UInt8, data.armour],
         [PacketRpcValueType.Bits, data.additionalKey, 2],
         [PacketRpcValueType.Bits, data.weaponId, 6],
-        [PacketRpcValueType.UInt8, data.sirenState],
-        [PacketRpcValueType.UInt8, data.landingGearState],
+        [PacketRpcValueType.UInt8, +data.sirenState],
+        [PacketRpcValueType.UInt8, +data.landingGearState],
         [PacketRpcValueType.UInt16, data.trailerId],
         [PacketRpcValueType.Float, data.trainSpeed],
       );

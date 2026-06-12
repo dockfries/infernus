@@ -37,8 +37,8 @@ export interface IInCarSync extends ICommonSyncWrite {
   armour: number;
   additionalKey: number;
   weaponId: WeaponEnum;
-  sirenState: number;
-  landingGearState: LandingGearStateEnum;
+  sirenState: number | boolean;
+  landingGearState: LandingGearStateEnum | boolean;
   trailerId: number;
   trainSpeed: number;
 }
@@ -127,7 +127,7 @@ export interface IStatsUpdate {
 }
 
 export interface IRconCommand {
-  command: number[];
+  command: string;
 }
 
 export interface IPacketListSync {

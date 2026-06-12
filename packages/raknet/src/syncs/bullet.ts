@@ -3,6 +3,7 @@ import { SyncId, SyncReader, SyncWriter } from "raknet/decorators";
 import { PacketIdList, PacketRpcValueType } from "raknet/enums";
 import { RakNetException } from "raknet/exceptions";
 import type { IBulletSync, IPacketListSync } from "raknet/interfaces";
+import { WriteTuple } from "raknet/types";
 
 @SyncId(PacketIdList.BulletSync)
 export class BulletSync extends BitStream implements IPacketListSync {
@@ -17,13 +18,13 @@ export class BulletSync extends BitStream implements IPacketListSync {
     if (this.bs.isIncoming()) {
       [data.hitType, data.hitId, data.origin, data.hitPos, data.offsets, data.weaponId] =
         this.bs.readValue(
-          PacketRpcValueType.UInt8,
-          PacketRpcValueType.UInt16,
-          PacketRpcValueType.Float3,
-          PacketRpcValueType.Float3,
-          PacketRpcValueType.Float3,
-          PacketRpcValueType.UInt8,
-        ) as any;
+          [PacketRpcValueType.UInt8],
+          [PacketRpcValueType.UInt16],
+          [PacketRpcValueType.Float3],
+          [PacketRpcValueType.Float3],
+          [PacketRpcValueType.Float3],
+          [PacketRpcValueType.UInt8],
+        );
     } else {
       [
         data.playerId,
@@ -34,14 +35,14 @@ export class BulletSync extends BitStream implements IPacketListSync {
         data.offsets,
         data.weaponId,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.UInt8,
-      ) as any;
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.UInt8],
+      );
     }
 
     return data as IBulletSync | null;
@@ -49,14 +50,14 @@ export class BulletSync extends BitStream implements IPacketListSync {
 
   @SyncWriter
   writeSync(data: IBulletSync) {
-    const value = [
+    const value: WriteTuple[] = [
       [PacketRpcValueType.UInt8, data.hitType],
       [PacketRpcValueType.UInt16, data.hitId],
       [PacketRpcValueType.Float3, data.origin],
       [PacketRpcValueType.Float3, data.hitPos],
       [PacketRpcValueType.Float3, data.offsets],
       [PacketRpcValueType.UInt8, data.weaponId],
-    ] as any;
+    ];
     if (!this.bs.isIncoming()) {
       if (typeof data.playerId === "undefined") {
         throw new RakNetException("playerId is required for outgoing BulletSync");

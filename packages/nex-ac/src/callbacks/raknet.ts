@@ -384,7 +384,7 @@ IRPC(AC_RPC_RequestClass, ({ playerId, next }) => {
 const AC_RPC_DamageVehicle = 106;
 
 IRPC(AC_RPC_DamageVehicle, ({ playerId, bs, next }) => {
-  const vehicleId = bs.readValue(PacketRpcValueType.UInt16) as number;
+  const [vehicleId] = bs.readValue(PacketRpcValueType.UInt16);
   const veh = Vehicle.getInstance(vehicleId);
   if (!veh || veh.getModel() <= 0 || ACVehInfo.get(vehicleId)!.acDriver !== playerId) return false;
   return next();

@@ -23,21 +23,21 @@ export class OnFootSync extends BitStream implements IPacketListSync {
     };
 
     if (_outgoing) {
-      data.playerId = this.bs.readValue(PacketRpcValueType.UInt16) as number;
+      [data.playerId] = this.bs.readValue(PacketRpcValueType.UInt16);
 
-      const hasLeftRight = this.bs.readValue(PacketRpcValueType.Bool);
+      const [hasLeftRight] = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasLeftRight) {
-        data.lrKey = this.bs.readValue(PacketRpcValueType.UInt16) as number;
+        [data.lrKey] = this.bs.readValue(PacketRpcValueType.UInt16);
       }
 
-      const hasUpDown = this.bs.readValue(PacketRpcValueType.Bool);
+      const [hasUpDown] = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasUpDown) {
-        data.udKey = this.bs.readValue(PacketRpcValueType.UInt16) as number;
+        [data.udKey] = this.bs.readValue(PacketRpcValueType.UInt16);
       }
 
-      let healthArmour: number, hasSurfInfo: number;
+      let healthArmour: number, hasSurfInfo: boolean;
 
       [
         data.keys,
@@ -49,34 +49,34 @@ export class OnFootSync extends BitStream implements IPacketListSync {
         data.velocity,
         hasSurfInfo,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.NormQuat,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.Vector,
-        PacketRpcValueType.Bool,
-      ) as any;
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.NormQuat],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.Vector],
+        [PacketRpcValueType.Bool],
+      );
 
-      const { health, armour } = BitStream.unpackHealthArmour(healthArmour as number);
+      const { health, armour } = BitStream.unpackHealthArmour(healthArmour);
       data.health = health;
       data.armour = armour;
 
       if (hasSurfInfo) {
         [data.surfingVehicleId, data.surfingOffsets] = this.bs.readValue(
-          PacketRpcValueType.UInt16,
-          PacketRpcValueType.Float3,
-        ) as any;
+          [PacketRpcValueType.UInt16],
+          [PacketRpcValueType.Float3],
+        );
       }
 
-      const hasAnimation = this.bs.readValue(PacketRpcValueType.Bool);
+      const [hasAnimation] = this.bs.readValue(PacketRpcValueType.Bool);
 
       if (hasAnimation) {
         [data.animationId, data.animationFlags] = this.bs.readValue(
-          PacketRpcValueType.Int16,
-          PacketRpcValueType.Int16,
-        ) as any;
+          [PacketRpcValueType.Int16],
+          [PacketRpcValueType.Int16],
+        );
       }
     } else {
       [
@@ -96,22 +96,22 @@ export class OnFootSync extends BitStream implements IPacketListSync {
         data.animationId,
         data.animationFlags,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float4,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt8,
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float4],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt8],
         [PacketRpcValueType.Bits, 2],
         [PacketRpcValueType.Bits, 6],
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.Float3,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.Int16,
-        PacketRpcValueType.Int16,
-      ) as any;
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.Float3],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.Int16],
+        [PacketRpcValueType.Int16],
+      );
     }
     return data as IOnFootSync | null;
   }

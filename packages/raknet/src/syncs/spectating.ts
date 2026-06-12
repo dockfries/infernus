@@ -13,11 +13,11 @@ export class SpectatingSync extends BitStream implements IPacketListSync {
   readSync() {
     const data: Partial<ISpectatingSync> = {};
     [data.lrKey, data.udKey, data.keys, data.position] = this.bs.readValue(
-      PacketRpcValueType.UInt16,
-      PacketRpcValueType.UInt16,
-      PacketRpcValueType.UInt16,
-      PacketRpcValueType.Float3,
-    ) as any;
+      [PacketRpcValueType.UInt16],
+      [PacketRpcValueType.UInt16],
+      [PacketRpcValueType.UInt16],
+      [PacketRpcValueType.Float3],
+    );
 
     return data as ISpectatingSync | null;
   }

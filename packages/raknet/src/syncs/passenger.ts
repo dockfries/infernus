@@ -3,6 +3,7 @@ import { SyncId, SyncReader, SyncWriter } from "raknet/decorators";
 import { PacketIdList, PacketRpcValueType } from "raknet/enums";
 import { RakNetException } from "raknet/exceptions";
 import type { IPacketListSync, IPassengerSync } from "raknet/interfaces";
+import { WriteTuple } from "raknet/types";
 
 @SyncId(PacketIdList.PassengerSync)
 export class PassengerSync extends BitStream implements IPacketListSync {
@@ -28,18 +29,18 @@ export class PassengerSync extends BitStream implements IPacketListSync {
         data.keys,
         data.position,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt16,
+        [PacketRpcValueType.UInt16],
         [PacketRpcValueType.Bits, 2],
         [PacketRpcValueType.Bits, 6],
         [PacketRpcValueType.Bits, 2],
         [PacketRpcValueType.Bits, 6],
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.Float3,
-      ) as any;
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.Float3],
+      );
     } else {
       [
         data.playerId,
@@ -55,19 +56,19 @@ export class PassengerSync extends BitStream implements IPacketListSync {
         data.keys,
         data.position,
       ] = this.bs.readValue(
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
         [PacketRpcValueType.Bits, 2],
         [PacketRpcValueType.Bits, 6],
         [PacketRpcValueType.Bits, 2],
         [PacketRpcValueType.Bits, 6],
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt8,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.UInt16,
-        PacketRpcValueType.Float3,
-      ) as any;
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt8],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.UInt16],
+        [PacketRpcValueType.Float3],
+      );
     }
 
     return data as IPassengerSync | null;
@@ -75,7 +76,7 @@ export class PassengerSync extends BitStream implements IPacketListSync {
 
   @SyncWriter
   writeSync(data: IPassengerSync) {
-    const value = [
+    const value: WriteTuple[] = [
       [PacketRpcValueType.UInt16, data.vehicleId],
       [PacketRpcValueType.Bits, data.driveBy, 2],
       [PacketRpcValueType.Bits, data.seatId, 6],
@@ -87,7 +88,7 @@ export class PassengerSync extends BitStream implements IPacketListSync {
       [PacketRpcValueType.UInt16, data.udKey],
       [PacketRpcValueType.UInt16, data.keys],
       [PacketRpcValueType.Float3, data.position],
-    ] as any;
+    ];
     if (!this.bs.isIncoming()) {
       if (typeof data.playerId === "undefined") {
         throw new RakNetException("playerId is required for outgoing PassengerSync");
