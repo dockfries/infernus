@@ -9,12 +9,13 @@ const R = PacketRpcValueType;
 export const VALUE_KIND = {
   INT: { r: "iI", w: "ii" },
   FLOAT: { r: "iF", w: "if" },
-  STRING: { r: "iSi", w: "isi", ds: 1024 },
+  STRING: { r: "iSi", w: "is" },
+  CSTRING: { r: "iSi", w: "is" },
   BITS: { r: "iIi", w: "iii", sr: true },
   VEC3: { r: "iVi", w: "iv", n: 3 },
   VEC4: { r: "iVi", w: "iv", n: 4 },
-  STR8: { r: "iSi", w: "isi", n: 8 },
-  STR32: { r: "iSi", w: "isi", n: 32 },
+  STR8: { r: "iSi", w: "is" },
+  STR32: { r: "iSi", w: "is" },
 } as const;
 
 export type ValueKind = keyof typeof VALUE_KIND;
@@ -37,7 +38,7 @@ export const TYPE_TO_KIND: Record<number, ValueKind> = {
   [R.CUInt32]: "INT",
   [R.CFloat]: "FLOAT",
   [R.CBool]: "INT",
-  [R.CString]: "STRING",
+  [R.CString]: "CSTRING",
   [R.Bits]: "BITS",
   [R.Float3]: "VEC3",
   [R.Float4]: "VEC4",

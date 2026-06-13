@@ -5,7 +5,7 @@ import { VALUE_KIND, TYPE_TO_KIND, BOOL_TYPES } from "./types";
 import { PR_MAX_WEAPON_SLOTS } from "./defines";
 import type { IRconCommand, IStatsUpdate, IWeaponsUpdate } from "./interfaces";
 import type { Vehicle, Player } from "@infernus/core";
-import { InvalidEnum } from "@infernus/core";
+import { InvalidEnum, I18n } from "@infernus/core";
 import { RakNetException } from "./exceptions";
 
 export class BitStream {
@@ -166,32 +166,17 @@ export class BitStream {
   readValue(type: PacketRpcValueType.Float4): [Vector4<number>, number];
   readValue(type: PacketRpcValueType.Vector): [Vector3<number>, number];
   readValue(type: PacketRpcValueType.NormQuat): [Vector4<number>, number];
-  readValue(type: PacketRpcValueType.String8): [string, number];
-  readValue(type: PacketRpcValueType.String32): [string, number];
+  readValue(type: PacketRpcValueType.String8, length?: number): [string, number];
+  readValue(type: PacketRpcValueType.String32, length?: number): [string, number];
   readValue<T extends Array<readonly [PacketRpcValueType] | readonly [PacketRpcValueType, number]>>(
     ...items: T
   ): [...ReadValueResult<T>, number];
   readValue(...args: any[]) {
-    if (args.length > 0 && Array.isArray(args[0])) {
-      return this.readMany(args as any);
-    }
-    const [type, size] = args;
-    const kind = TYPE_TO_KIND[type]!;
-    const info = VALUE_KIND[kind] as any;
-    const callArgs: any[] = [this.id, type];
-
-    if (info.n != null) {
-      callArgs.push(info.n);
-    } else if (info.sr) {
-      if (size == null) throw new RakNetException("Bits requires size");
-      callArgs.push(size);
-    } else if (info.ds != null) {
-      callArgs.push(size ?? info.ds);
-    }
-
-    const format = `ir[${info.r}]`;
-    const [value, ret] = samp.callNative("BS_ReadValue", format, ...callArgs);
-    return [BOOL_TYPES.has(type) ? !!value : value, ret as number];
+    const isBatch = Array.isArray(args[0]);
+    const normalized: Array<readonly [PacketRpcValueType] | readonly [PacketRpcValueType, number]> =
+      isBatch ? args : args[1] !== undefined ? [[args[0], args[1]]] : [[args[0]]];
+    const result = this.readMany(normalized);
+    return isBatch ? result : [result[0], result[result.length - 1]];
   }
 
   writeValue(type: PacketRpcValueType.Int8, value: number): number;
@@ -202,7 +187,7 @@ export class BitStream {
   writeValue(type: PacketRpcValueType.UInt32, value: number): number;
   writeValue(type: PacketRpcValueType.Float, value: number): number;
   writeValue(type: PacketRpcValueType.Bool, value: boolean): number;
-  writeValue(type: PacketRpcValueType.String, value: string, length?: number): number;
+  writeValue(type: PacketRpcValueType.String, value: string): number;
   writeValue(type: PacketRpcValueType.CInt8, value: number): number;
   writeValue(type: PacketRpcValueType.CInt16, value: number): number;
   writeValue(type: PacketRpcValueType.CInt32, value: number): number;
@@ -211,7 +196,7 @@ export class BitStream {
   writeValue(type: PacketRpcValueType.CUInt32, value: number): number;
   writeValue(type: PacketRpcValueType.CFloat, value: number): number;
   writeValue(type: PacketRpcValueType.CBool, value: boolean): number;
-  writeValue(type: PacketRpcValueType.CString, value: string, length?: number): number;
+  writeValue(type: PacketRpcValueType.CString, value: string): number;
   writeValue(type: PacketRpcValueType.Bits, value: number, size: number): number;
   writeValue(type: PacketRpcValueType.Float3, value: Vector3<number>): number;
   writeValue(type: PacketRpcValueType.Float4, value: Vector4<number>): number;
@@ -221,163 +206,136 @@ export class BitStream {
   writeValue(type: PacketRpcValueType.String32, value: string): number;
   writeValue(...tuples: WriteTuple[]): number;
   writeValue(...args: any[]): number {
-    if (args.length > 0 && Array.isArray(args[0])) {
-      return this.writeMany(args as any);
-    }
-    const [type, value, s] = args;
-    const kind = TYPE_TO_KIND[type]!;
-    const info = VALUE_KIND[kind] as any;
-    let v = value;
-    let size: number | undefined = s;
-
-    if (info.n != null) {
-      const max = info.n as number;
-      if (typeof v === "string") {
-        if (v.length >= max) {
-          v = v.slice(0, max - 1);
-        }
-        v += "\0";
-        size = v.length;
-      } else {
-        size = max;
-      }
-    } else if (info.sr) {
-      if (size == null) throw new RakNetException("Bits requires size");
-    } else if (info.ds != null) {
-      const max = size ?? (info.ds as number);
-      if (typeof v === "string") {
-        if (v.length >= max) {
-          v = v.slice(0, max - 1);
-        }
-        v += "\0";
-        size = v.length;
-      } else {
-        size = max;
-      }
-    }
-
-    const fmt = `ir[${info.w}]`;
-    return samp.callNative(
-      "BS_WriteValue",
-      fmt,
-      this.id,
-      type,
-      v,
-      ...(info.w.length > 2 ? [size] : []),
-    ) as number;
+    const isBatch = Array.isArray(args[0]);
+    const normalized: WriteTuple[] = isBatch ? args : [args as any];
+    return this.writeMany(normalized);
   }
 
   private readMany(
     items: Array<readonly [PacketRpcValueType] | readonly [PacketRpcValueType, number]>,
   ) {
-    const RETRY_LIMIT = 28;
-    const allValues: any[] = [];
-    let lastRet = 0;
-    let i = 0;
+    const BATCH_LIMIT = 28;
+    const outputs: any[] = [];
+    let lastReturn = 0;
+    let index = 0;
 
-    while (i < items.length) {
-      const inf = VALUE_KIND[TYPE_TO_KIND[items[i][0]]!] as any;
-      const inner: string[] = [];
-      const args: any[] = [this.id];
-      let slots = 1;
-      const boolOffsets: number[] = [];
-      const base = i;
-      const batchKind = inf.r;
+    while (index < items.length) {
+      const firstInfo = VALUE_KIND[TYPE_TO_KIND[items[index][0]]!] as any;
+      const batchReadFormat = firstInfo.r;
 
-      for (; i < items.length; i++) {
-        const t = items[i][0];
-        const userSize = items[i][1];
-        const ii = VALUE_KIND[TYPE_TO_KIND[t]!] as any;
-        if (ii.r !== batchKind) break;
-        if (slots + ii.r.length > RETRY_LIMIT) break;
+      const formatParts: string[] = [];
+      const nativeArgs: any[] = [this.id];
+      let formatCharCount = 1;
+      const batchBoolPositions: number[] = [];
+      const batchStart = index;
+      let prStringOverread = 0;
 
-        if (BOOL_TYPES.has(t)) boolOffsets.push(i - base);
-        inner.push(ii.r);
-        args.push(t);
+      for (; index < items.length; index++) {
+        const [type, userSize] = items[index];
+        const info = VALUE_KIND[TYPE_TO_KIND[type]!] as any;
+        const readFormat = info.r;
+        const fixedCount = info.n as number | undefined;
+        const isSizeRequired = info.sr as boolean | undefined;
 
-        if (ii.n != null) {
-          args.push(ii.n);
-        } else if (ii.sr) {
-          if (userSize == null) throw new RakNetException("Bits requires size");
-          args.push(userSize);
-        } else if (ii.ds != null) {
-          args.push(userSize ?? ii.ds);
+        if (readFormat !== batchReadFormat) break;
+        if (formatCharCount + readFormat.length > BATCH_LIMIT) break;
+
+        if (BOOL_TYPES.has(type)) {
+          batchBoolPositions.push(index - batchStart);
         }
 
-        slots += ii.r.length;
+        formatParts.push(readFormat);
+        nativeArgs.push(type);
+
+        const needsSize = readFormat.length > 2;
+        if (needsSize) {
+          if (fixedCount != null) {
+            nativeArgs.push((userSize ?? fixedCount) + 1);
+          } else if (isSizeRequired) {
+            if (userSize == null) throw new RakNetException("Bits requires size");
+            nativeArgs.push(userSize);
+          } else {
+            if (type === PacketRpcValueType.String) {
+              if (userSize == null) throw new RakNetException("String requires size");
+              nativeArgs.push(userSize + 1);
+              prStringOverread += 8;
+            } else {
+              const s = userSize ?? (type === PacketRpcValueType.String8 ? 256 : 4096);
+              nativeArgs.push(s + 1);
+            }
+          }
+        }
+
+        formatCharCount += readFormat.length;
       }
 
-      const format = `ir[${inner.join("")}]`;
-      const result = samp.callNative("BS_ReadValue", format, ...args) as any[];
+      const format = `ir[${formatParts.join("")}]`;
+      const result = samp.callNative("BS_ReadValue", format, ...nativeArgs) as any[];
       const ret = result.pop()!;
-      lastRet = ret;
-      for (const pos of boolOffsets) result[pos] = !!result[pos];
-      allValues.push(...result);
+      lastReturn = ret;
+      for (const pos of batchBoolPositions) result[pos] = !!result[pos];
+      outputs.push(...result);
+
+      if (prStringOverread > 0) {
+        this.setReadOffset(this.getReadOffset().offset - prStringOverread);
+      }
     }
 
-    return [...allValues, lastRet];
+    return [...outputs, lastReturn];
   }
 
-  private writeMany(
-    items: Array<readonly [PacketRpcValueType, any] | readonly [PacketRpcValueType, any, number]>,
-  ): number {
-    const RETRY_LIMIT = 28;
+  private writeMany(items: WriteTuple[]): number {
+    const BATCH_LIMIT = 28;
     let result = 0;
-    let i = 0;
+    let index = 0;
 
-    while (i < items.length) {
-      const inner: string[] = [];
-      const args: any[] = [this.id];
-      let slots = 1;
+    while (index < items.length) {
+      const formatParts: string[] = [];
+      const nativeArgs: any[] = [this.id];
+      let formatCharCount = 1;
 
-      for (; i < items.length; i++) {
-        const item = items[i];
-        const [t, value, userSize] = item;
-        const kind = TYPE_TO_KIND[t]!;
-        const info = VALUE_KIND[kind] as any;
-        let v = value;
+      for (; index < items.length; index++) {
+        const item = items[index];
+        const [type, value, userSize] = item;
+        const info = VALUE_KIND[TYPE_TO_KIND[type]!] as any;
+        const writeFormat = info.w;
+        const fixedCount = info.n as number | undefined;
+        const isSizeRequired = info.sr as boolean | undefined;
+
+        const formatLen = writeFormat.length;
+        if (formatCharCount + formatLen > BATCH_LIMIT) break;
+
         let size: number | undefined = userSize;
-
-        if (info.n != null) {
-          const max = info.n as number;
-          if (typeof v === "string") {
-            if (v.length >= max) {
-              v = v.slice(0, max - 1);
-            }
-            v += "\0";
-            size = v.length;
-          } else {
-            size = max;
-          }
-        } else if (info.sr) {
+        if (fixedCount != null) {
+          size = fixedCount;
+        } else if (isSizeRequired) {
           if (size == null) throw new RakNetException("Bits requires size");
-        } else if (info.ds != null) {
-          const max = size ?? (info.ds as number);
-          if (typeof v === "string") {
-            if (v.length >= max) {
-              v = v.slice(0, max - 1);
-            }
-            v += "\0";
-            size = v.length;
-          } else {
-            size = max;
-          }
         }
 
-        const need = info.w.length;
-        if (slots + need > RETRY_LIMIT) break;
-
-        inner.push(info.w);
-        args.push(t, v);
-        if (info.w.length > 2) args.push(size);
-        slots += need;
+        formatParts.push(writeFormat);
+        nativeArgs.push(type, value);
+        if (formatLen > 2) nativeArgs.push(size);
+        formatCharCount += formatLen;
       }
 
-      const format = `ir[${inner.join("")}]`;
-      result = samp.callNative("BS_WriteValue", format, ...args) as number;
+      const format = `ir[${formatParts.join("")}]`;
+      result = samp.callNative("BS_WriteValue", format, ...nativeArgs) as number;
     }
 
     return result;
+  }
+
+  private static isNotUtf8(charset?: string): charset is string {
+    return charset != null && charset.toLowerCase() !== "utf8";
+  }
+
+  private readRawBytes(type: PacketRpcValueType, size: number): [number[], number] {
+    const result = samp.callNative("BS_ReadValue", "ir[iAi]", this.id, type, size);
+    return [result[0] as number[], result[1] as number];
+  }
+
+  private writeRawBytes(type: PacketRpcValueType, data: number[]): number {
+    return samp.callNative("BS_WriteValue", "ir[ia]", this.id, type, data);
   }
 
   readInt8() {
@@ -404,7 +362,15 @@ export class BitStream {
   readBool() {
     return this.readValue(PacketRpcValueType.Bool);
   }
-  readString(size = 1024) {
+  readString(size: number, charset?: string) {
+    if (BitStream.isNotUtf8(charset)) {
+      const items: [PacketRpcValueType.UInt8][] = [];
+      for (let i = 0; i < size; i++) items.push([PacketRpcValueType.UInt8]);
+      const result = this.readValue(...(items as any)) as number[];
+      const ret = result[result.length - 1];
+      return [I18n.decodeFromBuf(result.slice(0, -1), charset), ret];
+    }
+
     return this.readValue(PacketRpcValueType.String, size);
   }
   readCompressedInt8() {
@@ -431,7 +397,11 @@ export class BitStream {
   readCompressedBool() {
     return this.readValue(PacketRpcValueType.CBool);
   }
-  readCompressedString(size: number) {
+  readCompressedString(size: number, charset?: string) {
+    if (BitStream.isNotUtf8(charset)) {
+      const [bytes, ret] = this.readRawBytes(PacketRpcValueType.CString, size);
+      return [I18n.decodeFromBuf(bytes, charset), ret] as [string, number];
+    }
     return this.readValue(PacketRpcValueType.CString, size);
   }
   readBits(size: number) {
@@ -449,11 +419,21 @@ export class BitStream {
   readNormQuat() {
     return this.readValue(PacketRpcValueType.NormQuat);
   }
-  readString8() {
-    return this.readValue(PacketRpcValueType.String8);
+  readString8(size?: number, charset?: string) {
+    if (BitStream.isNotUtf8(charset)) {
+      const s = size ?? 256;
+      const [bytes, ret] = this.readRawBytes(PacketRpcValueType.String8, s);
+      return [I18n.decodeFromBuf(bytes, charset), ret] as [string, number];
+    }
+    return this.readValue(PacketRpcValueType.String8, size ?? 256);
   }
-  readString32() {
-    return this.readValue(PacketRpcValueType.String32);
+  readString32(size?: number, charset?: string) {
+    if (BitStream.isNotUtf8(charset)) {
+      const s = size ?? 4096;
+      const [bytes, ret] = this.readRawBytes(PacketRpcValueType.String32, s);
+      return [I18n.decodeFromBuf(bytes, charset), ret] as [string, number];
+    }
+    return this.readValue(PacketRpcValueType.String32, size ?? 4096);
   }
 
   writeInt8(value: number) {
@@ -480,8 +460,11 @@ export class BitStream {
   writeBool(value: boolean) {
     return this.writeValue(PacketRpcValueType.Bool, value);
   }
-  writeString(value: string, length = 1024) {
-    return this.writeValue(PacketRpcValueType.String, value, length);
+  writeString(value: string, charset?: string) {
+    if (BitStream.isNotUtf8(charset)) {
+      return this.writeRawBytes(PacketRpcValueType.String, I18n.encodeToBuf(value, charset));
+    }
+    return this.writeValue(PacketRpcValueType.String, value);
   }
   writeCompressedInt8(value: number) {
     return this.writeValue(PacketRpcValueType.CInt8, value);
@@ -507,8 +490,11 @@ export class BitStream {
   writeCompressedBool(value: boolean) {
     return this.writeValue(PacketRpcValueType.CBool, value);
   }
-  writeCompressedString(value: string, length = 1024) {
-    return this.writeValue(PacketRpcValueType.CString, value, length);
+  writeCompressedString(value: string, charset?: string) {
+    if (BitStream.isNotUtf8(charset)) {
+      return this.writeRawBytes(PacketRpcValueType.CString, I18n.encodeToBuf(value, charset));
+    }
+    return this.writeValue(PacketRpcValueType.CString, value);
   }
   writeBits(value: number, size: number) {
     return this.writeValue(PacketRpcValueType.Bits, value, size);
@@ -525,10 +511,16 @@ export class BitStream {
   writeNormQuat(value: Vector4<number>) {
     return this.writeValue(PacketRpcValueType.NormQuat, value);
   }
-  writeString8(value: string) {
+  writeString8(value: string, charset?: string) {
+    if (BitStream.isNotUtf8(charset)) {
+      return this.writeRawBytes(PacketRpcValueType.String8, I18n.encodeToBuf(value, charset));
+    }
     return this.writeValue(PacketRpcValueType.String8, value);
   }
-  writeString32(value: string) {
+  writeString32(value: string, charset?: string) {
+    if (BitStream.isNotUtf8(charset)) {
+      return this.writeRawBytes(PacketRpcValueType.String32, I18n.encodeToBuf(value, charset));
+    }
     return this.writeValue(PacketRpcValueType.String32, value);
   }
 
