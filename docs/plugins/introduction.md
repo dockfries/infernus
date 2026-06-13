@@ -25,4 +25,6 @@ Due to the underlying implementation of plugins, `samp-node`, `sampgdk`, or `omp
 
 For example, `raknet` cannot be called directly, so `infernus` takes a detour by implementing calls through a `polyfill`.
 
+Starting from `@infernus/raknet@0.14.0+`, a **polyfill-free edition** is available — see the [Ecosystem](/ecosystem) page for details.
+
 If you encounter similar issues when developing wrappers, you may need to follow the `polyfill` approach used for `raknet` as a workaround — unless `samp-node` and related ecosystems eventually achieve full OMP compatibility.

@@ -36,18 +36,6 @@ Varias limitaciones afectan significativamente la experiencia de desarrollo. **R
 **En general, el ecosistema es actualmente inestable debido a múltiples factores.**
 :::
 
-### Ecosistema
-
-::: info
-[Haga clic para ver los paquetes del ecosistema implementados](https://github.com/dockfries/infernus/tree/main/packages). Tenga en cuenta que los resultados pueden diferir de las librerías originales y es probable que haya errores.
-:::
-
-Las librerías existentes desarrolladas en Pawn pueden presentar dos problemas si su proyecto depende de ellas: **sin mantenimiento o incompatibles**.
-
-Dado que el desarrollo de plugins de `samp-node` se basa en `samp` y no en `omp`, ciertos ecosistemas de plugins son incompatibles. Por ejemplo, no es posible acceder a funciones nativas de plugins como `raknet`.
-
-Esto limita enormemente el desarrollo de plugins de `samp` usando el ecosistema de Node.js y requiere un esfuerzo conjunto de la comunidad para resolverlo.
-
 ### Soporte para 32 bits y Bindings
 
 Lamentablemente, este proyecto se basa en Node.js embebido de 32 bits, y el soporte para `bindings` es inestable. Puede encontrar errores y otros problemas.
@@ -67,15 +55,6 @@ Antes de usar este proyecto, tenga en cuenta los siguientes requisitos de versi�
 > Nota de soporte del entorno: `better-sqlite3` ha sido probado y verificado en la plataforma Windows.
 
 Este problema podría resolverse en el futuro con `omp-node` de 64 bits.
-
-> [!TIP]
-> Ahora se proporcionan compilaciones de 64 bits de `samp-node` solo para uso experimental. Deben ejecutarse en un servidor OMP de 64 bits con plugins de 64 bits compatibles (p. ej. [streamer](https://github.com/dockfries/samp-streamer-plugin/releases/tag/v2.9.6), [gps](https://github.com/dockfries/samp-gps-plugin/releases/tag/v1.4.1), [raknet](https://github.com/dockfries/Pawn.RakNet/releases/tag/1.6.1-omp-rc1)).
->
-> Tenga en cuenta que `@infernus/create-app` no admite la descarga de estas dependencias de 64 bits en este momento.
->
-> Al usar el plugin raknet de 64 bits, es posible que deba recompilar manualmente el polyfill para que coincida con la versión de Pawn.RakNet y evitar advertencias de incompatibilidad de versiones.
->
-> Al migrar de una plantilla de 32 bits a 64 bits (o viceversa), elimine `arch=ia32` y `target_arch=ia32` del `.npmrc` (o agréguelos al volver). Tenga en cuenta que en pnpm >= 11, el manejo de `.npmrc` se ha simplificado y estas propiedades pueden no tener efecto — consulte la guía de migración de pnpm para más detalles.
 
 El entorno de Node de 32 bits tiene limitaciones de memoria. Considere configurar un proyecto separado de Node para operaciones de base de datos en el Node de 64 bits de su máquina anfitriona. Por ejemplo, use NestJS para construir una API específicamente para operaciones CRUD. El servidor de juego puede acceder a ella mediante peticiones HTTP, o puede probar métodos más avanzados como RPC o sockets.
 

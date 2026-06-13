@@ -55,8 +55,8 @@ function nav(): DefaultTheme.NavItem[] {
           link: "https://github.com/Pottus/ColAndreas",
         },
         {
-          text: "samp-cef",
-          link: "https://github.com/Pycckue-Bnepeg/samp-cef",
+          text: "omp-cef",
+          link: "https://github.com/aurora-mp/omp-cef",
         },
         {
           text: "samp-gps",
@@ -79,6 +79,7 @@ function nav(): DefaultTheme.NavItem[] {
 function sidebarGuide(): DefaultTheme.SidebarItem[] {
   return [
     { text: "Introduction", link: "introduction" },
+    { text: "Ecosystem", link: "ecosystem" },
     { text: "Quick Start", link: "quick-start" },
   ];
 }

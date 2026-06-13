@@ -36,18 +36,6 @@ Several limitations significantly impact the development experience. **We recomm
 **Overall, the ecosystem is currently unstable due to various factors.**
 :::
 
-### Ecosystem
-
-::: info
-[Click to view implemented ecosystem packages](https://github.com/dockfries/infernus/tree/main/packages). Note that results may differ from original libraries and some bugs are expected.
-:::
-
-Existing Pawn libraries may present two problems if your project depends on them: **unmaintained or incompatible**.
-
-Since `samp-node` plugin development is based on `samp` rather than `omp`, certain plugin ecosystems are incompatible. For example, accessing native functions of plugins like `raknet` is not possible.
-
-This greatly limits `samp` plugin development in the Node.js ecosystem and requires joint effort from the community to resolve.
-
 ### 32-bit and Bindings Support
 
 Unfortunately, this project is built on a 32-bit embedded Node.js, and `bindings` support is unstable. You may encounter errors and other issues.
@@ -67,15 +55,6 @@ Before using this project, please note the following version requirements:
 > Environment support note: `better-sqlite3` has been tested and verified on Windows.
 
 This issue may be resolved in the future with 64-bit `omp-node`.
-
-> [!TIP]
-> 64-bit builds of `samp-node` are now provided for experimental use only. They must be run on a 64-bit OMP server with matching 64-bit plugins (e.g. [streamer](https://github.com/dockfries/samp-streamer-plugin/releases/tag/v2.9.6), [gps](https://github.com/dockfries/samp-gps-plugin/releases/tag/v1.4.1), [raknet](https://github.com/dockfries/Pawn.RakNet/releases/tag/1.6.1-omp-rc1)).
->
-> Note that `@infernus/create-app` does not support downloading these 64-bit dependencies at this time.
->
-> When using the 64-bit raknet plugin, you may need to manually recompile the polyfill to match the Pawn.RakNet version and avoid version mismatch warnings.
->
-> When migrating from a 32-bit template to 64-bit (or vice versa), remove `arch=ia32` and `target_arch=ia32` from `.npmrc` (or add them when switching back). Note that in pnpm >= 11, `.npmrc` handling has been streamlined and these properties may no longer take effect — refer to the pnpm upgrade migration guide for details.
 
 The 32-bit Node environment has memory limitations. Consider setting up a separate Node project for database operations on your host machine's 64-bit Node. For example, use `NestJS` to build an API specifically for CRUD operations. The game server can then access it via HTTP requests, or you can try more advanced methods like RPC or sockets.
 

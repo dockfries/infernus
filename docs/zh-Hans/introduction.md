@@ -36,18 +36,6 @@
 **总的来说，目前生态并不稳定，这是多方面因素导致的。**
 :::
 
-### 生态系统
-
-::: info
-[点击查看已实现的生态包](https://github.com/dockfries/infernus/tree/main/packages)。不保证与原型库执行结果相同，且可能存在 Bug。
-:::
-
-原有的以 Pawn 开发的库，如果您的项目必须依赖它们，目前会出现两种情况：无人维护或不兼容。
-
-由于 `samp-node` 的插件开发基于 `samp` 而非 `omp`，部分插件生态基本无法兼容，例如无法访问某些插件的 native 函数（如 `raknet`）。
-
-这极大限制了基于 Node.js 的 samp 插件生态发展，需要社区共同努力推进。
-
 ### 32 位与 Bindings 支持
 
 很遗憾，本项目基于 32 位嵌入式 Node.js，对 `bindings` 的支持不稳定，您可能会遇到报错等情况。
@@ -67,15 +55,6 @@
 > 环境支持说明：`better-sqlite3` 模块已在 Windows 平台测试通过。
 
 也许未来 64 位的 `omp-node` 上能迎刃而解。
-
-> [!TIP]
-> `samp-node` 现已提供 64 位构建，仅供实验性使用。需要搭配 64 位的 OMP 服务端以及对应的 64 位插件（如 [streamer](https://github.com/dockfries/samp-streamer-plugin/releases/tag/v2.9.6)、[gps](https://github.com/dockfries/samp-gps-plugin/releases/tag/v1.4.1)、[raknet](https://github.com/dockfries/Pawn.RakNet/releases/tag/1.6.1-omp-rc1)）使用。
->
-> 请注意，`@infernus/create-app` 目前暂不支持下载这些 64 位依赖。
->
-> 使用 64 位的 raknet 插件时，可能需要手动重新编译 polyfill 以匹配 Pawn.RakNet 的版本，避免版本不匹配的警告。
->
-> 从 32 位模板迁移到 64 位（或反之）时，需移除 `.npmrc` 中的 `arch=ia32` 和 `target_arch=ia32`（切回时则添加）。注意，在 pnpm >= 11 中，`.npmrc` 的作用方式已被精简，这两项属性可能不再生效，具体请查阅 pnpm 升级迁移文档。
 
 32 位 Node 环境内存受限，建议另外建立一个数据库操作的 Node 项目，运行在宿主机的 64 位 Node 上。例如用 NestJS 搭建 API 专门用于 CRUD，游戏服务端通过 HTTP 请求访问，或尝试更高级的 RPC 或 Socket 方式通信。
 

@@ -25,4 +25,6 @@ Debido a la implementación subyacente de los complementos, `samp-node`, `sampgd
 
 Por ejemplo, `raknet` no se puede llamar directamente, por lo que `infernus` da un rodeo implementando las llamadas a través de un `polyfill`.
 
+A partir de `@infernus/raknet@0.14.0+`, está disponible una **edición sin polyfill** — consulte la página [Ecosistema](/es-ES/ecosystem) para más detalles.
+
 Si encuentra problemas similares al desarrollar envoltorios, puede ser necesario seguir el enfoque de `polyfill` usado para `raknet` como solución alternativa — a menos que `samp-node` y los ecosistemas relacionados logren compatibilidad total con `omp` en el futuro.

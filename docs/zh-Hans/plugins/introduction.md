@@ -25,4 +25,6 @@
 
 例如，`raknet` 无法被直接调用，因此 `infernus` 另辟蹊径，通过 `polyfill` 实现了对其的调用。
 
+自 `@infernus/raknet@0.14.0+` 起，已提供**无 polyfill 版本**，详情请参阅[生态系统](/zh-Hans/ecosystem)页面。
+
 如果您在开发封装时遇到类似问题，可能需要参考 `raknet` 的 `polyfill` 实现来绕过限制——除非未来某天 `samp-node` 和其他生态能完全兼容 `omp`。
