@@ -18,6 +18,7 @@ El ecosistema `@infernus/*` está diseñado para integrar las librerías Pawn in
 | `@infernus/gps` | Un envoltorio del plugin GPS para samp-node |
 | `@infernus/map-loader` | Una herramienta para conversión, análisis y carga de objetos |
 | `@infernus/mapandreas` | Implementación de mapa de altura en TypeScript puro, sin plugin nativo |
+| `@infernus/s-art` | Un envoltorio de la popular librería s-art para renderizar imágenes de píxeles en el juego usando DynamicObject con texto de material |
 | `@infernus/nex-ac` | Un envoltorio de la librería nex-ac para samp-node |
 | `@infernus/progress` | Una barra de progreso basada en `LD_SPAC:white` para control preciso |
 | `@infernus/qrcode` | Genera objetos qrcode simples para infernus |

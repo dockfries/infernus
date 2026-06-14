@@ -4,31 +4,32 @@
 
 `@infernus/*` 提供了以下生态包：
 
-| 包名 | 说明 |
-| --- | --- |
-| `@infernus/core` | 核心库，用于编写 Open Multiplayer 脚本 |
-| `@infernus/cef` | 对 omp-cef 组件的封装 |
-| `@infernus/colandreas` | 对 ColAndreas 插件的封装 |
-| `@infernus/create-app` | 命令行脚手架，快速创建项目 |
-| `@infernus/distance` | 对 distance 库的封装 |
-| `@infernus/drift-detection` | 对 driftDetection 库的封装 |
-| `@infernus/e-selection` | 对 eSelection 库的封装 |
-| `@infernus/fcnpc` | 对 FCNPC 插件的封装 |
-| `@infernus/fs` | 内置 filterscript 合集 |
-| `@infernus/gps` | 对 GPS 插件的封装 |
-| `@infernus/map-loader` | 用于 obj 转换、解析和加载的工具 |
-| `@infernus/mapandreas` | 纯 TypeScript 高度图查询实现，无需原生插件 |
-| `@infernus/nex-ac` | 对 nex-ac 库的封装 |
-| `@infernus/progress` | 基于 `LD_SPAC:white` 的进度条 |
-| `@infernus/qrcode` | 二维码生成 |
-| `@infernus/query` | 用于发送 SA-MP 查询的简易 API |
-| `@infernus/raknet` | 对 open.mp raknet 插件的封装 |
-| `@infernus/rec` | `.rec` 与 `.json` 文件格式互转 |
-| `@infernus/samp-voice` | 对 SA-MP voice 库的封装 |
-| `@infernus/shared` | 共享工具和类型（内部包） |
-| `@infernus/streamer` | 对 SA-MP streamer 插件 (v2.9.6) 的封装（**私有包**） |
-| `@infernus/types` | 精简的 samp-node API 类型定义（内部包） |
-| `@infernus/weapon-config` | 对 weapon-config 库的封装 |
+| 包名                        | 说明                                                                         |
+| --------------------------- | ---------------------------------------------------------------------------- |
+| `@infernus/core`            | 核心库，用于编写 Open Multiplayer 脚本                                       |
+| `@infernus/cef`             | 对 omp-cef 组件的封装                                                        |
+| `@infernus/colandreas`      | 对 ColAndreas 插件的封装                                                     |
+| `@infernus/create-app`      | 命令行脚手架，快速创建项目                                                   |
+| `@infernus/distance`        | 对 distance 库的封装                                                         |
+| `@infernus/drift-detection` | 对 driftDetection 库的封装                                                   |
+| `@infernus/e-selection`     | 对 eSelection 库的封装                                                       |
+| `@infernus/fcnpc`           | 对 FCNPC 插件的封装                                                          |
+| `@infernus/fs`              | 内置 filterscript 合集                                                       |
+| `@infernus/gps`             | 对 GPS 插件的封装                                                            |
+| `@infernus/map-loader`      | 用于 obj 转换、解析和加载的工具                                              |
+| `@infernus/mapandreas`      | 纯 TypeScript 高度图查询实现，无需原生插件                                   |
+| `@infernus/s-art`           | 对流行的 s-art 库的封装，用于在游戏中使用 DynamicObject 纹理文本渲染像素图片 |
+| `@infernus/nex-ac`          | 对 nex-ac 库的封装                                                           |
+| `@infernus/progress`        | 基于 `LD_SPAC:white` 的进度条                                                |
+| `@infernus/qrcode`          | 二维码生成                                                                   |
+| `@infernus/query`           | 用于发送 SA-MP 查询的简易 API                                                |
+| `@infernus/raknet`          | 对 open.mp raknet 插件的封装                                                 |
+| `@infernus/rec`             | `.rec` 与 `.json` 文件格式互转                                               |
+| `@infernus/samp-voice`      | 对 SA-MP voice 库的封装                                                      |
+| `@infernus/shared`          | 共享工具和类型（内部包）                                                     |
+| `@infernus/streamer`        | 对 SA-MP streamer 插件 (v2.9.6) 的封装（**私有包**）                         |
+| `@infernus/types`           | 精简的 samp-node API 类型定义（内部包）                                      |
+| `@infernus/weapon-config`   | 对 weapon-config 库的封装                                                    |
 
 ## 设计理念
 
