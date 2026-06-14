@@ -15,11 +15,11 @@ import {
   INF_CONFIG_NAME,
 } from "./config.js";
 import { downloadFile, getRepoRelease, getTimeDiff } from "./api.js";
-import type { AddDepsOptions, LocalConfig, LockFileContent, PawnJson } from "../types/index.js";
+import type { AddDepsOptions, LocalConfig, LockFileContent, PawnJson } from "../types";
 import { minSatisfying, validRange } from "./semver.js";
 import { addOpenMp, removeOpenMp } from "./omp.js";
 import { getPawnJson, getIncludePath, getPlugOrCompPath } from "./pawn.js";
-import { ompRepository, isWindows } from "../constants/index.js";
+import { ompRepository, isWindows } from "../constants";
 
 async function hasGlobalDepTemp(depVersionPath: string): Promise<boolean> {
   if (!fs.existsSync(depVersionPath)) return false;

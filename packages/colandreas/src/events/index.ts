@@ -5,3 +5,5 @@ GameMode.onExit(({ next }) => {
   CA_Object.destroyAll();
   return next();
 });
+
+export {};
