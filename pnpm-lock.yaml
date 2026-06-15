@@ -217,6 +217,12 @@ importers:
         specifier: workspace:^
         version: link:../raknet
 
+  packages/ompp:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+
   packages/progress:
     devDependencies:
       '@infernus/core':
