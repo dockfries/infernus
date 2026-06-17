@@ -30,3 +30,9 @@ export enum CefHudComponentEnum {
   WANTED_STARS,
   WEAPON,
 }
+
+export enum CefEscapeMenuModeEnum {
+  GTA,
+  DISABLED,
+  CUSTOM,
+}

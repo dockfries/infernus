@@ -2,7 +2,12 @@ import { I18n, InvalidEnum, ObjectMp, Player } from "@infernus/core";
 import { CefBrowserSourceInfo } from "../interfaces";
 import { CefException } from "../exceptions";
 import { INVALID_CEF_ID } from "../constants";
-import { CefAudioModeEnum, CefCreateStatusEnum, CefHudComponentEnum } from "../enums";
+import {
+  CefAudioModeEnum,
+  CefCreateStatusEnum,
+  CefEscapeMenuModeEnum,
+  CefHudComponentEnum,
+} from "../enums";
 import { playerBrowserPool } from "./pool";
 
 const MAX_CEF_ID = 65536;
@@ -282,6 +287,18 @@ export class CefBrowser {
     ) as number;
   }
 
+  loadUrl(url: string) {
+    this.throwIfInvalid();
+    this.sourceInfo.url = url;
+    return samp.callNative(
+      "CEF_LoadUrl",
+      "iis",
+      this.sourceInfo.player.id,
+      this.browserId,
+      url,
+    ) as number;
+  }
+
   getId() {
     return this.browserId;
   }
@@ -366,6 +383,10 @@ export class CefBrowser {
 
   static exitGame(player: Player) {
     return samp.callNative("CEF_ExitGame", "i", player.id) as number;
+  }
+
+  static setEscapeMenuMode(player: Player, mode: CefEscapeMenuModeEnum) {
+    return samp.callNative("CEF_SetEscapeMenuMode", "ii", player.id, mode) as number;
   }
 
   static getInstance(browserId: number, player: Player) {
