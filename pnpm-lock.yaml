@@ -283,6 +283,15 @@ importers:
 
   packages/types: {}
 
+  packages/veh-para:
+    devDependencies:
+      '@infernus/colandreas':
+        specifier: workspace:^
+        version: link:../colandreas
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+
   packages/weapon-config:
     devDependencies:
       '@infernus/core':
