@@ -143,6 +143,33 @@ const [onRecv] = defineEvent({
   },
 });
 
+const [onDownloadProgress] = defineEvent({
+  name: "OnCefDownloadProgress",
+  identifier: "isiiiiii",
+  beforeEach(
+    playerId: number,
+    fileName: string,
+    filePercent: number,
+    totalPercent: number,
+    fileDownloadedKb: number,
+    fileTotalKb: number,
+    totalDownloadedKb: number,
+    totalKb: number,
+  ) {
+    const player = Player.getInstance(playerId)!;
+    return {
+      player,
+      fileName,
+      filePercent,
+      totalPercent,
+      fileDownloadedKb,
+      fileTotalKb,
+      totalDownloadedKb,
+      totalKb,
+    };
+  },
+});
+
 export const CefEvent = {
   onInitialize,
   onDownloadStart,
@@ -152,4 +179,5 @@ export const CefEvent = {
   onPressKey,
   onChatInputState,
   onRecv,
+  onDownloadProgress,
 };

@@ -36,3 +36,9 @@ export enum CefEscapeMenuModeEnum {
   DISABLED,
   CUSTOM,
 }
+
+export enum CefPlayerListModeEnum {
+  DEFAULT,
+  DISABLED,
+  CUSTOM,
+}

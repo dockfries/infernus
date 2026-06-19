@@ -7,6 +7,7 @@ import {
   CefCreateStatusEnum,
   CefEscapeMenuModeEnum,
   CefHudComponentEnum,
+  CefPlayerListModeEnum,
 } from "../enums";
 import { playerBrowserPool } from "./pool";
 
@@ -387,6 +388,10 @@ export class CefBrowser {
 
   static setEscapeMenuMode(player: Player, mode: CefEscapeMenuModeEnum) {
     return samp.callNative("CEF_SetEscapeMenuMode", "ii", player.id, mode) as number;
+  }
+
+  static setPlayerListMode(player: Player, mode: CefPlayerListModeEnum) {
+    return samp.callNative("CEF_SetPlayerListMode", "ii", player.id, mode) as number;
   }
 
   static getInstance(browserId: number, player: Player) {
