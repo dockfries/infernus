@@ -176,6 +176,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
       orig_playerMethods.setVelocity.call(editable.issuerId, 0.0, 0.0, 0.0);
 
       const animIndex = orig_playerMethods.getAnimationIndex.call(editable.issuerId);
+
       if (animIndex !== 747) {
         debugMessageRed(
           editable.issuerId,
@@ -225,21 +226,22 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
     }
   }
 
-  if (damage !== InvalidEnum.PLAYER_ID && orig_playerMethods.isConnected.call(damage)) {
-    if (hasSameTeam(player, damage.id)) {
+  const _damage = typeof damage === "number" ? damage : damage.id;
+  if (orig_playerMethods.isConnected.call(damage)) {
+    if (hasSameTeam(player, _damage)) {
       return 0;
     }
 
     if (
-      isDying.get(damage.id) &&
+      isDying.get(_damage) &&
       (isBulletWeapon(weapon) || isMeleeWeapon(weapon)) &&
-      Date.now() - lastDeathTick.get(damage.id) > 80
+      Date.now() - lastDeathTick.get(_damage) > 80
     ) {
-      debugMessageRed(player, `shot/punched by dead player (${damage.id})`);
+      debugMessageRed(player, `shot/punched by dead player (${_damage})`);
       return 0;
     }
 
-    if (beingReSynced.get(damage.id)) {
+    if (beingReSynced.get(_damage)) {
       return 0;
     }
 
@@ -254,16 +256,19 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
     }
 
     if (
+      damage === InvalidEnum.PLAYER_ID ||
       (!orig_playerMethods.isStreamedIn.call(player, damage) && !wc_IsPlayerPaused(damage)) ||
       !orig_playerMethods.isStreamedIn.call(damage, player)
     ) {
       if (innerGameModeConfig.lagCompMode) {
         damage = InvalidEnum.PLAYER_ID;
       } else {
-        addRejectedHit(player, damage, RejectedReasonEnum.HIT_UNSTREAMED, weapon, damage.id);
+        addRejectedHit(player, damage, RejectedReasonEnum.HIT_UNSTREAMED, weapon, _damage);
         return 0;
       }
     }
+  } else if (damage !== InvalidEnum.PLAYER_ID) {
+    damage = InvalidEnum.PLAYER_ID;
   }
 
   const bullets = 0.0;

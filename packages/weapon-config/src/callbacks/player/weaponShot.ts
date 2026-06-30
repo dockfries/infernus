@@ -257,8 +257,8 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
 
   if (hitType === BulletHitTypesEnum.VEHICLE) {
     if (
-      hitId < 0 ||
-      hitId > LimitsEnum.MAX_VEHICLES ||
+      hitId <= 0 ||
+      hitId >= LimitsEnum.MAX_VEHICLES ||
       !Vehicle.getInstance(hitId) ||
       !orig_vehicleMethods.isValid.call(Vehicle.getInstance(hitId))
     ) {

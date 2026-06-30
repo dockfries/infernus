@@ -74,9 +74,9 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
     return 0;
   }
 
-  if (!innerGameModeConfig.lagCompMode) {
-    const npc = orig_playerMethods.isNpc.call(damage);
+  const npc = orig_playerMethods.isNpc.call(damage);
 
+  if (!innerGameModeConfig.lagCompMode) {
     if (weapon === WeaponEnum.KNIFE && amount === 0.0) {
       if (damage === player) {
         return 0;
@@ -121,8 +121,6 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
 
     return 0;
   }
-
-  const npc = orig_playerMethods.isNpc.call(damage);
 
   if (amount === 1833.33154296875) {
     return 0;
@@ -249,7 +247,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
 
       const animIndex = orig_playerMethods.getAnimationIndex.call(editable.issuerId);
 
-      if (animIndex !== 747) {
+      if (animIndex !== 747 && animIndex !== 748) {
         debugMessageRed(
           editable.issuerId,
           `applying knife anim for you too (current: ${animIndex})`,

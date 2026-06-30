@@ -138,11 +138,13 @@ export function getWeaponDamage(weaponId: number) {
 }
 
 export function getCbugAllowed(player: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID) {
-  if (player === InvalidEnum.PLAYER_ID) {
-    return innerGameModeConfig.cBugGlobal;
+  const _player = typeof player === "number" ? player : player.id;
+
+  if (_player >= 0 && _player < LimitsEnum.MAX_PLAYERS) {
+    return cBugAllowed.get(_player);
   }
 
-  return cBugAllowed.get(player.id);
+  return innerGameModeConfig.cBugGlobal;
 }
 
 export function getWeaponShootRate(weaponId: number) {
@@ -188,7 +190,11 @@ export function getLastDamageArmour(player: Player) {
 }
 
 export function getRejectedHit(player: Player, idx: number) {
-  if (idx >= innerWeaponConfig.MAX_REJECTED_HITS) {
+  if (
+    player.id < 0 ||
+    player.id >= LimitsEnum.MAX_PLAYERS ||
+    idx >= innerWeaponConfig.MAX_REJECTED_HITS
+  ) {
     return { ret: 0, output: "" };
   }
 

@@ -1557,7 +1557,7 @@ TextDraw.__inject__.getPreviewVehicleColorsPlayer = wc_PlayerTextDrawGetPreviewV
 export function wc_EditPlayerClass(
   classId: number,
   teamId: number,
-  modelId: number,
+  skinId: number,
   spawnX: number,
   spawnY: number,
   spawnZ: number,
@@ -1573,7 +1573,7 @@ export function wc_EditPlayerClass(
     orig_EditPlayerClass(
       classId,
       teamId,
-      modelId,
+      skinId,
       spawnX,
       spawnY,
       spawnZ,
@@ -1586,7 +1586,7 @@ export function wc_EditPlayerClass(
       weapon3Ammo,
     )
   ) {
-    classSpawnInfo.get(classId).skin = modelId;
+    classSpawnInfo.get(classId).skin = skinId;
     classSpawnInfo.get(classId).team = teamId;
     classSpawnInfo.get(classId).posX = spawnX;
     classSpawnInfo.get(classId).posY = spawnY;

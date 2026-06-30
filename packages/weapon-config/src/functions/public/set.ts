@@ -1,5 +1,5 @@
 import { Player, InvalidEnum, LimitsEnum } from "@infernus/core";
-import { innerGameModeConfig } from "../../config";
+import { innerGameModeConfig, innerWeaponConfig } from "../../config";
 import {
   s_WeaponDamage,
   s_DamageType,
@@ -49,6 +49,10 @@ export function setWeaponDamage(
     }
 
     const steps = (args.length - 1) / 2;
+
+    if (steps > innerWeaponConfig.MAX_DAMAGE_RANGES) {
+      return 0;
+    }
 
     s_DamageType[weaponId] = damage_type;
     damageRangeSteps[weaponId] = steps;
@@ -103,13 +107,14 @@ export function setCbugAllowed(
   enabled: boolean,
   player: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID,
 ) {
-  if (player === InvalidEnum.PLAYER_ID) {
+  const _player = typeof player === "number" ? player : player.id;
+  if (_player >= 0 && _player < LimitsEnum.MAX_PLAYERS) {
+    cBugAllowed.set(_player, enabled);
+  } else {
     innerGameModeConfig.cBugGlobal = enabled;
     Player.getInstances().forEach((p) => {
       cBugAllowed.set(p.id, enabled);
     });
-  } else {
-    cBugAllowed.set(player.id, enabled);
   }
 
   return enabled;
@@ -179,17 +184,25 @@ export function setWeaponMaxRange(weaponId: WC_WeaponEnum, range: number) {
 }
 
 export function setPlayerMaxHealth(player: Player, value: number) {
-  if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
+  if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS && value > 0.0) {
     playerMaxHealth.set(player.id, value);
     updateHealthBar(player, true);
+
+    return 1;
   }
+
+  return 0;
 }
 
 export function setPlayerMaxArmour(player: Player, value: number) {
-  if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
+  if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS && value > 0.0) {
     playerMaxArmour.set(player.id, value);
     updateHealthBar(player, true);
+
+    return 1;
   }
+
+  return 0;
 }
 
 export function damagePlayer(
@@ -200,7 +213,7 @@ export function damagePlayer(
   bodyPart: WC_BodyPartsEnum = WC_BodyPartsEnum.UNKNOWN,
   ignore_armour = false,
 ) {
-  if (player.id < 0 || player.id > LimitsEnum.MAX_PLAYERS || !player.isConnected()) {
+  if (player.id < 0 || player.id >= LimitsEnum.MAX_PLAYERS || !player.isConnected()) {
     return 0;
   }
 
@@ -214,7 +227,7 @@ export function damagePlayer(
 
   if (
     issuerId !== InvalidEnum.PLAYER_ID &&
-    (issuerId.id < 0 || issuerId.id > LimitsEnum.MAX_PLAYERS || !issuerId.isConnected())
+    (issuerId.id < 0 || issuerId.id >= LimitsEnum.MAX_PLAYERS || !issuerId.isConnected())
   ) {
     issuerId = InvalidEnum.PLAYER_ID;
   }

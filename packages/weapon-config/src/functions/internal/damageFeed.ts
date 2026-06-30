@@ -1,4 +1,4 @@
-import { Player, TextDraw, I18n, InvalidEnum } from "@infernus/core";
+import { Player, TextDraw, I18n, InvalidEnum, LimitsEnum } from "@infernus/core";
 import { innerWeaponConfig, innerGameModeConfig } from "../../config";
 import { wc_GetWeaponName } from "../../hooks/weapon";
 import {
@@ -374,7 +374,7 @@ export function damageFeedAddHit(
   arr[idx]!.issuer = typeof issuerId === "number" ? issuerId : issuerId.id;
   arr[idx]!.weapon = weapon;
 
-  if (typeof issuerId !== "number") {
+  if (typeof issuerId !== "number" && issuerId.id >= 0 && issuerId.id < LimitsEnum.MAX_PLAYERS) {
     arr[idx]!.name = orig_playerMethods.getName.call(issuerId).name;
   }
 

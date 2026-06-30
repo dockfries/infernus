@@ -59,10 +59,12 @@ export function wc_IsPlayerPaused(player: Player) {
 }
 
 export function isDamageFeedActive(player: Player | -1 = -1) {
-  if (player !== -1) {
+  const _player = typeof player === "number" ? player : player.id;
+
+  if (_player >= 0 && _player < LimitsEnum.MAX_PLAYERS) {
     return (
-      damageFeedPlayer.get(player.id) === 1 ||
-      (innerGameModeConfig.damageFeed && damageFeedPlayer.get(player.id) !== 0)
+      damageFeedPlayer.get(_player) === 1 ||
+      (innerGameModeConfig.damageFeed && damageFeedPlayer.get(_player) !== 0)
     );
   }
 
