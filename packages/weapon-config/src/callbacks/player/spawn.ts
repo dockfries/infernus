@@ -74,7 +74,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
   if (beingReSynced.get(player.id)) {
     beingReSynced.set(player.id, false);
 
-    updateHealthBar(player);
+    updateHealthBar(player, true);
 
     orig_playerMethods.setPos.call(
       player,

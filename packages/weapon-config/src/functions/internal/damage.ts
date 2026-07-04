@@ -162,6 +162,25 @@ export function processDamage(editable: IProcessDamageArgs) {
 
   if (editable.weaponId === WC_WeaponEnum.HELIBLADES && editable.amount !== 330.0) {
     editable.weaponId = WC_WeaponEnum.CARPARK;
+  } else if (
+    editable.weaponId >= WC_WeaponEnum.REASON_VEHICLE &&
+    editable.weaponId <= WC_WeaponEnum.HELIBLADES
+  ) {
+    if (editable.issuer !== InvalidEnum.PLAYER_ID) {
+      const { x, y, z } = orig_playerMethods.getPos.call(editable.issuer)!;
+      const dist = orig_playerMethods.getDistanceFromPoint.call(editable.player, x, y, z);
+
+      if (dist > 15.0) {
+        addRejectedHit(
+          editable.issuer,
+          editable.player,
+          RejectedReasonEnum.HIT_TOO_FAR_FROM_ORIGIN,
+          editable.weaponId,
+          dist,
+        );
+        return InvalidDamageEnum.INVALID_DISTANCE;
+      }
+    }
   }
 
   if (
@@ -359,10 +378,13 @@ export function processDamage(editable: IProcessDamageArgs) {
     const { x, y, z } = orig_playerMethods.getPos.call(editable.issuer)!;
     const dist = orig_playerMethods.getDistanceFromPoint.call(editable.player, x, y, z);
 
+    const reason =
+      editable.weaponId === WC_WeaponEnum.PISTOLWHIP ? WC_WeaponEnum.UNARMED : editable.weaponId;
+
     if (
-      editable.weaponId >= WC_WeaponEnum.UNARMED &&
-      editable.weaponId < s_WeaponRange.length &&
-      dist > s_WeaponRange[editable.weaponId] + 2.0
+      reason >= WC_WeaponEnum.UNARMED &&
+      reason < s_WeaponRange.length &&
+      dist > s_WeaponRange[reason] + 2.0
     ) {
       addRejectedHit(
         editable.issuer,
@@ -370,7 +392,7 @@ export function processDamage(editable: IProcessDamageArgs) {
         RejectedReasonEnum.HIT_TOO_FAR_FROM_ORIGIN,
         editable.weaponId,
         dist,
-        s_WeaponRange[editable.weaponId],
+        s_WeaponRange[reason],
       );
       return InvalidDamageEnum.INVALID_DISTANCE;
     }

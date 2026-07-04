@@ -150,6 +150,9 @@ export const wc_SpawnPlayer = setPlayerHook("spawn", function () {
 });
 
 export const wc_GetPlayerState = setPlayerHook("getState", function () {
+  if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
+    return PlayerStateEnum.NONE;
+  }
   if (isDying.get(this.id)) {
     return PlayerStateEnum.WASTED;
   }

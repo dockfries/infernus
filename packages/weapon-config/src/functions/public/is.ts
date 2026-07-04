@@ -1,4 +1,4 @@
-import { Player, PlayerStateEnum, LimitsEnum } from "@infernus/core";
+import { Player, PlayerStateEnum, LimitsEnum, InvalidEnum } from "@infernus/core";
 import { innerGameModeConfig } from "../../config";
 import { WC_WeaponEnum } from "../../enums";
 import {
@@ -39,6 +39,10 @@ export function isMeleeWeapon(weaponId: number) {
 }
 
 export function wc_IsPlayerSpawned(player: Player) {
+  if (player.id < 0 || player.id >= LimitsEnum.MAX_PLAYERS) {
+    return false;
+  }
+
   if (isDying.get(player.id) || beingReSynced.get(player.id)) {
     return false;
   }
@@ -58,7 +62,7 @@ export function wc_IsPlayerPaused(player: Player) {
   return Date.now() - lastUpdateTick.get(player.id) > 2000;
 }
 
-export function isDamageFeedActive(player: Player | -1 = -1) {
+export function isDamageFeedActive(player: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID) {
   const _player = typeof player === "number" ? player : player.id;
 
   if (_player >= 0 && _player < LimitsEnum.MAX_PLAYERS) {
