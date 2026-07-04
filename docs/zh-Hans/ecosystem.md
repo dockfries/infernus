@@ -63,6 +63,7 @@
 - [gps](https://github.com/dockfries/samp-gps-plugin/releases/tag/v1.4.1)
 - [raknet](https://github.com/dockfries/Pawn.RakNet/releases/tag/1.6.1-omp-rc1)
 - [ColAndreas](https://github.com/dockfries/ColAndreas/releases/tag/v1.6.0)
+- [sampvoice](https://github.com/dockfries/sampvoice)
 
 > 请注意，`@infernus/create-app` 目前暂不支持下载这些 64 位依赖。
 

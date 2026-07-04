@@ -63,6 +63,7 @@ A partir de **v0.14.0+**, `@infernus/raknet` proporciona una **edición sin poly
 - [gps](https://github.com/dockfries/samp-gps-plugin/releases/tag/v1.4.1)
 - [raknet](https://github.com/dockfries/Pawn.RakNet/releases/tag/1.6.1-omp-rc1)
 - [ColAndreas](https://github.com/dockfries/ColAndreas/releases/tag/v1.6.0)
+- [sampvoice](https://github.com/dockfries/sampvoice)
 
 > Tenga en cuenta que `@infernus/create-app` no admite la descarga de estas dependencias de 64 bits en este momento.
 

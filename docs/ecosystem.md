@@ -63,6 +63,7 @@ Starting from **v0.14.0+**, `@infernus/raknet` provides a **polyfill-free editio
 - [gps](https://github.com/dockfries/samp-gps-plugin/releases/tag/v1.4.1)
 - [raknet](https://github.com/dockfries/Pawn.RakNet/releases/tag/1.6.1-omp-rc1)
 - [ColAndreas](https://github.com/dockfries/ColAndreas/releases/tag/v1.6.0)
+- [sampvoice](https://github.com/dockfries/sampvoice)
 
 > Note that `@infernus/create-app` does not support downloading these 64-bit dependencies at this time.
 

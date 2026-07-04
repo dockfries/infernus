@@ -132,9 +132,9 @@ The `so/dll` files depend on your target server environment — choose the appro
 
 2. Download the [samp-node plugin](https://github.com/dockfries/samp-node/releases), then extract `libnode.so/dll` into the project root and `samp-node.so/dll` into the `plugins` folder (create it if it doesn't exist).
 
-3. Download the [streamer plugin](https://github.com/samp-incognito/samp-streamer-plugin/releases), then place `streamer.so/dll` in the `plugins` folder.
+3. Download the [streamer plugin](https://github.com/dockfries/samp-streamer-plugin/releases), then place `streamer.so/dll` in the `plugins` folder.
 
-4. **(If you need raknet)** download the [raknet plugin](https://github.com/katursis/Pawn.RakNet/releases), then place all files except `.inc` files into the `components` folder.
+4. **(If you need raknet)** download the [raknet plugin](https://github.com/dockfries/Pawn.RakNet/releases), then place all files except `.inc` files into the `components` folder.
    1. Replace `gamemodes/polyfill_raknet.amx` with `gamemodes/polyfill.amx`, **or** modify the `pawn.main_scripts` section in `config.json`.
 
 ```json

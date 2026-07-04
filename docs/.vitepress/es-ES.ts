@@ -54,11 +54,11 @@ function nav(): DefaultTheme.NavItem[] {
         },
         {
           text: "Streamer",
-          link: "https://github.com/samp-incognito/samp-streamer-plugin",
+          link: "https://github.com/dockfries/samp-streamer-plugin",
         },
         {
           text: "RakNet",
-          link: "https://github.com/katursis/Pawn.RakNet",
+          link: "https://github.com/dockfries/Pawn.RakNet",
         },
         {
           text: "MapAndreas",
@@ -66,7 +66,7 @@ function nav(): DefaultTheme.NavItem[] {
         },
         {
           text: "ColAndreas",
-          link: "https://github.com/Pottus/ColAndreas",
+          link: "https://github.com/dockfries/ColAndreas",
         },
         {
           text: "omp-cef",
@@ -74,7 +74,11 @@ function nav(): DefaultTheme.NavItem[] {
         },
         {
           text: "samp-gps",
-          link: "https://github.com/AmyrAhmady/samp-gps-plugin",
+          link: "https://github.com/dockfries/samp-gps-plugin",
+        },
+        {
+          text: "sampvoice",
+          link: "https://github.com/dockfries/sampvoice",
         },
       ],
     },

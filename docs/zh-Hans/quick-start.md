@@ -131,9 +131,9 @@ vim config.json # 您不一定要用 vim，任意编辑器均可
 
 2. 下载 [samp-node 插件](https://github.com/dockfries/samp-node/releases)，将 `libnode.so/dll` 放入项目根目录，`samp-node.so/dll` 放入 `plugins` 文件夹（如不存在则手动创建）。
 
-3. 下载 [streamer 插件](https://github.com/samp-incognito/samp-streamer-plugin/releases)，将 `streamer.so/dll` 放入 `plugins` 文件夹。
+3. 下载 [streamer 插件](https://github.com/dockfries/samp-streamer-plugin/releases)，将 `streamer.so/dll` 放入 `plugins` 文件夹。
 
-4. **（如需使用 raknet）** 下载 [raknet 插件](https://github.com/katursis/Pawn.RakNet/releases)，将除 `.inc` 后缀外的所有文件放入 `components` 文件夹。
+4. **（如需使用 raknet）** 下载 [raknet 插件](https://github.com/dockfries/Pawn.RakNet/releases)，将除 `.inc` 后缀外的所有文件放入 `components` 文件夹。
    1. 将 `gamemodes/polyfill_raknet.amx` 替换为 `gamemodes/polyfill.amx`，**或**修改 `config.json` 中的 `pawn.main_scripts` 部分。
 
 ```json
