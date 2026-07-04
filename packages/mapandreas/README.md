@@ -10,7 +10,7 @@ A pure TypeScript heightmap query implementation for SA-MP / open.mp. No native 
 pnpm add @infernus/core @infernus/mapandreas
 ```
 
-Place a `.hmap` file (e.g. `SAFull.hmap`) in your server's `scriptfiles/` directory.
+Place [height maps](https://github.com/philip1337/samp-plugin-mapandreas/tree/master/heightmaps) (e.g. `SAFull.hmap`) in your server's `scriptfiles/` directory.
 
 ## Example
 
