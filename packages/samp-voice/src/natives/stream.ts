@@ -1,7 +1,7 @@
 import type { Player } from "@infernus/core";
-import { SV_NULL } from "../constants";
+import { SV_CHANNELS_ALL, SV_NULL } from "../constants";
 import { streamPools } from "./pool";
-import { SvParameterEnum } from "../enums";
+import { SvParameterEnum, SvTargetEnum } from "../enums";
 import { SampVoiceException } from "../exceptions";
 
 export abstract class SampVoiceStream {
@@ -51,6 +51,17 @@ export abstract class SampVoiceStream {
   attachSpeaker(player: Player) {
     if (this._ptr === SV_NULL) return false;
     return !!samp.callNative("SvAttachSpeakerToStream", "ii", this.ptr, player.id);
+  }
+
+  attachSpeakerWithChannels(player: Player, channelMask: number = SV_CHANNELS_ALL) {
+    if (this._ptr === SV_NULL) return false;
+    return !!samp.callNative(
+      "SvAttachSpeakerToStreamWithChannels",
+      "iii",
+      this.ptr,
+      player.id,
+      channelMask,
+    );
   }
 
   hasSpeakerIn(player: Player) {
@@ -114,6 +125,31 @@ export abstract class SampVoiceStream {
   parameterSlide(parameter: SvParameterEnum, deltaValue: number, time: number) {
     if (this._ptr === SV_NULL) return;
     samp.callNative("SvStreamParameterSlide", "iifi", this.ptr, parameter, deltaValue, time);
+  }
+
+  enableTransiter() {
+    if (this._ptr === SV_NULL) return false;
+    return !!samp.callNative("SvEnableTransiter", "i", this.ptr);
+  }
+
+  disableTransiter() {
+    if (this._ptr === SV_NULL) return false;
+    return !!samp.callNative("SvDisableTransiter", "i", this.ptr);
+  }
+
+  checkTransiter() {
+    if (this._ptr === SV_NULL) return false;
+    return !!samp.callNative("SvCheckTransiter", "i", this.ptr);
+  }
+
+  setTarget(targetType: SvTargetEnum, targetId: number) {
+    if (this._ptr === SV_NULL) return;
+    samp.callNative("SvSetStreamTarget", "iii", this.ptr, targetType, targetId);
+  }
+
+  setIcon(icon: string) {
+    if (this._ptr === SV_NULL) return;
+    samp.callNative("SvSetIcon", "is", this.ptr, icon);
   }
 
   delete() {
