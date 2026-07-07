@@ -69,6 +69,6 @@ export const SampVoice = Object.freeze({
     return !!samp.callNative("SvDisableSpeaker", "ii", player.id, channelMask);
   },
   checkSpeaker(player: Player, channelMask: number = SV_CHANNELS_ALL) {
-    return !!samp.callNative("SvCheckSpeaker", "i", player.id, channelMask);
+    return !!samp.callNative("SvCheckSpeaker", "ii", player.id, channelMask);
   },
 });
