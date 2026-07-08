@@ -82,6 +82,8 @@ If they ask about **ecosystem context** (polyfills, versions, omp-node), read `r
 | `references/query.md` | UDP server query |
 | `references/rec.md` | Recording data blocks |
 | `references/utilities.md` | @infernus/distance, @infernus/mapandreas, @infernus/fs, @infernus/create-app |
+| `references/s-art.md` | Image-to-object art renderer |
+| `references/veh-para.md` | Vehicle parachute system |
 
 ### Guides
 | File | Covers |
