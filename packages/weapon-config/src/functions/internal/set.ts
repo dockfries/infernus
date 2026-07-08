@@ -1,6 +1,6 @@
 import { Player, TextDraw, InvalidEnum, TextDrawFontsEnum, WeaponEnum } from "@infernus/core";
 import { BitStream, PacketRpcValueType } from "@infernus/raknet";
-import { innerWeaponConfig, innerGameModeConfig } from "../../config";
+import { innerWeaponConfig } from "../../config";
 import { WC_RPC_REQUEST_SPAWN } from "../../constants";
 import {
   orig_playerMethods,
@@ -8,9 +8,6 @@ import {
   orig_PlayerTextDrawColor,
   orig_PlayerTextDrawFont,
   orig_PlayerTextDrawShow,
-  orig_TextDrawShowForPlayer,
-  orig_PlayerTextDrawHide,
-  orig_TextDrawHideForPlayer,
 } from "../../hooks/origin";
 import {
   spawnForStreamedIn,
@@ -33,6 +30,8 @@ import {
   fakeHealth,
   fakeArmour,
   fakeQuat,
+  healthBarBorder,
+  healthBarBackground,
 } from "../../struct";
 import { angleBetweenPoints, wc_CalculateBar } from "../../utils/math";
 import { clearAnimationsForPlayer } from "./anim";
@@ -40,6 +39,12 @@ import { getRotationQuaternion } from "./get";
 import { sendLastSyncPacket, updateSyncData } from "./raknet";
 import { wc_IsPlayerPaused } from "../public/is";
 import { getPlayerActualSkin } from "./get";
+import {
+  getHealthBarSize,
+  getHealthBarPadding,
+  getHealthBarColor,
+  getHealthBarPosition,
+} from "../public/get";
 
 export function wc_SpawnForStreamedIn(player: Player) {
   if (!orig_playerMethods.isConnected.call(player)) {
@@ -135,16 +140,22 @@ export function updateHealthBar(player: Player, force = false, forceSync = false
     orig_playerMethods.setHealth.call(player, 8000000.0 + health);
 
     if (healthBarVisible.get(player.id) && !isDying.get(player.id)) {
+      const { x: sizeX, y: sizeY } = getHealthBarSize(player);
+      const { padding } = getHealthBarPadding(player);
+      const { fgColor } = getHealthBarColor(player);
+
       if (
         !healthBarForeground.get(player.id) ||
         healthBarForeground.get(player.id)!.id === InvalidEnum.TEXT_DRAW
       ) {
+        const { x: posX, y: posY } = getHealthBarPosition(player);
+
         healthBarForeground.set(
           player.id,
           new TextDraw({
             player,
-            x: 548.0,
-            y: 68.8,
+            x: posX + padding[3],
+            y: posY + padding[0],
             text: "LD_SPAC:white",
           }).create(),
         );
@@ -156,14 +167,10 @@ export function updateHealthBar(player: Player, force = false, forceSync = false
           orig_PlayerTextDrawTextSize(
             player.id,
             healthBarForeground.get(player.id)!.id,
-            wc_CalculateBar(57.8, 100.0, health),
-            4.7,
+            wc_CalculateBar(sizeX - padding[1] - padding[3], 100.0, health),
+            sizeY - padding[0] - padding[2],
           );
-          orig_PlayerTextDrawColor(
-            player.id,
-            healthBarForeground.get(player.id)!.id,
-            innerWeaponConfig.HEALTH_BAR_FG_COLOR,
-          );
+          orig_PlayerTextDrawColor(player.id, healthBarForeground.get(player.id)!.id, fgColor);
           orig_PlayerTextDrawFont(
             player.id,
             healthBarForeground.get(player.id)!.id,
@@ -175,8 +182,8 @@ export function updateHealthBar(player: Player, force = false, forceSync = false
         orig_PlayerTextDrawTextSize(
           player.id,
           healthBarForeground.get(player.id)!.id,
-          wc_CalculateBar(57.8, 100.0, health),
-          4.7,
+          wc_CalculateBar(sizeX - padding[1] - padding[3], 100.0, health),
+          sizeY - padding[0] - padding[2],
         );
         orig_PlayerTextDrawShow(player.id, healthBarForeground.get(player.id)!.id);
       }
@@ -207,18 +214,55 @@ export function setHealthBarVisible(player: Player, toggle: boolean) {
   healthBarVisible.set(player.id, toggle);
 
   if (toggle) {
-    if (
-      innerGameModeConfig.healthBarBorder &&
-      innerGameModeConfig.healthBarBorder.id !== InvalidEnum.TEXT_DRAW
-    ) {
-      orig_TextDrawShowForPlayer(player.id, innerGameModeConfig.healthBarBorder.id);
+    const { x: posX, y: posY } = getHealthBarPosition(player);
+    const { x: sizeX, y: sizeY } = getHealthBarSize(player);
+    const { padding } = getHealthBarPadding(player);
+    const { borderColor, bgColor } = getHealthBarColor(player);
+
+    if (!healthBarBorder.get(player.id)) {
+      try {
+        const td = new TextDraw({
+          x: posX,
+          y: posY,
+          text: "LD_SPAC:white",
+          player,
+        });
+        td.create();
+
+        healthBarBorder.set(player.id, td);
+        internalPlayerTextDraw.get(player.id)[healthBarBorder.get(player.id)!.id] = true;
+        td.setTextSize(sizeX, sizeY);
+        td.setColor(borderColor);
+        td.setFont(TextDrawFontsEnum.SPRITE_DRAW);
+        td.show();
+      } catch {
+        console.log("(wc) WARN: Unable to create player healthbar border");
+      }
+    } else if (internalPlayerTextDraw.get(player.id)[healthBarBorder.get(player.id)!.id]) {
+      healthBarBorder.get(player.id)!.show();
     }
 
-    if (
-      innerGameModeConfig.healthBarBackground &&
-      innerGameModeConfig.healthBarBackground.id !== InvalidEnum.TEXT_DRAW
-    ) {
-      orig_TextDrawShowForPlayer(player.id, innerGameModeConfig.healthBarBackground.id);
+    if (!healthBarBackground.get(player.id)) {
+      try {
+        const td = new TextDraw({
+          x: posX + padding[3],
+          y: posY + padding[0],
+          text: "LD_SPAC:white",
+          player,
+        });
+        td.create();
+
+        healthBarBackground.set(player.id, td);
+        internalPlayerTextDraw.get(player.id)[healthBarBackground.get(player.id)!.id] = true;
+        td.setTextSize(sizeX - padding[1] - padding[3], sizeY - padding[0] - padding[2]);
+        td.setColor(bgColor);
+        td.setFont(TextDrawFontsEnum.SPRITE_DRAW);
+        td.show();
+      } catch {
+        console.log("(wc) WARN: Unable to create player healthbar background");
+      }
+    } else if (internalPlayerTextDraw.get(player.id)[healthBarBackground.get(player.id)!.id]) {
+      healthBarBackground.get(player.id)!.show();
     }
 
     updateHealthBar(player, true);
@@ -227,22 +271,60 @@ export function setHealthBarVisible(player: Player, toggle: boolean) {
       healthBarForeground.get(player.id) &&
       healthBarForeground.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
     ) {
-      orig_PlayerTextDrawHide(player.id, healthBarForeground.get(player.id)!.id);
+      internalPlayerTextDraw.get(player.id)[healthBarForeground.get(player.id)!.id] = false;
+      healthBarForeground.get(player.id)!.destroy();
+      healthBarForeground.set(player.id, null);
     }
 
     if (
-      innerGameModeConfig.healthBarBorder &&
-      innerGameModeConfig.healthBarBorder.id !== InvalidEnum.TEXT_DRAW
+      healthBarBorder.get(player.id) &&
+      healthBarBorder.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
     ) {
-      orig_TextDrawHideForPlayer(player.id, innerGameModeConfig.healthBarBorder.id);
+      internalPlayerTextDraw.get(player.id)[healthBarBorder.get(player.id)!.id] = false;
+      healthBarBorder.get(player.id)!.destroy();
+      healthBarBorder.set(player.id, null);
     }
 
     if (
-      innerGameModeConfig.healthBarBackground &&
-      innerGameModeConfig.healthBarBackground.id !== InvalidEnum.TEXT_DRAW
+      healthBarBackground.get(player.id) &&
+      healthBarBackground.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
     ) {
-      orig_TextDrawHideForPlayer(player.id, innerGameModeConfig.healthBarBackground.id);
+      internalPlayerTextDraw.get(player.id)[healthBarBackground.get(player.id)!.id] = false;
+      healthBarBackground.get(player.id)!.destroy();
+      healthBarBackground.set(player.id, null);
     }
+  }
+}
+
+export function updateHealthBarSize(player: Player) {
+  if (!player.isConnected() || !healthBarVisible.get(player.id)) {
+    return;
+  }
+
+  const { x: sizeX, y: sizeY } = getHealthBarSize(player);
+  const { padding } = getHealthBarPadding(player);
+
+  if (
+    healthBarBorder.get(player.id) &&
+    healthBarBorder.get(player.id)!.id !== InvalidEnum.TEXT_DRAW &&
+    internalPlayerTextDraw.get(player.id)[healthBarBorder.get(player.id)!.id]
+  ) {
+    healthBarBorder.get(player.id)!.setTextSize(sizeX, sizeY).show();
+  }
+
+  if (
+    healthBarBackground.get(player.id) &&
+    healthBarBackground.get(player.id)!.id !== InvalidEnum.TEXT_DRAW &&
+    internalPlayerTextDraw.get(player.id)[healthBarBackground.get(player.id)!.id]
+  ) {
+    healthBarBackground
+      .get(player.id)!
+      .setTextSize(sizeX - padding[1] - padding[3], sizeY - padding[0] - padding[2])
+      .show();
+  }
+
+  if (!isDying.get(player.id)) {
+    updateHealthBar(player, true);
   }
 }
 

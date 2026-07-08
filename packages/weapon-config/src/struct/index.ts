@@ -98,7 +98,19 @@ export const lastVehicleTick = new SafetyMap<number, number>(() => 0);
 
 export const enableHealthBar = new SafetyMap<number, boolean>(() => false);
 export const healthBarVisible = new SafetyMap<number, boolean>(() => false);
+export const healthBarBorder = new SafetyMap<number, TextDraw | null>(() => null);
+export const healthBarBackground = new SafetyMap<number, TextDraw | null>(() => null);
 export const healthBarForeground = new SafetyMap<number, TextDraw | null>(() => null);
+export const playerHealthBarPosX = new SafetyMap<number, number>(() => Number.NaN);
+export const playerHealthBarPosY = new SafetyMap<number, number>(() => Number.NaN);
+export const playerHealthBarSizeX = new SafetyMap<number, number>(() => Number.NaN);
+export const playerHealthBarSizeY = new SafetyMap<number, number>(() => Number.NaN);
+export const playerHealthBarPadding = new SafetyMap<number, [number, number, number, number]>(
+  () => [Number.NaN, Number.NaN, Number.NaN, Number.NaN],
+);
+export const playerHealthBarBorderColor = new SafetyMap<number, number>(() => 0);
+export const playerHealthBarBGColor = new SafetyMap<number, number>(() => 0);
+export const playerHealthBarFGColor = new SafetyMap<number, number>(() => 0);
 
 export const damageFeedPlayer = new SafetyMap<number, number>(() => -1);
 export const damageFeedTaken = new SafetyMap<number, TextDraw | null>(() => null);
@@ -108,7 +120,6 @@ export const damageFeedHitsTaken = new SafetyMap<number, (DamageFeedHit | null)[
 export const damageFeedUpdateTick = new SafetyMap<number, number>(() => 0);
 export const damageFeedTimer = new SafetyMap<number, NodeJS.Timeout | null>(() => null);
 
-export const internalTextDraw = new SafetyMap<number, boolean>(() => false);
 export const internalPlayerTextDraw = new SafetyMap<number, boolean[]>(() => []); // [PlayerText:MAX_PLAYER_TEXT_DRAWS]
 
 export const lastAnim = new SafetyMap<number, number>(() => -1);

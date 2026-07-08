@@ -18,6 +18,10 @@ export {
   averageHitRate,
   averageShootRate,
   enableHealthBarForPlayer,
+  getHealthBarPosition,
+  getHealthBarSize,
+  getHealthBarPadding,
+  getHealthBarColor,
   getCbugAllowed,
   getRejectedHit,
   getRespawnTime,
@@ -40,6 +44,7 @@ export {
 export {
   damagePlayer,
   setCbugAllowed,
+  setCbugDeathDelay,
   setCustomArmourRules,
   setCustomFallDamage,
   setCustomVendingMachines,
@@ -53,6 +58,14 @@ export {
   setWeaponDamage,
   setWeaponMaxRange,
   setWeaponShootRate,
+  setHealthBarPosition,
+  setHealthBarSize,
+  setHealthBarPadding,
+  setHealthBarPositionForPlayer,
+  setHealthBarSizeForPlayer,
+  setHealthBarPaddingForPlayer,
+  setHealthBarColor,
+  setHealthBarColorForPlayer,
 } from "./functions/public/set";
 
 export { defineWeaponConfig, type IWeaponConfig } from "./config";

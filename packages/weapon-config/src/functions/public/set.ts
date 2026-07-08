@@ -17,13 +17,28 @@ import {
   playerMaxHealth,
   playerMaxArmour,
   beingReSynced,
+  playerHealthBarPadding,
+  healthBarVisible,
+  playerHealthBarPosX,
+  playerHealthBarPosY,
+  playerHealthBarSizeX,
+  playerHealthBarSizeY,
+  playerHealthBarBorderColor,
+  playerHealthBarBGColor,
+  playerHealthBarFGColor,
 } from "../../struct";
 import { inflictDamage } from "../internal/damage";
 import { damageFeedUpdate } from "../internal/damageFeed";
 import { saveSyncData } from "../internal/raknet";
-import { spawnPlayerInPlace, updateHealthBar } from "../internal/set";
+import {
+  setHealthBarVisible,
+  spawnPlayerInPlace,
+  updateHealthBar,
+  updateHealthBarSize,
+} from "../internal/set";
 import { createVendingMachines, destroyVendingMachines } from "../internal/vendingMachines";
 import { isBulletWeapon } from "./is";
+import { darkenRGBA } from "../../utils/color";
 
 export function setRespawnTime(ms: number) {
   innerGameModeConfig.respawnTime = Math.max(0, ms);
@@ -245,4 +260,144 @@ export function resyncPlayer(player: Player) {
 
 export function setCbugDeathDelay(toggle: boolean) {
   innerGameModeConfig.cBugDeathDelay = toggle;
+}
+
+export function setHealthBarPosition(x: number, y: number) {
+  innerGameModeConfig.healthBarPosX = x;
+  innerGameModeConfig.healthBarPosY = y;
+
+  Player.getInstances().forEach((p) => {
+    if (
+      healthBarVisible.get(p.id) &&
+      (!Number.isNaN(playerHealthBarPosX.get(p.id)) || !Number.isNaN(playerHealthBarPosY.get(p.id)))
+    ) {
+      setHealthBarVisible(p, false);
+      setHealthBarVisible(p, true);
+    }
+  });
+}
+
+export function setHealthBarSize(x: number, y: number) {
+  innerGameModeConfig.healthBarSizeX = x;
+  innerGameModeConfig.healthBarSizeY = y;
+
+  Player.getInstances().forEach((p) => {
+    if (
+      healthBarVisible.get(p.id) &&
+      (!Number.isNaN(playerHealthBarSizeX.get(p.id)) ||
+        !Number.isNaN(playerHealthBarSizeY.get(p.id)))
+    ) {
+      updateHealthBarSize(p);
+    }
+  });
+}
+
+export function setHealthBarPadding(padding: [number, number, number, number]) {
+  innerGameModeConfig.healthBarPadding = [...padding];
+
+  Player.getInstances().forEach((p) => {
+    if (
+      healthBarVisible.get(p.id) &&
+      playerHealthBarPadding.get(p.id).some((v) => !Number.isNaN(v))
+    ) {
+      setHealthBarVisible(p, false);
+      setHealthBarVisible(p, true);
+    }
+  });
+}
+
+export function setHealthBarPositionForPlayer(player: Player, x = Number.NaN, y = Number.NaN) {
+  if (!player.isConnected()) return 0;
+
+  playerHealthBarPosX.set(player.id, x);
+  playerHealthBarPosY.set(player.id, y);
+
+  if (healthBarVisible.get(player.id)) {
+    setHealthBarVisible(player, false);
+    setHealthBarVisible(player, true);
+  }
+
+  return 1;
+}
+
+export function setHealthBarSizeForPlayer(player: Player, x = Number.NaN, y = Number.NaN) {
+  if (!player.isConnected()) return 0;
+
+  playerHealthBarSizeX.set(player.id, x);
+  playerHealthBarSizeY.set(player.id, y);
+
+  if (healthBarVisible.get(player.id)) {
+    updateHealthBarSize(player);
+  }
+
+  return 1;
+}
+
+export function setHealthBarPaddingForPlayer(
+  player: Player,
+  padding: [number, number, number, number] = [Number.NaN, Number.NaN, Number.NaN, Number.NaN],
+) {
+  if (!player.isConnected()) return 0;
+
+  playerHealthBarPadding.set(player.id, [...padding]);
+
+  if (healthBarVisible.get(player.id)) {
+    setHealthBarVisible(player, false);
+    setHealthBarVisible(player, true);
+  }
+
+  return 1;
+}
+
+export function setHealthBarColor(borderColor = 0, bgColor = 0, fgColor = 0) {
+  if (borderColor !== 0) {
+    innerGameModeConfig.healthBarBorderColor = borderColor;
+  }
+
+  if (fgColor !== 0) {
+    innerGameModeConfig.healthBarFGColor = fgColor;
+  }
+
+  if (bgColor !== 0) {
+    innerGameModeConfig.healthBarBGColor = bgColor;
+  } else if (fgColor !== 0) {
+    innerGameModeConfig.healthBarBGColor = darkenRGBA(innerGameModeConfig.healthBarFGColor);
+  }
+
+  Player.getInstances().forEach((p) => {
+    if (
+      healthBarVisible.get(p.id) &&
+      (playerHealthBarBorderColor.get(p.id) === 0 ||
+        playerHealthBarBGColor.get(p.id) === 0 ||
+        playerHealthBarFGColor.get(p.id) === 0)
+    ) {
+      setHealthBarVisible(p, false);
+      setHealthBarVisible(p, true);
+    }
+  });
+}
+
+export function setHealthBarColorForPlayer(
+  player: Player,
+  borderColor = 0,
+  bgColor = 0,
+  fgColor = 0,
+) {
+  if (!player.isConnected()) return 0;
+
+  playerHealthBarBorderColor.set(player.id, borderColor);
+  playerHealthBarFGColor.set(player.id, fgColor);
+
+  if (bgColor === 0 && playerHealthBarFGColor.get(player.id) !== 0) {
+    playerHealthBarBGColor.set(player.id, darkenRGBA(playerHealthBarFGColor.get(player.id)));
+  } else {
+    playerHealthBarBGColor.set(player.id, bgColor);
+  }
+
+  if (healthBarVisible.get(player.id)) {
+    setHealthBarVisible(player, false);
+    setHealthBarVisible(player, true);
+  }
+
+  return 1;
 }

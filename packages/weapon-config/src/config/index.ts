@@ -1,53 +1,3 @@
-import { TextDraw } from "@infernus/core";
-
-export interface IWeaponConfigGM {
-  lagCompMode: boolean;
-  maxShootRateSamples: number;
-  maxHitRateSamples: number;
-  respawnTime: number;
-  customFallDamage: boolean;
-  damageFeed: boolean;
-  damageFeedHideDelay: number;
-  damageFeedMaxUpdateRate: number;
-  vehiclePassengerDamage: boolean;
-  vehicleUnoccupiedDamage: boolean;
-  fallDeathVelocity: number;
-  damageTakenSound: number;
-  damageGivenSound: number;
-  disableSyncBugs: boolean;
-  knifeSync: boolean;
-  cBugGlobal: boolean;
-  cBugDeathDelay: boolean;
-  damageArmourToggle: [boolean, boolean];
-  customVendingMachines: boolean;
-  healthBarBorder: TextDraw | null;
-  healthBarBackground: TextDraw | null;
-}
-
-export const innerGameModeConfig: IWeaponConfigGM = {
-  lagCompMode: false,
-  maxShootRateSamples: 4,
-  maxHitRateSamples: 4,
-  respawnTime: 3000,
-  customFallDamage: false,
-  damageFeed: true,
-  damageFeedHideDelay: 3000,
-  damageFeedMaxUpdateRate: 250,
-  vehiclePassengerDamage: false,
-  vehicleUnoccupiedDamage: false,
-  fallDeathVelocity: -0.6,
-  damageTakenSound: 1190,
-  damageGivenSound: 17802,
-  disableSyncBugs: true,
-  knifeSync: true,
-  cBugGlobal: true,
-  cBugDeathDelay: true,
-  damageArmourToggle: [false, false],
-  customVendingMachines: true,
-  healthBarBorder: null,
-  healthBarBackground: null,
-};
-
 export interface IWeaponConfig {
   DEBUG: boolean;
   DEBUG_SILENT: boolean;
@@ -76,6 +26,66 @@ export const innerWeaponConfig: IWeaponConfig = {
   CUSTOM_VENDING_MACHINES: true,
   HEALTH_BAR_FG_COLOR: 0xb4191dff,
   HEALTH_BAR_BG_COLOR: 0x5a0c0eff,
+};
+
+export interface IWeaponConfigGM {
+  lagCompMode: boolean;
+  maxShootRateSamples: number;
+  maxHitRateSamples: number;
+  respawnTime: number;
+  customFallDamage: boolean;
+  damageFeed: boolean;
+  damageFeedHideDelay: number;
+  damageFeedMaxUpdateRate: number;
+  vehiclePassengerDamage: boolean;
+  vehicleUnoccupiedDamage: boolean;
+  fallDeathVelocity: number;
+  damageTakenSound: number;
+  damageGivenSound: number;
+  disableSyncBugs: boolean;
+  knifeSync: boolean;
+  cBugGlobal: boolean;
+  cBugDeathDelay: boolean;
+  damageArmourToggle: [boolean, boolean];
+  customVendingMachines: boolean;
+  healthBarPosX: number;
+  healthBarPosY: number;
+  healthBarSizeX: number;
+  healthBarSizeY: number;
+  healthBarPadding: [number, number, number, number];
+  healthBarBorderColor: number;
+  healthBarBGColor: number;
+  healthBarFGColor: number;
+}
+
+export const innerGameModeConfig: IWeaponConfigGM = {
+  lagCompMode: false,
+  maxShootRateSamples: 4,
+  maxHitRateSamples: 4,
+  respawnTime: 3000,
+  customFallDamage: false,
+  damageFeed: true,
+  damageFeedHideDelay: 3000,
+  damageFeedMaxUpdateRate: 250,
+  vehiclePassengerDamage: false,
+  vehicleUnoccupiedDamage: false,
+  fallDeathVelocity: -0.6,
+  damageTakenSound: 1190,
+  damageGivenSound: 17802,
+  disableSyncBugs: true,
+  knifeSync: true,
+  cBugGlobal: true,
+  cBugDeathDelay: true,
+  damageArmourToggle: [false, false],
+  customVendingMachines: true,
+  healthBarPosX: 546.0,
+  healthBarPosY: 66.7,
+  healthBarSizeX: 61.7,
+  healthBarSizeY: 8.4,
+  healthBarPadding: [2.1, 1.9, 1.6, 2.0],
+  healthBarBorderColor: 255,
+  healthBarBGColor: innerWeaponConfig.HEALTH_BAR_BG_COLOR,
+  healthBarFGColor: innerWeaponConfig.HEALTH_BAR_FG_COLOR,
 };
 
 export function defineWeaponConfig(cb: () => Partial<IWeaponConfig>) {

@@ -1,21 +1,8 @@
-import {
-  GameMode,
-  TextDraw,
-  Player,
-  InvalidEnum,
-  TextDrawFontsEnum,
-  PlayerStateEnum,
-} from "@infernus/core";
+import { GameMode, Player, InvalidEnum, PlayerStateEnum } from "@infernus/core";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
-import {
-  orig_TextDrawTextSize,
-  orig_TextDrawColor,
-  orig_TextDrawFont,
-  orig_playerMethods,
-} from "../../hooks/origin";
+import { orig_playerMethods } from "../../hooks/origin";
 import {
   classSpawnInfo,
-  internalTextDraw,
   playerTeam,
   world,
   lastUpdateTick,
@@ -34,6 +21,8 @@ import {
   internalPlayerTextDraw,
   damageFeedGiven,
   damageFeedTaken,
+  healthBarBorder,
+  healthBarBackground,
 } from "../../struct";
 import { setKnifeSync } from "../emulated";
 import { damageFeedUpdate } from "./damageFeed";
@@ -63,40 +52,6 @@ export function scriptInit() {
 
   for (let i = 0; i < innerWeaponConfig.MAX_CLASSES; i++) {
     classSpawnInfo.get(i).skin = -1;
-  }
-
-  try {
-    innerGameModeConfig.healthBarBorder = new TextDraw({
-      x: 546.0,
-      y: 66.7,
-      text: "LD_SPAC:white",
-    }).create();
-    internalTextDraw.set(innerGameModeConfig.healthBarBorder.id, true);
-    orig_TextDrawTextSize(innerGameModeConfig.healthBarBorder.id, 61.7, 8.4);
-    orig_TextDrawColor(innerGameModeConfig.healthBarBorder.id, 255);
-    orig_TextDrawFont(innerGameModeConfig.healthBarBorder.id, TextDrawFontsEnum.SPRITE_DRAW);
-  } catch (err) {
-    console.log("(wc) WARN: Cannot create healthBar border textDraw");
-    console.log(err);
-  }
-
-  try {
-    innerGameModeConfig.healthBarBackground = new TextDraw({
-      x: 548.0,
-      y: 68.0,
-      text: "LD_SPAC:white",
-    }).create();
-
-    internalTextDraw.set(innerGameModeConfig.healthBarBackground.id, true);
-    orig_TextDrawTextSize(innerGameModeConfig.healthBarBackground.id, 57.8, 4.7);
-    orig_TextDrawColor(
-      innerGameModeConfig.healthBarBackground.id,
-      innerWeaponConfig.HEALTH_BAR_BG_COLOR,
-    );
-    orig_TextDrawFont(innerGameModeConfig.healthBarBackground.id, TextDrawFontsEnum.SPRITE_DRAW);
-  } catch (err) {
-    console.log("(wc) WARN: Cannot create healthBar background textDraw");
-    console.log(err);
   }
 
   if (innerWeaponConfig.CUSTOM_VENDING_MACHINES && innerGameModeConfig.customVendingMachines) {
@@ -200,6 +155,24 @@ export function scriptExit() {
     setHealthBarVisible(player, false);
 
     if (
+      healthBarBorder.has(player.id) &&
+      healthBarBorder.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
+    ) {
+      internalPlayerTextDraw.get(player.id)[healthBarBorder.get(player.id)!.id] = false;
+      healthBarBorder.get(player.id)!.destroy();
+      healthBarBorder.set(player.id, null);
+    }
+
+    if (
+      healthBarBackground.has(player.id) &&
+      healthBarBackground.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
+    ) {
+      internalPlayerTextDraw.get(player.id)[healthBarBackground.get(player.id)!.id] = false;
+      healthBarBackground.get(player.id)!.destroy();
+      healthBarBackground.set(player.id, null);
+    }
+
+    if (
       healthBarForeground.has(player.id) &&
       healthBarForeground.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
     ) {
@@ -226,20 +199,4 @@ export function scriptExit() {
       damageFeedTaken.set(player.id, null);
     }
   });
-
-  if (
-    innerGameModeConfig.healthBarBorder &&
-    innerGameModeConfig.healthBarBorder.id !== InvalidEnum.TEXT_DRAW
-  ) {
-    internalTextDraw.set(innerGameModeConfig.healthBarBorder.id, false);
-    innerGameModeConfig.healthBarBorder.destroy();
-  }
-
-  if (
-    innerGameModeConfig.healthBarBackground &&
-    innerGameModeConfig.healthBarBackground.id !== InvalidEnum.TEXT_DRAW
-  ) {
-    internalTextDraw.set(innerGameModeConfig.healthBarBackground.id, false);
-    innerGameModeConfig.healthBarBackground.destroy();
-  }
 }

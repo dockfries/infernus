@@ -65,6 +65,16 @@ import {
   knifeTimeout,
   lastVehicleShooter,
   vendingUseTimer,
+  playerHealthBarPosY,
+  playerHealthBarPosX,
+  playerHealthBarSizeX,
+  playerHealthBarBGColor,
+  playerHealthBarBorderColor,
+  playerHealthBarFGColor,
+  playerHealthBarPadding,
+  playerHealthBarSizeY,
+  healthBarBorder,
+  healthBarBackground,
 } from "../../struct";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
 import { WC_WeaponEnum } from "../../enums";
@@ -120,6 +130,14 @@ PlayerEvent.onConnect(({ player, next }) => {
   delayedDeathTimer.set(player.id, null);
   damageFeedPlayer.set(player.id, -1);
   enableHealthBar.set(player.id, true);
+  playerHealthBarPosX.set(player.id, Number.NaN);
+  playerHealthBarPosY.set(player.id, Number.NaN);
+  playerHealthBarSizeX.set(player.id, Number.NaN);
+  playerHealthBarSizeY.set(player.id, Number.NaN);
+  playerHealthBarPadding.set(player.id, [Number.NaN, Number.NaN, Number.NaN, Number.NaN]);
+  playerHealthBarBorderColor.set(player.id, 0);
+  playerHealthBarBGColor.set(player.id, 0);
+  playerHealthBarFGColor.set(player.id, 0);
 
   fakeHealth.set(player.id, 255);
   fakeArmour.set(player.id, 255);
@@ -130,6 +148,16 @@ PlayerEvent.onConnect(({ player, next }) => {
   restorePlayerTeleport.set(player.id, false);
 
   blockAdminTeleport.set(player.id, false);
+
+  if (healthBarBorder.get(player.id) !== null) {
+    internalPlayerTextDraw.get(player.id)[healthBarBorder.get(player.id)!.id] = false;
+    healthBarBorder.set(player.id, null);
+  }
+
+  if (healthBarBackground.get(player.id) !== null) {
+    internalPlayerTextDraw.get(player.id)[healthBarBackground.get(player.id)!.id] = false;
+    healthBarBackground.set(player.id, null);
+  }
 
   if (
     healthBarForeground.get(player.id) &&
@@ -211,6 +239,24 @@ PlayerEvent.onDisconnect(({ player, next }) => {
   if (knifeTimeout.get(player.id)) {
     clearTimeout(knifeTimeout.get(player.id)!);
     knifeTimeout.set(player.id, null);
+  }
+
+  if (
+    healthBarBorder.get(player.id) &&
+    healthBarBorder.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
+  ) {
+    internalPlayerTextDraw.get(player.id)[healthBarBorder.get(player.id)!.id] = false;
+    healthBarBorder.get(player.id)!.destroy();
+    healthBarBorder.set(player.id, null);
+  }
+
+  if (
+    healthBarBackground.get(player.id) &&
+    healthBarBackground.get(player.id)!.id !== InvalidEnum.TEXT_DRAW
+  ) {
+    internalPlayerTextDraw.get(player.id)[healthBarBackground.get(player.id)!.id] = false;
+    healthBarBackground.get(player.id)!.destroy();
+    healthBarBackground.set(player.id, null);
   }
 
   if (

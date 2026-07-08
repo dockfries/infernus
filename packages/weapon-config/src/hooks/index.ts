@@ -22,9 +22,7 @@ import {
   orig_IsPlayerInCheckpoint,
   orig_IsPlayerInRaceCheckpoint,
   orig_IsPlayerTextDrawVisible,
-  orig_IsTextDrawVisibleForPlayer,
   orig_IsValidPlayerTextDraw,
-  orig_IsValidTextDraw,
   orig_playerMethods,
   orig_PlayerTextDrawAlignment,
   orig_PlayerTextDrawBackgroundColor,
@@ -63,47 +61,6 @@ import {
   orig_PlayerTextDrawShow,
   orig_PlayerTextDrawTextSize,
   orig_PlayerTextDrawUseBox,
-  orig_TextDrawAlignment,
-  orig_TextDrawBackgroundColor,
-  orig_TextDrawBoxColor,
-  orig_TextDrawColor,
-  orig_TextDrawCreate,
-  orig_TextDrawDestroy,
-  orig_TextDrawFont,
-  orig_TextDrawGetAlignment,
-  orig_TextDrawGetBackgroundColor,
-  orig_TextDrawGetBoxColor,
-  orig_TextDrawGetColor,
-  orig_TextDrawGetFont,
-  orig_TextDrawGetLetterSize,
-  orig_TextDrawGetOutline,
-  orig_TextDrawGetPos,
-  orig_TextDrawGetPreviewModel,
-  orig_TextDrawGetPreviewRot,
-  orig_TextDrawGetPreviewVehCol,
-  orig_TextDrawGetShadow,
-  orig_TextDrawGetString,
-  orig_TextDrawGetTextSize,
-  orig_TextDrawHideForAll,
-  orig_TextDrawHideForPlayer,
-  orig_TextDrawIsBox,
-  orig_TextDrawIsProportional,
-  orig_TextDrawIsSelectable,
-  orig_TextDrawLetterSize,
-  orig_TextDrawSetOutline,
-  orig_TextDrawSetPos,
-  orig_TextDrawSetPreviewModel,
-  orig_TextDrawSetPreviewRot,
-  orig_TextDrawSetPreviewVehCol,
-  orig_TextDrawSetProportional,
-  orig_TextDrawSetSelectable,
-  orig_TextDrawSetShadow,
-  orig_TextDrawSetString,
-  orig_TextDrawSetStringForPlayer,
-  orig_TextDrawShowForAll,
-  orig_TextDrawShowForPlayer,
-  orig_TextDrawTextSize,
-  orig_TextDrawUseBox,
   setPlayerHook,
 } from "./origin";
 import {
@@ -111,7 +68,6 @@ import {
   deathTimer,
   delayedDeathTimer,
   internalPlayerTextDraw,
-  internalTextDraw,
   isDying,
   lastStopTick,
   lastVehicleShooter,
@@ -649,173 +605,6 @@ export const wc_SetPlayerSpecialAction = setPlayerHook("setSpecialAction", funct
   return orig_playerMethods.setSpecialAction.call(this, actionId);
 });
 
-export function wc_TextDrawCreate(x: number, y: number, text: number[]) {
-  const td = orig_TextDrawCreate(x, y, text);
-  if (td !== InvalidEnum.TEXT_DRAW) {
-    internalTextDraw.set(td, false);
-  }
-  return td;
-}
-
-TextDraw.__inject__.create = wc_TextDrawCreate;
-
-export function wc_TextDrawDestroy(text: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawDestroy(text);
-}
-
-TextDraw.__inject__.destroy = wc_TextDrawDestroy;
-
-export function wc_TextDrawLetterSize(text: number, x: number, y: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawLetterSize(text, x, y);
-}
-
-TextDraw.__inject__.setLetterSize = wc_TextDrawLetterSize;
-
-export function wc_TextDrawTextSize(text: number, x: number, y: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawTextSize(text, x, y);
-}
-
-TextDraw.__inject__.setTextSize = wc_TextDrawTextSize;
-
-export function wc_TextDrawAlignment(text: number, alignment: TextDrawAlignEnum) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawAlignment(text, alignment);
-}
-
-TextDraw.__inject__.setAlignment = wc_TextDrawAlignment;
-
-export function wc_TextDrawColor(text: number, color: string | number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawColor(text, color);
-}
-
-TextDraw.__inject__.setColor = wc_TextDrawColor;
-
-export function wc_TextDrawUseBox(text: number, use: boolean) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawUseBox(text, use);
-}
-
-TextDraw.__inject__.useBox = wc_TextDrawUseBox;
-
-export function wc_TextDrawBoxColor(text: number, color: string | number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawBoxColor(text, color);
-}
-
-TextDraw.__inject__.setBoxColor = wc_TextDrawBoxColor;
-
-export function wc_TextDrawSetShadow(text: number, size: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawSetShadow(text, size);
-}
-
-TextDraw.__inject__.setShadow = wc_TextDrawSetShadow;
-
-export function wc_TextDrawSetOutline(text: number, size: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawSetOutline(text, size);
-}
-
-TextDraw.__inject__.setOutline = wc_TextDrawSetOutline;
-
-export function wc_TextDrawBackgroundColor(text: number, color: string | number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawBackgroundColor(text, color);
-}
-
-TextDraw.__inject__.setBackgroundColor = wc_TextDrawBackgroundColor;
-
-export function wc_TextDrawFont(text: number, font: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawFont(text, font);
-}
-
-TextDraw.__inject__.setFont = wc_TextDrawFont;
-
-export function wc_TextDrawSetProportional(text: number, set: boolean) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawSetProportional(text, set);
-}
-
-TextDraw.__inject__.setProportional = wc_TextDrawSetProportional;
-
-export function wc_TextDrawSetSelectable(text: number, set: boolean) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawSetSelectable(text, set);
-}
-
-TextDraw.__inject__.setSelectable = wc_TextDrawSetSelectable;
-
-export function wc_TextDrawShowForPlayer(playerId: number, text: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawShowForPlayer(playerId, text);
-}
-
-TextDraw.__inject__.showForPlayer = wc_TextDrawShowForPlayer;
-
-export function wc_TextDrawHideForPlayer(playerId: number, text: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawHideForPlayer(playerId, text);
-}
-
-TextDraw.__inject__.hideForPlayer = wc_TextDrawHideForPlayer;
-
-export function wc_TextDrawShowForAll(text: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawShowForAll(text);
-}
-
-TextDraw.__inject__.showForAll = wc_TextDrawShowForAll;
-
-export function wc_TextDrawHideForAll(text: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawHideForAll(text);
-}
-
-TextDraw.__inject__.hideForAll = wc_TextDrawHideForAll;
-
-export function wc_TextDrawSetString(text: number, string: number[]) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawSetString(text, string);
-}
-
-TextDraw.__inject__.setString = wc_TextDrawSetString;
-
-export function wc_TextDrawSetPreviewModel(text: number, modelIndex: number) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawSetPreviewModel(text, modelIndex);
-}
-
-TextDraw.__inject__.setPreviewModel = wc_TextDrawSetPreviewModel;
-
-export function wc_TextDrawSetPreviewRot(
-  text: number,
-  fRotX: number,
-  fRotY: number,
-  fRotZ: number,
-  fZoom?: number,
-) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawSetPreviewRot(text, fRotX, fRotY, fRotZ, fZoom);
-}
-
-TextDraw.__inject__.setPreviewRot = wc_TextDrawSetPreviewRot;
-
-export function wc_TextDrawSetPreviewVehCol(
-  text: number,
-  color1: string | number,
-  color2: string | number,
-) {
-  if (text < 0 || text >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(text)) return false;
-  return orig_TextDrawSetPreviewVehCol(text, color1, color2);
-}
-
-TextDraw.__inject__.setPreviewVehicleColors = wc_TextDrawSetPreviewVehCol;
-
 export function wc_CreatePlayerTextDraw(playerId: number, x: number, y: number, text: number[]) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return InvalidEnum.TEXT_DRAW;
   const td = orig_CreatePlayerTextDraw(playerId, x, y, text);
@@ -1115,166 +904,6 @@ export const wc_IsPlayerTeleportAllowed = setPlayerHook("isTeleportAllowed", fun
   return orig_playerMethods.isTeleportAllowed.call(this);
 });
 
-export function wc_IsValidTextDraw(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return false;
-  return orig_IsValidTextDraw(textId);
-}
-
-TextDraw.__inject__.isValid = wc_IsValidTextDraw;
-
-export function wc_IsTextDrawVisibleForPlayer(playerId: number, textId: number) {
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return false;
-  return orig_IsTextDrawVisibleForPlayer(playerId, textId);
-}
-
-TextDraw.__inject__.isVisibleForPlayer = wc_IsTextDrawVisibleForPlayer;
-
-export function wc_TextDrawGetString(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return { str: "", ret: false };
-  return orig_TextDrawGetString(textId);
-}
-
-TextDraw.__inject__.getString = wc_TextDrawGetString;
-
-export function wc_TextDrawSetPos(textId: number, x: number, y: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return false;
-  return orig_TextDrawSetPos(textId, x, y);
-}
-
-TextDraw.__inject__.setPos = wc_TextDrawSetPos;
-
-export function wc_TextDrawGetLetterSize(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return { fX: 0, fY: 0, ret: false };
-  return orig_TextDrawGetLetterSize(textId);
-}
-
-TextDraw.__inject__.getLetterSize = wc_TextDrawGetLetterSize;
-
-export function wc_TextDrawGetTextSize(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return { fX: 0, fY: 0, ret: false };
-  return orig_TextDrawGetTextSize(textId);
-}
-
-TextDraw.__inject__.getTextSize = wc_TextDrawGetTextSize;
-
-export function wc_TextDrawGetPos(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return { fX: 0, fY: 0, ret: false };
-  return orig_TextDrawGetPos(textId);
-}
-
-TextDraw.__inject__.getPos = wc_TextDrawGetPos;
-
-export function wc_TextDrawGetColor(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
-  return orig_TextDrawGetColor(textId);
-}
-
-TextDraw.__inject__.getColor = wc_TextDrawGetColor;
-
-export function wc_TextDrawGetBoxColor(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
-  return orig_TextDrawGetBoxColor(textId);
-}
-
-TextDraw.__inject__.getBoxColor = wc_TextDrawGetBoxColor;
-
-export function wc_TextDrawGetBackgroundColor(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
-  return orig_TextDrawGetBackgroundColor(textId);
-}
-
-TextDraw.__inject__.getBackgroundColor = wc_TextDrawGetBackgroundColor;
-
-export function wc_TextDrawGetShadow(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
-  return orig_TextDrawGetShadow(textId);
-}
-
-TextDraw.__inject__.getShadow = wc_TextDrawGetShadow;
-
-export function wc_TextDrawGetOutline(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
-  return orig_TextDrawGetOutline(textId);
-}
-
-TextDraw.__inject__.getOutline = wc_TextDrawGetOutline;
-
-export function wc_TextDrawGetFont(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return -1;
-  return orig_TextDrawGetFont(textId);
-}
-
-TextDraw.__inject__.getFont = wc_TextDrawGetFont;
-
-export function wc_TextDrawIsBox(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return false;
-  return orig_TextDrawIsBox(textId);
-}
-
-TextDraw.__inject__.isBox = wc_TextDrawIsBox;
-
-export function wc_TextDrawIsProportional(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return false;
-  return orig_TextDrawIsProportional(textId);
-}
-
-TextDraw.__inject__.isProportional = wc_TextDrawIsProportional;
-
-export function wc_TextDrawIsSelectable(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return false;
-  return orig_TextDrawIsSelectable(textId);
-}
-
-TextDraw.__inject__.isSelectable = wc_TextDrawIsSelectable;
-
-export function wc_TextDrawGetAlignment(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return -1;
-  return orig_TextDrawGetAlignment(textId);
-}
-
-TextDraw.__inject__.getAlignment = wc_TextDrawGetAlignment;
-
-export function wc_TextDrawGetPreviewModel(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId)) return 0;
-  return orig_TextDrawGetPreviewModel(textId);
-}
-
-TextDraw.__inject__.getPreviewModel = wc_TextDrawGetPreviewModel;
-
-export function wc_TextDrawGetPreviewRot(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return {
-      fRotX: 0,
-      fRotY: 0,
-      fRotZ: 0,
-      fZoom: 0,
-      ret: false,
-    };
-  return orig_TextDrawGetPreviewRot(textId);
-}
-
-TextDraw.__inject__.getPreviewRot = wc_TextDrawGetPreviewRot;
-
-export function wc_TextDrawSetStringForPlayer(textId: number, playerId: number, string: number[]) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return false;
-  if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
-  return orig_TextDrawSetStringForPlayer(textId, playerId, string);
-}
-
-TextDraw.__inject__.setStringForPlayer = wc_TextDrawSetStringForPlayer;
-
 export function wc_IsValidPlayerTextDraw(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return false;
   if (
@@ -1521,14 +1150,6 @@ export function wc_PlayerTextDrawGetPreviewRot(playerId: number, textId: number)
 }
 
 TextDraw.__inject__.getPreviewRotPlayer = wc_PlayerTextDrawGetPreviewRot;
-
-export function wc_TextDrawGetPreviewVehCol(textId: number) {
-  if (textId < 0 || textId >= LimitsEnum.MAX_TEXT_DRAWS || internalTextDraw.get(textId))
-    return { color1: 0, color2: 0, ret: false };
-  return orig_TextDrawGetPreviewVehCol(textId);
-}
-
-TextDraw.__inject__.getPreviewVehicleColors = wc_TextDrawGetPreviewVehCol;
 
 export function wc_PlayerTextDrawGetBackgroundColor(playerId: number, textId: number) {
   if (playerId < 0 || playerId >= LimitsEnum.MAX_PLAYERS) return 0;
