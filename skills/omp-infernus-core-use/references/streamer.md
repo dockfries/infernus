@@ -9,15 +9,24 @@ Wraps [samp-incognito/samp-streamer-plugin](https://github.com/samp-incognito/sa
 ```typescript
 import { Streamer } from "@infernus/core";
 
-Streamer.setTickRate(rate);             Streamer.getTickRate();
-Streamer.setPlayerTickRate(player, r);  Streamer.getPlayerTickRate(player);
-Streamer.toggleChunkStream(toggle);     Streamer.isToggleChunkStream();
-Streamer.setChunkTickRate(type, rate);  Streamer.getChunkTickRate(type);
-Streamer.setChunkSize(size);            Streamer.getChunkSize();
-Streamer.setMaxItems(type, max);        Streamer.getMaxItems(type);
-Streamer.setVisibleItems(type, items);  Streamer.getVisibleItems(type);
-Streamer.setRadiusMultiplier(type, m);  Streamer.getRadiusMultiplier(type);
-Streamer.setPriority(type, priority);   Streamer.getPriority(type);
+Streamer.setTickRate(rate);
+Streamer.getTickRate();
+Streamer.setPlayerTickRate(player, r);
+Streamer.getPlayerTickRate(player);
+Streamer.toggleChunkStream(toggle);
+Streamer.isToggleChunkStream();
+Streamer.setChunkTickRate(type, rate);
+Streamer.getChunkTickRate(type);
+Streamer.setChunkSize(size);
+Streamer.getChunkSize();
+Streamer.setMaxItems(type, max);
+Streamer.getMaxItems(type);
+Streamer.setVisibleItems(type, items);
+Streamer.getVisibleItems(type);
+Streamer.setRadiusMultiplier(type, m);
+Streamer.getRadiusMultiplier(type);
+Streamer.setPriority(type, priority);
+Streamer.getPriority(type);
 Streamer.getPlayerStreamerPointer(player);
 ```
 
@@ -40,8 +49,10 @@ import { DynamicObject, DynamicArea, DynamicAreaEvent } from "@infernus/core";
 const obj = new DynamicObject({ modelId: 1337, x: 0, y: 0, z: 10, rx: 0, ry: 0, rz: 0 });
 obj.create();
 
-obj.setPos(x, y, z);    obj.getPos();
-obj.setRot(rx, ry, rz); obj.getRot();
+obj.setPos(x, y, z);
+obj.getPos();
+obj.setRot(rx, ry, rz);
+obj.getRot();
 obj.move(x, y, z, speed, rx, ry, rz);
 obj.stop();
 obj.attachCamera(player);
@@ -51,14 +62,26 @@ obj.setMaterialText(text, slot, size, fontFace, fontSize, bold, fontColor, backC
 obj.destroy();
 
 // DynamicArea — use new + .create() with a type config, NOT static factories
-const circle = new DynamicArea({ type: "circle", x: 0, y: 0, size: 50, worldId: -1, interiorId: -1, playerId: -1 });
+const circle = new DynamicArea({
+  type: "circle",
+  x: 0,
+  y: 0,
+  size: 50,
+  worldId: -1,
+  interiorId: -1,
+  playerId: -1,
+});
 circle.create();
 // Available types: "circle", "sphere", "cylinder", "cuboid", "rectangle", "polygon"
 // Set extended: true in config for array-based world/interior/playerId support
 circle.destroy();
 
-DynamicAreaEvent.onPlayerEnter(({ area, player, next }) => { return next(); });
-DynamicAreaEvent.onPlayerLeave(({ area, player, next }) => { return next(); });
+DynamicAreaEvent.onPlayerEnter(({ area, player, next }) => {
+  return next();
+});
+DynamicAreaEvent.onPlayerLeave(({ area, player, next }) => {
+  return next();
+});
 ```
 
 **Instance management:** All Dynamic* classes have `getInstance(id)`, `getInstances()`, and pools.

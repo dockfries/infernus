@@ -16,15 +16,15 @@
 
 > 有关 omp-node 的具体情况，请以官方后续文档为准。以下内容仅供参考。
 
-| /          | Infernus + samp-node                                                            | omp-node                    |
-| ---------- | ------------------------------------------------------------------------------- | --------------------------- |
-| 运行环境   | Windows/Linux: Node.js 22.22.3                                                  | Windows/Linux: Node.js 18+  |
-| 模块规范   | CommonJS/ESModule                                                               | ESModule                    |
-| 架构支持   | x86（稳定）/ x64（实验性，未经测试）                                            | x86/x64                     |
-| 底层实现   | 通过 sampgdk → fakeamx → 原生调用                                               | 直接调用 omp-gdk/omp-sdk    |
-| 执行效率   | 低                                                                              | 高                          |
-| 兼容性策略 | 通过 polyfill 兼容层支持三方插件                                                | 插件需适配 SDK 并使用特定版本 |
-| 设计理念   | 1. 提倡完全使用 Infernus 重构，避免 Pawn 代码<br>2. 强制采用 Steamer 替代原生接口 | 详见官方文档                |
+| /          | Infernus + samp-node                                                              | omp-node                      |
+| ---------- | --------------------------------------------------------------------------------- | ----------------------------- |
+| 运行环境   | Windows/Linux: Node.js 22.22.3                                                    | Windows/Linux: Node.js 18+    |
+| 模块规范   | CommonJS/ESModule                                                                 | ESModule                      |
+| 架构支持   | x86（稳定）/ x64（实验性，未经测试）                                              | x86/x64                       |
+| 底层实现   | 通过 sampgdk → fakeamx → 原生调用                                                 | 直接调用 omp-gdk/omp-sdk      |
+| 执行效率   | 低                                                                                | 高                            |
+| 兼容性策略 | 通过 polyfill 兼容层支持三方插件                                                  | 插件需适配 SDK 并使用特定版本 |
+| 设计理念   | 1. 提倡完全使用 Infernus 重构，避免 Pawn 代码<br>2. 强制采用 Steamer 替代原生接口 | 详见官方文档                  |
 
 ## 缺陷
 

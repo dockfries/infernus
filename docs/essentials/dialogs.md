@@ -32,10 +32,7 @@ PlayerEvent.onCommandText("register", async ({ player, next }) => {
   const { inputText: againPassword } = await dialog.show(player);
 
   if (password !== againPassword) {
-    player.sendClientMessage(
-      "#f00",
-      "The passwords you entered do not match. Please try again!",
-    );
+    player.sendClientMessage("#f00", "The passwords you entered do not match. Please try again!");
   }
 
   return next();

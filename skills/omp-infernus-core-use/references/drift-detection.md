@@ -35,18 +35,34 @@ Drift.isPlayerDrifting(player);     // → boolean
 ## DriftEvent
 
 ```typescript
-DriftEvent.onPlayerStart(({ player, next }) => { return next(); });
-DriftEvent.onPlayerUpdate(({ player, driftAngle, speed, time, next }) => { return next(); });
-DriftEvent.onPlayerEnd(({ player, reason, distance, time, next }) => { return next(); });
+DriftEvent.onPlayerStart(({ player, next }) => {
+  return next();
+});
+DriftEvent.onPlayerUpdate(({ player, driftAngle, speed, time, next }) => {
+  return next();
+});
+DriftEvent.onPlayerEnd(({ player, reason, distance, time, next }) => {
+  return next();
+});
 // reason: DriftEndReasonEnum (TIMEOUT, DAMAGED, OTHER)
 ```
 
 ## Enums & Constants
 
 ```typescript
-enum DriftEndReasonEnum { TIMEOUT, DAMAGED, OTHER }
-enum DriftStateEnum { NONE, DRIFTING }
-enum DriftOptionsEnum { DRIFT_CHECK_ENABLED = 1, DAMAGE_CHECK_ENABLED = 2 }
+enum DriftEndReasonEnum {
+  TIMEOUT,
+  DAMAGED,
+  OTHER,
+}
+enum DriftStateEnum {
+  NONE,
+  DRIFTING,
+}
+enum DriftOptionsEnum {
+  DRIFT_CHECK_ENABLED = 1,
+  DAMAGE_CHECK_ENABLED = 2,
+}
 
 MIN_DRIFT_ANGLE = 12;
 MAX_DRIFT_ANGLE = 80;

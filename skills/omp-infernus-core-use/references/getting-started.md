@@ -18,6 +18,7 @@ pnpm dev
 ```
 
 This scaffolds a complete project from [infernus-starter](https://github.com/dockfries/infernus-starter). It includes:
+
 - `gamemodes/` with polyfill and config
 - `package.json` with `@infernus/core`
 - Build scripts and development server
@@ -30,39 +31,39 @@ import { GameMode, PlayerEvent } from "@infernus/core";
 
 // All game API calls MUST be inside events
 GameMode.onInit(({ next }) => {
-    GameMode.setWeather(0);
-    GameMode.setWorldTime(12);
-    GameMode.addPlayerClass(0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0);
-    console.log("Gamemode initialized!");
-    return next();
+  GameMode.setWeather(0);
+  GameMode.setWorldTime(12);
+  GameMode.addPlayerClass(0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0);
+  console.log("Gamemode initialized!");
+  return next();
 });
 
 GameMode.onExit(({ next }) => {
-    console.log("Gamemode exited");
-    return next();
+  console.log("Gamemode exited");
+  return next();
 });
 
 PlayerEvent.onConnect(({ player, next }) => {
-    player.sendClientMessage("#fff", "Welcome to the server!");
-    return next();
+  player.sendClientMessage("#fff", "Welcome to the server!");
+  return next();
 });
 
 PlayerEvent.onSpawn(({ player, next }) => {
-    player.setHealth(100);
-    player.setArmour(50);
-    return next();
+  player.setHealth(100);
+  player.setArmour(50);
+  return next();
 });
 
 PlayerEvent.onCommandText("help", ({ player, next }) => {
-    player.sendClientMessage("#0f0", "Available commands: /help, /veh");
-    return next();
+  player.sendClientMessage("#0f0", "Available commands: /help, /veh");
+  return next();
 });
 
 PlayerEvent.onCommandText("veh", ({ player, next }) => {
-    const veh = new Vehicle({ modelId: 411, x: 0, y: 0, z: 5, zAngle: 0, color: [-1, -1] });
-    veh.create();
-    veh.putPlayerIn(player, 0);
-    return next();
+  const veh = new Vehicle({ modelId: 411, x: 0, y: 0, z: 5, zAngle: 0, color: [-1, -1] });
+  veh.create();
+  veh.putPlayerIn(player, 0);
+  return next();
 });
 ```
 

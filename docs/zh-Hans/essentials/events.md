@@ -214,9 +214,7 @@ PlayerEvent.onCommandText("help teleport", ({ player, next }) => {
 
 // 定义可由 /msg 或 /message 触发的命令
 PlayerEvent.onCommandText(["msg", "message"], ({ player, subcommand, next }) => {
-  console.log(
-    `玩家 ${player.getName().name} 输入了此命令，子命令：${subcommand.toString()}`,
-  );
+  console.log(`玩家 ${player.getName().name} 输入了此命令，子命令：${subcommand.toString()}`);
 
   // 相当于玩家输入了 /message global 或 /msg global
   if (subcommand[0] === "global") {

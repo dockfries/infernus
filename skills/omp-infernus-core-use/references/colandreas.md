@@ -14,8 +14,8 @@ pnpm add @infernus/core @infernus/colandreas
 import { init } from "@infernus/colandreas";
 
 GameMode.onInit(({ next }) => {
-    init();
-    return next();
+  init();
+  return next();
 });
 ```
 
@@ -23,16 +23,16 @@ GameMode.onInit(({ next }) => {
 
 ```typescript
 import {
-    rayCastLine,           // → { ret, x, y, z } | null
-    rayCastLineID,         // → includes object ID
-    rayCastLineExtraID,    // → with type filter
-    rayCastLineAngle,      // → { x, y, z, rx, ry, rz } | null
-    rayCastLineAngleEx,    // → extended with surface angles
-    rayCastLineNormal,     // → { x, y, z, nx, ny, nz } | null
-    rayCastReflectionVector, // → { x, y, z, nx, ny, nz } | null
-    rayCastLineEx,         // → extended with rotation/contact
-    rayCastMultiLine,      // → { collisions, x[], y[], z[], dist[], modelIds[] }
-    contactTest,           // → boolean
+  rayCastLine, // → { ret, x, y, z } | null
+  rayCastLineID, // → includes object ID
+  rayCastLineExtraID, // → with type filter
+  rayCastLineAngle, // → { x, y, z, rx, ry, rz } | null
+  rayCastLineAngleEx, // → extended with surface angles
+  rayCastLineNormal, // → { x, y, z, nx, ny, nz } | null
+  rayCastReflectionVector, // → { x, y, z, nx, ny, nz } | null
+  rayCastLineEx, // → extended with rotation/contact
+  rayCastMultiLine, // → { collisions, x[], y[], z[], dist[], modelIds[] }
+  contactTest, // → boolean
 } from "@infernus/colandreas";
 ```
 
@@ -49,22 +49,22 @@ restoreBuilding(modelId, x, y, z, radius);
 
 ```typescript
 import {
-    findZ_For2DCoord,       // → number | undefined
-    rayCastExplode,         // → { x, y, z }[] — explosion ray fragmentation
-    isPlayerInWater,        // → false | { depth, playerDepth }
-    isVehicleInWater,       // → false | { depth, vehicleDepth }
-    isPlayerOnSurface,      // → boolean
-    isVehicleOnSurface,     // → boolean
-    isPlayerNearWater,      // → boolean
-    isVehicleNearWater,     // → boolean
-    isPlayerFacingWater,    // → boolean
-    isVehicleFacingWater,   // → boolean
-    isPlayerBlocked,        // → boolean
-    isVehicleBlocked,       // → boolean
-    removeBarriers,         // → boolean
-    removeBreakableBuildings, // → boolean
-    getRoomHeight,          // → number
-    getRoomCenter,          // → -1 | { size, m_x, m_y }
+  findZ_For2DCoord, // → number | undefined
+  rayCastExplode, // → { x, y, z }[] — explosion ray fragmentation
+  isPlayerInWater, // → false | { depth, playerDepth }
+  isVehicleInWater, // → false | { depth, vehicleDepth }
+  isPlayerOnSurface, // → boolean
+  isVehicleOnSurface, // → boolean
+  isPlayerNearWater, // → boolean
+  isVehicleNearWater, // → boolean
+  isPlayerFacingWater, // → boolean
+  isVehicleFacingWater, // → boolean
+  isPlayerBlocked, // → boolean
+  isVehicleBlocked, // → boolean
+  removeBarriers, // → boolean
+  removeBreakableBuildings, // → boolean
+  getRoomHeight, // → number
+  getRoomCenter, // → -1 | { size, m_x, m_y }
 } from "@infernus/colandreas";
 ```
 
@@ -72,11 +72,11 @@ import {
 
 ```typescript
 import {
-    eulerToQuat,              // → { x, y, z, w, ret }
-    quatToEuler,              // → { rx, ry, rz, ret }
-    getModelBoundingBox,      // → { minX, minY, minZ, maxX, maxY, maxZ } | null
-    getModelBoundingSphere,   // → { offX, offY, offZ, radius } | null
-    loadFromDff,              // → number
+  eulerToQuat, // → { x, y, z, w, ret }
+  quatToEuler, // → { rx, ry, rz, ret }
+  getModelBoundingBox, // → { minX, minY, minZ, maxX, maxY, maxZ } | null
+  getModelBoundingSphere, // → { offX, offY, offZ, radius } | null
+  loadFromDff, // → number
 } from "@infernus/colandreas";
 ```
 

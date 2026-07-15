@@ -33,12 +33,12 @@
 
 ## 示例
 
-| 项目 | 说明 |
-| --- | --- |
-| [omp-gm-grandlarc](https://github.com/dockfries/omp-gm-grandlarc) | 使用 infernus-starter 编写的 GrandLarceny 示例游戏模式 |
-| [omp-gm-rivershell](https://github.com/dockfries/omp-gm-rivershell) | 使用 infernus-starter 编写的 RiverShell 示例游戏模式 |
-| [fme](https://github.com/dockfries/fme) | Fusez Map Editor Version 3 — 一个用于 samp-node 的地图编辑器 |
-| [nte](https://github.com/dockfries/nte) | Nexor's TextDraw Editor for samp-node |
+| 项目                                                                | 说明                                                         |
+| ------------------------------------------------------------------- | ------------------------------------------------------------ |
+| [omp-gm-grandlarc](https://github.com/dockfries/omp-gm-grandlarc)   | 使用 infernus-starter 编写的 GrandLarceny 示例游戏模式       |
+| [omp-gm-rivershell](https://github.com/dockfries/omp-gm-rivershell) | 使用 infernus-starter 编写的 RiverShell 示例游戏模式         |
+| [fme](https://github.com/dockfries/fme)                             | Fusez Map Editor Version 3 — 一个用于 samp-node 的地图编辑器 |
+| [nte](https://github.com/dockfries/nte)                             | Nexor's TextDraw Editor for samp-node                        |
 
 ## 设计理念
 

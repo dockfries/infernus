@@ -110,21 +110,51 @@ FCNPC.getInstance(id);             FCNPC.getInstances();
 ## FCNPCEvent
 
 ```typescript
-FCNPCEvent.onInit(({ next }) => { return next(); });
-FCNPCEvent.onCreate(({ npc, next }) => { return next(); });
-FCNPCEvent.onDestroy(({ npc, next }) => { return next(); });
-FCNPCEvent.onSpawn(({ npc, next }) => { return next(); });
-FCNPCEvent.onRespawn(({ npc, next }) => { return next(); });
-FCNPCEvent.onDeath(({ npc, killer, reason, next }) => { return next(); });
-FCNPCEvent.onTakeDamage(({ npc, from, weapon, bodyPart, healthLoss, armorLoss, next }) => { return next(); });
-FCNPCEvent.onGiveDamage(({ npc, to, weapon, bodyPart, healthLoss, armorLoss, next }) => { return next(); });
-FCNPCEvent.onReachDestination(({ npc, next }) => { return next(); });
-FCNPCEvent.onFinishMovePath(({ npc, path, pointId, next }) => { return next(); });
-FCNPCEvent.onStreamIn(({ npc, forPlayer, next }) => { return next(); });
-FCNPCEvent.onStreamOut(({ npc, forPlayer, next }) => { return next(); });
-FCNPCEvent.onWeaponShot(({ npc, weapon, hitType, hitId, x, y, z, next }) => { return next(); });
-FCNPCEvent.onStateChange(({ npc, newState, oldState, next }) => { return next(); });
-FCNPCEvent.onVehicleEntryComplete(({ npc, vehicle, seat, next }) => { return next(); });
+FCNPCEvent.onInit(({ next }) => {
+  return next();
+});
+FCNPCEvent.onCreate(({ npc, next }) => {
+  return next();
+});
+FCNPCEvent.onDestroy(({ npc, next }) => {
+  return next();
+});
+FCNPCEvent.onSpawn(({ npc, next }) => {
+  return next();
+});
+FCNPCEvent.onRespawn(({ npc, next }) => {
+  return next();
+});
+FCNPCEvent.onDeath(({ npc, killer, reason, next }) => {
+  return next();
+});
+FCNPCEvent.onTakeDamage(({ npc, from, weapon, bodyPart, healthLoss, armorLoss, next }) => {
+  return next();
+});
+FCNPCEvent.onGiveDamage(({ npc, to, weapon, bodyPart, healthLoss, armorLoss, next }) => {
+  return next();
+});
+FCNPCEvent.onReachDestination(({ npc, next }) => {
+  return next();
+});
+FCNPCEvent.onFinishMovePath(({ npc, path, pointId, next }) => {
+  return next();
+});
+FCNPCEvent.onStreamIn(({ npc, forPlayer, next }) => {
+  return next();
+});
+FCNPCEvent.onStreamOut(({ npc, forPlayer, next }) => {
+  return next();
+});
+FCNPCEvent.onWeaponShot(({ npc, weapon, hitType, hitId, x, y, z, next }) => {
+  return next();
+});
+FCNPCEvent.onStateChange(({ npc, newState, oldState, next }) => {
+  return next();
+});
+FCNPCEvent.onVehicleEntryComplete(({ npc, vehicle, seat, next }) => {
+  return next();
+});
 // 20+ events total — see source for full list
 ```
 

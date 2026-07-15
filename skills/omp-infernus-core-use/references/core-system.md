@@ -4,16 +4,16 @@
 
 ## Architecture
 
-| Export | Kind | Description |
-|--------|------|-------------|
-| `GameMode` | static class | Global game state, lifecycle events |
-| `Dialog` | class | Promise-based async dialogs |
-| `NetStats` | static class | Network statistics |
-| `I18n` | class | Internationalization |
-| `defineEvent` / `useTrigger` | functions | Custom event creation |
-| `defineHooks` | function | Method interceptor system |
-| `Streamer` | static class | Streamer plugin config |
-| `Dynamic*` entities | classes | Re-exported from @infernus/streamer |
+| Export                       | Kind         | Description                         |
+| ---------------------------- | ------------ | ----------------------------------- |
+| `GameMode`                   | static class | Global game state, lifecycle events |
+| `Dialog`                     | class        | Promise-based async dialogs         |
+| `NetStats`                   | static class | Network statistics                  |
+| `I18n`                       | class        | Internationalization                |
+| `defineEvent` / `useTrigger` | functions    | Custom event creation               |
+| `defineHooks`                | function     | Method interceptor system           |
+| `Streamer`                   | static class | Streamer plugin config              |
+| `Dynamic*` entities          | classes      | Re-exported from @infernus/streamer |
 
 ## Lifecycle Constraint
 
@@ -27,8 +27,8 @@ GameMode.setWeather(10);
 
 // CORRECT
 GameMode.onInit(({ next }) => {
-    GameMode.setWeather(10);
-    return next();
+  GameMode.setWeather(10);
+  return next();
 });
 ```
 
@@ -55,6 +55,7 @@ npc.create();
 ```
 
 **Classes that do NOT need `.create()`:**
+
 - `Dialog` — `new Dialog(config)` then `.show(player)`
 - `GameText` — `new GameText(str, time, style)` then `.forAll()`
 - `Player` — created automatically by `onConnect`
@@ -64,10 +65,10 @@ npc.create();
 
 ```typescript
 PlayerEvent.onConnect(({ player, next }) => {
-    return next();       // continue chain
+  return next(); // continue chain
 });
 PlayerEvent.onText(({ next }) => {
-    return true;         // override native default
+  return true; // override native default
 });
 ```
 
@@ -85,8 +86,8 @@ PlayerEvent.onText(({ next }) => {
 Every entity class maintains an internal `Map<number, Entity>` pool:
 
 ```typescript
-const player = Player.getInstance(0);    // looks up playerPool Map by numeric ID
-const veh = Vehicle.getInstance(vehId);  // looks up vehiclePool Map
+const player = Player.getInstance(0); // looks up playerPool Map by numeric ID
+const veh = Vehicle.getInstance(vehId); // looks up vehiclePool Map
 ```
 
 - **Key is always the numeric in-game ID** (playerid, vehicleid, etc.). Not a config object, not a name string.
@@ -94,9 +95,9 @@ const veh = Vehicle.getInstance(vehId);  // looks up vehiclePool Map
 - **Per-player entities** (ObjectMp, TextDraw, GangZone, Pickup, TextLabel) have separate pools per player. Passing a `Player` scopes the lookup:
 
 ```typescript
-TextDraw.getInstance(id);           // → global textdraw pool
-TextDraw.getInstance(id, player);   // → that player's private textdraw pool
-TextDraw.getInstances(player);      // → all textdraws for that player
+TextDraw.getInstance(id); // → global textdraw pool
+TextDraw.getInstance(id, player); // → that player's private textdraw pool
+TextDraw.getInstances(player); // → all textdraws for that player
 ```
 
 Pools are populated automatically by event callbacks (e.g., `onConnect` adds to `playerPool`) or by constructors (`new Vehicle(id)` / `new Vehicle(config).create()`).
@@ -105,11 +106,11 @@ Pools are populated automatically by event callbacks (e.g., `onConnect` adds to 
 
 Some cleanup is automatic; some you must do manually:
 
-| Trigger | Auto-Cleaned | Must Clean Manually |
-|---------|-------------|---------------------|
-| Player disconnect | `playerPool`, per-player ObjectMp/TextDraw/GangZone/Pickup/TextLabel pools | — |
-| GameMode exit | Vehicle, Actor, FCNPC, all per-player pools cleared; Dynamic* entities destroyed | Custom timers, interval handles, global state |
-| Vehicle destroyed | Entry stays in pool (ID may be reused) | — |
+| Trigger           | Auto-Cleaned                                                                     | Must Clean Manually                           |
+| ----------------- | -------------------------------------------------------------------------------- | --------------------------------------------- |
+| Player disconnect | `playerPool`, per-player ObjectMp/TextDraw/GangZone/Pickup/TextLabel pools       | —                                             |
+| GameMode exit     | Vehicle, Actor, FCNPC, all per-player pools cleared; Dynamic* entities destroyed | Custom timers, interval handles, global state |
+| Vehicle destroyed | Entry stays in pool (ID may be reused)                                           | —                                             |
 
 The `INTERNAL_FLAGS.skip` flag is set during GameMode exit — entity destroy calls skip native API invocations to avoid errors when the game server is shutting down.
 
@@ -119,17 +120,17 @@ The `INTERNAL_FLAGS.skip` flag is set during GameMode exit — entity destroy ca
 import { defineEvent } from "@infernus/core";
 
 const [onPlayerDanger, trigger] = defineEvent({
-    name: "OnPlayerDanger",
-    isNative: false,
-    defaultValue: true,
-    beforeEach(player: Player, health: number) {
-        return { player, health };
-    },
+  name: "OnPlayerDanger",
+  isNative: false,
+  defaultValue: true,
+  beforeEach(player: Player, health: number) {
+    return { player, health };
+  },
 });
 
 onPlayerDanger(({ player, health, next }) => {
-    player.sendClientMessage("#ff0", `DANGER!`);
-    return next();
+  player.sendClientMessage("#ff0", `DANGER!`);
+  return next();
 });
 
 trigger(somePlayer, somePlayer.getHealth());
@@ -208,15 +209,15 @@ GameMode.isUseScriptLoaded(name);
 import { Dialog } from "@infernus/core";
 
 const dlg = new Dialog({
-    style: DialogStylesEnum.INPUT,  // MSGBOX, LIST, TABLIST, PASSWORD, FORM
-    caption: "Title",
-    info: "Enter text:",
-    button1: "OK",
-    button2: "Cancel",
+  style: DialogStylesEnum.INPUT, // MSGBOX, LIST, TABLIST, PASSWORD, FORM
+  caption: "Title",
+  info: "Enter text:",
+  button1: "OK",
+  button2: "Cancel",
 });
 
 const { response, listItem, inputText } = await dlg.show(player);
-dlg.caption = "New Title";    // dynamic update via setter
+dlg.caption = "New Title"; // dynamic update via setter
 Dialog.close(player);
 ```
 
@@ -226,27 +227,33 @@ Dialog.close(player);
 import { PlayerEvent, GameMode } from "@infernus/core";
 
 const off = PlayerEvent.onCommandText("help", ({ player, next, subcommand, cmdText }) => {
-    return next();
+  return next();
 });
-off();   // unsubscribe
+off(); // unsubscribe
 
 PlayerEvent.onCommandText(["msg", "message"], ({ player, subcommand, next }) => {
-    // subcommand = ["hello"] for /msg hello
-    return next();
+  // subcommand = ["hello"] for /msg hello
+  return next();
 });
 
 PlayerEvent.onCommandText({
-    caseSensitive: false,
-    command: "foo",
-    run({ player, next }) { return next(); },
+  caseSensitive: false,
+  command: "foo",
+  run({ player, next }) {
+    return next();
+  },
 });
 
 // Guards
-PlayerEvent.onCommandReceived(({ player, command, next }) => { return next(); });  // before
-PlayerEvent.onCommandPerformed(({ player, command, next }) => { return next(); }); // after
+PlayerEvent.onCommandReceived(({ player, command, next }) => {
+  return next();
+}); // before
+PlayerEvent.onCommandPerformed(({ player, command, next }) => {
+  return next();
+}); // after
 PlayerEvent.onCommandError(({ player, command, error, next }) => {
-    player.sendClientMessage("#f00", `Error #${error.code}: ${error.msg}`);
-    return true;   // true = handled, suppress default
+  player.sendClientMessage("#f00", `Error #${error.code}: ${error.msg}`);
+  return true; // true = handled, suppress default
 });
 ```
 
@@ -255,12 +262,17 @@ PlayerEvent.onCommandError(({ player, command, error, next }) => {
 ```typescript
 import { NetStats } from "@infernus/core";
 
-NetStats.getNetworkStats();                 NetStats.getPlayerNetworkStats(player);
-NetStats.getBytesReceived(player);          NetStats.getBytesSent(player);
-NetStats.getConnectionStatus(player);       NetStats.getConnectedTime(player);
-NetStats.getIpPort(player);                 // { ip, port }
-NetStats.getMessagesReceived(player);       NetStats.getMessagesSent(player);
-NetStats.getMessagesRecvPerSecond(player);  NetStats.getPacketLossPercent(player);
+NetStats.getNetworkStats();
+NetStats.getPlayerNetworkStats(player);
+NetStats.getBytesReceived(player);
+NetStats.getBytesSent(player);
+NetStats.getConnectionStatus(player);
+NetStats.getConnectedTime(player);
+NetStats.getIpPort(player); // { ip, port }
+NetStats.getMessagesReceived(player);
+NetStats.getMessagesSent(player);
+NetStats.getMessagesRecvPerSecond(player);
+NetStats.getPacketLossPercent(player);
 ```
 
 ## FilterScript
@@ -270,13 +282,15 @@ import { GameMode } from "@infernus/core";
 import type { IFilterScript } from "@infernus/core";
 
 const MyScript: IFilterScript = {
-    name: "my_script",
-    load(...args) {
-        const off1 = PlayerEvent.onCommandText("foo", ({ next }) => next());
-        const off2 = PlayerEvent.onConnect(({ next }) => next());
-        return [off1, off2];   // ← return cleanup array to avoid memory leaks
-    },
-    unload() { /* reset timers, global state */ },
+  name: "my_script",
+  load(...args) {
+    const off1 = PlayerEvent.onCommandText("foo", ({ next }) => next());
+    const off2 = PlayerEvent.onConnect(({ next }) => next());
+    return [off1, off2]; // ← return cleanup array to avoid memory leaks
+  },
+  unload() {
+    /* reset timers, global state */
+  },
 };
 
 GameMode.use(MyScript, "arg1");
@@ -294,16 +308,16 @@ import { defineHooks, Player, Vehicle } from "@infernus/core";
 
 // 1. Prototype method interception (defineHooks)
 const [orig, setHook] = defineHooks(Player);
-setHook("setHealth", function(health: number) {
-    return orig.setHealth.call(this, Math.min(health, 100));
+setHook("setHealth", function (health: number) {
+  return orig.setHealth.call(this, Math.min(health, 100));
 });
 
 // 2. __inject__ native function replacement
 const origCreate = Vehicle.__inject__.create;
-Vehicle.__inject__.create = function(...args) {
-    const id = origCreate(...args);
-    console.log(`Vehicle ${id} created`);
-    return id;
+Vehicle.__inject__.create = function (...args) {
+  const id = origCreate(...args);
+  console.log(`Vehicle ${id} created`);
+  return id;
 };
 ```
 
@@ -313,8 +327,8 @@ Vehicle.__inject__.create = function(...args) {
 import { I18n } from "@infernus/core";
 
 const { $t } = new I18n("en_US", {
-    zh_CN: { server: { running: "服务器已运行 %s" } },
-    en_US: { server: { running: "Server running %s" } },
+  zh_CN: { server: { running: "服务器已运行 %s" } },
+  en_US: { server: { running: "Server running %s" } },
 });
 console.log($t("server.running", ["v1.0"]));
 console.log($t("server.running", ["v1.0"], "zh_CN"));
@@ -322,18 +336,18 @@ console.log($t("server.running", ["v1.0"], "zh_CN"));
 player.sendClientMessage("#fff", $t("server.running", null, player.locale));
 
 // Static utilities
-I18n.encodeToBuf("text", "utf8");     // string → byte array
-I18n.decodeFromBuf(bytes, "utf8");    // byte array → string
-I18n.getValidStr(bytes);              // truncate at first 0-byte
+I18n.encodeToBuf("text", "utf8"); // string → byte array
+I18n.decodeFromBuf(bytes, "utf8"); // byte array → string
+I18n.getValidStr(bytes); // truncate at first 0-byte
 ```
 
 ## Colors
 
 ```typescript
-player.sendClientMessage("#fff", "text");           // hex shorthand
+player.sendClientMessage("#fff", "text"); // hex shorthand
 player.sendClientMessage("#ff0000", "red");
-player.sendClientMessage(-1, "white");               // native ARGB
-player.sendClientMessage("(255,0,0,255)", "red");    // CSS rgba
+player.sendClientMessage(-1, "white"); // native ARGB
+player.sendClientMessage("(255,0,0,255)", "red"); // CSS rgba
 ```
 
 ## Dynamic (Streamer) Entities
@@ -344,9 +358,18 @@ Re-exported from `@infernus/streamer`. Available: `DynamicObject`, `DynamicPicku
 import { DynamicObject, DynamicArea, Streamer } from "@infernus/core";
 
 const obj = new DynamicObject({
-    modelId: 1337, x: 0, y: 0, z: 10, rx: 0, ry: 0, rz: 0,
-    virtualWorld: -1, interior: -1, playerId: -1,
-    streamDistance: 200, priority: 0,
+  modelId: 1337,
+  x: 0,
+  y: 0,
+  z: 10,
+  rx: 0,
+  ry: 0,
+  rz: 0,
+  virtualWorld: -1,
+  interior: -1,
+  playerId: -1,
+  streamDistance: 200,
+  priority: 0,
 });
 obj.create();
 const circle = DynamicArea.createCircle({ x: 0, y: 0, z: 0, size: 50 });
@@ -357,27 +380,27 @@ Streamer.setTickRate(50);
 
 `@infernus/core` throws typed exceptions on invalid operations. Each entity and system has its own:
 
-| Exception | Thrown when |
-|-----------|-------------|
-| `CoreException` | General core errors |
-| `PlayerException` | Invalid player ID / unpooled access |
-| `VehicleException` | Invalid vehicle ID / unpooled access |
-| `ActorException` | Invalid actor ID |
-| `NpcException` | Invalid NPC ID |
-| `ObjectMpException` | Invalid object ID |
-| `PickupException` | Invalid pickup ID |
-| `GangZoneException` | Invalid gang zone ID |
-| `TextDrawException` | Invalid textdraw ID |
-| `TextLabelException` | Invalid textlabel ID |
-| `MenuException` | Invalid menu ID |
-| `DialogException` | Dialog operation error |
-| `NetStatsException` | NetStats lookup error |
-| `GameModeException` | GameMode operation error |
-| `HookException` | Hook interception error |
-| `I18nException` | i18n lookup or encoding error |
-| `ClientCheckException` | Client check error |
-| `StreamerException` | Streamer base error |
-| `Dynamic*Exception` | Per-entity streamer errors |
+| Exception              | Thrown when                          |
+| ---------------------- | ------------------------------------ |
+| `CoreException`        | General core errors                  |
+| `PlayerException`      | Invalid player ID / unpooled access  |
+| `VehicleException`     | Invalid vehicle ID / unpooled access |
+| `ActorException`       | Invalid actor ID                     |
+| `NpcException`         | Invalid NPC ID                       |
+| `ObjectMpException`    | Invalid object ID                    |
+| `PickupException`      | Invalid pickup ID                    |
+| `GangZoneException`    | Invalid gang zone ID                 |
+| `TextDrawException`    | Invalid textdraw ID                  |
+| `TextLabelException`   | Invalid textlabel ID                 |
+| `MenuException`        | Invalid menu ID                      |
+| `DialogException`      | Dialog operation error               |
+| `NetStatsException`    | NetStats lookup error                |
+| `GameModeException`    | GameMode operation error             |
+| `HookException`        | Hook interception error              |
+| `I18nException`        | i18n lookup or encoding error        |
+| `ClientCheckException` | Client check error                   |
+| `StreamerException`    | Streamer base error                  |
+| `Dynamic*Exception`    | Per-entity streamer errors           |
 
 ```typescript
 import { ActorException } from "@infernus/core";
@@ -385,31 +408,31 @@ import { ActorException } from "@infernus/core";
 const actor = new Actor({ skin: 0, x: 0, y: 0, z: 0, rotation: 0 });
 // actor.create();  // forgot to create
 try {
-    actor.getPos();  // throws ActorException: "Cannot getPos before create"
+  actor.getPos(); // throws ActorException: "Cannot getPos before create"
 } catch (e) {
-    if (e instanceof ActorException) {
-        // handle
-    }
+  if (e instanceof ActorException) {
+    // handle
+  }
 }
 ```
 
 ## Companion Packages
 
-| Package | Wraps | Description |
-|---------|-------|-------------|
-| `@infernus/streamer` | [samp-streamer-plugin](https://github.com/samp-incognito/samp-streamer-plugin) | Dynamic objects, areas (`"private": true`) |
-| `@infernus/raknet` | [Pawn.RakNet](https://github.com/katursis/Pawn.RakNet) | RakNet packet/RPC interception |
-| `@infernus/fs` | Built-in filterscripts | Rewrites of official filterscripts |
-| `@infernus/cef` | [omp-cef](https://github.com/aurora-mp/omp-cef) | CEF browser overlay |
-| `@infernus/fcnpc` | [FCNPC](https://github.com/ziggi/FCNPC) | Advanced NPC plugin |
-| `@infernus/colandreas` | [ColAndreas](https://github.com/Pottus/ColAndreas) | Collision detection |
-| `@infernus/samp-voice` | [samp-voice](https://github.com/CocaColaBear/samp-voice) | In-game voice chat |
-| `@infernus/progress` | — | Progress bar TextDraw |
-| `@infernus/qrcode` | — | QR code via DynamicObject |
-| `@infernus/query` | — | UDP server query |
-| `@infernus/gps` | [samp-gps-plugin](https://github.com/AmyrAhmady/samp-gps-plugin) | GPS navigation |
-| `@infernus/mapandreas` | [MapAndreas](https://github.com/Pottus/MapAndreas) | Height map |
-| `@infernus/map-loader` | — | .map file loader |
-| `@infernus/nex-ac` | [nex-ac](https://github.com/NexiusTailer/nex-ac) | Anti-cheat |
-| `@infernus/weapon-config` | — | Weapon damage config |
-| `@infernus/create-app` | — | CLI scaffolding (`npx infernus`) |
+| Package                   | Wraps                                                                          | Description                                |
+| ------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------ |
+| `@infernus/streamer`      | [samp-streamer-plugin](https://github.com/samp-incognito/samp-streamer-plugin) | Dynamic objects, areas (`"private": true`) |
+| `@infernus/raknet`        | [Pawn.RakNet](https://github.com/katursis/Pawn.RakNet)                         | RakNet packet/RPC interception             |
+| `@infernus/fs`            | Built-in filterscripts                                                         | Rewrites of official filterscripts         |
+| `@infernus/cef`           | [omp-cef](https://github.com/aurora-mp/omp-cef)                                | CEF browser overlay                        |
+| `@infernus/fcnpc`         | [FCNPC](https://github.com/ziggi/FCNPC)                                        | Advanced NPC plugin                        |
+| `@infernus/colandreas`    | [ColAndreas](https://github.com/Pottus/ColAndreas)                             | Collision detection                        |
+| `@infernus/samp-voice`    | [samp-voice](https://github.com/CocaColaBear/samp-voice)                       | In-game voice chat                         |
+| `@infernus/progress`      | —                                                                              | Progress bar TextDraw                      |
+| `@infernus/qrcode`        | —                                                                              | QR code via DynamicObject                  |
+| `@infernus/query`         | —                                                                              | UDP server query                           |
+| `@infernus/gps`           | [samp-gps-plugin](https://github.com/AmyrAhmady/samp-gps-plugin)               | GPS navigation                             |
+| `@infernus/mapandreas`    | [MapAndreas](https://github.com/Pottus/MapAndreas)                             | Height map                                 |
+| `@infernus/map-loader`    | —                                                                              | .map file loader                           |
+| `@infernus/nex-ac`        | [nex-ac](https://github.com/NexiusTailer/nex-ac)                               | Anti-cheat                                 |
+| `@infernus/weapon-config` | —                                                                              | Weapon damage config                       |
+| `@infernus/create-app`    | —                                                                              | CLI scaffolding (`npx infernus`)           |

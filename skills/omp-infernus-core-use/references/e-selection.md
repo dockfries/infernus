@@ -15,47 +15,46 @@ import { ModelSelectionMenu } from "@infernus/e-selection";
 import type { IModelData, IModelOptions } from "@infernus/e-selection";
 
 const menu = new ModelSelectionMenu({
-    player,
-    models: [
-        { modelId: 0 },
-        { modelId: 29, modelText: "Cool people only" },
-    ],
-    headerText: "Select a skin",
-    maxItemPerPage: 20,
-    bannerColor: "#333",
-    menuBgColor: "#222",
-    menuTextColor: "#fff",
-    itemBgColor: "#444",
-    itemTextColor: "#0f0",
-    coolDownMs: 500,
+  player,
+  models: [{ modelId: 0 }, { modelId: 29, modelText: "Cool people only" }],
+  headerText: "Select a skin",
+  maxItemPerPage: 20,
+  bannerColor: "#333",
+  menuBgColor: "#222",
+  menuTextColor: "#fff",
+  itemBgColor: "#444",
+  itemTextColor: "#0f0",
+  coolDownMs: 500,
 });
 
 const model: IModelData | null = await menu.show();
 
-menu.setPage(page);   // → boolean, navigate to page
+menu.setPage(page); // → boolean, navigate to page
 ```
 
 ## Interfaces
 
 ```typescript
 interface IModelData {
-    modelId: number;
-    modelText?: string;
-    rotX?: number; rotY?: number; rotZ?: number;
-    zoom?: number;
-    vehColor?: [number, number];
+  modelId: number;
+  modelText?: string;
+  rotX?: number;
+  rotY?: number;
+  rotZ?: number;
+  zoom?: number;
+  vehColor?: [number, number];
 }
 
 interface IModelOptions {
-    player: Player;
-    models: IModelData[];
-    headerText?: string;
-    maxItemPerPage?: number;
-    bannerColor?: number | string;
-    menuBgColor?: number | string;
-    menuTextColor?: number | string;
-    itemBgColor?: number | string;
-    itemTextColor?: number | string;
-    coolDownMs?: number;
+  player: Player;
+  models: IModelData[];
+  headerText?: string;
+  maxItemPerPage?: number;
+  bannerColor?: number | string;
+  menuBgColor?: number | string;
+  menuTextColor?: number | string;
+  itemBgColor?: number | string;
+  itemTextColor?: number | string;
+  coolDownMs?: number;
 }
 ```

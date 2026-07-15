@@ -13,12 +13,13 @@ public OnPlayerConnect(playerid) {
 ```typescript
 // Infernus
 PlayerEvent.onConnect(({ player, next }) => {
-    console.log(`Player ${player.id} connected`);
-    return next();
+  console.log(`Player ${player.id} connected`);
+  return next();
 });
 ```
 
 **Key changes:**
+
 - `playerid` (number) → `player` (Player instance with `.id`, methods, etc.)
 - `return 1` → `return next()` (continue chain) or `return true`/`false` (override default)
 - Multiple listeners can register on the same event
@@ -108,9 +109,9 @@ SendClientMessage(playerid, 0xFF0000FF, "red");
 
 ```typescript
 // Infernus — multiple formats
-player.sendClientMessage("#fff", "text");       // CSS hex
+player.sendClientMessage("#fff", "text"); // CSS hex
 player.sendClientMessage("#ff0000", "red");
-player.sendClientMessage(-1, "white");           // native number
+player.sendClientMessage(-1, "white"); // native number
 player.sendClientMessage("(255,0,0,255)", "red"); // CSS rgba
 ```
 
@@ -130,12 +131,12 @@ public OnPlayerCommandText(playerid, cmdtext[]) {
 ```typescript
 // Infernus — declarative
 PlayerEvent.onCommandText("help", ({ player, next }) => {
-    player.sendClientMessage(-1, "Help!");
-    return next();
+  player.sendClientMessage(-1, "Help!");
+  return next();
 });
 // Supports aliases, subcommands, guards, case sensitivity
 PlayerEvent.onCommandText(["msg", "message"], ({ player, subcommand, next }) => {
-    return next();
+  return next();
 });
 ```
 
@@ -153,7 +154,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 
 ```typescript
 // Infernus — Promise-based, auto ID
-const dlg = new Dialog({ style: DialogStylesEnum.LIST, caption: "Title", info: "Item 1\nItem 2", button1: "Select", button2: "Cancel" });
+const dlg = new Dialog({
+  style: DialogStylesEnum.LIST,
+  caption: "Title",
+  info: "Item 1\nItem 2",
+  button1: "Select",
+  button2: "Cancel",
+});
 const { response, listItem, inputText } = await dlg.show(player);
 ```
 
@@ -166,25 +173,29 @@ SetTimer("MyFunction", 1000, true);
 
 ```typescript
 // Infernus — standard JS
-setInterval(() => { console.log("tick"); }, 1000);
-setTimeout(() => { console.log("done"); }, 1000);
+setInterval(() => {
+  console.log("tick");
+}, 1000);
+setTimeout(() => {
+  console.log("done");
+}, 1000);
 ```
 
 ## Common PAWN → Infernus Mapping Table
 
-| PAWN | Infernus |
-|------|----------|
-| `SetPlayerHealth(playerid, health)` | `player.setHealth(health)` |
-| `GetPlayerPos(playerid, &x, &y, &z)` | `const {x,y,z} = player.getPos()` |
-| `SetSpawnInfo(playerid, ...)` | `GameMode.addPlayerClass(...)` |
-| `CreateVehicle(...)` | `new Vehicle(config).create()` |
-| `CreateObject(...)` | `new ObjectMp(config).create()` |
-| `SetTimer(func, ms, repeat)` | `setTimeout` / `setInterval` |
-| `strcmp(cmd, "/help")` | `PlayerEvent.onCommandText("help", ...)` |
-| `ShowPlayerDialog(...)` | `new Dialog(config).show(player)` |
-| `GetPlayerName(playerid, buf, size)` | `player.getName().name` |
-| `PlayerTextDrawCreate(...)` | `new TextDraw(config, player).create()` |
-| `GangZoneCreate(...)` | `new GangZone(config).create()` |
-| `CreatePickup(...)` | `new Pickup(config).create()` |
-| `Create3DTextLabel(...)` | `new TextLabel(config).create()` |
-| `CreateMenu(...)` | `new Menu(config).create()` |
+| PAWN                                 | Infernus                                 |
+| ------------------------------------ | ---------------------------------------- |
+| `SetPlayerHealth(playerid, health)`  | `player.setHealth(health)`               |
+| `GetPlayerPos(playerid, &x, &y, &z)` | `const {x,y,z} = player.getPos()`        |
+| `SetSpawnInfo(playerid, ...)`        | `GameMode.addPlayerClass(...)`           |
+| `CreateVehicle(...)`                 | `new Vehicle(config).create()`           |
+| `CreateObject(...)`                  | `new ObjectMp(config).create()`          |
+| `SetTimer(func, ms, repeat)`         | `setTimeout` / `setInterval`             |
+| `strcmp(cmd, "/help")`               | `PlayerEvent.onCommandText("help", ...)` |
+| `ShowPlayerDialog(...)`              | `new Dialog(config).show(player)`        |
+| `GetPlayerName(playerid, buf, size)` | `player.getName().name`                  |
+| `PlayerTextDrawCreate(...)`          | `new TextDraw(config, player).create()`  |
+| `GangZoneCreate(...)`                | `new GangZone(config).create()`          |
+| `CreatePickup(...)`                  | `new Pickup(config).create()`            |
+| `Create3DTextLabel(...)`             | `new TextLabel(config).create()`         |
+| `CreateMenu(...)`                    | `new Menu(config).create()`              |

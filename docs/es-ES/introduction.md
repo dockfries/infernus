@@ -16,15 +16,15 @@ El nombre `Infernus` proviene del vehículo con ID `411` en GTA: San Andreas.
 
 > Todos los detalles sobre omp-node están sujetos a su documentación oficial. La siguiente información es solo de referencia.
 
-| /              | Infernus + samp-node                                                                         | omp-node                     |
-| -------------- | -------------------------------------------------------------------------------------------- | ---------------------------- |
-| Runtime        | Windows/Linux: Node.js 22.22.3                                                               | Windows/Linux: Node.js 18+   |
-| Module System  | CommonJS/ESModule                                                                            | ESModule                     |
-| Architecture   | x86 (estable) / x64 (experimental, sin probar)                                               | x86/x64                      |
+| /              | Infernus + samp-node                                                                         | omp-node                          |
+| -------------- | -------------------------------------------------------------------------------------------- | --------------------------------- |
+| Runtime        | Windows/Linux: Node.js 22.22.3                                                               | Windows/Linux: Node.js 18+        |
+| Module System  | CommonJS/ESModule                                                                            | ESModule                          |
+| Architecture   | x86 (estable) / x64 (experimental, sin probar)                                               | x86/x64                           |
 | Implementation | Via sampgdk → fakeamx → llamadas nativas                                                     | Llamadas directas omp-gdk/omp-sdk |
-| Performance    | Lento                                                                                        | Rápido                       |
-| Compatibility  | Plugins de terceros mediante capa polyfill                                                   | Requiere adaptación del SDK  |
-| Philosophy     | 1. Reescribir completamente con Infernus (evitar Pawn)<br>2. Adopción obligatoria de Steamer | Ver documentación oficial    |
+| Performance    | Lento                                                                                        | Rápido                            |
+| Compatibility  | Plugins de terceros mediante capa polyfill                                                   | Requiere adaptación del SDK       |
+| Philosophy     | 1. Reescribir completamente con Infernus (evitar Pawn)<br>2. Adopción obligatoria de Steamer | Ver documentación oficial         |
 
 ## Limitaciones
 

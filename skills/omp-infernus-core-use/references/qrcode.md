@@ -14,13 +14,23 @@ pnpm add @infernus/core @infernus/qrcode
 import { generateQRText, createQRObject, setObjectQRMaterial } from "@infernus/qrcode";
 
 // Generate QR text (SVG path data)
-const qrText = generateQRText("https://example.com", 0, "M");  // typeNumber 0-40, errorLevel L/M/Q/H
+const qrText = generateQRText("https://example.com", 0, "M"); // typeNumber 0-40, errorLevel L/M/Q/H
 
 // Create a DynamicObject with QR code material
-const obj = createQRObject(qrText, {
-    modelId: 19300, x: 0, y: 0, z: 10, rx: 0, ry: 0, rz: 0,
-    virtualWorld: -1, interior: -1,
-}, {
+const obj = createQRObject(
+  qrText,
+  {
+    modelId: 19300,
+    x: 0,
+    y: 0,
+    z: 10,
+    rx: 0,
+    ry: 0,
+    rz: 0,
+    virtualWorld: -1,
+    interior: -1,
+  },
+  {
     charset: "utf8",
     materialIndex: 0,
     materialSize: 140,
@@ -29,7 +39,8 @@ const obj = createQRObject(qrText, {
     fontColor: "#000",
     backColor: "#fff",
     textAlignment: 2,
-});
+  },
+);
 
 // Apply QR to an existing DynamicObject
 setObjectQRMaterial(existingObj, qrText, material);

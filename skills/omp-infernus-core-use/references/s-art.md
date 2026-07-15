@@ -34,59 +34,59 @@ await art.create();                // → Promise<void> (async!)
 ### Methods
 
 ```typescript
-art.create();             // → Promise, loads image, creates DynamicObject blocks
-art.destroy();            // → void, destroys all objects
-art.getObjects();         // → DynamicObject[]
+art.create(); // → Promise, loads image, creates DynamicObject blocks
+art.destroy(); // → void, destroys all objects
+art.getObjects(); // → DynamicObject[]
 ```
 
 ### Static
 
 ```typescript
-SArt.getInstance(id);     // → SArt | undefined
-SArt.getInstances();      // → SArt[]
-SArt.setType(type, schema);  // register custom art type
-SArt.getType(type);          // → IArtType | undefined
+SArt.getInstance(id); // → SArt | undefined
+SArt.getInstances(); // → SArt[]
+SArt.setType(type, schema); // register custom art type
+SArt.getType(type); // → IArtType | undefined
 ```
 
 ## Interfaces
 
 ```typescript
 interface CreateArtParams {
-    image: string | Buffer;
-    type: number;
-    pos: [number, number, number];
-    rot: [number, number, number];
-    resize?: { width: number; height: number };
-    worldId?: number;
-    interiorId?: number;
-    playerId?: number;
-    streamDistance?: number;
-    drawDistance?: number;
+  image: string | Buffer;
+  type: number;
+  pos: [number, number, number];
+  rot: [number, number, number];
+  resize?: { width: number; height: number };
+  worldId?: number;
+  interiorId?: number;
+  playerId?: number;
+  streamDistance?: number;
+  drawDistance?: number;
 }
 
 interface IArtType {
-    modelId: number;   // SA-MP object model ID
-    ws: number;        // panel width (world units)
-    hs: number;        // panel height (world units)
+  modelId: number; // SA-MP object model ID
+  ws: number; // panel width (world units)
+  hs: number; // panel height (world units)
 }
 ```
 
 ## Built-in Art Types
 
-| Index | modelId | Description |
-|-------|---------|-------------|
-| `0` | `19464` | Largest panel |
-| `1` | `19372` | **Default**, medium panel |
-| `2` | `2814` | Small square |
-| `3` | `18887` | Smallest panel, rotated layout |
+| Index | modelId | Description                    |
+| ----- | ------- | ------------------------------ |
+| `0`   | `19464` | Largest panel                  |
+| `1`   | `19372` | **Default**, medium panel      |
+| `2`   | `2814`  | Small square                   |
+| `3`   | `18887` | Smallest panel, rotated layout |
 
 Custom types can be added via `SArt.setType()`.
 
 ## Constants
 
 ```typescript
-ART_CHUNK = 15;            // pixels per DynamicObject block
-MAX_ART_BLOCKS = 1000;     // max objects per artwork
+ART_CHUNK = 15; // pixels per DynamicObject block
+MAX_ART_BLOCKS = 1000; // max objects per artwork
 ```
 
 ## Exception

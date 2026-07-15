@@ -64,23 +64,64 @@ CefBrowser.exitGame(player);
 ## CefEvent
 
 ```typescript
-CefEvent.onInitialize(({ player, success, reason, message, next }) => { return next(); });
-CefEvent.onDownloadStart(({ player, next }) => { return next(); });
-CefEvent.onDownloadFinish(({ player, next }) => { return next(); });
-CefEvent.onReady(({ player, next }) => { return next(); });
-CefEvent.onBrowserCreated(({ player, browser, success, code, reason, next }) => { return next(); });
-CefEvent.onPressKey(({ player, key, scanCode, modifiers, down, repeat, next }) => { return next(); });
-CefEvent.onChatInputState(({ player, open, next }) => { return next(); });
-CefEvent.onRecv(({ player, browser, raw, data, buffer, next }) => { return next(); });
+CefEvent.onInitialize(({ player, success, reason, message, next }) => {
+  return next();
+});
+CefEvent.onDownloadStart(({ player, next }) => {
+  return next();
+});
+CefEvent.onDownloadFinish(({ player, next }) => {
+  return next();
+});
+CefEvent.onReady(({ player, next }) => {
+  return next();
+});
+CefEvent.onBrowserCreated(({ player, browser, success, code, reason, next }) => {
+  return next();
+});
+CefEvent.onPressKey(({ player, key, scanCode, modifiers, down, repeat, next }) => {
+  return next();
+});
+CefEvent.onChatInputState(({ player, open, next }) => {
+  return next();
+});
+CefEvent.onRecv(({ player, browser, raw, data, buffer, next }) => {
+  return next();
+});
 ```
 
 ## Enums
 
 ```typescript
-enum CefInitReasonEnum { OK, TIMEOUT, VERSION_MISMATCH, IP_MISMATCH, HANDSHAKE_FAILED, UNKNOWN }
-enum CefCreateStatusEnum { SUCCESS, ERROR_GENERIC, ERROR_ID_ALREADY_IN_USE }
-enum CefAudioModeEnum { WORLD, UI }
-enum CefHudComponentEnum { ALL, AMMO, ARMOUR, BREATH, CROSSHAIR, HEALTH, MONEY, RADAR, WANTED_STARS, WEAPON }
+enum CefInitReasonEnum {
+  OK,
+  TIMEOUT,
+  VERSION_MISMATCH,
+  IP_MISMATCH,
+  HANDSHAKE_FAILED,
+  UNKNOWN,
+}
+enum CefCreateStatusEnum {
+  SUCCESS,
+  ERROR_GENERIC,
+  ERROR_ID_ALREADY_IN_USE,
+}
+enum CefAudioModeEnum {
+  WORLD,
+  UI,
+}
+enum CefHudComponentEnum {
+  ALL,
+  AMMO,
+  ARMOUR,
+  BREATH,
+  CROSSHAIR,
+  HEALTH,
+  MONEY,
+  RADAR,
+  WANTED_STARS,
+  WEAPON,
+}
 ```
 
 ## Exception
@@ -96,8 +137,28 @@ import { CefException } from "@infernus/cef";
 ```typescript
 type CefBrowserSourceInfo = CefBrowserOptions | CefWorldBrowserOptions | CefWorld2DBrowserOptions;
 
-interface CefCommonOptions { player: Player; url: string; width?: number; height?: number; }
-interface CefBrowserOptions extends CefCommonOptions { type: "2dPlayer"; focused: boolean; controlsChat?: boolean; }
-interface CefWorldBrowserOptions extends CefCommonOptions { type: "3dWorld"; textureName: string; }
-interface CefWorld2DBrowserOptions extends CefCommonOptions { type: "2dWorld"; worldX: number; worldY: number; worldZ: number; offsetZ?: number; pivotX?: number; pivotY?: number; }
+interface CefCommonOptions {
+  player: Player;
+  url: string;
+  width?: number;
+  height?: number;
+}
+interface CefBrowserOptions extends CefCommonOptions {
+  type: "2dPlayer";
+  focused: boolean;
+  controlsChat?: boolean;
+}
+interface CefWorldBrowserOptions extends CefCommonOptions {
+  type: "3dWorld";
+  textureName: string;
+}
+interface CefWorld2DBrowserOptions extends CefCommonOptions {
+  type: "2dWorld";
+  worldX: number;
+  worldY: number;
+  worldZ: number;
+  offsetZ?: number;
+  pivotX?: number;
+  pivotY?: number;
+}
 ```

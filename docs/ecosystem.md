@@ -4,41 +4,41 @@ The `@infernus/*` ecosystem is designed to bridge Pawn include libraries into th
 
 `@infernus/*` provides the following ecosystem packages:
 
-| Package | Description |
-| --- | --- |
-| `@infernus/core` | Node.js library for scripting Open Multiplayer |
-| `@infernus/cef` | A wrapper of the omp-cef component for samp-node |
-| `@infernus/colandreas` | A wrapper of the SA-MP ColAndreas plugin for samp-node |
-| `@infernus/create-app` | Command line interface for rapid infernus development |
-| `@infernus/distance` | A wrapper of the distance library for samp-node |
-| `@infernus/drift-detection` | A wrapper of the driftDetection library for samp-node |
-| `@infernus/e-selection` | A wrapper of the eSelection library for samp-node |
-| `@infernus/fcnpc` | A wrapper of the FCNPC plugin for samp-node |
-| `@infernus/fs` | A collection of all built-in filterscripts |
-| `@infernus/gps` | A wrapper of the GPS plugin for samp-node |
-| `@infernus/map-loader` | A tool for obj conversion, parsing, and loading |
-| `@infernus/mapandreas` | A pure TypeScript heightmap query implementation, no native plugin required |
-| `@infernus/s-art` | A wrapper of the popular s-art library for rendering pixel images in-game using DynamicObject with material text |
-| `@infernus/nex-ac` | A wrapper of the nex-ac library for samp-node |
-| `@infernus/progress` | A progress bar based on `LD_SPAC:white` for precise control |
-| `@infernus/qrcode` | Generate simple qrcode objects for infernus |
-| `@infernus/query` | Simple API for sending SA-MP queries with TypeScript |
-| `@infernus/raknet` | A wrapper of the open.mp raknet plugin for samp-node |
-| `@infernus/rec` | File format converter from `.rec` to `.json` and vice versa |
-| `@infernus/samp-voice` | A wrapper of the SA-MP voice library for samp-node |
-| `@infernus/shared` | Shared utilities and types for infernus packages (internal) |
-| `@infernus/streamer` | A wrapper of the SA-MP streamer plugin (v2.9.6, **private**) |
-| `@infernus/types` | Minimized samp-node API types for infernus (internal) |
-| `@infernus/weapon-config` | A wrapper of the weapon-config library for samp-node |
+| Package                     | Description                                                                                                      |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `@infernus/core`            | Node.js library for scripting Open Multiplayer                                                                   |
+| `@infernus/cef`             | A wrapper of the omp-cef component for samp-node                                                                 |
+| `@infernus/colandreas`      | A wrapper of the SA-MP ColAndreas plugin for samp-node                                                           |
+| `@infernus/create-app`      | Command line interface for rapid infernus development                                                            |
+| `@infernus/distance`        | A wrapper of the distance library for samp-node                                                                  |
+| `@infernus/drift-detection` | A wrapper of the driftDetection library for samp-node                                                            |
+| `@infernus/e-selection`     | A wrapper of the eSelection library for samp-node                                                                |
+| `@infernus/fcnpc`           | A wrapper of the FCNPC plugin for samp-node                                                                      |
+| `@infernus/fs`              | A collection of all built-in filterscripts                                                                       |
+| `@infernus/gps`             | A wrapper of the GPS plugin for samp-node                                                                        |
+| `@infernus/map-loader`      | A tool for obj conversion, parsing, and loading                                                                  |
+| `@infernus/mapandreas`      | A pure TypeScript heightmap query implementation, no native plugin required                                      |
+| `@infernus/s-art`           | A wrapper of the popular s-art library for rendering pixel images in-game using DynamicObject with material text |
+| `@infernus/nex-ac`          | A wrapper of the nex-ac library for samp-node                                                                    |
+| `@infernus/progress`        | A progress bar based on `LD_SPAC:white` for precise control                                                      |
+| `@infernus/qrcode`          | Generate simple qrcode objects for infernus                                                                      |
+| `@infernus/query`           | Simple API for sending SA-MP queries with TypeScript                                                             |
+| `@infernus/raknet`          | A wrapper of the open.mp raknet plugin for samp-node                                                             |
+| `@infernus/rec`             | File format converter from `.rec` to `.json` and vice versa                                                      |
+| `@infernus/samp-voice`      | A wrapper of the SA-MP voice library for samp-node                                                               |
+| `@infernus/shared`          | Shared utilities and types for infernus packages (internal)                                                      |
+| `@infernus/streamer`        | A wrapper of the SA-MP streamer plugin (v2.9.6, **private**)                                                     |
+| `@infernus/types`           | Minimized samp-node API types for infernus (internal)                                                            |
+| `@infernus/weapon-config`   | A wrapper of the weapon-config library for samp-node                                                             |
 
 ## Examples
 
-| Project | Description |
-| --- | --- |
-| [omp-gm-grandlarc](https://github.com/dockfries/omp-gm-grandlarc) | The GrandLarceny sample game mode written with infernus-starter |
-| [omp-gm-rivershell](https://github.com/dockfries/omp-gm-rivershell) | The RiverShell sample game mode written with infernus-starter |
-| [fme](https://github.com/dockfries/fme) | Fusez Map Editor Version 3 — a map editor for samp-node |
-| [nte](https://github.com/dockfries/nte) | Nexor's TextDraw Editor for samp-node |
+| Project                                                             | Description                                                     |
+| ------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [omp-gm-grandlarc](https://github.com/dockfries/omp-gm-grandlarc)   | The GrandLarceny sample game mode written with infernus-starter |
+| [omp-gm-rivershell](https://github.com/dockfries/omp-gm-rivershell) | The RiverShell sample game mode written with infernus-starter   |
+| [fme](https://github.com/dockfries/fme)                             | Fusez Map Editor Version 3 — a map editor for samp-node         |
+| [nte](https://github.com/dockfries/nte)                             | Nexor's TextDraw Editor for samp-node                           |
 
 ## Design Philosophy
 

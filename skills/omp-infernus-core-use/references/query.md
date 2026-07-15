@@ -15,10 +15,10 @@ import { sendQuery, RequestPacket } from "@infernus/query";
 
 // Get server info
 const info = await sendQuery({
-    address: "127.0.0.1",
-    port: 7777,
-    opcode: RequestPacket.INFORMATION,
-    timeout: 2000,
+  address: "127.0.0.1",
+  port: 7777,
+  opcode: RequestPacket.INFORMATION,
+  timeout: 2000,
 });
 // → ServerInfo { isPassword, hostname, gameMode, language, maxPlayers, playerCount, rtt }
 
@@ -39,10 +39,10 @@ const details = await sendQuery({ address, opcode: RequestPacket.DETAILED });
 
 ```typescript
 enum RequestPacket {
-    CLIENT_LIST = 99,
-    DETAILED = 100,
-    INFORMATION = 105,
-    RULES = 114,
+  CLIENT_LIST = 99,
+  DETAILED = 100,
+  INFORMATION = 105,
+  RULES = 114,
 }
 ```
 
@@ -58,16 +58,16 @@ import { QueryException } from "@infernus/query";
 
 ```typescript
 interface Options<T extends RequestPacket> {
-    address: string;
-    port?: number;
-    opcode?: T;
-    timeout?: number;
+  address: string;
+  port?: number;
+  opcode?: T;
+  timeout?: number;
 }
 
 type ResponseTypeMap = {
-    [RequestPacket.INFORMATION]: ServerInfo;
-    [RequestPacket.RULES]: ServerRule[];
-    [RequestPacket.CLIENT_LIST]: Client[];
-    [RequestPacket.DETAILED]: ClientDetail[];
+  [RequestPacket.INFORMATION]: ServerInfo;
+  [RequestPacket.RULES]: ServerRule[];
+  [RequestPacket.CLIENT_LIST]: Client[];
+  [RequestPacket.DETAILED]: ClientDetail[];
 };
 ```

@@ -23,23 +23,23 @@ import { GameMode, PlayerEvent, Vehicle } from "@infernus/core";
 
 // All game API calls MUST be inside events — module level calls silently fail
 GameMode.onInit(({ next }) => {
-    GameMode.setWeather(0);
-    GameMode.setWorldTime(12);
-    GameMode.addPlayerClass(0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0);
-    return next();
+  GameMode.setWeather(0);
+  GameMode.setWorldTime(12);
+  GameMode.addPlayerClass(0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0);
+  return next();
 });
 
 PlayerEvent.onConnect(({ player, next }) => {
-    player.sendClientMessage("#fff", "Welcome!");
-    return next();
+  player.sendClientMessage("#fff", "Welcome!");
+  return next();
 });
 
 // Commands use declarative registration, not manual strcmp
 PlayerEvent.onCommandText("veh", ({ player, next }) => {
-    const veh = new Vehicle({ modelId: 411, x: 0, y: 0, z: 5, zAngle: 0, color: [-1, -1] });
-    veh.create();   // ← must call .create(), new alone is not enough
-    veh.putPlayerIn(player, 0);
-    return next();
+  const veh = new Vehicle({ modelId: 411, x: 0, y: 0, z: 5, zAngle: 0, color: [-1, -1] });
+  veh.create(); // ← must call .create(), new alone is not enough
+  veh.putPlayerIn(player, 0);
+  return next();
 });
 ```
 
@@ -53,45 +53,49 @@ If they ask about **ecosystem context** (polyfills, versions, omp-node), read `r
 ## Reference Files
 
 ### Core API
-| File | Covers |
-|------|--------|
-| `references/core-entities.md` | Player, Vehicle, Actor, NPC, ObjectMp, Pickup, GangZone, TextDraw, TextLabel, Checkpoint/RaceCheckpoint, Menu, GameText |
-| `references/core-system.md` | Lifecycle, Event system, GameMode, Dialog, Commands, NetStats, FilterScript, Hooks, i18n, Colors, Dynamic* streamer entities, Companion packages table |
+
+| File                          | Covers                                                                                                                                                 |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `references/core-entities.md` | Player, Vehicle, Actor, NPC, ObjectMp, Pickup, GangZone, TextDraw, TextLabel, Checkpoint/RaceCheckpoint, Menu, GameText                                |
+| `references/core-system.md`   | Lifecycle, Event system, GameMode, Dialog, Commands, NetStats, FilterScript, Hooks, i18n, Colors, Dynamic* streamer entities, Companion packages table |
 
 ### Plugin Wrappers
-| File | Covers |
-|------|--------|
-| `references/streamer.md` | DynamicObject, DynamicArea, Streamer config |
-| `references/raknet.md` | BitStream, packet/RPC interception, sync classes |
-| `references/fcnpc.md` | FCNPC class, full movement/combat/vehicle API |
-| `references/colandreas.md` | Raycasting, CA_Object, collision helpers |
-| `references/cef.md` | CefBrowser, CefEvent, CEF overlay |
-| `references/samp-voice.md` | Voice streams, SampVoice, effects |
-| `references/nex-ac.md` | Anti-cheat config, events, functions |
-| `references/gps.md` | MapNode, GpsPath, Waze navigation |
+
+| File                       | Covers                                           |
+| -------------------------- | ------------------------------------------------ |
+| `references/streamer.md`   | DynamicObject, DynamicArea, Streamer config      |
+| `references/raknet.md`     | BitStream, packet/RPC interception, sync classes |
+| `references/fcnpc.md`      | FCNPC class, full movement/combat/vehicle API    |
+| `references/colandreas.md` | Raycasting, CA_Object, collision helpers         |
+| `references/cef.md`        | CefBrowser, CefEvent, CEF overlay                |
+| `references/samp-voice.md` | Voice streams, SampVoice, effects                |
+| `references/nex-ac.md`     | Anti-cheat config, events, functions             |
+| `references/gps.md`        | MapNode, GpsPath, Waze navigation                |
 
 ### Internal Utilities
-| File | Covers |
-|------|--------|
-| `references/weapon-config.md` | Weapon damage config, callbacks |
-| `references/e-selection.md` | ModelSelectionMenu |
-| `references/progress.md` | ProgressBar |
-| `references/qrcode.md` | QR code generator |
-| `references/drift-detection.md` | Drift detection events |
-| `references/map-loader.md` | .map file loader |
-| `references/query.md` | UDP server query |
-| `references/rec.md` | Recording data blocks |
-| `references/utilities.md` | @infernus/distance, @infernus/mapandreas, @infernus/fs, @infernus/create-app |
-| `references/s-art.md` | Image-to-object art renderer |
-| `references/veh-para.md` | Vehicle parachute system |
+
+| File                            | Covers                                                                       |
+| ------------------------------- | ---------------------------------------------------------------------------- |
+| `references/weapon-config.md`   | Weapon damage config, callbacks                                              |
+| `references/e-selection.md`     | ModelSelectionMenu                                                           |
+| `references/progress.md`        | ProgressBar                                                                  |
+| `references/qrcode.md`          | QR code generator                                                            |
+| `references/drift-detection.md` | Drift detection events                                                       |
+| `references/map-loader.md`      | .map file loader                                                             |
+| `references/query.md`           | UDP server query                                                             |
+| `references/rec.md`             | Recording data blocks                                                        |
+| `references/utilities.md`       | @infernus/distance, @infernus/mapandreas, @infernus/fs, @infernus/create-app |
+| `references/s-art.md`           | Image-to-object art renderer                                                 |
+| `references/veh-para.md`        | Vehicle parachute system                                                     |
 
 ### Guides
-| File | Covers |
-|------|--------|
-| `references/getting-started.md` | New project setup, minimal gamemode, starter template |
-| `references/migration-from-pawn.md` | PAWN ↔ Infernus mapping table |
-| `references/troubleshooting.md` | Common errors and fixes |
-| `references/ecosystem.md` | Runtime requirements, polyfills, omp-node migration |
+
+| File                                | Covers                                                |
+| ----------------------------------- | ----------------------------------------------------- |
+| `references/getting-started.md`     | New project setup, minimal gamemode, starter template |
+| `references/migration-from-pawn.md` | PAWN ↔ Infernus mapping table                         |
+| `references/troubleshooting.md`     | Common errors and fixes                               |
+| `references/ecosystem.md`           | Runtime requirements, polyfills, omp-node migration   |
 
 ## Quick Truths
 
@@ -109,11 +113,11 @@ async function handle(player: Player) {
   try {
     const result = await dialog.show(player);
   } catch (e) {
-    if (e instanceof DialogException) return;  // disconnected / closed
+    if (e instanceof DialogException) return; // disconnected / closed
     throw e;
   }
   await someAsyncTask();
-  if (!player.isConnected()) return;           // must check after await
+  if (!player.isConnected()) return; // must check after await
   player.sendClientMessage("#0f0", "still here");
 }
 ```

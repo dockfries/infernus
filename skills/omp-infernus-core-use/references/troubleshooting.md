@@ -15,9 +15,9 @@ new Vehicle(config).create();
 
 // DO — wrap in event callbacks
 GameMode.onInit(({ next }) => {
-    GameMode.setWeather(10);
-    new Vehicle(config).create();
-    return next();
+  GameMode.setWeather(10);
+  new Vehicle(config).create();
+  return next();
 });
 ```
 
@@ -29,9 +29,9 @@ GameMode.onInit(({ next }) => {
 
 ```typescript
 PlayerEvent.onConnect(({ player, next }) => {
-    player.charset = "ISO-8859-1";  // default Western
-    // or "windows-1251" for Russian, "gbk" for Chinese, etc.
-    return next();
+  player.charset = "ISO-8859-1"; // default Western
+  // or "windows-1251" for Russian, "gbk" for Chinese, etc.
+  return next();
 });
 ```
 
@@ -42,6 +42,7 @@ If you're using i18n, make sure `polyfill.amx` is compiled and installed in the 
 **Cause:** These packages require a PAWN polyfill to be compiled into the gamemode.
 
 **Fix:** Download and compile the corresponding `.inc` file from [infernus-starter/gamemodes](https://github.com/dockfries/infernus-starter/tree/main/gamemodes):
+
 - `raknet.inc` → required for `@infernus/raknet`
 - `cef.inc` → required for `@infernus/cef`
 - `gps.inc` → required for `@infernus/gps`
@@ -51,6 +52,7 @@ The polyfill must be `#include`d in your gamemode's `.pwn` file and compiled to 
 ## Server crashes on startup with samp-node
 
 **Common causes:**
+
 - samp-node version mismatch with open.mp server version
 - Node.js version too new or too old (typically Node 20.x is safest)
 - Missing `.dll`/`.so` dependencies for samp-node
@@ -67,10 +69,10 @@ The polyfill must be `#include`d in your gamemode's `.pwn` file and compiled to 
 
 ```typescript
 try {
-    const veh = new Vehicle(config);
-    veh.create();
+  const veh = new Vehicle(config);
+  veh.create();
 } catch (e) {
-    console.error(`Vehicle creation failed: ${e.message}`);
+  console.error(`Vehicle creation failed: ${e.message}`);
 }
 ```
 
@@ -83,31 +85,28 @@ import { CoreException } from "@infernus/core";
 import { RakNetException } from "@infernus/raknet";
 
 try {
-    // game API calls
+  // game API calls
 } catch (e) {
-    if (e instanceof CoreException) {
-        // handle core-specific error
-    }
-    if (e instanceof RakNetException) {
-        // handle raknet-specific error
-    }
+  if (e instanceof CoreException) {
+    // handle core-specific error
+  }
+  if (e instanceof RakNetException) {
+    // handle raknet-specific error
+  }
 }
 ```
 
 Some exceptions are expected in normal operation (e.g. `ClientCheckException` on timeout, `DialogException` when the player closes a dialog or disconnects before responding). A common pattern is to suppress known benign exceptions at the process level:
 
 ```typescript
-import {
-    ClientCheckException,
-    DialogException,
-} from "@infernus/core";
+import { ClientCheckException, DialogException } from "@infernus/core";
 
 process.on("uncaughtException", (err) => {
-    const ignoreExceptions = [ClientCheckException, DialogException];
-    if (ignoreExceptions.some((e) => err instanceof e)) {
-        return;
-    }
-    console.error(err);
+  const ignoreExceptions = [ClientCheckException, DialogException];
+  if (ignoreExceptions.some((e) => err instanceof e)) {
+    return;
+  }
+  console.error(err);
 });
 ```
 
@@ -119,12 +118,12 @@ process.on("uncaughtException", (err) => {
 
 ```typescript
 const MyScript: IFilterScript = {
-    name: "my_script",
-    load() {
-        const off1 = PlayerEvent.onConnect(({ next }) => next());
-        const off2 = PlayerEvent.onCommandText("foo", ({ next }) => next());
-        return [off1, off2];   // ← required!
-    },
-    unload() {},
+  name: "my_script",
+  load() {
+    const off1 = PlayerEvent.onConnect(({ next }) => next());
+    const off2 = PlayerEvent.onCommandText("foo", ({ next }) => next());
+    return [off1, off2]; // ← required!
+  },
+  unload() {},
 };
 ```

@@ -10,96 +10,203 @@
 import { Player, PlayerEvent } from "@infernus/core";
 
 // Events
-PlayerEvent.onConnect(({ player, next }) => { return next(); });
-PlayerEvent.onDisconnect(({ player, reason, next }) => { return next(); }); // 0=timeout,1=quit,2=kicked
-PlayerEvent.onSpawn(({ player, next }) => { return next(); });
-PlayerEvent.onDeath(({ player, killer, reason, next }) => { return next(); });
-PlayerEvent.onText(({ player, text, next }) => { return next(); });
-PlayerEvent.onRequestClass(({ player, classId, next }) => { return next(); });
-PlayerEvent.onRequestSpawn(({ player, next }) => { return next(); });
-PlayerEvent.onStateChange(({ player, newState, oldState, next }) => { return next(); });
-PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => { return next(); });
-PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart, next }) => { return next(); });
-PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart, next }) => { return next(); });
-PlayerEvent.onClickMap(({ player, fX, fY, fZ, next }) => { return next(); });
-PlayerEvent.onClickPlayer(({ player, clickedPlayer, source, next }) => { return next(); });
-PlayerEvent.onStreamIn(({ player, forPlayer, next }) => { return next(); });
-PlayerEvent.onStreamOut(({ player, forPlayer, next }) => { return next(); });
-PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) => { return next(); });
-PlayerEvent.onInteriorChange(({ player, newInteriorId, oldInteriorId, next }) => { return next(); });
-PlayerEvent.onEnterExitModShop(({ player, enterExit, interior, next }) => { return next(); });
-PlayerEvent.onPause(({ player, next }) => { return next(); });
-PlayerEvent.onResume(({ player, next }) => { return next(); });
-PlayerEvent.onUpdate(({ player, next }) => { return next(); });
-PlayerEvent.onRequestDownload(({ player, type, crc, next }) => { return next(); });
-PlayerEvent.onFinishedDownloading(({ player, virtualWorld, next }) => { return next(); });
-PlayerEvent.onCheckResponse(({ player, actionId, memAddr, data, next }) => { return next(); });
-PlayerEvent.onDialogResponse(({ player, dialogId, response, listItem, inputText, next }) => { return next(); });
-PlayerEvent.onLocaleChange(({ player, newLocale, oldLocale, next }) => { return next(); });
-PlayerEvent.onCharsetChange(({ player, newCharset, oldCharset, next }) => { return next(); });
-PlayerEvent.onFpsUpdate(({ player, fps, next }) => { return next(); });
-PlayerEvent.onAndroidCheck(({ player, isAndroid, next }) => { return next(); });
-PlayerEvent.onCommandTextRaw(({ player, command, next }) => { return next(); });
+PlayerEvent.onConnect(({ player, next }) => {
+  return next();
+});
+PlayerEvent.onDisconnect(({ player, reason, next }) => {
+  return next();
+}); // 0=timeout,1=quit,2=kicked
+PlayerEvent.onSpawn(({ player, next }) => {
+  return next();
+});
+PlayerEvent.onDeath(({ player, killer, reason, next }) => {
+  return next();
+});
+PlayerEvent.onText(({ player, text, next }) => {
+  return next();
+});
+PlayerEvent.onRequestClass(({ player, classId, next }) => {
+  return next();
+});
+PlayerEvent.onRequestSpawn(({ player, next }) => {
+  return next();
+});
+PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
+  return next();
+});
+PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
+  return next();
+});
+PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart, next }) => {
+  return next();
+});
+PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart, next }) => {
+  return next();
+});
+PlayerEvent.onClickMap(({ player, fX, fY, fZ, next }) => {
+  return next();
+});
+PlayerEvent.onClickPlayer(({ player, clickedPlayer, source, next }) => {
+  return next();
+});
+PlayerEvent.onStreamIn(({ player, forPlayer, next }) => {
+  return next();
+});
+PlayerEvent.onStreamOut(({ player, forPlayer, next }) => {
+  return next();
+});
+PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) => {
+  return next();
+});
+PlayerEvent.onInteriorChange(({ player, newInteriorId, oldInteriorId, next }) => {
+  return next();
+});
+PlayerEvent.onEnterExitModShop(({ player, enterExit, interior, next }) => {
+  return next();
+});
+PlayerEvent.onPause(({ player, next }) => {
+  return next();
+});
+PlayerEvent.onResume(({ player, next }) => {
+  return next();
+});
+PlayerEvent.onUpdate(({ player, next }) => {
+  return next();
+});
+PlayerEvent.onRequestDownload(({ player, type, crc, next }) => {
+  return next();
+});
+PlayerEvent.onFinishedDownloading(({ player, virtualWorld, next }) => {
+  return next();
+});
+PlayerEvent.onCheckResponse(({ player, actionId, memAddr, data, next }) => {
+  return next();
+});
+PlayerEvent.onDialogResponse(({ player, dialogId, response, listItem, inputText, next }) => {
+  return next();
+});
+PlayerEvent.onLocaleChange(({ player, newLocale, oldLocale, next }) => {
+  return next();
+});
+PlayerEvent.onCharsetChange(({ player, newCharset, oldCharset, next }) => {
+  return next();
+});
+PlayerEvent.onFpsUpdate(({ player, fps, next }) => {
+  return next();
+});
+PlayerEvent.onAndroidCheck(({ player, isAndroid, next }) => {
+  return next();
+});
+PlayerEvent.onCommandTextRaw(({ player, command, next }) => {
+  return next();
+});
 
 // Methods
 player.sendClientMessage("#fff", "text");
-player.setHealth(100);          player.getHealth();
-player.setArmour(50);           player.getArmour();
-player.setPos(x, y, z);         player.getPos();       // { x, y, z, ret }
-player.setSkin(id);             player.getSkin();
-player.setInterior(id);         player.getInterior();
-player.setVirtualWorld(id);     player.getVirtualWorld();
-player.setScore(n);             player.getScore();
-player.getPing();               player.getMoney();
-player.giveMoney(n);            player.resetMoney();
-player.setColor("#f00");        player.getColor();
-player.getName();               // { name, ret }
+player.setHealth(100);
+player.getHealth();
+player.setArmour(50);
+player.getArmour();
+player.setPos(x, y, z);
+player.getPos(); // { x, y, z, ret }
+player.setSkin(id);
+player.getSkin();
+player.setInterior(id);
+player.getInterior();
+player.setVirtualWorld(id);
+player.getVirtualWorld();
+player.setScore(n);
+player.getScore();
+player.getPing();
+player.getMoney();
+player.giveMoney(n);
+player.resetMoney();
+player.setColor("#f00");
+player.getColor();
+player.getName(); // { name, ret }
 player.setName("NewName");
-player.kick();                  player.ban();   player.banEx("reason", "utf8");
-player.spawn();                 player.forceClassSelection();
-player.toggleSpectating(b);     player.spectatePlayer(tp);  player.spectateVehicle(tv);
-player.giveWeapon(w, ammo);     player.setWeaponAmmo(w, ammo);
-player.getWeaponData(slot);     // { weapon, ammo }
-player.resetWeapons();          player.getWeapon();   player.getAmmo();
+player.kick();
+player.ban();
+player.banEx("reason", "utf8");
+player.spawn();
+player.forceClassSelection();
+player.toggleSpectating(b);
+player.spectatePlayer(tp);
+player.spectateVehicle(tv);
+player.giveWeapon(w, ammo);
+player.setWeaponAmmo(w, ammo);
+player.getWeaponData(slot); // { weapon, ammo }
+player.resetWeapons();
+player.getWeapon();
+player.getAmmo();
 player.setChatBubble("text", "#fff", dist, ms);
-player.setCameraPos(x,y,z);     player.setCameraLookAt(x,y,z,cut);
-player.setCameraBehind();       player.interpolateCameraPos(fX,fY,fZ,tX,tY,tZ,ms,cut);
-player.isInAnyVehicle();        player.isStreamedIn(fp);   player.isAdmin();
-player.getFps();                player.getSpecialAction();
-player.getState();              player.getVersion();
+player.setCameraPos(x, y, z);
+player.setCameraLookAt(x, y, z, cut);
+player.setCameraBehind();
+player.interpolateCameraPos(fX, fY, fZ, tX, tY, tZ, ms, cut);
+player.isInAnyVehicle();
+player.isStreamedIn(fp);
+player.isAdmin();
+player.getFps();
+player.getSpecialAction();
+player.getState();
+player.getVersion();
 player.applyAnimation(lib, name, speed, loop, lockX, lockY, freeze, time, forceSync);
 player.clearAnimations();
 player.removeBuilding(mid, x, y, z, radius);
-player.setFightingStyle(s);     player.getFightingStyle();
-player.setTeam(t);              player.getTeam();
-player.setWeather(w);           player.getWeather();
-player.setTime(h, m);           player.getTime();      // { hour, minute }
-player.setWantedLevel(0-6);     player.getWantedLevel();
+player.setFightingStyle(s);
+player.getFightingStyle();
+player.setTeam(t);
+player.getTeam();
+player.setWeather(w);
+player.getWeather();
+player.setTime(h, m);
+player.getTime(); // { hour, minute }
+player.setWantedLevel(0 - 6);
+player.getWantedLevel();
 player.playSound(id, x, y, z);
-player.playAudioStream(url, x, y, z, dist);  player.stopAudioStream();
+player.playAudioStream(url, x, y, z, dist);
+player.stopAudioStream();
 player.getIp();
-player.getCameraPos();          player.getCameraFrontVector();  player.getCameraMode();
-player.getCameraAspectRatio();  player.getCameraZoom();
-player.getCameraTargetPlayer(); player.getCameraTargetVehicle();
-player.getCameraTargetActor();  player.getCameraTargetObject();
+player.getCameraPos();
+player.getCameraFrontVector();
+player.getCameraMode();
+player.getCameraAspectRatio();
+player.getCameraZoom();
+player.getCameraTargetPlayer();
+player.getCameraTargetVehicle();
+player.getCameraTargetActor();
+player.getCameraTargetObject();
 player.getCameraTargetPlayerObject();
-player.getKeys();               player.getSpeed(magic = 180.0);
-player.toggleClock(b);          player.toggleControllable(b);
-player.enableCameraTarget(b);   player.setMapIcon(id, x, y, z, type, color, style);
-player.removeMapIcon(id);       player.setMarker(tp, color);
+player.getKeys();
+player.getSpeed((magic = 180.0));
+player.toggleClock(b);
+player.toggleControllable(b);
+player.enableCameraTarget(b);
+player.setMapIcon(id, x, y, z, type, color, style);
+player.removeMapIcon(id);
+player.setMarker(tp, color);
 player.setSkillLevel(skill, level);
 player.createExplosion(x, y, z, type, radius);
-player.playCrimeReport(suspect, crimeId);  // 3-22
-player.sendMessageToPlayer(player, msg);   player.sendMessageToAll(msg);
-player.isNpc();                 player.getDrunkLevel();
+player.playCrimeReport(suspect, crimeId); // 3-22
+player.sendMessageToPlayer(player, msg);
+player.sendMessageToAll(msg);
+player.isNpc();
+player.getDrunkLevel();
 
 // Properties
-player.id;     player.charset;     player.locale;
-player.lastFps; player.isPaused;   player.isRecording;
+player.id;
+player.charset;
+player.locale;
+player.lastFps;
+player.isPaused;
+player.isRecording;
 
 // Static
-Player.getInstance(id);       Player.getInstances();
-Player.isConnected(id);       Player.getMaxPlayers();
+Player.getInstance(id);
+Player.getInstances();
+Player.isConnected(id);
+Player.getMaxPlayers();
 Player.sendClientMessageToAll(color, msg);
 
 // NetStats (static class, not Player method)
@@ -171,6 +278,7 @@ Vehicle.getComponentType(component);
 ## Actor vs NPC — Not the Same
 
 **`Actor`** and **`Npc` are two completely different things in Infernus.** They are not interchangeable:
+
 - `Actor` is a static character rendered by the client (shopkeepers, bystanders). No player ID, no movement.
 - `Npc` is a scripted bot that connects as a real player. Has a player ID, can move/drive/fight.
 
@@ -182,22 +290,35 @@ import { Actor, ActorEvent } from "@infernus/core";
 const actor = new Actor({ skin: 0, x: 0, y: 0, z: 0, rotation: 0 });
 actor.create();
 
-actor.setPos(x, y, z);          actor.getPos();
-actor.setFacingAngle(a);        actor.getFacingAngle();
-actor.setHealth(100);           actor.getHealth();
-actor.setInvulnerable(true);    actor.isInvulnerable();
-actor.setVirtualWorld(vw);      actor.getVirtualWorld();
-actor.setSkin(skin);            actor.getSkin();
+actor.setPos(x, y, z);
+actor.getPos();
+actor.setFacingAngle(a);
+actor.getFacingAngle();
+actor.setHealth(100);
+actor.getHealth();
+actor.setInvulnerable(true);
+actor.isInvulnerable();
+actor.setVirtualWorld(vw);
+actor.getVirtualWorld();
+actor.setSkin(skin);
+actor.getSkin();
 actor.applyAnimation(lib, name, delta, loop, lockX, lockY, freeze, time);
 actor.clearAnimations();
 actor.destroy();
 
-ActorEvent.onPlayerGiveDamage(({ actor, player, amount, weapon, bodyPart, next }) => { return next(); });
-ActorEvent.onStreamIn(({ actor, player, next }) => { return next(); });
-ActorEvent.onStreamOut(({ actor, player, next }) => { return next(); });
+ActorEvent.onPlayerGiveDamage(({ actor, player, amount, weapon, bodyPart, next }) => {
+  return next();
+});
+ActorEvent.onStreamIn(({ actor, player, next }) => {
+  return next();
+});
+ActorEvent.onStreamOut(({ actor, player, next }) => {
+  return next();
+});
 
 // Static
-Actor.getInstance(id);    Actor.getInstances();
+Actor.getInstance(id);
+Actor.getInstances();
 Actor.isValid(id);
 ```
 
@@ -405,17 +526,27 @@ TextLabel.getPlayersInstances();  // [Player, TextLabel[]][]
 import { Checkpoint, RaceCheckpoint } from "@infernus/core";
 import { CheckPointEvent, RaceCpEvent } from "@infernus/core";
 
-Checkpoint.set(player, x, y, z, radius);     Checkpoint.disable(player);
-Checkpoint.isPlayerIn(player);               Checkpoint.isActive(player);
-Checkpoint.get(player);                      // { x, y, z, radius }
+Checkpoint.set(player, x, y, z, radius);
+Checkpoint.disable(player);
+Checkpoint.isPlayerIn(player);
+Checkpoint.isActive(player);
+Checkpoint.get(player); // { x, y, z, radius }
 
 RaceCheckpoint.set(player, type, x, y, z, nx, ny, nz, radius);
 RaceCheckpoint.disable(player);
 
-CheckPointEvent.onPlayerEnter(({ player, next }) => { return next(); });
-CheckPointEvent.onPlayerLeave(({ player, next }) => { return next(); });
-RaceCpEvent.onPlayerEnter(({ player, next }) => { return next(); });
-RaceCpEvent.onPlayerLeave(({ player, next }) => { return next(); });
+CheckPointEvent.onPlayerEnter(({ player, next }) => {
+  return next();
+});
+CheckPointEvent.onPlayerLeave(({ player, next }) => {
+  return next();
+});
+RaceCpEvent.onPlayerEnter(({ player, next }) => {
+  return next();
+});
+RaceCpEvent.onPlayerLeave(({ player, next }) => {
+  return next();
+});
 ```
 
 ## Menu
@@ -426,16 +557,23 @@ import { Menu, MenuEvent } from "@infernus/core";
 const menu = new Menu({ title: "Menu", columns: 2, x: 100, y: 100, colWidth: [200, 200] });
 menu.create();
 
-menu.addItem(col, "Option");          menu.setColumnHeader(col, "Header");
+menu.addItem(col, "Option");
+menu.setColumnHeader(col, "Header");
 menu.disableRow(row);
-menu.showForPlayer(player);           menu.hideForPlayer(player);
+menu.showForPlayer(player);
+menu.hideForPlayer(player);
 menu.destroy();
 
-MenuEvent.onPlayerSelectedRow(({ player, menu, row, next }) => { return next(); });
-MenuEvent.onPlayerExited(({ player, menu, next }) => { return next(); });
+MenuEvent.onPlayerSelectedRow(({ player, menu, row, next }) => {
+  return next();
+});
+MenuEvent.onPlayerExited(({ player, menu, next }) => {
+  return next();
+});
 
 // Static
-Menu.getInstance(id);     Menu.getInstances();
+Menu.getInstance(id);
+Menu.getInstances();
 Menu.isValid(menuId);
 Menu.getInstanceByPlayer(player);
 ```
@@ -445,8 +583,10 @@ Menu.getInstanceByPlayer(player);
 ```typescript
 import { GameText } from "@infernus/core";
 
-const gt = new GameText("Hello!", 3000, 4);   // text, timeMs, style
-gt.forAll();                gt.forPlayer(player);
-gt.hideForPlayer(player);   GameText.hideForAll(style);
+const gt = new GameText("Hello!", 3000, 4); // text, timeMs, style
+gt.forAll();
+gt.forPlayer(player);
+gt.hideForPlayer(player);
+GameText.hideForAll(style);
 GameText.has(player, style);
 ```

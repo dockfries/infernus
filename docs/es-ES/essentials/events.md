@@ -156,7 +156,9 @@ Esto es útil cuando desea ejecutar un manejador solo una vez, o cancelarlo en u
 ```ts
 // Definir un comando de una sola vez
 const off = PlayerEvent.onCommandText("once", ({ player, next }) => {
-  console.log("Este comando solo se ejecuta una vez; las invocaciones posteriores no lo activarán.");
+  console.log(
+    "Este comando solo se ejecuta una vez; las invocaciones posteriores no lo activarán.",
+  );
   const ret = next();
   off(); // llame a off() después de next()
   return ret;

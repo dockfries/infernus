@@ -4,41 +4,41 @@ El ecosistema `@infernus/*` está diseñado para integrar las librerías Pawn in
 
 `@infernus/*` proporciona los siguientes paquetes del ecosistema:
 
-| Paquete | Descripción |
-| --- | --- |
-| `@infernus/core` | Librería de Node.js para crear scripts en Open Multiplayer |
-| `@infernus/cef` | Un envoltorio del componente omp-cef para samp-node |
-| `@infernus/colandreas` | Un envoltorio del plugin ColAndreas para samp-node |
-| `@infernus/create-app` | Interfaz de línea de comandos para desarrollo rápido con infernus |
-| `@infernus/distance` | Un envoltorio de la librería distance para samp-node |
-| `@infernus/drift-detection` | Un envoltorio de la librería driftDetection para samp-node |
-| `@infernus/e-selection` | Un envoltorio de la librería eSelection para samp-node |
-| `@infernus/fcnpc` | Un envoltorio del plugin FCNPC para samp-node |
-| `@infernus/fs` | Una colección de todos los filterscripts integrados |
-| `@infernus/gps` | Un envoltorio del plugin GPS para samp-node |
-| `@infernus/map-loader` | Una herramienta para conversión, análisis y carga de objetos |
-| `@infernus/mapandreas` | Implementación de mapa de altura en TypeScript puro, sin plugin nativo |
-| `@infernus/s-art` | Un envoltorio de la popular librería s-art para renderizar imágenes de píxeles en el juego usando DynamicObject con texto de material |
-| `@infernus/nex-ac` | Un envoltorio de la librería nex-ac para samp-node |
-| `@infernus/progress` | Una barra de progreso basada en `LD_SPAC:white` para control preciso |
-| `@infernus/qrcode` | Genera objetos qrcode simples para infernus |
-| `@infernus/query` | API simple para enviar consultas SA-MP con TypeScript |
-| `@infernus/raknet` | Un envoltorio del plugin raknet de open.mp para samp-node |
-| `@infernus/rec` | Conversor de formato de archivo de `.rec` a `.json` y viceversa |
-| `@infernus/samp-voice` | Un envoltorio de la librería SA-MP voice para samp-node |
-| `@infernus/shared` | Utilidades y tipos compartidos para paquetes infernus (interno) |
-| `@infernus/streamer` | Un envoltorio del plugin streamer SA-MP (v2.9.6, **privado**) |
-| `@infernus/types` | Tipos de API samp-node minimizados para infernus (interno) |
-| `@infernus/weapon-config` | Un envoltorio de la librería weapon-config para samp-node |
+| Paquete                     | Descripción                                                                                                                           |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `@infernus/core`            | Librería de Node.js para crear scripts en Open Multiplayer                                                                            |
+| `@infernus/cef`             | Un envoltorio del componente omp-cef para samp-node                                                                                   |
+| `@infernus/colandreas`      | Un envoltorio del plugin ColAndreas para samp-node                                                                                    |
+| `@infernus/create-app`      | Interfaz de línea de comandos para desarrollo rápido con infernus                                                                     |
+| `@infernus/distance`        | Un envoltorio de la librería distance para samp-node                                                                                  |
+| `@infernus/drift-detection` | Un envoltorio de la librería driftDetection para samp-node                                                                            |
+| `@infernus/e-selection`     | Un envoltorio de la librería eSelection para samp-node                                                                                |
+| `@infernus/fcnpc`           | Un envoltorio del plugin FCNPC para samp-node                                                                                         |
+| `@infernus/fs`              | Una colección de todos los filterscripts integrados                                                                                   |
+| `@infernus/gps`             | Un envoltorio del plugin GPS para samp-node                                                                                           |
+| `@infernus/map-loader`      | Una herramienta para conversión, análisis y carga de objetos                                                                          |
+| `@infernus/mapandreas`      | Implementación de mapa de altura en TypeScript puro, sin plugin nativo                                                                |
+| `@infernus/s-art`           | Un envoltorio de la popular librería s-art para renderizar imágenes de píxeles en el juego usando DynamicObject con texto de material |
+| `@infernus/nex-ac`          | Un envoltorio de la librería nex-ac para samp-node                                                                                    |
+| `@infernus/progress`        | Una barra de progreso basada en `LD_SPAC:white` para control preciso                                                                  |
+| `@infernus/qrcode`          | Genera objetos qrcode simples para infernus                                                                                           |
+| `@infernus/query`           | API simple para enviar consultas SA-MP con TypeScript                                                                                 |
+| `@infernus/raknet`          | Un envoltorio del plugin raknet de open.mp para samp-node                                                                             |
+| `@infernus/rec`             | Conversor de formato de archivo de `.rec` a `.json` y viceversa                                                                       |
+| `@infernus/samp-voice`      | Un envoltorio de la librería SA-MP voice para samp-node                                                                               |
+| `@infernus/shared`          | Utilidades y tipos compartidos para paquetes infernus (interno)                                                                       |
+| `@infernus/streamer`        | Un envoltorio del plugin streamer SA-MP (v2.9.6, **privado**)                                                                         |
+| `@infernus/types`           | Tipos de API samp-node minimizados para infernus (interno)                                                                            |
+| `@infernus/weapon-config`   | Un envoltorio de la librería weapon-config para samp-node                                                                             |
 
 ## Ejemplos
 
-| Proyecto | Descripción |
-| --- | --- |
-| [omp-gm-grandlarc](https://github.com/dockfries/omp-gm-grandlarc) | El modo de juego de muestra GrandLarceny escrito con infernus-starter |
-| [omp-gm-rivershell](https://github.com/dockfries/omp-gm-rivershell) | El modo de juego de muestra RiverShell escrito con infernus-starter |
-| [fme](https://github.com/dockfries/fme) | Fusez Map Editor Version 3 — un editor de mapas para samp-node |
-| [nte](https://github.com/dockfries/nte) | Nexor's TextDraw Editor para samp-node |
+| Proyecto                                                            | Descripción                                                           |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [omp-gm-grandlarc](https://github.com/dockfries/omp-gm-grandlarc)   | El modo de juego de muestra GrandLarceny escrito con infernus-starter |
+| [omp-gm-rivershell](https://github.com/dockfries/omp-gm-rivershell) | El modo de juego de muestra RiverShell escrito con infernus-starter   |
+| [fme](https://github.com/dockfries/fme)                             | Fusez Map Editor Version 3 — un editor de mapas para samp-node        |
+| [nte](https://github.com/dockfries/nte)                             | Nexor's TextDraw Editor para samp-node                                |
 
 ## Filosofía de diseño
 

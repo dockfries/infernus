@@ -38,14 +38,14 @@ MapNode.saveMapNodesToFile(fileName);               // → boolean
 const path = new GpsPath(pathId);
 
 path.destroy();
-path.isValid();         // → boolean
-path.getSize();         // → number
-path.getLength();       // → number
-path.getNode(index);    // → MapNode
-path.getNodeIndex(node);// → number
+path.isValid(); // → boolean
+path.getSize(); // → number
+path.getLength(); // → number
+path.getNode(index); // → MapNode
+path.getNodeIndex(node); // → number
 
-GpsPath.findSync(node, target);        // → GpsPath (sync)
-GpsPath.find(node, target);            // → Promise<GpsPath> (async)
+GpsPath.findSync(node, target); // → GpsPath (sync)
+GpsPath.find(node, target); // → Promise<GpsPath> (async)
 ```
 
 ## GpsConnection
@@ -54,11 +54,11 @@ GpsPath.find(node, target);            // → Promise<GpsPath> (async)
 const conn = new GpsConnection();
 conn.create(sourceNode, targetNode);
 conn.destroy();
-conn.getSource();      // → MapNode
-conn.getTarget();      // → MapNode
+conn.getSource(); // → MapNode
+conn.getTarget(); // → MapNode
 
-GpsConnection.getMapNode(node, index);               // → GpsConnection
-GpsConnection.getBetweenMapNodes(node, target);      // → GpsConnection
+GpsConnection.getMapNode(node, index); // → GpsConnection
+GpsConnection.getBetweenMapNodes(node, target); // → GpsConnection
 ```
 
 ## Waze GPS (Navigation)
@@ -91,5 +91,12 @@ INVALID_CONNECTION_ID = -1;
 MAX_WAZE_DOTS = 100;
 WAZE_UPDATE_TIME = 3100;
 
-enum GpsError { None, InvalidParams, InvalidPath, InvalidNode, InvalidConnection, Internal }
+enum GpsError {
+  None,
+  InvalidParams,
+  InvalidPath,
+  InvalidNode,
+  InvalidConnection,
+  Internal,
+}
 ```
