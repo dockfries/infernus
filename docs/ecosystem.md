@@ -31,6 +31,15 @@ The `@infernus/*` ecosystem is designed to bridge Pawn include libraries into th
 | `@infernus/types` | Minimized samp-node API types for infernus (internal) |
 | `@infernus/weapon-config` | A wrapper of the weapon-config library for samp-node |
 
+## Examples
+
+| Project | Description |
+| --- | --- |
+| [omp-gm-grandlarc](https://github.com/dockfries/omp-gm-grandlarc) | The GrandLarceny sample game mode written with infernus-starter |
+| [omp-gm-rivershell](https://github.com/dockfries/omp-gm-rivershell) | The RiverShell sample game mode written with infernus-starter |
+| [fme](https://github.com/dockfries/fme) | Fusez Map Editor Version 3 — a map editor for samp-node |
+| [nte](https://github.com/dockfries/nte) | Nexor's TextDraw Editor for samp-node |
+
 ## Design Philosophy
 
 ### Avoid Filterscripts
