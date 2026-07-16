@@ -144,6 +144,10 @@ vim config.json # 您不一定要用 vim，任意编辑器均可
 
 ### 安装依赖并运行
 
+> [!TIP]
+> 若使用 32 位 samp-node，执行 `pnpm install` 前需设置相应的环境变量，
+> 详见[生态系统 → 64 位实验性支持](/zh-Hans/ecosystem#_64-位实验性支持)。
+
 ```sh
 # 安装依赖
 pnpm install

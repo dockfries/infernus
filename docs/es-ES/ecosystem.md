@@ -78,4 +78,20 @@ A partir de **v0.14.0+**, `@infernus/raknet` proporciona una **edición sin poly
 
 Al usar el plugin raknet de 64 bits, es posible que deba recompilar manualmente el polyfill para que coincida con la versión de Pawn.RakNet y evitar advertencias de incompatibilidad de versiones.
 
-Al migrar de una plantilla de 32 bits a 64 bits (o viceversa), elimine `arch=ia32` y `target_arch=ia32` del `.npmrc` (o agréguelos al volver). Tenga en cuenta que en pnpm >= 11, el manejo de `.npmrc` se ha simplificado y estas propiedades pueden no tener efecto — consulte la guía de migración de pnpm para más detalles.
+Antes de ejecutar `pnpm install`, verifica si tu samp-node es de 32 bits (x86) o 64 bits (x64) y establece las variables de entorno correspondientes. Si ya has ejecutado `pnpm install`, elimina la carpeta `node_modules` primero antes de reinstalar.
+
+```sh
+# bash
+export npm_config_arch=ia32
+export npm_config_target_arch=ia32
+
+# powershell
+# $env:npm_config_arch="ia32";
+# $env:npm_config_target_arch="ia32";
+
+# cmd
+# set npm_config_arch=ia32
+# set npm_config_target_arch=ia32
+```
+
+Asegúrate de establecer estas variables de entorno cada vez que ejecutes `pnpm install`. No son necesarias para samp-node de 64 bits.

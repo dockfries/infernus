@@ -78,4 +78,20 @@
 
 使用 64 位的 raknet 插件时，可能需要手动重新编译 polyfill 以匹配 Pawn.RakNet 的版本，避免版本不匹配的警告。
 
-从 32 位模板迁移到 64 位（或反之）时，需移除 `.npmrc` 中的 `arch=ia32` 和 `target_arch=ia32`（切回时则添加）。注意，在 pnpm >= 11 中，`.npmrc` 的作用方式已被精简，这两项属性可能不再生效，具体请查阅 pnpm 升级迁移文档。
+在执行 `pnpm install` 之前，请根据你的 samp-node 是 32 位 (x86) 还是 64 位 (x64) 来决定是否启用以下环境变量。如果你已经执行过 `pnpm install`，请先删除 `node_modules` 文件夹后重新安装。
+
+```sh
+# bash
+export npm_config_arch=ia32
+export npm_config_target_arch=ia32
+
+# powershell
+# $env:npm_config_arch="ia32";
+# $env:npm_config_target_arch="ia32";
+
+# cmd
+# set npm_config_arch=ia32
+# set npm_config_target_arch=ia32
+```
+
+每次执行 `pnpm install` 时，都需要确保已设置这些环境变量。64 位 samp-node 不需要这些环境变量。

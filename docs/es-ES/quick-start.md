@@ -145,6 +145,10 @@ Los archivos `so/dll` dependen del entorno donde ejecutará el servidor; elija l
 
 ### Instalar dependencias y desarrollo
 
+> [!TIP]
+> Si usas samp-node de 32 bits, necesitas establecer las variables de entorno antes de ejecutar `pnpm install`.
+> Consulta [Ecosistema → Soporte Experimental de 64 bits](/es-ES/ecosystem#soporte-experimental-de-64-bits) para más detalles.
+
 ```sh
 # Instalar dependencias
 pnpm install

@@ -145,6 +145,10 @@ The `so/dll` files depend on your target server environment — choose the appro
 
 ### Install Dependencies & Dev
 
+> [!TIP]
+> If you are using a 32-bit samp-node, you need to set specific environment variables before running `pnpm install`.
+> See [Ecosystem → 64-bit Experimental Support](/ecosystem#_64-bit-experimental-support) for details.
+
 ```sh
 # Install dependencies
 pnpm install
