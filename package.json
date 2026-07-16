@@ -38,7 +38,7 @@
     "oxfmt": "^0.59.0",
     "oxlint": "^1.74.0",
     "oxlint-tsgolint": "^0.24.0",
-    "rolldown": "^1.1.5",
+    "rolldown": "^1.2.0",
     "rolldown-plugin-dts": "^0.27.9",
     "tslib": "^2.8.1",
     "tsx": "^4.23.1",
