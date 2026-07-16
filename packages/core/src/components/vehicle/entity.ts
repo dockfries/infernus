@@ -11,7 +11,7 @@ import { rgba } from "core/utils/color";
 import * as v from "core/wrapper/native";
 import { VectorSize } from "core/wrapper/native";
 import { vehiclePool, playerPool } from "core/utils/pools";
-import { INTERNAL_FLAGS } from "core/utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { VehicleException } from "core/exceptions";
 
 export class Vehicle {

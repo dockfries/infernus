@@ -4,7 +4,7 @@ import { Player } from "../player";
 import { rgba } from "../../utils/color";
 import type { IGangZone } from "core/interfaces";
 import type { IGangZonePos } from "core/wrapper/native/interfaces";
-import { INTERNAL_FLAGS } from "core/utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { gangZonePool, playerGangZonePool } from "core/utils/pools";
 import { GangZoneException } from "core/exceptions";
 

@@ -6,7 +6,7 @@ import type { StreamerAreaTypes } from "@infernus/streamer";
 import * as s from "@infernus/streamer";
 import type { DynamicObject } from "../object";
 import { Streamer } from "../common";
-import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { dynamicAreasPool } from "core/utils/pools";
 import { DynamicAreaException } from "core/exceptions";
 

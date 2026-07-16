@@ -1,5 +1,5 @@
 import { InvalidEnum } from "core/enums";
-import { INTERNAL_FLAGS } from "core/utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { npcNodePool } from "core/utils/pools";
 
 export class NpcNode {

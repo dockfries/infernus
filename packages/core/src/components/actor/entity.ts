@@ -1,6 +1,6 @@
 import { InvalidEnum, LimitsEnum } from "core/enums";
 import { IActor } from "core/interfaces";
-import { INTERNAL_FLAGS } from "core/utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { actorPool } from "core/utils/pools";
 import * as a from "core/wrapper/native";
 import { Player } from "../player/entity";

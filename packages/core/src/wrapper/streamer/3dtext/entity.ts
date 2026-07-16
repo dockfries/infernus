@@ -16,7 +16,7 @@ import {
   StreamerMiscellaneous,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { Player, Vehicle } from "core/components";
 import { dynamic3DTextLabelPool } from "core/utils/pools";
 import { DynamicTextLabelException } from "core/exceptions";

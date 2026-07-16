@@ -12,7 +12,7 @@ import {
   StreamerMiscellaneous,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { Player } from "core/components";
 import { dynamicMapIconPool } from "core/utils/pools";
 import { DynamicMapIconException } from "core/exceptions";

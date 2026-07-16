@@ -15,7 +15,7 @@ import {
   TogglePlayerDynamicRaceCP,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { dynamicRaceCPPool } from "core/utils/pools";
 import { DynamicRaceCpException } from "core/exceptions";
 

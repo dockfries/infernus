@@ -1,6 +1,6 @@
 import { InvalidEnum, LimitsEnum, MaterialTextSizes } from "core/enums";
 import { IObjectMp } from "core/interfaces";
-import { INTERNAL_FLAGS } from "core/utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { objectMpPool, playerObjectPool } from "core/utils/pools";
 import { rgba } from "core/utils/color";
 import * as o from "core/wrapper/native";

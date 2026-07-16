@@ -3,7 +3,7 @@ import * as w from "core/wrapper/native";
 import type { Player } from "../player";
 import { InvalidEnum, LimitsEnum } from "../../enums";
 import { menuPool } from "core/utils/pools";
-import { INTERNAL_FLAGS } from "core/utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { IMenu } from "core/interfaces";
 import {
   CreateMenu,

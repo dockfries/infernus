@@ -1,4 +1,3 @@
-import "core/utils/flags";
 export * from "./mapIcon";
 export * from "./pickup";
 export * from "./checkpoint";

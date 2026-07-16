@@ -10,7 +10,7 @@ import {
 } from "core/utils/helper";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
-import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { dynamicObjectPool } from "core/utils/pools";
 import { DynamicObjectException } from "core/exceptions";
 

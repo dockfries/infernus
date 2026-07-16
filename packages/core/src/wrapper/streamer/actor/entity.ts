@@ -3,7 +3,7 @@ import type { IDynamicActor } from "core/interfaces";
 import { isValidAnimateName } from "core/utils/animate";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
-import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { dynamicActorPool } from "core/utils/pools";
 import { DynamicActorException } from "core/exceptions";
 

@@ -1,6 +1,10 @@
 import { defineEvent } from "../../utils/bus";
 import { I18n } from "../../utils/i18n";
 
+export const INTERNAL_FLAGS = {
+  skip: false,
+};
+
 export const [onSampGdkInit] = defineEvent({
   name: "OnGameModeInit",
   identifier: "",
@@ -12,13 +16,21 @@ export const [onInit, triggerOnInit] = defineEvent({
 });
 
 onSampGdkInit(() => {
-  Promise.resolve().then(triggerOnInit);
-  return;
+  INTERNAL_FLAGS.skip = false;
+  Promise.resolve().then(() => {
+    if (INTERNAL_FLAGS.skip) return;
+    triggerOnInit();
+  });
 });
 
 export const [onExit] = defineEvent({
   name: "OnGameModeExit",
   identifier: "",
+});
+
+onExit(({ next }) => {
+  INTERNAL_FLAGS.skip = true;
+  return next();
 });
 
 export const [onIncomingConnection] = defineEvent({

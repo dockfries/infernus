@@ -2,7 +2,7 @@ import { InvalidEnum, LimitsEnum } from "core/enums";
 import { IPickup } from "core/interfaces";
 import * as p from "core/wrapper/native";
 import { Player } from "../player";
-import { INTERNAL_FLAGS } from "core/utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { pickupPool, playerPickupPool } from "core/utils/pools";
 import { PickupException } from "core/exceptions";
 

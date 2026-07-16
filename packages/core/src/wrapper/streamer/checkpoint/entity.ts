@@ -14,7 +14,7 @@ import {
   TogglePlayerDynamicCP,
 } from "@infernus/streamer";
 import { Streamer } from "../common";
-import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { dynamicCheckpointPool } from "core/utils/pools";
 import { DynamicCheckPointException } from "core/exceptions";
 

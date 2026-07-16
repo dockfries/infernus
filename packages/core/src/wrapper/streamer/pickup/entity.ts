@@ -1,7 +1,7 @@
 import type { IDynamicPickup } from "core/interfaces";
 import * as s from "@infernus/streamer";
 import { Streamer } from "../common";
-import { INTERNAL_FLAGS } from "../../../utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { Player } from "core/components";
 import { dynamicPickupPool } from "core/utils/pools";
 import { DynamicPickupException } from "core/exceptions";

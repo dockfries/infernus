@@ -1,7 +1,7 @@
 import { InvalidEnum, LimitsEnum } from "core/enums";
 import { textLabelPool, playerTextLabelPool } from "core/utils/pools";
 import { ITextLabel } from "core/interfaces";
-import { INTERNAL_FLAGS } from "core/utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import * as tg from "core/wrapper/native/3dText/global";
 import * as tp from "core/wrapper/native/3dText/player";
 import { Player } from "../player/entity";

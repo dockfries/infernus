@@ -17,7 +17,7 @@ import {
 import { Player } from "../player";
 import { Vehicle } from "../vehicle";
 import { internalPlayerProps, npcPool } from "core/utils/pools";
-import { INTERNAL_FLAGS } from "core/utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { DynamicObject } from "core/wrapper/streamer/object";
 import { Streamer } from "core/wrapper/streamer";
 import { NpcRecord } from "./record";

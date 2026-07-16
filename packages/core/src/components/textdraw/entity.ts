@@ -5,7 +5,7 @@ import { InvalidEnum, LimitsEnum, TextDrawFontsEnum } from "core/enums";
 import * as w from "core/wrapper/native";
 import { I18n } from "../../utils/i18n";
 import { textDrawPool, playerTextDrawPool } from "core/utils/pools";
-import { INTERNAL_FLAGS } from "core/utils/flags";
+import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { TextDrawException } from "core/exceptions";
 
 export class TextDraw {
