@@ -56,7 +56,7 @@ export function wasPlayerInVehicle(player: Player, time: number) {
     return false;
   }
 
-  if (Date.now() - time < lastVehicleTick.get(player.id)) {
+  if (Date.now() - lastVehicleTick.get(player.id) < time) {
     return true;
   }
 

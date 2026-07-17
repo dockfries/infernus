@@ -135,7 +135,7 @@ export function wcc_setPlayerHealth(player: Player, health: number, armour = -1.
       inflictDamage(player, 0.0);
     }
   } else {
-    if (armour !== -1.0) {
+    if (armour >= 0.0) {
       if (armour > playerMaxArmour.get(player.id)) {
         armour = playerMaxArmour.get(player.id);
       }
@@ -165,10 +165,12 @@ export const wc_SetPlayerArmour = setPlayerHook("setArmour", function (armour: n
   if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
     return false;
   }
-  if (armour > playerMaxArmour.get(this.id)) {
-    armour = playerMaxArmour.get(this.id);
+  if (armour >= 0.0) {
+    if (armour > playerMaxArmour.get(this.id)) {
+      armour = playerMaxArmour.get(this.id);
+    }
+    playerArmour.set(this.id, armour);
   }
-  playerArmour.set(this.id, armour);
   updateHealthBar(this, true);
   return true;
 });
@@ -1210,19 +1212,21 @@ export function wc_EditPlayerClass(
       weapon3Ammo,
     )
   ) {
-    classSpawnInfo.get(classId).skin = skinId;
-    classSpawnInfo.get(classId).team = teamId;
-    classSpawnInfo.get(classId).posX = spawnX;
-    classSpawnInfo.get(classId).posY = spawnY;
-    classSpawnInfo.get(classId).posZ = spawnZ;
-    classSpawnInfo.get(classId).rot = zAngle;
-    classSpawnInfo.get(classId).weapon1 = weapon1;
-    classSpawnInfo.get(classId).ammo1 = weapon1Ammo;
-    classSpawnInfo.get(classId).weapon2 = weapon2;
-    classSpawnInfo.get(classId).ammo2 = weapon2Ammo;
-    classSpawnInfo.get(classId).weapon3 = weapon3;
-    classSpawnInfo.get(classId).ammo3 = weapon3Ammo;
-    return true;
+    if (classId >= 0 && classId < innerWeaponConfig.MAX_CLASSES) {
+      classSpawnInfo.get(classId).skin = skinId;
+      classSpawnInfo.get(classId).team = teamId;
+      classSpawnInfo.get(classId).posX = spawnX;
+      classSpawnInfo.get(classId).posY = spawnY;
+      classSpawnInfo.get(classId).posZ = spawnZ;
+      classSpawnInfo.get(classId).rot = zAngle;
+      classSpawnInfo.get(classId).weapon1 = weapon1;
+      classSpawnInfo.get(classId).ammo1 = weapon1Ammo;
+      classSpawnInfo.get(classId).weapon2 = weapon2;
+      classSpawnInfo.get(classId).ammo2 = weapon2Ammo;
+      classSpawnInfo.get(classId).weapon3 = weapon3;
+      classSpawnInfo.get(classId).ammo3 = weapon3Ammo;
+      return true;
+    }
   }
   return false;
 }

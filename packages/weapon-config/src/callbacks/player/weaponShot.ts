@@ -278,12 +278,11 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
       return 0;
     }
 
-    if (innerGameModeConfig.vehiclePassengerDamage) {
-      let has_driver = false,
-        has_passenger = false,
-        seat;
+    if (innerGameModeConfig.vehiclePassengerDamage || innerGameModeConfig.vehicleUnoccupiedDamage) {
+      let hasDriver = false;
+      let hasPassenger = false;
 
-      Player.getInstances().forEach((other) => {
+      for (const other of Player.getInstances()) {
         if (other === player) {
           return;
         }
@@ -294,60 +293,38 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
           return;
         }
 
-        seat = orig_playerMethods.getVehicleSeat.call(other);
-
-        if (seat === 0) {
-          has_driver = true;
+        if (orig_playerMethods.getVehicleSeat.call(other) !== 0) {
+          hasPassenger = true;
         } else {
-          has_passenger = true;
+          hasDriver = true;
+          break;
         }
-      });
-
-      if (!has_driver && has_passenger) {
-        let health = orig_vehicleMethods.getHealth.call(Vehicle.getInstance(hitId)!).health;
-
-        if (weapon >= WeaponEnum.SHOTGUN && weapon <= WeaponEnum.SHOTGSPA) {
-          health -= 120.0;
-        } else {
-          health -= s_WeaponDamage[weapon] * 3.0;
-        }
-
-        if (health <= 0.0) {
-          health = 0.0;
-        }
-
-        orig_vehicleMethods.setHealth.call(Vehicle.getInstance(hitId)!, health);
       }
-    }
 
-    if (innerGameModeConfig.vehicleUnoccupiedDamage) {
-      let has_occupant = false;
+      if (!hasDriver) {
+        let health = orig_vehicleMethods.getHealth.call(Vehicle.getInstance(hitId)!).health;
+        let applyDamage = false;
 
-      Player.getInstances().forEach((other) => {
-        if (other === player) {
-          return;
+        if (innerGameModeConfig.vehiclePassengerDamage && hasPassenger) {
+          applyDamage = true;
+        } else if (innerGameModeConfig.vehicleUnoccupiedDamage && !hasPassenger) {
+          if (health >= 250.0) {
+            applyDamage = true;
+          }
         }
 
-        const veh = orig_playerMethods.getVehicle.call(other);
-
-        if (veh && veh.id !== hitId) {
-          return;
-        }
-
-        has_occupant = true;
-      });
-
-      if (!has_occupant) {
-        let health = orig_vehicleMethods.getHealth.call(Vehicle.getInstance(hitId)).health;
-
-        if (health >= 250.0) {
+        if (applyDamage) {
           if (weapon >= WeaponEnum.SHOTGUN && weapon <= WeaponEnum.SHOTGSPA) {
             health -= 120.0;
           } else {
             health -= s_WeaponDamage[weapon] * 3.0;
           }
 
-          if (health < 250.0) {
+          if (hasPassenger) {
+            if (health <= 0.0) {
+              health = 0.0;
+            }
+          } else if (health < 250.0) {
             if (!vehicleRespawnTimer.get(hitId)) {
               health = 249.0;
               vehicleRespawnTimer.set(

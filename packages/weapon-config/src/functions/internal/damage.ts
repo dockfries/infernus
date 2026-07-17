@@ -634,7 +634,7 @@ export function inflictDamage(
 
   const s_DamageArmourToggle = innerGameModeConfig.damageArmourToggle;
 
-  if (
+  const hitArmour =
     !ignore_armour &&
     editable.weaponId !== WC_WeaponEnum.REASON_COLLISION &&
     editable.weaponId !== WC_WeaponEnum.REASON_DROWN &&
@@ -644,8 +644,8 @@ export function inflictDamage(
       (s_DamageArmour[editable.weaponId][0] &&
         (!s_DamageArmourToggle[1] ||
           (s_DamageArmour[editable.weaponId][1] && editable.bodyPart === 3) ||
-          !s_DamageArmour[editable.weaponId][1])))
-  ) {
+          !s_DamageArmour[editable.weaponId][1])));
+  if (hitArmour) {
     if (editable.amount <= 0.0) {
       editable.amount = playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id);
     }
@@ -659,7 +659,7 @@ export function inflictDamage(
     playerHealth.set(editable.player.id, playerHealth.get(editable.player.id) - editable.amount);
   }
 
-  if (playerArmour.get(editable.player.id) < 0.0) {
+  if (hitArmour && playerArmour.get(editable.player.id) < 0.0) {
     damageDoneArmour.set(
       editable.player.id,
       editable.amount + playerArmour.get(editable.player.id),
@@ -670,9 +670,12 @@ export function inflictDamage(
       playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id),
     );
     playerArmour.set(editable.player.id, 0);
-  } else {
+  } else if (hitArmour) {
     damageDoneArmour.set(editable.player.id, editable.amount);
     damageDoneHealth.set(editable.player.id, 0.0);
+  } else {
+    damageDoneArmour.set(editable.player.id, 0.0);
+    damageDoneHealth.set(editable.player.id, editable.amount);
   }
 
   if (playerHealth.get(editable.player.id) <= 0.0) {

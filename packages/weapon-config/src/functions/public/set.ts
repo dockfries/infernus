@@ -26,6 +26,8 @@ import {
   playerHealthBarBorderColor,
   playerHealthBarBGColor,
   playerHealthBarFGColor,
+  playerHealth,
+  playerArmour,
 } from "../../struct";
 import { inflictDamage } from "../internal/damage";
 import { damageFeedUpdate } from "../internal/damageFeed";
@@ -201,8 +203,12 @@ export function setWeaponMaxRange(weaponId: WC_WeaponEnum, range: number) {
 export function setPlayerMaxHealth(player: Player, value: number) {
   if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS && value > 0.0) {
     playerMaxHealth.set(player.id, value);
-    updateHealthBar(player, true);
 
+    if (playerHealth.get(player.id) > value) {
+      playerHealth.set(player.id, value);
+    }
+
+    updateHealthBar(player, true);
     return 1;
   }
 
@@ -212,8 +218,12 @@ export function setPlayerMaxHealth(player: Player, value: number) {
 export function setPlayerMaxArmour(player: Player, value: number) {
   if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS && value > 0.0) {
     playerMaxArmour.set(player.id, value);
-    updateHealthBar(player, true);
 
+    if (playerArmour.get(player.id) > value) {
+      playerArmour.set(player.id, value);
+    }
+
+    updateHealthBar(player, true);
     return 1;
   }
 
@@ -228,11 +238,7 @@ export function damagePlayer(
   bodyPart: WC_BodyPartsEnum = WC_BodyPartsEnum.UNKNOWN,
   ignore_armour = false,
 ) {
-  if (player.id < 0 || player.id >= LimitsEnum.MAX_PLAYERS || !player.isConnected()) {
-    return 0;
-  }
-
-  if (amount < 0.0) {
+  if (!player.isConnected() || amount < 0.0) {
     return 0;
   }
 
@@ -240,10 +246,7 @@ export function damagePlayer(
     weaponId = WC_WeaponEnum.UNKNOWN;
   }
 
-  if (
-    issuerId !== InvalidEnum.PLAYER_ID &&
-    (issuerId.id < 0 || issuerId.id >= LimitsEnum.MAX_PLAYERS || !issuerId.isConnected())
-  ) {
+  if (issuerId !== InvalidEnum.PLAYER_ID && !issuerId.isConnected()) {
     issuerId = InvalidEnum.PLAYER_ID;
   }
 
@@ -253,9 +256,11 @@ export function damagePlayer(
 }
 
 export function resyncPlayer(player: Player) {
-  saveSyncData(player);
-  beingReSynced.set(player.id, true);
-  spawnPlayerInPlace(player);
+  if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
+    saveSyncData(player);
+    beingReSynced.set(player.id, true);
+    spawnPlayerInPlace(player);
+  }
 }
 
 export function setCbugDeathDelay(toggle: boolean) {

@@ -102,6 +102,7 @@ PlayerEvent.onConnect(({ player, next }) => {
   isDying.set(player.id, false);
   beingReSynced.set(player.id, false);
   spawnForStreamedIn.set(player.id, false);
+  knifeTimeout.set(player.id, null);
   world.set(player.id, 0);
   lastAnim.set(player.id, -1);
   lastZVelo.set(player.id, 0.0);

@@ -74,6 +74,9 @@ PlayerEvent.onSpawn(({ player, next }) => {
   if (beingReSynced.get(player.id)) {
     beingReSynced.set(player.id, false);
 
+    playerHealth.set(player.id, syncData.get(player.id).health);
+    playerArmour.set(player.id, syncData.get(player.id).armour);
+
     updateHealthBar(player, true);
 
     orig_playerMethods.setPos.call(
@@ -313,26 +316,27 @@ export const internalPlayerDeath: Parameters<(typeof PlayerEvent)["onDeath"]>[0]
       editable.amount = playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id);
     }
 
-    if (
-      editable.weaponId === WC_WeaponEnum.REASON_COLLISION ||
-      editable.weaponId === WC_WeaponEnum.REASON_DROWN ||
-      editable.weaponId === WC_WeaponEnum.CARPARK
-    ) {
-      if (editable.amount <= 0.0) {
-        editable.amount = playerHealth.get(editable.player.id);
-      }
+    const hitArmour =
+      editable.weaponId != WC_WeaponEnum.REASON_COLLISION &&
+      editable.weaponId !== WC_WeaponEnum.REASON_DROWN &&
+      editable.weaponId !== WC_WeaponEnum.CARPARK;
 
-      playerHealth.set(editable.player.id, playerHealth.get(editable.player.id) - editable.amount);
-    } else {
+    if (hitArmour) {
       if (editable.amount <= 0.0) {
         editable.amount =
           playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id);
       }
 
       playerArmour.set(editable.player.id, playerArmour.get(editable.player.id) - editable.amount);
+    } else {
+      if (editable.amount <= 0.0) {
+        editable.amount = playerHealth.get(editable.player.id);
+      }
+
+      playerHealth.set(editable.player.id, playerHealth.get(editable.player.id) - editable.amount);
     }
 
-    if (playerArmour.get(editable.player.id) < 0.0) {
+    if (hitArmour && playerArmour.get(editable.player.id) < 0.0) {
       damageDoneArmour.set(
         editable.player.id,
         editable.amount + playerArmour.get(editable.player.id),
@@ -343,9 +347,12 @@ export const internalPlayerDeath: Parameters<(typeof PlayerEvent)["onDeath"]>[0]
         playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id),
       );
       playerArmour.set(editable.player.id, 0.0);
-    } else {
+    } else if (hitArmour) {
       damageDoneArmour.set(editable.player.id, editable.amount);
       damageDoneHealth.set(editable.player.id, 0.0);
+    } else {
+      damageDoneArmour.set(editable.player.id, 0.0);
+      damageDoneHealth.set(editable.player.id, editable.amount);
     }
 
     if (playerHealth.get(editable.player.id) <= 0.0) {

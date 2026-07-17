@@ -206,8 +206,8 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
         return 0;
       }
 
-      damageDoneHealth.set(editable.issuerId.id, playerHealth.get(editable.issuerId.id));
-      damageDoneArmour.set(editable.issuerId.id, playerArmour.get(editable.issuerId.id));
+      damageDoneHealth.set(editable.player.id, playerHealth.get(editable.player.id));
+      damageDoneArmour.set(editable.player.id, playerArmour.get(editable.player.id));
 
       onPlayerDamageDone(
         editable.player,

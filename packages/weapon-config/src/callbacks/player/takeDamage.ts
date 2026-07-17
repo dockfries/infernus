@@ -152,7 +152,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
         animLib,
         animName,
         false,
-        4000 - orig_playerMethods.getPing.call(editable.player),
+        Math.max(4000 - orig_playerMethods.getPing.call(editable.player), 3000),
       );
 
       useTrigger("OnPlayerDeath")!(

@@ -59,6 +59,10 @@ export function wc_IsPlayerSpawned(player: Player) {
 }
 
 export function wc_IsPlayerPaused(player: Player) {
+  if (player.id < 0 || player.id >= LimitsEnum.MAX_PLAYERS) {
+    return false;
+  }
+
   return Date.now() - lastUpdateTick.get(player.id) > 2000;
 }
 
