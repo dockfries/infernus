@@ -1,3 +1,5 @@
+## [0.14.6](https://github.com/dockfries/infernus/compare/v0.14.5...v0.14.6) (2026-07-17)
+
 ## [0.14.5](https://github.com/dockfries/infernus/compare/v0.14.4...v0.14.5) (2026-05-25)
 
 ### ⚠ BREAKING CHANGES
