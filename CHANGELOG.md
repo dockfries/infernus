@@ -1,13 +1,43 @@
 ## [0.14.6](https://github.com/dockfries/infernus/compare/v0.14.5...v0.14.6) (2026-07-17)
 
+### ⚠ BREAKING CHANGES
+
+- **raknet:** overhaul BitStream API — unify readValue/writeValue, drop polyfill
+
+### Features
+
+- **cef:** loadUrl, setEscapeMenuMode ([6e5e862](https://github.com/dockfries/infernus/commit/6e5e862b7d45e79e0573fe07ffa0bb0b28388672))
+- **cef:** setPlayerListMode, onDownloadProgress ([f90f6e1](https://github.com/dockfries/infernus/commit/f90f6e16adc3cdef6d81d83dc4de72c67fa3bded))
+- **ompp:** create a wrapper for ompp ([422ff55](https://github.com/dockfries/infernus/commit/422ff55f8351112f279abc14cc9248b5f33a392f))
+- **raknet:** overhaul BitStream API — unify readValue/writeValue, drop polyfill ([859639d](https://github.com/dockfries/infernus/commit/859639d474e64c85f0fcc1e2355f259e647a66aa))
+- **root:** upgrade pnpm 11 ([28d2214](https://github.com/dockfries/infernus/commit/28d22140e65d156112c7cd842cc0fe7160b3fe2c))
+- **s-art:** create a wrapper for s-art ([e1cf69b](https://github.com/dockfries/infernus/commit/e1cf69b0ea9dd89c31a293caa1f67d62fc49f0d8))
+- **samp-voice:** add natives ([2ddbaee](https://github.com/dockfries/infernus/commit/2ddbaee75cb4ccdca22802ae8ec2d9c3e0bc5e4c))
+- **veh-para:** add a wrapper for veh-para ([885ad57](https://github.com/dockfries/infernus/commit/885ad573290b033258820c1d04ca8ac8a7c5c80f))
+- **weapon-config:** sync 359 ([d5a72cd](https://github.com/dockfries/infernus/commit/d5a72cd61ce449c74171f992aaafd4f15d813f2e))
+- **weapon-config:** sync 359, 362 ([d71e45f](https://github.com/dockfries/infernus/commit/d71e45f49165849720b5cff98f984228d75557c8))
+- **weapon-config:** sync 360, 361 ([b6f7224](https://github.com/dockfries/infernus/commit/b6f72247ef0c27cd0ecf4de1eaa2666fe488981f))
+- **weapon-config:** sync 364 ([6267eb3](https://github.com/dockfries/infernus/commit/6267eb3fc6b037d04990c3e8261f75c6f33c16e5))
+
+### Bug Fixes
+
+- **ci:** pnpm-lock fix ([09bed60](https://github.com/dockfries/infernus/commit/09bed60a2b93df3d9424a07b1af6b19a2c417e86))
+- **colandreas, create-app:** export and import ([0f8f00f](https://github.com/dockfries/infernus/commit/0f8f00f25f64e315707933b7df750b09d363291d))
+- **core:** if exit is triggered first, stop init ([2a82f4a](https://github.com/dockfries/infernus/commit/2a82f4a9d113729a7f8394a0d0761080db8fb214))
+- **core:** maybe check again afterEach ([6999f22](https://github.com/dockfries/infernus/commit/6999f220305f06f3a4feb771e80fd08a6693a17b))
+- **raknet:** correct string read/write size handling ([986a411](https://github.com/dockfries/infernus/commit/986a4112e9c08fa47c4c5c441318eb8415695b3e))
+- **s-art:** export exceptions ([74e65fa](https://github.com/dockfries/infernus/commit/74e65fa144d02b57896c7b5b62855218ad4f13a1))
+- **samp-voice:** checkSpeaker ([7e836ec](https://github.com/dockfries/infernus/commit/7e836ec0e3a4f920bf63d94f99fbe06d3af65361))
+- **skills:** correct SKILL docs to match actual API code ([b57da9c](https://github.com/dockfries/infernus/commit/b57da9c5318e6d84a574ed119b9c4bcd60fa2652))
+
 ## [0.14.5](https://github.com/dockfries/infernus/compare/v0.14.4...v0.14.5) (2026-05-25)
 
 ### ⚠ BREAKING CHANGES
 
-- **gps,map-loader:** MapLoaderError renamed to MapLoaderException.
 - **mapandreas:** init is now async and throws on failure instead of
   returning a boolean. unload is now synchronous and returns void.
   NoBuffer mode is treated as Full, Medium as Minimal.
+- **gps,map-loader:** MapLoaderError renamed to MapLoaderException.
 - **cef:** untested emit, on
 - **cef:** untested, but used if available for cef next
 
@@ -39,445 +69,427 @@
 - **core:** manage model download ([7d0bbf9](https://github.com/dockfries/infernus/commit/7d0bbf99b8e4060fc70ddbaec0f9e9ece53f6c10))
 - **weapon-config:** wtf s_FakeQuat == s_FakeQuat and angle != angle? ([c6f1d3a](https://github.com/dockfries/infernus/commit/c6f1d3ac0cea843e9eeb9f7f842d17615a9ba7d7))
 
-## <small>0.14.4 (2026-01-30)</small>
-
-- fix(core): spreadErr CommandErrors.RECEIVED_THROW ([e32a9e5](https://github.com/dockfries/infernus/commit/e32a9e5))
-- fix(core): types in .d.ts ([055a2ea](https://github.com/dockfries/infernus/commit/055a2ea))
-
-## <small>0.14.3 (2026-01-28)</small>
-
-- chore(readme): use npmx.dev ([c0af8d8](https://github.com/dockfries/infernus/commit/c0af8d8))
-- chore(release): cef v0.1.2 ([0ec1719](https://github.com/dockfries/infernus/commit/0ec1719))
-- chore(release): colandreas v0.1.2 ([c954747](https://github.com/dockfries/infernus/commit/c954747))
-- chore(release): distance v0.1.2 ([35096fa](https://github.com/dockfries/infernus/commit/35096fa))
-- chore(release): drift-detection v0.1.2 ([3c5c740](https://github.com/dockfries/infernus/commit/3c5c740))
-- chore(release): gps v0.0.3 ([ab87cfb](https://github.com/dockfries/infernus/commit/ab87cfb))
-- chore(release): mapandreas v0.3.2 ([f419fd2](https://github.com/dockfries/infernus/commit/f419fd2))
-- chore(release): progress v0.0.4 ([f679fb1](https://github.com/dockfries/infernus/commit/f679fb1))
-- chore(release): qrcode v0.0.5 ([a51bbbd](https://github.com/dockfries/infernus/commit/a51bbbd))
-- chore(release): query v0.1.2 ([95afb02](https://github.com/dockfries/infernus/commit/95afb02))
-- chore(release): raknet v0.13.2 ([f242110](https://github.com/dockfries/infernus/commit/f242110))
-- chore(release): rec v0.0.4 ([ff3f4e7](https://github.com/dockfries/infernus/commit/ff3f4e7))
-- chore(release): samp-voice v0.0.4 ([33b6c9f](https://github.com/dockfries/infernus/commit/33b6c9f))
-- chore(release): weapon-config v0.3.3 ([a9a234f](https://github.com/dockfries/infernus/commit/a9a234f))
-- chore(root): update deps ([bb30173](https://github.com/dockfries/infernus/commit/bb30173))
-- revert(query): iconv ([a2c1735](https://github.com/dockfries/infernus/commit/a2c1735))
-- refactor(packages): error exception ([071d66f](https://github.com/dockfries/infernus/commit/071d66f))
-- fix(build): rolldown dts no export failed to emit declaration file ([d10d2df](https://github.com/dockfries/infernus/commit/d10d2df))
-- fix(core): inject for three getMethods ([a6a63dd](https://github.com/dockfries/infernus/commit/a6a63dd))
-- feat(core)!: revert player entity checkPoint, isLeavingSpectatorMode ([d8cabf1](https://github.com/dockfries/infernus/commit/d8cabf1))
-- feat(core): add npc, player natives ([f7cf6ac](https://github.com/dockfries/infernus/commit/f7cf6ac))
-- feat(weapon-config): update takeDamage 347 ([28337a2](https://github.com/dockfries/infernus/commit/28337a2))
-- build(root): use rolldown ([ed3b1b9](https://github.com/dockfries/infernus/commit/ed3b1b9))
-
-## <small>0.14.2 (2025-12-31)</small>
-
-- chore(core): eslint ([e70e834](https://github.com/dockfries/infernus/commit/e70e834))
-- chore(create-app): maybe keep husky? ([80b9fd8](https://github.com/dockfries/infernus/commit/80b9fd8))
-- chore(release): cef v0.1.1 ([3b8ba5a](https://github.com/dockfries/infernus/commit/3b8ba5a))
-- chore(release): colandreas v0.1.1 ([65eeea4](https://github.com/dockfries/infernus/commit/65eeea4))
-- chore(release): create-app v0.2.17 ([1edfd80](https://github.com/dockfries/infernus/commit/1edfd80))
-- chore(release): distance v0.1.1 ([bc0d8f1](https://github.com/dockfries/infernus/commit/bc0d8f1))
-- chore(release): drift-detection v0.1.1 ([54e236a](https://github.com/dockfries/infernus/commit/54e236a))
-- chore(release): e-selection v0.0.2 ([6db4239](https://github.com/dockfries/infernus/commit/6db4239))
-- chore(release): fcnpc v0.1.1 ([4027009](https://github.com/dockfries/infernus/commit/4027009))
-- chore(release): filterscript v0.14.1 ([e3dbcf6](https://github.com/dockfries/infernus/commit/e3dbcf6))
-- chore(release): gps v0.0.2 ([d0a94ff](https://github.com/dockfries/infernus/commit/d0a94ff))
-- chore(release): map-loader v0.1.1 ([5adb814](https://github.com/dockfries/infernus/commit/5adb814))
-- chore(release): mapandreas v0.3.1 ([3fb2dc7](https://github.com/dockfries/infernus/commit/3fb2dc7))
-- chore(release): nex-ac v0.3.1 ([7a45c45](https://github.com/dockfries/infernus/commit/7a45c45))
-- chore(release): progress v0.0.2 ([7758b38](https://github.com/dockfries/infernus/commit/7758b38))
-- chore(release): progress v0.0.3 ([c1e4e2f](https://github.com/dockfries/infernus/commit/c1e4e2f))
-- chore(release): qrcode v0.0.4 ([703597e](https://github.com/dockfries/infernus/commit/703597e))
-- chore(release): raknet v0.13.1 ([7fd31b8](https://github.com/dockfries/infernus/commit/7fd31b8))
-- chore(release): rec v0.0.3 ([df576a6](https://github.com/dockfries/infernus/commit/df576a6))
-- chore(release): samp-voice v0.0.3 ([19ebed7](https://github.com/dockfries/infernus/commit/19ebed7))
-- chore(release): weapon-config v0.3.1 ([1f834fe](https://github.com/dockfries/infernus/commit/1f834fe))
-- chore(release): weapon-config v0.3.2 ([f94d4cf](https://github.com/dockfries/infernus/commit/f94d4cf))
-- feat(create-app): only update cache when dep version equal ([d6f6e07](https://github.com/dockfries/infernus/commit/d6f6e07))
-- feat(progress): maybe we can hook destroy textdraw ([9d726ac](https://github.com/dockfries/infernus/commit/9d726ac))
-- fix(core): match cmdText maybe null ([89bf9c3](https://github.com/dockfries/infernus/commit/89bf9c3))
-- fix(core): streamer pickup streamInOut player type ([48f176e](https://github.com/dockfries/infernus/commit/48f176e))
-- fix(weapon-config): use try catch for new TextDraw ([ee563a2](https://github.com/dockfries/infernus/commit/ee563a2))
-
-## <small>0.14.1 (2025-12-19)</small>
-
-- chore(build): await subProc exit ([5bf4f67](https://github.com/dockfries/infernus/commit/5bf4f67))
-- chore(release): filterscript v0.14.0 ([e438e4c](https://github.com/dockfries/infernus/commit/e438e4c))
-- chore(release): nex-ac v0.3.0 ([6e6041b](https://github.com/dockfries/infernus/commit/6e6041b))
-- chore(release): raknet v0.13.0 ([d8063e1](https://github.com/dockfries/infernus/commit/d8063e1))
-- chore(release): weapon-config v0.3.0 ([6cd38a6](https://github.com/dockfries/infernus/commit/6cd38a6))
-- feat(core): a couple of native types, missing natives, default params ([0d810d0](https://github.com/dockfries/infernus/commit/0d810d0))
-
-## 0.14.0 (2025-12-17)
-
-- feat(core): add npc angle to pos natives ([9d9e103](https://github.com/dockfries/infernus/commit/9d9e103))
-- feat(core): moveType to auto by default ([ce75809](https://github.com/dockfries/infernus/commit/ce75809))
-- feat(core, nex-ac, weapon-config)!: pickup add per player, change some throw message ([86a011c](https://github.com/dockfries/infernus/commit/86a011c))
-
-## <small>0.13.4 (2025-12-01)</small>
-
-- feat(core): npc getPosMovingTo, getCustomSkin ([5f75d40](https://github.com/dockfries/infernus/commit/5f75d40))
-- feat(progress): init ([7094299](https://github.com/dockfries/infernus/commit/7094299))
-- chore(readme): use week statics npm download ([e7f4c39](https://github.com/dockfries/infernus/commit/e7f4c39))
-- chore(release): progress v0.0.1 ([012f428](https://github.com/dockfries/infernus/commit/012f428))
-- chore(root): update deps ([ca87511](https://github.com/dockfries/infernus/commit/ca87511))
-- refactor(progress): use `LD_SPAC:white` control ([b0f381c](https://github.com/dockfries/infernus/commit/b0f381c))
-- docs(features): remove force streamer ([30a2994](https://github.com/dockfries/infernus/commit/30a2994))
-- docs(hooks): update ([dacdffa](https://github.com/dockfries/infernus/commit/dacdffa))
-- fix(core): remove unused player gangzone destroy ([938569a](https://github.com/dockfries/infernus/commit/938569a))
-
-## <small>0.13.3 (2025-11-21)</small>
-
-- fix(core): getAnimationName ([fde73fa](https://github.com/dockfries/infernus/commit/fde73fa))
-- fix(core): getPlayerCameraTarget, some getMethods, id constructor check invalid ([9ce3532](https://github.com/dockfries/infernus/commit/9ce3532))
-- fix(core): objectMp edit player params ([6d23ea9](https://github.com/dockfries/infernus/commit/6d23ea9))
-- docs(zh-Hans): rename zh-CN to zh-Hans ([64a5a5c](https://github.com/dockfries/infernus/commit/64a5a5c))
-- feat(core): some origin playerPool need destroy onDisconnect ([de3a6fe](https://github.com/dockfries/infernus/commit/de3a6fe))
-- chore(release): filterscript v0.13.2 ([87eaf1b](https://github.com/dockfries/infernus/commit/87eaf1b))
-
-## <small>0.13.2 (2025-11-06)</small>
-
-- fix(build): update build configuration and export types ([207b40f](https://github.com/dockfries/infernus/commit/207b40f))
-- feat(fs): npc should use create method ([f1cca06](https://github.com/dockfries/infernus/commit/f1cca06))
-- chore(release): nex-ac v0.2.2 ([7f75cc3](https://github.com/dockfries/infernus/commit/7f75cc3))
-- chore(release): weapon-config v0.2.1 ([eae8e71](https://github.com/dockfries/infernus/commit/eae8e71))
-
-## <small>0.13.1 (2025-11-06)</small>
-
-- refactor(core): entity create fail message, maybe other reason fail, not maximum ([8ff6f5e](https://github.com/dockfries/infernus/commit/8ff6f5e))
-- refactor(core): extract npc setSurfingPlayerObject method ([1f5af82](https://github.com/dockfries/infernus/commit/1f5af82))
-- refactor(core): gangzone, object, textdraw, textlabel constructor id ([783aa6c](https://github.com/dockfries/infernus/commit/783aa6c))
-- refactor(core): move streamer from core devDeps to root deps ([49ad2f5](https://github.com/dockfries/infernus/commit/49ad2f5))
-- refactor(core): objectMp attachTo methods ([d713ae4](https://github.com/dockfries/infernus/commit/d713ae4))
-- refactor(core): restructure Menu class and NPC function exports ([ff94e49](https://github.com/dockfries/infernus/commit/ff94e49))
-- feat(core, filterscript): add charset to menu ([5f78d48](https://github.com/dockfries/infernus/commit/5f78d48))
-- feat(core, streamer, nex-ac, weapon-config): change **inject** methods ([e13443f](https://github.com/dockfries/infernus/commit/e13443f))
-- refactor(core. nex-ac, weapon-config): **inject** naming ([bad527a](https://github.com/dockfries/infernus/commit/bad527a))
-- refactor(fs, nex-ac): replace loose equality with strict equality ([3ee1be9](https://github.com/dockfries/infernus/commit/3ee1be9))
-- docs(intro): update ([33b7592](https://github.com/dockfries/infernus/commit/33b7592))
-- feat(core): improve error handling and afterEach execution in bus middleware ([28d683e](https://github.com/dockfries/infernus/commit/28d683e))
-- feat(core): make **inject** methods lowercase and shorthand ([a856a68](https://github.com/dockfries/infernus/commit/a856a68))
-- feat(core): player, npc **inject** ([8ce007e](https://github.com/dockfries/infernus/commit/8ce007e))
-- feat(distance): add actor, object functions ([e668837](https://github.com/dockfries/infernus/commit/e668837))
-- feat(nex-ac): 1.9.67 ([575649a](https://github.com/dockfries/infernus/commit/575649a))
-- feat(nex-ac): initialize arrays with proper sizes in ACInfoStruct ([623f595](https://github.com/dockfries/infernus/commit/623f595))
-- chore(release): distance v0.1.0 ([f5bb3fe](https://github.com/dockfries/infernus/commit/f5bb3fe))
-- chore(release): filterscript v0.13.0 ([306d377](https://github.com/dockfries/infernus/commit/306d377))
-- chore(release): nex-ac v0.2.0 ([290517a](https://github.com/dockfries/infernus/commit/290517a))
-- chore(release): nex-ac v0.2.1 ([a585374](https://github.com/dockfries/infernus/commit/a585374))
-- chore(release): weapon-config v0.2.0 ([cc89837](https://github.com/dockfries/infernus/commit/cc89837))
-- chore(root): update contributor src ([bcc9085](https://github.com/dockfries/infernus/commit/bcc9085))
-- fix(core): streamer getPlayerCameraTarget Streamer.INVALID_ID ([ac3ca61](https://github.com/dockfries/infernus/commit/ac3ca61))
-- fix(nex-ac): rename ru locale file to ru-RU ([5041ea8](https://github.com/dockfries/infernus/commit/5041ea8))
-
-## 0.13.0 (2025-10-31)
-
-- feat(core): add Actor entity class and update native wrapper ([855fdeb](https://github.com/dockfries/infernus/commit/855fdeb))
-- feat(core): add origin object/playerObject in same ObjectMp ([5577b43](https://github.com/dockfries/infernus/commit/5577b43))
-- feat(core): add Pickup entity and improve entity constructors ([8f081f3](https://github.com/dockfries/infernus/commit/8f081f3))
-- feat(core): add textdraw isPlayer ([4d7e619](https://github.com/dockfries/infernus/commit/4d7e619))
-- feat(core): improve object attachment and return type consistency ([7a8cd43](https://github.com/dockfries/infernus/commit/7a8cd43))
-- feat(core): make object drawDistance optional with default value ([62e2cb4](https://github.com/dockfries/infernus/commit/62e2cb4))
-- feat(core): more **inject** methods ([f12efea](https://github.com/dockfries/infernus/commit/f12efea))
-- feat(core): more LimitsEnum ([154f605](https://github.com/dockfries/infernus/commit/154f605))
-- feat(core): npc getPlayer ([d76729c](https://github.com/dockfries/infernus/commit/d76729c))
-- feat(core): npc/player surfing object ([1ce048b](https://github.com/dockfries/infernus/commit/1ce048b))
-- feat(player): add player map icon api ([0af89c8](https://github.com/dockfries/infernus/commit/0af89c8))
-- feat(samp-voice): try port samp-voice ([1aa9ffc](https://github.com/dockfries/infernus/commit/1aa9ffc))
-- feat(weapon-config): use origin checkpoint logic replace streamer, add pickup event ([d2ef2b2](https://github.com/dockfries/infernus/commit/d2ef2b2))
-- refactor(core): move player internal properties ([52c7c84](https://github.com/dockfries/infernus/commit/52c7c84))
-- refactor(core): objectMp destroy methods ([2c247f2](https://github.com/dockfries/infernus/commit/2c247f2))
-- refactor(core): rename controller to components, rename utils ([6d58269](https://github.com/dockfries/infernus/commit/6d58269))
-- refactor(core): reorganize exports and consolidate utils module ([42577db](https://github.com/dockfries/infernus/commit/42577db))
-- refactor(core): reorganize pickup exports and remove npc module ([4ddb3a7](https://github.com/dockfries/infernus/commit/4ddb3a7))
-- refactor(core): undefined type checking, some entity isGlobal ([01eeea8](https://github.com/dockfries/infernus/commit/01eeea8))
-- refactor(core): validation checks for maximum limits ([264cbbe](https://github.com/dockfries/infernus/commit/264cbbe))
-- feat(core, fs, streamer): add TextLabel component, rename Los to LOS ([a99e7f3](https://github.com/dockfries/infernus/commit/a99e7f3))
-- feat(core, nex-ac): pickup inject ([c1d66b7](https://github.com/dockfries/infernus/commit/c1d66b7))
-- feat(core)!: add checkpoint and raceCp ([e0dbf45](https://github.com/dockfries/infernus/commit/e0dbf45))
-- refactor(core, e-selection): rename internalProps ([f600245](https://github.com/dockfries/infernus/commit/f600245))
-- refactor(fs, nex-ac): onPlayerEditAttached ([e7c845e](https://github.com/dockfries/infernus/commit/e7c845e))
-- fix(core): gangzone perPlayerPool manage ([dbc1579](https://github.com/dockfries/infernus/commit/dbc1579))
-- fix(core): textDraw perPlayerPool manage ([bd9f149](https://github.com/dockfries/infernus/commit/bd9f149))
-- chore(packages): add exports.types in package.json ([550fbaa](https://github.com/dockfries/infernus/commit/550fbaa))
-- chore(release): samp-voice v0.0.2 ([e85825a](https://github.com/dockfries/infernus/commit/e85825a))
-
-## <small>0.12.7 (2025-10-25)</small>
-
-- feat(core): npc new natives, entity invalid enum ([05d0981](https://github.com/dockfries/infernus/commit/05d0981))
-
-## <small>0.12.6 (2025-10-19)</small>
-
-- fix(build): rollup build dts includeExternal streamer ([713ab8f](https://github.com/dockfries/infernus/commit/713ab8f))
-- fix(build): script build-all raknet should be fixed ([b836927](https://github.com/dockfries/infernus/commit/b836927))
-- fix(core): streamer area missing priority ([326518a](https://github.com/dockfries/infernus/commit/326518a))
-- fix(weapon-config): sync upstream 339~341 pr ([1b7d586](https://github.com/dockfries/infernus/commit/1b7d586))
-- refactor(fcnpc): addPoints remove two-dimensional array ([0e8153a](https://github.com/dockfries/infernus/commit/0e8153a))
-- refactor(shared): shared utilities ([497afec](https://github.com/dockfries/infernus/commit/497afec))
-- chore(release): weapon-config v0.1.2 ([9236d86](https://github.com/dockfries/infernus/commit/9236d86))
-- chore(workspace): update deps ([39a3be3](https://github.com/dockfries/infernus/commit/39a3be3))
-- docs(intro): update ([aced22c](https://github.com/dockfries/infernus/commit/aced22c))
-
-## <small>0.12.5 (2025-10-15)</small>
-
-- feat(core): add isUseScriptLoaded, support generic speculation load arguments ([e8864b8](https://github.com/dockfries/infernus/commit/e8864b8))
-- feat(core): vehicle getRotation ([428f2f6](https://github.com/dockfries/infernus/commit/428f2f6))
-- chore(release): filterscript v0.12.1 ([59882c8](https://github.com/dockfries/infernus/commit/59882c8))
-
-## <small>0.12.4 (2025-10-13)</small>
-
-- fix(core): maybe compat sampgdk and npc component ([5651196](https://github.com/dockfries/infernus/commit/5651196))
-- fix(core): npc spawn, respawn event name case ([d6d862d](https://github.com/dockfries/infernus/commit/d6d862d))
-- fix(fs): gl_npcs, startPlayback is fixed path `npcmodes/records` ([7d3ef29](https://github.com/dockfries/infernus/commit/7d3ef29))
-- feat(core): npc gamemodeexit clear skip ([eb53aa3](https://github.com/dockfries/infernus/commit/eb53aa3))
-- refactor(core): change identifiers to float type (#55) ([53e2900](https://github.com/dockfries/infernus/commit/53e2900)), closes [#55](https://github.com/dockfries/infernus/issues/55)
-- refactor(fs): gl_npcs npc component ([d84b48b](https://github.com/dockfries/infernus/commit/d84b48b))
-- refactor(gl_npcs): npcmodes useStateChange, change npc vehicle model info ([95d4fa9](https://github.com/dockfries/infernus/commit/95d4fa9))
-- chore(deps): update dependencies and fix NPC cleanup ([3f04507](https://github.com/dockfries/infernus/commit/3f04507))
-- chore(release): raknet v0.12.2 ([2e6a746](https://github.com/dockfries/infernus/commit/2e6a746))
-
-## <small>0.12.3 (2025-10-09)</small>
-
-- chore(release): create-app v0.2.16 ([1bfdd97](https://github.com/dockfries/infernus/commit/1bfdd97))
-- feat(streamer): add constants module and refactor magic values ([f0442fb](https://github.com/dockfries/infernus/commit/f0442fb))
-- fix(build): `SIGINT` kill ([5daa071](https://github.com/dockfries/infernus/commit/5daa071))
-- fix(core): correct logical errors and resource handling in core controllers ([213ccaf](https://github.com/dockfries/infernus/commit/213ccaf))
-- fix(core): correct typos and parameter naming in core entities ([e67f051](https://github.com/dockfries/infernus/commit/e67f051))
-- fix(core): missing events identifier, some type ([b6260bd](https://github.com/dockfries/infernus/commit/b6260bd))
-- fix(raknet): improve type safety and error handling in BitStream ([0311a5d](https://github.com/dockfries/infernus/commit/0311a5d))
-- refactor(create-app): improve error handling and proxy configuration ([1fc9e08](https://github.com/dockfries/infernus/commit/1fc9e08))
-- docs(intro): update ([0d50c96](https://github.com/dockfries/infernus/commit/0d50c96))
-
-## <small>0.12.2 (2025-10-07)</small>
-
-- fix(core): iconv-lite import esm ([aa750ce](https://github.com/dockfries/infernus/commit/aa750ce))
-- fix(core): npc id type ([0720271](https://github.com/dockfries/infernus/commit/0720271))
-- fix(raknet): some read macros return type ([f8cca22](https://github.com/dockfries/infernus/commit/f8cca22))
-- feat(core): npc max_npcs, invalid id, types ([00939f5](https://github.com/dockfries/infernus/commit/00939f5))
-- feat(core): npc node,path,record class, remove deprecate funcs ([d02da25](https://github.com/dockfries/infernus/commit/d02da25))
-- chore(release): raknet v0.12.1 ([6ed824e](https://github.com/dockfries/infernus/commit/6ed824e))
-
-## <small>0.12.1 (2025-09-04)</small>
-
-- chore(core): npc typo ([552e306](https://github.com/dockfries/infernus/commit/552e306))
-- chore(release): colandreas v0.1.0 ([0f03710](https://github.com/dockfries/infernus/commit/0f03710))
-- chore(release): distance v0.0.1 ([485bf98](https://github.com/dockfries/infernus/commit/485bf98))
-- chore(release): drift-detection v0.1.0 ([ab3eab3](https://github.com/dockfries/infernus/commit/ab3eab3))
-- chore(release): fcnpc v0.1.0 ([b314523](https://github.com/dockfries/infernus/commit/b314523))
-- chore(release): filterscript v0.12.0 ([af5f40a](https://github.com/dockfries/infernus/commit/af5f40a))
-- chore(release): map-loader v0.1.0 ([af1586e](https://github.com/dockfries/infernus/commit/af1586e))
-- chore(release): mapandreas v0.3.0 ([da6dfcf](https://github.com/dockfries/infernus/commit/da6dfcf))
-- chore(release): nex-ac v0.1.0 ([b340386](https://github.com/dockfries/infernus/commit/b340386))
-- chore(release): raknet v0.12.0 ([0cac3da](https://github.com/dockfries/infernus/commit/0cac3da))
-- chore(release): weapon-config v0.1.0 ([09b4ffd](https://github.com/dockfries/infernus/commit/09b4ffd))
-- chore(release): weapon-config v0.1.1 ([14a9fee](https://github.com/dockfries/infernus/commit/14a9fee))
-- feat(core): add onNpcFinishMovePathPoint ([fe38204](https://github.com/dockfries/infernus/commit/fe38204))
-- feat(core): npc apis ([8af6a88](https://github.com/dockfries/infernus/commit/8af6a88))
-- feat(core): npc apis ([1c1b799](https://github.com/dockfries/infernus/commit/1c1b799))
-- feat(core): npc apis ([d1d961e](https://github.com/dockfries/infernus/commit/d1d961e))
-- feat(core): npc create maybe put in player pool before onPlayerConnect? ([4f72f2d](https://github.com/dockfries/infernus/commit/4f72f2d))
-- fix(weapon-config): fix recursion when setting health to NPC ([e6c609d](https://github.com/dockfries/infernus/commit/e6c609d))
-
-## 0.12.0 (2025-08-10)
-
-- feat(colandreas, map-loader): maybe can check colandreas this way? ([2f5196d](https://github.com/dockfries/infernus/commit/2f5196d))
-- feat(core)!: get methods should return ret, so break changes ([0ece293](https://github.com/dockfries/infernus/commit/0ece293))
-- feat(nex-ac)!: result rename to ret ([1fa7fc7](https://github.com/dockfries/infernus/commit/1fa7fc7))
-- fix(core, colandreas, fs, gps): getPos/facingAngle ([3fed03a](https://github.com/dockfries/infernus/commit/3fed03a))
-- fix(core, fs, nex-ac): getMethods ([9fd4393](https://github.com/dockfries/infernus/commit/9fd4393))
-- fix(core, fs): getMethods ([d9ae995](https://github.com/dockfries/infernus/commit/d9ae995))
-- feat(colandreas): global defined ([1156059](https://github.com/dockfries/infernus/commit/1156059))
-- feat(distance): init ([884b920](https://github.com/dockfries/infernus/commit/884b920))
-- feat(drift-detection): init ([edd4cf4](https://github.com/dockfries/infernus/commit/edd4cf4))
-- feat(raknet): global defined ([ff2ff20](https://github.com/dockfries/infernus/commit/ff2ff20))
-- chore(release): drift-detection v0.0.1 ([fe09681](https://github.com/dockfries/infernus/commit/fe09681))
-- chore(root): update CONTRIBUTING.md ([e87c8b3](https://github.com/dockfries/infernus/commit/e87c8b3))
-
-## <small>0.11.15 (2025-08-03)</small>
-
-- chore(release): map-loader v0.0.1 ([4b6f452](https://github.com/dockfries/infernus/commit/4b6f452))
-- chore(root): update deps ([6fdfc6f](https://github.com/dockfries/infernus/commit/6fdfc6f))
-- fix(core): npc id public ([1360f91](https://github.com/dockfries/infernus/commit/1360f91))
-- feat(core): npc 1106 ([eda67c7](https://github.com/dockfries/infernus/commit/eda67c7))
-- build(deps): bump axios from 1.10.0 to 1.11.0 (#53) ([061ce57](https://github.com/dockfries/infernus/commit/061ce57)), closes [#53](https://github.com/dockfries/infernus/issues/53)
-
-## <small>0.11.14 (2025-07-22)</small>
-
-- chore(create-app, weapon-config): typo ([294d804](https://github.com/dockfries/infernus/commit/294d804))
-- chore(fs, nex-ac): now getPos no need assert ([e13e365](https://github.com/dockfries/infernus/commit/e13e365))
-- chore(root, create-app): update deps ([5552e37](https://github.com/dockfries/infernus/commit/5552e37))
-- docs(hooks, sqlite): update docs ([39d7f03](https://github.com/dockfries/infernus/commit/39d7f03))
-- feat(map-loader): init ([04d390c](https://github.com/dockfries/infernus/commit/04d390c))
-- feat(qrcode): simple qrcode ([375ad38](https://github.com/dockfries/infernus/commit/375ad38))
-- refactor(core): pools, $t format, streamer bundle & fix getMaterialInfo, player simulateCmd ([0f1832e](https://github.com/dockfries/infernus/commit/0f1832e))
-- docs(intro): update ([e6a4322](https://github.com/dockfries/infernus/commit/e6a4322))
-- docs(intro): update ([e1c4837](https://github.com/dockfries/infernus/commit/e1c4837))
-- docs(nav): update nav ([75c6c64](https://github.com/dockfries/infernus/commit/75c6c64))
-- docs(quick-start): dlx cache ([ed80e1c](https://github.com/dockfries/infernus/commit/ed80e1c))
-- chore(deps): update ([996287f](https://github.com/dockfries/infernus/commit/996287f))
-- chore(release): create-app v0.2.15 ([d0dfe86](https://github.com/dockfries/infernus/commit/d0dfe86))
-- chore(release): qrcode v0.0.3 ([e9669a9](https://github.com/dockfries/infernus/commit/e9669a9))
-- chore(release): weapon-config v0.0.2 ([cef5ac7](https://github.com/dockfries/infernus/commit/cef5ac7))
-- chore(release): weapon-config v0.0.3 ([3cf74fd](https://github.com/dockfries/infernus/commit/3cf74fd))
-- chore(root): update readme ([b9cf8a0](https://github.com/dockfries/infernus/commit/b9cf8a0))
-- fix(create-app): tag_name error ([ba37dbe](https://github.com/dockfries/infernus/commit/ba37dbe))
-- fix(weapon-config): 329, 331 ([801e7ef](https://github.com/dockfries/infernus/commit/801e7ef))
-
-## <small>0.11.13 (2025-06-08)</small>
-
-- chore(create-app): open.mp select tips ([1c1f107](https://github.com/dockfries/infernus/commit/1c1f107))
-- chore(fs): import node module with `node:` ([2fcbc27](https://github.com/dockfries/infernus/commit/2fcbc27))
-- chore(release): create-app v0.2.13 ([55df0d9](https://github.com/dockfries/infernus/commit/55df0d9))
-- chore(release): create-app v0.2.14 ([3734d7a](https://github.com/dockfries/infernus/commit/3734d7a))
-- chore(release): query v0.1.1 ([2c5c8f9](https://github.com/dockfries/infernus/commit/2c5c8f9))
-- chore(release): weapon-config v0.0.1 ([89f7a35](https://github.com/dockfries/infernus/commit/89f7a35))
-- chore(root): update deps ([10634d7](https://github.com/dockfries/infernus/commit/10634d7))
-- fix((create-app): assetsByEnv.length ([e79baf1](https://github.com/dockfries/infernus/commit/e79baf1))
-- fix(core, weapon-config): idk, maybe we should unshift it, because special order? ([8b6f9cf](https://github.com/dockfries/infernus/commit/8b6f9cf))
-- feat(create-app): manually select open.mp asset (drawback is global cache like other deps) ([e55a8dd](https://github.com/dockfries/infernus/commit/e55a8dd))
-- fix(query): udp not require too long timeouts because it makes no sense ([0f0d84f](https://github.com/dockfries/infernus/commit/0f0d84f))
-
-## <small>0.11.12 (2025-05-15)</small>
-
-- chore(release): nex-ac v0.0.1 ([b9d95ae](https://github.com/dockfries/infernus/commit/b9d95ae))
-- chore(weapon-config): update readme, export emulated ([9dc1083](https://github.com/dockfries/infernus/commit/9dc1083))
-- chore(weapon-config): wtf s_FakeQuat == s_FakeQuat and angle != angle? ([d834912](https://github.com/dockfries/infernus/commit/d834912))
-- refactor(weapon-config): build circular deps ([c4f5f63](https://github.com/dockfries/infernus/commit/c4f5f63))
-- fix(weapon-config): some issues ([527d260](https://github.com/dockfries/infernus/commit/527d260))
-
-## <small>0.11.11 (2025-05-12)</small>
-
-- chore(nex-ac): adjust file path ([36c0625](https://github.com/dockfries/infernus/commit/36c0625))
-- chore(release): streamer v0.11.3 ([820b72f](https://github.com/dockfries/infernus/commit/820b72f))
-- chore(root): update deps ([9523dc0](https://github.com/dockfries/infernus/commit/9523dc0))
-- chore(weapon-config): remove some comments ([4c0176c](https://github.com/dockfries/infernus/commit/4c0176c))
-- feat(core): onCommandError getSuggestion ([f155e95](https://github.com/dockfries/infernus/commit/f155e95))
-- feat(nex-ac): try port, but there must be bugs ([3ecdb72](https://github.com/dockfries/infernus/commit/3ecdb72))
-- feat(weapon-config): try port, but there are bugs ([c0fcf77](https://github.com/dockfries/infernus/commit/c0fcf77))
-- docs(intro): update omp-node link ([9940b28](https://github.com/dockfries/infernus/commit/9940b28))
-- docs(introduction): slow update status ([4e63c0f](https://github.com/dockfries/infernus/commit/4e63c0f))
-- fix(core): getSurfing should no need params ([25b55eb](https://github.com/dockfries/infernus/commit/25b55eb))
-- fix(nex-ac): maybe else ([5ff8a91](https://github.com/dockfries/infernus/commit/5ff8a91))
-- fix(nex-ac): maybe if ([d2bd7e8](https://github.com/dockfries/infernus/commit/d2bd7e8))
-
-## <small>0.11.10 (2025-04-21)</small>
-
-- chore(release): e-selection v0.0.1 ([7730b97](https://github.com/dockfries/infernus/commit/7730b97))
-- chore(release): query v0.1.0 ([e883de7](https://github.com/dockfries/infernus/commit/e883de7))
-- fix(core): playerTextDraw/GangZone auto destroy valid check ([2065a19](https://github.com/dockfries/infernus/commit/2065a19))
-- fix(core): setPreviewVehColors type, objAlign enum typo, player innerProps ([f9fab4b](https://github.com/dockfries/infernus/commit/f9fab4b))
-- fix(core): vehicle getDriver should no need players params ([3eb0b2b](https://github.com/dockfries/infernus/commit/3eb0b2b))
-- fix(query): use chardetng when run out of samp-node ([495f502](https://github.com/dockfries/infernus/commit/495f502))
-- feat(core): npc natives ([98a02d4](https://github.com/dockfries/infernus/commit/98a02d4))
-- feat(e-selection): try port eSelection ([29fcc1b](https://github.com/dockfries/infernus/commit/29fcc1b))
-- feat(types): minimized samp-node api types for infernus ([32c82c6](https://github.com/dockfries/infernus/commit/32c82c6))
-- build(scripts, create-app): use `@inquirer/prompts` and `tsx` ([d2f7d0d](https://github.com/dockfries/infernus/commit/d2f7d0d))
-
-## <small>0.11.9 (2025-03-17)</small>
-
-- chore(release): query v0.0.2 ([792f2f4](https://github.com/dockfries/infernus/commit/792f2f4))
-- chore(root): contributing.md ([3a1ab95](https://github.com/dockfries/infernus/commit/3a1ab95))
-- chore(root): update deps, use and bundle es-toolkit, remove lodash ([775bf49](https://github.com/dockfries/infernus/commit/775bf49))
-- feat(core): experimental hook natives #50 ([9de59d7](https://github.com/dockfries/infernus/commit/9de59d7)), closes [#50](https://github.com/dockfries/infernus/issues/50)
-- feat(query): use chardetng when run out of samp-node ([ef39c86](https://github.com/dockfries/infernus/commit/ef39c86))
-- refactor(core): hook ([e898a2b](https://github.com/dockfries/infernus/commit/e898a2b))
-- refactor(core): hook, so we should use .call for performance ([64aaf5f](https://github.com/dockfries/infernus/commit/64aaf5f))
-- fix(core): `player.setChatBubble` charset #49 ([b162188](https://github.com/dockfries/infernus/commit/b162188)), closes [#49](https://github.com/dockfries/infernus/issues/49)
-
-## <small>0.11.8 (2025-02-27)</small>
-
-- chore(fcnpc): update readme ([f2b7252](https://github.com/dockfries/infernus/commit/f2b7252))
-- chore(readme): update contributors ([f523f6a](https://github.com/dockfries/infernus/commit/f523f6a))
-- chore(rec): change description ([f889e0e](https://github.com/dockfries/infernus/commit/f889e0e))
-- chore(release): fcnpc v0.0.1 ([72c00f9](https://github.com/dockfries/infernus/commit/72c00f9))
-- chore(release): query v0.0.1 ([509ab0a](https://github.com/dockfries/infernus/commit/509ab0a))
-- chore(release): raknet v0.11.2 ([f29a6d8](https://github.com/dockfries/infernus/commit/f29a6d8))
-- chore(release): rec v0.0.1 ([aa27290](https://github.com/dockfries/infernus/commit/aa27290))
-- chore(release): rec v0.0.2 ([214d829](https://github.com/dockfries/infernus/commit/214d829))
-- feat(core): attachTo syntax sugar for `Dynamic3DTextLabel` #48 ([62aad79](https://github.com/dockfries/infernus/commit/62aad79)), closes [#48](https://github.com/dockfries/infernus/issues/48)
-- feat(query): simple API for send SA-MP queries ([11de555](https://github.com/dockfries/infernus/commit/11de555))
-- feat(raknet): update internal packet list ([74639bf](https://github.com/dockfries/infernus/commit/74639bf))
-- feat(raknet): update rpc list ([8d07d50](https://github.com/dockfries/infernus/commit/8d07d50))
-- feat(rec): file format converter ([a4adcef](https://github.com/dockfries/infernus/commit/a4adcef))
-- fix(rec): check the none type ([18396e5](https://github.com/dockfries/infernus/commit/18396e5))
-
-## <small>0.11.7 (2025-02-05)</small>
-
-- chore(release): create-app v0.2.12 ([dd73a93](https://github.com/dockfries/infernus/commit/dd73a93))
-- fix(core): player.getDistanceFromPoint retval ([7d3b4c8](https://github.com/dockfries/infernus/commit/7d3b4c8))
-- fix(create-app): removeDeps lockFile dep component ([5249522](https://github.com/dockfries/infernus/commit/5249522))
-- fix(root): devDeps eslint/js ([1298bdc](https://github.com/dockfries/infernus/commit/1298bdc))
-
-## <small>0.11.6 (2025-01-13)</small>
-
-- build(release): change question order ([e4c225e](https://github.com/dockfries/infernus/commit/e4c225e))
-- feat(core): add `player.isUsingOmp` ([07acf89](https://github.com/dockfries/infernus/commit/07acf89))
-- feat(gps): wrapper for samp-gps-plugin (#46) ([a3dac5b](https://github.com/dockfries/infernus/commit/a3dac5b)), closes [#46](https://github.com/dockfries/infernus/issues/46)
-- chore(release): create-app v0.2.11 ([ba9bc96](https://github.com/dockfries/infernus/commit/ba9bc96))
-- chore(release): gps v0.0.1 ([b288d05](https://github.com/dockfries/infernus/commit/b288d05))
-- chore(root): update readme ([15f88d9](https://github.com/dockfries/infernus/commit/15f88d9))
-- docs(quick-start, nav): update ([b5bb94d](https://github.com/dockfries/infernus/commit/b5bb94d))
-- fix(create-app): install all ([e6b2921](https://github.com/dockfries/infernus/commit/e6b2921))
-
-## <small>0.11.5 (2025-01-04)</small>
-
-- chore(release): create-app v0.2.10 ([2000e2f](https://github.com/dockfries/infernus/commit/2000e2f))
-- fix(create-app): includes glob empty result, pawno path ([e590e33](https://github.com/dockfries/infernus/commit/e590e33))
-- fix(create-app): maybe sort omp deps before add or remove ([476d454](https://github.com/dockfries/infernus/commit/476d454))
-- feat(core): more params for command & defineEvent throwOnError ? ([1f5f453](https://github.com/dockfries/infernus/commit/1f5f453))
-- feat(create-app): install --component option ([b7ea0ec](https://github.com/dockfries/infernus/commit/b7ea0ec))
-
-## <small>0.11.4 (2024-12-03)</small>
-
-- feat(core): streamer static method, maybe we can add some utils ([381c683](https://github.com/dockfries/infernus/commit/381c683))
-- feat(core): vehicle toggle methods syntax sugar ([6d6701c](https://github.com/dockfries/infernus/commit/6d6701c))
-- fix(core): event pusher again crash ([5e4da77](https://github.com/dockfries/infernus/commit/5e4da77))
-- fix(core): isAndroid default true, skippable ([0f522eb](https://github.com/dockfries/infernus/commit/0f522eb))
-- chore(release): filterscript v0.11.8 ([8166163](https://github.com/dockfries/infernus/commit/8166163))
-
-## <small>0.11.3 (2024-11-30)</small>
-
-- feat(core): maybe we can try android checker? ([ebd481d](https://github.com/dockfries/infernus/commit/ebd481d))
-- feat(core): textdraw special char ([cf191a1](https://github.com/dockfries/infernus/commit/cf191a1))
-- fix(fs_debug): some errors ([3f69fb9](https://github.com/dockfries/infernus/commit/3f69fb9))
-- fix(fs): fs_debug object register ([b3ada29](https://github.com/dockfries/infernus/commit/b3ada29))
-- fix(fs): fs_debug ssel timer ([6b215f6](https://github.com/dockfries/infernus/commit/6b215f6))
-- chore(release): filterscript v0.11.7 ([54fdd83](https://github.com/dockfries/infernus/commit/54fdd83))
-
-## <small>0.11.2 (2024-11-29)</small>
-
-- chore(docs): fs rewrite ([3b1faf1](https://github.com/dockfries/infernus/commit/3b1faf1))
-- chore(fs): test_cmds ([3f9e057](https://github.com/dockfries/infernus/commit/3f9e057))
-- chore(fs): test_cmds dialog response ([48c63e6](https://github.com/dockfries/infernus/commit/48c63e6))
-- chore(fs): typo ([9220621](https://github.com/dockfries/infernus/commit/9220621))
-- chore(root): update deps ([4f21506](https://github.com/dockfries/infernus/commit/4f21506))
-- fix(core): `GameText` special char ([d0fc8c4](https://github.com/dockfries/infernus/commit/d0fc8c4))
-- fix(core): onPlayerWeaponShot ([8133df3](https://github.com/dockfries/infernus/commit/8133df3))
-- fix(core): setCameraLookAt default cut ([96b6420](https://github.com/dockfries/infernus/commit/96b6420))
-- fix(core): vehicle `getParamsEx`, onUnoccupiedUpdate ([b6a98e6](https://github.com/dockfries/infernus/commit/b6a98e6))
-- fix(fs): build ([d4222f0](https://github.com/dockfries/infernus/commit/d4222f0))
-- ci(release): maybe no need tag_name ([b847457](https://github.com/dockfries/infernus/commit/b847457))
-- feat(fs): fs_debug ([316dcda](https://github.com/dockfries/infernus/commit/316dcda))
-- feat(fs): test_cmds ([c3b5b4f](https://github.com/dockfries/infernus/commit/c3b5b4f))
-- chore(core, fs, raknet): three equals ([c5bc954](https://github.com/dockfries/infernus/commit/c5bc954))
-- fix(core, streamer): typo, enum ([627e502](https://github.com/dockfries/infernus/commit/627e502))
-
-## <small>0.11.1 (2024-11-03)</small>
-
-- chore(eslint, fcnpc): cache ignore, typo and default return ([a51567a](https://github.com/dockfries/infernus/commit/a51567a))
-- feat(core)!: remove logger, use throw error ([8fb796f](https://github.com/dockfries/infernus/commit/8fb796f))
-- fix(core, cef): registerEvent with empty string, off bus, cef instances ([f8faed7](https://github.com/dockfries/infernus/commit/f8faed7))
-- fix(core): player, vehicle, DynamicActor params type ([e676c87](https://github.com/dockfries/infernus/commit/e676c87))
-- fix(create-app): minSatisfying check version ([f805525](https://github.com/dockfries/infernus/commit/f805525))
-- fix(streamer): isToggleCallbacks return false ([871484b](https://github.com/dockfries/infernus/commit/871484b))
-- chore(github): add issue and PR template ([bb95a60](https://github.com/dockfries/infernus/commit/bb95a60))
-- chore(release): create-app v0.2.9 ([110c676](https://github.com/dockfries/infernus/commit/110c676))
-- chore(root): update deps, eslint ([b48edd8](https://github.com/dockfries/infernus/commit/b48edd8))
-- chore(root): update docs, readme ([21bedb5](https://github.com/dockfries/infernus/commit/21bedb5))
-- chore(workflows): docs trigger with `package.json` ([e53e298](https://github.com/dockfries/infernus/commit/e53e298))
-- feat(fcnpc): didn't work, but it might help someone in the future ([49fc8ed](https://github.com/dockfries/infernus/commit/49fc8ed))
-- ci(github): release tag ([6250ce2](https://github.com/dockfries/infernus/commit/6250ce2))
+## [0.14.4](https://github.com/dockfries/infernus/compare/v0.14.3...v0.14.4) (2026-01-30)
+
+### Bug Fixes
+
+- **core:** spreadErr CommandErrors.RECEIVED_THROW ([e32a9e5](https://github.com/dockfries/infernus/commit/e32a9e5dc5ca0df4cddcfce5238394f577a30ac5))
+- **core:** types in .d.ts ([055a2ea](https://github.com/dockfries/infernus/commit/055a2ea6963c06b229f29dcc8b96d12c54131798))
+
+## [0.14.3](https://github.com/dockfries/infernus/compare/v0.14.2...v0.14.3) (2026-01-28)
+
+### ⚠ BREAKING CHANGES
+
+- **core:** revert player entity checkPoint, isLeavingSpectatorMode
+
+### Features
+
+- **core:** add npc, player natives ([f7cf6ac](https://github.com/dockfries/infernus/commit/f7cf6ac4aa4e6280484cebf2ecbc749ed7deb6a8))
+- **core:** revert player entity checkPoint, isLeavingSpectatorMode ([d8cabf1](https://github.com/dockfries/infernus/commit/d8cabf17394b34771cf0a113f54c3ba59ef322c7))
+- **weapon-config:** update takeDamage 347 ([28337a2](https://github.com/dockfries/infernus/commit/28337a2cf28d068d07fb968b3f52177023a8e9fb))
+
+### Bug Fixes
+
+- **build:** rolldown dts no export failed to emit declaration file ([d10d2df](https://github.com/dockfries/infernus/commit/d10d2df4b12c7da67c758a9dcbb8c511e96713a3))
+- **core:** inject for three getMethods ([a6a63dd](https://github.com/dockfries/infernus/commit/a6a63dd8158dcedadf0b8a8a3ce8e8215983e1ad))
+
+### Reverts
+
+- **query:** iconv ([a2c1735](https://github.com/dockfries/infernus/commit/a2c173553b32b93b60b3dca5c4aa7ac47322ed2c))
+
+## [0.14.2](https://github.com/dockfries/infernus/compare/v0.14.1...v0.14.2) (2025-12-31)
+
+### Features
+
+- **create-app:** only update cache when dep version equal ([d6f6e07](https://github.com/dockfries/infernus/commit/d6f6e072e5a081aaf50ded59fcc4959b08a07e0f))
+- **progress:** maybe we can hook destroy textdraw ([9d726ac](https://github.com/dockfries/infernus/commit/9d726ac02122879cdcca3db2a55860cedd0568d8))
+
+### Bug Fixes
+
+- **core:** match cmdText maybe null ([89bf9c3](https://github.com/dockfries/infernus/commit/89bf9c36c27b4484c47e244dfc683a3a7379a3a5))
+- **core:** streamer pickup streamInOut player type ([48f176e](https://github.com/dockfries/infernus/commit/48f176ed7840f0affaea37ea0a9ccb4e15e21094))
+- **weapon-config:** use try catch for new TextDraw ([ee563a2](https://github.com/dockfries/infernus/commit/ee563a2b7f7f4c97a2892cc420db04244109846a))
+
+## [0.14.1](https://github.com/dockfries/infernus/compare/v0.14.0...v0.14.1) (2025-12-19)
+
+### Features
+
+- **core:** a couple of native types, missing natives, default params ([0d810d0](https://github.com/dockfries/infernus/commit/0d810d0f0228b58ffed8db61540ed4a1ba7168cc))
+
+## [0.14.0](https://github.com/dockfries/infernus/compare/v0.13.4...v0.14.0) (2025-12-17)
+
+### ⚠ BREAKING CHANGES
+
+- **core, nex-ac, weapon-config:** pickup add per player, change some throw message
+
+### Features
+
+- **core, nex-ac, weapon-config:** pickup add per player, change some throw message ([86a011c](https://github.com/dockfries/infernus/commit/86a011c6fa61950f4e25dcf02c915859521dc31c))
+- **core:** add npc angle to pos natives ([9d9e103](https://github.com/dockfries/infernus/commit/9d9e103c02d53a045b67a7035406c688eddcd593))
+- **core:** moveType to auto by default ([ce75809](https://github.com/dockfries/infernus/commit/ce75809365375d3c0951084c1d53893141624d74))
+
+## [0.13.4](https://github.com/dockfries/infernus/compare/v0.13.3...v0.13.4) (2025-12-01)
+
+### Features
+
+- **core:** npc getPosMovingTo, getCustomSkin ([5f75d40](https://github.com/dockfries/infernus/commit/5f75d404d252bdb51e64eac76083bfb3d9e241cf))
+- **progress:** init ([7094299](https://github.com/dockfries/infernus/commit/709429997cb9466ccb489c1dbcecd438c21ef25c))
+
+### Bug Fixes
+
+- **core:** remove unused player gangzone destroy ([938569a](https://github.com/dockfries/infernus/commit/938569a81256f57d618c07702535ea46ae3a4260))
+
+## [0.13.3](https://github.com/dockfries/infernus/compare/v0.13.2...v0.13.3) (2025-11-21)
+
+### Features
+
+- **core:** some origin playerPool need destroy onDisconnect ([de3a6fe](https://github.com/dockfries/infernus/commit/de3a6fe90aca8e32220dae831824388f5a3aded2))
+
+### Bug Fixes
+
+- **core:** getAnimationName ([fde73fa](https://github.com/dockfries/infernus/commit/fde73fa3d34da833de5d16840e66cb89e753f469))
+- **core:** getPlayerCameraTarget, some getMethods, id constructor check invalid ([9ce3532](https://github.com/dockfries/infernus/commit/9ce3532e8a54266538511fec73959c4b8faba07a))
+- **core:** objectMp edit player params ([6d23ea9](https://github.com/dockfries/infernus/commit/6d23ea91ba6f9f904223d675686f2bd7caf9e35a))
+
+## [0.13.2](https://github.com/dockfries/infernus/compare/v0.13.1...v0.13.2) (2025-11-06)
+
+### Features
+
+- **fs:** npc should use create method ([f1cca06](https://github.com/dockfries/infernus/commit/f1cca06894f2eb2999d80d35197f900201a53eee))
+
+### Bug Fixes
+
+- **build:** update build configuration and export types ([207b40f](https://github.com/dockfries/infernus/commit/207b40fc95da0a81d5e281ecc726c046d900319a))
+
+## [0.13.1](https://github.com/dockfries/infernus/compare/v0.13.0...v0.13.1) (2025-11-06)
+
+### Features
+
+- **core, filterscript:** add charset to menu ([5f78d48](https://github.com/dockfries/infernus/commit/5f78d48c856234386dfd9250c29232e728b50d2f))
+- **core, streamer, nex-ac, weapon-config:** change **inject** methods ([e13443f](https://github.com/dockfries/infernus/commit/e13443f9f57689bf4ffde6e2ac1fc3f5bf87c3e2))
+- **core:** improve error handling and afterEach execution in bus middleware ([28d683e](https://github.com/dockfries/infernus/commit/28d683ee866d3de736e54f9fdd229fac679e841a))
+- **core:** make **inject** methods lowercase and shorthand ([a856a68](https://github.com/dockfries/infernus/commit/a856a68723a017df917090b20697e5d4145f2d3f))
+- **core:** player, npc **inject** ([8ce007e](https://github.com/dockfries/infernus/commit/8ce007ea6f3d7307aaa30c56fbb4ebcb05de234e))
+- **distance:** add actor, object functions ([e668837](https://github.com/dockfries/infernus/commit/e668837c8d7066823496a0500fcbc50b25ee6d68))
+- **nex-ac:** 1.9.67 ([575649a](https://github.com/dockfries/infernus/commit/575649acd56ac147d369db7a3f096c6ba01867bc))
+- **nex-ac:** initialize arrays with proper sizes in ACInfoStruct ([623f595](https://github.com/dockfries/infernus/commit/623f59547946a71c3c27dd945ac446830cff7219))
+
+### Bug Fixes
+
+- **core:** streamer getPlayerCameraTarget Streamer.INVALID_ID ([ac3ca61](https://github.com/dockfries/infernus/commit/ac3ca618a2550608efd39e1d335c3f8d4ed5b16f))
+- **nex-ac:** rename ru locale file to ru-RU ([5041ea8](https://github.com/dockfries/infernus/commit/5041ea895c1d4903a32c7e5852168668bf9924d5))
+
+## [0.13.0](https://github.com/dockfries/infernus/compare/v0.12.7...v0.13.0) (2025-10-31)
+
+### ⚠ BREAKING CHANGES
+
+- **core:** add checkpoint and raceCp
+
+### Features
+
+- **core, fs, streamer:** add TextLabel component, rename Los to LOS ([a99e7f3](https://github.com/dockfries/infernus/commit/a99e7f3f752d397bdabaa547639a3512b6fd9b7e))
+- **core, nex-ac:** pickup inject ([c1d66b7](https://github.com/dockfries/infernus/commit/c1d66b7ade8b7d397a7bdc7d9361c17699a9cd80))
+- **core:** add Actor entity class and update native wrapper ([855fdeb](https://github.com/dockfries/infernus/commit/855fdeb303a71ce86dcde34b3e570de14b9dc4dd))
+- **core:** add checkpoint and raceCp ([e0dbf45](https://github.com/dockfries/infernus/commit/e0dbf454091197d6dc47814299c0ef07e9fa4511))
+- **core:** add origin object/playerObject in same ObjectMp ([5577b43](https://github.com/dockfries/infernus/commit/5577b435f3185d8ef5dcdc8a19770432db6584da))
+- **core:** add Pickup entity and improve entity constructors ([8f081f3](https://github.com/dockfries/infernus/commit/8f081f309b9020f73438984fb52a615a59e13321))
+- **core:** add textdraw isPlayer ([4d7e619](https://github.com/dockfries/infernus/commit/4d7e61907503cdc969346d5cb83ce035021e109f))
+- **core:** improve object attachment and return type consistency ([7a8cd43](https://github.com/dockfries/infernus/commit/7a8cd43c34189f22bc4ec29eb1a93e08b98f55da))
+- **core:** make object drawDistance optional with default value ([62e2cb4](https://github.com/dockfries/infernus/commit/62e2cb40d9bc0b6706abb3acbef0b40868c55114))
+- **core:** more **inject** methods ([f12efea](https://github.com/dockfries/infernus/commit/f12efea964d925c68fdf88245f89f0536ec02136))
+- **core:** more LimitsEnum ([154f605](https://github.com/dockfries/infernus/commit/154f6057a8aaed74d7e7876aa4d563e05974aff0))
+- **core:** npc getPlayer ([d76729c](https://github.com/dockfries/infernus/commit/d76729c73a813e649c1933005c43bed41d6bfde2))
+- **core:** npc/player surfing object ([1ce048b](https://github.com/dockfries/infernus/commit/1ce048b55432b1db18f57350b9eb004d5591939f))
+- **player:** add player map icon api ([0af89c8](https://github.com/dockfries/infernus/commit/0af89c85b547f2cbdf24e8dc81259be9e4db901c))
+- **samp-voice:** try port samp-voice ([1aa9ffc](https://github.com/dockfries/infernus/commit/1aa9ffcb1951135b7136dcf392a43ee2087cfc89))
+- **weapon-config:** use origin checkpoint logic replace streamer, add pickup event ([d2ef2b2](https://github.com/dockfries/infernus/commit/d2ef2b26633bfc05f9851339f8a4ee41f4e5dd4f))
+
+### Bug Fixes
+
+- **core:** gangzone perPlayerPool manage ([dbc1579](https://github.com/dockfries/infernus/commit/dbc15794fa020624cb1e11a71fa54072b27dbd34))
+- **core:** textDraw perPlayerPool manage ([bd9f149](https://github.com/dockfries/infernus/commit/bd9f149690ecfbed6dfe41ccfaa0bbfb135ca6f1))
+
+## [0.12.7](https://github.com/dockfries/infernus/compare/v0.12.6...v0.12.7) (2025-10-25)
+
+### Features
+
+- **core:** npc new natives, entity invalid enum ([05d0981](https://github.com/dockfries/infernus/commit/05d0981f9882149990686d8f9303af5ef6ff5082))
+
+## [0.12.6](https://github.com/dockfries/infernus/compare/v0.12.5...v0.12.6) (2025-10-19)
+
+### Bug Fixes
+
+- **build:** rollup build dts includeExternal streamer ([713ab8f](https://github.com/dockfries/infernus/commit/713ab8feff62a5923942e197ed383a01045cb279))
+- **build:** script build-all raknet should be fixed ([b836927](https://github.com/dockfries/infernus/commit/b836927967dbe3b379fe2e1158e7637d5880e40b))
+- **core:** streamer area missing priority ([326518a](https://github.com/dockfries/infernus/commit/326518a65ff3763751f272f69c3e88e8cf76c7a6))
+- **weapon-config:** sync upstream 339~341 pr ([1b7d586](https://github.com/dockfries/infernus/commit/1b7d586b84c53d8ab278a0c688c704f9a2eecb19))
+
+## [0.12.5](https://github.com/dockfries/infernus/compare/v0.12.4...v0.12.5) (2025-10-15)
+
+### Features
+
+- **core:** add isUseScriptLoaded, support generic speculation load arguments ([e8864b8](https://github.com/dockfries/infernus/commit/e8864b8c4f06e6d3fd2bbbd10f074656abc52298))
+- **core:** vehicle getRotation ([428f2f6](https://github.com/dockfries/infernus/commit/428f2f6e36641c108dada72287c142586c2f996b))
+
+## [0.12.4](https://github.com/dockfries/infernus/compare/v0.12.3...v0.12.4) (2025-10-13)
+
+### Features
+
+- **core:** npc gamemodeexit clear skip ([eb53aa3](https://github.com/dockfries/infernus/commit/eb53aa32509f41b2755cf45470c5ab9fb57a56ef))
+
+### Bug Fixes
+
+- **core:** maybe compat sampgdk and npc component ([5651196](https://github.com/dockfries/infernus/commit/5651196cee51bc768c8613640bcbd93e64fa8716))
+- **core:** npc spawn, respawn event name case ([d6d862d](https://github.com/dockfries/infernus/commit/d6d862dd7dbaaebd5d95f103a28989c3ad38c5bb))
+- **fs:** gl_npcs, startPlayback is fixed path `npcmodes/records` ([7d3ef29](https://github.com/dockfries/infernus/commit/7d3ef29cf65aeb7a2364a3ccd6c886245553918c))
+
+## [0.12.3](https://github.com/dockfries/infernus/compare/v0.12.2...v0.12.3) (2025-10-09)
+
+### Features
+
+- **streamer:** add constants module and refactor magic values ([f0442fb](https://github.com/dockfries/infernus/commit/f0442fb6a9f6ee6dd694f22bd8ef49a50c31db89))
+
+### Bug Fixes
+
+- **build:** `SIGINT` kill ([5daa071](https://github.com/dockfries/infernus/commit/5daa0719b084782b455f1e622aa5ddb083e74ca4))
+- **core:** correct logical errors and resource handling in core controllers ([213ccaf](https://github.com/dockfries/infernus/commit/213ccaf7ecc6b8951a767538d9ee1ec5bc79f7de))
+- **core:** correct typos and parameter naming in core entities ([e67f051](https://github.com/dockfries/infernus/commit/e67f051d01c7b9a703fffd4545f6457784bd435a))
+- **core:** missing events identifier, some type ([b6260bd](https://github.com/dockfries/infernus/commit/b6260bd842ac6642b27406d85d1a2386a348e1f5))
+- **raknet:** improve type safety and error handling in BitStream ([0311a5d](https://github.com/dockfries/infernus/commit/0311a5d5c52748f8a288d91845a6e369d0c279ac))
+
+## [0.12.2](https://github.com/dockfries/infernus/compare/v0.12.1...v0.12.2) (2025-10-07)
+
+### Features
+
+- **core:** npc max_npcs, invalid id, types ([00939f5](https://github.com/dockfries/infernus/commit/00939f56ada0e829832e1e0a64324a636e36201d))
+- **core:** npc node,path,record class, remove deprecate funcs ([d02da25](https://github.com/dockfries/infernus/commit/d02da253cbc4c7028262573309119fa2fe05836b))
+
+### Bug Fixes
+
+- **core:** iconv-lite import esm ([aa750ce](https://github.com/dockfries/infernus/commit/aa750ce815c029eeec969bcbe8cafda555c40ca3))
+- **core:** npc id type ([0720271](https://github.com/dockfries/infernus/commit/0720271b8d93cb0809fc828f289634ef02c36ace))
+- **raknet:** some read macros return type ([f8cca22](https://github.com/dockfries/infernus/commit/f8cca22575b10f202f6b339fcd04f154348f6a95))
+
+## [0.12.1](https://github.com/dockfries/infernus/compare/v0.12.0...v0.12.1) (2025-09-04)
+
+### Features
+
+- **core:** add onNpcFinishMovePathPoint ([fe38204](https://github.com/dockfries/infernus/commit/fe38204915bb6c2097ad27ecc5907937ab4d2e40))
+- **core:** npc apis ([8af6a88](https://github.com/dockfries/infernus/commit/8af6a88606b0c3895488d95fd06c2466350934dd))
+- **core:** npc apis ([1c1b799](https://github.com/dockfries/infernus/commit/1c1b7990aaaf46e6b783e47b121157a40ff14e9e))
+- **core:** npc apis ([d1d961e](https://github.com/dockfries/infernus/commit/d1d961e6e7b4c0e38e79010177e2eb956cd64680))
+- **core:** npc create maybe put in player pool before onPlayerConnect? ([4f72f2d](https://github.com/dockfries/infernus/commit/4f72f2d8b03cc50f0029570b3493a7d469015ade))
+
+### Bug Fixes
+
+- **weapon-config:** fix recursion when setting health to NPC ([e6c609d](https://github.com/dockfries/infernus/commit/e6c609d5390dcc126753625a8fdddb6e707e5e35))
+
+## [0.12.0](https://github.com/dockfries/infernus/compare/v0.11.15...v0.12.0) (2025-08-10)
+
+### ⚠ BREAKING CHANGES
+
+- **core:** get methods should return ret, so break changes
+- **nex-ac:** result rename to ret
+
+### Features
+
+- **colandreas, map-loader:** maybe can check colandreas this way? ([2f5196d](https://github.com/dockfries/infernus/commit/2f5196d1625327c1a035f9e42a4508b1cd3f66b0))
+- **colandreas:** global defined ([1156059](https://github.com/dockfries/infernus/commit/115605956dfe314a3da5d95f179ae23861128a47))
+- **core:** get methods should return ret, so break changes ([0ece293](https://github.com/dockfries/infernus/commit/0ece2936de3fe69e856bf7f835c5197d0210fc73))
+- **distance:** init ([884b920](https://github.com/dockfries/infernus/commit/884b920a020a2b1900c96606cefa6c2f3d2e3c62))
+- **drift-detection:** init ([edd4cf4](https://github.com/dockfries/infernus/commit/edd4cf4abbc3df869c26d6ecf2903f875a7ca166))
+- **nex-ac:** result rename to ret ([1fa7fc7](https://github.com/dockfries/infernus/commit/1fa7fc7de26561437a5b406078d4650043ea7056))
+- **raknet:** global defined ([ff2ff20](https://github.com/dockfries/infernus/commit/ff2ff2093934ba187bdca34b0cd2f7baa49004b8))
+
+### Bug Fixes
+
+- **core, colandreas, fs, gps:** getPos/facingAngle ([3fed03a](https://github.com/dockfries/infernus/commit/3fed03a3a06db9675b4b2d9a70d4f78b7b51bea0))
+- **core, fs, nex-ac:** getMethods ([9fd4393](https://github.com/dockfries/infernus/commit/9fd4393658371b7c6b5fb4126de43538730d7c9d))
+- **core, fs:** getMethods ([d9ae995](https://github.com/dockfries/infernus/commit/d9ae995c4df4f559c939ffc1f1e3fa0d361e0f45))
+
+## [0.11.15](https://github.com/dockfries/infernus/compare/v0.11.14...v0.11.15) (2025-08-03)
+
+### Features
+
+- **core:** npc 1106 ([eda67c7](https://github.com/dockfries/infernus/commit/eda67c757af3da058cede34d91adb1b6c65a8423))
+
+### Bug Fixes
+
+- **core:** npc id public ([1360f91](https://github.com/dockfries/infernus/commit/1360f914b0fd61c870d7bc1152d6c97e81f03dd5))
+
+## [0.11.14](https://github.com/dockfries/infernus/compare/v0.11.13...v0.11.14) (2025-07-22)
+
+### Features
+
+- **map-loader:** init ([04d390c](https://github.com/dockfries/infernus/commit/04d390cc156b4aae5bbc27e4b23a599342a5f07e))
+- **qrcode:** simple qrcode ([375ad38](https://github.com/dockfries/infernus/commit/375ad3897a2d74a0440356892fe6e1ee59074bcf))
+
+### Bug Fixes
+
+- **create-app:** tag_name error ([ba37dbe](https://github.com/dockfries/infernus/commit/ba37dbeeb64e4c3bd121906d49a4830266bb6b93))
+- **weapon-config:** 329, 331 ([801e7ef](https://github.com/dockfries/infernus/commit/801e7ef032d81ef6d39fa2caadd2c07df2c43b28))
+
+## [0.11.13](https://github.com/dockfries/infernus/compare/v0.11.12...v0.11.13) (2025-06-08)
+
+### Features
+
+- **create-app:** manually select open.mp asset (drawback is global cache like other deps) ([e55a8dd](https://github.com/dockfries/infernus/commit/e55a8dd8f26fe0487eb45ddd24966a8083cc5625))
+
+### Bug Fixes
+
+- **(create-app:** assetsByEnv.length ([e79baf1](https://github.com/dockfries/infernus/commit/e79baf1e40a58937664a7861df846e6ec7d27f54))
+- **core, weapon-config:** idk, maybe we should unshift it, because special order? ([8b6f9cf](https://github.com/dockfries/infernus/commit/8b6f9cf67a68a1e5029746785a2753d3bea56fb1))
+- **query:** udp not require too long timeouts because it makes no sense ([0f0d84f](https://github.com/dockfries/infernus/commit/0f0d84f8c6662a5300ee4e259278d58e892f30e7))
+
+## [0.11.12](https://github.com/dockfries/infernus/compare/v0.11.11...v0.11.12) (2025-05-15)
+
+### Bug Fixes
+
+- **weapon-config:** some issues ([527d260](https://github.com/dockfries/infernus/commit/527d2601b5f7ecccddd4cbeb84c7bfc592971b84))
+
+## [0.11.11](https://github.com/dockfries/infernus/compare/v0.11.10...v0.11.11) (2025-05-12)
+
+### Features
+
+- **core:** onCommandError getSuggestion ([f155e95](https://github.com/dockfries/infernus/commit/f155e95330473262134af2b0d9f4ff8411999ee6))
+- **nex-ac:** try port, but there must be bugs ([3ecdb72](https://github.com/dockfries/infernus/commit/3ecdb7260e2566fe1a92fa7e23404c675b3fe660))
+- **weapon-config:** try port, but there are bugs ([c0fcf77](https://github.com/dockfries/infernus/commit/c0fcf773c567b38c720e3cf16c2107138670c9fd))
+
+### Bug Fixes
+
+- **core:** getSurfing should no need params ([25b55eb](https://github.com/dockfries/infernus/commit/25b55ebb7826efa8186009ac8b9cf99d1165355c))
+- **nex-ac:** maybe else ([5ff8a91](https://github.com/dockfries/infernus/commit/5ff8a91312a0c368e28bcc454e56210a6d9bbfd0))
+- **nex-ac:** maybe if ([d2bd7e8](https://github.com/dockfries/infernus/commit/d2bd7e8979db6a28a1e4192a97e8f40038bb903b))
+
+## [0.11.10](https://github.com/dockfries/infernus/compare/v0.11.9...v0.11.10) (2025-04-21)
+
+### Features
+
+- **core:** npc natives ([98a02d4](https://github.com/dockfries/infernus/commit/98a02d4d27ded13d82e95d040352c91c1b1a4045))
+- **e-selection:** try port eSelection ([29fcc1b](https://github.com/dockfries/infernus/commit/29fcc1b67975d708d41d56d2e00e495622ea7007))
+- **types:** minimized samp-node api types for infernus ([32c82c6](https://github.com/dockfries/infernus/commit/32c82c6165893e6ae6ffbe58f45bff301be32b91))
+
+### Bug Fixes
+
+- **core:** playerTextDraw/GangZone auto destroy valid check ([2065a19](https://github.com/dockfries/infernus/commit/2065a19e688fb5fa498fd4642c30beaf54791242))
+- **core:** setPreviewVehColors type, objAlign enum typo, player innerProps ([f9fab4b](https://github.com/dockfries/infernus/commit/f9fab4b5eb1039c07629699e24c75e595c6efe85))
+- **core:** vehicle getDriver should no need players params ([3eb0b2b](https://github.com/dockfries/infernus/commit/3eb0b2b641b60c3785b1c083df4634aee5105061))
+- **query:** use chardetng when run out of samp-node ([495f502](https://github.com/dockfries/infernus/commit/495f5028c9dd776896ae159230a8ba638389f6e4))
+
+## [0.11.9](https://github.com/dockfries/infernus/compare/v0.11.8...v0.11.9) (2025-03-17)
+
+### Features
+
+- **core:** experimental hook natives [#50](https://github.com/dockfries/infernus/issues/50) ([9de59d7](https://github.com/dockfries/infernus/commit/9de59d741904ba14decbacb56572b39cd912429d))
+- **query:** use chardetng when run out of samp-node ([ef39c86](https://github.com/dockfries/infernus/commit/ef39c869cf56b499d1e836938149b871b9e7b22f))
+
+### Bug Fixes
+
+- **core:** `player.setChatBubble` charset [#49](https://github.com/dockfries/infernus/issues/49) ([b162188](https://github.com/dockfries/infernus/commit/b162188f0414ba09bab8f32ba6618a857d52b11f))
+
+## [0.11.8](https://github.com/dockfries/infernus/compare/v0.11.7...v0.11.8) (2025-02-27)
+
+### Features
+
+- **core:** attachTo syntax sugar for `Dynamic3DTextLabel` [#48](https://github.com/dockfries/infernus/issues/48) ([62aad79](https://github.com/dockfries/infernus/commit/62aad79f4925972baedc70a3f4fddaa7c80179aa))
+- **query:** simple API for send SA-MP queries ([11de555](https://github.com/dockfries/infernus/commit/11de55529dc705009cba9fb398a041f0eb5ded1d))
+- **raknet:** update internal packet list ([74639bf](https://github.com/dockfries/infernus/commit/74639bf8c0c144f00a982e28a09298d159cd2757))
+- **raknet:** update rpc list ([8d07d50](https://github.com/dockfries/infernus/commit/8d07d50974b5d3eab9ecc7613492a6bd640329a7))
+- **rec:** file format converter ([a4adcef](https://github.com/dockfries/infernus/commit/a4adcef2f65aab9b8021cc19662bf18cd3c3b8aa))
+
+### Bug Fixes
+
+- **rec:** check the none type ([18396e5](https://github.com/dockfries/infernus/commit/18396e5e83d7e3d61b687f44870389d339639599))
+
+## [0.11.7](https://github.com/dockfries/infernus/compare/v0.11.6...v0.11.7) (2025-02-05)
+
+### Bug Fixes
+
+- **core:** player.getDistanceFromPoint retval ([7d3b4c8](https://github.com/dockfries/infernus/commit/7d3b4c810e34cd56d1c94dbe500b8bd894d40208))
+- **create-app:** removeDeps lockFile dep component ([5249522](https://github.com/dockfries/infernus/commit/5249522bdf5896f306b5cdb8541fb0fbaf34f47b))
+- **root:** devDeps eslint/js ([1298bdc](https://github.com/dockfries/infernus/commit/1298bdcdd6a4bf8b72475612cd22ebf4e923689c))
+
+## [0.11.6](https://github.com/dockfries/infernus/compare/v0.11.5...v0.11.6) (2025-01-13)
+
+### Features
+
+- **core:** add `player.isUsingOmp` ([07acf89](https://github.com/dockfries/infernus/commit/07acf8929ac4afa439f245388a9a2fe8ebc3f719))
+- **gps:** wrapper for samp-gps-plugin ([#46](https://github.com/dockfries/infernus/issues/46)) ([a3dac5b](https://github.com/dockfries/infernus/commit/a3dac5b7312897f07263412bc834c7c2649ed2f1))
+
+### Bug Fixes
+
+- **create-app:** install all ([e6b2921](https://github.com/dockfries/infernus/commit/e6b29211a070fd346d3b6f2838fbe42345db9203))
+
+## [0.11.5](https://github.com/dockfries/infernus/compare/v0.11.4...v0.11.5) (2025-01-04)
+
+### Features
+
+- **core:** more params for command & defineEvent throwOnError ? ([1f5f453](https://github.com/dockfries/infernus/commit/1f5f45341fc911fc91db6ef046f2aed6af895797))
+- **create-app:** install --component option ([b7ea0ec](https://github.com/dockfries/infernus/commit/b7ea0ec5f0bea3299feed7b18590a2e1d072a865))
+
+### Bug Fixes
+
+- **create-app:** includes glob empty result, pawno path ([e590e33](https://github.com/dockfries/infernus/commit/e590e332585f77261be35663f44f4fc7c61dced2))
+- **create-app:** maybe sort omp deps before add or remove ([476d454](https://github.com/dockfries/infernus/commit/476d4541e167c32fbab29dec27e38e3bba34cbff))
+
+## [0.11.4](https://github.com/dockfries/infernus/compare/v0.11.3...v0.11.4) (2024-12-03)
+
+### Features
+
+- **core:** streamer static method, maybe we can add some utils ([381c683](https://github.com/dockfries/infernus/commit/381c683395df300a9551ca90bf72b0a5b67d7191))
+- **core:** vehicle toggle methods syntax sugar ([6d6701c](https://github.com/dockfries/infernus/commit/6d6701c0e681f01ef766f06a28f9d9c56fdabf79))
+
+### Bug Fixes
+
+- **core:** event pusher again crash ([5e4da77](https://github.com/dockfries/infernus/commit/5e4da7715efef626ae96e6fe1984d4cea26bd5c7))
+- **core:** isAndroid default true, skippable ([0f522eb](https://github.com/dockfries/infernus/commit/0f522eb642a9bc428eaa6874fdbf21135dec9853))
+
+## [0.11.3](https://github.com/dockfries/infernus/compare/v0.11.2...v0.11.3) (2024-11-30)
+
+### Features
+
+- **core:** maybe we can try android checker? ([ebd481d](https://github.com/dockfries/infernus/commit/ebd481d75d9382e069ba0793d7fae51a01f3db5c))
+- **core:** textdraw special char ([cf191a1](https://github.com/dockfries/infernus/commit/cf191a12e6ae212f5b227de743f4c49ae3b195dc))
+
+### Bug Fixes
+
+- **fs_debug:** some errors ([3f69fb9](https://github.com/dockfries/infernus/commit/3f69fb94bf7d905181ce63d392ab9e870f67b61b))
+- **fs:** fs_debug object register ([b3ada29](https://github.com/dockfries/infernus/commit/b3ada29616583885efc83261ba2425ba9378f095))
+- **fs:** fs_debug ssel timer ([6b215f6](https://github.com/dockfries/infernus/commit/6b215f66dd43ad51f919e55a1a6f7b422144ee39))
+
+## [0.11.2](https://github.com/dockfries/infernus/compare/v0.11.1...v0.11.2) (2024-11-29)
+
+### Features
+
+- **fs:** fs_debug ([316dcda](https://github.com/dockfries/infernus/commit/316dcda2dc786759ef1d9b0abc8ffe6ec04666e2))
+- **fs:** test_cmds ([c3b5b4f](https://github.com/dockfries/infernus/commit/c3b5b4fb7cf8ddc0931ea65aada7d529f2d8b54d))
+
+### Bug Fixes
+
+- **core, streamer:** typo, enum ([627e502](https://github.com/dockfries/infernus/commit/627e5026623e172a3a62cdaf2797a277e1b5a6c5))
+- **core:** `GameText` special char ([d0fc8c4](https://github.com/dockfries/infernus/commit/d0fc8c4af55a1092e12a856f618c7e9d997219c0))
+- **core:** onPlayerWeaponShot ([8133df3](https://github.com/dockfries/infernus/commit/8133df37b97c38035dcc9811d59e70554fadb098))
+- **core:** setCameraLookAt default cut ([96b6420](https://github.com/dockfries/infernus/commit/96b64208589f42dd55184970a8208efe767c2231))
+- **core:** vehicle `getParamsEx`, onUnoccupiedUpdate ([b6a98e6](https://github.com/dockfries/infernus/commit/b6a98e6ef12e1f397d949f7cf05b80a1b8b668ff))
+- **fs:** build ([d4222f0](https://github.com/dockfries/infernus/commit/d4222f060ee2ad6d2280c74b51ab739be01e7848))
+
+## [0.11.1](https://github.com/dockfries/infernus/compare/v0.11.0-beta.13...v0.11.1) (2024-11-03)
+
+### ⚠ BREAKING CHANGES
+
+- **core:** remove logger, use throw error
+
+### Features
+
+- **core:** remove logger, use throw error ([8fb796f](https://github.com/dockfries/infernus/commit/8fb796ff29d116087571d5de14bee93c4bc46241))
+- **fcnpc:** didn't work, but it might help someone in the future ([49fc8ed](https://github.com/dockfries/infernus/commit/49fc8eda10b55314fc23ff8a6cec79fb5bace4d3))
+
+### Bug Fixes
+
+- **core, cef:** registerEvent with empty string, off bus, cef instances ([f8faed7](https://github.com/dockfries/infernus/commit/f8faed77bbd51c3d393f547bc1c6289f01e5d8dc))
+- **core:** player, vehicle, DynamicActor params type ([e676c87](https://github.com/dockfries/infernus/commit/e676c878b604d3850f7810b529d97b2e45d506b3))
+- **create-app:** minSatisfying check version ([f805525](https://github.com/dockfries/infernus/commit/f8055252064c63ea79e8520d01ba60e3e863f239))
+- **streamer:** isToggleCallbacks return false ([871484b](https://github.com/dockfries/infernus/commit/871484b014a071228a0b49b6d2725e0eaa2a8ab5))
 
 ## [0.11.0-beta.13](https://github.com/dockfries/infernus/compare/v0.11.0-beta.12...v0.11.0-beta.13) (2024-08-23)
 
@@ -603,20 +615,20 @@
 - **cef:** not sure if it works properly ([d670e79](https://github.com/dockfries/infernus/commit/d670e792539dc1a59b5f06105186ce7538eacc5c))
 - **core:** sendRconCommand support charset ([9623b00](https://github.com/dockfries/infernus/commit/9623b00d2dc6140310e01e1787d0912e9487daa1))
 
-## [0.11.0-beta.5](https://github.com/dockfries/infernus/compare/v0.11.0-beta.3...v0.11.0-beta.5) (2024-3-11)
+## [0.11.0-beta.5](https://github.com/dockfries/infernus/compare/v0.11.0-beta.3...v0.11.0-beta.5) (2024-03-11)
 
 ### Features
 
 - **core:** gangzone & textdraw chain call always return this ([456a394](https://github.com/dockfries/infernus/commit/456a394524c26486c91872628c321c483dfcb9ef))
 - **core:** playerEvent onFpsUpdate, onLocale/CharsetChange ([b0451a7](https://github.com/dockfries/infernus/commit/b0451a7ff5e19b752e3427e1548847337976d52d))
 
-## [0.11.0-beta.3](https://github.com/dockfries/infernus/compare/v0.11.0-beta.2...v0.11.0-beta.3) (2024-2-19)
+## [0.11.0-beta.3](https://github.com/dockfries/infernus/compare/v0.11.0-beta.2...v0.11.0-beta.3) (2024-02-19)
 
 ### Bug Fixes
 
 - **core:** textdraw setTextSize, isVisibleForPlayer not correctly call ([c2dad16](https://github.com/dockfries/infernus/commit/c2dad165a79fed90fb428f7d02a8ba61e08595b2))
 
-## [0.11.0-beta.2](https://github.com/dockfries/infernus/compare/v0.11.0-beta.1...v0.11.0-beta.2) (2024-2-18)
+## [0.11.0-beta.2](https://github.com/dockfries/infernus/compare/v0.11.0-beta.1...v0.11.0-beta.2) (2024-02-18)
 
 ### Features
 
@@ -627,7 +639,7 @@
 - **core:** editAttachedObject, setAttachedObject default value ([d795575](https://github.com/dockfries/infernus/commit/d795575837e5de630a71e62c455cccb537ed047d))
 - **core:** textdraw cancel middleware onDisconnect ([3e4f3ec](https://github.com/dockfries/infernus/commit/3e4f3ec76727abc9f5df48eb8a0a1aa97d4e114b))
 
-## [0.11.0-beta.1](https://github.com/dockfries/infernus/compare/v0.10.0-beta.12...v0.11.0-beta.1) (2024-2-11)
+## [0.11.0-beta.1](https://github.com/dockfries/infernus/compare/v0.10.0-beta.12...v0.11.0-beta.1) (2024-02-11)
 
 ### ⚠ BREAKING CHANGES
 
@@ -652,7 +664,7 @@
 
 - **core:** use isValidVehModelId ([61493ef](https://github.com/dockfries/infernus/commit/61493ef35c11e5cea124089d09696bb4a8b80da9))
 
-## [0.10.0-beta.12](https://github.com/dockfries/infernus/compare/v0.10.0-beta.11...v0.10.0-beta.12) (2024-2-7)
+## [0.10.0-beta.12](https://github.com/dockfries/infernus/compare/v0.10.0-beta.11...v0.10.0-beta.12) (2024-02-07)
 
 ### Features
 
@@ -664,7 +676,7 @@
 
 - **create-app:** decompress overwrite ([53ad784](https://github.com/dockfries/infernus/commit/53ad7845975d6288438211ea2789cf64ea5bbfb8))
 
-## [0.10.0-beta.11](https://github.com/dockfries/infernus/compare/v0.10.0-beta.10...v0.10.0-beta.11) (2024-2-1)
+## [0.10.0-beta.11](https://github.com/dockfries/infernus/compare/v0.10.0-beta.10...v0.10.0-beta.11) (2024-02-01)
 
 ### Features
 
@@ -674,19 +686,19 @@
 
 - **streamer:** get actor animation ([1de139a](https://github.com/dockfries/infernus/commit/1de139a89332aaaa299396751ac221141ca0dee7))
 
-## [0.10.0-beta.10](https://github.com/dockfries/infernus/compare/v0.10.0-beta.9...v0.10.0-beta.10) (2024-1-31)
+## [0.10.0-beta.10](https://github.com/dockfries/infernus/compare/v0.10.0-beta.9...v0.10.0-beta.10) (2024-01-31)
 
 ### Features
 
 - **streamer:** add `DynamicObjectNoCameraCollision` ([a90e10a](https://github.com/dockfries/infernus/commit/a90e10a9f8d9344b06be0d253f5de630fe02c4a7))
 
-## [0.10.0-beta.9](https://github.com/dockfries/infernus/compare/v0.10.0-beta.8...v0.10.0-beta.9) (2024-1-31)
+## [0.10.0-beta.9](https://github.com/dockfries/infernus/compare/v0.10.0-beta.8...v0.10.0-beta.9) (2024-01-31)
 
 ### ⚠ BREAKING CHANGES
 
-- **fs:** remove play sound players param
-- **core:** remove partial generics and instances param
 - **core:** remove deprecated pool size functions
+- **core:** remove partial generics and instances param
+- **fs:** remove play sound players param
 
 ### Features
 
@@ -704,7 +716,7 @@
 - **core:** remove partial generics and instances param ([1adf6c5](https://github.com/dockfries/infernus/commit/1adf6c59275c56005ae2409d054aa497340826b7))
 - **fs:** remove play sound players param ([40d305f](https://github.com/dockfries/infernus/commit/40d305fc70276f45ebb317ef8280464ed4df6c4b))
 
-## [0.10.0-beta.8](https://github.com/dockfries/infernus/compare/v0.10.0-beta.7...v0.10.0-beta.8) (2024-1-22)
+## [0.10.0-beta.8](https://github.com/dockfries/infernus/compare/v0.10.0-beta.7...v0.10.0-beta.8) (2024-01-22)
 
 ### Bug Fixes
 
@@ -714,7 +726,7 @@
 - **raknet:** invalid sync decorator ([5852dd1](https://github.com/dockfries/infernus/commit/5852dd12a103957199b528c8dd80bd5771f503ca))
 - **raknet:** pass array/string through new polyfill ([f61eaf2](https://github.com/dockfries/infernus/commit/f61eaf291ec27c3aa45983e39c5119e1034e97e7))
 
-## [0.10.0-beta.7](https://github.com/dockfries/infernus/compare/v0.10.0-beta.6...v0.10.0-beta.7) (2023-12-2)
+## [0.10.0-beta.7](https://github.com/dockfries/infernus/compare/v0.10.0-beta.6...v0.10.0-beta.7) (2023-12-02)
 
 ### Features
 
@@ -725,7 +737,7 @@
 - **core:** error map key match for gangZone and textDraw ([4ff710f](https://github.com/dockfries/infernus/commit/4ff710fa92254f2699763d2030e651e3e1fc6c61))
 - **core:** onDeath, onTakeDamage enum type generic inference, getKeys return hump ([258667b](https://github.com/dockfries/infernus/commit/258667bdfb199c1291aa5c3c3c2a8454373045c0))
 
-## [0.10.0-beta.6](https://github.com/dockfries/infernus/compare/v0.10.0-beta.5...v0.10.0-beta.6) (2023-12-2)
+## [0.10.0-beta.6](https://github.com/dockfries/infernus/compare/v0.10.0-beta.5...v0.10.0-beta.6) (2023-12-02)
 
 ### Features
 
@@ -735,13 +747,13 @@
 
 - **core:** onCommandText replace /, failed to correctly define some i18n functions ([03276ae](https://github.com/dockfries/infernus/commit/03276ae03f39d4a29a6367ea3fb1bc3fee2ef375))
 
-## [0.10.0-beta.5](https://github.com/dockfries/infernus/compare/v0.10.0-beta.4...v0.10.0-beta.5) (2023-12-1)
+## [0.10.0-beta.5](https://github.com/dockfries/infernus/compare/v0.10.0-beta.4...v0.10.0-beta.5) (2023-12-01)
 
 ### Bug Fixes
 
 - **core:** streamer destroy not set id -1, return onExit ([20a874b](https://github.com/dockfries/infernus/commit/20a874bbe0e2002aa7f0c5509d7a784a93493aaf))
 
-## [0.10.0-beta.4](https://github.com/dockfries/infernus/compare/v0.10.0-beta.2...v0.10.0-beta.4) (2023-12-1)
+## [0.10.0-beta.4](https://github.com/dockfries/infernus/compare/v0.10.0-beta.2...v0.10.0-beta.4) (2023-12-01)
 
 ### Bug Fixes
 
