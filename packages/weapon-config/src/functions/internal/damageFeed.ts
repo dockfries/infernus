@@ -165,6 +165,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
 
   if (damageFeedTimer.get(player.id)) {
     clearTimeout(damageFeedTimer.get(player.id)!);
+    damageFeedTimer.set(player.id, null);
   }
 
   if (
@@ -176,6 +177,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
       setTimeout(
         () => {
           wc_DamageFeedUpdate(player);
+          damageFeedTimer.delete(player.id);
         },
         innerGameModeConfig.damageFeedMaxUpdateRate - (tick - damageFeedUpdateTick.get(player.id)),
       ),
@@ -190,6 +192,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
         setTimeout(
           () => {
             wc_DamageFeedUpdate(player);
+            damageFeedTimer.delete(player.id);
           },
           innerGameModeConfig.damageFeedHideDelay - (tick - lowest_tick) + 10,
         ),

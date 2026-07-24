@@ -75,6 +75,8 @@ import {
   playerHealthBarSizeY,
   healthBarBorder,
   healthBarBackground,
+  secondKnifeAnimTimer,
+  cBugPunishmentTimer,
 } from "../../struct";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
 import { WC_WeaponEnum } from "../../enums";
@@ -240,6 +242,16 @@ PlayerEvent.onDisconnect(({ player, next }) => {
   if (knifeTimeout.get(player.id)) {
     clearTimeout(knifeTimeout.get(player.id)!);
     knifeTimeout.set(player.id, null);
+  }
+
+  if (secondKnifeAnimTimer.get(player.id)) {
+    clearTimeout(secondKnifeAnimTimer.get(player.id)!);
+    secondKnifeAnimTimer.set(player.id, null);
+  }
+
+  if (cBugPunishmentTimer.get(player.id)) {
+    clearTimeout(cBugPunishmentTimer.get(player.id)!);
+    cBugPunishmentTimer.set(player.id, null);
   }
 
   if (

@@ -139,6 +139,7 @@ export function playerDeath(
     player.id,
     setTimeout(() => {
       wc_PlayerDeathRespawn(player);
+      deathTimer.delete(player.id);
     }, editable.respawnTime),
   );
 

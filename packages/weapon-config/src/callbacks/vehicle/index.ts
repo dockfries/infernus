@@ -64,6 +64,7 @@ export function wc_KillVehicle(vehicle: Vehicle, killer: Player) {
     vehicle.id,
     setTimeout(() => {
       wc_OnDeadVehicleSpawn(vehicle);
+      vehicleRespawnTimer.delete(vehicle.id);
     }, 10000),
   );
   return 1;

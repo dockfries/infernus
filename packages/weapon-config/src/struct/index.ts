@@ -249,3 +249,6 @@ export const gogglesTick = new SafetyMap<number, number>(() => 0);
 
 export const restorePlayerTeleport = new SafetyMap<number, boolean>(() => false);
 export const blockAdminTeleport = new SafetyMap<number, boolean>(() => false);
+
+export const secondKnifeAnimTimer = new SafetyMap<number, NodeJS.Timeout | null>(() => null);
+export const cBugPunishmentTimer = new SafetyMap<number, NodeJS.Timeout | null>(() => null);

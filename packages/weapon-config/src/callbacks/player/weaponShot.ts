@@ -331,6 +331,7 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
                 hitId,
                 setTimeout(() => {
                   wc_KillVehicle(Vehicle.getInstance(hitId)!, player);
+                  vehicleRespawnTimer.delete(hitId);
                 }, 6000),
               );
             }

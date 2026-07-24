@@ -815,12 +815,14 @@ export function inflictDamage(
     } else {
       if (delayedDeathTimer.get(editable.player.id)) {
         clearTimeout(delayedDeathTimer.get(editable.player.id)!);
+        delayedDeathTimer.delete(editable.player.id);
       }
 
       delayedDeathTimer.set(
         editable.player.id,
         setTimeout(() => {
           wc_DelayedDeath(editable.player, editable.issuerId, editable.weaponId);
+          delayedDeathTimer.delete(editable.player.id);
         }, 1200),
       );
     }

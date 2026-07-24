@@ -20,6 +20,7 @@ import {
   lastDeathTick,
   lastHitTicks,
   lastHitWeapons,
+  secondKnifeAnimTimer,
 } from "../../struct";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
 import { InvalidDamageEnum, RejectedReasonEnum, WC_WeaponEnum } from "../../enums";
@@ -90,6 +91,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
         damage.id,
         setTimeout(() => {
           wc_SetSpawnForStreamedIn(damage);
+          knifeTimeout.delete(damage.id);
         }, 2500),
       );
     }
@@ -143,6 +145,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
           damage.id,
           setTimeout(() => {
             wc_SpawnForStreamedIn(damage);
+            knifeTimeout.delete(damage.id);
           }, 150),
         );
         orig_playerMethods.clearAnimations.call(player, true);
@@ -164,6 +167,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
             damage.id,
             setTimeout(() => {
               wc_SpawnForStreamedIn(damage);
+              knifeTimeout.delete(damage.id);
             }, 150),
           );
           orig_playerMethods.clearAnimations.call(player, true);
@@ -190,6 +194,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
           editable.player.id,
           setTimeout(() => {
             wc_SpawnForStreamedIn(editable.player);
+            knifeTimeout.delete(editable.player.id);
           }, 150),
         );
 
@@ -223,9 +228,18 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
       let animName = "KILL_Knife_Ped_Damage";
       playerDeath(editable.player, animLib, animName, false, 5200);
 
-      setTimeout(() => {
-        wc_SecondKnifeAnim(editable.player);
-      }, 2200);
+      if (secondKnifeAnimTimer.has(editable.player.id)) {
+        clearTimeout(secondKnifeAnimTimer.get(editable.player.id)!);
+        secondKnifeAnimTimer.delete(editable.player.id);
+      }
+
+      secondKnifeAnimTimer.set(
+        editable.player.id,
+        setTimeout(() => {
+          wc_SecondKnifeAnim(editable.player);
+          secondKnifeAnimTimer.delete(editable.player.id);
+        }, 2200),
+      );
 
       useTrigger("OnPlayerDeath")!(
         withTriggerOptions({

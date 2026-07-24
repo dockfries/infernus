@@ -29,6 +29,7 @@ import {
   previousHits,
   restorePlayerTeleport,
   vendingUseTimer,
+  cBugPunishmentTimer,
 } from "../../struct";
 import { innerWeaponConfig, innerGameModeConfig } from "../../config";
 import { sc_VendingMachines } from "../../constants";
@@ -113,9 +114,19 @@ PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
         );
         freezeSyncPacket(player, true);
         orig_playerMethods.setArmedWeapon.call(player, w);
-        setTimeout(() => {
-          wc_CbugPunishment(player, orig_playerMethods.getWeapon.call(player));
-        }, 600);
+
+        if (cBugPunishmentTimer.has(player.id)) {
+          clearTimeout(cBugPunishmentTimer.get(player.id)!);
+          cBugPunishmentTimer.delete(player.id);
+        }
+
+        cBugPunishmentTimer.set(
+          player.id,
+          setTimeout(() => {
+            wc_CbugPunishment(player, orig_playerMethods.getWeapon.call(player));
+            cBugPunishmentTimer.delete(player.id);
+          }, 600),
+        );
 
         cBugFroze.set(player.id, tick);
 
@@ -217,6 +228,7 @@ PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
                 player.id,
                 setTimeout(() => {
                   wc_VendingMachineUsed(player, editable.healthGiven);
+                  vendingUseTimer.delete(player.id);
                 }, 2500),
               );
 
