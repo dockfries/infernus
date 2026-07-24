@@ -126,6 +126,7 @@ function ac_AntiCheatKickWithDesync(player: Player, code: number) {
   ACInfo.get(player.id).acKickTimerID = setTimeout(
     () => {
       ac_KickTimer(player);
+      ACInfo.get(player.id).acKickTimerID = null;
     },
     Math.min(ac_gpp, innerACConfig.AC_MAX_PING),
   );
