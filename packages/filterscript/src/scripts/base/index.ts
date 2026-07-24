@@ -5,6 +5,9 @@ import type { IFilterScript } from "@infernus/core";
 import { Player, PlayerEvent } from "@infernus/core";
 import { ColorEnum } from "./enums/color";
 
+const kickTimer = new Map<number, NodeJS.Timeout>();
+const banTimer = new Map<number, NodeJS.Timeout>();
+
 export const Base: IFilterScript = {
   name: "base",
   load() {
@@ -83,9 +86,17 @@ export const Base: IFilterScript = {
       const message = `>> ${iName}(${id}) has been kicked.`;
       player.sendClientMessage(ColorEnum.ADMINFS_MESSAGE, message);
 
-      setTimeout(() => {
+      if (kickTimer.has(iPlayer.id)) {
+        clearTimeout(kickTimer.get(iPlayer.id)!);
+        kickTimer.delete(iPlayer.id);
+      }
+
+      const timer = setTimeout(() => {
         iPlayer.kick();
+        kickTimer.delete(iPlayer.id);
       }, iPlayer.getPing() + 100);
+
+      kickTimer.set(iPlayer.id, timer);
 
       return next();
     });
@@ -125,9 +136,17 @@ export const Base: IFilterScript = {
       const message = `>> ${iName}(${id}) has been banned.`;
       player.sendClientMessage(ColorEnum.ADMINFS_MESSAGE, message);
 
-      setTimeout(() => {
+      if (banTimer.has(iPlayer.id)) {
+        clearTimeout(banTimer.get(iPlayer.id)!);
+        banTimer.delete(iPlayer.id);
+      }
+
+      const timer = setTimeout(() => {
         iPlayer.ban();
+        banTimer.delete(iPlayer.id);
       }, iPlayer.getPing() + 100);
+
+      banTimer.set(iPlayer.id, timer);
 
       return next();
     });
@@ -136,5 +155,19 @@ export const Base: IFilterScript = {
 
     return [pm, kick, ban];
   },
-  unload() {},
+  unload() {
+    kickTimer.forEach((timer) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    });
+    kickTimer.clear();
+
+    banTimer.forEach((timer) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    });
+    banTimer.clear();
+  },
 };

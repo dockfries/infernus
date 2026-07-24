@@ -256,8 +256,9 @@ function elevator_MoveToFloor(floorId: number) {
   );
   label_Elevator!.destroy();
 
-  if (elevatorTurnTimer) {
-    clearTimeout(elevatorTurnTimer);
+  if (elevatorBoostTimer) {
+    clearTimeout(elevatorBoostTimer);
+    elevatorBoostTimer = null;
   }
 
   elevatorBoostTimer = setTimeout(() => {
@@ -456,6 +457,7 @@ export const LSElevator: IFilterScript = {
 
         if (elevatorTurnTimer) {
           clearTimeout(elevatorTurnTimer);
+          elevatorTurnTimer = null;
         }
 
         elevatorState = constants.ELEVATOR_STATE_WAITING;

@@ -1,5 +1,7 @@
 import { Player, PlayerEvent, SpecialActionsEnum, Vehicle } from "@infernus/core";
 
+const kickTimer = new Map<number, NodeJS.Timeout>();
+
 export function createPlayerCommands() {
   const weap = PlayerEvent.onCommandText("weap", ({ player, subcommand, next }) => {
     const [weaponId] = subcommand;
@@ -205,10 +207,17 @@ export function createPlayerCommands() {
   });
 
   function kickWithMessage(player: Player, message: string) {
+    if (kickTimer.has(player.id)) {
+      clearTimeout(kickTimer.get(player.id));
+      kickTimer.delete(player.id);
+    }
+
     player.sendClientMessage(0xff4444ff, message);
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       player.kick();
+      kickTimer.delete(player.id);
     }, 1000);
+    kickTimer.set(player.id, timer);
   }
 
   const kickmessage = PlayerEvent.onCommandText("kickmessage", ({ player, next }) => {
@@ -318,5 +327,13 @@ export function createPlayerCommands() {
     disablecamtarget,
     enablecamtarget,
     poolsize,
+    () => {
+      kickTimer.forEach((timer) => {
+        if (timer) {
+          clearTimeout(timer);
+        }
+      });
+      kickTimer.clear();
+    },
   ];
 }

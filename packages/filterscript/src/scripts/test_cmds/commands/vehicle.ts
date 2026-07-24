@@ -10,6 +10,8 @@ import {
 } from "@infernus/core";
 import { spawnVehicleInFrontOfPlayer } from "filterscript/utils/gl_common";
 
+const timedVdTimer = new Map<number, NodeJS.Timeout>();
+
 export function createVehCommands() {
   const player2v = PlayerEvent.onCommandText("player2v", ({ subcommand, next }) => {
     const [vId, pId] = subcommand;
@@ -281,12 +283,19 @@ export function createVehCommands() {
   });
 
   const timed_vd = PlayerEvent.onCommandText("timed_vd", ({ player, next }) => {
-    setTimeout(() => {
+    if (timedVdTimer.has(player.id)) {
+      clearTimeout(timedVdTimer.get(player.id)!);
+      timedVdTimer.delete(player.id);
+    }
+
+    const timer = setTimeout(() => {
       const vehicleToKill = player.getVehicle();
       if (vehicleToKill && vehicleToKill.isValid()) {
         vehicleToKill.destroy();
       }
+      timedVdTimer.delete(player.id);
     }, 3000);
+    timedVdTimer.set(player.id, timer);
     return next();
   });
 
@@ -400,5 +409,13 @@ export function createVehCommands() {
     closecarwindows,
     disablevcol,
     enablevcol,
+    () => {
+      timedVdTimer.forEach((timer) => {
+        if (timer) {
+          clearTimeout(timer);
+        }
+      });
+      timedVdTimer.clear();
+    },
   ];
 }

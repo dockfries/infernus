@@ -1,5 +1,7 @@
 import { Dialog, DialogStylesEnum, Player, PlayerEvent } from "@infernus/core";
 
+const timeddlgTimer = new Map<number, NodeJS.Timeout>();
+
 export function createDialogCommands() {
   const testmsgbox = PlayerEvent.onCommandText("testmsgbox", async ({ player, next }) => {
     // Example of handling dialog responses.
@@ -187,7 +189,11 @@ export function createDialogCommands() {
   });
 
   const timeddlg = PlayerEvent.onCommandText("timeddlg", ({ player, next }) => {
-    setTimeout(async () => {
+    if (timeddlgTimer.has(player.id)) {
+      clearTimeout(timeddlgTimer.get(player.id)!);
+      timeddlgTimer.delete(player.id);
+    }
+    const timer = setTimeout(async () => {
       const listItems =
         "{FFFFFF}1\t{55EE55}Deagle\n{FFFFFF}2\t{55EE55}Sawnoff\n{FFFFFF}3\t{55EE55}Pistol\n{FFFFFF}4\t{55EE55}Grenade\n{FFFFFF}5\t{55EE55}Parachute\n6\t{55EE55}Lorikeet";
 
@@ -205,7 +211,9 @@ export function createDialogCommands() {
       } else {
         player.sendClientMessage(0xffffffff, "You selected Cancel");
       }
+      timeddlgTimer.delete(player.id);
     }, 5000);
+    timeddlgTimer.set(player.id, timer);
     return next();
   });
 
@@ -220,5 +228,13 @@ export function createDialogCommands() {
     testtablistcrash,
     testclosebox,
     timeddlg,
+    () => {
+      timeddlgTimer.forEach((timer) => {
+        if (timer) {
+          clearTimeout(timer);
+        }
+      });
+      timeddlgTimer.clear();
+    },
   ];
 }

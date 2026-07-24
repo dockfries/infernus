@@ -83,6 +83,7 @@ export const PirateShip: IPirateShipFS = {
         // Before heading to the first route we should wait a bit
         if (timer) {
           clearTimeout(timer);
+          timer = null;
         }
         timer = setTimeout(startMovingTimer, 30 * 1000); // pause at route 0 for 30 seconds
         return next();
@@ -200,6 +201,7 @@ export const PirateShip: IPirateShipFS = {
 
     if (timer) {
       clearTimeout(timer);
+      timer = null;
     }
     timer = setTimeout(startMovingTimer, 30 * 1000); // pause at route 0 for 30 seconds
     return [onMoved];
@@ -207,6 +209,7 @@ export const PirateShip: IPirateShipFS = {
   unload() {
     if (timer) {
       clearTimeout(timer);
+      timer = null;
     }
 
     let x = 0;
