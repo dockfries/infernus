@@ -385,9 +385,7 @@ export class ModelSelectionMenu {
       modelSelectionTask.set(this.player, {
         resolve: (response) => {
           this[internalPropsKey].destroy();
-          setTimeout(() => {
-            resolve(response);
-          }, 0);
+          resolve(response);
         },
         reject: (reason) => {
           const reasonText =
@@ -395,9 +393,7 @@ export class ModelSelectionMenu {
               ? "[ModelSelectionMenu]: player disconnected"
               : "[ModelSelectionMenu]: player second request show";
           this[internalPropsKey].destroy(reason === 1);
-          setTimeout(() => {
-            reject(reasonText);
-          }, 0);
+          reject(reasonText);
         },
       });
       playerMenus.set(this.player, this);
