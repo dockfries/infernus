@@ -41,7 +41,7 @@ import { isBulletWeapon } from "./is";
 export function averageShootRate(player: Player, shots: number) {
   let multiple_weapons = false;
 
-  if (player.id === InvalidEnum.PLAYER_ID || shotsFired.get(player.id) < shots) {
+  if (player.id < 0 || player.id >= LimitsEnum.MAX_PLAYERS || shotsFired.get(player.id) < shots) {
     return { multiple_weapons, ret: -1 };
   }
 
@@ -80,7 +80,8 @@ export function averageShootRate(player: Player, shots: number) {
 
 export function averageHitRate(player: Player, hits: number) {
   let multiple_weapons = false;
-  if (player.id === InvalidEnum.PLAYER_ID || hitsIssued.get(player.id) < hits) {
+
+  if (player.id < 0 || player.id >= LimitsEnum.MAX_PLAYERS || hitsIssued.get(player.id) < hits) {
     return { multiple_weapons, ret: -1 };
   }
 

@@ -28,6 +28,10 @@ import {
   damageDoneHealth,
   damageDoneArmour,
   lastDeathTick,
+  cBugFroze,
+  knifeAnimTimer,
+  delayedDeathTimer,
+  cBugTimeout,
 } from "../../struct";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
 import { WC_WeaponEnum } from "../../enums";
@@ -36,7 +40,6 @@ import { debugMessage, debugMessageRedAll } from "../../utils/debug";
 import {
   IEditableOnPlayerDamage,
   IEditableOnPlayerPrepareDeath,
-  triggerOnPlayerDamage,
   triggerOnPlayerPrepareDeath,
 } from "../custom";
 import { damageFeedUpdate } from "../../functions/internal/damageFeed";
@@ -48,16 +51,26 @@ import {
   setFakeFacingAngle,
   spawnPlayerInPlace,
 } from "../../functions/internal/set";
-import { onPlayerDamageDone, onPlayerDeathFinished } from "../../functions/internal/event";
+import {
+  onPlayerDamage,
+  onPlayerDamageDone,
+  onPlayerDeathFinished,
+} from "../../functions/internal/event";
 import { getPlayerActualSkin } from "../../functions/internal/get";
 
 PlayerEvent.onSpawn(({ player, next }) => {
   trueDeath.set(player.id, false);
   inClassSelection.set(player.id, false);
+  cBugFroze.set(player.id, 0);
 
   if (deathTimer.get(player.id)) {
     clearTimeout(deathTimer.get(player.id)!);
     deathTimer.set(player.id, null);
+  }
+
+  if (knifeAnimTimer.get(player.id)) {
+    clearTimeout(knifeAnimTimer.get(player.id)!);
+    knifeAnimTimer.set(player.id, null);
   }
 
   if (forceClassSelection.get(player.id)) {
@@ -113,9 +126,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
 
     if (classId === -1) {
       spawn_info = playerSpawnInfo.get(player.id);
-    } else if (classId === -2) {
-      spawn_info = playerFallbackSpawnInfo.get(player.id);
-    } else {
+    } else if (classId >= 0 && classId < innerWeaponConfig.MAX_CLASSES) {
       if (
         classSpawnInfo.get(classId).skin === -1 &&
         playerFallbackSpawnInfo.get(player.id).skin !== -1
@@ -124,6 +135,8 @@ PlayerEvent.onSpawn(({ player, next }) => {
       } else {
         spawn_info = classSpawnInfo.get(classId);
       }
+    } else {
+      spawn_info = playerFallbackSpawnInfo.get(player.id);
     }
 
     if (spawn_info.skin !== -1) {
@@ -250,9 +263,19 @@ export const internalPlayerDeath: Parameters<(typeof PlayerEvent)["onDeath"]>[0]
     }
   }
 
+  if (delayedDeathTimer.get(player.id)) {
+    clearTimeout(delayedDeathTimer.get(player.id)!);
+    delayedDeathTimer.set(player.id, null);
+  }
+
   if (deathTimer.get(player.id)) {
     clearTimeout(deathTimer.get(player.id)!);
     deathTimer.set(player.id, null);
+  }
+
+  if (cBugTimeout.get(player.id)) {
+    clearTimeout(cBugTimeout.get(player.id)!);
+    cBugTimeout.set(player.id, null);
   }
 
   if (beingReSynced.get(player.id) || forceClassSelection.get(player.id)) {
@@ -307,11 +330,7 @@ export const internalPlayerDeath: Parameters<(typeof PlayerEvent)["onDeath"]>[0]
     bodyPart,
   };
 
-  if (triggerOnPlayerDamage(editable)) {
-    if (editable.weaponId < WC_WeaponEnum.UNARMED || editable.weaponId > WC_WeaponEnum.UNKNOWN) {
-      editable.weaponId = WC_WeaponEnum.UNKNOWN;
-    }
-
+  if (onPlayerDamage(editable)) {
     if (editable.amount === 0.0) {
       editable.amount = playerHealth.get(editable.player.id) + playerArmour.get(editable.player.id);
     }

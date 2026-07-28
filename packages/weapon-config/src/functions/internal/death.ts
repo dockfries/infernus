@@ -23,6 +23,7 @@ import {
   deathTimer,
   healthBarForeground,
   trueDeath,
+  cBugTimeout,
 } from "../../struct";
 import { onPlayerDeathFinished } from "./event";
 import { freezeSyncPacket } from "./raknet";
@@ -83,6 +84,11 @@ export function playerDeath(
     delayedDeathTimer.set(player.id, null);
   }
 
+  if (cBugTimeout.get(player.id)) {
+    clearTimeout(cBugTimeout.get(player.id)!);
+    cBugTimeout.set(player.id, null);
+  }
+
   if (orig_playerMethods.isTeleportAllowed.call(player)) {
     restorePlayerTeleport.set(player.id, true);
     orig_playerMethods.allowTeleport.call(player, false);
@@ -112,7 +118,7 @@ export function playerDeath(
   updateHealthBar(player, false, true);
   freezeSyncPacket(player, freezeSync);
 
-  if (editable.respawnTime === -1) {
+  if (editable.respawnTime < 0) {
     editable.respawnTime = innerGameModeConfig.respawnTime;
   }
 

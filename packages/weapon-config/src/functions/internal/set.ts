@@ -405,7 +405,7 @@ export function spawnPlayerForWorld(player: Player) {
 
   const bs = new BitStream();
 
-  bs.writeValue([PacketRpcValueType.UInt32, player.id]);
+  bs.writeValue([PacketRpcValueType.UInt32, player.id], [PacketRpcValueType.UInt32, 2]);
 
   Player.getInstances().forEach((i) => {
     if (i !== player) {

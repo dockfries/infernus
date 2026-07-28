@@ -126,9 +126,11 @@ export function wcc_setPlayerHealth(player: Player, health: number, armour = -1.
   if (player.id < 0 || player.id >= LimitsEnum.MAX_PLAYERS) {
     return false;
   }
+
   if (health <= 0.0) {
     playerArmour.set(player.id, 0.0);
     playerHealth.set(player.id, 0.0);
+
     if (player.isNpc()) {
       updateHealthBar(player, true);
     } else {
@@ -165,12 +167,16 @@ export const wc_SetPlayerArmour = setPlayerHook("setArmour", function (armour: n
   if (this.id < 0 || this.id >= LimitsEnum.MAX_PLAYERS) {
     return false;
   }
-  if (armour >= 0.0) {
+
+  if (armour <= 0.0) {
+    playerArmour.set(this.id, 0.0);
+  } else {
     if (armour > playerMaxArmour.get(this.id)) {
       armour = playerMaxArmour.get(this.id);
     }
     playerArmour.set(this.id, armour);
   }
+
   updateHealthBar(this, true);
   return true;
 });
@@ -271,7 +277,7 @@ export const wc_AddPlayerClass = function (
   );
   if (classId >= 0 && classId < innerWeaponConfig.MAX_CLASSES) {
     classSpawnInfo.get(classId).skin = modelId;
-    classSpawnInfo.get(classId).team = 0x7fffffff;
+    classSpawnInfo.get(classId).team = InvalidEnum.NO_TEAM;
     classSpawnInfo.get(classId).posX = spawnX;
     classSpawnInfo.get(classId).posY = spawnY;
     classSpawnInfo.get(classId).posZ = spawnZ;

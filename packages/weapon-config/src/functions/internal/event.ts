@@ -1,13 +1,15 @@
-import { Player, InvalidEnum } from "@infernus/core";
+import { Player, InvalidEnum, LimitsEnum } from "@infernus/core";
 import {
   triggerOnRejectedHit,
   triggerOnPlayerDeathFinished,
   triggerOnInvalidWeaponDamage,
   triggerOnPlayerDamageDone,
+  triggerOnPlayerDamage,
+  IEditableOnPlayerDamage,
 } from "../../callbacks/custom";
 import { innerWeaponConfig, innerGameModeConfig } from "../../config";
 import { g_HitRejectReasons } from "../../constants";
-import { InvalidDamageEnum } from "../../enums";
+import { InvalidDamageEnum, WC_WeaponEnum } from "../../enums";
 import { wc_GetWeaponName } from "../../hooks/weapon";
 import { orig_playerMethods } from "../../hooks/origin";
 import {
@@ -154,4 +156,19 @@ export function onPlayerDamageDone(
   damageFeedAddHitTaken(player, issuer, amount, weapon);
 
   triggerOnPlayerDamageDone(player, amount, issuer, weapon, bodyPart);
+}
+
+export function onPlayerDamage(editable: IEditableOnPlayerDamage) {
+  const ret = triggerOnPlayerDamage(editable);
+
+  const issuerId = typeof editable.issuerId === "number" ? editable.issuerId : editable.issuerId.id;
+  if (issuerId < 0 || issuerId >= LimitsEnum.MAX_PLAYERS) {
+    editable.issuerId = InvalidEnum.PLAYER_ID;
+  }
+
+  if (editable.weaponId < WC_WeaponEnum.UNARMED || editable.weaponId > WC_WeaponEnum.UNKNOWN) {
+    editable.weaponId = WC_WeaponEnum.UNKNOWN;
+  }
+
+  return ret;
 }

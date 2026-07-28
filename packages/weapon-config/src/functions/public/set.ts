@@ -256,7 +256,7 @@ export function damagePlayer(
 }
 
 export function resyncPlayer(player: Player) {
-  if (player.id >= 0 && player.id < LimitsEnum.MAX_PLAYERS) {
+  if (player.isConnected()) {
     saveSyncData(player);
     beingReSynced.set(player.id, true);
     spawnPlayerInPlace(player);

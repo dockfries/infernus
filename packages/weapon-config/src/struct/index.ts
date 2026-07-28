@@ -129,6 +129,7 @@ export const lastStopTick = new SafetyMap<number, number>(() => 0);
 
 export const cBugAllowed = new SafetyMap<number, boolean>(() => true);
 export const cBugFroze = new SafetyMap<number, number>(() => 0);
+export const cBugTimeout = new SafetyMap<number, NodeJS.Timeout | null>(() => null);
 
 export const shotsFired = new SafetyMap<number, number>(() => 0);
 export const hitsIssued = new SafetyMap<number, number>(() => 0);
@@ -188,6 +189,7 @@ export const deathSkipTick = new SafetyMap<number, number>(() => 0);
 export const beingReSynced = new SafetyMap<number, boolean>(() => false);
 export const spawnForStreamedIn = new SafetyMap<number, boolean>(() => false);
 export const knifeTimeout = new SafetyMap<number, NodeJS.Timeout | null>(() => null);
+export const knifeAnimTimer = new SafetyMap<number, NodeJS.Timeout | null>(() => null);
 export const syncData = new SafetyMap<number, ReSyncData>(() => new ReSyncData());
 
 export const vehicleAlive = new SafetyMap<number, boolean>(() => false);
@@ -249,6 +251,3 @@ export const gogglesTick = new SafetyMap<number, number>(() => 0);
 
 export const restorePlayerTeleport = new SafetyMap<number, boolean>(() => false);
 export const blockAdminTeleport = new SafetyMap<number, boolean>(() => false);
-
-export const secondKnifeAnimTimer = new SafetyMap<number, NodeJS.Timeout | null>(() => null);
-export const cBugPunishmentTimer = new SafetyMap<number, NodeJS.Timeout | null>(() => null);

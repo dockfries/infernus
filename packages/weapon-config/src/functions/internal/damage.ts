@@ -8,7 +8,7 @@ import {
   FightingStylesEnum,
   SpecialActionsEnum,
 } from "@infernus/core";
-import { IEditableOnPlayerDamage, triggerOnPlayerDamage } from "../../callbacks/custom";
+import { IEditableOnPlayerDamage } from "../../callbacks/custom";
 import { internalPlayerDeath } from "../../callbacks/player/spawn";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
 import { s_WeaponDamage, s_WeaponRange, s_DamageType, s_DamageArmour } from "../../constants";
@@ -35,7 +35,7 @@ import { debugMessage, debugMessageAll } from "../../utils/debug";
 import { floatFraction } from "../../utils/math";
 import { isMeleeWeapon, isHighRateWeapon, isBulletWeapon, wc_IsPlayerSpawned } from "../public/is";
 import { playerDeath, wc_DelayedDeath } from "./death";
-import { onRejectedHit, onPlayerDamageDone } from "./event";
+import { onRejectedHit, onPlayerDamageDone, onPlayerDamage } from "./event";
 import { isVehicleArmedWithWeapon, isVehicleBike, isPlayerBehindPlayer } from "./is";
 import { updateHealthBar, makePlayerFacePlayer } from "./set";
 
@@ -580,12 +580,8 @@ export function inflictDamage(
     bodyPart,
   };
 
-  if (!triggerOnPlayerDamage(editable)) {
+  if (!onPlayerDamage(editable)) {
     updateHealthBar(editable.player, true);
-
-    if (editable.weaponId < WC_WeaponEnum.UNARMED || editable.weaponId > WC_WeaponEnum.UNKNOWN) {
-      editable.weaponId = WC_WeaponEnum.UNKNOWN;
-    }
 
     if (innerWeaponConfig.DEBUG) {
       let length = 0.0;
@@ -607,10 +603,6 @@ export function inflictDamage(
     }
 
     return;
-  }
-
-  if (editable.weaponId < WC_WeaponEnum.UNARMED || editable.weaponId > WC_WeaponEnum.UNKNOWN) {
-    editable.weaponId = WC_WeaponEnum.UNKNOWN;
   }
 
   if (innerWeaponConfig.DEBUG) {

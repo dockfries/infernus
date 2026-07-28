@@ -20,13 +20,13 @@ import {
   lastDeathTick,
   lastHitTicks,
   lastHitWeapons,
-  secondKnifeAnimTimer,
+  knifeAnimTimer,
 } from "../../struct";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
 import { InvalidDamageEnum, RejectedReasonEnum, WC_WeaponEnum } from "../../enums";
 import { orig_playerMethods } from "../../hooks/origin";
 import { debugMessage, debugMessageRed } from "../../utils/debug";
-import { IEditableOnPlayerDamage, triggerOnPlayerDamage } from "../custom";
+import { IEditableOnPlayerDamage } from "../custom";
 import { s_MaxWeaponShootRate, s_ValidDamageGiven, s_WeaponRange } from "../../constants";
 import { internalPlayerDeath } from "./spawn";
 import { wc_SecondKnifeAnim } from "../../functions/internal/anim";
@@ -39,7 +39,11 @@ import {
 import { playerDeath } from "../../functions/internal/death";
 import { hasSameTeam, isVehicleBike } from "../../functions/internal/is";
 import { wc_SetSpawnForStreamedIn, wc_SpawnForStreamedIn } from "../../functions/internal/set";
-import { onInvalidWeaponDamage, onPlayerDamageDone } from "../../functions/internal/event";
+import {
+  onInvalidWeaponDamage,
+  onPlayerDamage,
+  onPlayerDamageDone,
+} from "../../functions/internal/event";
 import {
   isBulletWeapon,
   isHighRateWeapon,
@@ -185,7 +189,7 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
         bodyPart,
       };
 
-      if (!triggerOnPlayerDamage(editable)) {
+      if (!onPlayerDamage(editable)) {
         if (knifeTimeout.get(editable.player.id)) {
           clearTimeout(knifeTimeout.get(editable.player.id)!);
         }
@@ -228,16 +232,16 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
       let animName = "KILL_Knife_Ped_Damage";
       playerDeath(editable.player, animLib, animName, false, 5200);
 
-      if (secondKnifeAnimTimer.has(editable.player.id)) {
-        clearTimeout(secondKnifeAnimTimer.get(editable.player.id)!);
-        secondKnifeAnimTimer.delete(editable.player.id);
+      if (knifeAnimTimer.has(editable.player.id)) {
+        clearTimeout(knifeAnimTimer.get(editable.player.id)!);
+        knifeAnimTimer.delete(editable.player.id);
       }
 
-      secondKnifeAnimTimer.set(
+      knifeAnimTimer.set(
         editable.player.id,
         setTimeout(() => {
           wc_SecondKnifeAnim(editable.player);
-          secondKnifeAnimTimer.delete(editable.player.id);
+          knifeAnimTimer.delete(editable.player.id);
         }, 2200),
       );
 

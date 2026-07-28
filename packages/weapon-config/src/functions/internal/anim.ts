@@ -2,6 +2,7 @@ import { Player } from "@infernus/core";
 import { BitStream, PacketRpcValueType } from "@infernus/raknet";
 import { WC_RPC_CLEAR_ANIMATIONS } from "../../constants";
 import { orig_playerMethods } from "../../hooks/origin";
+import { knifeAnimTimer } from "../../struct";
 
 export function clearAnimationsForPlayer(player: Player, forPlayer: Player) {
   if (
@@ -21,6 +22,8 @@ export function clearAnimationsForPlayer(player: Player, forPlayer: Player) {
 }
 
 export function wc_SecondKnifeAnim(player: Player) {
+  knifeAnimTimer.set(player.id, null);
+
   const animLib = "KNIFE",
     animName = "KILL_Knife_Ped_Die";
   orig_playerMethods.applyAnimation.call(

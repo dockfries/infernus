@@ -20,7 +20,7 @@ import { innerGameModeConfig } from "../../config";
 import { InvalidDamageEnum, RejectedReasonEnum, WC_WeaponEnum } from "../../enums";
 import { orig_playerMethods } from "../../hooks/origin";
 import { debugMessage, debugMessageRed } from "../../utils/debug";
-import { IEditableOnPlayerDamage, triggerOnPlayerDamage } from "../custom";
+import { IEditableOnPlayerDamage } from "../custom";
 import { s_ValidDamageTaken, s_WeaponRange } from "../../constants";
 import { internalPlayerDeath } from "./spawn";
 import {
@@ -32,7 +32,11 @@ import {
 import { playerDeath } from "../../functions/internal/death";
 import { hasSameTeam, isVehicleArmedWithWeapon } from "../../functions/internal/is";
 import { updateHealthBar } from "../../functions/internal/set";
-import { onPlayerDamageDone, onInvalidWeaponDamage } from "../../functions/internal/event";
+import {
+  onPlayerDamageDone,
+  onInvalidWeaponDamage,
+  onPlayerDamage,
+} from "../../functions/internal/event";
 import {
   isBulletWeapon,
   isHighRateWeapon,
@@ -122,7 +126,7 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
         bodyPart,
       };
 
-      if (!triggerOnPlayerDamage(editable)) {
+      if (!onPlayerDamage(editable)) {
         resyncPlayer(editable.player);
         return 0;
       }
@@ -182,7 +186,6 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
           editable.issuerId,
           `applying knife anim for you too (current: ${animIndex})`,
         );
-
         forceSync = 1;
       }
 

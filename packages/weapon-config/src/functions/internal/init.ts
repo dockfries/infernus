@@ -16,7 +16,6 @@ import {
   playerHealth,
   playerArmour,
   playerMaxHealth,
-  vendingUseTimer,
   healthBarForeground,
   internalPlayerTextDraw,
   damageFeedGiven,
@@ -33,6 +32,7 @@ import {
   setFakeHealth,
   setFakeArmour,
   setFakeFacingAngle,
+  updatePlayerVirtualWorld,
 } from "./set";
 import {
   createVendingMachines,
@@ -126,13 +126,6 @@ export function scriptExit() {
   let health = 0;
 
   Player.getInstances().forEach((player) => {
-    if (innerWeaponConfig.CUSTOM_VENDING_MACHINES) {
-      if (vendingUseTimer.get(player.id)) {
-        clearTimeout(vendingUseTimer.get(player.id)!);
-        vendingUseTimer.set(player.id, null);
-      }
-    }
-
     orig_playerMethods.setTeam.call(player, playerTeam.get(player.id));
 
     const state = orig_playerMethods.getState.call(player);
@@ -150,6 +143,7 @@ export function scriptExit() {
 
     setFakeHealth(player, 255);
     setFakeArmour(player, 255);
+    updatePlayerVirtualWorld(player);
     freezeSyncPacket(player, false);
     setFakeFacingAngle(player);
     setHealthBarVisible(player, false);

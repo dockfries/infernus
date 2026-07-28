@@ -11,6 +11,7 @@ import {
   restorePlayerTeleport,
   inClassSelection,
   playerClass,
+  knifeAnimTimer,
 } from "../../struct";
 import { debugMessage } from "../../utils/debug";
 import { spawnPlayerInPlace, updatePlayerVirtualWorld } from "../../functions/internal/set";
@@ -22,6 +23,11 @@ PlayerEvent.onRequestClass(({ player, classId, next }) => {
   if (deathTimer.get(player.id)) {
     clearTimeout(deathTimer.get(player.id)!);
     deathTimer.set(player.id, null);
+  }
+
+  if (knifeAnimTimer.get(player.id)) {
+    clearTimeout(knifeAnimTimer.get(player.id)!);
+    knifeAnimTimer.set(player.id, null);
   }
 
   if (deathSkip.get(player.id)) {

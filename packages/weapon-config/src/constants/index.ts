@@ -187,7 +187,6 @@ export const g_WeaponName = [
   "Drowning",
   "Collision",
   "Splat",
-  "Unknown",
 ];
 
 export const sc_VendingMachines = [

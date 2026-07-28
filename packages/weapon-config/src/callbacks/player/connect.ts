@@ -75,8 +75,11 @@ import {
   playerHealthBarSizeY,
   healthBarBorder,
   healthBarBackground,
-  secondKnifeAnimTimer,
-  cBugPunishmentTimer,
+  knifeAnimTimer,
+  cBugTimeout,
+  lastDeathTick,
+  damageDoneHealth,
+  damageDoneArmour,
 } from "../../struct";
 import { innerGameModeConfig, innerWeaponConfig } from "../../config";
 import { WC_WeaponEnum } from "../../enums";
@@ -96,6 +99,7 @@ PlayerEvent.onConnect(({ player, next }) => {
   lastExplosive.set(player.id, WC_WeaponEnum.UNARMED);
   lastShotIdx.set(player.id, 0);
   lastShot.get(player.id).tick = 0;
+  lastShot.get(player.id).valid = false;
   lastHitIdx.set(player.id, 0);
   rejectedHitIdx.set(player.id, 0);
   shotsFired.set(player.id, 0);
@@ -124,11 +128,15 @@ PlayerEvent.onConnect(({ player, next }) => {
   playerClass.set(player.id, -2);
   spawnInfoModified.set(player.id, false);
   playerFallbackSpawnInfo.get(player.id).skin = -1;
+  lastDeathTick.set(player.id, 0);
   deathSkip.set(player.id, 0);
   lastVehicleTick.set(player.id, 0);
+  damageDoneHealth.set(player.id, 0);
+  damageDoneArmour.set(player.id, 0);
   previousHitIdx.set(player.id, 0);
   cBugAllowed.set(player.id, innerGameModeConfig.cBugGlobal);
   cBugFroze.set(player.id, 0);
+  cBugTimeout.set(player.id, null);
   deathTimer.set(player.id, null);
   delayedDeathTimer.set(player.id, null);
   damageFeedPlayer.set(player.id, -1);
@@ -239,19 +247,19 @@ PlayerEvent.onDisconnect(({ player, next }) => {
     deathTimer.set(player.id, null);
   }
 
+  if (cBugTimeout.get(player.id)) {
+    clearTimeout(cBugTimeout.get(player.id)!);
+    cBugTimeout.set(player.id, null);
+  }
+
+  if (knifeAnimTimer.get(player.id)) {
+    clearTimeout(knifeAnimTimer.get(player.id)!);
+    knifeAnimTimer.set(player.id, null);
+  }
+
   if (knifeTimeout.get(player.id)) {
     clearTimeout(knifeTimeout.get(player.id)!);
     knifeTimeout.set(player.id, null);
-  }
-
-  if (secondKnifeAnimTimer.get(player.id)) {
-    clearTimeout(secondKnifeAnimTimer.get(player.id)!);
-    secondKnifeAnimTimer.set(player.id, null);
-  }
-
-  if (cBugPunishmentTimer.get(player.id)) {
-    clearTimeout(cBugPunishmentTimer.get(player.id)!);
-    cBugPunishmentTimer.set(player.id, null);
   }
 
   if (

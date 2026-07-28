@@ -8,6 +8,8 @@ import {
   fakeArmour,
   syncData,
   syncDataFrozen,
+  playerHealth,
+  playerArmour,
 } from "../../struct";
 import { wc_IsPlayerPaused } from "../public/is";
 import { getPlayerActualSkin } from "./get";
@@ -56,8 +58,8 @@ export function sendLastSyncPacket(player: Player, toPlayer: Player, animation =
 }
 
 export function saveSyncData(player: Player) {
-  syncData.get(player.id).health = orig_playerMethods.getHealth.call(player).health;
-  syncData.get(player.id).armour = orig_playerMethods.getArmour.call(player).armour;
+  syncData.get(player.id).health = playerHealth.get(player.id);
+  syncData.get(player.id).armour = playerArmour.get(player.id);
 
   const { x, y, z } = orig_playerMethods.getPos.call(player)!;
   syncData.get(player.id).posX = x;

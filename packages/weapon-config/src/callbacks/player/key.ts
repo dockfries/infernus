@@ -29,7 +29,7 @@ import {
   previousHits,
   restorePlayerTeleport,
   vendingUseTimer,
-  cBugPunishmentTimer,
+  cBugTimeout,
 } from "../../struct";
 import { innerWeaponConfig, innerGameModeConfig } from "../../config";
 import { sc_VendingMachines } from "../../constants";
@@ -55,12 +55,11 @@ PlayerEvent.onClickMap(({ player, next }) => {
 });
 
 export function wc_CbugPunishment(player: Player, weapon: number) {
-  freezeSyncPacket(player, false);
-  orig_playerMethods.setArmedWeapon.call(player, weapon);
+  cBugTimeout.set(player.id, null);
 
-  if (!isDying.get(player.id)) {
-    orig_playerMethods.clearAnimations.call(player, true);
-  }
+  freezeSyncPacket(player, false);
+  orig_playerMethods.clearAnimations.call(player, true);
+  orig_playerMethods.setArmedWeapon.call(player, weapon);
 }
 
 PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
@@ -115,16 +114,16 @@ PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
         freezeSyncPacket(player, true);
         orig_playerMethods.setArmedWeapon.call(player, w);
 
-        if (cBugPunishmentTimer.has(player.id)) {
-          clearTimeout(cBugPunishmentTimer.get(player.id)!);
-          cBugPunishmentTimer.delete(player.id);
+        if (cBugTimeout.has(player.id)) {
+          clearTimeout(cBugTimeout.get(player.id)!);
+          cBugTimeout.delete(player.id);
         }
 
-        cBugPunishmentTimer.set(
+        cBugTimeout.set(
           player.id,
           setTimeout(() => {
             wc_CbugPunishment(player, orig_playerMethods.getWeapon.call(player));
-            cBugPunishmentTimer.delete(player.id);
+            cBugTimeout.delete(player.id);
           }, 600),
         );
 

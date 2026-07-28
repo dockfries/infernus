@@ -209,6 +209,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
 
 export function damageFeedUpdateText(player: Player) {
   let buf = "";
+  let damagedId: number = InvalidEnum.PLAYER_ID;
 
   for (let i = 0; i < damageFeedHitsGiven.get(player.id).length; i++) {
     if (!damageFeedHitsGiven.get(player.id)[i]?.tick) {
@@ -223,10 +224,12 @@ export function damageFeedUpdateText(player: Player) {
       weapon = wc_GetWeaponName(damageFeedHitsGiven.get(player.id)[i]!.weapon).name;
     }
 
+    damagedId = damageFeedHitsGiven.get(player.id)[i]!.issuer;
+
     if (damageFeedHitsGiven.get(player.id)[i]!.issuer === InvalidEnum.PLAYER_ID) {
       buf = `${buf}${weapon} +${(damageFeedHitsGiven.get(player.id)[i]!.amount + 0.009).toFixed(2)}~n~`;
     } else {
-      buf = `${buf}${damageFeedHitsGiven.get(player.id)[i]!.name} - ${weapon} +${(damageFeedHitsGiven.get(player.id)[i]!.amount + 0.009).toFixed(2)} (${playerHealth.get(damageFeedHitsGiven.get(player.id)[i]!.issuer).toFixed(2)})~n~`;
+      buf = `${buf}${damageFeedHitsGiven.get(player.id)[i]!.name} - ${weapon} +${(damageFeedHitsGiven.get(player.id)[i]!.amount + 0.009).toFixed(2)} (${playerHealth.get(damagedId).toFixed(2)})~n~`;
     }
   }
 
@@ -249,6 +252,11 @@ export function damageFeedUpdateText(player: Player) {
   }
 
   buf = "";
+  damagedId = spectating.get(player.id);
+
+  if (damagedId === InvalidEnum.PLAYER_ID) {
+    damagedId = player.id;
+  }
 
   for (let i = 0; i < damageFeedHitsTaken.get(player.id).length; i++) {
     if (!damageFeedHitsTaken.get(player.id)[i]?.tick) {
@@ -264,9 +272,9 @@ export function damageFeedUpdateText(player: Player) {
     }
 
     if (damageFeedHitsTaken.get(player.id)[i]!.issuer === InvalidEnum.PLAYER_ID) {
-      buf = `${buf}${weapon} -${(damageFeedHitsTaken.get(player.id)[i]!.amount + 0.009).toFixed(2)} (${playerHealth.get(player.id).toFixed(2)})~n~`;
+      buf = `${buf}${weapon} -${(damageFeedHitsTaken.get(player.id)[i]!.amount + 0.009).toFixed(2)} (${playerHealth.get(damagedId).toFixed(2)})~n~`;
     } else {
-      buf = `${buf}${damageFeedHitsTaken.get(player.id)[i]!.name} - ${weapon} -${(damageFeedHitsTaken.get(player.id)[i]!.amount + 0.009).toFixed(2)} (${playerHealth.get(damageFeedHitsGiven.get(player.id)[i]!.issuer).toFixed(2)})~n~`;
+      buf = `${buf}${damageFeedHitsTaken.get(player.id)[i]!.name} - ${weapon} -${(damageFeedHitsTaken.get(player.id)[i]!.amount + 0.009).toFixed(2)} (${playerHealth.get(damagedId).toFixed(2)})~n~`;
     }
   }
 
