@@ -106,17 +106,9 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
         resyncPlayer(player);
 
         return 0;
-      } else {
-        const { x, y, z } = orig_playerMethods.getPos.call(damage)!;
-
-        if (
-          orig_playerMethods.getDistanceFromPoint.call(player, x, y, z) >
-          s_WeaponRange[weapon] + 2.0
-        ) {
-          resyncPlayer(player);
-          return 0;
-        }
       }
+
+      const { x, y, z } = orig_playerMethods.getPos.call(damage)!;
 
       const editable: IEditableOnPlayerDamage = {
         player,
@@ -126,7 +118,11 @@ PlayerEvent.onTakeDamage(({ player, damage, amount, weapon, bodyPart }) => {
         bodyPart,
       };
 
-      if (!onPlayerDamage(editable)) {
+      if (
+        orig_playerMethods.getDistanceFromPoint.call(player, x, y, z) >
+          s_WeaponRange[weapon] + 2.0 ||
+        !onPlayerDamage(editable)
+      ) {
         resyncPlayer(editable.player);
         return 0;
       }

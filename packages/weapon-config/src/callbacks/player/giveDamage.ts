@@ -156,30 +156,9 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
         orig_playerMethods.setArmedWeapon.call(player, w);
 
         return 0;
-      } else {
-        const { x, y, z } = orig_playerMethods.getPos.call(player)!;
-
-        if (
-          orig_playerMethods.getDistanceFromPoint.call(damage, x, y, z) >
-          s_WeaponRange[weapon] + 2.0
-        ) {
-          if (knifeTimeout.get(damage.id)) {
-            clearTimeout(knifeTimeout.get(damage.id)!);
-          }
-
-          knifeTimeout.set(
-            damage.id,
-            setTimeout(() => {
-              wc_SpawnForStreamedIn(damage);
-              knifeTimeout.delete(damage.id);
-            }, 150),
-          );
-          orig_playerMethods.clearAnimations.call(player, true);
-          orig_playerMethods.setArmedWeapon.call(player, w);
-
-          return 0;
-        }
       }
+
+      const { x, y, z } = orig_playerMethods.getPos.call(player)!;
 
       const editable: IEditableOnPlayerDamage = {
         player: damage,
@@ -189,7 +168,11 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
         bodyPart,
       };
 
-      if (!onPlayerDamage(editable)) {
+      if (
+        orig_playerMethods.getDistanceFromPoint.call(damage, x, y, z) >
+          s_WeaponRange[weapon] + 2.0 ||
+        !onPlayerDamage(editable)
+      ) {
         if (knifeTimeout.get(editable.player.id)) {
           clearTimeout(knifeTimeout.get(editable.player.id)!);
         }
@@ -202,12 +185,11 @@ PlayerEvent.onGiveDamage(({ player, damage, amount, weapon, bodyPart }) => {
           }, 150),
         );
 
-        if (editable.issuerId === InvalidEnum.PLAYER_ID) {
-          return 0;
+        if (editable.issuerId !== InvalidEnum.PLAYER_ID) {
+          orig_playerMethods.clearAnimations.call(editable.issuerId, true);
+          orig_playerMethods.setArmedWeapon.call(editable.issuerId, w);
         }
 
-        orig_playerMethods.clearAnimations.call(editable.issuerId, true);
-        orig_playerMethods.setArmedWeapon.call(editable.issuerId, w);
         return 0;
       }
 
