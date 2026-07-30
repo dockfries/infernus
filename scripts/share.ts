@@ -13,15 +13,6 @@ export const pkgNames = fs.readdirSync(pkgDir).filter((dirPath) => {
   return fs.statSync(path.resolve(pkgDir, dirPath)).isDirectory() && !excludePkg.includes(dirPath);
 });
 
-function onceSIGKill(subProc: ReturnType<typeof execa>) {
-  const fn = (signal: NodeJS.Signals) => {
-    subProc.kill(signal);
-    process.exit(subProc.exitCode);
-  };
-  process.once("SIGINT", fn);
-  process.once("SIGTERM", fn);
-}
-
 export async function build(pkgName: string) {
   const pkgPath = path.resolve(pkgDir, pkgName);
 
@@ -37,20 +28,9 @@ export async function build(pkgName: string) {
 
   const args = ["-c", "rolldown.config.js", "--environment", `TARGET:${pkgName}`].filter(Boolean);
 
-  const subProc = execa("rolldown", args, {
+  await execa("rolldown", args, {
     cwd: useSelfConfig ? pkgPath : process.cwd(),
     stdio: "inherit",
+    killDescendants: true,
   });
-
-  onceSIGKill(subProc);
-
-  try {
-    await new Promise((resolve) => {
-      subProc.once("exit", resolve);
-    });
-  } finally {
-    subProc.removeAllListeners("exit");
-    process.removeAllListeners("SIGINT");
-    process.removeAllListeners("SIGTERM");
-  }
 }

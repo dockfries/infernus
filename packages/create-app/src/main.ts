@@ -15,7 +15,7 @@ import { fileURLToPath } from "url";
 
 import updateNotifier from "update-notifier";
 
-import { execa } from "execa";
+import { execa, Options as ExecaOptions } from "execa";
 
 import { downloadGitRepo } from "./utils/api";
 
@@ -38,16 +38,6 @@ const pkgFilePath = resolve(dirname(currentFilePath), "../package.json");
 
 const pkg = fs.readJsonSync(pkgFilePath);
 
-function onceSIGINTKill(subProc: any) {
-  const fn = async (signal: NodeJS.Signals) => {
-    subProc.kill(signal);
-    await subProc;
-    process.exit(subProc.exitCode);
-  };
-  process.once("SIGINT", fn);
-  return fn;
-}
-
 async function successInstalled(projectName: string) {
   console.log(`\nSuccessfully created project ${chalk.cyan(projectName)}`);
 
@@ -59,23 +49,14 @@ async function successInstalled(projectName: string) {
   if (install) {
     if (!appGeneratePath) throw new Error("appGeneratePath is empty");
 
-    const options = {
+    const options: ExecaOptions = {
       cwd: appGeneratePath,
-      stdio: "inherit" as const,
+      stdio: "inherit",
+      killDescendants: true,
     };
 
-    let subProc = execa("pnpm", ["dlx", "@infernus/create-app@latest", "install"], options);
-
-    const onceFn = onceSIGINTKill(subProc);
-
-    await subProc;
-
-    subProc = execa("pnpm", ["install"], options);
-
-    process.off("SIGINT", onceFn);
-    onceSIGINTKill(subProc);
-
-    await subProc;
+    await execa("pnpm", ["dlx", "@infernus/create-app@latest", "install"], options);
+    await execa("pnpm", ["install"], options);
   }
 
   console.log(`\ncd ${chalk.cyan(projectName)}`);

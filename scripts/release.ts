@@ -37,6 +37,7 @@ function releasePkg(isReady: boolean) {
   return execa("pnpm publish", args, {
     cwd: pkgPath,
     stdio: "inherit",
+    killDescendants: true,
   });
 }
 
