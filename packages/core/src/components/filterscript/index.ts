@@ -110,7 +110,11 @@ export const isUseScriptLoaded = (scriptName: string) => {
 onInit(async ({ next }) => {
   const fsNames = preInstallScripts.map((fs) => fs.name);
   for (const fs of fsNames) {
-    await loadUseScript(fs);
+    try {
+      await loadUseScript(fs);
+    } catch (err) {
+      samp.logprint(`[filterscript]: failed to load script ${fs}\n${err}`);
+    }
   }
   return next();
 });
@@ -118,7 +122,11 @@ onInit(async ({ next }) => {
 onExit(async ({ next }) => {
   const fsNames = installedScripts.map((fs) => fs.name);
   for (const fs of fsNames) {
-    await unloadUseScript(fs);
+    try {
+      await unloadUseScript(fs);
+    } catch (err) {
+      samp.logprint(`[filterscript]: failed to unload script ${fs}\n${err}`);
+    }
   }
   return next();
 });
