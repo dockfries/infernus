@@ -4,6 +4,44 @@ export type CallbackRet = boolean | number | void;
 
 export type PromisifyCallbackRet = CallbackRet | Promise<CallbackRet>;
 
+/** Info passed to the global event error handler. */
+export interface EventErrorInfo {
+  eventName: string;
+  index: number;
+}
+
+export type EventErrorHandler = (err: unknown, info: EventErrorInfo) => void;
+
+let eventErrorHandler: EventErrorHandler | null = null;
+
+/**
+ * Registers a global error handler for listener errors (both synchronous throws and
+ * async rejections). Use it to feed your own logger. When no handler is registered,
+ * errors fall back to `samp.logprint`.
+ */
+export function setEventErrorHandler(handler: EventErrorHandler | null) {
+  eventErrorHandler = handler;
+}
+
+function handleListenerError(err: unknown, name: string, index: number) {
+  if (eventErrorHandler) {
+    try {
+      eventErrorHandler(err, { eventName: name, index });
+    } catch {
+      // ignore
+    }
+    return;
+  }
+  const isError = err instanceof Error;
+  const msg = `executing event [name:${name},index:${index}]`;
+  samp.logprint(msg);
+  if (isError) {
+    samp.logprint(err.message);
+  } else {
+    samp.logprint(JSON.stringify(err));
+  }
+}
+
 export interface defineEventOptions<T extends object> {
   name: string;
   defaultValue?: boolean;
@@ -40,7 +78,14 @@ function executeMiddlewares<T extends object>(
   const middlewares = eventBus.get(name);
   if (!middlewares || !middlewares.length) return +defaultValue;
 
-  const enhanced = beforeEach ? beforeEach(...args) : ({} as T);
+  let enhanced: T;
+  try {
+    enhanced = beforeEach ? beforeEach(...args) : ({} as T);
+  } catch (err) {
+    // beforeEach failed to parse the event params; route the error and abort the event
+    handleListenerError(err, name, -1);
+    return +defaultValue;
+  }
 
   const promises: Promise<CallbackRet>[] = [];
 
@@ -64,6 +109,8 @@ function executeMiddlewares<T extends object>(
         const ret = middlewares[index](params);
 
         if (ret instanceof Promise) {
+          const currIdx = index;
+          ret.catch((err) => handleListenerError(err, name, currIdx));
           promises.push(ret);
           return defaultValue;
         }
@@ -78,12 +125,7 @@ function executeMiddlewares<T extends object>(
           }
           throw new CoreException(msg + "\n" + JSON.stringify(err));
         }
-        samp.logprint(msg);
-        if (isError) {
-          samp.logprint(err.message);
-        } else {
-          samp.logprint(JSON.stringify(err));
-        }
+        handleListenerError(err, name, index);
         executeAfterEach();
       }
       return defaultValue;
@@ -97,6 +139,13 @@ function executeMiddlewares<T extends object>(
   return transformReturnValue(next(), defaultValue);
 }
 
+/**
+ * @throws {CoreException} When an event with the same `name` has already been defined.
+ *
+ * Listener errors: synchronous throws inside listeners are routed to the handler registered via
+ * `setEventErrorHandler` (falling back to `samp.logprint`), or re-thrown when `throwOnError` is
+ * set. Async listener rejections are routed the same way instead of becoming unhandled rejections.
+ */
 export function defineEvent<T extends object>(options: defineEventOptions<T>) {
   const { name, identifier, isNative = true } = options;
 

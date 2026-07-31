@@ -6,6 +6,9 @@ export {
   defineEvent,
   useTrigger,
   withTriggerOptions,
+  setEventErrorHandler,
+  type EventErrorHandler,
+  type EventErrorInfo,
   type ExecMiddlewareOptions,
   type defineEventOptions,
 } from "./bus";
