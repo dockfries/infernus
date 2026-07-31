@@ -36,7 +36,11 @@ function handleListenerError(err: unknown, name: string, index: number) {
   const msg = `executing event [name:${name},index:${index}]`;
   samp.logprint(msg);
   if (isError) {
-    samp.logprint(err.message);
+    if (err.stack) {
+      samp.logprint(err.stack);
+    } else {
+      samp.logprint(err.message);
+    }
   } else {
     samp.logprint(JSON.stringify(err));
   }
