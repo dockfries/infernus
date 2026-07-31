@@ -1,6 +1,6 @@
 import { GameModeException } from "core/exceptions";
 import type { IFilterScript } from "../../interfaces";
-import { onExit, onInit } from "../gamemode/event";
+import { INTERNAL_FLAGS, onExit, onInit } from "../gamemode/event";
 
 const preInstallScripts: Array<IFilterScript> = [];
 const installedScripts: Array<IFilterScript> = [];
@@ -19,17 +19,25 @@ export const loadUseScript = async (scriptName: string) => {
       const fsIdx = preInstallScripts.findIndex((fs) => fs.name === scriptName);
       if (fsIdx === -1) {
         loadingScripts.delete(scriptName);
-        return;
+        return resolve();
       }
 
       const scripts = preInstallScripts[fsIdx];
 
       function load(events: Array<() => void>) {
         loadingScripts.delete(scriptName);
+        if (INTERNAL_FLAGS.skip) {
+          // the mode exited while load was in flight — unregister anything the
+          // script already registered, but leave it in preInstallScripts so the
+          // next mode's onInit loads it again
+          events.forEach((off) => off());
+          resolve();
+          return;
+        }
         if (events.length) registeredEvents.set(scriptName, events);
         preInstallScripts.splice(fsIdx, 1);
         installedScripts.push(scripts);
-        setTimeout(resolve);
+        resolve();
       }
 
       const ret = scripts.load();
@@ -62,7 +70,7 @@ export const unloadUseScript = async (scriptName: string) => {
       const fsIdx = installedScripts.findIndex((fs) => fs.name === scriptName);
       if (fsIdx === -1) {
         loadingScripts.delete(scriptName);
-        return;
+        return resolve();
       }
 
       const scripts = installedScripts[fsIdx];
@@ -76,7 +84,7 @@ export const unloadUseScript = async (scriptName: string) => {
         loadingScripts.delete(scriptName);
         installedScripts.splice(fsIdx, 1);
         preInstallScripts.push(scripts);
-        setTimeout(resolve);
+        resolve();
       }
 
       const ret = scripts.unload();
@@ -110,12 +118,14 @@ export const isUseScriptLoaded = (scriptName: string) => {
 onInit(async ({ next }) => {
   const fsNames = preInstallScripts.map((fs) => fs.name);
   for (const fs of fsNames) {
+    if (INTERNAL_FLAGS.skip) break;
     try {
       await loadUseScript(fs);
     } catch (err) {
       samp.logprint(`[filterscript]: failed to load script ${fs}\n${err}`);
     }
   }
+  if (INTERNAL_FLAGS.skip) return;
   return next();
 });
 
