@@ -23,19 +23,25 @@ PlayerEvent.onCommandText("registro", async ({ player, next }) => {
     button1: "ok",
   });
 
-  const { inputText: password } = await dialog.show(player);
+  try {
+    const { inputText: password } = await dialog.show(player);
 
-  // Las instancias de diálogo existentes se pueden reutilizar — solo modifique sus propiedades.
-  // Hay otros setters además de info.
-  dialog.info = "Por favor, ingrese su contraseña nuevamente";
+    // Las instancias de diálogo existentes se pueden reutilizar — solo modifique sus propiedades.
+    // Hay otros setters además de info.
+    dialog.info = "Por favor, ingrese su contraseña nuevamente";
 
-  const { inputText: againPassword } = await dialog.show(player);
+    const { inputText: againPassword } = await dialog.show(player);
 
-  if (password !== againPassword) {
-    player.sendClientMessage(
-      "#f00",
-      "Las contraseñas ingresadas no coinciden. ¡Inténtelo de nuevo!",
-    );
+    if (password !== againPassword) {
+      player.sendClientMessage(
+        "#f00",
+        "Las contraseñas ingresadas no coinciden. ¡Inténtelo de nuevo!",
+      );
+    }
+  } catch {
+    // dialog.show() se rechaza cuando el jugador se desconecta, expira el tiempo
+    // o abre otro diálogo. Manéjelo (p. ej. con su propio logger) en lugar de
+    // dejarlo como un rechazo no controlado.
   }
 
   return next();

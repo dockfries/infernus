@@ -67,8 +67,13 @@ Loaded scripts are automatically unloaded when the GameMode exits.
 ```ts
 import { GameMode, PlayerEvent } from "@infernus/core";
 
-PlayerEvent.onCommandText("reloadMyScript", ({ next }) => {
-  GameMode.reloadUseScript("my_script");
+PlayerEvent.onCommandText("reloadMyScript", async ({ next }) => {
+  try {
+    await GameMode.reloadUseScript("my_script");
+  } catch (err) {
+    // reloadUseScript throws GameModeException when the script is missing or fails to load/unload
+    console.error("Failed to reload my_script:", err);
+  }
   return next();
 });
 ```

@@ -23,16 +23,21 @@ PlayerEvent.onCommandText("register", async ({ player, next }) => {
     button1: "ok",
   });
 
-  const { inputText: password } = await dialog.show(player);
+  try {
+    const { inputText: password } = await dialog.show(player);
 
-  // Existing dialog instances can be reused — just modify their properties.
-  // There are other setters besides info.
-  dialog.info = "Please enter your password again";
+    // Existing dialog instances can be reused — just modify their properties.
+    // There are other setters besides info.
+    dialog.info = "Please enter your password again";
 
-  const { inputText: againPassword } = await dialog.show(player);
+    const { inputText: againPassword } = await dialog.show(player);
 
-  if (password !== againPassword) {
-    player.sendClientMessage("#f00", "The passwords you entered do not match. Please try again!");
+    if (password !== againPassword) {
+      player.sendClientMessage("#f00", "The passwords you entered do not match. Please try again!");
+    }
+  } catch {
+    // dialog.show() rejects when the player disconnects, times out, or opens another dialog.
+    // Handle it (e.g. log via your own logger) instead of letting it become an unhandled rejection.
   }
 
   return next();

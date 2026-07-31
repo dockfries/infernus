@@ -66,8 +66,13 @@ GameMode.use(MyScript, "参数1", "参数2", "参数...");
 ```ts
 import { GameMode, PlayerEvent } from "@infernus/core";
 
-PlayerEvent.onCommandText("reloadMyScript", ({ next }) => {
-  GameMode.reloadUseScript("my_script");
+PlayerEvent.onCommandText("reloadMyScript", async ({ next }) => {
+  try {
+    await GameMode.reloadUseScript("my_script");
+  } catch (err) {
+    // reloadUseScript 在脚本缺失或加载/卸载失败时会抛出 GameModeException
+    console.error("Failed to reload my_script:", err);
+  }
   return next();
 });
 ```

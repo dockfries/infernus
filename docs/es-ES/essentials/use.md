@@ -67,8 +67,13 @@ Los scripts cargados se descargan automáticamente al salir del GameMode.
 ```ts
 import { GameMode, PlayerEvent } from "@infernus/core";
 
-PlayerEvent.onCommandText("reloadMyScript", ({ next }) => {
-  GameMode.reloadUseScript("my_script");
+PlayerEvent.onCommandText("reloadMyScript", async ({ next }) => {
+  try {
+    await GameMode.reloadUseScript("my_script");
+  } catch (err) {
+    // reloadUseScript lanza GameModeException cuando el script falta o falla al cargar/descargar
+    console.error("Failed to reload my_script:", err);
+  }
   return next();
 });
 ```

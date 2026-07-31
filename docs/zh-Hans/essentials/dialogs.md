@@ -23,16 +23,21 @@ PlayerEvent.onCommandText("register", async ({ player, next }) => {
     button1: "ok",
   });
 
-  const { inputText: password } = await dialog.show(player);
+  try {
+    const { inputText: password } = await dialog.show(player);
 
-  // 对话框实例可重复使用，修改属性后再次展示
-  // 除了 info 之外还有其他 setter
-  dialog.info = "请再次输入您的密码";
+    // 对话框实例可重复使用，修改属性后再次展示
+    // 除了 info 之外还有其他 setter
+    dialog.info = "请再次输入您的密码";
 
-  const { inputText: againPassword } = await dialog.show(player);
+    const { inputText: againPassword } = await dialog.show(player);
 
-  if (password !== againPassword) {
-    player.sendClientMessage("#f00", "两次输入的密码不一致，请重试！");
+    if (password !== againPassword) {
+      player.sendClientMessage("#f00", "两次输入的密码不一致，请重试！");
+    }
+  } catch {
+    // dialog.show() 在玩家断开连接、超时或打开了另一个对话框时会 reject。
+    // 请务必处理（例如用您自己的 logger 记录），否则会变成 unhandled rejection。
   }
 
   return next();
