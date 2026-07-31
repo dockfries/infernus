@@ -360,11 +360,19 @@ function propertyCommand(player: Player, cmd: string, subcommand: string[], pTyp
   return 1;
 }
 
-function loadProperties() {
+async function loadProperties() {
   unloadProperties();
-  readInteriorInfo("properties/interiors.txt");
+  try {
+    await readInteriorInfo("properties/interiors.txt");
+  } catch (err) {
+    console.log("Could Not Read Interiors file (properties/interiors.txt)", err);
+  }
   for (let i = 0; i < propFile.length; i++) {
-    readPropertyFile(propFile[i]);
+    try {
+      await readPropertyFile(propFile[i]);
+    } catch (err) {
+      console.log(`Could Not Read Property file (${propFile[i]})`, err);
+    }
   }
   return 1;
 }
@@ -399,8 +407,8 @@ function unloadProperties() {
 
 export const GlProperty: IFilterScript = {
   name: "gl_property",
-  load() {
-    loadProperties();
+  async load() {
+    await loadProperties();
 
     const onInteriorChange = PlayerEvent.onInteriorChange(({ player, newInteriorId, next }) => {
       if (newInteriorId === 0) {

@@ -71,15 +71,22 @@ export const GlRealTime: IGlRealTimeFS = {
 
     // Init our text display
     txtTimeDisplay = new TextDraw({ x: 605.0, y: 25.0, text: "00:00" });
-    txtTimeDisplay.create();
-    txtTimeDisplay.useBox(false);
-    txtTimeDisplay.setFont(3);
-    txtTimeDisplay.setShadow(0); // no shadow
-    txtTimeDisplay.setOutline(2); // thickness 1
-    txtTimeDisplay.setBackgroundColors(0x000000ff);
-    txtTimeDisplay.setColor(0xffffffff);
-    txtTimeDisplay.setAlignment(3);
-    txtTimeDisplay.setLetterSize(0.5, 1.5);
+    try {
+      txtTimeDisplay.create();
+    } catch (err) {
+      console.log("gl_real_time: TextDraw create failed:", err);
+      txtTimeDisplay = null;
+    }
+    if (txtTimeDisplay) {
+      txtTimeDisplay.useBox(false);
+      txtTimeDisplay.setFont(3);
+      txtTimeDisplay.setShadow(0); // no shadow
+      txtTimeDisplay.setOutline(2); // thickness 1
+      txtTimeDisplay.setBackgroundColors(0x000000ff);
+      txtTimeDisplay.setColor(0xffffffff);
+      txtTimeDisplay.setAlignment(3);
+      txtTimeDisplay.setLetterSize(0.5, 1.5);
+    }
     updateTimeAndWeather();
     if (timer) clearInterval(timer);
     timer = setInterval(updateTimeAndWeather, 1000 * 60);

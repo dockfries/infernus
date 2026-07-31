@@ -47,7 +47,7 @@ function loopingAnim(
 ) {
   gPlayerUsingLoopingAnim.add(player);
   player.applyAnimation(animLib, animName, speed, looping, lockX, lockY, freeze, time);
-  txtAnimHelper!.show(player);
+  txtAnimHelper?.show(player);
 }
 
 function stopLoopingAnim(player: Player) {
@@ -67,26 +67,32 @@ export const GlActions: IGlActionsFS = {
   name: "gl_actions",
   load(options) {
     // Init our text display
-    txtAnimHelper = new TextDraw({
-      x: 610.0,
-      y: 400.0,
-      text: "~r~~k~~PED_SPRINT~ ~w~to stop the animation",
-    });
-    txtAnimHelper.create();
-    txtAnimHelper.useBox(false);
-    txtAnimHelper.setFont(2);
-    txtAnimHelper.setShadow(0); // no shadow
-    txtAnimHelper.setOutline(1); // thickness 1
-    txtAnimHelper.setBackgroundColors(0x000000ff);
-    txtAnimHelper.setColor(0xffffffff);
-    txtAnimHelper.setAlignment(3); // align right
+
+    try {
+      txtAnimHelper = new TextDraw({
+        x: 610.0,
+        y: 400.0,
+        text: "~r~~k~~PED_SPRINT~ ~w~to stop the animation",
+      });
+      txtAnimHelper.create();
+      txtAnimHelper.useBox(false);
+      txtAnimHelper.setFont(2);
+      txtAnimHelper.setShadow(0); // no shadow
+      txtAnimHelper.setOutline(1); // thickness 1
+      txtAnimHelper.setBackgroundColors(0x000000ff);
+      txtAnimHelper.setColor(0xffffffff);
+      txtAnimHelper.setAlignment(3); // align right
+    } catch (err) {
+      console.log("gl_actions: TextDraw create failed:", err);
+      txtAnimHelper = null;
+    }
 
     const onKeyStateChange = PlayerEvent.onKeyStateChange(({ player, newKeys, oldKeys, next }) => {
       if (!gPlayerUsingLoopingAnim.has(player)) return next();
 
       if (isKeyJustDown(KeysEnum.SPRINT, newKeys, oldKeys)) {
         stopLoopingAnim(player);
-        txtAnimHelper!.hide(player);
+        txtAnimHelper?.hide(player);
       }
 
       return next();
@@ -96,7 +102,7 @@ export const GlActions: IGlActionsFS = {
       // if they die whilst performing a looping anim, we should reset the state
       if (gPlayerUsingLoopingAnim.has(player)) {
         gPlayerUsingLoopingAnim.delete(player);
-        txtAnimHelper!.hide(player);
+        txtAnimHelper?.hide(player);
       }
       return next();
     });
@@ -432,7 +438,7 @@ export const GlActions: IGlActionsFS = {
       stopLoopingAnim(player);
     });
 
-    txtAnimHelper!.destroy();
+    txtAnimHelper?.destroy();
     txtAnimHelper = null;
 
     gPlayerAnimLibsPreloaded.clear();

@@ -55,7 +55,7 @@ export const LsMall: IFilterScript = {
   },
   unload() {
     createdObjects.forEach((o) => {
-      o.destroy();
+      if (o.isValid()) o.destroy();
     });
     createdObjects = [];
   },

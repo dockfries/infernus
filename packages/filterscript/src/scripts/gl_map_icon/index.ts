@@ -34,7 +34,7 @@ export const GlMapIcon: IFilterScript = {
   },
   unload() {
     instances!.forEach((instance) => {
-      instance.destroy();
+      if (instance.isValid()) instance.destroy();
     });
     instances = null;
   },

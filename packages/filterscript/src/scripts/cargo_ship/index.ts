@@ -172,7 +172,7 @@ export const CargoShip: IFilterScript = {
     gMainShipObject = null;
     let x = 0;
     while (x !== NUM_SHIP_ATTACHMENTS) {
-      gShipsAttachments[x].destroy();
+      if (gShipsAttachments[x].isValid()) gShipsAttachments[x].destroy();
       x++;
     }
     gShipsAttachments.length = 0;

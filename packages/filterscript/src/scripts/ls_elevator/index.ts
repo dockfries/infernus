@@ -398,13 +398,21 @@ async function showElevatorDialog(player: Player) {
 
     info += constants.FloorNames[i] + "\n";
   }
-  const { listItem } = await new Dialog({
-    style: DialogStylesEnum.LIST,
-    caption: "Elevator",
-    info,
-    button1: "Accept",
-    button2: "Cancel",
-  }).show(player);
+  let listItem: number;
+  try {
+    const result = await new Dialog({
+      style: DialogStylesEnum.LIST,
+      caption: "Elevator",
+      info,
+      button1: "Accept",
+      button2: "Cancel",
+    }).show(player);
+    listItem = result.listItem;
+  } catch (err) {
+    // dialog.show() rejects on timeout/disconnect; avoid an unhandled rejection
+    console.log("ls_elevator: elevator dialog failed:", err);
+    return false;
+  }
 
   if (floorRequestedBy[listItem] !== InvalidEnum.PLAYER_ID || isFloorInQueue(listItem))
     new GameText("~r~The floor is already in the queue", 3500, 4).forPlayer(player);

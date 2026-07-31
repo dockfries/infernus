@@ -59,35 +59,40 @@ function vehicleSelect(player: Player) {
     const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
     const angle = player.getFacingAngle().angle;
 
-    const vehId = curPlayerVehI.get(player)!;
-    let veh = Vehicle.getInstance(vehId)!;
-    if (veh) {
-      veh.destroy();
-      const p_curServerVehP = curServerVehP.get(veh) || ({} as CUR_VEHICLE);
-      p_curServerVehP.spawn = false;
-      curServerVehP.set(veh, p_curServerVehP);
+    try {
+      const vehId = curPlayerVehI.get(player)!;
+      const oldVeh = Vehicle.getInstance(vehId);
+      if (oldVeh) {
+        oldVeh.destroy();
+        const p_curServerVehP = curServerVehP.get(oldVeh) || ({} as CUR_VEHICLE);
+        p_curServerVehP.spawn = false;
+        curServerVehP.set(oldVeh, p_curServerVehP);
+      }
+      const veh = new Vehicle({
+        modelId: p_curPlayerVehM,
+        x,
+        y,
+        z: z + 2.0,
+        zAngle: angle + 90.0,
+        color: [-1, -1],
+        respawnDelay: 5000,
+      });
+      veh.create();
+
+      curPlayerVehI.set(player, veh.id);
+      console.log("vsel vehicle select id = %d", veh.id);
+
+      veh.linkToInterior(player.getInterior());
+
+      curServerVehP.set(veh, {
+        spawn: true,
+        vModel: p_curPlayerVehM,
+        vInt: player.getInterior(),
+      });
+    } catch (err) {
+      // Vehicle.create() throws on failure; keep the old selection instead of crashing the timer
+      console.log("vsel create vehicle failed:", err);
     }
-    veh = new Vehicle({
-      modelId: p_curPlayerVehM,
-      x,
-      y,
-      z: z + 2.0,
-      zAngle: angle + 90.0,
-      color: [-1, -1],
-      respawnDelay: 5000,
-    });
-    veh.create();
-
-    curPlayerVehI.set(player, veh.id);
-    console.log("vsel vehicle select id = %d", veh.id);
-
-    veh.linkToInterior(player.getInterior());
-
-    curServerVehP.set(veh, {
-      spawn: true,
-      vModel: p_curPlayerVehM,
-      vInt: player.getInterior(),
-    });
   }
 
   // Left key decreases Vehicle MODELID
@@ -111,35 +116,40 @@ function vehicleSelect(player: Player) {
     const { x, y } = getXYInFrontOfPlayer(player, VEHICLE_DISTANCE);
     const angle = player.getFacingAngle().angle;
 
-    const vehId = curPlayerVehI.get(player)!;
-    let veh = Vehicle.getInstance(vehId)!;
-    if (veh) {
-      veh.destroy();
-      const p_curServerVehP = curServerVehP.get(veh) || ({} as CUR_VEHICLE);
-      p_curServerVehP.spawn = false;
-      curServerVehP.set(veh, p_curServerVehP);
+    try {
+      const vehId = curPlayerVehI.get(player)!;
+      const oldVeh = Vehicle.getInstance(vehId);
+      if (oldVeh) {
+        oldVeh.destroy();
+        const p_curServerVehP = curServerVehP.get(oldVeh) || ({} as CUR_VEHICLE);
+        p_curServerVehP.spawn = false;
+        curServerVehP.set(oldVeh, p_curServerVehP);
+      }
+      const veh = new Vehicle({
+        modelId: p_curPlayerVehM,
+        x,
+        y,
+        z: z + 2.0,
+        zAngle: angle + 90.0,
+        color: [-1, -1],
+        respawnDelay: 5000,
+      });
+      veh.create();
+
+      curPlayerVehI.set(player, veh.id);
+      console.log("vsel vehicle select id = %d", veh.id);
+
+      veh.linkToInterior(player.getInterior());
+
+      curServerVehP.set(veh, {
+        spawn: true,
+        vModel: p_curPlayerVehM,
+        vInt: player.getInterior(),
+      });
+    } catch (err) {
+      // Vehicle.create() throws on failure; keep the old selection instead of crashing the timer
+      console.log("vsel create vehicle failed:", err);
     }
-    veh = new Vehicle({
-      modelId: p_curPlayerVehM,
-      x,
-      y,
-      z: z + 2.0,
-      zAngle: angle + 90.0,
-      color: [-1, -1],
-      respawnDelay: 5000,
-    });
-    veh.create();
-
-    curPlayerVehI.set(player, veh.id);
-    console.log("vsel vehicle select id = %d", veh.id);
-
-    veh.linkToInterior(player.getInterior());
-
-    curServerVehP.set(veh, {
-      spawn: true,
-      vModel: p_curPlayerVehM,
-      vInt: player.getInterior(),
-    });
   }
 
   // Action key exits vehicle selection

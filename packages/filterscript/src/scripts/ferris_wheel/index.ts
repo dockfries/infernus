@@ -145,7 +145,7 @@ export const FerrisWheel: IFilterScript = {
 
     let x = 0;
     while (x !== NUM_FERRIS_CAGES) {
-      gFerrisCages[x].destroy();
+      if (gFerrisCages[x].isValid()) gFerrisCages[x].destroy();
       x++;
     }
     gFerrisCages = [];

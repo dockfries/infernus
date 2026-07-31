@@ -26,8 +26,12 @@ export const GlNpcs: IGlNpcsFS = {
     const vehCreatedInfo: Record<string, Vehicle> = {};
 
     Object.entries(vehCreateInfo).forEach(([npcName, vehInfo]) => {
-      vehCreatedInfo[npcName] = new Vehicle(vehInfo, true);
-      vehCreatedInfo[npcName].create();
+      try {
+        vehCreatedInfo[npcName] = new Vehicle(vehInfo, true);
+        vehCreatedInfo[npcName].create();
+      } catch (err) {
+        console.log(`NPC vehicle create failed for ${npcName}:`, err);
+      }
     });
 
     const offConnect = PlayerEvent.onConnect(({ player, next }) => {
@@ -74,6 +78,8 @@ export const GlNpcs: IGlNpcsFS = {
         player.setColor(0xffffffff);
 
         const veh = vehCreatedInfo[playerName];
+        if (!veh.isValid()) return next();
+
         Npc.getInstance(player.id)!.putInVehicle(veh, 0);
 
         if (playerName === "DriverTest2") {

@@ -442,13 +442,23 @@ async function showElevatorDialog(player: Player) {
     info += constants.FloorNames[i] + "\n";
   }
   {
-    const { response, listItem } = await new Dialog({
-      style: DialogStylesEnum.LIST,
-      caption: "ZomboTech Elevator...",
-      info,
-      button1: "Accept",
-      button2: "Cancel",
-    }).show(player);
+    let response: number;
+    let listItem: number;
+    try {
+      const result = await new Dialog({
+        style: DialogStylesEnum.LIST,
+        caption: "ZomboTech Elevator...",
+        info,
+        button1: "Accept",
+        button2: "Cancel",
+      }).show(player);
+      response = result.response;
+      listItem = result.listItem;
+    } catch (err) {
+      // dialog.show() rejects on timeout/disconnect; avoid an unhandled rejection
+      console.log("sf_zombo_tech: elevator dialog failed:", err);
+      return false;
+    }
 
     if (!response) return false;
 

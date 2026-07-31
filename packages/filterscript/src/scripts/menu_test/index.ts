@@ -22,10 +22,15 @@ function initTestMenu() {
     colWidth: [200.0, 200.0],
   });
 
-  testMenu.create();
+  try {
+    testMenu.create();
 
-  for (let x = 0; x < testMenuStrings.length; x++) {
-    testMenu.addItem(0, testMenuStrings[x]);
+    for (let x = 0; x < testMenuStrings.length; x++) {
+      testMenu.addItem(0, testMenuStrings[x]);
+    }
+  } catch (err) {
+    console.log("menu_test: Menu create failed:", err);
+    testMenu = null;
   }
 }
 

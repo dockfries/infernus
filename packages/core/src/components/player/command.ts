@@ -326,7 +326,7 @@ export class CmdBus {
     const invalidCmd = _command.find((cmd) => !cmd.match(commandPattern));
 
     if (invalidCmd) {
-      console.log(`error command ${invalidCmd} format`);
+      samp.logprint(`error command ${invalidCmd} format`);
       return () => {};
     }
 

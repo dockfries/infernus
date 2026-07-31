@@ -478,21 +478,21 @@ export const StuntIsland: IStuntIsLandFS = {
     for (let i = 0; i < NUM_SI_VEHICLES; i++) {
       // Create an Infernus and remember the vehicle number so it can be
       // deleted when this filterScript is unloaded
-      siInfernus[i] = new Vehicle({
-        modelId: 411,
-        x: 89.45,
-        y: 3445.0 + i * 6.0,
-        z: 5.05,
-        zAngle: 90.0,
-        color: [-1, -1],
-        respawnDelay: 30,
-      });
-      siInfernus[i].create();
-
-      // Check that the vehicle was created ok
-      if (siInfernus[i].isValid()) {
+      try {
+        siInfernus[i] = new Vehicle({
+          modelId: 411,
+          x: 89.45,
+          y: 3445.0 + i * 6.0,
+          z: 5.05,
+          zAngle: 90.0,
+          color: [-1, -1],
+          respawnDelay: 30,
+        });
+        siInfernus[i].create();
         // Add 10x NOS to the Infernus
         siInfernus[i].addComponent(1010);
+      } catch (err) {
+        console.log(`stunt_island: Infernus ${i} create failed:`, err);
       }
     }
 
