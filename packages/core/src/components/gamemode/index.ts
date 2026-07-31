@@ -29,13 +29,19 @@ export class GameMode {
   static onRconCommand = onRconCommand;
   static onRconLoginAttempt = onRconLoginAttempt;
 
+  /**
+   * @throws {GameModeException} When a script with the same name is already applied (via `useFilterScript`).
+   */
   static use<T extends IFilterScript>(plugin: T, ...options: Parameters<T["load"]>) {
     useFilterScript(plugin, ...options);
     return this;
   }
 
+  /** @throws {GameModeException} When `scriptName` is already being loaded, or its load fails. */
   static loadUseScript = loadUseScript;
+  /** @throws {GameModeException} When `scriptName` fails to load or unload. */
   static reloadUseScript = reloadUseScript;
+  /** @throws {GameModeException} When `scriptName` is already being unloaded, or its unload fails. */
   static unloadUseScript = unloadUseScript;
   static isUseScriptLoaded = isUseScriptLoaded;
 
@@ -54,12 +60,18 @@ export class GameMode {
     }
   }
 
+  /**
+   * @throws {GameModeException} When `weather` is outside the range 0 to 255.
+   */
   static setWeather(weather: number) {
     if (weather < 0 || weather > 255) {
       throw new GameModeException("The valid weather value is only 0 to 255");
     }
     w.SetWeather(weather);
   }
+  /**
+   * @throws {GameModeException} When `hour` is outside the range 0 to 23.
+   */
   static setWorldTime(hour: number) {
     if (hour < 0 || hour > 23) {
       throw new GameModeException("The valid hour value is only 0 to 23");
@@ -71,6 +83,9 @@ export class GameMode {
   static sendRconCommand = SendRconCommand;
   static addPlayerClass = w.AddPlayerClass;
   static addPlayerClassEx = w.AddPlayerClassEx;
+  /**
+   * @throws {GameModeException} When `type` is outside the range 0 to 13.
+   */
   static createExplosion(x: number, y: number, z: number, type: number, radius: number): boolean {
     if (type < 0 || type > 13) {
       throw new GameModeException("The valid explosion type value is only 0 to 13");
@@ -83,6 +98,9 @@ export class GameMode {
   static getServerTickRate = w.GetServerTickRate;
   static addCharModel = w.AddCharModel;
   static getCustomModelPath = w.GetCustomModelPath;
+  /**
+   * @throws {GameModeException} When any argument is out of range (via `checkSimpleModel`).
+   */
   static addSimpleModel(
     virtualWorld: number,
     baseId: number,
@@ -95,6 +113,9 @@ export class GameMode {
     }
     return false;
   }
+  /**
+   * @throws {GameModeException} When any argument is out of range (via `checkSimpleModel`).
+   */
   static addSimpleModelTimed(
     virtualWorld: number,
     baseId: number,
@@ -109,6 +130,11 @@ export class GameMode {
     }
     return false;
   }
+  /**
+   * @throws {GameModeException} When any argument is out of range: `virtualWorld` below -1,
+   * `baseId` below 0, `newId` outside the custom model range, `dffName`/`txdName` empty,
+   * or `timeOn`/`timeOff` outside 0 to 23.
+   */
   static checkSimpleModel(
     virtualWorld: number,
     baseId: number,
@@ -143,6 +169,9 @@ export class GameMode {
   }
   static isValidCustomModel = w.IsValidCustomModel;
   static getCustomModePath = w.GetCustomModePath;
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding (via `I18n.decodeFromBuf`).
+   */
   static getConsoleVarAsString(varname: string, charset = "utf8") {
     const { consoleVarBuf, ret } = w.GetConsoleVarAsByteArray(varname);
     return {

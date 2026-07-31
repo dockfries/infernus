@@ -22,6 +22,9 @@ export class ObjectMp {
     return this._id;
   }
 
+  /**
+   * @throws {ObjectMpException} When constructed with an invalid id.
+   */
   constructor(objectOrId: IObjectMp | number, player?: Player) {
     if (typeof objectOrId === "number") {
       if (objectOrId === InvalidEnum.OBJECT_ID) {
@@ -50,6 +53,9 @@ export class ObjectMp {
     }
   }
 
+  /**
+   * @throws {ObjectMpException} When `create()` is called twice or without source info, or the native creation fails.
+   */
   create(): this {
     if (!this.sourceInfo) throw new ObjectMpException("Cannot create with only id");
     if (this.id !== InvalidEnum.OBJECT_ID) throw new ObjectMpException("Cannot create again");
@@ -98,6 +104,9 @@ export class ObjectMp {
     return this;
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   destroy(): this {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new ObjectMpException("Cannot destroy before create");
@@ -172,6 +181,9 @@ export class ObjectMp {
     return this.sourceInfo.modelId;
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   getPos() {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new ObjectMpException("Cannot get position before create");
@@ -181,6 +193,9 @@ export class ObjectMp {
     return ObjectMp.__inject__.getPosPlayer(this.getPlayerId(), this.id);
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   setPos(x: number, y: number, z: number): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new ObjectMpException("Cannot set position before create");
@@ -190,6 +205,9 @@ export class ObjectMp {
     return ObjectMp.__inject__.setPosPlayer(this.getPlayerId(), this.id, x, y, z);
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   getRot() {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new ObjectMpException("Cannot get rotation before create");
@@ -199,6 +217,9 @@ export class ObjectMp {
     return ObjectMp.__inject__.getRotPlayer(this.getPlayerId(), this.id);
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   setRot(rx: number, ry: number, rz: number): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new ObjectMpException("Cannot set rotation before create");
@@ -208,6 +229,9 @@ export class ObjectMp {
     return ObjectMp.__inject__.setRotPlayer(this.getPlayerId(), this.id, rx, ry, rz);
   }
 
+  /**
+   * @throws {ObjectMpException} When `speed` is less than 0, or greater than 120 seconds worth of movement (likely unintentional).
+   */
   move(
     x: number,
     y: number,
@@ -231,6 +255,9 @@ export class ObjectMp {
     return ObjectMp.__inject__.movePlayer(this.getPlayerId(), this.id, x, y, z, speed, rx, ry, rz);
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   stop(): boolean {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new ObjectMpException("Cannot stop moving before create");
@@ -248,6 +275,9 @@ export class ObjectMp {
     return ObjectMp.__inject__.isMovingPlayer(this.getPlayerId(), this.id);
   }
 
+  /**
+   * @throws {ObjectMpException} When called without a `player`.
+   */
   attachCamera(player?: Player): boolean {
     if (this.id === InvalidEnum.OBJECT_ID) return false;
     if (this.isGlobal()) {
@@ -259,6 +289,9 @@ export class ObjectMp {
     return ObjectMp.__inject__.attachCameraPlayer(this.getPlayerId(), this.id);
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   attachToObject(
     attachTo: ObjectMp,
     offsetX: number,
@@ -371,6 +404,9 @@ export class ObjectMp {
     );
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   edit(player?: Player): boolean {
     if (this.id === InvalidEnum.OBJECT_ID) throw new ObjectMpException("Cannot edit before create");
 
@@ -394,6 +430,9 @@ export class ObjectMp {
     return ObjectMp.__inject__.isMaterialSlotUsedPlayer(this.getPlayerId(), this.id, materialIndex);
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   getMaterial(materialIndex: number) {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new ObjectMpException("Cannot get material before create");
@@ -403,6 +442,9 @@ export class ObjectMp {
     return ObjectMp.__inject__.getMaterialPlayer(this.getPlayerId(), this.id, materialIndex);
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   setMaterial(
     materialIndex: number,
     modelId: number,
@@ -433,6 +475,9 @@ export class ObjectMp {
     );
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   getMaterialText(materialIndex: number) {
     if (this.id === InvalidEnum.OBJECT_ID)
       throw new ObjectMpException("Cannot get material text before create");
@@ -451,6 +496,9 @@ export class ObjectMp {
     );
   }
 
+  /**
+   * @throws {ObjectMpException} When called before `create`().
+   */
   setMaterialText(
     charset = this.sourceInfo?.charset,
     text: string,

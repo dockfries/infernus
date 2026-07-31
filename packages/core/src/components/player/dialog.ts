@@ -109,6 +109,12 @@ export class Dialog {
     return true;
   }
 
+  /**
+   * Shows the dialog and resolves with the player's response.
+   * Rejects with `DialogException` when no dialog id is available, the player times out,
+   * disconnects, or another dialog is shown meanwhile; rejects with `I18nException` when
+   * the dialog charset is unknown.
+   */
   show(player: Player) {
     return new Promise<IDialogResCommon>((resolve, reject) => {
       Dialog.close(player);

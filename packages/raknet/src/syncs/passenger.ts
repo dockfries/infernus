@@ -74,6 +74,9 @@ export class PassengerSync extends BitStream implements IPacketListSync {
     return data as IPassengerSync | null;
   }
 
+  /**
+   * @throws {RakNetException} When `playerId` is missing on an outgoing sync.
+   */
   @SyncWriter
   writeSync(data: IPassengerSync) {
     const value: WriteTuple[] = [

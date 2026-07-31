@@ -33,6 +33,9 @@ export class Npc {
     return this._id;
   }
 
+  /**
+   * @throws {NpcException} When constructed with an invalid id.
+   */
   constructor(nameOrId: string | number) {
     if (typeof nameOrId === "string") {
       this._name = nameOrId;
@@ -49,6 +52,9 @@ export class Npc {
     }
     return this;
   }
+  /**
+   * @throws {NpcException} When `create()` is called twice. Note: a failed native creation does not throw — the npc stays invalid.
+   */
   create() {
     if (this.id !== InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot create again");
@@ -62,6 +68,9 @@ export class Npc {
     }
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   destroy() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot destroy before create");
@@ -73,12 +82,18 @@ export class Npc {
     this._id = InvalidEnum.NPC_ID;
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getPlayer() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getPlayer before create");
     }
     return Player.getInstance(this._id)!;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getName() {
     if (this._id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getName before create");
@@ -93,6 +108,9 @@ export class Npc {
     if (INTERNAL_FLAGS.skip && this._id !== InvalidEnum.NPC_ID) return true;
     return Npc.isValid(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   spawn() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot spawn before create");
@@ -100,6 +118,9 @@ export class Npc {
     Npc.__inject__.spawn(this._id);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   respawn() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot respawn before create");
@@ -107,6 +128,9 @@ export class Npc {
     Npc.__inject__.respawn(this._id);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setPos(x: number, y: number, z: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setPos before create");
@@ -114,6 +138,9 @@ export class Npc {
     Npc.__inject__.setPos(this._id, x, y, z);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setRot(rX: number, rY: number, rZ: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setRot before create");
@@ -121,12 +148,18 @@ export class Npc {
     Npc.__inject__.setRot(this._id, rX, rY, rZ);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getRot() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getRot before create");
     }
     return Npc.__inject__.getRot(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setFacingAngle(angle: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setFacingAngle before create");
@@ -134,12 +167,18 @@ export class Npc {
     Npc.__inject__.setFacingAngle(this._id, angle);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getFacingAngle() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getFacingAngle before create");
     }
     return Npc.__inject__.getFacingAngle(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setVirtualWorld(virtualWorld: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setVirtualWorld before create");
@@ -147,12 +186,18 @@ export class Npc {
     Npc.__inject__.setVirtualWorld(this._id, virtualWorld);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getVirtualWorld() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getVirtualWorld before create");
     }
     return Npc.__inject__.getVirtualWorld(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   move(
     targetPosX: number,
     targetPosY: number,
@@ -165,6 +210,9 @@ export class Npc {
     }
     return Npc.__inject__.move(this._id, targetPosX, targetPosY, targetPosZ, moveType, moveSpeed);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   moveToPlayer(
     player: Player,
     moveType = NPCMoveTypeEnum.AUTO,
@@ -175,6 +223,9 @@ export class Npc {
     }
     return Npc.__inject__.moveToPlayer(this._id, player.id, moveType, moveSpeed);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   stopMove() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot stopMove before create");
@@ -194,6 +245,9 @@ export class Npc {
     }
     return Npc.__inject__.isMovingToPlayer(this._id, player.id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setSkin(model: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setSkin before create");
@@ -201,6 +255,9 @@ export class Npc {
     Npc.__inject__.setSkin(this._id, model);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getSkin() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getSkin before create");
@@ -215,6 +272,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isAnyStreamedIn(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setInterior(interior: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setInterior before create");
@@ -226,6 +286,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getInterior(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setHealth(health: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setHealth before create");
@@ -237,6 +300,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getHealth(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setArmour(armour: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setArmour before create");
@@ -252,6 +318,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isDead(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   applyAnimation(
     animLib: string,
     animName: string,
@@ -280,6 +349,9 @@ export class Npc {
     );
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setWeapon(weapon: WeaponEnum) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setWeapon before create");
@@ -291,6 +363,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getWeapon(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setAmmo(ammo: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setAmmo before create");
@@ -302,6 +377,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getAmmo(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setKeys(upAndDown: number, leftAndDown: number, keys: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setKeys before create");
@@ -309,12 +387,18 @@ export class Npc {
     Npc.__inject__.setKeys(this._id, upAndDown, leftAndDown, keys);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getKeys() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getKeys before create");
     }
     return Npc.__inject__.getKeys(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setWeaponSkillLevel(skill: WeaponSkillsEnum, level: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setWeaponSkillLevel before create");
@@ -322,12 +406,18 @@ export class Npc {
     Npc.__inject__.setWeaponSkillLevel(this._id, skill, level);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getWeaponSkillLevel(skill: WeaponSkillsEnum) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getWeaponSkillLevel before create");
     }
     return Npc.__inject__.getWeaponSkillLevel(this._id, skill);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   meleeAttack(time: number = -1, secondaryAttack: boolean = false) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot meleeAttack before create");
@@ -335,6 +425,9 @@ export class Npc {
     Npc.__inject__.meleeAttack(this._id, time, secondaryAttack);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   stopMeleeAttack() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot stopMeleeAttack before create");
@@ -346,6 +439,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isMeleeAttacking(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setFightingStyle(style: FightingStylesEnum) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setFightingStyle before create");
@@ -357,6 +453,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return FightingStylesEnum.NORMAL;
     return Npc.__inject__.getFightingStyle(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   enableReloading(enable: boolean = true) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot enableReloading before create");
@@ -372,6 +471,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isReloading(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   enableInfiniteAmmo(enable: boolean = true) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot enableInfiniteAmmo before create");
@@ -383,6 +485,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isInfiniteAmmoEnabled(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setWeaponState(weaponState: WeaponStatesEnum) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setWeaponState before create");
@@ -393,6 +498,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return WeaponStatesEnum.UNKNOWN;
     return Npc.__inject__.getWeaponState(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setAmmoInClip(ammo: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setAmmoInClip before create");
@@ -404,6 +512,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getAmmoInClip(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   shoot(
     weapon: WeaponStatesEnum,
     hitId: number,
@@ -440,6 +551,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isShooting(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   aimAt(
     pointX: number,
     pointY: number,
@@ -470,6 +584,9 @@ export class Npc {
     );
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   aimAtPlayer(
     player: Player,
     shoot: boolean = false,
@@ -502,6 +619,9 @@ export class Npc {
     );
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   stopAim() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot stopAim before create");
@@ -517,6 +637,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isAimingAtPlayer(this._id, player.id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setWeaponAccuracy(weapon: WeaponEnum, accuracy: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setWeaponAccuracy before create");
@@ -528,6 +651,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getWeaponAccuracy(this._id, weapon);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setWeaponReloadTime(weapon: number, time: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setWeaponReloadTime before create");
@@ -542,6 +668,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getWeaponActualReloadTime(this._id, weapon);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setWeaponShootTime(weapon: number, time: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setWeaponShootTime before create");
@@ -552,6 +681,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getWeaponShootTime(this._id, weapon);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setWeaponClipSize(weapon: number, size: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setWeaponClipSize before create");
@@ -566,6 +698,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getWeaponActualClipSize(this._id, weapon);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   enterVehicle(vehicle: Vehicle, seatId: number, moveType = NPCMoveTypeEnum.AUTO) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot enterVehicle before create");
@@ -573,6 +708,9 @@ export class Npc {
     Npc.__inject__.enterVehicle(this._id, vehicle.id, seatId, moveType);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   exitVehicle() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot exitVehicle before create");
@@ -580,12 +718,18 @@ export class Npc {
     Npc.__inject__.exitVehicle(this._id);
     return this;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   putInVehicle(vehicle: Vehicle, seat: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot putInVehicle before create");
     }
     return Npc.__inject__.putInVehicle(this._id, vehicle.id, seat);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   removeFromVehicle() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot removeFromVehicle before create");
@@ -595,6 +739,9 @@ export class Npc {
   getVehicle() {
     return Vehicle.getInstance(this.getVehicleID());
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getVehicleID() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getVehicle before create");
@@ -608,6 +755,9 @@ export class Npc {
   getEnteringVehicle() {
     return Vehicle.getInstance(this.getEnteringVehicleId());
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getEnteringVehicleId() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getEnteringVehicle before create");
@@ -622,6 +772,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isEnteringVehicle(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   useVehicleSiren(use = true) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot useVehicleSiren before create");
@@ -632,6 +785,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isVehicleSirenUsed(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setVehicleHealth(health: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setVehicleHealth before create");
@@ -642,6 +798,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getVehicleHealth(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setVehicleHydraThrusters(direction: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setVehicleHydraThrusters before create");
@@ -652,6 +811,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getVehicleHydraThrusters(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setVehicleGearState(gearState: LandingGearStateEnum) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setVehicleGearState before create");
@@ -661,6 +823,9 @@ export class Npc {
   getVehicleGearState() {
     return Npc.__inject__.getVehicleGearState(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setVehicleTrainSpeed(speed: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setVehicleTrainSpeed before create");
@@ -671,12 +836,18 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getVehicleTrainSpeed(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   resetAnimation() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot resetAnimation before create");
     }
     return Npc.__inject__.resetAnimation(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setAnimation(
     animationId: number,
     delta: number,
@@ -704,12 +875,18 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getAnimation(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   clearAnimations() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot clearAnimations before create");
     }
     return Npc.__inject__.clearAnimations(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setSpecialAction(action: SpecialActionsEnum) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setSpecialAction before create");
@@ -719,6 +896,9 @@ export class Npc {
   getSpecialAction() {
     return Npc.__inject__.getSpecialAction(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   startPlayback(
     recordName: string,
     autoUnload: boolean = false,
@@ -744,6 +924,9 @@ export class Npc {
       rotZ,
     );
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   startPlaybackEx(
     record: NpcRecord,
     autoUnload: boolean = false,
@@ -769,12 +952,18 @@ export class Npc {
       rotZ,
     );
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   stopPlayback() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot stopPlayback before create");
     }
     return Npc.__inject__.stopPlayback(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   pausePlayback(paused: boolean = true) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot pausePlayback before create");
@@ -789,6 +978,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isPlaybackPaused(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   playNode(
     node: NpcNode,
     moveType = NPCMoveTypeEnum.AUTO,
@@ -801,18 +993,27 @@ export class Npc {
     }
     return Npc.__inject__.playNode(this._id, node.id, moveType, speed, radius, setAngle);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   stopPlayingNode() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot stopPlayingNode before create");
     }
     return Npc.__inject__.stopPlayingNode(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   pausePlayingNode() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot pausePlayingNode before create");
     }
     return Npc.__inject__.pausePlayingNode(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   resumePlayingNode() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot resumePlayingNode before create");
@@ -827,18 +1028,27 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isPlayingNode(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   changeNode(node: NpcNode, link: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot changeNode before create");
     }
     return Npc.__inject__.changeNode(this._id, node.id, link);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   updateNodePoint(pointId: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot updateNodePoint before create");
     }
     return Npc.__inject__.updateNodePoint(this._id, pointId);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setInvulnerable(toggle: boolean = true) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setInvulnerable before create");
@@ -849,6 +1059,9 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isInvulnerable(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setSurfingOffsets(x: number, y: number, z: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setSurfingOffsets before create");
@@ -858,6 +1071,9 @@ export class Npc {
   getSurfingOffsets() {
     return Npc.__inject__.getSurfingOffsets(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setSurfingVehicle(vehicle: Vehicle) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setSurfingVehicle before create");
@@ -867,12 +1083,18 @@ export class Npc {
   getSurfingVehicle() {
     return Vehicle.getInstance(this.getSurfingVehicleId());
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getSurfingVehicleId() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getSurfingVehicle before create");
     }
     return Npc.__inject__.getSurfingVehicle(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setSurfingObject(objectMp: ObjectMp) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setSurfingObject before create");
@@ -891,6 +1113,9 @@ export class Npc {
     }
     return Npc.__inject__.getSurfingObject(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setSurfingPlayerObject(objectMp: ObjectMp) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setSurfingPlayerObject before create");
@@ -915,6 +1140,9 @@ export class Npc {
     }
     return Npc.__inject__.getSurfingPlayerObject(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   resetSurfingData() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot resetSurfingData before create");
@@ -940,24 +1168,36 @@ export class Npc {
     if (this.id === InvalidEnum.NPC_ID) return false;
     return Npc.__inject__.isSpawned(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   kill(killer: Player | number, reason: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot kill before create");
     }
     return Npc.__inject__.kill(this._id, typeof killer === "number" ? killer : killer.id, reason);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setVelocity(x: number, y: number, z: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setVelocity before create");
     }
     return Npc.__inject__.setVelocity(this._id, x, y, z);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getVelocity() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getVelocity before create");
     }
     return Npc.__inject__.getVelocity(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getPlayerAimingAt() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getPlayerAimingAt before create");
@@ -966,6 +1206,9 @@ export class Npc {
     if (playerId !== InvalidEnum.PLAYER_ID) return Player.getInstance(playerId)!;
     return null;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getPlayerMovingTo() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getPlayerMovingTo before create");
@@ -974,42 +1217,63 @@ export class Npc {
     if (playerId !== InvalidEnum.PLAYER_ID) return Player.getInstance(playerId)!;
     return null;
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getPosMovingTo() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getPosMovingTo before create");
     }
     return Npc.__inject__.getPosMovingTo(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   getCustomSkin() {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot getCustomSkin before create");
     }
     return Npc.__inject__.getCustomSkin(this._id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setAngleToPos(x: number, y: number, z: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setAngleToPos before create");
     }
     return Npc.__inject__.setAngleToPos(this._id, x, y, z);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setAngleToPlayer(player: Player) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setAngleToPlayer before create");
     }
     return Npc.__inject__.setAngleToPlayer(this._id, player.id);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setVehiclePos(x: number, y: number, z: number, immediateUpdate: boolean) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setVehiclePosition before create");
     }
     return Npc.__inject__.setVehiclePos(this._id, x, y, z, immediateUpdate);
   }
+  /**
+   * @throws {NpcException} When called before `create`().
+   */
   setVehicleRot(x: number, y: number, z: number, immediateUpdate: boolean) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setVehicleRotation before create");
     }
     return Npc.__inject__.setVehicleRot(this._id, x, y, z, immediateUpdate);
   }
+  /**
+   * @throws {NpcException} When recording is already in progress.
+   */
   static startRecordingPlayerData(
     player: Player,
     recordType: RecordTypesEnum,
@@ -1019,6 +1283,9 @@ export class Npc {
     Npc.__inject__.startRecordingPlayerData(player.id, recordType, recordName);
     player[internalPlayerProps].isRecording = true;
   }
+  /**
+   * @throws {NpcException} When recording has not been started.
+   */
   static stopRecordingPlayerData(player: Player): void {
     if (!player.isRecording) throw new NpcException("It should be started before stop");
     Npc.__inject__.stopRecordingPlayerData(player.id);

@@ -4,6 +4,9 @@ import { HeaderDataBlock, OnFootDataBlock, VehicleDataBlock } from "./dataBlock"
 import { BinaryReader } from "./reader";
 import { BinaryWriter } from "./writer";
 
+/**
+ * @throws {RecException} When the file is not a valid REC format file.
+ */
 export async function recToJson(filePath: string) {
   const data: any[] = [];
 
@@ -65,6 +68,9 @@ export async function recToJson(filePath: string) {
   return data;
 }
 
+/**
+ * @throws {RecException} When `data` does not start with a valid REC header.
+ */
 export function jsonToRec(filePath: string, data: any[]) {
   const header = data[0];
 

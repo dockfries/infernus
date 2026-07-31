@@ -78,6 +78,9 @@ const DEFAULT_MATERIAL = {
   textAlignment: 1,
 } as const;
 
+/**
+ * @throws {QRException} When `text` is empty or whitespace only.
+ */
 export function generateQRText(
   text: string,
   typeNumber: TypeNumber = 0,

@@ -2,6 +2,9 @@ import { DynamicObject } from "@infernus/core";
 import { IMapLoadOptions } from "../interfaces";
 import { ensureLength, MapLoaderException } from "../utils/error";
 
+/**
+ * @throws {MapLoaderException} When a line entry is not a valid number.
+ */
 export function objParser(line: string[], options: IMapLoadOptions) {
   ensureLength("objParser", line, 8, line.length);
 

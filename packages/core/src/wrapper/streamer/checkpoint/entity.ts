@@ -24,6 +24,9 @@ export class DynamicCheckpoint {
   get id(): number {
     return this._id;
   }
+  /**
+   * @throws {DynamicCheckPointException} When constructed with an invalid id.
+   */
   constructor(checkPointOrId: IDynamicCheckPoint | number) {
     if (typeof checkPointOrId === "number") {
       if (checkPointOrId === StreamerMiscellaneous.INVALID_ID) {
@@ -40,6 +43,9 @@ export class DynamicCheckpoint {
       this.sourceInfo = checkPointOrId;
     }
   }
+  /**
+   * @throws {DynamicCheckPointException} When `size` is less than 0.
+   */
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
       throw new DynamicCheckPointException("Cannot create again");
@@ -101,6 +107,9 @@ export class DynamicCheckpoint {
     dynamicCheckpointPool.set(this._id, this);
     return this;
   }
+  /**
+   * @throws {DynamicCheckPointException} When called before `create`().
+   */
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new DynamicCheckPointException("Cannot destroy the checkpoint before create");
@@ -115,6 +124,9 @@ export class DynamicCheckpoint {
     if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID) return true;
     return DynamicCheckpoint.isValid(this.id);
   }
+  /**
+   * @throws {DynamicCheckPointException} When called before `create`().
+   */
   togglePlayer(player: Player, toggle: boolean): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicCheckPointException("Cannot toggle the player before create");
@@ -125,6 +137,9 @@ export class DynamicCheckpoint {
     if (this.id === StreamerMiscellaneous.INVALID_ID) return false;
     return DynamicCheckpoint.__inject__.isPlayerIn(player.id, this.id);
   }
+  /**
+   * @throws {DynamicCheckPointException} When called before `create`().
+   */
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicCheckPointException("Cannot toggle callbacks before create");

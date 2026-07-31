@@ -19,6 +19,9 @@ export class DynamicArea {
   get id(): number {
     return this._id;
   }
+  /**
+   * @throws {DynamicAreaException} When constructed with an invalid id.
+   */
   constructor(areaOrId: TDynamicArea | number) {
     if (typeof areaOrId === "number") {
       if (areaOrId === s.StreamerMiscellaneous.INVALID_ID) {
@@ -35,6 +38,9 @@ export class DynamicArea {
       this.sourceInfo = areaOrId;
     }
   }
+  /**
+   * @throws {DynamicAreaException} When an area `size` is less than 0, or a polygon has an odd number of points.
+   */
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicAreaException("Cannot create again");
@@ -221,6 +227,9 @@ export class DynamicArea {
     dynamicAreasPool.set(this._id, this);
     return this;
   }
+  /**
+   * @throws {DynamicAreaException} When called before `create`().
+   */
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new DynamicAreaException("Cannot destroy the area before create");
@@ -235,6 +244,9 @@ export class DynamicArea {
     if (INTERNAL_FLAGS.skip && this.id !== s.StreamerMiscellaneous.INVALID_ID) return true;
     return DynamicArea.isValid(this.id);
   }
+  /**
+   * @throws {DynamicAreaException} When called before `create`().
+   */
   getType(): StreamerAreaTypes {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicAreaException("Cannot get type before create");
@@ -243,6 +255,9 @@ export class DynamicArea {
   getPolygonPoints() {
     return DynamicArea.__inject__.getPolygonPoints(this.id);
   }
+  /**
+   * @throws {DynamicAreaException} When called before `create`().
+   */
   getPolygonNumberPoints(): number {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicAreaException("Cannot getPolygonNumberPoints number before create");
@@ -318,6 +333,9 @@ export class DynamicArea {
   ): number {
     return DynamicArea.__inject__.getNumberForLine(x1, y1, z1, x2, y2, z2);
   }
+  /**
+   * @throws {DynamicAreaException} When called before `create`().
+   */
   attachToObject(obj: DynamicObject, offsetX = 0.0, offsetY = 0.0, offsetZ = 0.0): number {
     if (
       this.id === s.StreamerMiscellaneous.INVALID_ID ||
@@ -334,16 +352,25 @@ export class DynamicArea {
       offsetZ,
     );
   }
+  /**
+   * @throws {DynamicAreaException} When called before `create`().
+   */
   attachToPlayer(player: Player, offsetX = 0.0, offsetY = 0.0, offsetZ = 0.0): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID || player.id === InvalidEnum.PLAYER_ID)
       throw new DynamicAreaException("Cannot toggle attach to player before create");
     return DynamicArea.__inject__.attachToPlayer(this.id, player.id, offsetX, offsetY, offsetZ);
   }
+  /**
+   * @throws {DynamicAreaException} When called before `create`().
+   */
   attachToVehicle(vehicle: Vehicle, offsetX = 0.0, offsetY = 0.0, offsetZ = 0.0): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID || vehicle.id === InvalidEnum.VEHICLE_ID)
       throw new DynamicAreaException("Cannot toggle attach to vehicle before create");
     return DynamicArea.__inject__.attachToVehicle(this.id, vehicle.id, offsetX, offsetY, offsetZ);
   }
+  /**
+   * @throws {DynamicAreaException} When called before `create`().
+   */
   toggleSpectateMode(toggle: boolean): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicAreaException("Cannot toggle spectate mode before create");
@@ -353,6 +380,9 @@ export class DynamicArea {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
     return DynamicArea.__inject__.isToggleSpectateMode(this.id);
   }
+  /**
+   * @throws {DynamicAreaException} When called before `create`().
+   */
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicAreaException("Cannot toggle callbacks before create");

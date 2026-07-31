@@ -15,6 +15,9 @@ export class Pickup {
     return this._id;
   }
 
+  /**
+   * @throws {PickupException} When constructed with an invalid id.
+   */
   constructor(pickupOrId: IPickup | number, player?: Player) {
     if (typeof pickupOrId === "number") {
       if (pickupOrId === InvalidEnum.PICKUP_ID) {
@@ -43,6 +46,9 @@ export class Pickup {
     }
   }
 
+  /**
+   * @throws {PickupException} When `create()` is called twice or without source info, or the native creation fails.
+   */
   create() {
     if (!this.sourceInfo) {
       throw new PickupException("Cannot create with only id");
@@ -84,6 +90,9 @@ export class Pickup {
     return this;
   }
 
+  /**
+   * @throws {PickupException} When called on a static pickup or before `create`().
+   */
   destroy(): void {
     if (this.sourceInfo && this.sourceInfo.isStatic) {
       throw new PickupException("Cannot destroy static pickup");
@@ -208,6 +217,9 @@ export class Pickup {
     return Pickup.__inject__.setVirtualWorld(this.id, virtualWorld);
   }
 
+  /**
+   * @throws {PickupException} When called on a player pickup.
+   */
   showForPlayer(player: Player): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
     const p = this.getPlayer();
@@ -217,6 +229,9 @@ export class Pickup {
     return Pickup.__inject__.showForPlayer(player.id, this.id);
   }
 
+  /**
+   * @throws {PickupException} When called on a player pickup.
+   */
   hideForPlayer(player: Player): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
     const p = this.getPlayer();
@@ -226,6 +241,9 @@ export class Pickup {
     return Pickup.__inject__.hideForPlayer(player.id, this.id);
   }
 
+  /**
+   * @throws {PickupException} When called on a player pickup.
+   */
   isHiddenForPlayer(player: Player): boolean {
     if (this.id === InvalidEnum.PICKUP_ID) return false;
     const p = this.isPlayer();

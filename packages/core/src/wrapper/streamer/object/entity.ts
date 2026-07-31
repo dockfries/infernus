@@ -34,6 +34,9 @@ export class DynamicObject {
     }
   }
 
+  /**
+   * @throws {DynamicObjectException} When `create()` is called twice or without source info. Note: a failed native creation does not throw — later method calls will.
+   */
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot create again");
@@ -111,6 +114,9 @@ export class DynamicObject {
     return this;
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new DynamicObjectException("Cannot destroy object before create");
@@ -134,30 +140,45 @@ export class DynamicObject {
     return this.sourceInfo.modelId;
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   getPos() {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot get position before create");
     return DynamicObject.__inject__.getPos(this.id);
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   setPos(x: number, y: number, z: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot set position before create");
     return DynamicObject.__inject__.setPos(this.id, x, y, z);
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   getRot() {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot get rotation before create");
     return DynamicObject.__inject__.getRot(this.id);
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   setRot(rx: number, ry: number, rz: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot set rotation before create");
     return DynamicObject.__inject__.setRot(this.id, rx, ry, rz);
   }
 
+  /**
+   * @throws {DynamicObjectException} When `speed` is less than 0, or greater than 120 seconds worth of movement (likely unintentional).
+   */
   move(x: number, y: number, z: number, speed: number, rx = -1000, ry = -1000, rz = -1000): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot start moving before create");
@@ -170,6 +191,9 @@ export class DynamicObject {
     return DynamicObject.__inject__.move(this.id, x, y, z, speed, rx, ry, rz);
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   stop(): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot stop moving before create");
@@ -181,12 +205,18 @@ export class DynamicObject {
     return DynamicObject.__inject__.isMoving(this.id);
   }
 
+  /**
+   * @throws {DynamicObjectException} When called without a `player`.
+   */
   attachCamera(player: Player): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID || player.id === InvalidEnum.PLAYER_ID)
       throw new DynamicObjectException("Cannot attachCamera before both are created");
     return DynamicObject.__inject__.attachCamera(player.id, this.id);
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   attachToObject(
     attachTo: DynamicObject,
     offsetX: number,
@@ -215,6 +245,9 @@ export class DynamicObject {
     );
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   attachToPlayer(
     player: Player,
     offsetX: number,
@@ -238,6 +271,9 @@ export class DynamicObject {
     );
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   attachToVehicle(
     vehicle: Vehicle,
     offsetX: number,
@@ -261,6 +297,9 @@ export class DynamicObject {
     );
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   edit(player: Player): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot edit before create");
@@ -279,12 +318,18 @@ export class DynamicObject {
     return DynamicObject.__inject__.removeMaterial(this.id, materialIndex);
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   getMaterial(materialIndex: number) {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot get material before create");
     return DynamicObject.__inject__.getMaterial(this.id, materialIndex);
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   setMaterial(
     materialIndex: number,
     modelId: number,
@@ -315,6 +360,9 @@ export class DynamicObject {
     return DynamicObject.__inject__.removeMaterialText(this.id, materialIndex);
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   getMaterialText(materialIndex: number) {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot get material text before create");
@@ -325,6 +373,9 @@ export class DynamicObject {
     );
   }
 
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   setMaterialText(
     charset = this.sourceInfo?.charset,
     materialIndex: number,
@@ -362,6 +413,9 @@ export class DynamicObject {
     if (dynId === s.StreamerMiscellaneous.INVALID_ID) return;
     return dynamicObjectPool.get(dynId);
   }
+  /**
+   * @throws {DynamicObjectException} When called before `create`().
+   */
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicObjectException("Cannot toggle callbacks before create");

@@ -22,6 +22,9 @@ export class Menu {
     return this._id;
   }
 
+  /**
+   * @throws {MenuException} When constructed with an invalid id.
+   */
   constructor(menuOrId: IMenu | number) {
     if (typeof menuOrId === "number") {
       if (menuOrId === InvalidEnum.MENU) {
@@ -37,6 +40,9 @@ export class Menu {
     }
   }
 
+  /**
+   * @throws {MenuException} When `create()` is called twice or without source info, or the native creation fails.
+   */
   create(): this {
     if (!this.sourceInfo) {
       throw new MenuException("Cannot create with only id");
@@ -54,6 +60,9 @@ export class Menu {
     return this;
   }
 
+  /**
+   * @throws {MenuException} When called before `create`().
+   */
   destroy(): this {
     if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot destroy before create");
     if (!INTERNAL_FLAGS.skip) {
@@ -64,6 +73,9 @@ export class Menu {
     return this;
   }
 
+  /**
+   * @throws {MenuException} When `column` is not 0 or 1.
+   */
   addItem(column: number, title: string): this {
     if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot addItem before create");
     if (column !== 0 && column !== 1) throw new MenuException("Wrong number of columns");
@@ -71,6 +83,9 @@ export class Menu {
     return this;
   }
 
+  /**
+   * @throws {MenuException} When `column` is not 0 or 1.
+   */
   setColumnHeader(column: number, header: string): this {
     if (this._id === InvalidEnum.MENU)
       throw new MenuException("Cannot setColumnHeader before create");
@@ -84,12 +99,18 @@ export class Menu {
     return this;
   }
 
+  /**
+   * @throws {MenuException} When called before `create`().
+   */
   disable(): this {
     if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot disable menu before create");
     Menu.__inject__.disable(this.id);
     return this;
   }
 
+  /**
+   * @throws {MenuException} When called before `create`().
+   */
   disableRow(row: number) {
     if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot disable row before create");
     return Menu.__inject__.disableRow(this.id, row);
@@ -100,11 +121,17 @@ export class Menu {
     return Menu.isValid(this.id);
   }
 
+  /**
+   * @throws {MenuException} When called before `create`().
+   */
   showForPlayer(player: Player): boolean {
     if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot show menu before create");
     return Menu.__inject__.showForPlayer(this.id, player.id);
   }
 
+  /**
+   * @throws {MenuException} When called before `create`().
+   */
   hideForPlayer(player: Player): boolean {
     if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot hide menu before create");
     return Menu.__inject__.hideForPlayer(this.id, player.id);
@@ -133,6 +160,9 @@ export class Menu {
     return Menu.__inject__.getColumnWidth(this.id);
   }
 
+  /**
+   * @throws {MenuException} When called before `create`().
+   */
   getColumnHeader(column: number) {
     if (this._id === InvalidEnum.MENU)
       throw new MenuException("Cannot get column header before create");
@@ -143,6 +173,9 @@ export class Menu {
     );
   }
 
+  /**
+   * @throws {MenuException} When `item` is outside the valid range of items for `column`.
+   */
   getItem(column: number, item: number) {
     if (this._id === InvalidEnum.MENU) throw new MenuException("Cannot get item before create");
     if (item < 0 || item > this.getItems(column) - 1)

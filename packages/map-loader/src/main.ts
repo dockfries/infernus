@@ -12,6 +12,9 @@ GameMode.onExit(({ next }) => {
   return next();
 });
 
+/**
+ * @throws {MapLoaderException} When the map data cannot be parsed (via `mapReader`).
+ */
 export async function loadMap(options: IMapLoadOptions) {
   const { objects, removedBuilding, removedBuildingIdx } = await mapReader(options);
 
@@ -32,6 +35,9 @@ export async function loadMap(options: IMapLoadOptions) {
   return id;
 }
 
+/**
+ * @throws {MapLoaderException} When `mapId` has not been loaded.
+ */
 export function unloadMap(mapId: number) {
   if (!INTERNAL_MAP.loadedMaps.has(mapId)) {
     throw new MapLoaderException({ msg: `invalid mapId ${mapId}` });
@@ -75,6 +81,9 @@ export function unloadMap(mapId: number) {
 
   return mapId;
 }
+/**
+ * @throws {MapLoaderException} When `mapId` has not been loaded.
+ */
 export async function reloadMap(mapId: number) {
   const mapInfo = INTERNAL_MAP.loadedMaps.get(mapId);
   if (!mapInfo) {

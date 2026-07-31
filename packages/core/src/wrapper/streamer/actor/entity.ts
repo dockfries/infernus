@@ -13,6 +13,9 @@ export class DynamicActor {
   get id(): number {
     return this._id;
   }
+  /**
+   * @throws {DynamicActorException} When constructed with an invalid id.
+   */
   constructor(actorOrId: IDynamicActor | number) {
     if (typeof actorOrId === "number") {
       if (actorOrId === s.StreamerMiscellaneous.INVALID_ID) {
@@ -29,6 +32,9 @@ export class DynamicActor {
       this.sourceInfo = actorOrId;
     }
   }
+  /**
+   * @throws {DynamicActorException} When `create()` is called twice or without source info. Note: a failed native creation does not throw — later method calls will.
+   */
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot create again");
@@ -94,6 +100,9 @@ export class DynamicActor {
     dynamicActorPool.set(this.id, this);
     return this;
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new DynamicActorException("Cannot destroy to actor before create");
@@ -112,16 +121,25 @@ export class DynamicActor {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
     return DynamicActor.__inject__.isStreamedIn(this.id, forPlayer.id);
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   getVirtualWorld(): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot get virtual world before create");
     return DynamicActor.__inject__.getVirtualWorld(this.id);
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   setVirtualWorld(vWorld: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot set virtual world before create");
     return DynamicActor.__inject__.setVirtualWorld(this.id, vWorld);
   }
+  /**
+   * @throws {DynamicActorException} When `animLib`/`animName` is not a valid animation library or name.
+   */
   applyAnimation(
     animLib: string,
     animName: string,
@@ -149,6 +167,9 @@ export class DynamicActor {
       time,
     );
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   clearAnimations(): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot clear animation before create");
@@ -157,16 +178,25 @@ export class DynamicActor {
   getFacingAngle() {
     return DynamicActor.__inject__.getFacingAngle(this.id);
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   setFacingAngle(ang: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot set facing angle before create");
     return DynamicActor.__inject__.setFacingAngle(this.id, ang);
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   getPos() {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot get pos before create");
     return DynamicActor.__inject__.getPos(this.id);
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   setPos(x: number, y: number, z: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot set pos before create");
@@ -175,6 +205,9 @@ export class DynamicActor {
   getHealth() {
     return DynamicActor.__inject__.getHealth(this.id);
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   setHealth(health: number): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot set health before create");
@@ -184,6 +217,9 @@ export class DynamicActor {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID) return false;
     return DynamicActor.__inject__.isInvulnerable(this.id);
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   setInvulnerable(invulnerable = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot set invulnerable before create");
@@ -197,11 +233,17 @@ export class DynamicActor {
     const actorId = DynamicActor.__inject__.getPlayerCameraTarget(player.id);
     return dynamicActorPool.get(actorId);
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   getAnimation() {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot get animation before create");
     return DynamicActor.__inject__.getAnimation(this.id);
   }
+  /**
+   * @throws {DynamicActorException} When called before `create`().
+   */
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicActorException("Cannot toggle callbacks before create");

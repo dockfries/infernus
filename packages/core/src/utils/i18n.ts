@@ -28,6 +28,9 @@ export class I18n {
     this.locales = omit(this.locales, props);
   };
 
+  /**
+   * @throws {I18nException} When `key` does not exist in `locale`.
+   */
   $t = (
     key: string,
     replaceable?: any[] | undefined | null,
@@ -48,6 +51,9 @@ export class I18n {
     return strDotVal;
   };
 
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   // determine if the incoming character encoding type is valid
   static isValidate(charset: string): void {
     if (!encodingExists(charset)) {
@@ -58,12 +64,18 @@ export class I18n {
   // convert utf8 strings to different encoded byte stream arrays
   // used to solve the internationalization language display display messy problem
   // https://github.com/AmyrAhmady/samp-node/issues/2
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   static encodeToBuf(content: string, charset: string): number[] {
     I18n.isValidate(charset);
     return [...encode(content, charset), 0];
   }
 
   // convert byte stream arrays of different encodings to utf8 strings
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   static decodeFromBuf(buf: Buffer | number[], charset = "utf8"): string {
     I18n.isValidate(charset);
     const buffer = isBuffer(buf) ? buf : Buffer.from(I18n.getValidStr(buf));

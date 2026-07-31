@@ -29,6 +29,9 @@ export class Dynamic3DTextLabel {
     return this._id;
   }
 
+  /**
+   * @throws {DynamicTextLabelException} When constructed with an invalid id.
+   */
   constructor(textLabelOrId: IDynamic3DTextLabel | number) {
     if (typeof textLabelOrId === "number") {
       if (textLabelOrId === StreamerMiscellaneous.INVALID_ID) {
@@ -45,6 +48,9 @@ export class Dynamic3DTextLabel {
       this.sourceInfo = textLabelOrId;
     }
   }
+  /**
+   * @throws {DynamicTextLabelException} When `create()` is called twice or without source info. Note: a failed native creation does not throw — later method calls will.
+   */
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
       throw new DynamicTextLabelException("Cannot create again");
@@ -128,6 +134,9 @@ export class Dynamic3DTextLabel {
     dynamic3DTextLabelPool.set(this.id, this);
     return this;
   }
+  /**
+   * @throws {DynamicTextLabelException} When called before `create`().
+   */
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new DynamicTextLabelException("Cannot destroy before create");
@@ -142,6 +151,9 @@ export class Dynamic3DTextLabel {
     if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID) return true;
     return Dynamic3DTextLabel.isValid(this.id);
   }
+  /**
+   * @throws {DynamicTextLabelException} When called before `create`().
+   */
   getColor(): string | number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicTextLabelException("Cannot get color before create");
@@ -150,6 +162,9 @@ export class Dynamic3DTextLabel {
     }
     return this.sourceInfo.color;
   }
+  /**
+   * @throws {DynamicTextLabelException} When called before `create`().
+   */
   getCharset(): void | string {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicTextLabelException("Cannot get charset before create");
@@ -158,6 +173,10 @@ export class Dynamic3DTextLabel {
   getText() {
     return Dynamic3DTextLabel.__inject__.getText(this.id, this.sourceInfo?.charset || "utf8");
   }
+  /**
+   * @throws {DynamicTextLabelException} When called before `create`().
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   updateText(color: string | number, text: string, charset?: string): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicTextLabelException("Cannot update text before create");
@@ -168,6 +187,9 @@ export class Dynamic3DTextLabel {
     }
     return Dynamic3DTextLabel.__inject__.updateText(this.id, rgba(color), text, _charset);
   }
+  /**
+   * @throws {DynamicTextLabelException} When called before `create`().
+   */
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicTextLabelException("Cannot toggle callbacks before create");
@@ -204,6 +226,9 @@ export class Dynamic3DTextLabel {
     }
     return ret;
   }
+  /**
+   * @throws {DynamicTextLabelException} When called before `create`().
+   */
   attachToPlayer(
     player: Player | InvalidEnum.PLAYER_ID,
     offsetX: number,
@@ -227,6 +252,9 @@ export class Dynamic3DTextLabel {
     }
     return ret;
   }
+  /**
+   * @throws {DynamicTextLabelException} When called before `create`().
+   */
   attachToVehicle(
     vehicle: Vehicle | InvalidEnum.VEHICLE_ID,
     offsetX: number,

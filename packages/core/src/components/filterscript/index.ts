@@ -6,6 +6,9 @@ const preInstallScripts: Array<IFilterScript> = [];
 const installedScripts: Array<IFilterScript> = [];
 const registeredEvents = new Map<string, Array<() => void>>();
 const loadingScripts = new Set<string>();
+/**
+ * @throws {GameModeException} When `scriptName` is already being loaded, or its load fails.
+ */
 export const loadUseScript = async (scriptName: string) => {
   if (loadingScripts.has(scriptName)) {
     throw new GameModeException(`script ${scriptName} is already being loaded`);
@@ -46,6 +49,9 @@ export const loadUseScript = async (scriptName: string) => {
   }
 };
 
+/**
+ * @throws {GameModeException} When `scriptName` is already being unloaded, or its unload fails.
+ */
 export const unloadUseScript = async (scriptName: string) => {
   if (loadingScripts.has(scriptName)) {
     throw new GameModeException(`script ${scriptName} is already being unloaded`);
@@ -89,6 +95,9 @@ export const unloadUseScript = async (scriptName: string) => {
   }
 };
 
+/**
+ * @throws {GameModeException} When the script fails to load or unload (via `loadUseScript`/`unloadUseScript`).
+ */
 export const reloadUseScript = async (scriptName: string) => {
   await unloadUseScript(scriptName);
   await loadUseScript(scriptName);
@@ -114,6 +123,9 @@ onExit(async ({ next }) => {
   return next();
 });
 
+/**
+ * @throws {GameModeException} When a script with the same name is already applied.
+ */
 export const useFilterScript = function (script: IFilterScript, ...options: Array<any>): void {
   if (
     preInstallScripts.some((fs) => fs.name === script.name) ||

@@ -14,6 +14,9 @@ function isValidIPv4(ip: string): boolean {
   });
 }
 
+/**
+ * @throws {QueryException} When `options.address` is not a valid IPv4 address.
+ */
 export function makePacket<T extends RequestPacket>(options: Options<T>): Buffer {
   if (!isValidIPv4(options.address)) {
     throw new QueryException("Invalid ip address");

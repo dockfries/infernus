@@ -48,6 +48,9 @@ export class BulletSync extends BitStream implements IPacketListSync {
     return data as IBulletSync | null;
   }
 
+  /**
+   * @throws {RakNetException} When `playerId` is missing on an outgoing sync.
+   */
   @SyncWriter
   writeSync(data: IBulletSync) {
     const value: WriteTuple[] = [

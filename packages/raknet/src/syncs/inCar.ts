@@ -110,6 +110,9 @@ export class InCarSync extends BitStream implements IPacketListSync {
     return data as IInCarSync | null;
   }
 
+  /**
+   * @throws {RakNetException} When `playerId` is missing on an outgoing sync.
+   */
   @SyncWriter
   writeSync(data: IInCarSync, outgoing = false) {
     const _outgoing = outgoing || !this.bs.isIncoming();

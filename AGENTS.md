@@ -53,6 +53,17 @@ pnpm docs:dev             # VitePress dev server
 
 - VitePress under `docs/`. Dev: `pnpm docs:dev`. Deployed to GitHub Pages on main branch changes to `docs/` or `package.json`.
 
+### JSDoc conventions
+
+No full JSDoc style is used — TypeScript types are the contract. Only two tags are allowed:
+
+- `@throws` — the one thing types can't express. Follow the [JSDoc spec](https://jsdoc.app/tags-throws): `@throws {<ExceptionType>} description`, with the exception type in curly braces. Add it to public methods/functions that can throw, as close to the throwing code as possible (method/function level, not class level):
+  - **Method level**: one `@throws` per throwing method, describing the condition (e.g. lifecycle guard "when called before `create()`", range validation, native failure).
+  - **Class level**: avoid — a class-level tag should only be used when virtually every method throws for a common reason and method-level tags would be pure noise.
+- `@deprecated` — marks deprecated APIs; preserved into `dist/bundle.d.ts`.
+
+Skip `@throws` on private static-class constructors, internal utils (`bus.ts`, `hook.ts`), and throws unreachable by consumers. If the exception class is not exported from the package's `src/main.ts`, describe it in plain text instead of `@link`.
+
 ## Structure
 
 - 23 packages under `packages/*`, all `@infernus/*` scope.

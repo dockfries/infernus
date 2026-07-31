@@ -24,6 +24,9 @@ export class Vehicle {
     return this._id;
   }
 
+  /**
+   * @throws {VehicleException} When constructed with an invalid id.
+   */
   constructor(vehOrId: IVehicle | number, isStatic = false) {
     if (typeof vehOrId === "number") {
       if (vehOrId === InvalidEnum.VEHICLE_ID) {
@@ -44,6 +47,9 @@ export class Vehicle {
       this.isStatic = isStatic;
     }
   }
+  /**
+   * @throws {VehicleException} When `create()` is called twice or without source info, or the native creation fails.
+   */
   create(): void {
     if (this.id !== InvalidEnum.VEHICLE_ID) throw new VehicleException("Cannot create again");
     if (!this.sourceInfo) throw new VehicleException("Cannot create with only id");
@@ -82,6 +88,9 @@ export class Vehicle {
     Vehicle.createdCount++;
     vehiclePool.set(this._id, this);
   }
+  /**
+   * @throws {VehicleException} When called before `create`().
+   */
   destroy(): void {
     if (this.id === InvalidEnum.VEHICLE_ID && !INTERNAL_FLAGS.skip) {
       throw new VehicleException("Cannot destroy the vehicle before create");
@@ -142,6 +151,9 @@ export class Vehicle {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.isPlayerIn(player.id, this.id);
   }
+  /**
+   * @throws {VehicleException} When `seatId` is greater than 4 — an invalid or taken seat can crash the game when the player exits the vehicle.
+   */
   putPlayerIn(player: Player, seatId: number) {
     if (this.id === InvalidEnum.VEHICLE_ID) return 0;
     if (seatId < 0) return 0;
@@ -159,6 +171,9 @@ export class Vehicle {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
     return Vehicle.__inject__.setZAngle(this.id, zAngle);
   }
+  /**
+   * @throws {VehicleException} When `numberplate` is longer than 32 characters, or contains anything but letters and numbers.
+   */
   setNumberPlate(numberplate: string): boolean {
     if (this.id === InvalidEnum.VEHICLE_ID) return false;
     if (numberplate.length < 1 || numberplate.length > 32) {

@@ -17,6 +17,9 @@ export class GangZone {
     return this._id;
   }
 
+  /**
+   * @throws {GangZoneException} When constructed with an invalid id.
+   */
   constructor(gangZoneOrId: IGangZone | number, player?: Player) {
     if (typeof gangZoneOrId === "number") {
       if (gangZoneOrId === InvalidEnum.GANG_ZONE) {
@@ -45,6 +48,9 @@ export class GangZone {
     }
   }
 
+  /**
+   * @throws {GangZoneException} When `create()` is called twice or without source info, or the native creation fails.
+   */
   create() {
     if (!this.sourceInfo) {
       throw new GangZoneException("Cannot create with only id");
@@ -81,6 +87,9 @@ export class GangZone {
     return this;
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`().
+   */
   destroy() {
     if (this.id === InvalidEnum.GANG_ZONE)
       throw new GangZoneException("Cannot destroy before create");
@@ -130,6 +139,9 @@ export class GangZone {
     return player ? player.id : InvalidEnum.PLAYER_ID;
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`(), or on a player gangzone.
+   */
   showForAll(color: string | number) {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new GangZoneException("Cannot show gangzone before create");
@@ -142,6 +154,9 @@ export class GangZone {
     throw new GangZoneException("player's gangzone should not be show for all.");
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`().
+   */
   showForPlayer(color: string | number, player?: Player) {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new GangZoneException("Cannot show gangzone before create");
@@ -157,6 +172,9 @@ export class GangZone {
     return this;
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`(), or on a player gangzone.
+   */
   hideForAll() {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new GangZoneException("Cannot hide gangzone before create");
@@ -169,6 +187,9 @@ export class GangZone {
     throw new GangZoneException("player's gangzone should not be hide for all.");
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`().
+   */
   hideForPlayer(player?: Player) {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new GangZoneException("Cannot hide gangzone before create");
@@ -184,6 +205,9 @@ export class GangZone {
     return this;
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`(), or on a player gangzone.
+   */
   flashForAll(flashColor: string | number) {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new GangZoneException("Cannot flash gangzone before create");
@@ -196,6 +220,9 @@ export class GangZone {
     throw new GangZoneException("player's gangzone should not be flash for all.");
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`().
+   */
   flashForPlayer(player: Player, flashColor: string | number) {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new GangZoneException("Cannot flash gangzone before create");
@@ -211,6 +238,9 @@ export class GangZone {
     return this;
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`(), or on a player gangzone.
+   */
   stopFlashForAll() {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new GangZoneException("Cannot stop flash gangzone before create");
@@ -223,6 +253,9 @@ export class GangZone {
     throw new GangZoneException("player's gangzone should not be stop flash for all.");
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`().
+   */
   stopFlashForPlayer(player: Player) {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new GangZoneException("Cannot stop flash gangzone before create");
@@ -260,6 +293,9 @@ export class GangZone {
     return GangZone.__inject__.isVisibleForPlayer(player.id, this.id);
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`().
+   */
   getColorForPlayer(player: Player): number {
     if (this.id === InvalidEnum.GANG_ZONE)
       throw new GangZoneException("Cannot get color before create");
@@ -268,6 +304,9 @@ export class GangZone {
     return GangZone.__inject__.getColorForPlayer(player.id, this.id);
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`().
+   */
   getFlashColorForPlayer(player: Player): number {
     if (this.id === InvalidEnum.GANG_ZONE)
       throw new GangZoneException("Cannot get flash color before create");
@@ -283,6 +322,9 @@ export class GangZone {
     return GangZone.__inject__.isFlashingForPlayer(player.id, this.id);
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`().
+   */
   getPos(): IGangZonePos {
     if (this.id === InvalidEnum.GANG_ZONE)
       throw new GangZoneException("Cannot get position before create");
@@ -291,6 +333,9 @@ export class GangZone {
     return GangZone.__inject__.getPos(this.id);
   }
 
+  /**
+   * @throws {GangZoneException} When called before `create`().
+   */
   useCheck(toggle: boolean) {
     if (this.id === InvalidEnum.GANG_ZONE) {
       throw new GangZoneException("Cannot use check before create");

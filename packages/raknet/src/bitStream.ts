@@ -143,6 +143,9 @@ export class BitStream {
     return { bits, ret };
   }
 
+  /**
+   * @throws {RakNetException} When reading/writing a `Bits` or `String` value without the required size.
+   */
   readValue(type: PacketRpcValueType.Int8): [number, number];
   readValue(type: PacketRpcValueType.Int16): [number, number];
   readValue(type: PacketRpcValueType.Int32): [number, number];
@@ -179,6 +182,9 @@ export class BitStream {
     return isBatch ? result : [result[0], result[result.length - 1]];
   }
 
+  /**
+   * @throws {RakNetException} When reading/writing a `Bits` or `String` value without the required size.
+   */
   writeValue(type: PacketRpcValueType.Int8, value: number): number;
   writeValue(type: PacketRpcValueType.Int16, value: number): number;
   writeValue(type: PacketRpcValueType.Int32, value: number): number;

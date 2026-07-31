@@ -62,6 +62,9 @@ export class UnoccupiedSync extends BitStream implements IPacketListSync {
     return data as IUnoccupiedSync | null;
   }
 
+  /**
+   * @throws {RakNetException} When `playerId` is missing on an outgoing sync.
+   */
   @SyncWriter
   writeSync(data: IUnoccupiedSync) {
     const value: WriteTuple[] = [

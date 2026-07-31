@@ -5,6 +5,9 @@ import { MapNode } from "./node";
 
 export class GpsConnection {
   constructor(public connectionId = INVALID_CONNECTION_ID) {}
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   create(source: MapNode, target: MapNode): this {
     const [connectionId, ret]: number[] = samp.callNative(
       "CreateConnection",
@@ -19,6 +22,9 @@ export class GpsConnection {
     return this;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   destroy(): this {
     const ret = samp.callNative("DestroyConnection", "i", this.connectionId);
     if (ret !== GpsError.None) {
@@ -28,6 +34,9 @@ export class GpsConnection {
     return this;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getSource(): MapNode {
     const [nodeId, ret]: number[] = samp.callNative("GetConnectionSource", "iI", this.connectionId);
     if (ret !== GpsError.None) {
@@ -36,6 +45,9 @@ export class GpsConnection {
     return new MapNode(nodeId);
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getTarget(): MapNode {
     const [nodeId, ret]: number[] = samp.callNative("GetConnectionTarget", "iI", this.connectionId);
     if (ret !== GpsError.None) {
@@ -44,6 +56,9 @@ export class GpsConnection {
     return new MapNode(nodeId);
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   static getMapNode(node: MapNode, index: number): GpsConnection {
     const [connectionId, ret]: number[] = samp.callNative(
       "GetMapNodeConnection",
@@ -57,6 +72,9 @@ export class GpsConnection {
     return new GpsConnection(connectionId);
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   static getBetweenMapNodes(node: MapNode, target: MapNode): GpsConnection {
     const [connectionId, ret]: number[] = samp.callNative(
       "GetConnectionBetweenMapNodes",

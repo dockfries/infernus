@@ -17,6 +17,9 @@ export class TextDraw {
     return this._id;
   }
 
+  /**
+   * @throws {TextDrawException} When constructed with an invalid id.
+   */
   constructor(textDrawOrId: ITextDraw | number, player?: Player) {
     if (typeof textDrawOrId === "number") {
       if (textDrawOrId === InvalidEnum.TEXT_DRAW || textDrawOrId === InvalidEnum.PLAYER_TEXT_DRAW) {
@@ -44,6 +47,9 @@ export class TextDraw {
       this._player = null;
     }
   }
+  /**
+   * @throws {TextDrawException} When `create()` is called twice or without source info, or the native creation fails.
+   */
   create(): this {
     if (!this.sourceInfo) throw new TextDrawException("Cannot create with only id");
     if (this.id !== InvalidEnum.TEXT_DRAW) throw new TextDrawException("Cannot create again");
@@ -159,6 +165,9 @@ export class TextDraw {
     else TextDraw.__inject__.setLetterSize(this.id, x, y);
     return this;
   }
+  /**
+   * @throws {TextDrawException} When `size` is less than 0.
+   */
   setOutline(size: number) {
     if (this.id === InvalidEnum.TEXT_DRAW) {
       TextDraw.beforeCreateWarn("set outline model");
@@ -227,6 +236,9 @@ export class TextDraw {
     else TextDraw.__inject__.setSelectable(this.id, set);
     return this;
   }
+  /**
+   * @throws {TextDrawException} When `size` is less than 0.
+   */
   setShadow(size: number) {
     if (this.id === InvalidEnum.TEXT_DRAW) {
       TextDraw.beforeCreateWarn("set shadow");
@@ -240,6 +252,9 @@ export class TextDraw {
     else TextDraw.__inject__.setShadow(this.id, size);
     return this;
   }
+  /**
+   * @throws {TextDrawException} When `text` is empty or longer than 1024 characters.
+   */
   setString(text: string, player?: Player) {
     if (this.id === InvalidEnum.TEXT_DRAW) {
       TextDraw.beforeCreateWarn("set string");
@@ -288,6 +303,9 @@ export class TextDraw {
     throw new TextDrawException(`Cannot ${msg} before create`);
   }
   // player's textdraw should be shown / hidden only for whom it is created.
+  /**
+   * @throws {TextDrawException} When called before `create`(), or when a global textdraw is shown without a target player.
+   */
   show(player?: Player) {
     if (this.id === InvalidEnum.TEXT_DRAW) {
       TextDraw.beforeCreateWarn("show");
@@ -303,6 +321,9 @@ export class TextDraw {
     }
     return this;
   }
+  /**
+   * @throws {TextDrawException} When called before `create`(), or when a global textdraw is hidden without a target player.
+   */
   hide(player?: Player) {
     if (this.id === InvalidEnum.TEXT_DRAW) {
       TextDraw.beforeCreateWarn("hide");
@@ -318,6 +339,9 @@ export class TextDraw {
     }
     return this;
   }
+  /**
+   * @throws {TextDrawException} When called before `create`(), or on a player textdraw.
+   */
   showAll() {
     if (this.id === InvalidEnum.TEXT_DRAW) {
       TextDraw.beforeCreateWarn("show");
@@ -330,6 +354,9 @@ export class TextDraw {
     }
     throw new TextDrawException("player's textdraw should not be show for all.");
   }
+  /**
+   * @throws {TextDrawException} When called before `create`(), or on a player textdraw.
+   */
   hideAll() {
     if (this.id === InvalidEnum.TEXT_DRAW) {
       TextDraw.beforeCreateWarn("hideAll");

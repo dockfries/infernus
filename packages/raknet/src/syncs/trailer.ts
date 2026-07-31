@@ -45,6 +45,9 @@ export class TrailerSync extends BitStream implements IPacketListSync {
     return data as ITrailerSync | null;
   }
 
+  /**
+   * @throws {RakNetException} When `playerId` is missing on an outgoing sync.
+   */
   @SyncWriter
   writeSync(data: ITrailerSync) {
     const value: WriteTuple[] = [

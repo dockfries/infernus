@@ -25,6 +25,9 @@ export class TextLabel {
     return this._id;
   }
 
+  /**
+   * @throws {TextLabelException} When constructed with an invalid id.
+   */
   constructor(textLabelOrId: ITextLabel | number, player?: Player) {
     if (typeof textLabelOrId === "number") {
       if (textLabelOrId === InvalidEnum.PLAYER_3DTEXT_ID) {
@@ -53,6 +56,9 @@ export class TextLabel {
     }
   }
 
+  /**
+   * @throws {TextLabelException} When `create()` is called twice or without source info, or the native creation fails.
+   */
   create(): this {
     if (!this.sourceInfo) throw new TextLabelException("Cannot create with only id");
     if (this.id !== InvalidEnum._3DTEXT_ID) throw new TextLabelException("Cannot create again");
@@ -125,6 +131,9 @@ export class TextLabel {
     return this;
   }
 
+  /**
+   * @throws {TextLabelException} When called before `create`().
+   */
   destroy(): this {
     if (this.id === InvalidEnum._3DTEXT_ID)
       throw new TextLabelException("Cannot destroy the textLabel before create");
@@ -189,6 +198,9 @@ export class TextLabel {
     return TextLabel.isValid(this.id, this.getPlayerId());
   }
 
+  /**
+   * @throws {TextLabelException} When the textLabel is not global.
+   */
   attachToPlayer(player: Player, offsetX: number, offsetY: number, offsetZ: number): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (!this.isGlobal()) {
@@ -197,6 +209,9 @@ export class TextLabel {
     return TextLabel.__inject__.attachToPlayer(this.id, player.id, offsetX, offsetY, offsetZ);
   }
 
+  /**
+   * @throws {TextLabelException} When the textLabel is not global.
+   */
   attachToVehicle(vehicle: Vehicle, offsetX: number, offsetY: number, offsetZ: number): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (!this.isGlobal()) {
@@ -205,6 +220,9 @@ export class TextLabel {
     return TextLabel.__inject__.attachToVehicle(this.id, vehicle.id, offsetX, offsetY, offsetZ);
   }
 
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   updateText(color: number | string, text: string, charset: string = "utf8"): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (this.isGlobal()) {
@@ -213,6 +231,9 @@ export class TextLabel {
     return TextLabel.__inject__.updatePlayerText(charset, this.getPlayerId(), this.id, color, text);
   }
 
+  /**
+   * @throws {TextLabelException} When the textLabel is not global.
+   */
   isStreamedIn(player: Player): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (!this.isGlobal()) {
@@ -221,6 +242,9 @@ export class TextLabel {
     return TextLabel.__inject__.isStreamedIn(this.id, player.id);
   }
 
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   getText(charset = this.sourceInfo?.charset || "utf8") {
     if (this.isGlobal()) {
       return TextLabel.__inject__.getText(charset, this.id);

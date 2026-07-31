@@ -11,6 +11,9 @@ export class MapNode {
     return this;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   destroy(): this {
     const ret = samp.callNative("DestroyMapNode", "i", this.nodeId);
     if (ret !== GpsError.None) {
@@ -24,6 +27,9 @@ export class MapNode {
     return !!samp.callNative("IsValidMapNode", "i", this.nodeId);
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getPos() {
     const [x, y, z, ret]: [number, number, number, number] = samp.callNative(
       "GetMapNodePos",
@@ -36,6 +42,9 @@ export class MapNode {
     return { x, y, z, ret };
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getConnectionCount(): number {
     const [count, ret]: number[] = samp.callNative("GetMapNodeConnectionCount", "iI", this.nodeId);
     if (ret !== GpsError.None) {
@@ -44,6 +53,9 @@ export class MapNode {
     return count;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getDistanceBetween(second: MapNode): number {
     const [distance, ret]: number[] = samp.callNative(
       "GetDistanceBetweenMapNodes",
@@ -57,6 +69,9 @@ export class MapNode {
     return distance;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getAngleBetween(second: MapNode): number {
     const [angle, ret]: number[] = samp.callNative(
       "GetAngleBetweenMapNodes",
@@ -70,6 +85,9 @@ export class MapNode {
     return angle;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getDistanceFromPoint(x: number, y: number, z: number): number {
     const [distance, ret]: number[] = samp.callNative(
       "GetMapNodeDistanceFromPoint",
@@ -85,6 +103,9 @@ export class MapNode {
     return distance;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getAngleFromPoint(x: number, y: number): number {
     const [angle, ret]: number[] = samp.callNative(
       "GetMapNodeAngleFromPoint",
@@ -104,6 +125,9 @@ export class MapNode {
     return nodeId;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   static getRandom(): MapNode {
     const nodeId: number = samp.callNative("GetRandomMapNode", "I");
     if (nodeId === INVALID_MAP_NODE_ID) {
@@ -112,6 +136,9 @@ export class MapNode {
     return new MapNode(nodeId);
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   static getClosestToPoint(
     x: number,
     y: number,
@@ -132,6 +159,9 @@ export class MapNode {
     return new MapNode(nodeId);
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   static saveMapNodesToFile(fileName: string) {
     const ret: number = samp.callNative("SaveMapNodesToFile", "s", fileName);
     if (ret !== GpsError.None) {

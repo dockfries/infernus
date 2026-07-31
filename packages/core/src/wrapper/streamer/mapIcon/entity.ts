@@ -23,6 +23,9 @@ export class DynamicMapIcon {
   get id(): number {
     return this._id;
   }
+  /**
+   * @throws {DynamicMapIconException} When constructed with an invalid id.
+   */
   constructor(mapIconOrId: IDynamicMapIcon | null) {
     if (typeof mapIconOrId === "number") {
       if (mapIconOrId === StreamerMiscellaneous.INVALID_ID) {
@@ -39,6 +42,9 @@ export class DynamicMapIcon {
       this.sourceInfo = mapIconOrId;
     }
   }
+  /**
+   * @throws {DynamicMapIconException} When `type` is outside the range 0 to 63.
+   */
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
       throw new DynamicMapIconException("Cannot create again");
@@ -107,6 +113,9 @@ export class DynamicMapIcon {
     dynamicMapIconPool.set(this._id, this);
     return this;
   }
+  /**
+   * @throws {DynamicMapIconException} When called before `create`().
+   */
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new DynamicMapIconException("Cannot destroy the map icon before create");
@@ -121,6 +130,9 @@ export class DynamicMapIcon {
     if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID) return true;
     return DynamicMapIcon.isValid(this.id);
   }
+  /**
+   * @throws {DynamicMapIconException} When called before `create`().
+   */
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicMapIconException("Cannot toggle callbacks before create");

@@ -116,6 +116,9 @@ export class OnFootSync extends BitStream implements IPacketListSync {
     return data as IOnFootSync | null;
   }
 
+  /**
+   * @throws {RakNetException} When `playerId` is missing on an outgoing sync.
+   */
   @SyncWriter
   writeSync(data: IOnFootSync, outgoing = false) {
     const _outgoing = outgoing || !this.bs.isIncoming();

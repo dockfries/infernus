@@ -16,6 +16,9 @@ export abstract class SampVoiceStream {
     return this._type;
   }
 
+  /**
+   * @throws {SampVoiceException} When constructed with an invalid stream pointer.
+   */
   constructor(ptr: number, type: string) {
     if (typeof ptr !== "number") {
       throw new SampVoiceException(`Invalid stream pointer: ${ptr}`);

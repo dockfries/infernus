@@ -42,6 +42,9 @@ export class GameText {
     return GameText.__inject__.has(player.id, style);
   }
 
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   forAll(charset = "win1252") {
     GameText.__inject__.forAll(
       I18n.encodeToBuf(I18n.convertSpecialChar(this.text), charset),
@@ -50,6 +53,9 @@ export class GameText {
     );
   }
 
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   forPlayer(player: Player, charset = "win1252") {
     GameText.__inject__.forPlayer(
       player.id,

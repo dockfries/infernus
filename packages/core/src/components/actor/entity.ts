@@ -15,6 +15,9 @@ export class Actor {
     return this._id;
   }
 
+  /**
+   * @throws {ActorException} When constructed with an invalid id.
+   */
   constructor(actorOrId: IActor | number) {
     if (typeof actorOrId === "number") {
       if (actorOrId === InvalidEnum.ACTOR_ID) {
@@ -30,6 +33,9 @@ export class Actor {
     }
   }
 
+  /**
+   * @throws {ActorException} When `create()` is called twice or without source info, or the native creation fails.
+   */
   create() {
     if (this._id !== InvalidEnum.ACTOR_ID) throw new ActorException("Cannot be created twice");
     const { skin, x, y, z, rotation } = this.sourceInfo!;
@@ -44,6 +50,9 @@ export class Actor {
     return this;
   }
 
+  /**
+   * @throws {ActorException} When called before `create`().
+   */
   destroy() {
     if (this._id === InvalidEnum.ACTOR_ID) throw new ActorException("Cannot before create");
     if (!INTERNAL_FLAGS.skip) {
@@ -103,6 +112,9 @@ export class Actor {
     return Actor.__inject__.setPos(this.id, x, y, z);
   }
 
+  /**
+   * @throws {ActorException} When called before `create`().
+   */
   getPos() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new ActorException("Cannot getPos before create");
@@ -115,6 +127,9 @@ export class Actor {
     return Actor.__inject__.setFacingAngle(this.id, ang);
   }
 
+  /**
+   * @throws {ActorException} When called before `create`().
+   */
   getFacingAngle() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new ActorException("Cannot getFacingAngle before create");
@@ -127,6 +142,9 @@ export class Actor {
     return Actor.__inject__.setHealth(this.id, health);
   }
 
+  /**
+   * @throws {ActorException} When called before `create`().
+   */
   getHealth() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new ActorException("Cannot getHealth before create");
@@ -153,6 +171,9 @@ export class Actor {
     return Actor.__inject__.setSkin(this.id, skin);
   }
 
+  /**
+   * @throws {ActorException} When called before `create`().
+   */
   getSkin() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new ActorException("Cannot getSkin before create");
@@ -163,6 +184,9 @@ export class Actor {
     return Actor.__inject__.getSkin(this.id);
   }
 
+  /**
+   * @throws {ActorException} When called before `create`().
+   */
   getAnimation() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new ActorException("Cannot getAnimation before create");
@@ -170,6 +194,9 @@ export class Actor {
     return Actor.__inject__.getAnimation(this.id);
   }
 
+  /**
+   * @throws {ActorException} When called before `create`().
+   */
   getSpawnInfo() {
     if (this._id === InvalidEnum.ACTOR_ID) {
       throw new ActorException("Cannot getSpawnInfo before create");

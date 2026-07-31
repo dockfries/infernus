@@ -12,6 +12,9 @@ export class DynamicPickup {
   get id(): number {
     return this._id;
   }
+  /**
+   * @throws {DynamicPickupException} When constructed with an invalid id.
+   */
   constructor(pickupOrId: IDynamicPickup | null) {
     if (typeof pickupOrId === "number") {
       if (pickupOrId === s.StreamerMiscellaneous.INVALID_ID) {
@@ -28,6 +31,9 @@ export class DynamicPickup {
       this.sourceInfo = pickupOrId;
     }
   }
+  /**
+   * @throws {DynamicPickupException} When `type` is less than 0.
+   */
   create(): this {
     if (this.id !== s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicPickupException("Cannot create again");
@@ -91,6 +97,9 @@ export class DynamicPickup {
     dynamicPickupPool.set(this._id, this);
     return this;
   }
+  /**
+   * @throws {DynamicPickupException} When called on a static pickup or before `create`().
+   */
   destroy(): this {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new DynamicPickupException("Cannot destroy pickup before create");
@@ -103,6 +112,9 @@ export class DynamicPickup {
     if (INTERNAL_FLAGS.skip && this.id !== s.StreamerMiscellaneous.INVALID_ID) return true;
     return DynamicPickup.isValid(this.id);
   }
+  /**
+   * @throws {DynamicPickupException} When called before `create`().
+   */
   toggleCallbacks(toggle = true): number {
     if (this.id === s.StreamerMiscellaneous.INVALID_ID)
       throw new DynamicPickupException("Cannot toggle callbacks before create");

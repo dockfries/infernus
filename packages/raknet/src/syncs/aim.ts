@@ -58,6 +58,9 @@ export class AimSync extends BitStream implements IPacketListSync {
     return data as IAimSync | null;
   }
 
+  /**
+   * @throws {RakNetException} When `playerId` is missing on an outgoing sync.
+   */
   @SyncWriter
   writeSync(data: IAimSync) {
     const value: WriteTuple[] = [

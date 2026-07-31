@@ -11,6 +11,9 @@ export abstract class SampVoiceEffect {
     return this._ptr;
   }
 
+  /**
+   * @throws {SampVoiceException} When constructed with an invalid effect pointer.
+   */
   constructor(ptr: number) {
     if (typeof ptr !== "number") {
       throw new SampVoiceException(`Invalid effect pointer: ${ptr}`);
@@ -38,6 +41,9 @@ export abstract class SampVoiceEffect {
     this._ptr = SV_NULL;
   }
 
+  /**
+   * @throws {SampVoiceException} When `filter` is unsupported or `args` does not match the filter's expected argument count.
+   */
   appendFilter(filter: SvFilterEnum, ...args: number[]) {
     if (this._ptr === SV_NULL) return false;
     this.checkFilter(filter, ...args);

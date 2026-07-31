@@ -29,6 +29,9 @@ function randomTaskId() {
 export class GpsPath {
   constructor(public pathId = INVALID_PATH_ID) {}
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   destroy(): this {
     const ret = samp.callNative("DestroyPath", "i", this.pathId);
     if (ret !== GpsError.None) {
@@ -42,6 +45,9 @@ export class GpsPath {
     return !!ret;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getSize(): number {
     const [size, ret]: number[] = samp.callNative("GetPathSize", "iI", this.pathId);
     if (ret !== GpsError.None) {
@@ -50,6 +56,9 @@ export class GpsPath {
     return size;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getLength(): number {
     const [length, ret]: number[] = samp.callNative("GetPathLength", "iF", this.pathId);
     if (ret !== GpsError.None) {
@@ -58,6 +67,9 @@ export class GpsPath {
     return length;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getNode(index: number): MapNode {
     const [nodeId, ret]: number[] = samp.callNative("GetPathNode", "iiI", this.pathId, index);
     if (ret !== GpsError.None) {
@@ -66,6 +78,9 @@ export class GpsPath {
     return new MapNode(nodeId);
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   getNodeIndex(node: MapNode): number {
     const [index, ret]: number[] = samp.callNative(
       "GetPathNodeIndex",
@@ -79,6 +94,9 @@ export class GpsPath {
     return index;
   }
 
+  /**
+   * @throws {GpsException} When the native call fails (error code in the message).
+   */
   static findSync(node: MapNode, target: MapNode): GpsPath {
     const [pathId, ret]: number[] = samp.callNative("FindPath", "iiI", node.nodeId, target.nodeId);
     if (ret !== GpsError.None) {

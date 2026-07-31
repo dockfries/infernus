@@ -30,6 +30,9 @@ export class SArt {
 
   constructor(private params: CreateArtParams) {}
 
+  /**
+   * @throws {SArtException} When the image cannot be loaded, or produces too many art blocks.
+   */
   async create() {
     this.destroy();
 

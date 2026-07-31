@@ -44,6 +44,9 @@ export class ProgressBar {
     this.sourceInfo = requiredBar;
   }
 
+  /**
+   * @throws {ProgressBarException} When the player is not connected, or the bar is created twice.
+   */
   create() {
     const { player } = this.sourceInfo;
     if (!player.isConnected()) {

@@ -129,6 +129,9 @@ export class Player {
     triggerOnLocaleChange(this, newLocale, oldLocale);
   }
 
+  /**
+   * @throws {PlayerException} When `id` is outside the range 0 to `LimitsEnum.MAX_PLAYERS - 1`.
+   */
   constructor(public readonly id: number) {
     if (id < 0 || id >= LimitsEnum.MAX_PLAYERS) {
       throw new PlayerException(
@@ -169,6 +172,9 @@ export class Player {
   getDrunkLevel(): number {
     return Player.__inject__.getDrunkLevel(this.id);
   }
+  /**
+   * @throws {PlayerException} When `level` is outside the range 0 to 50000.
+   */
   setDrunkLevel(level: number) {
     if (level < 0 || level > 50000) {
       throw new PlayerException("player's drunk level ranges from 0 to 50000");
@@ -267,6 +273,9 @@ export class Player {
   ban() {
     return Player.__inject__.ban(this.id);
   }
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   banEx(reason: string, charset: string) {
     return Player.__inject__.banEx(this.id, reason, charset);
   }
@@ -330,6 +339,9 @@ export class Player {
   removeFromVehicle() {
     return Player.__inject__.removeFromVehicle(this.id);
   }
+  /**
+   * @throws {PlayerException} When `level` is outside the range 0 to 6.
+   */
   setWantedLevel(level: number) {
     if (level < 0 || level > 6) {
       throw new PlayerException("player's wanted level ranges from 0 to 6");
@@ -367,6 +379,9 @@ export class Player {
   getTeam(): number {
     return Player.__inject__.getTeam(this.id);
   }
+  /**
+   * @throws {PlayerException} When `level` is outside the range 0 to 999.
+   */
   setSkillLevel(skill: WeaponSkillsEnum, level: number) {
     if (level < 0 || level > 999) {
       throw new PlayerException("The valid skill level is only 0 to 999");
@@ -386,7 +401,6 @@ export class Player {
     return Player.__inject__.getVelocity(this.id);
   }
   getSpeed(magic = 180.0) {
-    if (this.id === -1) return 0.0;
     const { x, y, z } = this.getVelocity();
     return VectorSize(x, y, z) * magic;
   }
@@ -473,6 +487,9 @@ export class Player {
   static getMaxPlayers(): number {
     return Player.__inject__.getMaxPlayers();
   }
+  /**
+   * @throws {PlayerException} When `crimeId` is outside the range 3 to 22.
+   */
   playCrimeReport(suspect: Player, crimeId: number) {
     if (crimeId < 3 || crimeId > 22) {
       throw new PlayerException("Available crime ids range from 3 to 22");
@@ -523,6 +540,9 @@ export class Player {
       cut,
     );
   }
+  /**
+   * @throws {PlayerException} When `type` is outside the range 0 to 13.
+   */
   createExplosion(x: number, y: number, z: number, type: number, radius: number) {
     if (type < 0 || type > 13) {
       throw new PlayerException("The valid explosion type value is only 0 to 13");
@@ -552,6 +572,9 @@ export class Player {
     const vehId = Player.__inject__.getSurfingVehicleID(this.id);
     return Vehicle.getInstance(vehId);
   }
+  /**
+   * @throws {PlayerException} When `animLib`/`animName` is not a valid animation library or name.
+   */
   applyAnimation(
     animLib: string,
     animName: string,
@@ -600,6 +623,9 @@ export class Player {
   clearWorldBounds() {
     return Player.__inject__.clearWorldBounds(this.id);
   }
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   setChatBubble(
     text: string,
     color: string | number,
@@ -711,6 +737,10 @@ export class Player {
   redirectDownload(url: string) {
     return Player.__inject__.redirectDownload(this.id, url);
   }
+  /**
+   * @throws {PlayerException} When `type` is not one of [2, 5, 69, 70, 71, 72].
+   * Rejects with `ClientCheckException` when the player is paused or the check times out.
+   */
   sendClientCheck(type: number, memAddr: number, memOffset: number, byteCount: number) {
     const validTypes = [2, 5, 69, 70, 71, 72];
     if (!validTypes.includes(type)) {
@@ -920,6 +950,9 @@ export class Player {
   areWeaponsAllowed() {
     return Player.__inject__.areWeaponsAllowed(this.id);
   }
+  /**
+   * @throws {I18nException} When `charset` is an unknown character encoding.
+   */
   gpci(charset: string = this.charset) {
     return Player.__inject__.gpci(this.id, charset);
   }

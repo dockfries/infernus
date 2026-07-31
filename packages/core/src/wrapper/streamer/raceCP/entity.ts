@@ -25,6 +25,9 @@ export class DynamicRaceCP {
   get id(): number {
     return this._id;
   }
+  /**
+   * @throws {DynamicRaceCpException} When constructed with an invalid id.
+   */
   constructor(checkPointOrId: IDynamicRaceCp | number) {
     if (typeof checkPointOrId === "number") {
       if (checkPointOrId === StreamerMiscellaneous.INVALID_ID) {
@@ -41,6 +44,9 @@ export class DynamicRaceCP {
       this.sourceInfo = checkPointOrId;
     }
   }
+  /**
+   * @throws {DynamicRaceCpException} When `type` is outside the range 0 to 8, or `size` is less than 0.
+   */
   create(): this {
     if (this.id !== StreamerMiscellaneous.INVALID_ID)
       throw new DynamicRaceCpException("Cannot create again");
@@ -112,6 +118,9 @@ export class DynamicRaceCP {
     dynamicRaceCPPool.set(this._id, this);
     return this;
   }
+  /**
+   * @throws {DynamicRaceCpException} When called before `create`().
+   */
   destroy(): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID && !INTERNAL_FLAGS.skip)
       throw new DynamicRaceCpException("Cannot destroy the checkpoint before create");
@@ -126,6 +135,9 @@ export class DynamicRaceCP {
     if (INTERNAL_FLAGS.skip && this.id !== StreamerMiscellaneous.INVALID_ID) return true;
     return DynamicRaceCP.isValid(this.id);
   }
+  /**
+   * @throws {DynamicRaceCpException} When called before `create`().
+   */
   togglePlayer(player: Player, toggle: boolean): this {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicRaceCpException("Cannot toggle player before create");
@@ -142,6 +154,9 @@ export class DynamicRaceCP {
   static getPlayerVisible(player: Player) {
     return dynamicRaceCPPool.get(DynamicRaceCP.__inject__.getPlayerVisible(player.id));
   }
+  /**
+   * @throws {DynamicRaceCpException} When called before `create`().
+   */
   toggleCallbacks(toggle = true): number {
     if (this.id === StreamerMiscellaneous.INVALID_ID)
       throw new DynamicRaceCpException("Cannot toggle callbacks before create");

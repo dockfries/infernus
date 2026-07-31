@@ -53,6 +53,9 @@ export class MapAndreas {
     throw new MapAndreasException("This is a static class and cannot be instantiated.");
   }
 
+  /**
+   * @throws {MapAndreasException} When `mode` is unknown, the heightmap file cannot be read, or its size does not match `mode`.
+   */
   static async init(mode: MapAndreasMode, name: string): Promise<void> {
     if (state) return;
 
@@ -82,10 +85,16 @@ export class MapAndreas {
     state = null;
   }
 
+  /**
+   * @throws {MapAndreasException} When `init()` has not been called yet.
+   */
   static findZFor2DCoord(x: number, y: number): { z: number; ret: MapAndreasError } {
     return findZ(assertInit(), x, y);
   }
 
+  /**
+   * @throws {MapAndreasException} When `init()` has not been called yet.
+   */
   static findAverageZ(x: number, y: number): { z: number; ret: MapAndreasError } {
     const s = assertInit();
     const { resolution } = getModeInfo(s.mode);
@@ -106,6 +115,9 @@ export class MapAndreas {
     return { z, ret: MapAndreasError.Success };
   }
 
+  /**
+   * @throws {MapAndreasException} When `init()` has not been called yet.
+   */
   static setZFor2DCoord(x: number, y: number, z: number): boolean {
     const s = assertInit();
     const { cells, resolution } = getModeInfo(s.mode);
@@ -122,6 +134,9 @@ export class MapAndreas {
     return true;
   }
 
+  /**
+   * @throws {MapAndreasException} When `init()` has not been called yet.
+   */
   static async saveCurrentHMap(name: string): Promise<boolean> {
     const s = assertInit();
     try {

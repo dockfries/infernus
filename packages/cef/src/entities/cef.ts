@@ -42,6 +42,9 @@ export class CefBrowser {
     this.sourceInfo = browserOptions;
   }
 
+  /**
+   * @throws {CefException} When the browser is already created, no browser id can be generated, or the native creation fails.
+   */
   create() {
     if (this.isValid()) {
       throw new CefException("Browser is already created");
@@ -112,6 +115,9 @@ export class CefBrowser {
     playerBrowserPool.get(player)!.set(this.browserId, this);
   }
 
+  /**
+   * @throws {CefException} When the browser is not a World2DBrowser (`type !== "2dWorld"`).
+   */
   setPos(x: number, y: number, z: number) {
     this.throwIfInvalid();
 
@@ -131,6 +137,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   setVisible(visible: boolean) {
     this.throwIfInvalid();
     return samp.callNative(
@@ -142,6 +151,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   destroy() {
     this.throwIfInvalid();
 
@@ -171,6 +183,9 @@ export class CefBrowser {
   //   const jsonData = JSON.parse(decodeData);
   //   ...
   // }
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   emitEvent(eventName: string, data: any) {
     this.throwIfInvalid();
 
@@ -187,6 +202,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   reloadBrowser(ignoreCache = false) {
     this.throwIfInvalid();
     return samp.callNative(
@@ -198,6 +216,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   focusBrowser(focused: boolean) {
     this.throwIfInvalid();
     return samp.callNative(
@@ -209,6 +230,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   enableDevTools(enabled: boolean) {
     this.throwIfInvalid();
     return samp.callNative(
@@ -220,6 +244,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When `object` is not valid, or is not a global object.
+   */
   attachToObject(object: ObjectMp) {
     this.throwIfInvalid();
     if (!object.isValid()) {
@@ -237,6 +264,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When `object` is not valid, or is not a global object.
+   */
   detachFromObject(object: ObjectMp) {
     this.throwIfInvalid();
     if (!object.isValid()) {
@@ -254,6 +284,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   setMuted(mute: boolean) {
     this.throwIfInvalid();
     return samp.callNative(
@@ -265,6 +298,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   setAudioMode(mode: CefAudioModeEnum) {
     this.throwIfInvalid();
     return samp.callNative(
@@ -276,6 +312,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   setAudioSettings(maxDistance: number, referenceDistance: number) {
     this.throwIfInvalid();
     return samp.callNative(
@@ -288,6 +327,9 @@ export class CefBrowser {
     ) as number;
   }
 
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   loadUrl(url: string) {
     this.throwIfInvalid();
     this.sourceInfo.url = url;

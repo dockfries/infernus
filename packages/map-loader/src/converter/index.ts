@@ -8,6 +8,9 @@ import { IMapConverterOptions } from "../interfaces";
 import { MapLoaderException } from "../utils/error";
 import assert from "node:assert";
 
+/**
+ * @throws {MapLoaderException} When a line in the input file produces an invalid (NaN) converted value.
+ */
 export async function mapConverter(options: IMapConverterOptions) {
   const { input, output, removeOutput } = options;
 

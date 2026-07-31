@@ -9,6 +9,9 @@ export * from "./interfaces";
 export * from "./types";
 export * from "./exceptions";
 
+/**
+ * @throws {QueryException} When `options.address` is not a valid IPv4 address.
+ */
 export function sendQuery<T extends RequestPacket>(options: Options<T>) {
   return new Promise<ResponseTypeMap[T] | null>((resolve, reject) => {
     const client = dgram.createSocket("udp4");
