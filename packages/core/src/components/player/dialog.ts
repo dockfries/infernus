@@ -116,7 +116,9 @@ export class Dialog {
    * the dialog charset is unknown.
    */
   show(player: Player) {
+    let myResolve!: (value: IDialogResCommon) => void;
     return new Promise<IDialogResCommon>((resolve, reject) => {
+      myResolve = resolve;
       Dialog.close(player);
 
       const usedIds = new Set(Dialog.showingIds.values());
@@ -140,7 +142,12 @@ export class Dialog {
       Dialog.__inject__.show(player, this._id, this.dialog);
     })
       .catch((e) => Promise.reject(e))
-      .finally(() => Dialog.delDialogTask(player));
+      .finally(() => {
+        // only remove the task this show() created — a newer show()/close() may have
+        // replaced the player's entry meanwhile (e.g. calling show() twice in a row)
+        const task = Dialog.waitingQueue.get(player);
+        if (task && task.resolve === myResolve) Dialog.delDialogTask(player);
+      });
   }
 
   static close(player: Player) {
