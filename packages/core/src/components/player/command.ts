@@ -216,12 +216,16 @@ onCommandText(({ player, buffer, cmdText, next }) => {
 
   const fullCommand = matchedCommand.join(" ");
 
-  let subcommand: CmdBusCallback["subcommand"] = [];
-
   const mainCmdRelations = [
     [strictMainCmd, strictCmdMap, true],
     [noStrictMainCmd, noStrictCmdMap, false],
   ] as const;
+
+  const mainCmd =
+    hasStrict || hasNoStrict ? mainCmdRelations[0][0] || mainCmdRelations[1][0] : undefined;
+  const subcommand: CmdBusCallback["subcommand"] = mainCmd
+    ? fullCommand.replace(mainCmd, "").trim().split(" ")
+    : [];
 
   const triggerParams = [
     fullCommand,
@@ -234,10 +238,7 @@ onCommandText(({ player, buffer, cmdText, next }) => {
     subcommand,
   ] as const;
 
-  if (hasStrict || hasNoStrict) {
-    const mainCmd = mainCmdRelations[0][0] || mainCmdRelations[1][0];
-    subcommand = fullCommand.replace(mainCmd!, "").trim().split(" ");
-  } else {
+  if (!mainCmd) {
     return triggerOnError(player, CommandErrors.NOT_EXIST, ...triggerParams);
   }
 
