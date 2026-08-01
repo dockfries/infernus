@@ -1,3 +1,25 @@
+## [0.14.7](https://github.com/dockfries/infernus/compare/v0.14.6...v0.14.7) (2026-08-01)
+
+### ⚠ BREAKING CHANGES
+
+- **core:** route event listener errors through setEventErrorHandler
+
+### Features
+
+- **core:** route event listener errors through setEventErrorHandler ([e13edba](https://github.com/dockfries/infernus/commit/e13edbac557269e30ea64cc465ef729deb11dc87))
+- **root:** add logLevel parameter to logprint ([7e0997e](https://github.com/dockfries/infernus/commit/7e0997ee99156822de001148c4999706c1a3b75b))
+- **weapon-config:** sync 366, 368 ([c537e8b](https://github.com/dockfries/infernus/commit/c537e8ba02a2193e7ef6157287f87bc32ca2af02))
+- **weapon-config:** sync 369 ([9b08bd6](https://github.com/dockfries/infernus/commit/9b08bd6d33af102c32a583f6e8ff554e58ef1f97))
+
+### Bug Fixes
+
+- **core:** catch per-script load/unload failures in onInit/onExit ([212149a](https://github.com/dockfries/infernus/commit/212149a86394dfd29e692cc3a06992c8e6c411f7))
+- **core:** compute subcommand before building trigger params ([68beee9](https://github.com/dockfries/infernus/commit/68beee972064b95c53bf55707803ed1d39ad4f10))
+- **core:** guard filterscript load against mode exit race ([c8943a1](https://github.com/dockfries/infernus/commit/c8943a1dc22506a80ed6b42ab7fe715394c2084f))
+- **core:** manually destroy streamer items under fakeamx ([edf40d7](https://github.com/dockfries/infernus/commit/edf40d77066a8e70e7198b91e0d29cac0cc3fba1))
+- **core:** stop Dialog.show finally from removing a newer task ([b03301b](https://github.com/dockfries/infernus/commit/b03301b77c35338235802e1928af44758f223776))
+- **filterscript:** guard entity creation and cleanup in sample scripts ([ff396ea](https://github.com/dockfries/infernus/commit/ff396eaddff464234df407511fdafd7d1536bf08))
+
 ## [0.14.6](https://github.com/dockfries/infernus/compare/v0.14.5...v0.14.6) (2026-07-17)
 
 ### ⚠ BREAKING CHANGES
