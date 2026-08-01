@@ -12,6 +12,7 @@
 
 import type { IFilterScript } from "@infernus/core";
 import {
+  LogLevelEnum,
   Dynamic3DTextLabel,
   DynamicObject,
   DynamicObjectEvent,
@@ -58,12 +59,12 @@ export const LSPrisonWalls: IFilterScript = {
   name: "ls_prison_walls",
   load() {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------------------------------------------------");
-    console.log("  |--- LS Prison Walls FilterScript");
-    console.log("  |--  Script v1.01");
-    console.log("  |--  13th February 2015");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- LS Prison Walls FilterScript", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.01", LogLevelEnum.INFO);
+    samp.logprint("  |--  13th February 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     // Create the LS Prison Walls object
     lsPrisonWallsObject = new DynamicObject({
@@ -78,7 +79,7 @@ export const LSPrisonWalls: IFilterScript = {
     lsPrisonWallsObject.create();
 
     // Display information in the Server Console
-    console.log("  |--  LS Prison Walls object created");
+    samp.logprint("  |--  LS Prison Walls object created", LogLevelEnum.INFO);
 
     // Create the LS Prison Walls Eastern Gates objects
     lsPrisonGatesObject[0] = new DynamicObject({
@@ -127,7 +128,7 @@ export const LSPrisonWalls: IFilterScript = {
     lsPrisonGatesObject[3].create();
 
     // Display information in the Server Console
-    console.log("  |--  LS Prison Walls Gates objects created");
+    samp.logprint("  |--  LS Prison Walls Gates objects created", LogLevelEnum.INFO);
 
     // Create variable
 
@@ -160,8 +161,8 @@ export const LSPrisonWalls: IFilterScript = {
     labelGates[1].create();
 
     // Display information in the Server Console
-    console.log("  |--  LS Prison Wall Gates 3D Text Labels created");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |--  LS Prison Wall Gates 3D Text Labels created", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     Player.getInstances().forEach((p) => {
       // Check if the player is connected and not a NPC
@@ -222,7 +223,7 @@ export const LSPrisonWalls: IFilterScript = {
         // Check if the player is outside the eastern prison gates
         if (player.isInRangeOfPoint(10.0, 1823.78, -1537.98, 13.54)) {
           // Debug
-          //console.logf("-->Player ID %d within 10m of the Eastern Prison Gates", playerid);
+          //samp.logprintf("-->Player ID %d within 10m of the Eastern Prison Gates", playerid);
 
           // Check if the eastern gates are not currently opening (ie moving)
           if (easternGatesStatus === constants.GATES_OPENING) {
@@ -308,7 +309,7 @@ export const LSPrisonWalls: IFilterScript = {
         // Check if the player is outside the southern prison gates
         else if (player.isInRangeOfPoint(10.0, 1754.27, -1592.18, 13.54)) {
           // Debug
-          //console.logf("-->Player ID %d within 10m of the Southern Prison Gates", playerid);
+          //samp.logprintf("-->Player ID %d within 10m of the Southern Prison Gates", playerid);
 
           // Check if the southern gates are not currently opening (ie moving)
           if (southernGatesStatus === constants.GATES_OPENING) {
@@ -405,8 +406,8 @@ export const LSPrisonWalls: IFilterScript = {
       lsPrisonWallsObject!.destroy();
 
       // Display information in the Server Console
-      console.log("  |---------------------------------------------------");
-      console.log("  |--  LS Prison Walls object destroyed");
+      samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+      samp.logprint("  |--  LS Prison Walls object destroyed", LogLevelEnum.INFO);
     }
 
     lsPrisonWallsObject = null;
@@ -417,7 +418,7 @@ export const LSPrisonWalls: IFilterScript = {
       lsPrisonGatesObject[0].destroy();
 
       // Display information in the Server Console
-      console.log("  |--  LS Prison Walls Eastern Gates object 1 destroyed");
+      samp.logprint("  |--  LS Prison Walls Eastern Gates object 1 destroyed", LogLevelEnum.INFO);
     }
 
     // Check for valid object
@@ -426,7 +427,7 @@ export const LSPrisonWalls: IFilterScript = {
       lsPrisonGatesObject[1].destroy();
 
       // Display information in the Server Console
-      console.log("  |--  LS Prison Walls Eastern Gates object 2 destroyed");
+      samp.logprint("  |--  LS Prison Walls Eastern Gates object 2 destroyed", LogLevelEnum.INFO);
     }
 
     // Check for valid object
@@ -435,7 +436,7 @@ export const LSPrisonWalls: IFilterScript = {
       lsPrisonGatesObject[2].destroy();
 
       // Display information in the Server Console
-      console.log("  |--  LS Prison Walls Southern Gates object 1 destroyed");
+      samp.logprint("  |--  LS Prison Walls Southern Gates object 1 destroyed", LogLevelEnum.INFO);
     }
 
     // Check for valid object
@@ -444,7 +445,7 @@ export const LSPrisonWalls: IFilterScript = {
       lsPrisonGatesObject[3].destroy();
 
       // Display information in the Server Console
-      console.log("  |--  LS Prison Walls Southern Gates object 2 destroyed");
+      samp.logprint("  |--  LS Prison Walls Southern Gates object 2 destroyed", LogLevelEnum.INFO);
     }
 
     lsPrisonGatesObject = [];
@@ -456,11 +457,11 @@ export const LSPrisonWalls: IFilterScript = {
     labelGates = [];
 
     // Display information in the Server Console
-    console.log("  |--  Deleted the 3D Text Labels on the Prison Gates");
+    samp.logprint("  |--  Deleted the 3D Text Labels on the Prison Gates", LogLevelEnum.INFO);
 
     // Display information in the Server Console
-    console.log("  |---------------------------------------------------");
-    console.log("  |--  LS Prison Walls FilterScript Unloaded");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--  LS Prison Walls FilterScript Unloaded", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
   },
 };

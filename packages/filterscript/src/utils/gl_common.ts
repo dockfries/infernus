@@ -1,6 +1,6 @@
 import type { ICommonOptions } from "filterscript/interfaces";
 import type { KeysEnum } from "@infernus/core";
-import { Player, Vehicle, VehicleModelInfoEnum } from "@infernus/core";
+import { LogLevelEnum, Player, Vehicle, VehicleModelInfoEnum } from "@infernus/core";
 import { degreesToRadians } from "shared/utils/convert";
 
 export const isKeyJustDown = (key: KeysEnum, newKeys: KeysEnum, oldKeys: KeysEnum) => {
@@ -27,7 +27,7 @@ export const playSoundForPlayersInRange = (
 };
 
 export const log = (options: ICommonOptions, msg: string) => {
-  if (options.debug) console.log(msg);
+  if (options.debug) samp.logprint(msg, LogLevelEnum.DEBUG);
 };
 
 export const RETURN_USER_FAILURE = -1;

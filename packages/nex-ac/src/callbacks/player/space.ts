@@ -1,4 +1,4 @@
-import { Player, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, Player, PlayerEvent } from "@infernus/core";
 import { ACInfo, ACVehInfo } from "../../struct";
 import { innerACConfig } from "../../config";
 import { ac_Mtfc } from "../../constants";
@@ -55,8 +55,9 @@ PlayerEvent.onInteriorChange(({ player, newInteriorId, oldInteriorId, next }) =>
       if (ACInfo.get(player.id).acVeh > 0) {
         if (ACInfo.get(player.id).acACAllow[3] && newInteriorId !== ACInfo.get(player.id).acInt) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC DEBUG] AC interior: ${ACInfo.get(player.id).acSet[0]}, acInt (last): ${ACInfo.get(player.id).acInt}, newInteriorId: ${newInteriorId}, oldInteriorId: ${oldInteriorId}, veh: ${ACInfo.get(player.id).acVeh}`,
+              LogLevelEnum.DEBUG,
             );
           }
           ac_KickWithCode(player, "", 0, 3, 1);
@@ -68,8 +69,9 @@ PlayerEvent.onInteriorChange(({ player, newInteriorId, oldInteriorId, next }) =>
         newInteriorId !== ACInfo.get(player.id).acInt
       ) {
         if (innerACConfig.DEBUG) {
-          console.log(
+          samp.logprint(
             `[Nex-AC DEBUG] AC interior: ${ACInfo.get(player.id).acSet[0]}, acInt (last): ${ACInfo.get(player.id).acInt}, newInteriorId: ${newInteriorId}, oldInteriorId: ${oldInteriorId}`,
+            LogLevelEnum.DEBUG,
           );
         }
         ac_KickWithCode(player, "", 0, 2, 1);

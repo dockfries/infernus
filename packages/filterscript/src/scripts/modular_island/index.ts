@@ -8,7 +8,7 @@
 // Warning...
 // This script uses a total of 87 objects
 
-import { GameText, PlayerEvent, DynamicObject } from "@infernus/core";
+import { LogLevelEnum, GameText, PlayerEvent, DynamicObject } from "@infernus/core";
 import { modularIslandObjects } from "./constants";
 import type { IModularIsLandFS } from "./interfaces";
 
@@ -37,12 +37,12 @@ export const ModularIsland: IModularIsLandFS = {
   name: "modular_island",
   load(options) {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------------------------------------------------");
-    console.log("  |--- Modular Island FilterScript by Matite");
-    console.log("  |--  Script v1.01");
-    console.log("  |--  12th January 2015");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- Modular Island FilterScript by Matite", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.01", LogLevelEnum.INFO);
+    samp.logprint("  |--  12th January 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     createMIObjects();
 
@@ -77,8 +77,8 @@ export const ModularIsland: IModularIsLandFS = {
     createdObjects = [];
 
     // Display information in the Server Console
-    console.log("  |---------------------------------------------------");
-    console.log("  |--  Modular Island FilterScript Unloaded");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--  Modular Island FilterScript Unloaded", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
   },
 };

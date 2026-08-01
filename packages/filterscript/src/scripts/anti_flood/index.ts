@@ -2,7 +2,7 @@
 // using # or @<message>
 
 import type { IFilterScript } from "@infernus/core";
-import { Player, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, Player, PlayerEvent } from "@infernus/core";
 
 const iPlayerChatTime = new Map<Player, number>();
 const szPlayerChatMsg = new Map<Player, string>();
@@ -76,7 +76,7 @@ export const AntiFlood: IFilterScript = {
       return next();
     });
 
-    console.log("\n--Anti Flood loaded.\n");
+    samp.logprint("\n--Anti Flood loaded.\n", LogLevelEnum.INFO);
 
     return [onText, onCmdReceived, onDisconnect];
   },

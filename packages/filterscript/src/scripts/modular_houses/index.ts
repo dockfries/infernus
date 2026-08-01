@@ -10,7 +10,7 @@
 // command by default.
 
 import type { IFilterScript } from "@infernus/core";
-import { GameText, PlayerEvent, DynamicObject } from "@infernus/core";
+import { LogLevelEnum, GameText, PlayerEvent, DynamicObject } from "@infernus/core";
 import { modularHousesObjects } from "./constants";
 
 let createdObjects: DynamicObject[] = [];
@@ -53,12 +53,12 @@ export const ModularHouses: IFilterScript = {
   name: "modular_houses",
   load() {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------------------------------------------------");
-    console.log("  |--- Modular Houses FilterScript by Matite");
-    console.log("  |--  Script v1.01");
-    console.log("  |--  28th February 2015");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- Modular Houses FilterScript by Matite", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.01", LogLevelEnum.INFO);
+    samp.logprint("  |--  28th February 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     createMHObjects();
 
@@ -99,8 +99,8 @@ export const ModularHouses: IFilterScript = {
     createdObjects = [];
 
     // Display information in the Server Console
-    console.log("  |---------------------------------------------------");
-    console.log("  |--  Modular Houses FilterScript Unloaded");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--  Modular Houses FilterScript Unloaded", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
   },
 };

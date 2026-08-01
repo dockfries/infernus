@@ -13,7 +13,7 @@
 // * Enables the /dgs command to teleport the player to the Dillimore Gas Station
 
 import type { IFilterScript } from "@infernus/core";
-import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
 
 // Stores the created object numbers of the replacement building objects so
 // they can be destroyed when the filterScript is unloaded
@@ -33,12 +33,12 @@ export const DillimoreGasStation: IFilterScript = {
   name: "dillimore_gas",
   load() {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------------------------------------------------");
-    console.log("  |--- Dillimore Gas Station FilterScript");
-    console.log("  |--  Script v1.01");
-    console.log("  |--  3rd March 2015");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- Dillimore Gas Station FilterScript", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.01", LogLevelEnum.INFO);
+    samp.logprint("  |--  3rd March 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     // Create the Dillimore Gas Station exterior object
     DillimoreGasObject1 = new DynamicObject({
@@ -53,7 +53,7 @@ export const DillimoreGasStation: IFilterScript = {
     DillimoreGasObject1.create();
 
     // Display information in the Server Console
-    console.log("  |--  Dillimore Gas Station exterior object created");
+    samp.logprint("  |--  Dillimore Gas Station exterior object created", LogLevelEnum.INFO);
 
     // Create the Dillimore Gas Station interior object
     DillimoreGasObject2 = new DynamicObject({
@@ -68,8 +68,8 @@ export const DillimoreGasStation: IFilterScript = {
     DillimoreGasObject2.create();
 
     // Display information in the Server Console
-    console.log("  |--  Dillimore Gas Station interior object created");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |--  Dillimore Gas Station interior object created", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     // Loop
     Player.getInstances().forEach((player) => {
@@ -107,8 +107,8 @@ export const DillimoreGasStation: IFilterScript = {
       DillimoreGasObject1 = null;
 
       // Display information in the Server Console
-      console.log("  |---------------------------------------------------");
-      console.log("  |--  Dillimore Gas Station exterior object destroyed");
+      samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+      samp.logprint("  |--  Dillimore Gas Station exterior object destroyed", LogLevelEnum.INFO);
     }
 
     // Check for valid object
@@ -118,12 +118,12 @@ export const DillimoreGasStation: IFilterScript = {
       DillimoreGasObject2 = null;
 
       // Display information in the Server Console
-      console.log("  |--  Dillimore Gas Station interior object destroyed");
+      samp.logprint("  |--  Dillimore Gas Station interior object destroyed", LogLevelEnum.INFO);
     }
 
     // Display information in the Server Console
-    console.log("  |---------------------------------------------------");
-    console.log("  |--  Dillimore Gas Station FilterScript Unloaded");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--  Dillimore Gas Station FilterScript Unloaded", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
   },
 };

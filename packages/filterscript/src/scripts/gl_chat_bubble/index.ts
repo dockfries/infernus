@@ -3,7 +3,7 @@
 //
 
 import type { IFilterScript } from "@infernus/core";
-import { PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, PlayerEvent } from "@infernus/core";
 
 export const GlChatBubble: IFilterScript = {
   name: "gl_chat_bubble",
@@ -32,7 +32,7 @@ export const GlChatBubble: IFilterScript = {
       return next();
     });
 
-    console.log("\n--Speech bubble example loaded.\n");
+    samp.logprint("\n--Speech bubble example loaded.\n", LogLevelEnum.INFO);
     return [onText, meCommand];
   },
   unload() {},

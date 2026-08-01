@@ -1,4 +1,4 @@
-import { ActorEvent, DynamicActorEvent } from "@infernus/core";
+import { LogLevelEnum, ActorEvent, DynamicActorEvent } from "@infernus/core";
 import { ACInfo } from "../struct";
 import { ac_IsValidDamageReason } from "../functions";
 import { innerACConfig } from "../config";
@@ -11,8 +11,9 @@ DynamicActorEvent.onPlayerGiveDamage(({ player, actor, bodyPart, amount, weapon,
     (amount < 0.0 || !(bodyPart >= 3 && bodyPart <= 9) || !ac_IsValidDamageReason(weapon))
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(
+      samp.logprint(
         `[Nex-AC DEBUG] Dyn actorId: ${actor.id}, amount: ${amount}, weaponId: ${weapon}, bodyPart: ${bodyPart}`,
+        LogLevelEnum.DEBUG,
       );
     }
     return ac_KickWithCode(player, "", 0, 47, 8);
@@ -27,8 +28,9 @@ ActorEvent.onPlayerGiveDamage(({ player, actor, bodyPart, amount, weapon, next }
     (amount < 0.0 || !(bodyPart >= 3 && bodyPart <= 9) || !ac_IsValidDamageReason(weapon))
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(
+      samp.logprint(
         `[Nex-AC DEBUG] Dyn actorId: ${actor.id}, amount: ${amount}, weaponId: ${weapon}, bodyPart: ${bodyPart}`,
+        LogLevelEnum.DEBUG,
       );
     }
     return ac_KickWithCode(player, "", 0, 47, 7);

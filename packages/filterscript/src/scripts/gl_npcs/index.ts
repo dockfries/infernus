@@ -4,7 +4,7 @@
 //
 //-------------------------------------------------
 
-import { Vehicle, GameMode, Npc, PlayerEvent, PlayerStateEnum } from "@infernus/core";
+import { LogLevelEnum, Vehicle, GameMode, Npc, PlayerEvent, PlayerStateEnum } from "@infernus/core";
 import { npcNames, spawnInfo, vehCreateInfo } from "./constants";
 import type { IGlNpcsFS } from "./interfaces";
 import { initNpcModes } from "./npcmodes";
@@ -30,7 +30,7 @@ export const GlNpcs: IGlNpcsFS = {
         vehCreatedInfo[npcName] = new Vehicle(vehInfo, true);
         vehCreatedInfo[npcName].create();
       } catch (err) {
-        console.log(`NPC vehicle create failed for ${npcName}:`, err);
+        samp.logprint(`NPC vehicle create failed for ${npcName}: ${err}`, LogLevelEnum.ERROR);
       }
     });
 
@@ -45,12 +45,15 @@ export const GlNpcs: IGlNpcsFS = {
 
       if (ip_addr_npc === ip_addr_server) {
         // this bot is remote connecting
-        console.log("NPC: Got a remote NPC connecting from %s and I'm kicking it.", ip_addr_npc);
+        samp.logprint(
+          `NPC: Got a remote NPC connecting from ${ip_addr_npc} and I'm kicking it.`,
+          LogLevelEnum.WARNING,
+        );
         player.kick();
         return false;
       }
 
-      console.log("NPC: Connection from %s is allowed.", ip_addr_npc);
+      samp.logprint(`NPC: Connection from ${ip_addr_npc} is allowed.`, LogLevelEnum.INFO);
       return next();
     });
 

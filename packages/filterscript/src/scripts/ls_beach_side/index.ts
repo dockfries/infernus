@@ -40,6 +40,7 @@ import {
   GameText,
   InvalidEnum,
   KeysEnum,
+  LogLevelEnum,
   Player,
   PlayerEvent,
 } from "@infernus/core";
@@ -473,7 +474,7 @@ async function showElevatorDialog(player: Player) {
     listItem = result.listItem;
   } catch (err) {
     // dialog.show() rejects on timeout/disconnect; avoid an unhandled rejection
-    console.log("ls_beach_side: elevator dialog failed:", err);
+    samp.logprint(`ls_beach_side: elevator dialog failed: ${err}`, LogLevelEnum.ERROR);
     return false;
   }
 
@@ -524,12 +525,12 @@ export const LSBeachSide: ILSBeachSideFS = {
   name: "ls_beach_side",
   load(options) {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------");
-    console.log("  |--- LS BeachSide FilterScript");
-    console.log("  |--  Script v1.03");
-    console.log("  |--  19th April 2015");
-    console.log("  |---------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------", LogLevelEnum.INFO);
+    samp.logprint("  |--- LS BeachSide FilterScript", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.03", LogLevelEnum.INFO);
+    samp.logprint("  |--  19th April 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------", LogLevelEnum.INFO);
 
     // Reset the elevator queue
     resetElevatorQueue();
@@ -538,8 +539,8 @@ export const LSBeachSide: ILSBeachSideFS = {
     elevator_Initialize();
 
     // Display information in the Server Console
-    console.log("  |--  LS BeachSide Building Elevator created");
-    console.log("  |---------");
+    samp.logprint("  |--  LS BeachSide Building Elevator created", LogLevelEnum.INFO);
+    samp.logprint("  |---------", LogLevelEnum.INFO);
 
     Player.getInstances().forEach((p) => {
       removeBuilding(p);
@@ -609,7 +610,7 @@ export const LSBeachSide: ILSBeachSideFS = {
 
         const pos = player.getPos();
         // For debug
-        // console.log(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
+        // samp.logprint(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
 
         // Check if the player is using the button inside the elevator
         if (
@@ -751,7 +752,7 @@ export const LSBeachSide: ILSBeachSideFS = {
     elevator_Destroy();
 
     // Display information in the Server Console
-    console.log("  |--  LS BeachSide Building Elevator destroyed");
-    console.log("  |---------");
+    samp.logprint("  |--  LS BeachSide Building Elevator destroyed", LogLevelEnum.INFO);
+    samp.logprint("  |---------", LogLevelEnum.INFO);
   },
 };

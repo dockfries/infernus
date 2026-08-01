@@ -1,4 +1,11 @@
-import { Player, TextDraw, InvalidEnum, TextDrawFontsEnum, WeaponEnum } from "@infernus/core";
+import {
+  LogLevelEnum,
+  Player,
+  TextDraw,
+  InvalidEnum,
+  TextDrawFontsEnum,
+  WeaponEnum,
+} from "@infernus/core";
 import { BitStream, PacketRpcValueType } from "@infernus/raknet";
 import { innerWeaponConfig } from "../../config";
 import { WC_RPC_REQUEST_SPAWN } from "../../constants";
@@ -161,7 +168,10 @@ export function updateHealthBar(player: Player, force = false, forceSync = false
         );
 
         if (healthBarForeground.get(player.id)!.id === InvalidEnum.TEXT_DRAW) {
-          console.log("(wc) WARN: Cannot create player healthbar foreground");
+          samp.logprint(
+            "(wc) WARN: Cannot create player healthbar foreground",
+            LogLevelEnum.WARNING,
+          );
         } else {
           internalPlayerTextDraw.get(player.id)[healthBarForeground.get(player.id)!.id] = true;
           orig_PlayerTextDrawTextSize(
@@ -236,7 +246,7 @@ export function setHealthBarVisible(player: Player, toggle: boolean) {
         td.setFont(TextDrawFontsEnum.SPRITE_DRAW);
         td.show();
       } catch {
-        console.log("(wc) WARN: Unable to create player healthbar border");
+        samp.logprint("(wc) WARN: Unable to create player healthbar border", LogLevelEnum.WARNING);
       }
     } else if (internalPlayerTextDraw.get(player.id)[healthBarBorder.get(player.id)!.id]) {
       healthBarBorder.get(player.id)!.show();
@@ -259,7 +269,10 @@ export function setHealthBarVisible(player: Player, toggle: boolean) {
         td.setFont(TextDrawFontsEnum.SPRITE_DRAW);
         td.show();
       } catch {
-        console.log("(wc) WARN: Unable to create player healthbar background");
+        samp.logprint(
+          "(wc) WARN: Unable to create player healthbar background",
+          LogLevelEnum.WARNING,
+        );
       }
     } else if (internalPlayerTextDraw.get(player.id)[healthBarBackground.get(player.id)!.id]) {
       healthBarBackground.get(player.id)!.show();

@@ -1,4 +1,5 @@
 import {
+  LogLevelEnum,
   GameMode,
   InvalidEnum,
   IPlayerClass,
@@ -36,7 +37,10 @@ PlayerEvent.onConnect(({ player, next }) => {
 
       if (ACInfo.get(player.id).acIp !== "127.0.0.1" && !ac_rslt) {
         if (innerACConfig.DEBUG) {
-          console.log(`[Nex-AC DEBUG] NPC's IP: '${ACInfo.get(player.id).acIp}'`);
+          samp.logprint(
+            `[Nex-AC DEBUG] NPC's IP: '${ACInfo.get(player.id).acIp}'`,
+            LogLevelEnum.DEBUG,
+          );
         }
         ac_KickWithCode(player, "", 0, 36);
       }
@@ -54,7 +58,7 @@ PlayerEvent.onConnect(({ player, next }) => {
       const ac_ver = player.getVersion().version;
       if (!ac_ver.includes(innerACConfig.AC_CLIENT_VERSION)) {
         if (innerACConfig.DEBUG) {
-          console.log($t("DEBUG_CODE_2", [player.id, ac_ver]));
+          samp.logprint($t("DEBUG_CODE_2", [player.id, ac_ver]), LogLevelEnum.DEBUG);
         }
         ac_KickWithCode(player, "", 0, 41);
       }
@@ -70,7 +74,10 @@ PlayerEvent.onConnect(({ player, next }) => {
           ac_i--;
           if (ac_i < 1) {
             if (innerACConfig.DEBUG) {
-              console.log($t("DEBUG_CODE_3", [player.id, innerACConfig.AC_MAX_CONNECTS_FROM_IP]));
+              samp.logprint(
+                $t("DEBUG_CODE_3", [player.id, innerACConfig.AC_MAX_CONNECTS_FROM_IP]),
+                LogLevelEnum.DEBUG,
+              );
             }
             ac_KickWithCode(player, "", 0, 40);
             break;
@@ -206,8 +213,9 @@ PlayerEvent.onSpawn(({ player, next }) => {
         (ACInfo.get(player.id).acSpawnRes < 1 || ac_gtc - ACInfo.get(player.id).acSpawnTick < 1000)
       ) {
         if (innerACConfig.DEBUG) {
-          console.log(
+          samp.logprint(
             `[Nex-AC DEBUG] Spawn res: ${ACInfo.get(player.id).acSpawnRes}, respawn time: ${ac_gtc - ACInfo.get(player.id).acSpawnTick}`,
+            LogLevelEnum.DEBUG,
           );
         }
         ac_KickWithCode(player, "", 0, 27);
@@ -303,8 +311,9 @@ PlayerEvent.onDeath(({ player, killer, reason, next }) => {
             killer !== InvalidEnum.PLAYER_ID)))
     ) {
       if (innerACConfig.DEBUG) {
-        console.log(
+        samp.logprint(
           `[Nex-AC DEBUG] Is dead: ${ACInfo.get(player.id).acDead}, death res: ${ACInfo.get(player.id).acDeathRes}, killerId: ${typeof killer === "number" ? killer : killer.id}, reason: ${reason}`,
+          LogLevelEnum.DEBUG,
         );
       }
       ac_KickWithCode(player, "", 0, 28);
@@ -316,7 +325,10 @@ PlayerEvent.onDeath(({ player, killer, reason, next }) => {
     if (!ACInfo.get(player.id).acSpec) ACInfo.get(player.id).acSpawnRes = 1;
     else {
       if (innerACConfig.DEBUG) {
-        console.log(`[Nex-AC DEBUG] Spawn res: ${ACInfo.get(player.id).acSpawnRes}`);
+        samp.logprint(
+          `[Nex-AC DEBUG] Spawn res: ${ACInfo.get(player.id).acSpawnRes}`,
+          LogLevelEnum.DEBUG,
+        );
       }
       ac_KickWithCode(player, "", 0, 48, 4);
     }

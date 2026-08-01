@@ -3,7 +3,7 @@
 //
 
 import type { IFilterScript } from "@infernus/core";
-import { Player } from "@infernus/core";
+import { LogLevelEnum, Player } from "@infernus/core";
 import { InvalidEnum, NetStats, Dialog, DialogStylesEnum, PlayerEvent } from "@infernus/core";
 
 let gNetStatsPlayer: Player | InvalidEnum.PLAYER_ID = InvalidEnum.PLAYER_ID;
@@ -91,7 +91,7 @@ export const NetStatsFs: IFilterScript = {
       },
     );
 
-    console.log("\n--Admin NetStats FS loaded.\n");
+    samp.logprint("\n--Admin NetStats FS loaded.\n", LogLevelEnum.INFO);
 
     return [netstatCmd, netstatCmd2];
   },

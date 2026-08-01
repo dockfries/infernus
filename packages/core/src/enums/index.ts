@@ -6,6 +6,7 @@ export * from "./netstat";
 export * from "./invalid";
 export * from "./keys";
 export * from "./limits";
+export * from "./logLevel";
 export * from "./marker";
 export * from "./npc";
 export * from "./object";

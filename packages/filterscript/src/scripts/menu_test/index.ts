@@ -1,7 +1,7 @@
 // Test menu functionality filterscipt
 
 import type { IFilterScript, Player } from "@infernus/core";
-import { Menu, MenuEvent, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, Menu, MenuEvent, PlayerEvent } from "@infernus/core";
 
 let testMenu: Menu | null = null;
 const testMenuStrings = ["Test1", "Test2", "Test3", "Test4", "Test5", "Test6"];
@@ -29,7 +29,7 @@ function initTestMenu() {
       testMenu.addItem(0, testMenuStrings[x]);
     }
   } catch (err) {
-    console.log("menu_test: Menu create failed:", err);
+    samp.logprint(`menu_test: Menu create failed: ${err}`, LogLevelEnum.ERROR);
     testMenu = null;
   }
 }

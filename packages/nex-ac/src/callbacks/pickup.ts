@@ -1,4 +1,5 @@
 import {
+  LogLevelEnum,
   DynamicPickup,
   DynamicPickupEvent,
   E_STREAMER,
@@ -42,8 +43,9 @@ DynamicPickupEvent.onPlayerPickUp(({ pickup, player, next }) => {
       );
       if (ACInfo.get(player.id).acSet[7] === -1 || ac_dist_set >= 15.0) {
         if (innerACConfig.DEBUG) {
-          console.log(
+          samp.logprint(
             `[Nex-AC debug] Dyn pickupid: ${pickup.id}, dist: ${ac_dist}, dist set: ${ac_dist_set}, acSet[7]: ${ACInfo.get(player.id).acSet[7]}, playerid: ${player.id}`,
+            LogLevelEnum.DEBUG,
           );
         }
         ac_KickWithCode(player, "", 0, 6, 2);
@@ -114,8 +116,9 @@ PickUpEvent.onPlayerPickUpGlobal(({ pickup, player, next }) => {
         );
         if (ACInfo.get(player.id).acSet[7] === -1 || ac_dist_set >= 15.0) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC debug] Pickupid: ${pickup.id}, dist: ${ac_dist}, dist set: ${ac_dist_set}, acSet[7]: ${ACInfo.get(player.id).acSet[7]}, player.id: ${player.id}`,
+              LogLevelEnum.DEBUG,
             );
           }
           ac_KickWithCode(player, "", 0, 6, 1);

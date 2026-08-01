@@ -1,4 +1,5 @@
 import { CoreException } from "core/exceptions";
+import { LogLevelEnum } from "core/enums";
 
 export type CallbackRet = boolean | number | void;
 
@@ -34,15 +35,15 @@ function handleListenerError(err: unknown, name: string, index: number) {
   }
   const isError = err instanceof Error;
   const msg = `executing event [name:${name},index:${index}]`;
-  samp.logprint(msg);
+  samp.logprint(msg, LogLevelEnum.ERROR);
   if (isError) {
     if (err.stack) {
-      samp.logprint(err.stack);
+      samp.logprint(err.stack, LogLevelEnum.ERROR);
     } else {
-      samp.logprint(err.message);
+      samp.logprint(err.message, LogLevelEnum.ERROR);
     }
   } else {
-    samp.logprint(JSON.stringify(err));
+    samp.logprint(JSON.stringify(err), LogLevelEnum.ERROR);
   }
 }
 

@@ -2,7 +2,7 @@
 // Contains /pm /kick /ban commands.
 
 import type { IFilterScript } from "@infernus/core";
-import { Player, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, Player, PlayerEvent } from "@infernus/core";
 import { ColorEnum } from "./enums/color";
 
 const kickTimer = new Map<number, NodeJS.Timeout>();
@@ -46,7 +46,7 @@ export const Base: IFilterScript = {
       iPlayer.sendClientMessage(ColorEnum.PM_INCOMING, message);
       iPlayer.playSound(1085, 0.0, 0.0, 0.0);
 
-      console.log("PM: %s", message);
+      samp.logprint(`PM: ${message}`, LogLevelEnum.INFO);
 
       return next();
     });
@@ -151,7 +151,7 @@ export const Base: IFilterScript = {
       return next();
     });
 
-    console.log("\n--Base FS loaded.\n");
+    samp.logprint("\n--Base FS loaded.\n", LogLevelEnum.INFO);
 
     return [pm, kick, ban];
   },

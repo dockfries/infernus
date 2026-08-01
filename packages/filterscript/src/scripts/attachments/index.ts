@@ -10,7 +10,14 @@
 //-------------------------------------------------
 
 import type { IFilterScript } from "@infernus/core";
-import { Dialog, DialogStylesEnum, LimitsEnum, ObjectMpEvent, PlayerEvent } from "@infernus/core";
+import {
+  Dialog,
+  DialogStylesEnum,
+  LimitsEnum,
+  LogLevelEnum,
+  ObjectMpEvent,
+  PlayerEvent,
+} from "@infernus/core";
 import { attachmentBones, attachmentObjects } from "./constants";
 
 export const Attachments: IFilterScript = {
@@ -103,7 +110,7 @@ export const Attachments: IFilterScript = {
       }) => {
         const debug_string = `SetPlayerAttachedObject(${player.id}, ${index},${modelId},${boneId},\
           ${fOffsetX},${fOffsetY},${fOffsetZ},${fRotX},${fRotY},${fRotZ},${fScaleX},${fScaleY},${fScaleZ})`;
-        console.log(debug_string);
+        samp.logprint(debug_string, LogLevelEnum.DEBUG);
 
         player.sendClientMessage("#fff", debug_string);
         player.setAttachedObject(

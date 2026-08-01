@@ -12,7 +12,7 @@
 // * Enables the /lswf command to teleport the player to the LS Wells Fargo Building
 
 import type { IFilterScript } from "@infernus/core";
-import { GameText, Player, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, GameText, Player, PlayerEvent } from "@infernus/core";
 import { DynamicObject } from "@infernus/core";
 
 // Stores the created object number of the replacement building object so
@@ -33,12 +33,12 @@ export const LsWellsFargo: IFilterScript = {
   name: "ls_wells_fargo",
   load() {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------------------------------------------------");
-    console.log("  |--- LS Wells Fargo Building FilterScript");
-    console.log("  |--  Script v1.01");
-    console.log("  |--  6th March 2015");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- LS Wells Fargo Building FilterScript", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.01", LogLevelEnum.INFO);
+    samp.logprint("  |--  6th March 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     // Create the LS Wells Fargo Building object
     LSWellsFargoObject1 = new DynamicObject({
@@ -52,8 +52,8 @@ export const LsWellsFargo: IFilterScript = {
     });
     LSWellsFargoObject1.create();
     // Display information in the Server Console
-    console.log("  |--  LS Wells Fargo Building object created");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |--  LS Wells Fargo Building object created", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     Player.getInstances().forEach((p) => {
       removeBuilding(p);
@@ -91,13 +91,13 @@ export const LsWellsFargo: IFilterScript = {
       LSWellsFargoObject1 = null;
 
       // Display information in the Server Console
-      console.log("  |---------------------------------------------------");
-      console.log("  |--  LS Wells Fargo Building object destroyed");
+      samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+      samp.logprint("  |--  LS Wells Fargo Building object destroyed", LogLevelEnum.INFO);
     }
 
     // Display information in the Server Console
-    console.log("  |---------------------------------------------------");
-    console.log("  |--  LS Wells Fargo Building FilterScript Unloaded");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--  LS Wells Fargo Building FilterScript Unloaded", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
   },
 };

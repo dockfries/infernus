@@ -1,4 +1,11 @@
-import { InvalidEnum, Player, PlayerEvent, PlayerStateEnum, Vehicle } from "@infernus/core";
+import {
+  LogLevelEnum,
+  InvalidEnum,
+  Player,
+  PlayerEvent,
+  PlayerStateEnum,
+  Vehicle,
+} from "@infernus/core";
 import { ACInfo, ACVehInfo } from "../../struct";
 import {
   ac_GetMaxPassengers,
@@ -43,7 +50,10 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
           !(newState >= PlayerStateEnum.SPAWNED && newState <= PlayerStateEnum.SPECTATING)
         ) {
           if (innerACConfig.DEBUG) {
-            console.log(`[Nex-AC DEBUG] NewState: ${newState}, oldState: ${oldState}`);
+            samp.logprint(
+              `[Nex-AC DEBUG] NewState: ${newState}, oldState: ${oldState}`,
+              LogLevelEnum.DEBUG,
+            );
           }
           ac_KickWithCode(player, "", 0, 48, 2);
         }
@@ -97,8 +107,9 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
               );
             if (ac_dist >= 50.0) {
               if (innerACConfig.DEBUG) {
-                console.log(
+                samp.logprint(
                   `[Nex-AC DEBUG] Veh model: ${ac_t}, veh: ${ACInfo.get(player.id).acVeh}, dist: ${ac_dist}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 2, 4);
@@ -146,12 +157,14 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
             ) {
               if (innerACConfig.DEBUG) {
                 if (ac_s === InvalidEnum.PLAYER_ID)
-                  console.log(
+                  samp.logprint(
                     `[Nex-AC DEBUG] Veh model: ${ac_model}, veh: ${ac_t}, dist: ${ac_dist}`,
+                    LogLevelEnum.DEBUG,
                   );
                 else
-                  console.log(
+                  samp.logprint(
                     `[Nex-AC DEBUG] Veh model: ${ac_model}, veh: ${ac_t}, driver AFK time: ${ac_gtc - ACInfo.get(ac_s).acUpdateTick}, dist: ${ac_dist}`,
+                    LogLevelEnum.DEBUG,
                   );
               }
               ac_KickWithCode(player, "", 0, 2, 5);
@@ -169,7 +182,7 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
           ac_gtc - ACInfo.get(player.id).acGtc[16] > ac_s
         ) {
           if (innerACConfig.DEBUG) {
-            console.log(`[Nex-AC DEBUG] NewState: ${newState}`);
+            samp.logprint(`[Nex-AC DEBUG] NewState: ${newState}`, LogLevelEnum.DEBUG);
           }
           ac_KickWithCode(player, "", 0, 48, 3);
         }
@@ -203,8 +216,9 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
         if (ac_s <= 0) {
           if (ACInfo.get(player.id).acACAllow[44]) {
             if (innerACConfig.DEBUG) {
-              console.log(
+              samp.logprint(
                 `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, seatId: ${ac_seat}`,
+                LogLevelEnum.DEBUG,
               );
             }
             ac_KickWithCode(player, "", 0, 44, 2);
@@ -215,8 +229,9 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
             if (newState === PlayerStateEnum.DRIVER) {
               if (ac_seat !== 0 || ac_maxSeats === 15) {
                 if (innerACConfig.DEBUG) {
-                  console.log(
+                  samp.logprint(
                     `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, seatId: ${ac_seat}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
                 ac_KickWithCode(player, "", 0, 44, 3);
@@ -227,8 +242,9 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
               (ac_seat > ac_maxSeats && !ac_IsABusEx(ac_s) && ac_s !== 570)
             ) {
               if (innerACConfig.DEBUG) {
-                console.log(
+                samp.logprint(
                   `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, max seats: ${ac_maxSeats}, seatId: ${ac_seat}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 44, 4);
@@ -242,8 +258,9 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
               ac_gtc - ACInfo.get(player.id).acEnterVehTick < (ac_IsABikeEx(ac_s) ? 100 : 300)
             ) {
               if (innerACConfig.DEBUG) {
-                console.log(
+                samp.logprint(
                   `[Nex-AC DEBUG] Entered veh: ${ACInfo.get(player.id).acEnterVeh}, veh: ${ac_vehId}, entered seat: ${ACInfo.get(player.id).acEnterSeat}, seat: ${ac_seat}, veh model: ${ac_s}, enter time: ${ac_gtc - ACInfo.get(player.id).acEnterVehTick}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 4, 1);
@@ -259,8 +276,9 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
                   (ac_dist >= 20.0 && ac_s !== 553 && ac_s !== 577 && ac_s !== 592)
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, dist: ${ac_dist}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 4, 3);
@@ -270,8 +288,9 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
                 (ac_dist >= 30.0 && ac_gtc - ACInfo.get(player.id).acUpdateTick >= 1500)
               ) {
                 if (innerACConfig.DEBUG) {
-                  console.log(
+                  samp.logprint(
                     `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, AFK time: ${ac_gtc - ACInfo.get(player.id).acUpdateTick}, dist: ${ac_dist}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
                 ac_KickWithCode(player, "", 0, 4, 4);
@@ -293,8 +312,9 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
                     (ac_dist >= 20.0 && ac_s !== 553 && ac_s !== 577 && ac_s !== 592)
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, dist: ${ac_dist}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 4, 6);
@@ -304,8 +324,9 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
                   (ac_dist >= 30.0 && ac_gtc - ACInfo.get(player.id).acUpdateTick >= 1500)
                 ) {
                   if (innerACConfig.DEBUG)
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, AFK time: ${ac_gtc - ACInfo.get(player.id).acUpdateTick}, dist: ${ac_dist}`,
+                      LogLevelEnum.DEBUG,
                     );
                 }
                 ac_KickWithCode(player, "", 0, 4, 7);
@@ -321,8 +342,9 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
             ac_s !== player.id
           ) {
             if (innerACConfig.DEBUG) {
-              console.log(
+              samp.logprint(
                 `[Nex-AC DEBUG] AC driver: ${player.id}, driver:${ac_s}, veh: ${ac_vehId}`,
+                LogLevelEnum.DEBUG,
               );
             }
             ac_KickWithCode(Player.getInstance(ac_s)!, "", 0, 32, 2);

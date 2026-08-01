@@ -147,7 +147,7 @@ export function createCallbacks() {
   //   if (weapon === lastShotWeapon) {
   //     const message = `WeaponId: ${weapon} LastShotDelta: ${Date.now() - lastShotTime}`;
   //     player.sendClientMessage(0xffffffff, message);
-  //     console.log(message);
+  //     samp.logprint(message);
   //   }
   //   lastShotWeapon = weapon;
   //   lastShotTime = Date.now();

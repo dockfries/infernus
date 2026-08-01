@@ -15,7 +15,7 @@
 // * Enables the /a51 command to teleport the player to the Area 51 (69) Base
 // * 2 3D Text Labels = 1 on each gate
 
-import { GameText, I18n, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, GameText, I18n, PlayerEvent } from "@infernus/core";
 
 import { loadLabels, registerLabelEvent, unloadLabels } from "./label";
 import { loadObjects, moveGate, removeBuilding, unloadObjects } from "./object";
@@ -72,7 +72,7 @@ function registerCommand(options: IA51BaseFSOptions) {
 }
 
 const separator = () => {
-  console.log("  |---------------------------------------------------");
+  samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 };
 
 export const A51Base: IA51BaseFS = {
@@ -92,11 +92,11 @@ export const A51Base: IA51BaseFS = {
     offs.push(registerLabelEvent(_options, i18n));
     offs.push(registerCommand(_options));
 
-    console.log("\n");
+    samp.logprint("\n", LogLevelEnum.INFO);
     separator();
-    console.log(`  |--- ${i18n.$t("a51.load.line-1")}`);
-    console.log(`  |--  ${i18n.$t("a51.load.line-2")}`);
-    console.log(`  |--  ${i18n.$t("a51.load.line-3")}`);
+    samp.logprint(`  |--- ${i18n.$t("a51.load.line-1")}`, LogLevelEnum.INFO);
+    samp.logprint(`  |--  ${i18n.$t("a51.load.line-2")}`, LogLevelEnum.INFO);
+    samp.logprint(`  |--  ${i18n.$t("a51.load.line-3")}`, LogLevelEnum.INFO);
     separator();
 
     return offs;
@@ -106,7 +106,7 @@ export const A51Base: IA51BaseFS = {
     unloadLabels(_options!, i18n!);
 
     separator();
-    console.log(`  |--- ${i18n!.$t("a51.unload.line-1")}`);
+    samp.logprint(`  |--- ${i18n!.$t("a51.unload.line-1")}`, LogLevelEnum.INFO);
     separator();
   },
 };

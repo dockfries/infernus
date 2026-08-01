@@ -13,7 +13,7 @@
 // * Enables the /kb command to teleport the player to Kylie's Barn
 
 import type { IFilterScript } from "@infernus/core";
-import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
 
 // Stores the created object number of the replacement barn object so
 // it can be destroyed when the filterScript is unloaded
@@ -32,12 +32,12 @@ export const KyliesBarn: IFilterScript = {
   name: "kylies_barn",
   load() {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------------------------------------------------");
-    console.log("  |--- Kylie's Barn FilterScript");
-    console.log("  |--  Script v1.01");
-    console.log("  |--  6th March 2015");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- Kylie's Barn FilterScript", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.01", LogLevelEnum.INFO);
+    samp.logprint("  |--  6th March 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     // Create Kylie's Barn repaired object
     KyliesBarnObject1 = new DynamicObject({
@@ -52,8 +52,8 @@ export const KyliesBarn: IFilterScript = {
     KyliesBarnObject1.create();
 
     // Display information in the Server Console
-    console.log("  |--  Kylie's Barn object created");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |--  Kylie's Barn object created", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     Player.getInstances().forEach((p) => {
       removeBuilding(p);
@@ -90,13 +90,13 @@ export const KyliesBarn: IFilterScript = {
       KyliesBarnObject1!.destroy();
 
       // Display information in the Server Console
-      console.log("  |---------------------------------------------------");
-      console.log("  |--  Kylie's Barn object destroyed");
+      samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+      samp.logprint("  |--  Kylie's Barn object destroyed", LogLevelEnum.INFO);
     }
 
     // Display information in the Server Console
-    console.log("  |---------------------------------------------------");
-    console.log("  |--  Kylie's Barn FilterScript Unloaded");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--  Kylie's Barn FilterScript Unloaded", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
   },
 };

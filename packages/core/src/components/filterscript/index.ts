@@ -1,4 +1,5 @@
 import { GameModeException } from "core/exceptions";
+import { LogLevelEnum } from "core/enums";
 import type { IFilterScript } from "../../interfaces";
 import { INTERNAL_FLAGS, onExit, onInit } from "../gamemode/event";
 
@@ -122,7 +123,7 @@ onInit(async ({ next }) => {
     try {
       await loadUseScript(fs);
     } catch (err) {
-      samp.logprint(`[filterscript]: failed to load script ${fs}\n${err}`);
+      samp.logprint(`[filterscript]: failed to load script ${fs}\n${err}`, LogLevelEnum.ERROR);
     }
   }
   if (INTERNAL_FLAGS.skip) return;
@@ -135,7 +136,7 @@ onExit(async ({ next }) => {
     try {
       await unloadUseScript(fs);
     } catch (err) {
-      samp.logprint(`[filterscript]: failed to unload script ${fs}\n${err}`);
+      samp.logprint(`[filterscript]: failed to unload script ${fs}\n${err}`, LogLevelEnum.ERROR);
     }
   }
   return next();

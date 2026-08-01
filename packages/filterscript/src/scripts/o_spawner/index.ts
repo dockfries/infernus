@@ -5,6 +5,7 @@
 
 import type { IFilterScript, Player } from "@infernus/core";
 import {
+  LogLevelEnum,
   DynamicObject,
   InvalidEnum,
   PlayerEvent,
@@ -395,7 +396,7 @@ export const OSpawner: IFilterScript = {
       return next();
     });
 
-    console.log("\n--Admin Object Spawner Loaded\n");
+    samp.logprint("\n--Admin Object Spawner Loaded\n", LogLevelEnum.INFO);
 
     return [onPlayerClickGlobal, onPlayerClickPlayer, oSpawner];
   },

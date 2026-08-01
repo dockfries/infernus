@@ -1,4 +1,5 @@
 import {
+  LogLevelEnum,
   DynamicObjectEvent,
   E_STREAMER,
   ObjectMpEvent,
@@ -27,7 +28,10 @@ DynamicObjectEvent.onPlayerSelect(({ player, object, modelId, next }) => {
       modelId
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(`[Nex-AC DEBUG] Dyn object model: ${ac_i}, modelId: ${modelId}`);
+      samp.logprint(
+        `[Nex-AC DEBUG] Dyn object model: ${ac_i}, modelId: ${modelId}`,
+        LogLevelEnum.DEBUG,
+      );
     }
     return ac_KickWithCode(player, "", 0, 46, 3);
   }
@@ -50,7 +54,10 @@ ObjectMpEvent.onPlayerSelect(({ player, objectMp: object, modelId, next }) => {
       modelId
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(`[Nex-AC DEBUG] Dyn object model: ${ac_i}, modelId: ${modelId}`);
+      samp.logprint(
+        `[Nex-AC DEBUG] Dyn object model: ${ac_i}, modelId: ${modelId}`,
+        LogLevelEnum.DEBUG,
+      );
     }
     return ac_KickWithCode(player, "", 0, 46, 2);
   }
@@ -66,7 +73,10 @@ ObjectMpEvent.onPlayerEditAttached(({ player, modelId, index, boneId, next }) =>
       !(boneId >= 1 && boneId <= 18))
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(`[Nex-AC DEBUG] Object modelId: ${modelId}, index: ${index}, boneId ${boneId}`);
+      samp.logprint(
+        `[Nex-AC DEBUG] Object modelId: ${modelId}, index: ${index}, boneId ${boneId}`,
+        LogLevelEnum.DEBUG,
+      );
     }
     ac_KickWithCode(player, "", 0, 46, 1);
     return true;

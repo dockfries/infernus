@@ -5,7 +5,14 @@
 //
 //  (c) 2009-2014 SA-MP Team
 
-import { GameMode, Player, PlayerEvent, PlayerStateEnum, TextDraw } from "@infernus/core";
+import {
+  GameMode,
+  LogLevelEnum,
+  Player,
+  PlayerEvent,
+  PlayerStateEnum,
+  TextDraw,
+} from "@infernus/core";
 import { fine_weather_ids, foggy_weather_ids, wet_weather_ids } from "./constants";
 import type { IGlRealTimeFS } from "./interfaces";
 
@@ -74,7 +81,7 @@ export const GlRealTime: IGlRealTimeFS = {
     try {
       txtTimeDisplay.create();
     } catch (err) {
-      console.log("gl_real_time: TextDraw create failed:", err);
+      samp.logprint(`gl_real_time: TextDraw create failed: ${err}`, LogLevelEnum.ERROR);
       txtTimeDisplay = null;
     }
     if (txtTimeDisplay) {

@@ -4,6 +4,7 @@ import type { CallbackRet, PromisifyCallbackRet } from "../../utils/bus";
 import { defineEvent, eventBus } from "../../utils/bus";
 import type { Player } from "./entity";
 import { playerPool } from "core/utils/pools";
+import { LogLevelEnum } from "core/enums";
 
 export interface CmdBusCallback {
   player: Player;
@@ -327,7 +328,7 @@ export class CmdBus {
     const invalidCmd = _command.find((cmd) => !cmd.match(commandPattern));
 
     if (invalidCmd) {
-      samp.logprint(`error command ${invalidCmd} format`);
+      samp.logprint(`error command ${invalidCmd} format`, LogLevelEnum.WARNING);
       return () => {};
     }
 

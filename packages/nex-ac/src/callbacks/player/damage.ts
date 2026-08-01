@@ -1,4 +1,4 @@
-import { InvalidEnum, LimitsEnum, PlayerEvent, WeaponEnum } from "@infernus/core";
+import { LogLevelEnum, InvalidEnum, LimitsEnum, PlayerEvent, WeaponEnum } from "@infernus/core";
 import { ACInfo } from "../../struct";
 import { ac_IsValidDamageReason, ac_IsValidWeapon } from "../../functions";
 import { innerACConfig } from "../../config";
@@ -17,8 +17,9 @@ PlayerEvent.onTakeDamage(({ player, bodyPart, amount, damage, weapon, next }) =>
       !ac_IsValidDamageReason(weapon))
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(
+      samp.logprint(
         `[Nex-AC DEBUG] Issuerid: ${issuerId}, amount: ${amount}, weaponId: ${weapon}, bodyPart: ${bodyPart}`,
+        LogLevelEnum.DEBUG,
       );
     }
     ac_KickWithCode(player, "", 0, 47, 4);
@@ -38,8 +39,9 @@ PlayerEvent.onGiveDamage(({ player, damage, bodyPart, weapon, amount, next }) =>
       !ac_IsValidWeapon(weapon)
     ) {
       if (innerACConfig.DEBUG) {
-        console.log(
+        samp.logprint(
           `[Nex-AC DEBUG] Damagedid: ${damage.id}, amount: ${amount}, weaponId: ${weapon}, bodyPart: ${bodyPart}`,
+          LogLevelEnum.DEBUG,
         );
       }
       ac_KickWithCode(player, "", 0, 47, 3);
@@ -54,8 +56,9 @@ PlayerEvent.onGiveDamage(({ player, damage, bodyPart, weapon, amount, next }) =>
       ) {
         if (Date.now() - ACInfo.get(player.id).acGtc[6] > player.getPing()) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC DEBUG] Damagedid: ${damage.id}, amount: ${amount}, AC weapon: ${ACInfo.get(player.id).acWeapon[ac_s]}, weaponId: ${weapon}, bodyPart: ${bodyPart}`,
+              LogLevelEnum.DEBUG,
             );
           }
           ac_KickWithCode(player, "", 0, 47, 5);

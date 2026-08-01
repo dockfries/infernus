@@ -4,6 +4,7 @@ import {
   CameraCutStylesEnum,
   GameText,
   KeysEnum,
+  LogLevelEnum,
   Player,
 } from "@infernus/core";
 import {
@@ -80,7 +81,7 @@ function vehicleSelect(player: Player) {
       veh.create();
 
       curPlayerVehI.set(player, veh.id);
-      console.log("vsel vehicle select id = %d", veh.id);
+      samp.logprint(`vsel vehicle select id = ${veh.id}`, LogLevelEnum.DEBUG);
 
       veh.linkToInterior(player.getInterior());
 
@@ -91,7 +92,7 @@ function vehicleSelect(player: Player) {
       });
     } catch (err) {
       // Vehicle.create() throws on failure; keep the old selection instead of crashing the timer
-      console.log("vsel create vehicle failed:", err);
+      samp.logprint(`vsel create vehicle failed: ${err}`, LogLevelEnum.ERROR);
     }
   }
 
@@ -137,7 +138,7 @@ function vehicleSelect(player: Player) {
       veh.create();
 
       curPlayerVehI.set(player, veh.id);
-      console.log("vsel vehicle select id = %d", veh.id);
+      samp.logprint(`vsel vehicle select id = ${veh.id}`, LogLevelEnum.DEBUG);
 
       veh.linkToInterior(player.getInterior());
 
@@ -148,7 +149,7 @@ function vehicleSelect(player: Player) {
       });
     } catch (err) {
       // Vehicle.create() throws on failure; keep the old selection instead of crashing the timer
-      console.log("vsel create vehicle failed:", err);
+      samp.logprint(`vsel create vehicle failed: ${err}`, LogLevelEnum.ERROR);
     }
   }
 
@@ -271,7 +272,7 @@ export function registerVehicleSelect(options?: IFsDebugOptions) {
     });
     veh.create();
     veh.linkToInterior(player.getInterior());
-    console.log(`vsel vehicle start id = ${veh.id}`);
+    samp.logprint(`vsel vehicle start id = ${veh.id}`, LogLevelEnum.DEBUG);
 
     curPlayerVehI.set(player, veh.id);
 

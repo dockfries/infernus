@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { PlayerEvent, CameraCutStylesEnum, KeysEnum, Player } from "@infernus/core";
+import { PlayerEvent, CameraCutStylesEnum, KeysEnum, LogLevelEnum, Player } from "@infernus/core";
 import {
   COLOR_GREEN,
   COLOR_RED,
@@ -21,7 +21,10 @@ function cameraSelect(player: Player) {
 
   const { keys, upDown, leftRight } = player.getKeys();
 
-  console.log(`Player (${player.id}) keys = ${keys}, upDown = ${upDown}, leftRight = ${leftRight}`);
+  samp.logprint(
+    `Player (${player.id}) keys = ${keys}, upDown = ${upDown}, leftRight = ${leftRight}`,
+    LogLevelEnum.DEBUG,
+  );
 
   const p_curPlayerCamD = curPlayerCamD.get(player) || ({} as P_CAMERA_D);
 
@@ -147,10 +150,10 @@ function cameraSelect(player: Player) {
     const fullPath = path.resolve(process.cwd(), "scriptfiles", "CAMERA.txt");
     fs.writeFile(fullPath, cString, { flag: "a" }, (err) => {
       if (err) {
-        console.log('Failed to create the file "CAMERA.txt".\n');
-        console.log(err);
+        samp.logprint('Failed to create the file "CAMERA.txt".\n', LogLevelEnum.ERROR);
+        samp.logprint(String(err), LogLevelEnum.ERROR);
       } else {
-        console.log("\n" + cString + "\n");
+        samp.logprint("\n" + cString + "\n", LogLevelEnum.DEBUG);
         player.sendClientMessage(COLOR_GREEN, "Current camera data saved to 'CAMERA.txt'");
       }
     });

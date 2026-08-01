@@ -8,7 +8,7 @@
 //  *  17/11/2011
 //  *    Updated to 0.5d which supports SA:MP 0.3d
 
-import { Player, PlayerEvent, Vehicle } from "@infernus/core";
+import { LogLevelEnum, Player, PlayerEvent, Vehicle } from "@infernus/core";
 import {
   DEBUG_VERSION,
   MIN_OBJECT_ID,
@@ -38,10 +38,13 @@ import { registerMiscCommands } from "./commands/miscCommands";
 export const FsDebug: IFsDebug = {
   name: "fs_debug",
   load(options) {
-    console.log("\n  *********************\n  * SA:MP DEBUG 0.2   *");
-    console.log("  * By Simon Campbell *\n  *********************");
-    console.log(`  * Version: ${DEBUG_VERSION}      *\n  *********************`);
-    console.log("  * -- LOADED         *\n  *********************\n");
+    samp.logprint("\n  *********************\n  * SA:MP DEBUG 0.2   *", LogLevelEnum.INFO);
+    samp.logprint("  * By Simon Campbell *\n  *********************", LogLevelEnum.INFO);
+    samp.logprint(
+      `  * Version: ${DEBUG_VERSION}      *\n  *********************`,
+      LogLevelEnum.INFO,
+    );
+    samp.logprint("  * -- LOADED         *\n  *********************\n", LogLevelEnum.INFO);
 
     function initData(player: Player) {
       curPlayerCamD.set(player, {
@@ -183,8 +186,8 @@ export const FsDebug: IFsDebug = {
     ];
   },
   unload() {
-    console.log("\n  *********************\n  * SA:MP DEBUG 0.2   *");
-    console.log("  * -- SHUTDOWN       *\n  *********************\n");
+    samp.logprint("\n  *********************\n  * SA:MP DEBUG 0.2   *", LogLevelEnum.INFO);
+    samp.logprint("  * -- SHUTDOWN       *\n  *********************\n", LogLevelEnum.INFO);
 
     gPlayerStatus.clear();
     Array.from(gPlayerTimers.values()).forEach((t) => clearTimeout(t));

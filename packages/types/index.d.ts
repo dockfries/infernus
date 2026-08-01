@@ -11,7 +11,7 @@ declare global {
     callNativeFloat: SampNodeApi["callNative"];
     callPublic(publicName: string, paramTypes: string, ...args: Array<any>): any;
     callPublicFloat: SampNodeApi["callPublic"];
-    logprint(str: string): void;
+    logprint(str: string, level?: number): void;
     [k: string | symbol]: any;
   }
   var samp: SampNodeApi;

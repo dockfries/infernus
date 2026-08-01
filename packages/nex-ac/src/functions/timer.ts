@@ -1,6 +1,7 @@
 import {
   E_STREAMER,
   LimitsEnum,
+  LogLevelEnum,
   NetStats,
   Player,
   PlayerStateEnum,
@@ -36,8 +37,9 @@ export function ac_Timer(player: Player) {
     (ac_gpp = NetStats.getMessagesRecvPerSecond(player)) > innerACConfig.AC_MAX_MSGS_REC_DIFF
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(
+      samp.logprint(
         `[Nex-AC debug] Max msgs per sec: ${innerACConfig.AC_MAX_MSGS_REC_DIFF}, msgs per sec: ${ac_gpp}`,
+        LogLevelEnum.DEBUG,
       );
     }
     ac_KickWithCode(player, "", 0, 51);
@@ -48,7 +50,10 @@ export function ac_Timer(player: Player) {
     if (ac_gpp > innerACConfig.AC_MAX_PING) {
       if (++ACInfo.get(player.id).acCheatCount[0] > innerACConfig.AC_MAX_PING_WARNINGS) {
         if (innerACConfig.DEBUG) {
-          console.log(`[Nex-AC debug] Max ping: ${innerACConfig.AC_MAX_PING}, ping: ${ac_gpp}`);
+          samp.logprint(
+            `[Nex-AC debug] Max ping: ${innerACConfig.AC_MAX_PING}, ping: ${ac_gpp}`,
+            LogLevelEnum.DEBUG,
+          );
         }
         ac_KickWithCode(player, "", 0, 38);
         ACInfo.get(player.id).acCheatCount[0] = 0;
@@ -100,9 +105,13 @@ export function ac_Timer(player: Player) {
                     ++ACInfo.get(player.id).acNOPCount[0] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log($t("DEBUG_CODE_5", [player.id, "GivePlayerWeapon"]));
-                      console.log(
+                      samp.logprint(
+                        $t("DEBUG_CODE_5", [player.id, "GivePlayerWeapon"]),
+                        LogLevelEnum.DEBUG,
+                      );
+                      samp.logprint(
                         `[Nex-AC debug] AC weapon: ${ACInfo.get(player.id).acSetWeapon[ac_i]}, weaponId: ${ac_w}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 52, 13);
@@ -160,8 +169,9 @@ export function ac_Timer(player: Player) {
                       (!ac_IsWeaponSlotWithAmmo(ac_i) || ac_a !== 0)
                     ) {
                       if (innerACConfig.DEBUG)
-                        console.log(
+                        samp.logprint(
                           `[Nex-AC debug] AC weaponId: ${ACInfo.get(player.id).acWeapon[ac_i]}, AC ammo: ${ACInfo.get(player.id).acAmmo[ac_i]}, weaponId: ${ac_w}, ammo: ${ac_a}`,
+                          LogLevelEnum.DEBUG,
                         );
                     }
                     ac_KickWithCode(player, "", 0, 15, 2);
@@ -189,9 +199,13 @@ export function ac_Timer(player: Player) {
                       innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                     ) {
                       if (innerACConfig.DEBUG) {
-                        console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerAmmo"]));
-                        console.log(
+                        samp.logprint(
+                          $t("DEBUG_CODE_5", [player.id, "SetPlayerAmmo"]),
+                          LogLevelEnum.DEBUG,
+                        );
+                        samp.logprint(
                           `[Nex-AC debug] AC ammo: ${ACInfo.get(player.id).acGiveAmmo[ac_i]}, ammo: ${ac_a}, weaponId: ${ac_w}`,
+                          LogLevelEnum.DEBUG,
                         );
                       }
                       ac_KickWithCode(player, "", 0, 52, 14);
@@ -222,8 +236,9 @@ export function ac_Timer(player: Player) {
                     ac_gtc - ACInfo.get(player.id).acShotTick > 3850)
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC debug] AC ammo: ${ACInfo.get(player.id).acAmmo[ac_i]}, ammo: ${ac_a}, weaponId: ${ac_w}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 16, 2);
@@ -263,8 +278,9 @@ export function ac_Timer(player: Player) {
                       ac_gtc - ACInfo.get(player.id).acShotTick > 3850)
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC debug] AC ammo: ${ACInfo.get(player.id).acAmmo[ac_i]}, ammo: ${ac_a}, weaponId: ${ac_w}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 16, 3);
@@ -302,8 +318,9 @@ export function ac_Timer(player: Player) {
               (ACInfo.get(player.id).acSet[7] === -1 || ac_dist_set >= ac_maxDist)
             ) {
               if (innerACConfig.DEBUG) {
-                console.log(
+                samp.logprint(
                   `[Nex-AC debug] Dist: ${ac_dist}, dist set: ${ac_dist_set}, acSet[7]: ${ACInfo.get(player.id).acSet[7]}, speed: ${ACVehInfo.get(ac_t).acSpeed}, veh: ${ac_t}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 3, 3);
@@ -330,8 +347,9 @@ export function ac_Timer(player: Player) {
                 ACInfo.get(player.id).acCheatCount[18] > innerACConfig.AC_MAX_SPEEDHACK_VEH_WARNINGS
               ) {
                 if (innerACConfig.DEBUG) {
-                  console.log(
+                  samp.logprint(
                     `[Nex-AC debug] Speed: ${ac_s}, last speed: ${ACVehInfo.get(ac_t).acLastSpeed}, veh model: ${ac_m}, veh: ${ac_t}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
                 ac_KickWithCode(player, "", 0, 10, 4);
@@ -379,8 +397,9 @@ export function ac_Timer(player: Player) {
               (ACInfo.get(player.id).acSet[7] === -1 || ac_dist_set >= ac_maxDist)
             ) {
               if (innerACConfig.DEBUG) {
-                console.log(
+                samp.logprint(
                   `[Nex-AC debug] Dist: ${ac_dist}, dist set: ${ac_dist_set}, acSet[7]: ${ACInfo.get(player.id).acSet[7]}, speed: ${ACInfo.get(player.id).acSpeed}, old pos x, y: ${ACInfo.get(player.id).acLastPosX}, ${ACInfo.get(player.id).acLastPosY}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 2, 6);
@@ -403,8 +422,9 @@ export function ac_Timer(player: Player) {
                   ++ACInfo.get(player.id).acCheatCount[20] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC debug] Money: ${ac_t}, old money: ${ACInfo.get(player.id).acMoney}, price: ${ACInfo.get(player.id).acSet[10]}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 15, 3);
@@ -433,8 +453,9 @@ export function ac_Timer(player: Player) {
                   ++ACInfo.get(player.id).acCheatCount[21] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC debug] Money: ${ac_t}, old money: ${ACInfo.get(player.id).acMoney}, components price: ${ACInfo.get(player.id).acSet[11]}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 23, 3);
@@ -457,8 +478,11 @@ export function ac_Timer(player: Player) {
           if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[9]) {
             if (++ACInfo.get(player.id).acNOPCount[9] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS) {
               if (innerACConfig.DEBUG) {
-                console.log($t("DEBUG_CODE_5", [player.id, "SpawnPlayer"]));
-                console.log(`[Nex-AC debug] acSet[6]: ${ACInfo.get(player.id).acSet[6]}`);
+                samp.logprint($t("DEBUG_CODE_5", [player.id, "SpawnPlayer"]), LogLevelEnum.DEBUG);
+                samp.logprint(
+                  `[Nex-AC debug] acSet[6]: ${ACInfo.get(player.id).acSet[6]}`,
+                  LogLevelEnum.DEBUG,
+                );
               }
               ac_KickWithCode(player, "", 0, 52, 7);
 
@@ -482,9 +506,13 @@ export function ac_Timer(player: Player) {
           ) {
             if (++ACInfo.get(player.id).acNOPCount[2] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS) {
               if (innerACConfig.DEBUG) {
-                console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerInterior"]));
-                console.log(
+                samp.logprint(
+                  $t("DEBUG_CODE_5", [player.id, "SetPlayerInterior"]),
+                  LogLevelEnum.DEBUG,
+                );
+                samp.logprint(
                   `[Nex-AC debug] AC interior: ${ACInfo.get(player.id).acSet[0]}, interiorId: ${ACInfo.get(player.id).acInt}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 52, 5);
@@ -512,8 +540,9 @@ export function ac_Timer(player: Player) {
               (innerACConfig.AC_USE_CASINOS && !ac_InCasino(player, ACInfo.get(player.id).acInt))
             ) {
               if (innerACConfig.DEBUG) {
-                console.log(
+                samp.logprint(
                   `[Nex-AC debug] AC money: ${ACInfo.get(player.id).acMoney}, money: ${ac_t}, stunt bonus: ${ACInfo.get(player.id).acStuntBonus}, veh: ${ACInfo.get(player.id).acVeh}, playerId: ${player.id}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
 

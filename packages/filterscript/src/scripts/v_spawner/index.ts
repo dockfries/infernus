@@ -5,6 +5,7 @@
 
 import type { IFilterScript, Player } from "@infernus/core";
 import {
+  LogLevelEnum,
   InvalidEnum,
   PlayerEvent,
   TextDraw,
@@ -350,7 +351,7 @@ export const VSpawner: IFilterScript = {
       return next();
     });
 
-    console.log("\n--Admin Vehicle Spawner Loaded\n");
+    samp.logprint("\n--Admin Vehicle Spawner Loaded\n", LogLevelEnum.INFO);
 
     return [onPlayerClickGlobal, onPlayerClickPlayer, vSpawner];
   },

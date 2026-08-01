@@ -34,6 +34,7 @@ import {
   DialogStylesEnum,
   GameText,
   Dialog,
+  LogLevelEnum,
   PlayerEvent,
   DynamicObjectEvent,
   KeysEnum,
@@ -456,7 +457,7 @@ async function showElevatorDialog(player: Player) {
     listItem = result.listItem;
   } catch (err) {
     // dialog.show() rejects on timeout/disconnect; avoid an unhandled rejection
-    console.log("ls_apartments1: elevator dialog failed:", err);
+    samp.logprint(`ls_apartments1: elevator dialog failed: ${err}`, LogLevelEnum.ERROR);
     return false;
   }
 
@@ -507,12 +508,12 @@ export const LSApartments1: ILSApartments1FS = {
   name: "ls_apartments1",
   load(options) {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |------------------");
-    console.log("  |--- LS Apartments 1 Filterscript");
-    console.log("  |--  Script v1.02");
-    console.log("  |--  5th February 2015");
-    console.log("  |------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- LS Apartments 1 Filterscript", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.02", LogLevelEnum.INFO);
+    samp.logprint("  |--  5th February 2015", LogLevelEnum.INFO);
+    samp.logprint("  |------------------", LogLevelEnum.INFO);
 
     // Create the LS Apartments 1 Building object
     lsApartments1Object = new DynamicObject({
@@ -527,7 +528,7 @@ export const LSApartments1: ILSApartments1FS = {
     lsApartments1Object.create();
 
     // Display information in the Server Console
-    console.log("  |--  LS Apartments 1 Building object created");
+    samp.logprint("  |--  LS Apartments 1 Building object created", LogLevelEnum.INFO);
 
     // Create the LS Apartments 1 Car Park object
     lsApartments1CPObject = new DynamicObject({
@@ -542,7 +543,7 @@ export const LSApartments1: ILSApartments1FS = {
     lsApartments1CPObject.create();
 
     // Display information in the Server Console
-    console.log("  |--  LS Apartments 1 Car Park object created");
+    samp.logprint("  |--  LS Apartments 1 Car Park object created", LogLevelEnum.INFO);
 
     // Reset the elevator queue
     resetElevatorQueue();
@@ -551,8 +552,8 @@ export const LSApartments1: ILSApartments1FS = {
     elevator_Initialize();
 
     // Display information in the Server Console
-    console.log("  |--  LS Apartments 1 Elevator created");
-    console.log("  |------------------");
+    samp.logprint("  |--  LS Apartments 1 Elevator created", LogLevelEnum.INFO);
+    samp.logprint("  |------------------", LogLevelEnum.INFO);
 
     Player.getInstances().forEach((p) => {
       removeBuilding(p);
@@ -623,7 +624,7 @@ export const LSApartments1: ILSApartments1FS = {
         const pos = player.getPos();
 
         // For debug
-        // console.log(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
+        // samp.logprint(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
 
         // Check if the player is using the button inside the elevator
         if (
@@ -763,8 +764,8 @@ export const LSApartments1: ILSApartments1FS = {
       lsApartments1Object = null;
 
       // Display information in the Server Console
-      console.log("  |------------------");
-      console.log("  |--  LS Apartments 1 Building object destroyed");
+      samp.logprint("  |------------------", LogLevelEnum.INFO);
+      samp.logprint("  |--  LS Apartments 1 Building object destroyed", LogLevelEnum.INFO);
     }
 
     // Check for valid object
@@ -775,14 +776,14 @@ export const LSApartments1: ILSApartments1FS = {
       lsApartments1CPObject = null;
 
       // Display information in the Server Console
-      console.log("  |--  LS Apartments 1 Car Park object destroyed");
+      samp.logprint("  |--  LS Apartments 1 Car Park object destroyed", LogLevelEnum.INFO);
     }
 
     // Destroy the elevator, the elevator doors and the elevator floor doors
     elevator_Destroy();
 
     // Display information in the Server Console
-    console.log("  |--  LS Apartments 1 Elevator destroyed");
-    console.log("  |------------------");
+    samp.logprint("  |--  LS Apartments 1 Elevator destroyed", LogLevelEnum.INFO);
+    samp.logprint("  |------------------", LogLevelEnum.INFO);
   },
 };

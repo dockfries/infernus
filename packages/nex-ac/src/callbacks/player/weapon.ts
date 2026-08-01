@@ -1,4 +1,5 @@
 import {
+  LogLevelEnum,
   BulletHitTypesEnum,
   InvalidEnum,
   LimitsEnum,
@@ -41,7 +42,10 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
       !ac_IsBulletWeapon(weapon))
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(`[Nex-AC DEBUG] HitType: ${hitType}, hitId: ${hitId}, weaponId: ${weapon}`);
+      samp.logprint(
+        `[Nex-AC DEBUG] HitType: ${hitType}, hitId: ${hitId}, weaponId: ${weapon}`,
+        LogLevelEnum.DEBUG,
+      );
     }
     return ac_KickWithCode(player, "", 0, 47, 1);
   }
@@ -72,8 +76,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
     ) {
       if (++ACInfo.get(player.id).acCheatCount[5] > innerACConfig.AC_MAX_AFK_GHOST_WARNINGS) {
         if (innerACConfig.DEBUG) {
-          console.log(
+          samp.logprint(
             `[Nex-AC DEBUG] WeaponId: ${weapon}, origin dist: ${ac_dist}, pZ: ${ACInfo.get(player.id).acPosZ}, oZ: ${ac_oZ}`,
+            LogLevelEnum.DEBUG,
           );
         }
         ac_KickWithCode(player, "", 0, 34);
@@ -98,8 +103,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
       ) {
         if (++ACInfo.get(player.id).acCheatCount[11] > innerACConfig.AC_MAX_SILENT_AIM_WARNINGS) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC DEBUG] HitType: ${hitType}, weaponId: ${weapon}, pZ: ${ACInfo.get(player.id).acPosZ}, oZ: ${ac_oZ}, fX, fY, fZ: ${fX}, ${fY}, ${fZ}`,
+              LogLevelEnum.DEBUG,
             );
           }
           ac_KickWithCode(player, "", 0, 29, 1);
@@ -134,7 +140,10 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
             ) {
               if (++ACInfo.get(player.id).acCheatCount[6] > innerACConfig.AC_MAX_PRO_AIM_WARNINGS) {
                 if (innerACConfig.DEBUG) {
-                  console.log(`[Nex-AC DEBUG] WeaponId: ${weapon}, hit dist: ${ac_dist}`);
+                  samp.logprint(
+                    `[Nex-AC DEBUG] WeaponId: ${weapon}, hit dist: ${ac_dist}`,
+                    LogLevelEnum.DEBUG,
+                  );
                 }
                 ac_KickWithCode(player, "", 0, 29, 2);
                 if (ACInfo.get(player.id).acKicked > 0) return false;
@@ -260,8 +269,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
   if (ACInfo.get(player.id).acACAllow[47]) {
     if (ac_t === PlayerStateEnum.DRIVER) {
       if (innerACConfig.DEBUG) {
-        console.log(
+        samp.logprint(
           `[Nex-AC DEBUG] WeaponId: ${weapon}, state: ${ac_t}, veh model: ${Vehicle.getInstance(ACInfo.get(player.id).acVeh)!.getModel()}, veh: ${ACInfo.get(player.id).acVeh}`,
+          LogLevelEnum.DEBUG,
         );
       }
       return ac_KickWithCode(player, "", 0, 47, 6);
@@ -273,8 +283,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
       ) {
         if (++ACInfo.get(player.id).acCheatCount[16] > innerACConfig.AC_MAX_FAKE_WEAPON_WARNINGS) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC DEBUG] Armed weapon: ${ACInfo.get(player.id).acLastWeapon}, AC weapon: ${ACInfo.get(player.id).acWeapon[ac_s]}, weaponId: ${weapon}, state: ${ac_t}`,
+              LogLevelEnum.DEBUG,
             );
           }
           ac_KickWithCode(player, "", 0, 47, 2);
@@ -292,8 +303,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
       if (weapon !== WeaponEnum.MINIGUN && ac_t !== PlayerStateEnum.PASSENGER) {
         if (ac_gtc - ACInfo.get(player.id).acReloadTick < 110) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC DEBUG] WeaponId: ${weapon}, reload time: ${ac_gtc - ACInfo.get(player.id).acReloadTick}, state: ${ac_t}`,
+              LogLevelEnum.DEBUG,
             );
           }
 
@@ -303,7 +315,10 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
         } else if (ac_i < 30 || (ac_i < 50 && ac_s !== 4)) {
           if (++ACInfo.get(player.id).acCheatCount[8] > innerACConfig.AC_MAX_RAPID_FIRE_WARNINGS) {
             if (innerACConfig.DEBUG) {
-              console.log(`[Nex-AC DEBUG] Fire rate: ${ac_i}, weaponId: ${weapon}`);
+              samp.logprint(
+                `[Nex-AC DEBUG] Fire rate: ${ac_i}, weaponId: ${weapon}`,
+                LogLevelEnum.DEBUG,
+              );
             }
             ac_KickWithCode(player, "", 0, 26, 1);
             if (ACInfo.get(player.id).acKicked > 0) return false;
@@ -320,7 +335,10 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
       ) {
         if (++ACInfo.get(player.id).acCheatCount[12] > innerACConfig.AC_MAX_AUTO_C_WARNINGS) {
           if (innerACConfig.DEBUG) {
-            console.log(`[Nex-AC DEBUG] Fire rate: ${ac_i}, weaponId: ${weapon}`);
+            samp.logprint(
+              `[Nex-AC DEBUG] Fire rate: ${ac_i}, weaponId: ${weapon}`,
+              LogLevelEnum.DEBUG,
+            );
           }
 
           ac_KickWithCode(player, "", 0, 26, 2);
@@ -333,8 +351,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
     }
   } else if (ac_i < 30) {
     if (innerACConfig.DEBUG) {
-      console.log(
+      samp.logprint(
         `[Nex-AC DEBUG] Fire rate: ${ac_i}, weaponId: ${weapon}, last weapon: ${ACInfo.get(player.id).acShotWeapon}`,
+        LogLevelEnum.DEBUG,
       );
     }
 
@@ -353,8 +372,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
     ac_t = player.getAmmo();
     if (ACInfo.get(player.id).acAmmo[ac_s] === 0) {
       if (innerACConfig.DEBUG) {
-        console.log(
+        samp.logprint(
           `[Nex-AC DEBUG] WeaponId: ${weapon}, AC ammo: ${ACInfo.get(player.id).acAmmo[ac_s]}, ammo: ${ac_t}`,
+          LogLevelEnum.DEBUG,
         );
       }
 
@@ -365,8 +385,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
       if (weapon === WeaponEnum.MINIGUN) {
         if (++ACInfo.get(player.id).acCheatCount[7] > 9) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC DEBUG] WeaponId: ${weapon}, AC ammo: ${ACInfo.get(player.id).acAmmo[ac_s]}, ammo: ${ac_t}, acCheatCount[7]: ${ACInfo.get(player.id).acCheatCount[7]}`,
+              LogLevelEnum.DEBUG,
             );
           }
           ac_KickWithCode(player, "", 0, 17, 2);
@@ -379,8 +400,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
       }
     } else if (ac_t - ACInfo.get(player.id).acAmmo[ac_s] > 6) {
       if (innerACConfig.DEBUG) {
-        console.log(
+        samp.logprint(
           `[Nex-AC DEBUG] WeaponId: ${weapon}, AC ammo: ${ACInfo.get(player.id).acAmmo[ac_s]}, ammo: ${ac_t}`,
+          LogLevelEnum.DEBUG,
         );
       }
 

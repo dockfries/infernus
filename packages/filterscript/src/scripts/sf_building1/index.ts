@@ -13,7 +13,7 @@
 // * Enables the /sfb command to teleport the player to the SF Building 1
 
 import type { IFilterScript } from "@infernus/core";
-import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
 
 // Stores the created object numbers of the replacement building objects so
 // they can be destroyed when the filterScript is unloaded
@@ -35,12 +35,12 @@ export const SFBuilding1: IFilterScript = {
   name: "sf_building1",
   load() {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------------------------------------------------");
-    console.log("  |--- SF Building 1 FilterScript");
-    console.log("  |--  Script v1.01");
-    console.log("  |--  10th February 2015");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- SF Building 1 FilterScript", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.01", LogLevelEnum.INFO);
+    samp.logprint("  |--  10th February 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     // Create the SF Building 1 Land object
     sfBuilding1Object1 = new DynamicObject({
@@ -55,7 +55,7 @@ export const SFBuilding1: IFilterScript = {
     sfBuilding1Object1.create();
 
     // Display information in the Server Console
-    console.log("  |--  SF Building 1 Land object created");
+    samp.logprint("  |--  SF Building 1 Land object created", LogLevelEnum.INFO);
 
     // Create the SF Building 1 Outside object
     sfBuilding1Object2 = new DynamicObject({
@@ -70,7 +70,7 @@ export const SFBuilding1: IFilterScript = {
     sfBuilding1Object2.create();
 
     // Display information in the Server Console
-    console.log("  |--  SF Building 1 Outside object created");
+    samp.logprint("  |--  SF Building 1 Outside object created", LogLevelEnum.INFO);
 
     // Create the SF Building 1 Inside object
     sfBuilding1Object3 = new DynamicObject({
@@ -85,8 +85,8 @@ export const SFBuilding1: IFilterScript = {
     sfBuilding1Object3.create();
 
     // Display information in the Server Console
-    console.log("  |--  SF Building 1 Inside object created");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |--  SF Building 1 Inside object created", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     // Loop
     Player.getInstances().forEach((p) => {
@@ -124,8 +124,8 @@ export const SFBuilding1: IFilterScript = {
       sfBuilding1Object1 = null;
 
       // Display information in the Server Console
-      console.log("  |---------------------------------------------------");
-      console.log("  |--  SF Building 1 Land object destroyed");
+      samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+      samp.logprint("  |--  SF Building 1 Land object destroyed", LogLevelEnum.INFO);
     }
 
     // Check for valid object
@@ -135,7 +135,7 @@ export const SFBuilding1: IFilterScript = {
       sfBuilding1Object2 = null;
 
       // Display information in the Server Console
-      console.log("  |--  SF Building 1 Outside object destroyed");
+      samp.logprint("  |--  SF Building 1 Outside object destroyed", LogLevelEnum.INFO);
     }
 
     // Check for valid object
@@ -145,12 +145,12 @@ export const SFBuilding1: IFilterScript = {
       sfBuilding1Object3 = null;
 
       // Display information in the Server Console
-      console.log("  |--  SF Building 1 Inside object destroyed");
+      samp.logprint("  |--  SF Building 1 Inside object destroyed", LogLevelEnum.INFO);
     }
 
     // Display information in the Server Console
-    console.log("  |---------------------------------------------------");
-    console.log("  |--  SF Building 1 FilterScript Unloaded");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--  SF Building 1 FilterScript Unloaded", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
   },
 };

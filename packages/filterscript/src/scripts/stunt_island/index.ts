@@ -20,7 +20,7 @@
 //
 // Note: you can enable the /flip command by removing the code comment lines
 
-import { DynamicObject } from "@infernus/core";
+import { DynamicObject, LogLevelEnum } from "@infernus/core";
 import {
   DynamicRaceCP,
   DynamicRaceCPEvent,
@@ -158,7 +158,7 @@ export const StuntIsland: IStuntIsLandFS = {
           // Add 10x NOS
           veh.addComponent(1010);
           // Debug
-          // console.log(`-->Added 10x NOS to Vehicle Number ${veh.id} for Player ID ${player.id}`);
+          // samp.logprint(`-->Added 10x NOS to Vehicle Number ${veh.id} for Player ID ${player.id}`);
         }
       }
 
@@ -175,7 +175,7 @@ export const StuntIsland: IStuntIsLandFS = {
       siPlayerCP.set(player, (siPlayerCP.get(player) || 0) + 1);
 
       // Debug
-      // console.log(`-->Player ID ${player.id} Current CP is ${siPlayerCP.get(player)} of ${stuntIslandCPs.length}`);
+      // samp.logprint(`-->Player ID ${player.id} Current CP is ${siPlayerCP.get(player)} of ${stuntIslandCPs.length}`);
 
       // Check if the race checkpoint is the start line
       if (siPlayerCP.get(player) === 1) {
@@ -186,7 +186,7 @@ export const StuntIsland: IStuntIsLandFS = {
         siPlayerStartTime.set(player, Date.now());
 
         // Debug
-        // console.log(`-->Race start time for Player ${player} is ${siPlayerStartTime.get(player)}`, player);
+        // samp.logprint(`-->Race start time for Player ${player} is ${siPlayerStartTime.get(player)}`, player);
 
         // Send a gametext message to the player
         new GameText("~n~~n~~n~~n~~n~~n~~n~~n~~n~~n~~g~~h~Race Timer Started!", 3000, 3).forPlayer(
@@ -492,7 +492,7 @@ export const StuntIsland: IStuntIsLandFS = {
         // Add 10x NOS to the Infernus
         siInfernus[i].addComponent(1010);
       } catch (err) {
-        console.log(`stunt_island: Infernus ${i} create failed:`, err);
+        samp.logprint(`stunt_island: Infernus ${i} create failed: ${err}`, LogLevelEnum.ERROR);
       }
     }
 
@@ -505,12 +505,12 @@ export const StuntIsland: IStuntIsLandFS = {
     siIAutoFixTimer = setInterval(siAutoFix, 1803);
 
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |-------------------");
-    console.log("  |--- Stunt Island FilterScript by Matite and Kye");
-    console.log("  |--  Script v1.02");
-    console.log("  |--  13th February 2015");
-    console.log("  |-------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |-------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- Stunt Island FilterScript by Matite and Kye", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.02", LogLevelEnum.INFO);
+    samp.logprint("  |--  13th February 2015", LogLevelEnum.INFO);
+    samp.logprint("  |-------------------", LogLevelEnum.INFO);
 
     return offs;
   },
@@ -540,8 +540,8 @@ export const StuntIsland: IStuntIsLandFS = {
     siVehicleCols.clear();
 
     // Display information in the Server Console
-    console.log("  |-------------------");
-    console.log("  |--  Stunt Island FilterScript Unloaded");
-    console.log("  |-------------------");
+    samp.logprint("  |-------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--  Stunt Island FilterScript Unloaded", LogLevelEnum.INFO);
+    samp.logprint("  |-------------------", LogLevelEnum.INFO);
   },
 };

@@ -1,4 +1,4 @@
-import { Player, TextDraw, I18n, InvalidEnum, LimitsEnum } from "@infernus/core";
+import { LogLevelEnum, Player, TextDraw, I18n, InvalidEnum, LimitsEnum } from "@infernus/core";
 import { innerWeaponConfig, innerGameModeConfig } from "../../config";
 import { wc_GetWeaponName } from "../../hooks/weapon";
 import {
@@ -76,8 +76,8 @@ export function damageFeedUpdate(player: Player, modified = false) {
       orig_PlayerTextDrawBackgroundColor(player.id, td.id, 0x0000001a);
       damageFeedGiven.set(player.id, td);
     } catch (err) {
-      console.log("(wc) WARN: Cannot create damage feed textDraw");
-      console.log(err);
+      samp.logprint("(wc) WARN: Cannot create damage feed textDraw", LogLevelEnum.ERROR);
+      samp.logprint(String(err), LogLevelEnum.ERROR);
     }
   }
 
@@ -102,8 +102,8 @@ export function damageFeedUpdate(player: Player, modified = false) {
 
       damageFeedTaken.set(player.id, td);
     } catch (err) {
-      console.log("(wc) WARN: Cannot create damage feed textDraw");
-      console.log(err);
+      samp.logprint("(wc) WARN: Cannot create damage feed textDraw", LogLevelEnum.ERROR);
+      samp.logprint(String(err), LogLevelEnum.ERROR);
     }
   }
 
@@ -237,7 +237,7 @@ export function damageFeedUpdateText(player: Player) {
     !damageFeedGiven.get(player.id) ||
     damageFeedGiven.get(player.id)!.id === InvalidEnum.TEXT_DRAW
   ) {
-    console.log("(wc) WARN: Doesn't have feed textDraw when needed");
+    samp.logprint("(wc) WARN: Doesn't have feed textDraw when needed", LogLevelEnum.WARNING);
   } else if (internalPlayerTextDraw.get(player.id)[damageFeedGiven.get(player.id)!.id]) {
     if (buf) {
       orig_PlayerTextDrawSetString(
@@ -282,7 +282,7 @@ export function damageFeedUpdateText(player: Player) {
     !damageFeedTaken.get(player.id) ||
     damageFeedTaken.get(player.id)!.id === InvalidEnum.TEXT_DRAW
   ) {
-    console.log("(wc) WARN: Doesn't have feed textDraw when needed");
+    samp.logprint("(wc) WARN: Doesn't have feed textDraw when needed", LogLevelEnum.WARNING);
   } else if (internalPlayerTextDraw.get(player.id)[damageFeedTaken.get(player.id)!.id]) {
     if (buf) {
       orig_PlayerTextDrawSetString(

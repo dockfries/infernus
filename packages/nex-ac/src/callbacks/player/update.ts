@@ -1,4 +1,5 @@
 import {
+  LogLevelEnum,
   E_STREAMER,
   InvalidEnum,
   LimitsEnum,
@@ -89,9 +90,13 @@ PlayerEvent.onUpdate(({ player, next }) => {
             if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[0]) {
               if (++ACInfo.get(player.id).acNOPCount[0] > innerACConfig.AC_MAX_NOP_WARNINGS) {
                 if (innerACConfig.DEBUG) {
-                  console.log($t("DEBUG_CODE_5", [player.id, "GivePlayerWeapon"]));
-                  console.log(
+                  samp.logprint(
+                    $t("DEBUG_CODE_5", [player.id, "GivePlayerWeapon"]),
+                    LogLevelEnum.DEBUG,
+                  );
+                  samp.logprint(
                     `[Nex-AC DEBUG] AC weapon: ${ACInfo.get(player.id).acSetWeapon[ac_s]}, weaponId: ${ac_w}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
                 ac_KickWithCode(player, "", 0, 52, 1);
@@ -118,9 +123,13 @@ PlayerEvent.onUpdate(({ player, next }) => {
             ) {
               if (++ACInfo.get(player.id).acNOPCount[1] > innerACConfig.AC_MAX_NOP_WARNINGS) {
                 if (innerACConfig.DEBUG) {
-                  console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerAmmo"]));
-                  console.log(
+                  samp.logprint(
+                    $t("DEBUG_CODE_5", [player.id, "SetPlayerAmmo"]),
+                    LogLevelEnum.DEBUG,
+                  );
+                  samp.logprint(
                     `[Nex-AC DEBUG] AC ammo: ${ACInfo.get(player.id).acGiveAmmo[ac_s]}, ammo: ${ac_a}, weaponId: ${ac_w}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
                 ac_KickWithCode(player, "", 0, 52, 2);
@@ -212,8 +221,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     ACInfo.get(player.id).acSetWeapon[ac_s] === -1
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] AC weaponId: ${ACInfo.get(player.id).acWeapon[ac_s]}, AC ammo: ${ACInfo.get(player.id).acAmmo[ac_s]}, weaponId: ${ac_w}, ammo: ${ac_a}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 15, 1);
@@ -240,8 +250,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
               (0 > ac_a && ac_a < ACInfo.get(player.id).acAmmo[ac_s]))
           ) {
             if (innerACConfig.DEBUG) {
-              console.log(
+              samp.logprint(
                 `[Nex-AC DEBUG] AC ammo: ${ACInfo.get(player.id).acAmmo[ac_s]}, ammo: ${ac_a}, weaponId: ${ac_w}`,
+                LogLevelEnum.DEBUG,
               );
             }
             ac_KickWithCode(player, "", 0, 16, 1);
@@ -270,9 +281,13 @@ PlayerEvent.onUpdate(({ player, next }) => {
           ) {
             if (++ACInfo.get(player.id).acNOPCount[3] > innerACConfig.AC_MAX_NOP_WARNINGS) {
               if (innerACConfig.DEBUG) {
-                console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerHealth"]));
-                console.log(
+                samp.logprint(
+                  $t("DEBUG_CODE_5", [player.id, "SetPlayerHealth"]),
+                  LogLevelEnum.DEBUG,
+                );
+                samp.logprint(
                   `[Nex-AC DEBUG] AC health: ${ACInfo.get(player.id).acSet[1]}, health: ${ac_health}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 52, 3);
@@ -309,8 +324,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   !ac_NearVendingMachine(player, ACInfo.get(player.id).acInt)))
             ) {
               if (innerACConfig.DEBUG)
-                console.log(
+                samp.logprint(
                   `[Nex-AC DEBUG] AC health: ${ACInfo.get(player.id).acHealth}, health: ${ac_health}`,
+                  LogLevelEnum.DEBUG,
                 );
             }
             ac_KickWithCode(player, "", 0, 12);
@@ -338,9 +354,13 @@ PlayerEvent.onUpdate(({ player, next }) => {
           ) {
             if (++ACInfo.get(player.id).acNOPCount[5] > innerACConfig.AC_MAX_NOP_WARNINGS) {
               if (innerACConfig.DEBUG) {
-                console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerArmour"]));
-                console.log(
+                samp.logprint(
+                  $t("DEBUG_CODE_5", [player.id, "SetPlayerArmour"]),
+                  LogLevelEnum.DEBUG,
+                );
+                samp.logprint(
                   `[Nex-AC DEBUG] AC armour: ${ACInfo.get(player.id).acSet[2]}, armour: ${ac_armour}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 52, 4);
@@ -376,8 +396,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
             ACInfo.get(player.id).acGtc[17] = ac_gtc + 2650;
           } else {
             if (innerACConfig.DEBUG) {
-              console.log(
+              samp.logprint(
                 `[Nex-AC DEBUG] AC armour: ${ACInfo.get(player.id).acArmour}, armour: ${ac_armour}`,
+                LogLevelEnum.DEBUG,
               );
             }
 
@@ -404,8 +425,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
         ACInfo.get(player.id).acDmgRes = ACInfo.get(player.id).acVehDmgRes = false;
         if (++ACInfo.get(player.id).acCheatCount[9] > innerACConfig.AC_MAX_GODMODE_WARNINGS) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC DEBUG] AC health: ${ACInfo.get(player.id).acHealth}, health: ${ac_health}, AC armour: ${ACInfo.get(player.id).acArmour}, armour: ${ac_armour}`,
+              LogLevelEnum.DEBUG,
             );
           }
           ac_KickWithCode(player, "", 0, 19);
@@ -422,7 +444,10 @@ PlayerEvent.onUpdate(({ player, next }) => {
         if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[8]) {
           if (++ACInfo.get(player.id).acNOPCount[8] > innerACConfig.AC_MAX_NOP_WARNINGS) {
             if (innerACConfig.DEBUG) {
-              console.log($t("DEBUG_CODE_5", [player.id, "TogglePlayerSpectating"]));
+              samp.logprint(
+                $t("DEBUG_CODE_5", [player.id, "TogglePlayerSpectating"]),
+                LogLevelEnum.DEBUG,
+              );
             }
             ac_KickWithCode(player, "", 0, 52, 6);
             if (ACInfo.get(player.id).acKicked > 0) return false;
@@ -463,8 +488,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
             if (ac_tmp < ac_dist) ac_dist = ac_tmp;
             if (ac_dist >= 20.0) {
               if (innerACConfig.DEBUG) {
-                console.log(
+                samp.logprint(
                   `[Nex-AC DEBUG] Veh model: ${ac_i}, veh: ${ac_vehId}, dist: ${ac_dist}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 4, 5);
@@ -514,9 +540,13 @@ PlayerEvent.onUpdate(({ player, next }) => {
           ) {
             if (++ACInfo.get(player.id).acNOPCount[7] > innerACConfig.AC_MAX_NOP_WARNINGS) {
               if (innerACConfig.DEBUG) {
-                console.log($t("DEBUG_CODE_5", [player.id, "PutPlayerInVehicle"]));
-                console.log(
+                samp.logprint(
+                  $t("DEBUG_CODE_5", [player.id, "PutPlayerInVehicle"]),
+                  LogLevelEnum.DEBUG,
+                );
+                samp.logprint(
                   `[Nex-AC DEBUG] AC veh: ${ACInfo.get(player.id).acSet[8]}, veh: ${ac_vehId}, AC seat: ${ACInfo.get(player.id).acSet[4]}, seatId: ${ac_s}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 52, 9);
@@ -553,9 +583,13 @@ PlayerEvent.onUpdate(({ player, next }) => {
             if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[10]) {
               if (++ACInfo.get(player.id).acNOPCount[10] > innerACConfig.AC_MAX_NOP_WARNINGS) {
                 if (innerACConfig.DEBUG) {
-                  console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerPos"]));
-                  console.log(
+                  samp.logprint(
+                    $t("DEBUG_CODE_5", [player.id, "SetPlayerPos"]),
+                    LogLevelEnum.DEBUG,
+                  );
+                  samp.logprint(
                     `[Nex-AC DEBUG] Dist: ${ac_dist_set}, acSet[7]: ${ACInfo.get(player.id).acSet[7]}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
                 ac_KickWithCode(player, "", 0, 52, 10);
@@ -579,8 +613,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
             if (ACInfo.get(player.id).acVeh !== ac_vehId) {
               if (ACInfo.get(player.id).acACAllow[4]) {
                 if (innerACConfig.DEBUG) {
-                  console.log(
+                  samp.logprint(
                     `[Nex-AC DEBUG] AC veh: ${ACInfo.get(player.id).acVeh}, veh: ${ac_vehId}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
                 ac_KickWithCode(player, "", 0, 4, 2);
@@ -591,8 +626,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
               ACInfo.get(player.id).acSeat !== ac_s
             ) {
               if (innerACConfig.DEBUG) {
-                console.log(
+                samp.logprint(
                   `[Nex-AC DEBUG] AC seat: ${ACInfo.get(player.id).acSeat}, seatId: ${ac_s}, veh model: ${ac_i}, veh: ${ac_vehId}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 50);
@@ -609,8 +645,14 @@ PlayerEvent.onUpdate(({ player, next }) => {
               if (ac_vsp > 25) ACInfo.get(player.id).acGtc[7] = ac_gtc + 2650;
               else {
                 if (innerACConfig.DEBUG) {
-                  console.log($t("DEBUG_CODE_5", [player.id, "RemovePlayerFromVehicle"]));
-                  console.log(`[Nex-AC DEBUG] Veh model: ${ac_i}, veh: ${ac_vehId}`);
+                  samp.logprint(
+                    $t("DEBUG_CODE_5", [player.id, "RemovePlayerFromVehicle"]),
+                    LogLevelEnum.DEBUG,
+                  );
+                  samp.logprint(
+                    `[Nex-AC DEBUG] Veh model: ${ac_i}, veh: ${ac_vehId}`,
+                    LogLevelEnum.DEBUG,
+                  );
                 }
                 ac_KickWithCode(player, "", 0, 52, 8);
                 if (ACInfo.get(player.id).acKicked > 0) return false;
@@ -625,8 +667,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
               ACVehInfo.get(ac_vehId).acDriver !== InvalidEnum.PLAYER_ID
             ) {
               if (innerACConfig.DEBUG) {
-                console.log(
+                samp.logprint(
                   `[Nex-AC DEBUG] AC driver: ${ACVehInfo.get(ac_vehId).acDriver}, driver: ${player.id}, veh: ${ac_vehId}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
 
@@ -649,9 +692,13 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 ) {
                   if (++ACInfo.get(player.id).acNOPCount[4] > innerACConfig.AC_MAX_NOP_WARNINGS) {
                     if (innerACConfig.DEBUG) {
-                      console.log($t("DEBUG_CODE_5", [player.id, "SetVehicleHealth"]));
-                      console.log(
+                      samp.logprint(
+                        $t("DEBUG_CODE_5", [player.id, "SetVehicleHealth"]),
+                        LogLevelEnum.DEBUG,
+                      );
+                      samp.logprint(
                         `[Nex-AC DEBUG] AC veh health: ${ACInfo.get(player.id).acSetVehHealth}, veh health: ${ac_vHealth}, veh: ${ac_vehId}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 52, 11);
@@ -683,8 +730,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   !ac_InPayNSpray(ACInfo.get(player.id).acInt, ac_pX, ac_pY, ac_pZ))
               ) {
                 if (innerACConfig.DEBUG) {
-                  console.log(
+                  samp.logprint(
                     `[Nex-AC DEBUG] AC veh health: ${ACVehInfo.get(ac_vehId).acHealth}, veh health: ${ac_vHealth}, veh: ${ac_vehId}, playerId: ${player.id}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
                 ac_KickWithCode(player, "", 0, 11);
@@ -711,8 +759,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   innerACConfig.AC_MAX_GODMODE_VEH_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC DEBUG] AC veh health: ${ACVehInfo.get(ac_vehId).acHealth}, veh health: ${ac_vHealth}, veh: ${ac_vehId}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 20);
@@ -743,8 +792,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                       innerACConfig.AC_MAX_TELEPORT_GLITCH_WARNINGS)
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC DEBUG] Dist: ${ac_dist}, dist set: ${ac_dist_set}, old pos diff: ${ACVehInfo.get(ac_vehId).acPosDiff}, speed: ${ac_vsp}, veh: ${ac_vehId}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 3, 2);
@@ -757,8 +807,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 if (ac_dist >= 40.0 && ac_dist_set >= 40.0) {
                   if (ACInfo.get(player.id).acACAllow[3]) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] Speed: ${ac_vsp}, dist: ${ac_dist}, dist set: ${ac_dist_set}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 3, 4);
@@ -769,8 +820,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     ++ACInfo.get(player.id).acCheatCount[2] > innerACConfig.AC_MAX_AIR_VEH_WARNINGS
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] Speed: ${ac_vsp}, dist: ${ac_dist}, veh: ${ac_vehId}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 1, 1);
@@ -788,8 +840,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
               if (ACInfo.get(player.id).acACAllow[10]) {
                 if (ac_spDiff > 220 || ac_vsp > 620) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC DEBUG] Speed: ${ac_vsp}, old speed: ${ACVehInfo.get(ac_vehId).acSpeed}, veh model: ${ac_i}, veh: ${ac_vehId}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 10, 3);
@@ -818,8 +871,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     innerACConfig.AC_MAX_SPEEDHACK_VEH_WARNINGS
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] Speed: ${ac_vsp}, old speed: ${ACVehInfo.get(ac_vehId).acSpeed}, veh model: ${ac_i}, veh: ${ac_vehId}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 10, 1);
@@ -850,8 +904,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 ac_vZ < 0.0 !== ACVehInfo.get(ac_vehId).acVelZ < 0.0
               ) {
                 if (innerACConfig.DEBUG) {
-                  console.log(
+                  samp.logprint(
                     `[Nex-AC DEBUG] Speed: ${ac_vsp}, speed diff: ${ac_spDiff}, z angle: ${ac_zAngle}, old z angle: ${ACVehInfo.get(ac_vehId).acZAngle}, veh: ${ac_vehId}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
                 ac_KickWithCode(player, "", 0, 25);
@@ -863,8 +918,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   (ac_sa = ac_GetSpeed(ac_vX, ac_vY)) > 270
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC DEBUG] Speed (x, y): ${ac_sa}, veh model: ${ac_i}, veh: ${ac_vehId}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 10, 2);
@@ -887,8 +943,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                       : innerACConfig.AC_MAX_FLYHACK_VEH_WARNINGS)
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] Vel z: ${ac_vZ}, old vel z: ${ACVehInfo.get(ac_vehId).acVelZ}, pos diff x, y, z: ${ACInfo.get(player.id).acPosX - ac_pX}, ${ACInfo.get(player.id).acPosY - ac_pY}, ${ac_tmp}, veh: ${ac_vehId}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 8, 1);
@@ -906,8 +963,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
               (ac_spDiff > 220 || ac_vsp > 620)
             ) {
               if (innerACConfig.DEBUG) {
-                console.log(
+                samp.logprint(
                   `[Nex-AC DEBUG] Speed: ${ac_vsp}, old speed: ${ACVehInfo.get(ac_vehId).acSpeed}, veh model: ${ac_i}, veh: ${ac_vehId}`,
+                  LogLevelEnum.DEBUG,
                 );
               }
               ac_KickWithCode(player, "", 0, 10, 5);
@@ -939,8 +997,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   ++ACInfo.get(player.id).acCheatCount[13] > innerACConfig.AC_MAX_FLYHACK_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC DEBUG] Anim: ${ac_sa}, old anim: ${ACInfo.get(player.id).acAnim}, old veh: ${ACInfo.get(player.id).acVeh}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 7, 2);
@@ -959,8 +1018,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   ++ACInfo.get(player.id).acCheatCount[13] > innerACConfig.AC_MAX_FLYHACK_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC DEBUG] Speed: ${ac_s}, old speed: ${ACInfo.get(player.id).acSpeed}, anim: ${ac_sa}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 7, 3);
@@ -976,8 +1036,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     ++ACInfo.get(player.id).acCheatCount[13] > innerACConfig.AC_MAX_FLYHACK_WARNINGS
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] Anim: ${ac_sa}, old anim: ${ACInfo.get(player.id).acAnim}, weaponId: ${ac_w}, spec act: ${ac_specAct}, vel x, y: ${ac_tmp}, vel z: ${ac_vZ}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 7, 1);
@@ -1010,8 +1071,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                   ++ACInfo.get(player.id).acCheatCount[17] > innerACConfig.AC_MAX_CJ_RUN_WARNINGS
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC DEBUG] Skin: ${ac_i}, old anim: ${ACInfo.get(player.id).acAnim}, weaponId: ${ac_w}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 30);
@@ -1042,9 +1104,13 @@ PlayerEvent.onUpdate(({ player, next }) => {
               ) {
                 if (++ACInfo.get(player.id).acNOPCount[6] > innerACConfig.AC_MAX_NOP_WARNINGS) {
                   if (innerACConfig.DEBUG) {
-                    console.log($t("DEBUG_CODE_5", [player.id, "SetPlayerSpecialAction"]));
-                    console.log(
+                    samp.logprint(
+                      $t("DEBUG_CODE_5", [player.id, "SetPlayerSpecialAction"]),
+                      LogLevelEnum.DEBUG,
+                    );
+                    samp.logprint(
                       `[Nex-AC DEBUG] AC spec act: ${ACInfo.get(player.id).acSet[3]}, spec act: ${ac_specAct}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 52, 12);
@@ -1091,8 +1157,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     )
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] AC spec act: ${ACInfo.get(player.id).acSpecAct}, spec act: ${ac_specAct}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 18, 2);
@@ -1109,8 +1176,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     )) >= 15.0
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] AC spec act: ${ACInfo.get(player.id).acSpecAct}, spec act: ${ac_specAct}, dist: ${ac_tmp}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 18, 3);
@@ -1152,8 +1220,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                         ac_specAct !== SpecialActionsEnum.USECELLPHONE))
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] AC spec act: ${ACInfo.get(player.id).acSpecAct}, spec act: ${ac_specAct}, last spec act: ${ACInfo.get(player.id).acLastSpecAct}, old veh: ${ACInfo.get(player.id).acVeh}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 18, 5);
@@ -1185,8 +1254,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                       innerACConfig.AC_MAX_TELEPORT_GLITCH_WARNINGS)
                 ) {
                   if (innerACConfig.DEBUG) {
-                    console.log(
+                    samp.logprint(
                       `[Nex-AC DEBUG] Dist: ${ac_dist}, dist set: ${ac_dist_set}, speed: ${ac_s}, pos x, y, z: ${ac_pX}, ${ac_pY}, ${ac_pZ}, old pos x, y, z: ${ACInfo.get(player.id).acPosX}, ${ACInfo.get(player.id).acPosY}, ${ACInfo.get(player.id).acPosZ}`,
+                      LogLevelEnum.DEBUG,
                     );
                   }
                   ac_KickWithCode(player, "", 0, 2, 2);
@@ -1208,8 +1278,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 ) {
                   if (ACInfo.get(player.id).acACAllow[2]) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] Speed: ${ac_s}, dist: ${ac_dist}, dist set: ${ac_dist_set}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 2, 3);
@@ -1218,7 +1289,10 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 } else if (ACInfo.get(player.id).acACAllow[0] && (ac_s >= 3.0 || ac_dist >= 3.0)) {
                   if (++ACInfo.get(player.id).acCheatCount[1] > innerACConfig.AC_MAX_AIR_WARNINGS) {
                     if (innerACConfig.DEBUG)
-                      console.log(`[Nex-AC DEBUG] Speed: ${ac_s}, dist: ${ac_dist}`);
+                      samp.logprint(
+                        `[Nex-AC DEBUG] Speed: ${ac_s}, dist: ${ac_dist}`,
+                        LogLevelEnum.DEBUG,
+                      );
                   }
                   ac_KickWithCode(player, "", 0, 0);
                   if (ACInfo.get(player.id).acKicked > 0) return false;
@@ -1231,8 +1305,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
             if (ACInfo.get(player.id).acACAllow[9]) {
               if (ACInfo.get(player.id).acSpeed < ac_s && ac_s > 518) {
                 if (innerACConfig.DEBUG) {
-                  console.log(
+                  samp.logprint(
                     `[Nex-AC DEBUG] Speed: ${ac_s}, old speed: ${ACInfo.get(player.id).acSpeed}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
                 ac_KickWithCode(player, "", 0, 9, 1);
@@ -1251,8 +1326,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     innerACConfig.AC_MAX_SPEEDHACK_WARNINGS
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] Speed: ${ac_s}, speed x, y: ${ac_i}, vel z: ${ac_vZ}, pos diff z: ${ac_tmp}, old speed: ${ACInfo.get(player.id).acSpeed}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 9, 2);
@@ -1285,8 +1361,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                       innerACConfig.AC_MAX_SPEEDHACK_WARNINGS
                   ) {
                     if (innerACConfig.DEBUG) {
-                      console.log(
+                      samp.logprint(
                         `[Nex-AC DEBUG] Speed: ${ac_s}, old speed: ${ACInfo.get(player.id).acSpeed}, veh model: ${ac_a1.getModel()}, veh speed: ${ac_i}`,
+                        LogLevelEnum.DEBUG,
                       );
                     }
                     ac_KickWithCode(player, "", 0, 9, 3);
@@ -1305,8 +1382,9 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 } else ACInfo.get(player.id).acCheatCount[15] = 0;
               } else if (ACInfo.get(player.id).acSpeed < ac_s && ac_s > 518) {
                 if (innerACConfig.DEBUG) {
-                  console.log(
+                  samp.logprint(
                     `[Nex-AC DEBUG] Speed: ${ac_s}, old speed: ${ACInfo.get(player.id).acSpeed}`,
+                    LogLevelEnum.DEBUG,
                   );
                 }
 

@@ -5,6 +5,7 @@
 
 import type { IFilterScript, Player } from "@infernus/core";
 import {
+  LogLevelEnum,
   InvalidEnum,
   PlayerEvent,
   TextDraw,
@@ -357,7 +358,7 @@ export const SkinChanger: IFilterScript = {
       return next();
     });
 
-    console.log("\n--Admin Player Skin Changer Loaded\n");
+    samp.logprint("\n--Admin Player Skin Changer Loaded\n", LogLevelEnum.INFO);
 
     return [onPlayerClickGlobal, onPlayerClickPlayer, skinChange];
   },

@@ -1,4 +1,11 @@
-import { defineEvent, GameMode, InvalidEnum, Player, PlayerStateEnum } from "@infernus/core";
+import {
+  LogLevelEnum,
+  defineEvent,
+  GameMode,
+  InvalidEnum,
+  Player,
+  PlayerStateEnum,
+} from "@infernus/core";
 import { innerACConfig } from "../config";
 import { $t } from "../lang";
 import { ac_sInfo, ac_Mtfc } from "../constants";
@@ -172,14 +179,19 @@ export function ac_KickWithCode(
   }
   if (!innerACConfig.NO_SUSPICION_LOGS) {
     const ac_strTmp = code2 !== 0 ? ` (${code2})` : "";
-    if (type) console.log($t("SUSPICION_2", [ipAddress, (code + "").padStart(3, "0"), ac_strTmp]));
+    if (type)
+      samp.logprint(
+        $t("SUSPICION_2", [ipAddress, (code + "").padStart(3, "0"), ac_strTmp]),
+        LogLevelEnum.WARNING,
+      );
     else
-      console.log(
+      samp.logprint(
         $t("SUSPICION_1", [
           typeof player === "number" ? player : player.id,
           (code + "").padStart(3, "0"),
           ac_strTmp,
         ]),
+        LogLevelEnum.WARNING,
       );
   }
   triggerCheatDetected(player, ipAddress, type, code);
@@ -190,7 +202,10 @@ export function ac_FloodDetect(player: Player, publicId: number) {
   if (ACInfo.get(player.id).acKicked < 1) {
     if (++ACInfo.get(player.id).acFloodCount[publicId] > ac_Mtfc[publicId][1]) {
       if (innerACConfig.DEBUG) {
-        console.log($t("DEBUG_CODE_1", [player.id, ac_Mtfc[publicId][1], publicId]));
+        samp.logprint(
+          $t("DEBUG_CODE_1", [player.id, ac_Mtfc[publicId][1], publicId]),
+          LogLevelEnum.DEBUG,
+        );
       }
 
       ac_KickWithCode(player, "", 0, 49, publicId);

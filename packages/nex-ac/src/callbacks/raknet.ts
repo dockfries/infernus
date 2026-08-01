@@ -1,4 +1,5 @@
 import {
+  LogLevelEnum,
   BulletHitTypesEnum,
   InvalidEnum,
   LimitsEnum,
@@ -278,8 +279,9 @@ IPacket(AC_TRAILER_SYNC, ({ playerId, bs, next }) => {
         Math.abs(ac_tData.velocity[2]) >= Math.abs(ACVehInfo.get(trailerId)!.acVelZ)))
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(
+      samp.logprint(
         `[Nex-AC DEBUG] Pos x, y, z: ${ac_tData.position[0]}, ${ac_tData.position[1]}, ${ac_tData.position[2]}, vel x, y, z: ${ac_tData.velocity[0]}, ${ac_tData.velocity[1]}, ${ac_tData.velocity[2]}`,
+        LogLevelEnum.DEBUG,
       );
     }
     return ac_KickWithCode(Player.getInstance(playerId)!, "", 0, 31, 3);
@@ -297,8 +299,9 @@ IPacket(AC_TRAILER_SYNC, ({ playerId, bs, next }) => {
   if (ACInfo.get(playerId).acACAllow[5] && (ac_dist >= 80.0 || ac_tmp >= 40.0)) {
     const { x: ac_x, y: ac_y, z: ac_z } = Vehicle.getInstance(trailerId)!.getPos();
     if (innerACConfig.DEBUG) {
-      console.log(
+      samp.logprint(
         `[Nex-AC DEBUG] Dist: ${ac_dist}, truck dist: ${ac_tmp}, old pos z: ${ac_z}, veh: ${trailerId}, playerId: ${playerId}`,
+        LogLevelEnum.DEBUG,
       );
     }
     ac_KickWithCode(Player.getInstance(playerId)!, "", 0, 5, 2);

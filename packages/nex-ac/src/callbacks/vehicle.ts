@@ -1,4 +1,5 @@
 import {
+  LogLevelEnum,
   InvalidEnum,
   LimitsEnum,
   Player,
@@ -42,8 +43,9 @@ VehicleEvent.onPlayerEnter(({ player, vehicle, isPassenger, next }) => {
       (ac_model <= 0 || (!vehicle.isStreamedIn(player) && !ac_IsATrainCarriageEx(ac_model)))
     ) {
       if (innerACConfig.DEBUG) {
-        console.log(
+        samp.logprint(
           `[Nex-AC DEBUG] Veh: ${vehicle.id}, veh model: ${ac_model}, isPassenger: ${isPassenger}`,
+          LogLevelEnum.DEBUG,
         );
       }
       return ac_KickWithCode(player, "", 0, 44, 1);
@@ -60,8 +62,9 @@ VehicleEvent.onPlayerEnter(({ player, vehicle, isPassenger, next }) => {
         (ac_dist >= 20.0 && ac_model !== 553 && ac_model !== 577 && ac_model !== 592)
       ) {
         if (innerACConfig.DEBUG) {
-          console.log(
+          samp.logprint(
             `[Nex-AC DEBUG] Veh model: ${ac_model}, veh: ${vehicle.id}, dist: ${ac_dist}, isPassenger: ${isPassenger}, playerId: ${player.id}`,
+            LogLevelEnum.DEBUG,
           );
         }
         ac_KickWithCode(player, "", 0, 5, 3);
@@ -111,7 +114,10 @@ VehicleEvent.onPlayerExit(({ player, vehicle, next }) => {
     ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[7] = ac_i;
     if (ACInfo.get(player.id).acACAllow[44] && !vehicle.isStreamedIn(player)) {
       if (innerACConfig.DEBUG) {
-        console.log(`[Nex-AC DEBUG] Veh: ${vehicle.id}, veh model: ${vehicle.getModel()}`);
+        samp.logprint(
+          `[Nex-AC DEBUG] Veh: ${vehicle.id}, veh model: ${vehicle.getModel()}`,
+          LogLevelEnum.DEBUG,
+        );
       }
       return ac_KickWithCode(player, "", 0, 44, 5);
     }
@@ -151,8 +157,9 @@ VehicleEvent.onMod(({ player, vehicle, componentId, next }) => {
     !ac_IsCompatible((ac_i = vehicle.getModel()), componentId)
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(
+      samp.logprint(
         `[Nex-AC DEBUG] Veh model: ${ac_i}, veh: ${vehicle.id}, componentId: ${componentId}`,
+        LogLevelEnum.DEBUG,
       );
     }
     return ac_KickWithCode(player, "", 0, 43, 1);
@@ -180,8 +187,9 @@ VehicleEvent.onPaintjob(({ player, vehicle, paintjobId, next }) => {
     paintjobId !== 255
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(
+      samp.logprint(
         `[Nex-AC DEBUG] Veh model: ${vehicle.getModel()}, veh: ${vehicle.id}, paintjobId: ${paintjobId}`,
+        LogLevelEnum.DEBUG,
       );
     }
     ac_KickWithCode(player, "", 0, 43, 2);
@@ -209,8 +217,9 @@ VehicleEvent.onRespray(({ player, vehicle, color, next }) => {
   if (!innerACConfig.AC_USE_TUNING_GARAGES && !innerACConfig.AC_USE_PAYNSPRAY) {
     if (ACInfo.get(player.id).acACAllow[23]) {
       if (innerACConfig.DEBUG) {
-        console.log(
+        samp.logprint(
           `[Nex-AC DEBUG] Veh model: ${vehicle.getModel()}, veh: ${vehicle.id}, color1: ${color[0]}, color2: ${color[1]}`,
+          LogLevelEnum.DEBUG,
         );
       }
       ac_KickWithCode(player, "", 0, 23, 5);
@@ -365,8 +374,9 @@ VehicleEvent.onUnoccupiedUpdate(
           Math.abs(velZ) >= Math.abs(ACVehInfo.get(vehicleId).acVelZ)))
     ) {
       if (innerACConfig.DEBUG) {
-        console.log(
+        samp.logprint(
           `[Nex-AC DEBUG] Pos x, y, z: ${newX}, ${newY}, ${newZ}, vel x, y, z: ${velX}, ${velY}, ${velZ}`,
+          LogLevelEnum.DEBUG,
         );
       }
       return ac_KickWithCode(player, "", 0, 31, 2);
@@ -381,8 +391,9 @@ VehicleEvent.onUnoccupiedUpdate(
       const ac_dist = player.getDistanceFromPoint(newX, newY, newZ);
       if (ac_dist >= 120.0) {
         if (innerACConfig.DEBUG) {
-          console.log(
+          samp.logprint(
             `[Nex-AC DEBUG] Dist: ${ac_dist}, veh: ${vehicleId}, seat: ${passengerSeat}, playerId: ${player.id}`,
+            LogLevelEnum.DEBUG,
           );
         }
 
@@ -413,8 +424,9 @@ VehicleEvent.onUnoccupiedUpdate(
       ) {
         if (++ACInfo.get(player.id).acCheatCount[4] > innerACConfig.AC_MAX_CARSHOT_WARNINGS) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC DEBUG] Vel x, y, z: ${velX}, ${velY}, ${velZ}, old vel x, y: ${ACVehInfo.get(vehicleId).acVelX}, ${ACVehInfo.get(vehicleId).acVelY}, pos diff x, y, z: ${newX - ac_x}, ${newY - ac_y}, ${ac_zDiff}, veh: ${vehicleId}`,
+              LogLevelEnum.DEBUG,
             );
           }
           ac_KickWithCode(player, "", 0, 31, 1);
@@ -436,8 +448,9 @@ VehicleEvent.onUnoccupiedUpdate(
       ) {
         if (++ACInfo.get(player.id).acCheatCount[3] > innerACConfig.AC_MAX_FLYHACK_VEH_WARNINGS) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC DEBUG] Vel z: ${velZ}, old vel z: ${ACVehInfo.get(vehicleId).acVelZ}, pos diff x, y, z: ${ac_x - newX}, ${ac_y - newY}, ${ac_zDiff}, veh: ${vehicleId}`,
+              LogLevelEnum.DEBUG,
             );
           }
           ac_KickWithCode(player, "", 0, 8, 2);
@@ -449,8 +462,9 @@ VehicleEvent.onUnoccupiedUpdate(
       } else if (ACInfo.get(player.id).acACAllow[1] && ac_dist >= 2.6 && ac_vsp < 63) {
         if (++ACInfo.get(player.id).acCheatCount[2] > innerACConfig.AC_MAX_AIR_VEH_WARNINGS) {
           if (innerACConfig.DEBUG) {
-            console.log(
+            samp.logprint(
               `[Nex-AC DEBUG] Speed: ${ac_vsp}, dist: ${ac_dist}, old pos diff: ${ACVehInfo.get(vehicleId).acPosDiff}, veh: ${vehicleId}, seat: ${passengerSeat}`,
+              LogLevelEnum.DEBUG,
             );
           }
           ac_KickWithCode(player, "", 0, 1, 2);
@@ -468,8 +482,9 @@ VehicleEvent.onUnoccupiedUpdate(
       (ac_z >= -45.0 || ac_GetVectorDist(newX - ac_x, newY - ac_y) >= 180.0)
     ) {
       if (innerACConfig.DEBUG) {
-        console.log(
+        samp.logprint(
           `[Nex-AC DEBUG] Dist: ${ac_dist}, old pos diff: ${ACVehInfo.get(vehicleId).acPosDiff}, old pos z: ${ac_z}, veh: ${vehicleId}, seat: ${passengerSeat}, playerId: ${player.id}`,
+          LogLevelEnum.DEBUG,
         );
       }
 

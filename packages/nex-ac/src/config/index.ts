@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import fsPromise from "node:fs/promises";
 import path from "node:path";
+import { LogLevelEnum } from "@infernus/core";
 import { ac_ACAllow, ac_NOPAllow } from "../constants";
 import { i18n } from "../lang";
 
@@ -147,7 +148,7 @@ export async function ac_LoadCfg() {
       await ac_writeCfg();
     }
   } catch (err) {
-    console.log(err);
+    samp.logprint(String(err), LogLevelEnum.ERROR);
     return false;
   }
   return true;
@@ -162,7 +163,7 @@ export async function ac_writeCfg() {
       .join("\n");
     await fsPromise.writeFile(FULL_AC_CONFIG_FILE(), ac_string, "utf-8");
   } catch (err) {
-    console.log(err);
+    samp.logprint(String(err), LogLevelEnum.ERROR);
     return false;
   }
   return true;
@@ -183,7 +184,7 @@ export async function ac_LoadNOPCfg() {
       await ac_writeNOPCfg();
     }
   } catch (err) {
-    console.log(err);
+    samp.logprint(String(err), LogLevelEnum.ERROR);
     return false;
   }
   return true;
@@ -198,7 +199,7 @@ export async function ac_writeNOPCfg() {
       .join("\n");
     await fsPromise.writeFile(FULL_AC_NOP_CONFIG_FILE(), ac_string, "utf-8");
   } catch (err) {
-    console.log(err);
+    samp.logprint(String(err), LogLevelEnum.ERROR);
     return false;
   }
   return true;

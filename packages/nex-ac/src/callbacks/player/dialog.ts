@@ -1,4 +1,4 @@
-import { PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, PlayerEvent } from "@infernus/core";
 import { ACInfo } from "../../struct";
 import { innerACConfig } from "../../config";
 import { ac_Mtfc } from "../../constants";
@@ -17,8 +17,9 @@ PlayerEvent.onDialogResponse(({ player, dialogId, listItem, inputText, next }) =
     (dialogId !== ACInfo.get(player.id).acDialog || listItem < -1)
   ) {
     if (innerACConfig.DEBUG) {
-      console.log(
+      samp.logprint(
         `[Nex-AC DEBUG] AC dialog: ${ACInfo.get(player.id).acDialog}, dialogId: ${dialogId}, listItem: ${listItem}`,
+        LogLevelEnum.DEBUG,
       );
     }
     ac_KickWithCode(player, "", 0, 39);

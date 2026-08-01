@@ -4,7 +4,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { Player, IFilterScript } from "@infernus/core";
-import { DynamicPickup, Dynamic3DTextLabel, PlayerEvent, DynamicPickupEvent } from "@infernus/core";
+import {
+  DynamicPickup,
+  Dynamic3DTextLabel,
+  LogLevelEnum,
+  PlayerEvent,
+  DynamicPickupEvent,
+} from "@infernus/core";
 import type { E_INTERIORS, E_PROPERTIES } from "./interfaces";
 import {
   MAX_INTERIORS,
@@ -120,7 +126,7 @@ function readInteriorInfo(fileName: string) {
     const fullPath = path.resolve(process.cwd(), "scriptfiles", fileName);
     fs.readFile(fullPath, "utf8", (err, data) => {
       if (err) {
-        // console.log(`Could Not Read Interiors file ( ${fileName} )`);
+        // samp.logprint(`Could Not Read Interiors file ( ${fileName} )`);
         return reject(err);
       }
       const lines = data.replaceAll("\r\n", "\n").replaceAll(" ;", "").split("\n");
@@ -138,11 +144,11 @@ function readInteriorInfo(fileName: string) {
           inExitA: +inExitA,
           inName,
         });
-        // console.log(
+        // samp.logprint(
         //   `ReadInteriorInfo(${uniqId}, ${inIntID}, ${inExitX}, ${inExitY}, ${inExitZ}, ${inExitA} ( ${inName} ))`,
         // );
       }
-      // console.log("Interiors File read successfully");
+      // samp.logprint("Interiors File read successfully");
       resolve(data);
     });
   });
@@ -150,7 +156,7 @@ function readInteriorInfo(fileName: string) {
 
 function readPropertyFile(fileName: string) {
   return new Promise<string>((resolve, reject) => {
-    console.log("Reading File: %s", fileName);
+    samp.logprint(`Reading File: ${fileName}`, LogLevelEnum.INFO);
     const fullPath = path.resolve(process.cwd(), "scriptfiles", fileName);
     fs.readFile(fullPath, "utf8", (err, data) => {
       if (err) return reject(err);
@@ -159,7 +165,7 @@ function readPropertyFile(fileName: string) {
         const line = lines[i];
         if (!line) continue;
         const [pIcon, enX, enY, enZ, enA, uniqIntId, others] = line.split(", ");
-        if (!others) console.log(line);
+        if (!others) samp.logprint(line, LogLevelEnum.DEBUG);
         const p_type = others.split(" ;")[0];
         // const comment = others.split(' ;')[1];
         createProperty(+uniqIntId, +pIcon, +enX, +enY, +enZ, +enA, +p_type);
@@ -214,7 +220,7 @@ function addProperty(
 
   if (interiorId) {
     const tmp = `${propIcons[pType][0]}, ${entX}, ${entY}, ${entZ}, ${entA}, ${uniqIntId}, ${pType} ; //${comment}\n`;
-    console.log("PropDB - %s", tmp);
+    samp.logprint(`PropDB - ${tmp}`, LogLevelEnum.DEBUG);
     const fullPath = path.resolve(process.cwd(), "scriptfiles", propFile[pType]);
     fs.writeFile(fullPath, tmp, { flag: "a" }, () => {});
     return createProperty(uniqIntId, propIcons[pType][0], entX, entY, entZ, entA, pType);
@@ -242,7 +248,7 @@ function createProperty(
     z: entZ,
     worldId: 0,
   });
-  // console.log(`CreateProperty(${uniqIntId}, ${iconId}, ${entX}, ${entY}, ${entZ}, ${entA}, ${p_type})`);
+  // samp.logprint(`CreateProperty(${uniqIntId}, ${iconId}, ${entX}, ${entY}, ${entZ}, ${entA}, ${p_type})`);
   pickup.create();
   propPickups.push(pickup);
   properties.set(pickup, {
@@ -365,13 +371,16 @@ async function loadProperties() {
   try {
     await readInteriorInfo("properties/interiors.txt");
   } catch (err) {
-    console.log("Could Not Read Interiors file (properties/interiors.txt)", err);
+    samp.logprint(
+      `Could Not Read Interiors file (properties/interiors.txt): ${err}`,
+      LogLevelEnum.ERROR,
+    );
   }
   for (let i = 0; i < propFile.length; i++) {
     try {
       await readPropertyFile(propFile[i]);
     } catch (err) {
-      console.log(`Could Not Read Property file (${propFile[i]})`, err);
+      samp.logprint(`Could Not Read Property file (${propFile[i]}): ${err}`, LogLevelEnum.ERROR);
     }
   }
   return 1;
@@ -423,7 +432,7 @@ export const GlProperty: IFilterScript = {
     });
 
     const onPlayerPickUp = DynamicPickupEvent.onPlayerPickUp(({ player, pickup, next }) => {
-      // console.log(`DEBUG: Player ${player.id} pickedup Pickup %d Prop Id ${pickup.id}`);
+      // samp.logprint(`DEBUG: Player ${player.id} pickedup Pickup %d Prop Id ${pickup.id}`);
       lastPickup.set(player, pickup);
       const prop = properties.get(pickup);
       if (!prop) return next();
@@ -579,9 +588,9 @@ export const GlProperty: IFilterScript = {
       return next();
     });
 
-    console.log("\n-----------------------------------");
-    console.log("Grand Larceny Property FilterScript		");
-    console.log("-----------------------------------\n");
+    samp.logprint("\n-----------------------------------", LogLevelEnum.INFO);
+    samp.logprint("Grand Larceny Property FilterScript		", LogLevelEnum.INFO);
+    samp.logprint("-----------------------------------\n", LogLevelEnum.INFO);
 
     return [
       onInteriorChange,

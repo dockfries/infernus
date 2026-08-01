@@ -34,6 +34,7 @@ import {
   GameText,
   InvalidEnum,
   KeysEnum,
+  LogLevelEnum,
   Player,
   PlayerEvent,
 } from "@infernus/core";
@@ -456,7 +457,7 @@ async function showElevatorDialog(player: Player) {
       listItem = result.listItem;
     } catch (err) {
       // dialog.show() rejects on timeout/disconnect; avoid an unhandled rejection
-      console.log("sf_zombo_tech: elevator dialog failed:", err);
+      samp.logprint(`sf_zombo_tech: elevator dialog failed: ${err}`, LogLevelEnum.ERROR);
       return false;
     }
 
@@ -495,12 +496,12 @@ export const SFZomboTech: ISFZomboTechFS = {
   name: "sf_zombo_tech",
   load(options) {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------------------------------------------------");
-    console.log("  |--- SF ZomboTech FilterScript");
-    console.log("  |--  Script v1.01");
-    console.log("  |--  12th January 2015");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- SF ZomboTech FilterScript", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.01", LogLevelEnum.INFO);
+    samp.logprint("  |--  12th January 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     // Create the SF ZomboTech Building object
     sfZomboTechBuildingObject = new DynamicObject({
@@ -527,7 +528,7 @@ export const SFZomboTech: ISFZomboTechFS = {
     sfZomboTechLabObject.create();
 
     // Display information in the Server Console
-    console.log("  |--  SF ZomboTech Building and Lab objects created");
+    samp.logprint("  |--  SF ZomboTech Building and Lab objects created", LogLevelEnum.INFO);
 
     // Reset the elevator queue
     resetElevatorQueue();
@@ -536,8 +537,8 @@ export const SFZomboTech: ISFZomboTechFS = {
     elevator_Initialize();
 
     // Display information in the Server Console
-    console.log("  |--  SF ZomboTech Building Elevator created");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |--  SF ZomboTech Building Elevator created", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     Player.getInstances().forEach((p) => {
       removeBuilding(p);
@@ -602,7 +603,7 @@ export const SFZomboTech: ISFZomboTechFS = {
       if (!player.isInAnyVehicle() && newKeys & KeysEnum.YES) {
         const pos = player.getPos();
 
-        // console.log(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
+        // samp.logprint(`X = ${pos.x} | Y = ${pos.y} | Z = ${pos.z}`);
 
         if (
           pos.y < constants.Y_ELEVATOR_POS + 1.8 &&
@@ -628,7 +629,7 @@ export const SFZomboTech: ISFZomboTechFS = {
               i = 0;
             } else i = 1;
 
-            //console.logf("Floor = %d | State = %d | i = %d", ElevatorFloor, ElevatorState, i);
+            //samp.logprintf("Floor = %d | State = %d | i = %d", ElevatorFloor, ElevatorState, i);
 
             // Check if the elevator is not moving and already on the requested floor
             if (elevatorState !== constants.ELEVATOR_STATE_MOVING && elevatorFloor === i) {
@@ -641,7 +642,7 @@ export const SFZomboTech: ISFZomboTechFS = {
               return true;
             }
 
-            //console.logf("Call Elevator to Floor %i", i);
+            //samp.logprintf("Call Elevator to Floor %i", i);
 
             callElevator(player, i);
             new GameText("~r~Elevator called", 3500, 4).forPlayer(player);
@@ -695,8 +696,8 @@ export const SFZomboTech: ISFZomboTechFS = {
       sfZomboTechBuildingObject = null;
 
       // Display information in the Server Console
-      console.log("  |---------------------------------------------------");
-      console.log("  |--  SF ZomboTech Building object destroyed");
+      samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+      samp.logprint("  |--  SF ZomboTech Building object destroyed", LogLevelEnum.INFO);
     }
 
     // Check for valid object
@@ -706,14 +707,14 @@ export const SFZomboTech: ISFZomboTechFS = {
       sfZomboTechLabObject = null;
 
       // Display information in the Server Console
-      console.log("  |--  SF ZomboTech Lab object destroyed");
+      samp.logprint("  |--  SF ZomboTech Lab object destroyed", LogLevelEnum.INFO);
     }
 
     // Destroy the elevator, the elevator doors and the elevator floor doors
     elevator_Destroy();
 
     // Display information in the Server Console
-    console.log("  |--  SF ZomboTech Building Elevator destroyed");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |--  SF ZomboTech Building Elevator destroyed", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
   },
 };

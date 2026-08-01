@@ -5,6 +5,7 @@ import {
   GameMode,
   GameText,
   CameraCutStylesEnum,
+  LogLevelEnum,
   Player,
   KeysEnum,
 } from "@infernus/core";
@@ -119,10 +120,10 @@ function worldSelect(player: Player) {
     const fullPath = path.resolve(process.cwd(), "scriptfiles", "TIME-WEATHER.txt");
     fs.writeFile(fullPath, cString, { flag: "a" }, (err) => {
       if (err) {
-        console.log('Failed to create the file "TIME-WEATHER.txt".\n');
-        console.log(err);
+        samp.logprint('Failed to create the file "TIME-WEATHER.txt".\n', LogLevelEnum.ERROR);
+        samp.logprint(String(err), LogLevelEnum.ERROR);
       } else {
-        console.log(cString);
+        samp.logprint(cString, LogLevelEnum.DEBUG);
       }
     });
 

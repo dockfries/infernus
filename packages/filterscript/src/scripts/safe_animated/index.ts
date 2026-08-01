@@ -22,7 +22,7 @@
 // This script uses a total of 2 objects
 
 import type { IFilterScript } from "@infernus/core";
-import { DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, DynamicObject, GameText, Player, PlayerEvent } from "@infernus/core";
 
 // Safe door status
 const SAFE_DOOR_OPEN = 1;
@@ -48,12 +48,12 @@ export const SafeAnimated: IFilterScript = {
   name: "safe_animated",
   load() {
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------------------------------------------------");
-    console.log("  |--- Safe and Door FilterScript by Matite");
-    console.log("  |--  Script v1.02");
-    console.log("  |--  13th February 2015");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- Safe and Door FilterScript by Matite", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.02", LogLevelEnum.INFO);
+    samp.logprint("  |--  13th February 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     // Create the safe object
     safeObject = new DynamicObject({
@@ -68,7 +68,7 @@ export const SafeAnimated: IFilterScript = {
     safeObject.create();
 
     // Display information in the Server Console
-    console.log("  |--  Safe object created");
+    samp.logprint("  |--  Safe object created", LogLevelEnum.INFO);
 
     // Create the safe door object
     safeDoorObject = new DynamicObject({
@@ -83,8 +83,8 @@ export const SafeAnimated: IFilterScript = {
     safeDoorObject.create();
 
     // Display information in the Server Console
-    console.log("  |--  Safe door object created");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |--  Safe door object created", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     // Loop
     Player.getInstances().forEach((p) => {
@@ -162,8 +162,8 @@ export const SafeAnimated: IFilterScript = {
       safeObject = null;
 
       // Display information in the Server Console
-      console.log("  |---------------------------------------------------");
-      console.log("  |--  Safe object destroyed");
+      samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+      samp.logprint("  |--  Safe object destroyed", LogLevelEnum.INFO);
     }
 
     // Check for valid object
@@ -173,12 +173,12 @@ export const SafeAnimated: IFilterScript = {
       safeDoorObject = null;
 
       // Display information in the Server Console
-      console.log("  |--  Safe door object destroyed");
+      samp.logprint("  |--  Safe door object destroyed", LogLevelEnum.INFO);
     }
 
     // Display information in the Server Console
-    console.log("  |---------------------------------------------------");
-    console.log("  |--  Safe and Door FilterScript Unloaded");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--  Safe and Door FilterScript Unloaded", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
   },
 };

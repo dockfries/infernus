@@ -5,7 +5,7 @@
 // This script tests the new SA-MP animation/pose inside the SAMP.ifp file.
 //
 
-import { GameText, PlayerEvent } from "@infernus/core";
+import { LogLevelEnum, GameText, PlayerEvent } from "@infernus/core";
 import type { IFilterScript } from "@infernus/core";
 
 export const SampAnims: IFilterScript = {
@@ -20,19 +20,19 @@ export const SampAnims: IFilterScript = {
     });
 
     // Display information in the Server Console
-    console.log("\n");
-    console.log("  |---------------------------------------------------");
-    console.log("  |--- SA-MP Animations FilterScript by Matite");
-    console.log("  |--  Script v1.01");
-    console.log("  |--  12th January 2015");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("\n", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--- SA-MP Animations FilterScript by Matite", LogLevelEnum.INFO);
+    samp.logprint("  |--  Script v1.01", LogLevelEnum.INFO);
+    samp.logprint("  |--  12th January 2015", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
 
     return [fish];
   },
   unload() {
     // Display information in the Server Console
-    console.log("  |---------------------------------------------------");
-    console.log("  |--  SA-MP Animations FilterScript Unloaded");
-    console.log("  |---------------------------------------------------");
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
+    samp.logprint("  |--  SA-MP Animations FilterScript Unloaded", LogLevelEnum.INFO);
+    samp.logprint("  |---------------------------------------------------", LogLevelEnum.INFO);
   },
 };

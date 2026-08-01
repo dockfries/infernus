@@ -6,6 +6,7 @@
 import type { Player } from "@infernus/core";
 import {
   KeysEnum,
+  LogLevelEnum,
   PlayerEvent,
   PlayerStateEnum,
   SpecialActionsEnum,
@@ -83,7 +84,7 @@ export const GlActions: IGlActionsFS = {
       txtAnimHelper.setColor(0xffffffff);
       txtAnimHelper.setAlignment(3); // align right
     } catch (err) {
-      console.log("gl_actions: TextDraw create failed:", err);
+      samp.logprint(`gl_actions: TextDraw create failed: ${err}`, LogLevelEnum.ERROR);
       txtAnimHelper = null;
     }
 

@@ -13,6 +13,7 @@ import {
   GameText,
   InvalidEnum,
   KeysEnum,
+  LogLevelEnum,
   PlayerEvent,
 } from "@infernus/core";
 import * as constants from "./constants";
@@ -410,7 +411,7 @@ async function showElevatorDialog(player: Player) {
     listItem = result.listItem;
   } catch (err) {
     // dialog.show() rejects on timeout/disconnect; avoid an unhandled rejection
-    console.log("ls_elevator: elevator dialog failed:", err);
+    samp.logprint(`ls_elevator: elevator dialog failed: ${err}`, LogLevelEnum.ERROR);
     return false;
   }
 
