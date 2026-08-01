@@ -1,6 +1,6 @@
 {
   "name": "@infernus/s-art",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A wrapper of the popular s-art library for samp-node.",
   "keywords": [
     "omp",
