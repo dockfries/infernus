@@ -1,6 +1,6 @@
 {
   "name": "@infernus/map-loader",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A tool for obj conversion, parsing, and loading",
   "keywords": [
     "samp",
