@@ -1,11 +1,14 @@
+import { StreamerItemTypes } from "@infernus/streamer";
 import { DynamicActor } from "./entity";
 import { GameMode } from "core/components/gamemode";
 import { defineEvent } from "core/utils/bus";
 import { Player } from "core/components/player/entity";
-import type { WeaponEnum, BodyPartsEnum } from "core/enums";
+import { type WeaponEnum, type BodyPartsEnum } from "core/enums";
 import { dynamicActorPool } from "core/utils/pools";
+import { Streamer } from "../common";
 
 GameMode.onExit(({ next }) => {
+  Streamer.destroyAllItems(StreamerItemTypes.ACTOR, 1);
   DynamicActor.getInstances().forEach((a) => a.destroy());
   dynamicActorPool.clear();
   return next();

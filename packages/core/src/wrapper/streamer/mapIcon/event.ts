@@ -1,12 +1,14 @@
+import { StreamerItemTypes } from "@infernus/streamer";
 import { GameMode } from "core/components/gamemode";
 import { DynamicMapIcon } from "./entity";
 import { defineEvent } from "core/utils/bus";
 import type { Player } from "core/components/player/entity";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
-import { StreamerItemTypes } from "core/enums";
 import { dynamicMapIconPool } from "core/utils/pools";
+import { Streamer } from "../common";
 
 GameMode.onExit(({ next }) => {
+  Streamer.destroyAllItems(StreamerItemTypes.MAP_ICON, 1);
   DynamicMapIcon.getInstances().forEach((m) => m.destroy());
   dynamicMapIconPool.clear();
   return next();

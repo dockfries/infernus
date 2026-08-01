@@ -1,12 +1,14 @@
+import { StreamerItemTypes } from "@infernus/streamer";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/utils/bus";
 import { GameMode } from "core/components/gamemode";
-import { StreamerItemTypes } from "core/enums";
 import { DynamicRaceCP } from "./entity";
 import { Player } from "core/components/player/entity";
 import { dynamicRaceCPPool } from "core/utils/pools";
+import { Streamer } from "../common";
 
 GameMode.onExit(({ next }) => {
+  Streamer.destroyAllItems(StreamerItemTypes.RACE_CP, 1);
   DynamicRaceCP.getInstances().forEach((r) => r.destroy());
   dynamicRaceCPPool.clear();
   return next();

@@ -84,7 +84,7 @@ export class Streamer {
   static isToggleItemCallbacks = s.Streamer_IsToggleItemCallbacks;
   static toggleErrorCallback = s.Streamer_ToggleErrorCallback;
   static isToggleErrorCallback = s.Streamer_IsToggleErrorCallback;
-  static amxUnloadDestroyItems = s.Streamer_AmxUnloadDestroyItems;
+  // static amxUnloadDestroyItems = s.Streamer_AmxUnloadDestroyItems;
   static processActiveItems = s.Streamer_ProcessActiveItems;
   static toggleIdleUpdate(player: Player, toggle: boolean): number {
     return s.Streamer_ToggleIdleUpdate(player.id, toggle);

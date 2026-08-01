@@ -1,12 +1,15 @@
+import { StreamerItemTypes } from "@infernus/streamer";
 import { DynamicPickup } from "./entity";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/utils/bus";
-import { InvalidEnum, StreamerItemTypes } from "core/enums";
+import { InvalidEnum } from "core/enums";
 import { GameMode } from "core/components/gamemode";
 import { Player } from "core/components/player/entity";
 import { dynamicPickupPool } from "core/utils/pools";
+import { Streamer } from "../common";
 
 GameMode.onExit(({ next }) => {
+  Streamer.destroyAllItems(StreamerItemTypes.PICKUP, 1);
   DynamicPickup.getInstances().forEach((p) => p.destroy());
   dynamicPickupPool.clear();
   return next();

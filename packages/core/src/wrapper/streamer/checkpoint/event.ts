@@ -1,12 +1,14 @@
+import { StreamerItemTypes } from "@infernus/streamer";
 import { DynamicCheckpoint } from "./entity";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/utils/bus";
 import { GameMode } from "core/components/gamemode";
 import { Player } from "core/components/player/entity";
-import { StreamerItemTypes } from "core/enums";
 import { dynamicCheckpointPool } from "core/utils/pools";
+import { Streamer } from "../common";
 
 GameMode.onExit(({ next }) => {
+  Streamer.destroyAllItems(StreamerItemTypes.CP, 1);
   DynamicCheckpoint.getInstances().forEach((c) => c.destroy());
   dynamicCheckpointPool.clear();
   return next();

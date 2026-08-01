@@ -1,12 +1,14 @@
+import { StreamerItemTypes } from "@infernus/streamer";
 import { DynamicArea } from "./entity";
 import { GameMode } from "core/components/gamemode";
 import { onItemStreamIn, onItemStreamOut } from "../callbacks";
 import { defineEvent } from "core/utils/bus";
 import { Player } from "core/components/player/entity";
-import { StreamerItemTypes } from "core/enums";
 import { dynamicAreasPool } from "core/utils/pools";
+import { Streamer } from "../common";
 
 GameMode.onExit(({ next }) => {
+  Streamer.destroyAllItems(StreamerItemTypes.AREA, 1);
   DynamicArea.getInstances().forEach((a) => a.destroy());
   dynamicAreasPool.clear();
   return next();

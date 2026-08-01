@@ -5,8 +5,10 @@ import { GameMode } from "core/components/gamemode";
 import { Dynamic3DTextLabel } from "./entity";
 import type { Player } from "core/components/player/entity";
 import { dynamic3DTextLabelPool } from "core/utils/pools";
+import { Streamer } from "../common";
 
 GameMode.onExit(({ next }) => {
+  Streamer.destroyAllItems(StreamerItemTypes.TEXT_3D_LABEL, 1);
   Dynamic3DTextLabel.getInstances().forEach((t) => t.destroy());
   dynamic3DTextLabelPool.clear();
   return next();
