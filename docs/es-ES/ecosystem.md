@@ -56,14 +56,6 @@ Esto mantiene toda la lógica unificada en el entorno Node.js/TypeScript, evitan
 
 ## Compatibilidad
 
-### Edición sin Polyfill
-
-Debido a las limitaciones de implementación subyacentes de los plugins, `samp-node`, `sampgdk` y `omp`, ciertas funciones nativas de plugins no pueden llamarse directamente a través de `samp-node`. Por ejemplo, las funciones nativas de `raknet` anteriormente requerían una solución alternativa mediante `polyfill`.
-
-A partir de **v0.14.0+**, `@infernus/raknet` proporciona una **edición sin polyfill** — la directiva `#include <polyfill/raknet>` ya **no es necesaria**. Utilice nuestro fork mantenido [dockfries/Pawn.RakNet](https://github.com/dockfries/Pawn.RakNet) para comenzar.
-
-> **⚠️ La edición sin polyfill es experimental** — pueden existir errores. Si depende del enfoque basado en polyfill, continúe usando `@infernus/raknet@0.13.x` con el Pawn.RakNet original.
-
 ### Soporte Experimental de 64 bits
 
 `samp-node` ahora proporciona compilaciones de 64 bits para uso experimental. Requieren un servidor OMP de 64 bits con plugins de 64 bits compatibles:

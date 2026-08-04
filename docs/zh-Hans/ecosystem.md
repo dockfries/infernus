@@ -56,14 +56,6 @@
 
 ## 兼容性
 
-### 无 Polyfill 版本
-
-由于插件、`samp-node`、`sampgdk` 或 `omp` 的底层实现限制，某些插件的 native 函数无法直接被 `samp-node` 调用。例如，`raknet` 的 native 函数之前需要通过 `polyfill` 间接调用。
-
-从 **v0.14.0+** 起，`@infernus/raknet` 提供了**无 polyfill 版本**，不再需要 `#include <polyfill/raknet>` 指令。配合我们维护的 [dockfries/Pawn.RakNet](https://github.com/dockfries/Pawn.RakNet) 即可使用。
-
-> **⚠️ 无 polyfill 版本为实验性**，可能存在 Bug。如果您依赖旧的 polyfill 方案，请继续使用 `@infernus/raknet@0.13.x` 及原版 Pawn.RakNet。
-
 ### 64 位实验性支持
 
 `samp-node` 现已提供 64 位构建，仅供实验性使用。需要搭配 64 位的 OMP 服务端以及对应的 64 位插件使用：
