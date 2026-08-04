@@ -60,12 +60,12 @@ export class BitStream {
 
   emulateIncomingPacket(player: number | Player) {
     const pid = typeof player === "number" ? player : player.id;
-    return samp.callNative("BS_EmulateIncomingPacket", "ii", this.id, pid) as number;
+    return samp.callNative("PR_EmulateIncomingPacket", "ii", this.id, pid) as number;
   }
 
   emulateIncomingRPC(player: number | Player, rpcId: number) {
     const pid = typeof player === "number" ? player : player.id;
-    return samp.callNative("BS_EmulateIncomingRPC", "iii", this.id, pid, rpcId) as number;
+    return samp.callNative("PR_EmulateIncomingRPC", "iii", this.id, pid, rpcId) as number;
   }
 
   newCopy() {
