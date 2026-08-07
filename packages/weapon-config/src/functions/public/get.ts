@@ -25,10 +25,8 @@ import {
   damageDoneArmour,
   rejectedHitIdx,
   rejectedHits,
-  playerHealthBarPosX,
-  playerHealthBarPosY,
-  playerHealthBarSizeX,
-  playerHealthBarSizeY,
+  playerHealthBarPos,
+  playerHealthBarSize,
   playerHealthBarPadding,
   playerHealthBarBorderColor,
   playerHealthBarBGColor,
@@ -139,55 +137,67 @@ export function enableHealthBarForPlayer(player: Player, enable: boolean) {
 }
 
 export function getHealthBarPosition(player: Player | InvalidEnum.PLAYER_ID) {
-  let x = innerGameModeConfig.healthBarPosX;
-  let y = innerGameModeConfig.healthBarPosY;
+  let x: number, y: number;
   const _playerId = typeof player === "number" ? player : player.id;
 
   if (_playerId >= 0 && _playerId < LimitsEnum.MAX_PLAYERS) {
-    if (playerHealthBarPosX.has(_playerId)) {
-      x = playerHealthBarPosX.get(_playerId)!;
+    x = playerHealthBarPos.get(_playerId)[0];
+    y = playerHealthBarPos.get(_playerId)[1];
+
+    if (Number.isNaN(x)) {
+      x = innerGameModeConfig.healthBarPos[0];
     }
-    if (playerHealthBarPosY.has(_playerId)) {
-      y = playerHealthBarPosY.get(_playerId)!;
+
+    if (Number.isNaN(y)) {
+      y = innerGameModeConfig.healthBarPos[1];
     }
 
     return { ret: 1, x, y };
   }
 
+  x = innerGameModeConfig.healthBarPos[0];
+  y = innerGameModeConfig.healthBarPos[1];
   return { ret: 0, x, y };
 }
 
 export function getHealthBarSize(player: Player | InvalidEnum.PLAYER_ID) {
-  let x = innerGameModeConfig.healthBarSizeX;
-  let y = innerGameModeConfig.healthBarSizeY;
+  let x: number, y: number;
   const _playerId = typeof player === "number" ? player : player.id;
 
   if (_playerId >= 0 && _playerId < LimitsEnum.MAX_PLAYERS) {
-    if (playerHealthBarSizeX.has(_playerId)) {
-      x = playerHealthBarSizeX.get(_playerId)!;
+    x = playerHealthBarSize.get(_playerId)[0];
+    y = playerHealthBarSize.get(_playerId)[1];
+
+    if (Number.isNaN(x)) {
+      x = innerGameModeConfig.healthBarSize[0];
     }
-    if (playerHealthBarSizeY.has(_playerId)) {
-      y = playerHealthBarSizeY.get(_playerId)!;
+
+    if (Number.isNaN(y)) {
+      y = innerGameModeConfig.healthBarSize[1];
     }
 
     return { ret: 1, x, y };
   }
 
+  x = innerGameModeConfig.healthBarSize[0];
+  y = innerGameModeConfig.healthBarSize[1];
   return { ret: 0, x, y };
 }
 
 export function getHealthBarPadding(player: Player | InvalidEnum.PLAYER_ID) {
-  let padding = [...innerGameModeConfig.healthBarPadding];
   const _playerId = typeof player === "number" ? player : player.id;
 
   if (_playerId >= 0 && _playerId < LimitsEnum.MAX_PLAYERS) {
-    if (playerHealthBarPadding.has(_playerId)) {
-      padding = playerHealthBarPadding.get(_playerId)!;
+    const padding = [...playerHealthBarPadding.get(_playerId)];
+    for (let index = 0; index < padding.length; index++) {
+      if (Number.isNaN(padding[index])) {
+        padding[index] = innerGameModeConfig.healthBarPadding[index];
+      }
     }
 
     return { ret: 1, padding };
   }
-
+  const padding = [...innerGameModeConfig.healthBarPadding];
   return { ret: 0, padding };
 }
 
@@ -198,13 +208,13 @@ export function getHealthBarColor(player: Player | InvalidEnum.PLAYER_ID = Inval
 
   const _playerId = typeof player === "number" ? player : player.id;
   if (_playerId >= 0 && _playerId < LimitsEnum.MAX_PLAYERS) {
-    if (playerHealthBarBorderColor.get(_playerId) !== 0) {
+    if (playerHealthBarBorderColor.get(_playerId)) {
       borderColor = playerHealthBarBorderColor.get(_playerId);
     }
-    if (playerHealthBarBGColor.get(_playerId) !== 0) {
+    if (playerHealthBarBGColor.get(_playerId)) {
       bgColor = playerHealthBarBGColor.get(_playerId);
     }
-    if (playerHealthBarFGColor.get(_playerId) !== 0) {
+    if (playerHealthBarFGColor.get(_playerId)) {
       fgColor = playerHealthBarFGColor.get(_playerId);
     }
     return { ret: 1, borderColor, bgColor, fgColor };

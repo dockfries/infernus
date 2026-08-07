@@ -22,6 +22,9 @@ import {
   damageFeedTaken,
   healthBarBorder,
   healthBarBackground,
+  playerHealthBarPos,
+  playerHealthBarSize,
+  playerHealthBarPadding,
 } from "../../struct";
 import { setKnifeSync } from "../emulated";
 import { damageFeedUpdate } from "./damageFeed";
@@ -62,8 +65,14 @@ export function scriptInit() {
   const tick = Date.now();
 
   Player.getInstances().forEach((player) => {
+    setFakeHealth(player, 255.0);
+    setFakeArmour(player, 255.0);
+
     playerTeam.set(player.id, orig_playerMethods.getTeam.call(player));
+
     orig_playerMethods.setTeam.call(player, playerTeam.get(player.id));
+    freezeSyncPacket(player, false);
+    setFakeFacingAngle(player);
     damageFeedUpdate(player);
 
     worldId = orig_playerMethods.getVirtualWorld.call(player);
@@ -79,9 +88,11 @@ export function scriptInit() {
     damageFeedUpdateTick.set(player.id, tick);
     lastStopTick.set(player.id, tick);
     lastVehicleEnterTime.set(player.id, 0);
-    trueDeath.set(player.id, true);
-    inClassSelection.set(player.id, true);
     playerFallbackSpawnInfo.get(player.id).skin = -1;
+
+    playerHealthBarPos.set(player.id, [Number.NaN, Number.NaN]);
+    playerHealthBarSize.set(player.id, [Number.NaN, Number.NaN]);
+    playerHealthBarPadding.set(player.id, [Number.NaN, Number.NaN, Number.NaN, Number.NaN]);
 
     if (innerWeaponConfig.CUSTOM_VENDING_MACHINES) {
       alreadyConnected.set(player.id, true);
@@ -105,11 +116,17 @@ export function scriptInit() {
       case PlayerStateEnum.DRIVER:
       case PlayerStateEnum.PASSENGER:
       case PlayerStateEnum.SPAWNED: {
+        trueDeath.set(player.id, false);
+        inClassSelection.set(player.id, false);
+
         setHealthBarVisible(player, true);
         break;
       }
 
       default: {
+        trueDeath.set(player.id, true);
+        inClassSelection.set(player.id, true);
+
         setHealthBarVisible(player, false);
       }
     }

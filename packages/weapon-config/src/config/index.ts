@@ -48,10 +48,8 @@ export interface IWeaponConfigGM {
   cBugDeathDelay: boolean;
   damageArmourToggle: [boolean, boolean];
   customVendingMachines: boolean;
-  healthBarPosX: number;
-  healthBarPosY: number;
-  healthBarSizeX: number;
-  healthBarSizeY: number;
+  healthBarPos: [number, number];
+  healthBarSize: [number, number];
   healthBarPadding: [number, number, number, number];
   healthBarBorderColor: number;
   healthBarBGColor: number;
@@ -78,10 +76,8 @@ export const innerGameModeConfig: IWeaponConfigGM = {
   cBugDeathDelay: true,
   damageArmourToggle: [false, false],
   customVendingMachines: true,
-  healthBarPosX: 546.0,
-  healthBarPosY: 66.7,
-  healthBarSizeX: 61.7,
-  healthBarSizeY: 8.4,
+  healthBarPos: [546.0, 66.7],
+  healthBarSize: [61.7, 8.4],
   healthBarPadding: [2.1, 1.9, 1.6, 2.0],
   healthBarBorderColor: 255,
   healthBarBGColor: innerWeaponConfig.HEALTH_BAR_BG_COLOR,

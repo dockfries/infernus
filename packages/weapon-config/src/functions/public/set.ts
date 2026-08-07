@@ -19,10 +19,8 @@ import {
   beingReSynced,
   playerHealthBarPadding,
   healthBarVisible,
-  playerHealthBarPosX,
-  playerHealthBarPosY,
-  playerHealthBarSizeX,
-  playerHealthBarSizeY,
+  playerHealthBarPos,
+  playerHealthBarSize,
   playerHealthBarBorderColor,
   playerHealthBarBGColor,
   playerHealthBarFGColor,
@@ -145,7 +143,7 @@ export function setCustomFallDamage(
   innerGameModeConfig.customFallDamage = toggle;
 
   if (toggle) {
-    s_WeaponDamage[54] = damage_multiplier;
+    s_WeaponDamage[WC_WeaponEnum.REASON_COLLISION] = damage_multiplier;
     innerGameModeConfig.fallDeathVelocity = -Math.abs(death_velocity);
   }
 }
@@ -268,13 +266,13 @@ export function setCbugDeathDelay(toggle: boolean) {
 }
 
 export function setHealthBarPosition(x: number, y: number) {
-  innerGameModeConfig.healthBarPosX = x;
-  innerGameModeConfig.healthBarPosY = y;
+  innerGameModeConfig.healthBarPos = [x, y];
 
   Player.getInstances().forEach((p) => {
     if (
       healthBarVisible.get(p.id) &&
-      (!Number.isNaN(playerHealthBarPosX.get(p.id)) || !Number.isNaN(playerHealthBarPosY.get(p.id)))
+      (Number.isNaN(playerHealthBarPos.get(p.id)[0]) ||
+        Number.isNaN(playerHealthBarPos.get(p.id)[1]))
     ) {
       setHealthBarVisible(p, false);
       setHealthBarVisible(p, true);
@@ -283,14 +281,13 @@ export function setHealthBarPosition(x: number, y: number) {
 }
 
 export function setHealthBarSize(x: number, y: number) {
-  innerGameModeConfig.healthBarSizeX = x;
-  innerGameModeConfig.healthBarSizeY = y;
+  innerGameModeConfig.healthBarSize = [x, y];
 
   Player.getInstances().forEach((p) => {
     if (
       healthBarVisible.get(p.id) &&
-      (!Number.isNaN(playerHealthBarSizeX.get(p.id)) ||
-        !Number.isNaN(playerHealthBarSizeY.get(p.id)))
+      (Number.isNaN(playerHealthBarSize.get(p.id)[0]) ||
+        Number.isNaN(playerHealthBarSize.get(p.id)[1]))
     ) {
       updateHealthBarSize(p);
     }
@@ -303,7 +300,7 @@ export function setHealthBarPadding(padding: [number, number, number, number]) {
   Player.getInstances().forEach((p) => {
     if (
       healthBarVisible.get(p.id) &&
-      playerHealthBarPadding.get(p.id).some((v) => !Number.isNaN(v))
+      playerHealthBarPadding.get(p.id).some((v) => Number.isNaN(v))
     ) {
       setHealthBarVisible(p, false);
       setHealthBarVisible(p, true);
@@ -314,8 +311,7 @@ export function setHealthBarPadding(padding: [number, number, number, number]) {
 export function setHealthBarPositionForPlayer(player: Player, x = Number.NaN, y = Number.NaN) {
   if (!player.isConnected()) return 0;
 
-  playerHealthBarPosX.set(player.id, x);
-  playerHealthBarPosY.set(player.id, y);
+  playerHealthBarPos.set(player.id, [x, y]);
 
   if (healthBarVisible.get(player.id)) {
     setHealthBarVisible(player, false);
@@ -328,8 +324,7 @@ export function setHealthBarPositionForPlayer(player: Player, x = Number.NaN, y 
 export function setHealthBarSizeForPlayer(player: Player, x = Number.NaN, y = Number.NaN) {
   if (!player.isConnected()) return 0;
 
-  playerHealthBarSizeX.set(player.id, x);
-  playerHealthBarSizeY.set(player.id, y);
+  playerHealthBarSize.set(player.id, [x, y]);
 
   if (healthBarVisible.get(player.id)) {
     updateHealthBarSize(player);
@@ -355,26 +350,26 @@ export function setHealthBarPaddingForPlayer(
 }
 
 export function setHealthBarColor(borderColor = 0, bgColor = 0, fgColor = 0) {
-  if (borderColor !== 0) {
+  if (borderColor) {
     innerGameModeConfig.healthBarBorderColor = borderColor;
   }
 
-  if (fgColor !== 0) {
+  if (fgColor) {
     innerGameModeConfig.healthBarFGColor = fgColor;
   }
 
-  if (bgColor !== 0) {
+  if (bgColor) {
     innerGameModeConfig.healthBarBGColor = bgColor;
-  } else if (fgColor !== 0) {
+  } else if (fgColor) {
     innerGameModeConfig.healthBarBGColor = darkenRGBA(innerGameModeConfig.healthBarFGColor);
   }
 
   Player.getInstances().forEach((p) => {
     if (
       healthBarVisible.get(p.id) &&
-      (playerHealthBarBorderColor.get(p.id) === 0 ||
-        playerHealthBarBGColor.get(p.id) === 0 ||
-        playerHealthBarFGColor.get(p.id) === 0)
+      (!playerHealthBarBorderColor.get(p.id) ||
+        !playerHealthBarBGColor.get(p.id) ||
+        !playerHealthBarFGColor.get(p.id))
     ) {
       setHealthBarVisible(p, false);
       setHealthBarVisible(p, true);
@@ -393,7 +388,7 @@ export function setHealthBarColorForPlayer(
   playerHealthBarBorderColor.set(player.id, borderColor);
   playerHealthBarFGColor.set(player.id, fgColor);
 
-  if (bgColor === 0 && playerHealthBarFGColor.get(player.id) !== 0) {
+  if (!bgColor && playerHealthBarFGColor.get(player.id)) {
     playerHealthBarBGColor.set(player.id, darkenRGBA(playerHealthBarFGColor.get(player.id)));
   } else {
     playerHealthBarBGColor.set(player.id, bgColor);

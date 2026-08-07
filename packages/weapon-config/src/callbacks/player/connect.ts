@@ -65,14 +65,12 @@ import {
   knifeTimeout,
   lastVehicleShooter,
   vendingUseTimer,
-  playerHealthBarPosY,
-  playerHealthBarPosX,
-  playerHealthBarSizeX,
+  playerHealthBarPos,
+  playerHealthBarSize,
   playerHealthBarBGColor,
   playerHealthBarBorderColor,
   playerHealthBarFGColor,
   playerHealthBarPadding,
-  playerHealthBarSizeY,
   healthBarBorder,
   healthBarBackground,
   knifeAnimTimer,
@@ -141,10 +139,8 @@ PlayerEvent.onConnect(({ player, next }) => {
   delayedDeathTimer.set(player.id, null);
   damageFeedPlayer.set(player.id, -1);
   enableHealthBar.set(player.id, true);
-  playerHealthBarPosX.set(player.id, Number.NaN);
-  playerHealthBarPosY.set(player.id, Number.NaN);
-  playerHealthBarSizeX.set(player.id, Number.NaN);
-  playerHealthBarSizeY.set(player.id, Number.NaN);
+  playerHealthBarPos.set(player.id, [Number.NaN, Number.NaN]);
+  playerHealthBarSize.set(player.id, [Number.NaN, Number.NaN]);
   playerHealthBarPadding.set(player.id, [Number.NaN, Number.NaN, Number.NaN, Number.NaN]);
   playerHealthBarBorderColor.set(player.id, 0);
   playerHealthBarBGColor.set(player.id, 0);

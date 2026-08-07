@@ -101,10 +101,14 @@ export const healthBarVisible = new SafetyMap<number, boolean>(() => false);
 export const healthBarBorder = new SafetyMap<number, TextDraw | null>(() => null);
 export const healthBarBackground = new SafetyMap<number, TextDraw | null>(() => null);
 export const healthBarForeground = new SafetyMap<number, TextDraw | null>(() => null);
-export const playerHealthBarPosX = new SafetyMap<number, number>(() => Number.NaN);
-export const playerHealthBarPosY = new SafetyMap<number, number>(() => Number.NaN);
-export const playerHealthBarSizeX = new SafetyMap<number, number>(() => Number.NaN);
-export const playerHealthBarSizeY = new SafetyMap<number, number>(() => Number.NaN);
+export const playerHealthBarPos = new SafetyMap<number, [number, number]>(() => [
+  Number.NaN,
+  Number.NaN,
+]);
+export const playerHealthBarSize = new SafetyMap<number, [number, number]>(() => [
+  Number.NaN,
+  Number.NaN,
+]);
 export const playerHealthBarPadding = new SafetyMap<number, [number, number, number, number]>(
   () => [Number.NaN, Number.NaN, Number.NaN, Number.NaN],
 );
