@@ -211,6 +211,12 @@ importers:
 
   packages/mapandreas: {}
 
+  packages/mapfix:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+
   packages/nex-ac:
     devDependencies:
       '@infernus/core':
