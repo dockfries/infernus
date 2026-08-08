@@ -1256,20 +1256,20 @@ export class Npc {
   /**
    * @throws {NpcException} When called before `create`().
    */
-  setVehiclePos(x: number, y: number, z: number, immediateUpdate: boolean) {
+  setVehiclePos(x: number, y: number, z: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setVehiclePosition before create");
     }
-    return Npc.__inject__.setVehiclePos(this._id, x, y, z, immediateUpdate);
+    return Npc.__inject__.setVehiclePos(this._id, x, y, z);
   }
   /**
    * @throws {NpcException} When called before `create`().
    */
-  setVehicleRot(x: number, y: number, z: number, immediateUpdate: boolean) {
+  setVehicleRot(x: number, y: number, z: number) {
     if (this.id === InvalidEnum.NPC_ID) {
       throw new NpcException("Cannot setVehicleRotation before create");
     }
-    return Npc.__inject__.setVehicleRot(this._id, x, y, z, immediateUpdate);
+    return Npc.__inject__.setVehicleRot(this._id, x, y, z);
   }
   /**
    * @throws {NpcException} When recording is already in progress.
