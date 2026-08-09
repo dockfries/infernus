@@ -17,6 +17,7 @@
 | `@infernus/fs`              | 内置 filterscript 合集                                                       |
 | `@infernus/gps`             | 对 GPS 插件的封装                                                            |
 | `@infernus/map-loader`      | 用于 obj 转换、解析和加载的工具                                              |
+| `@infernus/mapfix`          | 对流行的 MapFix include 的封装                                               |
 | `@infernus/mapandreas`      | 纯 TypeScript 高度图查询实现，无需原生插件                                   |
 | `@infernus/s-art`           | 对流行的 s-art 库的封装，用于在游戏中使用 DynamicObject 纹理文本渲染像素图片 |
 | `@infernus/nex-ac`          | 对 nex-ac 库的封装                                                           |

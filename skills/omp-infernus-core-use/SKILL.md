@@ -82,6 +82,7 @@ If they ask about **ecosystem context** (polyfills, versions, omp-node), read `r
 | `references/qrcode.md`          | QR code generator                                                            |
 | `references/drift-detection.md` | Drift detection events                                                       |
 | `references/map-loader.md`      | .map file loader                                                             |
+| `references/mapfix.md`          | MapFix object fixes (156 places), toggleMapFixPlace                          |
 | `references/query.md`           | UDP server query                                                             |
 | `references/rec.md`             | Recording data blocks                                                        |
 | `references/utilities.md`       | @infernus/distance, @infernus/mapandreas, @infernus/fs, @infernus/create-app |

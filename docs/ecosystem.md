@@ -17,6 +17,7 @@ The `@infernus/*` ecosystem is designed to bridge Pawn include libraries into th
 | `@infernus/fs`              | A collection of all built-in filterscripts                                                                       |
 | `@infernus/gps`             | A wrapper of the GPS plugin for samp-node                                                                        |
 | `@infernus/map-loader`      | A tool for obj conversion, parsing, and loading                                                                  |
+| `@infernus/mapfix`          | A wrapper of the popular MapFix include for samp-node                                                            |
 | `@infernus/mapandreas`      | A pure TypeScript heightmap query implementation, no native plugin required                                      |
 | `@infernus/s-art`           | A wrapper of the popular s-art library for rendering pixel images in-game using DynamicObject with material text |
 | `@infernus/nex-ac`          | A wrapper of the nex-ac library for samp-node                                                                    |

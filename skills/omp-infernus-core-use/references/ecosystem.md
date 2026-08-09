@@ -58,6 +58,7 @@ To install: `#include` the `.inc` file in your gamemode's `.pwn`, compile to `.a
 | `@infernus/progress`        | public | Progress bar via TextDraw sprites           | ProgressBar               |
 | `@infernus/qrcode`          | public | QR code rendered on DynamicObject materials | generateQRText            |
 | `@infernus/map-loader`      | public | Load .map files into DynamicObjects         | loadMap                   |
+| `@infernus/mapfix`          | public | MapFix object fixes (156 places)            | toggleMapFixPlace         |
 | `@infernus/weapon-config`   | public | Weapon damage configuration                 | defineWeaponConfig        |
 | `@infernus/drift-detection` | public | Drift angle detection system                | Drift                     |
 | `@infernus/e-selection`     | public | Enhanced model selection menu               | ModelSelectionMenu        |

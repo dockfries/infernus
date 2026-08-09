@@ -20,3 +20,10 @@ import "@infernus/mapfix";
 import { toggleMapFixPlace } from "@infernus/mapfix";
 toggleMapFixPlace(1, false);
 ```
+
+## Note
+
+All mapfix objects are created on `GameMode.onInit` (registered when the package is imported). To
+disable a place you must call `toggleMapFixPlace(...)` at **module top level, before `GameMode.onInit`
+fires** — calling it inside an event callback is too late for the current round, and it will only
+apply on the next GMX restart (the next `OnGameModeInit`).

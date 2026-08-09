@@ -17,6 +17,7 @@ El ecosistema `@infernus/*` está diseñado para integrar las librerías Pawn in
 | `@infernus/fs`              | Una colección de todos los filterscripts integrados                                                                                   |
 | `@infernus/gps`             | Un envoltorio del plugin GPS para samp-node                                                                                           |
 | `@infernus/map-loader`      | Una herramienta para conversión, análisis y carga de objetos                                                                          |
+| `@infernus/mapfix`          | Un envoltorio de la popular librería MapFix include para samp-node                                                                    |
 | `@infernus/mapandreas`      | Implementación de mapa de altura en TypeScript puro, sin plugin nativo                                                                |
 | `@infernus/s-art`           | Un envoltorio de la popular librería s-art para renderizar imágenes de píxeles en el juego usando DynamicObject con texto de material |
 | `@infernus/nex-ac`          | Un envoltorio de la librería nex-ac para samp-node                                                                                    |
