@@ -25,6 +25,9 @@ import {
   playerHealthBarPos,
   playerHealthBarSize,
   playerHealthBarPadding,
+  cBugAllowed,
+  enableHealthBar,
+  firstSpawn,
 } from "../../struct";
 import { setKnifeSync } from "../emulated";
 import { damageFeedUpdate } from "./damageFeed";
@@ -89,6 +92,8 @@ export function scriptInit() {
     lastStopTick.set(player.id, tick);
     lastVehicleEnterTime.set(player.id, 0);
     playerFallbackSpawnInfo.get(player.id).skin = -1;
+    cBugAllowed.set(player.id, innerGameModeConfig.cBugGlobal);
+    enableHealthBar.set(player.id, true);
 
     playerHealthBarPos.set(player.id, [Number.NaN, Number.NaN]);
     playerHealthBarSize.set(player.id, [Number.NaN, Number.NaN]);
@@ -96,6 +101,8 @@ export function scriptInit() {
 
     if (innerWeaponConfig.CUSTOM_VENDING_MACHINES) {
       alreadyConnected.set(player.id, true);
+      firstSpawn.set(player.id, true);
+
       removeDefaultVendingMachines(player);
     }
 

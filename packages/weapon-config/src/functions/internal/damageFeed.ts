@@ -132,7 +132,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
       break;
     }
 
-    if (damageFeedHitsGiven.get(player.id)[i]!.tick < lowest_tick) {
+    if (damageFeedHitsGiven.get(player.id)[i]!.tick - lowest_tick < 0) {
       lowest_tick = damageFeedHitsGiven.get(player.id)[i]!.tick;
     }
   }
@@ -158,7 +158,7 @@ export function damageFeedUpdate(player: Player, modified = false) {
       break;
     }
 
-    if (damageFeedHitsTaken.get(player.id)[i]!.tick < lowest_tick) {
+    if (damageFeedHitsTaken.get(player.id)[i]!.tick - lowest_tick < 0) {
       lowest_tick = damageFeedHitsTaken.get(player.id)[i]!.tick;
     }
   }
