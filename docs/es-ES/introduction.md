@@ -52,9 +52,17 @@ Antes de usar este proyecto, tenga en cuenta los siguientes requisitos de versi�
    - Elimine la carpeta `node_modules`.
    - Vuelva a ejecutar `pnpm install`.
 
-> Nota de soporte del entorno: `better-sqlite3` ha sido probado y verificado en la plataforma Windows.
+> Nota de soporte del entorno: `better-sqlite3` ha sido probado y verificado en la plataforma Windows. El soporte de 32 bits solo está verificado hasta la versión **12.11.1**. A partir de v13, `better-sqlite3` ya no compila binarios de 32 bits durante la instalación — ni configurar variables de entorno como `npm_config_arch=ia32` y `npm_config_target_arch=ia32`, ni ejecutar `pnpm rebuild`, disparará una compilación de 32 bits.
+>
+> Use la versión **13 o superior** con un `samp-node` de **64 bits**, y mantenga **12.11.1** si usa un `samp-node` de 32 bits. Forzar v13+ en un `samp-node` de 32 bits produce un error como:
+>
+> ```text
+> Error: Cannot find module 'foo\node_modules\better-sqlite3\build\Release\better_sqlite3.node'
+> ```
+>
+> Aunque la compilación manual puede hacerlo funcionar, no se recomienda compilar manualmente `better-sqlite3` v13 de 32 bits.
 
-Este problema podría resolverse en el futuro con `omp-node` de 64 bits.
+Este problema podría resolverse en el futuro con `omp-node` de 64 bits — consulte [Soporte Experimental de 64 bits](./ecosystem#soporte-experimental-de-64-bits).
 
 El entorno de Node de 32 bits tiene limitaciones de memoria. Considere configurar un proyecto separado de Node para operaciones de base de datos en el Node de 64 bits de su máquina anfitriona. Por ejemplo, use NestJS para construir una API específicamente para operaciones CRUD. El servidor de juego puede acceder a ella mediante peticiones HTTP, o puede probar métodos más avanzados como RPC o sockets.
 

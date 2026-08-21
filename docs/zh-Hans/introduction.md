@@ -52,9 +52,17 @@
    - 删除 `node_modules` 文件夹。
    - 重新运行 `pnpm install`。
 
-> 环境支持说明：`better-sqlite3` 模块已在 Windows 平台测试通过。
+> 环境支持说明：`better-sqlite3` 模块已在 Windows 平台测试通过，32 位支持仅验证至 **12.11.1** 版本。自 v13 起，`better-sqlite3` 在安装阶段不再编译 32 位二进制——无论是设置 `npm_config_arch=ia32`、`npm_config_target_arch=ia32` 等环境变量，还是执行 `pnpm rebuild`，都无法触发 32 位编译。
+>
+> 若使用 **64 位 `samp-node`**，请搭配 **13 及以上版本**；若使用 32 位 `samp-node`，请保持 **12.11.1** 版本。在 32 位 `samp-node` 下强行使用 v13+，会出现如下报错：
+>
+> ```text
+> Error: Cannot find module 'foo\node_modules\better-sqlite3\build\Release\better_sqlite3.node'
+> ```
+>
+> 手动编译虽可使其运行，但不建议手动编译 32 位的 `better-sqlite3` v13。
 
-也许未来 64 位的 `omp-node` 上能迎刃而解。
+也许未来 64 位的 `omp-node` 上能迎刃而解，详见[生态系统中的 64 位实验性支持](./ecosystem#64-位实验性支持)。
 
 32 位 Node 环境内存受限，建议另外建立一个数据库操作的 Node 项目，运行在宿主机的 64 位 Node 上。例如用 NestJS 搭建 API 专门用于 CRUD，游戏服务端通过 HTTP 请求访问，或尝试更高级的 RPC 或 Socket 方式通信。
 
