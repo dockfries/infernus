@@ -61,10 +61,10 @@ Esto mantiene toda la lógica unificada en el entorno Node.js/TypeScript, evitan
 
 `samp-node` ahora proporciona compilaciones de 64 bits para uso experimental. Requieren un servidor OMP de 64 bits con plugins de 64 bits compatibles:
 
-- [streamer](https://github.com/dockfries/samp-streamer-plugin/releases/tag/v2.9.6)
-- [gps](https://github.com/dockfries/samp-gps-plugin/releases/tag/v1.4.1)
-- [raknet](https://github.com/dockfries/Pawn.RakNet/releases/tag/1.6.1-omp-rc1)
-- [ColAndreas](https://github.com/dockfries/ColAndreas/releases/tag/v1.6.0)
+- [streamer](https://github.com/dockfries/samp-streamer-plugin/releases)
+- [gps](https://github.com/dockfries/samp-gps-plugin/releases)
+- [raknet](https://github.com/dockfries/Pawn.RakNet/releases)
+- [ColAndreas](https://github.com/dockfries/ColAndreas/releases)
 - [sampvoice](https://github.com/dockfries/sampvoice)
 
 > Tenga en cuenta que `@infernus/create-app` no admite la descarga de estas dependencias de 64 bits en este momento.
