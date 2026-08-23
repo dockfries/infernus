@@ -2,7 +2,7 @@
 
 > All API calls must be inside event callbacks (`GameMode.onInit`, etc.). Module-level calls silently fail.
 
-Wraps [SA-MP ColAndreas plugin](https://github.com/Pottus/ColAndreas). Collision detection and raycasting.
+Wraps [SA-MP ColAndreas plugin](https://github.com/dockfries/ColAndreas). Collision detection and raycasting.
 
 ```bash
 pnpm add @infernus/core @infernus/colandreas

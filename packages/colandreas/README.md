@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@infernus/colandreas)](https://www.npmx.dev/package/@infernus/colandreas) ![npm](https://img.shields.io/npm/dw/@infernus/colandreas) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/colandreas)
 
-A wrapper of the popular [SA-MP ColAndreas plugin](https://github.com/Pottus/ColAndreas) for samp-node.
+A wrapper of the popular [SA-MP ColAndreas plugin](https://github.com/dockfries/ColAndreas) for samp-node.
 
 ## Getting started
 

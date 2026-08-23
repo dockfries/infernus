@@ -2,7 +2,7 @@
 
 > All API calls must be inside event callbacks (`GameMode.onInit`, etc.). Module-level calls silently fail.
 
-Wraps [SA-MP GPS plugin](https://github.com/AmyrAhmady/samp-gps-plugin) with built-in [WazeGPS](https://github.com/devbluen/WazeGPS-Samp). Requires a [polyfill](https://github.com/dockfries/infernus-starter/blob/main/gamemodes/polyfill/gps.inc).
+Wraps [SA-MP GPS plugin](https://github.com/dockfries/samp-gps-plugin) with built-in [WazeGPS](https://github.com/devbluen/WazeGPS-Samp). Requires a [polyfill](https://github.com/dockfries/infernus-starter/blob/main/gamemodes/polyfill/gps.inc).
 
 ```bash
 pnpm add @infernus/core @infernus/gps

@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@infernus/gps)](https://www.npmx.dev/package/@infernus/gps) ![npm](https://img.shields.io/npm/dw/@infernus/gps) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/gps)
 
-A wrapper of the popular [SA-MP GPS plugin](https://github.com/AmyrAhmady/samp-gps-plugin) for samp-node, built-in [WazeGPS](https://github.com/devbluen/WazeGPS-Samp).
+A wrapper of the popular [SA-MP GPS plugin](https://github.com/dockfries/samp-gps-plugin) for samp-node, built-in [WazeGPS](https://github.com/devbluen/WazeGPS-Samp).
 
 **You must use an existing [polyfill](https://github.com/dockfries/infernus-starter/blob/main/gamemodes/polyfill/gps.inc) or compile the corresponding GameMode based on it before you can use it.**
 

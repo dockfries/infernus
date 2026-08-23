@@ -2,7 +2,7 @@
 
 > All API calls must be inside event callbacks (`GameMode.onInit`, etc.). Module-level calls silently fail.
 
-Wraps [SA-MP voice library](https://github.com/AmyrAhmady/sampvoice). In-game voice chat.
+Wraps [SA-MP voice library](https://github.com/dockfries/sampvoice). In-game voice chat.
 
 ```bash
 pnpm add @infernus/core @infernus/samp-voice
