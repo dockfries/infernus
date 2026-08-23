@@ -70,7 +70,7 @@ function nav(): DefaultTheme.NavItem[] {
         },
         {
           text: "omp-cef",
-          link: "https://github.com/aurora-mp/omp-cef",
+          link: "https://github.com/dockfries/omp-cef",
         },
         {
           text: "samp-gps",
