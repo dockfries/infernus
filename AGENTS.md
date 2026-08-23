@@ -42,6 +42,11 @@ pnpm docs:dev             # VitePress dev server
 
 `tsx scripts/release.ts` → interactive select → build → bump → dry-run publish. Core release also syncs version to root `package.json`.
 
+## Changelog
+
+- `pnpm changelog:unreleased` — insert/refresh a `## Unreleased` section at the top of `CHANGELOG.md` (idempotent) from commits since the last tag.
+- `pnpm changelog` — generate the versioned section; strips any existing `## Unreleased` section first. Runs automatically during core release (via `scripts/changelog.ts`).
+
 ## TypeScript
 
 - TypeScript 6.0, `"module": "ESNext"`, `"moduleResolution": "bundler"`, `"strict": true`.

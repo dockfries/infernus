@@ -1,3 +1,16 @@
+## [Unreleased](https://github.com/dockfries/infernus/compare/v0.14.7...4753d5cdcce5fddec4824c203124ec044000d4eb) (2026-08-23)
+
+### Features
+
+- **mapfix:** add wrapper of mapfix ([7a9c35d](https://github.com/dockfries/infernus/commit/7a9c35d9a46c35c321a6e808c5d280bc63dec139))
+- **weapon-config:** sync 370 ([172ff4d](https://github.com/dockfries/infernus/commit/172ff4dc07d328e2e7a4ee653764a7069dd85436))
+- **weapon-config:** sync 371 ([4753d5c](https://github.com/dockfries/infernus/commit/4753d5cdcce5fddec4824c203124ec044000d4eb))
+
+### Bug Fixes
+
+- **core:** update args for npc setVehiclePosRot ([4dc9e0c](https://github.com/dockfries/infernus/commit/4dc9e0c3b4b27e9d75eb0b5ebbc74d29f429de5a))
+- **raknet:** emulate native func name ([6daabf3](https://github.com/dockfries/infernus/commit/6daabf314a1937b0e4c1ad56bfefce056d621822))
+
 ## [0.14.7](https://github.com/dockfries/infernus/compare/v0.14.6...v0.14.7) (2026-08-01)
 
 ### ⚠ BREAKING CHANGES
