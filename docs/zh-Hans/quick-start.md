@@ -49,11 +49,11 @@ pnpm update @infernus/create-app -g
 infernus create <appName>
 
 # 安装一个或多个依赖，可指定版本号，语法类似 npm 包
-infernus add openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
+infernus add openmultiplayer/open.mp dockfries/samp-streamer-plugin@^2.9.6
 # 安装组件依赖
-infernus add katursis/Pawn.RakNet@^1.6.0-omp --component
+infernus add dockfries/Pawn.RakNet@^1.7.0-omp --component
 # 生产模式安装（不复制 inc 文件）
-infernus add samp-incognito/samp-streamer-plugin@^2.9.6 -p
+infernus add dockfries/samp-streamer-plugin@^2.9.6 -p
 
 # 安装所有现有依赖（类似 sampctl ensure）
 infernus install
@@ -62,19 +62,19 @@ infernus install
 infernus install -p
 
 # 卸载一个或多个依赖
-infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin
-infernus remove katursis/Pawn.RakNet
+infernus remove openmultiplayer/open.mp dockfries/samp-streamer-plugin
+infernus remove dockfries/Pawn.RakNet
 
 # 更新依赖（更新全局缓存并应用到当前目录）
 infernus update openmultiplayer/open.mp
 
 # 更新到指定版本
-infernus update openmultiplayer/open.mp@^1.2.0.2670
+infernus update openmultiplayer/open.mp@^1.5.8
 
 # 清理全局单个依赖的最低匹配版本
-infernus cache clean samp-incognito/samp-streamer-plugin@^2.9.6
+infernus cache clean dockfries/samp-streamer-plugin@^2.9.6
 # 清理全局单个依赖的所有版本
-infernus cache clean samp-incognito/samp-streamer-plugin
+infernus cache clean dockfries/samp-streamer-plugin
 # 清理所有全局缓存
 infernus cache clean -a
 
@@ -133,7 +133,7 @@ vim config.json # 您不一定要用 vim，任意编辑器均可
 
 3. 下载 [streamer 插件](https://github.com/dockfries/samp-streamer-plugin/releases)，将 `streamer.so/dll` 放入 `plugins` 文件夹。
 
-4. **（如需使用 raknet）** 下载 [raknet 插件](https://github.com/dockfries/Pawn.RakNet/releases)，将除 `.inc` 后缀外的所有文件放入 `components` 文件夹。
+4. **（如需使用 raknet）** 下载 [raknet 组件](https://github.com/dockfries/Pawn.RakNet/releases)，将除 `.inc` 后缀外的所有文件放入 `components` 文件夹。
    1. 将 `gamemodes/polyfill_raknet.amx` 替换为 `gamemodes/polyfill.amx`，**或**修改 `config.json` 中的 `pawn.main_scripts` 部分。
 
 ```json

@@ -50,11 +50,11 @@ infernus create <nombreApp>
 
 # Instalar una o más dependencias.
 # Todas las operaciones pueden especificar un número de versión, similar a la sintaxis de npm.
-infernus add openmultiplayer/open.mp samp-incognito/samp-streamer-plugin@^2.9.6
+infernus add openmultiplayer/open.mp dockfries/samp-streamer-plugin@^2.9.6
 # Instalar una dependencia de componente
-infernus add katursis/Pawn.RakNet@^1.6.0-omp --component
+infernus add dockfries/Pawn.RakNet@^1.7.0-omp --component
 # Modo producción (no copia archivos inc)
-infernus add samp-incognito/samp-streamer-plugin@^2.9.6 -p
+infernus add dockfries/samp-streamer-plugin@^2.9.6 -p
 
 # Instalar todas las dependencias existentes (similar a sampctl ensure)
 infernus install
@@ -63,19 +63,19 @@ infernus install
 infernus install -p
 
 # Desinstalar una o más dependencias
-infernus remove openmultiplayer/open.mp samp-incognito/samp-streamer-plugin
-infernus remove katursis/Pawn.RakNet
+infernus remove openmultiplayer/open.mp dockfries/samp-streamer-plugin
+infernus remove dockfries/Pawn.RakNet
 
 # Actualizar una dependencia (actualiza la caché global y el directorio actual)
 infernus update openmultiplayer/open.mp
 
 # Actualizar a una versión específica
-infernus update openmultiplayer/open.mp@^1.2.0.2670
+infernus update openmultiplayer/open.mp@^1.5.8
 
 # Limpiar la versión de menor coincidencia de una dependencia global
-infernus cache clean samp-incognito/samp-streamer-plugin@^2.9.6
+infernus cache clean dockfries/samp-streamer-plugin@^2.9.6
 # Limpiar todas las versiones de una dependencia global
-infernus cache clean samp-incognito/samp-streamer-plugin
+infernus cache clean dockfries/samp-streamer-plugin
 # Limpiar toda la caché global
 infernus cache clean -a
 
@@ -134,7 +134,7 @@ Los archivos `so/dll` dependen del entorno donde ejecutará el servidor; elija l
 
 3. Descargue el [plugin streamer](https://github.com/dockfries/samp-streamer-plugin/releases) y coloque `streamer.so/dll` en la carpeta `plugins`.
 
-4. **(Si necesita usar raknet)** descargue el [plugin raknet](https://github.com/dockfries/Pawn.RakNet/releases) y coloque todos los archivos excepto los `.inc` en la carpeta `components`.
+4. **(Si necesita usar raknet)** descargue el [componente raknet](https://github.com/dockfries/Pawn.RakNet/releases) y coloque todos los archivos excepto los `.inc` en la carpeta `components`.
    1. Reemplace `gamemodes/polyfill_raknet.amx` por `gamemodes/polyfill.amx`, **o** modifique la sección `pawn.main_scripts` en `config.json`.
 
 ```json
