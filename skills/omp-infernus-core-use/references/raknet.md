@@ -2,7 +2,7 @@
 
 > All API calls must be inside event callbacks (`GameMode.onInit`, etc.). Module-level calls silently fail.
 
-TypeScript wrapper of [Pawn.RakNet](https://github.com/katursis/Pawn.RakNet). Requires `@infernus/core` as peer dependency. A [polyfill](https://github.com/dockfries/infernus-starter/blob/main/gamemodes/polyfill/raknet.inc) must be compiled into the gamemode.
+TypeScript wrapper of [Pawn.RakNet](https://github.com/dockfries/Pawn.RakNet). Requires `@infernus/core` as peer dependency. A [polyfill](https://github.com/dockfries/infernus-starter/blob/main/gamemodes/polyfill/raknet.inc) must be compiled into the gamemode.
 
 ## BitStream — Binary Data Buffer
 

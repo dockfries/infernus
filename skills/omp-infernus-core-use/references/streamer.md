@@ -2,7 +2,7 @@
 
 > All API calls must be inside event callbacks (`GameMode.onInit`, etc.). Module-level calls silently fail.
 
-Wraps [samp-incognito/samp-streamer-plugin](https://github.com/samp-incognito/samp-streamer-plugin) v2.9.6. The Dynamic* entity classes are re-exported from `@infernus/core` via `wrapper/streamer/`. The package is `"private": true`.
+Wraps [dockfries/samp-streamer-plugin](https://github.com/dockfries/samp-streamer-plugin) v2.9.6. The Dynamic* entity classes are re-exported from `@infernus/core` via `wrapper/streamer/`. The package is `"private": true`.
 
 ## Streamer Config (static class)
 

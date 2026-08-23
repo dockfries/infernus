@@ -39,16 +39,16 @@ To install: `#include` the `.inc` file in your gamemode's `.pwn`, compile to `.a
 
 ### Plugin Wrappers
 
-| Package                | npm     | Wraps                                                                          | Key Export                 |
-| ---------------------- | ------- | ------------------------------------------------------------------------------ | -------------------------- |
-| `@infernus/streamer`   | private | [samp-streamer-plugin](https://github.com/samp-incognito/samp-streamer-plugin) | DynamicObject, DynamicArea |
-| `@infernus/raknet`     | public  | [Pawn.RakNet](https://github.com/katursis/Pawn.RakNet)                         | BitStream, IPacket         |
-| `@infernus/fcnpc`      | public  | [FCNPC](https://github.com/ziggi/FCNPC)                                        | FCNPC class                |
-| `@infernus/colandreas` | public  | [ColAndreas](https://github.com/Pottus/ColAndreas)                             | rayCastLine, CA_Object     |
-| `@infernus/cef`        | public  | [omp-cef](https://github.com/aurora-mp/omp-cef)                                | CefBrowser                 |
-| `@infernus/samp-voice` | public  | [samp-voice](https://github.com/CocaColaBear/samp-voice)                       | SampVoice, stream classes  |
-| `@infernus/nex-ac`     | public  | [nex-ac](https://github.com/NexiusTailer/nex-ac)                               | Anti-cheat events          |
-| `@infernus/gps`        | public  | [samp-gps-plugin](https://github.com/AmyrAhmady/samp-gps-plugin)               | MapNode, WazeEvent         |
+| Package                | npm     | Wraps                                                                     | Key Export                 |
+| ---------------------- | ------- | ------------------------------------------------------------------------- | -------------------------- |
+| `@infernus/streamer`   | private | [samp-streamer-plugin](https://github.com/dockfries/samp-streamer-plugin) | DynamicObject, DynamicArea |
+| `@infernus/raknet`     | public  | [Pawn.RakNet](https://github.com/dockfries/Pawn.RakNet)                   | BitStream, IPacket         |
+| `@infernus/fcnpc`      | public  | [FCNPC](https://github.com/ziggi/FCNPC)                                   | FCNPC class                |
+| `@infernus/colandreas` | public  | [ColAndreas](https://github.com/Pottus/ColAndreas)                        | rayCastLine, CA_Object     |
+| `@infernus/cef`        | public  | [omp-cef](https://github.com/dockfries/omp-cef)                           | CefBrowser                 |
+| `@infernus/samp-voice` | public  | [samp-voice](https://github.com/CocaColaBear/samp-voice)                  | SampVoice, stream classes  |
+| `@infernus/nex-ac`     | public  | [nex-ac](https://github.com/NexiusTailer/nex-ac)                          | Anti-cheat events          |
+| `@infernus/gps`        | public  | [samp-gps-plugin](https://github.com/AmyrAhmady/samp-gps-plugin)          | MapNode, WazeEvent         |
 
 ### Pure TypeScript (no external plugin) Wrappers
 

@@ -2,7 +2,7 @@
 
 > All API calls must be inside event callbacks (`GameMode.onInit`, etc.). Module-level calls silently fail.
 
-Wraps [omp-cef](https://github.com/aurora-mp/omp-cef). CEF browser overlay in-game. Requires a [polyfill](https://github.com/dockfries/infernus-starter/blob/main/gamemodes/polyfill/cef.inc).
+Wraps [omp-cef](https://github.com/dockfries/omp-cef). CEF browser overlay in-game. Requires a [polyfill](https://github.com/dockfries/infernus-starter/blob/main/gamemodes/polyfill/cef.inc).
 
 ```bash
 pnpm add @infernus/core @infernus/cef

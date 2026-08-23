@@ -418,22 +418,22 @@ try {
 
 ## Companion Packages
 
-| Package                   | Wraps                                                                          | Description                                |
-| ------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------ |
-| `@infernus/streamer`      | [samp-streamer-plugin](https://github.com/samp-incognito/samp-streamer-plugin) | Dynamic objects, areas (`"private": true`) |
-| `@infernus/raknet`        | [Pawn.RakNet](https://github.com/katursis/Pawn.RakNet)                         | RakNet packet/RPC interception             |
-| `@infernus/fs`            | Built-in filterscripts                                                         | Rewrites of official filterscripts         |
-| `@infernus/cef`           | [omp-cef](https://github.com/aurora-mp/omp-cef)                                | CEF browser overlay                        |
-| `@infernus/fcnpc`         | [FCNPC](https://github.com/ziggi/FCNPC)                                        | Advanced NPC plugin                        |
-| `@infernus/colandreas`    | [ColAndreas](https://github.com/Pottus/ColAndreas)                             | Collision detection                        |
-| `@infernus/samp-voice`    | [samp-voice](https://github.com/CocaColaBear/samp-voice)                       | In-game voice chat                         |
-| `@infernus/progress`      | —                                                                              | Progress bar TextDraw                      |
-| `@infernus/qrcode`        | —                                                                              | QR code via DynamicObject                  |
-| `@infernus/query`         | —                                                                              | UDP server query                           |
-| `@infernus/gps`           | [samp-gps-plugin](https://github.com/AmyrAhmady/samp-gps-plugin)               | GPS navigation                             |
-| `@infernus/mapandreas`    | [MapAndreas](https://github.com/Pottus/MapAndreas)                             | Height map                                 |
-| `@infernus/map-loader`    | —                                                                              | .map file loader                           |
-| `@infernus/mapfix`        | [MapFix include](https://github.com/NexiusTailer/MapFix)                       | Map object fixes (156 places)              |
-| `@infernus/nex-ac`        | [nex-ac](https://github.com/NexiusTailer/nex-ac)                               | Anti-cheat                                 |
-| `@infernus/weapon-config` | —                                                                              | Weapon damage config                       |
-| `@infernus/create-app`    | —                                                                              | CLI scaffolding (`npx infernus`)           |
+| Package                   | Wraps                                                                     | Description                                |
+| ------------------------- | ------------------------------------------------------------------------- | ------------------------------------------ |
+| `@infernus/streamer`      | [samp-streamer-plugin](https://github.com/dockfries/samp-streamer-plugin) | Dynamic objects, areas (`"private": true`) |
+| `@infernus/raknet`        | [Pawn.RakNet](https://github.com/dockfries/Pawn.RakNet)                   | RakNet packet/RPC interception             |
+| `@infernus/fs`            | Built-in filterscripts                                                    | Rewrites of official filterscripts         |
+| `@infernus/cef`           | [omp-cef](https://github.com/dockfries/omp-cef)                           | CEF browser overlay                        |
+| `@infernus/fcnpc`         | [FCNPC](https://github.com/ziggi/FCNPC)                                   | Advanced NPC plugin                        |
+| `@infernus/colandreas`    | [ColAndreas](https://github.com/Pottus/ColAndreas)                        | Collision detection                        |
+| `@infernus/samp-voice`    | [samp-voice](https://github.com/CocaColaBear/samp-voice)                  | In-game voice chat                         |
+| `@infernus/progress`      | —                                                                         | Progress bar TextDraw                      |
+| `@infernus/qrcode`        | —                                                                         | QR code via DynamicObject                  |
+| `@infernus/query`         | —                                                                         | UDP server query                           |
+| `@infernus/gps`           | [samp-gps-plugin](https://github.com/AmyrAhmady/samp-gps-plugin)          | GPS navigation                             |
+| `@infernus/mapandreas`    | [MapAndreas](https://github.com/Pottus/MapAndreas)                        | Height map                                 |
+| `@infernus/map-loader`    | —                                                                         | .map file loader                           |
+| `@infernus/mapfix`        | [MapFix include](https://github.com/NexiusTailer/MapFix)                  | Map object fixes (156 places)              |
+| `@infernus/nex-ac`        | [nex-ac](https://github.com/NexiusTailer/nex-ac)                          | Anti-cheat                                 |
+| `@infernus/weapon-config` | —                                                                         | Weapon damage config                       |
+| `@infernus/create-app`    | —                                                                         | CLI scaffolding (`npx infernus`)           |

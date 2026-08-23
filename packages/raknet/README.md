@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@infernus/raknet)](https://www.npmx.dev/package/@infernus/raknet) ![npm](https://img.shields.io/npm/dw/@infernus/raknet) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@infernus/raknet)
 
-A wrapper of the popular [open.mp raknet plugin](https://github.com/katursis/Pawn.RakNet) for samp-node.
+A wrapper of the popular [open.mp raknet component](https://github.com/dockfries/Pawn.RakNet) for samp-node.
 
 ## Getting started
 
