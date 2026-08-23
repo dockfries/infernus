@@ -24,7 +24,7 @@ El ecosistema `@infernus/*` está diseñado para integrar las librerías Pawn in
 | `@infernus/progress`        | Una barra de progreso basada en `LD_SPAC:white` para control preciso                                                                  |
 | `@infernus/qrcode`          | Genera objetos qrcode simples para infernus                                                                                           |
 | `@infernus/query`           | API simple para enviar consultas SA-MP con TypeScript                                                                                 |
-| `@infernus/raknet`          | Un envoltorio del plugin raknet de open.mp para samp-node                                                                             |
+| `@infernus/raknet`          | Un envoltorio del componente raknet de open.mp para samp-node                                                                         |
 | `@infernus/rec`             | Conversor de formato de archivo de `.rec` a `.json` y viceversa                                                                       |
 | `@infernus/samp-voice`      | Un envoltorio de la librería SA-MP voice para samp-node                                                                               |
 | `@infernus/shared`          | Utilidades y tipos compartidos para paquetes infernus (interno)                                                                       |
@@ -69,7 +69,7 @@ Esto mantiene toda la lógica unificada en el entorno Node.js/TypeScript, evitan
 
 > Tenga en cuenta que `@infernus/create-app` no admite la descarga de estas dependencias de 64 bits en este momento.
 
-Al usar el plugin raknet de 64 bits, es posible que deba recompilar manualmente el polyfill para que coincida con la versión de Pawn.RakNet y evitar advertencias de incompatibilidad de versiones.
+~~Al usar el plugin raknet de 64 bits, es posible que deba recompilar manualmente el polyfill para que coincida con la versión de Pawn.RakNet y evitar advertencias de incompatibilidad de versiones.~~
 
 Antes de ejecutar `pnpm install`, verifica si tu samp-node es de 32 bits (x86) o 64 bits (x64) y establece las variables de entorno correspondientes. Si ya has ejecutado `pnpm install`, elimina la carpeta `node_modules` primero antes de reinstalar.
 

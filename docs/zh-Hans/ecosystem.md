@@ -24,7 +24,7 @@
 | `@infernus/progress`        | 基于 `LD_SPAC:white` 的进度条                                                |
 | `@infernus/qrcode`          | 二维码生成                                                                   |
 | `@infernus/query`           | 用于发送 SA-MP 查询的简易 API                                                |
-| `@infernus/raknet`          | 对 open.mp raknet 插件的封装                                                 |
+| `@infernus/raknet`          | 对 open.mp raknet 组件的封装                                                 |
 | `@infernus/rec`             | `.rec` 与 `.json` 文件格式互转                                               |
 | `@infernus/samp-voice`      | 对 SA-MP voice 库的封装                                                      |
 | `@infernus/shared`          | 共享工具和类型（内部包）                                                     |
@@ -69,7 +69,7 @@
 
 > 请注意，`@infernus/create-app` 目前暂不支持下载这些 64 位依赖。
 
-使用 64 位的 raknet 插件时，可能需要手动重新编译 polyfill 以匹配 Pawn.RakNet 的版本，避免版本不匹配的警告。
+~~使用 64 位的 raknet 插件时，可能需要手动重新编译 polyfill 以匹配 Pawn.RakNet 的版本，避免版本不匹配的警告。~~
 
 在执行 `pnpm install` 之前，请根据你的 samp-node 是 32 位 (x86) 还是 64 位 (x64) 来决定是否启用以下环境变量。如果你已经执行过 `pnpm install`，请先删除 `node_modules` 文件夹后重新安装。
 

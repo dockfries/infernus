@@ -24,7 +24,7 @@ The `@infernus/*` ecosystem is designed to bridge Pawn include libraries into th
 | `@infernus/progress`        | A progress bar based on `LD_SPAC:white` for precise control                                                      |
 | `@infernus/qrcode`          | Generate simple qrcode objects for infernus                                                                      |
 | `@infernus/query`           | Simple API for sending SA-MP queries with TypeScript                                                             |
-| `@infernus/raknet`          | A wrapper of the open.mp raknet plugin for samp-node                                                             |
+| `@infernus/raknet`          | A wrapper of the open.mp raknet component for samp-node                                                          |
 | `@infernus/rec`             | File format converter from `.rec` to `.json` and vice versa                                                      |
 | `@infernus/samp-voice`      | A wrapper of the SA-MP voice library for samp-node                                                               |
 | `@infernus/shared`          | Shared utilities and types for infernus packages (internal)                                                      |
@@ -69,7 +69,7 @@ This keeps all logic unified in the Node.js/TypeScript environment, avoiding fra
 
 > Note that `@infernus/create-app` does not support downloading these 64-bit dependencies at this time.
 
-When using the 64-bit raknet plugin, you may need to manually recompile the polyfill to match the Pawn.RakNet version and avoid version mismatch warnings.
+~~When using the 64-bit raknet plugin, you may need to manually recompile the polyfill to match the Pawn.RakNet version and avoid version mismatch warnings.~~
 
 Before running `pnpm install`, determine whether your samp-node is 32-bit (x86) or 64-bit (x64) and set the environment variables accordingly. If you have already run `pnpm install`, delete the `node_modules` folder first before reinstalling.
 
