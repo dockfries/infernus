@@ -23,6 +23,14 @@
 
 由于插件、`samp-node`、`sampgdk` 或 `omp` 的底层实现限制，您可能无法直接使用 `samp-node` 调用插件/`omp` 组件的 native 函数，也无法直接注册回调函数。
 
-例如，`raknet` 无法被直接调用，因此 `infernus` 另辟蹊径，通过 `polyfill` 实现了对其的调用。
+~~例如，`raknet` 无法被直接调用，因此 `infernus` 另辟蹊径，通过 `polyfill` 实现了对其的调用。~~
 
-如果您在开发封装时遇到类似问题，可能需要参考 `raknet` 的 `polyfill` 实现来绕过限制——除非未来某天 `samp-node` 和其他生态能完全兼容 `omp`。
+~~如果您在开发封装时遇到类似问题，可能需要参考 `raknet` 的 `polyfill` 实现来绕过限制——除非未来某天 `samp-node` 和其他生态能完全兼容 `omp`。~~
+
+实际上，对于不兼容的插件，我们的做法基本是**为其编写封装并重写实现**，使其兼容 `sampgdk` 底层基于 `fakeamx` 的调用机制。
+
+### Sampgdk Index Mismatch
+
+使用多个 legacy 插件时，您可能会遇到 `Sampgdk Index Mismatch` 错误：不同的插件可能捆绑了不同版本的 `sampgdk`，而我们使用的是修改过的 `sampgdk` 版本。换言之，凡是依赖 `sampgdk` 的 legacy 插件，都必须使用同一个 `sampgdk` 版本，否则加载时会发生索引冲突。
+
+目前我们生态中常见依赖 `sampgdk` 的库有 `samp-node`、`streamer` 与 `omp-cef`，它们均已基于我们最新修改的 `sampgdk` 版本构建，因此请勿混用原作者发布的版本。关于我们 fork 的 `sampgdk` 实现，源码见 [sampgdk-backup](https://github.com/dockfries/sampgdk-backup)。
