@@ -46,6 +46,7 @@ export function objParser(line: string[], options: IMapLoadOptions) {
     streamDistance: defaultStreamDistance,
     drawDistance: defaultDrawDistance,
     overwrite,
+    extended = false,
   } = options;
 
   return new DynamicObject({
@@ -63,5 +64,6 @@ export function objParser(line: string[], options: IMapLoadOptions) {
     drawDistance: overwrite ? defaultDrawDistance : (drawDistance ?? defaultDrawDistance),
     playerId: overwritePlayerId,
     priority: overwrite ? defaultPriority : (priority ?? defaultPriority),
+    extended,
   }).create();
 }

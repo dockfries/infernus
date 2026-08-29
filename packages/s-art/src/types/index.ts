@@ -17,4 +17,5 @@ export interface CreateArtParams {
   streamDistance?: IDynamicObject["streamDistance"];
   drawDistance?: IDynamicObject["drawDistance"];
   resize?: { width: number; height: number };
+  extended?: IDynamicObject["extended"];
 }

@@ -123,6 +123,7 @@ export class SArt {
             playerId: params.playerId,
             streamDistance: params.streamDistance,
             drawDistance: params.drawDistance,
+            extended: params.extended,
           });
           obj.create();
           this.objects.push(obj);
