@@ -102,6 +102,7 @@ If they ask about **ecosystem context** (polyfills, versions, omp-node), read `r
 
 - **All game API calls must be inside event callbacks.** Module-level calls silently fail.
 - **`new` does NOT call the game API** — only `.create()` does (Vehicle, Actor, ObjectMp, TextDraw, TextLabel, GangZone, Pickup, Menu, Npc, Dynamic*).
+- **Dynamic\* configs: `extended` must match value shape.** `worldId`/`interiorId`/`playerId`/`areaId` **arrays require `extended: true`**; single numbers must **not** set it. Mismatched combos silently flatten to `-1` (no error). See `references/streamer.md`.
 - **Some entities are per-player, not global.** Their config object already has a `player?` field — do NOT pass `player` as both config property and second constructor arg; they are mutually exclusive. E.g. `new TextDraw({ x: 100, text: "Hello", player })` (correct), `new TextDraw({ x: 100, text: "Hello" }, player)` (also correct, player as second arg for ID-based construction), `new TextDraw({ ..., player }, player)` (WRONG — double-specified).
 - **`getInstance(id, player?)` looks up by numeric entity ID** in either the global pool or the per-player pool. It does NOT accept config objects. `getInstances(player?)` returns all instances optionally filtered by player.
 - **Events use a middleware pipeline** — call `next()` to continue, return `true`/`false` to override native default.

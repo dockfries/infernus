@@ -34,14 +34,16 @@ Streamer.getPlayerStreamerPointer(player);
 
 All follow `new X(config).create()` pattern:
 
-- `DynamicObject` — `{ modelId, x, y, z, rx, ry, rz, virtualWorld?, interior?, playerId?, streamDistance?, priority?, drawDistance? }`
-- `DynamicPickup` — `{ modelId, type, x, y, z, virtualWorld?, interior?, playerId?, streamDistance?, priority? }`
-- `DynamicActor` — `{ modelId, x, y, z, r, invulnerable?, health?, virtualWorld?, interior?, playerId?, streamDistance?, priority? }`
-- `Dynamic3DTextLabel` — `{ text, color, x, y, z, drawDistance, virtualWorld?, interior?, playerId?, attachedPlayer?, attachedVehicle?, testLOS?, priority?, streamDistance? }`
-- `DynamicMapIcon` — `{ x, y, z, type, color, style?, virtualWorld?, interior?, playerId?, streamDistance?, priority? }`
-- `DynamicCheckpoint` — `{ x, y, z, size, virtualWorld?, interior?, playerId?, streamDistance?, priority? }`
-- `DynamicRaceCP` — `{ type, x, y, z, nextX, nextY, nextZ, size, virtualWorld?, interior?, playerId?, streamDistance?, priority? }`
-- `DynamicArea` — use static factories: `DynamicArea.createCircle()`, `createCylinder()`, `createSphere()`, `createRectangle()`, `createCuboid()`, `createPolygon()`
+- `DynamicObject` — `{ modelId, x, y, z, rx, ry, rz, worldId?, interiorId?, playerId?, areaId?, streamDistance?, priority?, drawDistance? }`
+- `DynamicPickup` — `{ modelId, type, x, y, z, worldId?, interiorId?, playerId?, areaId?, streamDistance?, priority? }`
+- `DynamicActor` — `{ modelId, x, y, z, r, invulnerable, health, worldId?, interiorId?, playerId?, areaId?, streamDistance?, priority? }`
+- `Dynamic3DTextLabel` — `{ text, color, x, y, z, drawDistance, worldId?, interiorId?, playerId?, areaId?, attachedPlayer?, attachedVehicle?, testLOS?, priority?, streamDistance? }`
+- `DynamicMapIcon` — `{ x, y, z, type, color, style?, worldId?, interiorId?, playerId?, areaId?, streamDistance?, priority? }`
+- `DynamicCheckpoint` — `{ x, y, z, size, worldId?, interiorId?, playerId?, areaId?, streamDistance?, priority? }`
+- `DynamicRaceCP` — `{ type, x, y, z, nextX, nextY, nextZ, size, worldId?, interiorId?, playerId?, areaId?, streamDistance?, priority? }`
+- `DynamicArea` — `new + .create()` with a type config: `type: "circle" | "sphere" | "cylinder" | "cuboid" | "rectangle" | "polygon"`
+
+All configs also accept `extended?: boolean` — pass `extended: true` whenever any of `worldId` / `interiorId` / `playerId` / `areaId` is an **array** (see ⚠️ below).
 
 ```typescript
 import { DynamicObject, DynamicArea, DynamicAreaEvent } from "@infernus/core";
@@ -73,7 +75,7 @@ const circle = new DynamicArea({
 });
 circle.create();
 // Available types: "circle", "sphere", "cylinder", "cuboid", "rectangle", "polygon"
-// Set extended: true in config for array-based world/interior/playerId support
+// Set extended: true for array-based worldId/interiorId/playerId/areaId — see the ⚠️ note below
 circle.destroy();
 
 DynamicAreaEvent.onPlayerEnter(({ area, player, next }) => {
@@ -82,6 +84,56 @@ DynamicAreaEvent.onPlayerEnter(({ area, player, next }) => {
 DynamicAreaEvent.onPlayerLeave(({ area, player, next }) => {
   return next();
 });
+```
+
+> ⚠️ **`extended` must match how you write `worldId` / `interiorId` / `playerId` / `areaId`.**
+>
+> | Value shape                      | `extended: true`? | Result                                                            |
+> | -------------------------------- | ----------------- | ----------------------------------------------------------------- |
+> | array, e.g. `worldId: [1, 2]`    | **Yes**           | multi-world / multi-interior / multi-player visibility            |
+> | single number, e.g. `worldId: 1` | **No**            | single value kept as-is                                           |
+> | array + no `extended`            | —                 | array silently flattened to `-1`, values discarded, **no error**  |
+> | single number + `extended: true` | —                 | number silently replaced by `[-1]`, value discarded, **no error** |
+>
+> Mismatched combos never throw — the value just becomes `-1` (all worlds / all interiors). Applies uniformly to all Dynamic\* entities.
+
+```typescript
+// ✓ correct
+new DynamicObject({
+  modelId: 1337,
+  x: 0,
+  y: 0,
+  z: 10,
+  rx: 0,
+  ry: 0,
+  rz: 0,
+  worldId: [1, 2],
+  extended: true,
+}).create();
+new DynamicObject({ modelId: 1337, x: 0, y: 0, z: 10, rx: 0, ry: 0, rz: 0, worldId: 1 }).create();
+
+// ✗ silent footguns — both end up as -1
+new DynamicObject({
+  modelId: 1337,
+  x: 0,
+  y: 0,
+  z: 10,
+  rx: 0,
+  ry: 0,
+  rz: 0,
+  worldId: [1, 2],
+}).create(); // array without extended
+new DynamicObject({
+  modelId: 1337,
+  x: 0,
+  y: 0,
+  z: 10,
+  rx: 0,
+  ry: 0,
+  rz: 0,
+  worldId: 1,
+  extended: true,
+}).create(); // single number with extended
 ```
 
 **Instance management:** All Dynamic* classes have `getInstance(id)`, `getInstances()`, and pools.
