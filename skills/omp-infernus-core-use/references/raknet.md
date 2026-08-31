@@ -101,31 +101,31 @@ bs.sendRPCToVehicleStream(players, vehicle, rpcId, excludedPlayer, priority, rel
 
 ### Read/Write Methods
 
-| Read                          | Write                             | Type                 |
-| ----------------------------- | --------------------------------- | -------------------- |
-| `readInt8()`                  | `writeInt8(v)`                    | Signed 8-bit         |
-| `readInt16()`                 | `writeInt16(v)`                   | Signed 16-bit        |
-| `readInt32()`                 | `writeInt32(v)`                   | Signed 32-bit        |
-| `readUint8()`                 | `writeUint8(v)`                   | Unsigned 8-bit       |
-| `readUint16()`                | `writeUint16(v)`                  | Unsigned 16-bit      |
-| `readUint32()`                | `writeUint32(v)`                  | Unsigned 32-bit      |
-| `readFloat()`                 | `writeFloat(v)`                   | 32-bit float         |
-| `readBool()`                  | `writeBool(v)`                    | Boolean              |
-| `readString(size?)`           | `writeString(v, length?)`         | UTF-8 string         |
-| `readCompressedInt8()`        | `writeCompressedInt8(v)`          | Compressed int8      |
-| `readCompressedInt16()`       | `writeCompressedInt16(v)`         | Compressed int16     |
-| `readCompressedInt32()`       | `writeCompressedInt32(v)`         | Compressed int32     |
-| `readCompressedFloat()`       | `writeCompressedFloat(v)`         | Compressed float     |
-| `readCompressedBool()`        | `writeCompressedBool(v)`          | Compressed bool      |
-| `readCompressedString(s, c?)` | `writeCompressedString(v, l?)`    | Compressed string    |
-| `readBits(size)`              | `writeBits(v, size)`              | Raw bits             |
-| `readFloat3()`                | `writeFloat3(v)`                  | 3× float → `Vector3` |
-| `readFloat4()`                | `writeFloat4(v)`                  | 4× float → `Vector4` |
-| `readVector()`                | `writeVector(v)`                  | Compressed vector    |
-| `readNormQuat()`              | `writeNormQuat(v)`                | Normalized quat      |
-| `readString8(c?)`             | `writeString8(v)`                 | 8-byte string        |
-| `readString32(c?)`            | `writeString32(v)`                | 32-byte string       |
-| `readValue(...types)`         | `writeValue(...[type,val,len][])` | Multi-value          |
+| Read                                   | Write                                 | Type                                      |
+| -------------------------------------- | ------------------------------------- | ----------------------------------------- |
+| `readInt8()`                           | `writeInt8(v)`                        | Signed 8-bit                              |
+| `readInt16()`                          | `writeInt16(v)`                       | Signed 16-bit                             |
+| `readInt32()`                          | `writeInt32(v)`                       | Signed 32-bit                             |
+| `readUint8()`                          | `writeUint8(v)`                       | Unsigned 8-bit                            |
+| `readUint16()`                         | `writeUint16(v)`                      | Unsigned 16-bit                           |
+| `readUint32()`                         | `writeUint32(v)`                      | Unsigned 32-bit                           |
+| `readFloat()`                          | `writeFloat(v)`                       | 32-bit float                              |
+| `readBool()`                           | `writeBool(v)`                        | Boolean                                   |
+| `readString(size)`                     | `writeString(v, charset?)`            | UTF-8 string (size is required to read)   |
+| `readCompressedInt8()`                 | `writeCompressedInt8(v)`              | Compressed int8                           |
+| `readCompressedInt16()`                | `writeCompressedInt16(v)`             | Compressed int16                          |
+| `readCompressedInt32()`                | `writeCompressedInt32(v)`             | Compressed int32                          |
+| `readCompressedFloat()`                | `writeCompressedFloat(v)`             | Compressed float                          |
+| `readCompressedBool()`                 | `writeCompressedBool(v)`              | Compressed bool                           |
+| `readCompressedString(size, charset?)` | `writeCompressedString(v, charset?)`  | Compressed string (size required to read) |
+| `readBits(size)`                       | `writeBits(v, size)`                  | Raw bits                                  |
+| `readFloat3()`                         | `writeFloat3(v)`                      | 3× float → `Vector3`                      |
+| `readFloat4()`                         | `writeFloat4(v)`                      | 4× float → `Vector4`                      |
+| `readVector()`                         | `writeVector(v)`                      | Compressed vector                         |
+| `readNormQuat()`                       | `writeNormQuat(v)`                    | Normalized quat                           |
+| `readString8(size?)`                   | `writeString8(v)`                     | 8-byte string (default size 256)          |
+| `readString32(size?)`                  | `writeString32(v)`                    | 32-byte string                            |
+| `readValue(...types)`                  | `writeValue(...[type, val, size?][])` | Multi-value (size only for `Bits`)        |
 
 ### Static Utilities
 
@@ -212,13 +212,15 @@ Each extends `BitStream`, decorated with `@SyncId(packetId)`, implements `IPacke
 | `MarkersSync`    | `MarkersSync` (208)    | `IMarkersSync`    |
 
 ```typescript
-// Read
+// Read — inside IPacket the stream is incoming, so readSync() defaults to incoming format.
+// Do NOT pass `true` here: readSync(true) forces the outgoing layout (reads a leading playerId)
+// and will misparse incoming packets.
 IPacket(PacketIdList.OnFootSync, ({ bs, next }) => {
-  const data = new OnFootSync(bs).readSync(true); // true = outgoing
+  const data = new OnFootSync(bs).readSync();
   return next();
 });
 
-// Write + send
+// Write + send — outgoing stream
 const bs = new BulletSync(new BitStream());
 bs.writeSync(bulletData);
 bs.sendPacket(playerId);

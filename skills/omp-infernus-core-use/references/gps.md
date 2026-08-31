@@ -25,11 +25,11 @@ node.getDistanceBetween(otherNode);                // → number
 node.getAngleBetween(otherNode);                   // → number
 node.getDistanceFromPoint(x, y, z);                // → number
 node.getAngleFromPoint(x, y);                      // → number
-node.getHighest();                                 // → number
-node.getRandom();                                  // → MapNode
 
+MapNode.getHighest();                              // → number (static)
+MapNode.getRandom();                               // → MapNode (static)
 MapNode.getClosestToPoint(x, y, z, ignoredNode?);  // → MapNode
-MapNode.saveMapNodesToFile(fileName);               // → boolean
+MapNode.saveMapNodesToFile(fileName);              // → boolean
 ```
 
 ## GpsPath
@@ -92,11 +92,11 @@ MAX_WAZE_DOTS = 100;
 WAZE_UPDATE_TIME = 3100;
 
 enum GpsError {
-  None,
-  InvalidParams,
-  InvalidPath,
-  InvalidNode,
-  InvalidConnection,
-  Internal,
+  None = 0,
+  InvalidParams = -1,
+  InvalidPath = -2,
+  InvalidNode = -3,
+  InvalidConnection = -4,
+  Internal = -5,
 }
 ```

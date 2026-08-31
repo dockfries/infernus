@@ -70,6 +70,21 @@ CefEvent.onInitialize(({ player, success, reason, message, next }) => {
 CefEvent.onDownloadStart(({ player, next }) => {
   return next();
 });
+CefEvent.onDownloadProgress(
+  ({
+    player,
+    fileName,
+    filePercent,
+    totalPercent,
+    fileDownloadedKb,
+    fileTotalKb,
+    totalDownloadedKb,
+    totalKb,
+    next,
+  }) => {
+    return next();
+  },
+);
 CefEvent.onDownloadFinish(({ player, next }) => {
   return next();
 });

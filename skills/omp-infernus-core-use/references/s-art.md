@@ -21,9 +21,10 @@ const art = new SArt({
     rot: [0, 0, 0],
     resize: { width: 300, height: 300 },  // optional
     // Optional DynamicObject params:
-    worldId?: number,
-    interiorId?: number,
-    playerId?: number,
+    worldId?: number | number[],
+    interiorId?: number | number[],
+    playerId?: number | number[],
+    extended?: boolean,        // required when any of the above is an array — same rule as DynamicObject
     streamDistance?: number,
     drawDistance?: number,
 });
@@ -57,9 +58,10 @@ interface CreateArtParams {
   pos: [number, number, number];
   rot: [number, number, number];
   resize?: { width: number; height: number };
-  worldId?: number;
-  interiorId?: number;
-  playerId?: number;
+  worldId?: number | number[];
+  interiorId?: number | number[];
+  playerId?: number | number[];
+  extended?: boolean; // required when any of the above is an array — same rule as DynamicObject
   streamDistance?: number;
   drawDistance?: number;
 }

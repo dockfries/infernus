@@ -20,15 +20,15 @@ const qrText = generateQRText("https://example.com", 0, "M"); // typeNumber 0-40
 const obj = createQRObject(
   qrText,
   {
-    modelId: 19300,
+    modelId: 19300, // modelId defaults to 19371 if omitted
     x: 0,
     y: 0,
     z: 10,
     rx: 0,
     ry: 0,
     rz: 0,
-    virtualWorld: -1,
-    interior: -1,
+    worldId: -1,
+    interiorId: -1,
   },
   {
     charset: "utf8",

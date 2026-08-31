@@ -24,8 +24,8 @@ GameMode.onInit(({ next }) => {
 ```typescript
 import {
   rayCastLine, // → { ret, x, y, z } | null
-  rayCastLineID, // → includes object ID
-  rayCastLineExtraID, // → with type filter
+  rayCastLineID, // → { ret, x, y, z } | null (NO object ID despite the name)
+  rayCastLineExtraID, // → (type, ...) → { ret, x, y, z } | null
   rayCastLineAngle, // → { x, y, z, rx, ry, rz } | null
   rayCastLineAngleEx, // → extended with surface angles
   rayCastLineNormal, // → { x, y, z, nx, ny, nz } | null
@@ -53,14 +53,14 @@ import {
   rayCastExplode, // → { x, y, z }[] — explosion ray fragmentation
   isPlayerInWater, // → false | { depth, playerDepth }
   isVehicleInWater, // → false | { depth, vehicleDepth }
-  isPlayerOnSurface, // → boolean
-  isVehicleOnSurface, // → boolean
-  isPlayerNearWater, // → boolean
-  isVehicleNearWater, // → boolean
-  isPlayerFacingWater, // → boolean
-  isVehicleFacingWater, // → boolean
-  isPlayerBlocked, // → boolean
-  isVehicleBlocked, // → boolean
+  isPlayerOnSurface, // → (player, tolerance = 1.5) → boolean
+  isVehicleOnSurface, // → (vehicle, tolerance = 1.5) → boolean
+  isPlayerNearWater, // → (player, dist = 3.0, height = 3.0) → boolean
+  isVehicleNearWater, // → (vehicle, dist = 3.0, height = 3.0) → boolean
+  isPlayerFacingWater, // → (player, dist = 3.0, height = 3.0) → boolean
+  isVehicleFacingWater, // → (vehicle, dist = 3.0, height = 3.0) → boolean
+  isPlayerBlocked, // → (player, dist = 1.5, height = 0.5) → boolean
+  isVehicleBlocked, // → (vehicle, dist = 1.5, height = 0.5) → boolean
   removeBarriers, // → boolean
   removeBreakableBuildings, // → boolean
   getRoomHeight, // → number

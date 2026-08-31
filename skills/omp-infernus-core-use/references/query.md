@@ -20,11 +20,12 @@ const info = await sendQuery({
   opcode: RequestPacket.INFORMATION,
   timeout: 2000,
 });
-// → ServerInfo { isPassword, hostname, gameMode, language, maxPlayers, playerCount, rtt }
+// → ServerInfo { isPassword, hostname, gameMode, language, maxPlayers, playerCount, rtt } | null
+// On timeout or no response, sendQuery resolves null (does NOT throw).
 
 // Get rules
 const rules = await sendQuery({ address, opcode: RequestPacket.RULES });
-// → ServerRule[] { ruleName, ruleValue }
+// → ServerRule[] { ruleName, ruleValue } | null
 
 // Get clients
 const clients = await sendQuery({ address, opcode: RequestPacket.CLIENT_LIST });
@@ -48,7 +49,7 @@ enum RequestPacket {
 
 ## Exception
 
-`QueryException` is thrown on network errors, timeout, or invalid response data during server queries.
+`QueryException` is thrown only when `address` is not a valid IPv4 address (in `makePacket`). **Timeout / no response resolves `null`** — it does not throw. Network-level socket errors reject with the raw `Error` from the socket, not a `QueryException`.
 
 ```typescript
 import { QueryException } from "@infernus/query";

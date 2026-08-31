@@ -96,19 +96,24 @@ try {
 }
 ```
 
-Some exceptions are expected in normal operation (e.g. `ClientCheckException` on timeout, `DialogException` when the player closes a dialog or disconnects before responding). A common pattern is to suppress known benign exceptions at the process level:
+Some exceptions are expected in normal operation (e.g. `ClientCheckException` on timeout, `DialogException` when the player closes a dialog or disconnects before responding).
+
+These are **await-ed promise rejections, not process-level throws** — they are caught by `try/catch` around the `await` and do NOT reach `process.on("uncaughtException")`. A global `uncaughtException` handler will not suppress them:
 
 ```typescript
-import { ClientCheckException, DialogException } from "@infernus/core";
+import { DialogException } from "@infernus/core";
 
-process.on("uncaughtException", (err) => {
-  const ignoreExceptions = [ClientCheckException, DialogException];
-  if (ignoreExceptions.some((e) => err instanceof e)) {
-    return;
+try {
+  const result = await dialog.show(player);
+} catch (e) {
+  if (e instanceof DialogException) {
+    return; // player closed / disconnected — expected
   }
-  console.error(err);
-});
+  throw e;
+}
 ```
+
+Use `process.on("uncaughtException")` only for genuinely unhandled errors (bugs in your own code, unexpected async failures) — not for expected business-logic exceptions.
 
 ## Memory leak / events firing multiple times
 

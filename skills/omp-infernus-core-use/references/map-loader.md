@@ -65,6 +65,7 @@ interface IMapLoadOptions {
   worldId?: number | number[];
   areaId?: number | number[];
   interiorId?: number | number[];
+  extended?: boolean; // required when any of the above is an array — same rule as DynamicObject
   priority?: number;
   streamDistance?: number;
   drawDistance?: number;

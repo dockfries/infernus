@@ -183,19 +183,19 @@ setTimeout(() => {
 
 ## Common PAWN → Infernus Mapping Table
 
-| PAWN                                 | Infernus                                 |
-| ------------------------------------ | ---------------------------------------- |
-| `SetPlayerHealth(playerid, health)`  | `player.setHealth(health)`               |
-| `GetPlayerPos(playerid, &x, &y, &z)` | `const {x,y,z} = player.getPos()`        |
-| `SetSpawnInfo(playerid, ...)`        | `GameMode.addPlayerClass(...)`           |
-| `CreateVehicle(...)`                 | `new Vehicle(config).create()`           |
-| `CreateObject(...)`                  | `new ObjectMp(config).create()`          |
-| `SetTimer(func, ms, repeat)`         | `setTimeout` / `setInterval`             |
-| `strcmp(cmd, "/help")`               | `PlayerEvent.onCommandText("help", ...)` |
-| `ShowPlayerDialog(...)`              | `new Dialog(config).show(player)`        |
-| `GetPlayerName(playerid, buf, size)` | `player.getName().name`                  |
-| `PlayerTextDrawCreate(...)`          | `new TextDraw(config, player).create()`  |
-| `GangZoneCreate(...)`                | `new GangZone(config).create()`          |
-| `CreatePickup(...)`                  | `new Pickup(config).create()`            |
-| `Create3DTextLabel(...)`             | `new TextLabel(config).create()`         |
-| `CreateMenu(...)`                    | `new Menu(config).create()`              |
+| PAWN                                 | Infernus                                                                                                                                 |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `SetPlayerHealth(playerid, health)`  | `player.setHealth(health)`                                                                                                               |
+| `GetPlayerPos(playerid, &x, &y, &z)` | `const {x,y,z} = player.getPos()`                                                                                                        |
+| `SetSpawnInfo(playerid, ...)`        | `player.setSpawnInfo(team, skin, x, y, z, rotation, w1, a1, ...)` (per-player; `GameMode.addPlayerClass` is the global class equivalent) |
+| `CreateVehicle(...)`                 | `new Vehicle(config).create()`                                                                                                           |
+| `CreateObject(...)`                  | `new ObjectMp(config).create()`                                                                                                          |
+| `SetTimer(func, ms, repeat)`         | `setTimeout` / `setInterval`                                                                                                             |
+| `strcmp(cmd, "/help")`               | `PlayerEvent.onCommandText("help", ...)`                                                                                                 |
+| `ShowPlayerDialog(...)`              | `new Dialog(config).show(player)`                                                                                                        |
+| `GetPlayerName(playerid, buf, size)` | `player.getName().name`                                                                                                                  |
+| `PlayerTextDrawCreate(...)`          | `new TextDraw(config, player).create()`                                                                                                  |
+| `GangZoneCreate(...)`                | `new GangZone(config).create()`                                                                                                          |
+| `CreatePickup(...)`                  | `new Pickup(config).create()`                                                                                                            |
+| `Create3DTextLabel(...)`             | `new TextLabel(config).create()`                                                                                                         |
+| `CreateMenu(...)`                    | `new Menu(config).create()`                                                                                                              |

@@ -11,15 +11,17 @@ pnpm add @infernus/core @infernus/nex-ac
 ## Config
 
 ```typescript
-import { defineNexACConfig, type INexACConfig } from "@infernus/nex-ac";
+import { defineNexACConfig } from "@infernus/nex-ac";
 
 defineNexACConfig(() => ({
   LOCALE: "en",
-  DEBUG: false,
+  DEBUG: true, // default is true (on)
   AC_MAX_PING: 500,
-  // ...see INexACConfig for full options
+  // ...see the INexACConfig interface in the package source for full options
 }));
 ```
+
+> The `INexACConfig` type is defined in the package source but is **not re-exported** from the package entry — only `defineNexACConfig` is public. If you need the type, import it from `@infernus/nex-ac/src/config` or rely on the inferred return type.
 
 ## Enable/Disable
 
@@ -79,6 +81,8 @@ import {
   antiCheatGetVehicleSpeed,
 } from "@infernus/nex-ac";
 ```
+
+> Position/velocity getters return `{ x, y, z, ret }` (e.g. `antiCheatGetPos`, `antiCheatGetVehiclePos`) — but `antiCheatGetVehicleVelocity` / `antiCheatGetVehicleSpawnPos` / `antiCheatGetPickupPos` / `antiCheatGetSpawnWeapon` use **`result`** as the success key instead of `ret`. `antiCheatGetWeaponData(player, slot)` returns `{ weapons, ammo, ret }`.
 
 ## Status Checks
 

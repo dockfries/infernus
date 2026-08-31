@@ -14,7 +14,7 @@ pnpm add @infernus/core @infernus/drift-detection
 import { Drift, DriftEvent } from "@infernus/drift-detection";
 
 // Configuration
-Drift.setMinAngle(angle);       // 12-80 valid range
+Drift.setMinAngle(angle);       // only checks angle < 80 (no lower bound); MIN_DRIFT_ANGLE = 12 is just the default
 Drift.getMinAngle();            // default 12
 Drift.setMinSpeed(speed);       // default 45
 Drift.getMinSpeed();
