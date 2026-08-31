@@ -8,7 +8,7 @@ export const CreateDynamicActor = (
   r: number,
   invulnerable = true,
   health = 100.0,
-  worldId = 0,
+  worldId = -1,
   interiorId = -1,
   playerId = -1,
   streamDistance: number = StreamerDistances.ACTOR_SD,
