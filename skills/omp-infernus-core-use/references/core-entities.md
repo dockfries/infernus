@@ -135,7 +135,7 @@ player.spectatePlayer(tp);
 player.spectateVehicle(tv);
 player.giveWeapon(w, ammo);
 player.setAmmo(weaponId, ammo);
-player.getWeaponData(slot); // { weapon, ammo }
+player.getWeaponData(slot); // { weapons, ammo, ret }
 player.resetWeapons();
 player.getWeapon();
 player.getAmmo();
@@ -381,14 +381,14 @@ obj.setRot(rx, ry, rz);       obj.getRot();
 obj.move(x, y, z, speed, rx, ry, rz);  obj.stop();
 obj.attachToObject(t,...);    obj.attachToPlayer(p,...);
 obj.attachToVehicle(v,...);   obj.attachCamera(player);
-obj.edit(player);             obj.setCameraCollision(bool);
+obj.edit(player);             obj.setNoCameraCollision();  obj.hasCameraCollision();
 obj.setMaterial(slot, modelId, txd, texture, color);
 obj.setMaterialText(charset?, text, materialIndex, size?, fontFace?, fontSize?, bold?, fontColor?, backColor?, align?);
 obj.destroy();
 
 ObjectMpEvent.onPlayerEdit(({ player, objectMp, response, fX, fY, fZ, fRotX, fRotY, fRotZ, next }) => { return next(); });
 ObjectMpEvent.onPlayerSelect(({ player, objectMp, type, modelId, fX, fY, fZ, next }) => { return next(); });
-ObjectMpEvent.onPlayerEditAttached(({ player, response, index, modelId, next }) => { return next(); });
+ObjectMpEvent.onPlayerEditAttached(({ player, response, index, modelId, boneId, fOffsetX, fOffsetY, fOffsetZ, fRotX, fRotY, fRotZ, fScaleX, fScaleY, fScaleZ, next }) => { return next(); });
 ObjectMpEvent.onGlobalMoved(({ objectMp, next }) => { return next(); });
 ObjectMpEvent.onPlayerMoved(({ player, playerObject, next }) => { return next(); });
 

@@ -59,7 +59,7 @@ obj.stop();
 obj.attachCamera(player);
 obj.edit(player);
 obj.setMaterial(slot, modelId, txd, texture, color);
-obj.setMaterialText(charset?, slot, text, size, fontFace, fontSize, bold, fontColor, backColor, align);
+obj.setMaterialText(charset?, materialIndex, text, size, fontFace, fontSize, bold, fontColor, backColor, align);
 obj.destroy();
 
 // DynamicArea — use new + .create() with a type config, NOT static factories

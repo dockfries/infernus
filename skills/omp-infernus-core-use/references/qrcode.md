@@ -27,8 +27,6 @@ const obj = createQRObject(
     rx: 0,
     ry: 0,
     rz: 0,
-    worldId: -1,
-    interiorId: -1,
   },
   {
     charset: "utf8",
