@@ -2,7 +2,8 @@
 
 import { input, confirm } from "@inquirer/prompts";
 import chalk from "chalk";
-import decompress from "decompress";
+// @ts-expect-error no types package
+import decompress from "@xhmikosr/decompress";
 
 import fs from "fs-extra";
 

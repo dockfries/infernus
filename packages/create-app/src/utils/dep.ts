@@ -1,5 +1,6 @@
 import path from "node:path";
-import decompress from "decompress";
+// @ts-expect-error no types package
+import decompress from "@xhmikosr/decompress";
 import fs from "fs-extra";
 import fg from "fast-glob";
 import { select } from "@inquirer/prompts";
