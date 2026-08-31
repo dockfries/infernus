@@ -14,11 +14,11 @@ pnpm add @infernus/core @infernus/weapon-config
 import { defineWeaponConfig, type IWeaponConfig } from "@infernus/weapon-config";
 
 defineWeaponConfig(() => ({
-  DEBUG: false,
-  MAX_REJECTED_HITS: 30,
-  DEATH_WORLD: 5,
-  FEED_HEIGHT: 300,
-  CUSTOM_VENDING_MACHINES: false,
+  DEBUG: true,
+  MAX_REJECTED_HITS: 15,
+  DEATH_WORLD: 0x00dead00,
+  FEED_HEIGHT: 5,
+  CUSTOM_VENDING_MACHINES: true,
   // ... see IWeaponConfig for full options
 }));
 ```
@@ -35,7 +35,9 @@ Config is split into two interfaces:
 | Field                 | Default      | Description                    |
 | --------------------- | ------------ | ------------------------------ |
 | `HEALTH_BAR_FG_COLOR` | `0xb4191dff` | Foreground (health fill) color |
-| `HEALTH_BG_BG_COLOR`  | `0x5a0c0eff` | Background color               |
+| `HEALTH_BAR_BG_COLOR` | `0x5a0c0eff` | Background color               |
+
+> `IWeaponConfigGM` is an internal runtime interface used by the package's own state — it is **not exported** from the package. Only `defineWeaponConfig` and the `IWeaponConfig` type are public (see `main.ts`).
 
 ### IWeaponConfigGM (runtime via set\* API)
 
@@ -106,14 +108,14 @@ import {
 } from "@infernus/weapon-config";
 ```
 
-| Function                        | Returns                                  | Description                                                                        |
-| ------------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------- |
-| `getHealthBarPosition(player?)` | `{ ret, x, y }`                          | Get health bar position for a player or global default                             |
-| `getHealthBarSize(player?)`     | `{ ret, x, y }`                          | Get health bar size for a player or global default                                 |
-| `getHealthBarPadding(player?)`  | `{ ret, padding }`                       | Get health bar padding `[top, right, bottom, left]` for a player or global default |
-| `getHealthBarColor(player?)`    | `{ ret, borderColor, bgColor, fgColor }` | Get health bar colors for a player or global default                               |
+| Function                       | Returns                                  | Description                                                                                                                      |
+| ------------------------------ | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `getHealthBarPosition(player)` | `{ ret, x, y }`                          | Get health bar position for a player; pass `InvalidEnum.PLAYER_ID` for the global default (the player arg is **required**)       |
+| `getHealthBarSize(player)`     | `{ ret, x, y }`                          | Get health bar size for a player; pass `InvalidEnum.PLAYER_ID` for the global default (required)                                 |
+| `getHealthBarPadding(player)`  | `{ ret, padding }`                       | Get health bar padding `[top, right, bottom, left]` for a player; pass `InvalidEnum.PLAYER_ID` for the global default (required) |
+| `getHealthBarColor(player?)`   | `{ ret, borderColor, bgColor, fgColor }` | Get health bar colors; the player arg is optional (defaults to `InvalidEnum.PLAYER_ID`)                                          |
 
-> `player` parameter is optional — pass `InvalidEnum.PLAYER_ID` or omit for global defaults.
+> `getHealthBarPosition` / `getHealthBarSize` / `getHealthBarPadding` **require** a player argument (pass `InvalidEnum.PLAYER_ID` for global defaults). Only `getHealthBarColor` has a default.
 
 ## Set Functions
 

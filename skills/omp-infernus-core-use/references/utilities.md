@@ -70,21 +70,25 @@ Check `packages/filterscript/src/scripts/` for the full list.
 
 ## @infernus/create-app
 
-CLI scaffolding tool. Run without installing:
+CLI scaffolding tool for the samp-node + open.mp environment. Run without installing:
 
 ```bash
-npx infernus create my-server       # scaffold new project
+pnpm dlx @infernus/create-app@latest create my-server   # scaffold new project
 cd my-server && pnpm install && pnpm dev
 ```
 
+The CLI is published as `@infernus/create-app` with the `infernus` binary — use `pnpm dlx @infernus/create-app@latest <cmd>` (or install it globally and run `infernus <cmd>`). `npx infernus` does **not** resolve to this package.
+
 Full command reference:
 
-| Command            | Description                                                                                   |
-| ------------------ | --------------------------------------------------------------------------------------------- |
-| `create <name>`    | Scaffold a new project from [infernus-starter](https://github.com/dockfries/infernus-starter) |
-| `add <package>`    | Add a dependency (e.g. `npx infernus add @infernus/raknet`)                                   |
-| `install`          | Install all project dependencies                                                              |
-| `remove <package>` | Remove a dependency                                                                           |
-| `update`           | Update all `@infernus/*` packages to latest                                                   |
-| `cache clean`      | Clear the download cache                                                                      |
-| `config`           | View or edit CLI configuration (GitHub token, etc.)                                           |
+| Command                | Description                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------------ |
+| `create <name>`        | Scaffold a new project from [infernus-starter](https://github.com/dockfries/infernus-starter)          |
+| `add <dep...>`         | Add **Pawn plugin/component** dependencies (`owner/repo[@version]`), not npm packages; alias `install` |
+| `install`              | Install all plugin/component dependencies listed in `pawn.json`                                        |
+| `remove <dep...>`      | Remove plugin/component dependencies; aliases `rm`, `uninstall`                                        |
+| `update <dep...>`      | Update plugin/component dependencies (no args = all in `pawn.json`) — **not** npm packages             |
+| `clean <dep...>`       | Clear the download cache for specific deps, or `--all` for everything                                  |
+| `config [key] [value]` | View or edit CLI config (GitHub token, etc.); `--list` prints all config items                         |
+
+> This CLI manages the **server-side Pawn plugins/components** (samp-node, streamer, etc.) via `pawn.json`. npm dependencies of your gamemode are managed with `pnpm add/update` as usual.

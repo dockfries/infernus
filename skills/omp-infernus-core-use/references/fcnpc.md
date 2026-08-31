@@ -27,6 +27,7 @@ npc.givePosition(x, y, z);         npc.setAngle(angle);
 npc.giveAngle(angle);              npc.getAngle();
 npc.setAngleToPos(x, y);           npc.setAngleToPlayer(player);
 npc.setQuaternion(w, x, y, z);     npc.getQuaternion();
+npc.giveQuaternion(w, x, y, z);
 npc.setVelocity(x, y, z);          npc.getVelocity();
 npc.giveVelocity(x, y, z);         npc.setSpeed(speed);
 npc.getSpeed();                    npc.getDestination();
@@ -38,7 +39,7 @@ npc.stop();                        npc.isMoving();
 npc.aimAt(x, y, z, shoot, delay, setAngle, ...);
 npc.aimAtPlayer(player, ...);
 npc.stopAim();
-npc.meleeAttack(delay, fightingStyle);
+npc.meleeAttack(delay, fightingStyle?); // fightingStyle is a boolean, not an enum
 npc.stopAttack();                  npc.isAttacking();
 npc.triggerWeaponShot(weapon, hitType, hitId, x, y, z, ...);
 
@@ -80,8 +81,10 @@ npc.setVehicleGearState(state);    npc.getVehicleGearState();
 
 // Surfing
 npc.setSurfingOffsets(x, y, z);    npc.getSurfingOffsets();
+npc.giveSurfingOffsets(x, y, z);
 npc.setSurfingVehicle(vehicle);    npc.setSurfingObject(objId);
-npc.setSurfingDynamicObject(obj);  npc.stopSurfing();
+npc.setSurfingPlayerObject(objId); npc.setSurfingDynamicObject(obj);
+npc.stopSurfing();
 
 // Playback
 npc.startPlayingPlayback(file, recordId, ...);
@@ -125,37 +128,39 @@ FCNPCEvent.onSpawn(({ npc, next }) => {
 FCNPCEvent.onRespawn(({ npc, next }) => {
   return next();
 });
-FCNPCEvent.onDeath(({ npc, killer, reason, next }) => {
+FCNPCEvent.onDeath(({ npc, killer, killerId, reason, next }) => {
   return next();
 });
-FCNPCEvent.onTakeDamage(({ npc, from, weapon, bodyPart, healthLoss, armorLoss, next }) => {
+FCNPCEvent.onTakeDamage(({ npc, issuer, issuerId, amount, weapon, bodyPart, next }) => {
   return next();
 });
-FCNPCEvent.onGiveDamage(({ npc, to, weapon, bodyPart, healthLoss, armorLoss, next }) => {
+FCNPCEvent.onGiveDamage(({ npc, damaged, damagedId, amount, weapon, bodyPart, next }) => {
   return next();
 });
 FCNPCEvent.onReachDestination(({ npc, next }) => {
   return next();
 });
-FCNPCEvent.onFinishMovePath(({ npc, path, pointId, next }) => {
+FCNPCEvent.onFinishMovePath(({ npc, pathId, next }) => {
   return next();
-});
+}); // pointId is in onFinishMovePathPoint
 FCNPCEvent.onStreamIn(({ npc, forPlayer, next }) => {
   return next();
 });
 FCNPCEvent.onStreamOut(({ npc, forPlayer, next }) => {
   return next();
 });
-FCNPCEvent.onWeaponShot(({ npc, weapon, hitType, hitId, x, y, z, next }) => {
+FCNPCEvent.onWeaponShot(({ npc, weapon, hitType, hitId, fX, fY, fZ, next }) => {
   return next();
 });
 FCNPCEvent.onStateChange(({ npc, newState, oldState, next }) => {
   return next();
 });
-FCNPCEvent.onVehicleEntryComplete(({ npc, vehicle, seat, next }) => {
+FCNPCEvent.onVehicleEntryComplete(({ npc, vehicle, seatId, next }) => {
   return next();
 });
-// 20+ events total — see source for full list
+// 24 events total — also: onUpdate, onWeaponStateChange, onVehicleExitComplete,
+// onVehicleTakeDamage, onFinishPlayback, onFinishNode, onFinishNodePoint, onChangeNode,
+// onFinishMovePathPoint, onChangeHeightPos
 ```
 
 ## Enums

@@ -17,17 +17,16 @@ Streamer.toggleChunkStream(toggle);
 Streamer.isToggleChunkStream();
 Streamer.setChunkTickRate(type, rate);
 Streamer.getChunkTickRate(type);
-Streamer.setChunkSize(size);
-Streamer.getChunkSize();
+Streamer.setChunkSize(type, size);
+Streamer.getChunkSize(type);
 Streamer.setMaxItems(type, max);
 Streamer.getMaxItems(type);
 Streamer.setVisibleItems(type, items);
 Streamer.getVisibleItems(type);
 Streamer.setRadiusMultiplier(type, m);
 Streamer.getRadiusMultiplier(type);
-Streamer.setPriority(type, priority);
-Streamer.getPriority(type);
-Streamer.getPlayerStreamerPointer(player);
+Streamer.setTypePriority(types);
+Streamer.getTypePriority();
 ```
 
 ## Dynamic* Entities
@@ -60,7 +59,7 @@ obj.stop();
 obj.attachCamera(player);
 obj.edit(player);
 obj.setMaterial(slot, modelId, txd, texture, color);
-obj.setMaterialText(text, slot, size, fontFace, fontSize, bold, fontColor, backColor, align);
+obj.setMaterialText(charset?, slot, text, size, fontFace, fontSize, bold, fontColor, backColor, align);
 obj.destroy();
 
 // DynamicArea — use new + .create() with a type config, NOT static factories
@@ -95,7 +94,7 @@ DynamicAreaEvent.onPlayerLeave(({ area, player, next }) => {
 > | array + no `extended`            | —                 | array silently flattened to `-1`, values discarded, **no error**  |
 > | single number + `extended: true` | —                 | number silently replaced by `[-1]`, value discarded, **no error** |
 >
-> Mismatched combos never throw — the value just becomes `-1` (all worlds / all interiors). Applies uniformly to all Dynamic\* entities.
+> Mismatched combos never throw — the value just becomes `-1` (all worlds / all interiors). Applies uniformly to all Dynamic\* entities except `DynamicArea`, which has **no `areaId`** — its extended path handles `worldId` / `interiorId` / `playerId` only.
 
 ```typescript
 // ✓ correct
@@ -138,7 +137,13 @@ new DynamicObject({
 
 **Instance management:** All Dynamic* classes have `getInstance(id)`, `getInstances()`, and pools.
 
-**Events:** Each Dynamic* entity has an `Event` frozen object. Common event names: `onMoved`, `onPlayerEdit`, `onPlayerSelect`, `onPlayerShoot`, `onPlayerPickUp`, `onStreamIn`, `onStreamOut`.
+**Events:** Each Dynamic* entity has an `Event` frozen object, but the set differs per entity:
+
+- `DynamicObject` — `onMoved`, `onPlayerEdit`, `onPlayerSelect`, `onPlayerShoot`, `onStreamIn`, `onStreamOut`
+- `DynamicPickup` — `onPlayerPickUp`, `onStreamIn`, `onStreamOut`
+- `DynamicActor` — `onStreamIn`, `onStreamOut`, `onPlayerGiveDamage`
+- `DynamicCheckpoint` / `DynamicRaceCP` / `DynamicArea` — `onPlayerEnter`, `onPlayerLeave`, `onStreamIn`, `onStreamOut`
+- `Dynamic3DTextLabel` / `DynamicMapIcon` — `onStreamIn`, `onStreamOut` only
 
 ## Natives (raw)
 
