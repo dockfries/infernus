@@ -22,7 +22,7 @@ PlayerEvent.onSpawn(({ player, next }) => {
 PlayerEvent.onDeath(({ player, killer, reason, next }) => {
   return next();
 });
-PlayerEvent.onText(({ player, text, next }) => {
+PlayerEvent.onText(({ player, text, buffer, next }) => {
   return next();
 });
 PlayerEvent.onRequestClass(({ player, classId, next }) => {
@@ -64,10 +64,10 @@ PlayerEvent.onInteriorChange(({ player, newInteriorId, oldInteriorId, next }) =>
 PlayerEvent.onEnterExitModShop(({ player, enterExit, interior, next }) => {
   return next();
 });
-PlayerEvent.onPause(({ player, next }) => {
+PlayerEvent.onPause(({ player, pausedAt, next }) => {
   return next();
 });
-PlayerEvent.onResume(({ player, next }) => {
+PlayerEvent.onResume(({ player, pausedAt, now, diff, next }) => {
   return next();
 });
 PlayerEvent.onUpdate(({ player, next }) => {
@@ -91,10 +91,10 @@ PlayerEvent.onLocaleChange(({ player, newLocale, oldLocale, next }) => {
 PlayerEvent.onCharsetChange(({ player, newCharset, oldCharset, next }) => {
   return next();
 });
-PlayerEvent.onFpsUpdate(({ player, fps, next }) => {
+PlayerEvent.onFpsUpdate(({ player, newFps, oldFps, next }) => {
   return next();
 });
-PlayerEvent.onAndroidCheck(({ player, isAndroid, next }) => {
+PlayerEvent.onAndroidCheck(({ player, result, next }) => {
   return next();
 });
 PlayerEvent.onCommandTextRaw(({ player, command, next }) => {
@@ -134,7 +134,7 @@ player.toggleSpectating(b);
 player.spectatePlayer(tp);
 player.spectateVehicle(tv);
 player.giveWeapon(w, ammo);
-player.setWeaponAmmo(w, ammo);
+player.setAmmo(weaponId, ammo);
 player.getWeaponData(slot); // { weapon, ammo }
 player.resetWeapons();
 player.getWeapon();
@@ -330,18 +330,27 @@ import { Npc, NpcEvent } from "@infernus/core";
 const npc = new Npc("Bot");     // constructor takes name string
 npc.create();                   // connects the NPC
 
-npc.goTo(x, y, z, type, speed);  npc.stopMove();
-npc.aimAt(x, y, z, shoot);       npc.stopAim();
-npc.setWeapon(w);                 npc.fireWeapon();
-npc.setAmmo(a);                   npc.enterVehicle(v, seat);
-npc.exitVehicle();                npc.applyAnimation(lib, name, ...);
-npc.startRecordingPlayback(id);   npc.stopRecordingPlayback();
-npc.setInvulnerable(true);        npc.destroy();
+npc.move(x, y, z, moveType, moveSpeed);  npc.stopMove();
+npc.aimAt(x, y, z, shoot);               npc.stopAim();
+npc.setWeapon(w);                         npc.shoot(weapon, hitId, hitType, endX, endY, endZ);
+npc.setAmmo(a);                           npc.enterVehicle(v, seat);
+npc.exitVehicle();                        npc.putInVehicle(v, seat);
+npc.removeFromVehicle();                  npc.getVehicle();
+npc.getVehicleID();                       npc.getVehicleSeat();
+npc.setVehiclePos(x, y, z);               npc.setVehicleRot(x, y, z);
+npc.setVehicleHealth(h);                  npc.getVehicleHealth();
+npc.useVehicleSiren(true);                npc.isVehicleSirenUsed();
+npc.applyAnimation(lib, name, ...);
+npc.startPlayback(recordName);            npc.stopPlayback();
+npc.setInvulnerable(true);                npc.destroy();
 
 NpcEvent.onCreate(({ npc, next }) => { return next(); });
 NpcEvent.onSpawn(({ npc, next }) => { return next(); });
 NpcEvent.onDeath(({ npc, reason, next }) => { return next(); });
-// 20+ events for movement, combat, playback
+// 18 events total: onCreate, onDestroy, onSpawn, onRespawn, onDeath, onFinishMove,
+// onWeaponStateChange, onTakeDamage, onGiveDamage, onWeaponShot,
+// onPlaybackStart, onPlaybackEnd, onFinishNode, onFinishNodePoint, onChangeNode,
+// onFinishMovePath, onFinishMovePathPoint, onClientMessage
 
 // Static
 Npc.getInstance(id);     Npc.getInstances();
@@ -374,13 +383,14 @@ obj.attachToObject(t,...);    obj.attachToPlayer(p,...);
 obj.attachToVehicle(v,...);   obj.attachCamera(player);
 obj.edit(player);             obj.setCameraCollision(bool);
 obj.setMaterial(slot, modelId, txd, texture, color);
-obj.setMaterialText(text, slot, size, fontFace, fontSize, bold, fontColor, backColor, align);
+obj.setMaterialText(charset?, text, materialIndex, size?, fontFace?, fontSize?, bold?, fontColor?, backColor?, align?);
 obj.destroy();
 
-ObjectMpEvent.onPlayerEdit(({ player, object, retType, pos, rot, next }) => { return next(); });
-ObjectMpEvent.onPlayerSelect(({ player, object, modelId, pos, next }) => { return next(); });
-ObjectMpEvent.onGlobalMoved(({ object, next }) => { return next(); });
-ObjectMpEvent.onPlayerMoved(({ object, player, next }) => { return next(); });
+ObjectMpEvent.onPlayerEdit(({ player, objectMp, response, fX, fY, fZ, fRotX, fRotY, fRotZ, next }) => { return next(); });
+ObjectMpEvent.onPlayerSelect(({ player, objectMp, type, modelId, fX, fY, fZ, next }) => { return next(); });
+ObjectMpEvent.onPlayerEditAttached(({ player, response, index, modelId, next }) => { return next(); });
+ObjectMpEvent.onGlobalMoved(({ objectMp, next }) => { return next(); });
+ObjectMpEvent.onPlayerMoved(({ player, playerObject, next }) => { return next(); });
 
 // Static
 ObjectMp.getInstance(objectId, player?); ObjectMp.getInstances(player?);
@@ -400,8 +410,11 @@ pu.create();                              // global
 const ppu = new Pickup({ model: 1240, ..., player }, player);  // WRONG
 const ppu = new Pickup({ model: 1240, ..., player });          // correct
 
-pu.setPos(x, y, z);    pu.getPos();
-pu.setModel(model);    pu.setType(type);   pu.setVirtualWorld(vw);
+pu.setPos(x, y, z, update); // setPos requires the 4th `update` arg
+pu.getPos();
+pu.setModel(model); // setModel(model, update = true)
+pu.setType(type); // setType(type, update = true)
+pu.setVirtualWorld(vw);
 pu.showForPlayer(p);   pu.hideForPlayer(p);
 pu.destroy();
 
@@ -411,6 +424,10 @@ Pickup.getInstances(player?);
 
 PickUpEvent.onPlayerPickUpGlobal(({ player, pickup, next }) => { return next(); });
 PickUpEvent.onPlayerPickupPlayer(({ player, pickup, next }) => { return next(); });
+PickUpEvent.onStreamInGlobal(({ player, pickup, next }) => { return next(); });
+PickUpEvent.onStreamOutGlobal(({ player, pickup, next }) => { return next(); });
+PickUpEvent.onStreamInPlayer(({ player, pickup, next }) => { return next(); });
+PickUpEvent.onStreamOutPlayer(({ player, pickup, next }) => { return next(); });
 
 // Static
 Pickup.getInstance(pickupId, player?);  Pickup.getInstances(player?);
@@ -430,11 +447,11 @@ gz.create();                              // global
 const pgz = new GangZone({ minX:0, maxX:100, minY:0, maxY:100, player }, player);  // WRONG
 const pgz = new GangZone({ minX:0, maxX:100, minY:0, maxY:100, player });          // correct
 
-gz.showForAll(color);        gz.showForPlayer(player, color);
+gz.showForAll(color);        gz.showForPlayer(color, player?);  // note: (color, player)
 gz.hideForAll();             gz.hideForPlayer(player);
-gz.flashForAll(color);       gz.flashForPlayer(player, color);
+gz.flashForAll(color);       gz.flashForPlayer(player, color);  // note: (player, color)
 gz.stopFlashForAll();        gz.stopFlashForPlayer(player);
-gz.isPlayerIn(player);       gz.isVisible(player);
+gz.isPlayerIn(player);       gz.isVisibleForPlayer(player);
 gz.getColorForPlayer(player);  gz.destroy();
 
 // getInstance(gangZoneId, player?) — lookup by numeric ID
@@ -530,7 +547,7 @@ Checkpoint.set(player, x, y, z, radius);
 Checkpoint.disable(player);
 Checkpoint.isPlayerIn(player);
 Checkpoint.isActive(player);
-Checkpoint.get(player); // { x, y, z, radius }
+Checkpoint.get(player); // { fX, fY, fZ, fSize, ret }
 
 RaceCheckpoint.set(player, type, x, y, z, nx, ny, nz, radius);
 RaceCheckpoint.disable(player);

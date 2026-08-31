@@ -73,12 +73,12 @@ PlayerEvent.onText(({ next }) => {
 ```
 
 - Multiple subscribers execute in registration order
-- **Not calling `next()` stops the chain** — subsequent subscribers will not execute.
-- **Return value vs chain control are independent:**
-  - `return next()` — passes control to next subscriber AND forwards its return value
-  - `return true` / `return false` — overrides native default but **does NOT** stop the chain (next subscriber still runs)
-  - Omitting `next()` entirely — stops the chain AND returns the event's `defaultValue`
-- **Async return values are discarded** — when any middleware is async, the default value is returned to the native callback immediately, regardless of what the async function returns.
+- **Not calling `next()` stops the chain** — subsequent subscribers will not execute, and whatever that subscriber returns (`true`/`false`, or nothing → `defaultValue`) is what reaches the native callback.
+- **Return value vs chain control are linked:**
+  - `return next()` — continues the chain and forwards the next subscriber's return value
+  - `return true` / `return false` without calling `next()` — stops the chain; the boolean overrides the native default
+  - Omitting `next()` and returning nothing — stops the chain and returns the event's `defaultValue`
+- **Async return values are discarded** — if any subscriber returns a Promise, the chain stops waiting: the event's `defaultValue` is returned to the native callback immediately, regardless of what the async function returns.
 - `off()` returned by subscription cancels a middleware.
 
 ## Pool System (getInstance / getInstances)
@@ -191,7 +191,7 @@ GameMode.setObjectsDefaultCameraCollision(bool);
 // Custom models & server rules
 GameMode.addServerRule(name, value); GameMode.setServerRule(name, value);
 GameMode.isValidServerRule(name);    GameMode.removeServerRule(name);
-GameMode.getConsoleVarAsString(name, charset?);
+GameMode.getConsoleVarAsString(name, charset?); // { consoleVar, ret }
 GameMode.getConsoleVarAsInt(name);   GameMode.getConsoleVarAsBool(name);
 
 // Validation
@@ -268,7 +268,7 @@ NetStats.getBytesReceived(player);
 NetStats.getBytesSent(player);
 NetStats.getConnectionStatus(player);
 NetStats.getConnectedTime(player);
-NetStats.getIpPort(player); // { ip, port }
+NetStats.getIpPort(player); // { ipPort, ret }
 NetStats.getMessagesReceived(player);
 NetStats.getMessagesSent(player);
 NetStats.getMessagesRecvPerSecond(player);
@@ -365,14 +365,15 @@ const obj = new DynamicObject({
   rx: 0,
   ry: 0,
   rz: 0,
-  virtualWorld: -1,
-  interior: -1,
+  worldId: -1,
+  interiorId: -1,
   playerId: -1,
   streamDistance: 200,
   priority: 0,
 });
 obj.create();
-const circle = DynamicArea.createCircle({ x: 0, y: 0, z: 0, size: 50 });
+const circle = new DynamicArea({ type: "circle", x: 0, y: 0, size: 50 });
+circle.create();
 Streamer.setTickRate(50);
 ```
 
@@ -418,22 +419,22 @@ try {
 
 ## Companion Packages
 
-| Package                   | Wraps                                                                     | Description                                |
-| ------------------------- | ------------------------------------------------------------------------- | ------------------------------------------ |
-| `@infernus/streamer`      | [samp-streamer-plugin](https://github.com/dockfries/samp-streamer-plugin) | Dynamic objects, areas (`"private": true`) |
-| `@infernus/raknet`        | [Pawn.RakNet](https://github.com/dockfries/Pawn.RakNet)                   | RakNet packet/RPC interception             |
-| `@infernus/fs`            | Built-in filterscripts                                                    | Rewrites of official filterscripts         |
-| `@infernus/cef`           | [omp-cef](https://github.com/dockfries/omp-cef)                           | CEF browser overlay                        |
-| `@infernus/fcnpc`         | [FCNPC](https://github.com/ziggi/FCNPC)                                   | Advanced NPC plugin                        |
-| `@infernus/colandreas`    | [ColAndreas](https://github.com/dockfries/ColAndreas)                     | Collision detection                        |
-| `@infernus/samp-voice`    | [samp-voice](https://github.com/dockfries/sampvoice)                      | In-game voice chat                         |
-| `@infernus/progress`      | —                                                                         | Progress bar TextDraw                      |
-| `@infernus/qrcode`        | —                                                                         | QR code via DynamicObject                  |
-| `@infernus/query`         | —                                                                         | UDP server query                           |
-| `@infernus/gps`           | [samp-gps-plugin](https://github.com/dockfries/samp-gps-plugin)           | GPS navigation                             |
-| `@infernus/mapandreas`    | [MapAndreas](https://github.com/Pottus/MapAndreas)                        | Height map                                 |
-| `@infernus/map-loader`    | —                                                                         | .map file loader                           |
-| `@infernus/mapfix`        | [MapFix include](https://github.com/NexiusTailer/MapFix)                  | Map object fixes (156 places)              |
-| `@infernus/nex-ac`        | [nex-ac](https://github.com/NexiusTailer/nex-ac)                          | Anti-cheat                                 |
-| `@infernus/weapon-config` | —                                                                         | Weapon damage config                       |
-| `@infernus/create-app`    | —                                                                         | CLI scaffolding (`npx infernus`)           |
+| Package                   | Wraps                                                                     | Description                                       |
+| ------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------- |
+| `@infernus/streamer`      | [samp-streamer-plugin](https://github.com/dockfries/samp-streamer-plugin) | Dynamic objects, areas (`"private": true`)        |
+| `@infernus/raknet`        | [Pawn.RakNet](https://github.com/dockfries/Pawn.RakNet)                   | RakNet packet/RPC interception                    |
+| `@infernus/fs`            | Built-in filterscripts                                                    | Rewrites of official filterscripts                |
+| `@infernus/cef`           | [omp-cef](https://github.com/dockfries/omp-cef)                           | CEF browser overlay                               |
+| `@infernus/fcnpc`         | [FCNPC](https://github.com/ziggi/FCNPC)                                   | Advanced NPC plugin                               |
+| `@infernus/colandreas`    | [ColAndreas](https://github.com/dockfries/ColAndreas)                     | Collision detection                               |
+| `@infernus/samp-voice`    | [samp-voice](https://github.com/dockfries/sampvoice)                      | In-game voice chat                                |
+| `@infernus/progress`      | —                                                                         | Progress bar TextDraw                             |
+| `@infernus/qrcode`        | —                                                                         | QR code via DynamicObject                         |
+| `@infernus/query`         | —                                                                         | UDP server query                                  |
+| `@infernus/gps`           | [samp-gps-plugin](https://github.com/dockfries/samp-gps-plugin)           | GPS navigation                                    |
+| `@infernus/mapandreas`    | [MapAndreas](https://github.com/Pottus/MapAndreas)                        | Height map                                        |
+| `@infernus/map-loader`    | —                                                                         | .map file loader                                  |
+| `@infernus/mapfix`        | [MapFix include](https://github.com/NexiusTailer/MapFix)                  | Map object fixes (156 places)                     |
+| `@infernus/nex-ac`        | [nex-ac](https://github.com/NexiusTailer/nex-ac)                          | Anti-cheat                                        |
+| `@infernus/weapon-config` | —                                                                         | Weapon damage config                              |
+| `@infernus/create-app`    | —                                                                         | CLI scaffolding (`pnpm dlx @infernus/create-app`) |
