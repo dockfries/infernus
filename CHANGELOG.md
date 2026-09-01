@@ -1,14 +1,18 @@
-## [Unreleased](https://github.com/dockfries/infernus/compare/v0.14.7...4753d5cdcce5fddec4824c203124ec044000d4eb) (2026-08-23)
+## [0.14.8](https://github.com/dockfries/infernus/compare/v0.14.7...v0.14.8) (2026-09-01)
 
 ### Features
 
 - **mapfix:** add wrapper of mapfix ([7a9c35d](https://github.com/dockfries/infernus/commit/7a9c35d9a46c35c321a6e808c5d280bc63dec139))
+- **release:** support generating unreleased changelog ([7b753c6](https://github.com/dockfries/infernus/commit/7b753c6f3a63c7648a28b117eb4a00c733224b87))
 - **weapon-config:** sync 370 ([172ff4d](https://github.com/dockfries/infernus/commit/172ff4dc07d328e2e7a4ee653764a7069dd85436))
 - **weapon-config:** sync 371 ([4753d5c](https://github.com/dockfries/infernus/commit/4753d5cdcce5fddec4824c203124ec044000d4eb))
 
 ### Bug Fixes
 
+- **core, streamer:** unify DynamicActor worldId default to -1 ([feab125](https://github.com/dockfries/infernus/commit/feab125e7f51f335fe43134a11c4cced5390bd3d))
 - **core:** update args for npc setVehiclePosRot ([4dc9e0c](https://github.com/dockfries/infernus/commit/4dc9e0c3b4b27e9d75eb0b5ebbc74d29f429de5a))
+- **create-app:** use `@xhmikosr/decompress` ([292a50a](https://github.com/dockfries/infernus/commit/292a50aba2a3ae9f219b9b5f84acbc72150d4445))
+- **map-loader, sart:** extended param for DynamicObject ([72d5b29](https://github.com/dockfries/infernus/commit/72d5b293771c549a2a6533b3e4395d24db497787))
 - **raknet:** emulate native func name ([6daabf3](https://github.com/dockfries/infernus/commit/6daabf314a1937b0e4c1ad56bfefce056d621822))
 
 ## [0.14.7](https://github.com/dockfries/infernus/compare/v0.14.6...v0.14.7) (2026-08-01)
