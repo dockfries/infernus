@@ -258,6 +258,14 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
           return archiveAssetReg.test(asset.name);
         });
 
+        if (!archiveAssets.length) {
+          throw new Error(
+            `Unable to match asset ${archiveResource.name} in dependency ${dep} \n` +
+              ` — available assets: \n` +
+              `${matchedRelease.assets.map((asset: any) => asset.name).join("\n")}`,
+          );
+        }
+
         const archiveAsset = archiveAssets[0];
         if (archiveAssets.length > 1) {
           const choices = archiveAssets.map((asset: any, idx: number) => {
