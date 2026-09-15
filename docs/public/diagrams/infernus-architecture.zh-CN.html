@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="archify 2.17.0-dev.1">
-  <title>Infernus 单仓架构与子包实现</title>
+  <title>Infernus 单仓架构与子包</title>
   <script>
     // Resolve the theme before first paint so light-preference users don't
     // see a dark flash. The toolbar script below re-applies with UI state.
@@ -5081,7 +5081,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
            data-preset-badge-blueprint="蓝图 / 修订 01"
            data-preset-badge-editorial="编辑风格 / 现场笔记">
         <div class="pulse-dot"></div>
-        <h1>Infernus 单仓架构与子包实现</h1>
+        <h1>Infernus 单仓架构与子包</h1>
       </div>
     </div>
 
@@ -5131,7 +5131,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <div class="diagram-container" data-detail-level="read"
          data-preset-badge-editorial-plate="ARCHIFY / 图版 04">
       <svg viewBox="0 0 1362 470" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
-        <title id="archify-diagram-title">Infernus 单仓架构与子包实现</title>
+        <title id="archify-diagram-title">Infernus 单仓架构与子包</title>
         <desc id="archify-diagram-description">由 Archify 生成的架构图。</desc>
         <!-- Definitions -->
         <defs>
@@ -5170,19 +5170,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <path data-edge-from="core_pkg" data-edge-to="samp_node" data-edge-label="callNative" data-edge-key="2" data-edge-id="core-calls-native" data-composition-points="80,288;80,322" d="M 80 288 L 80 322" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
 
         <!-- Components -->
-        <g id="node-create_app" data-node-id="create_app" data-node-label="create-app" tabindex="0" role="button" aria-label="聚焦create-app，infernus CLI, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="infernus CLI" data-node-context="架构组件">
-          <title>create-app · infernus CLI · 架构组件</title>
+        <g id="node-create_app" data-node-id="create_app" data-node-label="create-app" tabindex="0" role="button" aria-label="聚焦create-app，脚手架 CLI, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="脚手架 CLI" data-node-context="架构组件">
+          <title>create-app · 脚手架 CLI · 架构组件</title>
           <rect x="20" y="40" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="20" y="40" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(26 46) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="80" y="68" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">create-app</text>
-        <text data-detail="context" x="80" y="84" class="t-muted" font-size="9" text-anchor="middle">infernus CLI</text>
+        <text data-detail="context" x="80" y="84" class="t-muted" font-size="9" text-anchor="middle">脚手架 CLI</text>
         </g>
 
-        <g id="node-gamemode" data-node-id="gamemode" data-node-label="业务 Gamemode" tabindex="0" role="button" aria-label="聚焦业务 Gamemode，GameMode.onInit, 架构组件" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="GameMode.onInit" data-node-context="架构组件">
-          <title>业务 Gamemode · GameMode.onInit · 架构组件</title>
+        <g id="node-gamemode" data-node-id="gamemode" data-node-label="业务 Gamemode" tabindex="0" role="button" aria-label="聚焦业务 Gamemode，业务脚本入口, 架构组件" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="业务脚本入口" data-node-context="架构组件">
+          <title>业务 Gamemode · 业务脚本入口 · 架构组件</title>
           <rect x="20" y="134" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="20" y="134" width="120" height="60" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(26 140) scale(0.6875)">
@@ -5192,77 +5192,77 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="80" y="162" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">业务 Gamemode</text>
-        <text data-detail="context" x="80" y="178" class="t-muted" font-size="9" text-anchor="middle">GameMode.onInit</text>
+        <text data-detail="context" x="80" y="178" class="t-muted" font-size="9" text-anchor="middle">业务脚本入口</text>
         </g>
 
-        <g id="node-core_pkg" data-node-id="core_pkg" data-node-label="@infernus/core" tabindex="0" role="button" aria-label="聚焦@infernus/core，bus / hook, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="bus / hook" data-node-context="架构组件">
-          <title>@infernus/core · bus / hook · 架构组件</title>
+        <g id="node-core_pkg" data-node-id="core_pkg" data-node-label="@infernus/core" tabindex="0" role="button" aria-label="聚焦@infernus/core，核心库, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="核心库" data-node-context="架构组件">
+          <title>@infernus/core · 核心库 · 架构组件</title>
           <rect x="20" y="228" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="20" y="228" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(26 234) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="80" y="256" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">@infernus/core</text>
-        <text data-detail="context" x="80" y="272" class="t-muted" font-size="9" text-anchor="middle">bus / hook</text>
+        <text data-detail="context" x="80" y="272" class="t-muted" font-size="9" text-anchor="middle">核心库</text>
         </g>
 
-        <g id="node-samp_node" data-node-id="samp_node" data-node-label="samp-node 插件" tabindex="0" role="button" aria-label="聚焦samp-node 插件，全局 samp 对象, 架构组件" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="全局 samp 对象" data-node-context="架构组件">
-          <title>samp-node 插件 · 全局 samp 对象 · 架构组件</title>
+        <g id="node-samp_node" data-node-id="samp_node" data-node-label="samp-node 插件" tabindex="0" role="button" aria-label="聚焦samp-node 插件，Node 运行时, 架构组件" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="Node 运行时" data-node-context="架构组件">
+          <title>samp-node 插件 · Node 运行时 · 架构组件</title>
           <rect x="20" y="322" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="20" y="322" width="120" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(26 328) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="80" y="350" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">samp-node 插件</text>
-        <text data-detail="context" x="80" y="366" class="t-muted" font-size="9" text-anchor="middle">全局 samp 对象</text>
+        <text data-detail="context" x="80" y="366" class="t-muted" font-size="9" text-anchor="middle">Node 运行时</text>
         </g>
 
-        <g id="node-fs_pkg" data-node-id="fs_pkg" data-node-label="@infernus/fs" tabindex="0" role="button" aria-label="聚焦@infernus/fs，IFilterScript, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="IFilterScript" data-node-context="架构组件">
-          <title>@infernus/fs · IFilterScript · 架构组件</title>
+        <g id="node-fs_pkg" data-node-id="fs_pkg" data-node-label="@infernus/fs" tabindex="0" role="button" aria-label="聚焦@infernus/fs，内置脚本集合, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="内置脚本集合" data-node-context="架构组件">
+          <title>@infernus/fs · 内置脚本集合 · 架构组件</title>
           <rect x="148" y="40" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="148" y="40" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(154 46) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="208" y="68" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">@infernus/fs</text>
-        <text data-detail="context" x="208" y="84" class="t-muted" font-size="9" text-anchor="middle">IFilterScript</text>
+        <text data-detail="context" x="208" y="84" class="t-muted" font-size="9" text-anchor="middle">内置脚本集合</text>
         </g>
 
-        <g id="node-types_pkg" data-node-id="types_pkg" data-node-label="@infernus/types" tabindex="0" role="button" aria-label="聚焦@infernus/types，SampNodeApi, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="SampNodeApi" data-node-context="架构组件">
-          <title>@infernus/types · SampNodeApi · 架构组件</title>
+        <g id="node-types_pkg" data-node-id="types_pkg" data-node-label="@infernus/types" tabindex="0" role="button" aria-label="聚焦@infernus/types，类型声明, 架构组件" aria-pressed="false" data-node-kind="backend" data-node-sublabel="类型声明" data-node-context="架构组件">
+          <title>@infernus/types · 类型声明 · 架构组件</title>
           <rect x="148" y="134" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="148" y="134" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(154 140) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="208" y="162" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">@infernus/types</text>
-        <text data-detail="context" x="208" y="178" class="t-muted" font-size="9" text-anchor="middle">SampNodeApi</text>
+        <text data-detail="context" x="208" y="178" class="t-muted" font-size="9" text-anchor="middle">类型声明</text>
         </g>
 
-        <g id="node-omp_server" data-node-id="omp_server" data-node-label="open.mp Server" tabindex="0" role="button" aria-label="聚焦open.mp Server，加载插件, 架构组件" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="加载插件" data-node-context="架构组件">
-          <title>open.mp Server · 加载插件 · 架构组件</title>
+        <g id="node-omp_server" data-node-id="omp_server" data-node-label="open.mp Server" tabindex="0" role="button" aria-label="聚焦open.mp Server，服务端宿主, 架构组件" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="服务端宿主" data-node-context="架构组件">
+          <title>open.mp Server · 服务端宿主 · 架构组件</title>
           <rect x="148" y="228" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="148" y="228" width="120" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(154 234) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="208" y="256" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">open.mp Server</text>
-        <text data-detail="context" x="208" y="272" class="t-muted" font-size="9" text-anchor="middle">加载插件</text>
+        <text data-detail="context" x="208" y="272" class="t-muted" font-size="9" text-anchor="middle">服务端宿主</text>
         </g>
 
-        <g id="node-nodejs" data-node-id="nodejs" data-node-label="Node.js 22" tabindex="0" role="button" aria-label="聚焦Node.js 22，跑 bundle.mjs, 架构组件" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="跑 bundle.mjs" data-node-context="架构组件">
-          <title>Node.js 22 · 跑 bundle.mjs · 架构组件</title>
+        <g id="node-nodejs" data-node-id="nodejs" data-node-label="Node.js 22" tabindex="0" role="button" aria-label="聚焦Node.js 22，JS 运行时, 架构组件" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="JS 运行时" data-node-context="架构组件">
+          <title>Node.js 22 · JS 运行时 · 架构组件</title>
           <rect x="148" y="322" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="148" y="322" width="120" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(154 328) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="208" y="350" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Node.js 22</text>
-        <text data-detail="context" x="208" y="366" class="t-muted" font-size="9" text-anchor="middle">跑 bundle.mjs</text>
+        <text data-detail="context" x="208" y="366" class="t-muted" font-size="9" text-anchor="middle">JS 运行时</text>
         </g>
 
-        <g id="node-shared_pkg" data-node-id="shared_pkg" data-node-label="@infernus/shared" tabindex="0" role="button" aria-label="聚焦@infernus/shared，构建期工具, 架构组件" aria-pressed="false" data-node-kind="external" data-node-sublabel="构建期工具" data-node-context="架构组件">
-          <title>@infernus/shared · 构建期工具 · 架构组件</title>
+        <g id="node-shared_pkg" data-node-id="shared_pkg" data-node-label="@infernus/shared" tabindex="0" role="button" aria-label="聚焦@infernus/shared，构建期共享代码, 架构组件" aria-pressed="false" data-node-kind="external" data-node-sublabel="构建期共享代码" data-node-context="架构组件">
+          <title>@infernus/shared · 构建期共享代码 · 架构组件</title>
           <rect x="276" y="322" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="276" y="322" width="120" height="60" rx="6" class="c-external" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(282 328) scale(0.6875)">
@@ -5270,22 +5270,22 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="336" y="350" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">@infernus/shared</text>
-        <text data-detail="context" x="336" y="366" class="t-muted" font-size="9" text-anchor="middle">构建期工具</text>
+        <text data-detail="context" x="336" y="366" class="t-muted" font-size="9" text-anchor="middle">构建期共享代码</text>
         </g>
 
-        <g id="node-raknet" data-node-id="raknet" data-node-label="raknet" tabindex="0" role="button" aria-label="聚焦raknet，BitStream / RPC, 网络与反作弊" aria-pressed="false" data-node-kind="backend" data-node-sublabel="BitStream / RPC" data-node-context="网络与反作弊">
-          <title>raknet · BitStream / RPC · 网络与反作弊</title>
+        <g id="node-raknet" data-node-id="raknet" data-node-label="raknet" tabindex="0" role="button" aria-label="聚焦raknet，网络包与同步, 网络与反作弊" aria-pressed="false" data-node-kind="backend" data-node-sublabel="网络包与同步" data-node-context="网络与反作弊">
+          <title>raknet · 网络包与同步 · 网络与反作弊</title>
           <rect x="404" y="40" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="404" y="40" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(410 46) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="464" y="68" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">raknet</text>
-        <text data-detail="context" x="464" y="84" class="t-muted" font-size="9" text-anchor="middle">BitStream / RPC</text>
+        <text data-detail="context" x="464" y="84" class="t-muted" font-size="9" text-anchor="middle">网络包与同步</text>
         </g>
 
-        <g id="node-nex_ac" data-node-id="nex_ac" data-node-label="nex-ac" tabindex="0" role="button" aria-label="聚焦nex-ac，defineHooks 拦截, 网络与反作弊" aria-pressed="false" data-node-kind="security" data-node-sublabel="defineHooks 拦截" data-node-context="网络与反作弊">
-          <title>nex-ac · defineHooks 拦截 · 网络与反作弊</title>
+        <g id="node-nex_ac" data-node-id="nex_ac" data-node-label="nex-ac" tabindex="0" role="button" aria-label="聚焦nex-ac，服务端反作弊, 网络与反作弊" aria-pressed="false" data-node-kind="security" data-node-sublabel="服务端反作弊" data-node-context="网络与反作弊">
+          <title>nex-ac · 服务端反作弊 · 网络与反作弊</title>
           <rect x="532" y="40" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="532" y="40" width="120" height="60" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(538 46) scale(0.6875)">
@@ -5293,11 +5293,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="592" y="68" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">nex-ac</text>
-        <text data-detail="context" x="592" y="84" class="t-muted" font-size="9" text-anchor="middle">defineHooks 拦截</text>
+        <text data-detail="context" x="592" y="84" class="t-muted" font-size="9" text-anchor="middle">服务端反作弊</text>
         </g>
 
-        <g id="node-weapon_config" data-node-id="weapon_config" data-node-label="weapon-config" tabindex="0" role="button" aria-label="聚焦weapon-config，__inject__ ×44, 网络与反作弊" aria-pressed="false" data-node-kind="security" data-node-sublabel="__inject__ ×44" data-node-context="网络与反作弊">
-          <title>weapon-config · __inject__ ×44 · 网络与反作弊</title>
+        <g id="node-weapon_config" data-node-id="weapon_config" data-node-label="weapon-config" tabindex="0" role="button" aria-label="聚焦weapon-config，武器伤害与同步, 网络与反作弊" aria-pressed="false" data-node-kind="security" data-node-sublabel="武器伤害与同步" data-node-context="网络与反作弊">
+          <title>weapon-config · 武器伤害与同步 · 网络与反作弊</title>
           <rect x="404" y="134" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="404" y="134" width="120" height="60" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(410 140) scale(0.6875)">
@@ -5305,216 +5305,216 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="464" y="162" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">weapon-config</text>
-        <text data-detail="context" x="464" y="178" class="t-muted" font-size="9" text-anchor="middle">__inject__ ×44</text>
+        <text data-detail="context" x="464" y="178" class="t-muted" font-size="9" text-anchor="middle">武器伤害与同步</text>
         </g>
 
-        <g id="node-query" data-node-id="query" data-node-label="query" tabindex="0" role="button" aria-label="聚焦query，node:dgram 查询, 网络与反作弊" aria-pressed="false" data-node-kind="backend" data-node-sublabel="node:dgram 查询" data-node-context="网络与反作弊">
-          <title>query · node:dgram 查询 · 网络与反作弊</title>
+        <g id="node-query" data-node-id="query" data-node-label="query" tabindex="0" role="button" aria-label="聚焦query，服务器状态查询, 网络与反作弊" aria-pressed="false" data-node-kind="backend" data-node-sublabel="服务器状态查询" data-node-context="网络与反作弊">
+          <title>query · 服务器状态查询 · 网络与反作弊</title>
           <rect x="532" y="134" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="532" y="134" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(538 140) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="592" y="162" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">query</text>
-        <text data-detail="context" x="592" y="178" class="t-muted" font-size="9" text-anchor="middle">node:dgram 查询</text>
+        <text data-detail="context" x="592" y="178" class="t-muted" font-size="9" text-anchor="middle">服务器状态查询</text>
         </g>
 
-        <g id="node-streamer" data-node-id="streamer" data-node-label="streamer" tabindex="0" role="button" aria-label="聚焦streamer，181 个原生封装, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="181 个原生封装" data-node-context="世界、地形与导航">
-          <title>streamer · 181 个原生封装 · 世界、地形与导航</title>
+        <g id="node-streamer" data-node-id="streamer" data-node-label="streamer" tabindex="0" role="button" aria-label="聚焦streamer，实体流式加载, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="实体流式加载" data-node-context="世界、地形与导航">
+          <title>streamer · 实体流式加载 · 世界、地形与导航</title>
           <rect x="788" y="40" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="788" y="40" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(794 46) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="848" y="68" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">streamer</text>
-        <text data-detail="context" x="848" y="84" class="t-muted" font-size="9" text-anchor="middle">181 个原生封装</text>
+        <text data-detail="context" x="848" y="84" class="t-muted" font-size="9" text-anchor="middle">实体流式加载</text>
         </g>
 
-        <g id="node-colandreas" data-node-id="colandreas" data-node-label="colandreas" tabindex="0" role="button" aria-label="聚焦colandreas，CA_RayCastLine, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="CA_RayCastLine" data-node-context="世界、地形与导航">
-          <title>colandreas · CA_RayCastLine · 世界、地形与导航</title>
+        <g id="node-colandreas" data-node-id="colandreas" data-node-label="colandreas" tabindex="0" role="button" aria-label="聚焦colandreas，碰撞体查询, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="碰撞体查询" data-node-context="世界、地形与导航">
+          <title>colandreas · 碰撞体查询 · 世界、地形与导航</title>
           <rect x="916" y="40" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="916" y="40" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(922 46) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="976" y="68" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">colandreas</text>
-        <text data-detail="context" x="976" y="84" class="t-muted" font-size="9" text-anchor="middle">CA_RayCastLine</text>
+        <text data-detail="context" x="976" y="84" class="t-muted" font-size="9" text-anchor="middle">碰撞体查询</text>
         </g>
 
-        <g id="node-mapandreas" data-node-id="mapandreas" data-node-label="mapandreas" tabindex="0" role="button" aria-label="聚焦mapandreas，读 .dat 高度图, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="读 .dat 高度图" data-node-context="世界、地形与导航">
-          <title>mapandreas · 读 .dat 高度图 · 世界、地形与导航</title>
+        <g id="node-mapandreas" data-node-id="mapandreas" data-node-label="mapandreas" tabindex="0" role="button" aria-label="聚焦mapandreas，地形高度查询, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="地形高度查询" data-node-context="世界、地形与导航">
+          <title>mapandreas · 地形高度查询 · 世界、地形与导航</title>
           <rect x="1044" y="40" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="1044" y="40" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1050 46) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1104" y="68" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">mapandreas</text>
-        <text data-detail="context" x="1104" y="84" class="t-muted" font-size="9" text-anchor="middle">读 .dat 高度图</text>
+        <text data-detail="context" x="1104" y="84" class="t-muted" font-size="9" text-anchor="middle">地形高度查询</text>
         </g>
 
-        <g id="node-map_loader" data-node-id="map_loader" data-node-label="map-loader" tabindex="0" role="button" aria-label="聚焦map-loader，.map → 物体, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel=".map → 物体" data-node-context="世界、地形与导航">
-          <title>map-loader · .map → 物体 · 世界、地形与导航</title>
+        <g id="node-map_loader" data-node-id="map_loader" data-node-label="map-loader" tabindex="0" role="button" aria-label="聚焦map-loader，地图文件加载, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="地图文件加载" data-node-context="世界、地形与导航">
+          <title>map-loader · 地图文件加载 · 世界、地形与导航</title>
           <rect x="788" y="134" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="788" y="134" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(794 140) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="848" y="162" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">map-loader</text>
-        <text data-detail="context" x="848" y="178" class="t-muted" font-size="9" text-anchor="middle">.map → 物体</text>
+        <text data-detail="context" x="848" y="178" class="t-muted" font-size="9" text-anchor="middle">地图文件加载</text>
         </g>
 
-        <g id="node-mapfix" data-node-id="mapfix" data-node-label="mapfix" tabindex="0" role="button" aria-label="聚焦mapfix，约 500 修补物体, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="约 500 修补物体" data-node-context="世界、地形与导航">
-          <title>mapfix · 约 500 修补物体 · 世界、地形与导航</title>
+        <g id="node-mapfix" data-node-id="mapfix" data-node-label="mapfix" tabindex="0" role="button" aria-label="聚焦mapfix，地图漏洞修补, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="地图漏洞修补" data-node-context="世界、地形与导航">
+          <title>mapfix · 地图漏洞修补 · 世界、地形与导航</title>
           <rect x="916" y="134" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="916" y="134" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(922 140) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="976" y="162" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">mapfix</text>
-        <text data-detail="context" x="976" y="178" class="t-muted" font-size="9" text-anchor="middle">约 500 修补物体</text>
+        <text data-detail="context" x="976" y="178" class="t-muted" font-size="9" text-anchor="middle">地图漏洞修补</text>
         </g>
 
-        <g id="node-gps" data-node-id="gps" data-node-label="gps" tabindex="0" role="button" aria-label="聚焦gps，FindPathAsync, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="FindPathAsync" data-node-context="世界、地形与导航">
-          <title>gps · FindPathAsync · 世界、地形与导航</title>
+        <g id="node-gps" data-node-id="gps" data-node-label="gps" tabindex="0" role="button" aria-label="聚焦gps，导航与寻路, 世界、地形与导航" aria-pressed="false" data-node-kind="backend" data-node-sublabel="导航与寻路" data-node-context="世界、地形与导航">
+          <title>gps · 导航与寻路 · 世界、地形与导航</title>
           <rect x="1044" y="134" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="1044" y="134" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1050 140) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1104" y="162" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">gps</text>
-        <text data-detail="context" x="1104" y="178" class="t-muted" font-size="9" text-anchor="middle">FindPathAsync</text>
+        <text data-detail="context" x="1104" y="178" class="t-muted" font-size="9" text-anchor="middle">导航与寻路</text>
         </g>
 
-        <g id="node-cef" data-node-id="cef" data-node-label="cef" tabindex="0" role="button" aria-label="聚焦cef，CEF_Create, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="CEF_Create" data-node-context="界面与呈现">
-          <title>cef · CEF_Create · 界面与呈现</title>
+        <g id="node-cef" data-node-id="cef" data-node-label="cef" tabindex="0" role="button" aria-label="聚焦cef，浏览器界面, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="浏览器界面" data-node-context="界面与呈现">
+          <title>cef · 浏览器界面 · 界面与呈现</title>
           <rect x="404" y="228" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="404" y="228" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(410 234) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="464" y="256" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">cef</text>
-        <text data-detail="context" x="464" y="272" class="t-muted" font-size="9" text-anchor="middle">CEF_Create</text>
+        <text data-detail="context" x="464" y="272" class="t-muted" font-size="9" text-anchor="middle">浏览器界面</text>
         </g>
 
-        <g id="node-ompp" data-node-id="ompp" data-node-label="ompp" tabindex="0" role="button" aria-label="聚焦ompp，OMPP 原生扩展, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="OMPP 原生扩展" data-node-context="界面与呈现">
-          <title>ompp · OMPP 原生扩展 · 界面与呈现</title>
+        <g id="node-ompp" data-node-id="ompp" data-node-label="ompp" tabindex="0" role="button" aria-label="聚焦ompp，open.mp 扩展, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="open.mp 扩展" data-node-context="界面与呈现">
+          <title>ompp · open.mp 扩展 · 界面与呈现</title>
           <rect x="532" y="228" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="532" y="228" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(538 234) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="592" y="256" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">ompp</text>
-        <text data-detail="context" x="592" y="272" class="t-muted" font-size="9" text-anchor="middle">OMPP 原生扩展</text>
+        <text data-detail="context" x="592" y="272" class="t-muted" font-size="9" text-anchor="middle">open.mp 扩展</text>
         </g>
 
-        <g id="node-progress" data-node-id="progress" data-node-label="progress" tabindex="0" role="button" aria-label="聚焦progress，3 个 TextDraw, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="3 个 TextDraw" data-node-context="界面与呈现">
-          <title>progress · 3 个 TextDraw · 界面与呈现</title>
+        <g id="node-progress" data-node-id="progress" data-node-label="progress" tabindex="0" role="button" aria-label="聚焦progress，进度条显示, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="进度条显示" data-node-context="界面与呈现">
+          <title>progress · 进度条显示 · 界面与呈现</title>
           <rect x="660" y="228" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="660" y="228" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(666 234) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="720" y="256" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">progress</text>
-        <text data-detail="context" x="720" y="272" class="t-muted" font-size="9" text-anchor="middle">3 个 TextDraw</text>
+        <text data-detail="context" x="720" y="272" class="t-muted" font-size="9" text-anchor="middle">进度条显示</text>
         </g>
 
-        <g id="node-qrcode" data-node-id="qrcode" data-node-label="qrcode" tabindex="0" role="button" aria-label="聚焦qrcode，Webdings 材质, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Webdings 材质" data-node-context="界面与呈现">
-          <title>qrcode · Webdings 材质 · 界面与呈现</title>
+        <g id="node-qrcode" data-node-id="qrcode" data-node-label="qrcode" tabindex="0" role="button" aria-label="聚焦qrcode，二维码生成, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="二维码生成" data-node-context="界面与呈现">
+          <title>qrcode · 二维码生成 · 界面与呈现</title>
           <rect x="404" y="322" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="404" y="322" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(410 328) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="464" y="350" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">qrcode</text>
-        <text data-detail="context" x="464" y="366" class="t-muted" font-size="9" text-anchor="middle">Webdings 材质</text>
+        <text data-detail="context" x="464" y="366" class="t-muted" font-size="9" text-anchor="middle">二维码生成</text>
         </g>
 
-        <g id="node-s_art" data-node-id="s_art" data-node-label="s-art" tabindex="0" role="button" aria-label="聚焦s-art，sharp 切块渲染, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="sharp 切块渲染" data-node-context="界面与呈现">
-          <title>s-art · sharp 切块渲染 · 界面与呈现</title>
+        <g id="node-s_art" data-node-id="s_art" data-node-label="s-art" tabindex="0" role="button" aria-label="聚焦s-art，图像渲染, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="图像渲染" data-node-context="界面与呈现">
+          <title>s-art · 图像渲染 · 界面与呈现</title>
           <rect x="532" y="322" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="532" y="322" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(538 328) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="592" y="350" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">s-art</text>
-        <text data-detail="context" x="592" y="366" class="t-muted" font-size="9" text-anchor="middle">sharp 切块渲染</text>
+        <text data-detail="context" x="592" y="366" class="t-muted" font-size="9" text-anchor="middle">图像渲染</text>
         </g>
 
-        <g id="node-e_selection" data-node-id="e_selection" data-node-label="e-selection" tabindex="0" role="button" aria-label="聚焦e-selection，TextDraw 拼装, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="TextDraw 拼装" data-node-context="界面与呈现">
-          <title>e-selection · TextDraw 拼装 · 界面与呈现</title>
+        <g id="node-e_selection" data-node-id="e_selection" data-node-label="e-selection" tabindex="0" role="button" aria-label="聚焦e-selection，模型选择菜单, 界面与呈现" aria-pressed="false" data-node-kind="backend" data-node-sublabel="模型选择菜单" data-node-context="界面与呈现">
+          <title>e-selection · 模型选择菜单 · 界面与呈现</title>
           <rect x="660" y="322" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="660" y="322" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(666 328) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="720" y="350" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">e-selection</text>
-        <text data-detail="context" x="720" y="366" class="t-muted" font-size="9" text-anchor="middle">TextDraw 拼装</text>
+        <text data-detail="context" x="720" y="366" class="t-muted" font-size="9" text-anchor="middle">模型选择菜单</text>
         </g>
 
-        <g id="node-fcnpc" data-node-id="fcnpc" data-node-label="fcnpc" tabindex="0" role="button" aria-label="聚焦fcnpc，FCNPC_Create, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="FCNPC_Create" data-node-context="玩家与玩法">
-          <title>fcnpc · FCNPC_Create · 玩家与玩法</title>
+        <g id="node-fcnpc" data-node-id="fcnpc" data-node-label="fcnpc" tabindex="0" role="button" aria-label="聚焦fcnpc，NPC 与机器人, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="NPC 与机器人" data-node-context="玩家与玩法">
+          <title>fcnpc · NPC 与机器人 · 玩家与玩法</title>
           <rect x="916" y="228" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="916" y="228" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(922 234) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="976" y="256" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">fcnpc</text>
-        <text data-detail="context" x="976" y="272" class="t-muted" font-size="9" text-anchor="middle">FCNPC_Create</text>
+        <text data-detail="context" x="976" y="272" class="t-muted" font-size="9" text-anchor="middle">NPC 与机器人</text>
         </g>
 
-        <g id="node-samp_voice" data-node-id="samp_voice" data-node-label="samp-voice" tabindex="0" role="button" aria-label="聚焦samp-voice，SvInit 等原生, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="SvInit 等原生" data-node-context="玩家与玩法">
-          <title>samp-voice · SvInit 等原生 · 玩家与玩法</title>
+        <g id="node-samp_voice" data-node-id="samp_voice" data-node-label="samp-voice" tabindex="0" role="button" aria-label="聚焦samp-voice，语音聊天, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="语音聊天" data-node-context="玩家与玩法">
+          <title>samp-voice · 语音聊天 · 玩家与玩法</title>
           <rect x="1044" y="228" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="1044" y="228" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1050 234) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1104" y="256" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">samp-voice</text>
-        <text data-detail="context" x="1104" y="272" class="t-muted" font-size="9" text-anchor="middle">SvInit 等原生</text>
+        <text data-detail="context" x="1104" y="272" class="t-muted" font-size="9" text-anchor="middle">语音聊天</text>
         </g>
 
-        <g id="node-veh_para" data-node-id="veh_para" data-node-label="veh-para" tabindex="0" role="button" aria-label="聚焦veh-para，__inject__ 挂钩, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="__inject__ 挂钩" data-node-context="玩家与玩法">
-          <title>veh-para · __inject__ 挂钩 · 玩家与玩法</title>
+        <g id="node-veh_para" data-node-id="veh_para" data-node-label="veh-para" tabindex="0" role="button" aria-label="聚焦veh-para，载具降落伞, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="载具降落伞" data-node-context="玩家与玩法">
+          <title>veh-para · 载具降落伞 · 玩家与玩法</title>
           <rect x="1172" y="228" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="1172" y="228" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1178 234) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1232" y="256" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">veh-para</text>
-        <text data-detail="context" x="1232" y="272" class="t-muted" font-size="9" text-anchor="middle">__inject__ 挂钩</text>
+        <text data-detail="context" x="1232" y="272" class="t-muted" font-size="9" text-anchor="middle">载具降落伞</text>
         </g>
 
-        <g id="node-distance" data-node-id="distance" data-node-label="distance" tabindex="0" role="button" aria-label="聚焦distance，defineHooks, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="defineHooks" data-node-context="玩家与玩法">
-          <title>distance · defineHooks · 玩家与玩法</title>
+        <g id="node-distance" data-node-id="distance" data-node-label="distance" tabindex="0" role="button" aria-label="聚焦distance，距离计算, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="距离计算" data-node-context="玩家与玩法">
+          <title>distance · 距离计算 · 玩家与玩法</title>
           <rect x="916" y="322" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="916" y="322" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(922 328) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="976" y="350" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">distance</text>
-        <text data-detail="context" x="976" y="366" class="t-muted" font-size="9" text-anchor="middle">defineHooks</text>
+        <text data-detail="context" x="976" y="366" class="t-muted" font-size="9" text-anchor="middle">距离计算</text>
         </g>
 
-        <g id="node-drift_detection" data-node-id="drift_detection" data-node-label="drift-detection" tabindex="0" role="button" aria-label="聚焦drift-detection，onUpdate 算角, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="onUpdate 算角" data-node-context="玩家与玩法">
-          <title>drift-detection · onUpdate 算角 · 玩家与玩法</title>
+        <g id="node-drift_detection" data-node-id="drift_detection" data-node-label="drift-detection" tabindex="0" role="button" aria-label="聚焦drift-detection，漂移检测, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="漂移检测" data-node-context="玩家与玩法">
+          <title>drift-detection · 漂移检测 · 玩家与玩法</title>
           <rect x="1044" y="322" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="1044" y="322" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1050 328) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1104" y="350" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">drift-detection</text>
-        <text data-detail="context" x="1104" y="366" class="t-muted" font-size="9" text-anchor="middle">onUpdate 算角</text>
+        <text data-detail="context" x="1104" y="366" class="t-muted" font-size="9" text-anchor="middle">漂移检测</text>
         </g>
 
-        <g id="node-rec" data-node-id="rec" data-node-label="rec" tabindex="0" role="button" aria-label="聚焦rec，位域读写, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="位域读写" data-node-context="玩家与玩法">
-          <title>rec · 位域读写 · 玩家与玩法</title>
+        <g id="node-rec" data-node-id="rec" data-node-label="rec" tabindex="0" role="button" aria-label="聚焦rec，录制格式转换, 玩家与玩法" aria-pressed="false" data-node-kind="backend" data-node-sublabel="录制格式转换" data-node-context="玩家与玩法">
+          <title>rec · 录制格式转换 · 玩家与玩法</title>
           <rect x="1172" y="322" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="1172" y="322" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(1178 328) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1232" y="350" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">rec</text>
-        <text data-detail="context" x="1232" y="366" class="t-muted" font-size="9" text-anchor="middle">位域读写</text>
+        <text data-detail="context" x="1232" y="366" class="t-muted" font-size="9" text-anchor="middle">录制格式转换</text>
         </g>
 
         <!-- Connection labels -->
@@ -5768,9 +5768,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>三种实现路数</h3>
         </div>
         <ul>
-          <li>&bull; 直连原生插件：raknet、streamer、colandreas、cef、ompp、fcnpc 等把 samp.callNative 包成有类型函数</li>
-          <li>&bull; 挂钩 core 类：nex-ac、weapon-config、veh-para、distance 用 defineHooks 或覆盖 __inject__ 改写实体行为</li>
-          <li>&bull; 纯 TypeScript：mapandreas 读高度图、rec 读写位域、query 走 UDP、e-selection 用 TextDraw 拼界面</li>
+          <li>&bull; 包装原生插件：raknet、streamer、colandreas、cef、ompp、fcnpc 把插件原生包成带类型函数</li>
+          <li>&bull; 增强 core 行为：nex-ac、weapon-config、veh-para、distance 替换 core 的原生调用，改写伤害与位置逻辑</li>
+          <li>&bull; 纯 TypeScript：mapandreas、rec、query、e-selection 完全不用原生插件</li>
         </ul>
       </div>
 
@@ -5781,8 +5781,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </div>
         <ul>
           <li>&bull; defineEvent 建事件，监听器按注册顺序组成中间件链，用 next() 传递</li>
-          <li>&bull; defineHooks(Class) 返回 [原始方法快照, setHook]，把原型方法换成拦截器</li>
-          <li>&bull; GameMode.use(script) 只入队，装载发生在 onInit；IFilterScript.load() 需返回注销函数数组</li>
+          <li>&bull; defineHooks(Class) 返回原始方法快照与 setHook，用于替换类方法</li>
+          <li>&bull; GameMode.use() 只入队，装载发生在 onInit</li>
         </ul>
       </div>
 
@@ -5792,9 +5792,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>构建与运行时边界</h3>
         </div>
         <ul>
-          <li>&bull; tsx scripts/build-all.ts 串行：streamer → core → raknet → 其余；每包先 type-check 再 rolldown</li>
-          <li>&bull; samp-node 由 open.mp 加载、跑在 Node 22 上，向脚本注入全局 samp</li>
-          <li>&bull; streamer 与 types 不发布；shared 无 package.json，仅构建期被五个包引用</li>
+          <li>&bull; scripts/build-all.ts 串行构建：streamer、core、raknet，再其余</li>
+          <li>&bull; 每包先 type-check 再 rolldown；产物为 bundle.mjs / bundle.js / bundle.d.ts</li>
+          <li>&bull; samp-node 由 open.mp 加载并注入全局 samp；streamer 与 types 不发布</li>
         </ul>
       </div>
     </div>

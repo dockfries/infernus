@@ -5169,7 +5169,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <path data-edge-from="bus" data-edge-to="samp" data-edge-label="samp.on(name, trigger)" data-edge-key="1" data-edge-id="bus-to-samp" data-composition-points="534,86;1182,86" d="M 534 86 L 1182 86" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         <path data-edge-from="entities" data-edge-to="pools" data-edge-label="instance to pool" data-edge-key="2" data-edge-id="entities-to-pools" data-composition-points="150,404;282,404;282,298;414,298" d="M 150 404 L 274 404 Q 282 404 282 396 L 282 306 Q 282 298 290 298 L 414 298" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="native" data-edge-to="samp" data-edge-label="callNative" data-edge-key="3" data-edge-id="native-to-samp" data-composition-points="918,192;1050,192;1050,86;1182,86" d="M 918 192 L 1042 192 Q 1050 192 1050 184 L 1050 94 Q 1050 86 1058 86 L 1182 86" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="streamerw" data-edge-to="plugin" data-edge-label="Streamer_* 调用" data-edge-key="4" data-edge-id="streamerw-to-plugin" data-composition-points="918,404;1050,404;1050,298;1182,298" d="M 918 404 L 1042 404 Q 1050 404 1050 396 L 1050 306 Q 1050 298 1058 298 L 1182 298" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="streamerw" data-edge-to="plugin" data-edge-label="Streamer calls" data-edge-key="4" data-edge-id="streamerw-to-plugin" data-composition-points="918,404;1050,404;1050,298;1182,298" d="M 918 404 L 1042 404 Q 1050 404 1050 396 L 1050 306 Q 1050 298 1058 298 L 1182 298" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         <path data-edge-from="samp" data-edge-to="omp" data-edge-label="register callback" data-edge-key="5" data-edge-id="samp-to-omp" data-composition-points="1242,116;1242,162" d="M 1242 116 L 1242 162" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
 
         <!-- Components -->
@@ -5198,30 +5198,30 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="90" y="206" class="t-muted" font-size="9" text-anchor="middle">script loader</text>
         </g>
 
-        <g id="node-command" data-node-id="command" data-node-label="command" tabindex="0" role="button" aria-label="Focus command, CmdBus dispatch, components: entities" aria-pressed="false" data-node-kind="backend" data-node-sublabel="CmdBus dispatch" data-node-context="components: entities">
-          <title>command · CmdBus dispatch · components: entities</title>
+        <g id="node-command" data-node-id="command" data-node-label="command" tabindex="0" role="button" aria-label="Focus command, command dispatch, components: entities" aria-pressed="false" data-node-kind="backend" data-node-sublabel="command dispatch" data-node-context="components: entities">
+          <title>command · command dispatch · components: entities</title>
           <rect x="30" y="268" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="30" y="268" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(36 274) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="90" y="296" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">command</text>
-        <text data-detail="context" x="90" y="312" class="t-muted" font-size="9" text-anchor="middle">CmdBus dispatch</text>
+        <text data-detail="context" x="90" y="312" class="t-muted" font-size="9" text-anchor="middle">command dispatch</text>
         </g>
 
-        <g id="node-entities" data-node-id="entities" data-node-label="entities" tabindex="0" role="button" aria-label="Focus entities, Player etc., components: entities" aria-pressed="false" data-node-kind="backend" data-node-sublabel="Player etc." data-node-context="components: entities">
-          <title>entities · Player etc. · components: entities</title>
+        <g id="node-entities" data-node-id="entities" data-node-label="entities" tabindex="0" role="button" aria-label="Focus entities, entity instances, components: entities" aria-pressed="false" data-node-kind="backend" data-node-sublabel="entity instances" data-node-context="components: entities">
+          <title>entities · entity instances · components: entities</title>
           <rect x="30" y="374" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="30" y="374" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(36 380) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="90" y="402" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">entities</text>
-        <text data-detail="context" x="90" y="418" class="t-muted" font-size="9" text-anchor="middle">Player etc.</text>
+        <text data-detail="context" x="90" y="418" class="t-muted" font-size="9" text-anchor="middle">entity instances</text>
         </g>
 
-        <g id="node-bus" data-node-id="bus" data-node-label="utils/bus.ts" tabindex="0" role="button" aria-label="Focus utils/bus.ts, defineEvent, utils: events and pools" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="defineEvent" data-node-context="utils: events and pools">
-          <title>utils/bus.ts · defineEvent · utils: events and pools</title>
+        <g id="node-bus" data-node-id="bus" data-node-label="utils/bus.ts" tabindex="0" role="button" aria-label="Focus utils/bus.ts, event engine, utils: events and pools" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="event engine" data-node-context="utils: events and pools">
+          <title>utils/bus.ts · event engine · utils: events and pools</title>
           <rect x="414" y="56" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="414" y="56" width="120" height="60" rx="6" class="c-messagebus" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(420 62) scale(0.6875)">
@@ -5231,11 +5231,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="474" y="84" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">utils/bus.ts</text>
-        <text data-detail="context" x="474" y="100" class="t-muted" font-size="9" text-anchor="middle">defineEvent</text>
+        <text data-detail="context" x="474" y="100" class="t-muted" font-size="9" text-anchor="middle">event engine</text>
         </g>
 
-        <g id="node-hook" data-node-id="hook" data-node-label="utils/hook.ts" tabindex="0" role="button" aria-label="Focus utils/hook.ts, defineHooks, utils: events and pools" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="defineHooks" data-node-context="utils: events and pools">
-          <title>utils/hook.ts · defineHooks · utils: events and pools</title>
+        <g id="node-hook" data-node-id="hook" data-node-label="utils/hook.ts" tabindex="0" role="button" aria-label="Focus utils/hook.ts, method interception, utils: events and pools" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="method interception" data-node-context="utils: events and pools">
+          <title>utils/hook.ts · method interception · utils: events and pools</title>
           <rect x="414" y="162" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="414" y="162" width="120" height="60" rx="6" class="c-messagebus" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(420 168) scale(0.6875)">
@@ -5245,11 +5245,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="474" y="190" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">utils/hook.ts</text>
-        <text data-detail="context" x="474" y="206" class="t-muted" font-size="9" text-anchor="middle">defineHooks</text>
+        <text data-detail="context" x="474" y="206" class="t-muted" font-size="9" text-anchor="middle">method interception</text>
         </g>
 
-        <g id="node-pools" data-node-id="pools" data-node-label="utils/pools.ts" tabindex="0" role="button" aria-label="Focus utils/pools.ts, entity Map pools, utils: events and pools" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="entity Map pools" data-node-context="utils: events and pools">
-          <title>utils/pools.ts · entity Map pools · utils: events and pools</title>
+        <g id="node-pools" data-node-id="pools" data-node-label="utils/pools.ts" tabindex="0" role="button" aria-label="Focus utils/pools.ts, entity registry, utils: events and pools" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="entity registry" data-node-context="utils: events and pools">
+          <title>utils/pools.ts · entity registry · utils: events and pools</title>
           <rect x="414" y="268" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="414" y="268" width="120" height="60" rx="6" class="c-messagebus" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(420 274) scale(0.6875)">
@@ -5259,11 +5259,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="474" y="296" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">utils/pools.ts</text>
-        <text data-detail="context" x="474" y="312" class="t-muted" font-size="9" text-anchor="middle">entity Map pools</text>
+        <text data-detail="context" x="474" y="312" class="t-muted" font-size="9" text-anchor="middle">entity registry</text>
         </g>
 
-        <g id="node-innerprops" data-node-id="innerprops" data-node-label="internalProps" tabindex="0" role="button" aria-label="Focus internalProps, Symbol private field, utils: events and pools" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="Symbol private field" data-node-context="utils: events and pools">
-          <title>internalProps · Symbol private field · utils: events and pools</title>
+        <g id="node-innerprops" data-node-id="innerprops" data-node-label="internalProps" tabindex="0" role="button" aria-label="Focus internalProps, entity private state, utils: events and pools" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="entity private state" data-node-context="utils: events and pools">
+          <title>internalProps · entity private state · utils: events and pools</title>
           <rect x="414" y="374" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="414" y="374" width="120" height="60" rx="6" class="c-messagebus" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(420 380) scale(0.6875)">
@@ -5273,18 +5273,18 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="474" y="402" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">internalProps</text>
-        <text data-detail="context" x="474" y="418" class="t-muted" font-size="9" text-anchor="middle">Symbol private field</text>
+        <text data-detail="context" x="474" y="418" class="t-muted" font-size="9" text-anchor="middle">entity private state</text>
         </g>
 
-        <g id="node-native" data-node-id="native" data-node-label="wrapper/native" tabindex="0" role="button" aria-label="Focus wrapper/native, callNative, wrapper: native bindings" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="callNative" data-node-context="wrapper: native bindings">
-          <title>wrapper/native · callNative · wrapper: native bindings</title>
+        <g id="node-native" data-node-id="native" data-node-label="wrapper/native" tabindex="0" role="button" aria-label="Focus wrapper/native, native bindings, wrapper: native bindings" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="native bindings" data-node-context="wrapper: native bindings">
+          <title>wrapper/native · native bindings · wrapper: native bindings</title>
           <rect x="798" y="162" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="798" y="162" width="120" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(804 168) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="858" y="190" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">wrapper/native</text>
-        <text data-detail="context" x="858" y="206" class="t-muted" font-size="9" text-anchor="middle">callNative</text>
+        <text data-detail="context" x="858" y="206" class="t-muted" font-size="9" text-anchor="middle">native bindings</text>
         </g>
 
         <g id="node-inject" data-node-id="inject" data-node-label="__inject__" tabindex="0" role="button" aria-label="Focus __inject__, swappable impl, wrapper: native bindings" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="swappable impl" data-node-context="wrapper: native bindings">
@@ -5298,48 +5298,48 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="858" y="312" class="t-muted" font-size="9" text-anchor="middle">swappable impl</text>
         </g>
 
-        <g id="node-streamerw" data-node-id="streamerw" data-node-label="streamer wrapper" tabindex="0" role="button" aria-label="Focus streamer wrapper, Streamer_* natives, wrapper: native bindings" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="Streamer_* natives" data-node-context="wrapper: native bindings">
-          <title>streamer wrapper · Streamer_* natives · wrapper: native bindings</title>
+        <g id="node-streamerw" data-node-id="streamerw" data-node-label="streamer wrapper" tabindex="0" role="button" aria-label="Focus streamer wrapper, plugin natives, wrapper: native bindings" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="plugin natives" data-node-context="wrapper: native bindings">
+          <title>streamer wrapper · plugin natives · wrapper: native bindings</title>
           <rect x="798" y="374" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="798" y="374" width="120" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(804 380) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="858" y="402" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">streamer wrapper</text>
-        <text data-detail="context" x="858" y="418" class="t-muted" font-size="9" text-anchor="middle">Streamer_* natives</text>
+        <text data-detail="context" x="858" y="418" class="t-muted" font-size="9" text-anchor="middle">plugin natives</text>
         </g>
 
-        <g id="node-samp" data-node-id="samp" data-node-label="global samp" tabindex="0" role="button" aria-label="Focus global samp, registerEvent, Host: open.mp" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="registerEvent" data-node-context="Host: open.mp">
-          <title>global samp · registerEvent · Host: open.mp</title>
+        <g id="node-samp" data-node-id="samp" data-node-label="global samp" tabindex="0" role="button" aria-label="Focus global samp, event registration, Host: open.mp" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="event registration" data-node-context="Host: open.mp">
+          <title>global samp · event registration · Host: open.mp</title>
           <rect x="1182" y="56" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="1182" y="56" width="120" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1188 62) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1242" y="84" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">global samp</text>
-        <text data-detail="context" x="1242" y="100" class="t-muted" font-size="9" text-anchor="middle">registerEvent</text>
+        <text data-detail="context" x="1242" y="100" class="t-muted" font-size="9" text-anchor="middle">event registration</text>
         </g>
 
-        <g id="node-omp" data-node-id="omp" data-node-label="open.mp natives" tabindex="0" role="button" aria-label="Focus open.mp natives, OnPlayerConnect, Host: open.mp" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="OnPlayerConnect" data-node-context="Host: open.mp">
-          <title>open.mp natives · OnPlayerConnect · Host: open.mp</title>
+        <g id="node-omp" data-node-id="omp" data-node-label="open.mp natives" tabindex="0" role="button" aria-label="Focus open.mp natives, native callback src, Host: open.mp" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="native callback src" data-node-context="Host: open.mp">
+          <title>open.mp natives · native callback src · Host: open.mp</title>
           <rect x="1182" y="162" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="1182" y="162" width="120" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1188 168) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1242" y="190" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">open.mp natives</text>
-        <text data-detail="context" x="1242" y="206" class="t-muted" font-size="9" text-anchor="middle">OnPlayerConnect</text>
+        <text data-detail="context" x="1242" y="206" class="t-muted" font-size="9" text-anchor="middle">native callback src</text>
         </g>
 
-        <g id="node-plugin" data-node-id="plugin" data-node-label="streamer plugin" tabindex="0" role="button" aria-label="Focus streamer plugin, plugin natives, Host: open.mp" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="plugin natives" data-node-context="Host: open.mp">
-          <title>streamer plugin · plugin natives · Host: open.mp</title>
+        <g id="node-plugin" data-node-id="plugin" data-node-label="streamer plugin" tabindex="0" role="button" aria-label="Focus streamer plugin, streaming plugin, Host: open.mp" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="streaming plugin" data-node-context="Host: open.mp">
+          <title>streamer plugin · streaming plugin · Host: open.mp</title>
           <rect x="1182" y="268" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="1182" y="268" width="120" height="60" rx="6" class="c-cloud" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1188 274) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1242" y="296" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">streamer plugin</text>
-        <text data-detail="context" x="1242" y="312" class="t-muted" font-size="9" text-anchor="middle">plugin natives</text>
+        <text data-detail="context" x="1242" y="312" class="t-muted" font-size="9" text-anchor="middle">streaming plugin</text>
         </g>
 
         <!-- Connection labels -->
@@ -5359,9 +5359,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <rect x="1021" y="129" width="58" height="14" rx="3" class="c-mask"/>
           <text x="1050" y="139" class="t-muted" font-size="8" text-anchor="middle">callNative</text>
         </g>
-        <g data-detail="context" data-edge-from="streamerw" data-edge-to="plugin" data-edge-label="Streamer_* 调用" data-edge-key="4" data-edge-id="streamerw-to-plugin">
-          <rect x="1009" y="341" width="82" height="14" rx="3" class="c-mask"/>
-          <text x="1050" y="351" class="t-muted" font-size="8" text-anchor="middle">Streamer_* 调用</text>
+        <g data-detail="context" data-edge-from="streamerw" data-edge-to="plugin" data-edge-label="Streamer calls" data-edge-key="4" data-edge-id="streamerw-to-plugin">
+          <rect x="1011.4" y="341" width="77.2" height="14" rx="3" class="c-mask"/>
+          <text x="1050" y="351" class="t-muted" font-size="8" text-anchor="middle">Streamer calls</text>
         </g>
         <g data-detail="context" data-edge-from="samp" data-edge-to="omp" data-edge-label="register callback" data-edge-key="5" data-edge-id="samp-to-omp">
           <rect x="1196.2" y="129" width="91.6" height="14" rx="3" class="c-mask"/>

@@ -8,7 +8,10 @@
   },
   "layout": {
     "mode": "grid",
-    "origin": [30, 56],
+    "origin": [
+      30,
+      56
+    ],
     "cols": 7,
     "gapX": 72,
     "gapY": 46,
@@ -16,37 +19,222 @@
     "cellH": 60
   },
   "components": [
-    { "id": "gamemode", "type": "frontend", "label": "gamemode", "sublabel": "生命周期钩子", "row": 0, "col": 0 },
-    { "id": "filterscript", "type": "backend", "label": "filterscript", "sublabel": "脚本装载器", "row": 1, "col": 0 },
-    { "id": "command", "type": "backend", "label": "command", "sublabel": "CmdBus 指令", "row": 2, "col": 0 },
-    { "id": "entities", "type": "backend", "label": "entities", "sublabel": "Player 等实体", "row": 3, "col": 0 },
-
-    { "id": "bus", "type": "messagebus", "label": "utils/bus.ts", "sublabel": "defineEvent", "row": 0, "col": 2 },
-    { "id": "hook", "type": "messagebus", "label": "utils/hook.ts", "sublabel": "defineHooks", "row": 1, "col": 2 },
-    { "id": "pools", "type": "messagebus", "label": "utils/pools.ts", "sublabel": "实体池 Map", "row": 2, "col": 2 },
-    { "id": "innerprops", "type": "messagebus", "label": "internalProps", "sublabel": "Symbol 私有字段", "row": 3, "col": 2 },
-
-    { "id": "native", "type": "cloud", "label": "wrapper/native", "sublabel": "callNative", "row": 1, "col": 4 },
-    { "id": "inject", "type": "cloud", "label": "__inject__", "sublabel": "可替换实现", "row": 2, "col": 4 },
-    { "id": "streamerw", "type": "cloud", "label": "streamer 封装", "sublabel": "Streamer_* 原生", "row": 3, "col": 4 },
-
-    { "id": "samp", "type": "cloud", "label": "全局 samp", "sublabel": "registerEvent", "row": 0, "col": 6 },
-    { "id": "omp", "type": "cloud", "label": "open.mp 原生", "sublabel": "OnPlayerConnect", "row": 1, "col": 6 },
-    { "id": "plugin", "type": "cloud", "label": "streamer 插件", "sublabel": "独立插件原生", "row": 2, "col": 6 }
+    {
+      "id": "gamemode",
+      "type": "frontend",
+      "label": "gamemode",
+      "sublabel": "生命周期钩子",
+      "row": 0,
+      "col": 0
+    },
+    {
+      "id": "filterscript",
+      "type": "backend",
+      "label": "filterscript",
+      "sublabel": "脚本装载器",
+      "row": 1,
+      "col": 0
+    },
+    {
+      "id": "command",
+      "type": "backend",
+      "label": "command",
+      "sublabel": "指令解析分发",
+      "row": 2,
+      "col": 0
+    },
+    {
+      "id": "entities",
+      "type": "backend",
+      "label": "entities",
+      "sublabel": "实体实例",
+      "row": 3,
+      "col": 0
+    },
+    {
+      "id": "bus",
+      "type": "messagebus",
+      "label": "utils/bus.ts",
+      "sublabel": "事件引擎",
+      "row": 0,
+      "col": 2
+    },
+    {
+      "id": "hook",
+      "type": "messagebus",
+      "label": "utils/hook.ts",
+      "sublabel": "方法拦截",
+      "row": 1,
+      "col": 2
+    },
+    {
+      "id": "pools",
+      "type": "messagebus",
+      "label": "utils/pools.ts",
+      "sublabel": "实体实例注册",
+      "row": 2,
+      "col": 2
+    },
+    {
+      "id": "innerprops",
+      "type": "messagebus",
+      "label": "internalProps",
+      "sublabel": "实体私有状态",
+      "row": 3,
+      "col": 2
+    },
+    {
+      "id": "native",
+      "type": "cloud",
+      "label": "wrapper/native",
+      "sublabel": "原生调用绑定",
+      "row": 1,
+      "col": 4
+    },
+    {
+      "id": "inject",
+      "type": "cloud",
+      "label": "__inject__",
+      "sublabel": "可替换实现",
+      "row": 2,
+      "col": 4
+    },
+    {
+      "id": "streamerw",
+      "type": "cloud",
+      "label": "streamer 封装",
+      "sublabel": "插件原生绑定",
+      "row": 3,
+      "col": 4
+    },
+    {
+      "id": "samp",
+      "type": "cloud",
+      "label": "全局 samp",
+      "sublabel": "事件注册入口",
+      "row": 0,
+      "col": 6
+    },
+    {
+      "id": "omp",
+      "type": "cloud",
+      "label": "open.mp 原生",
+      "sublabel": "原生回调来源",
+      "row": 1,
+      "col": 6
+    },
+    {
+      "id": "plugin",
+      "type": "cloud",
+      "label": "streamer 插件",
+      "sublabel": "流式加载插件",
+      "row": 2,
+      "col": 6
+    }
   ],
   "boundaries": [
-    { "kind": "region", "label": "components 实体与生命周期", "wraps": ["gamemode", "filterscript", "command", "entities"] },
-    { "kind": "region", "label": "utils 事件、钩子与池", "wraps": ["bus", "hook", "pools", "innerprops"] },
-    { "kind": "region", "label": "wrapper 原生绑定", "wraps": ["native", "inject", "streamerw"] },
-    { "kind": "region", "label": "宿主 open.mp", "wraps": ["samp", "omp", "plugin"] }
+    {
+      "kind": "region",
+      "label": "components 实体与生命周期",
+      "wraps": [
+        "gamemode",
+        "filterscript",
+        "command",
+        "entities"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "utils 事件、钩子与池",
+      "wraps": [
+        "bus",
+        "hook",
+        "pools",
+        "innerprops"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "wrapper 原生绑定",
+      "wraps": [
+        "native",
+        "inject",
+        "streamerw"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "宿主 open.mp",
+      "wraps": [
+        "samp",
+        "omp",
+        "plugin"
+      ]
+    }
   ],
   "connections": [
-    { "id": "gamemode-to-bus", "from": "gamemode", "to": "bus", "label": "派发事件", "variant": "emphasis", "labelAt": [282, 70] },
-    { "id": "bus-to-samp", "from": "bus", "to": "samp", "label": "samp.on(name, trigger)", "variant": "emphasis", "labelAt": [858, 70] },
-    { "id": "entities-to-pools", "from": "entities", "to": "pools", "label": "实例入池", "labelAt": [282, 388] },
-    { "id": "native-to-samp", "from": "native", "to": "samp", "label": "callNative", "labelAt": [1050, 139] },
-    { "id": "streamerw-to-plugin", "from": "streamerw", "to": "plugin", "label": "Streamer_* 调用", "labelAt": [1050, 351] },
-    { "id": "samp-to-omp", "from": "samp", "to": "omp", "label": "注册回调", "labelAt": [1242, 139] }
+    {
+      "id": "gamemode-to-bus",
+      "from": "gamemode",
+      "to": "bus",
+      "label": "派发事件",
+      "variant": "emphasis",
+      "labelAt": [
+        282,
+        70
+      ]
+    },
+    {
+      "id": "bus-to-samp",
+      "from": "bus",
+      "to": "samp",
+      "label": "samp.on(name, trigger)",
+      "variant": "emphasis",
+      "labelAt": [
+        858,
+        70
+      ]
+    },
+    {
+      "id": "entities-to-pools",
+      "from": "entities",
+      "to": "pools",
+      "label": "实例入池",
+      "labelAt": [
+        282,
+        388
+      ]
+    },
+    {
+      "id": "native-to-samp",
+      "from": "native",
+      "to": "samp",
+      "label": "callNative",
+      "labelAt": [
+        1050,
+        139
+      ]
+    },
+    {
+      "id": "streamerw-to-plugin",
+      "from": "streamerw",
+      "to": "plugin",
+      "label": "Streamer 原生调用",
+      "labelAt": [
+        1050,
+        351
+      ]
+    },
+    {
+      "id": "samp-to-omp",
+      "from": "samp",
+      "to": "omp",
+      "label": "注册回调",
+      "labelAt": [
+        1242,
+        139
+      ]
+    }
   ],
   "cards": [
     {

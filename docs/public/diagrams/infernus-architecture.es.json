@@ -2,7 +2,7 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Monorepo Infernus y detalle de paquetes",
+    "title": "Monorepo Infernus y sus paquetes",
     "quality_profile": "showcase"
   },
   "layout": {
@@ -22,7 +22,7 @@
       "id": "create_app",
       "type": "backend",
       "label": "create-app",
-      "sublabel": "infernus CLI",
+      "sublabel": "CLI de creacion",
       "row": 0,
       "col": 0
     },
@@ -30,7 +30,7 @@
       "id": "gamemode",
       "type": "frontend",
       "label": "Script de gamemode",
-      "sublabel": "GameMode.onInit",
+      "sublabel": "gamemode propio",
       "row": 1,
       "col": 0
     },
@@ -38,7 +38,7 @@
       "id": "core_pkg",
       "type": "backend",
       "label": "@infernus/core",
-      "sublabel": "bus / hook",
+      "sublabel": "libreria central",
       "row": 2,
       "col": 0
     },
@@ -46,7 +46,7 @@
       "id": "samp_node",
       "type": "cloud",
       "label": "samp-node",
-      "sublabel": "samp global",
+      "sublabel": "runtime de Node",
       "row": 3,
       "col": 0
     },
@@ -54,7 +54,7 @@
       "id": "fs_pkg",
       "type": "backend",
       "label": "@infernus/fs",
-      "sublabel": "IFilterScript",
+      "sublabel": "scripts incluidos",
       "row": 0,
       "col": 1
     },
@@ -62,7 +62,7 @@
       "id": "types_pkg",
       "type": "backend",
       "label": "@infernus/types",
-      "sublabel": "SampNodeApi",
+      "sublabel": "tipos globales",
       "row": 1,
       "col": 1
     },
@@ -70,7 +70,7 @@
       "id": "omp_server",
       "type": "cloud",
       "label": "open.mp Server",
-      "sublabel": "加载插件",
+      "sublabel": "host del servidor",
       "row": 2,
       "col": 1
     },
@@ -78,7 +78,7 @@
       "id": "nodejs",
       "type": "cloud",
       "label": "Node.js 22",
-      "sublabel": "跑 bundle.mjs",
+      "sublabel": "runtime de JS",
       "row": 3,
       "col": 1
     },
@@ -86,7 +86,7 @@
       "id": "shared_pkg",
       "type": "external",
       "label": "@infernus/shared",
-      "sublabel": "solo compilacion",
+      "sublabel": "codigo de build",
       "row": 3,
       "col": 2
     },
@@ -94,7 +94,7 @@
       "id": "raknet",
       "type": "backend",
       "label": "raknet",
-      "sublabel": "BitStream / RPC",
+      "sublabel": "paquetes de red",
       "row": 0,
       "col": 3
     },
@@ -102,7 +102,7 @@
       "id": "nex_ac",
       "type": "security",
       "label": "nex-ac",
-      "sublabel": "defineHooks",
+      "sublabel": "antitrampas",
       "row": 0,
       "col": 4
     },
@@ -110,7 +110,7 @@
       "id": "weapon_config",
       "type": "security",
       "label": "weapon-config",
-      "sublabel": "__inject__ ×44",
+      "sublabel": "dano de armas",
       "row": 1,
       "col": 3
     },
@@ -118,7 +118,7 @@
       "id": "query",
       "type": "backend",
       "label": "query",
-      "sublabel": "consulta UDP",
+      "sublabel": "consulta de estado",
       "row": 1,
       "col": 4
     },
@@ -126,7 +126,7 @@
       "id": "streamer",
       "type": "backend",
       "label": "streamer",
-      "sublabel": "181 nativos",
+      "sublabel": "carga de entidades",
       "row": 0,
       "col": 6
     },
@@ -134,7 +134,7 @@
       "id": "colandreas",
       "type": "backend",
       "label": "colandreas",
-      "sublabel": "CA_RayCastLine",
+      "sublabel": "colisiones",
       "row": 0,
       "col": 7
     },
@@ -142,7 +142,7 @@
       "id": "mapandreas",
       "type": "backend",
       "label": "mapandreas",
-      "sublabel": "lee mapa .dat",
+      "sublabel": "alturas terreno",
       "row": 0,
       "col": 8
     },
@@ -150,7 +150,7 @@
       "id": "map_loader",
       "type": "backend",
       "label": "map-loader",
-      "sublabel": ".map a objetos",
+      "sublabel": "carga de mapas",
       "row": 1,
       "col": 6
     },
@@ -158,7 +158,7 @@
       "id": "mapfix",
       "type": "backend",
       "label": "mapfix",
-      "sublabel": "~500 objetos fijos",
+      "sublabel": "parches de mapa",
       "row": 1,
       "col": 7
     },
@@ -166,7 +166,7 @@
       "id": "gps",
       "type": "backend",
       "label": "gps",
-      "sublabel": "FindPathAsync",
+      "sublabel": "navegacion",
       "row": 1,
       "col": 8
     },
@@ -174,7 +174,7 @@
       "id": "cef",
       "type": "backend",
       "label": "cef",
-      "sublabel": "CEF_Create",
+      "sublabel": "navegador en juego",
       "row": 2,
       "col": 3
     },
@@ -182,7 +182,7 @@
       "id": "ompp",
       "type": "backend",
       "label": "ompp",
-      "sublabel": "nativos OMPP",
+      "sublabel": "extras open.mp",
       "row": 2,
       "col": 4
     },
@@ -190,7 +190,7 @@
       "id": "progress",
       "type": "backend",
       "label": "progress",
-      "sublabel": "3 个 TextDraw",
+      "sublabel": "barras de progreso",
       "row": 2,
       "col": 5
     },
@@ -198,7 +198,7 @@
       "id": "qrcode",
       "type": "backend",
       "label": "qrcode",
-      "sublabel": "material Webdings",
+      "sublabel": "codigos QR",
       "row": 3,
       "col": 3
     },
@@ -206,7 +206,7 @@
       "id": "s_art",
       "type": "backend",
       "label": "s-art",
-      "sublabel": "bloques sharp",
+      "sublabel": "render de imagenes",
       "row": 3,
       "col": 4
     },
@@ -214,7 +214,7 @@
       "id": "e_selection",
       "type": "backend",
       "label": "e-selection",
-      "sublabel": "montaje TextDraw",
+      "sublabel": "menu de modelos",
       "row": 3,
       "col": 5
     },
@@ -222,7 +222,7 @@
       "id": "fcnpc",
       "type": "backend",
       "label": "fcnpc",
-      "sublabel": "FCNPC_Create",
+      "sublabel": "NPC y bots",
       "row": 2,
       "col": 7
     },
@@ -230,7 +230,7 @@
       "id": "samp_voice",
       "type": "backend",
       "label": "samp-voice",
-      "sublabel": "SvInit 等原生",
+      "sublabel": "chat de voz",
       "row": 2,
       "col": 8
     },
@@ -238,7 +238,7 @@
       "id": "veh_para",
       "type": "backend",
       "label": "veh-para",
-      "sublabel": "engancha inject",
+      "sublabel": "paracaidas",
       "row": 2,
       "col": 9
     },
@@ -246,7 +246,7 @@
       "id": "distance",
       "type": "backend",
       "label": "distance",
-      "sublabel": "defineHooks",
+      "sublabel": "distancias",
       "row": 3,
       "col": 7
     },
@@ -254,7 +254,7 @@
       "id": "drift_detection",
       "type": "backend",
       "label": "drift-detection",
-      "sublabel": "angulo en update",
+      "sublabel": "deteccion de drift",
       "row": 3,
       "col": 8
     },
@@ -262,7 +262,7 @@
       "id": "rec",
       "type": "backend",
       "label": "rec",
-      "sublabel": "lectura de bits",
+      "sublabel": "conversion .rec",
       "row": 3,
       "col": 9
     }
@@ -354,27 +354,27 @@
       "dot": "cyan",
       "title": "Tres estilos de implementacion",
       "items": [
-        "Envoltorios nativos directos: raknet, streamer, colandreas, cef, ompp y fcnpc convierten samp.callNative en funciones tipadas",
-        "Enganchan a clases de core: nex-ac, weapon-config, veh-para y distance usan defineHooks o sobrescriben __inject__",
-        "TypeScript puro: mapandreas lee mapas de altura, rec lee campos de bits, query usa UDP y e-selection monta la interfaz con TextDraw"
+        "Envolver un plugin nativo: raknet, streamer, colandreas, cef, ompp y fcnpc exponen sus funciones nativas tipadas",
+        "Mejorar el comportamiento de core: nex-ac, weapon-config, veh-para y distance sustituyen llamadas nativas para reescribir dano y posicion",
+        "TypeScript puro: mapandreas, rec, query y e-selection no necesitan ningun plugin nativo"
       ]
     },
     {
       "dot": "emerald",
       "title": "Puntos de extension en core",
       "items": [
-        "defineEvent declara el evento; los listeners forman una cadena de middleware en orden de registro, avanzada con next()",
-        "defineHooks(Class) devuelve [instantanea de metodos originales, setHook] para sustituir metodos del prototipo",
-        "GameMode.use(script) solo encola; la carga ocurre en onInit y IFilterScript.load() debe devolver funciones de baja"
+        "defineEvent declara el evento; los listeners forman una cadena de middleware avanzada con next()",
+        "defineHooks(Class) devuelve la instantanea de metodos originales y setHook, para sustituir metodos",
+        "GameMode.use() solo encola; la carga ocurre en onInit"
       ]
     },
     {
       "dot": "violet",
       "title": "Limite de compilacion y ejecucion",
       "items": [
-        "tsx scripts/build-all.ts compila en serie: streamer, core, raknet y el resto; cada paquete valida tipos antes de rolldown",
-        "samp-node lo carga open.mp, se ejecuta en Node 22 e inyecta el objeto global samp",
-        "streamer y types no se publican; shared no tiene package.json y solo se usa en compilacion"
+        "scripts/build-all.ts compila en serie: streamer, core, raknet y el resto",
+        "Cada paquete valida tipos y luego empaqueta bundle.mjs / bundle.js / bundle.d.ts",
+        "samp-node lo carga open.mp e inyecta samp global; streamer y types no se publican"
       ]
     }
   ]

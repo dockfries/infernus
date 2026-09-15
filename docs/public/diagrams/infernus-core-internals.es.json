@@ -30,7 +30,7 @@
       "id": "filterscript",
       "type": "backend",
       "label": "filterscript",
-      "sublabel": "carga scripts",
+      "sublabel": "cargador scripts",
       "row": 1,
       "col": 0
     },
@@ -38,7 +38,7 @@
       "id": "command",
       "type": "backend",
       "label": "command",
-      "sublabel": "despacho CmdBus",
+      "sublabel": "despacho comandos",
       "row": 2,
       "col": 0
     },
@@ -46,7 +46,7 @@
       "id": "entities",
       "type": "backend",
       "label": "entities",
-      "sublabel": "Player y otros",
+      "sublabel": "instancias entidad",
       "row": 3,
       "col": 0
     },
@@ -54,7 +54,7 @@
       "id": "bus",
       "type": "messagebus",
       "label": "utils/bus.ts",
-      "sublabel": "defineEvent",
+      "sublabel": "motor de eventos",
       "row": 0,
       "col": 2
     },
@@ -62,7 +62,7 @@
       "id": "hook",
       "type": "messagebus",
       "label": "utils/hook.ts",
-      "sublabel": "defineHooks",
+      "sublabel": "intercepcion metodo",
       "row": 1,
       "col": 2
     },
@@ -70,7 +70,7 @@
       "id": "pools",
       "type": "messagebus",
       "label": "utils/pools.ts",
-      "sublabel": "pools Map",
+      "sublabel": "registro entidades",
       "row": 2,
       "col": 2
     },
@@ -78,7 +78,7 @@
       "id": "innerprops",
       "type": "messagebus",
       "label": "internalProps",
-      "sublabel": "campo Symbol",
+      "sublabel": "estado privado",
       "row": 3,
       "col": 2
     },
@@ -86,7 +86,7 @@
       "id": "native",
       "type": "cloud",
       "label": "wrapper/native",
-      "sublabel": "callNative",
+      "sublabel": "enlaces nativos",
       "row": 1,
       "col": 4
     },
@@ -94,7 +94,7 @@
       "id": "inject",
       "type": "cloud",
       "label": "__inject__",
-      "sublabel": "impl intercambiable",
+      "sublabel": "impl sustituible",
       "row": 2,
       "col": 4
     },
@@ -102,7 +102,7 @@
       "id": "streamerw",
       "type": "cloud",
       "label": "wrapper streamer",
-      "sublabel": "nativos Streamer",
+      "sublabel": "nativos del plugin",
       "row": 3,
       "col": 4
     },
@@ -110,7 +110,7 @@
       "id": "samp",
       "type": "cloud",
       "label": "samp global",
-      "sublabel": "registerEvent",
+      "sublabel": "registro eventos",
       "row": 0,
       "col": 6
     },
@@ -118,7 +118,7 @@
       "id": "omp",
       "type": "cloud",
       "label": "nativos open.mp",
-      "sublabel": "OnPlayerConnect",
+      "sublabel": "origen callbacks",
       "row": 1,
       "col": 6
     },
@@ -126,7 +126,7 @@
       "id": "plugin",
       "type": "cloud",
       "label": "plugin streamer",
-      "sublabel": "nativos plugin",
+      "sublabel": "plugin streaming",
       "row": 2,
       "col": 6
     }
@@ -218,7 +218,7 @@
       "id": "streamerw-to-plugin",
       "from": "streamerw",
       "to": "plugin",
-      "label": "Streamer_* 调用",
+      "label": "llamadas Streamer",
       "labelAt": [
         1050,
         351

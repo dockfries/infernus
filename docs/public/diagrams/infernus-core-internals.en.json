@@ -39,7 +39,7 @@
       "id": "command",
       "type": "backend",
       "label": "command",
-      "sublabel": "CmdBus dispatch",
+      "sublabel": "command dispatch",
       "row": 2,
       "col": 0
     },
@@ -47,7 +47,7 @@
       "id": "entities",
       "type": "backend",
       "label": "entities",
-      "sublabel": "Player etc.",
+      "sublabel": "entity instances",
       "row": 3,
       "col": 0
     },
@@ -55,7 +55,7 @@
       "id": "bus",
       "type": "messagebus",
       "label": "utils/bus.ts",
-      "sublabel": "defineEvent",
+      "sublabel": "event engine",
       "row": 0,
       "col": 2
     },
@@ -63,7 +63,7 @@
       "id": "hook",
       "type": "messagebus",
       "label": "utils/hook.ts",
-      "sublabel": "defineHooks",
+      "sublabel": "method interception",
       "row": 1,
       "col": 2
     },
@@ -71,7 +71,7 @@
       "id": "pools",
       "type": "messagebus",
       "label": "utils/pools.ts",
-      "sublabel": "entity Map pools",
+      "sublabel": "entity registry",
       "row": 2,
       "col": 2
     },
@@ -79,7 +79,7 @@
       "id": "innerprops",
       "type": "messagebus",
       "label": "internalProps",
-      "sublabel": "Symbol private field",
+      "sublabel": "entity private state",
       "row": 3,
       "col": 2
     },
@@ -87,7 +87,7 @@
       "id": "native",
       "type": "cloud",
       "label": "wrapper/native",
-      "sublabel": "callNative",
+      "sublabel": "native bindings",
       "row": 1,
       "col": 4
     },
@@ -103,7 +103,7 @@
       "id": "streamerw",
       "type": "cloud",
       "label": "streamer wrapper",
-      "sublabel": "Streamer_* natives",
+      "sublabel": "plugin natives",
       "row": 3,
       "col": 4
     },
@@ -111,7 +111,7 @@
       "id": "samp",
       "type": "cloud",
       "label": "global samp",
-      "sublabel": "registerEvent",
+      "sublabel": "event registration",
       "row": 0,
       "col": 6
     },
@@ -119,7 +119,7 @@
       "id": "omp",
       "type": "cloud",
       "label": "open.mp natives",
-      "sublabel": "OnPlayerConnect",
+      "sublabel": "native callback src",
       "row": 1,
       "col": 6
     },
@@ -127,7 +127,7 @@
       "id": "plugin",
       "type": "cloud",
       "label": "streamer plugin",
-      "sublabel": "plugin natives",
+      "sublabel": "streaming plugin",
       "row": 2,
       "col": 6
     }
@@ -219,7 +219,7 @@
       "id": "streamerw-to-plugin",
       "from": "streamerw",
       "to": "plugin",
-      "label": "Streamer_* 调用",
+      "label": "Streamer calls",
       "labelAt": [
         1050,
         351
