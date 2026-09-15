@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "defineEvent Event Execution Path",
+    "locale": "en",
+    "viewBox": [
+      1080,
+      480
+    ],
+    "column_fit": "spread",
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    {
+      "id": "script",
+      "type": "frontend",
+      "label": "Application script",
+      "sublabel": "onConnect listener"
+    },
+    {
+      "id": "bus",
+      "type": "backend",
+      "label": "@infernus/core bus.ts",
+      "sublabel": "eventBus / trigger"
+    },
+    {
+      "id": "node",
+      "type": "cloud",
+      "label": "samp-node",
+      "sublabel": "samp.on"
+    },
+    {
+      "id": "omp",
+      "type": "cloud",
+      "label": "open.mp Server",
+      "sublabel": "native callback"
+    }
+  ],
+  "segments": [
+    {
+      "from": 152,
+      "to": 205,
+      "label": "Register at import"
+    },
+    {
+      "from": 212,
+      "to": 336,
+      "label": "Native callback to chain"
+    },
+    {
+      "from": 344,
+      "to": 372,
+      "label": "Return value"
+    }
+  ],
+  "messages": [
+    {
+      "id": "define",
+      "from": "script",
+      "to": "bus",
+      "y": 160,
+      "label": "defineEvent({ name, identifier, isNative })",
+      "variant": "emphasis"
+    },
+    {
+      "id": "register",
+      "from": "bus",
+      "to": "node",
+      "y": 188,
+      "label": "samp.registerEvent(name, identifier) plus samp.on(name, trigger)",
+      "variant": "default"
+    },
+    {
+      "id": "native-cb",
+      "from": "omp",
+      "to": "node",
+      "y": 216,
+      "label": "OnPlayerConnect(playerid)",
+      "variant": "default"
+    },
+    {
+      "id": "trigger",
+      "from": "node",
+      "to": "bus",
+      "y": 244,
+      "label": "trigger(playerid)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "run-listener",
+      "from": "bus",
+      "to": "script",
+      "y": 272,
+      "label": "beforeEach builds context, then calls the listener",
+      "variant": "emphasis"
+    },
+    {
+      "id": "next",
+      "from": "script",
+      "to": "bus",
+      "y": 300,
+      "label": "return next() advances to the next listener",
+      "variant": "return"
+    },
+    {
+      "id": "after-each",
+      "from": "bus",
+      "to": "script",
+      "y": 328,
+      "label": "executeAfterEach() runs once after the chain ends",
+      "variant": "default"
+    },
+    {
+      "id": "transform",
+      "from": "bus",
+      "to": "omp",
+      "y": 356,
+      "label": "transformReturnValue gives 0 or 1, returned via samp-node",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Registration: an import side effect",
+      "items": [
+        "defineEvent registers as soon as the module is imported, with no manual init step",
+        "With isNative false neither samp.registerEvent nor samp.on is called, making it an in-process custom event",
+        "A duplicate name throws CoreException: event [name:xxx] error: already defined"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Propagation: next() steers the chain",
+      "items": [
+        "beforeEach parses native arguments into context; listeners receive { next, defaultValue, ...context }",
+        "next(value) advances and Object.assigns value into the shared context, changing what downstream listeners see",
+        "Not calling next() halts the chain, and that listener's return value becomes the event result"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Return value and errors",
+      "items": [
+        "The result normalises to 0 or 1: booleans convert, illegal values fall back to defaultValue (1 by default)",
+        "A listener returning a Promise does not block the chain; afterEach instead waits on Promise.allSettled",
+        "Thrown errors go to setEventErrorHandler, falling back to samp.logprint when unset"
+      ]
+    }
+  ]
+}

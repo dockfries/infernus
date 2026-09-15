@@ -1,0 +1,381 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Monorepo Infernus y detalle de paquetes",
+    "quality_profile": "showcase"
+  },
+  "layout": {
+    "mode": "grid",
+    "origin": [
+      20,
+      40
+    ],
+    "cols": 10,
+    "gapX": 8,
+    "gapY": 34,
+    "cellW": 120,
+    "cellH": 60
+  },
+  "components": [
+    {
+      "id": "create_app",
+      "type": "backend",
+      "label": "create-app",
+      "sublabel": "infernus CLI",
+      "row": 0,
+      "col": 0
+    },
+    {
+      "id": "gamemode",
+      "type": "frontend",
+      "label": "Script de gamemode",
+      "sublabel": "GameMode.onInit",
+      "row": 1,
+      "col": 0
+    },
+    {
+      "id": "core_pkg",
+      "type": "backend",
+      "label": "@infernus/core",
+      "sublabel": "bus / hook",
+      "row": 2,
+      "col": 0
+    },
+    {
+      "id": "samp_node",
+      "type": "cloud",
+      "label": "samp-node",
+      "sublabel": "samp global",
+      "row": 3,
+      "col": 0
+    },
+    {
+      "id": "fs_pkg",
+      "type": "backend",
+      "label": "@infernus/fs",
+      "sublabel": "IFilterScript",
+      "row": 0,
+      "col": 1
+    },
+    {
+      "id": "types_pkg",
+      "type": "backend",
+      "label": "@infernus/types",
+      "sublabel": "SampNodeApi",
+      "row": 1,
+      "col": 1
+    },
+    {
+      "id": "omp_server",
+      "type": "cloud",
+      "label": "open.mp Server",
+      "sublabel": "加载插件",
+      "row": 2,
+      "col": 1
+    },
+    {
+      "id": "nodejs",
+      "type": "cloud",
+      "label": "Node.js 22",
+      "sublabel": "跑 bundle.mjs",
+      "row": 3,
+      "col": 1
+    },
+    {
+      "id": "shared_pkg",
+      "type": "external",
+      "label": "@infernus/shared",
+      "sublabel": "solo compilacion",
+      "row": 3,
+      "col": 2
+    },
+    {
+      "id": "raknet",
+      "type": "backend",
+      "label": "raknet",
+      "sublabel": "BitStream / RPC",
+      "row": 0,
+      "col": 3
+    },
+    {
+      "id": "nex_ac",
+      "type": "security",
+      "label": "nex-ac",
+      "sublabel": "defineHooks",
+      "row": 0,
+      "col": 4
+    },
+    {
+      "id": "weapon_config",
+      "type": "security",
+      "label": "weapon-config",
+      "sublabel": "__inject__ ×44",
+      "row": 1,
+      "col": 3
+    },
+    {
+      "id": "query",
+      "type": "backend",
+      "label": "query",
+      "sublabel": "consulta UDP",
+      "row": 1,
+      "col": 4
+    },
+    {
+      "id": "streamer",
+      "type": "backend",
+      "label": "streamer",
+      "sublabel": "181 nativos",
+      "row": 0,
+      "col": 6
+    },
+    {
+      "id": "colandreas",
+      "type": "backend",
+      "label": "colandreas",
+      "sublabel": "CA_RayCastLine",
+      "row": 0,
+      "col": 7
+    },
+    {
+      "id": "mapandreas",
+      "type": "backend",
+      "label": "mapandreas",
+      "sublabel": "lee mapa .dat",
+      "row": 0,
+      "col": 8
+    },
+    {
+      "id": "map_loader",
+      "type": "backend",
+      "label": "map-loader",
+      "sublabel": ".map a objetos",
+      "row": 1,
+      "col": 6
+    },
+    {
+      "id": "mapfix",
+      "type": "backend",
+      "label": "mapfix",
+      "sublabel": "~500 objetos fijos",
+      "row": 1,
+      "col": 7
+    },
+    {
+      "id": "gps",
+      "type": "backend",
+      "label": "gps",
+      "sublabel": "FindPathAsync",
+      "row": 1,
+      "col": 8
+    },
+    {
+      "id": "cef",
+      "type": "backend",
+      "label": "cef",
+      "sublabel": "CEF_Create",
+      "row": 2,
+      "col": 3
+    },
+    {
+      "id": "ompp",
+      "type": "backend",
+      "label": "ompp",
+      "sublabel": "nativos OMPP",
+      "row": 2,
+      "col": 4
+    },
+    {
+      "id": "progress",
+      "type": "backend",
+      "label": "progress",
+      "sublabel": "3 个 TextDraw",
+      "row": 2,
+      "col": 5
+    },
+    {
+      "id": "qrcode",
+      "type": "backend",
+      "label": "qrcode",
+      "sublabel": "material Webdings",
+      "row": 3,
+      "col": 3
+    },
+    {
+      "id": "s_art",
+      "type": "backend",
+      "label": "s-art",
+      "sublabel": "bloques sharp",
+      "row": 3,
+      "col": 4
+    },
+    {
+      "id": "e_selection",
+      "type": "backend",
+      "label": "e-selection",
+      "sublabel": "montaje TextDraw",
+      "row": 3,
+      "col": 5
+    },
+    {
+      "id": "fcnpc",
+      "type": "backend",
+      "label": "fcnpc",
+      "sublabel": "FCNPC_Create",
+      "row": 2,
+      "col": 7
+    },
+    {
+      "id": "samp_voice",
+      "type": "backend",
+      "label": "samp-voice",
+      "sublabel": "SvInit 等原生",
+      "row": 2,
+      "col": 8
+    },
+    {
+      "id": "veh_para",
+      "type": "backend",
+      "label": "veh-para",
+      "sublabel": "engancha inject",
+      "row": 2,
+      "col": 9
+    },
+    {
+      "id": "distance",
+      "type": "backend",
+      "label": "distance",
+      "sublabel": "defineHooks",
+      "row": 3,
+      "col": 7
+    },
+    {
+      "id": "drift_detection",
+      "type": "backend",
+      "label": "drift-detection",
+      "sublabel": "angulo en update",
+      "row": 3,
+      "col": 8
+    },
+    {
+      "id": "rec",
+      "type": "backend",
+      "label": "rec",
+      "sublabel": "lectura de bits",
+      "row": 3,
+      "col": 9
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Red y antitrampas",
+      "wraps": [
+        "raknet",
+        "nex_ac",
+        "weapon_config",
+        "query"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Mundo y navegacion",
+      "wraps": [
+        "streamer",
+        "colandreas",
+        "mapandreas",
+        "map_loader",
+        "mapfix",
+        "gps"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Interfaz",
+      "wraps": [
+        "cef",
+        "ompp",
+        "progress",
+        "qrcode",
+        "s_art",
+        "e_selection"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Jugadores y juego",
+      "wraps": [
+        "fcnpc",
+        "samp_voice",
+        "veh_para",
+        "distance",
+        "drift_detection",
+        "rec"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "createapp-scaffolds-gamemode",
+      "from": "create_app",
+      "to": "gamemode",
+      "label": "genera esqueleto",
+      "labelAt": [
+        80,
+        114
+      ]
+    },
+    {
+      "id": "gamemode-imports-core",
+      "from": "gamemode",
+      "to": "core_pkg",
+      "label": "import core",
+      "variant": "emphasis",
+      "labelAt": [
+        80,
+        208
+      ]
+    },
+    {
+      "id": "core-calls-native",
+      "from": "core_pkg",
+      "to": "samp_node",
+      "label": "callNative",
+      "variant": "emphasis",
+      "labelAt": [
+        80,
+        302
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Tres estilos de implementacion",
+      "items": [
+        "Envoltorios nativos directos: raknet, streamer, colandreas, cef, ompp y fcnpc convierten samp.callNative en funciones tipadas",
+        "Enganchan a clases de core: nex-ac, weapon-config, veh-para y distance usan defineHooks o sobrescriben __inject__",
+        "TypeScript puro: mapandreas lee mapas de altura, rec lee campos de bits, query usa UDP y e-selection monta la interfaz con TextDraw"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Puntos de extension en core",
+      "items": [
+        "defineEvent declara el evento; los listeners forman una cadena de middleware en orden de registro, avanzada con next()",
+        "defineHooks(Class) devuelve [instantanea de metodos originales, setHook] para sustituir metodos del prototipo",
+        "GameMode.use(script) solo encola; la carga ocurre en onInit y IFilterScript.load() debe devolver funciones de baja"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Limite de compilacion y ejecucion",
+      "items": [
+        "tsx scripts/build-all.ts compila en serie: streamer, core, raknet y el resto; cada paquete valida tipos antes de rolldown",
+        "samp-node lo carga open.mp, se ejecuta en Node 22 e inyecta el objeto global samp",
+        "streamer y types no se publican; shared no tiene package.json y solo se usa en compilacion"
+      ]
+    }
+  ]
+}

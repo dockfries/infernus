@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "@infernus/core Subsystems and Event Machinery",
+    "locale": "en",
+    "quality_profile": "showcase"
+  },
+  "layout": {
+    "mode": "grid",
+    "origin": [
+      30,
+      56
+    ],
+    "cols": 7,
+    "gapX": 72,
+    "gapY": 46,
+    "cellW": 120,
+    "cellH": 60
+  },
+  "components": [
+    {
+      "id": "gamemode",
+      "type": "frontend",
+      "label": "gamemode",
+      "sublabel": "lifecycle hooks",
+      "row": 0,
+      "col": 0
+    },
+    {
+      "id": "filterscript",
+      "type": "backend",
+      "label": "filterscript",
+      "sublabel": "script loader",
+      "row": 1,
+      "col": 0
+    },
+    {
+      "id": "command",
+      "type": "backend",
+      "label": "command",
+      "sublabel": "CmdBus dispatch",
+      "row": 2,
+      "col": 0
+    },
+    {
+      "id": "entities",
+      "type": "backend",
+      "label": "entities",
+      "sublabel": "Player etc.",
+      "row": 3,
+      "col": 0
+    },
+    {
+      "id": "bus",
+      "type": "messagebus",
+      "label": "utils/bus.ts",
+      "sublabel": "defineEvent",
+      "row": 0,
+      "col": 2
+    },
+    {
+      "id": "hook",
+      "type": "messagebus",
+      "label": "utils/hook.ts",
+      "sublabel": "defineHooks",
+      "row": 1,
+      "col": 2
+    },
+    {
+      "id": "pools",
+      "type": "messagebus",
+      "label": "utils/pools.ts",
+      "sublabel": "entity Map pools",
+      "row": 2,
+      "col": 2
+    },
+    {
+      "id": "innerprops",
+      "type": "messagebus",
+      "label": "internalProps",
+      "sublabel": "Symbol private field",
+      "row": 3,
+      "col": 2
+    },
+    {
+      "id": "native",
+      "type": "cloud",
+      "label": "wrapper/native",
+      "sublabel": "callNative",
+      "row": 1,
+      "col": 4
+    },
+    {
+      "id": "inject",
+      "type": "cloud",
+      "label": "__inject__",
+      "sublabel": "swappable impl",
+      "row": 2,
+      "col": 4
+    },
+    {
+      "id": "streamerw",
+      "type": "cloud",
+      "label": "streamer wrapper",
+      "sublabel": "Streamer_* natives",
+      "row": 3,
+      "col": 4
+    },
+    {
+      "id": "samp",
+      "type": "cloud",
+      "label": "global samp",
+      "sublabel": "registerEvent",
+      "row": 0,
+      "col": 6
+    },
+    {
+      "id": "omp",
+      "type": "cloud",
+      "label": "open.mp natives",
+      "sublabel": "OnPlayerConnect",
+      "row": 1,
+      "col": 6
+    },
+    {
+      "id": "plugin",
+      "type": "cloud",
+      "label": "streamer plugin",
+      "sublabel": "plugin natives",
+      "row": 2,
+      "col": 6
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "components: entities",
+      "wraps": [
+        "gamemode",
+        "filterscript",
+        "command",
+        "entities"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "utils: events and pools",
+      "wraps": [
+        "bus",
+        "hook",
+        "pools",
+        "innerprops"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "wrapper: native bindings",
+      "wraps": [
+        "native",
+        "inject",
+        "streamerw"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Host: open.mp",
+      "wraps": [
+        "samp",
+        "omp",
+        "plugin"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "gamemode-to-bus",
+      "from": "gamemode",
+      "to": "bus",
+      "label": "dispatch",
+      "variant": "emphasis",
+      "labelAt": [
+        282,
+        70
+      ]
+    },
+    {
+      "id": "bus-to-samp",
+      "from": "bus",
+      "to": "samp",
+      "label": "samp.on(name, trigger)",
+      "variant": "emphasis",
+      "labelAt": [
+        858,
+        70
+      ]
+    },
+    {
+      "id": "entities-to-pools",
+      "from": "entities",
+      "to": "pools",
+      "label": "instance to pool",
+      "labelAt": [
+        282,
+        388
+      ]
+    },
+    {
+      "id": "native-to-samp",
+      "from": "native",
+      "to": "samp",
+      "label": "callNative",
+      "labelAt": [
+        1050,
+        139
+      ]
+    },
+    {
+      "id": "streamerw-to-plugin",
+      "from": "streamerw",
+      "to": "plugin",
+      "label": "Streamer_* 调用",
+      "labelAt": [
+        1050,
+        351
+      ]
+    },
+    {
+      "id": "samp-to-omp",
+      "from": "samp",
+      "to": "omp",
+      "label": "register callback",
+      "labelAt": [
+        1242,
+        139
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Event layer: utils/bus.ts",
+      "items": [
+        "eventBus is a Map<name, listener[]> where registration order is execution order; triggerBus keeps trigger for useTrigger reuse",
+        "defineEvent returns [pusher, trigger]: pusher subscribes and returns off, trigger runs the whole middleware chain",
+        "With isNative true, registerEvent plus samp.on happen at import; false makes it a purely in-process event"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Entities and state: utils/pools.ts",
+      "items": [
+        "One Map pool per entity kind; Player enters on onConnect and leaves on onDisconnect, Vehicle on create/destroy",
+        "internalPlayerProps is a Symbol key so plugins extending Player cannot overwrite core's private runtime fields",
+        "A native callback resolves the raw id into the pooled instance before passing it to listeners as an object"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Loading and lifecycle",
+      "items": [
+        "GameMode.use(script) only queues; the onInit listener loads in registration order and onExit unloads",
+        "IFilterScript.load() must return an array of unsubscribe functions, called one by one on unload",
+        "During unload and exit INTERNAL_FLAGS.skip is set, skipping native calls against a dead game"
+      ]
+    }
+  ]
+}

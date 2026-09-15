@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Infernus 单仓架构与子包实现",
+    "locale": "zh-CN",
+    "quality_profile": "showcase"
+  },
+  "layout": {
+    "mode": "grid",
+    "origin": [20, 40],
+    "cols": 10,
+    "gapX": 8,
+    "gapY": 34,
+    "cellW": 120,
+    "cellH": 60
+  },
+  "components": [
+    { "id": "create_app", "type": "backend", "label": "create-app", "sublabel": "infernus CLI", "row": 0, "col": 0 },
+    { "id": "gamemode", "type": "frontend", "label": "业务 Gamemode", "sublabel": "GameMode.onInit", "row": 1, "col": 0 },
+    { "id": "core_pkg", "type": "backend", "label": "@infernus/core", "sublabel": "bus / hook", "row": 2, "col": 0 },
+    { "id": "samp_node", "type": "cloud", "label": "samp-node 插件", "sublabel": "全局 samp 对象", "row": 3, "col": 0 },
+
+    { "id": "fs_pkg", "type": "backend", "label": "@infernus/fs", "sublabel": "IFilterScript", "row": 0, "col": 1 },
+    { "id": "types_pkg", "type": "backend", "label": "@infernus/types", "sublabel": "SampNodeApi", "row": 1, "col": 1 },
+    { "id": "omp_server", "type": "cloud", "label": "open.mp Server", "sublabel": "加载插件", "row": 2, "col": 1 },
+    { "id": "nodejs", "type": "cloud", "label": "Node.js 22", "sublabel": "跑 bundle.mjs", "row": 3, "col": 1 },
+    { "id": "shared_pkg", "type": "external", "label": "@infernus/shared", "sublabel": "构建期工具", "row": 3, "col": 2 },
+
+    { "id": "raknet", "type": "backend", "label": "raknet", "sublabel": "BitStream / RPC", "row": 0, "col": 3 },
+    { "id": "nex_ac", "type": "security", "label": "nex-ac", "sublabel": "defineHooks 拦截", "row": 0, "col": 4 },
+    { "id": "weapon_config", "type": "security", "label": "weapon-config", "sublabel": "__inject__ ×44", "row": 1, "col": 3 },
+    { "id": "query", "type": "backend", "label": "query", "sublabel": "node:dgram 查询", "row": 1, "col": 4 },
+
+    { "id": "streamer", "type": "backend", "label": "streamer", "sublabel": "181 个原生封装", "row": 0, "col": 6 },
+    { "id": "colandreas", "type": "backend", "label": "colandreas", "sublabel": "CA_RayCastLine", "row": 0, "col": 7 },
+    { "id": "mapandreas", "type": "backend", "label": "mapandreas", "sublabel": "读 .dat 高度图", "row": 0, "col": 8 },
+    { "id": "map_loader", "type": "backend", "label": "map-loader", "sublabel": ".map → 物体", "row": 1, "col": 6 },
+    { "id": "mapfix", "type": "backend", "label": "mapfix", "sublabel": "约 500 修补物体", "row": 1, "col": 7 },
+    { "id": "gps", "type": "backend", "label": "gps", "sublabel": "FindPathAsync", "row": 1, "col": 8 },
+
+    { "id": "cef", "type": "backend", "label": "cef", "sublabel": "CEF_Create", "row": 2, "col": 3 },
+    { "id": "ompp", "type": "backend", "label": "ompp", "sublabel": "OMPP 原生扩展", "row": 2, "col": 4 },
+    { "id": "progress", "type": "backend", "label": "progress", "sublabel": "3 个 TextDraw", "row": 2, "col": 5 },
+    { "id": "qrcode", "type": "backend", "label": "qrcode", "sublabel": "Webdings 材质", "row": 3, "col": 3 },
+    { "id": "s_art", "type": "backend", "label": "s-art", "sublabel": "sharp 切块渲染", "row": 3, "col": 4 },
+    { "id": "e_selection", "type": "backend", "label": "e-selection", "sublabel": "TextDraw 拼装", "row": 3, "col": 5 },
+
+    { "id": "fcnpc", "type": "backend", "label": "fcnpc", "sublabel": "FCNPC_Create", "row": 2, "col": 7 },
+    { "id": "samp_voice", "type": "backend", "label": "samp-voice", "sublabel": "SvInit 等原生", "row": 2, "col": 8 },
+    { "id": "veh_para", "type": "backend", "label": "veh-para", "sublabel": "__inject__ 挂钩", "row": 2, "col": 9 },
+    { "id": "distance", "type": "backend", "label": "distance", "sublabel": "defineHooks", "row": 3, "col": 7 },
+    { "id": "drift_detection", "type": "backend", "label": "drift-detection", "sublabel": "onUpdate 算角", "row": 3, "col": 8 },
+    { "id": "rec", "type": "backend", "label": "rec", "sublabel": "位域读写", "row": 3, "col": 9 }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "网络与反作弊", "wraps": ["raknet", "nex_ac", "weapon_config", "query"] },
+    { "kind": "region", "label": "世界、地形与导航", "wraps": ["streamer", "colandreas", "mapandreas", "map_loader", "mapfix", "gps"] },
+    { "kind": "region", "label": "界面与呈现", "wraps": ["cef", "ompp", "progress", "qrcode", "s_art", "e_selection"] },
+    { "kind": "region", "label": "玩家与玩法", "wraps": ["fcnpc", "samp_voice", "veh_para", "distance", "drift_detection", "rec"] }
+  ],
+  "connections": [
+    { "id": "createapp-scaffolds-gamemode", "from": "create_app", "to": "gamemode", "label": "生成骨架", "labelAt": [80, 114] },
+    { "id": "gamemode-imports-core", "from": "gamemode", "to": "core_pkg", "label": "import core", "variant": "emphasis", "labelAt": [80, 208] },
+    { "id": "core-calls-native", "from": "core_pkg", "to": "samp_node", "label": "callNative", "variant": "emphasis", "labelAt": [80, 302] }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三种实现路数",
+      "items": [
+        "直连原生插件：raknet、streamer、colandreas、cef、ompp、fcnpc 等把 samp.callNative 包成有类型函数",
+        "挂钩 core 类：nex-ac、weapon-config、veh-para、distance 用 defineHooks 或覆盖 __inject__ 改写实体行为",
+        "纯 TypeScript：mapandreas 读高度图、rec 读写位域、query 走 UDP、e-selection 用 TextDraw 拼界面"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "core 提供的接入面",
+      "items": [
+        "defineEvent 建事件，监听器按注册顺序组成中间件链，用 next() 传递",
+        "defineHooks(Class) 返回 [原始方法快照, setHook]，把原型方法换成拦截器",
+        "GameMode.use(script) 只入队，装载发生在 onInit；IFilterScript.load() 需返回注销函数数组"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "构建与运行时边界",
+      "items": [
+        "tsx scripts/build-all.ts 串行：streamer → core → raknet → 其余；每包先 type-check 再 rolldown",
+        "samp-node 由 open.mp 加载、跑在 Node 22 上，向脚本注入全局 samp",
+        "streamer 与 types 不发布；shared 无 package.json，仅构建期被五个包引用"
+      ]
+    }
+  ]
+}

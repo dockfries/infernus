@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "core and samp-node Bidirectional Bridge",
+    "locale": "en",
+    "viewBox": [
+      1080,
+      560
+    ],
+    "column_fit": "spread",
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    {
+      "id": "omp",
+      "type": "cloud",
+      "label": "open.mp",
+      "sublabel": "native callbacks"
+    },
+    {
+      "id": "plugin",
+      "type": "cloud",
+      "label": "samp-node",
+      "sublabel": "events.cpp"
+    },
+    {
+      "id": "runtime",
+      "type": "cloud",
+      "label": "libnode V8",
+      "sublabel": "nodeimpl Tick"
+    },
+    {
+      "id": "samp",
+      "type": "frontend",
+      "label": "global samp",
+      "sublabel": "functions.cpp"
+    },
+    {
+      "id": "core",
+      "type": "frontend",
+      "label": "@infernus/core",
+      "sublabel": "bus.ts trigger"
+    }
+  ],
+  "segments": [
+    {
+      "from": 155,
+      "to": 248,
+      "label": "Plugin startup and bootstrap"
+    },
+    {
+      "from": 256,
+      "to": 388,
+      "label": "Native callback into JS"
+    },
+    {
+      "from": 396,
+      "to": 456,
+      "label": "Return value to open.mp"
+    }
+  ],
+  "messages": [
+    {
+      "id": "load",
+      "from": "omp",
+      "to": "plugin",
+      "y": 160,
+      "label": "Load(ppData) plugin export",
+      "variant": "emphasis"
+    },
+    {
+      "id": "init-node",
+      "from": "plugin",
+      "to": "runtime",
+      "y": 188,
+      "label": "InitializeOncePerProcess + NewIsolate",
+      "variant": "default"
+    },
+    {
+      "id": "create-env",
+      "from": "plugin",
+      "to": "runtime",
+      "y": 216,
+      "label": "CreateEnvironment(bootstrap), then dynamic import of entry_file",
+      "variant": "default"
+    },
+    {
+      "id": "register",
+      "from": "core",
+      "to": "samp",
+      "y": 244,
+      "label": "registerEvent + on(name, trigger)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "native-cb",
+      "from": "omp",
+      "to": "plugin",
+      "y": 272,
+      "label": "OnPlayerConnect(playerid)",
+      "variant": "default"
+    },
+    {
+      "id": "dispatch",
+      "from": "plugin",
+      "to": "samp",
+      "y": 300,
+      "label": "events[name]->call, AMX args to V8",
+      "variant": "emphasis"
+    },
+    {
+      "id": "trigger",
+      "from": "samp",
+      "to": "core",
+      "y": 328,
+      "label": "calls trigger, running the middleware chain",
+      "variant": "emphasis"
+    },
+    {
+      "id": "call-native",
+      "from": "core",
+      "to": "samp",
+      "y": 356,
+      "label": "callNative(name, fmt, args)",
+      "variant": "default"
+    },
+    {
+      "id": "invoke",
+      "from": "samp",
+      "to": "omp",
+      "y": 384,
+      "label": "InvokeNativeArray into open.mp",
+      "variant": "emphasis"
+    },
+    {
+      "id": "promise-pump",
+      "from": "plugin",
+      "to": "runtime",
+      "y": 412,
+      "label": "handlePromiseReturnValue pumps Tick",
+      "variant": "dashed"
+    },
+    {
+      "id": "retval",
+      "from": "plugin",
+      "to": "omp",
+      "y": 440,
+      "label": "return normalised to 0 or 1; ProcessTick drives each frame",
+      "variant": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "What bootstrap does",
+      "items": [
+        "LoadResource spins in while(esmLoading), calling Tick and yielding each ms until the module loads",
+        "bootstrap sets ipv4first, imports entry_file, then __internal_esmLoaded ends the wait",
+        "Afterwards ProcessTick drives Tick each frame: microtasks, uv_run(NOWAIT), DrainTasks"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "How core sits on this layer",
+      "items": [
+        "core's defineEvent calls samp.registerEvent and samp.on at import time",
+        "A native callback first runs convertAmxParamsToV8 to turn AMX cells into V8 values",
+        "beforeEach then builds the context, so the event system is middleware over that registry"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Sync bridge and boundaries",
+      "items": [
+        "Same thread: no cross-thread queue, Tick runs JS on the server main thread",
+        "A Promise-returning listener spins Tick until settled, disguising async as sync",
+        "callNative passes i/f/s/a/v and retrieves I/F/A/V/S; callPublic walks every AMX"
+      ]
+    }
+  ]
+}

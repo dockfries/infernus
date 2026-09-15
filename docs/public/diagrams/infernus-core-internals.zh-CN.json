@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "@infernus/core 内部子系统与事件机制",
+    "locale": "zh-CN",
+    "quality_profile": "showcase"
+  },
+  "layout": {
+    "mode": "grid",
+    "origin": [30, 56],
+    "cols": 7,
+    "gapX": 72,
+    "gapY": 46,
+    "cellW": 120,
+    "cellH": 60
+  },
+  "components": [
+    { "id": "gamemode", "type": "frontend", "label": "gamemode", "sublabel": "生命周期钩子", "row": 0, "col": 0 },
+    { "id": "filterscript", "type": "backend", "label": "filterscript", "sublabel": "脚本装载器", "row": 1, "col": 0 },
+    { "id": "command", "type": "backend", "label": "command", "sublabel": "CmdBus 指令", "row": 2, "col": 0 },
+    { "id": "entities", "type": "backend", "label": "entities", "sublabel": "Player 等实体", "row": 3, "col": 0 },
+
+    { "id": "bus", "type": "messagebus", "label": "utils/bus.ts", "sublabel": "defineEvent", "row": 0, "col": 2 },
+    { "id": "hook", "type": "messagebus", "label": "utils/hook.ts", "sublabel": "defineHooks", "row": 1, "col": 2 },
+    { "id": "pools", "type": "messagebus", "label": "utils/pools.ts", "sublabel": "实体池 Map", "row": 2, "col": 2 },
+    { "id": "innerprops", "type": "messagebus", "label": "internalProps", "sublabel": "Symbol 私有字段", "row": 3, "col": 2 },
+
+    { "id": "native", "type": "cloud", "label": "wrapper/native", "sublabel": "callNative", "row": 1, "col": 4 },
+    { "id": "inject", "type": "cloud", "label": "__inject__", "sublabel": "可替换实现", "row": 2, "col": 4 },
+    { "id": "streamerw", "type": "cloud", "label": "streamer 封装", "sublabel": "Streamer_* 原生", "row": 3, "col": 4 },
+
+    { "id": "samp", "type": "cloud", "label": "全局 samp", "sublabel": "registerEvent", "row": 0, "col": 6 },
+    { "id": "omp", "type": "cloud", "label": "open.mp 原生", "sublabel": "OnPlayerConnect", "row": 1, "col": 6 },
+    { "id": "plugin", "type": "cloud", "label": "streamer 插件", "sublabel": "独立插件原生", "row": 2, "col": 6 }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "components 实体与生命周期", "wraps": ["gamemode", "filterscript", "command", "entities"] },
+    { "kind": "region", "label": "utils 事件、钩子与池", "wraps": ["bus", "hook", "pools", "innerprops"] },
+    { "kind": "region", "label": "wrapper 原生绑定", "wraps": ["native", "inject", "streamerw"] },
+    { "kind": "region", "label": "宿主 open.mp", "wraps": ["samp", "omp", "plugin"] }
+  ],
+  "connections": [
+    { "id": "gamemode-to-bus", "from": "gamemode", "to": "bus", "label": "派发事件", "variant": "emphasis", "labelAt": [282, 70] },
+    { "id": "bus-to-samp", "from": "bus", "to": "samp", "label": "samp.on(name, trigger)", "variant": "emphasis", "labelAt": [858, 70] },
+    { "id": "entities-to-pools", "from": "entities", "to": "pools", "label": "实例入池", "labelAt": [282, 388] },
+    { "id": "native-to-samp", "from": "native", "to": "samp", "label": "callNative", "labelAt": [1050, 139] },
+    { "id": "streamerw-to-plugin", "from": "streamerw", "to": "plugin", "label": "Streamer_* 调用", "labelAt": [1050, 351] },
+    { "id": "samp-to-omp", "from": "samp", "to": "omp", "label": "注册回调", "labelAt": [1242, 139] }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "事件层 utils/bus.ts",
+      "items": [
+        "eventBus 是 Map<name, 监听器数组>，注册顺序即执行顺序；triggerBus 另存 trigger 供 useTrigger 复用",
+        "defineEvent 返回 [pusher, trigger]：pusher 订阅并返回 off，trigger 触发整条中间件链",
+        "isNative 为 true 时在 import 阶段完成 registerEvent + samp.on；为 false 则是纯进程内事件"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "实体与状态 utils/pools.ts",
+      "items": [
+        "每种实体一个 Map 池；Player 在 onConnect 构造入池、onDisconnect 出池，Vehicle 在 create/destroy 时进出池",
+        "internalPlayerProps 是 Symbol 键，避免插件扩展 Player 时覆盖 core 的私有运行时字段",
+        "原生回调先按 id 解析成池中实例，再以对象形式传给监听器"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "装载与生命周期",
+      "items": [
+        "GameMode.use(script) 仅入队；onInit 监听器按注册顺序依次 load，onExit 卸载",
+        "IFilterScript.load() 必须返回注销函数数组，卸载时逐个调用",
+        "卸载与退出期间 INTERNAL_FLAGS.skip 置位，跳过对已失效游戏的原生调用"
+      ]
+    }
+  ]
+}

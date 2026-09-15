@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Ruta de ejecucion del evento defineEvent",
+    "viewBox": [
+      1080,
+      480
+    ],
+    "column_fit": "spread",
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    {
+      "id": "script",
+      "type": "frontend",
+      "label": "Script de app",
+      "sublabel": "listener onConnect"
+    },
+    {
+      "id": "bus",
+      "type": "backend",
+      "label": "@infernus/core bus.ts",
+      "sublabel": "eventBus / trigger"
+    },
+    {
+      "id": "node",
+      "type": "cloud",
+      "label": "samp-node",
+      "sublabel": "samp.on"
+    },
+    {
+      "id": "omp",
+      "type": "cloud",
+      "label": "Servidor open.mp",
+      "sublabel": "callback nativo"
+    }
+  ],
+  "segments": [
+    {
+      "from": 152,
+      "to": 205,
+      "label": "Registro al importar"
+    },
+    {
+      "from": 212,
+      "to": 336,
+      "label": "Callback nativo a cadena"
+    },
+    {
+      "from": 344,
+      "to": 372,
+      "label": "Valor de retorno"
+    }
+  ],
+  "messages": [
+    {
+      "id": "define",
+      "from": "script",
+      "to": "bus",
+      "y": 160,
+      "label": "defineEvent({ name, identifier, isNative })",
+      "variant": "emphasis"
+    },
+    {
+      "id": "register",
+      "from": "bus",
+      "to": "node",
+      "y": 188,
+      "label": "samp.registerEvent(name, identifier) y samp.on(name, trigger)",
+      "variant": "default"
+    },
+    {
+      "id": "native-cb",
+      "from": "omp",
+      "to": "node",
+      "y": 216,
+      "label": "OnPlayerConnect(playerid)",
+      "variant": "default"
+    },
+    {
+      "id": "trigger",
+      "from": "node",
+      "to": "bus",
+      "y": 244,
+      "label": "trigger(playerid)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "run-listener",
+      "from": "bus",
+      "to": "script",
+      "y": 272,
+      "label": "beforeEach arma el contexto y llama al listener",
+      "variant": "emphasis"
+    },
+    {
+      "id": "next",
+      "from": "script",
+      "to": "bus",
+      "y": 300,
+      "label": "return next() avanza al siguiente listener",
+      "variant": "return"
+    },
+    {
+      "id": "after-each",
+      "from": "bus",
+      "to": "script",
+      "y": 328,
+      "label": "executeAfterEach() se ejecuta al acabar la cadena",
+      "variant": "default"
+    },
+    {
+      "id": "transform",
+      "from": "bus",
+      "to": "omp",
+      "y": 356,
+      "label": "transformReturnValue da 0 o 1, devuelto via samp-node",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Registro: efecto de importar",
+      "items": [
+        "defineEvent se registra al importar el modulo, sin init manual",
+        "Con isNative false no se llama a registerEvent ni samp.on, queda como evento interno",
+        "Un nombre repetido lanza CoreException: event [name:xxx] already defined"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Propagacion: next() guia la cadena",
+      "items": [
+        "beforeEach convierte los argumentos nativos en contexto; el listener recibe { next, defaultValue, ...contexto }",
+        "next(value) avanza y aplica Object.assign al contexto, cambiando lo que ven los siguientes",
+        "No llamar a next() corta la cadena y ese retorno pasa a ser el resultado del evento"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Valor de retorno y errores",
+      "items": [
+        "El resultado se normaliza a 0 o 1: los booleanos convierten y los valores invalidos usan defaultValue",
+        "Un listener que devuelve Promise no bloquea la cadena; afterEach espera allSettled",
+        "Los errores van a setEventErrorHandler o, si no hay, a samp.logprint"
+      ]
+    }
+  ]
+}

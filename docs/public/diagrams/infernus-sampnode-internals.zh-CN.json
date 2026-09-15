@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "samp-node 插件内部架构与 libnode 嵌入",
+    "locale": "zh-CN",
+    "quality_profile": "showcase"
+  },
+  "layout": {
+    "mode": "grid",
+    "origin": [60, 40],
+    "cols": 6,
+    "gapX": 90,
+    "gapY": 60,
+    "cellW": 120,
+    "cellH": 60
+  },
+  "components": [
+    { "id": "sampgdk", "type": "cloud", "label": "sampgdk", "sublabel": "静态库桥接", "row": 0, "col": 0 },
+    { "id": "omp_server", "type": "cloud", "label": "open.mp Server", "sublabel": "宿主与原生", "row": 1, "col": 0 },
+
+    { "id": "wload", "type": "backend", "label": "Load / Unload", "sublabel": "PLUGIN_EXPORT", "row": 0, "col": 1 },
+    { "id": "wpublic", "type": "backend", "label": "OnPublicCall", "sublabel": "回调分发", "row": 1, "col": 1 },
+
+    { "id": "nodeimpl", "type": "backend", "label": "nodeimpl.cpp", "sublabel": "初始化", "row": 0, "col": 2 },
+    { "id": "resource_boot", "type": "backend", "label": "resource.cpp", "sublabel": "bootstrap 装载", "row": 0, "col": 3 },
+
+    { "id": "libnode", "type": "cloud", "label": "libnode 与 V8", "sublabel": "Node 22 共享库", "row": 0, "col": 4 },
+    { "id": "events", "type": "backend", "label": "events.cpp", "sublabel": "事件注册表", "row": 1, "col": 4 },
+    { "id": "natives", "type": "backend", "label": "natives.cpp", "sublabel": "callNative 编组", "row": 2, "col": 4 },
+    { "id": "callbacks", "type": "backend", "label": "callbacks.cpp", "sublabel": "callPublic 编组", "row": 3, "col": 4 },
+
+    { "id": "entry_module", "type": "frontend", "label": "entry_file 模块", "sublabel": "dist/bundle.mjs", "row": 0, "col": 5 },
+    { "id": "core_bus", "type": "frontend", "label": "@infernus/core", "sublabel": "bus.ts trigger", "row": 1, "col": 5 },
+    { "id": "samp_global", "type": "frontend", "label": "全局 samp 对象", "sublabel": "functions.cpp", "row": 2, "col": 5 }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "open.mp 宿主", "wraps": ["sampgdk", "omp_server"] },
+    { "kind": "region", "label": "插件导出入口", "wraps": ["wload", "wpublic"] },
+    { "kind": "region", "label": "嵌入运行时", "wraps": ["nodeimpl", "resource_boot", "libnode"] },
+    { "kind": "region", "label": "事件与原生编组", "wraps": ["events", "natives", "callbacks"] },
+    { "kind": "region", "label": "JS 资源层", "wraps": ["entry_module", "core_bus", "samp_global"] }
+  ],
+  "connections": [
+    { "id": "omp-to-sampgdk", "from": "omp_server", "to": "sampgdk", "label": "宿主加载" },
+    { "id": "sampgdk-to-wload", "from": "sampgdk", "to": "wload", "label": "PLUGIN_EXPORT", "variant": "emphasis" },
+    { "id": "wload-to-nodeimpl", "from": "wload", "to": "nodeimpl", "label": "Initialize", "variant": "emphasis" },
+    { "id": "nodeimpl-to-resource", "from": "nodeimpl", "to": "resource_boot", "label": "LoadResource" },
+    { "id": "resource-to-libnode", "from": "resource_boot", "to": "libnode", "label": "CreateEnv" },
+    { "id": "libnode-to-entry", "from": "libnode", "to": "entry_module", "label": "动态 import", "variant": "emphasis" },
+    { "id": "entry-to-core", "from": "entry_module", "to": "core_bus" },
+    { "id": "core-to-sampglobal", "from": "core_bus", "to": "samp_global", "label": "register / on", "labelDy": 24 },
+    { "id": "omp-to-wpublic", "from": "omp_server", "to": "wpublic", "label": "OnPublicCall", "variant": "emphasis" },
+    { "id": "wpublic-to-events", "from": "wpublic", "to": "events", "label": "events[name]->call", "variant": "emphasis" },
+    { "id": "events-to-core", "from": "events", "to": "core_bus", "label": "调用 trigger" },
+    { "id": "sampglobal-to-natives", "from": "samp_global", "to": "natives", "label": "callNative" },
+    { "id": "sampglobal-to-callbacks", "from": "samp_global", "to": "callbacks", "label": "callPublic" },
+    { "id": "natives-to-sampgdk", "from": "natives", "to": "sampgdk", "label": "InvokeNativeArray", "fromSide": "left", "toSide": "left", "via": [[12, 310], [12, 70]], "labelAt": [300, 294] }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "插件导出与启动顺序",
+      "items": [
+        "Load() 读 samp-node.json，再 Log::Init、sampgdk::Load、Initialize、LoadResource",
+        "Supports() 声明 AMX 原生与 PROCESS_TICK 支持",
+        "OnPublicCall 查 js_calling_public 防递归；AmxLoad 注册 SAMPNode_CallEvent"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "libnode 嵌入与 bootstrap",
+      "items": [
+        "InitializeOncePerProcess，再 MultiIsolatePlatform::Create(4) 与 NewIsolate，并建 uv_loop",
+        "functions::init 注入全局 samp，再 CreateEnvironment 装载 bootstrap",
+        "bootstrap 设 ipv4first、import entry_file，最后 __internal_esmLoaded 解除等待"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "单线程事件循环与同步桥",
+      "items": [
+        "无独立 Node 线程：ProcessTick 每帧跑微任务、uv_run(NOWAIT)、DrainTasks",
+        "监听器返回 Promise 时自旋 Tick 至 settled，把异步伪装成同步",
+        "callNative 走 FindNative 与规格串编组；callPublic 遍历所有 AMX 实例"
+      ]
+    }
+  ]
+}

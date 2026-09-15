@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "samp-node Plugin Architecture and libnode Embedding",
+    "locale": "en",
+    "quality_profile": "showcase"
+  },
+  "layout": {
+    "mode": "grid",
+    "origin": [
+      60,
+      40
+    ],
+    "cols": 6,
+    "gapX": 90,
+    "gapY": 60,
+    "cellW": 120,
+    "cellH": 60
+  },
+  "components": [
+    {
+      "id": "sampgdk",
+      "type": "cloud",
+      "label": "sampgdk",
+      "sublabel": "static bridge lib",
+      "row": 0,
+      "col": 0
+    },
+    {
+      "id": "omp_server",
+      "type": "cloud",
+      "label": "open.mp Server",
+      "sublabel": "host and natives",
+      "row": 1,
+      "col": 0
+    },
+    {
+      "id": "wload",
+      "type": "backend",
+      "label": "Load / Unload",
+      "sublabel": "PLUGIN_EXPORT",
+      "row": 0,
+      "col": 1
+    },
+    {
+      "id": "wpublic",
+      "type": "backend",
+      "label": "OnPublicCall",
+      "sublabel": "callback dispatch",
+      "row": 1,
+      "col": 1
+    },
+    {
+      "id": "nodeimpl",
+      "type": "backend",
+      "label": "nodeimpl.cpp",
+      "sublabel": "init and Tick",
+      "row": 0,
+      "col": 2
+    },
+    {
+      "id": "resource_boot",
+      "type": "backend",
+      "label": "resource.cpp",
+      "sublabel": "bootstrap load",
+      "row": 0,
+      "col": 3
+    },
+    {
+      "id": "libnode",
+      "type": "cloud",
+      "label": "libnode and V8",
+      "sublabel": "Node 22 shared lib",
+      "row": 0,
+      "col": 4
+    },
+    {
+      "id": "events",
+      "type": "backend",
+      "label": "events.cpp",
+      "sublabel": "event registry",
+      "row": 1,
+      "col": 4
+    },
+    {
+      "id": "natives",
+      "type": "backend",
+      "label": "natives.cpp",
+      "sublabel": "callNative marshalling",
+      "row": 2,
+      "col": 4
+    },
+    {
+      "id": "callbacks",
+      "type": "backend",
+      "label": "callbacks.cpp",
+      "sublabel": "callPublic marshalling",
+      "row": 3,
+      "col": 4
+    },
+    {
+      "id": "entry_module",
+      "type": "frontend",
+      "label": "entry_file module",
+      "sublabel": "dist/bundle.mjs",
+      "row": 0,
+      "col": 5
+    },
+    {
+      "id": "core_bus",
+      "type": "frontend",
+      "label": "@infernus/core",
+      "sublabel": "bus.ts trigger",
+      "row": 1,
+      "col": 5
+    },
+    {
+      "id": "samp_global",
+      "type": "frontend",
+      "label": "global samp object",
+      "sublabel": "functions.cpp",
+      "row": 2,
+      "col": 5
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Host: open.mp",
+      "wraps": [
+        "sampgdk",
+        "omp_server"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Plugin export entry",
+      "wraps": [
+        "wload",
+        "wpublic"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Embedded runtime",
+      "wraps": [
+        "nodeimpl",
+        "resource_boot",
+        "libnode"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Events and marshalling",
+      "wraps": [
+        "events",
+        "natives",
+        "callbacks"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "JS resource layer",
+      "wraps": [
+        "entry_module",
+        "core_bus",
+        "samp_global"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "omp-to-sampgdk",
+      "from": "omp_server",
+      "to": "sampgdk",
+      "label": "loads plugin"
+    },
+    {
+      "id": "sampgdk-to-wload",
+      "from": "sampgdk",
+      "to": "wload",
+      "label": "PLUGIN_EXPORT",
+      "variant": "emphasis"
+    },
+    {
+      "id": "wload-to-nodeimpl",
+      "from": "wload",
+      "to": "nodeimpl",
+      "label": "Initialize",
+      "variant": "emphasis"
+    },
+    {
+      "id": "nodeimpl-to-resource",
+      "from": "nodeimpl",
+      "to": "resource_boot",
+      "label": "LoadResource"
+    },
+    {
+      "id": "resource-to-libnode",
+      "from": "resource_boot",
+      "to": "libnode",
+      "label": "CreateEnv"
+    },
+    {
+      "id": "libnode-to-entry",
+      "from": "libnode",
+      "to": "entry_module",
+      "label": "dynamic import",
+      "variant": "emphasis"
+    },
+    {
+      "id": "entry-to-core",
+      "from": "entry_module",
+      "to": "core_bus"
+    },
+    {
+      "id": "core-to-sampglobal",
+      "from": "core_bus",
+      "to": "samp_global",
+      "label": "register / on",
+      "labelDy": 24
+    },
+    {
+      "id": "omp-to-wpublic",
+      "from": "omp_server",
+      "to": "wpublic",
+      "label": "OnPublicCall",
+      "variant": "emphasis"
+    },
+    {
+      "id": "wpublic-to-events",
+      "from": "wpublic",
+      "to": "events",
+      "label": "events[name]->call",
+      "variant": "emphasis"
+    },
+    {
+      "id": "events-to-core",
+      "from": "events",
+      "to": "core_bus",
+      "label": "calls trigger"
+    },
+    {
+      "id": "sampglobal-to-natives",
+      "from": "samp_global",
+      "to": "natives",
+      "label": "callNative"
+    },
+    {
+      "id": "sampglobal-to-callbacks",
+      "from": "samp_global",
+      "to": "callbacks",
+      "label": "callPublic"
+    },
+    {
+      "id": "natives-to-sampgdk",
+      "from": "natives",
+      "to": "sampgdk",
+      "label": "InvokeNativeArray",
+      "fromSide": "left",
+      "toSide": "left",
+      "via": [
+        [
+          12,
+          310
+        ],
+        [
+          12,
+          70
+        ]
+      ],
+      "labelAt": [
+        300,
+        294
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Plugin exports and startup order",
+      "items": [
+        "Load() reads samp-node.json, then Log::Init, sampgdk::Load, Initialize and LoadResource",
+        "Supports() declares AMX-native and PROCESS_TICK support",
+        "OnPublicCall checks js_calling_public to prevent recursion; AmxLoad registers SAMPNode_CallEvent"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "libnode embedding and bootstrap",
+      "items": [
+        "InitializeOncePerProcess, then MultiIsolatePlatform::Create(4), NewIsolate and a uv_loop",
+        "functions::init injects global samp, then CreateEnvironment loads the bootstrap",
+        "bootstrap sets ipv4first, imports entry_file, then __internal_esmLoaded releases the wait"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Single-thread loop and sync bridge",
+      "items": [
+        "No separate Node thread: ProcessTick per frame runs microtasks, uv_run(NOWAIT), DrainTasks",
+        "A Promise-returning listener spins Tick until settled, disguising async as sync",
+        "callNative uses FindNative with format-string marshalling; callPublic walks every AMX instance"
+      ]
+    }
+  ]
+}

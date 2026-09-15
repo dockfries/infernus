@@ -98,6 +98,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
   return [
     { text: "起步", link: "introduction" },
     { text: "生态系统", link: "ecosystem" },
+    { text: "架构总览", link: "architecture" },
     { text: "快速上手", link: "quick-start" },
   ];
 }

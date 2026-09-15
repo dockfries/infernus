@@ -98,6 +98,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
   return [
     { text: "Introducción", link: "introduction" },
     { text: "Ecosistema", link: "ecosystem" },
+    { text: "Arquitectura", link: "architecture" },
     { text: "Inicio rápido", link: "quick-start" },
   ];
 }

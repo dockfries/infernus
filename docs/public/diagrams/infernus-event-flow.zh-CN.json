@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "defineEvent 事件运行链路",
+    "locale": "zh-CN",
+    "viewBox": [1080, 480],
+    "column_fit": "spread",
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    { "id": "script", "type": "frontend", "label": "业务脚本", "sublabel": "onConnect 监听器" },
+    { "id": "bus", "type": "backend", "label": "@infernus/core bus.ts", "sublabel": "eventBus / trigger" },
+    { "id": "node", "type": "cloud", "label": "samp-node 插件", "sublabel": "samp.on" },
+    { "id": "omp", "type": "cloud", "label": "open.mp Server", "sublabel": "原生回调" }
+  ],
+  "segments": [
+    { "from": 152, "to": 205, "label": "模块加载时注册" },
+    { "from": 212, "to": 336, "label": "原生回调 → 监听链" },
+    { "from": 344, "to": 372, "label": "返回值" }
+  ],
+  "messages": [
+    { "id": "define", "from": "script", "to": "bus", "y": 160, "label": "defineEvent({ name, identifier, isNative })", "variant": "emphasis" },
+    { "id": "register", "from": "bus", "to": "node", "y": 188, "label": "samp.registerEvent(name, identifier) + samp.on(name, trigger)", "variant": "default" },
+    { "id": "native-cb", "from": "omp", "to": "node", "y": 216, "label": "OnPlayerConnect(playerid)", "variant": "default" },
+    { "id": "trigger", "from": "node", "to": "bus", "y": 244, "label": "trigger(playerid)", "variant": "emphasis" },
+    { "id": "run-listener", "from": "bus", "to": "script", "y": 272, "label": "beforeEach 解析上下文 → 调用监听器", "variant": "emphasis" },
+    { "id": "next", "from": "script", "to": "bus", "y": 300, "label": "return next() 前进到下一个监听器", "variant": "return" },
+    { "id": "after-each", "from": "bus", "to": "script", "y": 328, "label": "链尾后 executeAfterEach() 执行一次", "variant": "default" },
+    { "id": "transform", "from": "bus", "to": "omp", "y": 356, "label": "transformReturnValue → 0 | 1，经 samp-node 回传", "variant": "emphasis" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "注册：import 副作用",
+      "items": [
+        "defineEvent 在模块被 import 时即注册，无需手动初始化",
+        "isNative 为 false 时不调 samp.registerEvent/samp.on，成为进程内自定义事件",
+        "name 重复即抛 CoreException：event [name:xxx] error: already defined"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "传播：next() 决定链的走向",
+      "items": [
+        "beforeEach 把原生参数解析成上下文，监听器收到 { next, defaultValue, ...上下文 }",
+        "next(value) 前进且 value 会 Object.assign 进共享上下文，影响下游所见",
+        "不调 next() 即中断链路，该监听器返回值成为事件结果"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "返回值与错误",
+      "items": [
+        "结果归一化成 0/1：布尔转数字，非法值回落 defaultValue（默认 1）",
+        "监听器返回 Promise 不阻塞链路，afterEach 改为等待 Promise.allSettled",
+        "抛错交由 setEventErrorHandler，未设置时回落 samp.logprint"
+      ]
+    }
+  ]
+}
