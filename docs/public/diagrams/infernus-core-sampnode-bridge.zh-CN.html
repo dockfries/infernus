@@ -5245,19 +5245,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
         </g>
 
-        <g data-edge-from="plugin" data-edge-to="runtime" data-edge-label="handlePromiseReturnValue 泵 Tick" data-edge-key="9" data-edge-id="promise-pump">
+        <g data-edge-from="plugin" data-edge-to="runtime" data-edge-label="驱动事件循环，等 Promise 完成" data-edge-key="9" data-edge-id="promise-pump">
           <path data-composition-edge-from="plugin" data-composition-edge-to="runtime" data-composition-edge-id="promise-pump" data-composition-points="355.25,412;544,412" d="M 355.25 412 L 544 412" class="a-dashed" stroke-width="1.4" marker-end="url(#arrowhead-dashed)"/>
         <g data-detail="context">
-          <rect x="360.425" y="392" width="178.4" height="16" rx="3" class="c-mask"/>
-          <text x="449.625" y="402" class="t-messagebus" font-size="9" text-anchor="middle">handlePromiseReturnValue 泵 Tick</text>
+          <rect x="368.225" y="392" width="162.8" height="16" rx="3" class="c-mask"/>
+          <text x="449.625" y="402" class="t-messagebus" font-size="9" text-anchor="middle">驱动事件循环，等 Promise 完成</text>
         </g>
         </g>
 
-        <g data-edge-from="plugin" data-edge-to="omp" data-edge-label="返回值归一化成 0 / 1，ProcessTick 每帧驱动" data-edge-key="10" data-edge-id="retval">
+        <g data-edge-from="plugin" data-edge-to="omp" data-edge-label="把结果作为 0 / 1 返回给 open.mp" data-edge-key="10" data-edge-id="retval">
           <path data-composition-edge-from="plugin" data-composition-edge-to="omp" data-composition-edge-id="retval" data-composition-points="341.25,440;152.5,440" d="M 341.25 440 L 152.5 440" class="a-default" stroke-width="1.4" stroke-dasharray="3,5" marker-end="url(#arrowhead)"/>
         <g data-detail="context">
-          <rect x="131.675" y="420" width="230.4" height="16" rx="3" class="c-mask"/>
-          <text x="246.875" y="430" class="t-muted" font-size="9" text-anchor="middle">返回值归一化成 0 / 1，ProcessTick 每帧驱动</text>
+          <rect x="160.27499999999998" y="420" width="173.20000000000002" height="16" rx="3" class="c-mask"/>
+          <text x="246.875" y="430" class="t-muted" font-size="9" text-anchor="middle">把结果作为 0 / 1 返回给 open.mp</text>
         </g>
         </g>
 
@@ -5549,7 +5549,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>bootstrap 做了什么</h3>
         </div>
         <ul>
-          <li>&bull; LoadResource 进 while(esmLoading) 循环，调 Tick 并每毫秒让出，等模块加载完才返回</li>
+          <li>&bull; LoadResource 进 while(esmLoading) 循环，调 Tick 并每毫秒让出 CPU，等模块加载完才返回</li>
           <li>&bull; bootstrap 设 ipv4first、import entry_file，再调 __internal_esmLoaded 结束等待</li>
           <li>&bull; 此后每帧 ProcessTick 驱动 Tick：微任务、uv_run(NOWAIT)、DrainTasks</li>
         </ul>
@@ -5574,7 +5574,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </div>
         <ul>
           <li>&bull; 同一线程：没有跨线程队列，Tick 在服务器主线程上跑 JS</li>
-          <li>&bull; 监听器返回 Promise 时自旋 Tick 至 settled，把异步伪装成同步</li>
+          <li>&bull; async 监听器返回 Promise 时，循环驱动事件循环直到它完成：resolve 取其布尔值，reject 为 0</li>
           <li>&bull; callNative 按 i/f/s/a/v 传值、I/F/A/V/S 取回；callPublic 遍历所有 AMX</li>
         </ul>
       </div>

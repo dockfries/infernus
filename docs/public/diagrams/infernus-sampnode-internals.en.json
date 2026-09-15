@@ -87,7 +87,7 @@
       "id": "natives",
       "type": "backend",
       "label": "natives.cpp",
-      "sublabel": "native marshalling",
+      "sublabel": "native args",
       "row": 2,
       "col": 4
     },
@@ -95,7 +95,7 @@
       "id": "callbacks",
       "type": "backend",
       "label": "callbacks.cpp",
-      "sublabel": "public marshalling",
+      "sublabel": "public args",
       "row": 3,
       "col": 4
     },
@@ -300,7 +300,7 @@
       "title": "Single-thread loop and sync bridge",
       "items": [
         "No separate Node thread: ProcessTick per frame runs microtasks, uv_run(NOWAIT), DrainTasks",
-        "A Promise-returning listener spins Tick until settled, disguising async as sync",
+        "An async listener's Promise is settled by spinning the event loop, then read",
         "callNative uses FindNative with format-string marshalling; callPublic walks every AMX instance"
       ]
     }

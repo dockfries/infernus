@@ -86,7 +86,7 @@
       "id": "natives",
       "type": "backend",
       "label": "natives.cpp",
-      "sublabel": "marshal nativos",
+      "sublabel": "args nativos",
       "row": 2,
       "col": 4
     },
@@ -94,7 +94,7 @@
       "id": "callbacks",
       "type": "backend",
       "label": "callbacks.cpp",
-      "sublabel": "marshal publics",
+      "sublabel": "args public",
       "row": 3,
       "col": 4
     },
@@ -299,7 +299,7 @@
       "title": "Bucle de un hilo y puente sincrono",
       "items": [
         "Sin hilo Node aparte: ProcessTick por frame ejecuta microtareas, uv_run(NOWAIT), DrainTasks",
-        "Si un listener devuelve Promise, gira en Tick hasta resolverla, disfrazando async de sincrono",
+        "La Promise de un listener async se resuelve girando el bucle de eventos y luego se lee",
         "callNative usa FindNative con marshalling; callPublic recorre cada instancia AMX"
       ]
     }

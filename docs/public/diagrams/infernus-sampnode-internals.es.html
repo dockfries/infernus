@@ -5271,26 +5271,26 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="960" y="204" class="t-muted" font-size="9" text-anchor="middle">registro eventos</text>
         </g>
 
-        <g id="node-natives" data-node-id="natives" data-node-label="natives.cpp" tabindex="0" role="button" aria-label="Focus natives.cpp, marshal nativos, Eventos y marshalling" aria-pressed="false" data-node-kind="backend" data-node-sublabel="marshal nativos" data-node-context="Eventos y marshalling">
-          <title>natives.cpp · marshal nativos · Eventos y marshalling</title>
+        <g id="node-natives" data-node-id="natives" data-node-label="natives.cpp" tabindex="0" role="button" aria-label="Focus natives.cpp, args nativos, Eventos y marshalling" aria-pressed="false" data-node-kind="backend" data-node-sublabel="args nativos" data-node-context="Eventos y marshalling">
+          <title>natives.cpp · args nativos · Eventos y marshalling</title>
           <rect x="900" y="280" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="900" y="280" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(906 286) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="960" y="308" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">natives.cpp</text>
-        <text data-detail="context" x="960" y="324" class="t-muted" font-size="9" text-anchor="middle">marshal nativos</text>
+        <text data-detail="context" x="960" y="324" class="t-muted" font-size="9" text-anchor="middle">args nativos</text>
         </g>
 
-        <g id="node-callbacks" data-node-id="callbacks" data-node-label="callbacks.cpp" tabindex="0" role="button" aria-label="Focus callbacks.cpp, marshal publics, Eventos y marshalling" aria-pressed="false" data-node-kind="backend" data-node-sublabel="marshal publics" data-node-context="Eventos y marshalling">
-          <title>callbacks.cpp · marshal publics · Eventos y marshalling</title>
+        <g id="node-callbacks" data-node-id="callbacks" data-node-label="callbacks.cpp" tabindex="0" role="button" aria-label="Focus callbacks.cpp, args public, Eventos y marshalling" aria-pressed="false" data-node-kind="backend" data-node-sublabel="args public" data-node-context="Eventos y marshalling">
+          <title>callbacks.cpp · args public · Eventos y marshalling</title>
           <rect x="900" y="400" width="120" height="60" rx="6" class="c-mask"/>
           <rect x="900" y="400" width="120" height="60" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(906 406) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="960" y="428" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">callbacks.cpp</text>
-        <text data-detail="context" x="960" y="444" class="t-muted" font-size="9" text-anchor="middle">marshal publics</text>
+        <text data-detail="context" x="960" y="444" class="t-muted" font-size="9" text-anchor="middle">args public</text>
         </g>
 
         <g id="node-entry_module" data-node-id="entry_module" data-node-label="modulo entry_file" tabindex="0" role="button" aria-label="Focus modulo entry_file, entrada del script, Capa de recursos JS" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="entrada del script" data-node-context="Capa de recursos JS">
@@ -5649,7 +5649,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </div>
         <ul>
           <li>&bull; Sin hilo Node aparte: ProcessTick por frame ejecuta microtareas, uv_run(NOWAIT), DrainTasks</li>
-          <li>&bull; Si un listener devuelve Promise, gira en Tick hasta resolverla, disfrazando async de sincrono</li>
+          <li>&bull; La Promise de un listener async se resuelve girando el bucle de eventos y luego se lee</li>
           <li>&bull; callNative usa FindNative con marshalling; callPublic recorre cada instancia AMX</li>
         </ul>
       </div>

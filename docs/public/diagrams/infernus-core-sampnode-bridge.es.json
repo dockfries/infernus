@@ -137,7 +137,7 @@
       "from": "plugin",
       "to": "runtime",
       "y": 412,
-      "label": "handlePromiseReturnValue bombea Tick",
+      "label": "gira el bucle de eventos hasta resolver la promesa",
       "variant": "dashed"
     },
     {
@@ -145,7 +145,7 @@
       "from": "plugin",
       "to": "omp",
       "y": 440,
-      "label": "retorno 0 o 1; ProcessTick impulsa cada frame",
+      "label": "devuelve 0 o 1 a open.mp",
       "variant": "return"
     }
   ],
@@ -173,7 +173,7 @@
       "title": "Puente sincrono y limites",
       "items": [
         "Mismo hilo: sin cola entre hilos, Tick ejecuta JS en el hilo principal",
-        "Si un listener devuelve Promise, gira en Tick hasta resolverla, disfrazando async de sincrono",
+        "Un listener async devuelve una Promise; C++ no puede await, asi que gira el bucle hasta resolverla (resolve toma el booleano, reject es 0)",
         "callNative pasa i/f/s/a/v y recupera I/F/A/V/S; callPublic recorre cada AMX"
       ]
     }

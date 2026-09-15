@@ -87,7 +87,7 @@
       "id": "natives",
       "type": "backend",
       "label": "natives.cpp",
-      "sublabel": "原生参数编组",
+      "sublabel": "原生参数转换",
       "row": 2,
       "col": 4
     },
@@ -95,7 +95,7 @@
       "id": "callbacks",
       "type": "backend",
       "label": "callbacks.cpp",
-      "sublabel": "公共函数编组",
+      "sublabel": "公共函数转换",
       "row": 3,
       "col": 4
     },
@@ -152,7 +152,7 @@
     },
     {
       "kind": "region",
-      "label": "事件与原生编组",
+      "label": "事件与原生转换",
       "wraps": [
         "events",
         "natives",
@@ -300,8 +300,8 @@
       "title": "单线程事件循环与同步桥",
       "items": [
         "无独立 Node 线程：ProcessTick 每帧跑微任务、uv_run(NOWAIT)、DrainTasks",
-        "监听器返回 Promise 时自旋 Tick 至 settled，把异步伪装成同步",
-        "callNative 走 FindNative 与规格串编组；callPublic 遍历所有 AMX 实例"
+        "async 监听器返回 Promise 时，循环驱动事件循环直到它完成，再取结果",
+        "callNative 走 FindNative 并按格式串转换参数；callPublic 遍历所有 AMX 实例"
       ]
     }
   ]

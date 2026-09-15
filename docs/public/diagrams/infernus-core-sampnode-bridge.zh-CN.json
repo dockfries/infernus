@@ -4,41 +4,158 @@
   "meta": {
     "title": "core 与 samp-node 的双向桥接",
     "locale": "zh-CN",
-    "viewBox": [1080, 560],
+    "viewBox": [
+      1080,
+      560
+    ],
     "column_fit": "spread",
     "quality_profile": "showcase"
   },
   "participants": [
-    { "id": "omp", "type": "cloud", "label": "open.mp", "sublabel": "原生回调" },
-    { "id": "plugin", "type": "cloud", "label": "samp-node", "sublabel": "events.cpp" },
-    { "id": "runtime", "type": "cloud", "label": "libnode V8", "sublabel": "nodeimpl Tick" },
-    { "id": "samp", "type": "frontend", "label": "全局 samp", "sublabel": "functions.cpp" },
-    { "id": "core", "type": "frontend", "label": "@infernus/core", "sublabel": "bus.ts trigger" }
+    {
+      "id": "omp",
+      "type": "cloud",
+      "label": "open.mp",
+      "sublabel": "原生回调"
+    },
+    {
+      "id": "plugin",
+      "type": "cloud",
+      "label": "samp-node",
+      "sublabel": "events.cpp"
+    },
+    {
+      "id": "runtime",
+      "type": "cloud",
+      "label": "libnode V8",
+      "sublabel": "nodeimpl Tick"
+    },
+    {
+      "id": "samp",
+      "type": "frontend",
+      "label": "全局 samp",
+      "sublabel": "functions.cpp"
+    },
+    {
+      "id": "core",
+      "type": "frontend",
+      "label": "@infernus/core",
+      "sublabel": "bus.ts trigger"
+    }
   ],
   "segments": [
-    { "from": 155, "to": 248, "label": "插件启动与 bootstrap" },
-    { "from": 256, "to": 388, "label": "原生回调进入 JS" },
-    { "from": 396, "to": 456, "label": "返回值回传 open.mp" }
+    {
+      "from": 155,
+      "to": 248,
+      "label": "插件启动与 bootstrap"
+    },
+    {
+      "from": 256,
+      "to": 388,
+      "label": "原生回调进入 JS"
+    },
+    {
+      "from": 396,
+      "to": 456,
+      "label": "返回值回传 open.mp"
+    }
   ],
   "messages": [
-    { "id": "load", "from": "omp", "to": "plugin", "y": 160, "label": "Load(ppData) 插件导出", "variant": "emphasis" },
-    { "id": "init-node", "from": "plugin", "to": "runtime", "y": 188, "label": "InitializeOncePerProcess + NewIsolate", "variant": "default" },
-    { "id": "create-env", "from": "plugin", "to": "runtime", "y": 216, "label": "CreateEnvironment(bootstrap) 后动态 import entry_file", "variant": "default" },
-    { "id": "register", "from": "core", "to": "samp", "y": 244, "label": "registerEvent + on(name, trigger)", "variant": "emphasis" },
-    { "id": "native-cb", "from": "omp", "to": "plugin", "y": 272, "label": "OnPlayerConnect(playerid)", "variant": "default" },
-    { "id": "dispatch", "from": "plugin", "to": "samp", "y": 300, "label": "events[name]->call，AMX 参数转 V8", "variant": "emphasis" },
-    { "id": "trigger", "from": "samp", "to": "core", "y": 328, "label": "调用 trigger，跑中间件链", "variant": "emphasis" },
-    { "id": "call-native", "from": "core", "to": "samp", "y": 356, "label": "callNative(name, fmt, args)", "variant": "default" },
-    { "id": "invoke", "from": "samp", "to": "omp", "y": 384, "label": "InvokeNativeArray 打到 open.mp", "variant": "emphasis" },
-    { "id": "promise-pump", "from": "plugin", "to": "runtime", "y": 412, "label": "handlePromiseReturnValue 泵 Tick", "variant": "dashed" },
-    { "id": "retval", "from": "plugin", "to": "omp", "y": 440, "label": "返回值归一化成 0 / 1，ProcessTick 每帧驱动", "variant": "return" }
+    {
+      "id": "load",
+      "from": "omp",
+      "to": "plugin",
+      "y": 160,
+      "label": "Load(ppData) 插件导出",
+      "variant": "emphasis"
+    },
+    {
+      "id": "init-node",
+      "from": "plugin",
+      "to": "runtime",
+      "y": 188,
+      "label": "InitializeOncePerProcess + NewIsolate",
+      "variant": "default"
+    },
+    {
+      "id": "create-env",
+      "from": "plugin",
+      "to": "runtime",
+      "y": 216,
+      "label": "CreateEnvironment(bootstrap) 后动态 import entry_file",
+      "variant": "default"
+    },
+    {
+      "id": "register",
+      "from": "core",
+      "to": "samp",
+      "y": 244,
+      "label": "registerEvent + on(name, trigger)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "native-cb",
+      "from": "omp",
+      "to": "plugin",
+      "y": 272,
+      "label": "OnPlayerConnect(playerid)",
+      "variant": "default"
+    },
+    {
+      "id": "dispatch",
+      "from": "plugin",
+      "to": "samp",
+      "y": 300,
+      "label": "events[name]->call，AMX 参数转 V8",
+      "variant": "emphasis"
+    },
+    {
+      "id": "trigger",
+      "from": "samp",
+      "to": "core",
+      "y": 328,
+      "label": "调用 trigger，跑中间件链",
+      "variant": "emphasis"
+    },
+    {
+      "id": "call-native",
+      "from": "core",
+      "to": "samp",
+      "y": 356,
+      "label": "callNative(name, fmt, args)",
+      "variant": "default"
+    },
+    {
+      "id": "invoke",
+      "from": "samp",
+      "to": "omp",
+      "y": 384,
+      "label": "InvokeNativeArray 打到 open.mp",
+      "variant": "emphasis"
+    },
+    {
+      "id": "promise-pump",
+      "from": "plugin",
+      "to": "runtime",
+      "y": 412,
+      "label": "驱动事件循环，等 Promise 完成",
+      "variant": "dashed"
+    },
+    {
+      "id": "retval",
+      "from": "plugin",
+      "to": "omp",
+      "y": 440,
+      "label": "把结果作为 0 / 1 返回给 open.mp",
+      "variant": "return"
+    }
   ],
   "cards": [
     {
       "dot": "cyan",
       "title": "bootstrap 做了什么",
       "items": [
-        "LoadResource 进 while(esmLoading) 循环，调 Tick 并每毫秒让出，等模块加载完才返回",
+        "LoadResource 进 while(esmLoading) 循环，调 Tick 并每毫秒让出 CPU，等模块加载完才返回",
         "bootstrap 设 ipv4first、import entry_file，再调 __internal_esmLoaded 结束等待",
         "此后每帧 ProcessTick 驱动 Tick：微任务、uv_run(NOWAIT)、DrainTasks"
       ]
@@ -57,7 +174,7 @@
       "title": "同步桥与边界",
       "items": [
         "同一线程：没有跨线程队列，Tick 在服务器主线程上跑 JS",
-        "监听器返回 Promise 时自旋 Tick 至 settled，把异步伪装成同步",
+        "async 监听器返回 Promise 时，循环驱动事件循环直到它完成：resolve 取其布尔值，reject 为 0",
         "callNative 按 i/f/s/a/v 传值、I/F/A/V/S 取回；callPublic 遍历所有 AMX"
       ]
     }

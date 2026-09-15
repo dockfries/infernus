@@ -5245,19 +5245,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </g>
         </g>
 
-        <g data-edge-from="plugin" data-edge-to="runtime" data-edge-label="handlePromiseReturnValue pumps Tick" data-edge-key="9" data-edge-id="promise-pump">
+        <g data-edge-from="plugin" data-edge-to="runtime" data-edge-label="spins the event loop until the promise settles" data-edge-key="9" data-edge-id="promise-pump">
           <path data-composition-edge-from="plugin" data-composition-edge-to="runtime" data-composition-edge-id="promise-pump" data-composition-points="355.25,412;544,412" d="M 355.25 412 L 544 412" class="a-dashed" stroke-width="1.4" marker-end="url(#arrowhead-dashed)"/>
         <g data-detail="context">
-          <rect x="352.625" y="392" width="194" height="16" rx="3" class="c-mask"/>
-          <text x="449.625" y="402" class="t-messagebus" font-size="9" text-anchor="middle">handlePromiseReturnValue pumps Tick</text>
+          <rect x="324.025" y="392" width="251.20000000000002" height="16" rx="3" class="c-mask"/>
+          <text x="449.625" y="402" class="t-messagebus" font-size="9" text-anchor="middle">spins the event loop until the promise settles</text>
         </g>
         </g>
 
-        <g data-edge-from="plugin" data-edge-to="omp" data-edge-label="return normalised to 0 or 1; ProcessTick drives each frame" data-edge-key="10" data-edge-id="retval">
+        <g data-edge-from="plugin" data-edge-to="omp" data-edge-label="returns 0 or 1 to open.mp" data-edge-key="10" data-edge-id="retval">
           <path data-composition-edge-from="plugin" data-composition-edge-to="omp" data-composition-edge-id="retval" data-composition-points="341.25,440;152.5,440" d="M 341.25 440 L 152.5 440" class="a-default" stroke-width="1.4" stroke-dasharray="3,5" marker-end="url(#arrowhead)"/>
         <g data-detail="context">
-          <rect x="90.07499999999999" y="420" width="313.6" height="16" rx="3" class="c-mask"/>
-          <text x="246.875" y="430" class="t-muted" font-size="9" text-anchor="middle">return normalised to 0 or 1; ProcessTick drives each frame</text>
+          <rect x="175.875" y="420" width="142" height="16" rx="3" class="c-mask"/>
+          <text x="246.875" y="430" class="t-muted" font-size="9" text-anchor="middle">returns 0 or 1 to open.mp</text>
         </g>
         </g>
 
@@ -5574,7 +5574,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </div>
         <ul>
           <li>&bull; Same thread: no cross-thread queue, Tick runs JS on the server main thread</li>
-          <li>&bull; A Promise-returning listener spins Tick until settled, disguising async as sync</li>
+          <li>&bull; An async listener returns a Promise; C++ cannot await, so it spins the event loop until settled (resolve takes the boolean, reject is 0)</li>
           <li>&bull; callNative passes i/f/s/a/v and retrieves I/F/A/V/S; callPublic walks every AMX</li>
         </ul>
       </div>
