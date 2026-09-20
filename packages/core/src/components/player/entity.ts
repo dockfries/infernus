@@ -42,6 +42,7 @@ import { CmdBus } from "./command";
 import { ObjectMp } from "../object/entity";
 import { GameMode } from "../gamemode";
 import { ClientCheckException, PlayerException } from "core/exceptions";
+import { Npc } from "../npc";
 
 export const [onCheckResponse] = defineEvent({
   name: "OnClientCheckResponse",
@@ -451,6 +452,10 @@ export class Player {
   getCameraTargetPlayer(): Player | undefined {
     const target = Player.__inject__.getCameraTargetPlayer(this.id);
     return Player.getInstance(target);
+  }
+  getCameraTargetNpc(): Npc | undefined {
+    const target = Player.__inject__.getCameraTargetNpc(this.id);
+    return Npc.getInstance(target);
   }
   getCameraTargetVehicle(): Vehicle | undefined {
     const target = Player.__inject__.getCameraTargetVehicle(this.id);
@@ -1081,6 +1086,7 @@ export class Player {
     getCameraMode: w.GetPlayerCameraMode,
     getCameraPos: w.GetPlayerCameraPos,
     getCameraTargetPlayer: w.GetPlayerCameraTargetPlayer,
+    getCameraTargetNpc: w.GetPlayerCameraTargetNpc,
     getCameraTargetVehicle: w.GetPlayerCameraTargetVehicle,
     getCameraTargetActor: w.GetPlayerCameraTargetActor,
     getCameraTargetObject: w.GetPlayerCameraTargetObject,
