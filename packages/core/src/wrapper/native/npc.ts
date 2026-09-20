@@ -448,6 +448,16 @@ export const NPC_GetVehicle = (id: number) => {
   return samp.callNative("NPC_GetVehicle", "i", id) as number;
 };
 
+export const NPC_GetVehiclePos = (id: number) => {
+  const [x, y, z, ret] = samp.callNative("NPC_GetVehiclePos", "iFFF", id) as number[];
+  return { x, y, z, ret };
+};
+
+export const NPC_GetVehicleRot = (id: number) => {
+  const [x, y, z, ret] = samp.callNative("NPC_GetVehicleRot", "iFFF", id) as number[];
+  return { x, y, z, ret };
+};
+
 export const NPC_GetVehicleSeat = (id: number) => {
   return samp.callNative("NPC_GetVehicleSeat", "i", id) as number;
 };
