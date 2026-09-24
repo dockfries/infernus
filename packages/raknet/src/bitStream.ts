@@ -374,7 +374,7 @@ export class BitStream {
       for (let i = 0; i < size; i++) items.push([PacketRpcValueType.UInt8]);
       const result = this.readValue(...(items as any)) as number[];
       const ret = result[result.length - 1];
-      return [I18n.decodeFromBuf(result.slice(0, -1), charset), ret];
+      return [I18n.decodeFromBuf(result.slice(0, -1), charset), ret] as const;
     }
 
     return this.readValue(PacketRpcValueType.String, size);
