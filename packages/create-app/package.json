@@ -27,7 +27,7 @@
     "cli-progress": "^3.12.0",
     "execa": "^10.0.1",
     "fast-glob": "^3.3.3",
-    "fs-extra": "^11.4.0",
+    "fs-extra": "^11.4.1",
     "https-proxy-agent": "^9.1.0",
     "semver": "^7.8.5",
     "update-notifier": "^7.3.1",
