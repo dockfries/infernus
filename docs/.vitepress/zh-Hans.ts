@@ -30,8 +30,12 @@ export const zh_Hans = defineConfig({
       next: "下一篇",
       prev: "上一篇",
     },
-    lastUpdatedText: "最后一次更新",
-    outlineTitle: "页面导航",
+    lastUpdated: {
+      text: "最后一次更新",
+    },
+    outline: {
+      label: "页面导航",
+    },
     returnToTopLabel: "回到顶部",
     sidebarMenuLabel: "菜单",
   },

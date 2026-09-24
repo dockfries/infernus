@@ -1,5 +1,4 @@
 import { DynamicObject, GameMode } from "@infernus/core";
-import { createRequire } from "node:module";
 import "./parser/removeBuilding";
 import { mapReader } from "./parser/reader";
 import { INTERNAL_MAP, INVALID_MAP_ID } from "./constants";
@@ -38,7 +37,7 @@ export async function loadMap(options: IMapLoadOptions) {
 /**
  * @throws {MapLoaderException} When `mapId` has not been loaded.
  */
-export function unloadMap(mapId: number) {
+export async function unloadMap(mapId: number) {
   if (!INTERNAL_MAP.loadedMaps.has(mapId)) {
     throw new MapLoaderException({ msg: `invalid mapId ${mapId}` });
   }
@@ -63,16 +62,10 @@ export function unloadMap(mapId: number) {
   INTERNAL_MAP.loadedMaps.delete(mapId);
 
   if (typeof samp !== "undefined" && samp.defined && samp.defined._colandreas_included) {
-    try {
-      const require =
-        typeof global.require !== "undefined" ? global.require : createRequire(import.meta.url);
-      const colandreas: typeof import("@infernus/colandreas") = require("@infernus/colandreas");
-      removedBuilding.forEach((rmv) => {
-        colandreas.restoreBuilding(...rmv);
-      });
-    } catch {
-      /* empty */
-    }
+    const colandreas = await import("@infernus/colandreas");
+    removedBuilding.forEach((rmv) => {
+      colandreas.restoreBuilding(...rmv);
+    });
   }
 
   if (onUnloaded) {

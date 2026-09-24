@@ -1,5 +1,4 @@
 import { DynamicObject, Player } from "@infernus/core";
-import { createRequire } from "node:module";
 import { INTERNAL_MAP } from "../constants";
 import { objParser } from "./object";
 import { IMapLoadOptions, RemoveBuildingArgs } from "../interfaces";
@@ -80,22 +79,18 @@ export async function mapReader(options: IMapLoadOptions) {
       removedBuildingIdx = INTERNAL_MAP.removedBuilding.push(removedBuilding) - 1;
     }
 
-    Player.getInstances().forEach((p) => {
-      removedBuilding.forEach((rmv) => {
+    let colandreas: typeof import("@infernus/colandreas") | null = null;
+
+    if (typeof samp !== "undefined" && samp.defined && samp.defined._colandreas_included) {
+      colandreas = await import("@infernus/colandreas");
+    }
+
+    removedBuilding.forEach((rmv) => {
+      Player.getInstances().forEach((p) => {
         p.removeBuilding(...rmv);
       });
-
-      if (typeof samp !== "undefined" && samp.defined && samp.defined._colandreas_included) {
-        try {
-          const require =
-            typeof global.require !== "undefined" ? global.require : createRequire(import.meta.url);
-          const colandreas: typeof import("@infernus/colandreas") = require("@infernus/colandreas");
-          removedBuilding.forEach((rmv) => {
-            colandreas.removeBuilding(...rmv);
-          });
-        } catch {
-          /* empty */
-        }
+      if (colandreas) {
+        colandreas.removeBuilding(...rmv);
       }
     });
 

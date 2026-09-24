@@ -19,7 +19,7 @@
 | /          | Infernus + samp-node                                                              | omp-node                      |
 | ---------- | --------------------------------------------------------------------------------- | ----------------------------- |
 | 运行环境   | Windows/Linux: Node.js 22.23.3                                                    | Windows/Linux: Node.js 18+    |
-| 模块规范   | CommonJS/ESModule                                                                 | ESModule                      |
+| 模块规范   | ESModule                                                                          | ESModule                      |
 | 架构支持   | x86（稳定）/ x64（实验性，未经测试）                                              | x86/x64                       |
 | 底层实现   | 通过 sampgdk → fakeamx → 原生调用                                                 | 直接调用 omp-gdk/omp-sdk      |
 | 执行效率   | 低                                                                                | 高                            |

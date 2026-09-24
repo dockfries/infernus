@@ -1,4 +1,4 @@
-import { distance, closest } from "fastest-levenshtein";
+import { distance, closest } from "fastest-levenshtein/esm/mod";
 import { I18n } from "../../utils/i18n";
 import type { CallbackRet, PromisifyCallbackRet } from "../../utils/bus";
 import { defineEvent, eventBus } from "../../utils/bus";

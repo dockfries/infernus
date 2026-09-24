@@ -30,8 +30,12 @@ export const es_ES = defineConfig({
       next: "Siguiente",
       prev: "Anterior",
     },
-    lastUpdatedText: "Última actualización",
-    outlineTitle: "Navegación de la página",
+    lastUpdated: {
+      text: "Última actualización",
+    },
+    outline: {
+      label: "Navegación de la página",
+    },
     returnToTopLabel: "Volver al principio",
     sidebarMenuLabel: "Menú",
   },

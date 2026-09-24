@@ -25,16 +25,15 @@
   "contributors": [
     "Frank441"
   ],
+  "type": "module",
   "exports": {
     ".": {
-      "require": "./dist/bundle.js",
-      "import": "./dist/bundle.mjs",
-      "types": "./dist/bundle.d.ts"
+      "types": "./dist/bundle.d.mts",
+      "import": "./dist/bundle.mjs"
     }
   },
-  "main": "dist/bundle.js",
-  "module": "dist/bundle.mjs",
-  "types": "dist/bundle.d.ts",
+  "main": "dist/bundle.mjs",
+  "types": "dist/bundle.d.mts",
   "files": [
     "dist"
   ],

@@ -19,7 +19,7 @@ El nombre `Infernus` proviene del vehículo con ID `411` en GTA: San Andreas.
 | /              | Infernus + samp-node                                                                         | omp-node                          |
 | -------------- | -------------------------------------------------------------------------------------------- | --------------------------------- |
 | Runtime        | Windows/Linux: Node.js 22.23.3                                                               | Windows/Linux: Node.js 18+        |
-| Module System  | CommonJS/ESModule                                                                            | ESModule                          |
+| Module System  | ESModule                                                                                     | ESModule                          |
 | Architecture   | x86 (estable) / x64 (experimental, sin probar)                                               | x86/x64                           |
 | Implementation | Via sampgdk → fakeamx → llamadas nativas                                                     | Llamadas directas omp-gdk/omp-sdk |
 | Performance    | Lento                                                                                        | Rápido                            |

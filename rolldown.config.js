@@ -51,26 +51,9 @@ export default defineConfig([
         format: "es",
         minify: true,
       },
-      {
-        dir: outputPath,
-        entryFileNames: "[name].js",
-        format: "cjs",
-        minify: true,
-      },
     ],
-  },
-  {
-    ...commonConfig,
-    input: {
-      bundle: inputPath,
-    },
-    output: {
-      format: "es",
-      dir: outputPath,
-    },
     plugins: [
       dts({
-        emitDtsOnly: true,
         tsconfig: "./tsconfig.json",
         resolve: ["@infernus/streamer"],
       }),

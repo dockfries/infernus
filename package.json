@@ -1,7 +1,11 @@
 {
+  "name": "@infernus/monorepo",
   "version": "0.14.8",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "tsx scripts/build.ts",
     "build-all": "tsx scripts/build-all.ts",
