@@ -1,0 +1,40 @@
+{
+  "name": "@infernus/rustext",
+  "version": "0.0.1",
+  "description": "A wrapper of the popular rustext plugin for samp-node.",
+  "keywords": [
+    "omp",
+    "samp"
+  ],
+  "homepage": "https://github.com/dockfries/infernus/tree/main/packages/rustext#readme",
+  "bugs": {
+    "url": "https://github.com/dockfries/infernus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dockfries/infernus.git"
+  },
+  "license": "MIT",
+  "author": "dockfries",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/bundle.d.mts",
+      "import": "./dist/bundle.mjs"
+    }
+  },
+  "main": "dist/bundle.mjs",
+  "types": "dist/bundle.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {},
+  "devDependencies": {
+    "@infernus/core": "workspace:^",
+    "@infernus/raknet": "workspace:^"
+  },
+  "peerDependencies": {
+    "@infernus/core": "workspace:^",
+    "@infernus/raknet": "workspace:^"
+  }
+}

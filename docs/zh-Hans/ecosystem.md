@@ -26,6 +26,7 @@
 | `@infernus/query`           | 用于发送 SA-MP 查询的简易 API                                                |
 | `@infernus/raknet`          | 对 open.mp raknet 组件的封装                                                 |
 | `@infernus/rec`             | `.rec` 与 `.json` 文件格式互转                                               |
+| `@infernus/rustext`         | 对 rustext 插件的封装                                                        |
 | `@infernus/samp-voice`      | 对 SA-MP voice 库的封装                                                      |
 | `@infernus/shared`          | 共享工具和类型（内部包）                                                     |
 | `@infernus/streamer`        | 对 SA-MP streamer 插件 (v2.9.6) 的封装（**私有包**）                         |
@@ -34,12 +35,12 @@
 
 ## 示例
 
-| 项目                                                                | 说明                                                         |
-| ------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [omp-gm-grandlarc](https://github.com/dockfries/omp-gm-grandlarc)   | 使用 infernus-starter 编写的 GrandLarceny 示例游戏模式       |
-| [omp-gm-rivershell](https://github.com/dockfries/omp-gm-rivershell) | 使用 infernus-starter 编写的 RiverShell 示例游戏模式         |
-| [fme](https://github.com/dockfries/fme)                             | Fusez Map Editor Version 3 — 一个用于 samp-node 的地图编辑器 |
-| [nte](https://github.com/dockfries/nte)                             | Nexor's TextDraw Editor for samp-node                        |
+| 项目                                                                | 说明                                                   |
+| ------------------------------------------------------------------- | ------------------------------------------------------ |
+| [omp-gm-grandlarc](https://github.com/dockfries/omp-gm-grandlarc)   | 使用 infernus-starter 编写的 GrandLarceny 示例游戏模式 |
+| [omp-gm-rivershell](https://github.com/dockfries/omp-gm-rivershell) | 使用 infernus-starter 编写的 RiverShell 示例游戏模式   |
+| [fme](https://github.com/dockfries/fme)                             | Fusez的地图编辑器v3用于 samp-node                      |
+| [nte](https://github.com/dockfries/nte)                             | Nexor的文本绘图编辑器用于 samp-node                    |
 
 ## 设计理念
 

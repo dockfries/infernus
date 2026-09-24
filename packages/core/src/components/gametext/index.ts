@@ -59,7 +59,12 @@ export class GameText {
   forPlayer(player: Player, charset = "win1252") {
     GameText.__inject__.forPlayer(
       player.id,
-      I18n.encodeToBuf(I18n.convertSpecialChar(this.text), charset),
+      I18n.encodeToBuf(
+        samp.defined && samp.defined._rustext_included
+          ? this.text
+          : I18n.convertSpecialChar(this.text),
+        charset,
+      ),
       this.time,
       this.style,
     );

@@ -331,8 +331,9 @@ export class BitStream {
     return result;
   }
 
-  private static isNotUtf8(charset?: string): charset is string {
-    return charset != null && charset.toLowerCase() !== "utf8";
+  private static isNotUtf8(charset: string) {
+    const _charset = charset.toLowerCase();
+    return _charset !== "utf8" && _charset !== "utf-8";
   }
 
   private readRawBytes(type: PacketRpcValueType, size: number): [number[], number] {
@@ -369,7 +370,7 @@ export class BitStream {
     return this.readValue(PacketRpcValueType.Bool);
   }
   readString(size: number, charset?: string) {
-    if (BitStream.isNotUtf8(charset)) {
+    if (charset && BitStream.isNotUtf8(charset)) {
       const items: [PacketRpcValueType.UInt8][] = [];
       for (let i = 0; i < size; i++) items.push([PacketRpcValueType.UInt8]);
       const result = this.readValue(...(items as any)) as number[];
@@ -404,7 +405,7 @@ export class BitStream {
     return this.readValue(PacketRpcValueType.CBool);
   }
   readCompressedString(size: number, charset?: string) {
-    if (BitStream.isNotUtf8(charset)) {
+    if (charset && BitStream.isNotUtf8(charset)) {
       const [bytes, ret] = this.readRawBytes(PacketRpcValueType.CString, size);
       return [I18n.decodeFromBuf(bytes, charset), ret] as [string, number];
     }
@@ -426,7 +427,7 @@ export class BitStream {
     return this.readValue(PacketRpcValueType.NormQuat);
   }
   readString8(size?: number, charset?: string) {
-    if (BitStream.isNotUtf8(charset)) {
+    if (charset && BitStream.isNotUtf8(charset)) {
       const s = size ?? 256;
       const [bytes, ret] = this.readRawBytes(PacketRpcValueType.String8, s);
       return [I18n.decodeFromBuf(bytes, charset), ret] as [string, number];
@@ -434,7 +435,7 @@ export class BitStream {
     return this.readValue(PacketRpcValueType.String8, size ?? 256);
   }
   readString32(size?: number, charset?: string) {
-    if (BitStream.isNotUtf8(charset)) {
+    if (charset && BitStream.isNotUtf8(charset)) {
       const s = size ?? 4096;
       const [bytes, ret] = this.readRawBytes(PacketRpcValueType.String32, s);
       return [I18n.decodeFromBuf(bytes, charset), ret] as [string, number];
@@ -467,7 +468,7 @@ export class BitStream {
     return this.writeValue(PacketRpcValueType.Bool, value);
   }
   writeString(value: string, charset?: string) {
-    if (BitStream.isNotUtf8(charset)) {
+    if (charset && BitStream.isNotUtf8(charset)) {
       return this.writeRawBytes(PacketRpcValueType.String, I18n.encodeToBuf(value, charset));
     }
     return this.writeValue(PacketRpcValueType.String, value);
@@ -497,7 +498,7 @@ export class BitStream {
     return this.writeValue(PacketRpcValueType.CBool, value);
   }
   writeCompressedString(value: string, charset?: string) {
-    if (BitStream.isNotUtf8(charset)) {
+    if (charset && BitStream.isNotUtf8(charset)) {
       return this.writeRawBytes(PacketRpcValueType.CString, I18n.encodeToBuf(value, charset));
     }
     return this.writeValue(PacketRpcValueType.CString, value);
@@ -518,13 +519,13 @@ export class BitStream {
     return this.writeValue(PacketRpcValueType.NormQuat, value);
   }
   writeString8(value: string, charset?: string) {
-    if (BitStream.isNotUtf8(charset)) {
+    if (charset && BitStream.isNotUtf8(charset)) {
       return this.writeRawBytes(PacketRpcValueType.String8, I18n.encodeToBuf(value, charset));
     }
     return this.writeValue(PacketRpcValueType.String8, value);
   }
   writeString32(value: string, charset?: string) {
-    if (BitStream.isNotUtf8(charset)) {
+    if (charset && BitStream.isNotUtf8(charset)) {
       return this.writeRawBytes(PacketRpcValueType.String32, I18n.encodeToBuf(value, charset));
     }
     return this.writeValue(PacketRpcValueType.String32, value);

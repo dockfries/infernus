@@ -55,7 +55,10 @@ export class TextDraw {
     if (this.id !== InvalidEnum.TEXT_DRAW) throw new TextDrawException("Cannot create again");
 
     const { x, y, text, player, charset = "ISO-8859-1" } = this.sourceInfo;
-    const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
+    const _text = I18n.encodeToBuf(
+      samp.defined && samp.defined._rustext_included ? text : I18n.convertSpecialChar(text),
+      charset,
+    );
 
     if (!player) {
       this._id = TextDraw.__inject__.create(x, y, _text);
@@ -264,7 +267,10 @@ export class TextDraw {
       throw new TextDrawException("Invalid text length");
     }
     const charset = this.sourceInfo?.charset || "ISO-8859-1";
-    const _text = I18n.encodeToBuf(I18n.convertSpecialChar(text), charset);
+    const _text = I18n.encodeToBuf(
+      samp.defined && samp.defined._rustext_included ? text : I18n.convertSpecialChar(text),
+      charset,
+    );
 
     // not-global
     const _player = this.getPlayer();

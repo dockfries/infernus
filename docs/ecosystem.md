@@ -26,6 +26,7 @@ The `@infernus/*` ecosystem is designed to bridge Pawn include libraries into th
 | `@infernus/query`           | Simple API for sending SA-MP queries with TypeScript                                                             |
 | `@infernus/raknet`          | A wrapper of the open.mp raknet component for samp-node                                                          |
 | `@infernus/rec`             | File format converter from `.rec` to `.json` and vice versa                                                      |
+| `@infernus/rustext`         | A wrapper of the popular rustext plugin for samp-node                                                            |
 | `@infernus/samp-voice`      | A wrapper of the SA-MP voice library for samp-node                                                               |
 | `@infernus/shared`          | Shared utilities and types for infernus packages (internal)                                                      |
 | `@infernus/streamer`        | A wrapper of the SA-MP streamer plugin (v2.9.6, **private**)                                                     |

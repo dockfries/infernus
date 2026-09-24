@@ -269,6 +269,15 @@ importers:
         specifier: ^0.2.2
         version: 0.2.2
 
+  packages/rustext:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+      '@infernus/raknet':
+        specifier: workspace:^
+        version: link:../raknet
+
   packages/s-art:
     dependencies:
       sharp:
