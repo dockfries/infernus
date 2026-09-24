@@ -20,7 +20,7 @@ Object.keys({
   ...(targetPkgJson.peerDependencies || {}),
 }).forEach((key) => externalSet.add(new RegExp(`^${key}(/.*)?$`)));
 
-const commonConfig = {
+export default defineConfig({
   tsconfig: "./tsconfig.json",
   transform: {
     target: "node22",
@@ -35,28 +35,22 @@ const commonConfig = {
       shared: path.resolve(process.cwd(), "packages/shared/src/"),
     },
   },
-};
-
-export default defineConfig([
-  {
-    ...commonConfig,
-    input: {
-      bundle: inputPath,
-    },
-    output: [
-      {
-        dir: outputPath,
-        cleanDir: true,
-        entryFileNames: "[name].mjs",
-        format: "es",
-        minify: true,
-      },
-    ],
-    plugins: [
-      dts({
-        tsconfig: "./tsconfig.json",
-        resolve: ["@infernus/streamer"],
-      }),
-    ],
+  input: {
+    bundle: inputPath,
   },
-]);
+  output: [
+    {
+      dir: outputPath,
+      cleanDir: true,
+      entryFileNames: "[name].mjs",
+      format: "es",
+      minify: true,
+    },
+  ],
+  plugins: [
+    dts({
+      tsconfig: "./tsconfig.json",
+      resolve: ["@infernus/streamer"],
+    }),
+  ],
+});
