@@ -1,10 +1,10 @@
 import { createRequire } from "module";
-import { defineConfig, type DefaultTheme } from "vitepress";
+import { defineAdditionalConfig, type DefaultTheme, type MarkdownLocaleOptions } from "vitepress";
 
-const require = createRequire(import.meta.url);
-const pkg = require("../../package.json");
+const require_ = createRequire(import.meta.url);
+const pkg = require_("../../package.json");
 
-export const zh_Hans = defineConfig({
+export const zh_Hans = defineAdditionalConfig({
   lang: "zh-Hans",
   description: "用于编写Open Multiplayer脚本的Node.js库",
   themeConfig: {
@@ -40,6 +40,23 @@ export const zh_Hans = defineConfig({
     sidebarMenuLabel: "菜单",
   },
 });
+
+export const markdown: MarkdownLocaleOptions = {
+  container: {
+    infoLabel: "信息",
+    noteLabel: "注意",
+    tipLabel: "提示",
+    warningLabel: "警告",
+    dangerLabel: "危险",
+    detailsLabel: "详细信息",
+    importantLabel: "重要",
+    cautionLabel: "谨慎",
+  },
+  codeCopyButton: {
+    tooltipText: "复制代码",
+    copiedText: "已复制",
+  },
+};
 
 function nav(): DefaultTheme.NavItem[] {
   return [

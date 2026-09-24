@@ -1,10 +1,10 @@
 import { createRequire } from "module";
-import { defineConfig, type DefaultTheme } from "vitepress";
+import { defineAdditionalConfig, type DefaultTheme, type MarkdownLocaleOptions } from "vitepress";
 
-const require = createRequire(import.meta.url);
-const pkg = require("../../package.json");
+const require_ = createRequire(import.meta.url);
+const pkg = require_("../../package.json");
 
-export const es_ES = defineConfig({
+export const es_ES = defineAdditionalConfig({
   lang: "es-ES",
   description: "Librería de Node.js para la creación de scripts en Open Multiplayer",
   themeConfig: {
@@ -40,6 +40,23 @@ export const es_ES = defineConfig({
     sidebarMenuLabel: "Menú",
   },
 });
+
+export const markdown: MarkdownLocaleOptions = {
+  container: {
+    infoLabel: "INFORMACIÓN",
+    noteLabel: "NOTA",
+    tipLabel: "CONSEJO",
+    warningLabel: "ADVERTENCIA",
+    dangerLabel: "PELIGRO",
+    detailsLabel: "Detalles",
+    importantLabel: "IMPORTANTE",
+    cautionLabel: "PRECAUCIÓN",
+  },
+  codeCopyButton: {
+    tooltipText: "Copiar código",
+    copiedText: "Copiado",
+  },
+};
 
 function nav(): DefaultTheme.NavItem[] {
   return [

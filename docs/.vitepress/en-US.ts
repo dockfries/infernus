@@ -1,10 +1,10 @@
 import { createRequire } from "module";
-import { defineConfig, type DefaultTheme } from "vitepress";
+import { defineAdditionalConfig, type DefaultTheme } from "vitepress";
 
-const require = createRequire(import.meta.url);
-const pkg = require("../../package.json");
+const require_ = createRequire(import.meta.url);
+const pkg = require_("../../package.json");
 
-export const en_US = defineConfig({
+export const en_US = defineAdditionalConfig({
   lang: "en-US",
   description: "Node.js library for scripting Open Multiplayer",
   themeConfig: {
