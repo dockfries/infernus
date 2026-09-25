@@ -154,6 +154,20 @@ export class CefBrowser {
   /**
    * @throws {CefException} When the browser is not valid (not created).
    */
+  setLayer(layer: number) {
+    this.throwIfInvalid();
+    return samp.callNative(
+      "CEF_SetBrowserLayer",
+      "iii",
+      this.sourceInfo.player.id,
+      this.browserId,
+      layer,
+    ) as number;
+  }
+
+  /**
+   * @throws {CefException} When the browser is not valid (not created).
+   */
   destroy() {
     this.throwIfInvalid();
 
