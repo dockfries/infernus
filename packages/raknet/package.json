@@ -1,6 +1,6 @@
 {
   "name": "@infernus/raknet",
-  "version": "0.14.2",
+  "version": "0.15.0",
   "description": "A wrapper of the popular open.mp raknet component for samp-node.",
   "keywords": [
     "samp",
