@@ -423,6 +423,7 @@ try {
 | ------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------- |
 | `@infernus/streamer`      | [samp-streamer-plugin](https://github.com/dockfries/samp-streamer-plugin) | Dynamic objects, areas (`"private": true`)        |
 | `@infernus/raknet`        | [Pawn.RakNet](https://github.com/dockfries/Pawn.RakNet)                   | RakNet packet/RPC interception                    |
+| `@infernus/rustext`       | [rustext](https://github.com/ziggi/rustext)                               | Russifier for GameText/TextDraw/Menu text         |
 | `@infernus/fs`            | Built-in filterscripts                                                    | Rewrites of official filterscripts                |
 | `@infernus/cef`           | [omp-cef](https://github.com/dockfries/omp-cef)                           | CEF browser overlay                               |
 | `@infernus/fcnpc`         | [FCNPC](https://github.com/ziggi/FCNPC)                                   | Advanced NPC plugin                               |

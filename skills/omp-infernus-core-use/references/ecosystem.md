@@ -19,13 +19,14 @@ As noted in the [official docs](https://dockfries.github.io/infernus/introductio
 
 Some packages require a PAWN polyfill to be compiled into the server gamemode. The polyfills are maintained in [infernus-starter/gamemodes](https://github.com/dockfries/infernus-starter/tree/main/gamemodes).
 
-| Package            | Polyfill Required | Polyfill File  |
-| ------------------ | ----------------- | -------------- |
-| `@infernus/core`   | Yes (for i18n)    | `polyfill.amx` |
-| `@infernus/raknet` | Yes               | `raknet.inc`   |
-| `@infernus/cef`    | Yes               | `cef.inc`      |
-| `@infernus/gps`    | Yes               | `gps.inc`      |
-| All other packages | No                | —              |
+| Package             | Polyfill Required | Polyfill File  |
+| ------------------- | ----------------- | -------------- |
+| `@infernus/core`    | Yes (for i18n)    | `polyfill.amx` |
+| `@infernus/raknet`  | Yes               | `raknet.inc`   |
+| `@infernus/rustext` | Yes (via raknet)  | `raknet.inc`   |
+| `@infernus/cef`     | Yes               | `cef.inc`      |
+| `@infernus/gps`     | Yes               | `gps.inc`      |
+| All other packages  | No                | —              |
 
 To install: `#include` the `.inc` file in your gamemode's `.pwn`, compile to `.amx`, and place alongside your main gamemode.
 
@@ -43,6 +44,7 @@ To install: `#include` the `.inc` file in your gamemode's `.pwn`, compile to `.a
 | ---------------------- | ------- | ------------------------------------------------------------------------- | -------------------------- |
 | `@infernus/streamer`   | private | [samp-streamer-plugin](https://github.com/dockfries/samp-streamer-plugin) | DynamicObject, DynamicArea |
 | `@infernus/raknet`     | public  | [Pawn.RakNet](https://github.com/dockfries/Pawn.RakNet)                   | BitStream, IPacket         |
+| `@infernus/rustext`    | public  | [rustext](https://github.com/ziggi/rustext)                               | setPlayerRussifierType     |
 | `@infernus/fcnpc`      | public  | [FCNPC](https://github.com/ziggi/FCNPC)                                   | FCNPC class                |
 | `@infernus/colandreas` | public  | [ColAndreas](https://github.com/dockfries/ColAndreas)                     | rayCastLine, CA_Object     |
 | `@infernus/cef`        | public  | [omp-cef](https://github.com/dockfries/omp-cef)                           | CefBrowser                 |

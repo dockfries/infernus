@@ -37,6 +37,8 @@ PlayerEvent.onConnect(({ player, next }) => {
 
 If you're using i18n, make sure `polyfill.amx` is compiled and installed in the server's gamemodes directory.
 
+**With `@infernus/rustext`:** `GameText`/`TextDraw` do **not** follow `player.charset`. Their text is converted by the package, whose glyph table is cp1251-indexed — pass `charset: "cp1251"` on those calls, or the Cyrillic becomes `?` before the package ever sees it. Accented Latin characters (`à`, `é`, `ñ`) cannot be displayed at all with a russifier font, because it replaces the glyph slots they live in. See `references/rustext.md`.
+
 ## `@infernus/raknet` / `@infernus/cef` / `@infernus/gps` doesn't work
 
 **Cause:** These packages require a PAWN polyfill to be compiled into the gamemode.
@@ -44,6 +46,7 @@ If you're using i18n, make sure `polyfill.amx` is compiled and installed in the 
 **Fix:** Download and compile the corresponding `.inc` file from [infernus-starter/gamemodes](https://github.com/dockfries/infernus-starter/tree/main/gamemodes):
 
 - `raknet.inc` → required for `@infernus/raknet`
+- `raknet.inc` → also required for `@infernus/rustext`, which builds on `@infernus/raknet`
 - `cef.inc` → required for `@infernus/cef`
 - `gps.inc` → required for `@infernus/gps`
 
