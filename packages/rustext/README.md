@@ -4,7 +4,7 @@
 
 A wrapper of the popular [rustext plugin](https://github.com/ziggi/rustext) for samp-node.
 
-It rewrites the text of outgoing `GameText` / `TextDraw` / `Menu` RPCs on the fly, converting cp1251 Russian text into the glyph codes of a russifier font.
+It rewrites the text of outgoing `GameText` / `TextDraw` / `Menu` RPCs on the fly, converting cp1251 Russian text into the glyph codes of a russifier — a Russian localization mod that players install on their own client, which redraws the game's font so Cyrillic letters sit in slots the original font reserves for accented Latin characters. This package ships no russifier assets. Set each player's type to the pack they actually have: `SanLtd` (the default), `OneC`, `Rush`, `MG` and the others each lay the letters out differently.
 
 ## Getting started
 
