@@ -7,10 +7,7 @@
   },
   "layout": {
     "mode": "grid",
-    "origin": [
-      20,
-      40
-    ],
+    "origin": [20, 40],
     "cols": 10,
     "gapX": 8,
     "gapY": 34,
@@ -107,6 +104,14 @@
       "col": 4
     },
     {
+      "id": "rustext",
+      "type": "backend",
+      "label": "rustext",
+      "sublabel": "reescritura RPC",
+      "row": 0,
+      "col": 5
+    },
+    {
       "id": "weapon_config",
       "type": "security",
       "label": "weapon-config",
@@ -128,7 +133,7 @@
       "label": "streamer",
       "sublabel": "carga de entidades",
       "row": 0,
-      "col": 6
+      "col": 7
     },
     {
       "id": "colandreas",
@@ -136,7 +141,7 @@
       "label": "colandreas",
       "sublabel": "colisiones",
       "row": 0,
-      "col": 7
+      "col": 8
     },
     {
       "id": "mapandreas",
@@ -144,7 +149,7 @@
       "label": "mapandreas",
       "sublabel": "alturas terreno",
       "row": 0,
-      "col": 8
+      "col": 9
     },
     {
       "id": "map_loader",
@@ -152,7 +157,7 @@
       "label": "map-loader",
       "sublabel": "carga de mapas",
       "row": 1,
-      "col": 6
+      "col": 7
     },
     {
       "id": "mapfix",
@@ -160,7 +165,7 @@
       "label": "mapfix",
       "sublabel": "parches de mapa",
       "row": 1,
-      "col": 7
+      "col": 8
     },
     {
       "id": "gps",
@@ -168,7 +173,7 @@
       "label": "gps",
       "sublabel": "navegacion",
       "row": 1,
-      "col": 8
+      "col": 9
     },
     {
       "id": "cef",
@@ -271,48 +276,22 @@
     {
       "kind": "region",
       "label": "Red y antitrampas",
-      "wraps": [
-        "raknet",
-        "nex_ac",
-        "weapon_config",
-        "query"
-      ]
+      "wraps": ["raknet", "nex_ac", "rustext", "weapon_config", "query"]
     },
     {
       "kind": "region",
       "label": "Mundo y navegacion",
-      "wraps": [
-        "streamer",
-        "colandreas",
-        "mapandreas",
-        "map_loader",
-        "mapfix",
-        "gps"
-      ]
+      "wraps": ["streamer", "colandreas", "mapandreas", "map_loader", "mapfix", "gps"]
     },
     {
       "kind": "region",
       "label": "Interfaz",
-      "wraps": [
-        "cef",
-        "ompp",
-        "progress",
-        "qrcode",
-        "s_art",
-        "e_selection"
-      ]
+      "wraps": ["cef", "ompp", "progress", "qrcode", "s_art", "e_selection"]
     },
     {
       "kind": "region",
       "label": "Jugadores y juego",
-      "wraps": [
-        "fcnpc",
-        "samp_voice",
-        "veh_para",
-        "distance",
-        "drift_detection",
-        "rec"
-      ]
+      "wraps": ["fcnpc", "samp_voice", "veh_para", "distance", "drift_detection", "rec"]
     }
   ],
   "connections": [
@@ -321,10 +300,7 @@
       "from": "create_app",
       "to": "gamemode",
       "label": "genera esqueleto",
-      "labelAt": [
-        80,
-        114
-      ]
+      "labelAt": [80, 114]
     },
     {
       "id": "gamemode-imports-core",
@@ -332,10 +308,7 @@
       "to": "core_pkg",
       "label": "import core",
       "variant": "emphasis",
-      "labelAt": [
-        80,
-        208
-      ]
+      "labelAt": [80, 208]
     },
     {
       "id": "core-calls-native",
@@ -343,20 +316,18 @@
       "to": "samp_node",
       "label": "callNative",
       "variant": "emphasis",
-      "labelAt": [
-        80,
-        302
-      ]
+      "labelAt": [80, 302]
     }
   ],
   "cards": [
     {
       "dot": "cyan",
-      "title": "Tres estilos de implementacion",
+      "title": "Cuatro estilos de implementacion",
       "items": [
         "Envolver un plugin nativo: raknet, streamer, colandreas, cef, ompp y fcnpc exponen sus funciones nativas tipadas",
         "Mejorar el comportamiento de core: nex-ac, weapon-config, veh-para y distance sustituyen llamadas nativas para reescribir dano y posicion",
-        "TypeScript puro: mapandreas, rec, query y e-selection no necesitan ningun plugin nativo"
+        "TypeScript puro: mapandreas, rec, query y e-selection no necesitan ningun plugin nativo",
+        "Portar un plugin a TypeScript: rustext reescribe texto RPC sobre @infernus/raknet, sin cargar el plugin nativo"
       ]
     },
     {

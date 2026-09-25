@@ -43,7 +43,7 @@ Cada diagrama es un artefacto autocontenido y sigue el idioma en el que estás l
 
 ## Monorepo y detalle de paquetes
 
-Los 25 paquetes compilables en `packages/*`, más `types`, `shared`, el host de ejecución y la cadena de compilación. La columna de dependencias va de izquierda a derecha: un gamemode sobre `@infernus/core`, a través del plugin `samp-node`, hasta el servidor open.mp. Las cuatro regiones agrupan los paquetes por dominio y cada nodo indica una implementación concreta: el nativo que envuelve o el mecanismo que usa.
+Los 26 paquetes compilables en `packages/*`, más `types`, `shared`, el host de ejecución y la cadena de compilación. La columna de dependencias va de izquierda a derecha: un gamemode sobre `@infernus/core`, a través del plugin `samp-node`, hasta el servidor open.mp. Las cuatro regiones agrupan los paquetes por dominio y cada nodo indica una implementación concreta: el nativo que envuelve o el mecanismo que usa.
 
 Los nombres de paquetes y de funciones nativas se mantienen en inglés; las etiquetas de región y las tarjetas resumen están escritas en el idioma de esta página.
 

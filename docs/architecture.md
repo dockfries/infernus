@@ -43,7 +43,7 @@ Each diagram is a self-contained artifact and follows the language you are readi
 
 ## Monorepo and package internals
 
-All 25 buildable packages under `packages/*` plus `types`, `shared`, the runtime host, and the build pipeline. The dependency spine runs left to right: a gamemode on `@infernus/core`, through the `samp-node` plugin, into the open.mp server. The four bordered regions group the wrapper packages by domain, and each node carries a concrete implementation fact — the native it wraps or the mechanism it uses.
+All 26 buildable packages under `packages/*` plus `types`, `shared`, the runtime host, and the build pipeline. The dependency spine runs left to right: a gamemode on `@infernus/core`, through the `samp-node` plugin, into the open.mp server. The four bordered regions group the wrapper packages by domain, and each node carries a concrete implementation fact — the native it wraps or the mechanism it uses.
 
 Package names and native identifiers stay in English; region labels and the summary cards are authored in this page's language.
 
