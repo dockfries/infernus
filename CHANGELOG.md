@@ -1,3 +1,25 @@
+## [0.15.0](https://github.com/dockfries/infernus/compare/v0.14.8...v0.15.0) (2026-09-25)
+
+### ⚠ BREAKING CHANGES
+
+- **root:** esm only, drop commonjs
+
+### Features
+
+- **core:** sync 1237 in advance if it is merged in the future ([e041424](https://github.com/dockfries/infernus/commit/e0414243ca6b7a8d9f3d0a763cc1145362d1864c))
+- **core:** sync 1267 in advance if it is merged in the future ([14e0e9c](https://github.com/dockfries/infernus/commit/14e0e9c501a73c6684bd1c59b864802d397141cb))
+- **root:** esm only, drop commonjs ([511914e](https://github.com/dockfries/infernus/commit/511914eedc57bc238ab3fe52963b46899de7d0aa))
+- **rustext:** try port & untested ([898ac12](https://github.com/dockfries/infernus/commit/898ac1279d97720df373e521aaf6b7426f69280a))
+
+### Bug Fixes
+
+- **create-app:** throw an exception when no asset can be matched ([f29cf22](https://github.com/dockfries/infernus/commit/f29cf229f3797b8228dfc5a3c3f9e8bb7f75f41d))
+- **raknet:** readString typescript return ([77135e0](https://github.com/dockfries/infernus/commit/77135e051794dc9fbb7dc7fd260734e5beed07c6))
+
+### Reverts
+
+- revert "fix(core, streamer): unify DynamicActor worldId default to -1" ([db71fb7](https://github.com/dockfries/infernus/commit/db71fb7d1e22cce466de65961e9b2057577e4a2b))
+
 ## [0.14.8](https://github.com/dockfries/infernus/compare/v0.14.7...v0.14.8) (2026-09-01)
 
 ### Features
