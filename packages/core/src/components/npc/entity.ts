@@ -748,24 +748,24 @@ export class Npc {
     }
     return Npc.__inject__.getVehicle(this._id);
   }
-  /**
-   * @throws {NpcException} When called before `create`().
-   */
-  getVehiclePos() {
-    if (this.id === InvalidEnum.NPC_ID) {
-      throw new NpcException("Cannot getVehiclePos before create");
-    }
-    return Npc.__inject__.getVehiclePos(this._id);
-  }
-  /**
-   * @throws {NpcException} When called before `create`().
-   */
-  getVehicleRot() {
-    if (this.id === InvalidEnum.NPC_ID) {
-      throw new NpcException("Cannot getVehicleRot before create");
-    }
-    return Npc.__inject__.getVehicleRot(this._id);
-  }
+  // /**
+  //  * @throws {NpcException} When called before `create`().
+  //  */
+  // getVehiclePos() {
+  //   if (this.id === InvalidEnum.NPC_ID) {
+  //     throw new NpcException("Cannot getVehiclePos before create");
+  //   }
+  //   return Npc.__inject__.getVehiclePos(this._id);
+  // }
+  // /**
+  //  * @throws {NpcException} When called before `create`().
+  //  */
+  // getVehicleRot() {
+  //   if (this.id === InvalidEnum.NPC_ID) {
+  //     throw new NpcException("Cannot getVehicleRot before create");
+  //   }
+  //   return Npc.__inject__.getVehicleRot(this._id);
+  // }
   getVehicleSeat() {
     if (this.id === InvalidEnum.NPC_ID) return 0;
     return Npc.__inject__.getVehicleSeat(this._id);
@@ -1393,8 +1393,8 @@ export class Npc {
     putInVehicle: w.NPC_PutInVehicle,
     removeFromVehicle: w.NPC_RemoveFromVehicle,
     getVehicle: w.NPC_GetVehicle,
-    getVehiclePos: w.NPC_GetVehiclePos,
-    getVehicleRot: w.NPC_GetVehicleRot,
+    // getVehiclePos: w.NPC_GetVehiclePos,
+    // getVehicleRot: w.NPC_GetVehicleRot,
     getVehicleSeat: w.NPC_GetVehicleSeat,
     getEnteringVehicle: w.NPC_GetEnteringVehicle,
     getEnteringVehicleSeat: w.NPC_GetEnteringVehicleSeat,

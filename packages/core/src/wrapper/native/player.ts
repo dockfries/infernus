@@ -793,9 +793,9 @@ export const GetPlayerCameraTargetPlayer = (playerId: number): number => {
   return samp.callNative("GetPlayerCameraTargetPlayer", "i", playerId);
 };
 
-export const GetPlayerCameraTargetNpc = (playerId: number): number => {
-  return samp.callNative("GetPlayerCameraTargetNpc", "i", playerId);
-};
+// export const GetPlayerCameraTargetNpc = (playerId: number): number => {
+//   return samp.callNative("GetPlayerCameraTargetNpc", "i", playerId);
+// };
 
 export const GetPlayerCameraTargetActor = (playerId: number): number => {
   return samp.callNative("GetPlayerCameraTargetActor", "i", playerId);
