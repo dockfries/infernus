@@ -12,7 +12,7 @@ import {
   GLOBAL_DEPS_PATH,
   INF_CONFIG_NAME,
 } from "./config";
-import type { AddDepsOptions, LocalConfig, LockFileContent } from "../types";
+import type { AddDepsOptions, LocalConfig, LockFileContent, PawnJsonResources } from "../types";
 import { validRange } from "./semver";
 import { isIncludeAsset, isPluginAsset } from "./asset";
 import { isSameReleaseTag, matchByRange, parseTag } from "./release";
@@ -113,12 +113,10 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
   if (!args.dependencies) return;
 
-  const verbose = !!args.verbose;
+  // A dry run is a request to see what would happen, so it prints the lookups
+  // that lead to the answer rather than refusing to run without --verbose.
   const dryRun = !!args.dryRun;
-
-  if (dryRun && !verbose) {
-    throw new Error("--dry-run needs --verbose, otherwise it would print nothing");
-  }
+  const verbose = !!args.verbose || dryRun;
 
   const installer = await DependencyInstaller.create({
     verbose,
@@ -277,10 +275,13 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
       });
     }
 
-    await removeDeps(
-      waitRemoveDeps,
-      _deps.map((dep) => dep.split("@")[0]),
-    );
+    // The old files go now, but the manifest is left alone: the install below
+    // writes it once, from what it actually placed, so a failure part way
+    // through cannot leave it describing an install that never happened.
+    await removeDeps(waitRemoveDeps, {
+      keep: _deps.map((dep) => dep.split("@")[0]),
+      record: false,
+    });
   }
 
   await installDeps(
@@ -294,159 +295,228 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
   if (!isInstallAll && !args.dryRun) await writeLocalConfig(config);
 }
 
-export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
-  if (!deps || !deps.length) return;
+/** what a removal will do, worked out before anything is deleted */
+interface RemovalPlan {
+  /** files to delete from the project */
+  files: string[];
+  /** cached server builds to tear down with their own routine */
+  openMp: string[];
+  /** dependencies to drop from the manifest */
+  manifestDeps: string[];
+  /** dependencies to drop from the lockfile */
+  lockDeps: string[];
+  /** plugins to drop from the server's load list */
+  legacyPlugins: string[];
+}
 
+/**
+ * Work out what removing these dependencies entails, without changing anything.
+ *
+ * `keep` names dependencies that are about to be reinstalled, so they stay in the
+ * manifest and the lockfile while their old files still go.
+ */
+async function planRemoval(
+  deps: string[],
+  { keep = [] }: { keep?: string[] } = {},
+): Promise<RemovalPlan | null> {
   const config = await readLocalConfig();
-  if (!config || !config.dependencies) return;
+  if (!config?.dependencies) return null;
 
   const lockFile = await readLockFile();
-  if (!lockFile || !lockFile.dependencies) return;
+  if (!lockFile?.dependencies) return null;
 
-  const start = Date.now();
+  const includePath = await getIncludePath();
+  const ompConfig = await readOmpConfig();
+  const legacyPlugins: string[] = ompConfig?.pawn?.legacy_plugins ?? [];
 
-  const localIncPath = await getIncludePath();
+  const plan: RemovalPlan = {
+    files: [],
+    openMp: [],
+    manifestDeps: [],
+    lockDeps: [],
+    legacyPlugins: [],
+  };
 
-  const ompConfig = (await readOmpConfig()) || {};
-
-  const hasLegacyPlugins = ompConfig.pawn && ompConfig.pawn.legacy_plugins;
-
-  const waitRemovePlugins = new Set();
+  const dropPlugins = new Set<string>();
 
   // the server is torn down after the plugins installed inside it
-  const deps_ = moveDependency(deps, ompRepository, "last");
+  for (const dep of moveDependency(deps, ompRepository, "last")) {
+    const [name] = dep.split("@");
 
-  for (const dep of deps_) {
-    const [depName] = dep.split("@");
+    if (!keep.length && name in config.dependencies) plan.manifestDeps.push(name);
 
-    if (!preInsDeps) {
-      if (depName in config.dependencies) {
-        delete config.dependencies[depName];
-      }
+    // the lockfile entry goes whether or not there is a build to clean up
+    if (!keep.includes(name)) plan.lockDeps.push(name);
+
+    const version = lockFile.dependencies[name]?.version;
+    if (!version) continue;
+
+    const versionPath = path.resolve(GLOBAL_DEPS_PATH, name, version);
+
+    if (name === ompRepository) {
+      plan.openMp.push(versionPath);
+      continue;
     }
 
-    if (depName in lockFile.dependencies) {
-      const version = lockFile.dependencies[depName].version;
-      if (!version) continue;
+    const [owner, repo] = name.split("/");
 
-      const globalVersionPath = path.resolve(GLOBAL_DEPS_PATH, depName, version);
+    // The files to delete are already on disk, so a repository that cannot be
+    // read (offline, rate limited, deleted upstream) must not block the removal:
+    // the manifest and the lockfile are updated either way, and only the file
+    // cleanup is skipped.
+    const pawnJson = await getPawnJson(owner, repo, version).catch((error: any) => {
+      console.log(
+        chalk.yellow(
+          `  warn: cannot read pawn.json of ${name}@${version} (${error?.message ?? error}), ` +
+            `removing it from the manifest only`,
+        ),
+      );
+      return null;
+    });
 
-      if (depName === ompRepository) {
-        await removeOpenMp(globalVersionPath);
-        continue;
-      }
+    if (!pawnJson?.resources) continue;
 
-      const [owner, repo] = depName.split("/");
+    const pluginFolder = getPlugOrCompPath(!!lockFile.dependencies[name]?.component);
 
-      // The files to delete are already on disk, so a repository that cannot be
-      // read (offline, rate limited, deleted upstream) must not block the
-      // removal itself: the manifest and the lockfile are updated either way,
-      // and only the file cleanup is skipped.
-      const pawnJson = await getPawnJson(owner, repo, version).catch((error: any) => {
-        console.log(
-          chalk.yellow(
-            `  warn: cannot read pawn.json of ${depName}@${version} (${error?.message ?? error}), ` +
-              `removing it from the manifest only`,
-          ),
-        );
-        return null;
-      });
+    for (const resource of pawnJson.resources) {
+      if (isWindows ? resource.platform !== "windows" : resource.platform !== "linux") continue;
 
-      if (!pawnJson?.resources) continue;
+      for (const target of await projectFilesOf(resource, {
+        includePath,
+        pluginFolder,
+        versionPath,
+      })) {
+        plan.files.push(target.path);
 
-      const platformResources = pawnJson.resources.filter((resource) => {
-        if (isWindows) return resource.platform === "windows";
-        return resource.platform === "linux";
-      });
-
-      for (const resource of platformResources) {
-        const isComponent = !!lockFile.dependencies?.[depName]?.component;
-        const pluginFolderPath = getPlugOrCompPath(isComponent);
-
-        if (resource.archive) {
-          if (resource.includes) {
-            const globIncPath = resource.includes.map((inc) => {
-              return path.extname(inc) ? inc : inc + "/*.inc";
-            });
-            let files = await fg.glob(globIncPath, {
-              cwd: globalVersionPath,
-              absolute: true,
-            });
-
-            files = files.map((file) => {
-              return path.resolve(localIncPath, path.basename(file));
-            });
-
-            await Promise.all(files.map((file) => fs.remove(file)));
-          } else {
-            let files = await fg.glob("*.inc", {
-              cwd: globalVersionPath,
-            });
-
-            files = files.map((file) => {
-              return path.resolve(localIncPath, file);
-            });
-
-            await Promise.all(files.map((file) => fs.remove(file)));
-          }
-          if (resource.plugins) {
-            let files = await fg.glob(resource.plugins, {
-              cwd: globalVersionPath,
-              absolute: true,
-            });
-
-            files = files.map((file) => {
-              return path.resolve(pluginFolderPath, path.basename(file));
-            });
-
-            await Promise.all(files.map((file) => fs.remove(file)));
-
-            if (hasLegacyPlugins) {
-              files.forEach((file) => {
-                waitRemovePlugins.add(path.basename(file, path.extname(file)));
-              });
-            }
-          }
-          if (resource.files) {
-            // the paths are relative to the dependency, like every other glob here
-            const files = await fg.glob(Object.values(resource.files), {
-              absolute: true,
-              cwd: globalVersionPath,
-            });
-            await Promise.all(files.map((file) => fs.remove(file)));
-          }
-        } else {
-          const assetPath = path.resolve(process.cwd(), resource.name);
-
-          if (isIncludeAsset(resource.name)) {
-            await fs.remove(path.resolve(localIncPath, resource.name));
-          } else if (isPluginAsset(resource.name)) {
-            await fs.remove(path.resolve(pluginFolderPath, resource.name));
-
-            if (hasLegacyPlugins) {
-              waitRemovePlugins.add(path.basename(assetPath, path.extname(assetPath)));
-            }
-          }
+        if (target.isPlugin) {
+          dropPlugins.add(path.basename(target.path, path.extname(target.path)));
         }
       }
-
-      if (!preInsDeps || !preInsDeps.includes(depName)) {
-        delete lockFile.dependencies[depName];
-      }
     }
   }
 
-  if (hasLegacyPlugins) {
-    const legacyPlugins = (ompConfig.pawn.legacy_plugins as string[]).filter((plugin) => {
-      return !waitRemovePlugins.has(plugin);
-    });
-    movePluginToLast(legacyPlugins, "samp-node");
-    ompConfig.pawn.legacy_plugins = legacyPlugins;
+  plan.legacyPlugins = legacyPlugins.filter((plugin) => !dropPlugins.has(plugin));
+
+  return plan;
+}
+
+/**
+ * Where each of a resource's files currently lives in the project.
+ *
+ * An archive carries its files, so they are found inside the unpacked build and
+ * then addressed in the project; a resource without an archive names them
+ * directly.
+ */
+async function projectFilesOf(
+  resource: PawnJsonResources,
+  context: { includePath: string; pluginFolder: string; versionPath: string },
+) {
+  const found: { path: string; isPlugin: boolean }[] = [];
+
+  if (!resource.archive) {
+    // a loose asset is named after the file itself and lands beside its kind
+    if (isIncludeAsset(resource.name)) {
+      found.push({ path: path.resolve(context.includePath, resource.name), isPlugin: false });
+    } else if (isPluginAsset(resource.name)) {
+      found.push({ path: path.resolve(context.pluginFolder, resource.name), isPlugin: true });
+    }
+
+    return found;
   }
 
-  cleanInvalidLockDeps(config, lockFile);
+  const includes = resource.includes?.length
+    ? resource.includes.map((include) => (path.extname(include) ? include : `${include}/*.inc`))
+    : ["*.inc"];
+
+  const groups = [
+    { patterns: includes, destination: context.includePath, isPlugin: false },
+    { patterns: resource.plugins ?? [], destination: context.pluginFolder, isPlugin: true },
+    {
+      patterns: Object.values(resource.files ?? {}),
+      destination: process.cwd(),
+      isPlugin: false,
+    },
+  ];
+
+  for (const group of groups) {
+    if (!group.patterns.length) continue;
+
+    const matches = await fg.glob(group.patterns, { absolute: true, cwd: context.versionPath });
+
+    for (const match of matches) {
+      found.push({
+        path: path.resolve(group.destination, path.basename(match)),
+        isPlugin: group.isPlugin,
+      });
+    }
+  }
+
+  return found;
+}
+
+/** Delete what a removal plan lists, then record it. */
+async function applyRemoval(plan: RemovalPlan, record: boolean) {
+  const config = await readLocalConfig();
+  const lockFile = await readLockFile();
+  const ompConfig = (await readOmpConfig()) || {};
+
+  if (config?.dependencies) {
+    for (const name of plan.manifestDeps) delete config.dependencies[name];
+  }
+
+  if (lockFile?.dependencies) {
+    for (const name of plan.lockDeps) delete lockFile.dependencies[name];
+  }
+
+  if (ompConfig.pawn?.legacy_plugins) {
+    const remaining = [...plan.legacyPlugins];
+    movePluginToLast(remaining, "samp-node");
+    ompConfig.pawn.legacy_plugins = remaining;
+  }
+
+  if (config && lockFile) cleanInvalidLockDeps(config, lockFile);
+
+  // the server has its own teardown, and its files are not project files
+  await Promise.all(plan.openMp.map((versionPath) => removeOpenMp(versionPath)));
+  await Promise.all(plan.files.map((file) => fs.remove(file)));
+
+  if (!record || !config || !lockFile) return;
 
   await Promise.all([writeOmpConfig(ompConfig), writeLocalConfig(config), writeLockFile(lockFile)]);
+}
+
+export interface RemovalOptions {
+  /**
+   * Dependencies about to be reinstalled: their files still go, but they stay in
+   * the manifest and the lockfile.
+   */
+  keep?: string[];
+  /**
+   * Whether to update the manifest and the lockfile.
+   *
+   * A caller that installs afterwards passes false, so the files go now and the
+   * manifest is written once, at the end, from what the install actually placed.
+   */
+  record?: boolean;
+}
+
+/**
+ * Remove dependencies from a project.
+ *
+ * The files are deleted first and the records updated afterwards, so a failure
+ * while deleting cannot leave the manifest claiming a dependency that is still
+ * on disk in full.
+ */
+export async function removeDeps(deps?: string[], options: RemovalOptions = {}) {
+  if (!deps?.length) return;
+
+  const start = Date.now();
+  const { keep = [], record = true } = options;
+
+  const plan = await planRemoval(deps, { keep });
+  if (!plan) return;
+
+  await applyRemoval(plan, record);
 
   console.log(`removeDeps Done in ${elapsed(start)}s`);
 }
