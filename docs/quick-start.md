@@ -70,7 +70,7 @@ infernus remove dockfries/Pawn.RakNet
 infernus update openmultiplayer/open.mp
 
 # Update a dependency to a specific version
-infernus update openmultiplayer/open.mp@^1.5.8
+infernus update openmultiplayer/open.mp@^1.6.7
 
 # List the versions a dependency can be installed from
 # (which ones satisfy the manifest, and which one is installed)
@@ -103,9 +103,9 @@ infernus config gh_token
 ```
 
 > [!WARNING]
-> In Windows `cmd.exe` the caret is an escape character, so `@^1.5.8` reaches the CLI as
+> In Windows `cmd.exe` the caret is an escape character, so `@^1.6.7` reaches the CLI as
 > `@1.5.8` and you get a confusing "version not found" style error. Quote the version:
-> `infernus update "openmultiplayer/open.mp@^1.5.8"`
+> `infernus update "openmultiplayer/open.mp@^1.6.7"`
 
 #### How versions are written
 
@@ -114,7 +114,7 @@ infernus config gh_token
 - **Mixing `2.6.1` and `^2.9.6` in one file is normal**: the CLI never rewrites a spec.
   `2.6.1` is an **exact pin**, so `update` stays on that release; `^2.9.6` is a **range**, so
   `update` walks forward to the newest release it allows. To follow releases, add the range:
-  `infernus add dockfries/samp-node@^2.6.1`. `infernus versions` shows which releases satisfy
+  `infernus add dockfries/samp-node@2.6.1`. `infernus versions` shows which releases satisfy
   what the manifest declares.
 - `infernus-lock.json` holds the **real GitHub release tag**, for example `v1.6.7.3218`.
   open.mp tags four segments (`vmajor.minor.patch.build`), so `1.6.7` is not a tag at all;

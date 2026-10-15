@@ -70,7 +70,7 @@ infernus remove dockfries/Pawn.RakNet
 infernus update openmultiplayer/open.mp
 
 # Actualizar a una versión específica
-infernus update openmultiplayer/open.mp@^1.5.8
+infernus update openmultiplayer/open.mp@^1.6.7
 
 # Listar las versiones disponibles de una dependencia
 # (cuáles cumplen el manifiesto y cuál está instalada)
@@ -103,9 +103,9 @@ infernus config gh_token
 ```
 
 > [!WARNING]
-> En `cmd.exe` de Windows el circunflejo es un carácter de escape, así que `@^1.5.8`
+> En `cmd.exe` de Windows el circunflejo es un carácter de escape, así que `@^1.6.7`
 > llega a la CLI como `@1.5.8` y provoca un error confuso de "versión no encontrada".
-> Entrecomille la versión: `infernus update "openmultiplayer/open.mp@^1.5.8"`
+> Entrecomille la versión: `infernus update "openmultiplayer/open.mp@^1.6.7"`
 
 #### Cómo se escriben las versiones
 
@@ -114,7 +114,7 @@ infernus config gh_token
 - **Mezclar `2.6.1` y `^2.9.6` en el mismo archivo es normal**: la CLI nunca reescribe el
   especificador. `2.6.1` es un **anclaje exacto**, así que `update` se queda en ese release;
   `^2.9.6` es un **rango**, así que `update` avanza al release más reciente que permite.
-  Para seguir los releases, escriba el rango: `infernus add dockfries/samp-node@^2.6.1`.
+  Para seguir los releases, escriba el rango: `infernus add dockfries/samp-node@2.6.1`.
   `infernus versions` muestra qué releases cumplen lo declarado en el manifiesto.
 - `infernus-lock.json` contiene la **etiqueta real del release de GitHub**, por ejemplo
   `v1.6.7.3218`. Las etiquetas de open.mp tienen cuatro segmentos
