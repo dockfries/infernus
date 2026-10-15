@@ -217,11 +217,30 @@ describe("decideFileAction", () => {
     }
   });
 
-  it("is conservative when no history is known at all", () => {
+  /**
+   * With no history there is nothing to compare against, but a plain server file
+   * that differs from what is being installed is an older build rather than an
+   * edit — the project is not expected to edit it. Keeping it made an upgrade
+   * report "4 kept (modified by this project)" and change nothing on disk while
+   * the lockfile moved to the new version.
+   */
+  it("replaces a plain server file when no history is known", () => {
     assert.equal(
       decideFileAction({
         isUserFile: false,
         installed: { size: 10, sha256: "from-some-old-build" },
+        shipped,
+        previouslyInstalled: undefined,
+      }),
+      "overwrite",
+    );
+  });
+
+  it("still keeps a file the project owns when no history is known", () => {
+    assert.equal(
+      decideFileAction({
+        isUserFile: true,
+        installed: { size: 10, sha256: "edited by the operator" },
         shipped,
         previouslyInstalled: undefined,
       }),
@@ -294,14 +313,25 @@ describe("copyServer", () => {
     assert.equal(await fs.readFile(path.resolve(target, "config.json"), "utf8"), "default-config");
   });
 
-  it("keeps a file whose origin it cannot prove, rather than overwriting it", async () => {
+  /**
+   * A plain server file with no history is treated as an older build rather than
+   * as an edit. The project is not expected to edit `omp-server.exe`, and keeping
+   * it means the upgrade changes nothing while the lockfile moves on — the
+   * failure mode is silent, which is worse than replacing a file the project was
+   * not supposed to touch.
+   */
+  it("replaces a plain server file when nothing proves where it came from", async () => {
     const source = await makeDir({ "omp-server.exe": "new-server-build" });
     const target = await makeDir({ "omp-server.exe": "something-we-did-not-install" });
 
     const result = await copyServer({ source, target, previousPath: null });
 
-    assert.deepEqual(result.written, []);
-    assert.deepEqual(result.kept, ["omp-server.exe"]);
+    assert.deepEqual(result.written, ["omp-server.exe"]);
+    assert.deepEqual(result.kept, []);
+    assert.equal(
+      await fs.readFile(path.resolve(target, "omp-server.exe"), "utf8"),
+      "new-server-build",
+    );
   });
 
   it("keeps files the project modified itself", async () => {
@@ -353,10 +383,10 @@ describe("copyServer", () => {
 
     const result = await copyServer({ source, target, previousPath: null });
 
-    // nothing proves the project server came from us, so it stays; a project
-    // that never installed a server gets one
-    assert.deepEqual(result.written, []);
-    assert.deepEqual(result.kept.sort(), ["bans.json", "config.json", "omp-server.exe"]);
+    // the server file is brought up to date, while the files a running server
+    // owns are the project's and are never touched
+    assert.deepEqual(result.written, ["omp-server.exe"]);
+    assert.deepEqual(result.kept.sort(), ["bans.json", "config.json"]);
     assert.equal(await fs.readFile(path.resolve(target, "config.json"), "utf8"), "my-config");
   });
 

@@ -168,8 +168,13 @@ export type FileAction = "install" | "overwrite" | "keep" | "current";
  * matches is current, and a file the project edited is kept rather than
  * replaced. Whether the project edited it is answered with the manifest of the
  * last install, falling back to the content of the build that was installed
- * before. With neither reference there is no way to tell an edit from an older
- * build, and a server only replaces what it can prove it owns.
+ * before.
+ *
+ * With neither reference a plain server file is still replaced, because the
+ * project is not expected to edit it and a differing content therefore means an
+ * older build: keeping it would make an upgrade report success while changing
+ * nothing on disk. Only the files a running server owns are outside that
+ * reasoning, and they are kept whatever the history says.
  */
 export function decideFileAction(input: {
   /** the file is one of the ones a running server owns */
@@ -190,7 +195,7 @@ export function decideFileAction(input: {
   // being installed there is nothing to write, whatever the history says.
   if (installed.sha256 === shipped.sha256) return "current";
 
-  if (!previouslyInstalled) return "keep";
+  if (!previouslyInstalled) return "overwrite";
 
   return installed.sha256 === previouslyInstalled.sha256 ? "overwrite" : "keep";
 }
