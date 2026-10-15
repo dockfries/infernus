@@ -1,4 +1,7 @@
 import path from "node:path";
+import { createHash } from "node:crypto";
+import { pipeline } from "node:stream/promises";
+import { setTimeout as delay } from "node:timers/promises";
 import axios, { type AxiosResponse } from "axios";
 import fs from "fs-extra";
 import cliProgress from "cli-progress";
@@ -6,13 +9,13 @@ import chalk from "chalk";
 import type { OctokitOptions } from "@octokit/core";
 import { Octokit } from "@octokit/core";
 import { readGlobalConfig } from "./config";
-import { proxyAgent } from "../constants";
+import { proxyAgentFor } from "./proxy";
 import { matchByRange, parseTag } from "./release";
 
-let delayTry = 500;
+const FIRST_RETRY_DELAY = 500;
 const MAX_RETRY_ATTEMPTS = 5;
-
-const request = axios.create({ httpsAgent: proxyAgent });
+/** no bytes for this long means the connection is dead, not merely slow */
+const STALL_TIMEOUT = 60_000;
 
 let octokitInstance: null | Octokit = null;
 
@@ -51,7 +54,7 @@ async function getOctokit() {
 
   const options: OctokitOptions = {
     request: {
-      agent: proxyAgent,
+      agent: proxyAgentFor(getApiBaseUrl()),
       headers: {
         "X-GitHub-Api-Version": "2022-11-28",
       },
@@ -62,77 +65,174 @@ async function getOctokit() {
   return octokitInstance;
 }
 
-export async function downloadFile(url: string, filePath: string, retryCount = 0) {
+export interface DownloadOptions {
+  /**
+   * `sha256:<hex>` for the bytes being downloaded.
+   *
+   * GitHub reports this per release asset, so a truncated or corrupted download
+   * is caught here rather than much later, when unpacking fails for a reason
+   * that no longer points at the network.
+   */
+  digest?: string | null;
+  /** bytes the server said it would send, cross-checked against what arrived */
+  expectedSize?: number | null;
+  /** how long to wait for the next chunk before giving up, in milliseconds */
+  stallTimeout?: number;
+}
+
+/**
+ * Download a URL to a file.
+ *
+ * The whole request has no total deadline, because a large asset on a slow link
+ * is not a failure; instead a watchdog fails the transfer when no bytes arrive
+ * for {@link STALL_TIMEOUT}. The response stream is consumed with `pipeline`, so
+ * an error on the network side rejects too rather than leaving the caller
+ * waiting on a promise that can never settle.
+ */
+export async function downloadFile(
+  url: string,
+  filePath: string,
+  retryCount = 0,
+  options: DownloadOptions = {},
+) {
   const bar = new cliProgress.SingleBar({
     format: "[{bar}] {percentage}% | ETA: {eta}s | {value}/{total} Chunks",
   });
 
-  if (fs.existsSync(filePath + ".tmp")) {
-    await fs.remove(filePath + ".tmp");
-  }
+  const tempPath = `${filePath}.tmp`;
+  await fs.remove(tempPath);
 
   let response: AxiosResponse;
   try {
-    response = await request({
+    response = await axios({
       url,
       method: "GET",
       headers: {
         "Accept-Encoding": "identity",
       },
       responseType: "stream",
+      httpsAgent: proxyAgentFor(url),
       onDownloadProgress(progressEvent) {
-        if (bar.getTotal()) {
-          bar.update(progressEvent.loaded);
-        }
+        if (bar.getTotal()) bar.update(progressEvent.loaded);
       },
     });
-  } catch (err: any) {
-    if (err.status === 404) throw err;
+  } catch (error: any) {
+    return await retryDownload(url, filePath, retryCount, options, error);
+  }
 
-    if (retryCount >= MAX_RETRY_ATTEMPTS) {
-      throw new Error(`Download failed after ${MAX_RETRY_ATTEMPTS} attempts: ${err.message}`, {
-        cause: err,
-      });
+  const contentLen = Number(response.headers["content-length"]) || 0;
+  bar.start(contentLen, 0);
+
+  try {
+    await streamToFile(
+      response.data,
+      tempPath,
+      () => {
+        if (bar.getTotal()) bar.update(bar.getTotal());
+      },
+      options.stallTimeout ?? STALL_TIMEOUT,
+    );
+
+    const written = (await fs.stat(tempPath)).size;
+    if (contentLen && written !== contentLen) {
+      throw new Error(`expected ${contentLen} bytes, received ${written}`);
+    }
+    if (options.expectedSize && written !== options.expectedSize) {
+      throw new Error(`expected ${options.expectedSize} bytes, received ${written}`);
+    }
+    if (options.digest) {
+      await verifyDigest(tempPath, options.digest);
     }
 
-    return new Promise<string>((resolve) => {
-      delayTry = delayTry * 2;
+    await fs.rename(tempPath, filePath);
+    return filePath;
+  } catch (error: any) {
+    await fs.remove(tempPath).catch(() => {});
+    bar.stop();
+    // a failed transfer is worth retrying, but not a file that simply does not
+    // match its digest: that is a repository problem, not a network one
+    if (options.digest && String(error?.message).includes("checksum")) throw error;
+    return await retryDownload(url, filePath, retryCount, options, error);
+  } finally {
+    bar.stop();
+  }
+}
 
-      console.log(chalk.yellow.bold(err));
-      console.log("\n");
+/** wait longer after every attempt, then try again */
+async function retryDownload(
+  url: string,
+  filePath: string,
+  retryCount: number,
+  options: DownloadOptions,
+  error: any,
+): Promise<string> {
+  if (error?.status === 404 || error?.response?.status === 404) throw error;
 
-      console.log(
-        chalk.yellow.bold(
-          `\ndownloadFile failed, try ${delayTry / 1000} seconds later again (attempt ${retryCount + 1}/${MAX_RETRY_ATTEMPTS})`,
-        ),
-      );
-      console.log(chalk.yellow.bold(`press ctrl/command + c to stop the process`));
-
-      setTimeout(() => {
-        downloadFile(url, filePath, retryCount + 1).then(resolve);
-      }, delayTry);
+  if (retryCount >= MAX_RETRY_ATTEMPTS) {
+    throw new Error(`Download failed after ${MAX_RETRY_ATTEMPTS} attempts: ${error.message}`, {
+      cause: error,
     });
   }
 
-  const contentLen = (response.headers["content-length"] as number) || 0;
-  bar.start(contentLen, 0);
+  const wait = FIRST_RETRY_DELAY * 2 ** retryCount;
 
-  return new Promise<string>((resolve, reject) => {
-    const ws = fs.createWriteStream(filePath + ".tmp");
-    response.data.pipe(ws);
+  console.log(chalk.yellow.bold(`\ndownload failed: ${error.message}`));
+  console.log(
+    chalk.yellow.bold(
+      `trying again in ${wait / 1000}s (attempt ${retryCount + 1}/${MAX_RETRY_ATTEMPTS})`,
+    ),
+  );
+  console.log(chalk.yellow.bold("press ctrl/command + c to stop the process"));
 
-    ws.on("finish", async () => {
-      delayTry = 500;
+  await delay(wait);
+  return downloadFile(url, filePath, retryCount + 1, options);
+}
 
-      bar.stop();
-      await fs.rename(filePath + ".tmp", filePath);
-      resolve(filePath);
-    });
+/**
+ * Pipe the response into the file, failing if it goes quiet.
+ *
+ * The watchdog is what turns a half open connection into an error instead of a
+ * command that never returns.
+ */
+async function streamToFile(
+  source: NodeJS.ReadableStream,
+  targetPath: string,
+  onData: () => void,
+  stallTimeout: number,
+) {
+  let watchdog: NodeJS.Timeout;
 
-    ws.on("error", (err) => {
-      reject(err);
-    });
+  const reset = () => {
+    clearTimeout(watchdog);
+    watchdog = setTimeout(() => {
+      (source as any).destroy(new Error(`no data received for ${stallTimeout / 1000}s`));
+    }, stallTimeout);
+  };
+
+  source.on("data", () => {
+    reset();
+    onData();
   });
+  reset();
+
+  try {
+    await pipeline(source, fs.createWriteStream(targetPath));
+  } finally {
+    clearTimeout(watchdog!);
+  }
+}
+
+async function verifyDigest(filePath: string, digest: string) {
+  const [algorithm, expected] = digest.split(":");
+  if (!expected || algorithm !== "sha256") return;
+
+  const actual = createHash("sha256")
+    .update(await fs.readFile(filePath))
+    .digest("hex");
+
+  if (actual !== expected) {
+    throw new Error(`checksum mismatch: expected ${expected}, got ${actual}`);
+  }
 }
 
 export async function downloadGitRepo(
@@ -189,7 +289,7 @@ export async function githubGet<T = any>(
   const url = `${getApiBaseUrl()}${path}${search ? `?${search}` : ""}`;
 
   const response = await axios.get(url, {
-    httpsAgent: proxyAgent,
+    httpsAgent: proxyAgentFor(url),
     headers: {
       Accept: "application/vnd.github+json",
       ...(process.env.gh_token ? { Authorization: `Bearer ${process.env.gh_token}` } : {}),

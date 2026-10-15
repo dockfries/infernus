@@ -1,9 +1,6 @@
 import path from "node:path";
-// @ts-expect-error no types package
-import decompress from "@xhmikosr/decompress";
 import fs from "fs-extra";
 import fg from "fast-glob";
-import { select } from "@inquirer/prompts";
 import chalk from "chalk";
 import {
   readLocalConfig,
@@ -15,13 +12,25 @@ import {
   GLOBAL_DEPS_PATH,
   INF_CONFIG_NAME,
 } from "./config";
-import { downloadFile, getRepoRelease } from "./api";
 import type { AddDepsOptions, LocalConfig, LockFileContent } from "../types";
 import { validRange } from "./semver";
+import { isIncludeAsset, isPluginAsset } from "./asset";
 import { isSameReleaseTag, matchByRange, parseTag } from "./release";
-import { addOpenMp, removeOpenMp } from "./omp";
+import {
+  describeCache,
+  planDependency,
+  planCache,
+  isPinnedRequest,
+  type CachePlan,
+  type DependencyPlan,
+} from "./plan";
+import { DependencyInstaller } from "./installer";
+import { removeOpenMp } from "./omp";
 import { getPawnJson, getIncludePath, getPlugOrCompPath } from "./pawn";
 import { ompRepository, isWindows } from "../constants";
+
+export { planCache, isPinnedRequest };
+export type { CachePlan };
 
 async function hasGlobalDepTemp(depVersionPath: string): Promise<boolean> {
   if (!fs.existsSync(depVersionPath)) return false;
@@ -31,57 +40,6 @@ async function hasGlobalDepTemp(depVersionPath: string): Promise<boolean> {
     (files.length === 1 && files[0] === "pawn.json") ||
     files.some((file) => file.endsWith(".tmp"))
   );
-}
-
-export interface CachePlan {
-  /** the cached tag this spec resolves to, when the cache can answer it */
-  cachedTag: string | null;
-  /** whether the dependency has to be downloaded and unpacked again */
-  needsDownload: boolean;
-  /** the cached version that must be dropped before downloading */
-  dropTag: string | null;
-}
-
-/**
- * Decide what the cache can answer for a requested spec, without touching disk.
- *
- * Shared by the real install and by `--dry-run` so a preview cannot drift from
- * what an install would do. Only a request that names a release can be answered
- * by the cache, and it is compared by tag, so `v1.6.7.3217` never passes for
- * `v1.6.7.3218`. A range has to be resolved against the repository first,
- * because the newest matching release may not be the newest *cached* one.
- */
-export function planCache(options: {
-  cachedVersions: string[] | null;
-  requested: string;
-  previousVersion?: string;
-  isUpdate: boolean;
-}): CachePlan {
-  const { cachedVersions, requested, previousVersion, isUpdate } = options;
-
-  const miss: CachePlan = { cachedTag: null, needsDownload: true, dropTag: null };
-
-  const requestedTag = parseTag(requested);
-  if (!requestedTag || !cachedVersions) return miss;
-
-  const cached = cachedVersions.map(parseTag).find((parsed) => parsed?.tag === requestedTag.tag);
-  if (!cached) return miss;
-
-  // The release is already installed when the lockfile pins it, so an update is
-  // the user asking for it again: download it afresh. Any other cached release
-  // satisfies the pin and is reused.
-  const alreadyInstalled = isSameReleaseTag(previousVersion, cached.tag);
-  return alreadyInstalled && isUpdate
-    ? { cachedTag: null, needsDownload: true, dropTag: cached.tag }
-    : { cachedTag: cached.tag, needsDownload: false, dropTag: null };
-}
-
-/**
- * Whether a request pins one release, in which case the cache can answer it
- * without asking the repository.
- */
-export function isPinnedRequest(requested: string) {
-  return parseTag(requested) !== null;
 }
 
 export async function cleanAllGlobalDeps() {
@@ -153,8 +111,6 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
   const start = Date.now();
   // todo: dev_dependencies & dependencies without resources
 
-  const isProd = args.production;
-
   if (!args.dependencies) return;
 
   const verbose = !!args.verbose;
@@ -164,6 +120,12 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     throw new Error("--dry-run needs --verbose, otherwise it would print nothing");
   }
 
+  const installer = await DependencyInstaller.create({
+    verbose,
+    isProd: args.production,
+    isComponent: args.component,
+  });
+
   // the server is installed before the plugins that run inside it, and the copy
   // step needs its files in place to tell its own files from the project's
   const deps = moveDependency(args.dependencies, ompRepository, "first");
@@ -171,367 +133,55 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
   // a dry run must not even delete stale temp folders from the cache
   if (!dryRun) await cleanGlobalDeps(deps);
 
-  const lockFile: LockFileContent = (await readLockFile()) || {
-    lockfileVersion: 1.0,
-  };
-  let dependencies = {};
-  const ompConfig = (await readOmpConfig()) || {};
-
-  ompConfig.pawn = { ...(ompConfig.pawn || {}) };
-  ompConfig.pawn.legacy_plugins = [...(ompConfig.pawn.legacy_plugins || [])];
-
-  const legacyPluginsSet = new Set([...ompConfig.pawn.legacy_plugins]);
-
-  interface InstallPlan {
-    dep: string;
-    from: string | null;
-    to: string | null;
-    action: string;
-    cached: boolean;
-  }
-  const plans: InstallPlan[] = [];
+  // Resolve everything before placing anything: a dependency that cannot be
+  // resolved then fails the command without having written a partial install.
+  const plans: DependencyPlan[] = [];
 
   for (const dep of deps) {
-    const [name, version = "*"] = dep.split("@");
-
-    if (!validRange(version)) throw new Error(`invalid deps version: ${name}`);
+    const name = dep.split("@")[0];
 
     if (verbose) {
       console.log(
-        chalk.gray(`\n[${name}] requested version "${version}"${isUpdate ? " (update)" : ""}`),
+        chalk.gray(
+          `\n[${name}] requested version "${dep.split("@")[1] ?? "*"}"${isUpdate ? " (update)" : ""}`,
+        ),
       );
     }
 
-    const previousDepInfo = lockFile.dependencies?.[name];
-    const previousComp = !!previousDepInfo?.component;
-    const previousVersion = previousDepInfo?.version;
-
-    const isComponent = !!args.component || previousComp;
-    const pluginFolderPath = getPlugOrCompPath(isComponent);
-
-    const [owner, repo] = name.split("/");
-
-    let localCacheFolder = null;
-    let localCacheVersion = null;
-
-    const depAnyVersionPath = path.resolve(GLOBAL_DEPS_PATH, name);
-    const isExistDepAnyVersion = fs.existsSync(depAnyVersionPath);
-
-    const plan = planCache({
-      cachedVersions: isExistDepAnyVersion ? await fs.readdir(depAnyVersionPath) : null,
-      requested: version,
-      previousVersion,
+    const plan = await planDependency(dep, {
+      verbose,
       isUpdate,
+      component: installer.isComponent(name),
+      previousVersion: installer.previousVersion(name),
     });
 
-    const isForceRedownload = plan.needsDownload;
-
-    if (plan.dropTag) {
-      await fs.remove(path.resolve(depAnyVersionPath, plan.dropTag));
-    }
-
-    if (plan.cachedTag) {
-      localCacheFolder = path.resolve(depAnyVersionPath, plan.cachedTag);
-      localCacheVersion = plan.cachedTag;
-    }
-
-    if (verbose) {
-      if (!isExistDepAnyVersion) {
-        console.log(chalk.gray(`  cache: ${depAnyVersionPath} does not exist`));
-      } else if (localCacheFolder) {
-        console.log(chalk.gray(`  cache hit: ${localCacheVersion} -> ${localCacheFolder}`));
-      } else if (plan.dropTag) {
-        console.log(chalk.gray(`  cache: dropping ${plan.dropTag} and downloading it again`));
-      } else {
-        console.log(chalk.gray(`  cache: no cached version satisfies "${version}"`));
-      }
-    }
-
-    let matchedRelease: any = null;
-
-    if (!localCacheFolder) {
-      matchedRelease = await getRepoRelease(owner, repo, version, verbose);
-      if (!matchedRelease) throw new Error(`not found satisfactory deps: ${dep}`);
-
-      if (verbose) {
-        console.log(chalk.gray(`  matched release: ${matchedRelease.tag_name}`));
-      }
-
-      // A range is resolved against the repository, but the release it lands on
-      // may already be unpacked in the cache, in which case only the project
-      // files are refreshed.
-      const cachedFolder = path.resolve(GLOBAL_DEPS_PATH, name, matchedRelease.tag_name);
-      if (isForceRedownload && !isPinnedRequest(version) && fs.existsSync(cachedFolder)) {
-        localCacheFolder = cachedFolder;
-        localCacheVersion = matchedRelease.tag_name;
-      }
-    }
-
-    if (dryRun) {
-      // Report exactly what an install would do, then move on: nothing is
-      // downloaded, unpacked, copied or written.
-      const target = localCacheVersion ?? matchedRelease?.tag_name ?? null;
-
-      if (!target) {
-        console.log(chalk.red(`  no release matches "${version}"`));
-        plans.push({
-          dep,
-          from: previousVersion ?? null,
-          to: null,
-          action: "missing",
-          cached: false,
-        });
-        continue;
-      }
-
-      const cached = !!localCacheVersion;
-      const action = cached
-        ? "reuse cache"
-        : plan.dropTag
-          ? `re-download (replacing ${plan.dropTag})`
-          : "download";
-
-      console.log(
-        `  ${action}: ${target}${previousVersion ? ` (lockfile had ${previousVersion})` : ""}`,
-      );
-
-      plans.push({ dep, from: previousVersion ?? null, to: target, action, cached });
-      continue;
-    }
-
-    if (name === ompRepository) {
-      dependencies = {
-        ...dependencies,
-        [name]: {
-          version: localCacheVersion ? localCacheVersion : matchedRelease.tag_name,
-        },
-      };
-
-      if (localCacheVersion) {
-        console.log(`local cache found: ${name} ${localCacheVersion}`);
-        await addOpenMp(localCacheVersion, false, previousVersion ?? null, verbose);
-      } else {
-        // The previous build is the reference telling an upgraded server file
-        // apart from one the project modified, so it is dropped only after its
-        // manifest has been used.
-        await addOpenMp(matchedRelease, true, previousVersion ?? null, verbose);
-        if (plan.dropTag) {
-          await fs.remove(path.resolve(depAnyVersionPath, plan.dropTag));
-        }
-      }
-      continue;
-    }
-
-    if (localCacheVersion) {
-      console.log(`local cache found: ${name} ${localCacheVersion}`);
-    }
-
-    const pawnJson = await getPawnJson(owner, repo, localCacheVersion ?? matchedRelease.tag_name);
-
-    if (!pawnJson || !pawnJson.resources || !pawnJson.resources.length)
-      throw new Error(`not found resources in pawn.json: ${name}`);
-
-    const finalVersion = localCacheVersion || matchedRelease!.tag_name;
-
-    const depVersionPath = path.resolve(GLOBAL_DEPS_PATH, name, finalVersion);
-
-    const pawnJsonPath = path.resolve(depVersionPath, "pawn.json");
-    await fs.ensureFile(pawnJsonPath);
-    await fs.writeJson(pawnJsonPath, pawnJson, { spaces: 2 });
-
-    const platformResources = pawnJson.resources.filter((resource) => {
-      if (isWindows) return resource.platform === "windows";
-      return resource.platform === "linux";
-    });
-
-    const archiveResources = platformResources.filter((resource) => resource.archive);
-
-    const notArchiveResources = platformResources.filter((resource) => !resource.archive);
-
-    const localIncPath = await getIncludePath();
-    await fs.ensureDir(localIncPath);
-
-    if (archiveResources.length) {
-      let archiveResource = archiveResources[0];
-
-      if (!localCacheVersion) {
-        if (archiveResources.length > 1) {
-          const choices = archiveResources.map((resource, idx) => {
-            return {
-              name: resource.name,
-              short: resource.version || "default",
-              value: idx,
-            };
-          });
-          const selectResource = await select({
-            message: "Multiple archive resources found, please select one",
-            choices,
-            default: 0,
-          });
-          archiveResource = archiveResources[selectResource];
-        }
-
-        const archiveAssetReg = new RegExp(archiveResource.name);
-
-        const archiveAssets = matchedRelease.assets.filter((asset: any) => {
-          return archiveAssetReg.test(asset.name);
-        });
-
-        if (!archiveAssets.length) {
-          throw new Error(
-            `Unable to match asset ${archiveResource.name} in dependency ${dep} \n` +
-              ` — available assets: \n` +
-              `${matchedRelease.assets.map((asset: any) => asset.name).join("\n")}`,
-          );
-        }
-
-        const archiveAsset = archiveAssets[0];
-        if (archiveAssets.length > 1) {
-          const choices = archiveAssets.map((asset: any, idx: number) => {
-            return {
-              name: asset.name,
-              value: idx,
-            };
-          });
-          const selectAsset = await select<number>({
-            message: "Multiple assets found, please select one",
-            choices,
-            default: 0,
-          });
-          archiveResource = archiveResources[selectAsset];
-        }
-        console.log(`download dep: ${archiveAsset.name} ${matchedRelease.tag_name}`);
-        const assetPath = await downloadFile(
-          archiveAsset.browser_download_url,
-          path.resolve(depVersionPath, archiveAsset.name),
-        );
-
-        await decompress(assetPath, depVersionPath);
-        await fs.remove(assetPath);
-      }
-
-      if (archiveResource.plugins) {
-        await fs.ensureDir(pluginFolderPath);
-
-        const pluginPaths = await fg.glob(archiveResource.plugins, {
-          absolute: true,
-          cwd: depVersionPath,
-        });
-
-        for (const plugin of pluginPaths) {
-          const pluginFileName = path.basename(plugin);
-          const pluginFileNameNoExt = path.basename(pluginFileName, path.extname(pluginFileName));
-          await fs.copy(plugin, path.resolve(pluginFolderPath, pluginFileName));
-          if (!isComponent) legacyPluginsSet.add(pluginFileNameNoExt);
-        }
-      }
-
-      if (!isProd) {
-        if (archiveResource.includes) {
-          const globIncPath = archiveResource.includes.map((inc) => {
-            return path.extname(inc) ? inc : inc + "/*.inc";
-          });
-          const includeFiles = await fg.glob(globIncPath, {
-            absolute: true,
-            cwd: depVersionPath,
-          });
-          for (const includeFolder of includeFiles) {
-            await fs.copy(includeFolder, path.resolve(localIncPath, path.basename(includeFolder)));
-          }
-        } else {
-          const includeFiles = await fg.glob("*.inc", {
-            absolute: true,
-            cwd: depVersionPath,
-          });
-          for (const includeFolder of includeFiles) {
-            await fs.copy(includeFolder, path.resolve(localIncPath, path.basename(includeFolder)));
-          }
-        }
-      }
-
-      if (archiveResource.files) {
-        for (const globPattern of Object.keys(archiveResource.files)) {
-          const files = await fg.glob(globPattern, {
-            absolute: true,
-            cwd: depVersionPath,
-          });
-          if (!files[0]) continue;
-          const to = path.resolve(process.cwd(), archiveResource.files[globPattern]);
-          await fs.copy(files[0], to);
-        }
-      }
-    }
-
-    if (notArchiveResources.length) {
-      const assetNames = notArchiveResources.map((r) => r.name);
-
-      if (!localCacheVersion) {
-        const assets = matchedRelease.assets.filter((asset: any) => {
-          return assetNames.includes(asset.name);
-        });
-
-        const emptyTmp = path.resolve(depVersionPath, "empty.tmp");
-
-        await fs.ensureFile(emptyTmp);
-
-        for (const asset of assets) {
-          console.log(`download dep: ${asset.name} ${matchedRelease.tag_name}`);
-          const assetPath = await downloadFile(
-            asset.browser_download_url,
-            path.resolve(depVersionPath, asset.name),
-          );
-
-          const assetExt = path.extname(asset.name);
-
-          if (assetExt === "inc") {
-            if (!isProd) {
-              await fs.copy(assetPath, localIncPath);
-            }
-          } else if (["dll", "so"].includes(assetExt)) {
-            await fs.copy(assetPath, pluginFolderPath);
-            legacyPluginsSet.add(path.basename(assetPath, assetExt));
-          }
-        }
-
-        await fs.remove(emptyTmp);
-      } else {
-        const assets = await fg.glob(assetNames, { absolute: true });
-        for (const assetPath of assets) {
-          const assetName = path.basename(assetPath);
-          const assetExt = path.extname(assetPath);
-          if (assetExt === "inc") {
-            if (!isProd) {
-              await fs.copy(assetPath, path.resolve(localIncPath, assetName));
-            }
-          } else if (["dll", "so"].includes(assetExt)) {
-            await fs.copy(assetPath, path.resolve(pluginFolderPath, assetName));
-            legacyPluginsSet.add(path.basename(assetName, assetExt));
-          }
-        }
-      }
-    }
-
-    const legacy_plugins = movePluginToLast([...legacyPluginsSet], "samp-node");
-    ompConfig.pawn.legacy_plugins = legacy_plugins;
-
-    dependencies = {
-      ...dependencies,
-      [name]: {
-        version: finalVersion,
-        component: isComponent,
-      },
-    };
+    if (verbose) describeCache(plan);
+    plans.push(plan);
   }
+
   if (dryRun) {
-    printInstallPlan(plans, isUpdate);
+    printInstallPlan(
+      plans.map((plan) => ({
+        dep: `${plan.name}@${plan.requested}`,
+        from: plan.previousVersion ?? null,
+        to: plan.finalVersion,
+        action: plan.cachedTag
+          ? "reuse cache"
+          : plan.cache.dropTag
+            ? `re-download (replacing ${plan.cache.dropTag})`
+            : "download",
+        cached: !!plan.cachedTag,
+      })),
+      isUpdate,
+    );
     return;
   }
 
-  lockFile.dependencies = {
-    ...(lockFile.dependencies || {}),
-    ...dependencies,
-  };
-  await Promise.all([writeOmpConfig(ompConfig), writeLockFile(lockFile)]);
+  for (const plan of plans) {
+    await installer.materialize(plan);
+  }
+
+  await installer.record();
   console.log(`installDeps Done in ${elapsed(start)}s`);
 }
 
@@ -607,8 +257,9 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
       {} as Record<string, string>,
     );
 
+    // written only once the install below has succeeded, so a failure cannot
+    // leave the manifest declaring a dependency that was never installed
     config.dependencies = { ...config.dependencies, ...reduceDeps };
-    if (!args.dryRun) await writeLocalConfig(config);
   }
 
   if (!Object.keys(reduceDeps).length) return;
@@ -639,6 +290,8 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
     },
     isUpdate,
   );
+
+  if (!isInstallAll && !args.dryRun) await writeLocalConfig(config);
 }
 
 export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
@@ -755,21 +408,23 @@ export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
             }
           }
           if (resource.files) {
+            // the paths are relative to the dependency, like every other glob here
             const files = await fg.glob(Object.values(resource.files), {
               absolute: true,
+              cwd: globalVersionPath,
             });
             await Promise.all(files.map((file) => fs.remove(file)));
           }
         } else {
           const assetPath = path.resolve(process.cwd(), resource.name);
-          const assetExt = path.extname(assetPath);
-          if (assetExt === "inc") {
+
+          if (isIncludeAsset(resource.name)) {
             await fs.remove(path.resolve(localIncPath, resource.name));
-          } else if (["dll", "so"].includes(assetExt)) {
+          } else if (isPluginAsset(resource.name)) {
             await fs.remove(path.resolve(pluginFolderPath, resource.name));
 
             if (hasLegacyPlugins) {
-              waitRemovePlugins.add(path.basename(assetPath, assetExt));
+              waitRemovePlugins.add(path.basename(assetPath, path.extname(assetPath)));
             }
           }
         }

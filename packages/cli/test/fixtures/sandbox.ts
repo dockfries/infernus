@@ -63,6 +63,32 @@ export const SAMP_NODE_REPO: FixtureRepo = {
   layout: "pawn",
 };
 
+/** what a pawn repository declares, shared by its archive and its contents route */
+function pawnJsonFor(repo: FixtureRepo) {
+  if (repo.layout !== "pawn") return null;
+
+  // declared after the repository's own name, so the loose-asset path can be
+  // exercised for more than one fixture repository
+  const plugin = repo.name.split("/")[1];
+
+  return {
+    resources: [
+      {
+        name: `${plugin}.so`,
+        platform: "linux",
+        version: "0.3.7",
+        archive: false,
+      },
+      {
+        name: `${plugin}.dll`,
+        platform: "windows",
+        version: "0.3.7",
+        archive: false,
+      },
+    ],
+  };
+}
+
 function archiveFor(repo: FixtureRepo, tag: string) {
   if (repo.layout === "openmp") {
     // one top level directory, the layout open.mp uses and the reason the
@@ -75,28 +101,13 @@ function archiveFor(repo: FixtureRepo, tag: string) {
     ]);
   }
 
-  const pawnJson = {
-    resources: [
-      {
-        name: "samp-node.so",
-        platform: "linux",
-        version: "0.3.7",
-        archive: false,
-      },
-      {
-        name: "samp-node.dll",
-        platform: "windows",
-        version: "0.3.7",
-        archive: false,
-      },
-    ],
-  };
+  const plugin = repo.name.split("/")[1];
 
   return createZip([
-    { name: "pawn.json", content: Buffer.from(JSON.stringify(pawnJson, null, 2)) },
-    { name: "samp-node.dll", content: Buffer.from(`dll ${tag}`) },
-    { name: "samp-node.so", content: Buffer.from(`so ${tag}`) },
-    { name: `samp-node-${tag}.inc`, content: Buffer.from(`inc ${tag}`) },
+    { name: "pawn.json", content: Buffer.from(JSON.stringify(pawnJsonFor(repo), null, 2)) },
+    { name: `${plugin}.dll`, content: Buffer.from(`dll ${tag}`) },
+    { name: `${plugin}.so`, content: Buffer.from(`so ${tag}`) },
+    { name: `${plugin}-${tag}.inc`, content: Buffer.from(`inc ${tag}`) },
   ]);
 }
 
@@ -116,6 +127,30 @@ export async function startReleaseServer(repos: FixtureRepo[] = [OMP_REPO]) {
     const url = new URL(req.url ?? "/", "http://127.0.0.1");
     const releasesMatch = /^\/repos\/([^/]+\/[^/]+)\/releases$/.exec(url.pathname);
 
+    // the contents API, through which a dependency's pawn.json is read
+    const contentsMatch = /^\/repos\/([^/]+\/[^/]+)\/contents\/(.+)$/.exec(url.pathname);
+    if (contentsMatch) {
+      const repo = repos.find((item) => item.name === contentsMatch[1]);
+      const content = repo ? pawnJsonFor(repo) : null;
+      if (!content) {
+        res.writeHead(404, { "content-type": "application/json" });
+        res.end(JSON.stringify({ message: "Not Found" }));
+        return;
+      }
+
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({
+          type: "file",
+          name: contentsMatch[2],
+          path: contentsMatch[2],
+          encoding: "base64",
+          content: Buffer.from(JSON.stringify(content, null, 2)).toString("base64"),
+        }),
+      );
+      return;
+    }
+
     if (releasesMatch) {
       const repo = repos.find((item) => item.name === releasesMatch[1]);
       if (!repo) {
@@ -127,32 +162,55 @@ export async function startReleaseServer(repos: FixtureRepo[] = [OMP_REPO]) {
       res.writeHead(200, { "content-type": "application/json" });
       res.end(
         JSON.stringify(
-          repo.tags.map((tag) => ({
-            tag_name: tag,
-            name: tag,
-            draft: false,
-            prerelease: false,
-            assets: [
+          repo.tags.map((tag) => {
+            const archives = [
               {
                 name: `${repo.name.split("/")[1]}-${tag}.zip`,
                 size: assets.get(`${repo.name}@${tag}`)!.length,
                 browser_download_url: `${baseUrl}/downloads/${repo.name}@${tag}.zip`,
               },
-            ],
-          })),
+            ];
+
+            // a plugin repository also ships the loose files its pawn.json names,
+            // which the install copies into plugins/ without unpacking anything
+            if (repo.layout === "pawn") {
+              const plugin = repo.name.split("/")[1];
+              for (const name of [`${plugin}.dll`, `${plugin}.so`]) {
+                archives.push({
+                  name,
+                  size: Buffer.byteLength(name),
+                  browser_download_url: `${baseUrl}/downloads/${repo.name}@${tag}/${name}`,
+                });
+              }
+            }
+
+            return { tag_name: tag, name: tag, draft: false, prerelease: false, assets: archives };
+          }),
         ),
       );
       return;
     }
 
     if (url.pathname.startsWith("/downloads/")) {
-      const body = assets.get(url.pathname.slice("/downloads/".length).replace(/\.zip$/, ""));
-      if (!body) {
-        res.writeHead(404).end("no such asset");
+      const requested = url.pathname.slice("/downloads/".length);
+
+      // a release archive is keyed as owner/repo@tag.zip, a loose plugin file as
+      // owner/repo@tag/name
+      const archive = assets.get(requested.replace(/\.zip$/, ""));
+      if (archive) {
+        res.writeHead(200, { "content-type": "application/zip" });
+        res.end(archive);
         return;
       }
-      res.writeHead(200, { "content-type": "application/zip" });
-      res.end(body);
+
+      const loose = /^(.+)@(.+)\/([^/]+)$/.exec(requested);
+      if (loose) {
+        res.writeHead(200, { "content-type": "application/octet-stream" });
+        res.end(loose[3]);
+        return;
+      }
+
+      res.writeHead(404).end("no such asset");
       return;
     }
 

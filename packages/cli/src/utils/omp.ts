@@ -336,7 +336,10 @@ export async function addOpenMp(
       const downloadOmpPath = globalOmpPath + assetSuffix(assetByEnv.name);
 
       console.log(`download dep: ${ompRepository} ${version}`);
-      const ompTmpPath = await downloadFile(assetByEnv.browser_download_url, downloadOmpPath);
+      const ompTmpPath = await downloadFile(assetByEnv.browser_download_url, downloadOmpPath, 0, {
+        digest: assetByEnv.digest,
+        expectedSize: assetByEnv.size,
+      });
       await unpackServer(ompTmpPath, globalOmpPath);
       await fs.remove(ompTmpPath);
     } else {

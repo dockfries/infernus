@@ -2,8 +2,6 @@
 
 import { input, confirm } from "@inquirer/prompts";
 import chalk from "chalk";
-// @ts-expect-error no types package
-import decompress from "@xhmikosr/decompress";
 
 import fs from "fs-extra";
 
@@ -18,26 +16,27 @@ import updateNotifier from "update-notifier";
 
 import { execa, Options as ExecaOptions } from "execa";
 
-import { downloadGitRepo } from "./utils/api";
-
 import { addDeps, cleanAllGlobalDeps, cleanGlobalDeps, removeDeps } from "./utils/dep";
 import { listVersions } from "./utils/versions";
 import { generateRandomString } from "./utils/random";
+import { fetchStarter } from "./utils/starter";
+import {
+  changeConfigJson,
+  changePkgName,
+  FORBIDDEN_RCON_PASSWORD,
+  installProjectDependencies,
+  isValidAppName,
+  isValidRconPassword,
+  PROJECT_NAME_DEFAULT,
+} from "./utils/project";
 import type {
   AddDepsOptions,
   CleanCacheOptions,
   ListVersionsOptions,
-  LocalConfig,
   RemoveDepsOptions,
   SetGetConfigOptions,
 } from "./types";
-import {
-  readGlobalConfig,
-  readLocalConfig,
-  readOmpConfig,
-  writeGlobalConfig,
-  writeOmpConfig,
-} from "./utils/config";
+import { readGlobalConfig, writeGlobalConfig } from "./utils/config";
 
 const cli = yargs(hideBin(process.argv));
 
@@ -48,30 +47,6 @@ const currentFilePath = fileURLToPath(import.meta.url);
 const pkgFilePath = resolve(dirname(currentFilePath), "../package.json");
 
 const pkg = fs.readJsonSync(pkgFilePath);
-
-/**
- * Install the dependencies of the project just generated.
- *
- * The work is done in this process rather than by shelling out to
- * `pnpm dlx <package>@latest install`: the running CLI is already the version the
- * user asked for, so there is nothing to download again and no chance of an
- * older cached copy doing the install.
- */
-async function installProjectDependencies(projectDir: string) {
-  const previous = process.cwd();
-  process.chdir(projectDir);
-  try {
-    const config: LocalConfig | null = await readLocalConfig();
-    const dependencies = Object.entries(config?.dependencies ?? {}).map(
-      ([name, version]) => `${name}@${version}`,
-    );
-
-    if (!dependencies.length) return;
-    await addDeps({ dependencies }, false);
-  } finally {
-    process.chdir(previous);
-  }
-}
 
 async function successInstalled(projectName: string) {
   console.log(`\nSuccessfully created project ${chalk.cyan(projectName)}`);
@@ -101,70 +76,18 @@ async function successInstalled(projectName: string) {
   console.log("pnpm dev\n");
 }
 
-async function initStarter(projectName: string, isRakNet = false) {
-  console.log("\n");
-  const isMac = process.platform === "darwin";
-  const isCreatedProject = fs.existsSync(appGeneratePath);
-  if (isCreatedProject) {
-    const files = await fs.readdir(appGeneratePath);
-    if (files.length) throw new Error(`The project directory ${projectName} already exists`);
-  }
-
-  if (isMac) {
-    console.log(
-      chalk.yellow(
-        "You are using a macOS system and cannot run directly on the macOS system after the configuration is complete",
-      ),
-    );
-  }
-
-  const starterPath = await downloadGitRepo(
-    "dockfries",
-    "infernus-starter",
-    appGeneratePath,
-    isRakNet ? "raknet" : "main",
-  );
-
-  await decompress(starterPath, appGeneratePath, { strip: 1 });
-
-  await fs.remove(starterPath);
-  await fs.remove(resolve(appGeneratePath, ".git"));
-}
-
-async function changePkgName(projectName: string) {
-  const pkgFilePath = resolve(appGeneratePath, "package.json");
-  const pkg = fs.readJsonSync(pkgFilePath);
-  pkg.name = projectName;
-  await fs.writeJson(pkgFilePath, pkg, { spaces: 2 });
-}
-
-async function changeConfigJson(password: string, isRakNet: boolean) {
-  const configJson = (await readOmpConfig()) || {};
-
-  configJson.rcon = configJson.rcon || {};
-  configJson.rcon.password = password;
-
-  if (isRakNet) {
-    configJson.pawn = configJson.pawn || {};
-    configJson.pawn.main_scripts = ["polyfill_raknet 1"];
-  }
-
-  return writeOmpConfig(configJson);
-}
-
 async function createApp(args: ArgumentsCamelCase<{ appName?: string }>) {
   let appName = args.appName;
 
   if (!appName) {
     appName = await input({
       message: "What do you want to call the application?",
-      default: "my-app",
-      validate(input) {
-        if (!/^[^\\/?*":<>|\r\n]+$/.test(input)) {
-          console.log(chalk.red.bold("\nThe project name cannot contain special characters"));
-          return false;
-        }
-        return true;
+      default: PROJECT_NAME_DEFAULT,
+      validate(name) {
+        if (isValidAppName(name)) return true;
+
+        console.log(chalk.red.bold("\nThe project name cannot contain special characters"));
+        return false;
       },
     });
   }
@@ -177,37 +100,39 @@ async function createApp(args: ArgumentsCamelCase<{ appName?: string }>) {
   const password = await input({
     message: "What password do you want for rcon? (default random)",
     default: generateRandomString(12),
-    validate(input) {
-      if (!input.length) {
-        console.log(chalk.red.bold("\nYou have to enter a password"));
-        return false;
-      }
-      if (!/^\w+$/.test(input)) {
-        console.log(
-          chalk.red.bold("\nPlease enter a password consisting of case, digits, and underscores."),
-        );
-        return false;
-      }
-      if (input.trim() === "changeme") {
-        console.log(chalk.red.bold("\nThe default rcon password cannot be used."));
-        return false;
-      }
-      return true;
+    validate(value) {
+      if (isValidRconPassword(value)) return true;
+
+      console.log(
+        chalk.red.bold(
+          `\nThe rcon password must use letters, digits and underscores only, and cannot be "${FORBIDDEN_RCON_PASSWORD}"`,
+        ),
+      );
+      return false;
     },
   });
 
   appGeneratePath = resolve(process.cwd(), appName);
 
-  await fs.ensureDir(appGeneratePath);
+  // refused before anything is written, so a mistyped name cannot leave a
+  // half filled directory behind
+  const existing = (await fs.pathExists(appGeneratePath)) ? await fs.readdir(appGeneratePath) : [];
+  if (existing.length) throw new Error(`The project directory ${appName} already exists`);
 
+  if (process.platform === "darwin") {
+    console.log(
+      chalk.yellow(
+        "You are using a macOS system and cannot run directly on the macOS system after the configuration is complete",
+      ),
+    );
+  }
+
+  await fs.ensureDir(appGeneratePath);
   process.chdir(appGeneratePath);
 
-  await initStarter(appName, isRakNet);
-
-  changePkgName(appName);
-
-  await changeConfigJson(password, isRakNet);
-
+  await fetchStarter(appGeneratePath, isRakNet);
+  await changePkgName(appGeneratePath, appName);
+  await changeConfigJson(appGeneratePath, password, isRakNet);
   await successInstalled(appName);
 }
 
