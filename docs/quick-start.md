@@ -85,11 +85,11 @@ infernus update openmultiplayer/open.mp@^1.6.7 --dry-run --verbose
 infernus update openmultiplayer/open.mp@^1.6.7 --verbose
 
 # Clear the lowest matching version of a single global dependency
-infernus cache clean dockfries/samp-streamer-plugin@^2.9.6
+infernus clean dockfries/samp-streamer-plugin@^2.9.6
 # Clear all versions of a single global dependency
-infernus cache clean dockfries/samp-streamer-plugin
+infernus clean dockfries/samp-streamer-plugin
 # Clear all global cache dependencies
-infernus cache clean -a
+infernus clean -a
 
 # Set a GitHub token to resolve API rate limit issues (on-demand).
 # Note: the `gh_token` environment variable takes precedence over the global config.

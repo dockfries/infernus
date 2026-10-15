@@ -65,6 +65,11 @@ async function collect(
  * The read only companion of `add` and `update`: it answers "which versions
  * exist, which of them does this manifest accept, and which one is installed"
  * without downloading or writing anything.
+ *
+ * With `--json` every informational line — the token reminder, the per-page
+ * logs, the rate limit notices — goes to stderr, so stdout carries the document
+ * alone and can be piped into something. Failures still throw; the command turns
+ * them into a document.
  */
 export async function listVersions(args: ListVersionsOptions) {
   const config: LocalConfig | null = await readLocalConfig();
@@ -78,34 +83,55 @@ export async function listVersions(args: ListVersionsOptions) {
     );
   }
 
-  const reports: VersionReport[] = [];
-  const unavailable: UnavailableDependency[] = [];
+  // `console.log` is the only channel the helpers below use, so sending it to
+  // stderr for the duration keeps the document on stdout without threading a
+  // quiet flag through every call.
+  const stdoutLog = console.log;
+  if (args.json)
+    console.log = ((...parts: unknown[]) => console.error(...parts)) as typeof console.log;
 
-  for (const name of names) {
-    const spec = configured[name] ?? "*";
-    if (!validRange(spec)) {
-      throw new Error(`invalid deps version in ${INF_CONFIG_NAME}: ${name}@${spec}`);
+  try {
+    const reports: VersionReport[] = [];
+    const unavailable: UnavailableDependency[] = [];
+
+    for (const name of names) {
+      const spec = configured[name] ?? "*";
+      if (!validRange(spec)) {
+        throw new Error(`invalid deps version in ${INF_CONFIG_NAME}: ${name}@${spec}`);
+      }
+
+      try {
+        reports.push(
+          await collect(name, spec, lockFile?.dependencies?.[name]?.version ?? null, args.verbose),
+        );
+      } catch (error: any) {
+        // one unreachable repository must not hide the versions of the others
+        unavailable.push({ name, reason: error?.message ?? String(error) });
+      }
     }
 
-    try {
-      reports.push(
-        await collect(name, spec, lockFile?.dependencies?.[name]?.version ?? null, args.verbose),
-      );
-    } catch (error: any) {
-      // one unreachable repository must not hide the versions of the others
-      unavailable.push({ name, reason: error?.message ?? String(error) });
+    if (!reports.length && unavailable.length) {
+      throw new Error(unavailable.map((item) => `${item.name}: ${item.reason}`).join("\n"));
     }
-  }
 
-  if (!reports.length && unavailable.length) {
-    throw new Error(unavailable.map((item) => `${item.name}: ${item.reason}`).join("\n"));
+    return await report(reports, unavailable, args);
+  } finally {
+    console.log = stdoutLog;
   }
+}
 
+async function report(
+  reports: VersionReport[],
+  unavailable: UnavailableDependency[],
+  args: ListVersionsOptions,
+) {
   const limit = args.all ? Infinity : (args.limit ?? 10);
 
   if (args.json) {
-    console.log(
-      JSON.stringify(
+    // written straight to stdout: `console.log` is redirected to stderr here so
+    // the informational lines cannot mix into the document
+    process.stdout.write(
+      `${JSON.stringify(
         {
           dependencies: reports.map((report) => ({
             name: report.name,
@@ -118,7 +144,7 @@ export async function listVersions(args: ListVersionsOptions) {
         },
         null,
         2,
-      ),
+      )}\n`,
     );
     return reports;
   }

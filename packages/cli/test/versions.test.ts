@@ -31,6 +31,52 @@ describe("listVersions", () => {
     await Promise.all(tempDirs.map((dir) => fs.remove(dir)));
   });
 
+  /**
+   * `--json` exists to be piped into something, so nothing but the document may
+   * reach stdout — including the informational lines `--verbose` turns on, which
+   * used to be printed ahead of it and made the stream unparseable.
+   */
+  it("writes only the document to stdout, verbose lines included", async () => {
+    const dir = await inProject({ "dockfries/samp-node": "^2.6.1" });
+
+    const stdout: string[] = [];
+    const stderr: string[] = [];
+    const writeOut = process.stdout.write.bind(process.stdout);
+    const writeErr = process.stderr.write.bind(process.stderr);
+    const logOut = console.log;
+    const errOut = console.error;
+
+    process.stdout.write = ((chunk: any) => {
+      stdout.push(String(chunk));
+      return true;
+    }) as typeof process.stdout.write;
+    process.stderr.write = ((chunk: any) => {
+      stderr.push(String(chunk));
+      return true;
+    }) as typeof process.stderr.write;
+    console.log = ((...parts: unknown[]) =>
+      void stdout.push(parts.join(" "))) as typeof console.log;
+    console.error = ((...parts: unknown[]) =>
+      void stderr.push(parts.join(" "))) as typeof console.error;
+
+    try {
+      await listVersions({ dependencies: ["dockfries/samp-node"], json: true, verbose: true });
+    } finally {
+      process.stdout.write = writeOut;
+      process.stderr.write = writeErr;
+      console.log = logOut;
+      console.error = errOut;
+    }
+
+    assert.ok(dir, "a project was set up");
+
+    const document = stdout.join("");
+    const parsed = JSON.parse(document);
+
+    assert.equal(parsed.dependencies.length, 1, "the document is the whole of stdout");
+    assert.deepEqual(parsed.dependencies[0].versions, ["2.8.1", "2.7.1", "2.6.1"]);
+  });
+
   async function inProject(manifest: Record<string, string>, lock: Record<string, string> = {}) {
     const dir = await fs.mkdtemp(path.join(os.tmpdir(), "infernus-versions-"));
     tempDirs.push(dir);

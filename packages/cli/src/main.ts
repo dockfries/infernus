@@ -151,8 +151,18 @@ async function updateDependencies(args: ArgumentsCamelCase<AddDepsOptions>) {
 }
 
 async function listVersionsCommand(args: ArgumentsCamelCase<ListVersionsOptions>) {
-  await listVersions(args);
-  return;
+  try {
+    await listVersions(args);
+  } catch (error: any) {
+    // A consumer parsing `--json` should not have to read prose to find out what
+    // went wrong, so the failure is reported in the shape it asked for.
+    if (!args.json) throw error;
+
+    process.stdout.write(
+      `${JSON.stringify({ dependencies: [], error: error?.message ?? String(error) }, null, 2)}\n`,
+    );
+    process.exitCode = 1;
+  }
 }
 
 function removeDependencies(args: ArgumentsCamelCase<RemoveDepsOptions>) {
@@ -168,19 +178,49 @@ async function cleanCache(args: ArgumentsCamelCase<CleanCacheOptions>) {
   return;
 }
 
+/** the global config keys the CLI acts on */
+const GLOBAL_CONFIG_KEYS = ["gh_token"] as const;
+type GlobalConfigKey = (typeof GLOBAL_CONFIG_KEYS)[number];
+
 async function setOrGetConfig(args: ArgumentsCamelCase<SetGetConfigOptions>) {
   const { list, key, value } = args;
+
   if (list) {
-    const config = await readGlobalConfig();
-    console.log(config);
+    console.log(await readGlobalConfig());
     return;
   }
+
   if (!key) return;
 
-  let config = await readGlobalConfig();
-  if (!config) config = {};
-  if (!value && config[key]) delete config[key];
-  else config[key] = value;
+  // A key nothing reads would be written and then ignored for ever, which is
+  // worse than a refusal: the user believes they configured something.
+  if (!GLOBAL_CONFIG_KEYS.includes(key as GlobalConfigKey)) {
+    throw new Error(
+      `unknown config key ${JSON.stringify(key)}; the keys are: ${GLOBAL_CONFIG_KEYS.join(", ")}`,
+    );
+  }
+
+  return setGlobalConfigKey(key as GlobalConfigKey, value);
+}
+
+/**
+ * Set a config key, or clear it when no value is given.
+ *
+ * Clearing is what an absent value means here: `infernus config gh_token` with
+ * nothing after it removes the stored token, and the token then falls back to
+ * the environment. A key that is already unset is left alone.
+ */
+async function setGlobalConfigKey(key: GlobalConfigKey, value?: string) {
+  const config = (await readGlobalConfig()) ?? {};
+
+  if (!value) {
+    if (!(key in config)) return;
+
+    delete config[key];
+  } else {
+    config[key] = value;
+  }
+
   await writeGlobalConfig(config);
   console.log(config);
 }

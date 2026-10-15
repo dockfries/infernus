@@ -82,11 +82,11 @@ infernus update openmultiplayer/open.mp@^1.6.7 --dry-run --verbose
 infernus update openmultiplayer/open.mp@^1.6.7 --verbose
 
 # 清理全局单个依赖的最低匹配版本
-infernus cache clean dockfries/samp-streamer-plugin@^2.9.6
+infernus clean dockfries/samp-streamer-plugin@^2.9.6
 # 清理全局单个依赖的所有版本
-infernus cache clean dockfries/samp-streamer-plugin
+infernus clean dockfries/samp-streamer-plugin
 # 清理所有全局缓存
-infernus cache clean -a
+infernus clean -a
 
 # 设置 GitHub Token 以解决 API 频率限制（按需）
 # 注：环境变量 gh_token 优先于全局配置
