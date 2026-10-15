@@ -4,14 +4,12 @@
   "meta": {
     "title": "samp-node Plugin Architecture and libnode Embedding",
     "locale": "en",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-sampnode-internals.en.html"
   },
   "layout": {
     "mode": "grid",
-    "origin": [
-      60,
-      40
-    ],
+    "origin": [60, 40],
     "cols": 6,
     "gapX": 90,
     "gapY": 60,
@@ -128,45 +126,27 @@
     {
       "kind": "region",
       "label": "Host: open.mp",
-      "wraps": [
-        "sampgdk",
-        "omp_server"
-      ]
+      "wraps": ["sampgdk", "omp_server"]
     },
     {
       "kind": "region",
       "label": "Plugin export entry",
-      "wraps": [
-        "wload",
-        "wpublic"
-      ]
+      "wraps": ["wload", "wpublic"]
     },
     {
       "kind": "region",
       "label": "Embedded runtime",
-      "wraps": [
-        "nodeimpl",
-        "resource_boot",
-        "libnode"
-      ]
+      "wraps": ["nodeimpl", "resource_boot", "libnode"]
     },
     {
       "kind": "region",
       "label": "Events and marshalling",
-      "wraps": [
-        "events",
-        "natives",
-        "callbacks"
-      ]
+      "wraps": ["events", "natives", "callbacks"]
     },
     {
       "kind": "region",
       "label": "JS resource layer",
-      "wraps": [
-        "entry_module",
-        "core_bus",
-        "samp_global"
-      ]
+      "wraps": ["entry_module", "core_bus", "samp_global"]
     }
   ],
   "connections": [
@@ -261,19 +241,10 @@
       "fromSide": "left",
       "toSide": "left",
       "via": [
-        [
-          12,
-          310
-        ],
-        [
-          12,
-          70
-        ]
+        [12, 310],
+        [12, 70]
       ],
-      "labelAt": [
-        300,
-        294
-      ]
+      "labelAt": [300, 294]
     }
   ],
   "cards": [

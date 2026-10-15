@@ -4,12 +4,10 @@
   "meta": {
     "title": "core and samp-node Bidirectional Bridge",
     "locale": "en",
-    "viewBox": [
-      1080,
-      560
-    ],
+    "viewBox": [1080, 560],
     "column_fit": "spread",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-core-sampnode-bridge.en.html"
   },
   "participants": [
     {

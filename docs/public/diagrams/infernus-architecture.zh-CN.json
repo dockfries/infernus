@@ -4,7 +4,8 @@
   "meta": {
     "title": "Infernus 单仓架构与子包",
     "locale": "zh-CN",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-architecture.zh-CN.html"
   },
   "layout": {
     "mode": "grid",
@@ -19,7 +20,7 @@
     {
       "id": "create_app",
       "type": "backend",
-      "label": "create-app",
+      "label": "cli",
       "sublabel": "脚手架 CLI",
       "row": 0,
       "col": 0

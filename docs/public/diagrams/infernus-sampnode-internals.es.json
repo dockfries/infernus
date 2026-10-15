@@ -3,14 +3,12 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "Arquitectura del plugin samp-node y libnode embebido",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-sampnode-internals.es.html"
   },
   "layout": {
     "mode": "grid",
-    "origin": [
-      60,
-      40
-    ],
+    "origin": [60, 40],
     "cols": 6,
     "gapX": 90,
     "gapY": 60,
@@ -127,45 +125,27 @@
     {
       "kind": "region",
       "label": "Host: open.mp",
-      "wraps": [
-        "sampgdk",
-        "omp_server"
-      ]
+      "wraps": ["sampgdk", "omp_server"]
     },
     {
       "kind": "region",
       "label": "Exportaciones del plugin",
-      "wraps": [
-        "wload",
-        "wpublic"
-      ]
+      "wraps": ["wload", "wpublic"]
     },
     {
       "kind": "region",
       "label": "Runtime embebido",
-      "wraps": [
-        "nodeimpl",
-        "resource_boot",
-        "libnode"
-      ]
+      "wraps": ["nodeimpl", "resource_boot", "libnode"]
     },
     {
       "kind": "region",
       "label": "Eventos y marshalling",
-      "wraps": [
-        "events",
-        "natives",
-        "callbacks"
-      ]
+      "wraps": ["events", "natives", "callbacks"]
     },
     {
       "kind": "region",
       "label": "Capa de recursos JS",
-      "wraps": [
-        "entry_module",
-        "core_bus",
-        "samp_global"
-      ]
+      "wraps": ["entry_module", "core_bus", "samp_global"]
     }
   ],
   "connections": [
@@ -260,19 +240,10 @@
       "fromSide": "left",
       "toSide": "left",
       "via": [
-        [
-          12,
-          310
-        ],
-        [
-          12,
-          70
-        ]
+        [12, 310],
+        [12, 70]
       ],
-      "labelAt": [
-        300,
-        294
-      ]
+      "labelAt": [300, 294]
     }
   ],
   "cards": [

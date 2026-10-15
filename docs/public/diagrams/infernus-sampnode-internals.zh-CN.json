@@ -4,14 +4,12 @@
   "meta": {
     "title": "samp-node 插件内部架构与 libnode 嵌入",
     "locale": "zh-CN",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-sampnode-internals.zh-CN.html"
   },
   "layout": {
     "mode": "grid",
-    "origin": [
-      60,
-      40
-    ],
+    "origin": [60, 40],
     "cols": 6,
     "gapX": 90,
     "gapY": 60,
@@ -128,45 +126,27 @@
     {
       "kind": "region",
       "label": "open.mp 宿主",
-      "wraps": [
-        "sampgdk",
-        "omp_server"
-      ]
+      "wraps": ["sampgdk", "omp_server"]
     },
     {
       "kind": "region",
       "label": "插件导出入口",
-      "wraps": [
-        "wload",
-        "wpublic"
-      ]
+      "wraps": ["wload", "wpublic"]
     },
     {
       "kind": "region",
       "label": "嵌入运行时",
-      "wraps": [
-        "nodeimpl",
-        "resource_boot",
-        "libnode"
-      ]
+      "wraps": ["nodeimpl", "resource_boot", "libnode"]
     },
     {
       "kind": "region",
       "label": "事件与原生转换",
-      "wraps": [
-        "events",
-        "natives",
-        "callbacks"
-      ]
+      "wraps": ["events", "natives", "callbacks"]
     },
     {
       "kind": "region",
       "label": "JS 资源层",
-      "wraps": [
-        "entry_module",
-        "core_bus",
-        "samp_global"
-      ]
+      "wraps": ["entry_module", "core_bus", "samp_global"]
     }
   ],
   "connections": [
@@ -261,19 +241,10 @@
       "fromSide": "left",
       "toSide": "left",
       "via": [
-        [
-          12,
-          310
-        ],
-        [
-          12,
-          70
-        ]
+        [12, 310],
+        [12, 70]
       ],
-      "labelAt": [
-        300,
-        294
-      ]
+      "labelAt": [300, 294]
     }
   ],
   "cards": [

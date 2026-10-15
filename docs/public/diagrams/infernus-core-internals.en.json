@@ -4,14 +4,12 @@
   "meta": {
     "title": "@infernus/core Subsystems and Event Machinery",
     "locale": "en",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-core-internals.en.html"
   },
   "layout": {
     "mode": "grid",
-    "origin": [
-      30,
-      56
-    ],
+    "origin": [30, 56],
     "cols": 7,
     "gapX": 72,
     "gapY": 46,
@@ -136,40 +134,22 @@
     {
       "kind": "region",
       "label": "components: entities",
-      "wraps": [
-        "gamemode",
-        "filterscript",
-        "command",
-        "entities"
-      ]
+      "wraps": ["gamemode", "filterscript", "command", "entities"]
     },
     {
       "kind": "region",
       "label": "utils: events and pools",
-      "wraps": [
-        "bus",
-        "hook",
-        "pools",
-        "innerprops"
-      ]
+      "wraps": ["bus", "hook", "pools", "innerprops"]
     },
     {
       "kind": "region",
       "label": "wrapper: native bindings",
-      "wraps": [
-        "native",
-        "inject",
-        "streamerw"
-      ]
+      "wraps": ["native", "inject", "streamerw"]
     },
     {
       "kind": "region",
       "label": "Host: open.mp",
-      "wraps": [
-        "samp",
-        "omp",
-        "plugin"
-      ]
+      "wraps": ["samp", "omp", "plugin"]
     }
   ],
   "connections": [
@@ -179,10 +159,7 @@
       "to": "bus",
       "label": "dispatch",
       "variant": "emphasis",
-      "labelAt": [
-        282,
-        70
-      ]
+      "labelAt": [282, 70]
     },
     {
       "id": "bus-to-samp",
@@ -190,50 +167,35 @@
       "to": "samp",
       "label": "samp.on(name, trigger)",
       "variant": "emphasis",
-      "labelAt": [
-        858,
-        70
-      ]
+      "labelAt": [858, 70]
     },
     {
       "id": "entities-to-pools",
       "from": "entities",
       "to": "pools",
       "label": "instance to pool",
-      "labelAt": [
-        282,
-        388
-      ]
+      "labelAt": [282, 388]
     },
     {
       "id": "native-to-samp",
       "from": "native",
       "to": "samp",
       "label": "callNative",
-      "labelAt": [
-        1050,
-        139
-      ]
+      "labelAt": [1050, 139]
     },
     {
       "id": "streamerw-to-plugin",
       "from": "streamerw",
       "to": "plugin",
       "label": "Streamer calls",
-      "labelAt": [
-        1050,
-        351
-      ]
+      "labelAt": [1050, 351]
     },
     {
       "id": "samp-to-omp",
       "from": "samp",
       "to": "omp",
       "label": "register callback",
-      "labelAt": [
-        1242,
-        139
-      ]
+      "labelAt": [1242, 139]
     }
   ],
   "cards": [

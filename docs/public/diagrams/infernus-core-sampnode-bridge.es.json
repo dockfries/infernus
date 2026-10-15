@@ -3,12 +3,10 @@
   "diagram_type": "sequence",
   "meta": {
     "title": "Puente bidireccional entre core y samp-node",
-    "viewBox": [
-      1080,
-      560
-    ],
+    "viewBox": [1080, 560],
     "column_fit": "spread",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-core-sampnode-bridge.es.html"
   },
   "participants": [
     {

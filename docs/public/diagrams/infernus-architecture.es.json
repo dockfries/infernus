@@ -3,7 +3,8 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "Monorepo Infernus y sus paquetes",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-architecture.es.html"
   },
   "layout": {
     "mode": "grid",
@@ -18,7 +19,7 @@
     {
       "id": "create_app",
       "type": "backend",
-      "label": "create-app",
+      "label": "cli",
       "sublabel": "CLI de creacion",
       "row": 0,
       "col": 0

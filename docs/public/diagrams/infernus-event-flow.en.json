@@ -4,12 +4,10 @@
   "meta": {
     "title": "defineEvent Event Execution Path",
     "locale": "en",
-    "viewBox": [
-      1080,
-      480
-    ],
+    "viewBox": [1080, 480],
     "column_fit": "spread",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-event-flow.en.html"
   },
   "participants": [
     {

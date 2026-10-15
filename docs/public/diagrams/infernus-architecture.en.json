@@ -4,7 +4,8 @@
   "meta": {
     "title": "Infernus Monorepo and Packages",
     "locale": "en",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-architecture.en.html"
   },
   "layout": {
     "mode": "grid",
@@ -19,7 +20,7 @@
     {
       "id": "create_app",
       "type": "backend",
-      "label": "create-app",
+      "label": "cli",
       "sublabel": "scaffolding CLI",
       "row": 0,
       "col": 0

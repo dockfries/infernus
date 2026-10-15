@@ -3,12 +3,10 @@
   "diagram_type": "sequence",
   "meta": {
     "title": "Ruta de ejecucion del evento defineEvent",
-    "viewBox": [
-      1080,
-      480
-    ],
+    "viewBox": [1080, 480],
     "column_fit": "spread",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-event-flow.es.html"
   },
   "participants": [
     {

@@ -4,12 +4,10 @@
   "meta": {
     "title": "core 与 samp-node 的双向桥接",
     "locale": "zh-CN",
-    "viewBox": [
-      1080,
-      560
-    ],
+    "viewBox": [1080, 560],
     "column_fit": "spread",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs/public/diagrams/infernus-core-sampnode-bridge.zh-CN.html"
   },
   "participants": [
     {
