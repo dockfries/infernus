@@ -98,7 +98,7 @@ export async function downloadFile(
   options: DownloadOptions = {},
 ) {
   const bar = new cliProgress.SingleBar({
-    format: "[{bar}] {percentage}% | ETA: {eta}s | {value}/{total} Chunks",
+    format: "[{bar}] {percentage}% | ETA: {eta}s | {value}/{total} bytes",
   });
 
   const tempPath = `${filePath}.tmp`;
@@ -114,9 +114,6 @@ export async function downloadFile(
       },
       responseType: "stream",
       httpsAgent: proxyAgentFor(url),
-      onDownloadProgress(progressEvent) {
-        if (bar.getTotal()) bar.update(progressEvent.loaded);
-      },
     });
   } catch (error: any) {
     return await retryDownload(url, filePath, retryCount, options, error);
@@ -125,15 +122,16 @@ export async function downloadFile(
   const contentLen = Number(response.headers["content-length"]) || 0;
   bar.start(contentLen, 0);
 
+  const draw = createProgressReporter(bar, contentLen);
+
   try {
     await streamToFile(
       response.data,
       tempPath,
-      () => {
-        if (bar.getTotal()) bar.update(bar.getTotal());
-      },
+      (bytes) => draw(bytes),
       options.stallTimeout ?? STALL_TIMEOUT,
     );
+    draw(0, true);
 
     const written = (await fs.stat(tempPath)).size;
     if (contentLen && written !== contentLen) {
@@ -196,10 +194,41 @@ async function retryDownload(
  * The watchdog is what turns a half open connection into an error instead of a
  * command that never returns.
  */
+/**
+ * A reporter that redraws a progress bar as bytes arrive.
+ *
+ * A chunk arrives far more often than a terminal needs to repaint, so redrawing
+ * on every one of them makes the bar flicker and, when each redraw is given the
+ * total rather than the running count, makes it show a full bar over and over.
+ * The count is accumulated here and the redraw is throttled; passing `force`
+ * draws the final state whatever the clock says.
+ *
+ * The logic is pure apart from the two calls it makes on the bar, so it can be
+ * driven directly in a test.
+ */
+export function createProgressReporter(
+  bar: { update: (value: number) => void; getTotal: () => number },
+  total: number,
+  intervalMs = 100,
+) {
+  let received = 0;
+  let lastDraw = 0;
+
+  return (bytes: number, force = false) => {
+    received += bytes;
+
+    const now = Date.now();
+    if (!force && now - lastDraw < intervalMs) return;
+
+    lastDraw = now;
+    bar.update(total ? Math.min(received, total) : received);
+  };
+}
+
 async function streamToFile(
   source: NodeJS.ReadableStream,
   targetPath: string,
-  onData: () => void,
+  onData: (bytes: number) => void,
   stallTimeout: number,
 ) {
   let watchdog: NodeJS.Timeout;
@@ -211,9 +240,10 @@ async function streamToFile(
     }, stallTimeout);
   };
 
-  source.on("data", () => {
+  source.on("data", (chunk: Buffer | string) => {
     reset();
-    onData();
+    // the length of what actually arrived, so a caller can track progress
+    onData(typeof chunk === "string" ? Buffer.byteLength(chunk) : chunk.length);
   });
   reset();
 
