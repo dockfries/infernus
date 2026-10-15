@@ -1,6 +1,6 @@
 import { defineConfig } from "vitepress";
-import { search as zhSearch } from "./zh-Hans";
-import { search as esSearch } from "./es-ES";
+import { search as zhSearch } from "./zh-Hans.ts";
+import { search as esSearch } from "./es-ES.ts";
 
 export const shared = defineConfig({
   base: "/infernus/",

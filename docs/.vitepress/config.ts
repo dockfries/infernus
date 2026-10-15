@@ -1,8 +1,8 @@
 import { defineConfig } from "vitepress";
-import { shared } from "./shared";
-import { en_US } from "./en-US";
-import { zh_Hans, markdown as zhHansMarkdown } from "./zh-Hans";
-import { es_ES, markdown as esESMarkdown } from "./es-ES";
+import { shared } from "./shared.ts";
+import { en_US } from "./en-US.ts";
+import { zh_Hans, markdown as zhHansMarkdown } from "./zh-Hans.ts";
+import { es_ES, markdown as esESMarkdown } from "./es-ES.ts";
 
 export default defineConfig({
   ...shared,
