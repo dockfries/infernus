@@ -16,6 +16,8 @@ const FIRST_RETRY_DELAY = 500;
 const MAX_RETRY_ATTEMPTS = 5;
 /** no bytes for this long means the connection is dead, not merely slow */
 const STALL_TIMEOUT = 60_000;
+/** a repository with more releases than this is not paged through in full */
+const MAX_RELEASE_PAGES = 50;
 
 let octokitInstance: null | Octokit = null;
 
@@ -274,6 +276,11 @@ export async function githubGet<T = any>(
   }
 
   const [method, routePath] = route.split(" ");
+  if (!routePath?.startsWith("/")) {
+    throw new Error(
+      `expected a route like "GET /repos/{owner}/{repo}/releases", got ${JSON.stringify(route)}`,
+    );
+  }
   if (method !== "GET") throw new Error(`the test endpoint only supports GET, got ${method}`);
 
   const search = new URLSearchParams(
@@ -433,8 +440,16 @@ export async function listRepoReleases(owner: string, repo: string, verbose = fa
     if (payload.length < perPage) break;
     page += 1;
 
-    // the suite serves small fixture pages; the real API never reaches this
-    if (page > 50) break;
+    // a guard against paging forever if a server keeps returning full pages
+    if (page > MAX_RELEASE_PAGES) {
+      console.log(
+        chalk.yellow(
+          `  warn: stopped listing ${owner}/${repo} after ${MAX_RELEASE_PAGES * perPage} releases; ` +
+            `older ones were not considered`,
+        ),
+      );
+      break;
+    }
   }
 
   return releases;

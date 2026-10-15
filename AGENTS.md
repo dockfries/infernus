@@ -33,6 +33,17 @@ pnpm docs:dev             # VitePress dev server
 - **test**: `pnpm test` (runs `@infernus/cli`'s `node:test` suite; only the CLI has tests).
 - Pre-commit hook runs `lint-staged` (lint on `*.{ts,js}`, format on `*.{ts,js,json,yml}`).
 
+### CLI tests
+
+- Live in `packages/cli/test`, one `*.test.ts` per area, imported through `../src/...`.
+- The suite runs offline: `test/fixtures/sandbox.ts` starts a GitHub API stand in
+  (`startReleaseServer`) that serves releases, the contents API and real zip
+  assets, and `INFERNUS_GITHUB_API` points the CLI at it. Point that variable at
+  a fixture server instead of mocking the network.
+- `test/fixtures/playground.ts` drives the **built** CLI end to end, so run
+  `tsx scripts/build.ts cli` before it (or use `TARGET=cli`). It reports
+  `all checks passed` and exits non-zero on a failed check.
+
 ## Commits
 
 - [Conventional Commits](https://www.conventionalcommits.org/) enforced by `@commitlint/config-conventional`.
