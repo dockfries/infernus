@@ -13,6 +13,8 @@ export interface PawnJson {
 }
 
 export interface LocalConfig {
+  /** written by the CLI so editors can validate and complete the file */
+  $schema?: string;
   dependencies?: Record<string, string>;
 }
 
@@ -35,6 +37,16 @@ export interface AddDepsOptions {
   dependencies?: string[];
   production?: boolean;
   component?: boolean;
+  verbose?: boolean;
+  dryRun?: boolean;
+}
+
+export interface ListVersionsOptions {
+  dependencies?: string[];
+  all?: boolean;
+  limit?: number;
+  json?: boolean;
+  verbose?: boolean;
 }
 
 export interface RemoveDepsOptions {

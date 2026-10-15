@@ -1,5 +1,5 @@
 {
-  "name": "@infernus/create-app",
+  "name": "@infernus/cli",
   "version": "0.2.21",
   "description": "Command line interface for rapid infernus development",
   "keywords": [
@@ -15,9 +15,13 @@
     "infernus": "dist/bundle.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "schemas",
+    "!dist/my-app"
   ],
-  "scripts": {},
+  "scripts": {
+    "test": "node --import tsx --test test/*.test.ts"
+  },
   "dependencies": {
     "@inquirer/prompts": "^8.7.3",
     "@octokit/core": "^7.0.8",

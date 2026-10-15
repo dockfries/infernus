@@ -21,13 +21,23 @@ import { execa, Options as ExecaOptions } from "execa";
 import { downloadGitRepo } from "./utils/api";
 
 import { addDeps, cleanAllGlobalDeps, cleanGlobalDeps, removeDeps } from "./utils/dep";
+import { listVersions } from "./utils/versions";
+import { generateRandomString } from "./utils/random";
 import type {
   AddDepsOptions,
   CleanCacheOptions,
+  ListVersionsOptions,
+  LocalConfig,
   RemoveDepsOptions,
   SetGetConfigOptions,
 } from "./types";
-import { readGlobalConfig, readOmpConfig, writeGlobalConfig, writeOmpConfig } from "./utils/config";
+import {
+  readGlobalConfig,
+  readLocalConfig,
+  readOmpConfig,
+  writeGlobalConfig,
+  writeOmpConfig,
+} from "./utils/config";
 
 const cli = yargs(hideBin(process.argv));
 
@@ -38,6 +48,30 @@ const currentFilePath = fileURLToPath(import.meta.url);
 const pkgFilePath = resolve(dirname(currentFilePath), "../package.json");
 
 const pkg = fs.readJsonSync(pkgFilePath);
+
+/**
+ * Install the dependencies of the project just generated.
+ *
+ * The work is done in this process rather than by shelling out to
+ * `pnpm dlx <package>@latest install`: the running CLI is already the version the
+ * user asked for, so there is nothing to download again and no chance of an
+ * older cached copy doing the install.
+ */
+async function installProjectDependencies(projectDir: string) {
+  const previous = process.cwd();
+  process.chdir(projectDir);
+  try {
+    const config: LocalConfig | null = await readLocalConfig();
+    const dependencies = Object.entries(config?.dependencies ?? {}).map(
+      ([name, version]) => `${name}@${version}`,
+    );
+
+    if (!dependencies.length) return;
+    await addDeps({ dependencies }, false);
+  } finally {
+    process.chdir(previous);
+  }
+}
 
 async function successInstalled(projectName: string) {
   console.log(`\nSuccessfully created project ${chalk.cyan(projectName)}`);
@@ -50,19 +84,18 @@ async function successInstalled(projectName: string) {
   if (install) {
     if (!appGeneratePath) throw new Error("appGeneratePath is empty");
 
-    const options: ExecaOptions = {
+    await installProjectDependencies(appGeneratePath);
+
+    await execa("pnpm", ["install"], {
       cwd: appGeneratePath,
       stdio: "inherit",
       killDescendants: true,
-    };
-
-    await execa("pnpm", ["dlx", "@infernus/create-app@latest", "install"], options);
-    await execa("pnpm", ["install"], options);
+    } as ExecaOptions);
   }
 
   console.log(`\ncd ${chalk.cyan(projectName)}`);
   if (!install) {
-    console.log(`pnpm dlx @infernus/create-app@latest install`);
+    console.log(`infernus install`);
     console.log(`pnpm install`);
   }
   console.log("pnpm dev\n");
@@ -117,12 +150,6 @@ async function changeConfigJson(password: string, isRakNet: boolean) {
   }
 
   return writeOmpConfig(configJson);
-}
-
-function generateRandomString(length: number) {
-  return Math.random()
-    .toString(36)
-    .slice(2, 2 + length);
 }
 
 async function createApp(args: ArgumentsCamelCase<{ appName?: string }>) {
@@ -192,6 +219,11 @@ async function updateDependencies(args: ArgumentsCamelCase<AddDepsOptions>) {
   return addDeps(args, true);
 }
 
+async function listVersionsCommand(args: ArgumentsCamelCase<ListVersionsOptions>) {
+  await listVersions(args);
+  return;
+}
+
 function removeDependencies(args: ArgumentsCamelCase<RemoveDepsOptions>) {
   return removeDeps(args.dependencies);
 }
@@ -235,6 +267,18 @@ function addUpdateBuilder(y: Argv) {
       type: "boolean",
       description: "install to components folder instead of plugins",
     })
+    .option("verbose", {
+      type: "boolean",
+      description:
+        "print every cache and release lookup detail, useful when a version cannot be resolved",
+      default: false,
+    })
+    .option("dry-run", {
+      type: "boolean",
+      description:
+        "resolve the versions and report what would change, without downloading or writing anything",
+      default: false,
+    })
     .check((argv: Arguments<AddDepsOptions>) => {
       if (argv.dependencies) {
         return true;
@@ -272,6 +316,37 @@ function init() {
       describe: "update plugins or components",
       builder: addUpdateBuilder,
       handler: updateDependencies,
+    })
+    .command({
+      command: "versions [dependencies..]",
+      describe: "list the releases a dependency can be installed from",
+      aliases: ["ls"],
+      builder: (y) => {
+        return y
+          .option("all", {
+            alias: "a",
+            type: "boolean",
+            description: "print every release instead of the newest ones",
+            default: false,
+          })
+          .option("limit", {
+            alias: "n",
+            type: "number",
+            description: "how many releases to print per dependency",
+            default: 10,
+          })
+          .option("json", {
+            type: "boolean",
+            description: "print the result as JSON, for scripts",
+            default: false,
+          })
+          .option("verbose", {
+            type: "boolean",
+            description: "print every release request as it is made",
+            default: false,
+          });
+      },
+      handler: listVersionsCommand,
     })
     .command({
       command: "config [key] [value]",
@@ -316,10 +391,6 @@ function init() {
       },
       cleanCache,
     )
-    // .option("verbose", {
-    //   type: "boolean",
-    //   describe: "output all detailed information - useful for debugging",
-    // })
     .alias("h", "help")
     .alias("v", "version")
     .wrap(null)
@@ -328,10 +399,21 @@ function init() {
     .demandCommand()
     .recommendCommands()
     .fail((msg, err, yargs) => {
-      yargs.showHelp("log");
-      console.log("\n");
+      // yargs sets msg together with err for CLI misuse, a bare err is our own runtime failure
+      const isRuntimeError = !!err && !msg;
+
+      if (!isRuntimeError) {
+        yargs.showHelp("log");
+        console.log("\n");
+      }
+
       if (err) {
-        console.log(chalk.red.bold(err));
+        console.log(chalk.red.bold(isRuntimeError ? err.message || String(err) : err));
+        if (isRuntimeError) {
+          console.log(
+            chalk.gray("\nre-run with --verbose to print every cache and release lookup detail"),
+          );
+        }
       } else if (msg) {
         console.log(chalk.red.bold(msg));
       }

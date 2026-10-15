@@ -4,7 +4,7 @@ import decompress from "@xhmikosr/decompress";
 import fs from "fs-extra";
 import fg from "fast-glob";
 import { select } from "@inquirer/prompts";
-import semver from "semver";
+import chalk from "chalk";
 import {
   readLocalConfig,
   readLockFile,
@@ -14,12 +14,13 @@ import {
   writeOmpConfig,
   GLOBAL_DEPS_PATH,
   INF_CONFIG_NAME,
-} from "./config.js";
-import { downloadFile, getRepoRelease, getTimeDiff } from "./api.js";
-import type { AddDepsOptions, LocalConfig, LockFileContent, PawnJson } from "../types";
-import { minSatisfying, validRange } from "./semver.js";
-import { addOpenMp, removeOpenMp } from "./omp.js";
-import { getPawnJson, getIncludePath, getPlugOrCompPath } from "./pawn.js";
+} from "./config";
+import { downloadFile, getRepoRelease } from "./api";
+import type { AddDepsOptions, LocalConfig, LockFileContent } from "../types";
+import { validRange } from "./semver";
+import { isSameReleaseTag, matchByRange, parseTag } from "./release";
+import { addOpenMp, removeOpenMp } from "./omp";
+import { getPawnJson, getIncludePath, getPlugOrCompPath } from "./pawn";
 import { ompRepository, isWindows } from "../constants";
 
 async function hasGlobalDepTemp(depVersionPath: string): Promise<boolean> {
@@ -30,6 +31,57 @@ async function hasGlobalDepTemp(depVersionPath: string): Promise<boolean> {
     (files.length === 1 && files[0] === "pawn.json") ||
     files.some((file) => file.endsWith(".tmp"))
   );
+}
+
+export interface CachePlan {
+  /** the cached tag this spec resolves to, when the cache can answer it */
+  cachedTag: string | null;
+  /** whether the dependency has to be downloaded and unpacked again */
+  needsDownload: boolean;
+  /** the cached version that must be dropped before downloading */
+  dropTag: string | null;
+}
+
+/**
+ * Decide what the cache can answer for a requested spec, without touching disk.
+ *
+ * Shared by the real install and by `--dry-run` so a preview cannot drift from
+ * what an install would do. Only a request that names a release can be answered
+ * by the cache, and it is compared by tag, so `v1.6.7.3217` never passes for
+ * `v1.6.7.3218`. A range has to be resolved against the repository first,
+ * because the newest matching release may not be the newest *cached* one.
+ */
+export function planCache(options: {
+  cachedVersions: string[] | null;
+  requested: string;
+  previousVersion?: string;
+  isUpdate: boolean;
+}): CachePlan {
+  const { cachedVersions, requested, previousVersion, isUpdate } = options;
+
+  const miss: CachePlan = { cachedTag: null, needsDownload: true, dropTag: null };
+
+  const requestedTag = parseTag(requested);
+  if (!requestedTag || !cachedVersions) return miss;
+
+  const cached = cachedVersions.map(parseTag).find((parsed) => parsed?.tag === requestedTag.tag);
+  if (!cached) return miss;
+
+  // The release is already installed when the lockfile pins it, so an update is
+  // the user asking for it again: download it afresh. Any other cached release
+  // satisfies the pin and is reused.
+  const alreadyInstalled = isSameReleaseTag(previousVersion, cached.tag);
+  return alreadyInstalled && isUpdate
+    ? { cachedTag: null, needsDownload: true, dropTag: cached.tag }
+    : { cachedTag: cached.tag, needsDownload: false, dropTag: null };
+}
+
+/**
+ * Whether a request pins one release, in which case the cache can answer it
+ * without asking the repository.
+ */
+export function isPinnedRequest(requested: string) {
+  return parseTag(requested) !== null;
 }
 
 export async function cleanAllGlobalDeps() {
@@ -74,9 +126,16 @@ export async function cleanGlobalDeps(deps?: string[], onlyTmp = true) {
         if (!onlyTmp || hasTmp) waitCleanFolders.push(depVersionPath);
       }
     } else {
-      const minVersion = minSatisfying(allVersions, version);
-      if (minVersion) {
-        const depVersionPath = path.resolve(depPath, minVersion);
+      const requestedTag = parseTag(version);
+      const matched = requestedTag
+        ? (allVersions.find((cached) => isSameReleaseTag(cached, requestedTag.tag)) ?? null)
+        : matchByRange(
+            allVersions.map(parseTag).filter((parsed) => parsed !== null),
+            version,
+          )?.tag;
+
+      if (matched) {
+        const depVersionPath = path.resolve(depPath, matched);
         const hasTmp = await hasGlobalDepTemp(depVersionPath);
         if (!onlyTmp || hasTmp) waitCleanFolders.push(depVersionPath);
       }
@@ -98,15 +157,19 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
   if (!args.dependencies) return;
 
-  const deps = args.dependencies.slice();
+  const verbose = !!args.verbose;
+  const dryRun = !!args.dryRun;
 
-  const ompIdx = deps.findIndex((dep) => dep === ompRepository);
-  if (ompIdx > 0) {
-    deps.splice(ompIdx, 1);
-    deps.unshift(ompRepository);
+  if (dryRun && !verbose) {
+    throw new Error("--dry-run needs --verbose, otherwise it would print nothing");
   }
 
-  await cleanGlobalDeps(deps);
+  // the server is installed before the plugins that run inside it, and the copy
+  // step needs its files in place to tell its own files from the project's
+  const deps = moveDependency(args.dependencies, ompRepository, "first");
+
+  // a dry run must not even delete stale temp folders from the cache
+  if (!dryRun) await cleanGlobalDeps(deps);
 
   const lockFile: LockFileContent = (await readLockFile()) || {
     lockfileVersion: 1.0,
@@ -119,17 +182,29 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
 
   const legacyPluginsSet = new Set([...ompConfig.pawn.legacy_plugins]);
 
+  interface InstallPlan {
+    dep: string;
+    from: string | null;
+    to: string | null;
+    action: string;
+    cached: boolean;
+  }
+  const plans: InstallPlan[] = [];
+
   for (const dep of deps) {
     const [name, version = "*"] = dep.split("@");
 
     if (!validRange(version)) throw new Error(`invalid deps version: ${name}`);
 
+    if (verbose) {
+      console.log(
+        chalk.gray(`\n[${name}] requested version "${version}"${isUpdate ? " (update)" : ""}`),
+      );
+    }
+
     const previousDepInfo = lockFile.dependencies?.[name];
     const previousComp = !!previousDepInfo?.component;
     const previousVersion = previousDepInfo?.version;
-
-    const isAnyVer = version === "*";
-    const coerceVersion = isAnyVer ? version : semver.coerce(previousVersion)?.version;
 
     const isComponent = !!args.component || previousComp;
     const pluginFolderPath = getPlugOrCompPath(isComponent);
@@ -142,72 +217,116 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     const depAnyVersionPath = path.resolve(GLOBAL_DEPS_PATH, name);
     const isExistDepAnyVersion = fs.existsSync(depAnyVersionPath);
 
-    let isForceRedownload = !isExistDepAnyVersion || isAnyVer;
+    const plan = planCache({
+      cachedVersions: isExistDepAnyVersion ? await fs.readdir(depAnyVersionPath) : null,
+      requested: version,
+      previousVersion,
+      isUpdate,
+    });
 
-    if (isExistDepAnyVersion) {
-      const files = await fs.readdir(depAnyVersionPath);
-      const satisfyVersion = minSatisfying(files, version);
-      if (satisfyVersion) {
-        const satisfyPath = path.resolve(depAnyVersionPath, satisfyVersion);
-        const isEqualCached =
-          isAnyVer ||
-          (coerceVersion
-            ? semver.eq(coerceVersion, semver.coerce(satisfyVersion)!.version)
-            : false);
-        isForceRedownload = isEqualCached;
+    const isForceRedownload = plan.needsDownload;
 
-        if (isForceRedownload && isUpdate) {
-          await fs.remove(satisfyPath);
-        } else {
-          localCacheFolder = satisfyPath;
-          localCacheVersion = satisfyVersion;
-        }
+    if (plan.dropTag) {
+      await fs.remove(path.resolve(depAnyVersionPath, plan.dropTag));
+    }
+
+    if (plan.cachedTag) {
+      localCacheFolder = path.resolve(depAnyVersionPath, plan.cachedTag);
+      localCacheVersion = plan.cachedTag;
+    }
+
+    if (verbose) {
+      if (!isExistDepAnyVersion) {
+        console.log(chalk.gray(`  cache: ${depAnyVersionPath} does not exist`));
+      } else if (localCacheFolder) {
+        console.log(chalk.gray(`  cache hit: ${localCacheVersion} -> ${localCacheFolder}`));
+      } else if (plan.dropTag) {
+        console.log(chalk.gray(`  cache: dropping ${plan.dropTag} and downloading it again`));
       } else {
-        isForceRedownload = true;
+        console.log(chalk.gray(`  cache: no cached version satisfies "${version}"`));
       }
     }
 
     let matchedRelease: any = null;
-    let pawnJson: null | PawnJson;
 
     if (!localCacheFolder) {
-      matchedRelease = await getRepoRelease(owner, repo, version);
+      matchedRelease = await getRepoRelease(owner, repo, version, verbose);
       if (!matchedRelease) throw new Error(`not found satisfactory deps: ${dep}`);
 
-      if (isForceRedownload && isUpdate) {
-        const cacheFolder = path.resolve(GLOBAL_DEPS_PATH, name, matchedRelease.tag_name);
-        if (fs.existsSync(cacheFolder)) {
-          await fs.remove(cacheFolder);
+      if (verbose) {
+        console.log(chalk.gray(`  matched release: ${matchedRelease.tag_name}`));
+      }
+
+      // A range is resolved against the repository, but the release it lands on
+      // may already be unpacked in the cache, in which case only the project
+      // files are refreshed.
+      const cachedFolder = path.resolve(GLOBAL_DEPS_PATH, name, matchedRelease.tag_name);
+      if (isForceRedownload && !isPinnedRequest(version) && fs.existsSync(cachedFolder)) {
+        localCacheFolder = cachedFolder;
+        localCacheVersion = matchedRelease.tag_name;
+      }
+    }
+
+    if (dryRun) {
+      // Report exactly what an install would do, then move on: nothing is
+      // downloaded, unpacked, copied or written.
+      const target = localCacheVersion ?? matchedRelease?.tag_name ?? null;
+
+      if (!target) {
+        console.log(chalk.red(`  no release matches "${version}"`));
+        plans.push({
+          dep,
+          from: previousVersion ?? null,
+          to: null,
+          action: "missing",
+          cached: false,
+        });
+        continue;
+      }
+
+      const cached = !!localCacheVersion;
+      const action = cached
+        ? "reuse cache"
+        : plan.dropTag
+          ? `re-download (replacing ${plan.dropTag})`
+          : "download";
+
+      console.log(
+        `  ${action}: ${target}${previousVersion ? ` (lockfile had ${previousVersion})` : ""}`,
+      );
+
+      plans.push({ dep, from: previousVersion ?? null, to: target, action, cached });
+      continue;
+    }
+
+    if (name === ompRepository) {
+      dependencies = {
+        ...dependencies,
+        [name]: {
+          version: localCacheVersion ? localCacheVersion : matchedRelease.tag_name,
+        },
+      };
+
+      if (localCacheVersion) {
+        console.log(`local cache found: ${name} ${localCacheVersion}`);
+        await addOpenMp(localCacheVersion, false, previousVersion ?? null, verbose);
+      } else {
+        // The previous build is the reference telling an upgraded server file
+        // apart from one the project modified, so it is dropped only after its
+        // manifest has been used.
+        await addOpenMp(matchedRelease, true, previousVersion ?? null, verbose);
+        if (plan.dropTag) {
+          await fs.remove(path.resolve(depAnyVersionPath, plan.dropTag));
         }
       }
-
-      if (name === ompRepository) {
-        dependencies = {
-          ...dependencies,
-          [name]: {
-            version: localCacheVersion ? localCacheVersion : matchedRelease.tag_name,
-          },
-        };
-        await addOpenMp(matchedRelease, true);
-        continue;
-      }
-
-      pawnJson = await getPawnJson(owner, repo, matchedRelease.tag_name);
-    } else {
-      console.log(`local cache found: ${name} ${localCacheVersion}`);
-      if (name === ompRepository) {
-        dependencies = {
-          ...dependencies,
-          [name]: {
-            version: localCacheVersion ? localCacheVersion : matchedRelease.tag_name,
-          },
-        };
-        await addOpenMp(localCacheVersion!, false);
-        continue;
-      }
-
-      pawnJson = await getPawnJson(owner, repo, localCacheVersion!);
+      continue;
     }
+
+    if (localCacheVersion) {
+      console.log(`local cache found: ${name} ${localCacheVersion}`);
+    }
+
+    const pawnJson = await getPawnJson(owner, repo, localCacheVersion ?? matchedRelease.tag_name);
 
     if (!pawnJson || !pawnJson.resources || !pawnJson.resources.length)
       throw new Error(`not found resources in pawn.json: ${name}`);
@@ -403,14 +522,47 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
       },
     };
   }
+  if (dryRun) {
+    printInstallPlan(plans, isUpdate);
+    return;
+  }
+
   lockFile.dependencies = {
     ...(lockFile.dependencies || {}),
     ...dependencies,
   };
   await Promise.all([writeOmpConfig(ompConfig), writeLockFile(lockFile)]);
-  const end = Date.now();
-  const diff = getTimeDiff(start, end);
-  console.log(`installDeps Done in ${diff}s`);
+  console.log(`installDeps Done in ${elapsed(start)}s`);
+}
+
+function printInstallPlan(
+  plans: { dep: string; from: string | null; to: string | null; action: string; cached: boolean }[],
+  isUpdate: boolean,
+) {
+  console.log(chalk.bold(`\ndry run, nothing was downloaded or written:`));
+
+  for (const plan of plans) {
+    if (!plan.to) {
+      console.log(`  ${plan.dep}  ${chalk.red("no release satisfies the requested version")}`);
+      continue;
+    }
+
+    const change =
+      plan.from === plan.to
+        ? chalk.gray(`stays ${plan.to}`)
+        : plan.from
+          ? `${chalk.yellow(plan.from)} -> ${chalk.green(plan.to)}`
+          : chalk.green(plan.to);
+
+    console.log(`  ${plan.dep}  ${change}  ${chalk.gray(`(${plan.action})`)}`);
+  }
+
+  const downloads = plans.filter((plan) => plan.to && !plan.cached).length;
+  console.log(
+    chalk.gray(
+      `\nwould ${isUpdate ? "update" : "install"} ${plans.filter((plan) => plan.to).length} dependencies, ${downloads} of them by downloading`,
+    ),
+  );
 }
 
 export async function addDeps(args: AddDepsOptions, isUpdate = false) {
@@ -456,14 +608,14 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
     );
 
     config.dependencies = { ...config.dependencies, ...reduceDeps };
-    await writeLocalConfig(config);
+    if (!args.dryRun) await writeLocalConfig(config);
   }
 
   if (!Object.keys(reduceDeps).length) return;
 
   const lockFile = await readLockFile();
 
-  if (lockFile && lockFile.dependencies) {
+  if (lockFile && lockFile.dependencies && !args.dryRun) {
     let waitRemoveDeps;
 
     if (isInstallAll) {
@@ -508,13 +660,8 @@ export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
 
   const waitRemovePlugins = new Set();
 
-  const deps_ = deps.slice();
-
-  const ompIdx = deps.findIndex((dep) => dep === ompRepository);
-  if (ompIdx > -1 && ompIdx !== deps.length - 1) {
-    deps_.splice(ompIdx, 1);
-    deps_.push(ompRepository);
-  }
+  // the server is torn down after the plugins installed inside it
+  const deps_ = moveDependency(deps, ompRepository, "last");
 
   for (const dep of deps_) {
     const [depName] = dep.split("@");
@@ -538,9 +685,21 @@ export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
 
       const [owner, repo] = depName.split("/");
 
-      const pawnJson = await getPawnJson(owner, repo, version);
+      // The files to delete are already on disk, so a repository that cannot be
+      // read (offline, rate limited, deleted upstream) must not block the
+      // removal itself: the manifest and the lockfile are updated either way,
+      // and only the file cleanup is skipped.
+      const pawnJson = await getPawnJson(owner, repo, version).catch((error: any) => {
+        console.log(
+          chalk.yellow(
+            `  warn: cannot read pawn.json of ${depName}@${version} (${error?.message ?? error}), ` +
+              `removing it from the manifest only`,
+          ),
+        );
+        return null;
+      });
 
-      if (!pawnJson.resources) continue;
+      if (!pawnJson?.resources) continue;
 
       const platformResources = pawnJson.resources.filter((resource) => {
         if (isWindows) return resource.platform === "windows";
@@ -634,9 +793,7 @@ export async function removeDeps(deps?: string[], preInsDeps?: string[]) {
 
   await Promise.all([writeOmpConfig(ompConfig), writeLocalConfig(config), writeLockFile(lockFile)]);
 
-  const end = Date.now();
-  const diff = getTimeDiff(start, end);
-  console.log(`removeDeps Done in ${diff}s`);
+  console.log(`removeDeps Done in ${elapsed(start)}s`);
 }
 
 function cleanInvalidLockDeps(config: LocalConfig, lockFile: LockFileContent) {
@@ -654,6 +811,24 @@ function cleanInvalidLockDeps(config: LocalConfig, lockFile: LockFileContent) {
   return count;
 }
 
+/**
+ * Move a dependency to the front or the back of a dependency list.
+ * open.mp is the server the others run inside, so it is installed first and
+ * removed last; the rest keep the order the user gave.
+ */
+function moveDependency(deps: string[], name: string, where: "first" | "last") {
+  const next = deps.slice();
+  const index = next.indexOf(name);
+  if (index === -1) return next;
+
+  next.splice(index, 1);
+  if (where === "first") next.unshift(name);
+  else next.push(name);
+
+  return next;
+}
+
+/** the same, for the legacy plugin list the server loads in order */
 function movePluginToLast(arr: string[], targetItem: string) {
   const targetIndex = arr.findIndex((item) => item === targetItem);
   if (targetIndex !== -1) {
@@ -661,4 +836,8 @@ function movePluginToLast(arr: string[], targetItem: string) {
     arr.push(targetItem);
   }
   return arr;
+}
+
+function elapsed(start: number) {
+  return ((Date.now() - start) / 1000).toFixed(1);
 }

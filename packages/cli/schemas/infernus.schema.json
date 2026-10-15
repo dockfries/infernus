@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/dockfries/infernus/main/packages/cli/schemas/infernus.schema.json",
+  "title": "Infernus CLI project files",
+  "description": "One schema for the two JSON files that @infernus/cli keeps in a project root: infernus.json (the hand-editable manifest) and infernus-lock.json (the generated lockfile). The two branches are structurally disjoint, so oneOf is used and not anyOf: a manifest carries no lockfileVersion and stores each version as a string, while a lockfile requires a numeric lockfileVersion and nests one object per dependency. A document can therefore never satisfy both branches at once.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/manifest"
+    },
+    {
+      "$ref": "#/$defs/lockfile"
+    }
+  ],
+  "$defs": {
+    "dependencyId": {
+      "type": "string",
+      "description": "Dependency identifier in owner/repo form, e.g. openmultiplayer/open.mp, dockfries/samp-node or dockfries/samp-streamer-plugin.",
+      "pattern": "^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$"
+    },
+    "manifestVersion": {
+      "type": "string",
+      "description": "npm-style semver RANGE, or a literal release tag to pin one build, as accepted by the CLI's validRange() check (see utils/semver.ts). Examples: *, ^1.5.8, 1.6.7, ~2.9.6, >=1.0.0, v1.6.7.3218. This is what the user writes and is NOT the installed tag name.",
+      "pattern": "^(\\*|(>=|<=|>|<|\\^|~|=)?\\s*v?\\d+(\\.\\d+){0,3}(-[0-9A-Za-z.-]+)?)$"
+    },
+    "lockVersion": {
+      "type": "string",
+      "description": "Literal git tag name of the resolved GitHub release, written verbatim as matchedRelease.tag_name (see utils/dep.ts). Examples: v1.5.8.3079, v1.6.7.3218, 2.6.1, v2.9.6, v1-RC2. This is a tag, NOT a semver range.",
+      "pattern": "^v?\\d+(\\.\\d+){0,3}(-[0-9A-Za-z.-]+)?$"
+    },
+    "manifest": {
+      "title": "infernus.json",
+      "description": "The project dependency manifest, read from and written to process.cwd()/infernus.json (LocalConfig). Each key maps an owner/repo dependency to the semver range the CLI resolves against GitHub releases, whose concrete result is then recorded in infernus-lock.json.",
+      "type": "object",
+      "required": ["dependencies"],
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "description": "Optional self-reference to this schema; the CLI keeps this key when it rewrites the file, so it is allowed here."
+        },
+        "dependencies": {
+          "type": "object",
+          "description": "Declared dependencies keyed by owner/repo. Every value is a semver range to resolve; unknown dependency names are rejected by propertyNames.",
+          "propertyNames": {
+            "$ref": "#/$defs/dependencyId"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/manifestVersion",
+            "description": "Semver range requested in the manifest (e.g. ^1.5.8), not the resolved tag name that appears in infernus-lock.json."
+          }
+        }
+      }
+    },
+    "lockfile": {
+      "title": "infernus-lock.json",
+      "description": "The generated lockfile, read from and written to process.cwd()/infernus-lock.json (LockFileContent). It pins the exact release tag installed for each dependency; it is produced by the CLI, so it is not meant to be edited by hand.",
+      "type": "object",
+      "required": ["lockfileVersion", "dependencies"],
+      "additionalProperties": false,
+      "properties": {
+        "lockfileVersion": {
+          "type": "number",
+          "description": "Lockfile format version; the CLI currently writes 1."
+        },
+        "dependencies": {
+          "type": "object",
+          "description": "Resolved dependencies keyed by owner/repo, normally mirroring the keys declared in infernus.json.",
+          "propertyNames": {
+            "$ref": "#/$defs/dependencyId"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/lockfileDep"
+          }
+        }
+      }
+    },
+    "lockfileDep": {
+      "title": "Locked dependency entry",
+      "description": "One resolved dependency (LockFileDep). version is always written; component is written for every dependency except open.mp itself. Unknown keys are rejected.",
+      "type": "object",
+      "required": ["version"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/lockVersion",
+          "description": "The installed release tag name (e.g. v1.5.8.3079 resolved from the manifest range ^1.5.8), stored literally so the dependency can be re-resolved from the global cache."
+        },
+        "component": {
+          "type": "boolean",
+          "description": "True when the dependency is installed as an open.mp component (components/), false when installed as a legacy plugin (plugins/), matching the CLI's --component flag."
+        }
+      }
+    }
+  }
+}

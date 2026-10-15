@@ -26,6 +26,9 @@ importers:
       '@types/node':
         specifier: ^26.6.5
         version: 26.6.5
+      ajv:
+        specifier: ^8.20.0
+        version: 8.20.0
       all-contributors-cli:
         specifier: ^6.26.1
         version: 6.26.1
@@ -84,26 +87,7 @@ importers:
         specifier: workspace:^
         version: link:../core
 
-  packages/colandreas:
-    devDependencies:
-      '@infernus/core':
-        specifier: workspace:^
-        version: link:../core
-
-  packages/core:
-    dependencies:
-      iconv-lite:
-        specifier: ^0.7.3
-        version: 0.7.3
-    devDependencies:
-      es-toolkit:
-        specifier: ^1.52.0
-        version: 1.52.0
-      fastest-levenshtein:
-        specifier: ^1.0.16
-        version: 1.0.16
-
-  packages/create-app:
+  packages/cli:
     dependencies:
       '@inquirer/prompts':
         specifier: ^8.7.3
@@ -160,6 +144,25 @@ importers:
       '@types/yargs':
         specifier: ^17.0.35
         version: 17.0.35
+
+  packages/colandreas:
+    devDependencies:
+      '@infernus/core':
+        specifier: workspace:^
+        version: link:../core
+
+  packages/core:
+    dependencies:
+      iconv-lite:
+        specifier: ^0.7.3
+        version: 0.7.3
+    devDependencies:
+      es-toolkit:
+        specifier: ^1.52.0
+        version: 1.52.0
+      fastest-levenshtein:
+        specifier: ^1.0.16
+        version: 1.0.16
 
   packages/distance:
     devDependencies:
@@ -1524,9 +1527,6 @@ packages:
 
   '@types/mdurl@2.0.0':
     resolution: {integrity: sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==}
-
-  '@types/node@26.4.0':
-    resolution: {integrity: sha512-faiGnoIrLH/V8cibOMEAZ8pMw6oXqSukl29ra4mN8GdaB2ZewzeaLj+INpV5N+Z1eKWzY+IzaIZH2EIR6YZRNQ==}
 
   '@types/node@26.6.5':
     resolution: {integrity: sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==}
@@ -3072,9 +3072,6 @@ packages:
   unconfig@7.5.0:
     resolution: {integrity: sha512-oi8Qy2JV4D3UQ0PsopR28CzdQ3S/5A1zwsUwp/rosSbfhJ5z7b90bIyTwi/F7hCLD4SGcZVjDzd4XoUQcEanvA==}
 
-  undici-types@8.3.0:
-    resolution: {integrity: sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==}
-
   undici-types@8.9.0:
     resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
@@ -4128,14 +4125,14 @@ snapshots:
 
   '@types/cli-progress@3.11.6':
     dependencies:
-      '@types/node': 26.4.0
+      '@types/node': 26.6.5
 
   '@types/configstore@6.0.2': {}
 
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 26.4.0
+      '@types/node': 26.6.5
 
   '@types/hast@3.0.5':
     dependencies:
@@ -4143,7 +4140,7 @@ snapshots:
 
   '@types/jsonfile@6.1.4':
     dependencies:
-      '@types/node': 26.4.0
+      '@types/node': 26.6.5
 
   '@types/linkify-it@5.0.0': {}
 
@@ -4157,10 +4154,6 @@ snapshots:
       '@types/unist': 3.0.3
 
   '@types/mdurl@2.0.0': {}
-
-  '@types/node@26.4.0':
-    dependencies:
-      undici-types: 8.3.0
 
   '@types/node@26.6.5':
     dependencies:
@@ -5707,8 +5700,6 @@ snapshots:
       jiti: 2.7.0
       quansync: 1.0.0
       unconfig-core: 7.5.0
-
-  undici-types@8.3.0: {}
 
   undici-types@8.9.0: {}
 

@@ -9,6 +9,7 @@
   "scripts": {
     "build": "tsx scripts/build.ts",
     "build-all": "tsx scripts/build-all.ts",
+    "test": "pnpm --filter @infernus/cli test",
     "release": "tsx scripts/release.ts",
     "contributors": "all-contributors generate & git add README.md",
     "changelog": "tsx scripts/changelog.ts release",
@@ -33,6 +34,7 @@
     "@infernus/types": "workspace:^",
     "@inquirer/prompts": "^8.7.3",
     "@types/node": "^26.6.5",
+    "ajv": "^8.20.0",
     "all-contributors-cli": "^6.26.1",
     "bumpp": "^12.3.0",
     "conventional-changelog": "^8.1.3",
