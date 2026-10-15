@@ -13,14 +13,18 @@ const UNBIASED_LIMIT = Math.floor(256 / ALPHABET.length) * ALPHABET.length;
  * server console and must not be predictable.
  */
 export function generateRandomString(length: number) {
+  // A fractional length would ask `randomBytes` for a partial byte, which yields
+  // no bytes at all and leaves the loop below turning forever.
+  const wanted = Number.isFinite(length) ? Math.max(0, Math.floor(length)) : 0;
+
   let password = "";
 
-  while (password.length < length) {
-    for (const byte of randomBytes(length)) {
+  while (password.length < wanted) {
+    for (const byte of randomBytes(Math.max(1, wanted))) {
       if (byte >= UNBIASED_LIMIT) continue;
 
       password += ALPHABET[byte % ALPHABET.length];
-      if (password.length === length) break;
+      if (password.length === wanted) break;
     }
   }
 

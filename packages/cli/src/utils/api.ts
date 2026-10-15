@@ -10,7 +10,7 @@ import type { OctokitOptions } from "@octokit/core";
 import { Octokit } from "@octokit/core";
 import { readGlobalConfig } from "./config";
 import { proxyAgentFor } from "./proxy";
-import { matchByRange, parseTag } from "./release";
+import { matchByRange, parseTag, withoutVersionPrefix } from "./release";
 
 const FIRST_RETRY_DELAY = 500;
 const MAX_RETRY_ATTEMPTS = 5;
@@ -477,7 +477,10 @@ export function resolveRelease(
 
   const exactTag = parseTag(spec);
   if (exactTag) {
-    const exact = parsedTags.find((entry) => entry.parsed!.tag === exactTag.tag);
+    // the `v` prefix is optional in a spec and inconsistent across repositories,
+    // so `1.6.7.3218` has to find the tag `v1.6.7.3218`
+    const wanted = withoutVersionPrefix(exactTag.tag);
+    const exact = parsedTags.find((entry) => withoutVersionPrefix(entry.parsed!.tag) === wanted);
     if (exact) {
       log(`exact tag "${exactTag.tag}" -> ${exact.release.tag_name}`);
       return exact.release;

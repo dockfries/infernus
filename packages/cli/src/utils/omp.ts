@@ -259,9 +259,11 @@ export async function copyServer(options: CopyServerOptions): Promise<CopyServer
       installed[file] = shippedFile;
     } else {
       kept.push(file);
-      // describe the file as the project has it, so the next upgrade recognises
-      // it as edited again rather than falling back to guessing
-      installed[file] = installedFile ?? shippedFile;
+      // Record what this build shipped, not what the project has. The next run
+      // compares the file against this record: storing the project's own content
+      // would make the file look like an untouched install next time, and the
+      // upgrade after that would overwrite the edit this decision protected.
+      installed[file] = shippedFile;
     }
   }
 

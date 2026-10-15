@@ -1,6 +1,7 @@
 import path from "node:path";
 import os from "node:os";
 import fs from "fs-extra";
+import chalk from "chalk";
 import type { LocalConfig, GlobalConfig, LockFileContent } from "../types";
 
 const globalDir = path.resolve(os.homedir(), ".infernus");
@@ -61,12 +62,54 @@ export function writeLocalConfig(config: LocalConfig) {
   return writeProjectFile(getConfigPath(), withSchema(config), isEmpty);
 }
 
+/**
+ * Read the lockfile, discarding entries that are not shaped like one.
+ *
+ * The file is generated but still hand-editable, and the version of an entry is
+ * used as a path segment. A number, an object or a missing version would become
+ * `undefined` in a path and fail deep inside a removal with a `TypeError` that
+ * names neither the file nor the entry, so an unusable entry is dropped here and
+ * reported instead.
+ */
 export async function readLockFile() {
+  let parsed: any;
+
   try {
-    return (await fs.readJson(getLockPath())) as LockFileContent;
+    parsed = await fs.readJson(getLockPath());
   } catch {
     return null;
   }
+
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return null;
+
+  const dependencies = parsed.dependencies;
+  if (!dependencies || typeof dependencies !== "object" || Array.isArray(dependencies)) {
+    return { ...parsed, dependencies: {} } as LockFileContent;
+  }
+
+  const usable: Record<string, { version: string; component?: boolean }> = {};
+  const dropped: string[] = [];
+
+  for (const [name, entry] of Object.entries<any>(dependencies)) {
+    if (entry && typeof entry === "object" && typeof entry.version === "string" && entry.version) {
+      usable[name] = entry;
+    } else {
+      dropped.push(name);
+    }
+  }
+
+  if (dropped.length) {
+    console.log(
+      chalk.yellow(
+        `  warn: ignoring ${dropped.length} malformed lockfile entr${
+          dropped.length === 1 ? "y" : "ies"
+        } (${dropped.slice(0, 3).join(", ")}${dropped.length > 3 ? ", ..." : ""}); ` +
+          `run \`infernus install\` to regenerate the lockfile`,
+      ),
+    );
+  }
+
+  return { ...parsed, dependencies: usable } as LockFileContent;
 }
 
 export function writeLockFile(data: object) {

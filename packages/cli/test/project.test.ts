@@ -37,6 +37,13 @@ describe("rcon password validation", () => {
     assert.equal(isValidRconPassword(FORBIDDEN_RCON_PASSWORD), false);
     assert.equal(isValidRconPassword(` ${FORBIDDEN_RCON_PASSWORD} `), false);
   });
+
+  it("rejects the shipped default whatever its casing", () => {
+    // the guard is against a password every reader of the template knows
+    for (const value of ["CHANGEME", "Changeme", "changeMe", "cHaNgEmE"]) {
+      assert.equal(isValidRconPassword(value), false, value);
+    }
+  });
 });
 
 describe("generated project files", () => {

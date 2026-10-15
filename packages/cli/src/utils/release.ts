@@ -91,6 +91,11 @@ export function isRangeSpec(spec: string) {
  * Written on the tags rather than on coerced versions: `coerce` reports `1.6.7`
  * for both `v1.6.7.3217` and `v1.6.7.3218`, so comparing coerced versions would
  * call two different builds the same download.
+ *
+ * The optional `v` prefix is ignored, because repositories are inconsistent
+ * about it: samp-node tags `2.6.1` where open.mp tags `v1.6.7.3218`, and a user
+ * should be able to write either. The build number still decides, so a pin of
+ * `1.6.7.3217` never matches the cached `v1.6.7.3218`.
  */
 export function isSameReleaseTag(a?: string | null, b?: string | null) {
   if (!a || !b) return false;
@@ -99,7 +104,12 @@ export function isSameReleaseTag(a?: string | null, b?: string | null) {
   const parsedB = parseTag(b);
   if (!parsedA || !parsedB) return parsedA === null && parsedB === null && a === b;
 
-  return parsedA.tag === parsedB.tag;
+  return withoutVersionPrefix(parsedA.tag) === withoutVersionPrefix(parsedB.tag);
+}
+
+/** `v1.6.7.3218` and `1.6.7.3218` name the same release */
+export function withoutVersionPrefix(tag: string) {
+  return tag.replace(/^v(?=\d)/i, "");
 }
 
 /**

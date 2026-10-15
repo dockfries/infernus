@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { assetExtension, isIncludeAsset, isPluginAsset } from "../src/utils/asset";
+import {
+  assetExtension,
+  assetMatchesPattern,
+  isIncludeAsset,
+  isPluginAsset,
+} from "../src/utils/asset";
 
 /**
  * `path.extname` keeps the leading dot, and comparing its result against `dll`
@@ -31,5 +36,54 @@ describe("asset classification", () => {
   it("recognises include files", () => {
     assert.equal(isIncludeAsset("streamer.inc"), true);
     assert.equal(isIncludeAsset("streamer.dll"), false);
+  });
+});
+
+/**
+ * The pattern is read out of someone else's `pawn.json` and used as a regular
+ * expression, so a nested quantifier in it makes matching backtrack
+ * exponentially: the payloads below never return if they are run. They are
+ * refused instead, and the patterns real repositories declare still work.
+ */
+describe("asset pattern matching", () => {
+  const longName = `${"a".repeat(40)}.zip`;
+
+  it("refuses a pattern that would backtrack forever", () => {
+    for (const pattern of ["(a+)+$", String.raw`(a+)+\$`, "(?:a+)+$", "([a-z]+)*$"]) {
+      assert.throws(
+        () => assetMatchesPattern(pattern, longName),
+        /nests quantifiers/,
+        `expected "${pattern}" to be refused`,
+      );
+    }
+  });
+
+  it("refuses an absurdly long pattern", () => {
+    assert.throws(() => assetMatchesPattern("a".repeat(600), longName), /too long/);
+  });
+
+  it("refuses a pattern that is not a valid expression", () => {
+    assert.throws(() => assetMatchesPattern("evil(win32", longName), /Invalid regular expression/);
+  });
+
+  it("still matches what repositories actually declare", () => {
+    const cases: [string, string[], string][] = [
+      [
+        String.raw`^samp-streamer-plugin-(.*)-win32\.zip$`,
+        ["samp-streamer-plugin-2.9.6-win32.zip", "samp-streamer-plugin-2.9.6-linux-i386.tar.gz"],
+        "samp-streamer-plugin-2.9.6-win32.zip",
+      ],
+      [
+        "samp-node-windows.zip",
+        ["samp-node-windows-x64.zip", "samp-node-windows.zip"],
+        "samp-node-windows.zip",
+      ],
+      [String.raw`^open\.mp-win-x86\.zip$`, ["open.mp-win-x86.zip"], "open.mp-win-x86.zip"],
+    ];
+
+    for (const [pattern, assets, expected] of cases) {
+      const matched = assets.filter((asset) => assetMatchesPattern(pattern, asset));
+      assert.deepEqual(matched, [expected], `pattern "${pattern}"`);
+    }
   });
 });

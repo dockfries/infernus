@@ -58,6 +58,10 @@
       "required": ["lockfileVersion", "dependencies"],
       "additionalProperties": false,
       "properties": {
+        "$schema": {
+          "type": "string",
+          "description": "Self-reference to this schema; the CLI writes it into the lockfile alongside the manifest, so it is allowed here."
+        },
         "lockfileVersion": {
           "type": "number",
           "description": "Lockfile format version; the CLI currently writes 1."

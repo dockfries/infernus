@@ -6,6 +6,9 @@ import { GLOBAL_DEPS_PATH } from "./config";
 import { parseTag, isSameReleaseTag } from "./release";
 import { validRange } from "./semver";
 
+/** the shape a dependency name has to have: `owner/repo` */
+const DEPENDENCY_NAME = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/;
+
 /** what the cache can answer for one requested version */
 export interface CachePlan {
   /** the requested version is already unpacked and can be reused */
@@ -43,11 +46,6 @@ export function planCache(options: PlanCacheOptions): CachePlan {
   return alreadyInstalled && isUpdate
     ? { cachedTag: null, dropTag: exact, needsDownload: true }
     : { cachedTag: exact, dropTag: null, needsDownload: false };
-}
-
-/** a pinned request asks for one exact build rather than a range */
-export function isPinnedRequest(requested: string) {
-  return parseTag(requested) !== null;
 }
 
 export interface DependencyPlan {
@@ -96,8 +94,14 @@ export async function planDependency(
   dep: string,
   options: PlanDependencyOptions = {},
 ): Promise<DependencyPlan> {
-  const [name, requested = "*"] = dep.split("@");
+  const [name, requested = "*", ...extra] = dep.split("@");
 
+  if (!DEPENDENCY_NAME.test(name)) {
+    throw new Error(`invalid dependency name: ${JSON.stringify(name)}, expected owner/repo`);
+  }
+  if (extra.length) {
+    throw new Error(`invalid dependency spec: ${JSON.stringify(dep)}, expected owner/repo@version`);
+  }
   if (!validRange(requested)) throw new Error(`invalid deps version: ${name}`);
 
   const dependencyPath = path.resolve(GLOBAL_DEPS_PATH, name);
@@ -116,10 +120,17 @@ export async function planDependency(
     matchedRelease = await getRepoRelease(owner, repo, requested, options.verbose);
     if (!matchedRelease) throw new Error(`not found satisfactory deps: ${dep}`);
 
-    // the repository resolved to a build the cache already holds, so only the
-    // project files need refreshing
+    // The repository resolved to a build the cache already holds, so only the
+    // project files need refreshing rather than the archive being fetched and
+    // unpacked again.
+    //
+    // This is the only reuse path a range has, since a range cannot name a
+    // cached tag itself. `planCache` has already settled the cases where reuse
+    // would be wrong: an exact pin is answered from the cache without reaching
+    // here, and an update of the installed version reports a drop.
     const cachedFolder = path.resolve(dependencyPath, matchedRelease.tag_name);
-    if (cache.needsDownload && !isPinned(requested) && (await fs.pathExists(cachedFolder))) {
+
+    if (cache.needsDownload && (await fs.pathExists(cachedFolder))) {
       cachedTag = matchedRelease.tag_name;
     }
   }
@@ -137,11 +148,6 @@ export async function planDependency(
     component: !!options.component,
     cache,
   };
-}
-
-/** a request that names one release, which the cache can answer without asking */
-function isPinned(requested: string) {
-  return parseTag(requested) !== null;
 }
 
 /** Report one cache decision, for --verbose. */

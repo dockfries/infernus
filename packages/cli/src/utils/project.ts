@@ -18,7 +18,10 @@ export function isValidAppName(name: string) {
 export function isValidRconPassword(password: string) {
   if (!password.length) return false;
   if (!/^\w+$/.test(password)) return false;
-  return password.trim() !== FORBIDDEN_RCON_PASSWORD;
+
+  // case-insensitive: the guard is against the default the starter ships, and
+  // "Changeme" protects the server console no better than "changeme"
+  return password.trim().toLowerCase() !== FORBIDDEN_RCON_PASSWORD;
 }
 
 /** Install the dependencies the starter declared, inside `projectDir`. */

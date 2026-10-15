@@ -112,6 +112,12 @@ async function createApp(args: ArgumentsCamelCase<{ appName?: string }>) {
     },
   });
 
+  // `infernus create a/b` would otherwise be accepted where the prompt refuses
+  // the same name, and would write a path separator into package.json
+  if (!isValidAppName(appName)) {
+    throw new Error(`The project name ${JSON.stringify(appName)} contains special characters`);
+  }
+
   appGeneratePath = resolve(process.cwd(), appName);
 
   // refused before anything is written, so a mistyped name cannot leave a

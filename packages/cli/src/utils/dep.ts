@@ -20,7 +20,6 @@ import {
   describeCache,
   planDependency,
   planCache,
-  isPinnedRequest,
   type CachePlan,
   type DependencyPlan,
 } from "./plan";
@@ -29,11 +28,49 @@ import { removeOpenMp } from "./omp";
 import { getPawnJson, getIncludePath, getPlugOrCompPath } from "./pawn";
 import { ompRepository, isWindows } from "../constants";
 
-export { planCache, isPinnedRequest };
+export { planCache };
 export type { CachePlan };
+
+/** the shape a dependency name has to have: `owner/repo` */
+const DEPENDENCY_NAME = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/;
+
+/**
+ * Where a dependency's cache directory is, refusing anything that is not a
+ * dependency name.
+ *
+ * These names come from the command line and end up as path segments under the
+ * cache, so `../..` would resolve to the user's home directory and a name
+ * without an owner would resolve to `undefined`. Both are rejected here rather
+ * than trusted, because the caller may then delete what it finds.
+ *
+ * @throws {Error} when the name is not `owner/repo` inside the cache
+ */
+function dependencyCachePath(owner?: string, repo?: string) {
+  const name = owner && repo ? `${owner}/${repo}` : (owner ?? "");
+
+  if (!owner || !repo || !DEPENDENCY_NAME.test(name)) {
+    throw new Error(`invalid dependency name: ${JSON.stringify(name)}, expected owner/repo`);
+  }
+
+  const target = path.resolve(GLOBAL_DEPS_PATH, owner, repo);
+  const relative = path.relative(GLOBAL_DEPS_PATH, target);
+
+  if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
+    throw new Error(`dependency name escapes the cache: ${JSON.stringify(name)}`);
+  }
+
+  return target;
+}
 
 async function hasGlobalDepTemp(depVersionPath: string): Promise<boolean> {
   if (!fs.existsSync(depVersionPath)) return false;
+
+  // The cache directory holds both builds and the archives downloaded beside
+  // them, so an entry is not necessarily a directory. Reading a file as one
+  // throws ENOTDIR, which would abort the cleanup that this check exists to
+  // decide, and with it the whole command.
+  if (!fs.statSync(depVersionPath).isDirectory()) return false;
+
   const files = await fs.readdir(depVersionPath);
   return (
     !files.length ||
@@ -69,7 +106,13 @@ export async function cleanGlobalDeps(deps?: string[], onlyTmp = true) {
     const [name, version = "*"] = dep.split("@");
     const [owner, repo] = name.split("/");
 
-    const depPath = path.resolve(GLOBAL_DEPS_PATH, owner, repo);
+    let depPath: string;
+    try {
+      depPath = dependencyCachePath(owner, repo);
+    } catch (error: any) {
+      console.log(chalk.yellow(`  warn: ${error.message}, skipping`));
+      continue;
+    }
 
     const isExist = fs.existsSync(depPath);
 
@@ -163,11 +206,17 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
         dep: `${plan.name}@${plan.requested}`,
         from: plan.previousVersion ?? null,
         to: plan.finalVersion,
+        // A drop that names the build being installed is not a replacement: the
+        // cache already holds exactly that build, and downloading it again would
+        // discard the install manifest kept beside it, which an upgrade needs to
+        // tell an untouched file from an edited one.
         action: plan.cachedTag
           ? "reuse cache"
-          : plan.cache.dropTag
-            ? `re-download (replacing ${plan.cache.dropTag})`
-            : "download",
+          : plan.cache.dropTag === plan.finalVersion
+            ? "reuse cache (already installed)"
+            : plan.cache.dropTag
+              ? `re-download (replacing ${plan.cache.dropTag})`
+              : "download",
         cached: !!plan.cachedTag,
       })),
       isUpdate,
@@ -322,8 +371,11 @@ async function planRemoval(
   const config = await readLocalConfig();
   if (!config?.dependencies) return null;
 
+  // A lockfile can be missing in a fresh clone or after an install that failed
+  // before writing one. The dependencies are still declared in the manifest, so
+  // removing them has to update it; there is simply nothing on disk to clean up.
   const lockFile = await readLockFile();
-  if (!lockFile?.dependencies) return null;
+  const installed = lockFile?.dependencies ?? {};
 
   const includePath = await getIncludePath();
   const ompConfig = await readOmpConfig();
@@ -348,13 +400,17 @@ async function planRemoval(
     // the lockfile entry goes whether or not there is a build to clean up
     if (!keep.includes(name)) plan.lockDeps.push(name);
 
-    const version = lockFile.dependencies[name]?.version;
+    const version = installed[name]?.version;
     if (!version) continue;
 
     const versionPath = path.resolve(GLOBAL_DEPS_PATH, name, version);
 
     if (name === ompRepository) {
-      plan.openMp.push(versionPath);
+      // A kept server is not torn down: its files are replaced one by one by the
+      // install that follows, which consults the install manifest and keeps the
+      // ones this project edited. Deleting them here would destroy those edits
+      // before that decision is ever made.
+      if (!keep.includes(name)) plan.openMp.push(versionPath);
       continue;
     }
 
@@ -376,7 +432,7 @@ async function planRemoval(
 
     if (!pawnJson?.resources) continue;
 
-    const pluginFolder = getPlugOrCompPath(!!lockFile.dependencies[name]?.component);
+    const pluginFolder = getPlugOrCompPath(!!installed[name]?.component);
 
     for (const resource of pawnJson.resources) {
       if (isWindows ? resource.platform !== "windows" : resource.platform !== "linux") continue;
@@ -401,6 +457,29 @@ async function planRemoval(
 }
 
 /**
+ * Refuse a declaration value that would resolve outside the project.
+ *
+ * These values come from a dependency's `pawn.json` and become delete targets
+ * during removal and copy targets during install, so a `..` in one of them could
+ * reach any file the user can write.
+ *
+ * @throws {Error} when the value resolves outside the project directory
+ */
+function assertInsideProject(value: string, what: string) {
+  const root = process.cwd();
+  const target = path.resolve(root, value);
+  const relative = path.relative(root, target);
+
+  if (relative.startsWith("..") || path.isAbsolute(relative)) {
+    throw new Error(
+      `refusing to use ${what} ${JSON.stringify(value)}: it resolves outside ${root}`,
+    );
+  }
+
+  return target;
+}
+
+/**
  * Where each of a resource's files currently lives in the project.
  *
  * An archive carries its files, so they are found inside the unpacked build and
@@ -414,7 +493,11 @@ async function projectFilesOf(
   const found: { path: string; isPlugin: boolean }[] = [];
 
   if (!resource.archive) {
-    // a loose asset is named after the file itself and lands beside its kind
+    // A loose asset is named after the file itself and lands beside its kind.
+    // The name comes from a dependency's declaration and is used as a delete
+    // target, so a `..` in it has to be refused rather than acted on.
+    assertInsideProject(resource.name, "loose asset name");
+
     if (isIncludeAsset(resource.name)) {
       found.push({ path: path.resolve(context.includePath, resource.name), isPlugin: false });
     } else if (isPluginAsset(resource.name)) {
@@ -431,11 +514,6 @@ async function projectFilesOf(
   const groups = [
     { patterns: includes, destination: context.includePath, isPlugin: false },
     { patterns: resource.plugins ?? [], destination: context.pluginFolder, isPlugin: true },
-    {
-      patterns: Object.values(resource.files ?? {}),
-      destination: process.cwd(),
-      isPlugin: false,
-    },
   ];
 
   for (const group of groups) {
@@ -447,6 +525,27 @@ async function projectFilesOf(
       found.push({
         path: path.resolve(group.destination, path.basename(match)),
         isPlugin: group.isPlugin,
+      });
+    }
+  }
+
+  // A `files` entry names a pattern to find in the build and the destination it
+  // was copied to, so the removal has to read the same pair. Globbing the
+  // destinations instead would leave the file behind and, when the build happens
+  // to contain a path that equals a destination, delete an unrelated file.
+  for (const [pattern, destination] of Object.entries(resource.files ?? {})) {
+    const matches = await fg.glob(pattern, { absolute: true, cwd: context.versionPath });
+
+    for (const match of matches) {
+      const target = path.resolve(process.cwd(), destination);
+      const isDirectory = await fs.stat(target).then(
+        (stats) => stats.isDirectory(),
+        () => false,
+      );
+
+      found.push({
+        path: isDirectory ? path.resolve(target, path.basename(match)) : target,
+        isPlugin: false,
       });
     }
   }

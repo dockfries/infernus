@@ -4,7 +4,63 @@ import fs from "fs-extra";
 import os from "node:os";
 import path from "node:path";
 import { addDeps, removeDeps } from "../src/utils/dep";
+import { planDependency } from "../src/utils/plan";
 import { OMP_REPO, startReleaseServer } from "./fixtures/sandbox";
+
+/**
+ * Whether a planned install reuses a build that is already unpacked.
+ *
+ * A range can never name a cached tag itself, so it reaches the cache only
+ * through the release the repository resolves it to. Getting this wrong makes
+ * every `infernus install` re-download and re-unpack the whole release, which is
+ * the normal case for a manifest that declares `^1.2.3`.
+ */
+describe("cache reuse when planning", () => {
+  const cacheRoot = path.resolve(os.homedir(), ".infernus", "dependencies");
+  const owner = "planner";
+  const repo = "plugin";
+  const cachePath = path.resolve(cacheRoot, owner, repo);
+
+  after(async () => {
+    await fs.remove(cachePath);
+  });
+
+  /** a cached build, and a release list that resolves to it */
+  async function seed(...tags: string[]) {
+    await fs.remove(cachePath);
+    for (const tag of tags) {
+      await fs.ensureDir(path.resolve(cachePath, tag));
+      await fs.writeJson(path.resolve(cachePath, tag, "pawn.json"), { resources: [] });
+    }
+  }
+
+  it("reuses a cached build for a range through the fixture server", async () => {
+    const server = await startReleaseServer([
+      { name: `${owner}/${repo}`, tags: ["v2.0.0.100", "v1.0.0.50"], layout: "pawn" } as any,
+    ]);
+    const previous = process.env.INFERNUS_GITHUB_API;
+    process.env.INFERNUS_GITHUB_API = server.baseUrl;
+
+    try {
+      await seed("v2.0.0.100");
+
+      for (const spec of ["^2.0.0", "2.x", "*", "v2.0.0.100"]) {
+        const plan = await planDependency(`${owner}/${repo}@${spec}`);
+
+        assert.equal(
+          plan.cachedTag,
+          "v2.0.0.100",
+          `"${spec}" should reuse the build already in the cache`,
+        );
+        assert.equal(plan.finalVersion, "v2.0.0.100");
+      }
+    } finally {
+      if (previous === undefined) delete process.env.INFERNUS_GITHUB_API;
+      else process.env.INFERNUS_GITHUB_API = previous;
+      await server.close();
+    }
+  });
+});
 
 /**
  * Installing a dependency that is already unpacked in the cache must still put

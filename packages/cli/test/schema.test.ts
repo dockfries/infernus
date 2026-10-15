@@ -21,7 +21,17 @@ const schema = JSON.parse(
 const validate = new Ajv({ strict: true, allErrors: true }).compile(schema);
 
 const manifest = (dependencies: Record<string, unknown>) => ({ dependencies });
+
+/**
+ * The CLI writes `$schema` into both of the files it owns, so the helpers here
+ * build what a project really contains rather than a simplified shape; a
+ * lockfile without it is not something the CLI ever produces.
+ */
+const SCHEMA_URL =
+  "https://raw.githubusercontent.com/dockfries/infernus/main/packages/cli/schemas/infernus.schema.json";
+
 const lockfile = (dependencies: Record<string, unknown>, lockfileVersion: unknown = 1) => ({
+  $schema: SCHEMA_URL,
   lockfileVersion,
   dependencies,
 });
@@ -30,8 +40,7 @@ describe("infernus.schema.json", () => {
   it("accepts the project files the CLI writes", () => {
     assert.equal(
       validate({
-        $schema:
-          "https://raw.githubusercontent.com/dockfries/infernus/main/packages/cli/schemas/infernus.schema.json",
+        $schema: SCHEMA_URL,
         dependencies: {
           "dockfries/samp-node": "^2.6.1",
           "openmultiplayer/open.mp": "^1.5.8",
@@ -42,6 +51,7 @@ describe("infernus.schema.json", () => {
       JSON.stringify(validate.errors),
     );
 
+    // exactly what writeLockFile leaves on disk, $schema included
     assert.equal(
       validate(
         lockfile({
@@ -51,6 +61,14 @@ describe("infernus.schema.json", () => {
       ),
       true,
       JSON.stringify(validate.errors),
+    );
+  });
+
+  it("accepts a lockfile that carries the schema key", () => {
+    assert.equal(
+      validate(lockfile({ "dockfries/samp-node": { version: "2.6.1" } })),
+      true,
+      "the CLI writes $schema into the lockfile, so the schema must allow it",
     );
   });
 

@@ -4,7 +4,7 @@ import decompress from "@xhmikosr/decompress";
 import fs from "fs-extra";
 import fg from "fast-glob";
 import { select } from "@inquirer/prompts";
-import { isIncludeAsset, isPluginAsset } from "./asset";
+import { assetMatchesPattern, isIncludeAsset, isPluginAsset } from "./asset";
 import { downloadFile } from "./api";
 import {
   GLOBAL_DEPS_PATH,
@@ -115,6 +115,18 @@ export class DependencyInstaller {
       return;
     }
 
+    // An update of a version that is already installed drops that build so the
+    // release is fetched again, which is what the dry run promises. It has to go
+    // before the install: addOpenMp would otherwise find it unpacked, skip the
+    // download, and the removal afterwards would delete the build that was just
+    // recorded in the lockfile. Only its own build is ever dropped.
+    const replaceable =
+      plan.cache.dropTag && plan.cache.dropTag !== plan.finalVersion
+        ? path.resolve(GLOBAL_DEPS_PATH, plan.name, plan.cache.dropTag)
+        : null;
+
+    if (replaceable) await fs.remove(replaceable);
+
     // the previous build is the reference telling an upgraded server file apart
     // from one the project modified, so it is dropped only after its manifest
     // has been used
@@ -124,10 +136,6 @@ export class DependencyInstaller {
       this.previousVersion(plan.name) ?? null,
       this.verbose,
     );
-
-    if (plan.cache.dropTag) {
-      await fs.remove(path.resolve(GLOBAL_DEPS_PATH, plan.name, plan.cache.dropTag));
-    }
   }
 
   private async materializeDependency(plan: DependencyPlan) {
@@ -148,6 +156,17 @@ export class DependencyInstaller {
     const resources = pawnJson.resources.filter((resource) =>
       isWindows ? resource.platform === "windows" : resource.platform === "linux",
     );
+
+    // Recording a dependency whose resources are all for another platform would
+    // claim an install that placed nothing, and the server would silently lack
+    // the plugin it was told about.
+    if (!resources.length) {
+      const platforms = [...new Set(pawnJson.resources.map((resource) => resource.platform))];
+      throw new Error(
+        `${plan.name}@${plan.finalVersion} has no ${isWindows ? "windows" : "linux"} resource; ` +
+          `it only declares: ${platforms.join(", ") || "none"}`,
+      );
+    }
 
     const pluginFolder = getPlugOrCompPath(plan.component);
 
@@ -173,18 +192,19 @@ export class DependencyInstaller {
     }
 
     if (resource.plugins) {
-      await fs.ensureDir(pluginFolder);
+      // resolved before the folder is created, so a refused pattern cannot leave
+      // an empty plugins/ directory behind
+      const plugins = await globInside(plan.versionPath, resource.plugins);
 
-      const plugins = await fg.glob(resource.plugins, {
-        absolute: true,
-        cwd: plan.versionPath,
-      });
+      if (plugins.length) {
+        await fs.ensureDir(pluginFolder);
 
-      for (const plugin of plugins) {
-        await fs.copy(plugin, path.resolve(pluginFolder, path.basename(plugin)));
+        for (const plugin of plugins) {
+          await fs.copy(plugin, path.resolve(pluginFolder, path.basename(plugin)));
 
-        if (!plan.component) {
-          this.legacyPlugins.add(path.basename(plugin, path.extname(plugin)));
+          if (!plan.component) {
+            this.legacyPlugins.add(path.basename(plugin, path.extname(plugin)));
+          }
         }
       }
     }
@@ -211,8 +231,9 @@ export class DependencyInstaller {
   }
 
   private async downloadArchive(plan: DependencyPlan, resource: PawnJsonResources) {
-    const pattern = new RegExp(resource.name);
-    const assets = plan.matchedRelease.assets.filter((asset: any) => pattern.test(asset.name));
+    const assets = plan.matchedRelease.assets.filter((asset: any) =>
+      assetMatchesPattern(resource.name, asset.name),
+    );
 
     if (!assets.length) {
       throw new Error(
@@ -236,6 +257,14 @@ export class DependencyInstaller {
 
     console.log(`download dep: ${asset.name} ${plan.matchedRelease.tag_name}`);
 
+    // A marker while the archive is being fetched and unpacked. A version
+    // directory that holds a pawn.json and an un-unpacked archive otherwise
+    // looks like a finished build, so the next run would reuse it, place nothing
+    // and still report success. Left behind on failure, removed on success —
+    // `cleanGlobalDeps` keys on it to discard an incomplete cache.
+    const marker = path.resolve(plan.versionPath, "empty.tmp");
+    await fs.ensureFile(marker);
+
     const archivePath = await downloadFile(
       asset.browser_download_url,
       path.resolve(plan.versionPath, asset.name),
@@ -245,6 +274,7 @@ export class DependencyInstaller {
 
     await decompress(archivePath, plan.versionPath);
     await fs.remove(archivePath);
+    await fs.remove(marker);
   }
 
   private async placeIncludes(plan: DependencyPlan, resource: PawnJsonResources) {
@@ -252,7 +282,7 @@ export class DependencyInstaller {
       ? resource.includes.map((include) => (path.extname(include) ? include : `${include}/*.inc`))
       : ["*.inc"];
 
-    const includes = await fg.glob(patterns, { absolute: true, cwd: plan.versionPath });
+    const includes = await globInside(plan.versionPath, patterns);
     if (!includes.length) return;
 
     await fs.ensureDir(this.includePath);
@@ -264,10 +294,25 @@ export class DependencyInstaller {
 
   private async placeExtraFiles(plan: DependencyPlan, resource: PawnJsonResources) {
     for (const [pattern, destination] of Object.entries(resource.files)) {
-      const [file] = await fg.glob(pattern, { absolute: true, cwd: plan.versionPath });
-      if (!file) continue;
+      const target = assertInside(process.cwd(), destination, "file destination");
+      const matches = await globInside(plan.versionPath, pattern);
+      if (!matches.length) continue;
 
-      await fs.copy(file, path.resolve(process.cwd(), destination));
+      // A pattern may name several files. The destination is a directory when it
+      // already is one, and otherwise a file only when a single match has to
+      // land there; anything else would drop matches without saying so.
+      const isDirectory =
+        matches.length > 1 ||
+        (await fs.stat(target).then(
+          (stats) => stats.isDirectory(),
+          () => false,
+        ));
+
+      for (const match of matches) {
+        const to = isDirectory ? path.resolve(target, path.basename(match)) : target;
+        await fs.ensureDir(path.dirname(to));
+        await fs.copy(match, to, { overwrite: true });
+      }
     }
   }
 
@@ -285,13 +330,13 @@ export class DependencyInstaller {
       // they are read from. Searching the project instead finds either nothing on
       // a first install, or the copies already placed there, which would then be
       // copied onto themselves.
-      const cached = await fg.glob(
+      const cached = await globInside(
+        plan.versionPath,
         loose.map((resource) => resource.name),
-        { absolute: true, cwd: plan.versionPath },
       );
 
       for (const asset of cached) {
-        await this.placeAsset(asset, pluginFolder);
+        await this.placeAsset(asset, pluginFolder, plan.component);
       }
       return;
     }
@@ -300,29 +345,30 @@ export class DependencyInstaller {
     const assets = plan.matchedRelease.assets.filter((asset: any) => names.includes(asset.name));
     if (!assets.length) return;
 
-    // a marker so an interrupted download is recognised as an incomplete cache
+    // A marker left behind only when the transfer failed, so the next install
+    // recognises the directory as an incomplete cache and fetches it again
+    // instead of placing the assets that happen to be there. It must outlive a
+    // failure, so it is removed after the loop rather than in a `finally`.
     const marker = path.resolve(plan.versionPath, "empty.tmp");
     await fs.ensureFile(marker);
 
-    try {
-      for (const asset of assets) {
-        console.log(`download dep: ${asset.name} ${plan.matchedRelease.tag_name}`);
+    for (const asset of assets) {
+      console.log(`download dep: ${asset.name} ${plan.matchedRelease.tag_name}`);
 
-        const assetPath = await downloadFile(
-          asset.browser_download_url,
-          path.resolve(plan.versionPath, asset.name),
-          0,
-          { digest: asset.digest, expectedSize: asset.size },
-        );
+      const assetPath = await downloadFile(
+        asset.browser_download_url,
+        path.resolve(plan.versionPath, asset.name),
+        0,
+        { digest: asset.digest, expectedSize: asset.size },
+      );
 
-        await this.placeAsset(assetPath, pluginFolder);
-      }
-    } finally {
-      await fs.remove(marker);
+      await this.placeAsset(assetPath, pluginFolder, plan.component);
     }
+
+    await fs.remove(marker);
   }
 
-  private async placeAsset(assetPath: string, pluginFolder: string) {
+  private async placeAsset(assetPath: string, pluginFolder: string, isComponent: boolean) {
     const name = path.basename(assetPath);
 
     if (isIncludeAsset(name)) {
@@ -336,7 +382,12 @@ export class DependencyInstaller {
     if (isPluginAsset(name)) {
       await fs.ensureDir(pluginFolder);
       await fs.copy(assetPath, path.resolve(pluginFolder, name));
-      this.legacyPlugins.add(path.basename(name, path.extname(name)));
+
+      // a component is loaded by the script that asked for it, so listing it as
+      // a legacy plugin would have the server look for it under plugins/ too
+      if (!isComponent) {
+        this.legacyPlugins.add(path.basename(name, path.extname(name)));
+      }
     }
   }
 
@@ -351,6 +402,22 @@ export class DependencyInstaller {
   }
 }
 
+/**
+ * Glob inside `root`, refusing patterns that reach outside it.
+ *
+ * Every pattern here comes from a dependency's `pawn.json`, so none of them are
+ * trusted to stay in their own build directory.
+ *
+ * @throws {Error} when a pattern resolves outside `root`
+ */
+async function globInside(root: string, patterns: string | string[]) {
+  for (const pattern of [patterns].flat()) {
+    assertInside(root, pattern, "glob pattern");
+  }
+
+  return fg.glob(patterns, { absolute: true, cwd: root });
+}
+
 /** put `name` at the end of a list, keeping the rest in order */
 function moveToLast(items: string[], name: string) {
   const index = items.indexOf(name);
@@ -359,4 +426,29 @@ function moveToLast(items: string[], name: string) {
   items.splice(index, 1);
   items.push(name);
   return items;
+}
+
+/**
+ * Refuse a declaration that would reach outside the directory it belongs to.
+ *
+ * A `pawn.json` comes from someone else's repository, and its values are used as
+ * glob patterns and as a destination to write to. An absolute pattern, a `..`
+ * segment or an absolute destination would let a dependency read files from
+ * anywhere on the machine and write anywhere the user can, so each is rejected
+ * before it is used. `path.resolve` is what makes the check meaningful: it
+ * collapses `..` first, and the result is then compared against the root.
+ *
+ * @throws {Error} when the value resolves outside `root`
+ */
+function assertInside(root: string, value: string, what: string) {
+  const target = path.resolve(root, value);
+  const relative = path.relative(root, target);
+
+  if (relative.startsWith("..") || path.isAbsolute(relative)) {
+    throw new Error(
+      `refusing to use ${what} ${JSON.stringify(value)}: it resolves outside ${root}`,
+    );
+  }
+
+  return target;
 }
