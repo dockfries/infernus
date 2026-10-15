@@ -14,16 +14,18 @@ Object.keys({
 }).forEach((key) => externalSet.add(new RegExp(`^${key}(/.*)?$`)));
 
 export default defineConfig({
-  input: inputPath,
+  input: {
+    bundle: inputPath,
+  },
   external: [...externalSet],
   platform: "node",
   transform: {
     target: "node22",
   },
   output: {
+    dir: outputPath,
     cleanDir: true,
     format: "es",
     minify: true,
-    file: outputPath + "/bundle.js",
   },
 });
