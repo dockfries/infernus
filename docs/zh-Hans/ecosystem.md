@@ -9,7 +9,7 @@
 | `@infernus/core`            | 核心库，用于编写 Open Multiplayer 脚本                                       |
 | `@infernus/cef`             | 对 omp-cef 组件的封装                                                        |
 | `@infernus/colandreas`      | 对 ColAndreas 插件的封装                                                     |
-| `@infernus/create-app`      | 命令行脚手架，快速创建项目                                                   |
+| `@infernus/cli`             | 命令行脚手架，快速创建项目                                                   |
 | `@infernus/distance`        | 对 distance 库的封装                                                         |
 | `@infernus/drift-detection` | 对 driftDetection 库的封装                                                   |
 | `@infernus/e-selection`     | 对 eSelection 库的封装                                                       |
@@ -68,7 +68,7 @@
 - [ColAndreas](https://github.com/dockfries/ColAndreas/releases)
 - [sampvoice](https://github.com/dockfries/sampvoice)
 
-> 请注意，`@infernus/create-app` 目前暂不支持下载这些 64 位依赖。
+> 请注意，`@infernus/cli` 目前暂不支持下载这些 64 位依赖。
 
 ~~使用 64 位的 raknet 插件时，可能需要手动重新编译 polyfill 以匹配 Pawn.RakNet 的版本，避免版本不匹配的警告。~~
 

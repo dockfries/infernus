@@ -15,7 +15,7 @@
 根据命令行的提示，您可以轻松创建项目。
 
 ```sh
-pnpm dlx @infernus/create-app@latest create
+pnpm dlx @infernus/cli@latest create
 ```
 
 ::: tip
@@ -24,7 +24,7 @@ pnpm dlx @infernus/create-app@latest create
 [了解 API 频率限制](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-primary-rate-limits)
 :::
 
-`@infernus/create-app` 是一个类似于 `sampctl` 的工具，通过解析 `pawn.json` 规则管理包依赖，方便您管理插件或 `open.mp` 基座依赖。
+`@infernus/cli` 是一个类似于 `sampctl` 的工具，通过解析 `pawn.json` 规则管理包依赖，方便您管理插件或 `open.mp` 基座依赖。
 
 #### 缓存
 
@@ -41,9 +41,9 @@ pnpm dlx @infernus/create-app@latest create
 
 ```sh
 # 全局安装 CLI 工具
-pnpm add @infernus/create-app -g
+pnpm add @infernus/cli -g
 # 已全局安装时更新
-pnpm update @infernus/create-app -g
+pnpm update @infernus/cli -g
 
 # 创建项目
 infernus create <appName>
@@ -71,6 +71,16 @@ infernus update openmultiplayer/open.mp
 # 更新到指定版本
 infernus update openmultiplayer/open.mp@^1.5.8
 
+# 查看某个依赖有哪些可用版本（哪些满足当前声明的范围、哪个已安装）
+infernus versions
+infernus versions openmultiplayer/open.mp --all
+
+# 预演一次安装或更新会做什么：只解析版本，不下载、不写入任何文件
+infernus update openmultiplayer/open.mp@^1.6.7 --dry-run --verbose
+
+# 排查版本解析问题时打印每一步的缓存判定与 GitHub 请求
+infernus update openmultiplayer/open.mp@^1.6.7 --verbose
+
 # 清理全局单个依赖的最低匹配版本
 infernus cache clean dockfries/samp-streamer-plugin@^2.9.6
 # 清理全局单个依赖的所有版本
@@ -87,6 +97,40 @@ infernus config -l
 
 # 删除某个全局配置
 infernus config gh_token
+```
+
+> [!WARNING]
+> 在 Windows 的 `cmd.exe` 中，`^` 是转义字符，`@^1.5.8` 会被 shell 吃掉变成 `@1.5.8`。
+> 请务必用引号包裹版本号，否则你会得到一条与"版本不存在"无关的困惑报错：
+> `infernus update "openmultiplayer/open.mp@^1.5.8"`
+
+#### 版本号怎么写
+
+- `infernus.json` 里写的是 **npm 风格的 semver 范围**（`*`、`^1.5.8`、`~1.6.7`），
+  也可以直接写一个具体的 release tag 来锁定单个构建。
+- **同一个文件里混着 `2.6.1` 和 `^2.9.6` 是正常的**：CLI 从不改写你写的版本号。
+  `2.6.1` 是**精确锁定**，`update` 会一直停在这个 release；
+  `^2.9.6` 是**范围**，`update` 会前进到该范围内最新的 release。
+  想让它跟着升级，就把范围写上：`infernus add dockfries/samp-node@^2.6.1`。
+  不确定某个依赖现在是什么状态，用 `infernus versions` 看：它会标出哪些版本满足声明的范围。
+- `infernus-lock.json` 里记的是 **GitHub release 的真实 tag**，例如 `v1.6.7.3218`。
+  open.mp 的 tag 是四段式（`v主.次.补.构建号`），所以 `1.6.7` 并不是一个真实 tag；
+  CLI 会把它当作范围回退匹配到最新的 `v1.6.7.3218`，`--verbose` 会显示这个回退过程。
+- 升级 open.mp 时，新版本自带的文件会替换旧构建留下的文件；
+  被项目改动过的文件会被保留并列出，`config.json`、`bans.json`、`gamemodes/` 从不覆盖。
+  项目文件会被重写时会额外留一份 `config.json.<时间戳>.bak`。
+
+#### JSON Schema
+
+`infernus.json` 与 `infernus-lock.json` 都有 schema 校验与补全，在文件顶部加一行即可：
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/dockfries/infernus/main/packages/cli/schemas/infernus.schema.json",
+  "dependencies": {
+    "openmultiplayer/open.mp": "^1.6.7"
+  }
+}
 ```
 
 #### 特性

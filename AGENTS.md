@@ -30,7 +30,7 @@ pnpm docs:dev             # VitePress dev server
 - **lint**: `pnpm lint` (oxlint, with `oxlint-tsgolint` plugin). No eslint.
 - **format**: `pnpm format` (oxfmt).
 - **type-check**: `tsx scripts/type-check.ts [packageName]`.
-- **No tests** — no test framework is configured.
+- **test**: `pnpm test` (runs `@infernus/cli`'s `node:test` suite; only the CLI has tests).
 - Pre-commit hook runs `lint-staged` (lint on `*.{ts,js}`, format on `*.{ts,js,json,yml}`).
 
 ## Commits
@@ -73,5 +73,5 @@ Skip `@throws` on private static-class constructors, internal utils (`bus.ts`, `
 
 - 23 packages under `packages/*`, all `@infernus/*` scope.
 - `core/` is the main library (`@infernus/core`).
-- `create-app/` is a CLI scaffolding tool (`@infernus/create-app`, published as `npx infernus`).
+- `cli/` is a CLI scaffolding tool (`@infernus/cli`, published as the `infernus` binary).
 - `.gitignore` blocks `.vscode`, `.npmrc`, `node_modules`, `dist`.

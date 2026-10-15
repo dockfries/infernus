@@ -9,7 +9,7 @@ The `@infernus/*` ecosystem is designed to bridge Pawn include libraries into th
 | `@infernus/core`            | Node.js library for scripting Open Multiplayer                                                                   |
 | `@infernus/cef`             | A wrapper of the omp-cef component for samp-node                                                                 |
 | `@infernus/colandreas`      | A wrapper of the SA-MP ColAndreas plugin for samp-node                                                           |
-| `@infernus/create-app`      | Command line interface for rapid infernus development                                                            |
+| `@infernus/cli`             | Command line interface for rapid infernus development                                                            |
 | `@infernus/distance`        | A wrapper of the distance library for samp-node                                                                  |
 | `@infernus/drift-detection` | A wrapper of the driftDetection library for samp-node                                                            |
 | `@infernus/e-selection`     | A wrapper of the eSelection library for samp-node                                                                |
@@ -68,7 +68,7 @@ This keeps all logic unified in the Node.js/TypeScript environment, avoiding fra
 - [ColAndreas](https://github.com/dockfries/ColAndreas/releases)
 - [sampvoice](https://github.com/dockfries/sampvoice)
 
-> Note that `@infernus/create-app` does not support downloading these 64-bit dependencies at this time.
+> Note that `@infernus/cli` does not support downloading these 64-bit dependencies at this time.
 
 ~~When using the 64-bit raknet plugin, you may need to manually recompile the polyfill to match the Pawn.RakNet version and avoid version mismatch warnings.~~
 

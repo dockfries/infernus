@@ -9,7 +9,7 @@ El ecosistema `@infernus/*` está diseñado para integrar las librerías Pawn in
 | `@infernus/core`            | Librería de Node.js para crear scripts en Open Multiplayer                                                                            |
 | `@infernus/cef`             | Un envoltorio del componente omp-cef para samp-node                                                                                   |
 | `@infernus/colandreas`      | Un envoltorio del plugin ColAndreas para samp-node                                                                                    |
-| `@infernus/create-app`      | Interfaz de línea de comandos para desarrollo rápido con infernus                                                                     |
+| `@infernus/cli`             | Interfaz de línea de comandos para desarrollo rápido con infernus                                                                     |
 | `@infernus/distance`        | Un envoltorio de la librería distance para samp-node                                                                                  |
 | `@infernus/drift-detection` | Un envoltorio de la librería driftDetection para samp-node                                                                            |
 | `@infernus/e-selection`     | Un envoltorio de la librería eSelection para samp-node                                                                                |
@@ -68,7 +68,7 @@ Esto mantiene toda la lógica unificada en el entorno Node.js/TypeScript, evitan
 - [ColAndreas](https://github.com/dockfries/ColAndreas/releases)
 - [sampvoice](https://github.com/dockfries/sampvoice)
 
-> Tenga en cuenta que `@infernus/create-app` no admite la descarga de estas dependencias de 64 bits en este momento.
+> Tenga en cuenta que `@infernus/cli` no admite la descarga de estas dependencias de 64 bits en este momento.
 
 ~~Al usar el plugin raknet de 64 bits, es posible que deba recompilar manualmente el polyfill para que coincida con la versión de Pawn.RakNet y evitar advertencias de incompatibilidad de versiones.~~
 

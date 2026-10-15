@@ -75,20 +75,20 @@ If they ask about **ecosystem context** (polyfills, versions, omp-node), read `r
 
 ### Internal Utilities
 
-| File                            | Covers                                                                       |
-| ------------------------------- | ---------------------------------------------------------------------------- |
-| `references/weapon-config.md`   | Weapon damage config, callbacks                                              |
-| `references/e-selection.md`     | ModelSelectionMenu                                                           |
-| `references/progress.md`        | ProgressBar                                                                  |
-| `references/qrcode.md`          | QR code generator                                                            |
-| `references/drift-detection.md` | Drift detection events                                                       |
-| `references/map-loader.md`      | .map file loader                                                             |
-| `references/mapfix.md`          | MapFix object fixes (156 places), toggleMapFixPlace                          |
-| `references/query.md`           | UDP server query                                                             |
-| `references/rec.md`             | Recording data blocks                                                        |
-| `references/utilities.md`       | @infernus/distance, @infernus/mapandreas, @infernus/fs, @infernus/create-app |
-| `references/s-art.md`           | Image-to-object art renderer                                                 |
-| `references/veh-para.md`        | Vehicle parachute system                                                     |
+| File                            | Covers                                                                |
+| ------------------------------- | --------------------------------------------------------------------- |
+| `references/weapon-config.md`   | Weapon damage config, callbacks                                       |
+| `references/e-selection.md`     | ModelSelectionMenu                                                    |
+| `references/progress.md`        | ProgressBar                                                           |
+| `references/qrcode.md`          | QR code generator                                                     |
+| `references/drift-detection.md` | Drift detection events                                                |
+| `references/map-loader.md`      | .map file loader                                                      |
+| `references/mapfix.md`          | MapFix object fixes (156 places), toggleMapFixPlace                   |
+| `references/query.md`           | UDP server query                                                      |
+| `references/rec.md`             | Recording data blocks                                                 |
+| `references/utilities.md`       | @infernus/distance, @infernus/mapandreas, @infernus/fs, @infernus/cli |
+| `references/s-art.md`           | Image-to-object art renderer                                          |
+| `references/veh-para.md`        | Vehicle parachute system                                              |
 
 ### Guides
 

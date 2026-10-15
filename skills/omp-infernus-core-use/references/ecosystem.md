@@ -70,10 +70,10 @@ To install: `#include` the `.inc` file in your gamemode's `.pwn`, compile to `.a
 
 ### Tooling
 
-| Package                | Type    | Description                                  |
-| ---------------------- | ------- | -------------------------------------------- |
-| `@infernus/create-app` | CLI     | Scaffolding: `npx infernus create my-server` |
-| `@infernus/fs`         | Pure TS | Built-in filterscript rewrites               |
+| Package         | Type    | Description                                  |
+| --------------- | ------- | -------------------------------------------- |
+| `@infernus/cli` | CLI     | Scaffolding: `npx infernus create my-server` |
+| `@infernus/fs`  | Pure TS | Built-in filterscript rewrites               |
 
 ## Version Compatibility
 

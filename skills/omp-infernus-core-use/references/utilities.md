@@ -68,16 +68,16 @@ GameMode.use(A51Base, { debug: true });
 
 Check `packages/filterscript/src/scripts/` for the full list.
 
-## @infernus/create-app
+## @infernus/cli
 
 CLI scaffolding tool for the samp-node + open.mp environment. Run without installing:
 
 ```bash
-pnpm dlx @infernus/create-app@latest create my-server   # scaffold new project
+pnpm dlx @infernus/cli@latest create my-server   # scaffold new project
 cd my-server && pnpm install && pnpm dev
 ```
 
-The CLI is published as `@infernus/create-app` with the `infernus` binary — use `pnpm dlx @infernus/create-app@latest <cmd>` (or install it globally and run `infernus <cmd>`). `npx infernus` does **not** resolve to this package.
+The CLI is published as `@infernus/cli` with the `infernus` binary — use `pnpm dlx @infernus/cli@latest <cmd>` (or install it globally and run `infernus <cmd>`). `npx infernus` does **not** resolve to this package.
 
 Full command reference:
 
