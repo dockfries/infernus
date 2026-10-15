@@ -126,6 +126,22 @@ export async function readOmpConfig() {
 }
 
 /**
+ * Whether a server config holds nothing but an empty plugin list.
+ *
+ * That is what a project is left with once its last plugin is removed: every
+ * other setting belongs to the server or the operator, so a config reduced to
+ * this has stopped meaning anything and is not worth a file.
+ */
+export function isOnlyPluginList(config: any) {
+  if (!config || Object.keys(config).length !== 1) return false;
+
+  const pawn = config.pawn;
+  if (!pawn || Object.keys(pawn).length !== 1) return false;
+
+  return Array.isArray(pawn.legacy_plugins) && !pawn.legacy_plugins.length;
+}
+
+/**
  * Write the open.mp server config, keeping a copy of what it replaces.
  *
  * This file belongs to the running server as much as to the CLI: it holds the
@@ -144,7 +160,15 @@ export async function writeOmpConfig(config: object) {
 
   if (current === next) return false;
 
-  if (current === null && !Object.keys(config).length) return false;
+  // nothing to record, and either no file to keep or one that only held this
+  if (!Object.keys(config).length || isOnlyPluginList(config)) {
+    if (current === null) return false;
+
+    if (isOnlyPluginList(config)) {
+      await fs.remove(configPath);
+      return true;
+    }
+  }
 
   if (current !== null) {
     const stamp = new Date().toISOString().replace(/[:.]/g, "-");
@@ -164,6 +188,6 @@ function getLockPath() {
   return path.resolve(process.cwd(), INF_LOCK_NAME);
 }
 
-function getOmpConfigPath() {
+export function getOmpConfigPath() {
   return path.resolve(process.cwd(), "config.json");
 }

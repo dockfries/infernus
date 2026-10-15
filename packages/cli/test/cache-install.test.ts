@@ -201,7 +201,13 @@ describe("installing from the cache", () => {
         "removing a dependency must delete the plugin it placed",
       );
 
-      const config = await fs.readJson(path.resolve(dir, "config.json"));
+      const configPath = path.resolve(dir, "config.json");
+      // the config only ever held this plugin's name, so it is removed rather
+      // than left behind as an empty shell claiming a server
+      const config = (await fs.pathExists(configPath))
+        ? await fs.readJson(configPath)
+        : { pawn: { legacy_plugins: [] } };
+
       assert.equal(
         (config.pawn?.legacy_plugins ?? []).includes("plugin-fixture"),
         false,
