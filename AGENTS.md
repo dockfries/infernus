@@ -21,7 +21,8 @@ pnpm docs:dev             # VitePress dev server
 - Building **includes type-checking** first (custom `tsx scripts/type-check.ts` — not `tsc`).
 - Build order: `streamer` → `core` → `raknet` → rest (enforced by `build-all.ts`).
 - `@infernus/types` and `@infernus/shared` have no `src/main.ts` and are excluded from build.
-- Set `TARGET=<name>` env to build a specific package non-interactively.
+- `tsx scripts/build.ts <name>` builds one package non-interactively; without the argument it
+  prompts. `TARGET` is set per package by that script for rolldown, not by the caller.
 - `@infernus/streamer` is `"private": true` (not published).
 - Most packages list `@infernus/core` as a **peerDependency**.
 
@@ -41,8 +42,10 @@ pnpm docs:dev             # VitePress dev server
   assets, and `INFERNUS_GITHUB_API` points the CLI at it. Point that variable at
   a fixture server instead of mocking the network.
 - `test/fixtures/playground.ts` drives the **built** CLI end to end, so run
-  `tsx scripts/build.ts cli` before it (or use `TARGET=cli`). It reports
-  `all checks passed` and exits non-zero on a failed check.
+  `tsx scripts/build.ts cli` before it. It reports `all checks passed` and exits
+  non-zero on a failed check. It shares the real `~/.infernus` cache, so a build
+  of the same version already on the machine is reused instead of the fixture
+  stand in; point `USERPROFILE`/`HOME` at a scratch directory to isolate it.
 
 ## Commits
 

@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import ts from "typescript";
 
 export function typeCheck(packageName?: string) {
@@ -60,4 +61,12 @@ export function typeCheck(packageName?: string) {
   }
 
   console.log(`Type-check Finished in ${totalSec}`);
+}
+
+// Run as a script (`tsx scripts/type-check.ts [packageName]`), and stay inert
+// when imported, which is how `share.ts` runs it before every build. Without
+// this the documented command started node, imported nothing and exited 0,
+// reporting a pass that never happened.
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+  typeCheck(process.argv[2]);
 }
