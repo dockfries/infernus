@@ -155,3 +155,23 @@ export function satisfiesSpec(tag: string | null | undefined, spec: string) {
 
   return pin.build === null && semver.satisfies(parsed.version, pin.version.version);
 }
+
+/**
+ * The spec to declare for a release, the way npm saves one.
+ *
+ * npm writes a caret range on the version it resolved, and `--save-exact` writes
+ * the version itself. The build number is dropped from the caret form on
+ * purpose: `^1.6.7` is a range open.mp's `v1.6.7.3218` satisfies, while
+ * `^1.6.7.3218` is not a range at all. The exact form keeps the tag verbatim, so
+ * a four segment pin still names one build.
+ *
+ * This only ever sees a tag that resolution produced, which already had to be
+ * parseable, so the fallback covers a case that cannot happen rather than one
+ * that does.
+ */
+export function saveSpecFor(tag: string, exact = false) {
+  const parsed = parseTag(tag);
+  if (!parsed || exact) return tag;
+
+  return `^${parsed.version.version}`;
+}

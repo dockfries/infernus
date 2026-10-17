@@ -281,4 +281,165 @@ describe("the lockfile answers what the manifest still accepts", () => {
       /takes no dependencies/,
     );
   });
+
+  it("leaves an up to date project untouched, edits included", async () => {
+    process.env.INFERNUS_GITHUB_API = failingUrl;
+    await seedCache(NEW);
+    const dir = await project({ [NAME]: "^2.6.1" }, { [NAME]: NEW });
+
+    await addDeps({});
+
+    const plugin = path.resolve(dir, "plugins", "plugin-fixture.dll");
+    assert.equal(await fs.readFile(plugin, "utf8"), `dll ${NEW}`, "the first install placed it");
+
+    await fs.writeFile(plugin, "patched by the project");
+
+    await addDeps({});
+
+    assert.equal(
+      await fs.readFile(plugin, "utf8"),
+      "patched by the project",
+      "an install with nothing to do must not rewrite the files it placed earlier",
+    );
+    assert.equal(
+      (await fs.readJson(path.resolve(dir, "infernus-lock.json"))).dependencies[NAME].version,
+      NEW,
+    );
+  });
+
+  it("places the files again when the project lost them", async () => {
+    process.env.INFERNUS_GITHUB_API = failingUrl;
+    await seedCache(NEW);
+    const dir = await project({ [NAME]: "^2.6.1" }, { [NAME]: NEW });
+
+    await addDeps({});
+    await fs.remove(path.resolve(dir, "plugins"));
+
+    await addDeps({});
+
+    assert.equal(
+      await fs.readFile(path.resolve(dir, "plugins", "plugin-fixture.dll"), "utf8"),
+      `dll ${NEW}`,
+      "a fresh clone carries the lockfile and no plugins/, so they have to be placed",
+    );
+  });
+
+  it("replaces the files when the release changes", async () => {
+    process.env.INFERNUS_GITHUB_API = server.baseUrl;
+    await seedCache(OLD);
+    const dir = await project({ [NAME]: "^2.6.1" }, { [NAME]: OLD });
+
+    await addDeps({});
+    const plugin = path.resolve(dir, "plugins", "plugin-fixture.dll");
+    await fs.writeFile(plugin, "patched by the project");
+
+    await addDeps({}, "update");
+
+    assert.equal(
+      await fs.readFile(plugin, "utf8"),
+      "plugin-fixture.dll",
+      "a changing release has to replace the file the old build left",
+    );
+  });
+
+  it("moves every declared dependency on a bare update", async () => {
+    process.env.INFERNUS_GITHUB_API = server.baseUrl;
+    await seedCache(OLD);
+    const dir = await project({ [NAME]: "^2.6.1" }, { [NAME]: OLD });
+
+    await addDeps({}, "update");
+
+    assert.equal(
+      (await fs.readJson(path.resolve(dir, "infernus-lock.json"))).dependencies[NAME].version,
+      NEW,
+    );
+    assert.equal(
+      (await fs.readJson(path.resolve(dir, "infernus.json"))).dependencies[NAME],
+      "^2.6.1",
+      "an update moves the lockfile, never the declaration",
+    );
+  });
+});
+
+/**
+ * npm's save-prefix: what a dependency that was named without a version ends up
+ * declaring. The manifest is the project's own statement of intent, so an
+ * existing declaration is never widened by an install-like command.
+ */
+describe("what add saves", () => {
+  const cwd = process.cwd();
+  const tempDirs: string[] = [];
+  const cachePath = path.resolve(os.homedir(), ".infernus", "dependencies", "lockcheck");
+  let server: Awaited<ReturnType<typeof startReleaseServer>>;
+
+  before(async () => {
+    server = await startReleaseServer([REPO]);
+    process.env.INFERNUS_GITHUB_API = server.baseUrl;
+  });
+
+  after(async () => {
+    process.chdir(cwd);
+    delete process.env.INFERNUS_GITHUB_API;
+    await server.close();
+    await fs.remove(cachePath);
+    await Promise.all(tempDirs.map((dir) => fs.remove(dir)));
+  });
+
+  async function project(manifest: Record<string, string> = {}) {
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "infernus-save-"));
+    tempDirs.push(dir);
+    await fs.writeJson(
+      path.resolve(dir, "infernus.json"),
+      { dependencies: manifest },
+      {
+        spaces: 2,
+      },
+    );
+    process.chdir(dir);
+    return dir;
+  }
+
+  it("declares a caret range for a dependency added without a version", async () => {
+    const dir = await project();
+
+    await addDeps({ dependencies: [NAME] });
+
+    assert.equal(
+      (await fs.readJson(path.resolve(dir, "infernus.json"))).dependencies[NAME],
+      `^${NEW}`,
+      "npm writes the caret range of the version it resolved",
+    );
+  });
+
+  it("declares the exact tag with --save-exact", async () => {
+    const dir = await project();
+
+    await addDeps({ dependencies: [NAME], saveExact: true });
+
+    assert.equal((await fs.readJson(path.resolve(dir, "infernus.json"))).dependencies[NAME], NEW);
+  });
+
+  it("keeps the range a project already declared", async () => {
+    const dir = await project({ [NAME]: "^2.6.1" });
+
+    await addDeps({ dependencies: [NAME] });
+
+    assert.equal(
+      (await fs.readJson(path.resolve(dir, "infernus.json"))).dependencies[NAME],
+      "^2.6.1",
+      "naming a dependency without a version must not widen what was declared",
+    );
+  });
+
+  it("saves an explicit spec verbatim, including a wildcard", async () => {
+    const dir = await project({ [NAME]: "^2.6.1" });
+
+    await addDeps({ dependencies: [`${NAME}@*`] });
+
+    assert.equal(
+      (await fs.readJson(path.resolve(dir, "infernus.json"))).dependencies[NAME],
+      "*",
+      "a spec typed on the command line is what the manifest gets",
+    );
+  });
 });

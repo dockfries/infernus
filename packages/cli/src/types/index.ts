@@ -41,6 +41,8 @@ export interface AddDepsOptions {
   dryRun?: boolean;
   /** install exactly what the lockfile records, refusing one that is out of sync */
   frozen?: boolean;
+  /** declare the exact release tag instead of a caret range */
+  saveExact?: boolean;
 }
 
 export interface ListVersionsOptions {

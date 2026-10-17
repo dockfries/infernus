@@ -66,11 +66,31 @@ async function main() {
     await step("frozen install", ["install", "--frozen", "--verbose"]);
     check("the frozen install kept the lockfile", lockedTag(), OLD_TAG);
 
+    // npm's other half: an update moves the declared ranges. `^1.5.8` accepts
+    // 1.6.7, so this is what carries the project forward
+    await step("update every declared dependency", ["update", "--verbose"]);
+    check("the bare update moved the lockfile", lockedTag(), NEW_TAG);
+    check(
+      "the bare update installed the new server",
+      sandbox.read("omp-server.exe"),
+      `server ${NEW_TAG}`,
+    );
+    check(
+      "the bare update kept the declaration",
+      sandbox.readJson("infernus.json").dependencies["openmultiplayer/open.mp"],
+      "^1.5.8",
+    );
+
     await step("update from the release server", [
       "update",
       "openmultiplayer/open.mp@^1.6.7",
       "--verbose",
     ]);
+    check(
+      "the explicit update declared the range",
+      sandbox.readJson("infernus.json").dependencies["openmultiplayer/open.mp"],
+      "^1.6.7",
+    );
 
     console.log("\n### resulting project");
     check("the server was upgraded", sandbox.read("omp-server.exe"), `server ${NEW_TAG}`);

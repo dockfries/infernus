@@ -257,6 +257,13 @@ function addUpdateBuilder(y: Argv) {
         "install exactly what infernus-lock.json records, failing if it no longer satisfies infernus.json",
       default: false,
     })
+    .option("save-exact", {
+      alias: "E",
+      type: "boolean",
+      description:
+        "declare the exact release tag instead of a caret range when a dependency is named without a version",
+      default: false,
+    })
     .check((argv: Arguments<AddDepsOptions>) => {
       // an update exists to move the lockfile, so freezing it is a contradiction
       if (argv.frozen && argv._[0] === "update") {
@@ -266,15 +273,21 @@ function addUpdateBuilder(y: Argv) {
         );
       }
 
-      if (argv.dependencies) {
-        return true;
-      } else if (argv._[0] === "install") {
+      // both commands can act on every declared dependency, which is what makes
+      // `infernus update` the way to move the whole project within its ranges
+      const everyDependency = argv._[0] === "install" || argv._[0] === "update";
+
+      if (!argv.dependencies?.length) {
+        if (!everyDependency) throw new Error("You must specify dependencies");
+
         if (argv.component) {
-          throw new Error("You can't specify component if install all");
+          throw new Error(
+            "You can't specify --component when installing or updating every dependency",
+          );
         }
-        return true;
       }
-      throw new Error("You must specify dependencies");
+
+      return true;
     });
 }
 

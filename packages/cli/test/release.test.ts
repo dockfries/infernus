@@ -7,8 +7,10 @@ import {
   matchByRange,
   parseTag,
   satisfiesSpec,
+  saveSpecFor,
   type ParsedTag,
 } from "../src/utils/release";
+import { validRange } from "../src/utils/semver";
 
 /** every tag openmultiplayer/open.mp has published, newest first */
 const OMP_TAGS = [
@@ -189,5 +191,40 @@ describe("satisfiesSpec", () => {
     assert.equal(satisfiesSpec("latest", "^1.6.7"), false);
     assert.equal(satisfiesSpec(null, "^1.6.7"), false);
     assert.equal(satisfiesSpec(undefined, "*"), false);
+  });
+});
+
+/**
+ * What a dependency added without a version ends up declaring. npm writes the
+ * caret range of the version it resolved; the build number is dropped from that
+ * form because `^1.6.7.3218` is not a range at all, while `v1.6.7.3218` still
+ * satisfies `^1.6.7`.
+ */
+describe("saveSpecFor", () => {
+  it("writes a caret range on the released version", () => {
+    assert.equal(saveSpecFor("2.8.1"), "^2.8.1");
+    assert.equal(saveSpecFor("v2.9.6"), "^2.9.6");
+    assert.equal(saveSpecFor("0.3.7"), "^0.3.7");
+  });
+
+  it("drops the build number, which a range cannot carry", () => {
+    assert.equal(saveSpecFor("v1.6.7.3218"), "^1.6.7");
+    assert.equal(satisfiesSpec("v1.6.7.3218", saveSpecFor("v1.6.7.3218")), true);
+  });
+
+  it("keeps a prerelease, since a range without it would not match the release", () => {
+    assert.equal(saveSpecFor("1.7.0-omp"), "^1.7.0-omp");
+    assert.equal(satisfiesSpec("1.7.0-omp", saveSpecFor("1.7.0-omp")), true);
+  });
+
+  it("keeps the tag verbatim as an exact declaration", () => {
+    assert.equal(saveSpecFor("v1.6.7.3218", true), "v1.6.7.3218");
+    assert.equal(saveSpecFor("2.8.1", true), "2.8.1");
+  });
+
+  it("produces a spec the CLI accepts", () => {
+    for (const tag of ["2.8.1", "v2.9.6", "v1.6.7.3218", "1.7.0-omp"]) {
+      assert.equal(validRange(saveSpecFor(tag)), true, `${saveSpecFor(tag)} must be installable`);
+    }
   });
 });

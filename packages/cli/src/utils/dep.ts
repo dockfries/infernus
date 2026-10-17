@@ -16,7 +16,7 @@ import {
 import type { AddDepsOptions, LocalConfig, LockFileContent, PawnJsonResources } from "../types";
 import { validRange } from "./semver";
 import { isIncludeAsset, isPluginAsset } from "./asset";
-import { isSameReleaseTag, matchByRange, parseTag, satisfiesSpec } from "./release";
+import { isSameReleaseTag, matchByRange, parseTag, satisfiesSpec, saveSpecFor } from "./release";
 import {
   describeCache,
   planDependency,
@@ -152,11 +152,30 @@ export async function cleanGlobalDeps(deps?: string[], onlyTmp = true) {
   return depCount;
 }
 
-async function installDeps(args: AddDepsOptions, mode: ResolveMode, isInstallAll: boolean) {
+/**
+ * Resolve every dependency, then place what is not already in place.
+ *
+ * A dependency whose release is changing has its previous files removed before
+ * the new ones go in. Everything else is left alone when its files are already
+ * there, so an install that finds the project up to date writes nothing: files
+ * the project edited survive, and a repeated install does not churn mtimes.
+ *
+ * Being up to date is decided by checking the files, not by the lockfile alone:
+ * a fresh clone carries a committed lockfile and no `plugins/`, and that project
+ * has to be filled in.
+ *
+ * The plans are returned so the caller can record what the manifest should
+ * declare, which is only known once resolution has happened.
+ */
+async function installDeps(
+  args: AddDepsOptions,
+  mode: ResolveMode,
+  isInstallAll: boolean,
+): Promise<DependencyPlan[]> {
   const start = Date.now();
   // todo: dev_dependencies & dependencies without resources
 
-  if (!args.dependencies) return;
+  if (!args.dependencies) return [];
 
   // A dry run is a request to see what would happen, so it prints the lookups
   // that lead to the answer rather than refusing to run without --verbose.
@@ -230,15 +249,105 @@ async function installDeps(args: AddDepsOptions, mode: ResolveMode, isInstallAll
       })),
       mode === "update",
     );
-    return;
+    return plans;
   }
 
+  // Only a dependency that has something installed under a different release has
+  // files to tear down. `--component` moves where a dependency's files belong,
+  // so it asks for the same teardown whatever the release says.
+  const changing = plans.filter(
+    (plan) =>
+      plan.previousVersion && (!!args.component || plan.finalVersion !== plan.previousVersion),
+  );
+
+  if (changing.length) {
+    // The files go now, but the manifest and the lockfile are left to the install
+    // below, so a failure part way through cannot leave them describing an
+    // install that never happened.
+    await removeDeps(
+      changing.map((plan) => plan.name),
+      { keep: deps.map((dep) => dep.split("@")[0]), record: false },
+    );
+  }
+
+  const includePath = await getIncludePath();
+
   for (const plan of plans) {
+    const upToDate = plan.finalVersion === plan.previousVersion && !args.component;
+
+    // The server's own copy already compares every file it ships and leaves an
+    // identical one alone, so it is always run; a plugin is skipped when it is
+    // already where it belongs.
+    if (plan.name !== ompRepository && upToDate) {
+      if (await isPlaced(plan, { includePath, isProd: !!args.production })) {
+        if (verbose) {
+          console.log(chalk.gray(`  up to date: ${plan.name} ${plan.finalVersion}`));
+        }
+        continue;
+      }
+    }
+
     await installer.materialize(plan);
   }
 
   await installer.record();
   console.log(`installDeps Done in ${elapsed(start)}s`);
+  return plans;
+}
+
+/**
+ * Whether a dependency's build is already placed in the project.
+ *
+ * The files are enumerated from the build's own `pawn.json`, which an earlier
+ * install cached, so this asks nothing of the network and matches what a
+ * placement would copy — including the loose assets that never had an archive.
+ * A dependency with no readable declaration, no file of the current platform, or
+ * an unusable one answers "not placed", which sends it down the normal install
+ * path where those problems are reported properly.
+ */
+async function isPlaced(
+  plan: DependencyPlan,
+  context: { includePath: string; isProd: boolean },
+): Promise<boolean> {
+  const [owner, repo] = plan.name.split("/");
+  const pawnJson = await getPawnJson(owner, repo, plan.finalVersion).catch(() => null);
+
+  if (!pawnJson?.resources?.length) return false;
+
+  const resources = pawnJson.resources.filter((resource) =>
+    isWindows ? resource.platform === "windows" : resource.platform === "linux",
+  );
+  if (!resources.length) return false;
+
+  const pluginFolder = getPlugOrCompPath(plan.component);
+  const expected: string[] = [];
+
+  for (const resource of resources) {
+    let found;
+    try {
+      found = await projectFilesOf(resource, {
+        includePath: context.includePath,
+        pluginFolder,
+        versionPath: plan.versionPath,
+      });
+    } catch {
+      // a declaration that cannot be used fails during the placement, where the
+      // error names it, rather than here where it would look like a missing file
+      return false;
+    }
+
+    // a production install deliberately leaves the include files out, so their
+    // absence must not make the dependency look incomplete
+    for (const file of found) {
+      if (context.isProd && !file.isPlugin) continue;
+      expected.push(file.path);
+    }
+  }
+
+  if (!expected.length) return false;
+
+  const present = await Promise.all(expected.map((file) => fs.pathExists(file)));
+  return present.every(Boolean);
 }
 
 function printInstallPlan(
@@ -317,84 +426,77 @@ export async function addDeps(args: AddDepsOptions, mode: ResolveMode = "install
 
   config.dependencies = config.dependencies || {};
 
-  let reduceDeps;
+  /** the specs named on the command line, saved as written */
+  const typed = new Map<string, string>();
+  /** dependencies named without a version, which already say what they want */
+  const kept = new Set<string>();
 
   if (isInstallAll) {
-    reduceDeps = config.dependencies;
-
-    _deps = Object.entries(config.dependencies).map((dep) => {
-      const [depName, depVersion = "*"] = dep;
+    _deps = Object.entries(config.dependencies).map(([depName, depVersion = "*"]) => {
       if (!validRange(depVersion))
         throw new Error(`invalid deps version: ${depName}@${depVersion}`);
       return `${depName}@${depVersion}`;
     });
 
-    if (!_deps || !_deps.length) {
+    if (!_deps.length) {
       throw new Error(`no deps found, pls check ${INF_CONFIG_NAME}`);
     }
   } else {
     if (!_deps) return;
 
-    reduceDeps = _deps.reduce(
-      (acc, dep) => {
-        const arr = dep.split("@");
-        const depName = arr[0];
-        let version = arr[1] || "*";
-        // `infernus update <pkg>` moves a dependency within what the manifest
-        // already declares; asking for `*` explicitly is how one jumps past it
-        if (mode === "update" && version === "*" && config.dependencies![depName]) {
-          version = config.dependencies![depName];
-        }
-        if (!validRange(version)) throw new Error(`invalid deps version: ${dep}`);
-        acc[depName] = version;
-        return acc;
-      },
-      {} as Record<string, string>,
-    );
+    _deps = _deps.map((dep) => {
+      const [depName, given, ...extra] = dep.split("@");
 
-    // written only once the install below has succeeded, so a failure cannot
-    // leave the manifest declaring a dependency that was never installed
-    config.dependencies = { ...config.dependencies, ...reduceDeps };
-  }
+      if (extra.length) {
+        throw new Error(
+          `invalid dependency spec: ${JSON.stringify(dep)}, expected owner/repo@version`,
+        );
+      }
 
-  if (!Object.keys(reduceDeps).length) return;
+      const version = given || "*";
+      const declared = config.dependencies![depName];
 
-  const lockFile = await readLockFile();
+      // A dependency named without a version keeps the spec the manifest already
+      // declares: `add pkg` on `^2.6.1` must not widen what the project asked for,
+      // and `update pkg` has always read this way.
+      if (!given && declared) {
+        if (!validRange(declared)) throw new Error(`invalid deps version: ${depName}@${declared}`);
+        kept.add(depName);
+        return `${depName}@${declared}`;
+      }
 
-  // Refused before anything is deleted or written, so an out of sync project is
-  // left exactly as it was found.
-  if (mode === "frozen") assertLockInSync(config, lockFile);
+      if (!validRange(version)) throw new Error(`invalid deps version: ${dep}`);
 
-  if (lockFile && lockFile.dependencies && !args.dryRun) {
-    let waitRemoveDeps;
+      // `pkg@*` is not the same request as `pkg`: the first asks for anything and
+      // says so, the second leaves the declaration to the resolved range below
+      if (given) typed.set(depName, version);
 
-    if (isInstallAll) {
-      waitRemoveDeps = Object.keys(config.dependencies);
-    } else {
-      waitRemoveDeps = Object.keys(config.dependencies).filter((installedDep) => {
-        return installedDep in reduceDeps;
-      });
-    }
-
-    // The old files go now, but the manifest is left alone: the install below
-    // writes it once, from what it actually placed, so a failure part way
-    // through cannot leave it describing an install that never happened.
-    await removeDeps(waitRemoveDeps, {
-      keep: _deps.map((dep) => dep.split("@")[0]),
-      record: false,
+      return `${depName}@${version}`;
     });
   }
 
-  await installDeps(
-    {
-      ...args,
-      dependencies: _deps,
-    },
-    mode,
-    isInstallAll,
-  );
+  if (!_deps.length) return;
 
-  if (!isInstallAll && !args.dryRun) await writeLocalConfig(config);
+  // Refused before anything is deleted or written, so an out of sync project is
+  // left exactly as it was found.
+  if (mode === "frozen") assertLockInSync(config, await readLockFile());
+
+  const plans = await installDeps({ ...args, dependencies: _deps }, mode, isInstallAll);
+
+  if (isInstallAll || args.dryRun) return;
+
+  // npm's save-prefix: a dependency that was named without a version is declared
+  // with the range that resolved it, and `--save-exact` declares the tag itself.
+  // Written only once the install above has succeeded, so a failure cannot leave
+  // the manifest describing a dependency that was never installed.
+  for (const plan of plans) {
+    if (kept.has(plan.name)) continue;
+
+    config.dependencies![plan.name] =
+      typed.get(plan.name) ?? saveSpecFor(plan.finalVersion, args.saveExact);
+  }
+
+  await writeLocalConfig(config);
 }
 
 /** what a removal will do, worked out before anything is deleted */
