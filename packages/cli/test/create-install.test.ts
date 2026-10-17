@@ -51,7 +51,18 @@ describe("installProjectDependencies", () => {
     const seeded = !(await fs.pathExists(buildDir));
     if (seeded) {
       await fs.ensureDir(buildDir);
-      await fs.writeJson(path.resolve(buildDir, "pawn.json"), { resources: [] }, { spaces: 2 });
+      // a declaration the platform in use can place, so the install succeeds on
+      // a machine whose cache is cold as well as on one that has used the CLI
+      await fs.writeJson(
+        path.resolve(buildDir, "pawn.json"),
+        {
+          resources: [
+            { name: "samp-node.dll", platform: "windows", version: "0.3.7", archive: false },
+            { name: "samp-node.so", platform: "linux", version: "0.3.7", archive: false },
+          ],
+        },
+        { spaces: 2 },
+      );
     }
 
     try {
@@ -68,6 +79,37 @@ describe("installProjectDependencies", () => {
     } finally {
       if (seeded) await fs.remove(buildDir);
     }
+  });
+
+  /**
+   * A starter can ship a lockfile. The generated project then has to install
+   * what it pinned, not resolve the manifest's range to whatever is newest: the
+   * lockfile is the reason those versions were chosen.
+   */
+  it("keeps the release a starter lockfile pinned", async () => {
+    const dir = await project({ "dockfries/samp-node": "^2.6.1" });
+    await fs.writeJson(
+      path.resolve(dir, "infernus-lock.json"),
+      {
+        lockfileVersion: 1,
+        dependencies: { "dockfries/samp-node": { version: "2.6.1" } },
+      },
+      { spaces: 2 },
+    );
+
+    await installProjectDependencies(dir);
+
+    const lockfile = await fs.readJson(path.resolve(dir, "infernus-lock.json"));
+    assert.equal(
+      lockfile.dependencies["dockfries/samp-node"].version,
+      "2.6.1",
+      "the pinned release wins over a newer one the range would allow",
+    );
+    assert.equal(
+      (await fs.readJson(path.resolve(dir, "infernus.json"))).dependencies["dockfries/samp-node"],
+      "^2.6.1",
+      "and the declaration is left as it was",
+    );
   });
 
   it("does nothing when the project declares no dependencies", async () => {

@@ -112,9 +112,21 @@ export async function readLockFile() {
   return { ...parsed, dependencies: usable } as LockFileContent;
 }
 
+/**
+ * Write the lockfile, with its entries in a stable order.
+ *
+ * The file is generated but committed, so it is compared in reviews and diffs:
+ * ordering the entries by name keeps a dependency added in the middle from
+ * rewriting its neighbours.
+ */
 export function writeLockFile(data: object) {
-  const isEmpty = !Object.keys((data as LockFileContent).dependencies ?? {}).length;
-  return writeProjectFile(getLockPath(), withSchema(data), isEmpty);
+  const lock = data as LockFileContent;
+  const dependencies = Object.fromEntries(
+    Object.entries(lock.dependencies ?? {}).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)),
+  );
+  const isEmpty = !Object.keys(dependencies).length;
+
+  return writeProjectFile(getLockPath(), withSchema({ ...lock, dependencies }), isEmpty);
 }
 
 export async function readOmpConfig() {

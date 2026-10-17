@@ -377,7 +377,8 @@ export async function addOpenMp(
   // read before anything is unpacked, since unpacking replaces the directory
   if (previousPath) await readInstallManifest(previousPath);
 
-  await copyServer({
+  // the result is what tells a caller whether this run actually wrote anything
+  return copyServer({
     source: globalOmpPath,
     target: process.cwd(),
     previousPath,

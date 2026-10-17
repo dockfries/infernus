@@ -30,12 +30,11 @@ export async function installProjectDependencies(projectDir: string) {
   process.chdir(projectDir);
   try {
     const config: LocalConfig | null = await readLocalConfig();
-    const dependencies = Object.entries(config?.dependencies ?? {}).map(
-      ([name, version]) => `${name}@${version}`,
-    );
+    if (!Object.keys(config?.dependencies ?? {}).length) return;
 
-    if (!dependencies.length) return;
-    await addDeps({ dependencies }, "install");
+    // The manifest drives the install, so a starter that ships a lockfile keeps
+    // the releases it pinned instead of resolving them again.
+    await addDeps({}, "install");
   } finally {
     process.chdir(previous);
   }

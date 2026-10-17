@@ -63,8 +63,13 @@ async function main() {
     );
     check("install says the lockfile answered", installed.output.includes("lockfile:"), true);
 
-    await step("frozen install", ["install", "--frozen", "--verbose"]);
+    const frozen = await step("frozen install", ["install", "--frozen", "--verbose"]);
     check("the frozen install kept the lockfile", lockedTag(), OLD_TAG);
+    check(
+      "a settled project reports that it has nothing to do",
+      frozen.output.includes("nothing to do"),
+      true,
+    );
 
     // npm's other half: an update moves the declared ranges. `^1.5.8` accepts
     // 1.6.7, so this is what carries the project forward

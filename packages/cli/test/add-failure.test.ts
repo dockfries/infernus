@@ -80,7 +80,18 @@ describe("addDeps and the manifest", () => {
     const seeded = !(await fs.pathExists(buildDir));
     if (seeded) {
       await fs.ensureDir(buildDir);
-      await fs.writeJson(path.resolve(buildDir, "pawn.json"), { resources: [] }, { spaces: 2 });
+      // a declaration either platform can place, so the test does not depend on
+      // an earlier run having left a real build in the shared cache
+      await fs.writeJson(
+        path.resolve(buildDir, "pawn.json"),
+        {
+          resources: [
+            { name: "samp-node.dll", platform: "windows", version: "0.3.7", archive: false },
+            { name: "samp-node.so", platform: "linux", version: "0.3.7", archive: false },
+          ],
+        },
+        { spaces: 2 },
+      );
     }
     return { buildDir, seeded };
   }

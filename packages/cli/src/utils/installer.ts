@@ -20,6 +20,12 @@ import type { DependencyPlan } from "./plan";
 import type { LockFileContent, PawnJsonResources } from "../types";
 
 export interface InstallOptions {
+  /**
+   * The dependency names the lockfile may describe: what the manifest declares
+   * plus what this run was asked for. Anything else is an entry for a
+   * dependency that no longer exists, and the generated lockfile drops it.
+   */
+  declared?: string[];
   /** keep only what the server needs to run, so include files are skipped */
   isProd?: boolean;
   /** install into components/ instead of plugins/ */
@@ -43,6 +49,8 @@ export class DependencyInstaller {
   private readonly isProd: boolean;
   private readonly forceComponent: boolean;
   private readonly frozen: boolean;
+  /** the names the lockfile may keep, or null to leave it alone */
+  private readonly declared: Set<string> | null;
 
   private lockFile!: LockFileContent;
   private ompConfig!: any;
@@ -57,6 +65,7 @@ export class DependencyInstaller {
     this.isProd = !!options.isProd;
     this.forceComponent = !!options.isComponent;
     this.frozen = !!options.frozen;
+    this.declared = options.declared ? new Set(options.declared) : null;
   }
 
   static async create(options: InstallOptions = {}) {
@@ -98,16 +107,19 @@ export class DependencyInstaller {
   /**
    * Place one resolved dependency and everything it declares.
    *
+   * Returns whether it wrote anything: the server's copy compares every file it
+   * ships, so a settled project installs nothing even though the copy always
+   * runs, and a summary that counted runs instead of writes would claim work
+   * that did not happen.
+   *
    * @throws {Error} when the dependency declares no resources, or an asset its
    * release does not publish
    */
-  async materialize(plan: DependencyPlan) {
-    if (plan.name === ompRepository) {
-      await this.materializeOpenMp(plan);
-      return;
-    }
+  async materialize(plan: DependencyPlan): Promise<boolean> {
+    if (plan.name === ompRepository) return this.materializeOpenMp(plan);
 
     await this.materializeDependency(plan);
+    return true;
   }
 
   private async materializeOpenMp(plan: DependencyPlan) {
@@ -115,8 +127,13 @@ export class DependencyInstaller {
 
     if (plan.cachedTag) {
       console.log(`local cache found: ${plan.name} ${plan.cachedTag}`);
-      await addOpenMp(plan.cachedTag, false, this.previousVersion(plan.name) ?? null, this.verbose);
-      return;
+      const result = await addOpenMp(
+        plan.cachedTag,
+        false,
+        this.previousVersion(plan.name) ?? null,
+        this.verbose,
+      );
+      return result.written.length > 0;
     }
 
     // An update of a version that is already installed drops that build so the
@@ -134,12 +151,14 @@ export class DependencyInstaller {
     // the previous build is the reference telling an upgraded server file apart
     // from one the project modified, so it is dropped only after its manifest
     // has been used
-    await addOpenMp(
+    const result = await addOpenMp(
       plan.matchedRelease,
       true,
       this.previousVersion(plan.name) ?? null,
       this.verbose,
     );
+
+    return result.written.length > 0;
   }
 
   private async materializeDependency(plan: DependencyPlan) {
@@ -400,7 +419,13 @@ export class DependencyInstaller {
     // the server loads last, whatever order the dependencies were installed in
     this.ompConfig.pawn.legacy_plugins = moveToLast([...this.legacyPlugins], "samp-node");
 
-    this.lockFile.dependencies = { ...(this.lockFile.dependencies ?? {}), ...this.installed };
+    // The lockfile describes the manifest, so an entry for a dependency that is
+    // no longer declared is dropped instead of being carried forever; what this
+    // run placed is then merged over what is left.
+    const kept = Object.entries(this.lockFile.dependencies ?? {}).filter(
+      ([name]) => !this.declared || this.declared.has(name),
+    );
+    this.lockFile.dependencies = { ...Object.fromEntries(kept), ...this.installed };
 
     // A frozen install reproduces the lockfile rather than producing it, so the
     // file must come out byte for byte as it went in: rewriting it would change

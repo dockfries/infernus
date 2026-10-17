@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import fs from "fs-extra";
 import os from "node:os";
 import path from "node:path";
-import { readLocalConfig, writeLocalConfig } from "../src/utils/config";
+import { readLocalConfig, writeLocalConfig, writeLockFile } from "../src/utils/config";
 
 /**
  * The manifest records the version spec the user chose, exactly as written.
@@ -55,6 +55,36 @@ describe("the manifest keeps the version spec verbatim", () => {
 
       assert.match(String(config?.$schema), /infernus\.schema\.json$/);
       assert.equal(config?.dependencies?.["dockfries/samp-node"], "2.6.1");
+    });
+  });
+
+  /**
+   * The lockfile is generated but committed, so it is read in reviews and diffs.
+   * Writing its entries in a stable order keeps a dependency added in the middle
+   * from rewriting the lines around it.
+   */
+  it("writes the lockfile entries in a stable order", async () => {
+    await inTempDir(async () => {
+      await writeLockFile({
+        lockfileVersion: 1,
+        dependencies: {
+          "z-last/plugin": { version: "2.0.0", component: false },
+          "a-first/open.mp": { version: "v1.6.7.3218" },
+          "m-middle/plugin": { version: "1.0.0", component: true },
+        },
+      });
+
+      const written = await fs.readJson(path.resolve(process.cwd(), "infernus-lock.json"));
+
+      assert.deepEqual(Object.keys(written.dependencies), [
+        "a-first/open.mp",
+        "m-middle/plugin",
+        "z-last/plugin",
+      ]);
+      assert.deepEqual(written.dependencies["m-middle/plugin"], {
+        version: "1.0.0",
+        component: true,
+      });
     });
   });
 

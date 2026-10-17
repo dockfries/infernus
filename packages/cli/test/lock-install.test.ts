@@ -359,6 +359,33 @@ describe("the lockfile answers what the manifest still accepts", () => {
       "an update moves the lockfile, never the declaration",
     );
   });
+
+  it("drops a lockfile entry for a dependency the manifest no longer declares", async () => {
+    process.env.INFERNUS_GITHUB_API = failingUrl;
+    await seedCache(NEW);
+    const dir = await project({ [NAME]: "^2.6.1" }, { [NAME]: NEW, "gone/plugin": "1.0.0" });
+
+    await addDeps({});
+
+    const lockfile = await fs.readJson(path.resolve(dir, "infernus-lock.json"));
+    assert.deepEqual(
+      Object.keys(lockfile.dependencies),
+      [NAME],
+      "a generated lockfile describes the manifest, so an orphan entry is not carried forever",
+    );
+  });
+
+  it("refuses a frozen install of a lockfile format it does not write", async () => {
+    await seedCache(NEW);
+    const dir = await project({ [NAME]: "^2.6.1" }, { [NAME]: NEW });
+    await fs.writeJson(
+      path.resolve(dir, "infernus-lock.json"),
+      { lockfileVersion: 2, dependencies: { [NAME]: { version: NEW } } },
+      { spaces: 2 },
+    );
+
+    await assert.rejects(() => addDeps({}, "frozen"), /lockfileVersion 2/);
+  });
 });
 
 /**

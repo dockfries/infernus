@@ -171,6 +171,7 @@ async function installDeps(
   args: AddDepsOptions,
   mode: ResolveMode,
   isInstallAll: boolean,
+  declared: string[],
 ): Promise<DependencyPlan[]> {
   const start = Date.now();
   // todo: dev_dependencies & dependencies without resources
@@ -187,6 +188,7 @@ async function installDeps(
     isProd: args.production,
     isComponent: args.component,
     frozen: mode === "frozen",
+    declared,
   });
 
   // The server is installed before the plugins that run inside it, and the copy
@@ -263,36 +265,74 @@ async function installDeps(
   if (changing.length) {
     // The files go now, but the manifest and the lockfile are left to the install
     // below, so a failure part way through cannot leave them describing an
-    // install that never happened.
+    // install that never happened. The install reports this in its own summary.
     await removeDeps(
       changing.map((plan) => plan.name),
-      { keep: deps.map((dep) => dep.split("@")[0]), record: false },
+      { keep: deps.map((dep) => dep.split("@")[0]), record: false, quiet: true },
     );
   }
 
   const includePath = await getIncludePath();
+  const skipped = new Set<string>();
 
   for (const plan of plans) {
     const upToDate = plan.finalVersion === plan.previousVersion && !args.component;
 
-    // The server's own copy already compares every file it ships and leaves an
-    // identical one alone, so it is always run; a plugin is skipped when it is
-    // already where it belongs.
-    if (plan.name !== ompRepository && upToDate) {
-      if (await isPlaced(plan, { includePath, isProd: !!args.production })) {
-        if (verbose) {
-          console.log(chalk.gray(`  up to date: ${plan.name} ${plan.finalVersion}`));
-        }
-        continue;
+    // A plugin is skipped when it is already where it belongs. The server's own
+    // copy always runs, because it compares each file and records what it made
+    // of it, so it reports whether it wrote anything instead.
+    if (
+      plan.name !== ompRepository &&
+      upToDate &&
+      (await isPlaced(plan, { includePath, isProd: !!args.production }))
+    ) {
+      if (verbose) {
+        console.log(chalk.gray(`  up to date: ${plan.name} ${plan.finalVersion}`));
       }
+      skipped.add(plan.name);
+      continue;
     }
 
-    await installer.materialize(plan);
+    if (!(await installer.materialize(plan))) skipped.add(plan.name);
   }
 
   await installer.record();
-  console.log(`installDeps Done in ${elapsed(start)}s`);
+  printInstallSummary(plans, skipped, start);
   return plans;
+}
+
+/**
+ * What an install did.
+ *
+ * A run that finds every dependency in place now writes nothing at all, and it
+ * used to report a duration alone, which reads the same as a failure. The moves
+ * are listed because they are the reason an update is run.
+ */
+function printInstallSummary(plans: DependencyPlan[], skipped: Set<string>, start: number) {
+  for (const plan of plans) {
+    if (plan.previousVersion && plan.finalVersion !== plan.previousVersion) {
+      console.log(
+        `  ${plan.name}: ${chalk.yellow(plan.previousVersion)} -> ${chalk.green(plan.finalVersion)}`,
+      );
+    }
+  }
+
+  const installed = plans.length - skipped.size;
+  const plural = (count: number) => (count === 1 ? "dependency" : "dependencies");
+
+  if (!installed) {
+    console.log(
+      chalk.gray(
+        `nothing to do, ${plans.length} ${plural(plans.length)} up to date in ${elapsed(start)}s`,
+      ),
+    );
+    return;
+  }
+
+  const upToDate = skipped.size ? `, ${skipped.size} up to date` : "";
+  console.log(
+    chalk.gray(`installed ${installed} ${plural(installed)}${upToDate} in ${elapsed(start)}s`),
+  );
 }
 
 /**
@@ -392,6 +432,16 @@ function printInstallPlan(
  * pinned to a release the declaration no longer accepts
  */
 function assertLockInSync(config: LocalConfig, lockFile: LockFileContent | null) {
+  // A lockfile from a newer format may mean something this CLI cannot honour,
+  // and reproducing it byte for byte is exactly what a frozen install promises,
+  // so it is refused rather than half understood.
+  if (lockFile?.lockfileVersion !== undefined && lockFile.lockfileVersion !== 1) {
+    throw new Error(
+      `${INF_LOCK_NAME} has lockfileVersion ${lockFile.lockfileVersion}, this CLI writes 1; ` +
+        `run \`infernus install\` to rewrite it`,
+    );
+  }
+
   const problems: string[] = [];
 
   for (const [name, spec] of Object.entries(config.dependencies ?? {})) {
@@ -481,7 +531,15 @@ export async function addDeps(args: AddDepsOptions, mode: ResolveMode = "install
   // left exactly as it was found.
   if (mode === "frozen") assertLockInSync(config, await readLockFile());
 
-  const plans = await installDeps({ ...args, dependencies: _deps }, mode, isInstallAll);
+  // what the lockfile may describe: the manifest plus whatever this run names
+  const declared = [
+    ...new Set([
+      ...Object.keys(config.dependencies ?? {}),
+      ..._deps.map((dep) => dep.split("@")[0]),
+    ]),
+  ];
+
+  const plans = await installDeps({ ...args, dependencies: _deps }, mode, isInstallAll, declared);
 
   if (isInstallAll || args.dryRun) return;
 
@@ -752,6 +810,14 @@ export interface RemovalOptions {
    * manifest is written once, at the end, from what the install actually placed.
    */
   record?: boolean;
+  /**
+   * Whether to stay silent about the work done.
+   *
+   * An install tears down the dependencies it is about to replace, and reports
+   * that in its own summary; the caller that runs it should not read like a
+   * second command ran on its behalf.
+   */
+  quiet?: boolean;
 }
 
 /**
@@ -765,14 +831,17 @@ export async function removeDeps(deps?: string[], options: RemovalOptions = {}) 
   if (!deps?.length) return;
 
   const start = Date.now();
-  const { keep = [], record = true } = options;
+  const { keep = [], record = true, quiet = false } = options;
 
   const plan = await planRemoval(deps, { keep });
   if (!plan) return;
 
   await applyRemoval(plan, record);
 
-  console.log(`removeDeps Done in ${elapsed(start)}s`);
+  if (!quiet) {
+    const plural = deps.length === 1 ? "dependency" : "dependencies";
+    console.log(`removed ${deps.length} ${plural} in ${elapsed(start)}s`);
+  }
 }
 
 function cleanInvalidLockDeps(config: LocalConfig, lockFile: LockFileContent) {
