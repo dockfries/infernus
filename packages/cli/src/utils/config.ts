@@ -9,7 +9,7 @@ const globalConfigPath = path.resolve(globalDir, "config.json");
 
 export const GLOBAL_DEPS_PATH = path.resolve(globalDir, "dependencies");
 export const INF_CONFIG_NAME = "infernus.json";
-const INF_LOCK_NAME = "infernus-lock.json";
+export const INF_LOCK_NAME = "infernus-lock.json";
 
 /** the schema shipped with the package, so editors can validate and complete */
 const SCHEMA_URL =

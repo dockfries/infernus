@@ -3,8 +3,19 @@ import chalk from "chalk";
 import fs from "fs-extra";
 import { getRepoRelease } from "./api";
 import { GLOBAL_DEPS_PATH } from "./config";
-import { parseTag, isSameReleaseTag } from "./release";
+import { parseTag, isSameReleaseTag, satisfiesSpec } from "./release";
 import { validRange } from "./semver";
+
+/**
+ * How far a run is allowed to move a dependency.
+ *
+ * `install` is npm's `npm install`: the lockfile answers for every dependency it
+ * still satisfies, and only what is missing or out of sync is resolved. `update`
+ * is `npm update`: every range is resolved again and the lockfile follows.
+ * `frozen` is `npm ci`: nothing is resolved, and a lockfile that no longer
+ * matches the manifest is refused instead of repaired.
+ */
+export type ResolveMode = "install" | "update" | "frozen";
 
 /** the shape a dependency name has to have: `owner/repo` */
 const DEPENDENCY_NAME = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/;
@@ -55,6 +66,8 @@ export interface DependencyPlan {
   requested: string;
   /** the version the lockfile held before this run */
   previousVersion?: string;
+  /** the lockfile answered this request instead of the repository */
+  fromLock: boolean;
   /** the cached tag answering this request, when there is one */
   cachedTag: string | null;
   /** the release to download, when the cache cannot answer */
@@ -74,7 +87,16 @@ export interface PlanDependencyOptions {
   component?: boolean;
   /** the version the lockfile held for this dependency */
   previousVersion?: string;
-  isUpdate?: boolean;
+  /** how far this run may move the dependency; an install by default */
+  mode?: ResolveMode;
+  /**
+   * The version the lockfile pins, when this dependency came from the manifest.
+   *
+   * A dependency named on the command line leaves this undefined: like
+   * `npm install pkg@^2`, it is an explicit request to resolve, not an install
+   * of what the project already recorded.
+   */
+  lockedVersion?: string;
   verbose?: boolean;
 }
 
@@ -83,12 +105,14 @@ export interface PlanDependencyOptions {
  * answer, the repository.
  *
  * A range is resolved against the repository even when a cached build satisfies
- * it, because a newer matching release may exist; the cache is then reused for
- * the files themselves.
+ * it, because a newer matching release may exist — unless the lockfile pins a
+ * release the manifest still accepts, which is npm's rule and the reason a
+ * settled project installs offline.
  *
  * Nothing is deleted or written here.
  *
- * @throws {Error} when no release satisfies the requested version
+ * @throws {Error} when no release satisfies the requested version, or when a
+ * frozen install finds a dependency the lockfile does not cover
  */
 export async function planDependency(
   dep: string,
@@ -104,12 +128,31 @@ export async function planDependency(
   }
   if (!validRange(requested)) throw new Error(`invalid deps version: ${name}`);
 
+  const mode = options.mode ?? "install";
+  const locked = options.lockedVersion ?? null;
+  const lockedSatisfies = locked ? satisfiesSpec(locked, requested) : false;
+
+  // `npm ci`: the lockfile is the install plan, so a manifest asking for
+  // something the lock does not record is reported rather than quietly resolved
+  if (mode === "frozen" && !lockedSatisfies) {
+    throw new Error(
+      `lockfile out of sync: ${name}@${requested} is locked to ${locked ?? "nothing"}; ` +
+        `run \`infernus install\` to resolve it against the repository`,
+    );
+  }
+
+  // The locked release is requested as the exact tag it is, which `planCache`
+  // answers from the unpacked cache without a lookup: that is what makes a
+  // settled install offline instead of one API call per range.
+  const fromLock = mode !== "update" && lockedSatisfies;
+  const wanted = fromLock ? locked! : requested;
+
   const dependencyPath = path.resolve(GLOBAL_DEPS_PATH, name);
   const cache = planCache({
     cachedVersions: (await fs.pathExists(dependencyPath)) ? await fs.readdir(dependencyPath) : null,
-    requested,
+    requested: wanted,
     previousVersion: options.previousVersion,
-    isUpdate: options.isUpdate,
+    isUpdate: mode === "update",
   });
 
   let cachedTag = cache.cachedTag;
@@ -117,8 +160,16 @@ export async function planDependency(
 
   if (!cachedTag) {
     const [owner, repo] = name.split("/");
-    matchedRelease = await getRepoRelease(owner, repo, requested, options.verbose);
-    if (!matchedRelease) throw new Error(`not found satisfactory deps: ${dep}`);
+    matchedRelease = await getRepoRelease(owner, repo, wanted, options.verbose);
+
+    if (!matchedRelease) {
+      throw new Error(
+        fromLock
+          ? `not found satisfactory deps: ${name}@${locked} (pinned by the lockfile); ` +
+              `run \`infernus update ${name}@${requested}\` to move it`
+          : `not found satisfactory deps: ${dep}`,
+      );
+    }
 
     // The repository resolved to a build the cache already holds, so only the
     // project files need refreshing rather than the archive being fetched and
@@ -141,6 +192,7 @@ export async function planDependency(
     name,
     requested,
     previousVersion: options.previousVersion,
+    fromLock,
     cachedTag,
     matchedRelease,
     finalVersion,
@@ -153,6 +205,14 @@ export async function planDependency(
 /** Report one cache decision, for --verbose. */
 export function describeCache(plan: DependencyPlan) {
   const dependencyPath = path.resolve(GLOBAL_DEPS_PATH, plan.name);
+
+  if (plan.fromLock) {
+    console.log(
+      chalk.gray(
+        `  lockfile: ${plan.finalVersion} satisfies "${plan.requested}", the repository is not asked`,
+      ),
+    );
+  }
 
   if (plan.cachedTag) {
     console.log(chalk.gray(`  cache hit: ${plan.cachedTag} -> ${dependencyPath}`));

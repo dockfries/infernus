@@ -128,3 +128,30 @@ export function matchByRange(parsedVersions: ParsedTag[], range: string) {
 
   return candidates.reduce((newest, parsed) => (compareTag(parsed, newest) > 0 ? parsed : newest));
 }
+
+/**
+ * Whether a locked tag still answers what the manifest declares.
+ *
+ * This is the question a lockfile has to answer before anything is resolved, and
+ * npm's rule for it: an entry is authoritative while the manifest still accepts
+ * it, and only the entries that fail this are resolved again.
+ *
+ * A range is decided by npm's own rules, where the build number is metadata and
+ * is therefore ignored. A pin is compared as the tag it names, so a `v` prefix
+ * does not matter and the build number still does. A three segment pin names the
+ * release *family* rather than one build, because open.mp publishes
+ * `v1.6.7.3218` and never `1.6.7`; that is the same fallback `resolveRelease`
+ * makes, so a pin and its lockfile agree on what it means.
+ */
+export function satisfiesSpec(tag: string | null | undefined, spec: string) {
+  const parsed = parseTag(tag ?? "");
+  if (!parsed) return false;
+
+  if (isRangeSpec(spec)) return semver.satisfies(parsed.version, spec);
+
+  const pin = parseTag(spec);
+  if (!pin) return false;
+  if (isSameReleaseTag(tag, spec)) return true;
+
+  return pin.build === null && semver.satisfies(parsed.version, pin.version.version);
+}

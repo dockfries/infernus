@@ -143,11 +143,11 @@ async function createApp(args: ArgumentsCamelCase<{ appName?: string }>) {
 }
 
 async function addDependencies(args: ArgumentsCamelCase<AddDepsOptions>) {
-  return addDeps(args, false);
+  return addDeps(args, args.frozen ? "frozen" : "install");
 }
 
 async function updateDependencies(args: ArgumentsCamelCase<AddDepsOptions>) {
-  return addDeps(args, true);
+  return addDeps(args, "update");
 }
 
 async function listVersionsCommand(args: ArgumentsCamelCase<ListVersionsOptions>) {
@@ -250,7 +250,22 @@ function addUpdateBuilder(y: Argv) {
         "resolve the versions and report what would change, without downloading or writing anything",
       default: false,
     })
+    .option("frozen", {
+      alias: "locked",
+      type: "boolean",
+      description:
+        "install exactly what infernus-lock.json records, failing if it no longer satisfies infernus.json",
+      default: false,
+    })
     .check((argv: Arguments<AddDepsOptions>) => {
+      // an update exists to move the lockfile, so freezing it is a contradiction
+      if (argv.frozen && argv._[0] === "update") {
+        throw new Error(
+          "`--frozen` cannot be combined with `infernus update`: an update resolves the declared " +
+            "ranges again, a frozen install keeps the lockfile as it is",
+        );
+      }
+
       if (argv.dependencies) {
         return true;
       } else if (argv._[0] === "install") {

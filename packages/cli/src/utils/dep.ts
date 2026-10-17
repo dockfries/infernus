@@ -11,17 +11,19 @@ import {
   writeOmpConfig,
   GLOBAL_DEPS_PATH,
   INF_CONFIG_NAME,
+  INF_LOCK_NAME,
 } from "./config";
 import type { AddDepsOptions, LocalConfig, LockFileContent, PawnJsonResources } from "../types";
 import { validRange } from "./semver";
 import { isIncludeAsset, isPluginAsset } from "./asset";
-import { isSameReleaseTag, matchByRange, parseTag } from "./release";
+import { isSameReleaseTag, matchByRange, parseTag, satisfiesSpec } from "./release";
 import {
   describeCache,
   planDependency,
   planCache,
   type CachePlan,
   type DependencyPlan,
+  type ResolveMode,
 } from "./plan";
 import { DependencyInstaller } from "./installer";
 import { removeOpenMp } from "./omp";
@@ -150,7 +152,7 @@ export async function cleanGlobalDeps(deps?: string[], onlyTmp = true) {
   return depCount;
 }
 
-async function installDeps(args: AddDepsOptions, isUpdate = false) {
+async function installDeps(args: AddDepsOptions, mode: ResolveMode, isInstallAll: boolean) {
   const start = Date.now();
   // todo: dev_dependencies & dependencies without resources
 
@@ -165,14 +167,20 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     verbose,
     isProd: args.production,
     isComponent: args.component,
+    frozen: mode === "frozen",
   });
 
-  // the server is installed before the plugins that run inside it, and the copy
-  // step needs its files in place to tell its own files from the project's
+  // The server is installed before the plugins that run inside it, and the copy
+  // step needs its files in place to tell its own files from the project's.
   const deps = moveDependency(args.dependencies, ompRepository, "first");
 
   // a dry run must not even delete stale temp folders from the cache
   if (!dryRun) await cleanGlobalDeps(deps);
+
+  // The lockfile answers for what the manifest declares. A dependency named on
+  // the command line is an explicit request to resolve, exactly like
+  // `npm install pkg@^2`, and an update is a request to move: neither consults it.
+  const useLock = isInstallAll && mode !== "update";
 
   // Resolve everything before placing anything: a dependency that cannot be
   // resolved then fails the command without having written a partial install.
@@ -182,18 +190,19 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
     const name = dep.split("@")[0];
 
     if (verbose) {
+      const label = mode === "update" ? " (update)" : mode === "frozen" ? " (frozen)" : "";
       console.log(
-        chalk.gray(
-          `\n[${name}] requested version "${dep.split("@")[1] ?? "*"}"${isUpdate ? " (update)" : ""}`,
-        ),
+        chalk.gray(`\n[${name}] requested version "${dep.split("@")[1] ?? "*"}"${label}`),
       );
     }
 
+    const previousVersion = installer.previousVersion(name);
     const plan = await planDependency(dep, {
       verbose,
-      isUpdate,
+      mode,
       component: installer.isComponent(name),
-      previousVersion: installer.previousVersion(name),
+      previousVersion,
+      lockedVersion: useLock ? previousVersion : undefined,
     });
 
     if (verbose) describeCache(plan);
@@ -219,7 +228,7 @@ async function installDeps(args: AddDepsOptions, isUpdate = false) {
               : "download",
         cached: !!plan.cachedTag,
       })),
-      isUpdate,
+      mode === "update",
     );
     return;
   }
@@ -262,10 +271,47 @@ function printInstallPlan(
   );
 }
 
-export async function addDeps(args: AddDepsOptions, isUpdate = false) {
+/**
+ * Refuse a frozen install whose lockfile no longer describes the manifest.
+ *
+ * `--frozen` is `npm ci`: the lockfile is the install plan, so a manifest asking
+ * for something the lock does not record is reported rather than quietly
+ * resolved. Every offending dependency is named, because the first one fixed
+ * would otherwise hide the next on the following run.
+ *
+ * @throws {Error} when a declared dependency is missing from the lockfile or is
+ * pinned to a release the declaration no longer accepts
+ */
+function assertLockInSync(config: LocalConfig, lockFile: LockFileContent | null) {
+  const problems: string[] = [];
+
+  for (const [name, spec] of Object.entries(config.dependencies ?? {})) {
+    const locked = lockFile?.dependencies?.[name]?.version;
+
+    if (!locked) problems.push(`  ${name}@${spec}: not in the lockfile`);
+    else if (!satisfiesSpec(locked, spec)) problems.push(`  ${name}@${spec}: locked to ${locked}`);
+  }
+
+  if (!problems.length) return;
+
+  throw new Error(
+    `${INF_LOCK_NAME} is out of sync with ${INF_CONFIG_NAME}:\n${problems.join("\n")}\n` +
+      `run \`infernus install\` without \`--frozen\` to resolve them, or \`infernus update <deps>\` to move within the declared range`,
+  );
+}
+
+export async function addDeps(args: AddDepsOptions, mode: ResolveMode = "install") {
   let _deps = args.dependencies;
 
   const isInstallAll = !_deps || !_deps.length;
+
+  // `--frozen` installs the lockfile as it is, so a dependency argument has
+  // nothing to mean: resolving one would have to write the lockfile it forbids
+  if (mode === "frozen" && !isInstallAll) {
+    throw new Error(
+      `\`--frozen\` installs exactly what ${INF_LOCK_NAME} records, so it takes no dependencies`,
+    );
+  }
 
   const config = (await readLocalConfig()) || ({} as LocalConfig);
 
@@ -294,7 +340,9 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
         const arr = dep.split("@");
         const depName = arr[0];
         let version = arr[1] || "*";
-        if (isUpdate && version === "*" && config.dependencies![depName]) {
+        // `infernus update <pkg>` moves a dependency within what the manifest
+        // already declares; asking for `*` explicitly is how one jumps past it
+        if (mode === "update" && version === "*" && config.dependencies![depName]) {
           version = config.dependencies![depName];
         }
         if (!validRange(version)) throw new Error(`invalid deps version: ${dep}`);
@@ -312,6 +360,10 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
   if (!Object.keys(reduceDeps).length) return;
 
   const lockFile = await readLockFile();
+
+  // Refused before anything is deleted or written, so an out of sync project is
+  // left exactly as it was found.
+  if (mode === "frozen") assertLockInSync(config, lockFile);
 
   if (lockFile && lockFile.dependencies && !args.dryRun) {
     let waitRemoveDeps;
@@ -338,7 +390,8 @@ export async function addDeps(args: AddDepsOptions, isUpdate = false) {
       ...args,
       dependencies: _deps,
     },
-    isUpdate,
+    mode,
+    isInstallAll,
   );
 
   if (!isInstallAll && !args.dryRun) await writeLocalConfig(config);

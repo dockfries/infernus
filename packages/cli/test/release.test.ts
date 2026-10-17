@@ -6,6 +6,7 @@ import {
   isSameReleaseTag,
   matchByRange,
   parseTag,
+  satisfiesSpec,
   type ParsedTag,
 } from "../src/utils/release";
 
@@ -139,5 +140,54 @@ describe("isRangeSpec", () => {
     for (const spec of ["v1.6.7.3218", "1.6.7.3218", "2.6.1", "v2.9.6"]) {
       assert.equal(isRangeSpec(spec), false, `${spec} is a pin`);
     }
+  });
+});
+
+/**
+ * The question a lockfile answers before anything is resolved: does the release
+ * it records still satisfy what the manifest declares? npm re-resolves only the
+ * entries that fail it, so getting this wrong either freezes a project that the
+ * manifest has moved past or upgrades one it did not.
+ */
+describe("satisfiesSpec", () => {
+  it("answers a range with npm's own rules", () => {
+    assert.equal(satisfiesSpec("2.6.1", "^2.6.1"), true);
+    assert.equal(satisfiesSpec("2.8.1", "^2.6.1"), true);
+    assert.equal(satisfiesSpec("3.0.0", "^2.6.1"), false);
+    assert.equal(satisfiesSpec("2.5.9", "^2.6.1"), false);
+    assert.equal(satisfiesSpec("2.6.1", "*"), true);
+  });
+
+  it("ignores the build number of a range and the v prefix", () => {
+    assert.equal(satisfiesSpec("v1.6.7.3218", "^1.6.7"), true);
+    assert.equal(satisfiesSpec("1.6.7.3218", "^1.6.7"), true);
+    assert.equal(satisfiesSpec("v1.5.8.3079", "^1.6.7"), false);
+  });
+
+  it("treats a three segment pin as the release family it names", () => {
+    // open.mp publishes v1.6.7.3218 and never 1.6.7, which is exactly the
+    // fallback resolveRelease makes, so a pin and its lockfile agree
+    assert.equal(satisfiesSpec("v1.6.7.3218", "1.6.7"), true);
+    assert.equal(satisfiesSpec("v1.6.7.3217", "1.6.7"), true);
+    // a four segment pin names one build, so its neighbours do not answer it
+    assert.equal(satisfiesSpec("v1.6.7.3218", "1.6.7.3217"), false);
+    assert.equal(satisfiesSpec("v1.6.7.3217", "1.6.7.3217"), true);
+  });
+
+  it("does not confuse two plugin tags that share a version", () => {
+    assert.equal(satisfiesSpec("2.6.1", "2.6.1"), true);
+    assert.equal(satisfiesSpec("v2.6.1", "2.6.1"), true);
+    assert.equal(satisfiesSpec("2.7.1", "2.6.1"), false);
+  });
+
+  it("does not let a prerelease answer a stable declaration", () => {
+    assert.equal(satisfiesSpec("1.6.7-rc.1", "1.6.7"), false);
+    assert.equal(satisfiesSpec("1.7.0-omp", "^1.7.0-omp"), true);
+  });
+
+  it("cannot answer for a release it cannot read", () => {
+    assert.equal(satisfiesSpec("latest", "^1.6.7"), false);
+    assert.equal(satisfiesSpec(null, "^1.6.7"), false);
+    assert.equal(satisfiesSpec(undefined, "*"), false);
   });
 });

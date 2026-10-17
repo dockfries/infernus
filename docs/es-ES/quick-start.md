@@ -62,6 +62,10 @@ infernus install
 # Modo producción (sin copiar archivos inc)
 infernus install -p
 
+# Instalar exactamente lo que registra el lockfile, y fallar si ya no cumple
+# el manifiesto (el `npm ci` de esta CLI)
+infernus install --frozen
+
 # Desinstalar una o más dependencias
 infernus remove openmultiplayer/open.mp dockfries/samp-streamer-plugin
 infernus remove dockfries/Pawn.RakNet
@@ -114,12 +118,18 @@ infernus config gh_token
 - **Mezclar `2.6.1` y `^2.9.6` en el mismo archivo es normal**: la CLI nunca reescribe el
   especificador. `2.6.1` es un **anclaje exacto**, así que `update` se queda en ese release;
   `^2.9.6` es un **rango**, así que `update` avanza al release más reciente que permite.
-  Para seguir los releases, escriba el rango: `infernus add dockfries/samp-node@2.6.1`.
+  Para seguir los releases, escriba el rango: `infernus add dockfries/samp-node@^2.6.1`.
   `infernus versions` muestra qué releases cumplen lo declarado en el manifiesto.
 - `infernus-lock.json` contiene la **etiqueta real del release de GitHub**, por ejemplo
   `v1.6.7.3218`. Las etiquetas de open.mp tienen cuatro segmentos
   (`vmayor.menor.parche.build`), así que `1.6.7` no es una etiqueta: la CLI la trata como
   rango y elige `v1.6.7.3218`, algo que `--verbose` muestra paso a paso.
+- **El lockfile decide qué puede mover una instalación**, igual que `package-lock.json` en
+  npm: una entrada cuyo release todavía cumple el manifiesto se instala tal como está
+  registrada, sin consultar GitHub, y solo se resuelven de nuevo las entradas que faltan en
+  el lockfile o que el manifiesto ya no acepta. `infernus update` es lo que resuelve otra vez
+  los rangos declarados y reescribe el lockfile; `infernus install --frozen` reproduce el
+  lockfile tal cual y rechaza un proyecto que ya no describe.
 - Al actualizar open.mp se reemplazan los archivos de la compilación anterior, se conservan
   y se listan los archivos modificados por el proyecto, y nunca se sobrescriben
   `config.json`, `bans.json` ni `gamemodes/`. Si se reescribe la configuración del

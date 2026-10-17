@@ -62,6 +62,10 @@ infernus install
 # Same as above, production mode (no inc files copied)
 infernus install -p
 
+# Install exactly what the lockfile records, and fail when it no longer
+# satisfies the manifest (the `npm ci` of this CLI)
+infernus install --frozen
+
 # Uninstall one or more dependencies
 infernus remove openmultiplayer/open.mp dockfries/samp-streamer-plugin
 infernus remove dockfries/Pawn.RakNet
@@ -114,12 +118,18 @@ infernus config gh_token
 - **Mixing `2.6.1` and `^2.9.6` in one file is normal**: the CLI never rewrites a spec.
   `2.6.1` is an **exact pin**, so `update` stays on that release; `^2.9.6` is a **range**, so
   `update` walks forward to the newest release it allows. To follow releases, add the range:
-  `infernus add dockfries/samp-node@2.6.1`. `infernus versions` shows which releases satisfy
+  `infernus add dockfries/samp-node@^2.6.1`. `infernus versions` shows which releases satisfy
   what the manifest declares.
 - `infernus-lock.json` holds the **real GitHub release tag**, for example `v1.6.7.3218`.
   open.mp tags four segments (`vmajor.minor.patch.build`), so `1.6.7` is not a tag at all;
   the CLI falls back to matching it as a range and picks `v1.6.7.3218`, which `--verbose`
   prints step by step.
+- **The lockfile decides what an install may move**, the way `package-lock.json` does for
+  npm: an entry whose release still satisfies the manifest is installed as recorded, without
+  asking GitHub, and only entries missing from the lockfile or no longer accepted by the
+  manifest are resolved again. `infernus update` is what resolves the declared ranges again
+  and rewrites the lockfile; `infernus install --frozen` reproduces the lockfile as it is and
+  refuses a project that it no longer describes.
 - Upgrading open.mp replaces the files the previous build shipped. Files the project
   changed are kept and listed, and `config.json`, `bans.json` and `gamemodes/` are never
   overwritten. When the project config is rewritten, a `config.json.<timestamp>.bak` copy

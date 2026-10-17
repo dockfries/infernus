@@ -39,6 +39,8 @@ export interface AddDepsOptions {
   component?: boolean;
   verbose?: boolean;
   dryRun?: boolean;
+  /** install exactly what the lockfile records, refusing one that is out of sync */
+  frozen?: boolean;
 }
 
 export interface ListVersionsOptions {

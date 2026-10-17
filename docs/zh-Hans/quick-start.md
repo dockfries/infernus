@@ -61,6 +61,9 @@ infernus install
 # 同上，生产模式（不复制 inc 文件）
 infernus install -p
 
+# 严格按 lockfile 安装：lockfile 与 infernus.json 对不上就直接失败（相当于 npm ci）
+infernus install --frozen
+
 # 卸载一个或多个依赖
 infernus remove openmultiplayer/open.mp dockfries/samp-streamer-plugin
 infernus remove dockfries/Pawn.RakNet
@@ -111,11 +114,16 @@ infernus config gh_token
 - **同一个文件里混着 `2.6.1` 和 `^2.9.6` 是正常的**：CLI 从不改写你写的版本号。
   `2.6.1` 是**精确锁定**，`update` 会一直停在这个 release；
   `^2.9.6` 是**范围**，`update` 会前进到该范围内最新的 release。
-  想让它跟着升级，就把范围写上：`infernus add dockfries/samp-node@2.6.1`。
+  想让它跟着升级，就把范围写上：`infernus add dockfries/samp-node@^2.6.1`。
   不确定某个依赖现在是什么状态，用 `infernus versions` 看：它会标出哪些版本满足声明的范围。
 - `infernus-lock.json` 里记的是 **GitHub release 的真实 tag**，例如 `v1.6.7.3218`。
   open.mp 的 tag 是四段式（`v主.次.补.构建号`），所以 `1.6.7` 并不是一个真实 tag；
   CLI 会把它当作范围回退匹配到最新的 `v1.6.7.3218`，`--verbose` 会显示这个回退过程。
+- **`install` 能被什么推动，由 lockfile 决定**，和 npm 的 `package-lock.json` 一样：
+  lockfile 里记录的 release 只要仍然满足 manifest 声明的范围，就直接装它、不再询问 GitHub；
+  只有 lockfile 没记录、或已不被 manifest 接受的条目才会重新解析。
+  要按声明的范围重新解析并改写 lockfile，用 `infernus update`；
+  `infernus install --frozen` 则原样复现 lockfile，一旦它与 manifest 对不上就报错退出。
 - 升级 open.mp 时，新版本自带的文件会替换旧构建留下的文件；
   被项目改动过的文件会被保留并列出，`config.json`、`bans.json`、`gamemodes/` 从不覆盖。
   项目文件会被重写时会额外留一份 `config.json.<时间戳>.bak`。

@@ -34,6 +34,9 @@ async function main() {
     );
   };
 
+  const lockedTag = () =>
+    sandbox.readJson("infernus-lock.json").dependencies["openmultiplayer/open.mp"].version;
+
   try {
     console.log(`project: ${sandbox.projectDir}`);
     console.log(`api:     ${server.baseUrl}`);
@@ -46,6 +49,22 @@ async function main() {
       sandbox.readJson("infernus-lock.json").dependencies["openmultiplayer/open.mp"].version,
       OLD_TAG,
     );
+
+    // npm's rule, and the reason the lockfile exists: an install keeps what the
+    // lockfile pins, even though ^1.5.8 would resolve to a newer release
+    const installed = await step("install, which must keep the locked release", [
+      "install",
+      "--verbose",
+    ]);
+    check(
+      "install kept the locked release",
+      sandbox.readJson("infernus-lock.json").dependencies["openmultiplayer/open.mp"].version,
+      OLD_TAG,
+    );
+    check("install says the lockfile answered", installed.output.includes("lockfile:"), true);
+
+    await step("frozen install", ["install", "--frozen", "--verbose"]);
+    check("the frozen install kept the lockfile", lockedTag(), OLD_TAG);
 
     await step("update from the release server", [
       "update",
@@ -84,6 +103,15 @@ async function main() {
       "openmultiplayer/open.mp@^1.6.7",
       "--verbose",
     ]);
+
+    // the upgraded project is now what `--frozen` has to reproduce
+    await step("frozen install after the update", ["install", "--frozen", "--verbose"]);
+    check("the frozen install kept the upgraded lockfile", lockedTag(), NEW_TAG);
+    check(
+      "the frozen install kept the upgraded server",
+      sandbox.read("omp-server.exe"),
+      `server ${NEW_TAG}`,
+    );
   } finally {
     sandbox.cleanup();
     await server.close();

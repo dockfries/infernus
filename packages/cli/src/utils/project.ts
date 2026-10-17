@@ -35,7 +35,7 @@ export async function installProjectDependencies(projectDir: string) {
     );
 
     if (!dependencies.length) return;
-    await addDeps({ dependencies }, false);
+    await addDeps({ dependencies }, "install");
   } finally {
     process.chdir(previous);
   }

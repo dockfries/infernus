@@ -24,6 +24,8 @@ export interface InstallOptions {
   isProd?: boolean;
   /** install into components/ instead of plugins/ */
   isComponent?: boolean;
+  /** reproduce the lockfile instead of updating it */
+  frozen?: boolean;
   /** print every cache and release decision */
   verbose?: boolean;
 }
@@ -40,6 +42,7 @@ export class DependencyInstaller {
   private readonly verbose: boolean;
   private readonly isProd: boolean;
   private readonly forceComponent: boolean;
+  private readonly frozen: boolean;
 
   private lockFile!: LockFileContent;
   private ompConfig!: any;
@@ -53,6 +56,7 @@ export class DependencyInstaller {
     this.verbose = !!options.verbose;
     this.isProd = !!options.isProd;
     this.forceComponent = !!options.isComponent;
+    this.frozen = !!options.frozen;
   }
 
   static async create(options: InstallOptions = {}) {
@@ -398,7 +402,12 @@ export class DependencyInstaller {
 
     this.lockFile.dependencies = { ...(this.lockFile.dependencies ?? {}), ...this.installed };
 
-    await Promise.all([writeOmpConfig(this.ompConfig), writeLockFile(this.lockFile)]);
+    // A frozen install reproduces the lockfile rather than producing it, so the
+    // file must come out byte for byte as it went in: rewriting it would change
+    // a file the caller asked not to be changed (and would add the schema
+    // reference to a lockfile that was written by hand).
+    await writeOmpConfig(this.ompConfig);
+    if (!this.frozen) await writeLockFile(this.lockFile);
   }
 }
 
