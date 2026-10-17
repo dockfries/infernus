@@ -91,7 +91,7 @@ infernus update openmultiplayer/open.mp@^1.6.7 --dry-run --verbose
 # 排查版本解析问题时打印每一步的缓存判定与 GitHub 请求
 infernus update openmultiplayer/open.mp@^1.6.7 --verbose
 
-# 清理全局单个依赖的最低匹配版本
+# 清理全局单个依赖中匹配该范围的所有版本
 infernus clean dockfries/samp-streamer-plugin@^2.9.6
 # 清理全局单个依赖的所有版本
 infernus clean dockfries/samp-streamer-plugin

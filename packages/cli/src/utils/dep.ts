@@ -16,7 +16,7 @@ import {
 import type { AddDepsOptions, LocalConfig, LockFileContent, PawnJsonResources } from "../types";
 import { validRange } from "./semver";
 import { isIncludeAsset, isPluginAsset } from "./asset";
-import { isSameReleaseTag, matchByRange, parseTag, satisfiesSpec, saveSpecFor } from "./release";
+import { satisfiesSpec, saveSpecFor } from "./release";
 import {
   describeCache,
   planDependency,
@@ -122,26 +122,20 @@ export async function cleanGlobalDeps(deps?: string[], onlyTmp = true) {
 
     const allVersions = await fs.readdir(depPath);
 
-    if (version === "*") {
-      for (const v of allVersions) {
-        const depVersionPath = path.resolve(depPath, v);
-        const hasTmp = await hasGlobalDepTemp(depVersionPath);
-        if (!onlyTmp || hasTmp) waitCleanFolders.push(depVersionPath);
-      }
-    } else {
-      const requestedTag = parseTag(version);
-      const matched = requestedTag
-        ? (allVersions.find((cached) => isSameReleaseTag(cached, requestedTag.tag)) ?? null)
-        : matchByRange(
-            allVersions.map(parseTag).filter((parsed) => parsed !== null),
-            version,
-          )?.tag;
+    // A declaration accepts every cached release it matches, so a range clears
+    // all of them: cleaning is a request to free the cache, and leaving the
+    // older builds of the same range behind answers half of it. `*` keeps
+    // clearing the whole directory, stray archives included, since those are not
+    // releases at all.
+    const matched =
+      version === "*"
+        ? allVersions
+        : allVersions.filter((cached) => satisfiesSpec(cached, version));
 
-      if (matched) {
-        const depVersionPath = path.resolve(depPath, matched);
-        const hasTmp = await hasGlobalDepTemp(depVersionPath);
-        if (!onlyTmp || hasTmp) waitCleanFolders.push(depVersionPath);
-      }
+    for (const cached of matched) {
+      const depVersionPath = path.resolve(depPath, cached);
+      const hasTmp = await hasGlobalDepTemp(depVersionPath);
+      if (!onlyTmp || hasTmp) waitCleanFolders.push(depVersionPath);
     }
   }
   await Promise.all(waitCleanFolders.map((folder) => fs.remove(folder)));

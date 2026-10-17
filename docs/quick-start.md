@@ -96,7 +96,7 @@ infernus update openmultiplayer/open.mp@^1.6.7 --dry-run --verbose
 # Print every cache decision and GitHub request, for version resolution problems
 infernus update openmultiplayer/open.mp@^1.6.7 --verbose
 
-# Clear the lowest matching version of a single global dependency
+# Clear every version of a single global dependency that a range matches
 infernus clean dockfries/samp-streamer-plugin@^2.9.6
 # Clear all versions of a single global dependency
 infernus clean dockfries/samp-streamer-plugin

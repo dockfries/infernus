@@ -266,6 +266,24 @@ describe("a cache holding archives as well as builds", () => {
     const removed = await cleanGlobalDeps([`${owner}/repo`], false);
     assert.equal(typeof removed, "number", "cleanup completes instead of throwing ENOTDIR");
   });
+
+  /**
+   * Cleaning by range is how one frees the older builds of a dependency that has
+   * moved on. Removing only the newest match answered the request with one
+   * directory and left the ones that were actually in the way.
+   */
+  it("clears every cached release a declaration matches", async () => {
+    const repoCache = path.resolve(cacheRoot, owner, "multi");
+    for (const tag of ["1.0.0", "1.1.0", "1.2.0", "2.0.0"]) {
+      await fs.ensureDir(path.resolve(repoCache, tag));
+      await fs.writeFile(path.resolve(repoCache, tag, "pawn.json"), "{}");
+    }
+
+    const removed = await cleanGlobalDeps([`${owner}/multi@^1.0.0`], false);
+
+    assert.equal(removed, 3, "all three 1.x builds go");
+    assert.deepEqual(await fs.readdir(repoCache), ["2.0.0"], "the other major survives");
+  });
 });
 
 /**
