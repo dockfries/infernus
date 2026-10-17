@@ -690,17 +690,23 @@ function cleanInvalidLockDeps(config: LocalConfig, lockFile: LockFileContent) {
 
 /**
  * Move a dependency to the front or the back of a dependency list.
+ *
  * open.mp is the server the others run inside, so it is installed first and
  * removed last; the rest keep the order the user gave.
+ *
+ * Only the name decides which entry is meant: an install list carries
+ * `owner/repo@^1.6.7` while a removal list carries the bare `owner/repo`, and
+ * comparing whole entries matched neither. The version suffix is carried along
+ * with the entry rather than rebuilt, so nothing has to know its shape.
  */
-function moveDependency(deps: string[], name: string, where: "first" | "last") {
+export function moveDependency(deps: string[], name: string, where: "first" | "last") {
   const next = deps.slice();
-  const index = next.indexOf(name);
+  const index = next.findIndex((dep) => dep.split("@")[0] === name);
   if (index === -1) return next;
 
-  next.splice(index, 1);
-  if (where === "first") next.unshift(name);
-  else next.push(name);
+  const [entry] = next.splice(index, 1);
+  if (where === "first") next.unshift(entry);
+  else next.push(entry);
 
   return next;
 }

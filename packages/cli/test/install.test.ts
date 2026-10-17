@@ -4,7 +4,7 @@ import fs from "fs-extra";
 import os from "node:os";
 import path from "node:path";
 import { resolveRelease } from "../src/utils/api";
-import { planCache } from "../src/utils/dep";
+import { moveDependency, planCache } from "../src/utils/dep";
 import { copyServer, decideFileAction } from "../src/utils/omp";
 
 /** the real shape of openmultiplayer/open.mp releases */
@@ -156,6 +156,55 @@ describe("planCache", () => {
       needsDownload: true,
       dropTag: null,
     });
+  });
+});
+
+/**
+ * open.mp is the server the plugins run inside, so it is installed before them
+ * and removed after them.
+ *
+ * An install list carries `owner/repo@^1.6.7` while a removal list carries the
+ * bare `owner/repo`, and comparing whole entries matched neither: the server
+ * silently kept whatever position the user wrote, which is exactly what the
+ * ordering exists to override.
+ */
+describe("moveDependency", () => {
+  const OMP = "openmultiplayer/open.mp";
+
+  it("finds a versioned entry by its name alone", () => {
+    const deps = ["dockfries/plugin@^2.9.6", `${OMP}@^1.6.7`, "dockfries/other@1.0.0"];
+
+    assert.deepEqual(moveDependency(deps, OMP, "first"), [
+      `${OMP}@^1.6.7`,
+      "dockfries/plugin@^2.9.6",
+      "dockfries/other@1.0.0",
+    ]);
+  });
+
+  it("moves a bare entry to the back, which is how a removal orders it", () => {
+    const deps = [OMP, "dockfries/plugin"];
+
+    assert.deepEqual(moveDependency(deps, OMP, "last"), ["dockfries/plugin", OMP]);
+  });
+
+  it("carries the entry verbatim, version suffix included", () => {
+    const moved = moveDependency(["a/b@^1.0.0", `${OMP}@1.6.7.3218`], OMP, "first");
+
+    assert.equal(moved[0], `${OMP}@1.6.7.3218`);
+  });
+
+  it("returns an untouched copy when the name is not in the list", () => {
+    const deps = ["a/b@1.0.0"];
+    const moved = moveDependency(deps, OMP, "first");
+
+    assert.deepEqual(moved, deps);
+    assert.notEqual(moved, deps, "the caller's list must not be mutated");
+  });
+
+  it("does not take a name for a prefix of another", () => {
+    const deps = [`${OMP}-extra@1.0.0`, `${OMP}@1.6.7`];
+
+    assert.deepEqual(moveDependency(deps, OMP, "first"), [`${OMP}@1.6.7`, `${OMP}-extra@1.0.0`]);
   });
 });
 
