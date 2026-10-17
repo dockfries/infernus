@@ -134,10 +134,10 @@ infernus config gh_token
   rango y elige `v1.6.7.3218`, algo que `--verbose` muestra paso a paso.
 - **El lockfile decide qué puede mover una instalación**, igual que `package-lock.json` en
   npm: una entrada cuyo release todavía cumple el manifiesto se instala tal como está
-  registrada, sin consultar GitHub, y solo se resuelven de nuevo las entradas que faltan en
-  el lockfile o que el manifiesto ya no acepta. `infernus update` es lo que resuelve otra vez
-  los rangos declarados y reescribe el lockfile; `infernus install --frozen` reproduce el
-  lockfile tal cual y rechaza un proyecto que ya no describe.
+  registrada, sin volver a resolver ese release, y solo se resuelven de nuevo las entradas que
+  faltan en el lockfile o que el manifiesto ya no acepta. `infernus update` es lo que resuelve
+  otra vez los rangos declarados y reescribe el lockfile; `infernus install --frozen` reproduce
+  el lockfile tal cual y rechaza un proyecto que ya no describe.
 - **La instalación es idempotente**: una dependencia cuyo release ya está instalado, y cuyos
   archivos siguen en su sitio, no se toca, así que los binarios de plugin y los includes que
   el proyecto editó no se reescriben. Los archivos se comprueban en vez de suponerse, de modo

@@ -127,7 +127,7 @@ infernus config gh_token
   open.mp 的 tag 是四段式（`v主.次.补.构建号`），所以 `1.6.7` 并不是一个真实 tag；
   CLI 会把它当作范围回退匹配到最新的 `v1.6.7.3218`，`--verbose` 会显示这个回退过程。
 - **`install` 能被什么推动，由 lockfile 决定**，和 npm 的 `package-lock.json` 一样：
-  lockfile 里记录的 release 只要仍然满足 manifest 声明的范围，就直接装它、不再询问 GitHub；
+  lockfile 里记录的 release 只要仍然满足 manifest 声明的范围，就直接装它、不再解析这个 release；
   只有 lockfile 没记录、或已不被 manifest 接受的条目才会重新解析。
   要按声明的范围重新解析并改写 lockfile，用 `infernus update`；
   `infernus install --frozen` 则原样复现 lockfile，一旦它与 manifest 对不上就报错退出。

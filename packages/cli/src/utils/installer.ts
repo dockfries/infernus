@@ -122,6 +122,32 @@ export class DependencyInstaller {
     return true;
   }
 
+  /**
+   * Record the plugins a dependency contributes without placing anything.
+   *
+   * A dependency whose files are already in place is skipped, but the server
+   * config still has to list what to load: the list is regenerated from what is
+   * installed, so a project that committed `plugins/` and not `config.json`
+   * would otherwise come up with nothing to load.
+   */
+  register(plan: DependencyPlan, plugins: string[]) {
+    if (plan.component) return;
+
+    for (const plugin of plugins) this.legacyPlugins.add(plugin);
+  }
+
+  /**
+   * Start the plugin list from what a teardown left behind.
+   *
+   * The list is loaded once, before anything is removed, so it still names the
+   * plugins whose files the teardown deleted; the removal already worked out
+   * which of them belong to the dependencies it took apart.
+   */
+  replacePlugins(plugins: string[]) {
+    this.legacyPlugins.clear();
+    for (const plugin of plugins) this.legacyPlugins.add(plugin);
+  }
+
   private async materializeOpenMp(plan: DependencyPlan) {
     this.installed[plan.name] = { version: plan.finalVersion, component: false };
 

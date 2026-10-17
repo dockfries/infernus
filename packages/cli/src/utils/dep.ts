@@ -260,10 +260,15 @@ async function installDeps(
     // The files go now, but the manifest and the lockfile are left to the install
     // below, so a failure part way through cannot leave them describing an
     // install that never happened. The install reports this in its own summary.
-    await removeDeps(
+    const removal = await removeDeps(
       changing.map((plan) => plan.name),
       { keep: deps.map((dep) => dep.split("@")[0]), record: false, quiet: true },
     );
+
+    // The installer loaded the plugin list before the teardown, and that list
+    // still names the plugins whose files just went: a release that renamed its
+    // binary would leave the server loading a file that no longer exists.
+    if (removal) installer.replacePlugins(removal.legacyPlugins);
   }
 
   const includePath = await getIncludePath();
@@ -272,19 +277,22 @@ async function installDeps(
   for (const plan of plans) {
     const upToDate = plan.finalVersion === plan.previousVersion && !args.component;
 
-    // A plugin is skipped when it is already where it belongs. The server's own
-    // copy always runs, because it compares each file and records what it made
-    // of it, so it reports whether it wrote anything instead.
-    if (
-      plan.name !== ompRepository &&
-      upToDate &&
-      (await isPlaced(plan, { includePath, isProd: !!args.production }))
-    ) {
-      if (verbose) {
-        console.log(chalk.gray(`  up to date: ${plan.name} ${plan.finalVersion}`));
+    // A plugin is skipped when it is already where it belongs, but its name is
+    // still recorded: the server config lists what to load, and skipping the
+    // placement must not empty that list. The server's own copy always runs,
+    // because it compares each file and records what it made of it, so it
+    // reports whether it wrote anything instead.
+    if (plan.name !== ompRepository && upToDate) {
+      const state = await placedState(plan, { includePath, isProd: !!args.production });
+
+      if (state.placed) {
+        if (verbose) {
+          console.log(chalk.gray(`  up to date: ${plan.name} ${plan.finalVersion}`));
+        }
+        installer.register(plan, state.plugins);
+        skipped.add(plan.name);
+        continue;
       }
-      skipped.add(plan.name);
-      continue;
     }
 
     if (!(await installer.materialize(plan))) skipped.add(plan.name);
@@ -330,7 +338,7 @@ function printInstallSummary(plans: DependencyPlan[], skipped: Set<string>, star
 }
 
 /**
- * Whether a dependency's build is already placed in the project.
+ * What a dependency's build would place, and whether it is already there.
  *
  * The files are enumerated from the build's own `pawn.json`, which an earlier
  * install cached, so this asks nothing of the network and matches what a
@@ -338,23 +346,31 @@ function printInstallSummary(plans: DependencyPlan[], skipped: Set<string>, star
  * A dependency with no readable declaration, no file of the current platform, or
  * an unusable one answers "not placed", which sends it down the normal install
  * path where those problems are reported properly.
+ *
+ * The names of the plugins come back with the answer because the server config
+ * lists them: a dependency that is skipped still has to be loaded, and a fresh
+ * clone that committed `plugins/` but not `config.json` would otherwise come out
+ * with an empty list and a server that loads nothing.
  */
-async function isPlaced(
+async function placedState(
   plan: DependencyPlan,
   context: { includePath: string; isProd: boolean },
-): Promise<boolean> {
+): Promise<{ placed: boolean; plugins: string[] }> {
+  const notPlaced = { placed: false, plugins: [] };
+
   const [owner, repo] = plan.name.split("/");
   const pawnJson = await getPawnJson(owner, repo, plan.finalVersion).catch(() => null);
 
-  if (!pawnJson?.resources?.length) return false;
+  if (!pawnJson?.resources?.length) return notPlaced;
 
   const resources = pawnJson.resources.filter((resource) =>
     isWindows ? resource.platform === "windows" : resource.platform === "linux",
   );
-  if (!resources.length) return false;
+  if (!resources.length) return notPlaced;
 
   const pluginFolder = getPlugOrCompPath(plan.component);
   const expected: string[] = [];
+  const plugins: string[] = [];
 
   for (const resource of resources) {
     let found;
@@ -367,21 +383,26 @@ async function isPlaced(
     } catch {
       // a declaration that cannot be used fails during the placement, where the
       // error names it, rather than here where it would look like a missing file
-      return false;
+      return notPlaced;
     }
 
-    // a production install deliberately leaves the include files out, so their
-    // absence must not make the dependency look incomplete
     for (const file of found) {
+      if (file.isPlugin) {
+        plugins.push(path.basename(file.path, path.extname(file.path)));
+      }
+
+      // a production install deliberately leaves the include files out, so their
+      // absence must not make the dependency look incomplete
       if (context.isProd && !file.isPlugin) continue;
       expected.push(file.path);
     }
   }
 
-  if (!expected.length) return false;
+  if (!expected.length) return notPlaced;
 
   const present = await Promise.all(expected.map((file) => fs.pathExists(file)));
-  return present.every(Boolean);
+
+  return { placed: present.every(Boolean), plugins };
 }
 
 function printInstallPlan(
@@ -502,8 +523,10 @@ export async function addDeps(args: AddDepsOptions, mode: ResolveMode = "install
 
       // A dependency named without a version keeps the spec the manifest already
       // declares: `add pkg` on `^2.6.1` must not widen what the project asked for,
-      // and `update pkg` has always read this way.
-      if (!given && declared) {
+      // and `update pkg` has always read this way. `--save-exact` is an explicit
+      // request for a narrower declaration, so it resolves the same way and then
+      // writes the tag.
+      if (!given && declared && !args.saveExact) {
         if (!validRange(declared)) throw new Error(`invalid deps version: ${depName}@${declared}`);
         kept.add(depName);
         return `${depName}@${declared}`;
@@ -515,7 +538,7 @@ export async function addDeps(args: AddDepsOptions, mode: ResolveMode = "install
       // says so, the second leaves the declaration to the resolved range below
       if (given) typed.set(depName, version);
 
-      return `${depName}@${version}`;
+      return `${depName}@${given ? version : (declared ?? version)}`;
     });
   }
 
@@ -820,15 +843,23 @@ export interface RemovalOptions {
  * The files are deleted first and the records updated afterwards, so a failure
  * while deleting cannot leave the manifest claiming a dependency that is still
  * on disk in full.
+ *
+ * The plan is returned so a caller that installs afterwards can start from the
+ * state the removal left: the plugin list it computed is the one the server
+ * should be given, and a plugin renamed between releases would otherwise stay
+ * listed while its file is gone.
  */
-export async function removeDeps(deps?: string[], options: RemovalOptions = {}) {
-  if (!deps?.length) return;
+export async function removeDeps(
+  deps?: string[],
+  options: RemovalOptions = {},
+): Promise<RemovalPlan | null> {
+  if (!deps?.length) return null;
 
   const start = Date.now();
   const { keep = [], record = true, quiet = false } = options;
 
   const plan = await planRemoval(deps, { keep });
-  if (!plan) return;
+  if (!plan) return null;
 
   await applyRemoval(plan, record);
 
@@ -836,6 +867,8 @@ export async function removeDeps(deps?: string[], options: RemovalOptions = {}) 
     const plural = deps.length === 1 ? "dependency" : "dependencies";
     console.log(`removed ${deps.length} ${plural} in ${elapsed(start)}s`);
   }
+
+  return plan;
 }
 
 function cleanInvalidLockDeps(config: LocalConfig, lockFile: LockFileContent) {

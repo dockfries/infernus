@@ -165,8 +165,9 @@ async function listVersionsCommand(args: ArgumentsCamelCase<ListVersionsOptions>
   }
 }
 
-function removeDependencies(args: ArgumentsCamelCase<RemoveDepsOptions>) {
-  return removeDeps(args.dependencies);
+async function removeDependencies(args: ArgumentsCamelCase<RemoveDepsOptions>) {
+  // the handler reports through its output; the plan it returns is for callers
+  await removeDeps(args.dependencies);
 }
 
 async function cleanCache(args: ArgumentsCamelCase<CleanCacheOptions>) {

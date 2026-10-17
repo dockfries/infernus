@@ -134,10 +134,10 @@ infernus config gh_token
   prints step by step.
 - **The lockfile decides what an install may move**, the way `package-lock.json` does for
   npm: an entry whose release still satisfies the manifest is installed as recorded, without
-  asking GitHub, and only entries missing from the lockfile or no longer accepted by the
-  manifest are resolved again. `infernus update` is what resolves the declared ranges again
-  and rewrites the lockfile; `infernus install --frozen` reproduces the lockfile as it is and
-  refuses a project that it no longer describes.
+  resolving the release again, and only entries missing from the lockfile or no longer
+  accepted by the manifest are resolved. `infernus update` is what resolves the declared
+  ranges again and rewrites the lockfile; `infernus install --frozen` reproduces the lockfile
+  as it is and refuses a project that it no longer describes.
 - **An install is idempotent**: a dependency whose release is already installed, and whose
   files are still in place, is left alone, so plugin binaries and includes the project edited
   are not rewritten. The files are checked rather than assumed, so a fresh clone (a committed

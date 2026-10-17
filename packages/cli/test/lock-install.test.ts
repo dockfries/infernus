@@ -324,6 +324,89 @@ describe("the lockfile answers what the manifest still accepts", () => {
     );
   });
 
+  /**
+   * A repository can commit `plugins/` while `config.json` stays a runtime file.
+   * The dependency is then skipped as up to date, and the server still has to be
+   * told what to load: the list is regenerated from what is installed, so a skip
+   * that recorded nothing would leave the server loading no plugins at all.
+   */
+  it("still lists a skipped dependency's plugins for the server to load", async () => {
+    process.env.INFERNUS_GITHUB_API = failingUrl;
+    await seedCache(NEW);
+    const dir = await project({ [NAME]: "^2.6.1" }, { [NAME]: NEW });
+
+    await fs.ensureDir(path.resolve(dir, "plugins"));
+    for (const file of ["plugin-fixture.dll", "plugin-fixture.so"]) {
+      await fs.writeFile(path.resolve(dir, "plugins", file), `dll ${NEW}`);
+    }
+
+    await addDeps({});
+
+    const config = await fs.readJson(path.resolve(dir, "config.json"));
+    assert.deepEqual(config.pawn.legacy_plugins, ["plugin-fixture"]);
+  });
+
+  /**
+   * A release that renames its binary leaves the old name in the list the
+   * installer loaded before the teardown. The removal already worked out which
+   * names its files belonged to, so that answer is what the server has to be
+   * given — otherwise it keeps trying to load a file that was just deleted.
+   */
+  it("replaces the plugin list when a release renames its binary", async () => {
+    const renamed = "lockcheck/renamed";
+    const renamedCache = path.resolve(cacheRoot, "lockcheck", "renamed");
+    const server2 = await startReleaseServer([
+      { name: renamed, tags: ["2.0.0", "1.0.0"], layout: "pawn" },
+    ]);
+    process.env.INFERNUS_GITHUB_API = server2.baseUrl;
+
+    // both builds in the cache, each naming its own binary
+    for (const [tag, plugin] of [
+      ["1.0.0", "renamed-old"],
+      ["2.0.0", "renamed-new"],
+    ]) {
+      const dir = path.resolve(renamedCache, tag);
+      await fs.ensureDir(dir);
+      await fs.writeJson(
+        path.resolve(dir, "pawn.json"),
+        {
+          resources: [
+            { name: `${plugin}.dll`, platform: "windows", version: "0.3.7", archive: false },
+            { name: `${plugin}.so`, platform: "linux", version: "0.3.7", archive: false },
+          ],
+        },
+        { spaces: 2 },
+      );
+      await fs.writeFile(path.resolve(dir, `${plugin}.dll`), `dll ${tag}`);
+      await fs.writeFile(path.resolve(dir, `${plugin}.so`), `so ${tag}`);
+    }
+
+    try {
+      // `*` so an update has somewhere to move; the lockfile is what keeps the
+      // project on 1.0.0 until then
+      const dir = await project({ [renamed]: "*" }, { [renamed]: "1.0.0" });
+
+      await addDeps({});
+      assert.deepEqual(
+        (await fs.readJson(path.resolve(dir, "config.json"))).pawn.legacy_plugins,
+        ["renamed-old"],
+        "precondition: the old binary is installed and listed",
+      );
+
+      await addDeps({}, "update");
+
+      assert.deepEqual(
+        (await fs.readJson(path.resolve(dir, "config.json"))).pawn.legacy_plugins,
+        ["renamed-new"],
+        "the server must not be told to load the deleted binary",
+      );
+    } finally {
+      process.env.INFERNUS_GITHUB_API = failingUrl;
+      await server2.close();
+      await fs.remove(renamedCache);
+    }
+  });
+
   it("replaces the files when the release changes", async () => {
     process.env.INFERNUS_GITHUB_API = server.baseUrl;
     await seedCache(OLD);
@@ -455,6 +538,18 @@ describe("what add saves", () => {
       (await fs.readJson(path.resolve(dir, "infernus.json"))).dependencies[NAME],
       "^2.6.1",
       "naming a dependency without a version must not widen what was declared",
+    );
+  });
+
+  it("narrows a declared range to the exact tag with --save-exact", async () => {
+    const dir = await project({ [NAME]: "^2.6.1" });
+
+    await addDeps({ dependencies: [NAME], saveExact: true });
+
+    assert.equal(
+      (await fs.readJson(path.resolve(dir, "infernus.json"))).dependencies[NAME],
+      NEW,
+      "asking for an exact declaration is a request to narrow, not one to ignore",
     );
   });
 
