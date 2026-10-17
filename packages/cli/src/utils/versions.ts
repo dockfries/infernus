@@ -1,10 +1,9 @@
 import chalk from "chalk";
-import semver from "semver";
 import { listRepoReleases } from "./api";
 import { readLocalConfig, readLockFile, INF_CONFIG_NAME } from "./config";
 import { ompRepository } from "../constants";
 import type { ListVersionsOptions, LocalConfig, LockFileContent } from "../types";
-import { isRangeSpec, parseTag, type ParsedTag } from "./release";
+import { parseTag, satisfiesSpec } from "./release";
 import { validRange } from "./semver";
 
 /** one dependency whose releases could not be read, reported instead of thrown */
@@ -43,16 +42,16 @@ async function collect(
     .map((release) => ({ tag: String(release.tag_name), version: parseTag(release.tag_name) }))
     .filter((entry) => entry.version !== null);
 
-  const acceptable = isRangeSpec(spec)
-    ? (entry: ParsedTag) => semver.satisfies(entry.version, spec)
-    : (entry: ParsedTag) => entry.tag === spec;
+  // the same question an install asks of the lockfile, so what this marks as
+  // compatible is exactly what an install may keep
+  const acceptable = (entry: { tag: string }) => satisfiesSpec(entry.tag, spec);
 
   return {
     name,
     spec,
     installed,
     tags: releases.map((release) => String(release.tag_name)),
-    compatible: new Set(parsed.filter((entry) => acceptable(entry.version!)).map((e) => e.tag)),
+    compatible: new Set(parsed.filter((entry) => acceptable(entry)).map((e) => e.tag)),
     unreadable: new Set(
       releases.map((release) => String(release.tag_name)).filter((tag) => parseTag(tag) === null),
     ),

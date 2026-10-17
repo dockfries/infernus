@@ -121,6 +121,35 @@ describe("listVersions", () => {
     assert.deepEqual([...report.compatible], ["2.6.1"]);
   });
 
+  /**
+   * Repositories are inconsistent about the `v` prefix, and an install compares a
+   * pin on the tag rather than on the string, so `2.6.1` installs from `v2.6.1`.
+   * This listing has to answer the same question, or it calls a manifest
+   * unsatisfiable while the install it describes succeeds.
+   */
+  it("marks a v prefixed tag as satisfying a pin written without it", async () => {
+    const repo = {
+      name: "lockcheck/prefixed",
+      tags: ["v2.6.1", "2.8.1"],
+      layout: "pawn" as const,
+    };
+    const prefixed = await startReleaseServer([repo]);
+    const previous = process.env.INFERNUS_GITHUB_API;
+    process.env.INFERNUS_GITHUB_API = prefixed.baseUrl;
+
+    try {
+      await inProject({ "lockcheck/prefixed": "2.6.1" });
+
+      const [report] = await listVersions({ dependencies: [], json: true });
+
+      assert.deepEqual([...report.compatible], ["v2.6.1"]);
+    } finally {
+      if (previous === undefined) delete process.env.INFERNUS_GITHUB_API;
+      else process.env.INFERNUS_GITHUB_API = previous;
+      await prefixed.close();
+    }
+  });
+
   it("keeps going when one repository cannot be read", async () => {
     await inProject({
       "dockfries/samp-node": "^2.6.1",
