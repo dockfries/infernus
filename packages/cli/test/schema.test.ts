@@ -73,7 +73,29 @@ describe("infernus.schema.json", () => {
   });
 
   it("accepts every version shape the CLI accepts in a manifest", () => {
-    const specs = ["*", "^1.5.8", "1.6.7", "~2.9.6", ">=1.0.0", "v1.6.7.3218", "1.6.7.3217"];
+    // the schema is an editor hint, so it must not red-line a spec the install
+    // itself accepts: these are the shapes validRange() understands
+    const specs = [
+      "*",
+      "",
+      "^1.5.8",
+      "1.6.7",
+      "~2.9.6",
+      ">=1.0.0",
+      ">=2.6 <2.7",
+      ">= 2.6.1",
+      "^2.6.1 || ^3.0.0",
+      "^2.6.1||^3.0.0",
+      "1.2.3 - 2.3.4",
+      "2.6.x",
+      "2.6.*",
+      "2.6",
+      "1",
+      "1.6.7.3217",
+      "1.6.7-rc.1",
+      "2.6.1+build",
+      "v1.6.7.3218",
+    ];
 
     for (const spec of specs) {
       assert.equal(validRange(spec), true, `the CLI accepts ${spec}`);
