@@ -68,11 +68,18 @@ infernus install --frozen
 infernus remove openmultiplayer/open.mp dockfries/samp-streamer-plugin
 infernus remove dockfries/Pawn.RakNet
 
+# 把所有已声明的依赖在各自范围内升到最新，并改写 lockfile
+infernus update
+
 # 更新依赖（更新全局缓存并应用到当前目录）
 infernus update openmultiplayer/open.mp
 
 # 更新到指定版本
 infernus update openmultiplayer/open.mp@^1.6.7
+
+# 不带版本添加依赖：manifest 里写 npm 风格的 ^2.8.1；加 --save-exact 则写精确 tag
+infernus add dockfries/samp-node
+infernus add dockfries/samp-node --save-exact
 
 # 查看某个依赖有哪些可用版本（哪些满足当前声明的范围、哪个已安装）
 infernus versions
@@ -124,6 +131,14 @@ infernus config gh_token
   只有 lockfile 没记录、或已不被 manifest 接受的条目才会重新解析。
   要按声明的范围重新解析并改写 lockfile，用 `infernus update`；
   `infernus install --frozen` 则原样复现 lockfile，一旦它与 manifest 对不上就报错退出。
+- **`install` 是幂等的**：release 没变、文件也都还在的依赖会被完全跳过，
+  所以你手改过的插件二进制和 inc 不会被 `install` 重写。
+  文件是逐个检查的，所以刚从仓库克隆下来（有 lockfile、没有 `plugins/`）也能补齐。
+- 不带参数的 `infernus update` 会把**所有**已声明的依赖在各自范围内升到最新并改写 lockfile；
+  `infernus update <pkg>` 只动其中一个。
+- 不带版本 `infernus add <pkg>` 时，manifest 里写的是 npm 风格的范围（`^2.8.1`），
+  加 `--save-exact` 则写精确 tag。依赖本来就已经声明过时，**沿用你写的范围**，
+  不会因为「没写版本」而被放宽。
 - 升级 open.mp 时，新版本自带的文件会替换旧构建留下的文件；
   被项目改动过的文件会被保留并列出，`config.json`、`bans.json`、`gamemodes/` 从不覆盖。
   项目文件会被重写时会额外留一份 `config.json.<时间戳>.bak`。

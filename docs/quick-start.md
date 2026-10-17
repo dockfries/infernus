@@ -70,11 +70,19 @@ infernus install --frozen
 infernus remove openmultiplayer/open.mp dockfries/samp-streamer-plugin
 infernus remove dockfries/Pawn.RakNet
 
+# Move every declared dependency inside its range, and rewrite the lockfile
+infernus update
+
 # Update a dependency (updates global cache and applies to current directory)
 infernus update openmultiplayer/open.mp
 
 # Update a dependency to a specific version
 infernus update openmultiplayer/open.mp@^1.6.7
+
+# Add a dependency without a version: the manifest gets the range npm would
+# write (^2.8.1), or the exact tag with --save-exact
+infernus add dockfries/samp-node
+infernus add dockfries/samp-node --save-exact
 
 # List the versions a dependency can be installed from
 # (which ones satisfy the manifest, and which one is installed)
@@ -130,6 +138,15 @@ infernus config gh_token
   manifest are resolved again. `infernus update` is what resolves the declared ranges again
   and rewrites the lockfile; `infernus install --frozen` reproduces the lockfile as it is and
   refuses a project that it no longer describes.
+- **An install is idempotent**: a dependency whose release is already installed, and whose
+  files are still in place, is left alone, so plugin binaries and includes the project edited
+  are not rewritten. The files are checked rather than assumed, so a fresh clone (a committed
+  lockfile and no `plugins/`) is still filled in.
+- `infernus update` without arguments moves **every** declared dependency inside its range and
+  rewrites the lockfile; `infernus update <pkg>` does the same for one of them.
+- `infernus add <pkg>` without a version declares the range npm would write (`^2.8.1`), and
+  `--save-exact` declares the exact tag instead. A dependency the manifest already declares
+  keeps its spec: naming it without a version never widens what the project asked for.
 - Upgrading open.mp replaces the files the previous build shipped. Files the project
   changed are kept and listed, and `config.json`, `bans.json` and `gamemodes/` are never
   overwritten. When the project config is rewritten, a `config.json.<timestamp>.bak` copy

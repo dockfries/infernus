@@ -70,11 +70,19 @@ infernus install --frozen
 infernus remove openmultiplayer/open.mp dockfries/samp-streamer-plugin
 infernus remove dockfries/Pawn.RakNet
 
+# Subir todas las dependencias declaradas dentro de su rango y reescribir el lockfile
+infernus update
+
 # Actualizar una dependencia (actualiza la caché global y el directorio actual)
 infernus update openmultiplayer/open.mp
 
 # Actualizar a una versión específica
 infernus update openmultiplayer/open.mp@^1.6.7
+
+# Añadir una dependencia sin versión: el manifiesto recibe el rango que escribiría
+# npm (^2.8.1), o la etiqueta exacta con --save-exact
+infernus add dockfries/samp-node
+infernus add dockfries/samp-node --save-exact
 
 # Listar las versiones disponibles de una dependencia
 # (cuáles cumplen el manifiesto y cuál está instalada)
@@ -130,6 +138,15 @@ infernus config gh_token
   el lockfile o que el manifiesto ya no acepta. `infernus update` es lo que resuelve otra vez
   los rangos declarados y reescribe el lockfile; `infernus install --frozen` reproduce el
   lockfile tal cual y rechaza un proyecto que ya no describe.
+- **La instalación es idempotente**: una dependencia cuyo release ya está instalado, y cuyos
+  archivos siguen en su sitio, no se toca, así que los binarios de plugin y los includes que
+  el proyecto editó no se reescriben. Los archivos se comprueban en vez de suponerse, de modo
+  que un clon recién hecho (con lockfile y sin `plugins/`) se completa igualmente.
+- `infernus update` sin argumentos sube **todas** las dependencias declaradas dentro de su
+  rango y reescribe el lockfile; `infernus update <pkg>` hace lo mismo con una sola.
+- `infernus add <pkg>` sin versión declara el rango que escribiría npm (`^2.8.1`), y
+  `--save-exact` declara la etiqueta exacta. Una dependencia ya declarada en el manifiesto
+  conserva su especificador: nombrarla sin versión nunca lo amplía.
 - Al actualizar open.mp se reemplazan los archivos de la compilación anterior, se conservan
   y se listan los archivos modificados por el proyecto, y nunca se sobrescriben
   `config.json`, `bans.json` ni `gamemodes/`. Si se reescribe la configuración del
