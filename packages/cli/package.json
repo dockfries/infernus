@@ -1,6 +1,6 @@
 {
   "name": "@infernus/cli",
-  "version": "0.2.22",
+  "version": "0.2.23",
   "description": "Command line interface for rapid infernus development",
   "keywords": [
     "omp",
