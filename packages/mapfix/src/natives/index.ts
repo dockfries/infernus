@@ -1868,6 +1868,32 @@ export function createMapFixObjects() {
     MapFixObjects[663] = mf_CreateObject(3084, 2837.4, -1908.5, 9.82, -90.0, 180.0, -90.0, 14.0);
     MapFixObjects[664] = mf_CreateObject(3084, 2837.4, -1920.9, 9.82, -90.0, 180.0, -90.0, 14.0);
   }
+  if (!DISABLE_MAPFIX_PLACE.has(157)) {
+    MapFixObjects[665] = mf_CreateObject(
+      9339,
+      2806.07,
+      -1170.0495,
+      1027.9301,
+      0.0,
+      270.0,
+      0.0,
+      28.0,
+    );
+    mf_SetObjectMaterial(MapFixObjects[665], 0, 0, "none", "none", 0);
+  }
+  if (!DISABLE_MAPFIX_PLACE.has(158)) {
+    MapFixObjects[666] = mf_CreateObject(
+      18981,
+      -234.4023,
+      1404.1666,
+      30.0478,
+      0.0,
+      90.0,
+      90.0,
+      28.0,
+    );
+    mf_SetObjectMaterial(MapFixObjects[666], 0, 0, "none", "none", 0);
+  }
   return 1;
 }
 
