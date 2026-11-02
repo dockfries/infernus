@@ -1,3 +1,40 @@
+## [0.15.1](https://github.com/dockfries/infernus/compare/v0.15.0...v0.15.1) (2026-11-02)
+
+### ⚠ BREAKING CHANGES
+
+- **cli:** `infernus install` no longer moves a dependency past the
+  release the lockfile records; `infernus update` does that.
+
+### Features
+
+- **cef:** add browser layer control ([ceb643b](https://github.com/dockfries/infernus/commit/ceb643be11e72202ac6d7842910af880ab5bd97b))
+- **cli:** let the lockfile decide what an install may move ([8d5a11a](https://github.com/dockfries/infernus/commit/8d5a11a31356c2d09d7291260c91d68f4dda8c76))
+- **cli:** make an install idempotent, and save ranges the way npm does ([6a082fe](https://github.com/dockfries/infernus/commit/6a082fe94e094121ab5ed35b7375e383c1f87d8d))
+- **cli:** report what an install did, and keep the lockfile in order ([3f858be](https://github.com/dockfries/infernus/commit/3f858be6a9d85f7251d510147426c6c1f44198cd))
+- **core:** cherry-pick 1237 ([5c91cc2](https://github.com/dockfries/infernus/commit/5c91cc26083bfe0aa87f770c33027deb01c26637))
+- **mapfix:** added new fixes ([2e3681e](https://github.com/dockfries/infernus/commit/2e3681ec55d66bab700a569fc310c5eb06819199))
+- **query:** drop chardetng, use jschardet v4 ([7ebc7e8](https://github.com/dockfries/infernus/commit/7ebc7e8f13e90180f597e19f527a661b1463aa69))
+
+### Bug Fixes
+
+- **cli:** accept in the schema every range an install accepts ([39a914c](https://github.com/dockfries/infernus/commit/39a914cc85267781ef4b9f579af840eab1fb54bd))
+- **cli:** clear every cached release a range matches ([8158e16](https://github.com/dockfries/infernus/commit/8158e16475f94202b21ad0b191b08aaf271afcb7))
+- **cli:** close the paths that could destroy files outside the project ([54c77d7](https://github.com/dockfries/infernus/commit/54c77d7245e6df4fe46bba0c06339648ec791d19))
+- **cli:** compare a pinned release on its tag in versions ([28ff50a](https://github.com/dockfries/infernus/commit/28ff50a30ac93f2693085f2146da85d53a128e81))
+- **cli:** harden downloads and installation, split the install flow ([1fef560](https://github.com/dockfries/infernus/commit/1fef5607f5a07da53b9f25bbfebe4677da133c49))
+- **cli:** keep --json parseable, reject unknown config keys, fix the docs ([66b64ce](https://github.com/dockfries/infernus/commit/66b64ced1fa73d953d63541698051fcdc3288f3c))
+- **cli:** keep the server's plugin list truthful ([06230ea](https://github.com/dockfries/infernus/commit/06230ead13cdc42d6e35e225f7f6a0f26215fca5))
+- **cli:** make the download progress bar count up instead of jumping ([f504662](https://github.com/dockfries/infernus/commit/f504662c95c149b0801981c65170be5c8e22f6a5))
+- **cli:** order open.mp by dependency name, not by whole entry ([47e785b](https://github.com/dockfries/infernus/commit/47e785b3d86e00878ac2497db2df050fa71bec6f))
+- **cli:** remove the server config once its plugin list is empty ([9572dc1](https://github.com/dockfries/infernus/commit/9572dc11c85cff7b294a43026bb63dfd84e83b3f))
+- **cli:** replace a server file that no history can account for ([6a864ff](https://github.com/dockfries/infernus/commit/6a864ff142edb0f82c9438e506bdb2e89232afe2))
+- **cli:** report a truncated release listing and check the route shape ([a8d6d01](https://github.com/dockfries/infernus/commit/a8d6d01800d940979908b364473ae4bb820dd9b6))
+- **cli:** rolldown clean dir ([7c2f652](https://github.com/dockfries/infernus/commit/7c2f652ba27e95643b2dc02a1a768bd53713bcde))
+- **cli:** write the manifest once, after the install succeeds ([418032d](https://github.com/dockfries/infernus/commit/418032da46f3450dcc7b51179eb5885aa595a31c))
+- **docs:** add file extensions to the vitepress config imports ([53fb5d0](https://github.com/dockfries/infernus/commit/53fb5d03454e4f66c055f11074cde1a88bf12242))
+- **docs:** show every heading level in the localized outlines ([156ee30](https://github.com/dockfries/infernus/commit/156ee30e7399c554399030ee1af5617888023ae5))
+- **root:** include package tests in the tsconfig ([009b606](https://github.com/dockfries/infernus/commit/009b6063fe9ed08960e795cac9dceb969dcb3753))
+
 ## [0.15.0](https://github.com/dockfries/infernus/compare/v0.14.8...v0.15.0) (2026-09-25)
 
 ### ⚠ BREAKING CHANGES
