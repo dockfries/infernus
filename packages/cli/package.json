@@ -23,13 +23,13 @@
     "test": "node --import tsx --test test/*.test.ts"
   },
   "dependencies": {
-    "@inquirer/prompts": "^8.7.3",
+    "@inquirer/prompts": "^8.7.5",
     "@octokit/core": "^7.0.8",
     "@xhmikosr/decompress": "^11.1.4",
-    "axios": "^1.20.0",
+    "axios": "^1.21.0",
     "chalk": "^6.0.1",
     "cli-progress": "^3.12.0",
-    "execa": "^10.1.1",
+    "execa": "^10.2.1",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.4.1",
     "https-proxy-agent": "^9.1.0",
@@ -41,7 +41,7 @@
     "@types/cli-progress": "^3.11.6",
     "@types/fs-extra": "^11.0.4",
     "@types/semver": "^7.8.0",
-    "@types/update-notifier": "^6.0.8",
+    "@types/update-notifier": "^6.0.9",
     "@types/yargs": "^17.0.35"
   }
 }
