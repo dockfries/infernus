@@ -32,23 +32,23 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
     return false;
   }
   if (
-    ACInfo.get(player.id).acACAllow[47] &&
-    (!(hitType >= BulletHitTypesEnum.NONE && hitType <= BulletHitTypesEnum.PLAYER_OBJECT) ||
-      (hitType === BulletHitTypesEnum.PLAYER && !(hitId >= 0 && hitId < LimitsEnum.MAX_PLAYERS)) ||
-      (hitType === BulletHitTypesEnum.VEHICLE &&
-        !(hitId >= 1 && hitId < LimitsEnum.MAX_VEHICLES)) ||
-      (hitType === BulletHitTypesEnum.OBJECT && !(hitId >= 1 && hitId < LimitsEnum.MAX_OBJECTS)) ||
-      (hitType === BulletHitTypesEnum.PLAYER_OBJECT &&
-        !(hitId >= 1 && hitId < LimitsEnum.MAX_OBJECTS)) ||
-      !ac_IsBulletWeapon(weapon))
+    !(hitType >= BulletHitTypesEnum.NONE && hitType <= BulletHitTypesEnum.PLAYER_OBJECT) ||
+    (hitType === BulletHitTypesEnum.PLAYER && !(hitId >= 0 && hitId < LimitsEnum.MAX_PLAYERS)) ||
+    (hitType === BulletHitTypesEnum.VEHICLE && !(hitId >= 1 && hitId < LimitsEnum.MAX_VEHICLES)) ||
+    (hitType === BulletHitTypesEnum.OBJECT && !(hitId >= 1 && hitId < LimitsEnum.MAX_OBJECTS)) ||
+    (hitType === BulletHitTypesEnum.PLAYER_OBJECT &&
+      !(hitId >= 1 && hitId < LimitsEnum.MAX_OBJECTS)) ||
+    !ac_IsBulletWeapon(weapon)
   ) {
-    if (innerACConfig.DEBUG) {
-      samp.logprint(
-        `[Nex-AC DEBUG] HitType: ${hitType}, hitId: ${hitId}, weaponId: ${weapon}`,
-        LogLevelEnum.DEBUG,
-      );
+    if (ACInfo.get(player.id).acACAllow[47]) {
+      if (innerACConfig.DEBUG) {
+        samp.logprint(
+          `[Nex-AC DEBUG] HitType: ${hitType}, hitId: ${hitId}, weaponId: ${weapon}`,
+          LogLevelEnum.DEBUG,
+        );
+      }
+      return ac_KickWithCode(player, "", 0, 47, 1);
     }
-    return ac_KickWithCode(player, "", 0, 47, 1);
   }
   const {
     fOriginX: ac_oX,

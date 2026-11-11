@@ -1,6 +1,6 @@
 import { LogLevelEnum, InvalidEnum, LimitsEnum, PlayerEvent, WeaponEnum } from "@infernus/core";
-import { ACInfo } from "../../struct";
-import { ac_IsValidDamageReason, ac_IsValidWeapon } from "../../functions";
+import { ACInfo, ACVehInfo } from "../../struct";
+import { ac_IsBulletWeapon, ac_IsValidDamageReason, ac_IsValidWeapon } from "../../functions";
 import { innerACConfig } from "../../config";
 import { ac_wSlot } from "../../constants";
 import { ac_KickWithCode } from "../trigger";
@@ -63,6 +63,13 @@ PlayerEvent.onGiveDamage(({ player, damage, bodyPart, weapon, amount, next }) =>
         }
         return true;
       }
+    }
+  }
+  if (ac_IsBulletWeapon(weapon)) {
+    const ac_vehId = damage.getVehicle()?.id;
+    if (ac_vehId && ac_vehId > 0) {
+      const ac_driver = ACVehInfo.get(ac_vehId).acDriver;
+      if (ac_driver !== InvalidEnum.PLAYER_ID) ACInfo.get(ac_driver).acVehDmgRes = false;
     }
   }
   return next();

@@ -137,11 +137,9 @@ PlayerEvent.onDisconnect(({ player, reason, next }) => {
     }
     if (ACInfo.get(player.id).acACAllow[37] && innerACConfig.AC_MAX_CONNECTS_FROM_IP < 2) {
       if (reason === 0) {
-        const ac_tmp = GameMode.getConsoleVarAsInt("network.player_timeout");
-        GameMode.blockIpAddress(
-          ACInfo.get(player.id).acIp,
-          innerACConfig.AC_MIN_TIME_RECONNECT * 1000 - ac_tmp,
-        );
+        let ac_tmp = GameMode.getConsoleVarAsInt("network.player_timeout");
+        ac_tmp = innerACConfig.AC_MIN_TIME_RECONNECT * 1000 - ac_tmp;
+        GameMode.blockIpAddress(ACInfo.get(player.id).acIp, ac_tmp);
       } else {
         GameMode.blockIpAddress(
           ACInfo.get(player.id).acIp,

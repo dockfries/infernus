@@ -165,15 +165,15 @@ export function ac_KickWithCode(
     return false;
   if (innerACConfig.AC_USE_STATISTICS) {
     ac_sInfo[5]++;
-    if ((code >= 0 && code <= 35) || [37, 39, 51].includes(code)) {
+    if ((code >= 0 && code <= 35) || [37, 39, 52].includes(code)) {
       ac_sInfo[0]++;
-    } else if ([36, 38, 40, 41, 50].includes(code)) {
+    } else if ([36, 38, 40, 41, 51].includes(code)) {
       ac_sInfo[4]++;
     } else if (code === 42) {
       ac_sInfo[1]++;
-    } else if (code >= 47 && code <= 49) {
+    } else if (code >= 48 && code <= 50) {
       ac_sInfo[3]++;
-    } else if (code >= 43 && code <= 46) {
+    } else if (code >= 43 && code <= 47) {
       ac_sInfo[2]++;
     }
   }

@@ -87,7 +87,7 @@ export function ac_Timer(player: Player) {
           }
         }
         ac_s = ac_wSlot[ac_s];
-        for (let ac_i = 0, ac_cw = false; ac_i <= 12; ++ac_i) {
+        for (let ac_i = 0, ac_cw = false, ac_sw = 0, ac_sa = 0; ac_i <= 12; ++ac_i) {
           const { weapons: ac_w, ammo: ac_a } = player.getWeaponData(ac_i);
           if (ac_w === WeaponEnum.SATCHEL) ac_cw = true;
           if (ac_s !== ac_i) {
@@ -100,8 +100,9 @@ export function ac_Timer(player: Player) {
                 ACInfo.get(player.id).acWeapon[ac_i] = ac_w;
               } else if (ac_gtc - ACInfo.get(player.id).acGtcSetWeapon[ac_i] > ac_gpp) {
                 if (ACInfo.get(player.id).acACAllow[52] && ACInfo.get(player.id).acNOPAllow[0]) {
+                  if (++ac_sa <= 1) ACInfo.get(player.id).acNOPCount[0]++;
                   if (
-                    ++ACInfo.get(player.id).acNOPCount[0] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+                    ACInfo.get(player.id).acNOPCount[0] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
                   ) {
                     if (innerACConfig.DEBUG) {
                       samp.logprint(
@@ -119,10 +120,11 @@ export function ac_Timer(player: Player) {
                   } else {
                     triggerNOPWarning(player, 0, ACInfo.get(player.id).acNOPCount[0]);
                   }
-                } else if (
-                  ++ACInfo.get(player.id).acNOPCount[0] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
-                )
-                  ACInfo.get(player.id).acSetWeapon[ac_i] = -1;
+                } else {
+                  if (++ac_sw <= 1) ACInfo.get(player.id).acNOPCount[0]++;
+                  if (ACInfo.get(player.id).acNOPCount[0] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS)
+                    ACInfo.get(player.id).acSetWeapon[ac_i] = -1;
+                }
               }
             } else {
               if (ACInfo.get(player.id).acWeapon[ac_i] !== ac_w) {
@@ -193,6 +195,7 @@ export function ac_Timer(player: Player) {
                     (ACInfo.get(player.id).acGiveAmmo[ac_i] < ac_a ||
                       (0 > ac_a && ac_a <= ACInfo.get(player.id).acGiveAmmo[ac_i]))
                   ) {
+                    if (++ac_sa <= 1) ACInfo.get(player.id).acNOPCount[1]++;
                     if (
                       ++ACInfo.get(player.id).acNOPCount[1] >
                       innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
@@ -213,15 +216,18 @@ export function ac_Timer(player: Player) {
                     } else {
                       triggerNOPWarning(player, 1, ACInfo.get(player.id).acNOPCount[1]);
                     }
-                  } else if (
-                    ++ACInfo.get(player.id).acNOPCount[1] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
-                  ) {
+                  } else {
+                    if (++ac_sa <= 1) ACInfo.get(player.id).acNOPCount[1]++;
                     if (
-                      ACInfo.get(player.id).acGiveAmmo[ac_i] > ac_a &&
-                      !(0 > ac_a && ac_a <= ACInfo.get(player.id).acGiveAmmo[ac_i])
-                    )
-                      ACInfo.get(player.id).acAmmo[ac_i] = ac_a;
-                    ACInfo.get(player.id).acGiveAmmo[ac_i] = -65535;
+                      ACInfo.get(player.id).acNOPCount[1] > innerACConfig.AC_MAX_NOP_TIMER_WARNINGS
+                    ) {
+                      if (
+                        ACInfo.get(player.id).acGiveAmmo[ac_i] > ac_a &&
+                        !(0 > ac_a && ac_a <= ACInfo.get(player.id).acGiveAmmo[ac_i])
+                      )
+                        ACInfo.get(player.id).acAmmo[ac_i] = ac_a;
+                      ACInfo.get(player.id).acGiveAmmo[ac_i] = -65535;
+                    }
                   }
                 }
               } else if (ac_IsWeaponSlotWithAmmo(ac_i)) {
@@ -361,10 +367,8 @@ export function ac_Timer(player: Player) {
                   0,
                   10,
                   4,
-                  Math.round(
-                    ACInfo.get(player.id).acCheatCount[18] /
-                      innerACConfig.AC_SPEEDHACK_VEH_RESET_DELAY,
-                  ),
+                  ACInfo.get(player.id).acCheatCount[18] /
+                    innerACConfig.AC_SPEEDHACK_VEH_RESET_DELAY,
                 );
               }
             }

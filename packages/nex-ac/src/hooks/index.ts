@@ -123,12 +123,12 @@ export function ac_SetSpawnInfo(
   ac_y: number,
   ac_z: number,
   rotation: number,
-  weapon1: number,
-  weapon1_ammo: number,
-  weapon2: number,
-  weapon2_ammo: number,
-  weapon3: number,
-  weapon3_ammo: number,
+  weapon1: number = 0,
+  weapon1_ammo: number = 0,
+  weapon2: number = 0,
+  weapon2_ammo: number = 0,
+  weapon3: number = 0,
+  weapon3_ammo: number = 0,
 ) {
   if (
     !player.setSpawnInfo(
@@ -423,7 +423,7 @@ export function ac_SetPlayerArmour(player: Player, armour: number) {
 }
 
 export function ac_GivePlayerWeapon(player: Player, weaponId: number, ammo: number) {
-  if (ac_IsValidWeapon(weaponId)) {
+  if (ac_IsValidWeapon(weaponId) && weaponId !== 0) {
     const ac_s = ac_wSlot[weaponId];
     if (ammo < -32768) ammo = -32768;
     else if (ammo > 32767) ammo = 32767;
@@ -570,7 +570,9 @@ export function ac_SetPlayerSpecialAction(player: Player, actionId: number) {
 }
 
 export function ac_PlayerSpecPlayerOrVehicle(player: Player) {
-  ACInfo.get(player.id).acGtc[16] = Date.now() + 2650;
+  ACInfo.get(player.id).acSet[5] = 1;
+  ACInfo.get(player.id).acNOPCount[8] = 0;
+  ACInfo.get(player.id).acGtc[16] = ACInfo.get(player.id).acGtc[11] = Date.now() + 2650;
   return true;
 }
 
@@ -631,9 +633,10 @@ export function ac_PutPlayerInVehicle(vehicle: Vehicle, player: Player, seatId: 
     ACInfo.get(player.id).acNOPCount[7] = 0;
     ACInfo.get(player.id).acSet[8] = vehicle.id;
     if (
+      seatId < 0 ||
       ac_IsABusEx(ac_model) ||
-      ac_IsVehicleSeatOccupied(vehicle, seatId) ||
-      seatId > ac_GetMaxPassengers(ac_model)
+      seatId > ac_GetMaxPassengers(ac_model) ||
+      ac_IsVehicleSeatOccupied(vehicle, seatId)
     )
       ACInfo.get(player.id).acSet[4] = -1;
     else ACInfo.get(player.id).acSet[4] = seatId;
@@ -766,13 +769,13 @@ export function ac_UpdateVehicleDamageStatus(
 
 export function ac_SetVehicleParamsEx(
   vehicle: Vehicle,
-  engine: boolean | VehicleParamsEnum,
-  lights: boolean | VehicleParamsEnum,
-  alarm: boolean | VehicleParamsEnum,
-  doors: boolean | VehicleParamsEnum,
-  bonnet: boolean | VehicleParamsEnum,
-  boot: boolean | VehicleParamsEnum,
-  objective: boolean | VehicleParamsEnum,
+  engine: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+  lights: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+  alarm: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+  doors: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+  bonnet: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+  boot: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
+  objective: boolean | VehicleParamsEnum = VehicleParamsEnum.UNSET,
 ) {
   if (
     !orig_vehicleMethods.setParamsEx.call(
@@ -1146,12 +1149,12 @@ export function acc_AddPlayerClass(
   spawnY: number,
   spawnZ: number,
   zAngle: number,
-  weapon1: number,
-  weapon1Ammo: number,
-  weapon2: number,
-  weapon2Ammo: number,
-  weapon3: number,
-  weapon3Ammo: number,
+  weapon1: number = 0,
+  weapon1Ammo: number = 0,
+  weapon2: number = 0,
+  weapon2Ammo: number = 0,
+  weapon3: number = 0,
+  weapon3Ammo: number = 0,
 ) {
   const ac_class = orig_AddPlayerClass(
     modelId,
@@ -1190,12 +1193,12 @@ export function acc_AddPlayerClassEx(
   spawnY: number,
   spawnZ: number,
   zAngle: number,
-  weapon1: number,
-  weapon1Ammo: number,
-  weapon2: number,
-  weapon2Ammo: number,
-  weapon3: number,
-  weapon3Ammo: number,
+  weapon1: number = 0,
+  weapon1Ammo: number = 0,
+  weapon2: number = 0,
+  weapon2Ammo: number = 0,
+  weapon3: number = 0,
+  weapon3Ammo: number = 0,
 ) {
   const ac_class = orig_AddPlayerClassEx(
     teamId,

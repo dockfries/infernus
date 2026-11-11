@@ -152,23 +152,23 @@ VehicleEvent.onMod(({ player, vehicle, componentId, next }) => {
   if (innerACConfig.AC_USE_TUNING_GARAGES) {
     ACInfo.get(player.id).acGtc[18] = ac_i + 3250;
   }
-  if (ACInfo.get(player.id).acACAllow[43]) {
-    const ac_i = vehicle.getModel();
-    if (!ac_IsCompatible(ac_i, componentId)) {
-      if (innerACConfig.DEBUG) {
-        samp.logprint(
-          `[Nex-AC DEBUG] Veh model: ${ac_i}, veh: ${vehicle.id}, componentId: ${componentId}`,
-          LogLevelEnum.DEBUG,
-        );
-      }
-      return ac_KickWithCode(player, "", 0, 43, 1);
+  ac_i = vehicle.getModel();
+  if (!ac_IsCompatible(ac_i, componentId)) {
+    if (innerACConfig.AC_USE_TUNING_GARAGES) {
+      ac_i = componentId - 1000;
+      if (ACInfo.get(player.id).acSet[11] !== -1)
+        ACInfo.get(player.id).acSet[11] += ac_cPrice[ac_i];
+      else ACInfo.get(player.id).acSet[11] = ac_cPrice[ac_i];
+      ACInfo.get(player.id).acCheatCount[21] = 0;
     }
-  }
-  if (innerACConfig.AC_USE_TUNING_GARAGES) {
-    ac_i = componentId - 1000;
-    if (ACInfo.get(player.id).acSet[11] !== -1) ACInfo.get(player.id).acSet[11] += ac_cPrice[ac_i];
-    else ACInfo.get(player.id).acSet[11] = ac_cPrice[ac_i];
-    ACInfo.get(player.id).acCheatCount[21] = 0;
+  } else if (ACInfo.get(player.id).acACAllow[43]) {
+    if (innerACConfig.DEBUG) {
+      samp.logprint(
+        `[Nex-AC DEBUG] Veh model: ${ac_i}, veh: ${vehicle.id}, componentId: ${componentId}`,
+        LogLevelEnum.DEBUG,
+      );
+    }
+    return ac_KickWithCode(player, "", 0, 43, 1);
   }
   return next();
 });

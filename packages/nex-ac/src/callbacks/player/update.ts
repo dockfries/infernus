@@ -162,7 +162,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               if (
                 (ACInfo.get(player.id).acLastPickup >= 0 &&
                   ACInfo.get(player.id).acLastPickup < LimitsEnum.MAX_PICKUPS &&
-                  ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acWeapon == ac_w &&
+                  ACPickInfo.get(ACInfo.get(player.id).acLastPickup).acWeapon === ac_w &&
                   ac_a <=
                     (ac_IsAmmoSharingInSlot(ac_s)
                       ? ACInfo.get(player.id).acAmmo[ac_s] + ac_pAmmo[ac_w]
@@ -721,7 +721,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
               (!ac_IsValidFloat(ac_vHealth) ||
                 (ac_vHealth > ACVehInfo.get(ac_vehId).acHealth &&
                   !ACInfo.get(player.id).acModShop &&
-                  ac_vHealth))
+                  ac_vHealth !== 0.0))
             ) {
               if (
                 !innerACConfig.AC_USE_PAYNSPRAY ||
@@ -885,10 +885,8 @@ PlayerEvent.onUpdate(({ player, next }) => {
                       0,
                       10,
                       1,
-                      Math.round(
-                        ACInfo.get(player.id).acCheatCount[14] /
-                          innerACConfig.AC_SPEEDHACK_VEH_RESET_DELAY,
-                      ),
+                      ACInfo.get(player.id).acCheatCount[14] /
+                        innerACConfig.AC_SPEEDHACK_VEH_RESET_DELAY,
                     );
                   }
                 }
@@ -1063,7 +1061,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                 ac_IsValidSkin(ac_i) &&
                 ac_i !== 0 &&
                 ac_w !== WeaponEnum.PARACHUTE &&
-                ac_specAct != SpecialActionsEnum.USECELLPHONE &&
+                ac_specAct !== SpecialActionsEnum.USECELLPHONE &&
                 !(ac_specAct >= SpecialActionsEnum.DRINK_BEER && ac_specAct <= 25)
               ) {
                 if (
