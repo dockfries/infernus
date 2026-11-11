@@ -55,24 +55,22 @@ DynamicPickupEvent.onPlayerPickUp(({ pickup, player, next }) => {
   }
   ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[8] = ac_i;
   if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
-    switch (
-      (ac_i = Streamer.getIntData(StreamerItemTypes.PICKUP, pickup.id, E_STREAMER.EXTRA_ID))
-    ) {
-      case 1: {
+    ac_i = Streamer.getIntData(StreamerItemTypes.PICKUP, pickup.id, E_STREAMER.EXTRA_ID);
+    switch (ac_i) {
+      case 370: {
         ACInfo.get(player.id).acSpecAct = SpecialActionsEnum.USEJETPACK;
         break;
       }
-      case 2: {
+      case 1240: {
         if (ACInfo.get(player.id).acHealth < 100) ACInfo.get(player.id).acHealth = 100;
         break;
       }
-      case 3: {
+      case 1242: {
         if (ACInfo.get(player.id).acArmour < 100) ACInfo.get(player.id).acArmour = 100;
         break;
       }
       default: {
-        if (ac_i - 100 >= 1 && ac_i - 100 <= 46) {
-          ac_i -= 100;
+        if (ac_i >= 1 && ac_i <= 46) {
           const ac_s = ac_wSlot[ac_i];
           if (
             ACInfo.get(player.id).acWeapon[ac_s] === ac_i ||
@@ -94,7 +92,7 @@ PickUpEvent.onPlayerPickUpGlobal(({ pickup, player, next }) => {
 
   const streamerId = Streamer.getItemStreamerID(player, StreamerItemTypes.PICKUP, pickup.id);
   if (!DynamicPickup.isValid(streamerId)) {
-    const ac_i = Date.now();
+    let ac_i = Date.now();
     if (ACInfo.get(player.id).acACAllow[49]) {
       if (ac_i - ACInfo.get(player.id).acCall[8] < ac_Mtfc[8][0]) ac_FloodDetect(player, 8);
       else if (ac_i - ACInfo.get(player.id).acCall[27] < ac_Mtfc[27][0]) ac_FloodDetect(player, 27);
@@ -128,28 +126,29 @@ PickUpEvent.onPlayerPickUpGlobal(({ pickup, player, next }) => {
     }
     ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[8] = ac_i;
     if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
-      switch (ACPickInfo.get(pickup.id).acType) {
-        case 1: {
+      ac_i = ACPickInfo.get(pickup.id).acWeapon;
+      switch (ac_i) {
+        case 370: {
           ACInfo.get(player.id).acSpecAct = SpecialActionsEnum.USEJETPACK;
           break;
         }
-        case 2: {
+        case 1240: {
           if (ACInfo.get(player.id).acHealth < 100) ACInfo.get(player.id).acHealth = 100;
           break;
         }
-        case 3: {
+        case 1242: {
           if (ACInfo.get(player.id).acArmour < 100) ACInfo.get(player.id).acArmour = 100;
           break;
         }
-        case 4: {
-          const ac_i = ACPickInfo.get(pickup.id).acWeapon;
-          const ac_s = ac_wSlot[ac_i];
-          if (
-            ACInfo.get(player.id).acWeapon[ac_s] === ac_i ||
-            (ac_IsAmmoSharingInSlot(ac_s) && ACInfo.get(player.id).acWeapon[ac_s] > 0)
-          )
-            ACInfo.get(player.id).acAmmo[ac_s] += ac_pAmmo[ac_i];
-          break;
+        default: {
+          if (ac_i >= 1 && ac_i <= 46) {
+            const ac_s = ac_wSlot[ac_i];
+            if (
+              ACInfo.get(player.id).acWeapon[ac_s] === ac_i ||
+              (ac_IsAmmoSharingInSlot(ac_s) && ACInfo.get(player.id).acWeapon[ac_s] > 0)
+            )
+              ACInfo.get(player.id).acAmmo[ac_s] += ac_pAmmo[ac_i];
+          }
         }
       }
     }

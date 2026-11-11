@@ -152,17 +152,17 @@ VehicleEvent.onMod(({ player, vehicle, componentId, next }) => {
   if (innerACConfig.AC_USE_TUNING_GARAGES) {
     ACInfo.get(player.id).acGtc[18] = ac_i + 3250;
   }
-  if (
-    ACInfo.get(player.id).acACAllow[43] &&
-    !ac_IsCompatible((ac_i = vehicle.getModel()), componentId)
-  ) {
-    if (innerACConfig.DEBUG) {
-      samp.logprint(
-        `[Nex-AC DEBUG] Veh model: ${ac_i}, veh: ${vehicle.id}, componentId: ${componentId}`,
-        LogLevelEnum.DEBUG,
-      );
+  if (ACInfo.get(player.id).acACAllow[43]) {
+    const ac_i = vehicle.getModel();
+    if (!ac_IsCompatible(ac_i, componentId)) {
+      if (innerACConfig.DEBUG) {
+        samp.logprint(
+          `[Nex-AC DEBUG] Veh model: ${ac_i}, veh: ${vehicle.id}, componentId: ${componentId}`,
+          LogLevelEnum.DEBUG,
+        );
+      }
+      return ac_KickWithCode(player, "", 0, 43, 1);
     }
-    return ac_KickWithCode(player, "", 0, 43, 1);
   }
   if (innerACConfig.AC_USE_TUNING_GARAGES) {
     ac_i = componentId - 1000;
@@ -383,8 +383,7 @@ VehicleEvent.onUnoccupiedUpdate(
     }
     const ac_vsp = ac_GetSpeed(velX, velY, velZ);
 
-    const ac_gtc = Date.now(),
-      ac_gpp = player.getPing();
+    const ac_i = Date.now();
     const { x: ac_x, y: ac_y, z: ac_z } = vehicle.getPos();
 
     if (ACInfo.get(player.id).acACAllow[5]) {
@@ -437,14 +436,14 @@ VehicleEvent.onUnoccupiedUpdate(
         }
       } else if (
         ACInfo.get(player.id).acACAllow[8] &&
-        ((velZ >= 0.1 &&
-          velZ > ACVehInfo.get(vehicleId).acVelZ &&
-          Math.abs(ac_x - newX) < ac_zDiff / 2.0 &&
-          Math.abs(ac_y - newY) < ac_zDiff / 2.0) ||
-          (velZ >= 0.0 && ac_zDiff <= -1.0) ||
+        ((velZ >= 0.0 && ac_zDiff <= -1.0) ||
           (velZ <= 0.0 && ac_zDiff >= 1.0) ||
           (ac_zDiff >= 0.0 && velZ <= -0.3) ||
-          (ac_zDiff <= 0.0 && velZ >= 0.3))
+          (ac_zDiff <= 0.0 && velZ >= 0.3) ||
+          (velZ >= 0.1 &&
+            velZ > ACVehInfo.get(vehicleId).acVelZ &&
+            Math.abs(ac_x - newX) < ac_zDiff / 2.0 &&
+            Math.abs(ac_y - newY) < ac_zDiff / 2.0))
       ) {
         if (++ACInfo.get(player.id).acCheatCount[3] > innerACConfig.AC_MAX_FLYHACK_VEH_WARNINGS) {
           if (innerACConfig.DEBUG) {
@@ -477,7 +476,8 @@ VehicleEvent.onUnoccupiedUpdate(
     }
     if (
       ACInfo.get(player.id).acACAllow[5] &&
-      (ac_dist >= 25.0 || (ac_dist >= 15.0 && ac_gtc - ACInfo.get(player.id).acGtc[15] > ac_gpp)) &&
+      (ac_dist >= 25.0 ||
+        (ac_dist >= 15.0 && ac_i - ACInfo.get(player.id).acGtc[15] > player.getPing())) &&
       ac_dist - ACVehInfo.get(vehicleId).acPosDiff > (ac_dist / 3.0) * 1.6 &&
       (ac_z >= -45.0 || ac_GetVectorDist(newX - ac_x, newY - ac_y) >= 180.0)
     ) {

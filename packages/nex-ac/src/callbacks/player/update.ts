@@ -50,7 +50,6 @@ PlayerEvent.onUpdate(({ player, next }) => {
       (ac_w = player.getWeapon()) !== -1
     ) {
       let ac_s = ac_wSlot[ac_w];
-      const ac_a = player.getAmmo();
       let ac_tmp = 0;
       let ac_i = 0;
       if (innerACConfig.AC_USE_AMMUNATIONS || innerACConfig.AC_USE_TUNING_GARAGES) {
@@ -110,6 +109,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
             }
           }
         }
+        const ac_a = player.getAmmo();
         if (ACInfo.get(player.id).acGiveAmmo[ac_s] !== -65535) {
           if (ACInfo.get(player.id).acGiveAmmo[ac_s] === ac_a) {
             ACInfo.get(player.id).acGiveAmmo[ac_s] = -65535;
@@ -178,8 +178,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                     StreamerItemTypes.PICKUP,
                     ACInfo.get(player.id).acLastPickup - LimitsEnum.MAX_PICKUPS,
                     E_STREAMER.EXTRA_ID,
-                  ) ===
-                    ac_w + 100 &&
+                  ) === ac_w &&
                   ac_a <=
                     (ac_IsAmmoSharingInSlot(ac_s)
                       ? ACInfo.get(player.id).acAmmo[ac_s] + ac_pAmmo[ac_w]
@@ -929,12 +928,12 @@ PlayerEvent.onUpdate(({ player, next }) => {
               } else if (ACInfo.get(player.id).acACAllow[8]) {
                 ac_tmp = ac_pZ - ACInfo.get(player.id).acPosZ;
                 if (
+                  (ac_vZ >= 0.0 && ac_tmp <= -1.0) ||
+                  (ac_vZ <= 0.0 && ac_tmp >= 1.0) ||
                   (ac_vZ >= 0.1 &&
                     ac_vZ > ACVehInfo.get(ac_vehId).acVelZ &&
                     Math.abs(ACInfo.get(player.id).acPosX - ac_pX) < ac_tmp / 2.0 &&
-                    Math.abs(ACInfo.get(player.id).acPosY - ac_pY) < ac_tmp / 2.0) ||
-                  (ac_vZ >= 0.0 && ac_tmp <= -1.0) ||
-                  (ac_vZ <= 0.0 && ac_tmp >= 1.0)
+                    Math.abs(ACInfo.get(player.id).acPosY - ac_pY) < ac_tmp / 2.0)
                 ) {
                   if (
                     ++ACInfo.get(player.id).acCheatCount[3] >

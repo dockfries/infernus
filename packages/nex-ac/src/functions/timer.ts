@@ -79,12 +79,11 @@ export function ac_Timer(player: Player) {
               StreamerItemTypes.PICKUP,
               ACInfo.get(player.id).acLastPickup - LimitsEnum.MAX_PICKUPS,
             ).distance;
-            ac_t =
-              Streamer.getIntData(
-                StreamerItemTypes.PICKUP,
-                ACInfo.get(player.id).acLastPickup - LimitsEnum.MAX_PICKUPS,
-                E_STREAMER.EXTRA_ID,
-              ) - 100;
+            ac_t = Streamer.getIntData(
+              StreamerItemTypes.PICKUP,
+              ACInfo.get(player.id).acLastPickup - LimitsEnum.MAX_PICKUPS,
+              E_STREAMER.EXTRA_ID,
+            );
           }
         }
         ac_s = ac_wSlot[ac_s];

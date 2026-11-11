@@ -137,7 +137,6 @@ export class ACPickInfoStruct {
   acPosX: number = 0;
   acPosY: number = 0;
   acPosZ: number = 0;
-  acType: number = 0;
   acWeapon: number = 0;
 }
 

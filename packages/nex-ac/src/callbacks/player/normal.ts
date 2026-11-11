@@ -35,8 +35,7 @@ PlayerEvent.onConnect(({ player, next }) => {
   if (innerACConfig.AC_USE_NPC && player.isNpc()) {
     if (ac_ACAllow[36]) {
       const ac_rslt = ACInfo.get(player.id).acIpInt === innerGameModeConfig.ac_BindAddr;
-
-      if (ACInfo.get(player.id).acIp !== "127.0.0.1" && !ac_rslt) {
+      if (!ac_rslt && ACInfo.get(player.id).acIp !== "127.0.0.1") {
         if (innerACConfig.DEBUG) {
           samp.logprint(
             `[Nex-AC DEBUG] NPC's IP: '${ACInfo.get(player.id).acIp}'`,
@@ -343,7 +342,11 @@ PlayerEvent.onKeyStateChange(({ player, newKeys, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
   if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     let ac_i = player.getWeapon();
-    if (newKeys & KeysEnum.CROUCH && ((ac_i >= 24 && ac_i <= 25) || (ac_i >= 33 && ac_i <= 34)))
+    if (
+      newKeys & KeysEnum.CROUCH &&
+      ((ac_i >= WeaponEnum.DEAGLE && ac_i <= WeaponEnum.SHOTGUN) ||
+        (ac_i >= WeaponEnum.RIFLE && ac_i <= WeaponEnum.SNIPER))
+    )
       ACInfo.get(player.id).acCheatCount[12] = 0;
     if (newKeys & KeysEnum.SECONDARY_ATTACK) {
       const ac_i_veh = Vehicle.getInstance(ACInfo.get(player.id).acVeh);

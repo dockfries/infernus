@@ -1,4 +1,4 @@
-export const NEX_AC_VERSION = "1.9.68";
+export const NEX_AC_VERSION = "1.9.69";
 export const AC_SERVER_OMP_VERSION = "open.mp";
 
 export const ac_wSlot = [

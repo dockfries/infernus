@@ -25,7 +25,6 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
   if (!innerACConfig.AC_USE_NPC || (innerACConfig.AC_USE_NPC && !player.isNpc())) {
     const ac_gtc = Date.now();
-    let ac_s = player.getPing();
     if (ACInfo.get(player.id).acACAllow[49]) {
       if (ac_gtc - ACInfo.get(player.id).acCall[11] < ac_Mtfc[11][0]) {
         if (newState !== PlayerStateEnum.ONFOOT || oldState !== PlayerStateEnum.SPAWNED) {
@@ -132,22 +131,22 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
             ACInfo.get(player.id).acTpToZ ? ac_z : ACInfo.get(player.id).acSetPosZ,
           );
           if (
-            (ACInfo.get(player.id).acSet[7] === -1 || ac_dist >= 15.0) &&
-            (ac_GetVectorDist(
+            ((ACInfo.get(player.id).acSet[7] === -1 || ac_dist >= 15.0) &&
+              ACInfo.get(player.id).acPosZ >= -90.0) ||
+            ac_z - ACInfo.get(player.id).acPosZ < 40.0 ||
+            ac_GetVectorDist(
               ac_x - ACInfo.get(player.id).acPosX,
               ac_y - ACInfo.get(player.id).acPosY,
-            ) >= 180.0 ||
-              ACInfo.get(player.id).acPosZ >= -90.0 ||
-              ac_z - ACInfo.get(player.id).acPosZ < 40.0)
+            ) >= 180.0
           ) {
-            ac_s = ACVehInfo.get(ac_t).acDriver;
+            const ac_s = ACVehInfo.get(ac_t).acDriver;
+            const ac_model_veh = Vehicle.getInstance(ac_t);
+            let ac_model = ac_model_veh ? ac_model_veh.getModel() : 0;
             ac_dist = player.getDistanceFromPoint(
               ACInfo.get(player.id).acPosX,
               ACInfo.get(player.id).acPosY,
               ACInfo.get(player.id).acPosZ,
             );
-            const ac_model_veh = Vehicle.getInstance(ac_t);
-            let ac_model = ac_model_veh ? ac_model_veh.getModel() : 0;
             if (ac_model <= 0) ac_model = ACInfo.get(player.id).acLastModel;
             if (
               ac_dist >= 180.0 ||
@@ -179,7 +178,7 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
         if (
           ACInfo.get(player.id).acACAllow[48] &&
           !(newState >= PlayerStateEnum.WASTED && newState <= PlayerStateEnum.SPAWNED) &&
-          ac_gtc - ACInfo.get(player.id).acGtc[16] > ac_s
+          ac_gtc - ACInfo.get(player.id).acGtc[16] > player.getPing()
         ) {
           if (innerACConfig.DEBUG) {
             samp.logprint(`[Nex-AC DEBUG] NewState: ${newState}`, LogLevelEnum.DEBUG);
@@ -210,14 +209,14 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
       case PlayerStateEnum.DRIVER:
       case PlayerStateEnum.PASSENGER: {
         ACInfo.get(player.id).acSet[9] = -1;
-        const ac_vehId = player.getVehicle()!.id,
-          ac_seat = player.getVehicleSeat();
-        ac_s = player.getVehicle()!.getModel();
-        if (ac_s <= 0) {
+        const ac_vehId = player.getVehicle()!.id;
+        const ac_seat = player.getVehicleSeat();
+        let ac_t = player.getVehicle()!.getModel();
+        if (ac_t <= 0) {
           if (ACInfo.get(player.id).acACAllow[44]) {
             if (innerACConfig.DEBUG) {
               samp.logprint(
-                `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, seatId: ${ac_seat}`,
+                `[Nex-AC DEBUG] Veh model: ${ac_t}, veh: ${ac_vehId}, seatId: ${ac_seat}`,
                 LogLevelEnum.DEBUG,
               );
             }
@@ -225,12 +224,12 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
           }
         } else if (ACInfo.get(player.id).acSet[8] !== ac_vehId) {
           if (ACInfo.get(player.id).acACAllow[44]) {
-            const ac_maxSeats = ac_GetMaxPassengers(ac_s);
+            const ac_maxSeats = ac_GetMaxPassengers(ac_t);
             if (newState === PlayerStateEnum.DRIVER) {
               if (ac_seat !== 0 || ac_maxSeats === 15) {
                 if (innerACConfig.DEBUG) {
                   samp.logprint(
-                    `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, seatId: ${ac_seat}`,
+                    `[Nex-AC DEBUG] Veh model: ${ac_t}, veh: ${ac_vehId}, seatId: ${ac_seat}`,
                     LogLevelEnum.DEBUG,
                   );
                 }
@@ -239,11 +238,11 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
             } else if (
               ac_seat < 1 ||
               ac_maxSeats === 15 ||
-              (ac_seat > ac_maxSeats && !ac_IsABusEx(ac_s) && ac_s !== 570)
+              (ac_seat > ac_maxSeats && !ac_IsABusEx(ac_t) && ac_t !== 570)
             ) {
               if (innerACConfig.DEBUG) {
                 samp.logprint(
-                  `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, max seats: ${ac_maxSeats}, seatId: ${ac_seat}`,
+                  `[Nex-AC DEBUG] Veh model: ${ac_t}, veh: ${ac_vehId}, max seats: ${ac_maxSeats}, seatId: ${ac_seat}`,
                   LogLevelEnum.DEBUG,
                 );
               }
@@ -255,11 +254,11 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
               ACInfo.get(player.id).acEnterVeh !== ac_vehId ||
               (ACInfo.get(player.id).acEnterSeat !== -1 &&
                 ACInfo.get(player.id).acEnterSeat !== ac_seat) ||
-              ac_gtc - ACInfo.get(player.id).acEnterVehTick < (ac_IsABikeEx(ac_s) ? 100 : 300)
+              ac_gtc - ACInfo.get(player.id).acEnterVehTick < (ac_IsABikeEx(ac_t) ? 100 : 300)
             ) {
               if (innerACConfig.DEBUG) {
                 samp.logprint(
-                  `[Nex-AC DEBUG] Entered veh: ${ACInfo.get(player.id).acEnterVeh}, veh: ${ac_vehId}, entered seat: ${ACInfo.get(player.id).acEnterSeat}, seat: ${ac_seat}, veh model: ${ac_s}, enter time: ${ac_gtc - ACInfo.get(player.id).acEnterVehTick}`,
+                  `[Nex-AC DEBUG] Entered veh: ${ACInfo.get(player.id).acEnterVeh}, veh: ${ac_vehId}, entered seat: ${ACInfo.get(player.id).acEnterSeat}, seat: ${ac_seat}, veh model: ${ac_t}, enter time: ${ac_gtc - ACInfo.get(player.id).acEnterVehTick}`,
                   LogLevelEnum.DEBUG,
                 );
               }
@@ -273,11 +272,11 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
               if (newState === PlayerStateEnum.DRIVER) {
                 if (
                   ac_dist >= 30.0 ||
-                  (ac_dist >= 20.0 && ac_s !== 553 && ac_s !== 577 && ac_s !== 592)
+                  (ac_dist >= 20.0 && ac_t !== 553 && ac_t !== 577 && ac_t !== 592)
                 ) {
                   if (innerACConfig.DEBUG) {
                     samp.logprint(
-                      `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, dist: ${ac_dist}`,
+                      `[Nex-AC DEBUG] Veh model: ${ac_t}, veh: ${ac_vehId}, dist: ${ac_dist}`,
                       LogLevelEnum.DEBUG,
                     );
                   }
@@ -289,7 +288,7 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
               ) {
                 if (innerACConfig.DEBUG) {
                   samp.logprint(
-                    `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, AFK time: ${ac_gtc - ACInfo.get(player.id).acUpdateTick}, dist: ${ac_dist}`,
+                    `[Nex-AC DEBUG] Veh model: ${ac_t}, veh: ${ac_vehId}, AFK time: ${ac_gtc - ACInfo.get(player.id).acUpdateTick}, dist: ${ac_dist}`,
                     LogLevelEnum.DEBUG,
                   );
                 }
@@ -299,7 +298,7 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
               if (
                 ACInfo.get(player.id).acKicked < 1 &&
                 !ACInfo.get(player.id).acEnterRes &&
-                !ac_IsATrainPartEx(ac_s)
+                !ac_IsATrainPartEx(ac_t)
               ) {
                 ac_dist = player.getDistanceFromPoint(
                   ACVehInfo.get(ac_vehId).acPosX,
@@ -309,11 +308,11 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
                 if (newState === PlayerStateEnum.DRIVER) {
                   if (
                     ac_dist >= 30.0 ||
-                    (ac_dist >= 20.0 && ac_s !== 553 && ac_s !== 577 && ac_s !== 592)
+                    (ac_dist >= 20.0 && ac_t !== 553 && ac_t !== 577 && ac_t !== 592)
                   ) {
                     if (innerACConfig.DEBUG) {
                       samp.logprint(
-                        `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, dist: ${ac_dist}`,
+                        `[Nex-AC DEBUG] Veh model: ${ac_t}, veh: ${ac_vehId}, dist: ${ac_dist}`,
                         LogLevelEnum.DEBUG,
                       );
                     }
@@ -325,7 +324,7 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
                 ) {
                   if (innerACConfig.DEBUG)
                     samp.logprint(
-                      `[Nex-AC DEBUG] Veh model: ${ac_s}, veh: ${ac_vehId}, AFK time: ${ac_gtc - ACInfo.get(player.id).acUpdateTick}, dist: ${ac_dist}`,
+                      `[Nex-AC DEBUG] Veh model: ${ac_t}, veh: ${ac_vehId}, AFK time: ${ac_gtc - ACInfo.get(player.id).acUpdateTick}, dist: ${ac_dist}`,
                       LogLevelEnum.DEBUG,
                     );
                 }
@@ -335,20 +334,20 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
           }
         }
         if (newState === PlayerStateEnum.DRIVER && ACInfo.get(player.id).acKicked < 1) {
-          ac_s = ACVehInfo.get(ac_vehId).acDriver;
+          ac_t = ACVehInfo.get(ac_vehId).acDriver;
           if (
-            ac_s !== InvalidEnum.PLAYER_ID &&
-            ACInfo.get(ac_s).acACAllow[32] &&
-            ac_s !== player.id
+            ac_t !== InvalidEnum.PLAYER_ID &&
+            ACInfo.get(ac_t).acACAllow[32] &&
+            ac_t !== player.id
           ) {
             if (innerACConfig.DEBUG) {
               samp.logprint(
-                `[Nex-AC DEBUG] AC driver: ${player.id}, driver:${ac_s}, veh: ${ac_vehId}`,
+                `[Nex-AC DEBUG] AC driver: ${player.id}, driver:${ac_t}, veh: ${ac_vehId}`,
                 LogLevelEnum.DEBUG,
               );
             }
-            ac_KickWithCode(Player.getInstance(ac_s)!, "", 0, 32, 2);
-            Player.getInstance(ac_s)!.clearAnimations(true);
+            ac_KickWithCode(Player.getInstance(ac_t)!, "", 0, 32, 2);
+            Player.getInstance(ac_t)!.clearAnimations(true);
           }
           ACVehInfo.get(ac_vehId).acDriver = player.id;
           const pos = player.getPos();

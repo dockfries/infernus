@@ -167,21 +167,14 @@ export function ac_CreatePickup(
   ac_Y: number,
   ac_Z: number,
 ) {
-  ACPickInfo.get(pickupId).acType = 5;
-  ACPickInfo.get(pickupId).acWeapon = 0;
+  ACPickInfo.get(pickupId).acWeapon = 255;
   if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
     if ((type >= 2 && type <= 5) || type === 15 || type === 22) {
       switch (modelId) {
-        case 370: {
-          ACPickInfo.get(pickupId).acType = 1;
-          break;
-        }
-        case 1240: {
-          ACPickInfo.get(pickupId).acType = 2;
-          break;
-        }
+        case 370:
+        case 1240:
         case 1242: {
-          ACPickInfo.get(pickupId).acType = 3;
+          ACPickInfo.get(pickupId).acWeapon = modelId;
           break;
         }
         default: {
@@ -196,7 +189,6 @@ export function ac_CreatePickup(
           ) {
             for (let ac_i = 46; ac_i >= 1; --ac_i) {
               if (ac_wModel[ac_i] !== modelId) continue;
-              ACPickInfo.get(pickupId).acType = 4;
               ACPickInfo.get(pickupId).acWeapon = ac_i;
               break;
             }
@@ -213,19 +205,13 @@ export function ac_CreatePickup(
 }
 
 export function ac_CreateDynamicPickup(pickupId: number, modelId: number, type: number) {
-  Streamer.setIntData(StreamerItemTypes.PICKUP, pickupId, E_STREAMER.EXTRA_ID, 0);
+  let ac_weapon: number = 0;
   if ((type >= 2 && type <= 5) || type === 15 || type === 22) {
     switch (modelId) {
-      case 370: {
-        Streamer.setIntData(StreamerItemTypes.PICKUP, pickupId, E_STREAMER.EXTRA_ID, 1);
-        break;
-      }
-      case 1240: {
-        Streamer.setIntData(StreamerItemTypes.PICKUP, pickupId, E_STREAMER.EXTRA_ID, 2);
-        break;
-      }
+      case 370:
+      case 1240:
       case 1242: {
-        Streamer.setIntData(StreamerItemTypes.PICKUP, pickupId, E_STREAMER.EXTRA_ID, 3);
+        ac_weapon = modelId;
         break;
       }
       default:
@@ -241,25 +227,21 @@ export function ac_CreateDynamicPickup(pickupId: number, modelId: number, type: 
           )
             for (let ac_i = 46; ac_i >= 1; --ac_i) {
               if (ac_wModel[ac_i] !== modelId) continue;
-              Streamer.setIntData(
-                StreamerItemTypes.PICKUP,
-                pickupId,
-                E_STREAMER.EXTRA_ID,
-                ac_i + 100,
-              );
+              ac_weapon = ac_i;
               break;
             }
         }
         break;
     }
   }
+  Streamer.setIntData(StreamerItemTypes.PICKUP, pickupId, E_STREAMER.EXTRA_ID, ac_weapon);
   return true;
 }
 
 export const ac_GetPlayerVersion = setPlayerHook("getVersion", function () {
   const version = orig_playerMethods.getVersion.call(this);
   return {
-    version: version.version.replaceAll("%", "").replaceAll("~k~", ""),
+    version: version.version.replaceAll("%", "").replaceAll(/~k~/gi, ""),
     ret: version.ret,
   };
 });
@@ -284,7 +266,6 @@ export function ac_DestroyVehicle(vehicleId: number) {
 export function ac_DestroyPickup(pickupId: number) {
   if (!orig_DestroyPickup(pickupId)) return false;
   ACPickInfo.get(pickupId).acWeapon = 0;
-  ACPickInfo.get(pickupId).acType = 0;
   if (innerACConfig.AC_USE_PICKUP_WEAPONS) {
     Player.getInstances().forEach((ac_i) => {
       {
@@ -546,11 +527,6 @@ export function ac_SetPlayerSpecialAction(player: Player, actionId: number) {
   ) {
     ACInfo.get(player.id).acNOPCount[6] = 0;
     if (
-      ((actionId === 68 ||
-        (actionId >= SpecialActionsEnum.HANDSUP && actionId <= SpecialActionsEnum.USECELLPHONE) ||
-        (actionId >= SpecialActionsEnum.DRINK_BEER && actionId <= 25)) &&
-        ACInfo.get(player.id).acSpecAct >= SpecialActionsEnum.DANCE1 &&
-        ACInfo.get(player.id).acSpecAct <= SpecialActionsEnum.DANCE4) ||
       ((actionId === SpecialActionsEnum.HANDSUP ||
         (actionId >= SpecialActionsEnum.DRINK_BEER && actionId <= 25)) &&
         ACInfo.get(player.id).acSpecAct >= SpecialActionsEnum.USEJETPACK &&
@@ -562,6 +538,9 @@ export function ac_SetPlayerSpecialAction(player: Player, actionId: number) {
         (ACInfo.get(player.id).acSpecAct === SpecialActionsEnum.DUCK ||
           ACInfo.get(player.id).acSpecAct === SpecialActionsEnum.HANDSUP ||
           ACInfo.get(player.id).acSpecAct === 68)) ||
+      (actionId >= SpecialActionsEnum.HANDSUP &&
+        ACInfo.get(player.id).acSpecAct >= SpecialActionsEnum.DANCE1 &&
+        ACInfo.get(player.id).acSpecAct <= SpecialActionsEnum.DANCE4) ||
       (actionId >= 24 &&
         actionId <= 25 &&
         ACInfo.get(player.id).acSpecAct >= SpecialActionsEnum.DRINK_BEER &&
@@ -577,14 +556,12 @@ export function ac_SetPlayerSpecialAction(player: Player, actionId: number) {
     else {
       if (actionId === SpecialActionsEnum.STOPUSECELLPHONE) actionId = SpecialActionsEnum.NONE;
       else if (
-        actionId === SpecialActionsEnum.USEJETPACK ||
-        actionId === SpecialActionsEnum.HANDSUP ||
-        actionId === 68 ||
-        (actionId >= SpecialActionsEnum.DANCE1 && actionId <= SpecialActionsEnum.DANCE4) ||
-        (actionId >= SpecialActionsEnum.DRINK_BEER && actionId <= SpecialActionsEnum.DRINK_SPRUNK)
+        actionId === SpecialActionsEnum.USECELLPHONE ||
+        actionId === SpecialActionsEnum.NONE ||
+        (actionId >= 24 && actionId <= 25)
       )
-        ACInfo.get(player.id).acNextSpecAct = ACInfo.get(player.id).acSpecAct;
-      else ACInfo.get(player.id).acNextSpecAct = -1;
+        ACInfo.get(player.id).acNextSpecAct = -1;
+      else ACInfo.get(player.id).acNextSpecAct = ACInfo.get(player.id).acSpecAct;
       ACInfo.get(player.id).acSet[3] = actionId;
       ACInfo.get(player.id).acGtc[5] = Date.now() + 3250;
     }
@@ -875,22 +852,15 @@ export function ac_SetPickupModelOrType(
   modelId: number,
   type: number,
 ) {
-  ACPickInfo.get(pickupId).acType = 5;
-  ACPickInfo.get(pickupId).acWeapon = 0;
+  ACPickInfo.get(pickupId).acWeapon = 255;
   if (modelOrType) modelId = orig_GetPickupModel(pickupId);
   else type = orig_GetPickupType(pickupId);
   if ((type >= 2 && type <= 5) || type === 15 || type === 22) {
     switch (modelId) {
-      case 370: {
-        ACPickInfo.get(pickupId).acType = 1;
-        break;
-      }
-      case 1240: {
-        ACPickInfo.get(pickupId).acType = 2;
-        break;
-      }
+      case 370:
+      case 1240:
       case 1242: {
-        ACPickInfo.get(pickupId).acType = 3;
+        ACPickInfo.get(pickupId).acWeapon = modelId;
         break;
       }
       default: {
@@ -905,7 +875,6 @@ export function ac_SetPickupModelOrType(
         ) {
           for (let ac_i = 46; ac_i >= 1; --ac_i) {
             if (ac_wModel[ac_i] !== modelId) continue;
-            ACPickInfo.get(pickupId).acType = 4;
             ACPickInfo.get(pickupId).acWeapon = ac_i;
             break;
           }

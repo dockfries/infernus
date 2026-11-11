@@ -28,7 +28,7 @@ PlayerEvent.onDialogResponse(({ player, dialogId, listItem, inputText, next }) =
   ACInfo.get(player.id).acDialog = -1;
   ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[0] = ac_i;
   if (ACInfo.get(player.id).acACAllow[45]) {
-    inputText = inputText.replaceAll("%", "").replaceAll("~k~", "");
+    inputText = inputText.replaceAll("%", "").replaceAll(/~k~/gi, "");
     return next({ inputText });
   }
   return next();

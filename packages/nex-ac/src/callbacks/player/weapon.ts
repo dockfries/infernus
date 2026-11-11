@@ -333,9 +333,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
         }
       } else ACInfo.get(player.id).acCheatCount[8] = 0;
       if (
-        (weapon === 24 && ac_i < 240) ||
-        (weapon === 25 && ac_i < 480) ||
-        (weapon >= 33 && weapon <= 34 && ac_i < 380)
+        (weapon === WeaponEnum.DEAGLE && ac_i < 240) ||
+        (weapon === WeaponEnum.SHOTGUN && ac_i < 480) ||
+        (weapon >= WeaponEnum.RIFLE && weapon <= WeaponEnum.SNIPER && ac_i < 380)
       ) {
         if (++ACInfo.get(player.id).acCheatCount[12] > innerACConfig.AC_MAX_AUTO_C_WARNINGS) {
           if (innerACConfig.DEBUG) {

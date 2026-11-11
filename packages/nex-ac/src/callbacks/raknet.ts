@@ -291,36 +291,39 @@ IPacket(AC_TRAILER_SYNC, ({ playerId, bs, next }) => {
     ac_tData.position[1],
     ac_tData.position[2],
   );
-  let ac_tmp = Vehicle.getInstance(ACInfo.get(playerId).acVeh)!.getDistanceFromPoint(
-    ac_tData.position[0],
-    ac_tData.position[1],
-    ac_tData.position[2],
-  );
-  if (ACInfo.get(playerId).acACAllow[5] && (ac_dist >= 80.0 || ac_tmp >= 40.0)) {
-    const { x: ac_x, y: ac_y, z: ac_z } = Vehicle.getInstance(trailerId)!.getPos();
-    if (innerACConfig.DEBUG) {
-      samp.logprint(
-        `[Nex-AC DEBUG] Dist: ${ac_dist}, truck dist: ${ac_tmp}, old pos z: ${ac_z}, veh: ${trailerId}, playerId: ${playerId}`,
-        LogLevelEnum.DEBUG,
-      );
+  let ac_tmp: number;
+  if (ACInfo.get(playerId).acACAllow[5]) {
+    ac_tmp = Vehicle.getInstance(ACInfo.get(playerId).acVeh)!.getDistanceFromPoint(
+      ac_tData.position[0],
+      ac_tData.position[1],
+      ac_tData.position[2],
+    );
+    if (ac_dist >= 80.0 || ac_tmp >= 40.0) {
+      const { x: ac_x, y: ac_y, z: ac_z } = Vehicle.getInstance(trailerId)!.getPos();
+      if (innerACConfig.DEBUG) {
+        samp.logprint(
+          `[Nex-AC DEBUG] Dist: ${ac_dist}, truck dist: ${ac_tmp}, old pos z: ${ac_z}, veh: ${trailerId}, playerId: ${playerId}`,
+          LogLevelEnum.DEBUG,
+        );
+      }
+      ac_KickWithCode(Player.getInstance(playerId)!, "", 0, 5, 2);
+      ACVehInfo.get(trailerId)!.acZAngle = Vehicle.getInstance(trailerId)!.getZAngle().angle;
+      if (Vehicle.getInstance(trailerId)!.isStreamedIn(Player.getInstance(playerId)!)) {
+        setVehicleFakeZAngleForPlayer(
+          Player.getInstance(playerId)!,
+          Vehicle.getInstance(trailerId)!,
+          ACVehInfo.get(trailerId)!.acZAngle,
+        );
+        setVehicleFakePosForPlayer(
+          Player.getInstance(playerId)!,
+          Vehicle.getInstance(trailerId)!,
+          ac_x,
+          ac_y,
+          ac_z,
+        );
+      }
+      return false;
     }
-    ac_KickWithCode(Player.getInstance(playerId)!, "", 0, 5, 2);
-    ACVehInfo.get(trailerId)!.acZAngle = Vehicle.getInstance(trailerId)!.getZAngle().angle;
-    if (Vehicle.getInstance(trailerId)!.isStreamedIn(Player.getInstance(playerId)!)) {
-      setVehicleFakeZAngleForPlayer(
-        Player.getInstance(playerId)!,
-        Vehicle.getInstance(trailerId)!,
-        ACVehInfo.get(trailerId)!.acZAngle,
-      );
-      setVehicleFakePosForPlayer(
-        Player.getInstance(playerId)!,
-        Vehicle.getInstance(trailerId)!,
-        ac_x,
-        ac_y,
-        ac_z,
-      );
-    }
-    return false;
   }
   ac_tmp = Math.sqrt(
     Math.pow(ac_tData.quaternion[0], 2.0) +
@@ -376,8 +379,8 @@ IRPC(AC_RPC_RequestClass, ({ playerId, next }) => {
   if (!ACInfo.get(playerId).acForceClass) {
     const ac_i = Player.getInstance(playerId)!.getState();
     if (
-      (ac_i >= PlayerStateEnum.ONFOOT && ac_i < PlayerStateEnum.WASTED) ||
-      ac_i === PlayerStateEnum.SPAWNED
+      ac_i === PlayerStateEnum.SPAWNED ||
+      (ac_i >= PlayerStateEnum.ONFOOT && ac_i < PlayerStateEnum.WASTED)
     )
       return false;
   }
