@@ -19,6 +19,7 @@ import {
   ac_InCasino,
   ac_InRestaurant,
   ac_IsBulletWeapon,
+  ac_IsValidFloat,
 } from "../../functions";
 import { innerGameModeConfig, innerACConfig } from "../../config";
 import { ac_KickWithCode, triggerCheatWarning } from "../trigger";
@@ -66,10 +67,11 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
     const surfingPlayerObject = player.getSurfingPlayerObject();
 
     if (
-      ac_dist >= 80.0 ||
       ac_zDiff >= 15.0 ||
-      ((ac_dist >= 15.0 || ac_zDiff >= 5.0) &&
-        ACInfo.get(player.id).acVeh === 0 &&
+      ac_dist >= 80.0 ||
+      !ac_IsValidFloat(ac_dist) ||
+      ((ac_zDiff >= 5.0 || ac_dist >= 15.0) &&
+        ACInfo.get(player.id).acVeh <= 0 &&
         (!surfingVehicle || !surfingVehicle.isStreamedIn(player)) &&
         (!surfingObject || surfingObject.id === InvalidEnum.OBJECT_ID) &&
         (!surfingPlayerObject || surfingPlayerObject.id === InvalidEnum.OBJECT_ID))
@@ -132,8 +134,9 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
 
             if (
               ac_dist >= 50.0 ||
+              !ac_IsValidFloat(ac_dist) ||
               (ac_dist >= 20.0 &&
-                ACInfo.get(hitId).acVeh === 0 &&
+                ACInfo.get(hitId).acVeh <= 0 &&
                 (!surfingVehicle || !surfingVehicle.isStreamedIn(hitPlayer)) &&
                 (!surfingObject || surfingObject.id === InvalidEnum.OBJECT_ID) &&
                 (!surfingPlayerObject || surfingPlayerObject.id === InvalidEnum.OBJECT_ID))
@@ -167,6 +170,7 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
     case BulletHitTypesEnum.PLAYER: {
       if (
         hitId !== InvalidEnum.PLAYER_ID &&
+        ACInfo.get(player.id).acVeh <= 0 &&
         ACInfo.get(hitId).acACAllow[19] &&
         ACInfo.get(hitId).acUnFrozen
       ) {
@@ -211,7 +215,7 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
       break;
     }
     case BulletHitTypesEnum.VEHICLE: {
-      if (hitId !== InvalidEnum.VEHICLE_ID) {
+      if (hitId !== InvalidEnum.VEHICLE_ID && ACInfo.get(player.id).acVeh <= 0) {
         ac_i = ACVehInfo.get(hitId).acDriver;
         if (
           !innerACConfig.AC_USE_NPC ||

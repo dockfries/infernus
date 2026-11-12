@@ -414,10 +414,16 @@ export function ac_SpawnPlayer(player: Player) {
 export function ac_SetPlayerHealth(player: Player, health: number) {
   if (health < 0.0) health = 0.0;
   if (!orig_playerMethods.setHealth.call(player, health)) return false;
-  ACInfo.get(player.id).acNOPCount[3] = 0;
-  ACInfo.get(player.id).acSet[1] = health < 0 ? Math.ceil(health) : Math.floor(health);
-  if (ACInfo.get(player.id).acSet[1] < 0) ACInfo.get(player.id).acSet[1] = 0;
-  ACInfo.get(player.id).acGtc[2] = Date.now() + 2650;
+  if (!ACInfo.get(player.id).acSpec) {
+    ACInfo.get(player.id).acNOPCount[3] = 0;
+    if (health !== 0x7f800000) {
+      ACInfo.get(player.id).acSet[1] = health < 0 ? Math.ceil(health) : Math.floor(health);
+      if (ACInfo.get(player.id).acSet[1] < 0) ACInfo.get(player.id).acSet[1] = 0;
+    } else {
+      ACInfo.get(player.id).acSet[1] = Number.MAX_SAFE_INTEGER;
+    }
+    ACInfo.get(player.id).acGtc[2] = Date.now() + 2650;
+  }
   return true;
 }
 
@@ -425,8 +431,12 @@ export function ac_SetPlayerArmour(player: Player, armour: number) {
   if (armour < 0.0) armour = 0.0;
   if (!orig_playerMethods.setArmour.call(player, armour)) return false;
   ACInfo.get(player.id).acNOPCount[5] = 0;
-  ACInfo.get(player.id).acSet[2] = armour < 0 ? Math.ceil(armour) : Math.floor(armour);
-  if (ACInfo.get(player.id).acSet[2] < 0) ACInfo.get(player.id).acSet[2] = 0;
+  if (armour !== 0x7f800000) {
+    ACInfo.get(player.id).acSet[2] = armour < 0 ? Math.ceil(armour) : Math.floor(armour);
+    if (ACInfo.get(player.id).acSet[2] < 0) ACInfo.get(player.id).acSet[2] = 0;
+  } else {
+    ACInfo.get(player.id).acSet[2] = Number.MAX_SAFE_INTEGER;
+  }
   ACInfo.get(player.id).acGtc[4] = Date.now() + 2650;
   return true;
 }
@@ -522,11 +532,11 @@ export function ac_SetPlayerSpecialAction(player: Player, actionId: number) {
     ((actionId === SpecialActionsEnum.USECELLPHONE ||
       actionId === 68 ||
       (actionId >= SpecialActionsEnum.DANCE1 && actionId <= SpecialActionsEnum.DANCE4)) &&
-      ACInfo.get(player.id).acVeh === 0) ||
+      ACInfo.get(player.id).acVeh <= 0) ||
     ((actionId === SpecialActionsEnum.HANDSUP ||
       (actionId >= SpecialActionsEnum.DRINK_BEER && actionId <= SpecialActionsEnum.DRINK_SPRUNK)) &&
       ACInfo.get(player.id).acSpecAct !== SpecialActionsEnum.ENTER_VEHICLE &&
-      ACInfo.get(player.id).acVeh === 0) ||
+      ACInfo.get(player.id).acVeh <= 0) ||
     (actionId === SpecialActionsEnum.STOPUSECELLPHONE &&
       ACInfo.get(player.id).acSpecAct === SpecialActionsEnum.USECELLPHONE) ||
     (actionId === SpecialActionsEnum.NONE &&

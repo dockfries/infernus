@@ -9,6 +9,7 @@ import {
   SpecialActionsEnum,
   Vehicle,
   WeaponEnum,
+  LimitsEnum,
 } from "@infernus/core";
 import { ACInfo, ACVehInfo } from "../../struct";
 import {
@@ -155,7 +156,7 @@ PlayerEvent.onDisconnect(({ player, reason, next }) => {
     ACInfo.get(player.id).acKickTimerID = null;
   }
   let ac_vehId = ACInfo.get(player.id).acKickVeh;
-  if (ac_vehId > 0) {
+  if (ac_vehId >= 1 && ac_vehId < LimitsEnum.MAX_VEHICLES) {
     if (ACVehInfo.get(ac_vehId).acDriver === player.id)
       ACVehInfo.get(ac_vehId).acDriver = InvalidEnum.PLAYER_ID;
     if (ACInfo.get(player.id).acKicked === 2) {
@@ -171,7 +172,8 @@ PlayerEvent.onDisconnect(({ player, reason, next }) => {
       ac_veh.changePaintjob(ACVehInfo.get(ac_vehId).acPaintJob as any);
     }
   }
-  if ((ac_vehId = ACInfo.get(player.id).acVeh) > 0) {
+  ac_vehId = ACInfo.get(player.id).acVeh;
+  if (ac_vehId >= 1 && ac_vehId < LimitsEnum.MAX_VEHICLES) {
     if (ACVehInfo.get(ac_vehId).acDriver === player.id)
       ACVehInfo.get(ac_vehId).acDriver = InvalidEnum.PLAYER_ID;
     if (ACInfo.get(player.id).acKicked === 2) {
@@ -187,6 +189,7 @@ PlayerEvent.onDisconnect(({ player, reason, next }) => {
       ac_veh.changePaintjob(ACVehInfo.get(ac_vehId).acPaintJob as any);
     }
   }
+  ACInfo.get(player.id).acVeh = ACInfo.get(player.id).acKickVeh = 0;
   ACInfo.get(player.id).acOnline = false;
   if (ACInfo.get(player.id).acKicked < 1) ACInfo.get(player.id).acKicked = 3;
   return next();

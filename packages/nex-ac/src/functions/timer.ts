@@ -532,7 +532,7 @@ export function ac_Timer(player: Player) {
             ACInfo.get(player.id).acACAllow[14] &&
             ac_t > ACInfo.get(player.id).acMoney &&
             (!ACInfo.get(player.id).acStuntBonus ||
-              (ACInfo.get(player.id).acVeh === 0 &&
+              (ACInfo.get(player.id).acVeh <= 0 &&
                 ac_gtc - ACInfo.get(player.id).acGtc[15] > ac_gpp))
           ) {
             if (

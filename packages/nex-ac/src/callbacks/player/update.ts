@@ -1212,7 +1212,7 @@ PlayerEvent.onUpdate(({ player, next }) => {
                         ACInfo.get(player.id).acSpecAct === SpecialActionsEnum.ENTER_VEHICLE) &&
                       ac_specAct === ACInfo.get(player.id).acLastSpecAct
                     ) &&
-                    ((ACInfo.get(player.id).acVeh === 0 &&
+                    ((ACInfo.get(player.id).acVeh <= 0 &&
                       (ac_specAct !== SpecialActionsEnum.EXIT_VEHICLE ||
                         ac_gtc - ACInfo.get(player.id).acGtc[15] > 1350)) ||
                       (ac_specAct !== SpecialActionsEnum.EXIT_VEHICLE &&

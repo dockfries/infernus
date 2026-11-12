@@ -5,6 +5,7 @@ import {
   ObjectMpEvent,
   Streamer,
   StreamerItemTypes,
+  LimitsEnum,
 } from "@infernus/core";
 import { ACInfo } from "../struct";
 import { ac_IsBrokenObjectModel } from "../functions";
@@ -69,7 +70,7 @@ ObjectMpEvent.onPlayerEditAttached(({ player, modelId, index, boneId, next }) =>
   if (
     ACInfo.get(player.id).acACAllow[46] &&
     (ac_IsBrokenObjectModel(modelId) ||
-      !(index >= 0 && index <= 9) ||
+      !(index >= 0 && index < LimitsEnum.MAX_PLAYER_ATTACHED_OBJECTS) ||
       !(boneId >= 1 && boneId <= 18))
   ) {
     if (innerACConfig.DEBUG) {

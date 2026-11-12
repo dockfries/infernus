@@ -63,7 +63,7 @@ IPacket(AC_DRIVER_SYNC, ({ playerId, bs, next }) => {
     return false;
   const trailer = Vehicle.getInstance(ac_cData.trailerId);
   if (
-    ac_cData.trailerId !== 0 &&
+    ac_cData.trailerId > 0 &&
     (!trailer || trailer.getModel() <= 0 || !trailer.isStreamedIn(Player.getInstance(playerId)!))
   ) {
     ac_cData.trailerId = 0;
@@ -181,7 +181,7 @@ IPacket(AC_ONFOOT_SYNC, ({ playerId, bs, next }) => {
     ac_fData.surfingVehicleId = 0;
     syncBs.writeSync(ac_fData);
   } else if (
-    ac_fData.surfingVehicleId !== 0 &&
+    ac_fData.surfingVehicleId > 0 &&
     ac_fData.surfingOffsets[0] === 0.0 &&
     ac_fData.surfingOffsets[1] === 0.0 &&
     ac_fData.surfingOffsets[2] === 0.0
@@ -194,7 +194,7 @@ IPacket(AC_ONFOOT_SYNC, ({ playerId, bs, next }) => {
     (ac_fData.specialAction === SpecialActionsEnum.ENTER_VEHICLE &&
       ac_i - ACInfo.get(playerId).acEnterVehTick > 3850) ||
     (ac_fData.specialAction === SpecialActionsEnum.EXIT_VEHICLE &&
-      ACInfo.get(playerId).acVeh === 0 &&
+      ACInfo.get(playerId).acVeh <= 0 &&
       ac_i - ACInfo.get(playerId).acGtc[15] > 1350)
   ) {
     ac_fData.specialAction = 0;

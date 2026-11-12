@@ -5,10 +5,10 @@ import { innerACConfig } from "../config";
 import { ac_KickWithCode } from "./trigger";
 
 DynamicActorEvent.onPlayerGiveDamage(({ player, actor, bodyPart, amount, weapon, next }) => {
-  if (ACInfo.get(player.id).acKicked > 0) return false;
+  if (ACInfo.get(player.id).acKicked > 0 || amount < 0.0) return false;
   if (
     ACInfo.get(player.id).acACAllow[47] &&
-    (amount < 0.0 || !(bodyPart >= 3 && bodyPart <= 9) || !ac_IsValidDamageReason(weapon))
+    (!(bodyPart >= 3 && bodyPart <= 9) || !ac_IsValidDamageReason(weapon))
   ) {
     if (innerACConfig.DEBUG) {
       samp.logprint(
@@ -22,10 +22,10 @@ DynamicActorEvent.onPlayerGiveDamage(({ player, actor, bodyPart, amount, weapon,
 });
 
 ActorEvent.onPlayerGiveDamage(({ player, actor, bodyPart, amount, weapon, next }) => {
-  if (ACInfo.get(player.id).acKicked > 0) return false;
+  if (ACInfo.get(player.id).acKicked > 0 || amount < 0.0) return false;
   if (
     ACInfo.get(player.id).acACAllow[47] &&
-    (amount < 0.0 || !(bodyPart >= 3 && bodyPart <= 9) || !ac_IsValidDamageReason(weapon))
+    (!(bodyPart >= 3 && bodyPart <= 9) || !ac_IsValidDamageReason(weapon))
   ) {
     if (innerACConfig.DEBUG) {
       samp.logprint(

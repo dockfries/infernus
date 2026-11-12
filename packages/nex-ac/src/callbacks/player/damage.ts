@@ -6,13 +6,12 @@ import { ac_wSlot } from "../../constants";
 import { ac_KickWithCode } from "../trigger";
 
 PlayerEvent.onTakeDamage(({ player, bodyPart, amount, damage, weapon, next }) => {
-  if (ACInfo.get(player.id).acKicked > 0) return true;
+  if (ACInfo.get(player.id).acKicked > 0 || amount < 0.0) return true;
   const issuerId = typeof damage === "number" ? damage : damage.id;
   if (
     ACInfo.get(player.id).acACAllow[47] &&
-    (amount < 0.0 ||
-      (issuerId !== InvalidEnum.PLAYER_ID &&
-        !(issuerId >= 0 && issuerId < LimitsEnum.MAX_PLAYERS)) ||
+    ((issuerId !== InvalidEnum.PLAYER_ID &&
+      !(issuerId >= 0 && issuerId < LimitsEnum.MAX_PLAYERS)) ||
       !(bodyPart >= 3 && bodyPart <= 9) ||
       !ac_IsValidDamageReason(weapon))
   ) {
@@ -30,10 +29,9 @@ PlayerEvent.onTakeDamage(({ player, bodyPart, amount, damage, weapon, next }) =>
 });
 
 PlayerEvent.onGiveDamage(({ player, damage, bodyPart, weapon, amount, next }) => {
-  if (ACInfo.get(player.id).acKicked > 0) return true;
+  if (ACInfo.get(player.id).acKicked > 0 || amount < 0.0) return true;
   if (ACInfo.get(player.id).acACAllow[47]) {
     if (
-      amount < 0.0 ||
       !(damage.id >= 0 && damage.id < LimitsEnum.MAX_PLAYERS) ||
       !(bodyPart >= 3 && bodyPart <= 9) ||
       !ac_IsValidWeapon(weapon)
