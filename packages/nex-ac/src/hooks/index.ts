@@ -401,7 +401,7 @@ export function ac_SetPlayerHealth(player: Player, health: number) {
       ACInfo.get(player.id).acSet[1] = health < 0 ? Math.ceil(health) : Math.floor(health);
       if (ACInfo.get(player.id).acSet[1] < 0) ACInfo.get(player.id).acSet[1] = 0;
     } else {
-      ACInfo.get(player.id).acSet[1] = Number.MAX_SAFE_INTEGER;
+      ACInfo.get(player.id).acSet[1] = 0x7fffffff;
     }
     ACInfo.get(player.id).acGtc[2] = Date.now() + 2650;
   }
@@ -416,7 +416,7 @@ export function ac_SetPlayerArmour(player: Player, armour: number) {
     ACInfo.get(player.id).acSet[2] = armour < 0 ? Math.ceil(armour) : Math.floor(armour);
     if (ACInfo.get(player.id).acSet[2] < 0) ACInfo.get(player.id).acSet[2] = 0;
   } else {
-    ACInfo.get(player.id).acSet[2] = Number.MAX_SAFE_INTEGER;
+    ACInfo.get(player.id).acSet[2] = 0x7fffffff;
   }
   ACInfo.get(player.id).acGtc[4] = Date.now() + 2650;
   return true;
