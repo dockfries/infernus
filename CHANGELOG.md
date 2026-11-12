@@ -1,3 +1,18 @@
+## [0.15.2](https://github.com/dockfries/infernus/compare/v0.15.1...v0.15.2) (2026-11-12)
+
+### Features
+
+- **nex-ac:** v1.9.68 ([095c12e](https://github.com/dockfries/infernus/commit/095c12e4b0c3c5688747010dea0b4c174a2b2caa))
+- **nex-ac:** v1.9.69 ([c0a8141](https://github.com/dockfries/infernus/commit/c0a814138cd9fc3ca9f6efe4b917f73cef3ff2bb))
+- **nex-ac:** v1.9.70 ([be0d645](https://github.com/dockfries/infernus/commit/be0d645f830aea579a997823af89c65e539e38b9))
+
+### Bug Fixes
+
+- **nex-ac:** export empty as a module ([35dc5fd](https://github.com/dockfries/infernus/commit/35dc5fd589c32b536b0edc030eb9cb6f53b8d3ff))
+- **nex-ac:** max integer ([c999a5c](https://github.com/dockfries/infernus/commit/c999a5c3e4fbaad65aaef06d087af2a2bde5f5a4))
+- **ompp, raknet, rustext, veh-para, weapon-config:** strict equal ([443284b](https://github.com/dockfries/infernus/commit/443284ba4cb4cf270d801fece9d6e2a2299e29ee))
+- **streamer:** polygon default min/maxZ ([a5023c6](https://github.com/dockfries/infernus/commit/a5023c6513e36139e0772bf06cb1e8d88357ba9b))
+
 ## [0.15.1](https://github.com/dockfries/infernus/compare/v0.15.0...v0.15.1) (2026-11-02)
 
 ### ⚠ BREAKING CHANGES
