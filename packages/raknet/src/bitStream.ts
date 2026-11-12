@@ -226,7 +226,7 @@ export class BitStream {
     let index = 0;
 
     while (index < items.length) {
-      const firstInfo = VALUE_KIND[TYPE_TO_KIND[items[index][0]]!] as any;
+      const firstInfo = VALUE_KIND[TYPE_TO_KIND[items[index][0]]!];
       const batchReadFormat = firstInfo.r;
 
       const formatParts: string[] = [];
@@ -238,10 +238,10 @@ export class BitStream {
 
       for (; index < items.length; index++) {
         const [type, userSize] = items[index];
-        const info = VALUE_KIND[TYPE_TO_KIND[type]!] as any;
+        const info = VALUE_KIND[TYPE_TO_KIND[type]!];
         const readFormat = info.r;
-        const fixedCount = info.n as number | undefined;
-        const isSizeRequired = info.sr as boolean | undefined;
+        const fixedCount = "n" in info ? info.n : undefined;
+        const isSizeRequired = "sr" in info && info.sr;
 
         if (readFormat !== batchReadFormat) break;
         if (formatCharCount + readFormat.length > BATCH_LIMIT) break;
@@ -255,14 +255,16 @@ export class BitStream {
 
         const needsSize = readFormat.length > 2;
         if (needsSize) {
-          if (fixedCount != null) {
+          if (typeof fixedCount !== "undefined") {
             nativeArgs.push((userSize ?? fixedCount) + 1);
           } else if (isSizeRequired) {
-            if (userSize == null) throw new RakNetException("Bits requires size");
+            if (typeof userSize === "undefined" || userSize <= 0)
+              throw new RakNetException("Bits requires size");
             nativeArgs.push(userSize);
           } else {
             if (type === PacketRpcValueType.String) {
-              if (userSize == null) throw new RakNetException("String requires size");
+              if (typeof userSize === "undefined" || userSize <= 0)
+                throw new RakNetException("String requires size");
               nativeArgs.push(userSize + 1);
               prStringOverread += 8;
             } else {
@@ -303,19 +305,20 @@ export class BitStream {
       for (; index < items.length; index++) {
         const item = items[index];
         const [type, value, userSize] = item;
-        const info = VALUE_KIND[TYPE_TO_KIND[type]!] as any;
+        const info = VALUE_KIND[TYPE_TO_KIND[type]!];
         const writeFormat = info.w;
-        const fixedCount = info.n as number | undefined;
-        const isSizeRequired = info.sr as boolean | undefined;
+        const fixedCount = "n" in info ? info.n : undefined;
+        const isSizeRequired = "sr" in info && info.sr;
 
         const formatLen = writeFormat.length;
         if (formatCharCount + formatLen > BATCH_LIMIT) break;
 
         let size: number | undefined = userSize;
-        if (fixedCount != null) {
+        if (typeof fixedCount !== "undefined") {
           size = fixedCount;
         } else if (isSizeRequired) {
-          if (size == null) throw new RakNetException("Bits requires size");
+          if (typeof size === "undefined" || size <= 0)
+            throw new RakNetException("Bits requires size");
         }
 
         formatParts.push(writeFormat);

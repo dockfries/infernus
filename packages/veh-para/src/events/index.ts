@@ -75,7 +75,7 @@ VehicleEvent.onPlayerExit(({ player, vehicle, next }) => {
 });
 
 PlayerEvent.onStateChange(({ player, oldState, next }) => {
-  if (oldState == PlayerStateEnum.DRIVER && VehPara.isUsing(player)) {
+  if (oldState === PlayerStateEnum.DRIVER && VehPara.isUsing(player)) {
     stopVehicleParachuteAction(player, player.getVehicle());
   }
   return next();

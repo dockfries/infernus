@@ -684,23 +684,23 @@ export class OMPP {
     label: string,
     icon = "",
   ) {
-    return this.targetAddRow(player, targetId, optionId, TargetRow.Action, label, icon, true) != 0;
+    return this.targetAddRow(player, targetId, optionId, TargetRow.Action, label, icon, true) !== 0;
   }
 
   static targetAddInfo(player: Player, targetId: number, text: string) {
-    return this.targetAddRow(player, targetId, 0, TargetRow.Info, text, "", false) != 0;
+    return this.targetAddRow(player, targetId, 0, TargetRow.Info, text, "", false) !== 0;
   }
 
   static targetAddDialog(player: Player, targetId: number, text: string) {
-    return this.targetAddRow(player, targetId, 0, TargetRow.Dialog, text, "", false) != 0;
+    return this.targetAddRow(player, targetId, 0, TargetRow.Dialog, text, "", false) !== 0;
   }
 
   static targetAddDivider(player: Player, targetId: number) {
-    return this.targetAddRow(player, targetId, 0, TargetRow.Divider, "", "", false) != 0;
+    return this.targetAddRow(player, targetId, 0, TargetRow.Divider, "", "", false) !== 0;
   }
 
   static targetAddHeader(player: Player, targetId: number, text: string) {
-    return this.targetAddRow(player, targetId, 0, TargetRow.Header, text, "", false) != 0;
+    return this.targetAddRow(player, targetId, 0, TargetRow.Header, text, "", false) !== 0;
   }
 
   static targetAddDisabled(
@@ -711,7 +711,7 @@ export class OMPP {
     icon = "",
   ) {
     return (
-      this.targetAddRow(player, targetId, optionId, TargetRow.Disabled, label, icon, false) != 0
+      this.targetAddRow(player, targetId, optionId, TargetRow.Disabled, label, icon, false) !== 0
     );
   }
 
@@ -722,7 +722,7 @@ export class OMPP {
     label: string,
     icon = "",
   ) {
-    return this.targetAddRow(player, targetId, optionId, TargetRow.Toggle, label, icon, true) != 0;
+    return this.targetAddRow(player, targetId, optionId, TargetRow.Toggle, label, icon, true) !== 0;
   }
 
   static targetAddDanger(
@@ -732,7 +732,7 @@ export class OMPP {
     label: string,
     icon = "",
   ) {
-    return this.targetAddRow(player, targetId, optionId, TargetRow.Danger, label, icon, true) != 0;
+    return this.targetAddRow(player, targetId, optionId, TargetRow.Danger, label, icon, true) !== 0;
   }
 
   static targetBeginDirect(
@@ -751,7 +751,7 @@ export class OMPP {
         title,
         ttl_ms,
         flags | TargetFlag.DirectSelect,
-      ) != 0
+      ) !== 0
     );
   }
 
@@ -776,7 +776,7 @@ export class OMPP {
       return false;
     }
 
-    return this.beginKeyCapture(player, key, eventMask, priority, ttlMs, flags, action) != 0;
+    return this.beginKeyCapture(player, key, eventMask, priority, ttlMs, flags, action) !== 0;
   }
 
   static captureKeyInAnyVehicle(
@@ -792,7 +792,7 @@ export class OMPP {
       return false;
     }
 
-    return this.beginKeyCapture(player, key, eventMask, priority, ttlMs, flags, action) != 0;
+    return this.beginKeyCapture(player, key, eventMask, priority, ttlMs, flags, action) !== 0;
   }
 
   static captureKeyInVehicle(
@@ -809,7 +809,7 @@ export class OMPP {
       return false;
     }
 
-    return this.beginKeyCapture(player, key, eventMask, priority, ttlMs, flags, action) != 0;
+    return this.beginKeyCapture(player, key, eventMask, priority, ttlMs, flags, action) !== 0;
   }
 
   static captureKeyNearVehicle(
@@ -857,7 +857,7 @@ export class OMPP {
   }
 
   static hasRmlUi(player: Player) {
-    return this.isUsing(player) && (this.getClientCapabilities(player) & Capability.RmlUI) != 0;
+    return this.isUsing(player) && (this.getClientCapabilities(player) & Capability.RmlUI) !== 0;
   }
 
   static targetBeginNearPoint(

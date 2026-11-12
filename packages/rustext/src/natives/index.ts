@@ -43,7 +43,7 @@ export function getPlayerRussifierType(player: Player): RussifierType {
 }
 
 export function setDefaultRussifierType(type: RussifierType) {
-  if (type == RussifierType.Disabled) {
+  if (type === RussifierType.Disabled) {
     Russifier.toggleDefault(false);
     return true;
   }

@@ -336,7 +336,7 @@ export const internalPlayerDeath: Parameters<(typeof PlayerEvent)["onDeath"]>[0]
     }
 
     const hitArmour =
-      editable.weaponId != WC_WeaponEnum.REASON_COLLISION &&
+      editable.weaponId !== WC_WeaponEnum.REASON_COLLISION &&
       editable.weaponId !== WC_WeaponEnum.REASON_DROWN &&
       editable.weaponId !== WC_WeaponEnum.CARPARK;
 
