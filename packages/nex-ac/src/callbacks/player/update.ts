@@ -1411,3 +1411,5 @@ PlayerEvent.onUpdate(({ player, next }) => {
   if (ACInfo.get(player.id).acACAllow[33] && !ACInfo.get(player.id).acUnFrozen) return false;
   return ac_ret;
 });
+
+export {};

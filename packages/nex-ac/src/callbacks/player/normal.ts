@@ -447,3 +447,5 @@ PlayerEvent.onRequestSpawn(({ player, next }) => {
   ACInfo.get(player.id).acSet[6] = 3;
   return ac_i;
 });
+
+export {};

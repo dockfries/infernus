@@ -393,3 +393,5 @@ PlayerEvent.onStateChange(({ player, newState, oldState, next }) => {
     return next();
   }
 });
+
+export {};

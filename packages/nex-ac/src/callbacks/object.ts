@@ -84,3 +84,5 @@ ObjectMpEvent.onPlayerEditAttached(({ player, modelId, index, boneId, next }) =>
   }
   return next();
 });
+
+export {};

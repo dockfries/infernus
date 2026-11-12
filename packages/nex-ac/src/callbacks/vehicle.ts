@@ -537,3 +537,5 @@ VehicleEvent.onTrailerUpdate(({ player, vehicle, next }) => {
   }
   return ac_a;
 });
+
+export {};

@@ -395,3 +395,5 @@ IRPC(AC_RPC_DamageVehicle, ({ playerId, bs, next }) => {
   if (!veh || veh.getModel() <= 0 || ACVehInfo.get(vehicleId)!.acDriver !== playerId) return false;
   return next();
 });
+
+export {};

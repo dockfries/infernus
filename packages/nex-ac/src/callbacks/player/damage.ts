@@ -74,3 +74,5 @@ PlayerEvent.onGiveDamage(({ player, damage, bodyPart, weapon, amount, next }) =>
   }
   return next();
 });
+
+export {};

@@ -28,3 +28,5 @@ MenuEvent.onPlayerExited(({ player, next }) => {
   ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[20] = ac_gtc;
   return next();
 });
+
+export {};

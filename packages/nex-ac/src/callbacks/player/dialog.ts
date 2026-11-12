@@ -33,3 +33,5 @@ PlayerEvent.onDialogResponse(({ player, dialogId, listItem, inputText, next }) =
   }
   return next();
 });
+
+export {};

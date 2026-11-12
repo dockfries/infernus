@@ -37,3 +37,5 @@ ActorEvent.onPlayerGiveDamage(({ player, actor, bodyPart, amount, weapon, next }
   }
   return next();
 });
+
+export {};

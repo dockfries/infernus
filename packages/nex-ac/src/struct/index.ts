@@ -146,5 +146,3 @@ export const ACPickInfo = new SafetyMap<number, ACPickInfoStruct>(() => new ACPi
 export const ac_ClassPos = new SafetyMap<number, [number, number, number]>(() => [0, 0, 0]);
 export const ac_ClassWeapon = new SafetyMap<number, [number, number, number]>(() => [0, 0, 0]);
 export const ac_ClassAmmo = new SafetyMap<number, [number, number, number]>(() => [0, 0, 0]);
-
-export const ac_ipTables = new Map<number, number>();

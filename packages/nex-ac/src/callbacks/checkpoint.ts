@@ -128,3 +128,5 @@ RaceCpEvent.onPlayerLeave(({ player, next }) => {
   }
   return next();
 });
+
+export {};

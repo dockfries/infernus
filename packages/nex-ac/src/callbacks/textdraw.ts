@@ -32,3 +32,5 @@ TextDrawEvent.onPlayerClickPlayer(({ player, next }) => {
   ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[23] = ac_gtc;
   return next();
 });
+
+export {};

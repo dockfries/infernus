@@ -156,3 +156,5 @@ PickUpEvent.onPlayerPickUpGlobal(({ pickup, player, next }) => {
   }
   return next();
 });
+
+export {};

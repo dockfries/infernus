@@ -29,3 +29,5 @@ PlayerEvent.onClickPlayer(({ player, next }) => {
   ACInfo.get(player.id).acCall[27] = ACInfo.get(player.id).acCall[3] = ac_gtc;
   return next();
 });
+
+export {};

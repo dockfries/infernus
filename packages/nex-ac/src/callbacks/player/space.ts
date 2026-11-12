@@ -81,3 +81,5 @@ PlayerEvent.onInteriorChange(({ player, newInteriorId, oldInteriorId, next }) =>
   if (ACInfo.get(player.id).acKicked < 1) ACInfo.get(player.id).acInt = newInteriorId % 256;
   return next();
 });
+
+export {};

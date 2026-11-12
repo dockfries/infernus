@@ -439,3 +439,5 @@ PlayerEvent.onWeaponShot(({ player, weapon, hitType, hitId, fX, fY, fZ, next }) 
   }
   return ac_ret;
 });
+
+export {};

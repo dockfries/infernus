@@ -10,3 +10,5 @@ DynamicAreaEvent.onPlayerLeave(({ player, next }) => {
   if (ACInfo.get(player.id).acKicked > 0) return false;
   return next();
 });
+
+export {};
