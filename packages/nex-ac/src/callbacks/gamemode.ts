@@ -1,9 +1,8 @@
-import { LogLevelEnum, GameMode, InvalidEnum } from "@infernus/core";
+import { LogLevelEnum, GameMode, InvalidEnum, LimitsEnum } from "@infernus/core";
 import {
   ac_ClassAmmo,
   ac_ClassPos,
   ac_ClassWeapon,
-  ac_ipTables,
   ACInfo,
   ACPickInfo,
   ACVehInfo,
@@ -21,7 +20,6 @@ GameMode.onInit(({ next }) => {
   ac_ClassPos.clear();
   ac_ClassWeapon.clear();
   ac_ClassAmmo.clear();
-  ac_ipTables.clear();
 
   if (innerACConfig.AC_USE_CONFIG_FILES) {
     ac_LoadCfg().then((res) => {
@@ -81,27 +79,62 @@ GameMode.onExit(({ next }) => {
   return next();
 });
 
+const ac_ipTables: [number, number][] = Array.from({ length: LimitsEnum.MAX_PLAYERS }, () => [
+  0, 0,
+]);
+let ac_ipIndex = 0;
+
 GameMode.onRconLoginAttempt(({ ip, password, success, next }) => {
   const ac_currentIp = ac_IpToInt(ip);
-  if (success) {
-    if (ac_ipTables.has(ac_currentIp)) {
-      ac_ipTables.delete(ac_currentIp);
-    }
-  } else if (ac_ACAllow[42]) {
-    const code2 = ac_ipTables.has(ac_currentIp) ? 1 : 2;
+  let ac_i = 0;
 
-    const currentAttempts = ac_ipTables.get(ac_currentIp) || 0;
-    ac_ipTables.set(ac_currentIp, currentAttempts + 1);
-    const updatedAttempts = ac_ipTables.get(ac_currentIp)!;
-    if (updatedAttempts > innerACConfig.AC_MAX_RCON_LOGIN_ATTEMPT) {
-      if (innerACConfig.DEBUG) {
-        samp.logprint($t("DEBUG_CODE_4", [ip, password]), LogLevelEnum.DEBUG);
+  for (; ac_i < ac_ipTables.length; ++ac_i) {
+    if (ac_ipTables[ac_i][0] !== ac_currentIp) continue;
+
+    if (success) {
+      ac_ipTables[ac_i][1] = 0;
+    } else if (ac_ACAllow[42]) {
+      ++ac_ipTables[ac_i][1];
+      if (ac_ipTables[ac_i][1] > innerACConfig.AC_MAX_RCON_LOGIN_ATTEMPT) {
+        if (innerACConfig.DEBUG) {
+          samp.logprint($t("DEBUG_CODE_4", [ip, password]), LogLevelEnum.DEBUG);
+        }
+        ac_ipTables[ac_i][1] = 0;
+        ac_KickWithCode(InvalidEnum.PLAYER_ID, ip, 1, 42, 1);
+      } else {
+        triggerCheatWarning(InvalidEnum.PLAYER_ID, ip, 1, 42, 1, ac_ipTables[ac_i][1]);
       }
-      ac_ipTables.delete(ac_currentIp);
-      ac_KickWithCode(InvalidEnum.PLAYER_ID, ip, 1, 42, code2);
-    } else {
-      triggerCheatWarning(InvalidEnum.PLAYER_ID, ip, 1, 42, code2, updatedAttempts);
     }
+
+    ac_i = -1;
+    break;
   }
+
+  if (ac_i !== -1 && !success) {
+    ac_ipTables[ac_ipIndex][0] = ac_currentIp;
+
+    if (ac_ACAllow[42]) {
+      ++ac_ipTables[ac_ipIndex][1];
+      if (ac_ipTables[ac_ipIndex][1] > innerACConfig.AC_MAX_RCON_LOGIN_ATTEMPT) {
+        if (innerACConfig.DEBUG) {
+          samp.logprint(
+            $t("DEBUG_CODE_4", [ip, password, ac_ipTables[ac_ipIndex][1]]),
+            LogLevelEnum.DEBUG,
+          );
+        }
+        ac_ipTables[ac_ipIndex][1] = 0;
+        ac_KickWithCode(InvalidEnum.PLAYER_ID, ip, 1, 42, 2);
+      } else {
+        triggerCheatWarning(InvalidEnum.PLAYER_ID, ip, 1, 42, 2, ac_ipTables[ac_ipIndex][1]);
+      }
+    }
+
+    ++ac_ipIndex;
+    if (ac_ipIndex >= ac_ipTables.length) ac_ipIndex = 0;
+    ac_ipTables[ac_ipIndex][1] = 0;
+  }
+
   return next();
 });
+
+export {};
