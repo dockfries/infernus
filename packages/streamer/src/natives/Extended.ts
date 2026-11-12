@@ -397,8 +397,8 @@ export const CreateDynamicCubeEx = (
 
 export const CreateDynamicPolygonEx = (
   points: number[],
-  minZ: number = Number.MIN_VALUE,
-  maxZ: number = Number.MAX_VALUE,
+  minZ: number = -0x7f800000,
+  maxZ: number = 0x7f800000,
   worlds: number[] = [-1],
   interiors: number[] = [-1],
   players: number[] = [-1],

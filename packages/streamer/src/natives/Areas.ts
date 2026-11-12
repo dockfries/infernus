@@ -126,8 +126,8 @@ export const CreateDynamicCuboid = (
 
 export const CreateDynamicPolygon = (
   points: number[],
-  minZ: number = Number.MIN_VALUE,
-  maxZ: number = Number.MAX_VALUE,
+  minZ: number = -0x7f800000,
+  maxZ: number = 0x7f800000,
   worldId = -1,
   interiorId = -1,
   playerId = -1,

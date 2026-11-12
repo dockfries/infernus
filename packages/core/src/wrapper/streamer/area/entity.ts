@@ -10,6 +10,8 @@ import { INTERNAL_FLAGS } from "core/components/gamemode/event";
 import { dynamicAreasPool } from "core/utils/pools";
 import { DynamicAreaException } from "core/exceptions";
 
+const FLOAT_INFINITY = 0x7f800000;
+
 export class DynamicArea {
   private sourceInfo: TDynamicArea | null = null;
   private _id: number = s.StreamerMiscellaneous.INVALID_ID;
@@ -98,7 +100,7 @@ export class DynamicArea {
           priority,
         );
       } else if (type === "polygon") {
-        const { points, minZ, maxZ } = this.sourceInfo;
+        const { points, minZ = -FLOAT_INFINITY, maxZ = FLOAT_INFINITY } = this.sourceInfo;
         if (points.length % 2 !== 0)
           throw new DynamicAreaException("Cannot create polygon extended with asymmetrical points");
         this._id = DynamicArea.__inject__.createPolygonEx(
@@ -185,7 +187,7 @@ export class DynamicArea {
           priority,
         );
       } else if (type === "polygon") {
-        const { points, minZ, maxZ } = this.sourceInfo;
+        const { points, minZ = -FLOAT_INFINITY, maxZ = FLOAT_INFINITY } = this.sourceInfo;
         if (points.length % 2 !== 0)
           throw new DynamicAreaException("Cannot create polygon with asymmetrical points");
         this._id = DynamicArea.__inject__.createPolygon(

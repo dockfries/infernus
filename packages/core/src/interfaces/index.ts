@@ -176,8 +176,8 @@ export interface IDynamicCuboid extends IDynamicRectangleCommon {
 export interface IDynamicPolygon extends IDynamic {
   type: "polygon";
   points: number[];
-  minZ: number;
-  maxZ: number;
+  minZ?: number;
+  maxZ?: number;
 }
 
 export interface IDynamicAreaKey {

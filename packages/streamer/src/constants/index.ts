@@ -34,7 +34,4 @@ export const DEFAULT_SYNC_ROTATION = true;
 export const DEFAULT_INVULNERABLE = true;
 export const DEFAULT_HEALTH = 100.0;
 
-export const NUMBER_MIN_VALUE = Number.MIN_VALUE;
-export const NUMBER_MAX_VALUE = Number.MAX_VALUE;
-
 export const SERVER_WIDE = 1;
