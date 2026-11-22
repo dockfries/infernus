@@ -13,7 +13,7 @@ export const [onDialogResponse] = defineEvent({
   defaultValue: false,
   beforeEach(id: number, dialogId: number, response: number, listItem: number, buffer: number[]) {
     const player = Player.getInstance(id)!;
-    const inputText = I18n.decodeFromBuf(buffer, player.charset);
+    const inputText = I18n.decodeFromBuf(buffer, player.inputCharset);
     return {
       player,
       dialogId,

@@ -408,7 +408,7 @@ export function createObjectCommands() {
       });
       test_tex_objects[lp].create();
       // test_tex_objects[lp].setMaterialText(
-      //   player.charset,
+      //   player.outputCharset,
       //   0,
       //   `Text Here: {00FF00}${lp}`,
       //   MaterialTextSizes.SIZE_512x512,
@@ -423,7 +423,7 @@ export function createObjectCommands() {
         test_tex_objects[lp].setMaterial(0, 19371, "all_walls", "stormdrain3_nt", 0xff55aa55);
       } else {
         test_tex_objects[lp].setMaterialText(
-          player.charset,
+          player.outputCharset,
           0,
           "Text: {00FF00}%d",
           MaterialTextSizes.SIZE_512x256,
@@ -448,7 +448,7 @@ export function createObjectCommands() {
     const textdisp = `Dynamic Update (${text_counter})`;
     text_counter++;
     test_tex_objects[0].setMaterialText(
-      text_update_player.charset,
+      text_update_player.outputCharset,
       0,
       textdisp,
       MaterialTextSizes.SIZE_512x128,
@@ -482,7 +482,7 @@ export function createObjectCommands() {
     });
     test_tex_objects[0].create();
     test_tex_objects[0].setMaterialText(
-      player.charset,
+      player.outputCharset,
       0,
       "Dynamic Update (0)",
       MaterialTextSizes.SIZE_512x128,
@@ -516,7 +516,7 @@ export function createObjectCommands() {
     });
     test_tex_objects[1].create();
     test_tex_objects[1].setMaterialText(
-      player.charset,
+      player.outputCharset,
       0,
       "ABDSJFUEGI\nABDRJCFEGI\n{DDDDDD}Center",
       MaterialTextSizes.SIZE_512x256,
@@ -542,7 +542,7 @@ export function createObjectCommands() {
     });
     test_tex_objects[2].create();
     test_tex_objects[2].setMaterialText(
-      player.charset,
+      player.outputCharset,
       0,
       "Blue Text\nVerdana\nAlpha BG\n{DDDDDD}Center",
       MaterialTextSizes.SIZE_512x256,
@@ -568,7 +568,7 @@ export function createObjectCommands() {
     });
     test_tex_objects[3].create();
     test_tex_objects[3].setMaterialText(
-      player.charset,
+      player.outputCharset,
       0,
       "Blue Text\nArial\nAlpha BG\n{DDDDDD}Center",
       MaterialTextSizes.SIZE_512x256,
@@ -594,7 +594,7 @@ export function createObjectCommands() {
     });
     test_tex_objects[4].create();
     test_tex_objects[4].setMaterialText(
-      player.charset,
+      player.outputCharset,
       0,
       "Blue Text\nVerdana\nAlpha BG\n{DDDDDD}Center",
       MaterialTextSizes.SIZE_512x256,
@@ -620,7 +620,7 @@ export function createObjectCommands() {
     });
     test_tex_objects[5].create();
     test_tex_objects[5].setMaterialText(
-      player.charset,
+      player.outputCharset,
       0,
       "Blue Text\nArial\nAlpha BG\n{DDDDDD}Center",
       MaterialTextSizes.SIZE_512x256,

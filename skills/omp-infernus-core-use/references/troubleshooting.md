@@ -29,7 +29,7 @@ GameMode.onInit(({ next }) => {
 
 ```typescript
 PlayerEvent.onConnect(({ player, next }) => {
-  player.charset = "ISO-8859-1"; // default Western
+  player.inputCharset = player.outputCharset = "iso-8859-1"; // default Western
   // or "windows-1251" for Russian, "gbk" for Chinese, etc.
   return next();
 });

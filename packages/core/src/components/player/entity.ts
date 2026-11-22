@@ -63,8 +63,13 @@ export const [onLocaleChange, triggerOnLocaleChange] = defineEvent({
 export const [onCharsetChange, triggerOnCharsetChange] = defineEvent({
   name: "OnPlayerCharsetChange",
   isNative: false,
-  beforeEach(player: Player, newCharset: string, oldCharset: string) {
-    return { player, newCharset, oldCharset };
+  beforeEach(
+    player: Player,
+    newCharset: string,
+    oldCharset: string,
+    direction: "input" | "output",
+  ) {
+    return { player, newCharset, oldCharset, direction };
   },
 });
 
@@ -72,7 +77,8 @@ export class Player {
   static MAX_CHECK_ANDROID_DELAY = 10; // 10s
   static SKIP_CHECK_ANDROID = false;
 
-  private _charset = "ISO-8859-1";
+  private _inputCharset = "ISO-8859-1";
+  private _outputCharset = "ISO-8859-1";
   private _locale = "en_US";
 
   [internalPlayerProps]: IInnerPlayerProps = {
@@ -110,14 +116,24 @@ export class Player {
     return this[internalPlayerProps].isRecording;
   }
 
-  get charset() {
-    return this._charset;
+  get inputCharset() {
+    return this._inputCharset;
   }
 
-  set charset(newCharset: string) {
-    const oldCharset = this._charset;
-    this._charset = newCharset;
-    triggerOnCharsetChange(this, newCharset, oldCharset);
+  set inputCharset(newCharset: string) {
+    const oldCharset = this._inputCharset;
+    this._inputCharset = newCharset;
+    triggerOnCharsetChange(this, newCharset, oldCharset, "input");
+  }
+
+  get outputCharset() {
+    return this._outputCharset;
+  }
+
+  set outputCharset(newCharset: string) {
+    const oldCharset = this._outputCharset;
+    this._outputCharset = newCharset;
+    triggerOnCharsetChange(this, newCharset, oldCharset, "output");
   }
 
   get locale() {
@@ -636,7 +652,7 @@ export class Player {
     color: string | number,
     drawDistance: number,
     expireTime: number,
-    charset = this.charset,
+    charset = this.outputCharset,
   ) {
     return Player.__inject__.setChatBubble(this.id, text, color, drawDistance, expireTime, charset);
   }
@@ -958,7 +974,7 @@ export class Player {
   /**
    * @throws {I18nException} When `charset` is an unknown character encoding.
    */
-  gpci(charset: string = this.charset) {
+  gpci(charset: string = this.inputCharset) {
     return Player.__inject__.gpci(this.id, charset);
   }
   isCuffed() {

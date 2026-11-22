@@ -171,7 +171,7 @@ const [onCommandText, triggerOnCommandText] = defineEvent({
       cmdText = bufferOrText;
       buffer = I18n.encodeToBuf(cmdText, "utf-8");
     } else {
-      cmdText = I18n.decodeFromBuf(bufferOrText, player.charset);
+      cmdText = I18n.decodeFromBuf(bufferOrText, player.inputCharset);
     }
     return { player, buffer, cmdText };
   },

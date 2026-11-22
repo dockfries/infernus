@@ -23,7 +23,7 @@ const gInc: number[] = [1.0, 1.0, 1.0, 1.0];
 let timer: NodeJS.Timeout | null = null;
 
 PlayerEvent.onConnect(({ player, next }) => {
-  player.charset = "iso-8859-1";
+  player.inputCharset = player.outputCharset = "iso-8859-1";
 
   if (player.id !== 0) return next();
 

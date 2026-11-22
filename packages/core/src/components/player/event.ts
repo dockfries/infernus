@@ -52,7 +52,7 @@ export const [onText] = defineEvent({
   identifier: "iai",
   beforeEach(id: number, buffer: number[]) {
     const player = Player.getInstance(id)!;
-    return { player, text: I18n.decodeFromBuf(buffer, player.charset), buffer };
+    return { player, text: I18n.decodeFromBuf(buffer, player.inputCharset), buffer };
   },
 });
 

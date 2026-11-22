@@ -60,7 +60,7 @@ export const registerLabelEvent = (options: IA51BaseFSOptions, i18n: I18n) => {
     label.updateText(
       label.getColor() || "#fff",
       i18n?.$t("a51.labels.tips", [i18n?.$t(gateName, null, player.locale)], player.locale) || "",
-      player.charset,
+      player.outputCharset,
     );
     return next();
   });

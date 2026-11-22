@@ -243,7 +243,7 @@ export function damageFeedUpdateText(player: Player) {
       orig_PlayerTextDrawSetString(
         player.id,
         damageFeedGiven.get(player.id)!.id,
-        I18n.encodeToBuf(buf, player.charset),
+        I18n.encodeToBuf(buf, player.outputCharset),
       );
       orig_PlayerTextDrawShow(player.id, damageFeedGiven.get(player.id)!.id);
     } else {
@@ -288,7 +288,7 @@ export function damageFeedUpdateText(player: Player) {
       orig_PlayerTextDrawSetString(
         player.id,
         damageFeedTaken.get(player.id)!.id,
-        I18n.encodeToBuf(buf, player.charset),
+        I18n.encodeToBuf(buf, player.outputCharset),
       );
       orig_PlayerTextDrawShow(player.id, damageFeedTaken.get(player.id)!.id);
     } else {

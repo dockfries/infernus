@@ -16,7 +16,7 @@ export const processMsg = (msg: string, charset: string): processTuple => {
 
 // Here are some i18n functions used to override the original functions
 export const SendClientMessage = (player: Player, color: string | number, msg: string): boolean => {
-  const res = processMsg(msg, player.charset);
+  const res = processMsg(msg, player.outputCharset);
   return !!samp.callNative("SendClientMessage", `ii${res[0]}`, player.id, rgba(color), res[1]);
 };
 
@@ -33,7 +33,7 @@ export const SendPlayerMessageToPlayer = (
   senderId: number,
   message: string,
 ): boolean => {
-  const res = processMsg(message, player.charset);
+  const res = processMsg(message, player.outputCharset);
   return !!samp.callNative("SendPlayerMessageToPlayer", `ii${res[0]}`, player.id, senderId, res[1]);
 };
 
@@ -48,12 +48,12 @@ export const SendPlayerMessageToAll = (
 };
 
 export const ShowPlayerDialog = (player: Player, id: number, dialog: IDialog): boolean => {
-  const { charset } = player;
+  const { outputCharset } = player;
   const { style, caption, info, button1, button2 } = dialog;
-  const [flag, processCaption] = processMsg(caption || "", charset);
-  const [, processInfo] = processMsg(info || "", charset);
-  const [, processButton1] = processMsg(button1 || "", charset);
-  const [, processButton2] = processMsg(button2 || "", charset);
+  const [flag, processCaption] = processMsg(caption || "", outputCharset);
+  const [, processInfo] = processMsg(info || "", outputCharset);
+  const [, processButton1] = processMsg(button1 || "", outputCharset);
+  const [, processButton2] = processMsg(button2 || "", outputCharset);
   return !!samp.callNative(
     "ShowPlayerDialog",
     `iii${flag.repeat(4)}`,
@@ -75,13 +75,18 @@ export const GetPlayerName = (player: Player) => {
     LimitsEnum.MAX_PLAYER_NAME,
   );
   return {
-    name: I18n.decodeFromBuf(I18n.getValidStr(buf), player.charset),
+    name: I18n.decodeFromBuf(I18n.getValidStr(buf), player.inputCharset),
     ret,
   };
 };
 
 export const SetPlayerName = (player: Player, name: string): number => {
-  return samp.callNative("SetPlayerName", "ia", player.id, I18n.encodeToBuf(name, player.charset));
+  return samp.callNative(
+    "SetPlayerName",
+    "ia",
+    player.id,
+    I18n.encodeToBuf(name, player.inputCharset),
+  );
 };
 
 export const BanEx = (playerId: number, reason: string, charset: string): boolean => {

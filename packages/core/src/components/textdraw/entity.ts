@@ -54,9 +54,16 @@ export class TextDraw {
     if (!this.sourceInfo) throw new TextDrawException("Cannot create with only id");
     if (this.id !== InvalidEnum.TEXT_DRAW) throw new TextDrawException("Cannot create again");
 
-    const { x, y, text, player, charset = "ISO-8859-1" } = this.sourceInfo;
+    const {
+      x,
+      y,
+      text,
+      player,
+      charset = "ISO-8859-1",
+      covertSpecialChat = samp.defined?._rustext_included !== true,
+    } = this.sourceInfo;
     const _text = I18n.encodeToBuf(
-      samp.defined && samp.defined._rustext_included ? text : I18n.convertSpecialChar(text),
+      covertSpecialChat ? I18n.convertSpecialChar(text) : text,
       charset,
     );
 
@@ -266,9 +273,10 @@ export class TextDraw {
     if (text.length === 0 || text.length > 1024) {
       throw new TextDrawException("Invalid text length");
     }
-    const charset = this.sourceInfo?.charset || "ISO-8859-1";
+    const { charset = "ISO-8859-1", covertSpecialChat = samp.defined?._rustext_included !== true } =
+      this.sourceInfo || {};
     const _text = I18n.encodeToBuf(
-      samp.defined && samp.defined._rustext_included ? text : I18n.convertSpecialChar(text),
+      covertSpecialChat ? I18n.convertSpecialChar(text) : text,
       charset,
     );
 
