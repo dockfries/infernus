@@ -109,6 +109,7 @@ If they ask about **ecosystem context** (polyfills, versions, omp-node), read `r
 - **Events use a middleware pipeline** — call `next()` to continue, return `true`/`false` to override native default.
 - **Colors accept multiple formats**: `"#fff"`, `"#ff0000"`, `-1` (ARGB), `"(255,0,0,255)"` (rgba).
 - **Russian text needs `cp1251` on `GameText`/`TextDraw` when using `@infernus/rustext`.** Its glyph table is cp1251-indexed, and the defaults (`win1252`, `ISO-8859-1`) turn Cyrillic into `?` before the package can see it. See `references/rustext.md`.
+- **Charset is split by direction (0.16+).** `player.inputCharset` decodes what the player sends (name, chat, commands); `player.outputCharset` encodes what the player receives (messages, dialogs, chat bubbles). `player.charset` no longer exists — assign both to keep the old behavior.
 - **Reference [open.mp docs](https://open.mp/docs)** for native parameter ranges and behavior.
 - **Async + player disconnection:** In async functions that involve a `Player`, check `player.isConnected()` after **every `await`** if you need to continue operating on that player. If the awaited promise rejects on disconnect (e.g. `dialog.show()` throws `DialogException`), use try/catch:
 

@@ -13,7 +13,7 @@
 
 ## EOL / omp-node Migration
 
-As noted in the [official docs](https://dockfries.github.io/infernus/introduction), Infernus is being gradually archived in favor of **omp-node**, a next-generation runtime that replaces both samp-node and Infernus. For new projects, consider evaluating omp-node first. Infernus remains functional and maintained for existing projects.
+As noted in the [official docs](https://dockfries.github.io/infernus/introduction), Infernus is no longer maintained and the repository will be archived in favor of **omp-node**, a next-generation runtime that replaces both samp-node and Infernus. For new projects, evaluate omp-node first. If you want to keep using Infernus, you can fork it and maintain it yourself; you can also help the open.mp and omp-node communities build a better ecosystem.
 
 ## Polyfill Requirements
 

@@ -5,7 +5,7 @@
 `Infernus` 是基于 `samp-node` 打造的库，用于在 JavaScript 层调用游戏的 SDK。
 
 > [!WARNING]
-> Infernus 项目已进入维护阶段并将逐步归档，后续生态建设将由 omp-node 社区主导推进，诚邀感兴趣的开发者共同参与。
+> Infernus 已停止维护，仓库也将被归档。如果您对这个项目感兴趣，可以 fork 一份并自行维护；也欢迎您帮助 open.mp 与 omp-node 社区，共同建设更好的生态。
 
 ## 🚧 施工中
 

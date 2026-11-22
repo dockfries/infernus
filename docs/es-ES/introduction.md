@@ -5,7 +5,7 @@ El nombre `Infernus` proviene del vehículo con ID `411` en GTA: San Andreas.
 `Infernus` es una librería construida sobre `samp-node` que permite llamar al SDK del juego desde la capa de JavaScript.
 
 > [!WARNING]
-> El proyecto Infernus ha entrado en modo de mantenimiento y será archivado gradualmente. El desarrollo futuro del ecosistema estará liderado por la comunidad de omp-node. Damos una cálida bienvenida a los desarrolladores interesados en unirse y contribuir.
+> Infernus ya no recibe mantenimiento y el repositorio será archivado. Si le interesa el proyecto, puede hacer un fork y mantenerlo por su cuenta. También puede ayudar a las comunidades de open.mp y omp-node a construir un mejor ecosistema.
 
 ## 🚧 Trabajo en curso
 

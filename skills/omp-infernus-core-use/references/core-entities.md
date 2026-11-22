@@ -88,7 +88,8 @@ PlayerEvent.onDialogResponse(({ player, dialogId, response, listItem, inputText,
 PlayerEvent.onLocaleChange(({ player, newLocale, oldLocale, next }) => {
   return next();
 });
-PlayerEvent.onCharsetChange(({ player, newCharset, oldCharset, next }) => {
+PlayerEvent.onCharsetChange(({ player, newCharset, oldCharset, direction, next }) => {
+  // direction: "input" | "output"
   return next();
 });
 PlayerEvent.onFpsUpdate(({ player, newFps, oldFps, next }) => {
@@ -196,7 +197,8 @@ player.getDrunkLevel();
 
 // Properties
 player.id;
-player.charset;
+player.inputCharset; // decode client → server: name, chat, commands
+player.outputCharset; // encode server → client: messages, dialogs, chat bubbles
 player.locale;
 player.lastFps;
 player.isPaused;

@@ -25,7 +25,7 @@ GameMode.onInit(({ next }) => {
 
 **Cause:** Character set mismatch between the server and player client.
 
-**Fix:** Set the player's `charset` correctly on connect:
+**Fix:** Set the player's `inputCharset` and `outputCharset` correctly on connect:
 
 ```typescript
 PlayerEvent.onConnect(({ player, next }) => {
@@ -35,9 +35,11 @@ PlayerEvent.onConnect(({ player, next }) => {
 });
 ```
 
+On `0.15.x` and earlier, a single `player.charset` covered both directions.
+
 If you're using i18n, make sure `polyfill.amx` is compiled and installed in the server's gamemodes directory.
 
-**With `@infernus/rustext`:** `GameText`/`TextDraw` do **not** follow `player.charset`. Their text is converted by the package, whose glyph table is cp1251-indexed — pass `charset: "cp1251"` on those calls, or the Cyrillic becomes `?` before the package ever sees it. Accented Latin characters (`à`, `é`, `ñ`) cannot be displayed at all with a russifier font, because it replaces the glyph slots they live in. See `references/rustext.md`.
+**With `@infernus/rustext`:** `GameText`/`TextDraw` do **not** follow `player.inputCharset`/`player.outputCharset`. Their text is converted by the package, whose glyph table is cp1251-indexed — pass `charset: "cp1251"` on those calls, or the Cyrillic becomes `?` before the package ever sees it. Accented Latin characters (`à`, `é`, `ñ`) cannot be displayed at all with a russifier font, because it replaces the glyph slots they live in. See `references/rustext.md`.
 
 ## `@infernus/raknet` / `@infernus/cef` / `@infernus/gps` doesn't work
 

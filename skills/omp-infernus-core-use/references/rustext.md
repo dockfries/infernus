@@ -27,7 +27,7 @@ new GameText("Привет, мир!", 5000, 3).forPlayer(player, "cp1251");
 const td = new TextDraw({ x: 150, y: 150, text: "Я могу прочитать", charset: "cp1251" }).create();
 ```
 
-This is **not** `player.charset` — `GameText` and `TextDraw` read their own `charset` (the `TextDraw` one comes from `sourceInfo.charset` and is reused by `setString`).
+This is **not** `player.inputCharset` / `player.outputCharset` — `GameText` and `TextDraw` read their own `charset` (the `TextDraw` one comes from `sourceInfo.charset` and is reused by `setString`).
 
 ### Accented Latin characters ('à', 'é', 'ñ') cannot be used
 
@@ -36,7 +36,7 @@ Two reasons, neither fixable from here:
 - cp1251 has no accented Latin characters, so they become `?` at encode time.
 - The russifier font replaces the very glyph slots they live in — `convertSpecialChar` maps `à` to slot `0x97` and `À` to `0x80`, while the SanLtd table uses `0x97` for `б` and `0x80` for `Б`.
 
-The original plugin has the same limitation (its font replaces the same slots). Use `player.sendClientMessage`, dialogs or 3D labels for Latin text — those follow `player.charset` instead.
+The original plugin has the same limitation (its font replaces the same slots). Use `player.sendClientMessage`, dialogs or chat bubbles for Latin text — those encode with `player.outputCharset`. `GameText`/`TextDraw` stay glyph-restricted and cannot show accents under a russifier; 3D labels take their own explicit `charset`.
 
 ## API
 

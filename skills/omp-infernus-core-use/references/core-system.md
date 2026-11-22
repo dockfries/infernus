@@ -335,6 +335,11 @@ console.log($t("server.running", ["v1.0"], "zh_CN"));
 
 player.sendClientMessage("#fff", $t("server.running", null, player.locale));
 
+// Charset is per direction (0.16+): input decodes what the client sends,
+// output encodes what the client receives.
+player.inputCharset = "gbk"; // name, chat, commands
+player.outputCharset = "utf8"; // messages, dialogs, chat bubbles
+
 // Static utilities
 I18n.encodeToBuf("text", "utf8"); // string → byte array
 I18n.decodeFromBuf(bytes, "utf8"); // byte array → string

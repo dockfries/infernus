@@ -21,7 +21,7 @@ The conversion table is indexed by **cp1251** bytes, so the text must reach the 
 | `win1252`, `ISO-8859-1` | `63,63,63,63,63,63` — unrecoverable, nothing to fix |
 | `cp1251`                | `207,240,232,226,229,242` — correct                 |
 
-So pass `"cp1251"` explicitly. This is **not** `player.charset` — the two APIs above read their own `charset`.
+So pass `"cp1251"` explicitly. This is **not** `player.inputCharset` / `player.outputCharset` — the two APIs above read their own `charset`.
 
 ```ts
 import { GameText } from "@infernus/core";
