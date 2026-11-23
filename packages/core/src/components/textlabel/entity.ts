@@ -64,7 +64,7 @@ export class TextLabel {
     if (this.id !== InvalidEnum._3DTEXT_ID) throw new TextLabelException("Cannot create again");
 
     const {
-      charset = "utf8",
+      charset,
       text,
       color,
       x,
@@ -76,10 +76,11 @@ export class TextLabel {
       attachedPlayer,
       attachedVehicle,
     } = this.sourceInfo;
+    const labelCharset = charset ?? this.getPlayer()?.outputCharset ?? "utf8";
 
     if (this.isGlobal()) {
       this._id = TextLabel.__inject__.create(
-        charset,
+        labelCharset,
         text,
         color,
         x,
@@ -106,7 +107,7 @@ export class TextLabel {
     const player = this.getPlayer()!;
 
     this._id = TextLabel.__inject__.createPlayer(
-      charset,
+      labelCharset,
       playerId,
       text,
       color,
@@ -223,7 +224,11 @@ export class TextLabel {
   /**
    * @throws {I18nException} When `charset` is an unknown character encoding.
    */
-  updateText(color: number | string, text: string, charset: string = "utf8"): boolean {
+  updateText(
+    color: number | string,
+    text: string,
+    charset: string = this.sourceInfo?.charset ?? this.getPlayer()?.outputCharset ?? "utf8",
+  ): boolean {
     if (this.id === InvalidEnum._3DTEXT_ID) return false;
     if (this.isGlobal()) {
       return TextLabel.__inject__.updateText(charset, this.id, color, text);
@@ -245,7 +250,7 @@ export class TextLabel {
   /**
    * @throws {I18nException} When `charset` is an unknown character encoding.
    */
-  getText(charset = this.sourceInfo?.charset || "utf8") {
+  getText(charset = this.sourceInfo?.charset ?? this.getPlayer()?.outputCharset ?? "utf8") {
     if (this.isGlobal()) {
       return TextLabel.__inject__.getText(charset, this.id);
     }

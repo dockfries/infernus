@@ -525,6 +525,8 @@ tl.create();                              // global
 const ptl = new TextLabel({ ..., player }, player);  // WRONG
 const ptl = new TextLabel({ ..., player });          // correct
 
+// Per-player labels default to player.outputCharset; global labels to utf8
+
 tl.attachToPlayer(player, x, y, z);
 tl.attachToVehicle(vehicle, x, y, z);
 tl.updateText(color, text);
