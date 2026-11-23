@@ -57,7 +57,7 @@ export interface ITextDraw {
   y: number;
   text: string;
   charset?: string;
-  covertSpecialChat?: boolean;
+  convertSpecialChars?: boolean;
 }
 
 export interface IDialogFuncQueue {

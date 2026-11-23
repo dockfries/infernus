@@ -45,9 +45,12 @@ export class GameText {
   /**
    * @throws {I18nException} When `charset` is an unknown character encoding.
    */
-  forAll(charset = "win1252", covertSpecialChat = samp.defined?._rustext_included !== true) {
+  forAll(charset = "win1252", convertSpecialChars = I18n.needsSpecialCharConversion(charset)) {
     GameText.__inject__.forAll(
-      I18n.encodeToBuf(covertSpecialChat ? I18n.convertSpecialChar(this.text) : this.text, charset),
+      I18n.encodeToBuf(
+        convertSpecialChars ? I18n.convertSpecialChar(this.text) : this.text,
+        charset,
+      ),
       this.time,
       this.style,
     );
@@ -59,11 +62,14 @@ export class GameText {
   forPlayer(
     player: Player,
     charset = "win1252",
-    covertSpecialChat = samp.defined?._rustext_included !== true,
+    convertSpecialChars = I18n.needsSpecialCharConversion(charset),
   ) {
     GameText.__inject__.forPlayer(
       player.id,
-      I18n.encodeToBuf(covertSpecialChat ? I18n.convertSpecialChar(this.text) : this.text, charset),
+      I18n.encodeToBuf(
+        convertSpecialChars ? I18n.convertSpecialChar(this.text) : this.text,
+        charset,
+      ),
       this.time,
       this.style,
     );

@@ -93,6 +93,19 @@ export class I18n {
     return mapKeys(locales, (_: any, key: any) => snakeCase(key));
   }
 
+  // The stock SA font keeps accented Latin glyphs in dedicated byte slots, so
+  // the remap is only meaningful for the legacy Western encodings it targets.
+  static needsSpecialCharConversion(charset: string): boolean {
+    const normalized = charset.toLowerCase().replace(/[^a-z0-9]/g, "");
+    return (
+      normalized === "win1252" ||
+      normalized === "windows1252" ||
+      normalized === "cp1252" ||
+      normalized === "iso88591" ||
+      normalized === "latin1"
+    );
+  }
+
   static convertSpecialChar(input: string): string {
     const charMap: Record<string, string> = {
       à: "\x97",

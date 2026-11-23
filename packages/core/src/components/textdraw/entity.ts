@@ -60,10 +60,10 @@ export class TextDraw {
       text,
       player,
       charset = "ISO-8859-1",
-      covertSpecialChat = samp.defined?._rustext_included !== true,
+      convertSpecialChars = I18n.needsSpecialCharConversion(charset),
     } = this.sourceInfo;
     const _text = I18n.encodeToBuf(
-      covertSpecialChat ? I18n.convertSpecialChar(text) : text,
+      convertSpecialChars ? I18n.convertSpecialChar(text) : text,
       charset,
     );
 
@@ -273,10 +273,12 @@ export class TextDraw {
     if (text.length === 0 || text.length > 1024) {
       throw new TextDrawException("Invalid text length");
     }
-    const { charset = "ISO-8859-1", covertSpecialChat = samp.defined?._rustext_included !== true } =
-      this.sourceInfo || {};
+    const {
+      charset = "ISO-8859-1",
+      convertSpecialChars = I18n.needsSpecialCharConversion(charset),
+    } = this.sourceInfo || {};
     const _text = I18n.encodeToBuf(
-      covertSpecialChat ? I18n.convertSpecialChar(text) : text,
+      convertSpecialChars ? I18n.convertSpecialChar(text) : text,
       charset,
     );
 
