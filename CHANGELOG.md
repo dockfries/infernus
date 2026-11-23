@@ -1,3 +1,19 @@
+## [0.16.0](https://github.com/dockfries/infernus/compare/v0.15.2...v0.16.0) (2026-11-23)
+
+### ⚠ BREAKING CHANGES
+
+- **core:** make special-char conversion charset-aware
+- **core, fs, weapon-config:** separate player input and output charsets
+
+### Features
+
+- **core, fs, weapon-config:** separate player input and output charsets ([b3d717c](https://github.com/dockfries/infernus/commit/b3d717cde2d9ac1d09ecc98d8bb3f0db4381ece0))
+
+### Bug Fixes
+
+- **core:** default per-player TextLabels to output charset ([f5059ae](https://github.com/dockfries/infernus/commit/f5059aee9d108c69f163a5998d806a217022c82e))
+- **core:** make special-char conversion charset-aware ([d4687c3](https://github.com/dockfries/infernus/commit/d4687c3614c6242229d72870fa8cc4c355f4cf69))
+
 ## [0.15.2](https://github.com/dockfries/infernus/compare/v0.15.1...v0.15.2) (2026-11-12)
 
 ### Features
